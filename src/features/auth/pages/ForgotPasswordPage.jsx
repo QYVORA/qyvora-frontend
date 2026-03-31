@@ -1,0 +1,168 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Mail, KeyRound, Lock, Eye, EyeOff } from 'lucide-react'
+import { useToast } from '@/core/contexts/ToastContext'
+import { useTheme } from '@/core/contexts/ThemeContext'
+import { authService } from '@/core/services'
+import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
+import { Button, Input } from '@/shared/components/ui'
+
+export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState('')
+  const [requestLoading, setRequestLoading] = useState(false)
+  const [token, setToken] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [showPass, setShowPass] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
+  const { toast } = useToast()
+  const { isDark, toggleTheme } = useTheme()
+  const navigate = useNavigate()
+
+  const handleRequest = async (e) => {
+    e.preventDefault()
+    if (!email) {
+      toast({ type: 'error', message: 'Email is required.' })
+      return
+    }
+    setRequestLoading(true)
+    try {
+      await authService.requestPasswordReset(email)
+      toast({ type: 'success', title: 'Check your email', message: 'Password reset instructions sent.' })
+    } catch (err) {
+      toast({ type: 'error', message: err?.response?.data?.error || 'Request failed.' })
+    } finally {
+      setRequestLoading(false)
+    }
+  }
+
+  const handleReset = async (e) => {
+    e.preventDefault()
+    if (!token || !password) {
+      toast({ type: 'error', message: 'Token and new password are required.' })
+      return
+    }
+    if (password.length < 8) {
+      toast({ type: 'error', message: 'Password must be at least 8 characters.' })
+      return
+    }
+    if (password !== confirm) {
+      toast({ type: 'error', title: 'Password mismatch', message: 'The two passwords must match.' })
+      return
+    }
+    setResetLoading(true)
+    try {
+      await authService.confirmPasswordReset(token.trim(), password)
+      toast({ type: 'success', title: 'Password updated', message: 'You can now log in.' })
+      navigate('/login')
+    } catch (err) {
+      const apiMessage = err?.response?.data?.error
+      if (apiMessage && apiMessage.toLowerCase().includes('token')) {
+        toast({ type: 'error', title: 'Invalid token', message: apiMessage })
+      } else {
+        toast({ type: 'error', message: apiMessage || 'Reset failed.' })
+      }
+    } finally {
+      setResetLoading(false)
+    }
+  }
+
+  return (
+    <div className="relative isolate min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] p-6">
+      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-md space-y-6">
+        <AuthTopActions
+          isDark={isDark}
+          onToggleTheme={toggleTheme}
+          linkTo="/login"
+          linkLabel="Remembered your password?"
+          linkText="Log in"
+        />
+
+        <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
+          <div>
+            <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// reset access</p>
+            <h1 className="font-display font-bold text-2xl text-[var(--text-primary)]">Forgot Password</h1>
+            <p className="text-sm text-[var(--text-secondary)] mt-2">
+              Enter your email to receive a reset token.
+            </p>
+          </div>
+          <form onSubmit={handleRequest} className="space-y-3">
+            <Input
+              label="Email"
+              type="email"
+              placeholder="you@hsociety.io"
+              icon={Mail}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button type="submit" variant="primary" loading={requestLoading} className="w-full justify-center">
+              Request Reset
+            </Button>
+          </form>
+        </div>
+
+        <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
+          <div>
+            <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// set new password</p>
+            <h2 className="font-display font-bold text-xl text-[var(--text-primary)]">Confirm Reset</h2>
+          </div>
+          <form onSubmit={handleReset} className="space-y-3">
+            <Input
+              label="Reset Token"
+              placeholder="Paste reset token"
+              icon={KeyRound}
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+            />
+            <div>
+              <label className="label">New Password</label>
+              <div className="relative">
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+                <input
+                  type={showPass ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  className="input-field pl-10 pr-10"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass((v) => !v)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                >
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="label">Confirm Password</label>
+              <div className="relative">
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+                <input
+                  type={showConfirm ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  className="input-field pl-10 pr-10"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm((v) => !v)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                >
+                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+            <Button type="submit" variant="primary" loading={resetLoading} className="w-full justify-center">
+              Update Password
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}

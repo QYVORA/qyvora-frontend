@@ -8,4 +8,3 @@ export const authService = {
   requestPasswordReset: (email) => api.post('/auth/password-reset/request', { email }),
   confirmPasswordReset: (token, password) => api.post('/auth/password-reset/confirm', { token, password }),
 }
-

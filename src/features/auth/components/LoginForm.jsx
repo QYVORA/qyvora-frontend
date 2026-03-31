@@ -47,6 +47,12 @@ export function LoginForm({ form, errors, loading, showPass, onTogglePass, onCha
           </Button>
         </form>
 
+        <div className="mt-3 text-right">
+          <a href="/forgot-password" className="text-xs text-accent hover:opacity-80">
+            Forgot password?
+          </a>
+        </div>
+
         <div className="mt-6 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)]">
           <p className="text-xs text-[var(--text-muted)] font-mono mb-2">// demo credentials</p>
           <div className="space-y-1 text-xs font-mono">

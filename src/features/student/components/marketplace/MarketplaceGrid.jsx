@@ -2,7 +2,7 @@ import { ShoppingBag } from 'lucide-react'
 import { EmptyState, Card, Skeleton } from '@/shared/components/ui'
 import { MarketplaceItemCard } from '@/features/student/components/marketplace/MarketplaceItemCard'
 
-export function MarketplaceGrid({ items, user, onBuy, loading = false }) {
+export function MarketplaceGrid({ items, user, onBuy, onDownload, purchasedIds, loading = false }) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -34,7 +34,14 @@ export function MarketplaceGrid({ items, user, onBuy, loading = false }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {items.map(item => (
-        <MarketplaceItemCard key={item._id || item.id} item={item} user={user} onBuy={onBuy} />
+        <MarketplaceItemCard
+          key={item._id || item.id}
+          item={item}
+          user={user}
+          onBuy={onBuy}
+          onDownload={onDownload}
+          purchased={purchasedIds?.has(String(item._id || item.id))}
+        />
       ))}
     </div>
   )

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Search, Ban, Eye, Users } from 'lucide-react'
+import { Search, Ban, Eye, Users, Key } from 'lucide-react'
 import { Badge, Avatar, Button, EmptyState, Skeleton, Card } from '@/shared/components/ui'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useModal } from '@/core/contexts/ModalContext'
@@ -66,6 +66,35 @@ export default function AdminUsers() {
         toast({ type: 'success', message: `${user.hackerHandle || user.name || user.email} access restored.` })
       })
       .catch(() => toast({ type: 'error', message: 'Failed to update user.' }))
+  }
+
+  const handleViewRecovery = (user) => {
+    adminService.getUserRecoveryToken(user.id)
+      .then((res) => {
+        const token = res.data?.token || '—'
+        openModal({
+          title: 'Recovery Token',
+          badge: 'ADMIN',
+          description: `Recovery token for ${user.hackerHandle || user.name || user.email}.`,
+          confirmLabel: 'Copy Token',
+          cancelLabel: 'Close',
+          onConfirm: async () => {
+            try {
+              await navigator.clipboard.writeText(token)
+              toast({ type: 'success', title: 'Copied', message: 'Recovery token copied.' })
+            } catch {
+              toast({ type: 'error', message: 'Failed to copy token.' })
+            }
+          },
+          onCancel: () => {},
+          content: (
+            <div className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] p-3 font-mono text-xs text-[var(--text-primary)] break-all">
+              {token}
+            </div>
+          ),
+        })
+      })
+      .catch(() => toast({ type: 'error', message: 'Failed to fetch recovery token.' }))
   }
 
   return (
@@ -158,6 +187,7 @@ export default function AdminUsers() {
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-2">
                         <Button variant="ghost" size="sm" icon={Eye}>View</Button>
+                        <Button variant="ghost" size="sm" icon={Key} onClick={() => handleViewRecovery(u)}>Recovery</Button>
                         {!u.bootcampAccessRevoked ? (
                           <Button variant="danger" size="sm" icon={Ban} onClick={() => handleBan(u)}>Revoke</Button>
                         ) : (

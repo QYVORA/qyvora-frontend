@@ -76,11 +76,13 @@ export function AuthProvider({ children }) {
     clearSession()
   }
 
-  const updateUser = (updates) => {
-    const updated = { ...user, ...updates }
-    setUser(updated)
-    localStorage.setItem('hs_user', JSON.stringify(updated))
-  }
+  const updateUser = useCallback((updates) => {
+    setUser((prev) => {
+      const updated = { ...(prev || {}), ...updates }
+      localStorage.setItem('hs_user', JSON.stringify(updated))
+      return updated
+    })
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, loading, token, login, register, logout, updateUser, authState, isAuthenticated: !!user }}>

@@ -1,0 +1,1 @@
+import{j as e}from"./index-WhfO71r8.js";function c({label:a,options:s,className:n,...i}){return e.jsxs("div",{className:n,children:[a&&e.jsx("label",{className:"label",children:a}),e.jsx("select",{className:"input-field appearance-none",...i,children:s.map(l=>e.jsx("option",{value:l.value,children:l.label},l.value))})]})}export{c as S};

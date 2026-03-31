@@ -25,10 +25,13 @@ export function ContentUploadForm({
           onChange={e => onChangeForm({ ...form, title: e.target.value })}
         />
         <Select
-          label="Phase"
+          label="Phase (optional)"
           value={form.phase}
           onChange={e => onChangeForm({ ...form, phase: e.target.value })}
-          options={[1,2,3,4,5].map(n => ({ value: String(n), label: `Phase ${n}` }))}
+          options={[
+            { value: '', label: 'No phase' },
+            ...[1,2,3,4,5].map(n => ({ value: String(n), label: `Phase ${n}` })),
+          ]}
         />
         <Select
           label="Content Type"

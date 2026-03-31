@@ -8,7 +8,7 @@ import { Card, Skeleton } from '@/shared/components/ui'
 
 export default function AdminContent() {
   const [files, setFiles] = useState([])
-  const [form, setForm] = useState({ title: '', phase: '1', type: 'PDF', description: '' })
+  const [form, setForm] = useState({ title: '', phase: '', type: 'PDF', description: '' })
   const [uploading, setUploading] = useState(false)
   const [content, setContent] = useState([])
   const [rawContent, setRawContent] = useState(null)
@@ -102,7 +102,7 @@ export default function AdminContent() {
         description: item.description || '',
       })))
 
-      setForm({ title: '', phase: '1', type: 'PDF', description: '' })
+      setForm({ title: '', phase: '', type: 'PDF', description: '' })
       setFiles([])
       toast({ type: 'success', title: 'Content published!', message: `"${newResource.title}" is now live.` })
     } catch {

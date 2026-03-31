@@ -93,6 +93,7 @@
     @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-lg px-4 py-3 outline-none transition-all duration-200 focus:border-accent/60 focus:ring-2 focus:ring-accent/10;
   }
 
+
   .label {
     @apply text-sm font-medium text-[var(--text-secondary)] mb-1.5 block;
   }

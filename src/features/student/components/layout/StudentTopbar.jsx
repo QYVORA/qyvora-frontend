@@ -1,4 +1,4 @@
-import { Sun, Moon, LogOut, Bell, Zap } from 'lucide-react'
+import { Sun, Moon, LogOut, Bell, Zap, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { Avatar } from '@/shared/components/ui'
@@ -123,12 +123,16 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
         </div>
         <div className="h-6 w-px bg-[var(--border)] mx-1" />
         <div className="relative group">
-          <div className="flex items-center gap-2.5 max-w-[200px]">
+          <Link
+            to="/profile"
+            className="btn-ghost px-3 py-1.5 rounded-lg flex items-center gap-2.5 max-w-[220px]"
+          >
             <Avatar username={user?.hackerHandle || user?.name || user?.email} size="sm" />
             <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:block truncate">
               {user?.hackerHandle || user?.name || user?.email}
             </span>
-          </div>
+            <User size={14} className="text-[var(--text-muted)] hidden sm:block" />
+          </Link>
           <span className="pointer-events-none absolute top-11 right-0 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
             Profile
           </span>
