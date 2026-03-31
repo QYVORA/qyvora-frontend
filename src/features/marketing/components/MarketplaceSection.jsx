@@ -39,7 +39,7 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
               align="left"
             />
             <p className="text-[var(--text-secondary)] text-base leading-relaxed mb-6 mt-5">
-              Earn Cyber Points (CP) by completing modules, challenges, and phases. Spend them in the Zero-Day Market to unlock premium tools, playbooks, frameworks, and exploit research created by the community.
+              Earn Captured Points (CP) by completing modules, challenges, and phases. Spend them in the Zero-Day Market to unlock premium tools, playbooks, frameworks, and exploit research created by the community.
             </p>
             <ul className="space-y-4">
               {[
@@ -61,86 +61,88 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
             </Link>
           </div>
 
-          <div className="relative flex flex-col justify-center">
-            <div className="card p-8 border-accent/25 shadow-2xl shadow-accent/8 rounded-2xl relative overflow-hidden">
-              <div className={`absolute -right-12 -bottom-12 w-64 h-64 pointer-events-none rotate-12 ${isDark ? 'opacity-10' : 'opacity-25'}`}>
-                <img src={CP_COIN} alt="" className="w-full h-full object-contain" />
+          <div className="flex flex-col justify-center">
+            <div className="relative w-full">
+              <div className="absolute -top-3 -right-3 bg-accent text-[var(--bg-primary)] text-xs font-bold font-mono px-3 py-1.5 rounded-full shadow-lg z-30">
+                ZERO-DAY MARKET
               </div>
-              <div className="flex items-center justify-between mb-8 relative z-10">
-                <div>
-                  <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-1">Marketplace</p>
-                  {loading ? (
-                    <div className="space-y-2">
-                      <Skeleton className="h-10 w-32" />
-                      <Skeleton className="h-3 w-28" />
-                    </div>
-                  ) : (
-                    <>
-                      <p className="font-display font-black text-5xl text-accent">
-                        {Number(items.length || 0).toLocaleString()}
-                        <span className="text-xl text-[var(--text-muted)]"> Items</span>
-                      </p>
-                      {stats?.stats?.learnersTrained !== undefined && (
-                        <p className="text-xs text-[var(--text-secondary)] mt-2">
-                          {Number(stats.stats.learnersTrained).toLocaleString()} learners trained
+              <div className="card p-8 border-accent/25 shadow-2xl shadow-accent/8 rounded-2xl relative overflow-hidden">
+                <div className={`absolute -right-12 -bottom-12 w-64 h-64 pointer-events-none rotate-12 ${isDark ? 'opacity-10' : 'opacity-25'}`}>
+                  <img src={CP_COIN} alt="" className="w-full h-full object-contain" />
+                </div>
+                <div className="flex items-center justify-between mb-8 relative z-10">
+                  <div>
+                    <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-1">Marketplace</p>
+                    {loading ? (
+                      <div className="space-y-2">
+                        <Skeleton className="h-10 w-32" />
+                        <Skeleton className="h-3 w-28" />
+                      </div>
+                    ) : (
+                      <>
+                        <p className="font-display font-black text-5xl text-accent">
+                          {Number(items.length || 0).toLocaleString()}
+                          <span className="text-xl text-[var(--text-muted)]"> Items</span>
                         </p>
-                      )}
-                    </>
+                        {stats?.stats?.learnersTrained !== undefined && (
+                          <p className="text-xs text-[var(--text-secondary)] mt-2">
+                            {Number(stats.stats.learnersTrained).toLocaleString()} learners trained
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/25 flex items-center justify-center overflow-hidden">
+                    <img src={CP_COIN} alt="CP Coin" className="w-10 h-10 object-contain" />
+                  </div>
+                </div>
+
+                <div className="space-y-1 mb-6">
+                  {loading ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
+                        <Skeleton className="h-4 w-40" />
+                        <Skeleton className="h-4 w-16" />
+                      </div>
+                    ))
+                  ) : previewItems.length === 0 ? (
+                    <div className="text-sm text-[var(--text-secondary)]">No marketplace items available yet.</div>
+                  ) : (
+                    previewItems.map((item) => (
+                      <div key={item._id || item.id} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
+                        <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
+                        <span className="text-sm font-mono font-bold text-accent">{item.cpPrice} CP</span>
+                      </div>
+                    ))
                   )}
                 </div>
-                <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/25 flex items-center justify-center overflow-hidden">
-                  <img src={CP_COIN} alt="CP Coin" className="w-10 h-10 object-contain" />
-                </div>
-              </div>
 
-              <div className="space-y-1 mb-6">
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                      <Skeleton className="h-4 w-40" />
-                      <Skeleton className="h-4 w-16" />
-                    </div>
-                  ))
-                ) : previewItems.length === 0 ? (
-                  <div className="text-sm text-[var(--text-secondary)]">No marketplace items available yet.</div>
-                ) : (
-                  previewItems.map((item) => (
-                    <div key={item._id || item.id} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                      <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
-                      <span className="text-sm font-mono font-bold text-accent">{item.cpPrice} CP</span>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="rounded-xl overflow-hidden border border-accent/20">
-                <div className="bg-accent/8 px-4 py-2 border-b border-accent/20 flex items-center justify-between">
-                  <span className="text-xs font-mono text-accent uppercase tracking-widest">Recent Market Items</span>
-                  <ChevronRight size={12} className="text-accent" />
-                </div>
-                {loading ? (
-                  <div className="px-4 py-4 space-y-3">
-                    {Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="flex items-center justify-between">
-                        <Skeleton className="h-3 w-36" />
-                        <Skeleton className="h-3 w-12" />
-                      </div>
-                    ))}
+                <div className="rounded-xl overflow-hidden border border-accent/20">
+                  <div className="bg-accent/8 px-4 py-2 border-b border-accent/20 flex items-center justify-between">
+                    <span className="text-xs font-mono text-accent uppercase tracking-widest">Recent Market Items</span>
+                    <ChevronRight size={12} className="text-accent" />
                   </div>
-                ) : previewItems.length === 0 ? (
-                  <div className="px-4 py-4 text-xs text-[var(--text-muted)]">No listings yet.</div>
-                ) : (
-                  previewItems.map(item => (
-                    <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] last:border-0">
-                      <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
-                      <span className="text-xs font-mono font-bold text-accent">{item.cpPrice} CP</span>
+                  {loading ? (
+                    <div className="px-4 py-4 space-y-3">
+                      {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="flex items-center justify-between">
+                          <Skeleton className="h-3 w-36" />
+                          <Skeleton className="h-3 w-12" />
+                        </div>
+                      ))}
                     </div>
-                  ))
-                )}
+                  ) : previewItems.length === 0 ? (
+                    <div className="px-4 py-4 text-xs text-[var(--text-muted)]">No listings yet.</div>
+                  ) : (
+                    previewItems.map(item => (
+                      <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] last:border-0">
+                        <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
+                        <span className="text-xs font-mono font-bold text-accent">{item.cpPrice} CP</span>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="absolute -top-4 right-4 bg-accent text-[var(--bg-primary)] text-xs font-bold font-mono px-3 py-1.5 rounded-full shadow-lg">
-              ZERO-DAY MARKET
             </div>
           </div>
         </div>

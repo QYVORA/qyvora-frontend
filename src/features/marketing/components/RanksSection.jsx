@@ -1,4 +1,4 @@
-import { SectionHeader, Skeleton } from '@/shared/components/ui'
+import { Avatar, SectionHeader, Skeleton } from '@/shared/components/ui'
 
 export function RanksSection({ leaderboard = [], loading = false }) {
   return (
@@ -32,6 +32,9 @@ export function RanksSection({ leaderboard = [], loading = false }) {
             {leaderboard.slice(0, 6).map((entry, idx) => {
               const colors = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9', '#94a3b8']
               const color = colors[idx % colors.length]
+              const handle = entry.handle || entry.name || 'Anonymous'
+              const displayHandle = handle.length > 14 ? `${handle.slice(0, 12)}…` : handle
+              const rankLabel = entry.rank || 'Operator'
               return (
                 <div
                   key={entry.id || entry.handle || idx}
@@ -43,14 +46,17 @@ export function RanksSection({ leaderboard = [], loading = false }) {
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{ background: `radial-gradient(ellipse at center, ${color}10 0%, transparent 70%)` }}
                   />
-                  <div
-                    className="w-14 h-14 rounded-full border-2 flex items-center justify-center font-bold font-mono text-base relative z-10"
-                    style={{ borderColor: color, color }}
-                  >
-                    {idx + 1}
+                  <div className="relative z-10">
+                    <Avatar username={handle} size="lg" />
                   </div>
-                  <p className="font-display font-bold text-[var(--text-primary)] text-base text-center relative z-10">
-                    {entry.rank || 'Operator'}
+                  <p
+                    className="font-display font-bold text-[var(--text-primary)] text-base text-center relative z-10 truncate max-w-[140px]"
+                    title={handle}
+                  >
+                    {displayHandle}
+                  </p>
+                  <p className="text-xs font-mono text-[var(--text-muted)] relative z-10">
+                    {rankLabel}
                   </p>
                   <p className="text-xs font-mono relative z-10" style={{ color }}>
                     {Number(entry.totalXp || 0).toLocaleString()} XP

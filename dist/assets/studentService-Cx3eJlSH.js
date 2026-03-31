@@ -1,1 +1,0 @@
-import{b as t}from"./index-Bu_d8aWV.js";const s={getOverview:()=>t.get("/student/overview"),getLearningPath:()=>t.get("/student/learning-path"),getSnapshot:()=>t.get("/student/snapshot"),getXpSummary:()=>t.get("/student/xp-summary")};export{s};

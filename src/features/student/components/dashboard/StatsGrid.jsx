@@ -19,7 +19,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress }
         <StatCard
           label="CP Balance"
           value={Number(cpBalance || 0).toLocaleString()}
-          sub="Cyber Points"
+          sub="Captured Points"
           icon={Wallet}
           color="#0EA5E9"
           className="h-full"

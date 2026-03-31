@@ -72,7 +72,7 @@ export default function WalletPage() {
       <div>
         <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// economy</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">CP Wallet</h1>
-        <p className="text-[var(--text-secondary)] text-sm mt-1">Your Cyber Points balance and transaction history.</p>
+        <p className="text-[var(--text-secondary)] text-sm mt-1">Your Captured Points balance and transaction history.</p>
       </div>
 
       {/* Balance hero */}

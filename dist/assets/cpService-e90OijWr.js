@@ -1,1 +1,0 @@
-import{b as c}from"./index-Bu_d8aWV.js";const p={getBalance:()=>c.get("/cp/balance"),getTransactions:(a=20)=>c.get("/cp/transactions",{params:{limit:a}}),purchase:a=>c.post("/cp/purchase",{productId:a})};export{p as c};

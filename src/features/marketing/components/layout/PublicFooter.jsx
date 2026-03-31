@@ -3,7 +3,7 @@ import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 
 export function PublicFooter() {
   return (
-    <footer className="border-t border-[var(--border)] mt-20 overflow-hidden">
+    <footer className="mt-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2">
           <p className="text-[var(--text-muted)] text-sm font-mono">© 2026 HSOCIETY. Train Like a Hacker. Become a Hacker.</p>
@@ -29,7 +29,7 @@ export function PublicFooter() {
           </div>
         </div>
       </div>
-      <div className="border-t border-[var(--border)]/60">
+      <div>
         <div className="max-w-7xl mx-auto px-6 py-10">
           <p className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] tracking-tight leading-[0.8] text-center text-[var(--text-primary)]/15">
             <span className="text-accent/70">H</span>

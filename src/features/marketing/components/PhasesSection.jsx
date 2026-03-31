@@ -1,9 +1,13 @@
+import { Link } from 'react-router-dom'
 import { PHASES_SECTION_BG, PHASE_IMGS, PHASE_ICONS } from '@/features/marketing/data/landingData'
 import { SectionHeader, Skeleton } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { useAuth } from '@/core/contexts/AuthContext'
 
-export function PhasesSection({ items = [], isAuthenticated = false, loading = false }) {
+export function PhasesSection({ items = [], loading = false }) {
   const { isDark } = useTheme()
+  const { user } = useAuth()
+  const enrollTo = user ? '/bootcamp' : '/login'
   const overlayFilter = isDark ? 'brightness(0.2) saturate(0.5)' : 'brightness(0.85) saturate(0.7)'
   const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
   const iconBackdrop = isDark ? 'blur(8px)' : 'none'
@@ -49,11 +53,7 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
           </div>
         ) : items.length === 0 ? (
           <div className="card p-8 text-center">
-            <p className="text-sm text-[var(--text-secondary)]">
-              {isAuthenticated
-                ? 'No learning path data available yet. Complete onboarding to unlock your curriculum.'
-                : 'Sign in to view your live learning path and module progress.'}
-            </p>
+            <p className="text-sm text-[var(--text-secondary)]">Curriculum details will appear here soon.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -105,22 +105,11 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
-                      Status: {item.status?.replace('-', ' ') || 'pending'}
+                      Curated offensive security track built for real-world mastery.
                     </p>
-                    <div className="mt-5 pt-5 border-t border-[var(--border)] flex items-center justify-between">
-                      <span className="text-xs font-mono text-[var(--text-muted)]">
-                        {item.roomsCompleted}/{item.roomsTotal} rooms
-                      </span>
-                      <span className="text-sm font-mono font-bold" style={{ color: accent }}>
-                        {item.progress}% complete
-                      </span>
-                    </div>
-                    <div className="mt-3 h-1.5 rounded-full bg-[var(--border)] overflow-hidden">
-                      <div
-                        className="h-full rounded-full"
-                        style={{ width: `${item.progress || 0}%`, background: accent, boxShadow: `0 0 10px ${accent}55` }}
-                      />
-                    </div>
+                    <Link to={enrollTo} className="btn-primary mt-5 inline-flex items-center justify-center">
+                      Enroll
+                    </Link>
                   </div>
                 </div>
               )
