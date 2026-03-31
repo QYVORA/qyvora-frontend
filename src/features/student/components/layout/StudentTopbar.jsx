@@ -57,7 +57,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
           <button onClick={onToggleTheme} className="lg:hidden btn-ghost p-2 rounded-lg" aria-label="Toggle theme">
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
+          <span className="pointer-events-none absolute top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
             Change theme
           </span>
         </div>
@@ -65,7 +65,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
           <button onClick={onLogout} className="lg:hidden btn-ghost p-2 rounded-lg text-red-400" aria-label="Logout">
             <LogOut size={18} />
           </button>
-          <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
+          <span className="pointer-events-none absolute top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
             Logout
           </span>
         </div>
@@ -81,7 +81,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
               <Bell size={18} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-accent rounded-full" />
             </button>
-            <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
+            <span className="pointer-events-none absolute top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
               Notifications
             </span>
           </div>
@@ -129,7 +129,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
               {user?.hackerHandle || user?.name || user?.email}
             </span>
           </div>
-          <span className="pointer-events-none absolute -top-9 right-0 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
+          <span className="pointer-events-none absolute top-11 right-0 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
             Profile
           </span>
         </div>
