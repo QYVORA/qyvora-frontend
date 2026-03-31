@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f8fafc;
+    --border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+  }
+
+  .dark {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #111118;
+    --bg-card: #16161f;
+    --bg-card-hover: #1c1c28;
+    --border: #2e2e44;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #5a5a7a;
+  }
+
+  * {
+    border-color: var(--border);
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: #1fbf8f33;
+    color: #1fbf8f;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2e2e44;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1fbf8f55;
+  }
+}
+
+@layer components {
+  .card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .card-hover {
+    @apply card transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-dark-900 font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-accent-400 hover:shadow-lg hover:shadow-accent/25 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply border border-current text-accent px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-accent/10 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply text-[var(--text-secondary)] px-4 py-2 rounded-lg transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+  }
+
+  .input-field {
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-lg px-4 py-3 outline-none transition-all duration-200 focus:border-accent/60 focus:ring-2 focus:ring-accent/10;
+  }
+
+  .label {
+    @apply text-sm font-medium text-[var(--text-secondary)] mb-1.5 block;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium;
+  }
+
+  .section-title {
+    @apply font-display font-bold text-3xl md:text-4xl text-[var(--text-primary)];
+  }
+
+  .section-sub {
+    @apply text-[var(--text-secondary)] text-lg mt-3 max-w-2xl;
+  }
+
+  .mono {
+    @apply font-mono text-accent;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 30px #1fbf8f66;
+  }
+}
+
+/* Noise texture overlay */
+.noise-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply animate-pulse bg-[var(--border)] rounded;
+}
+
+/* Progress bar */
+.progress-bar {
+  @apply h-1.5 rounded-full bg-[var(--border)] overflow-hidden;
+}
+.progress-fill {
+  @apply h-full rounded-full bg-accent transition-all duration-700 ease-out;
+  box-shadow: 0 0 10px #1fbf8f66;
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Fade animations */
+.animate-enter {
+  animation: fadeIn 0.25s ease-out, slideUp 0.25s ease-out;
+}
