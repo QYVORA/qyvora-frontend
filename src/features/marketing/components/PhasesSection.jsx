@@ -6,6 +6,8 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
   const { isDark } = useTheme()
   const overlayFilter = isDark ? 'brightness(0.2) saturate(0.5)' : 'brightness(0.85) saturate(0.7)'
   const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
+  const iconBackdrop = isDark ? 'blur(8px)' : 'none'
+  const badgeBackdrop = isDark ? 'blur(6px)' : 'none'
   return (
     <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="phases">
       <div
@@ -81,7 +83,7 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
                         style={{
                           background: `${accent}20`,
                           borderColor: `${accent}50`,
-                          backdropFilter: 'blur(8px)',
+                          backdropFilter: iconBackdrop,
                         }}
                       >
                         <Icon size={28} style={{ color: accent }} />
@@ -93,7 +95,7 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
                         color: accent,
                         borderColor: `${accent}50`,
                         background: `${accent}15`,
-                        backdropFilter: 'blur(6px)',
+                        backdropFilter: badgeBackdrop,
                       }}
                     >
                       MODULE {String(item.id).padStart(2, '0')}

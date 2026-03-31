@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
 import { SectionHeader, Skeleton } from '@/shared/components/ui'
+import { useTheme } from '@/core/contexts/ThemeContext'
 
 export function MarketplaceSection({ items = [], stats, loading = false }) {
+  const { isDark } = useTheme()
   const previewItems = items.slice(0, 3)
   return (
     <section className="py-32 px-6 relative" id="marketplace">
@@ -61,7 +63,7 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
 
           <div className="relative flex flex-col justify-center">
             <div className="card p-8 border-accent/25 shadow-2xl shadow-accent/8 rounded-2xl relative overflow-hidden">
-              <div className="absolute -right-12 -bottom-12 w-64 h-64 opacity-10 pointer-events-none rotate-12">
+              <div className={`absolute -right-12 -bottom-12 w-64 h-64 pointer-events-none rotate-12 ${isDark ? 'opacity-10' : 'opacity-25'}`}>
                 <img src={CP_COIN} alt="" className="w-full h-full object-contain" />
               </div>
               <div className="flex items-center justify-between mb-8 relative z-10">

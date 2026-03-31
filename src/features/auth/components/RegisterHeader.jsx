@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom'
-import { Shield } from 'lucide-react'
 
 export function RegisterHeader() {
   return (
     <div className="text-center mb-8">
-      <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center">
-          <Shield size={20} className="text-accent" />
-        </div>
+      <Link to="/" className="inline-flex items-center mb-6">
         <span className="font-display font-bold text-2xl">H<span className="text-accent">SOCIETY</span></span>
       </Link>
       <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// create account</p>

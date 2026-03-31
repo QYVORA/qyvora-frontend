@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Shield, Sun, Moon } from 'lucide-react'
+import { Sun, Moon } from 'lucide-react'
 
 export function LoginTopBar({ isDark, onToggleTheme }) {
   return (
     <div className="flex items-center justify-between p-6">
-      <Link to="/" className="lg:hidden flex items-center gap-2">
-        <Shield size={18} className="text-accent" />
+      <Link to="/" className="lg:hidden flex items-center">
         <span className="font-display font-bold">H<span className="text-accent">SOCIETY</span></span>
       </Link>
       <div className="ml-auto flex items-center gap-3">

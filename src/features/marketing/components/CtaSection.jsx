@@ -5,9 +5,16 @@ import { useTheme } from '@/core/contexts/ThemeContext'
 
 export function CtaSection() {
   const { isDark } = useTheme()
-  const backdropFilter = isDark ? 'brightness(0.15) saturate(1.2)' : 'brightness(0.8) saturate(0.75)'
+  const backdropFilter = isDark ? 'brightness(0.15) saturate(1.2)' : 'brightness(0.45) saturate(0.9)'
+  const lightTextVars = !isDark
+    ? {
+      '--text-primary': '#f8fafc',
+      '--text-secondary': '#e2e8f0',
+      '--text-muted': '#cbd5f5',
+    }
+    : undefined
   return (
-    <section className="py-36 px-6 relative overflow-hidden">
+    <section className="py-36 px-6 relative overflow-hidden" style={lightTextVars}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

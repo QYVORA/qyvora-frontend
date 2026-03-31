@@ -9,11 +9,23 @@ export function HeroSection({ stats, loading = false }) {
   const learners = stats?.stats?.learnersTrained ?? 0
   const phases = stats?.stats?.engagementsCompleted ?? 0
   const marketItems = stats?.stats?.vulnerabilitiesIdentified ?? 0
-  const heroFilter = isDark ? 'brightness(0.18) saturate(1.4)' : 'brightness(0.85) saturate(0.8)'
+  const heroFilter = isDark ? 'brightness(0.18) saturate(1.4)' : 'brightness(0.55) saturate(0.9)'
   const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
   const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
+  const heroGlow = isDark ? 'blur-3xl' : 'blur-none'
+  const lightTextVars = !isDark
+    ? {
+      '--text-primary': '#f8fafc',
+      '--text-secondary': '#e2e8f0',
+      '--text-muted': '#cbd5f5',
+      '--border': 'rgba(248, 250, 252, 0.25)',
+    }
+    : undefined
   return (
-    <section className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
+    <section
+      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden"
+      style={lightTextVars}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -24,8 +36,8 @@ export function HeroSection({ stats, loading = false }) {
         }}
       />
       <div className={`absolute inset-0 bg-grid-pattern ${gridOpacity} pointer-events-none`} />
-      <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] ${operatorAccent} rounded-full blur-3xl pointer-events-none`} />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-phase-purple/8 rounded-full blur-3xl pointer-events-none" />
+      <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] ${operatorAccent} rounded-full ${heroGlow} pointer-events-none`} />
+      <div className={`absolute bottom-0 right-0 w-[500px] h-[500px] bg-phase-purple/8 rounded-full ${heroGlow} pointer-events-none`} />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
@@ -51,7 +63,10 @@ export function HeroSection({ stats, loading = false }) {
             Start Training
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link to="/login" className="btn-secondary text-base px-8 py-4 rounded-xl">
+          <Link
+            to="/login"
+            className={`btn-secondary text-base px-8 py-4 rounded-xl ${isDark ? '' : 'border-white/70 text-white hover:bg-white/10'}`}
+          >
             Log In
           </Link>
         </div>
