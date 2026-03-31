@@ -9,6 +9,7 @@ import { SocialSection } from '@/features/marketing/components/SocialSection'
 import api from '@/core/services/api'
 import { studentService } from '@/core/services'
 import { useAuth } from '@/core/contexts/AuthContext'
+import { PHASE_PREVIEW } from '@/features/marketing/data/landingData'
 
 export default function LandingPage() {
   const { user } = useAuth()
@@ -56,7 +57,7 @@ export default function LandingPage() {
     let mounted = true
     const loadLearningPath = async () => {
       if (!user) {
-        setLearningPath([])
+        setLearningPath(PHASE_PREVIEW)
         setLoadingLearningPath(false)
         return
       }

@@ -74,7 +74,8 @@ export function RegisterForm({ form, errors, strength, loading, showPass, onTogg
 
       <p className="text-center text-xs text-[var(--text-muted)] mt-6">
         By registering you agree to our{' '}
-        <a href="#" className="text-accent hover:underline">Terms of Service</a>.
+        <a href="/terms" className="text-accent hover:underline">Terms of Service</a> and{' '}
+        <a href="/privacy" className="text-accent hover:underline">Privacy Policy</a>.
         For educational purposes only.
       </p>
     </div>

@@ -20,7 +20,7 @@ export const SOCIAL_MEDIA = [
   {
     key: 'linkedin',
     label: 'LinkedIn',
-    handle: 'HSOCIETY Offsec',
+    handle: 'HSOCIETY OFFSEC',
     url: 'https://www.linkedin.com/company/hsociety-offsec/',
     icon: Linkedin,
     description: 'Company updates and operator wins.',
@@ -28,7 +28,7 @@ export const SOCIAL_MEDIA = [
   {
     key: 'whatsapp',
     label: 'WhatsApp',
-    handle: 'Operator Chat',
+    handle: 'HSOCIETY OFFSEC',
     url: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
     icon: MessageCircle,
     description: 'Join the community briefing room.',

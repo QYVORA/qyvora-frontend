@@ -21,27 +21,36 @@ export default function ProfilePage() {
   const [form, setForm] = useState({ name: '', hackerHandle: '' })
   const [loading, setLoading] = useState(true)
 
+  const withTimeout = (promise, ms = 8000) => Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms)),
+  ])
+
   useEffect(() => {
     let mounted = true
     const load = async () => {
       setLoading(true)
       try {
-        const [profileRes, overviewRes, leaderboardRes] = await Promise.all([
-          profileService.getProfile(),
-          studentService.getOverview(),
-          api.get('/public/leaderboard'),
+        const results = await Promise.allSettled([
+          withTimeout(profileService.getProfile()),
+          withTimeout(studentService.getOverview()),
+          withTimeout(api.get('/public/leaderboard')),
         ])
+        const [profileRes, overviewRes, leaderboardRes] = results.map((res) => (res.status === 'fulfilled' ? res.value : null))
         if (!mounted) return
-        setProfile(profileRes.data || null)
-        setOverview(overviewRes.data || null)
-        setLeaderboard(leaderboardRes.data?.leaderboard || [])
+        setProfile(profileRes?.data || null)
+        setOverview(overviewRes?.data || null)
+        setLeaderboard(leaderboardRes?.data?.leaderboard || [])
         setForm({
-          name: profileRes.data?.name || '',
-          hackerHandle: profileRes.data?.hackerHandle || '',
+          name: profileRes?.data?.name || '',
+          hackerHandle: profileRes?.data?.hackerHandle || '',
         })
-        updateUser(profileRes.data || {})
+        if (profileRes?.data) updateUser(profileRes.data || {})
+        if (results.some((r) => r.status === 'rejected')) {
+          toast({ type: 'warning', title: 'Partial load', message: 'Some profile data did not load. Refresh to try again.' })
+        }
       } catch {
-        // ignore
+        toast({ type: 'error', title: 'Profile unavailable', message: 'Please refresh the page.' })
       } finally {
         if (mounted) setLoading(false)
       }

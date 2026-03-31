@@ -50,10 +50,10 @@ export function RanksSection({ leaderboard = [], loading = false }) {
                     {idx + 1}
                   </div>
                   <p className="font-display font-bold text-[var(--text-primary)] text-base text-center relative z-10">
-                    {entry.handle || entry.name}
+                    {entry.rank || 'Operator'}
                   </p>
                   <p className="text-xs font-mono relative z-10" style={{ color }}>
-                    {entry.rank || 'Operator'} · {Number(entry.totalXp || 0).toLocaleString()} XP
+                    {Number(entry.totalXp || 0).toLocaleString()} XP
                   </p>
                 </div>
               )

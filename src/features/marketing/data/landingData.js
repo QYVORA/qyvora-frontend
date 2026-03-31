@@ -5,6 +5,12 @@ export const PHASES_SECTION_BG = '/images/phases-background-image/phases-section
 export const CTA_BG = '/images/cta-setion-background/cta-background.png'
 export const CP_COIN = '/icons/Cp-icon/cp-coin.png'
 export const CP_MARKET_BG = '/images/cp-card-background/zeroday-maket-background.png'
+export const HOW_IT_WORKS_IMGS = [
+  '/images/how-it-works-section/Learners-Trained.png',
+  '/images/how-it-works-section/Pentesters-Active.png',
+  '/images/how-it-works-section/Engagements-4Completed.png',
+  '/images/how-it-works-section/Findings-Identified.png',
+]
 
 export const FLOW_IMGS = [
   'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&q=75',
@@ -15,11 +21,19 @@ export const FLOW_IMGS = [
 ]
 
 export const PHASE_IMGS = [
-  'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75',
-  'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&q=75',
-  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=75',
-  'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=75',
-  'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=600&q=75',
+  '/images/Curriculum-images/phase1.png',
+  '/images/Curriculum-images/phase2.png',
+  '/images/Curriculum-images/phase3.png',
+  '/images/Curriculum-images/phase4.png',
+  '/images/Curriculum-images/phase5.png',
+]
+
+export const PHASE_PREVIEW = [
+  { id: 1, title: 'Phase 01 — Reconnaissance', status: 'in-progress', roomsCompleted: 4, roomsTotal: 8, progress: 50 },
+  { id: 2, title: 'Phase 02 — Exploitation', status: 'next', roomsCompleted: 1, roomsTotal: 10, progress: 10 },
+  { id: 3, title: 'Phase 03 — Post-Exploitation', status: 'locked', roomsCompleted: 0, roomsTotal: 9, progress: 0 },
+  { id: 4, title: 'Phase 04 — Persistence', status: 'locked', roomsCompleted: 0, roomsTotal: 7, progress: 0 },
+  { id: 5, title: 'Phase 05 — Zero-Day', status: 'locked', roomsCompleted: 0, roomsTotal: 6, progress: 0 },
 ]
 
 export const FLOW_STEPS = [

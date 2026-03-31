@@ -115,6 +115,12 @@ export function PhasesSection({ items = [], isAuthenticated = false, loading = f
                         {item.progress}% complete
                       </span>
                     </div>
+                    <div className="mt-3 h-1.5 rounded-full bg-[var(--border)] overflow-hidden">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${item.progress || 0}%`, background: accent, boxShadow: `0 0 10px ${accent}55` }}
+                      />
+                    </div>
                   </div>
                 </div>
               )
