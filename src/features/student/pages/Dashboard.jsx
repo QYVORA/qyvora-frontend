@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAuth } from '@/core/contexts/AuthContext'
-import { useModal } from '@/core/contexts/ModalContext'
-import { useToast } from '@/core/contexts/ToastContext'
 import { cpService, profileService, studentService } from '@/core/services'
 import { DashboardHeader } from '@/features/student/components/dashboard/DashboardHeader'
 import { StatsGrid } from '@/features/student/components/dashboard/StatsGrid'
@@ -14,15 +12,12 @@ import { Card, Skeleton } from '@/shared/components/ui'
 
 export default function StudentDashboard() {
   const { user: sessionUser, updateUser } = useAuth()
-  const { openModal } = useModal()
-  const { toast } = useToast()
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState(null)
   const [overview, setOverview] = useState(null)
   const [xpSummary, setXpSummary] = useState(null)
   const [balance, setBalance] = useState(null)
   const [activity, setActivity] = useState([])
-  const [recoveryPrompted, setRecoveryPrompted] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -57,47 +52,6 @@ export default function StudentDashboard() {
     load()
     return () => { mounted = false }
   }, [updateUser])
-
-  useEffect(() => {
-    if (!profile || recoveryPrompted) return
-    if (profile.recoveryToken && !profile.recoveryTokenAcknowledgedAt) {
-      const recoveryToken = profile.recoveryToken
-      setRecoveryPrompted(true)
-      openModal({
-        badge: 'Recovery Token',
-        title: 'Save Your Recovery Token',
-        description: 'Keep this token safe. You will need it to recover your account if you ever lose access.',
-        confirmLabel: 'I saved it',
-        onConfirm: async () => {
-          try {
-            await profileService.acknowledgeRecoveryToken()
-            setProfile((prev) => prev ? { ...prev, recoveryTokenAcknowledgedAt: new Date().toISOString() } : prev)
-          } catch {}
-        },
-        content: (
-          <div className="space-y-4">
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-              {recoveryToken}
-            </div>
-            <button
-              type="button"
-              className="btn-primary w-full justify-center py-2.5"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(recoveryToken)
-                  toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
-                } catch {
-                  toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
-                }
-              }}
-            >
-              Copy Token
-            </button>
-          </div>
-        ),
-      })
-    }
-  }, [profile, recoveryPrompted, openModal, toast])
 
   const displayName = profile?.hackerHandle || profile?.name || profile?.email || sessionUser?.hackerHandle || sessionUser?.name
   const totalXp = xpSummary?.totalXp ?? profile?.xpSummary?.totalXp ?? 0

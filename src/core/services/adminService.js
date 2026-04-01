@@ -3,7 +3,6 @@ import api from './api'
 export const adminService = {
   getOverview: () => api.get('/admin/overview'),
   getUsers: () => api.get('/admin/users'),
-  getUserRecoveryToken: (id) => api.get(`/admin/users/${id}/recovery-token`),
   updateUser: (id, data) => api.patch(`/admin/users/${id}`, data),
   getContent: () => api.get('/admin/content'),
   updateContent: (data) => api.patch('/admin/content', data),

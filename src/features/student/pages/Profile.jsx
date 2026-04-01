@@ -20,6 +20,8 @@ export default function ProfilePage() {
   const [leaderboard, setLeaderboard] = useState([])
   const [form, setForm] = useState({ name: '', hackerHandle: '' })
   const [loading, setLoading] = useState(true)
+  const [recoveryToken, setRecoveryToken] = useState('')
+  const [recoveryLoading, setRecoveryLoading] = useState(false)
 
   const withTimeout = (promise, ms = 8000) => Promise.race([
     promise,
@@ -45,7 +47,10 @@ export default function ProfilePage() {
           name: profileRes?.data?.name || '',
           hackerHandle: profileRes?.data?.hackerHandle || '',
         })
-        if (profileRes?.data) updateUser(profileRes.data || {})
+        if (profileRes?.data) {
+          updateUser(profileRes.data || {})
+          setRecoveryToken(profileRes.data?.recoveryToken || '')
+        }
         if (results.some((r) => r.status === 'rejected')) {
           toast({ type: 'warning', title: 'Partial load', message: 'Some profile data did not load. Refresh to try again.' })
         }
@@ -121,24 +126,41 @@ export default function ProfilePage() {
             variant="outline"
             size="sm"
             onClick={async () => {
-              const token = profile?.recoveryToken
-              if (!token) {
-                toast({ type: 'error', title: 'Token unavailable', message: 'Reload the page and try again.' })
+              if (!recoveryToken) {
+                try {
+                  setRecoveryLoading(true)
+                  const res = await profileService.regenerateRecoveryToken()
+                  const token = res.data?.token || ''
+                  if (!token) {
+                    toast({ type: 'error', title: 'Token unavailable', message: 'Please try again.' })
+                    return
+                  }
+                  setRecoveryToken(token)
+                  await navigator.clipboard.writeText(token)
+                  try { await profileService.acknowledgeRecoveryToken() } catch {}
+                  toast({ type: 'success', title: 'New token generated', message: 'Recovery token copied to clipboard.' })
+                } catch {
+                  toast({ type: 'error', title: 'Token unavailable', message: 'Please try again.' })
+                } finally {
+                  setRecoveryLoading(false)
+                }
                 return
               }
               try {
-                await navigator.clipboard.writeText(token)
+                await navigator.clipboard.writeText(recoveryToken)
+                try { await profileService.acknowledgeRecoveryToken() } catch {}
                 toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
               } catch {
                 toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
               }
             }}
+            loading={recoveryLoading}
           >
-            Copy Token
+            {recoveryToken ? 'Copy Token' : 'Generate Token'}
           </Button>
         </div>
         <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-          {loading ? <Skeleton className="h-4 w-full" /> : (profile?.recoveryToken || '—')}
+          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Token hidden. Generate a new one to view.')}
         </div>
       </Card>
 

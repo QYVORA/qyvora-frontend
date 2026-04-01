@@ -1,1 +1,0 @@
-import{b as c}from"./index-WhfO71r8.js";const p={getBalance:()=>c.get("/cp/balance"),getTransactions:(a=20)=>c.get("/cp/transactions",{params:{limit:a}}),purchase:a=>c.post("/cp/purchase",{productId:a}),download:a=>c.get(`/cp/products/${a}/download`,{responseType:"blob"})};export{p as c};

@@ -9,19 +9,51 @@ const api = axios.create({
   withCredentials: true,
 })
 
-// Attach auth token to every request
+let refreshPromise = null
+const refreshSession = () => {
+  if (!refreshPromise) {
+    refreshPromise = api.post('/auth/refresh').finally(() => {
+      refreshPromise = null
+    })
+  }
+  return refreshPromise
+}
+
+const getCookie = (name) => {
+  if (typeof document === 'undefined') return ''
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const match = document.cookie.match(new RegExp(`(?:^|; )${escaped}=([^;]*)`))
+  return match ? decodeURIComponent(match[1]) : ''
+}
+
+// Attach CSRF token when available (cookie-based auth)
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('hs_token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  const csrfToken = getCookie('csrf_token')
+  if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
   return config
 })
 
 // Handle auth errors globally
 api.interceptors.response.use(
   (res) => res,
-  (err) => {
+  async (err) => {
+    const originalRequest = err.config
+    const status = err.response?.status
+    const url = String(originalRequest?.url || '')
+    const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/refresh')
+
+    if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
+      originalRequest._retry = true
+      try {
+        await refreshSession()
+        return api(originalRequest)
+      } catch (refreshErr) {
+        localStorage.removeItem('hs_user')
+        window.location.href = '/login'
+        return Promise.reject(refreshErr)
+      }
+    }
     if (err.response?.status === 401) {
-      localStorage.removeItem('hs_token')
       localStorage.removeItem('hs_user')
       window.location.href = '/login'
     }

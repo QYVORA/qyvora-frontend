@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Mail, KeyRound, Lock, Eye, EyeOff } from 'lucide-react'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useTheme } from '@/core/contexts/ThemeContext'
@@ -8,6 +8,7 @@ import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
 import { Button, Input } from '@/shared/components/ui'
 
 export default function ForgotPasswordPage() {
+  const [searchParams] = useSearchParams()
   const [email, setEmail] = useState('')
   const [requestLoading, setRequestLoading] = useState(false)
   const [token, setToken] = useState('')
@@ -19,6 +20,11 @@ export default function ForgotPasswordPage() {
   const { toast } = useToast()
   const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const queryToken = String(searchParams.get('token') || '').trim()
+    if (queryToken) setToken(queryToken)
+  }, [searchParams])
 
   const handleRequest = async (e) => {
     e.preventDefault()
