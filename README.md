@@ -130,9 +130,11 @@ const login = async (email, password) => {
 }
 ```
 
-Set your backend URL in `.env`:
+Set your backend URL in `.env` (or Netlify environment variables):
 ```
 VITE_API_URL=https://api.yourdomain.com/v1
+# or, for relative proxying:
+VITE_API_BASE_URL=/api
 ```
 
 ---
