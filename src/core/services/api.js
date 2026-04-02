@@ -2,7 +2,15 @@ import axios from 'axios'
 
 const ENV_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL
 const DEFAULT_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : '/api'
-const BASE_URL = ENV_BASE_URL || DEFAULT_BASE_URL
+
+const normalizeBaseUrl = (value) => {
+  if (!value) return value
+  const trimmed = String(value).replace(/\/+$/, '')
+  if (/\/api(\/|$)/.test(trimmed)) return trimmed
+  return `${trimmed}/api`
+}
+
+const BASE_URL = normalizeBaseUrl(ENV_BASE_URL || DEFAULT_BASE_URL)
 
 if (import.meta.env.PROD && !ENV_BASE_URL) {
   console.warn('VITE_API_URL/VITE_API_BASE_URL not set; falling back to /api')
