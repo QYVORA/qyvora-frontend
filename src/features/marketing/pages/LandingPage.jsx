@@ -7,14 +7,15 @@ import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
 import api from '@/core/services/api'
-import { PHASE_PREVIEW } from '@/features/marketing/data/landingData'
 
 export default function LandingPage() {
   const [stats, setStats] = useState(null)
   const [items, setItems] = useState([])
+  const [bootcamps, setBootcamps] = useState([])
   const [leaderboard, setLeaderboard] = useState([])
   const [loadingStats, setLoadingStats] = useState(true)
   const [loadingItems, setLoadingItems] = useState(true)
+  const [loadingBootcamps, setLoadingBootcamps] = useState(true)
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true)
 
   useEffect(() => {
@@ -22,25 +23,30 @@ export default function LandingPage() {
     const load = async () => {
       setLoadingStats(true)
       setLoadingItems(true)
+      setLoadingBootcamps(true)
       setLoadingLeaderboard(true)
       try {
-        const [statsRes, itemsRes, leaderboardRes] = await Promise.all([
+        const [statsRes, itemsRes, bootcampsRes, leaderboardRes] = await Promise.all([
           api.get('/public/landing-stats'),
           api.get('/public/cp-products'),
+          api.get('/public/bootcamps'),
           api.get('/public/leaderboard'),
         ])
         if (!mounted) return
         setStats(statsRes.data || null)
         setItems(itemsRes.data?.items || [])
+        setBootcamps(bootcampsRes.data?.items || [])
         setLeaderboard(leaderboardRes.data?.leaderboard || [])
         setLoadingStats(false)
         setLoadingItems(false)
+        setLoadingBootcamps(false)
         setLoadingLeaderboard(false)
       } catch {
         // ignore public fetch errors
         if (!mounted) return
         setLoadingStats(false)
         setLoadingItems(false)
+        setLoadingBootcamps(false)
         setLoadingLeaderboard(false)
       }
     }
@@ -48,13 +54,13 @@ export default function LandingPage() {
     return () => { mounted = false }
   }, [])
 
-  const learningPath = PHASE_PREVIEW
+  const learningPath = bootcamps
 
   return (
     <div className="relative overflow-x-hidden">
       <HeroSection stats={stats} loading={loadingStats} />
       <FlowSection stats={stats} loading={loadingStats} />
-      <PhasesSection items={learningPath} loading={false} />
+      <PhasesSection items={learningPath} loading={loadingBootcamps} />
       <MarketplaceSection items={items} stats={stats} loading={loadingItems} />
       <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} />
       <SocialSection />

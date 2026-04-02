@@ -26,9 +26,9 @@ export function PhasesSection({ items = [], loading = false }) {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20">
           <SectionHeader
-            kicker="// curriculum"
-            title="Five Phases of Mastery"
-            subtitle="Each phase unlocks the next. No shortcuts. Earn your way through."
+            kicker="// bootcamps"
+            title="Bootcamps Built for Operators"
+            subtitle="Choose a track, commit to the grind, and earn your way through."
           />
         </div>
 
@@ -53,13 +53,14 @@ export function PhasesSection({ items = [], loading = false }) {
           </div>
         ) : items.length === 0 ? (
           <div className="card p-8 text-center">
-            <p className="text-sm text-[var(--text-secondary)]">Curriculum details will appear here soon.</p>
+            <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {items.map((item, i) => {
               const Icon = PHASE_ICONS[i % PHASE_ICONS.length]
               const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
+              const cover = item.image || PHASE_IMGS[i % PHASE_IMGS.length]
               return (
                 <div
                   key={item.id}
@@ -68,8 +69,8 @@ export function PhasesSection({ items = [], loading = false }) {
                 >
                   <div className="relative h-48 overflow-hidden shrink-0">
                     <img
-                      src={PHASE_IMGS[i % PHASE_IMGS.length]}
-                      alt={item.title}
+                      src={cover}
+                      alt={item.title || 'Bootcamp'}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       style={{ filter: 'brightness(0.4) saturate(1.3)' }}
                     />
@@ -98,15 +99,20 @@ export function PhasesSection({ items = [], loading = false }) {
                         backdropFilter: badgeBackdrop,
                       }}
                     >
-                      MODULE {String(item.id).padStart(2, '0')}
+                      BOOTCAMP
                     </div>
                   </div>
 
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
-                      Curated offensive security track built for real-world mastery.
+                      {item.description || 'Curated offensive security track built for real-world mastery.'}
                     </p>
+                    <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
+                      {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
+                      {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
+                      {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                    </div>
                     <Link to={enrollTo} className="btn-primary mt-5 inline-flex items-center justify-center">
                       Enroll
                     </Link>

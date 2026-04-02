@@ -5,7 +5,7 @@ import { Avatar } from '@/shared/components/ui'
 
 export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) {
   const { user } = useAuth()
-  const displayName = user?.hackerHandle || user?.name || user?.email
+  const displayName = user?.hackerHandle || user?.name || user?.email || 'Operator'
   const profileLink = user?.role === 'admin' ? '/admin' : '/profile'
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-[color:var(--bg-primary)]/80 backdrop-blur-xl">

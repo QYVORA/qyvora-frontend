@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle } from 'lucide-react'
+import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap } from 'lucide-react'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -10,6 +10,7 @@ import { AdminTopbar } from '@/features/admin/components/layout/AdminTopbar'
 const NAV_ITEMS = [
   { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true },
   { to: '/admin/users', label: 'Users', icon: Users },
+  { to: '/admin/bootcamps', label: 'Bootcamps', icon: GraduationCap },
   { to: '/admin/content', label: 'Content Upload', icon: Upload },
   { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag },
   { to: '/admin/notifications', label: 'Notifications', icon: Bell },

@@ -48,7 +48,7 @@ const TypingHeadline = memo(function TypingHeadline() {
     return (
       <>
         <span className="text-[var(--text-primary)]">{before}</span>
-        <span className="text-accent glow-text">{word}</span>
+        <span className="text-accent">{word}</span>
         <span className="text-[var(--text-primary)]">{after}</span>
       </>
     )
@@ -96,7 +96,7 @@ export function HeroSection({ stats, loading = false }) {
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">
-          Structured offensive security curriculum. Real techniques. Peer-validated skills. An economy built around zero-day knowledge.
+          Structured offensive security bootcamps. Real techniques. Peer-validated skills. An economy built around zero-day knowledge.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link to="/register" className="btn-primary text-base px-8 py-4 rounded-xl flex items-center gap-2 group">

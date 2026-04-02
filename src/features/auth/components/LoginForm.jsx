@@ -53,14 +53,7 @@ export function LoginForm({ form, errors, loading, showPass, onTogglePass, onCha
           </a>
         </div>
 
-        <div className="mt-6 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)]">
-          <p className="text-xs text-[var(--text-muted)] font-mono mb-2">// demo credentials</p>
-          <div className="space-y-1 text-xs font-mono">
-            <p><span className="text-[var(--text-muted)]">Student:</span> <span className="text-accent">student@hsociety.io</span></p>
-            <p><span className="text-[var(--text-muted)]">Admin:</span> <span className="text-accent">admin@hsociety.io</span></p>
-            <p><span className="text-[var(--text-muted)]">Password:</span> <span className="text-[var(--text-secondary)]">any value</span></p>
-          </div>
-        </div>
+        
       </div>
     </div>
   )

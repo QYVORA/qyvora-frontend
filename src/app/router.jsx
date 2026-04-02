@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts'
 import { FullPageLoader } from '@/shared/components/feedback'
 import { PublicLayout, StudentLayout, AdminLayout } from '@/shared/layouts'
+import NotFoundPage from '@/shared/pages/NotFoundPage'
 
 const LandingPage = lazy(() => import('@/features/marketing/pages/LandingPage'))
 const PrivacyPage = lazy(() => import('@/features/marketing/pages/PrivacyPage'))
@@ -20,6 +21,7 @@ const NotificationsPage = lazy(() => import('@/features/student/pages/Notificati
 const AdminDashboard = lazy(() => import('@/features/admin/pages/Dashboard'))
 const AdminUsers = lazy(() => import('@/features/admin/pages/Users'))
 const AdminContent = lazy(() => import('@/features/admin/pages/Content'))
+const AdminBootcamps = lazy(() => import('@/features/admin/pages/Bootcamps'))
 const AdminMarketplace = lazy(() => import('@/features/admin/pages/Marketplace'))
 const AdminNotifications = lazy(() => import('@/features/admin/pages/Notifications'))
 const AdminSecurityEvents = lazy(() => import('@/features/admin/pages/SecurityEvents'))
@@ -35,7 +37,8 @@ function ProtectedRoute({ children, role }) {
 function GuestRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <FullPageLoader />
-  if (user) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
+  const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
+  if (user && hasStoredSession) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
   return children
 }
 
@@ -45,9 +48,10 @@ export function AppRouter() {
       <Suspense fallback={<FullPageLoader />}>
         <Routes>
           <Route element={<PublicLayout />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
           </Route>
 
           <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
@@ -77,13 +81,13 @@ export function AppRouter() {
           <Route path="/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="bootcamps" element={<AdminBootcamps />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="marketplace" element={<AdminMarketplace />} />
           <Route path="notifications" element={<AdminNotifications />} />
           <Route path="security-events" element={<AdminSecurityEvents />} />
         </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
