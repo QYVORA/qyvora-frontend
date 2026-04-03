@@ -24,7 +24,7 @@ export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) 
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          {[['/', 'Home'], ['/#phases', 'Phases'], ['/#marketplace', 'Market']].map(([href, label]) => (
+          {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#marketplace', 'Market']].map(([href, label]) => (
             <a key={label} href={href} className="btn-ghost text-sm">{label}</a>
           ))}
         </div>
@@ -62,7 +62,7 @@ export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) 
             </Link>
           )}
           <div className="flex flex-col gap-4">
-            {[['/', 'Home'], ['/#phases', 'Phases'], ['/#marketplace', 'Market']].map(([href, label]) => (
+            {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#marketplace', 'Market']].map(([href, label]) => (
               <a
                 key={label}
                 href={href}

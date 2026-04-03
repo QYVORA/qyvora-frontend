@@ -13,7 +13,6 @@ export function LoginSidePanel() {
   const { isDark } = useTheme()
   const backgroundFilter = isDark ? 'brightness(0.35) saturate(1.3)' : 'brightness(0.9) saturate(0.75)'
   const patternOpacity = isDark ? 'opacity-40' : 'opacity-25'
-  const glowBlur = isDark ? 'blur-3xl' : 'blur-none'
   return (
     <div className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate">
       <div
@@ -24,7 +23,6 @@ export function LoginSidePanel() {
         }}
       />
       <div className={`absolute inset-0 bg-grid-pattern ${patternOpacity} pointer-events-none`} />
-      <div className={`absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full ${glowBlur} pointer-events-none`} />
       <div className="relative z-10">
         <Link to="/" className="flex items-center">
           <Logo size="lg" />

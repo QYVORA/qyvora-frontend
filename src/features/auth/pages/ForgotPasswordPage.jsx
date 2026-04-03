@@ -57,10 +57,8 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="relative isolate min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] p-6">
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
-
-      <div className="relative z-10 w-full max-w-md space-y-6">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
+      <div className="px-6 py-5">
         <AuthTopActions
           isDark={isDark}
           onToggleTheme={toggleTheme}
@@ -68,75 +66,78 @@ export default function ForgotPasswordPage() {
           linkLabel="Remembered your password?"
           linkText="Log in"
         />
-
-        <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
+      </div>
+      <div className="flex-1 flex items-center justify-center px-4 pb-10">
+        <div className="w-full max-w-sm space-y-6">
           <div>
             <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// set new password</p>
-            <h2 className="font-display font-bold text-xl text-[var(--text-primary)]">Reset Password</h2>
+            <h2 className="font-display font-bold text-3xl text-[var(--text-primary)]">Reset Password</h2>
             <p className="text-sm text-[var(--text-secondary)] mt-2">
               Enter your recovery token and email to reset your password.
             </p>
           </div>
-          <form onSubmit={handleReset} className="space-y-3">
-            <Input
-              label="Email"
-              type="email"
-              placeholder="you@hsociety.io"
-              icon={Mail}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              label="Reset Token"
-              placeholder="Paste reset token"
-              icon={KeyRound}
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-            />
-            <div>
-              <label className="label">New Password</label>
-              <div className="relative">
-                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-                <input
-                  type={showPass ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  className="input-field pl-10 pr-10"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPass((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                >
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 shadow-2xl shadow-black/30 space-y-4">
+            <form onSubmit={handleReset} className="space-y-4">
+              <Input
+                label="Email"
+                type="email"
+                placeholder="you@hsociety.io"
+                icon={Mail}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                label="Reset Token"
+                placeholder="Paste reset token"
+                icon={KeyRound}
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+              />
+              <div>
+                <label className="label">New Password</label>
+                <div className="relative">
+                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+                  <input
+                    type={showPass ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="input-field pl-10 pr-10"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPass((v) => !v)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  >
+                    {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
-            </div>
-            <div>
-              <label className="label">Confirm Password</label>
-              <div className="relative">
-                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-                <input
-                  type={showConfirm ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  className="input-field pl-10 pr-10"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                >
-                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+              <div>
+                <label className="label">Confirm Password</label>
+                <div className="relative">
+                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+                  <input
+                    type={showConfirm ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="input-field pl-10 pr-10"
+                    value={confirm}
+                    onChange={(e) => setConfirm(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((v) => !v)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  >
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
-            </div>
-            <Button type="submit" variant="primary" loading={resetLoading} className="w-full justify-center">
-              Update Password
-            </Button>
-          </form>
+              <Button type="submit" variant="primary" loading={resetLoading} className="w-full justify-center py-3">
+                Update Password
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
   const iconBackdrop = 'none'
   const badgeBackdrop = 'none'
   return (
-    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="phases">
+    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="bootcamps">
       <div
         className={`absolute inset-0 pointer-events-none ${overlayOpacity}`}
         style={{
