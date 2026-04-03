@@ -52,7 +52,7 @@ export function FlowSection({ stats, loading = false }) {
                     {String(i + 1).padStart(2, '0')}
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-2xl bg-[var(--bg-card)]/85 backdrop-blur-sm border border-accent/30 flex items-center justify-center shadow-xl">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--bg-card)]/85 border border-accent/30 flex items-center justify-center shadow-xl">
                       <step.icon size={26} className="text-accent" />
                     </div>
                   </div>

@@ -10,8 +10,8 @@ export function PhasesSection({ items = [], loading = false }) {
   const enrollTo = user ? '/bootcamp' : '/login'
   const overlayFilter = isDark ? 'brightness(0.2) saturate(0.5)' : 'brightness(0.85) saturate(0.7)'
   const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
-  const iconBackdrop = isDark ? 'blur(8px)' : 'none'
-  const badgeBackdrop = isDark ? 'blur(6px)' : 'none'
+  const iconBackdrop = 'none'
+  const badgeBackdrop = 'none'
   return (
     <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="phases">
       <div

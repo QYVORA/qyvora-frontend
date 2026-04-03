@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const ENV_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL
-const DEFAULT_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : '/api'
+const RENDER_BASE_URL = 'https://hsociety-backend.onrender.com/api'
+const DEFAULT_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : RENDER_BASE_URL
 
 const normalizeBaseUrl = (value) => {
   if (!value) return value
@@ -13,7 +14,7 @@ const normalizeBaseUrl = (value) => {
 const BASE_URL = normalizeBaseUrl(ENV_BASE_URL || DEFAULT_BASE_URL)
 
 if (import.meta.env.PROD && !ENV_BASE_URL) {
-  console.warn('VITE_API_URL/VITE_API_BASE_URL not set; falling back to /api')
+  console.warn('VITE_API_URL/VITE_API_BASE_URL not set; falling back to Render backend')
 }
 
 const api = axios.create({

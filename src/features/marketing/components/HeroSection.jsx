@@ -70,7 +70,7 @@ export function HeroSection({ stats, loading = false }) {
   const marketItems = stats?.stats?.vulnerabilitiesIdentified ?? 0
   const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
   const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
-  const heroGlow = isDark ? 'blur-3xl' : 'blur-none'
+  const heroGlow = 'blur-none'
   const lightTextVars = !isDark
     ? {
       '--text-primary': '#0f172a',
