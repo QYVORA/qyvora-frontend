@@ -14,6 +14,9 @@ const ForgotPasswordPage = lazy(() => import('@/features/auth/pages/ForgotPasswo
 const VerifyEmailPage = lazy(() => import('@/features/auth/pages/VerifyEmailPage'))
 const StudentDashboard = lazy(() => import('@/features/student/pages/Dashboard'))
 const BootcampPage = lazy(() => import('@/features/student/pages/Bootcamp'))
+const BootcampDashboard = lazy(() => import('@/features/student/pages/BootcampDashboard'))
+const BootcampModule = lazy(() => import('@/features/student/pages/BootcampModule'))
+const BootcampRoom = lazy(() => import('@/features/student/pages/BootcampRoom'))
 const WalletPage = lazy(() => import('@/features/student/pages/Wallet'))
 const MarketplacePage = lazy(() => import('@/features/student/pages/Marketplace'))
 const ProfilePage = lazy(() => import('@/features/student/pages/Profile'))
@@ -22,6 +25,7 @@ const AdminDashboard = lazy(() => import('@/features/admin/pages/Dashboard'))
 const AdminUsers = lazy(() => import('@/features/admin/pages/Users'))
 const AdminContent = lazy(() => import('@/features/admin/pages/Content'))
 const AdminBootcamps = lazy(() => import('@/features/admin/pages/Bootcamps'))
+const AdminBootcampManagement = lazy(() => import('@/features/admin/pages/BootcampManagement'))
 const AdminMarketplace = lazy(() => import('@/features/admin/pages/Marketplace'))
 const AdminNotifications = lazy(() => import('@/features/admin/pages/Notifications'))
 const AdminSecurityEvents = lazy(() => import('@/features/admin/pages/SecurityEvents'))
@@ -64,6 +68,9 @@ export function AppRouter() {
           </Route>
           <Route path="/bootcamp" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
             <Route index element={<BootcampPage />} />
+            <Route path=":bootcampId" element={<BootcampDashboard />} />
+            <Route path=":bootcampId/modules/:moduleId" element={<BootcampModule />} />
+            <Route path=":bootcampId/modules/:moduleId/rooms/:roomId" element={<BootcampRoom />} />
           </Route>
           <Route path="/wallet" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
             <Route index element={<WalletPage />} />
@@ -82,6 +89,7 @@ export function AppRouter() {
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="bootcamps" element={<AdminBootcamps />} />
+          <Route path="bootcamp-management" element={<AdminBootcampManagement />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="marketplace" element={<AdminMarketplace />} />
           <Route path="notifications" element={<AdminNotifications />} />

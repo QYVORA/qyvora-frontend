@@ -23,6 +23,11 @@ const api = axios.create({
   withCredentials: true,
 })
 
+const isAuthPage = () => {
+  if (typeof window === 'undefined') return false
+  return ['/login', '/register', '/forgot-password', '/verify-email'].includes(window.location.pathname)
+}
+
 let refreshPromise = null
 const refreshSession = () => {
   if (!refreshPromise) {
@@ -67,7 +72,7 @@ api.interceptors.response.use(
         return Promise.reject(refreshErr)
       }
     }
-    if (err.response?.status === 401) {
+    if (err.response?.status === 401 && !isAuthPage()) {
       localStorage.removeItem('hs_user')
       window.location.href = '/login'
     }

@@ -75,6 +75,7 @@ export default function AdminBootcamps() {
         image: form.image.trim(),
         isActive: form.isActive !== false,
         sortOrder: Number(form.sortOrder || 0),
+        quizAccessUserIds: [],
       },
       ...bootcamps,
     ]
@@ -118,37 +119,37 @@ export default function AdminBootcamps() {
       <Card className="p-6 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
-            className="input"
+            className="input-field"
             placeholder="Bootcamp title"
             value={form.title}
             onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
           />
           <input
-            className="input"
+            className="input-field"
             placeholder="Level (e.g. Beginner, Advanced)"
             value={form.level}
             onChange={(e) => setForm((prev) => ({ ...prev, level: e.target.value }))}
           />
           <input
-            className="input"
+            className="input-field"
             placeholder="Duration (e.g. 6 weeks)"
             value={form.duration}
             onChange={(e) => setForm((prev) => ({ ...prev, duration: e.target.value }))}
           />
           <input
-            className="input"
+            className="input-field"
             placeholder="Price label (e.g. Free, $299)"
             value={form.priceLabel}
             onChange={(e) => setForm((prev) => ({ ...prev, priceLabel: e.target.value }))}
           />
           <input
-            className="input md:col-span-2"
+            className="input-field md:col-span-2"
             placeholder="Cover image URL"
             value={form.image}
             onChange={(e) => setForm((prev) => ({ ...prev, image: e.target.value }))}
           />
           <textarea
-            className="input md:col-span-2 min-h-[90px]"
+            className="input-field md:col-span-2 min-h-[90px]"
             placeholder="Short description"
             value={form.description}
             onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
@@ -163,7 +164,7 @@ export default function AdminBootcamps() {
               Active
             </label>
             <input
-              className="input w-32"
+              className="input-field w-32"
               type="number"
               placeholder="Sort"
               value={form.sortOrder}

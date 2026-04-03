@@ -1,11 +1,12 @@
 import { Sun, Moon, LogOut, Bell, Zap, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import { clsx } from 'clsx'
 import { Avatar } from '@/shared/components/ui'
 import { notificationsService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
 
-export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
+export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) {
   const { toast } = useToast()
   const [notifOpen, setNotifOpen] = useState(false)
   const [notifLoading, setNotifLoading] = useState(false)
@@ -42,7 +43,12 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout }) {
   }, [notifOpen])
 
   return (
-    <header className="h-16 border-b border-[var(--border)] bg-[color:var(--bg-primary)]/80 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-30">
+    <header
+      className={clsx(
+        'h-16 border-b border-[var(--border)] flex items-center justify-between px-6 sticky top-0 z-30',
+        solid ? 'bg-[color:var(--bg-primary)]' : 'bg-[color:var(--bg-primary)]/80 backdrop-blur-sm'
+      )}
+    >
       <Link to="/" className="flex items-center gap-2 lg:hidden font-display font-bold text-lg tracking-tight">
         <span>
           H<span className="text-accent">SOCIETY</span>

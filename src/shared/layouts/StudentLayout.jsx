@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell } from 'lucide-react'
 import { useTheme } from '@/core/contexts/ThemeContext'
@@ -23,7 +23,9 @@ export default function StudentLayout() {
   const { user, logout, updateUser } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const isDashboard = location.pathname === '/dashboard'
 
   const handleLogout = () => {
     logout()
@@ -81,6 +83,7 @@ export default function StudentLayout() {
           isDark={isDark}
           onToggleTheme={toggleTheme}
           onLogout={handleLogout}
+          solid={isDashboard}
         />
 
         {/* Page content */}
@@ -89,7 +92,7 @@ export default function StudentLayout() {
         </main>
 
         {/* Bottom Nav (Mobile Only) */}
-        <StudentMobileNav navItems={NAV_ITEMS} />
+        <StudentMobileNav navItems={NAV_ITEMS} solid={isDashboard} />
       </div>
     </div>
   )

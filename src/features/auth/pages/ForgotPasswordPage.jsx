@@ -10,7 +10,6 @@ import { Button, Input } from '@/shared/components/ui'
 export default function ForgotPasswordPage() {
   const [searchParams] = useSearchParams()
   const [email, setEmail] = useState('')
-  const [requestLoading, setRequestLoading] = useState(false)
   const [token, setToken] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -26,27 +25,10 @@ export default function ForgotPasswordPage() {
     if (queryToken) setToken(queryToken)
   }, [searchParams])
 
-  const handleRequest = async (e) => {
-    e.preventDefault()
-    if (!email) {
-      toast({ type: 'error', message: 'Email is required.' })
-      return
-    }
-    setRequestLoading(true)
-    try {
-      await authService.requestPasswordReset(email)
-      toast({ type: 'success', title: 'Check your email', message: 'Password reset instructions sent.' })
-    } catch (err) {
-      toast({ type: 'error', message: err?.response?.data?.error || 'Request failed.' })
-    } finally {
-      setRequestLoading(false)
-    }
-  }
-
   const handleReset = async (e) => {
     e.preventDefault()
-    if (!token || !password) {
-      toast({ type: 'error', message: 'Token and new password are required.' })
+    if (!email || !token || !password) {
+      toast({ type: 'error', message: 'Email, token, and new password are required.' })
       return
     }
     if (password.length < 8) {
@@ -59,7 +41,7 @@ export default function ForgotPasswordPage() {
     }
     setResetLoading(true)
     try {
-      await authService.confirmPasswordReset(token.trim(), password)
+      await authService.confirmPasswordReset(email.trim(), token.trim(), password)
       toast({ type: 'success', title: 'Password updated', message: 'You can now log in.' })
       navigate('/login')
     } catch (err) {
@@ -89,13 +71,13 @@ export default function ForgotPasswordPage() {
 
         <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
           <div>
-            <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// reset access</p>
-            <h1 className="font-display font-bold text-2xl text-[var(--text-primary)]">Forgot Password</h1>
+            <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// set new password</p>
+            <h2 className="font-display font-bold text-xl text-[var(--text-primary)]">Reset Password</h2>
             <p className="text-sm text-[var(--text-secondary)] mt-2">
-              Enter your email to receive a reset token.
+              Enter your recovery token and email to reset your password.
             </p>
           </div>
-          <form onSubmit={handleRequest} className="space-y-3">
+          <form onSubmit={handleReset} className="space-y-3">
             <Input
               label="Email"
               type="email"
@@ -104,18 +86,6 @@ export default function ForgotPasswordPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Button type="submit" variant="primary" loading={requestLoading} className="w-full justify-center">
-              Request Reset
-            </Button>
-          </form>
-        </div>
-
-        <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
-          <div>
-            <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// set new password</p>
-            <h2 className="font-display font-bold text-xl text-[var(--text-primary)]">Confirm Reset</h2>
-          </div>
-          <form onSubmit={handleReset} className="space-y-3">
             <Input
               label="Reset Token"
               placeholder="Paste reset token"

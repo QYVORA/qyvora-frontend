@@ -6,6 +6,6 @@ export const authService = {
   logout: () => api.post('/auth/logout'),
   me: () => api.get('/auth/me'),
   requestPasswordReset: (email) => api.post('/auth/password-reset/request', { email }),
-  confirmPasswordReset: (token, password) => api.post('/auth/password-reset/confirm', { token, password }),
+  confirmPasswordReset: (email, token, password) => api.post('/auth/password-reset/confirm', { email, token, password }),
   confirmEmailVerification: (token) => api.post('/auth/verify-email/confirm', { token }),
 }

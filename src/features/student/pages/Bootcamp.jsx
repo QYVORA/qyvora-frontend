@@ -1,14 +1,19 @@
-import { Clock, CheckCircle, ChevronRight, Zap } from 'lucide-react'
-import { Badge, ProgressBar, Card } from '@/shared/components/ui'
-import { useEffect, useState } from 'react'
+import { Zap } from 'lucide-react'
+import { Card, Button } from '@/shared/components/ui'
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { studentService } from '@/core/services'
 import api from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
+import { useAuth } from '@/core/contexts/AuthContext'
 
 export default function BootcampPage() {
   const [overview, setOverview] = useState(null)
   const [bootcamps, setBootcamps] = useState([])
+  const [enrollingId, setEnrollingId] = useState('')
   const { toast } = useToast()
+  const { user, updateUser } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     let mounted = true
@@ -19,7 +24,15 @@ export default function BootcampPage() {
           api.get('/public/bootcamps'),
         ])
         if (!mounted) return
-        setOverview(res.data || null)
+        const nextOverview = res.data || null
+        setOverview(nextOverview)
+        if (nextOverview) {
+          updateUser({
+            bootcampStatus: nextOverview.bootcampStatus,
+            bootcampPaymentStatus: nextOverview.bootcampPaymentStatus,
+            bootcampId: nextOverview.bootcampId,
+          })
+        }
         setBootcamps(bootcampsRes.data?.items || [])
       } catch {
         setOverview(null)
@@ -28,9 +41,40 @@ export default function BootcampPage() {
     }
     load()
     return () => { mounted = false }
-  }, [])
+  }, [updateUser])
 
-  const modules = overview?.modules || []
+  const bootcampStatus = overview?.bootcampStatus || user?.bootcampStatus || 'not_enrolled'
+  const currentBootcampId = useMemo(() => {
+    if (overview?.bootcampId) return overview.bootcampId
+    if (user?.bootcampId) return user.bootcampId
+    if (bootcampStatus !== 'not_enrolled' && bootcamps.length > 0) return bootcamps[0].id
+    return ''
+  }, [overview?.bootcampId, user?.bootcampId, bootcampStatus, bootcamps])
+
+  const handleEnroll = async (bootcampId) => {
+    setEnrollingId(bootcampId)
+    try {
+      const res = await studentService.enrollBootcamp({ bootcampId })
+      const nextOverview = {
+        ...(overview || {}),
+        bootcampStatus: res.data?.bootcampStatus || 'enrolled',
+        bootcampPaymentStatus: res.data?.bootcampPaymentStatus || 'unpaid',
+        bootcampId: res.data?.bootcampId || bootcampId,
+      }
+      setOverview(nextOverview)
+      updateUser({
+        bootcampStatus: nextOverview.bootcampStatus,
+        bootcampPaymentStatus: nextOverview.bootcampPaymentStatus,
+        bootcampId: nextOverview.bootcampId,
+      })
+      toast({ type: 'success', message: 'Enrollment confirmed.' })
+      navigate(`/bootcamp/${bootcampId}`)
+    } catch (err) {
+      toast({ type: 'error', message: err?.response?.data?.error || 'Enrollment failed.' })
+    } finally {
+      setEnrollingId('')
+    }
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -49,8 +93,12 @@ export default function BootcampPage() {
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </Card>
         ) : (
-          bootcamps.map((item) => (
-            <Card key={item.id} className="p-6 flex flex-col gap-4">
+          bootcamps.map((item) => {
+            const isEnrolled = bootcampStatus !== 'not_enrolled'
+            const isCurrent = isEnrolled && currentBootcampId === item.id
+            const isOther = isEnrolled && currentBootcampId && currentBootcampId !== item.id
+            return (
+              <Card key={item.id} className="p-6 flex flex-col gap-4">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-display font-semibold text-xl text-[var(--text-primary)]">{item.title}</h3>
@@ -64,72 +112,48 @@ export default function BootcampPage() {
                 {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
                 {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
               </div>
-              <button
-                className="btn-primary mt-auto"
-                onClick={() => toast({ type: 'success', message: 'Enrollment request received.' })}
-              >
-                Enroll
-              </button>
+              {isCurrent ? (
+                <Button
+                  variant="primary"
+                  className="mt-auto justify-center"
+                  onClick={() => navigate(`/bootcamp/${item.id}`)}
+                >
+                  Continue
+                </Button>
+              ) : (
+                <Button
+                  variant={isOther ? 'outline' : 'primary'}
+                  className="mt-auto justify-center"
+                  disabled={isOther || enrollingId === item.id}
+                  loading={enrollingId === item.id}
+                  onClick={() => handleEnroll(item.id)}
+                >
+                  {isOther ? 'Enrolled Elsewhere' : 'I am enrolled'}
+                </Button>
+              )}
             </Card>
-          ))
+            )
+          })
         )}
       </div>
 
-      {/* Modules */}
-      <div className="space-y-5">
-        {modules.length === 0 ? (
-          <Card className="p-6 text-center">
-            <Zap size={28} className="text-accent/50 mx-auto mb-3" />
-            <p className="text-sm text-[var(--text-secondary)]">Bootcamp modules will appear once your enrollment is active.</p>
-          </Card>
-        ) : (
-          modules.map((mod) => (
-            <div key={mod.id} className="card overflow-hidden">
-              <div className="p-5 border-b border-[var(--border)] flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-display font-bold text-lg bg-accent/10 text-accent">
-                  {mod.id}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="font-mono text-xs uppercase tracking-widest text-accent">MODULE</span>
-                    {mod.ctfCompleted && <Badge variant="success">CTF Complete</Badge>}
-                  </div>
-                  <h3 className="font-display font-bold text-lg text-[var(--text-primary)]">{mod.title}</h3>
-                  <p className="text-sm text-[var(--text-secondary)] mt-0.5">Rooms completed: {mod.roomsCompleted}/{mod.roomsTotal}</p>
-                  <div className="mt-3">
-                    <ProgressBar value={mod.progress} max={100} color="#0EA5E9" label={`${mod.progress}%`} showPercent />
-                  </div>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="font-mono text-sm font-bold text-accent">{mod.ctf ? 'CTF' : 'Module'}</div>
-                  <div className="text-xs text-[var(--text-muted)]">Progress</div>
-                </div>
-              </div>
-              <div className="divide-y divide-[var(--border)]">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 px-5 py-3.5">
-                  <div className="shrink-0">
-                    {mod.ctfCompleted
-                      ? <CheckCircle size={18} className="text-green-400" />
-                      : <Clock size={18} className="text-[var(--text-muted)]" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-[var(--text-primary)]">
-                      {mod.ctfCompleted ? 'CTF complete' : 'CTF pending'}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    {!mod.ctfCompleted && (
-                      <button className="btn-primary text-xs px-3 py-1.5 flex items-center gap-1">
-                        Start <ChevronRight size={12} />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+      {bootcampStatus !== 'not_enrolled' && currentBootcampId && (
+        <Card className="p-5 flex flex-col md:flex-row md:items-center gap-4">
+          <div className="flex-1">
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Current bootcamp</p>
+            <p className="font-display font-semibold text-lg text-[var(--text-primary)]">
+              {bootcamps.find((item) => item.id === currentBootcampId)?.title || 'Bootcamp'}
+            </p>
+          </div>
+          <Button
+            variant="primary"
+            className="justify-center"
+            onClick={() => navigate(`/bootcamp/${currentBootcampId}`)}
+          >
+            Continue
+          </Button>
+        </Card>
+      )}
     </div>
   )
 }
