@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Sun, Moon, Menu, X } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Avatar } from '@/shared/components/ui'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) {
   const { user } = useAuth()
@@ -12,9 +13,7 @@ export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) 
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <span className="font-display font-bold text-lg tracking-tight">
-              H<span className="text-accent">SOCIETY</span>
-            </span>
+            <Logo size="md" />
           </Link>
           {user && displayName && (
             <Link to={profileLink} className="hidden md:flex items-center gap-2 rounded-xl border border-[var(--border)] px-3 py-1.5 hover:border-accent/50 transition-colors">

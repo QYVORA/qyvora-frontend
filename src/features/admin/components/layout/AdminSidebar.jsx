@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
 import { Sun, Moon, LogOut, X } from 'lucide-react'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function AdminSidebar({
   mobile,
@@ -16,7 +17,7 @@ export function AdminSidebar({
       <div className="h-16 flex items-center justify-between px-5 border-b border-[var(--border)] shrink-0">
         <Link to="/" className="flex items-center gap-2.5">
           <div>
-            <span className="font-display font-bold text-sm">H<span className="text-accent">SOCIETY</span></span>
+            <Logo size="sm" />
             <p className="text-[10px] text-red-400 font-mono uppercase tracking-widest -mt-0.5">Admin Panel</p>
           </div>
         </Link>

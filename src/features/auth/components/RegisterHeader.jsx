@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function RegisterHeader() {
   return (
     <div className="text-center mb-8">
       <Link to="/" className="inline-flex items-center mb-6">
-        <span className="font-display font-bold text-2xl">H<span className="text-accent">SOCIETY</span></span>
+        <Logo size="xl" />
       </Link>
       <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// create account</p>
       <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Join the Platform</h1>

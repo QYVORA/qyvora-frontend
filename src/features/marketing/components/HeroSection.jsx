@@ -1,8 +1,9 @@
 import { memo, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { Skeleton } from '@/shared/components/ui'
+import { Button, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { HeroStats } from '@/features/marketing/components/HeroStats'
 const TypingHeadline = memo(function TypingHeadline() {
   const phrases = useMemo(
     () => [
@@ -63,14 +64,24 @@ const TypingHeadline = memo(function TypingHeadline() {
     </span>
   )
 })
-export function HeroSection({ stats, loading = false }) {
+export function HeroSection({
+  stats,
+  leaderboard = [],
+  rewards,
+  loading = false,
+  loadingLeaderboard = false,
+}) {
   const { isDark } = useTheme()
-  const learners = stats?.stats?.learnersTrained ?? 0
-  const phases = stats?.stats?.engagementsCompleted ?? 0
-  const marketItems = stats?.stats?.vulnerabilitiesIdentified ?? 0
   const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
   const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
   const heroGlow = 'blur-none'
+  const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
+  const totalCp = totalXp
+  const earnedXp = rewards?.totals?.xp || 0
+  const earnedCp = rewards?.totals?.cp || 0
+  const previewKey = 'hero-bootcamp-preview'
+  const previewCompleted = rewards?.isCompleted?.(previewKey)
+  const [previewChoice, setPreviewChoice] = useState('')
   const lightTextVars = !isDark
     ? {
       '--text-primary': '#0f172a',
@@ -110,26 +121,70 @@ export function HeroSection({ stats, loading = false }) {
             Log In
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mt-16 pt-10 pb-20">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, idx) => (
-              <div key={idx} className="flex flex-col items-center gap-3">
-                <Skeleton className="h-10 w-20" />
-                <Skeleton className="h-3 w-24" />
+        <HeroStats stats={stats} loading={loading} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+          <div className="card p-6 text-left">
+            <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-2">Operator Economy</p>
+            <h3 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-4">XP & CP Live Ticker</h3>
+            {loadingLeaderboard ? (
+              <div className="flex items-center gap-3 text-[var(--text-secondary)]">
+                <Spinner size={24} />
+                <span className="text-sm font-mono">Loading stats...</span>
               </div>
-            ))
-          ) : (
-            [
-              [Number(learners || 0).toLocaleString(), 'Operators'],
-              [Number(phases || 0).toLocaleString(), 'Engagements'],
-              [Number(marketItems || 0).toLocaleString(), 'Findings'],
-            ].map(([val, label]) => (
-              <div key={label} className="flex flex-col items-center">
-                <span className="font-display font-black text-3xl md:text-4xl text-accent glow-text leading-none mb-2">{val}</span>
-                <span className="text-[10px] md:text-xs text-[var(--text-muted)] font-mono uppercase tracking-[0.2em]">{label}</span>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[var(--text-secondary)]">Total XP Tracked</span>
+                  <span className="font-mono text-lg text-accent">{Number(totalXp + earnedXp).toLocaleString()} XP</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[var(--text-secondary)]">CP In Circulation</span>
+                  <span className="font-mono text-lg text-[var(--text-primary)]">{Number(totalCp + earnedCp).toLocaleString()} CP</span>
+                </div>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Earn extra points below by completing the quick bootcamp preview.
+                </p>
               </div>
-            ))
-          )}
+            )}
+          </div>
+
+          <div className="card p-6 text-left">
+            <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-2">Bootcamp Preview</p>
+            <h3 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-3">Warm-Up Challenge</h3>
+            <p className="text-sm text-[var(--text-secondary)] mb-4">
+              Pick the safest command to scan a test host. Earn instant CP for the correct pick.
+            </p>
+            <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] p-4 font-mono text-xs text-[var(--text-primary)] mb-4">
+              $ ? <span className="text-accent">scan localhost safely</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'nmap -sV 127.0.0.1', correct: true },
+                { label: 'ping 127.0.0.1 -t', correct: false },
+              ].map((opt) => (
+                <Button
+                  key={opt.label}
+                  variant="outline"
+                  size="sm"
+                  disabled={previewCompleted}
+                  onClick={() => {
+                    setPreviewChoice(opt.label)
+                    if (opt.correct && !previewCompleted) {
+                      rewards?.award?.({ key: previewKey, cp: 12, xp: 25 })
+                    }
+                  }}
+                >
+                  {opt.label}
+                </Button>
+              ))}
+            </div>
+            {previewChoice && (
+              <p className={`mt-3 text-xs font-mono ${previewCompleted ? 'text-accent' : 'text-[var(--text-muted)]'}`}>
+                {previewCompleted ? 'Reward unlocked: +12 CP, +25 XP' : 'Try the safer scan command.'}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-muted)] opacity-50">

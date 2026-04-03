@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
-import { SectionHeader, Skeleton } from '@/shared/components/ui'
+import { Button, SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
 
-export function MarketplaceSection({ items = [], stats, loading = false }) {
+export function MarketplaceSection({ items = [], stats, loading = false, rewards }) {
   const { isDark } = useTheme()
   const previewItems = items.slice(0, 3)
+  const earnedCp = rewards?.totals?.cp || 0
+  const earnedXp = rewards?.totals?.xp || 0
+  const puzzleKey = 'marketplace-puzzle'
+  const puzzleCompleted = rewards?.isCompleted?.(puzzleKey)
   return (
     <section className="py-32 px-6 relative" id="marketplace">
       <div className="max-w-7xl mx-auto">
@@ -14,7 +18,9 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
           <div className="flex flex-col">
             <div className="relative rounded-2xl overflow-hidden h-56 mb-8 shrink-0">
               {loading ? (
-                <Skeleton className="w-full h-full" />
+                <div className="w-full h-full flex items-center justify-center">
+                  <Spinner size={28} />
+                </div>
               ) : (
                 <img
                   src={CP_MARKET_BG}
@@ -41,6 +47,54 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
             <p className="text-[var(--text-secondary)] text-base leading-relaxed mb-6 mt-5">
               Earn Captured Points (CP) by completing modules, challenges, and phases. Spend them in the Zero-Day Market to unlock premium tools, playbooks, frameworks, and exploit research created by the community.
             </p>
+            <div className="card p-4 mb-6 border border-accent/25">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">CP Wallet (Preview)</p>
+                  <p className="text-lg font-semibold text-[var(--text-primary)]">
+                    {Number(earnedCp).toLocaleString()} CP
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">XP Earned</p>
+                  <p className="text-lg font-semibold text-accent">
+                    {Number(earnedXp).toLocaleString()} XP
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-[var(--text-muted)] mt-2">
+                Complete the mini-task below to mint instant CP.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 mb-6">
+              <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-2">Mini Task</p>
+              <p className="text-sm text-[var(--text-primary)] mb-3">
+                Decode this hex to claim CP: <span className="font-mono text-accent">0x48 0x53</span>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'HS', correct: true },
+                  { label: 'SH', correct: false },
+                ].map((opt) => (
+                  <Button
+                    key={opt.label}
+                    size="sm"
+                    variant="outline"
+                    disabled={puzzleCompleted}
+                    onClick={() => {
+                      if (opt.correct && !puzzleCompleted) {
+                        rewards?.award?.({ key: puzzleKey, cp: 10, xp: 10 })
+                      }
+                    }}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+              {puzzleCompleted && (
+                <p className="text-xs font-mono text-accent mt-2">Reward unlocked: +10 CP, +10 XP</p>
+              )}
+            </div>
             <ul className="space-y-4">
               {[
                 'Earn CP for every module you complete',
@@ -74,9 +128,9 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
                   <div>
                     <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-1">Marketplace</p>
                     {loading ? (
-                      <div className="space-y-2">
-                        <Skeleton className="h-10 w-32" />
-                        <Skeleton className="h-3 w-28" />
+                      <div className="flex items-center gap-3 text-[var(--text-secondary)]">
+                        <Spinner size={24} />
+                        <span className="text-xs font-mono">Loading stats...</span>
                       </div>
                     ) : (
                       <>
@@ -99,12 +153,10 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
 
                 <div className="space-y-1 mb-6">
                   {loading ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                        <Skeleton className="h-4 w-40" />
-                        <Skeleton className="h-4 w-16" />
-                      </div>
-                    ))
+                    <div className="flex items-center gap-3 text-[var(--text-secondary)] py-3">
+                      <Spinner size={22} />
+                      <span className="text-xs font-mono">Loading items...</span>
+                    </div>
                   ) : previewItems.length === 0 ? (
                     <div className="text-sm text-[var(--text-secondary)]">No marketplace items available yet.</div>
                   ) : (
@@ -123,13 +175,9 @@ export function MarketplaceSection({ items = [], stats, loading = false }) {
                     <ChevronRight size={12} className="text-accent" />
                   </div>
                   {loading ? (
-                    <div className="px-4 py-4 space-y-3">
-                      {Array.from({ length: 3 }).map((_, i) => (
-                        <div key={i} className="flex items-center justify-between">
-                          <Skeleton className="h-3 w-36" />
-                          <Skeleton className="h-3 w-12" />
-                        </div>
-                      ))}
+                    <div className="px-4 py-4 flex items-center gap-3 text-[var(--text-secondary)]">
+                      <Spinner size={22} />
+                      <span className="text-xs font-mono">Loading items...</span>
                     </div>
                   ) : previewItems.length === 0 ? (
                     <div className="px-4 py-4 text-xs text-[var(--text-muted)]">No listings yet.</div>

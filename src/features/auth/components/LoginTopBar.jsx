@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Sun, Moon } from 'lucide-react'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function LoginTopBar({ isDark, onToggleTheme }) {
   return (
     <div className="flex items-center justify-between p-6">
       <Link to="/" className="lg:hidden flex items-center">
-        <span className="font-display font-bold">H<span className="text-accent">SOCIETY</span></span>
+        <Logo size="sm" />
       </Link>
       <div className="ml-auto flex items-center gap-3">
         <button onClick={onToggleTheme} className="btn-ghost p-2 rounded-lg">

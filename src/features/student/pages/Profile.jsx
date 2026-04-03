@@ -125,42 +125,26 @@ export default function ProfilePage() {
           <Button
             variant="outline"
             size="sm"
+            disabled={!recoveryToken}
             onClick={async () => {
-              if (!recoveryToken) {
-                try {
-                  setRecoveryLoading(true)
-                  const res = await profileService.regenerateRecoveryToken()
-                  const token = res.data?.token || ''
-                  if (!token) {
-                    toast({ type: 'error', title: 'Token unavailable', message: 'Please try again.' })
-                    return
-                  }
-                  setRecoveryToken(token)
-                  await navigator.clipboard.writeText(token)
-                  try { await profileService.acknowledgeRecoveryToken() } catch {}
-                  toast({ type: 'success', title: 'New token generated', message: 'Recovery token copied to clipboard.' })
-                } catch {
-                  toast({ type: 'error', title: 'Token unavailable', message: 'Please try again.' })
-                } finally {
-                  setRecoveryLoading(false)
-                }
-                return
-              }
               try {
+                setRecoveryLoading(true)
                 await navigator.clipboard.writeText(recoveryToken)
                 try { await profileService.acknowledgeRecoveryToken() } catch {}
                 toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
               } catch {
                 toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
+              } finally {
+                setRecoveryLoading(false)
               }
             }}
             loading={recoveryLoading}
           >
-            {recoveryToken ? 'Copy Token' : 'Generate Token'}
+            Copy Token
           </Button>
         </div>
         <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Token hidden. Generate a new one to view.')}
+          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Token not available. Contact support if you did not receive one.')}
         </div>
       </Card>
 

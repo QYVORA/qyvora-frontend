@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { clsx } from 'clsx'
 import { Avatar } from '@/shared/components/ui'
+import { Logo } from '@/shared/components/brand/Logo'
 import { notificationsService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
 
@@ -49,10 +50,8 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) 
         solid ? 'bg-[color:var(--bg-primary)]' : 'bg-[color:var(--bg-primary)]/80 backdrop-blur-sm'
       )}
     >
-      <Link to="/" className="flex items-center gap-2 lg:hidden font-display font-bold text-lg tracking-tight">
-        <span>
-          H<span className="text-accent">SOCIETY</span>
-        </span>
+      <Link to="/" className="flex items-center gap-2 lg:hidden">
+        <Logo size="md" />
       </Link>
       <div className="hidden lg:flex items-center gap-2 text-[var(--text-muted)] text-sm">
         <Zap size={14} className="text-accent" />

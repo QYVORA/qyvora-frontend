@@ -1,10 +1,37 @@
 import { Link } from 'react-router-dom'
 import { PHASES_SECTION_BG, PHASE_IMGS, PHASE_ICONS } from '@/features/marketing/data/landingData'
-import { SectionHeader, Skeleton } from '@/shared/components/ui'
+import { Badge, Button, ProgressBar, SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 
-export function PhasesSection({ items = [], loading = false }) {
+const MICRO_EXERCISES = [
+  {
+    id: 'xss',
+    prompt: 'XSS stands for?',
+    options: [
+      { label: 'Cross-Site Scripting', correct: true },
+      { label: 'Cross-Stack Session', correct: false },
+    ],
+  },
+  {
+    id: 'sql',
+    prompt: 'Pick the safer input:',
+    options: [
+      { label: "SELECT * FROM users WHERE id = ?", correct: true },
+      { label: "SELECT * FROM users WHERE id = " + 'id', correct: false },
+    ],
+  },
+  {
+    id: 'auth',
+    prompt: 'Which is a secure practice?',
+    options: [
+      { label: 'Use MFA for logins', correct: true },
+      { label: 'Reuse passwords', correct: false },
+    ],
+  },
+]
+
+export function PhasesSection({ items = [], loading = false, rewards }) {
   const { isDark } = useTheme()
   const { user } = useAuth()
   const enrollTo = user ? '/bootcamp' : '/login'
@@ -36,17 +63,11 @@ export function PhasesSection({ items = [], loading = false }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="card overflow-hidden flex flex-col" style={{ borderRadius: '18px' }}>
-                <div className="relative h-48 overflow-hidden shrink-0">
-                  <Skeleton className="w-full h-full" />
-                  <div className="absolute top-3 right-3 w-16 h-6 rounded-full bg-[var(--border)]" />
+                <div className="relative h-48 overflow-hidden shrink-0 flex items-center justify-center">
+                  <Spinner size={28} />
                 </div>
-                <div className="p-6 flex flex-col flex-1 gap-3">
-                  <Skeleton className="h-5 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
-                  <div className="mt-5 pt-5 border-t border-[var(--border)] flex items-center justify-between">
-                    <Skeleton className="h-3 w-20" />
-                    <Skeleton className="h-3 w-24" />
-                  </div>
+                <div className="p-6 flex flex-col flex-1 gap-3 items-center justify-center">
+                  <Spinner size={24} />
                 </div>
               </div>
             ))}
@@ -61,6 +82,12 @@ export function PhasesSection({ items = [], loading = false }) {
               const Icon = PHASE_ICONS[i % PHASE_ICONS.length]
               const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
               const cover = item.image || PHASE_IMGS[i % PHASE_IMGS.length]
+              const progressSeed = (item.title || '').length + i * 13
+              const progress = Math.min(98, 30 + (progressSeed * 7) % 61)
+              const exercise = MICRO_EXERCISES[i % MICRO_EXERCISES.length]
+              const exerciseKey = `bootcamp-${item.id || i}-${exercise.id}`
+              const exerciseCompleted = rewards?.isCompleted?.(exerciseKey)
+              const achievementUnlocked = progress >= 70 || exerciseCompleted
               return (
                 <div
                   key={item.id}
@@ -108,10 +135,48 @@ export function PhasesSection({ items = [], loading = false }) {
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
                       {item.description || 'Curated offensive security track built for real-world mastery.'}
                     </p>
+                    <div className="mt-4">
+                      <ProgressBar
+                        value={progress}
+                        max={100}
+                        showPercent
+                        label="Completion"
+                        color={accent}
+                      />
+                    </div>
                     <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
                       {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
                       {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
                       {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                    </div>
+                    <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-3">
+                      <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-2">Micro-Exercise</p>
+                      <p className="text-sm text-[var(--text-primary)] mb-3">{exercise.prompt}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {exercise.options.map((opt) => (
+                          <Button
+                            key={opt.label}
+                            size="sm"
+                            variant="outline"
+                            disabled={exerciseCompleted}
+                            onClick={() => {
+                              if (opt.correct && !exerciseCompleted) {
+                                rewards?.award?.({ key: exerciseKey, cp: 8, xp: 15 })
+                              }
+                            }}
+                          >
+                            {opt.label}
+                          </Button>
+                        ))}
+                      </div>
+                      {exerciseCompleted && (
+                        <p className="text-xs font-mono text-accent mt-2">Reward unlocked: +8 CP, +15 XP</p>
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      <Badge variant={achievementUnlocked ? 'success' : 'default'}>
+                        {achievementUnlocked ? 'Achievement Unlocked' : 'Achievement Locked'}
+                      </Badge>
                     </div>
                     <Link to={enrollTo} className="btn-primary mt-5 inline-flex items-center justify-center">
                       Enroll

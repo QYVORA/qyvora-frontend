@@ -6,6 +6,7 @@ import { MarketplaceSection } from '@/features/marketing/components/MarketplaceS
 import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
+import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
 
 export default function LandingPage() {
@@ -17,6 +18,7 @@ export default function LandingPage() {
   const [loadingItems, setLoadingItems] = useState(true)
   const [loadingBootcamps, setLoadingBootcamps] = useState(true)
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true)
+  const rewards = useLandingRewards()
 
   useEffect(() => {
     let mounted = true
@@ -58,11 +60,17 @@ export default function LandingPage() {
 
   return (
     <div className="relative overflow-x-hidden">
-      <HeroSection stats={stats} loading={loadingStats} />
+      <HeroSection
+        stats={stats}
+        leaderboard={leaderboard}
+        rewards={rewards}
+        loading={loadingStats}
+        loadingLeaderboard={loadingLeaderboard}
+      />
       <FlowSection stats={stats} loading={loadingStats} />
-      <PhasesSection items={learningPath} loading={loadingBootcamps} />
-      <MarketplaceSection items={items} stats={stats} loading={loadingItems} />
-      <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} />
+      <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
+      <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
+      <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
       <SocialSection />
       <CtaSection />
     </div>

@@ -59,6 +59,63 @@ export default function AdminUsers() {
     })
   }
 
+  const handleView = (user) => {
+    const accessKey = user.bootcampAccessKey || 'Not issued'
+    openModal({
+      title: user.hackerHandle || user.name || user.email,
+      badge: 'USER DETAILS',
+      description: 'Bootcamp access key and recovery status.',
+      content: (
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-1">Bootcamp Access Key</p>
+            <div className="flex items-center gap-2">
+              <code className="px-2.5 py-1 rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] text-xs">
+                {accessKey}
+              </code>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={!user.bootcampAccessKey}
+                onClick={() => {
+                  if (!user.bootcampAccessKey) return
+                  navigator.clipboard.writeText(user.bootcampAccessKey)
+                  toast({ type: 'success', message: 'Access key copied.' })
+                }}
+              >
+                Copy
+              </Button>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-1">Recovery Keys</p>
+            {user.recoveryToken ? (
+              <div className="flex items-center gap-2">
+                <code className="px-2.5 py-1 rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] text-xs">
+                  {user.recoveryToken}
+                </code>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    navigator.clipboard.writeText(user.recoveryToken)
+                    toast({ type: 'success', message: 'Recovery token copied.' })
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-[var(--text-secondary)]">
+                No stored recovery token for this user.
+              </p>
+            )}
+          </div>
+        </div>
+      ),
+    })
+  }
+
   const handleUnban = (user) => {
     adminService.updateUser(user.id, { bootcampAccessRevoked: false })
       .then((res) => {
@@ -157,7 +214,7 @@ export default function AdminUsers() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="sm" icon={Eye}>View</Button>
+                        <Button variant="ghost" size="sm" icon={Eye} onClick={() => handleView(u)}>View</Button>
                         {!u.bootcampAccessRevoked ? (
                           <Button variant="danger" size="sm" icon={Ban} onClick={() => handleBan(u)}>Revoke</Button>
                         ) : (

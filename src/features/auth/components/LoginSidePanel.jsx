@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { HERO_BG } from '@/features/marketing/data/landingData'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { Logo } from '@/shared/components/brand/Logo'
 
 const PHASE_LINES = [
   'Phase 01 — Reconnaissance',
@@ -26,7 +27,7 @@ export function LoginSidePanel() {
       <div className={`absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full ${glowBlur} pointer-events-none`} />
       <div className="relative z-10">
         <Link to="/" className="flex items-center">
-          <span className="font-display font-bold text-xl">H<span className="text-accent">SOCIETY</span></span>
+          <Logo size="lg" />
         </Link>
       </div>
       <div className="relative z-10">

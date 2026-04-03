@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
 import { Sun, Moon, LogOut, X } from 'lucide-react'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function StudentSidebar({
   mobile,
@@ -15,7 +16,7 @@ export function StudentSidebar({
     <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-64' : 'hidden lg:flex w-64 h-screen sticky top-0 shrink-0'} flex flex-col border-r border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden`}>
       <div className="h-16 flex items-center justify-between px-5 border-b border-[var(--border)] shrink-0">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="font-display font-bold text-base">H<span className="text-accent">SOCIETY</span></span>
+          <Logo size="sm" />
         </Link>
         {mobile && (
           <button onClick={onClose} className="btn-ghost p-1.5 rounded-lg">

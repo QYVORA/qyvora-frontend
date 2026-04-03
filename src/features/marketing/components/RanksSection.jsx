@@ -1,6 +1,10 @@
-import { Avatar, SectionHeader, Skeleton } from '@/shared/components/ui'
+import { Avatar, SectionHeader, Spinner } from '@/shared/components/ui'
 
-export function RanksSection({ leaderboard = [], loading = false }) {
+export function RanksSection({ leaderboard = [], loading = false, rewards }) {
+  const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
+  const totalCp = totalXp
+  const earnedXp = rewards?.totals?.xp || 0
+  const earnedCp = rewards?.totals?.cp || 0
   return (
     <section className="py-32 px-6 bg-[var(--bg-secondary)] relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
@@ -13,13 +17,31 @@ export function RanksSection({ leaderboard = [], loading = false }) {
           subtitle="XP never lies. Your rank reflects your actual skill level."
         />
 
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
+          {loading ? (
+            <div className="flex items-center gap-3 text-[var(--text-secondary)]">
+              <Spinner size={24} />
+              <span className="text-xs font-mono">Loading totals...</span>
+            </div>
+          ) : (
+            <>
+              <div className="card px-5 py-3">
+                <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Total XP</p>
+                <p className="font-display font-bold text-xl text-accent">{Number(totalXp + earnedXp).toLocaleString()} XP</p>
+              </div>
+              <div className="card px-5 py-3">
+                <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Total CP</p>
+                <p className="font-display font-bold text-xl text-[var(--text-primary)]">{Number(totalCp + earnedCp).toLocaleString()} CP</p>
+              </div>
+            </>
+          )}
+        </div>
+
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div key={idx} className="card p-7 flex flex-col items-center gap-3" style={{ borderRadius: '18px' }}>
-                <Skeleton className="w-14 h-14 rounded-full" />
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-3 w-24" />
+                <Spinner size={26} />
               </div>
             ))}
           </div>

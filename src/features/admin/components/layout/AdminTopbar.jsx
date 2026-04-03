@@ -1,5 +1,6 @@
 import { Menu } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Logo } from '@/shared/components/brand/Logo'
 
 export function AdminTopbar({ onOpenSidebar }) {
   return (
@@ -8,10 +9,8 @@ export function AdminTopbar({ onOpenSidebar }) {
         <button onClick={onOpenSidebar} className="lg:hidden btn-ghost p-2 rounded-lg"><Menu size={20} /></button>
         <span className="font-mono text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-full">ROOT ACCESS</span>
       </div>
-      <Link to="/" className="flex items-center gap-2 lg:hidden font-display font-bold text-base tracking-tight">
-        <span>
-          H<span className="text-accent">SOCIETY</span>
-        </span>
+      <Link to="/" className="flex items-center gap-2 lg:hidden">
+        <Logo size="sm" />
       </Link>
     </header>
   )

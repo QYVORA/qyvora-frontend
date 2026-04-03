@@ -1,4 +1,4 @@
-import { SectionHeader, Skeleton } from '@/shared/components/ui'
+import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { HOW_IT_WORKS_IMGS } from '@/features/marketing/data/landingData'
 import { Users, Target, Zap, Database } from 'lucide-react'
 
@@ -23,15 +23,8 @@ export function FlowSection({ stats, loading = false }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="card overflow-hidden flex flex-col" style={{ borderRadius: '16px' }}>
-                <div className="relative h-44 overflow-hidden shrink-0">
-                  <Skeleton className="w-full h-full" />
-                  <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-[var(--border)]" />
-                </div>
-                <div className="p-6 flex flex-col gap-3 flex-1">
-                  <Skeleton className="h-5 w-3/4" />
-                  <Skeleton className="h-4 w-1/2" />
-                </div>
+              <div key={i} className="card overflow-hidden flex flex-col items-center justify-center h-64" style={{ borderRadius: '16px' }}>
+                <Spinner size={28} />
               </div>
             ))
             : items.map((step, i) => (
