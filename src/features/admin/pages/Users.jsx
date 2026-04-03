@@ -59,7 +59,7 @@ export default function AdminUsers() {
     })
   }
 
-  const handleView = (user) => {
+  const openUserModal = (user, recoveryToken) => {
     const accessKey = user.bootcampAccessKey || 'Not issued'
     openModal({
       title: user.hackerHandle || user.name || user.email,
@@ -89,16 +89,16 @@ export default function AdminUsers() {
           </div>
           <div>
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-1">Recovery Keys</p>
-            {user.recoveryToken ? (
+            {recoveryToken ? (
               <div className="flex items-center gap-2">
                 <code className="px-2.5 py-1 rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] text-xs">
-                  {user.recoveryToken}
+                  {recoveryToken}
                 </code>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => {
-                    navigator.clipboard.writeText(user.recoveryToken)
+                    navigator.clipboard.writeText(recoveryToken)
                     toast({ type: 'success', message: 'Recovery token copied.' })
                   }}
                 >
@@ -114,6 +114,18 @@ export default function AdminUsers() {
         </div>
       ),
     })
+  }
+
+  const handleView = async (user) => {
+    try {
+      const res = await adminService.getRecoveryToken(user.id)
+      const latestToken = res.data?.token || user.recoveryToken || ''
+      setUsers(prev => prev.map(u => (u.id === user.id ? { ...u, recoveryToken: latestToken } : u)))
+      openUserModal(user, latestToken)
+    } catch (err) {
+      const apiMessage = err?.response?.data?.error
+      toast({ type: 'error', message: apiMessage || 'Unable to issue recovery token.' })
+    }
   }
 
   const handleUnban = (user) => {

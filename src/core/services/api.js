@@ -64,6 +64,9 @@ api.interceptors.response.use(
       || url.includes('/auth/register')
       || url.includes('/auth/refresh')
       || url.includes('/auth/me')
+      || url.includes('/auth/password-reset')
+      || url.includes('/auth/verify-email')
+      || url.includes('/auth/logout')
 
     if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
