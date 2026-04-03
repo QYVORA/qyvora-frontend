@@ -60,7 +60,10 @@ api.interceptors.response.use(
     const originalRequest = err.config
     const status = err.response?.status
     const url = String(originalRequest?.url || '')
-    const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/refresh')
+    const isAuthRoute = url.includes('/auth/login')
+      || url.includes('/auth/register')
+      || url.includes('/auth/refresh')
+      || url.includes('/auth/me')
 
     if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
@@ -73,7 +76,8 @@ api.interceptors.response.use(
         return Promise.reject(refreshErr)
       }
     }
-    if (err.response?.status === 401 && !isAuthPage()) {
+    const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
+    if (err.response?.status === 401 && hasStoredSession && !isAuthPage()) {
       localStorage.removeItem('hs_user')
       window.location.href = '/login'
     }
