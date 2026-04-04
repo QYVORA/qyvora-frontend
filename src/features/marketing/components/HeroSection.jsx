@@ -103,7 +103,7 @@ export function HeroSection({
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
           Offensive Security Training Platform
         </div>
-        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[0.95] tracking-tight mb-8 text-center w-full overflow-hidden">
+        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[0.95] tracking-tight mb-8 text-center w-full overflow-hidden min-h-[3.5rem] md:min-h-[5.5rem] lg:min-h-[7rem]">
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">

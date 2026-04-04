@@ -17,6 +17,7 @@ const BootcampPage = lazy(() => import('@/features/student/pages/Bootcamp'))
 const BootcampDashboard = lazy(() => import('@/features/student/pages/BootcampDashboard'))
 const BootcampModule = lazy(() => import('@/features/student/pages/BootcampModule'))
 const BootcampRoom = lazy(() => import('@/features/student/pages/BootcampRoom'))
+const StudentPayments = lazy(() => import('@/features/student/pages/StudentPayments'))
 const WalletPage = lazy(() => import('@/features/student/pages/Wallet'))
 const MarketplacePage = lazy(() => import('@/features/student/pages/Marketplace'))
 const ProfilePage = lazy(() => import('@/features/student/pages/Profile'))
@@ -83,6 +84,9 @@ export function AppRouter() {
         </Route>
         <Route path="/profile" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
           <Route index element={<ProfilePage />} />
+        </Route>
+        <Route path="/student-payments" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
+          <Route index element={<StudentPayments />} />
         </Route>
 
           <Route path="/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>

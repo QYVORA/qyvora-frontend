@@ -133,6 +133,19 @@ export default function BootcampRoom() {
     )
   }
 
+  if (room.locked) {
+    return (
+      <div className="max-w-5xl mx-auto space-y-6">
+        <Button variant="ghost" onClick={() => navigate(`/bootcamp/${bootcampId}/modules/${moduleId}`)}>
+          <ChevronLeft size={16} /> Back to module
+        </Button>
+        <Card className="p-6 text-sm text-[var(--text-secondary)]">
+          Complete previous rooms to unlock this one.
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

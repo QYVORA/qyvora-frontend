@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { BookOpen, ChevronLeft } from 'lucide-react'
 import { Card, Badge, Button } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
@@ -85,6 +85,19 @@ export default function BootcampModule() {
     )
   }
 
+  if (module.locked) {
+    return (
+      <div className="max-w-5xl mx-auto space-y-6">
+        <Button variant="ghost" onClick={() => navigate(`/bootcamp/${bootcampId}`)}>
+          <ChevronLeft size={16} /> Back to bootcamp
+        </Button>
+        <Card className="p-6 text-sm text-[var(--text-secondary)]">
+          Complete previous modules to unlock this module.
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -120,12 +133,14 @@ export default function BootcampModule() {
                 </div>
                 <p className="text-sm text-[var(--text-secondary)]">{room.overview || 'Room content and exercises.'}</p>
                 <div className="mt-auto">
-                  <Link
-                    to={`/bootcamp/${bootcampId}/modules/${module.moduleId}/rooms/${room.roomId}`}
-                    className="btn-primary w-full justify-center flex"
+                  <Button
+                    variant={room.locked ? 'outline' : 'primary'}
+                    className="w-full justify-center"
+                    disabled={room.locked}
+                    onClick={() => !room.locked && navigate(`/bootcamp/${bootcampId}/modules/${module.moduleId}/rooms/${room.roomId}`)}
                   >
-                    Open Room
-                  </Link>
+                    {room.locked ? 'Locked' : 'Open Room'}
+                  </Button>
                 </div>
               </Card>
             ))}

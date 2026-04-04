@@ -10,6 +10,9 @@ export const adminService = {
   uploadFreeResource: (formData) => api.post('/admin/uploads/free-resources', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
+  uploadBootcampImage: (formData) => api.post('/admin/uploads/bootcamp-images', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
   uploadCPProduct: (formData) => api.post('/admin/uploads/cp-products', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),

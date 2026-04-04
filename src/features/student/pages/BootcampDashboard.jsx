@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { BookOpen, ShieldCheck, Wallet, Zap } from 'lucide-react'
 import { Card, Badge, ProgressBar, Button } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
@@ -156,12 +156,14 @@ export default function BootcampDashboard() {
                 </div>
                 <p className="text-sm text-[var(--text-secondary)]">Rooms completed: {module.roomsCompleted}/{module.roomsTotal}</p>
                 <div className="mt-auto">
-                  <Link
-                    to={`/bootcamp/${bootcampId}/modules/${module.id}`}
-                    className="btn-primary w-full justify-center flex"
+                  <Button
+                    variant={module.locked ? 'outline' : 'primary'}
+                    className="w-full justify-center"
+                    disabled={module.locked}
+                    onClick={() => !module.locked && navigate(`/bootcamp/${bootcampId}/modules/${module.id}`)}
                   >
-                    Open Module
-                  </Link>
+                    {module.locked ? 'Locked' : 'Open Module'}
+                  </Button>
                 </div>
               </Card>
             ))}
