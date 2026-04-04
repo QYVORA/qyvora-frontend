@@ -104,7 +104,7 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="space-y-3">
             <Skeleton className="h-3 w-32" />
@@ -194,13 +194,14 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
       <DashboardHeader displayName={displayName} rankLabel={rankLabel} />
       <StatsGrid currentModule={currentModule} totalXp={totalXp} cpBalance={cpBalance} overallProgress={progressPercent} />
       <PhaseProgressCard
         currentModule={currentModule}
         progressPercent={progressPercent}
         bootcampTitle={currentBootcamp?.title}
+        bootcampImage={currentBootcamp?.image ? resolveImageUrl(currentBootcamp.image) : ''}
         isEnrolled={(overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'}
       />
       <RankProgressCard xp={totalXp} rankLabel={rankLabel} />
