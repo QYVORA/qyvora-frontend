@@ -12,6 +12,8 @@ const normalizeBaseUrl = (value) => {
 }
 
 const BASE_URL = normalizeBaseUrl(ENV_BASE_URL || DEFAULT_BASE_URL)
+export const API_BASE_URL = BASE_URL
+export const API_ORIGIN = BASE_URL.replace(/\/api\/?$/, '')
 
 if (import.meta.env.PROD && !ENV_BASE_URL) {
   console.warn('VITE_API_URL/VITE_API_BASE_URL not set; falling back to Render backend')

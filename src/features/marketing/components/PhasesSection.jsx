@@ -4,6 +4,7 @@ import { Badge, Button, ProgressBar, SectionHeader, Spinner } from '@/shared/com
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { studentService } from '@/core/services'
+import { API_ORIGIN } from '@/core/services/api'
 
 const MICRO_EXERCISES = [
   {
@@ -41,6 +42,14 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
   const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
   const iconBackdrop = 'none'
   const badgeBackdrop = 'none'
+  const resolveImageUrl = (value) => {
+    const src = String(value || '').trim()
+    if (!src) return ''
+    if (/^https?:\/\//i.test(src)) return src
+    if (src.startsWith('//')) return `${window.location.protocol}${src}`
+    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
+    return src
+  }
   return (
     <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="bootcamps">
       <div
@@ -83,7 +92,7 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
             {items.map((item, i) => {
               const Icon = PHASE_ICONS[i % PHASE_ICONS.length]
               const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
-              const cover = item.image || PHASE_IMGS[i % PHASE_IMGS.length]
+              const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
               const progressSeed = (item.title || '').length + i * 13
               const progress = Math.min(98, 30 + (progressSeed * 7) % 61)
               const exercise = MICRO_EXERCISES[i % MICRO_EXERCISES.length]

@@ -3,7 +3,7 @@ import { Card, Button } from '@/shared/components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { studentService } from '@/core/services'
-import api from '@/core/services/api'
+import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 
@@ -24,6 +24,15 @@ export default function BootcampPage() {
   const { toast } = useToast()
   const { user, updateUser } = useAuth()
   const navigate = useNavigate()
+
+  const resolveImageUrl = (value) => {
+    const src = String(value || '').trim()
+    if (!src) return ''
+    if (/^https?:\/\//i.test(src)) return src
+    if (src.startsWith('//')) return `${window.location.protocol}${src}`
+    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
+    return src
+  }
 
   useEffect(() => {
     let mounted = true
@@ -153,7 +162,7 @@ export default function BootcampPage() {
               <Card key={item.id} className="p-0 overflow-hidden flex flex-col gap-4 w-full">
                 {item.image ? (
                   <div className="h-40 w-full overflow-hidden">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                 ) : null}
                 <div className="p-6 flex flex-col gap-4 flex-1">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useToast } from '@/core/contexts/ToastContext'
 import { adminService } from '@/core/services'
+import { API_ORIGIN } from '@/core/services/api'
 import { Card } from '@/shared/components/ui'
 
 const emptyForm = {
@@ -23,6 +24,14 @@ export default function AdminBootcamps() {
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState('')
   const [uploadingImage, setUploadingImage] = useState(false)
+  const resolveImageUrl = (value) => {
+    const src = String(value || '').trim()
+    if (!src) return ''
+    if (/^https?:\/\//i.test(src)) return src
+    if (src.startsWith('//')) return `${window.location.protocol}${src}`
+    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
+    return src
+  }
 
   useEffect(() => {
     let mounted = true
@@ -289,7 +298,7 @@ export default function AdminBootcamps() {
             />
             {form.image && (
               <div className="overflow-hidden rounded-lg border border-[var(--border)]">
-                <img src={form.image} alt="Bootcamp preview" className="w-full h-48 object-cover" />
+                <img src={resolveImageUrl(form.image)} alt="Bootcamp preview" className="w-full h-48 object-cover" />
               </div>
             )}
             {uploadingImage && (
