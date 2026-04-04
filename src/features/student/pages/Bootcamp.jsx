@@ -1,7 +1,7 @@
 import { Zap } from 'lucide-react'
 import { Card, Button, Spinner } from '@/shared/components/ui'
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { studentService } from '@/core/services'
 import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -28,6 +28,7 @@ export default function BootcampPage() {
   const { toast } = useToast()
   const { user, updateUser } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const resolveImageUrl = (value) => {
     const src = String(value || '').trim()
@@ -128,6 +129,19 @@ export default function BootcampPage() {
       goals: '',
     })
   }
+
+  useEffect(() => {
+    const targetId = searchParams.get('bootcampId')
+    if (!targetId || loading || bootcamps.length === 0) return
+    if (bootcampStatus !== 'not_enrolled') {
+      navigate(`/bootcamp/${targetId}`)
+      return
+    }
+    const target = bootcamps.find((item) => String(item.id) === String(targetId))
+    if (target && selectedBootcamp?.id !== target.id) {
+      handleStartEnroll(target)
+    }
+  }, [bootcampStatus, bootcamps, loading, navigate, searchParams, selectedBootcamp?.id])
 
   const handlePayment = async (method) => {
     setPaymentLoading(method)

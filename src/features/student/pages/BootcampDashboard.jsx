@@ -64,11 +64,15 @@ export default function BootcampDashboard() {
   }, [overview?.bootcampStatus])
 
   const paymentBadge = useMemo(() => {
+    const label = String(bootcamp?.priceLabel || '').toLowerCase()
+    if (label && label.includes('free')) return { label: 'Free', variant: 'success' }
     const status = overview?.bootcampPaymentStatus || 'unpaid'
     if (status === 'paid') return { label: 'Paid', variant: 'success' }
     if (status === 'pending') return { label: 'Pending', variant: 'warning' }
     return { label: 'Unpaid', variant: 'danger' }
-  }, [overview?.bootcampPaymentStatus])
+  }, [bootcamp?.priceLabel, overview?.bootcampPaymentStatus])
+
+  const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
 
   const modules = progress?.modules || []
   const overallProgress = progress?.overall || '0%'
@@ -89,7 +93,14 @@ export default function BootcampDashboard() {
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">{bootcamp?.title || 'Bootcamp'}</h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">{bootcamp?.description || 'Your bootcamp modules and rooms live here.'}</p>
         </div>
-        <Button variant="ghost" onClick={() => navigate('/bootcamp')}>Back to bootcamps</Button>
+        <div className="flex flex-wrap gap-2">
+          {!isEnrolled && bootcampId && (
+            <Button variant="primary" onClick={() => navigate(`/bootcamp?bootcampId=${encodeURIComponent(bootcampId)}`)}>
+              Enroll
+            </Button>
+          )}
+          <Button variant="ghost" onClick={() => navigate('/bootcamp')}>Back to bootcamps</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -137,7 +148,11 @@ export default function BootcampDashboard() {
           <h2 className="font-display font-semibold text-xl text-[var(--text-primary)]">Modules</h2>
         </div>
 
-        {accessError ? (
+        {!isEnrolled ? (
+          <Card className="p-6 text-sm text-[var(--text-secondary)]">
+            Enroll in this bootcamp to unlock modules.
+          </Card>
+        ) : accessError ? (
           <Card className="p-6 text-sm text-[var(--text-secondary)]">
             {accessError}
           </Card>
