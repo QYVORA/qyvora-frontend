@@ -23,7 +23,7 @@ export default function BootcampModule() {
       try {
         const [bootcampsRes, courseRes] = await Promise.allSettled([
           api.get('/public/bootcamps'),
-          studentService.getCourse(),
+          studentService.getCourse({ bootcampId }),
         ])
 
         if (!mounted) return

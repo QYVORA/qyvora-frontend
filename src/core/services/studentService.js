@@ -9,8 +9,8 @@ export const studentService = {
   initializeBootcampPayment: (payload) => api.post('/student/bootcamp/payments/initialize', payload),
   verifyBootcampPayment: (reference) => api.get('/student/bootcamp/payments/verify', { params: { reference } }),
   claimLandingReward: (key) => api.post('/student/rewards/claim', { key }),
-  getCourse: () => api.get('/student/course'),
-  getCourseProgress: () => api.get('/student/course/progress'),
+  getCourse: (params) => api.get('/student/course', { params }),
+  getCourseProgress: (params) => api.get('/student/course/progress', { params }),
   getBootcampResources: (params) => api.get('/student/bootcamp/resources', { params }),
   requestQuiz: (payload) => api.post('/student/quiz', payload),
 }

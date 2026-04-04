@@ -25,7 +25,7 @@ export default function BootcampDashboard() {
         const [bootcampsRes, overviewRes, progressRes] = await Promise.allSettled([
           api.get('/public/bootcamps'),
           studentService.getOverview(),
-          studentService.getCourseProgress(),
+          studentService.getCourseProgress({ bootcampId }),
         ])
 
         if (!mounted) return

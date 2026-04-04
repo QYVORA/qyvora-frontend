@@ -26,7 +26,7 @@ export default function BootcampRoom() {
       setAccessError('')
       try {
         const [courseRes, resourcesRes] = await Promise.allSettled([
-          studentService.getCourse(),
+          studentService.getCourse({ bootcampId }),
           studentService.getBootcampResources({ moduleId, roomId }),
         ])
 
@@ -53,7 +53,7 @@ export default function BootcampRoom() {
     }
     load()
     return () => { mounted = false }
-  }, [moduleId, roomId, toast])
+  }, [bootcampId, moduleId, roomId, toast])
 
   const module = useMemo(() => {
     const modules = course?.modules || []
