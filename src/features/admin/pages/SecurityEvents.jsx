@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AlertTriangle, RefreshCcw } from 'lucide-react'
 import { adminService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -15,7 +15,7 @@ export default function AdminSecurityEvents() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true)
     try {
       const res = await adminService.getSecurityEvents({ limit: 50 })
@@ -26,11 +26,11 @@ export default function AdminSecurityEvents() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
 
   useEffect(() => {
     load()
-  }, [])
+  }, [load])
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

@@ -62,7 +62,11 @@ export default function RegisterPage() {
           description: 'This token can recover your account if you ever lose access. Copy it and store it somewhere safe.',
           confirmLabel: 'I saved it',
           onConfirm: async () => {
-            try { await profileService.acknowledgeRecoveryToken() } catch {}
+            try {
+              await profileService.acknowledgeRecoveryToken()
+            } catch {
+              // ignore acknowledgement failures
+            }
           },
           content: (
             <div className="space-y-4">

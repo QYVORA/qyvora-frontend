@@ -28,8 +28,8 @@ export default function AdminBootcampManagement() {
         setRawContent(contentRes.data || null)
         setBootcamps(nextBootcamps)
         setUsers(usersRes.data || [])
-        if (!selectedBootcampId && nextBootcamps.length) {
-          setSelectedBootcampId(nextBootcamps[0].id)
+        if (nextBootcamps.length) {
+          setSelectedBootcampId((prev) => prev || nextBootcamps[0].id)
         }
       } catch {
         if (!mounted) return

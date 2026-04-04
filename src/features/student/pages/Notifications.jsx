@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Bell, CheckCircle2, MailOpen, RefreshCcw } from 'lucide-react'
 import { notificationsService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -9,7 +9,7 @@ export default function NotificationsPage() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true)
     try {
       const res = await notificationsService.list()
@@ -19,11 +19,11 @@ export default function NotificationsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
 
   useEffect(() => {
     load()
-  }, [])
+  }, [load])
 
   const handleMarkAll = async () => {
     try {

@@ -62,7 +62,7 @@ export default function ProfilePage() {
     }
     load()
     return () => { mounted = false }
-  }, [updateUser])
+  }, [toast, updateUser])
 
   const rankLabel = profile?.xpSummary?.rank || 'Operator'
   const totalXp = profile?.xpSummary?.totalXp || 0
@@ -130,7 +130,11 @@ export default function ProfilePage() {
               try {
                 setRecoveryLoading(true)
                 await navigator.clipboard.writeText(recoveryToken)
-                try { await profileService.acknowledgeRecoveryToken() } catch {}
+                try {
+                  await profileService.acknowledgeRecoveryToken()
+                } catch {
+                  // ignore acknowledgement failures
+                }
                 toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
               } catch {
                 toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
