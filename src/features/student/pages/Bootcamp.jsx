@@ -7,6 +7,7 @@ import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
+import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 
 export default function BootcampPage() {
   const [overview, setOverview] = useState(null)
@@ -155,47 +156,62 @@ export default function BootcampPage() {
       </div>
 
       {/* Bootcamp Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-8 justify-center">
         {loading ? (
-          <Card className="p-6 text-center md:col-span-2 flex flex-col items-center gap-3">
+          <Card className="p-6 text-center flex flex-col items-center gap-3">
             <Spinner size={28} />
             <p className="text-sm text-[var(--text-secondary)]">Loading bootcamps...</p>
           </Card>
         ) : bootcamps.length === 0 ? (
-          <Card className="p-6 text-center md:col-span-2">
+          <Card className="p-6 text-center">
             <Zap size={28} className="text-accent/50 mx-auto mb-3" />
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </Card>
         ) : (
-          bootcamps.map((item) => {
+          bootcamps.map((item, i) => {
             const isEnrolled = bootcampStatus !== 'not_enrolled'
             const isCurrent = isEnrolled && currentBootcampId === item.id
             const isOther = isEnrolled && currentBootcampId && currentBootcampId !== item.id
+            const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
+            const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             return (
-              <Card key={item.id} className="p-0 overflow-hidden flex flex-col gap-4 w-full">
-                {item.image ? (
-                  <div className="h-40 w-full overflow-hidden">
-                    <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
+              <div
+                key={item.id}
+                className="card overflow-hidden flex flex-col lg:flex-row group w-full max-w-5xl mx-auto"
+                style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
+              >
+                <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
+                  <img
+                    src={cover}
+                    alt={item.title || 'Bootcamp'}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
+                    style={{
+                      color: accent,
+                      borderColor: `${accent}50`,
+                      background: `${accent}15`,
+                    }}
+                  >
+                    BOOTCAMP
                   </div>
-                ) : null}
-                <div className="p-6 flex flex-col gap-4 flex-1">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-display font-semibold text-xl text-[var(--text-primary)]">{item.title}</h3>
-                      <p className="text-sm text-[var(--text-secondary)] mt-1">{item.description || 'Bootcamp track built for real-world mastery.'}</p>
-                    </div>
-                    {item.priceLabel && (
-                      <span className="text-xs font-mono uppercase tracking-widest text-accent">{item.priceLabel}</span>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
+                </div>
+
+                <div className="p-6 lg:p-8 flex flex-col flex-1">
+                  <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
+                    {item.description || 'Curated offensive security track built for real-world mastery.'}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
                     {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
                     {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
+                    {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
                   </div>
                   {isCurrent ? (
                     <Button
                       variant="primary"
-                      className="mt-auto justify-center"
+                      className="mt-5 inline-flex items-center justify-center"
                       onClick={() => navigate(`/bootcamp/${item.id}`)}
                     >
                       Continue
@@ -203,7 +219,7 @@ export default function BootcampPage() {
                   ) : (
                     <Button
                       variant={isOther ? 'outline' : 'primary'}
-                      className="mt-auto justify-center"
+                      className="mt-5 inline-flex items-center justify-center"
                       disabled={isOther}
                       onClick={() => handleStartEnroll(item)}
                     >
@@ -211,7 +227,7 @@ export default function BootcampPage() {
                     </Button>
                   )}
                 </div>
-              </Card>
+              </div>
             )
           })
         )}
@@ -342,7 +358,7 @@ export default function BootcampPage() {
         </Card>
       )}
 
-      {bootcampStatus !== 'not_enrolled' && currentBootcampId && (
+      {bootcamps.length > 1 && bootcampStatus !== 'not_enrolled' && currentBootcampId && (
         <Card className="p-5 flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex-1">
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Current bootcamp</p>
