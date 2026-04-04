@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell } from 'lucide-react'
+import { clsx } from 'clsx'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -87,7 +88,12 @@ export default function StudentLayout() {
         />
 
         {/* Page content */}
-        <main className="flex-1 p-6 lg:p-8 pb-24 lg:pb-8 animate-enter">
+        <main
+          className={clsx(
+            'flex-1 pb-24 lg:pb-8 animate-enter',
+            isDashboard ? 'p-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8',
+          )}
+        >
           <Outlet />
         </main>
 

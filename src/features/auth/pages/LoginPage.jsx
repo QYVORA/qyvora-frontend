@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useTheme } from '@/core/contexts/ThemeContext'
@@ -16,6 +16,7 @@ export default function LoginPage() {
   const { toast } = useToast()
   const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const validate = () => {
     const e = {}
@@ -45,7 +46,25 @@ export default function LoginPage() {
         return
       }
       toast({ type: 'success', title: 'Access granted.', message: `Welcome back, ${user.hackerHandle || user.name || user.email}.` })
-      navigate(user.role === 'admin' ? '/admin' : '/dashboard')
+      if (user.role === 'admin') {
+        navigate('/admin')
+        return
+      }
+      const params = new URLSearchParams(location.search)
+      const intent = params.get('intent')
+      const bootcampId = params.get('bootcampId')
+      const next = params.get('next')
+      const safeNext = next && next.startsWith('/') ? next : null
+      if (intent === 'bootcamp') {
+        const enrolled = (user.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
+        if (enrolled && bootcampId) {
+          navigate(`/bootcamp/${bootcampId}`)
+        } else {
+          navigate('/bootcamp')
+        }
+        return
+      }
+      navigate(safeNext || '/dashboard')
     } catch {
       toast({ type: 'error', title: 'Login failed', message: 'Invalid credentials. Try again.' })
     } finally {

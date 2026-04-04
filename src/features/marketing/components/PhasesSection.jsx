@@ -1,19 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { PHASES_SECTION_BG, PHASE_IMGS, PHASE_ICONS } from '@/features/marketing/data/landingData'
+import { Link } from 'react-router-dom'
+import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner } from '@/shared/components/ui'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { API_ORIGIN } from '@/core/services/api'
 
 export function PhasesSection({ items = [], loading = false }) {
-  const { isDark } = useTheme()
   const { user } = useAuth()
-  const navigate = useNavigate()
-  const enrollTo = user ? '/bootcamp' : '/login'
-  const overlayFilter = isDark ? 'brightness(0.2) saturate(0.5)' : 'brightness(0.85) saturate(0.7)'
-  const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
-  const iconBackdrop = 'none'
   const badgeBackdrop = 'none'
+  const bootcampStatus = user?.bootcampStatus || 'not_enrolled'
+  const isEnrolled = bootcampStatus !== 'not_enrolled'
   const resolveImageUrl = (value) => {
     const src = String(value || '').trim()
     if (!src) return ''
@@ -52,9 +47,14 @@ export function PhasesSection({ items = [], loading = false }) {
         ) : (
           <div className="grid grid-cols-1 gap-10 justify-center">
             {items.map((item, i) => {
-              const Icon = PHASE_ICONS[i % PHASE_ICONS.length]
               const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
+              const bootcampId = item.id
+              const loginTarget = bootcampId
+                ? `/login?intent=bootcamp&bootcampId=${encodeURIComponent(bootcampId)}`
+                : '/login?intent=bootcamp'
+              const enrolledTarget = bootcampId ? `/bootcamp/${bootcampId}` : '/bootcamp'
+              const ctaTarget = user ? (isEnrolled ? enrolledTarget : '/bootcamp') : loginTarget
               return (
                 <div
                   key={item.id}
@@ -90,7 +90,7 @@ export function PhasesSection({ items = [], loading = false }) {
                       {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
                       {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
                     </div>
-                    <Link to={enrollTo} className="btn-primary mt-5 inline-flex items-center justify-center">
+                    <Link to={ctaTarget} className="btn-primary mt-5 inline-flex items-center justify-center">
                       Enroll
                     </Link>
                   </div>

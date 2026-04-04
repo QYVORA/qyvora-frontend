@@ -1,17 +1,20 @@
 import { Zap } from 'lucide-react'
-import { Card, Button } from '@/shared/components/ui'
+import { Card, Button, Spinner } from '@/shared/components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { studentService } from '@/core/services'
 import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
+import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 
 export default function BootcampPage() {
   const [overview, setOverview] = useState(null)
   const [bootcamps, setBootcamps] = useState([])
+  const [loading, setLoading] = useState(true)
   const [enrollingId, setEnrollingId] = useState('')
   const [selectedBootcamp, setSelectedBootcamp] = useState(null)
+  const [socialProgress, setSocialProgress] = useState({})
   const [application, setApplication] = useState({
     name: '',
     email: '',
@@ -38,6 +41,7 @@ export default function BootcampPage() {
   useEffect(() => {
     let mounted = true
     const load = async () => {
+      setLoading(true)
       try {
         const [res, bootcampsRes] = await Promise.all([
           studentService.getOverview(),
@@ -57,6 +61,8 @@ export default function BootcampPage() {
       } catch {
         setOverview(null)
         setBootcamps([])
+      } finally {
+        if (mounted) setLoading(false)
       }
     }
     load()
@@ -112,6 +118,7 @@ export default function BootcampPage() {
   const handleStartEnroll = (item) => {
     setSelectedBootcamp(item)
     setShowPayment(false)
+    setSocialProgress({})
     setApplication({
       name: user?.name || '',
       email: user?.email || '',
@@ -149,7 +156,12 @@ export default function BootcampPage() {
 
       {/* Bootcamp Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {bootcamps.length === 0 ? (
+        {loading ? (
+          <Card className="p-6 text-center md:col-span-2 flex flex-col items-center gap-3">
+            <Spinner size={28} />
+            <p className="text-sm text-[var(--text-secondary)]">Loading bootcamps...</p>
+          </Card>
+        ) : bootcamps.length === 0 ? (
           <Card className="p-6 text-center md:col-span-2">
             <Zap size={28} className="text-accent/50 mx-auto mb-3" />
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
@@ -250,10 +262,38 @@ export default function BootcampPage() {
             />
           </div>
 
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 space-y-3">
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Follow to unlock</p>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Visit all channels below before continuing your registration.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {SOCIAL_MEDIA.map((platform) => {
+                const Icon = platform.icon
+                const visited = socialProgress[platform.key]
+                return (
+                  <Button
+                    key={platform.key}
+                    variant={visited ? 'secondary' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      window.open(platform.url, '_blank', 'noopener,noreferrer')
+                      setSocialProgress((prev) => ({ ...prev, [platform.key]: true }))
+                    }}
+                  >
+                    <Icon size={14} />
+                    {visited ? `${platform.label} visited` : `Visit ${platform.label}`}
+                  </Button>
+                )
+              })}
+            </div>
+          </div>
+
           <div className="flex flex-wrap gap-3">
             <Button
               variant="primary"
               loading={enrollingId === selectedBootcamp.id}
+              disabled={!SOCIAL_MEDIA.every((platform) => socialProgress[platform.key])}
               onClick={() => handleEnroll(selectedBootcamp.id)}
             >
               Continue

@@ -217,7 +217,7 @@ export default function StudentDashboard() {
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 justify-center">
             {bootcamps.map((item) => (
-              <Card key={item.id} className="p-0 overflow-hidden flex flex-col w-full max-w-[360px] mx-auto">
+              <Card key={item.id} className="p-0 overflow-hidden flex flex-col w-full max-w-none mx-0 sm:max-w-[360px] sm:mx-auto">
                 {item.image ? (
                   <div className="h-32 w-full overflow-hidden">
                     <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
