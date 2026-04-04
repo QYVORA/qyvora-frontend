@@ -45,10 +45,11 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
   const resolveImageUrl = (value) => {
     const src = String(value || '').trim()
     if (!src) return ''
+    if (src.startsWith('data:')) return src
     if (/^https?:\/\//i.test(src)) return src
     if (src.startsWith('//')) return `${window.location.protocol}${src}`
     if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return src
+    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
   }
   return (
     <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="bootcamps">

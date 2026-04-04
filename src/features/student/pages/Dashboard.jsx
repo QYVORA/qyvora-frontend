@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { cpService, profileService, studentService } from '@/core/services'
-import api from '@/core/services/api'
+import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 import { DashboardHeader } from '@/features/student/components/dashboard/DashboardHeader'
 import { StatsGrid } from '@/features/student/components/dashboard/StatsGrid'
@@ -24,6 +24,16 @@ export default function StudentDashboard() {
   const [balance, setBalance] = useState(null)
   const [activity, setActivity] = useState([])
   const [bootcamps, setBootcamps] = useState([])
+
+  const resolveImageUrl = (value) => {
+    const src = String(value || '').trim()
+    if (!src) return ''
+    if (src.startsWith('data:')) return src
+    if (/^https?:\/\//i.test(src)) return src
+    if (src.startsWith('//')) return `${window.location.protocol}${src}`
+    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
+    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
+  }
 
   useEffect(() => {
     const paymentResult = location.state?.paymentResult
@@ -210,7 +220,7 @@ export default function StudentDashboard() {
               <Card key={item.id} className="p-0 overflow-hidden flex flex-col w-full max-w-[360px] mx-auto">
                 {item.image ? (
                   <div className="h-32 w-full overflow-hidden">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                 ) : null}
                 <div className="p-5 flex flex-col gap-3 flex-1">
