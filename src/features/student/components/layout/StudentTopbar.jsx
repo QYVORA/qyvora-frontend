@@ -80,6 +80,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) 
               type="button"
               onClick={() => setNotifOpen((open) => !open)}
               className="btn-ghost p-2 rounded-lg relative"
+              data-tour="topbar-notifications"
               aria-label="Notifications"
               aria-expanded={notifOpen}
             >
@@ -131,6 +132,7 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) 
           <Link
             to="/profile"
             className="btn-ghost px-3 py-1.5 rounded-lg flex items-center gap-2.5 max-w-[220px]"
+            data-tour="topbar-profile"
           >
             <Avatar username={user?.hackerHandle || user?.name || user?.email} size="sm" />
             <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:block truncate">

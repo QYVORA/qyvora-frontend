@@ -5,11 +5,12 @@ import { cpService, profileService, studentService } from '@/core/services'
 import api, { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 import { DashboardHeader } from '@/features/student/components/dashboard/DashboardHeader'
-import { StatsGrid } from '@/features/student/components/dashboard/StatsGrid'
 import { PhaseProgressCard } from '@/features/student/components/dashboard/PhaseProgressCard'
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
 import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
 import { RecentActivity } from '@/features/student/components/dashboard/RecentActivity'
+import { OnboardingWelcomeCard } from '@/features/student/components/onboarding/OnboardingWelcomeCard'
+import { OnboardingTour } from '@/features/student/components/onboarding/OnboardingTour'
 import { Card, Skeleton } from '@/shared/components/ui'
 
 export default function StudentDashboard() {
@@ -24,6 +25,8 @@ export default function StudentDashboard() {
   const [balance, setBalance] = useState(null)
   const [activity, setActivity] = useState([])
   const [bootcamps, setBootcamps] = useState([])
+  const [tourActive, setTourActive] = useState(false)
+  const [onboardingDone, setOnboardingDone] = useState(false)
 
   const resolveImageUrl = (value) => {
     const src = String(value || '').trim()
@@ -91,6 +94,7 @@ export default function StudentDashboard() {
       ? { title: overview.progressMeta.currentPhase.title, status: 'in-progress' }
       : null
   }, [overview?.progressMeta?.currentPhase])
+  const hasActiveModule = Boolean(currentModule?.title)
 
   const currentBootcamp = useMemo(() => {
     const bootcampId = overview?.bootcampId
@@ -101,6 +105,13 @@ export default function StudentDashboard() {
   const progressSnapshot = overview?.snapshot?.find((s) => s.id === 'progress')?.value || '0%'
   const progressPercent = Number(String(progressSnapshot).replace('%', '')) || 0
   const cpBalance = balance?.balance ?? profile?.cpPoints ?? 0
+  const onboardingComplete = onboardingDone || Boolean(overview?.onboarding?.completed || sessionUser?.onboardingCompletedAt)
+
+  useEffect(() => {
+    if (!loading && !onboardingComplete) {
+      setTourActive(true)
+    }
+  }, [loading, onboardingComplete])
 
   if (loading) {
     return (
@@ -193,10 +204,64 @@ export default function StudentDashboard() {
     )
   }
 
+  const bootcampSection = (
+    <div className="space-y-4 pb-24 sm:pb-4" data-tour="bootcamp-cards">
+      <h3 className="font-semibold text-[var(--text-primary)]">Available Bootcamps</h3>
+      {bootcamps.length === 0 ? (
+        <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
+      ) : (
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 justify-center">
+          {bootcamps.map((item) => {
+            const isEnrolledHere =
+              (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
+              && overview?.bootcampId
+              && String(overview.bootcampId) === String(item.id)
+            return (
+            <Card key={item.id} className="p-0 overflow-hidden flex flex-col md:flex-row w-full max-w-none mx-0">
+              {item.image ? (
+                <div className="h-32 md:h-auto md:w-48 lg:w-56 w-full overflow-hidden shrink-0">
+                  <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
+                </div>
+              ) : null}
+              <div className="p-5 flex flex-col gap-3 flex-1">
+                <div>
+                  <h4 className="font-display font-semibold text-lg text-[var(--text-primary)]">{item.title}</h4>
+                  <p className="text-sm text-[var(--text-secondary)] mt-1">{item.description || 'Bootcamp track ready for you.'}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
+                  {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
+                  {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
+                  {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                </div>
+                <div className="mt-auto">
+                  {isEnrolledHere ? (
+                    <a href={`/bootcamp/${item.id}`} className="btn-primary w-full justify-center flex">Continue</a>
+                  ) : (
+                    <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary w-full justify-center flex">Enroll</a>
+                  )}
+                </div>
+              </div>
+            </Card>
+          )})}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
+      {!loading && !onboardingComplete && (
+        <OnboardingWelcomeCard onStart={() => setTourActive(true)} />
+      )}
+      <OnboardingTour
+        active={tourActive && !onboardingComplete}
+        onComplete={() => {
+          setTourActive(false)
+          setOnboardingDone(true)
+        }}
+      />
       <DashboardHeader displayName={displayName} rankLabel={rankLabel} />
-      <StatsGrid currentModule={currentModule} totalXp={totalXp} cpBalance={cpBalance} overallProgress={progressPercent} />
+      {!hasActiveModule && bootcampSection}
       <PhaseProgressCard
         currentModule={currentModule}
         progressPercent={progressPercent}
@@ -211,47 +276,8 @@ export default function StudentDashboard() {
         <RecentActivity items={activity} />
       </div>
 
-      <div className="space-y-4">
-        <h3 className="font-semibold text-[var(--text-primary)]">Available Bootcamps</h3>
-        {bootcamps.length === 0 ? (
-          <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
-        ) : (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 justify-center">
-            {bootcamps.map((item) => {
-              const isEnrolledHere =
-                (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
-                && overview?.bootcampId
-                && String(overview.bootcampId) === String(item.id)
-              return (
-              <Card key={item.id} className="p-0 overflow-hidden flex flex-col md:flex-row w-full max-w-none mx-0">
-                {item.image ? (
-                  <div className="h-32 md:h-auto md:w-48 lg:w-56 w-full overflow-hidden shrink-0">
-                    <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
-                  </div>
-                ) : null}
-                <div className="p-5 flex flex-col gap-3 flex-1">
-                  <div>
-                    <h4 className="font-display font-semibold text-lg text-[var(--text-primary)]">{item.title}</h4>
-                    <p className="text-sm text-[var(--text-secondary)] mt-1">{item.description || 'Bootcamp track ready for you.'}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                    {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
-                    {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
-                    {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
-                  </div>
-                  <div className="mt-auto">
-                    {isEnrolledHere ? (
-                      <a href={`/bootcamp/${item.id}`} className="btn-primary w-full justify-center flex">Continue</a>
-                    ) : (
-                      <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary w-full justify-center flex">Enroll</a>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            )})}
-          </div>
-        )}
-      </div>
+      {hasActiveModule && bootcampSection}
+      <div className="h-24 sm:h-0" />
     </div>
   )
 }

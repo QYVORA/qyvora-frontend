@@ -2,7 +2,7 @@ import { Clock } from 'lucide-react'
 
 export function RecentActivity({ items = [] }) {
   return (
-    <div className="lg:col-span-2">
+    <div className="lg:col-span-2 pb-24 sm:pb-4">
       <h3 className="font-semibold text-[var(--text-primary)] flex items-center gap-2 mb-3">
         <Clock size={16} className="text-accent" />
         Recent Activity

@@ -90,8 +90,9 @@ export default function StudentLayout() {
         {/* Page content */}
         <main
           className={clsx(
-            'flex-1 pb-24 lg:pb-8 animate-enter',
-            isDashboard ? 'p-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8',
+            'flex-1 animate-enter',
+            isDashboard ? 'pt-0 px-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8',
+            'pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-24 lg:pb-8',
           )}
         >
           <Outlet />

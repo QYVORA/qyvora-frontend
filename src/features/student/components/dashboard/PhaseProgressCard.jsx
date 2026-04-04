@@ -4,7 +4,7 @@ import { Card, ProgressBar, Badge } from '@/shared/components/ui'
 
 export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitle, bootcampImage, isEnrolled }) {
   return (
-    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: '#0EA5E9' }}>
+    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: '#0EA5E9' }} data-tour="overview-card">
       <div className="flex flex-col lg:flex-row">
         {bootcampImage && (
           <div className="h-40 lg:h-auto lg:w-60 w-full overflow-hidden shrink-0">
