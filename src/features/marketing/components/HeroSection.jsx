@@ -1,8 +1,10 @@
 import { memo, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Button, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { useAuth } from '@/core/contexts/AuthContext'
+import { studentService } from '@/core/services'
 import { HeroStats } from '@/features/marketing/components/HeroStats'
 const TypingHeadline = memo(function TypingHeadline() {
   const phrases = useMemo(
@@ -72,6 +74,8 @@ export function HeroSection({
   loadingLeaderboard = false,
 }) {
   const { isDark } = useTheme()
+  const { user } = useAuth()
+  const navigate = useNavigate()
   const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
   const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
   const heroGlow = 'blur-none'
@@ -168,10 +172,24 @@ export function HeroSection({
                   variant="outline"
                   size="sm"
                   disabled={previewCompleted}
-                  onClick={() => {
+                  onClick={async () => {
+                    if (!user) {
+                      navigate('/register')
+                      return
+                    }
                     setPreviewChoice(opt.label)
                     if (opt.correct && !previewCompleted) {
-                      rewards?.award?.({ key: previewKey, cp: 12, xp: 25 })
+                      try {
+                        const res = await studentService.claimLandingReward(previewKey)
+                        const reward = res.data?.reward || { cp: 12, xp: 25 }
+                        if (!res.data?.alreadyClaimed) {
+                          rewards?.award?.({ key: previewKey, cp: reward.cp, xp: reward.xp })
+                        } else {
+                          rewards?.award?.({ key: previewKey, cp: 0, xp: 0 })
+                        }
+                      } catch {
+                        // ignore claim failures
+                      }
                     }
                   }}
                 >

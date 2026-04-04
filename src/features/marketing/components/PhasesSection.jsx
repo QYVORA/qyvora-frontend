@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PHASES_SECTION_BG, PHASE_IMGS, PHASE_ICONS } from '@/features/marketing/data/landingData'
 import { Badge, Button, ProgressBar, SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
+import { studentService } from '@/core/services'
 
 const MICRO_EXERCISES = [
   {
@@ -34,6 +35,7 @@ const MICRO_EXERCISES = [
 export function PhasesSection({ items = [], loading = false, rewards }) {
   const { isDark } = useTheme()
   const { user } = useAuth()
+  const navigate = useNavigate()
   const enrollTo = user ? '/bootcamp' : '/login'
   const overlayFilter = isDark ? 'brightness(0.2) saturate(0.5)' : 'brightness(0.85) saturate(0.7)'
   const overlayOpacity = isDark ? 'opacity-40' : 'opacity-20'
@@ -159,9 +161,23 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
                             size="sm"
                             variant="outline"
                             disabled={exerciseCompleted}
-                            onClick={() => {
+                            onClick={async () => {
+                              if (!user) {
+                                navigate('/register')
+                                return
+                              }
                               if (opt.correct && !exerciseCompleted) {
-                                rewards?.award?.({ key: exerciseKey, cp: 8, xp: 15 })
+                                try {
+                                  const res = await studentService.claimLandingReward(exerciseKey)
+                                  const reward = res.data?.reward || { cp: 8, xp: 15 }
+                                  if (!res.data?.alreadyClaimed) {
+                                    rewards?.award?.({ key: exerciseKey, cp: reward.cp, xp: reward.xp })
+                                  } else {
+                                    rewards?.award?.({ key: exerciseKey, cp: 0, xp: 0 })
+                                  }
+                                } catch {
+                                  // ignore claim failures
+                                }
                               }
                             }}
                           >
