@@ -183,9 +183,7 @@ export default function BootcampPage() {
           </Card>
         ) : (
           bootcamps.map((item, i) => {
-            const isEnrolled = bootcampStatus !== 'not_enrolled'
-            const isCurrent = isEnrolled && currentBootcampId === item.id
-            const isOther = isEnrolled && currentBootcampId && currentBootcampId !== item.id
+            const isEnrolledHere = bootcampStatus !== 'not_enrolled' && currentBootcampId === item.id
             const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
             const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             return (
@@ -222,7 +220,7 @@ export default function BootcampPage() {
                     {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
                     {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
                   </div>
-                  {isCurrent ? (
+                  {isEnrolledHere ? (
                     <Button
                       variant="primary"
                       className="mt-5 inline-flex items-center justify-center"
@@ -232,12 +230,11 @@ export default function BootcampPage() {
                     </Button>
                   ) : (
                     <Button
-                      variant={isOther ? 'outline' : 'primary'}
+                      variant="primary"
                       className="mt-5 inline-flex items-center justify-center"
-                      disabled={isOther}
                       onClick={() => handleStartEnroll(item)}
                     >
-                      {isOther ? 'Enrolled Elsewhere' : 'Enroll'}
+                      Enroll
                     </Button>
                   )}
                 </div>

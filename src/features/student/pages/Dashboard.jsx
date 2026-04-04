@@ -216,7 +216,12 @@ export default function StudentDashboard() {
           <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 justify-center">
-            {bootcamps.map((item) => (
+            {bootcamps.map((item) => {
+              const isEnrolledHere =
+                (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
+                && overview?.bootcampId
+                && String(overview.bootcampId) === String(item.id)
+              return (
               <Card key={item.id} className="p-0 overflow-hidden flex flex-col w-full max-w-none mx-0 sm:max-w-[360px] sm:mx-auto">
                 {item.image ? (
                   <div className="h-32 w-full overflow-hidden">
@@ -234,11 +239,15 @@ export default function StudentDashboard() {
                     {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
                   </div>
                   <div className="mt-auto">
-                    <a href="/bootcamp" className="btn-primary w-full justify-center flex">View Bootcamps</a>
+                    {isEnrolledHere ? (
+                      <a href={`/bootcamp/${item.id}`} className="btn-primary w-full justify-center flex">Continue</a>
+                    ) : (
+                      <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary w-full justify-center flex">Enroll</a>
+                    )}
                   </div>
                 </div>
               </Card>
-            ))}
+            )})}
           </div>
         )}
       </div>
