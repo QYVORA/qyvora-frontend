@@ -89,7 +89,7 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 justify-center">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 justify-center">
             {items.map((item, i) => {
               const Icon = PHASE_ICONS[i % PHASE_ICONS.length]
               const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
@@ -103,7 +103,7 @@ export function PhasesSection({ items = [], loading = false, rewards }) {
               return (
                 <div
                   key={item.id}
-                  className="card overflow-hidden flex flex-col group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-[360px] mx-auto"
+                  className="card overflow-hidden flex flex-col group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-[420px] mx-auto"
                   style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
                 >
                   <div className="relative h-48 overflow-hidden shrink-0">
