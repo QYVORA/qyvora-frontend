@@ -70,7 +70,12 @@ export default function BootcampRoom() {
     setQuizLoading(true)
     setQuizError('')
     try {
-      const res = await studentService.requestQuiz({ type: 'room', id: String(room.roomId) })
+      const res = await studentService.requestQuiz({
+        type: 'room',
+        id: String(room.roomId),
+        courseId: String(bootcampId || ''),
+        moduleId: String(moduleId || ''),
+      })
       setQuiz(res.data || null)
     } catch (err) {
       const status = err?.response?.status
@@ -90,7 +95,7 @@ export default function BootcampRoom() {
     setQuizLoading(true)
     try {
       const res = await studentService.requestQuiz({
-        scope: quiz.scope,
+        scope: { ...(quiz.scope || {}), moduleId: quiz.scope?.moduleId || String(moduleId || '') },
         answers,
       })
       setQuizResult(res.data || null)
@@ -140,7 +145,7 @@ export default function BootcampRoom() {
           <ChevronLeft size={16} /> Back to module
         </Button>
         <Card className="p-6 text-sm text-[var(--text-secondary)]">
-          Complete previous rooms to unlock this one.
+          This room is locked. Ask an admin to open access.
         </Card>
       </div>
     )

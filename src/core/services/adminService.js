@@ -7,6 +7,8 @@ export const adminService = {
   updateUser: (id, data) => api.patch(`/admin/users/${id}`, data),
   getContent: () => api.get('/admin/content'),
   updateContent: (data) => api.patch('/admin/content', data),
+  releaseQuiz: (data) => api.post('/admin/bootcamp/quizzes/release', data),
+  getBootcampQuizSummary: (bootcampId) => api.get('/admin/bootcamp/quiz-summary', { params: { bootcampId } }),
   uploadFreeResource: (formData) => api.post('/admin/uploads/free-resources', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),

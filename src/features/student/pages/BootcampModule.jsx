@@ -92,7 +92,7 @@ export default function BootcampModule() {
           <ChevronLeft size={16} /> Back to bootcamp
         </Button>
         <Card className="p-6 text-sm text-[var(--text-secondary)]">
-          Complete previous modules to unlock this module.
+          This module is locked. Ask an admin to start the module.
         </Card>
       </div>
     )

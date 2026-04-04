@@ -222,9 +222,9 @@ export default function StudentDashboard() {
                 && overview?.bootcampId
                 && String(overview.bootcampId) === String(item.id)
               return (
-              <Card key={item.id} className="p-0 overflow-hidden flex flex-col w-full max-w-none mx-0 sm:max-w-[360px] sm:mx-auto">
+              <Card key={item.id} className="p-0 overflow-hidden flex flex-col md:flex-row w-full max-w-none mx-0">
                 {item.image ? (
-                  <div className="h-32 w-full overflow-hidden">
+                  <div className="h-32 md:h-auto md:w-48 lg:w-56 w-full overflow-hidden shrink-0">
                     <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                 ) : null}

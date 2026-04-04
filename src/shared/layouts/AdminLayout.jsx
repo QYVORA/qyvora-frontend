@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck } from 'lucide-react'
 import { useTheme } from '@/core/contexts/ThemeContext'
@@ -6,6 +6,7 @@ import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { AdminSidebar } from '@/features/admin/components/layout/AdminSidebar'
 import { AdminTopbar } from '@/features/admin/components/layout/AdminTopbar'
+import { AdminMobileNav } from '@/features/admin/components/layout/AdminMobileNav'
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true },
@@ -23,7 +24,9 @@ export default function AdminLayout() {
   const { logout } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const isDashboard = location.pathname === '/admin'
 
   const handleLogout = () => {
     logout()
@@ -54,9 +57,10 @@ export default function AdminLayout() {
       )}
       <div className="flex-1 flex flex-col min-w-0">
         <AdminTopbar onOpenSidebar={() => setSidebarOpen(true)} />
-        <main className="flex-1 p-6 lg:p-8 pb-24 lg:pb-8 animate-enter">
+        <main className={`flex-1 pb-24 lg:pb-8 animate-enter ${isDashboard ? 'p-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8'}`}>
           <Outlet />
         </main>
+        <AdminMobileNav navItems={NAV_ITEMS} solid={isDashboard} />
       </div>
     </div>
   )

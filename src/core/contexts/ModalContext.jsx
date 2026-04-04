@@ -15,7 +15,7 @@ export function ModalProvider({ children }) {
       {modal && (
         <div className="fixed inset-0 z-[9000] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-dark-900/80 backdrop-blur-sm animate-fade-in" onClick={modal.dismissible !== false ? closeModal : undefined} />
-          <div className="relative card shadow-2xl shadow-black/50 w-full max-w-md animate-slide-up">
+          <div className="relative card shadow-2xl shadow-black/50 w-full max-w-md max-h-[85vh] overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-[var(--border)]">
               <div>
@@ -31,7 +31,7 @@ export function ModalProvider({ children }) {
               )}
             </div>
             {/* Body */}
-            <div className="p-6">
+            <div className="p-6 overflow-y-auto max-h-[calc(85vh-140px)]">
               {modal.description && (
                 <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">{modal.description}</p>
               )}
