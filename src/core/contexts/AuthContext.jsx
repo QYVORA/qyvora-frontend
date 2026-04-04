@@ -11,6 +11,7 @@ export function AuthProvider({ children }) {
     setUser(null)
     setAuthState(null)
     localStorage.removeItem('hs_user')
+    localStorage.removeItem('hs_csrf')
   }, [])
 
   const loadSession = useCallback(async () => {

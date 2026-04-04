@@ -46,16 +46,34 @@ const getCookie = (name) => {
   return match ? decodeURIComponent(match[1]) : ''
 }
 
+const CSRF_STORAGE_KEY = 'hs_csrf'
+
+const getStoredCsrf = () => {
+  if (typeof window === 'undefined') return ''
+  return localStorage.getItem(CSRF_STORAGE_KEY) || ''
+}
+
+const setStoredCsrf = (token) => {
+  if (typeof window === 'undefined') return
+  if (!token) return
+  localStorage.setItem(CSRF_STORAGE_KEY, token)
+}
+
 // Attach CSRF token when available (cookie-based auth)
 api.interceptors.request.use((config) => {
-  const csrfToken = getCookie('csrf_token')
+  const csrfToken = getStoredCsrf() || getCookie('csrf_token')
   if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
   return config
 })
 
 // Handle auth errors globally
 api.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    const headerToken = res?.headers?.['x-csrf-token'] || res?.headers?.['X-CSRF-Token']
+    const bodyToken = res?.data?.csrfToken
+    setStoredCsrf(headerToken || bodyToken)
+    return res
+  },
   async (err) => {
     const originalRequest = err.config
     const status = err.response?.status

@@ -1,0 +1,14 @@
+<svg width="1400" height="300" viewBox="0 0 1400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .logo-text {
+      font-family: 'Syne', 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 220px;
+      letter-spacing: -8px;
+    }
+  </style>
+  <text x="0" y="225" class="logo-text">
+    <tspan fill="#0f172a">H</tspan>
+    <tspan fill="#1fbf8f">SOCIETY</tspan>
+  </text>
+</svg>
