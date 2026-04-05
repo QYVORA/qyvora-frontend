@@ -16,6 +16,8 @@ export default function BootcampPage() {
   const [enrollingId, setEnrollingId] = useState('')
   const [selectedBootcamp, setSelectedBootcamp] = useState(null)
   const [socialProgress, setSocialProgress] = useState({})
+  const [phoneError, setPhoneError] = useState('')
+  const [enrollSuccess, setEnrollSuccess] = useState(false)
   const [application, setApplication] = useState({
     name: '',
     email: '',
@@ -84,7 +86,21 @@ export default function BootcampPage() {
     return Boolean(label) && !label.includes('free')
   }
 
+  const normalizePhoneDigits = (value) => String(value || '').replace(/\D/g, '')
+
+  const isValidPhone = (value) => {
+    const digits = normalizePhoneDigits(value)
+    return digits.length >= 7 && digits.length <= 15
+  }
+
   const handleEnroll = async (bootcampId) => {
+    const phoneValue = String(application.phone || '').trim()
+    if (!isValidPhone(phoneValue)) {
+      setPhoneError('Enter a valid phone number with at least 7 digits.')
+      toast({ type: 'error', message: 'Please enter a valid phone number to continue.' })
+      return
+    }
+
     setEnrollingId(bootcampId)
     try {
       const res = await studentService.enrollBootcamp({
@@ -103,12 +119,13 @@ export default function BootcampPage() {
         bootcampPaymentStatus: nextOverview.bootcampPaymentStatus,
         bootcampId: nextOverview.bootcampId,
       })
-      toast({ type: 'success', message: 'Enrollment confirmed.' })
+      setEnrollSuccess(true)
+      toast({ type: 'success', message: 'Bootcamp registration successful.' })
       const bootcamp = bootcamps.find((item) => item.id === bootcampId)
       if (bootcamp && isPaidBootcamp(bootcamp)) {
         setShowPayment(true)
       } else {
-        navigate(`/bootcamp/${bootcampId}`)
+        navigate(`/bootcamp/${bootcampId}`, { state: { enrolled: true } })
       }
     } catch (err) {
       toast({ type: 'error', message: err?.response?.data?.error || 'Enrollment failed.' })
@@ -121,6 +138,8 @@ export default function BootcampPage() {
     setSelectedBootcamp(item)
     setShowPayment(false)
     setSocialProgress({})
+    setPhoneError('')
+    setEnrollSuccess(false)
     setApplication({
       name: user?.name || '',
       email: user?.email || '',
@@ -273,7 +292,16 @@ export default function BootcampPage() {
               className="input-field"
               placeholder="Phone"
               value={application.phone}
-              onChange={(e) => setApplication((prev) => ({ ...prev, phone: e.target.value }))}
+              onChange={(e) => {
+                setPhoneError('')
+                setApplication((prev) => ({ ...prev, phone: e.target.value }))
+              }}
+              onBlur={() => {
+                const phoneValue = String(application.phone || '').trim()
+                if (phoneValue && !isValidPhone(phoneValue)) {
+                  setPhoneError('Enter a valid phone number with at least 7 digits.')
+                }
+              }}
             />
             <input
               className="input-field"
@@ -281,6 +309,9 @@ export default function BootcampPage() {
               value={application.experience}
               onChange={(e) => setApplication((prev) => ({ ...prev, experience: e.target.value }))}
             />
+            {phoneError && (
+              <div className="md:col-span-2 text-xs text-red-400">{phoneError}</div>
+            )}
             <textarea
               className="input-field md:col-span-2 min-h-[110px]"
               placeholder="Your goals / what you want to achieve"
@@ -329,6 +360,12 @@ export default function BootcampPage() {
               Cancel
             </Button>
           </div>
+
+          {enrollSuccess && (
+            <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+              Bootcamp registration successful. Proceed to payment or continue to the bootcamp.
+            </div>
+          )}
 
           {showPayment && isPaidBootcamp(selectedBootcamp) && (
             <div className="pt-4 border-t border-[var(--border)] space-y-3">

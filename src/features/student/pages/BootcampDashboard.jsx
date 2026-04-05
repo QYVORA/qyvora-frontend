@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { BookOpen, ShieldCheck, Wallet, Zap } from 'lucide-react'
 import { Card, Badge, ProgressBar, Button } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
@@ -15,6 +15,14 @@ export default function BootcampDashboard() {
   const [accessError, setAccessError] = useState('')
   const { toast } = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.enrolled) {
+      toast({ type: 'success', message: 'Bootcamp registration successful.' })
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location.pathname, location.state, navigate, toast])
 
   useEffect(() => {
     let mounted = true

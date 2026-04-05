@@ -251,7 +251,12 @@ export default function StudentDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
       {!loading && !onboardingComplete && (
-        <OnboardingWelcomeCard onStart={() => setTourActive(true)} />
+        <OnboardingWelcomeCard
+          onStart={() => setTourActive(true)}
+          onSocialClick={(key) => {
+            window.dispatchEvent(new CustomEvent('hsociety:onboarding-social', { detail: { key } }))
+          }}
+        />
       )}
       <OnboardingTour
         active={tourActive && !onboardingComplete}

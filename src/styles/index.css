@@ -150,6 +150,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  .tour-target-active {
+    outline: 2px solid rgba(31, 191, 143, 0.9);
+    outline-offset: 4px;
+    box-shadow: 0 0 22px rgba(31, 191, 143, 0.35);
+    transition: outline-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transform: translateZ(0) scale(1.01);
+  }
 }
 
 /* Fade animations */
