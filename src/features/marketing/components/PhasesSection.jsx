@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
-import { SectionHeader, Spinner } from '@/shared/components/ui'
+import { SectionHeader, Spinner, Skeleton } from '@/shared/components/ui'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { API_ORIGIN } from '@/core/services/api'
 
@@ -35,8 +35,10 @@ export function PhasesSection({ items = [], loading = false }) {
               <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0 flex items-center justify-center">
                 <Spinner size={28} />
               </div>
-              <div className="p-6 lg:p-8 flex flex-col flex-1 items-center justify-center">
-                <Spinner size={24} />
+              <div className="p-6 lg:p-8 flex flex-col flex-1 justify-center gap-3">
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-3 w-40" />
               </div>
             </div>
           </div>
