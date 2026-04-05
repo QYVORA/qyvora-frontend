@@ -1,10 +1,7 @@
 import { memo, useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { Button, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
-import { useAuth } from '@/core/contexts/AuthContext'
-import { studentService } from '@/core/services'
 import { HeroStats } from '@/features/marketing/components/HeroStats'
 const TypingHeadline = memo(function TypingHeadline() {
   const phrases = useMemo(
@@ -68,24 +65,12 @@ const TypingHeadline = memo(function TypingHeadline() {
 })
 export function HeroSection({
   stats,
-  leaderboard = [],
-  rewards,
   loading = false,
-  loadingLeaderboard = false,
 }) {
   const { isDark } = useTheme()
-  const { user } = useAuth()
-  const navigate = useNavigate()
   const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
   const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
   const heroGlow = 'blur-none'
-  const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
-  const totalCp = totalXp
-  const earnedXp = rewards?.totals?.xp || 0
-  const earnedCp = rewards?.totals?.cp || 0
-  const previewKey = 'hero-bootcamp-preview'
-  const previewCompleted = rewards?.isCompleted?.(previewKey)
-  const [previewChoice, setPreviewChoice] = useState('')
   const lightTextVars = !isDark
     ? {
       '--text-primary': '#0f172a',
@@ -107,7 +92,7 @@ export function HeroSection({
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
           Offensive Security Training Platform
         </div>
-        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[0.95] tracking-tight mb-8 text-center w-full overflow-hidden min-h-[3.5rem] md:min-h-[5.5rem] lg:min-h-[7rem]">
+        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full overflow-hidden h-[6.5rem] md:h-[9.5rem] lg:h-[12rem]">
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">
@@ -126,84 +111,6 @@ export function HeroSection({
           </Link>
         </div>
         <HeroStats stats={stats} loading={loading} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-          <div className="card p-6 text-left">
-            <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-2">Operator Economy</p>
-            <h3 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-4">XP & CP Live Ticker</h3>
-            {loadingLeaderboard ? (
-              <div className="flex items-center gap-3 text-[var(--text-secondary)]">
-                <Spinner size={24} />
-                <span className="text-sm font-mono">Loading stats...</span>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[var(--text-secondary)]">Total XP Tracked</span>
-                  <span className="font-mono text-lg text-accent">{Number(totalXp + earnedXp).toLocaleString()} XP</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[var(--text-secondary)]">CP In Circulation</span>
-                  <span className="font-mono text-lg text-[var(--text-primary)]">{Number(totalCp + earnedCp).toLocaleString()} CP</span>
-                </div>
-                <p className="text-xs text-[var(--text-muted)]">
-                  Earn extra points below by completing the quick bootcamp preview.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="card p-6 text-left">
-            <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-2">Bootcamp Preview</p>
-            <h3 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-3">Warm-Up Challenge</h3>
-            <p className="text-sm text-[var(--text-secondary)] mb-4">
-              Pick the safest command to scan a test host. Earn instant CP for the correct pick.
-            </p>
-            <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] p-4 font-mono text-xs text-[var(--text-primary)] mb-4">
-              $ ? <span className="text-accent">scan localhost safely</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: 'nmap -sV 127.0.0.1', correct: true },
-                { label: 'ping 127.0.0.1 -t', correct: false },
-              ].map((opt) => (
-                <Button
-                  key={opt.label}
-                  variant="outline"
-                  size="sm"
-                  disabled={previewCompleted}
-                  onClick={async () => {
-                    if (!user) {
-                      navigate('/register')
-                      return
-                    }
-                    setPreviewChoice(opt.label)
-                    if (opt.correct && !previewCompleted) {
-                      try {
-                        const res = await studentService.claimLandingReward(previewKey)
-                        const reward = res.data?.reward || { cp: 12, xp: 25 }
-                        if (!res.data?.alreadyClaimed) {
-                          rewards?.award?.({ key: previewKey, cp: reward.cp, xp: reward.xp })
-                        } else {
-                          rewards?.award?.({ key: previewKey, cp: 0, xp: 0 })
-                        }
-                      } catch {
-                        // ignore claim failures
-                      }
-                    }
-                  }}
-                >
-                  {opt.label}
-                </Button>
-              ))}
-            </div>
-            {previewChoice && (
-              <p className={`mt-3 text-xs font-mono ${previewCompleted ? 'text-accent' : 'text-[var(--text-muted)]'}`}>
-                {previewCompleted ? 'Reward unlocked: +12 CP, +25 XP' : 'Try the safer scan command.'}
-              </p>
-            )}
-          </div>
-        </div>
       </div>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-muted)] opacity-50">
         <span className="text-[10px] font-mono uppercase tracking-[0.3em]">Scroll</span>

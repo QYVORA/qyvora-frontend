@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
+import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
+import { BootcampPreviewSection } from '@/features/marketing/components/BootcampPreviewSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
 import { RanksSection } from '@/features/marketing/components/RanksSection'
@@ -62,12 +64,11 @@ export default function LandingPage() {
     <div className="relative overflow-x-hidden">
       <HeroSection
         stats={stats}
-        leaderboard={leaderboard}
-        rewards={rewards}
         loading={loadingStats}
-        loadingLeaderboard={loadingLeaderboard}
       />
       <FlowSection stats={stats} loading={loadingStats} />
+      <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />
+      <BootcampPreviewSection rewards={rewards} />
       <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
       <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
       <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />

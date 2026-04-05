@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
@@ -9,8 +10,44 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
   const previewItems = items.slice(0, 3)
   const earnedCp = rewards?.totals?.cp || 0
   const earnedXp = rewards?.totals?.xp || 0
-  const puzzleKey = 'marketplace-puzzle'
-  const puzzleCompleted = rewards?.isCompleted?.(puzzleKey)
+  const miniQuizzes = [
+    {
+      key: 'marketplace-quiz-hex',
+      label: 'Hex Decode',
+      prompt: 'Decode this hex to claim CP: 0x48 0x53',
+      options: [
+        { label: 'HS', correct: true },
+        { label: 'SH', correct: false },
+        { label: 'H$', correct: false },
+      ],
+      reward: { cp: 10, xp: 10 },
+    },
+    {
+      key: 'marketplace-quiz-port',
+      label: 'Port Scout',
+      prompt: 'Which port is the default for SSH?',
+      options: [
+        { label: '22', correct: true },
+        { label: '80', correct: false },
+        { label: '3389', correct: false },
+      ],
+      reward: { cp: 12, xp: 8 },
+    },
+    {
+      key: 'marketplace-quiz-hash',
+      label: 'Hash ID',
+      prompt: 'The `$2b$` prefix is most commonly associated with:',
+      options: [
+        { label: 'bcrypt', correct: true },
+        { label: 'MD5', correct: false },
+        { label: 'SHA-1', correct: false },
+      ],
+      reward: { cp: 8, xp: 12 },
+    },
+  ]
+  const [activeQuiz, setActiveQuiz] = useState(0)
+  const currentQuiz = miniQuizzes[activeQuiz] || miniQuizzes[0]
+  const puzzleCompleted = currentQuiz ? rewards?.isCompleted?.(currentQuiz.key) : false
   return (
     <section className="py-32 px-6 relative" id="marketplace">
       <div className="max-w-7xl mx-auto">
@@ -67,32 +104,53 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
               </p>
             </div>
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 mb-6">
-              <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-2">Mini Task</p>
-              <p className="text-sm text-[var(--text-primary)] mb-3">
-                Decode this hex to claim CP: <span className="font-mono text-accent">0x48 0x53</span>
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'HS', correct: true },
-                  { label: 'SH', correct: false },
-                ].map((opt) => (
-                  <Button
-                    key={opt.label}
-                    size="sm"
-                    variant="outline"
-                    disabled={puzzleCompleted}
-                    onClick={() => {
-                      if (opt.correct && !puzzleCompleted) {
-                        rewards?.award?.({ key: puzzleKey, cp: 10, xp: 10 })
-                      }
-                    }}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Mini Quizzes</p>
+                <div className="flex flex-wrap gap-2">
+                  {miniQuizzes.map((quiz, idx) => {
+                    const active = idx === activeQuiz
+                    return (
+                      <Button
+                        key={quiz.key}
+                        size="sm"
+                        variant={active ? 'primary' : 'outline'}
+                        className={active ? '' : 'text-xs'}
+                        onClick={() => setActiveQuiz(idx)}
+                      >
+                        {quiz.label}
+                      </Button>
+                    )
+                  })}
+                </div>
               </div>
-              {puzzleCompleted && (
-                <p className="text-xs font-mono text-accent mt-2">Reward unlocked: +10 CP, +10 XP</p>
+              {currentQuiz && (
+                <>
+                  <p className="text-sm text-[var(--text-primary)] mb-3">
+                    {currentQuiz.prompt}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {currentQuiz.options.map((opt) => (
+                      <Button
+                        key={`${currentQuiz.key}-${opt.label}`}
+                        size="sm"
+                        variant="outline"
+                        disabled={puzzleCompleted}
+                        onClick={() => {
+                          if (opt.correct && !puzzleCompleted) {
+                            rewards?.award?.({ key: currentQuiz.key, ...currentQuiz.reward })
+                          }
+                        }}
+                      >
+                        {opt.label}
+                      </Button>
+                    ))}
+                  </div>
+                  {puzzleCompleted && (
+                    <p className="text-xs font-mono text-accent mt-2">
+                      Reward unlocked: +{currentQuiz.reward.cp} CP, +{currentQuiz.reward.xp} XP
+                    </p>
+                  )}
+                </>
               )}
             </div>
             <ul className="space-y-4">
