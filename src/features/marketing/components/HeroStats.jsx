@@ -1,13 +1,13 @@
 import { Spinner } from '@/shared/components/ui'
 
 export function HeroStats({ stats, loading }) {
-  const learners = stats?.stats?.learnersTrained ?? 0
-  const phases = stats?.stats?.engagementsCompleted ?? 0
-  const marketItems = stats?.stats?.vulnerabilitiesIdentified ?? 0
+  const students = stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0
+  const bootcamps = stats?.stats?.bootcampsCount ?? 0
+  const marketItems = stats?.stats?.zeroDayProductsCount ?? 0
   const items = [
-    [Number(learners || 0).toLocaleString(), 'Operators'],
-    [Number(phases || 0).toLocaleString(), 'Engagements'],
-    [Number(marketItems || 0).toLocaleString(), 'Findings'],
+    [Number(students || 0).toLocaleString(), 'Students'],
+    [Number(bootcamps || 0).toLocaleString(), 'Bootcamps'],
+    [Number(marketItems || 0).toLocaleString(), 'Zero-Day Market Products'],
   ]
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mt-16 pt-10 pb-20">
