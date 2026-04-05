@@ -145,7 +145,7 @@ export default function BootcampDashboard() {
             </div>
           </div>
           <div className="mt-3">
-            <ProgressBar value={Number(String(overallProgress).replace('%', '')) || 0} max={100} color="#0EA5E9" showPercent />
+            <ProgressBar value={Number(String(overallProgress).replace('%', '')) || 0} max={100} color="#1fbf8f" showPercent />
           </div>
         </Card>
       </div>

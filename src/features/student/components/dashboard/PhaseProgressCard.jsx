@@ -3,8 +3,9 @@ import { ArrowRight } from 'lucide-react'
 import { Card, ProgressBar, Badge } from '@/shared/components/ui'
 
 export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitle, bootcampImage, isEnrolled }) {
+  const accent = '#1fbf8f'
   return (
-    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: '#0EA5E9' }} data-tour="overview-card">
+    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: accent }} data-tour="overview-card">
       <div className="flex flex-col lg:flex-row">
         {bootcampImage && (
           <div className="h-40 lg:h-auto lg:w-60 w-full overflow-hidden shrink-0">
@@ -13,7 +14,7 @@ export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitl
         )}
         <div className="flex-1 p-6 flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: '#0EA5E9' }}>CURRENT</span>
+            <span className="text-xs font-mono uppercase tracking-widest" style={{ color: accent }}>CURRENT</span>
             {currentModule?.status && <Badge variant="accent">{currentModule.status}</Badge>}
           </div>
           <div>
@@ -27,7 +28,7 @@ export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitl
           <ProgressBar
             value={progressPercent || 0}
             max={100}
-            color="#0EA5E9"
+            color={accent}
             label={`${progressPercent || 0}% complete`}
             showPercent
           />

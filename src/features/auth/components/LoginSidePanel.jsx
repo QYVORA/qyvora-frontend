@@ -11,17 +11,12 @@ const PHASE_LINES = [
 
 export function LoginSidePanel() {
   const { isDark } = useTheme()
-  const backgroundFilter = isDark ? 'brightness(0.35) saturate(1.3)' : 'brightness(0.9) saturate(0.75)'
   const patternOpacity = isDark ? 'opacity-40' : 'opacity-25'
   return (
-    <div className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{
-          backgroundImage: `url(${HERO_BG})`,
-          filter: backgroundFilter,
-        }}
-      />
+    <div
+      className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate bg-cover bg-center"
+      style={{ backgroundImage: `url(${HERO_BG})` }}
+    >
       <div className={`absolute inset-0 bg-grid-pattern ${patternOpacity} pointer-events-none`} />
       <div className="relative z-10">
         <Link to="/" className="flex items-center">

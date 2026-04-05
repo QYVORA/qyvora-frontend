@@ -12,10 +12,10 @@ export function PhasesOverview({ items = [] }) {
         <div className="card p-6 text-sm text-[var(--text-secondary)]">No learning path available yet.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {items.map((p, idx) => {
+          {items.map((p) => {
             const isActive = p.status === 'in-progress'
             const isDone = p.status === 'done'
-            const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][idx % 5]
+            const accent = '#1fbf8f'
             return (
               <div
                 key={p.id}
@@ -33,7 +33,7 @@ export function PhasesOverview({ items = [] }) {
                 <div className="flex justify-between items-center mt-2">
                   <span className="text-xs text-[var(--text-muted)] font-mono">{p.progress}%</span>
                   {p.status === 'next' && <span className="text-[10px] text-[var(--text-muted)]">LOCKED</span>}
-                  {isDone && <span className="text-[10px] text-green-400">✓</span>}
+                  {isDone && <span className="text-[10px] text-accent">✓</span>}
                 </div>
               </div>
             )

@@ -2,7 +2,7 @@ import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { Button, Input, ProgressBar } from '@/shared/components/ui'
 
 const STRENGTH_LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong']
-const STRENGTH_COLORS = ['', '#ef4444', '#f59e0b', '#0EA5E9', '#22c55e']
+const STRENGTH_COLORS = ['', 'var(--text-muted)', '#1fbf8f', '#1fbf8f', '#1fbf8f']
 
 export function RegisterForm({ form, errors, strength, loading, showPass, onTogglePass, onChange, onSubmit }) {
   return (

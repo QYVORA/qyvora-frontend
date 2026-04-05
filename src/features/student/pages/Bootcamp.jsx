@@ -203,7 +203,7 @@ export default function BootcampPage() {
         ) : (
           bootcamps.map((item, i) => {
             const isEnrolledHere = bootcampStatus !== 'not_enrolled' && currentBootcampId === item.id
-            const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
+            const accent = '#1fbf8f'
             const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             return (
               <div
@@ -362,7 +362,7 @@ export default function BootcampPage() {
           </div>
 
           {enrollSuccess && (
-            <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+            <div className="rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent">
               Bootcamp registration successful. Proceed to payment or continue to the bootcamp.
             </div>
           )}

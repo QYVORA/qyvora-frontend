@@ -11,7 +11,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           value={currentModule?.title || '—'}
           sub={currentModule?.status || 'pending'}
           icon={Target}
-          color="#3A3F8F"
+          color="#1fbf8f"
           className="h-full"
           valueClassName="text-lg leading-snug"
         />
@@ -23,7 +23,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           value={Number(cpBalance || 0).toLocaleString()}
           sub="Captured Points"
           icon={Wallet}
-          color="#0EA5E9"
+          color="#1fbf8f"
           className="h-full"
         />
         <img
@@ -32,7 +32,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           className="pointer-events-none absolute -right-2 -bottom-2 w-20 h-20 opacity-70 drop-shadow-xl rotate-12"
         />
       </div>
-      <StatCard label="Overall Progress" value={`${overallProgress || 0}%`} sub="Bootcamp progress" icon={Trophy} color="#22C55E" className="h-full" />
+      <StatCard label="Overall Progress" value={`${overallProgress || 0}%`} sub="Bootcamp progress" icon={Trophy} color="#1fbf8f" className="h-full" />
     </div>
   )
 }

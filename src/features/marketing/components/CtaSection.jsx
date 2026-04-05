@@ -25,7 +25,7 @@ export function CtaSection() {
         }}
       />
       <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/8 via-transparent to-phase-purple/8 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/8 via-transparent to-accent/5 pointer-events-none" />
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/12 border border-accent/25 text-accent text-xs font-mono mb-8">

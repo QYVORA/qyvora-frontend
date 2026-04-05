@@ -51,9 +51,8 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16">
-            {leaderboard.slice(0, 6).map((entry, idx) => {
-              const colors = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9', '#94a3b8']
-              const color = colors[idx % colors.length]
+            {leaderboard.slice(0, 6).map((entry) => {
+              const color = '#1fbf8f'
               const handle = entry.handle || entry.name || 'Anonymous'
               const displayHandle = handle.length > 14 ? `${handle.slice(0, 12)}…` : handle
               const rankLabel = entry.rank || 'Operator'

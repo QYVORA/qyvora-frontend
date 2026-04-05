@@ -47,7 +47,7 @@ export function PhasesSection({ items = [], loading = false }) {
         ) : (
           <div className="grid grid-cols-1 gap-10 justify-center">
             {items.map((item, i) => {
-              const accent = ['#3A3F8F', '#0EA5E9', '#22C55E', '#B8860B', '#6D28D9'][i % 5]
+              const accent = '#1fbf8f'
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
               const bootcampId = item.id
               const loginTarget = bootcampId

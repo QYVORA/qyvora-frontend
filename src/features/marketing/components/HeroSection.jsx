@@ -101,7 +101,7 @@ export function HeroSection({
     >
       <div className={`absolute inset-0 bg-grid-pattern ${gridOpacity} pointer-events-none`} />
       <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] ${operatorAccent} rounded-full ${heroGlow} pointer-events-none`} />
-      <div className={`absolute bottom-0 right-0 w-[500px] h-[500px] bg-phase-purple/8 rounded-full ${heroGlow} pointer-events-none`} />
+      <div className={`absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/8 rounded-full ${heroGlow} pointer-events-none`} />
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />

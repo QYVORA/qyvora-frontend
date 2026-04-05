@@ -77,9 +77,9 @@ export default function AdminDashboard() {
         ) : (
           <>
             <StatCard label="Total Users" value={Number(totalUsers).toLocaleString()} sub="All time" icon={Users} color="#1fbf8f" />
-            <StatCard label="Active Users" value={Number(activeUsers).toLocaleString()} sub="Last 24h" icon={Activity} color="#0EA5E9" />
-            <StatCard label="Market Items" value={Number(marketplaceItems).toLocaleString()} sub="Live listings" icon={ShoppingBag} color="#B8860B" />
-            <StatCard label="Content Pieces" value={Number(contentPieces).toLocaleString()} sub="Free resources" icon={FileText} color="#6D28D9" />
+            <StatCard label="Active Users" value={Number(activeUsers).toLocaleString()} sub="Last 24h" icon={Activity} color="#1fbf8f" />
+            <StatCard label="Market Items" value={Number(marketplaceItems).toLocaleString()} sub="Live listings" icon={ShoppingBag} color="#1fbf8f" />
+            <StatCard label="Content Pieces" value={Number(contentPieces).toLocaleString()} sub="Free resources" icon={FileText} color="#1fbf8f" />
           </>
         )}
       </div>

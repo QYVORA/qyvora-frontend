@@ -29,13 +29,6 @@ export default {
           200: '#3d3d58',
           100: '#5a5a7a',
         },
-        phase: {
-          indigo: '#3A3F8F',
-          blue: '#0EA5E9',
-          green: '#22C55E',
-          gold: '#B8860B',
-          purple: '#6D28D9',
-        }
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
