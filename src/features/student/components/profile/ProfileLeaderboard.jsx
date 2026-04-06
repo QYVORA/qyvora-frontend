@@ -18,7 +18,7 @@ export function ProfileLeaderboard({ user, entries = [] }) {
               key={entry.id || entry.handle || i}
               className={`flex items-center gap-4 p-3 rounded-xl ${isMe ? 'bg-accent/5 border border-accent/20' : 'hover:bg-[var(--bg-secondary)]'} transition-colors`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-mono shrink-0 ${i === 0 ? 'bg-yellow-400/20 text-yellow-400' : i === 1 ? 'bg-slate-400/20 text-slate-400' : i === 2 ? 'bg-orange-400/20 text-orange-400' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-mono shrink-0 ${i === 0 ? 'bg-accent/20 text-accent' : i === 1 ? 'bg-accent/15 text-accent' : i === 2 ? 'bg-accent/10 text-accent' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'}`}>
                 {entry.rank}
               </div>
               <Avatar username={handle} size="sm" />

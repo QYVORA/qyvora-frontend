@@ -1,36 +1,22 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Terminal, ShieldCheck, ChevronRight } from 'lucide-react'
-import { Button, SectionHeader } from '@/shared/components/ui'
+import { SectionHeader } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
-import { useAuth } from '@/core/contexts/AuthContext'
-import { studentService } from '@/core/services'
 
 export function BootcampPreviewSection({ rewards }) {
   const { isDark } = useTheme()
-  const { user } = useAuth()
-  const navigate = useNavigate()
-  const previewKey = 'hero-bootcamp-preview'
-  const previewCompleted = rewards?.isCompleted?.(previewKey)
-  const [previewChoice, setPreviewChoice] = useState('')
   const earnedXp = rewards?.totals?.xp || 0
   const earnedCp = rewards?.totals?.cp || 0
   const accentGlow = isDark ? 'bg-accent/12' : 'bg-accent/18'
 
-  const options = [
-    { label: 'nmap -sV 127.0.0.1', correct: true },
-    { label: 'ping 127.0.0.1 -t', correct: false },
-  ]
-
   return (
-    <section className="py-28 px-6 relative">
+    <section className="py-28 px-6 relative section-gradient">
       <div className={`absolute -top-20 right-12 w-[420px] h-[420px] ${accentGlow} rounded-full blur-3xl opacity-70 pointer-events-none`} />
       <div className="max-w-7xl mx-auto relative">
         <div className="mb-16">
           <SectionHeader
             kicker="// preview"
-            title="Bootcamp Warm-Up Challenge"
-            subtitle="A fast preview of the operator mindset. Earn bonus XP + CP for the correct pick."
+            title="Bootcamp Warm-Up Snapshot"
+            subtitle="A fast look at the operator mindset and the reward economy."
           />
         </div>
 
@@ -99,8 +85,8 @@ export function BootcampPreviewSection({ rewards }) {
             <div className="relative z-10">
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div>
-                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Warm-Up Challenge</p>
-                  <h3 className="font-display font-bold text-2xl text-[var(--text-primary)]">Pick the safest command</h3>
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Operator Mindset</p>
+                  <h3 className="font-display font-bold text-2xl text-[var(--text-primary)]">Think before you touch</h3>
                 </div>
                 <div className="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/30 flex items-center justify-center">
                   <ShieldCheck size={20} className="text-accent" />
@@ -108,53 +94,12 @@ export function BootcampPreviewSection({ rewards }) {
               </div>
 
               <p className="text-sm text-[var(--text-secondary)] mb-5">
-                Complete the command selection to unlock an instant reward. You can only claim once per account.
+                Every module rewards careful reconnaissance, clean execution, and documented outcomes. Progress compounds quickly when you choose safe, precise moves.
               </p>
 
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 font-mono text-xs text-[var(--text-primary)] mb-6">
-                $ ? <span className="text-accent">scan localhost safely</span>
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 font-mono text-xs text-[var(--text-primary)]">
+                $ mindset: <span className="text-accent">validate first, act second</span>
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                {options.map((opt) => (
-                  <Button
-                    key={opt.label}
-                    variant="outline"
-                    size="sm"
-                    disabled={previewCompleted}
-                    onClick={async () => {
-                      if (!user) {
-                        navigate('/register')
-                        return
-                      }
-                      setPreviewChoice(opt.label)
-                      if (opt.correct && !previewCompleted) {
-                        try {
-                          const res = await studentService.claimLandingReward(previewKey)
-                          const reward = res.data?.reward || { cp: 12, xp: 25 }
-                          if (!res.data?.alreadyClaimed) {
-                            rewards?.award?.({ key: previewKey, cp: reward.cp, xp: reward.xp })
-                          } else {
-                            rewards?.award?.({ key: previewKey, cp: 0, xp: 0 })
-                          }
-                        } catch {
-                          // ignore claim failures
-                        }
-                      }
-                    }}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
-              </div>
-
-              {previewChoice && (
-                <div className="mt-4 rounded-xl border border-accent/30 bg-accent/10 px-4 py-3">
-                  <p className={`text-xs font-mono ${previewCompleted ? 'text-accent' : 'text-[var(--text-muted)]'}`}>
-                    {previewCompleted ? 'Reward unlocked: +12 CP, +25 XP' : 'Try the safer scan command.'}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
         </div>

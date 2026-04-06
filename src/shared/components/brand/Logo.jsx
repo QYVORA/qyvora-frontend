@@ -1,15 +1,21 @@
 import { clsx } from 'clsx'
 
-export function Logo({ size = 'md', className }) {
+export function Logo({ size = 'md', scale = 1, offsetY = 0, className }) {
   const sizes = {
-    sm: 'text-sm',
-    md: 'text-lg',
-    lg: 'text-2xl',
-    xl: 'text-3xl',
+    sm: 'h-5',
+    md: 'h-7',
+    lg: 'h-10',
+    xl: 'h-14',
   }
+  const transform = scale !== 1 || offsetY !== 0 ? `translateY(${offsetY}px) scale(${scale})` : undefined
   return (
-    <span className={clsx('font-display font-bold tracking-tight', sizes[size] || sizes.md, className)}>
-      H<span className="text-accent">SOCIETY</span>
-    </span>
+    <img
+      src="/HSOCIETY_LOGO.png"
+      alt="HSOCIETY"
+      className={clsx('inline-block w-auto object-contain select-none', sizes[size] || sizes.md, className)}
+      loading="lazy"
+      decoding="async"
+      style={transform ? { transform, transformOrigin: 'left center' } : undefined}
+    />
   )
 }

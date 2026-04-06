@@ -6,7 +6,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
   const earnedXp = rewards?.totals?.xp || 0
   const earnedCp = rewards?.totals?.cp || 0
   return (
-    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative overflow-hidden">
+    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative overflow-hidden section-gradient">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/50 via-transparent to-[var(--bg-primary)]/50 pointer-events-none" />
 
@@ -52,7 +52,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16">
             {leaderboard.slice(0, 6).map((entry) => {
-              const color = '#1fbf8f'
+              const color = 'var(--accent)'
               const handle = entry.handle || entry.name || 'Anonymous'
               const displayHandle = handle.length > 14 ? `${handle.slice(0, 12)}…` : handle
               const rankLabel = entry.rank || 'Operator'

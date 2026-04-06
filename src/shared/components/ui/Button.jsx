@@ -12,10 +12,10 @@ export function Button({
 }) {
   const base = 'inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none'
   const variants = {
-    primary: 'bg-accent text-dark-900 hover:bg-accent-400 hover:shadow-lg hover:shadow-accent/25',
+    primary: 'bg-accent text-[var(--text-primary)] hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25',
     secondary: 'border border-accent text-accent hover:bg-accent/10',
     ghost: 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]',
-    danger: 'bg-red-500 text-white hover:bg-red-400',
+    danger: 'bg-[var(--text-primary)] text-accent hover:bg-[color:var(--text-primary)]/90',
     outline: 'border border-[var(--border)] text-[var(--text-primary)] hover:border-accent/40 hover:bg-[var(--bg-card-hover)]',
   }
   const sizes = {

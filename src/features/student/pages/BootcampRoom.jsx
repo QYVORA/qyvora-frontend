@@ -155,7 +155,6 @@ export default function BootcampRoom() {
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// room {room.roomId}</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">{room.title}</h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">{room.overview || module?.description || 'Live session, resources, and quiz.'}</p>
         </div>
@@ -240,7 +239,7 @@ export default function BootcampRoom() {
           ) : (
             <>
               <p className="text-sm text-[var(--text-secondary)]">Ready when you are. This quiz unlocks after admin approval.</p>
-              {quizError && <p className="text-xs text-red-400">{quizError}</p>}
+              {quizError && <p className="text-xs text-accent">{quizError}</p>}
               <Button
                 variant="outline"
                 loading={quizLoading}

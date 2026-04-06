@@ -14,8 +14,8 @@ export function ModalProvider({ children }) {
       {children}
       {modal && (
         <div className="fixed inset-0 z-[9000] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-dark-900/80 backdrop-blur-sm animate-fade-in" onClick={modal.dismissible !== false ? closeModal : undefined} />
-          <div className="relative card shadow-2xl shadow-black/50 w-full max-w-md max-h-[85vh] overflow-hidden animate-slide-up">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={modal.dismissible !== false ? closeModal : undefined} />
+          <div className="relative card shadow-2xl shadow-black/25 w-full max-w-md max-h-[85vh] overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-[var(--border)]">
               <div>
@@ -48,7 +48,7 @@ export function ModalProvider({ children }) {
                 {modal.onConfirm && (
                   <button
                     onClick={() => { modal.onConfirm(); closeModal() }}
-                    className={`flex-1 py-2.5 rounded-lg font-semibold transition-all duration-200 ${modal.danger ? 'bg-red-500 hover:bg-red-400 text-white' : 'btn-primary'}`}
+                    className={`flex-1 py-2.5 rounded-lg font-semibold transition-all duration-200 ${modal.danger ? 'bg-[var(--text-primary)] text-accent hover:bg-[color:var(--text-primary)]/90' : 'btn-primary'}`}
                   >
                     {modal.confirmLabel || 'Confirm'}
                   </button>

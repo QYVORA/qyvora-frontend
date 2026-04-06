@@ -11,6 +11,7 @@ import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
 import { RecentActivity } from '@/features/student/components/dashboard/RecentActivity'
 import { OnboardingWelcomeCard } from '@/features/student/components/onboarding/OnboardingWelcomeCard'
 import { OnboardingTour } from '@/features/student/components/onboarding/OnboardingTour'
+import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 import { Card, Skeleton } from '@/shared/components/ui'
 
 export default function StudentDashboard() {
@@ -210,38 +211,54 @@ export default function StudentDashboard() {
       {bootcamps.length === 0 ? (
         <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 justify-center">
-          {bootcamps.map((item) => {
+        <div className="grid grid-cols-1 gap-10 justify-center">
+          {bootcamps.map((item, i) => {
+            const accent = 'var(--accent)'
+            const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             const isEnrolledHere =
               (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
               && overview?.bootcampId
               && String(overview.bootcampId) === String(item.id)
             return (
-            <Card key={item.id} className="p-0 overflow-hidden flex flex-col md:flex-row w-full max-w-none mx-0">
-              {item.image ? (
-                <div className="h-32 md:h-auto md:w-48 lg:w-56 w-full overflow-hidden shrink-0">
-                  <img src={resolveImageUrl(item.image)} alt={item.title} className="w-full h-full object-cover" />
+              <div
+                key={item.id}
+                className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
+                style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
+              >
+                <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
+                  <img
+                    src={cover}
+                    alt={item.title || 'Bootcamp'}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
+                    style={{
+                      color: accent,
+                      borderColor: `${accent}50`,
+                      background: `${accent}15`,
+                    }}
+                  >
+                    BOOTCAMP
+                  </div>
                 </div>
-              ) : null}
-              <div className="p-5 flex flex-col gap-3 flex-1">
-                <div>
-                  <h4 className="font-display font-semibold text-lg text-[var(--text-primary)]">{item.title}</h4>
-                  <p className="text-sm text-[var(--text-secondary)] mt-1">{item.description || 'Bootcamp track ready for you.'}</p>
-                </div>
-                <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                  {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
-                  {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
-                  {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
-                </div>
-                <div className="mt-auto">
+                <div className="p-6 lg:p-8 flex flex-col flex-1">
+                  <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
+                    {item.description || 'Curated offensive security track built for real-world mastery.'}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
+                    {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
+                    {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
+                    {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                  </div>
                   {isEnrolledHere ? (
-                    <a href={`/bootcamp/${item.id}`} className="btn-primary w-full justify-center flex">Continue</a>
+                    <a href={`/bootcamp/${item.id}`} className="btn-primary mt-5 inline-flex items-center justify-center">Continue</a>
                   ) : (
-                    <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary w-full justify-center flex">Enroll</a>
+                    <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary mt-5 inline-flex items-center justify-center">Enroll</a>
                   )}
                 </div>
               </div>
-            </Card>
           )})}
         </div>
       )}

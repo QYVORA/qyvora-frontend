@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { Card, ProgressBar, Badge } from '@/shared/components/ui'
 
 export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitle, bootcampImage, isEnrolled }) {
-  const accent = '#1fbf8f'
+  const accent = 'var(--accent)'
   return (
     <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: accent }} data-tour="overview-card">
       <div className="flex flex-col lg:flex-row">

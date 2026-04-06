@@ -102,7 +102,6 @@ export default function BootcampModule() {
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// module {module.moduleId}</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">{module.title}</h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">{module.description || bootcamp?.description || 'Module rooms and live sessions.'}</p>
         </div>

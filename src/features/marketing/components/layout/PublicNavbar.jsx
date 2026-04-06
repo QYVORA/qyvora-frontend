@@ -1,26 +1,18 @@
 import { Link } from 'react-router-dom'
 import { Sun, Moon, Menu, X } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
-import { Avatar } from '@/shared/components/ui'
 import { Logo } from '@/shared/components/brand/Logo'
 
 export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) {
   const { user } = useAuth()
   const displayName = user?.hackerHandle || user?.name || user?.email || ''
-  const profileLink = user?.role === 'admin' ? '/admin' : '/profile'
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-[color:var(--bg-primary)]/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <Logo size="md" />
+            <Logo size="md" scale={2.6} offsetY={-3} className="h-[30px]" />
           </Link>
-          {user && displayName && (
-            <Link to={profileLink} className="hidden md:flex items-center gap-2 rounded-xl border border-[var(--border)] px-3 py-1.5 hover:border-accent/50 transition-colors">
-              <Avatar username={displayName} size="sm" />
-              <span className="text-sm font-medium text-[var(--text-primary)]">{displayName}</span>
-            </Link>
-          )}
         </div>
 
         <div className="hidden md:flex items-center gap-1">
@@ -52,15 +44,6 @@ export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) 
 
       {menuOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] p-6 space-y-6 animate-fade-in shadow-xl">
-          {user && displayName && (
-            <Link to={profileLink} onClick={onToggleMenu} className="flex items-center gap-3 border border-[var(--border)] rounded-xl px-4 py-3">
-              <Avatar username={displayName} size="sm" />
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{displayName}</p>
-                <p className="text-xs text-[var(--text-muted)]">View profile</p>
-              </div>
-            </Link>
-          )}
           <div className="flex flex-col gap-4">
             {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#marketplace', 'Market']].map(([href, label]) => (
               <a

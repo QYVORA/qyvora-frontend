@@ -10,9 +10,9 @@ export function Input({ label, error, icon: Icon, className, ...props }) {
             <Icon size={16} />
           </div>
         )}
-        <input className={clsx('input-field', Icon && 'pl-10', error && 'border-red-500/60 focus:border-red-500/60')} {...props} />
+        <input className={clsx('input-field', Icon && 'pl-10', error && 'border-accent/60 focus:border-accent/60')} {...props} />
       </div>
-      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-accent">{error}</p>}
     </div>
   )
 }

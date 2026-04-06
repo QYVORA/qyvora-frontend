@@ -12,7 +12,7 @@ export function PhaseProgress({ items = [] }) {
           <div className="text-sm text-[var(--text-secondary)]">No progress data available.</div>
         ) : (
           items.map((item) => {
-            const accent = '#1fbf8f'
+            const accent = 'var(--accent)'
             return (
               <div key={item.id} className={`${item.status === 'next' ? 'opacity-40' : ''}`}>
                 <div className="flex items-center justify-between mb-1.5">

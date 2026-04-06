@@ -18,7 +18,7 @@ export function AdminSidebar({
         <Link to="/" className="flex items-center gap-2.5">
           <div>
             <Logo size="sm" />
-            <p className="text-[10px] text-red-400 font-mono uppercase tracking-widest -mt-0.5">Admin Panel</p>
+            <p className="text-[10px] text-accent font-mono uppercase tracking-widest -mt-0.5">Admin Panel</p>
           </div>
         </Link>
         {mobile && <button onClick={onClose} className="btn-ghost p-1.5"><X size={18} /></button>}
@@ -50,7 +50,7 @@ export function AdminSidebar({
           {isDark ? <Sun size={16} /> : <Moon size={16} />}
           {isDark ? 'Light Mode' : 'Dark Mode'}
         </button>
-        <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-red-500/10 hover:text-red-400 transition-all justify-start text-left">
+        <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-accent/10 hover:text-accent transition-all justify-start text-left">
           <LogOut size={16} />
           Logout
         </button>

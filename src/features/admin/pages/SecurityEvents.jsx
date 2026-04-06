@@ -36,9 +36,9 @@ export default function AdminSecurityEvents() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-mono text-red-400 text-xs uppercase tracking-widest mb-1">// security feed</p>
+          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// security feed</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)] flex items-center gap-2">
-            <AlertTriangle size={20} className="text-red-400" /> Security Events
+            <AlertTriangle size={20} className="text-accent" /> Security Events
           </h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">Latest system and authentication events.</p>
         </div>

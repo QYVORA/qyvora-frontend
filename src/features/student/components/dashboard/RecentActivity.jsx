@@ -14,13 +14,13 @@ export function RecentActivity({ items = [] }) {
           items.map((item) => (
             <div key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${item.points > 0 ? 'bg-green-400' : 'bg-red-400'}`} />
+                <div className={`w-2 h-2 rounded-full shrink-0 ${item.points > 0 ? 'bg-accent' : 'bg-[var(--text-primary)]'}`} />
                 <div className="min-w-0">
                   <p className="text-sm text-[var(--text-primary)] truncate">{item.label}</p>
                   <p className="text-xs text-[var(--text-muted)]">{item.time}</p>
                 </div>
               </div>
-              <span className={`text-xs font-mono font-bold ${item.points > 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <span className={`text-xs font-mono font-bold ${item.points > 0 ? 'text-accent' : 'text-[var(--text-primary)]'}`}>
                 {item.points > 0 ? '+' : ''}{item.points} CP
               </span>
             </div>

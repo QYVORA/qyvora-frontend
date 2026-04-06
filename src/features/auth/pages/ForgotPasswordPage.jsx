@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
               Enter your recovery token and email to reset your password.
             </p>
           </div>
-          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 shadow-2xl shadow-black/30 space-y-4">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 shadow-2xl shadow-black/20 space-y-4">
             <form onSubmit={handleReset} className="space-y-4">
               <Input
                 label="Email"

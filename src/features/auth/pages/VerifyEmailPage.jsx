@@ -38,7 +38,6 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="relative isolate min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] p-6">
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md space-y-6">
         <AuthTopActions
@@ -49,7 +48,7 @@ export default function VerifyEmailPage() {
           linkText="Log in"
         />
 
-        <div className="card p-6 space-y-4 shadow-2xl shadow-black/40 border border-[var(--border)]">
+        <div className="card p-6 space-y-4 shadow-2xl shadow-black/20 border border-[var(--border)]">
           <div>
             <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// verify email</p>
             <h1 className="font-display font-bold text-2xl text-[var(--text-primary)]">Email Verification</h1>

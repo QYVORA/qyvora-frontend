@@ -48,7 +48,6 @@ export default function NotificationsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// inbox</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)] flex items-center gap-2">
             <Bell size={20} className="text-accent" /> Notifications
           </h1>

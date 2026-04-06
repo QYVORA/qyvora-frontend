@@ -97,7 +97,6 @@ export default function BootcampDashboard() {
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// bootcamp dashboard</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">{bootcamp?.title || 'Bootcamp'}</h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">{bootcamp?.description || 'Your bootcamp modules and rooms live here.'}</p>
         </div>
@@ -124,7 +123,7 @@ export default function BootcampDashboard() {
           </div>
         </Card>
         <Card className="p-5 flex items-center gap-4">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
+          <div className="p-2.5 rounded-xl bg-accent/10 text-accent">
             <Wallet size={20} />
           </div>
           <div>
@@ -145,7 +144,7 @@ export default function BootcampDashboard() {
             </div>
           </div>
           <div className="mt-3">
-            <ProgressBar value={Number(String(overallProgress).replace('%', '')) || 0} max={100} color="#1fbf8f" showPercent />
+            <ProgressBar value={Number(String(overallProgress).replace('%', '')) || 0} max={100} color="var(--accent)" showPercent />
           </div>
         </Card>
       </div>

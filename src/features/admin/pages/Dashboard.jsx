@@ -56,7 +56,7 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div>
-        <p className="font-mono text-red-400 text-xs uppercase tracking-widest mb-1">// root session</p>
+        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// root session</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Admin Overview</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">Platform health and management console.</p>
       </div>
@@ -76,10 +76,10 @@ export default function AdminDashboard() {
           ))
         ) : (
           <>
-            <StatCard label="Total Users" value={Number(totalUsers).toLocaleString()} sub="All time" icon={Users} color="#1fbf8f" />
-            <StatCard label="Active Users" value={Number(activeUsers).toLocaleString()} sub="Last 24h" icon={Activity} color="#1fbf8f" />
-            <StatCard label="Market Items" value={Number(marketplaceItems).toLocaleString()} sub="Live listings" icon={ShoppingBag} color="#1fbf8f" />
-            <StatCard label="Content Pieces" value={Number(contentPieces).toLocaleString()} sub="Free resources" icon={FileText} color="#1fbf8f" />
+            <StatCard label="Total Users" value={Number(totalUsers).toLocaleString()} sub="All time" icon={Users} color="var(--accent)" />
+            <StatCard label="Active Users" value={Number(activeUsers).toLocaleString()} sub="Last 24h" icon={Activity} color="var(--accent)" />
+            <StatCard label="Market Items" value={Number(marketplaceItems).toLocaleString()} sub="Live listings" icon={ShoppingBag} color="var(--accent)" />
+            <StatCard label="Content Pieces" value={Number(contentPieces).toLocaleString()} sub="Free resources" icon={FileText} color="var(--accent)" />
           </>
         )}
       </div>
@@ -146,7 +146,7 @@ export default function AdminDashboard() {
             ) : events.map((ev, i) => (
               <div key={ev.id || i} className="flex items-start gap-3 p-2.5 rounded-xl">
                 <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                  ev.severity === 'high' ? 'bg-red-400' : ev.severity === 'medium' ? 'bg-yellow-400' : 'bg-accent'
+                  ev.severity === 'high' ? 'bg-accent' : ev.severity === 'medium' ? 'bg-[var(--text-primary)]' : 'bg-[var(--primary-60)]'
                 }`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-[var(--text-primary)]">{ev.title || ev.action || 'Security event'}</p>

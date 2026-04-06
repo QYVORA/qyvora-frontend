@@ -11,19 +11,19 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           value={currentModule?.title || '—'}
           sub={currentModule?.status || 'pending'}
           icon={Target}
-          color="#1fbf8f"
+          color="var(--accent)"
           className="h-full"
           valueClassName="text-lg leading-snug"
         />
       )}
-      <StatCard label="Total XP" value={Number(totalXp || 0).toLocaleString()} sub="Experience points" icon={Zap} color="#1fbf8f" className="h-full" />
+      <StatCard label="Total XP" value={Number(totalXp || 0).toLocaleString()} sub="Experience points" icon={Zap} color="var(--accent)" className="h-full" />
       <div className="relative overflow-hidden rounded-2xl min-h-[150px] h-full" data-tour="cp-balance">
         <StatCard
           label="CP Balance"
           value={Number(cpBalance || 0).toLocaleString()}
           sub="Captured Points"
           icon={Wallet}
-          color="#1fbf8f"
+          color="var(--accent)"
           className="h-full"
         />
         <img
@@ -32,7 +32,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           className="pointer-events-none absolute -right-2 -bottom-2 w-20 h-20 opacity-70 drop-shadow-xl rotate-12"
         />
       </div>
-      <StatCard label="Overall Progress" value={`${overallProgress || 0}%`} sub="Bootcamp progress" icon={Trophy} color="#1fbf8f" className="h-full" />
+      <StatCard label="Overall Progress" value={`${overallProgress || 0}%`} sub="Bootcamp progress" icon={Trophy} color="var(--accent)" className="h-full" />
     </div>
   )
 }

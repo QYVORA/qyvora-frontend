@@ -16,7 +16,7 @@ export function ContentList({ content, onDelete }) {
               <p className="text-xs text-[var(--text-muted)] font-mono">Phase {c.phase} · {c.type} · {c.size} · {c.uploaded}</p>
             </div>
             <Badge variant={c.status === 'published' ? 'success' : 'warning'}>{c.status}</Badge>
-            <button onClick={() => onDelete(c.id)} className="text-[var(--text-muted)] hover:text-red-400 transition-colors shrink-0">
+            <button onClick={() => onDelete(c.id)} className="text-[var(--text-muted)] hover:text-accent transition-colors shrink-0">
               <X size={15} />
             </button>
           </div>

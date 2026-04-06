@@ -2,7 +2,7 @@ import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { Button, Input, ProgressBar } from '@/shared/components/ui'
 
 const STRENGTH_LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong']
-const STRENGTH_COLORS = ['', 'var(--text-muted)', '#1fbf8f', '#1fbf8f', '#1fbf8f']
+const STRENGTH_COLORS = ['', 'var(--text-muted)', 'var(--accent)', 'var(--accent)', 'var(--accent)']
 
 export function RegisterForm({
   form,
@@ -48,7 +48,7 @@ export function RegisterForm({
             <input
               type={showPass ? 'text' : 'password'}
               placeholder="••••••••"
-              className={`input-field pl-10 pr-10 ${errors.password ? 'border-red-500/60' : ''}`}
+              className={`input-field pl-10 pr-10 ${errors.password ? 'border-accent/60' : ''}`}
               value={form.password}
               onChange={e => onChange({ ...form, password: e.target.value })}
             />
@@ -60,7 +60,7 @@ export function RegisterForm({
               {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1.5 text-xs text-red-400">{errors.password}</p>}
+          {errors.password && <p className="mt-1.5 text-xs text-accent">{errors.password}</p>}
           {form.password && (
             <div className="mt-2">
               <ProgressBar value={strength} max={4} color={STRENGTH_COLORS[strength]} />
@@ -75,11 +75,11 @@ export function RegisterForm({
           <input
             type="password"
             placeholder="••••••••"
-            className={`input-field ${errors.confirm ? 'border-red-500/60' : ''}`}
+            className={`input-field ${errors.confirm ? 'border-accent/60' : ''}`}
             value={form.confirm}
             onChange={e => onChange({ ...form, confirm: e.target.value })}
           />
-          {errors.confirm && <p className="mt-1.5 text-xs text-red-400">{errors.confirm}</p>}
+          {errors.confirm && <p className="mt-1.5 text-xs text-accent">{errors.confirm}</p>}
         </div>
 
         <Button type="submit" variant="primary" loading={loading} className="w-full justify-center py-3 mt-2">

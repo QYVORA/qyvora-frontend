@@ -68,25 +68,20 @@ export function HeroSection({
   loading = false,
 }) {
   const { isDark } = useTheme()
-  const operatorAccent = isDark ? 'bg-accent/8' : 'bg-accent/12'
-  const gridOpacity = isDark ? 'opacity-40' : 'opacity-20'
-  const heroGlow = 'blur-none'
   const lightTextVars = !isDark
     ? {
-      '--text-primary': '#0f172a',
-      '--text-secondary': '#1e293b',
-      '--text-muted': '#475569',
-      '--border': 'rgba(15, 23, 42, 0.18)',
+      '--text-primary': 'var(--primary)',
+      '--text-secondary': 'rgba(0, 0, 0, 0.72)',
+      '--text-muted': 'rgba(0, 0, 0, 0.52)',
+      '--border': 'rgba(0, 0, 0, 0.18)',
     }
     : undefined
   return (
     <section
-      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden"
+      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden section-gradient"
       style={lightTextVars}
     >
-      <div className={`absolute inset-0 bg-grid-pattern ${gridOpacity} pointer-events-none`} />
-      <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] ${operatorAccent} rounded-full ${heroGlow} pointer-events-none`} />
-      <div className={`absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/8 rounded-full ${heroGlow} pointer-events-none`} />
+      <div className="cube-noise" />
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
@@ -105,7 +100,7 @@ export function HeroSection({
           </Link>
           <Link
             to="/login"
-            className={`btn-secondary text-base px-8 py-4 rounded-xl ${isDark ? '' : 'border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-black/5'}`}
+            className={`btn-secondary text-base px-8 py-4 rounded-xl ${isDark ? '' : 'border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--primary-10)]'}`}
           >
             Log In
           </Link>

@@ -21,8 +21,8 @@ export function StudentSidebar({
   }
 
   return (
-    <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-64' : 'hidden lg:flex w-64 h-screen sticky top-0 shrink-0'} flex flex-col border-r border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden`}>
-      <div className="h-16 flex items-center justify-between px-5 border-b border-[var(--border)] shrink-0">
+    <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-64' : 'hidden lg:flex w-64 h-screen sticky top-0 shrink-0'} flex flex-col bg-[var(--bg-secondary)] overflow-hidden`}>
+      <div className="h-20 flex items-center justify-between px-5 shrink-0">
         <Link to="/" className="flex items-center gap-2.5">
           <Logo size="sm" />
         </Link>
@@ -63,7 +63,7 @@ export function StudentSidebar({
           {isDark ? <Sun size={16} /> : <Moon size={16} />}
           {isDark ? 'Light Mode' : 'Dark Mode'}
         </button>
-        <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-red-500/10 hover:text-red-400 transition-all justify-start text-left">
+        <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-accent/10 hover:text-accent transition-all justify-start text-left">
           <LogOut size={16} />
           Logout
         </button>

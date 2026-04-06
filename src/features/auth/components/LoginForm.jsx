@@ -27,7 +27,7 @@ export function LoginForm({ form, errors, loading, showPass, onTogglePass, onCha
               <input
                 type={showPass ? 'text' : 'password'}
                 placeholder="••••••••"
-                className={`input-field pl-10 pr-10 ${errors.password ? 'border-red-500/60' : ''}`}
+                className={`input-field pl-10 pr-10 ${errors.password ? 'border-accent/60' : ''}`}
                 value={form.password}
                 onChange={e => onChange({ ...form, password: e.target.value })}
               />
@@ -39,7 +39,7 @@ export function LoginForm({ form, errors, loading, showPass, onTogglePass, onCha
                 {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
-            {errors.password && <p className="mt-1.5 text-xs text-red-400">{errors.password}</p>}
+            {errors.password && <p className="mt-1.5 text-xs text-accent">{errors.password}</p>}
           </div>
 
           <Button type="submit" variant="primary" loading={loading} className="w-full justify-center py-3 mt-2">

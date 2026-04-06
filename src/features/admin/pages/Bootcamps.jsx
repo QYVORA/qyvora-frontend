@@ -336,7 +336,7 @@ export default function AdminBootcamps() {
                       value={module.title || ''}
                       onChange={(e) => updateModule(moduleIndex, { title: e.target.value })}
                     />
-                    <button className="btn-ghost px-3 py-2 text-red-400" onClick={() => removeModule(moduleIndex)}>
+                    <button className="btn-ghost px-3 py-2 text-accent" onClick={() => removeModule(moduleIndex)}>
                       Remove
                     </button>
                   </div>
@@ -370,7 +370,7 @@ export default function AdminBootcamps() {
                               value={room.title || ''}
                               onChange={(e) => updateRoom(moduleIndex, roomIndex, { title: e.target.value })}
                             />
-                            <button className="btn-ghost px-3 py-1.5 text-red-400" onClick={() => removeRoom(moduleIndex, roomIndex)}>
+                            <button className="btn-ghost px-3 py-1.5 text-accent" onClick={() => removeRoom(moduleIndex, roomIndex)}>
                               Remove
                             </button>
                           </div>
@@ -437,7 +437,7 @@ export default function AdminBootcamps() {
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="font-display font-semibold text-lg text-[var(--text-primary)]">{item.title}</h3>
-                  <span className={`text-[10px] font-mono uppercase tracking-widest ${item.isActive ? 'text-green-400' : 'text-red-400'}`}>
+                  <span className={`text-[10px] font-mono uppercase tracking-widest ${item.isActive ? 'text-accent' : 'text-[var(--text-primary)]'}`}>
                     {item.isActive ? 'active' : 'hidden'}
                   </span>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)]">
@@ -458,7 +458,7 @@ export default function AdminBootcamps() {
                 <button className="btn-secondary px-4 py-2" onClick={() => toggleActive(item.id)}>
                   {item.isActive ? 'Disable' : 'Enable'}
                 </button>
-                <button className="btn-ghost px-4 py-2 text-red-400 hover:text-red-300" onClick={() => handleDelete(item.id)}>
+                <button className="btn-ghost px-4 py-2 text-accent hover:text-accent/80" onClick={() => handleDelete(item.id)}>
                   Delete
                 </button>
               </div>

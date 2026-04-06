@@ -199,7 +199,7 @@ export function OnboardingTour({ active, onComplete }) {
           arrowColor: 'var(--bg-card)',
           backgroundColor: 'var(--bg-card)',
           overlayColor: 'rgba(6, 8, 12, 0.7)',
-          primaryColor: '#1fbf8f',
+          primaryColor: '#88AD7C',
           textColor: 'var(--text-primary)',
           zIndex: 2000,
         },
@@ -218,7 +218,7 @@ export function OnboardingTour({ active, onComplete }) {
           fontWeight: 600,
         },
         buttonBack: {
-          color: '#94a3b8',
+          color: 'var(--text-muted)',
         },
       }}
     />

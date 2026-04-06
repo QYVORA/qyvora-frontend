@@ -8,10 +8,10 @@ function TxRow({ tx }) {
   const isEarned = tx.type === 'earned'
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-3 py-4 border-b border-[var(--border)] last:border-0">
-      <div className={`p-2 rounded-xl shrink-0 ${isEarned ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
+      <div className={`p-2 rounded-xl shrink-0 ${isEarned ? 'bg-accent/10' : 'bg-[var(--primary-10)]'}`}>
         {isEarned
-          ? <ArrowDownLeft size={16} className="text-green-400" />
-          : <ArrowUpRight size={16} className="text-red-400" />}
+          ? <ArrowDownLeft size={16} className="text-accent" />
+          : <ArrowUpRight size={16} className="text-[var(--text-primary)]" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-[var(--text-primary)] truncate">{tx.source}</p>
@@ -20,7 +20,7 @@ function TxRow({ tx }) {
         </p>
       </div>
       <div className="text-right shrink-0">
-        <p className={`font-mono font-bold text-sm ${isEarned ? 'text-green-400' : 'text-red-400'}`}>
+        <p className={`font-mono font-bold text-sm ${isEarned ? 'text-accent' : 'text-[var(--text-primary)]'}`}>
           {isEarned ? '+' : '-'}{tx.amount} CP
         </p>
         <Badge variant={isEarned ? 'success' : 'danger'} className="mt-0.5">
@@ -70,7 +70,6 @@ export default function WalletPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// economy</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">CP Wallet</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">Your Captured Points balance and transaction history.</p>
       </div>
@@ -120,9 +119,9 @@ export default function WalletPage() {
           ))
         ) : (
           <>
-            <StatCard label="Total Earned" value={totalEarned.toLocaleString()} sub="All time" icon={TrendingUp} color="#22c55e" />
-            <StatCard label="Total Spent" value={totalSpent.toLocaleString()} sub="All time" icon={ArrowUpRight} color="#ef4444" />
-            <StatCard label="Net Balance" value={Number(balance?.balance ?? user?.cpPoints ?? 0).toLocaleString()} sub="Available now" icon={Zap} color="#1fbf8f" />
+            <StatCard label="Total Earned" value={totalEarned.toLocaleString()} sub="All time" icon={TrendingUp} color="var(--accent)" />
+            <StatCard label="Total Spent" value={totalSpent.toLocaleString()} sub="All time" icon={ArrowUpRight} color="var(--primary)" />
+            <StatCard label="Net Balance" value={Number(balance?.balance ?? user?.cpPoints ?? 0).toLocaleString()} sub="Available now" icon={Zap} color="var(--accent)" />
           </>
         )}
       </div>

@@ -6,7 +6,7 @@ export function MarketplaceItemCard({ item, user, onBuy, onDownload, purchased =
 
   return (
     <div className="card hover:border-accent/20 transition-all duration-200 group flex flex-col overflow-hidden">
-      <div className="h-1" style={{ background: '#1fbf8f33' }} />
+      <div className="h-1" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }} />
       <div className="relative h-36 overflow-hidden">
         {item.coverUrl ? (
           <img
@@ -24,7 +24,7 @@ export function MarketplaceItemCard({ item, user, onBuy, onDownload, purchased =
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40" />
-        <div className="absolute bottom-2 left-3 right-3 text-xs text-white/90 font-mono truncate">
+        <div className="absolute bottom-2 left-3 right-3 text-xs text-[var(--text-primary)] font-mono truncate">
           {item.title}
         </div>
       </div>

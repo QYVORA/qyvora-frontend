@@ -183,7 +183,6 @@ export default function BootcampPage() {
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// training program</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Bootcamp</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">Choose a bootcamp and enroll to unlock modules.</p>
       </div>
@@ -203,14 +202,14 @@ export default function BootcampPage() {
         ) : (
           bootcamps.map((item, i) => {
             const isEnrolledHere = bootcampStatus !== 'not_enrolled' && currentBootcampId === item.id
-            const accent = '#1fbf8f'
+            const accent = 'var(--accent)'
             const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             return (
-              <div
-                key={item.id}
-                className="card overflow-hidden flex flex-col lg:flex-row group w-full max-w-5xl mx-auto"
-                style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
-              >
+                <div
+                  key={item.id}
+                  className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
+                  style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
+                >
                 <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
                   <img
                     src={cover}
@@ -267,7 +266,6 @@ export default function BootcampPage() {
         <Card className="p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// enrollment</p>
               <h2 className="font-display font-semibold text-xl text-[var(--text-primary)]">
                 Enroll in {selectedBootcamp.title}
               </h2>
@@ -310,7 +308,7 @@ export default function BootcampPage() {
               onChange={(e) => setApplication((prev) => ({ ...prev, experience: e.target.value }))}
             />
             {phoneError && (
-              <div className="md:col-span-2 text-xs text-red-400">{phoneError}</div>
+              <div className="md:col-span-2 text-xs text-accent">{phoneError}</div>
             )}
             <textarea
               className="input-field md:col-span-2 min-h-[110px]"

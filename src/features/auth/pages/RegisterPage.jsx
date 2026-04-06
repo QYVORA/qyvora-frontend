@@ -156,7 +156,6 @@ export default function RegisterPage() {
 
   return (
     <div className="relative isolate min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] p-6">
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md">
         <AuthTopActions

@@ -19,7 +19,7 @@ export function PhasesSection({ items = [], loading = false }) {
     return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
   }
   return (
-    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative" id="bootcamps">
+    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative section-gradient" id="bootcamps">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20">
           <SectionHeader
@@ -49,7 +49,7 @@ export function PhasesSection({ items = [], loading = false }) {
         ) : (
           <div className="grid grid-cols-1 gap-10 justify-center">
             {items.map((item, i) => {
-              const accent = '#1fbf8f'
+              const accent = 'var(--accent)'
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
               const bootcampId = item.id
               const loginTarget = bootcampId

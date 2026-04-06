@@ -9,9 +9,9 @@ export function QuickLinks({ user }) {
     '/bootcamp': 'quick-bootcamp',
   }
   const links = [
-    { to: '/wallet', label: 'CP Wallet', sub: `${cp} CP available`, icon: Wallet, color: '#1fbf8f' },
-    { to: '/marketplace', label: 'Marketplace', sub: 'Browse items', icon: ShoppingBag, color: '#1fbf8f' },
-    { to: '/bootcamp', label: 'Bootcamp', sub: 'Continue training', icon: BookOpen, color: '#1fbf8f' },
+    { to: '/wallet', label: 'CP Wallet', sub: `${cp} CP available`, icon: Wallet, color: 'var(--accent)' },
+    { to: '/marketplace', label: 'Marketplace', sub: 'Browse items', icon: ShoppingBag, color: 'var(--accent)' },
+    { to: '/bootcamp', label: 'Bootcamp', sub: 'Continue training', icon: BookOpen, color: 'var(--accent)' },
   ]
 
   return (

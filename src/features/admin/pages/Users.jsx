@@ -139,7 +139,7 @@ export default function AdminUsers() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
-        <p className="font-mono text-red-400 text-xs uppercase tracking-widest mb-1">// user management</p>
+        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// user management</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Users</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">{users.length} registered operators.</p>
       </div>

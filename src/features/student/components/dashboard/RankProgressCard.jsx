@@ -14,7 +14,7 @@ export function RankProgressCard({ xp, rankLabel }) {
           <span className="text-xs font-mono text-[var(--text-muted)]">{rankLabel || 'Operator'}</span>
         </div>
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: '100%', background: '#1fbf8f' }} />
+          <div className="progress-fill" style={{ width: '100%', background: 'var(--accent)' }} />
         </div>
         <div className="flex justify-between items-center">
           <span className="text-xs text-[var(--text-muted)]">{Number(xp || 0).toLocaleString()} XP</span>

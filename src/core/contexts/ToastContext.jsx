@@ -11,10 +11,10 @@ const ICONS = {
 }
 
 const STYLES = {
-  success: 'border-green-500/30 bg-green-500/10 text-green-400',
-  error: 'border-red-500/30 bg-red-500/10 text-red-400',
+  success: 'border-accent/40 bg-accent/10 text-accent',
+  error: 'border-[var(--primary-40)] bg-[var(--primary-10)] text-[var(--text-primary)]',
   info: 'border-accent/30 bg-accent/10 text-accent',
-  warning: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400',
+  warning: 'border-[var(--primary-40)] bg-[var(--primary-10)] text-[var(--text-primary)]',
 }
 
 function Toast({ toast, onRemove }) {

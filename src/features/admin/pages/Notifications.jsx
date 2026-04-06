@@ -48,9 +48,9 @@ export default function AdminNotifications() {
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-mono text-red-400 text-xs uppercase tracking-widest mb-1">// admin inbox</p>
+          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// admin inbox</p>
           <h1 className="font-display font-bold text-3xl text-[var(--text-primary)] flex items-center gap-2">
-            <Bell size={20} className="text-red-400" /> Notifications
+            <Bell size={20} className="text-accent" /> Notifications
           </h1>
           <p className="text-[var(--text-secondary)] text-sm mt-1">System updates and alerts across the platform.</p>
         </div>
@@ -82,7 +82,7 @@ export default function AdminNotifications() {
       ) : items.length === 0 ? (
         <Card>
           <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
-            <MailOpen size={16} className="text-red-400" />
+            <MailOpen size={16} className="text-accent" />
             You are all caught up.
           </div>
         </Card>

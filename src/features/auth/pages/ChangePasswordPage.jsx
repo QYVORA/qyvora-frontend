@@ -84,7 +84,7 @@ export default function ChangePasswordPage() {
               Set a stronger password to continue.
             </p>
           </div>
-          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 shadow-2xl shadow-black/30 space-y-4">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 shadow-2xl shadow-black/20 space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="label">New Password</label>

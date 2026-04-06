@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { HERO_BG } from '@/features/marketing/data/landingData'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
@@ -11,15 +10,10 @@ const PHASE_LINES = [
 
 export function LoginSidePanel() {
   const { isDark } = useTheme()
-  const patternOpacity = isDark ? 'opacity-40' : 'opacity-25'
-  const backgroundOverlay = isDark ? 'bg-black/40' : 'bg-white/80'
   return (
     <div
-      className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate bg-cover bg-center"
-      style={{ backgroundImage: `url(${HERO_BG})` }}
+      className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate"
     >
-      <div className={`${backgroundOverlay} absolute inset-0 pointer-events-none`} />
-      <div className={`absolute inset-0 bg-grid-pattern ${patternOpacity} pointer-events-none`} />
       <div className="relative z-10">
         <Link to="/" className="flex items-center">
           <Logo size="lg" />

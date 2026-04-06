@@ -5,23 +5,23 @@ export default function NotFoundPage() {
 
   return (
     <section className="mx-auto flex min-h-[70vh] w-full max-w-5xl flex-col items-center justify-center gap-6 px-6 text-center">
-      <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/70">
+      <div className="inline-flex items-center gap-3 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[var(--text-secondary)]">
         Page Not Found
       </div>
-      <h1 className="text-4xl font-semibold text-white sm:text-5xl">We can’t find that page</h1>
-      <p className="max-w-2xl text-base text-white/70 sm:text-lg">
-        The route <span className="font-mono text-white/90">{location.pathname}</span> doesn’t exist or has moved.
+      <h1 className="text-4xl font-semibold text-[var(--text-primary)] sm:text-5xl">We can’t find that page</h1>
+      <p className="max-w-2xl text-base text-[var(--text-secondary)] sm:text-lg">
+        The route <span className="font-mono text-[var(--text-primary)]">{location.pathname}</span> doesn’t exist or has moved.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/"
-          className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"
+          className="btn-primary rounded-full px-5 py-2.5 text-sm"
         >
           Go Home
         </Link>
         <Link
           to="/login"
-          className="rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40"
+          className="btn-secondary rounded-full px-5 py-2.5 text-sm font-semibold"
         >
           Login
         </Link>

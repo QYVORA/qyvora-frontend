@@ -15,7 +15,7 @@ export function PhasesOverview({ items = [] }) {
           {items.map((p) => {
             const isActive = p.status === 'in-progress'
             const isDone = p.status === 'done'
-            const accent = '#1fbf8f'
+            const accent = 'var(--accent)'
             return (
               <div
                 key={p.id}

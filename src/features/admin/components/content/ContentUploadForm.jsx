@@ -69,7 +69,7 @@ export function ContentUploadForm({
               <FileText size={16} className="text-accent shrink-0" />
               <span className="text-sm text-[var(--text-primary)] flex-1 truncate">{f.name}</span>
               <span className="text-xs text-[var(--text-muted)] font-mono">{(f.size / 1024 / 1024).toFixed(1)} MB</span>
-              <button onClick={() => onRemoveFile(i)} className="text-[var(--text-muted)] hover:text-red-400 transition-colors">
+              <button onClick={() => onRemoveFile(i)} className="text-[var(--text-muted)] hover:text-accent transition-colors">
                 <X size={15} />
               </button>
             </div>

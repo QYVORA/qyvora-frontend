@@ -143,7 +143,7 @@ export default function AdminMarketplace() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div>
-        <p className="font-mono text-red-400 text-xs uppercase tracking-widest mb-1">// marketplace control</p>
+        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-1">// marketplace control</p>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Marketplace</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">Review, approve, and remove marketplace listings.</p>
       </div>
@@ -295,7 +295,7 @@ export default function AdminMarketplace() {
                       {Number(item.cpPrice || 0) === 0 ? 'Free' : `${item.cpPrice} CP`}
                     </td>
                     <td className="p-3 text-sm text-[var(--text-secondary)] flex items-center gap-1">
-                      <Star size={12} className="text-yellow-400" />—
+                      <Star size={12} className="text-accent" />—
                     </td>
                     <td className="p-3 text-sm text-[var(--text-secondary)] font-mono">—</td>
                     <td className="p-3 text-sm text-[var(--text-muted)] font-mono">{item.createdBy || '—'}</td>

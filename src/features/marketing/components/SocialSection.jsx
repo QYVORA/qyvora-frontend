@@ -3,7 +3,7 @@ import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 
 export function SocialSection() {
   return (
-    <section className="px-6 py-24 relative text-center">
+    <section className="px-6 py-24 relative section-gradient">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
       <div className="max-w-6xl mx-auto relative">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 text-center md:text-left items-center">
@@ -28,19 +28,17 @@ export function SocialSection() {
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="group card p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-accent/40 transition-colors text-center md:text-left"
+              className="group card p-5 flex items-center gap-4 hover:border-accent/40 transition-colors text-left"
             >
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                  <Icon size={22} />
-                </div>
-                <div>
-                  <p className="font-display font-semibold text-lg text-[var(--text-primary)] mb-1">{label}</p>
-                  <p className="text-sm text-[var(--text-muted)]">{handle}</p>
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">{description}</p>
-                </div>
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+                <Icon size={22} />
               </div>
-              <div className="flex items-center justify-center text-accent font-mono text-xs uppercase tracking-widest gap-2">
+              <div className="min-w-0 flex-1">
+                <p className="font-display font-semibold text-base sm:text-lg text-[var(--text-primary)] leading-tight">{label}</p>
+                <p className="text-sm text-[var(--text-muted)]">{handle}</p>
+                <p className="text-xs text-[var(--text-secondary)] mt-1">{description}</p>
+              </div>
+              <div className="ml-auto flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-widest">
                 Follow
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>

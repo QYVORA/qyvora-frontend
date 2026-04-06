@@ -6,7 +6,6 @@ export function OnboardingWelcomeCard({ onStart, onSocialClick }) {
     <Card className="p-6 border border-accent/20 bg-[var(--bg-card)]/80" data-tour="onboarding-welcome">
       <div className="flex flex-col gap-4">
         <div>
-          <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// welcome operator</p>
           <h2 className="font-display text-2xl text-[var(--text-primary)] font-semibold">Your command center is ready.</h2>
           <p className="text-sm text-[var(--text-secondary)] mt-2">
             Step 1 starts at YouTube. Click the highlighted card, complete the follow, and we will advance to the next channel.

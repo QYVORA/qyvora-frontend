@@ -11,9 +11,9 @@ export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggle
           <Avatar username={displayName} size="xl" />
           <div
             className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-[var(--bg-card)] flex items-center justify-center"
-            style={{ background: '#1fbf8f' }}
+            style={{ background: 'var(--accent)' }}
           >
-            <span className="text-[9px] font-bold text-white">★</span>
+            <span className="text-[9px] font-bold text-[var(--text-primary)]">★</span>
           </div>
         </div>
 
@@ -48,7 +48,7 @@ export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggle
             <ProgressBar
               value={Number(totalXp || 0)}
               max={Number(totalXp || 1)}
-              color="#1fbf8f"
+              color="var(--accent)"
               label={`${Number(totalXp || 0).toLocaleString()} XP`}
               showPercent={false}
             />

@@ -8,13 +8,13 @@ export function CtaSection() {
   const backdropFilter = isDark ? 'brightness(0.15) saturate(1.2)' : 'brightness(0.45) saturate(0.9)'
   const lightTextVars = !isDark
     ? {
-      '--text-primary': '#f8fafc',
-      '--text-secondary': '#e2e8f0',
-      '--text-muted': '#cbd5f5',
+      '--text-primary': '#ffffff',
+      '--text-secondary': 'rgba(255, 255, 255, 0.8)',
+      '--text-muted': 'rgba(255, 255, 255, 0.6)',
     }
     : undefined
   return (
-    <section className="py-36 px-6 relative overflow-hidden" style={lightTextVars}>
+    <section className="py-36 px-6 relative overflow-hidden section-gradient" style={lightTextVars}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
