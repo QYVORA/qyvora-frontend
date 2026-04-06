@@ -28,7 +28,7 @@ const api = axios.create({
 
 const isAuthPage = () => {
   if (typeof window === 'undefined') return false
-  return ['/login', '/register', '/forgot-password', '/verify-email'].includes(window.location.pathname)
+  return ['/login', '/register', '/forgot-password', '/verify-email', '/change-password'].includes(window.location.pathname)
 }
 
 let refreshPromise = null
@@ -83,7 +83,6 @@ api.interceptors.response.use(
     const isAuthRoute = url.includes('/auth/login')
       || url.includes('/auth/register')
       || url.includes('/auth/refresh')
-      || url.includes('/auth/me')
       || url.includes('/auth/password-reset')
       || url.includes('/auth/verify-email')
       || url.includes('/auth/logout')

@@ -4,7 +4,18 @@ import { Button, Input, ProgressBar } from '@/shared/components/ui'
 const STRENGTH_LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong']
 const STRENGTH_COLORS = ['', 'var(--text-muted)', '#1fbf8f', '#1fbf8f', '#1fbf8f']
 
-export function RegisterForm({ form, errors, strength, loading, showPass, onTogglePass, onChange, onSubmit }) {
+export function RegisterForm({
+  form,
+  errors,
+  strength,
+  loading,
+  showPass,
+  onTogglePass,
+  onChange,
+  onSubmit,
+  onEmailBlur,
+  emailChecking,
+}) {
   return (
     <div className="card p-8">
       <form onSubmit={onSubmit} className="space-y-4">
@@ -24,8 +35,12 @@ export function RegisterForm({ form, errors, strength, loading, showPass, onTogg
           icon={Mail}
           value={form.email}
           onChange={e => onChange({ ...form, email: e.target.value })}
+          onBlur={onEmailBlur}
           error={errors.email}
         />
+        {emailChecking && (
+          <p className="text-xs text-[var(--text-muted)]">Checking email availability…</p>
+        )}
         <div>
           <label className="label">Password</label>
           <div className="relative">

@@ -12,6 +12,7 @@ const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/features/auth/pages/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('@/features/auth/pages/ForgotPasswordPage'))
 const VerifyEmailPage = lazy(() => import('@/features/auth/pages/VerifyEmailPage'))
+const ChangePasswordPage = lazy(() => import('@/features/auth/pages/ChangePasswordPage'))
 const StudentDashboard = lazy(() => import('@/features/student/pages/Dashboard'))
 const BootcampPage = lazy(() => import('@/features/student/pages/Bootcamp'))
 const BootcampDashboard = lazy(() => import('@/features/student/pages/BootcampDashboard'))
@@ -62,6 +63,7 @@ export function AppRouter() {
           <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
           <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
           <Route path="/forgot-password" element={<GuestRoute><ForgotPasswordPage /></GuestRoute>} />
+          <Route path="/change-password" element={<GuestRoute><ChangePasswordPage /></GuestRoute>} />
           <Route path="/verify-email" element={<GuestRoute><VerifyEmailPage /></GuestRoute>} />
 
           <Route path="/dashboard" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>

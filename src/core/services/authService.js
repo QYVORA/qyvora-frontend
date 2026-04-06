@@ -3,6 +3,7 @@ import api from './api'
 export const authService = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   register: (payload) => api.post('/auth/register', payload),
+  checkEmail: (email) => api.post('/auth/check-email', { email }),
   logout: () => api.post('/auth/logout'),
   me: () => api.get('/auth/me'),
   requestPasswordReset: (email) => api.post('/auth/password-reset/request', { email }),

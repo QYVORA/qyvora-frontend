@@ -10,6 +10,7 @@ import { ProfileLeaderboard } from '@/features/student/components/profile/Profil
 import api from '@/core/services/api'
 import { profileService, studentService } from '@/core/services'
 import { Button, Card, Skeleton } from '@/shared/components/ui'
+import { copyText } from '@/shared/utils/clipboard'
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuth()
@@ -129,15 +130,17 @@ export default function ProfilePage() {
             onClick={async () => {
               try {
                 setRecoveryLoading(true)
-                await navigator.clipboard.writeText(recoveryToken)
-                try {
-                  await profileService.acknowledgeRecoveryToken()
-                } catch {
-                  // ignore acknowledgement failures
+                const ok = await copyText(recoveryToken)
+                if (ok) {
+                  try {
+                    await profileService.acknowledgeRecoveryToken()
+                  } catch {
+                    // ignore acknowledgement failures
+                  }
+                  toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
+                } else {
+                  toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
                 }
-                toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
-              } catch {
-                toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
               } finally {
                 setRecoveryLoading(false)
               }
@@ -148,7 +151,7 @@ export default function ProfilePage() {
           </Button>
         </div>
         <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Token not available. Contact support if you did not receive one.')}
+          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Recovery tokens are shown only once during registration. Contact support if you lost yours.')}
         </div>
       </Card>
 

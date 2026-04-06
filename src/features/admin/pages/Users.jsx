@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Search, Ban, Eye, Users } from 'lucide-react'
+import { Search, Ban, Eye, Users, CheckCircle } from 'lucide-react'
 import { Badge, Avatar, Button, EmptyState, Skeleton, Card } from '@/shared/components/ui'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useModal } from '@/core/contexts/ModalContext'
 import { adminService } from '@/core/services'
+import { copyText } from '@/shared/utils/clipboard'
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([])
@@ -59,12 +60,12 @@ export default function AdminUsers() {
     })
   }
 
-  const openUserModal = (user, recoveryToken) => {
+  const openUserModal = (user) => {
     const accessKey = user.bootcampAccessKey || 'Not issued'
     openModal({
       title: user.hackerHandle || user.name || user.email,
       badge: 'USER DETAILS',
-      description: 'Bootcamp access key and recovery status.',
+      description: 'Bootcamp access key and verification status.',
       content: (
         <div className="space-y-4">
           <div>
@@ -79,8 +80,11 @@ export default function AdminUsers() {
                 disabled={!user.bootcampAccessKey}
                 onClick={() => {
                   if (!user.bootcampAccessKey) return
-                  navigator.clipboard.writeText(user.bootcampAccessKey)
-                  toast({ type: 'success', message: 'Access key copied.' })
+                  copyText(user.bootcampAccessKey)
+                    .then((ok) => {
+                      if (ok) toast({ type: 'success', message: 'Access key copied.' })
+                      else toast({ type: 'error', message: 'Copy failed.' })
+                    })
                 }}
               >
                 Copy
@@ -88,28 +92,31 @@ export default function AdminUsers() {
             </div>
           </div>
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-1">Recovery Keys</p>
-            {recoveryToken ? (
-              <div className="flex items-center gap-2">
-                <code className="px-2.5 py-1 rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] text-xs">
-                  {recoveryToken}
-                </code>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    navigator.clipboard.writeText(recoveryToken)
-                    toast({ type: 'success', message: 'Recovery token copied.' })
-                  }}
-                >
-                  Copy
-                </Button>
-              </div>
-            ) : (
-              <p className="text-sm text-[var(--text-secondary)]">
-                No stored recovery token for this user.
-              </p>
-            )}
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-1">Email Verification</p>
+            <div className="flex items-center gap-2">
+              <Badge variant={user.emailVerified ? 'success' : 'warning'}>
+                {user.emailVerified ? 'verified' : 'unverified'}
+              </Badge>
+              <Button
+                size="sm"
+                variant={user.emailVerified ? 'outline' : 'primary'}
+                icon={CheckCircle}
+                onClick={() => {
+                  const next = !user.emailVerified
+                  adminService.updateUser(user.id, { emailVerified: next })
+                    .then((res) => {
+                      setUsers(prev => prev.map(u => u.id === user.id ? res.data : u))
+                      toast({
+                        type: 'success',
+                        message: next ? 'Email marked as verified.' : 'Email marked as unverified.'
+                      })
+                    })
+                    .catch(() => toast({ type: 'error', message: 'Failed to update verification status.' }))
+                }}
+              >
+                {user.emailVerified ? 'Mark Unverified' : 'Mark Verified'}
+              </Button>
+            </div>
           </div>
         </div>
       ),
@@ -117,15 +124,7 @@ export default function AdminUsers() {
   }
 
   const handleView = async (user) => {
-    try {
-      const res = await adminService.getRecoveryToken(user.id)
-      const latestToken = res.data?.token || user.recoveryToken || ''
-      setUsers(prev => prev.map(u => (u.id === user.id ? { ...u, recoveryToken: latestToken } : u)))
-      openUserModal(user, latestToken)
-    } catch (err) {
-      const apiMessage = err?.response?.data?.error
-      toast({ type: 'error', message: apiMessage || 'Unable to issue recovery token.' })
-    }
+    openUserModal(user)
   }
 
   const handleUnban = (user) => {

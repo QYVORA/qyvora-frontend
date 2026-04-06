@@ -6,6 +6,7 @@ import { useTheme } from '@/core/contexts/ThemeContext'
 import { LoginSidePanel } from '@/features/auth/components/LoginSidePanel'
 import { LoginTopBar } from '@/features/auth/components/LoginTopBar'
 import { LoginForm } from '@/features/auth/components/LoginForm'
+import { TOKEN_STORAGE_KEY } from '@/features/auth/pages/ChangePasswordPage'
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
@@ -34,10 +35,10 @@ export default function LoginPage() {
       const result = await login(form.email, form.password)
       if (result.mustChangePassword) {
         toast({ type: 'warning', title: 'Password update required', message: 'Please update your password to continue.' })
-        return
-      }
-      if (result.twoFactorRequired) {
-        toast({ type: 'warning', title: 'Two-factor required', message: 'Complete 2FA to finish login.' })
+        if (typeof window !== 'undefined' && result.passwordChangeToken) {
+          sessionStorage.setItem(TOKEN_STORAGE_KEY, result.passwordChangeToken)
+        }
+        navigate(`/change-password${result.passwordChangeToken ? `?token=${encodeURIComponent(result.passwordChangeToken)}` : ''}`)
         return
       }
       const user = result.user

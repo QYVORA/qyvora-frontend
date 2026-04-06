@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     const res = await authService.login(email, password)
     const data = res.data || {}
     setAuthState(data)
-    if (data.user) {
+    if (data.user && data.token) {
       setUser(data.user)
       localStorage.setItem('hs_user', JSON.stringify(data.user))
     }
@@ -44,7 +44,7 @@ export function AuthProvider({ children }) {
     const res = await authService.register(payload)
     const data = res.data || {}
     setAuthState(data)
-    if (data.user) {
+    if (data.user && data.token) {
       setUser(data.user)
       localStorage.setItem('hs_user', JSON.stringify(data.user))
     }
@@ -68,8 +68,14 @@ export function AuthProvider({ children }) {
     })
   }, [])
 
+  const setSession = useCallback((nextUser) => {
+    if (!nextUser) return
+    setUser(nextUser)
+    localStorage.setItem('hs_user', JSON.stringify(nextUser))
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser, authState, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser, setSession, authState, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   )

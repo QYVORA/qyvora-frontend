@@ -4,10 +4,11 @@ import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useTheme } from '@/core/contexts/ThemeContext'
 import { useModal } from '@/core/contexts/ModalContext'
-import { profileService } from '@/core/services'
+import { authService, profileService } from '@/core/services'
 import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
 import { RegisterHeader } from '@/features/auth/components/RegisterHeader'
 import { RegisterForm } from '@/features/auth/components/RegisterForm'
+import { copyText } from '@/shared/utils/clipboard'
 
 function getPasswordStrength(pw) {
   let score = 0
@@ -23,6 +24,7 @@ export default function RegisterPage() {
   const [showPass, setShowPass] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [emailChecking, setEmailChecking] = useState(false)
   const { register } = useAuth()
   const { toast } = useToast()
   const { isDark, toggleTheme } = useTheme()
@@ -40,6 +42,22 @@ export default function RegisterPage() {
     return e
   }
 
+  const handleEmailBlur = async () => {
+    const email = form.email.trim()
+    if (!email || !/\S+@\S+\.\S+/.test(email)) return
+    setEmailChecking(true)
+    try {
+      const res = await authService.checkEmail(email)
+      if (res.data?.exists) {
+        setErrors((prev) => ({ ...prev, email: 'An account with this email already exists' }))
+      }
+    } catch {
+      // ignore check failures
+    } finally {
+      setEmailChecking(false)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
@@ -54,8 +72,11 @@ export default function RegisterPage() {
       }
       const result = await register(payload)
       const recoveryToken = result?.recoveryToken
-      const showRecoveryModal = () => {
-        if (!recoveryToken) return
+      const showRecoveryModal = (onDone) => {
+        if (!recoveryToken) {
+          if (onDone) onDone()
+          return
+        }
         openModal({
           badge: 'Recovery Token',
           title: 'Save Your Recovery Token',
@@ -67,6 +88,7 @@ export default function RegisterPage() {
             } catch {
               // ignore acknowledgement failures
             }
+            if (onDone) onDone()
           },
           content: (
             <div className="space-y-4">
@@ -77,10 +99,10 @@ export default function RegisterPage() {
                 type="button"
                 className="btn-primary w-full justify-center py-2.5"
                 onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(recoveryToken)
+                  const ok = await copyText(recoveryToken)
+                  if (ok) {
                     toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
-                  } catch {
+                  } else {
                     toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
                   }
                 }}
@@ -94,14 +116,12 @@ export default function RegisterPage() {
 
       if (result?.verificationRequired) {
         toast({ type: 'success', title: 'Verify your email', message: 'Check your inbox to complete registration.' })
-        showRecoveryModal()
-        navigate('/login')
+        showRecoveryModal(() => navigate('/login'))
         return
       }
       if (result?.user) {
         toast({ type: 'success', title: 'Operator registered!', message: 'Welcome to HSOCIETY. Begin Phase 01.' })
-        showRecoveryModal()
-        navigate('/dashboard')
+        showRecoveryModal(() => navigate('/dashboard'))
         return
       }
       toast({ type: 'error', title: 'Registration failed', message: 'Please try again.' })
@@ -149,16 +169,18 @@ export default function RegisterPage() {
 
         <RegisterHeader />
 
-        <RegisterForm
-          form={form}
-          errors={errors}
-          strength={strength}
-          loading={loading}
-          showPass={showPass}
-          onTogglePass={() => setShowPass(s => !s)}
-          onChange={setForm}
-          onSubmit={handleSubmit}
-        />
+      <RegisterForm
+        form={form}
+        errors={errors}
+        strength={strength}
+        loading={loading}
+        showPass={showPass}
+        onTogglePass={() => setShowPass(s => !s)}
+        onChange={setForm}
+        onEmailBlur={handleEmailBlur}
+        emailChecking={emailChecking}
+        onSubmit={handleSubmit}
+      />
       </div>
     </div>
   )
