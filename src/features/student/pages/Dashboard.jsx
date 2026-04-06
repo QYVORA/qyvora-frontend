@@ -115,7 +115,7 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
+      <div className="max-w-6xl mx-auto space-y-8 px-2 sm:px-0">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="space-y-3">
             <Skeleton className="h-3 w-32" />
@@ -249,7 +249,7 @@ export default function StudentDashboard() {
   )
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 px-3 sm:px-0">
+    <div className="max-w-6xl mx-auto space-y-8 px-2 sm:px-0">
       {!loading && !onboardingComplete && (
         <OnboardingWelcomeCard
           onStart={() => setTourActive(true)}
