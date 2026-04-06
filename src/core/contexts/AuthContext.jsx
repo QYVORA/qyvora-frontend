@@ -15,6 +15,12 @@ export function AuthProvider({ children }) {
   }, [])
 
   const loadSession = useCallback(async () => {
+    const hasStoredUser = typeof window !== 'undefined' && Boolean(localStorage.getItem('hs_user'))
+    const hasCsrfCookie = typeof document !== 'undefined' && document.cookie.includes('csrf_token=')
+    if (!hasStoredUser && !hasCsrfCookie) {
+      setLoading(false)
+      return
+    }
     try {
       const res = await authService.me()
       setUser(res.data)

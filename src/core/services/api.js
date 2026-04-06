@@ -90,16 +90,22 @@ api.interceptors.response.use(
     if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
       try {
+        const hasCsrf = Boolean(getStoredCsrf() || getCookie('csrf_token'))
+        if (!hasCsrf) {
+          throw new Error('No CSRF token; skip refresh')
+        }
         await refreshSession()
         return api(originalRequest)
       } catch (refreshErr) {
         localStorage.removeItem('hs_user')
-        window.location.href = '/login'
+        if (!isAuthPage()) {
+          window.location.href = '/login'
+        }
         return Promise.reject(refreshErr)
       }
     }
     const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
-    if (err.response?.status === 401 && hasStoredSession && !isAuthPage()) {
+    if (err.response?.status === 401 && hasStoredSession && !isAuthPage() && !url.includes('/auth/me')) {
       localStorage.removeItem('hs_user')
       window.location.href = '/login'
     }
