@@ -15,6 +15,7 @@ export function StudentMobileNav({ navItems, solid }) {
           <NavLink
             key={to}
             to={to}
+            aria-label={label}
             className={({ isActive }) =>
               `flex flex-col items-center justify-center gap-1 w-full h-full transition-colors ${
                 isActive ? 'text-accent' : 'text-[var(--text-muted)]'
@@ -22,9 +23,6 @@ export function StudentMobileNav({ navItems, solid }) {
             }
           >
             <Icon size={24} />
-            <span className="text-[12.5px] font-semibold uppercase tracking-tight">
-              {label === 'CP Wallet' ? 'Wallet' : label === 'Notifications' ? 'Alerts' : label}
-            </span>
           </NavLink>
         ))}
       </div>

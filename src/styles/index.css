@@ -245,11 +245,6 @@
   will-change: opacity, transform;
 }
 
-.reveal-group.reveal-visible .reveal-item {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
 .reveal-group .reveal-item.reveal-fade {
   transform: translate3d(0, 16px, 0);
 }
@@ -264,6 +259,11 @@
 
 .reveal-group .reveal-item.reveal-right {
   transform: translate3d(28px, 0, 0);
+}
+
+.reveal-group.reveal-visible .reveal-item {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {

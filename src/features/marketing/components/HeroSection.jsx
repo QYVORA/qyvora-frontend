@@ -91,27 +91,21 @@ export function HeroSection({
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">
-          HSOCIETY OFFSEC is an offensive security company in Africa. We stand between education
-and execution — training the next generation of security talent while delivering real offensive
-security work to businesses.
+          HSOCIETY OFFSEC is an offensive security company training the next generation of security talent across Africa.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/register" className="btn-primary text-base px-8 py-4 rounded-xl flex items-center gap-2 group">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+          <Link to="/register" className="btn-primary text-base px-8 py-4 rounded-xl flex items-center justify-center gap-2 group w-full sm:w-auto">
             Start Training
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
             to="/login"
-            className={`btn-secondary text-base px-8 py-4 rounded-xl ${isDark ? '' : 'border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--primary-10)]'}`}
+            className={`btn-secondary text-base px-8 py-4 rounded-xl w-full sm:w-auto flex items-center justify-center ${isDark ? '' : 'border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--primary-10)]'}`}
           >
             Log In
           </Link>
         </div>
         {/* <HeroStats stats={stats} loading={loading} /> */}
-      </div>
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-muted)] opacity-50">
-        <span className="text-[10px] font-mono uppercase tracking-[0.3em]">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-[var(--text-muted)] to-transparent" />
       </div>
     </section>
   )

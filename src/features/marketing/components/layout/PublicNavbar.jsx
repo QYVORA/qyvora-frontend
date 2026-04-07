@@ -33,7 +33,7 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
             </Link>
           )}
           <button className="md:hidden btn-ghost p-2" onClick={onToggleMenu}>
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            {menuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
