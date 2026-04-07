@@ -92,7 +92,7 @@ export default function WalletPage() {
                   <Skeleton className="h-4 w-16" />
                 </div>
               ) : (
-                <p className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-accent mt-2 glow-text">
+                <p className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-accent mt-2 glow-text">
                   {Number(balance?.balance ?? user?.cpPoints ?? 0).toLocaleString()}
                   <span className="text-base sm:text-xl text-[var(--text-secondary)] ml-2">CP</span>
                 </p>

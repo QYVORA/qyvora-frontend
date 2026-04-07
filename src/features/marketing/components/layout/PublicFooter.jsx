@@ -34,7 +34,7 @@ export function PublicFooter() {
       </div>
       <div className="relative">
         <div className="max-w-7xl mx-auto px-6 pb-6 flex justify-center overflow-hidden">
-          <div className="w-full h-[30vh] flex items-center justify-center overflow-hidden">
+          <div className="w-full h-[18vh] sm:h-[24vh] lg:h-[30vh] flex items-center justify-center overflow-hidden">
             <img
               src="/HSOCIETY_LOGO.png"
               alt="HSOCIETY"

@@ -41,7 +41,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
         {loading ? (
           <StaggerReveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16" stagger={90}>
             {Array.from({ length: 6 }).map((_, idx) => (
-              <div key={idx} className="card p-7 flex flex-col items-center gap-3" style={{ borderRadius: '18px' }}>
+              <div key={idx} className="card p-5 sm:p-7 flex flex-col items-center gap-3" style={{ borderRadius: '18px' }}>
                 <Spinner size={26} />
               </div>
             ))}
@@ -60,7 +60,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
               return (
                 <div
                   key={entry.id || entry.handle || idx}
-                  className="card p-7 flex flex-col items-center gap-3 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                  className="card p-5 sm:p-7 flex flex-col items-center gap-3 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
                   style={{ borderColor: `${color}35`, borderRadius: '18px' }}
                 >
                   <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: color, opacity: 0.6 }} />
@@ -72,7 +72,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                     <Avatar username={handle} size="lg" />
                   </div>
                   <p
-                    className="font-display font-bold text-[var(--text-primary)] text-base text-center relative z-10 truncate max-w-[140px]"
+                    className="font-display font-bold text-[var(--text-primary)] text-sm sm:text-base text-center relative z-10 truncate max-w-[140px]"
                     title={handle}
                   >
                     {displayHandle}

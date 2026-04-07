@@ -19,7 +19,7 @@ export function StudentSidebar({
   }
 
   return (
-    <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-72' : 'hidden lg:flex w-72 h-screen sticky top-0 shrink-0'} flex flex-col bg-[var(--bg-primary)] border-r border-[var(--border)]/60 shadow-[12px_0_30px_-28px_rgba(0,0,0,0.35)] overflow-hidden`}>
+    <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-[85vw] max-w-[320px]' : 'hidden lg:flex w-72 h-screen sticky top-0 shrink-0'} flex flex-col bg-[var(--bg-primary)] border-r border-[var(--border)]/60 shadow-[12px_0_30px_-28px_rgba(0,0,0,0.35)] overflow-hidden`}>
       <div className="h-20 flex items-center justify-between px-6 shrink-0">
         <Link to="/" className="flex items-center gap-2.5 w-full">
           <Logo size="lg" className="h-[56px] lg:h-[84px] w-auto max-w-full" />

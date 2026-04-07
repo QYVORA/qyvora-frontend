@@ -15,7 +15,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           <div className="flex flex-col">
-            <div className="relative rounded-2xl overflow-hidden h-56 mb-8 shrink-0">
+            <div className="relative rounded-2xl overflow-hidden h-44 sm:h-56 mb-8 shrink-0">
               {loading ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <Spinner size={28} />
@@ -30,7 +30,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
               )}
               <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent" />
               <div className="absolute bottom-5 left-5">
-                <p className="font-display font-black text-3xl text-[var(--text-primary)] leading-tight">Zero-Day<br />Market</p>
+                <p className="font-display font-black text-2xl sm:text-3xl text-[var(--text-primary)] leading-tight">Zero-Day<br />Market</p>
               </div>
               <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-accent text-[var(--bg-primary)] text-xs font-bold font-mono">
                 LIVE
@@ -43,7 +43,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
               subtitle=""
               align="left"
             />
-            <p className="text-[var(--text-secondary)] text-base leading-relaxed mb-6 mt-5">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed mb-6 mt-5">
               Earn Captured Points (CP) by completing modules, challenges, and phases. Spend them in the Zero-Day Market to unlock premium tools, playbooks, frameworks, and exploit research created by the community.
             </p>
             <div className="card p-4 mb-6 border border-accent/25">
@@ -104,7 +104,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                       </div>
                     ) : (
                       <>
-                        <p className="font-display font-black text-5xl text-accent">
+                    <p className="font-display font-black text-4xl sm:text-5xl text-accent">
                           {Number(items.length || 0).toLocaleString()}
                           <span className="text-xl text-[var(--text-muted)]"> Items</span>
                         </p>

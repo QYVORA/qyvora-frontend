@@ -3,7 +3,7 @@ import { Logo } from '@/shared/components/brand/Logo'
 
 export function LoginTopBar() {
   return (
-    <div className="flex items-center justify-between p-6">
+    <div className="flex items-center justify-between p-4 sm:p-6">
       <Link to="/" className="lg:hidden flex items-center">
         <Logo size="md" className="h-[48px] sm:h-[56px]" />
       </Link>

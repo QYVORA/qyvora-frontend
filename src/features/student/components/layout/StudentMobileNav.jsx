@@ -10,7 +10,7 @@ export function StudentMobileNav({ navItems, solid }) {
         solid ? 'bg-[var(--bg-primary)]' : 'bg-[var(--bg-primary)]/96 backdrop-blur-md'
       )}
     >
-      <div className="flex items-center justify-around h-24">
+      <div className="flex items-center justify-around h-20 sm:h-24">
         {mobileItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
