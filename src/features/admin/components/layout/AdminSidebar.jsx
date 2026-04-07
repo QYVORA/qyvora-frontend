@@ -1,12 +1,10 @@
 import { Link, NavLink } from 'react-router-dom'
-import { Sun, Moon, LogOut, X } from 'lucide-react'
+import { LogOut, X } from 'lucide-react'
 import { Logo } from '@/shared/components/brand/Logo'
 
 export function AdminSidebar({
   mobile,
   navItems,
-  isDark,
-  onToggleTheme,
   onLogout,
   onClose = () => {},
 }) {
@@ -46,10 +44,6 @@ export function AdminSidebar({
         </div>
       </nav>
       <div className="border-t border-[var(--border)] p-2 space-y-3 shrink-0 mt-auto">
-        <button onClick={onToggleTheme} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] transition-all justify-start text-left">
-          {isDark ? <Sun size={16} /> : <Moon size={16} />}
-          {isDark ? 'Light Mode' : 'Dark Mode'}
-        </button>
         <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:bg-accent/10 hover:text-accent transition-all justify-start text-left">
           <LogOut size={16} />
           Logout

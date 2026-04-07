@@ -1,7 +1,6 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck } from 'lucide-react'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { AdminSidebar } from '@/features/admin/components/layout/AdminSidebar'
@@ -20,7 +19,6 @@ const NAV_ITEMS = [
 ]
 
 export default function AdminLayout() {
-  const { isDark, toggleTheme } = useTheme()
   const { logout } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -38,8 +36,6 @@ export default function AdminLayout() {
     <div className="min-h-screen flex bg-[var(--bg-primary)]">
       <AdminSidebar
         navItems={NAV_ITEMS}
-        isDark={isDark}
-        onToggleTheme={toggleTheme}
         onLogout={handleLogout}
       />
       {sidebarOpen && (
@@ -48,8 +44,6 @@ export default function AdminLayout() {
           <AdminSidebar
             mobile
             navItems={NAV_ITEMS}
-            isDark={isDark}
-            onToggleTheme={toggleTheme}
             onLogout={handleLogout}
             onClose={() => setSidebarOpen(false)}
           />

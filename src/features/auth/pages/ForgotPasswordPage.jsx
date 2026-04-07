@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Mail, KeyRound, Lock, Eye, EyeOff } from 'lucide-react'
 import { useToast } from '@/core/contexts/ToastContext'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { authService } from '@/core/services'
 import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
 import { Button, Input } from '@/shared/components/ui'
@@ -17,7 +16,6 @@ export default function ForgotPasswordPage() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [resetLoading, setResetLoading] = useState(false)
   const { toast } = useToast()
-  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -60,8 +58,6 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
       <div className="px-6 py-5">
         <AuthTopActions
-          isDark={isDark}
-          onToggleTheme={toggleTheme}
           linkTo="/login"
           linkLabel="Remembered your password?"
           linkText="Log in"

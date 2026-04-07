@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { LoginSidePanel } from '@/features/auth/components/LoginSidePanel'
 import { LoginTopBar } from '@/features/auth/components/LoginTopBar'
 import { LoginForm } from '@/features/auth/components/LoginForm'
@@ -15,7 +14,6 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({})
   const { login } = useAuth()
   const { toast } = useToast()
-  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -78,7 +76,7 @@ export default function LoginPage() {
       <LoginSidePanel />
 
       <div className="flex-1 flex flex-col">
-        <LoginTopBar isDark={isDark} onToggleTheme={toggleTheme} />
+        <LoginTopBar />
         <LoginForm
           form={form}
           errors={errors}

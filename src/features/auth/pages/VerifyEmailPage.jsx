@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useToast } from '@/core/contexts/ToastContext'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { authService } from '@/core/services'
 import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
 import { Button } from '@/shared/components/ui'
@@ -10,7 +9,6 @@ export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams()
   const [status, setStatus] = useState('idle')
   const { toast } = useToast()
-  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -41,8 +39,6 @@ export default function VerifyEmailPage() {
 
       <div className="relative z-10 w-full max-w-md space-y-6">
         <AuthTopActions
-          isDark={isDark}
-          onToggleTheme={toggleTheme}
           linkTo="/login"
           linkLabel="Ready to sign in?"
           linkText="Log in"

@@ -1,17 +1,16 @@
 import { Link } from 'react-router-dom'
-import { Sun, Moon, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
-export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) {
+export function PublicNavbar({ menuOpen, onToggleMenu }) {
   const { user } = useAuth()
-  const displayName = user?.hackerHandle || user?.name || user?.email || ''
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-[color:var(--bg-primary)]/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <Logo size="md" scale={2.6} offsetY={-3} className="h-[30px]" />
+          <Link to="/" className="flex items-center gap-2.5 group px-3 sm:px-0 pl-3 sm:pl-0">
+            <Logo size="md" scale={2.6} offsetY={-3} className="h-[40px]" />
           </Link>
         </div>
 
@@ -22,9 +21,6 @@ export function PublicNavbar({ isDark, onToggleTheme, menuOpen, onToggleMenu }) 
         </div>
 
         <div className="flex items-center gap-3">
-          <button onClick={onToggleTheme} className="btn-ghost p-2 rounded-lg" aria-label="Toggle theme">
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
           {!user && (
             <>
               <Link to="/login" className="hidden md:inline-flex btn-ghost text-sm border border-[var(--border)] px-4 py-2 rounded-lg">Log in</Link>

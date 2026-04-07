@@ -2,7 +2,6 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell } from 'lucide-react'
 import { clsx } from 'clsx'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { profileService } from '@/core/services'
@@ -20,7 +19,6 @@ const NAV_ITEMS = [
 ]
 
 export default function StudentLayout() {
-  const { isDark, toggleTheme } = useTheme()
   const { user, logout, updateUser } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -55,8 +53,6 @@ export default function StudentLayout() {
       <StudentSidebar
         navItems={NAV_ITEMS}
         user={user}
-        isDark={isDark}
-        onToggleTheme={toggleTheme}
         onLogout={handleLogout}
       />
 
@@ -64,15 +60,13 @@ export default function StudentLayout() {
       {sidebarOpen && (
         <>
           <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
-          <StudentSidebar
-            mobile
-            navItems={NAV_ITEMS}
-            user={user}
-            isDark={isDark}
-            onToggleTheme={toggleTheme}
-            onLogout={handleLogout}
-            onClose={() => setSidebarOpen(false)}
-          />
+        <StudentSidebar
+          mobile
+          navItems={NAV_ITEMS}
+          user={user}
+          onLogout={handleLogout}
+          onClose={() => setSidebarOpen(false)}
+        />
         </>
       )}
 
@@ -81,8 +75,6 @@ export default function StudentLayout() {
         {/* Top bar */}
         <StudentTopbar
           user={user}
-          isDark={isDark}
-          onToggleTheme={toggleTheme}
           onLogout={handleLogout}
           solid={isDashboard}
         />

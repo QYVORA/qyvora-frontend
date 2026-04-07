@@ -68,7 +68,6 @@ export default function LandingPage() {
       />
       <FlowSection stats={stats} loading={loadingStats} />
       <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />
-      <BootcampPreviewSection rewards={rewards} />
       <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
       <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
       <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />

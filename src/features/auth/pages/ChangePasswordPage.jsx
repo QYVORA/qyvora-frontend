@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Lock, Eye, EyeOff } from 'lucide-react'
 import { useToast } from '@/core/contexts/ToastContext'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import api from '@/core/services/api'
 import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
@@ -18,7 +17,6 @@ export default function ChangePasswordPage() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
-  const { isDark, toggleTheme } = useTheme()
   const { setSession } = useAuth()
   const navigate = useNavigate()
 
@@ -68,8 +66,6 @@ export default function ChangePasswordPage() {
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
       <div className="px-6 py-5">
         <AuthTopActions
-          isDark={isDark}
-          onToggleTheme={toggleTheme}
           linkTo="/login"
           linkLabel="Back to login"
           linkText="Log in"

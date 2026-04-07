@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useTheme } from '@/core/contexts/ThemeContext'
-import { HeroStats } from '@/features/marketing/components/HeroStats'
+// import { HeroStats } from '@/features/marketing/components/HeroStats'
 const TypingHeadline = memo(function TypingHeadline() {
   const phrases = useMemo(
     () => [
@@ -83,15 +83,17 @@ export function HeroSection({
     >
       <div className="cube-noise" />
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
+        {/* <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
           Offensive Security Training Platform
-        </div>
+        </div> */}
         <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full overflow-hidden h-[10rem] md:h-[9.5rem] lg:h-[12rem]">
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">
-          Structured offensive security bootcamps. Real techniques. Peer-validated skills. An economy built around zero-day knowledge.
+          HSOCIETY OFFSEC is an offensive security company in Africa. We stand between education
+and execution — training the next generation of security talent while delivering real offensive
+security work to businesses.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link to="/register" className="btn-primary text-base px-8 py-4 rounded-xl flex items-center gap-2 group">
@@ -105,7 +107,7 @@ export function HeroSection({
             Log In
           </Link>
         </div>
-        <HeroStats stats={stats} loading={loading} />
+        {/* <HeroStats stats={stats} loading={loading} /> */}
       </div>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-muted)] opacity-50">
         <span className="text-[10px] font-mono uppercase tracking-[0.3em]">Scroll</span>

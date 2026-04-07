@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { useModal } from '@/core/contexts/ModalContext'
 import { authService, profileService } from '@/core/services'
 import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
@@ -27,7 +26,6 @@ export default function RegisterPage() {
   const [emailChecking, setEmailChecking] = useState(false)
   const { register } = useAuth()
   const { toast } = useToast()
-  const { isDark, toggleTheme } = useTheme()
   const { openModal } = useModal()
   const navigate = useNavigate()
 
@@ -159,8 +157,6 @@ export default function RegisterPage() {
 
       <div className="relative z-10 w-full max-w-md">
         <AuthTopActions
-          isDark={isDark}
-          onToggleTheme={toggleTheme}
           linkTo="/login"
           linkLabel="Already registered?"
           linkText="Log in"

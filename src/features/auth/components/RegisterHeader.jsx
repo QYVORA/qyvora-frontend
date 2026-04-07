@@ -5,7 +5,7 @@ export function RegisterHeader() {
   return (
     <div className="text-center mb-8">
       <Link to="/" className="inline-flex items-center mb-6">
-        <Logo size="xl" />
+        <Logo size="xl" className="h-[40px]" />
       </Link>
       <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// create account</p>
       <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Join the Platform</h1>

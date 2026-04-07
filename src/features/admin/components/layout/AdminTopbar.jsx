@@ -10,7 +10,7 @@ export function AdminTopbar({ onOpenSidebar }) {
         <span className="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-2.5 py-1 rounded-full">ROOT ACCESS</span>
       </div>
       <Link to="/" className="flex items-center gap-2 lg:hidden">
-        <Logo size="sm" scale={1.7} offsetY={-2} className="h-[30px]" />
+        <Logo size="sm" scale={1.7} offsetY={-2} className="h-[40px]" />
       </Link>
     </header>
   )

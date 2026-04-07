@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useTheme } from '@/core/contexts/ThemeContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
 const PHASE_LINES = [
@@ -9,14 +8,13 @@ const PHASE_LINES = [
 ]
 
 export function LoginSidePanel() {
-  const { isDark } = useTheme()
   return (
     <div
       className="hidden lg:flex flex-1 flex-col justify-between p-12 bg-[var(--bg-secondary)] border-r border-[var(--border)] relative overflow-hidden isolate"
     >
       <div className="relative z-10">
         <Link to="/" className="flex items-center">
-          <Logo size="lg" />
+          <Logo size="lg" className="h-[40px]" />
         </Link>
       </div>
       <div className="relative z-10">

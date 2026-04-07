@@ -1,4 +1,4 @@
-import { Sun, Moon, LogOut, Bell, Zap } from 'lucide-react'
+import { LogOut, Bell, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { clsx } from 'clsx'
@@ -7,7 +7,7 @@ import { Logo } from '@/shared/components/brand/Logo'
 import { notificationsService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
 
-export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) {
+export function StudentTopbar({ user, onLogout, solid }) {
   const { toast } = useToast()
   const [notifOpen, setNotifOpen] = useState(false)
   const [notifLoading, setNotifLoading] = useState(false)
@@ -51,21 +51,13 @@ export function StudentTopbar({ user, isDark, onToggleTheme, onLogout, solid }) 
       )}
     >
       <Link to="/" className="flex items-center gap-2 lg:hidden">
-        <Logo size="md" scale={1.7} offsetY={-2} className="h-[30px]" />
+        <Logo size="md" scale={1.7} offsetY={-2} className="h-[40px]" />
       </Link>
       <div className="hidden lg:flex items-center gap-2 text-[var(--text-muted)] text-sm">
         <Zap size={14} className="text-accent" />
         <span className="font-mono">Rank {user?.xpSummary?.rank || 'Operator'} — {Number(user?.xpSummary?.totalXp || 0).toLocaleString()} XP</span>
       </div>
       <div className="flex items-center gap-2 ml-auto">
-        <div className="relative group">
-          <button onClick={onToggleTheme} className="lg:hidden btn-ghost p-2 rounded-lg" aria-label="Toggle theme">
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <span className="pointer-events-none absolute top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-1 text-[10px] font-mono text-[var(--text-secondary)] shadow-lg opacity-0 -translate-y-1 transition-all group-hover:opacity-100 group-hover:translate-y-0">
-            Change theme
-          </span>
-        </div>
         <div className="relative group">
           <button onClick={onLogout} className="lg:hidden btn-ghost p-2 rounded-lg text-accent" aria-label="Logout">
             <LogOut size={18} />
