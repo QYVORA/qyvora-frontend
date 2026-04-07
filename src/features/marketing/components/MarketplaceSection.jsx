@@ -3,6 +3,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function MarketplaceSection({ items = [], stats, loading = false, rewards }) {
   const { isDark } = useTheme()
@@ -64,7 +65,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                 CP and XP totals update as you complete modules and challenges.
               </p>
             </div>
-            <ul className="space-y-4">
+            <StaggerReveal as="ul" className="space-y-4" stagger={80}>
               {[
                 'Earn CP for every module you complete',
                 'Bonus rewards for phase completions',
@@ -78,7 +79,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                   {item}
                 </li>
               ))}
-            </ul>
+            </StaggerReveal>
             <Link to="/register" className="btn-primary mt-8 inline-flex items-center gap-2 self-start">
               Open Your Wallet <ArrowRight size={16} />
             </Link>
@@ -120,7 +121,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                   </div>
                 </div>
 
-                <div className="space-y-1 mb-6">
+                <StaggerReveal className="space-y-1 mb-6" stagger={70} variant="left">
                   {loading ? (
                     <div className="flex items-center gap-3 text-[var(--text-secondary)] py-3">
                       <Spinner size={22} />
@@ -136,7 +137,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                       </div>
                     ))
                   )}
-                </div>
+                </StaggerReveal>
 
                 <div className="rounded-xl overflow-hidden border border-accent/20">
                   <div className="bg-accent/8 px-4 py-2 border-b border-accent/20 flex items-center justify-between">
@@ -151,12 +152,14 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                   ) : previewItems.length === 0 ? (
                     <div className="px-4 py-4 text-xs text-[var(--text-muted)]">No listings yet.</div>
                   ) : (
-                    previewItems.map(item => (
-                      <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] last:border-0">
-                        <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
-                        <span className="text-xs font-mono font-bold text-accent">{item.cpPrice} CP</span>
-                      </div>
-                    ))
+                    <StaggerReveal className="divide-y divide-[var(--border)]" stagger={70} variant="right">
+                      {previewItems.map(item => (
+                        <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3">
+                          <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
+                          <span className="text-xs font-mono font-bold text-accent">{item.cpPrice} CP</span>
+                        </div>
+                      ))}
+                    </StaggerReveal>
                   )}
                 </div>
               </div>

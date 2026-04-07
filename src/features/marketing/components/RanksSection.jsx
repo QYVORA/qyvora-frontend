@@ -1,4 +1,5 @@
 import { Avatar, SectionHeader, Spinner } from '@/shared/components/ui'
+import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function RanksSection({ leaderboard = [], loading = false, rewards }) {
   const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
@@ -6,7 +7,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
   const earnedXp = rewards?.totals?.xp || 0
   const earnedCp = rewards?.totals?.cp || 0
   return (
-    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative overflow-hidden section-gradient">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden section-gradient border-y border-[var(--border)]/40">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/50 via-transparent to-[var(--bg-primary)]/50 pointer-events-none" />
 
@@ -17,7 +18,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
           subtitle="XP never lies. Your rank reflects your actual skill level."
         />
 
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
+        <StaggerReveal as="div" className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6" stagger={120} variant="fade">
           {loading ? (
             <div className="flex items-center gap-3 text-[var(--text-secondary)]">
               <Spinner size={24} />
@@ -35,22 +36,22 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
               </div>
             </>
           )}
-        </div>
+        </StaggerReveal>
 
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16">
+          <StaggerReveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16" stagger={90}>
             {Array.from({ length: 6 }).map((_, idx) => (
               <div key={idx} className="card p-7 flex flex-col items-center gap-3" style={{ borderRadius: '18px' }}>
                 <Spinner size={26} />
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         ) : leaderboard.length === 0 ? (
           <div className="card p-8 text-sm text-[var(--text-secondary)] text-center mt-12">
             Leaderboard data is currently unavailable.
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16">
+          <StaggerReveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16" stagger={90} variant="scale">
             {leaderboard.slice(0, 6).map((entry) => {
               const color = 'var(--accent)'
               const handle = entry.handle || entry.name || 'Anonymous'
@@ -85,7 +86,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                 </div>
               )
             })}
-          </div>
+          </StaggerReveal>
         )}
       </div>
     </section>

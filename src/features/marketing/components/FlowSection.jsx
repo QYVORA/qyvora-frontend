@@ -1,6 +1,7 @@
 import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { HOW_IT_WORKS_IMGS } from '@/features/marketing/data/landingData'
 import { Users, Target, Zap, Database } from 'lucide-react'
+import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function FlowSection({ stats, loading = false }) {
   const items = [
@@ -20,7 +21,7 @@ export function FlowSection({ stats, loading = false }) {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
+        <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center" stagger={110}>
           {loading
             ? Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="card overflow-hidden flex flex-col items-center justify-center h-64" style={{ borderRadius: '16px' }}>
@@ -59,7 +60,7 @@ export function FlowSection({ stats, loading = false }) {
                 </div>
               </div>
             ))}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   )

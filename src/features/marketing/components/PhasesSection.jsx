@@ -3,6 +3,7 @@ import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner, Skeleton } from '@/shared/components/ui'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { API_ORIGIN } from '@/core/services/api'
+import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function PhasesSection({ items = [], loading = false }) {
   const { user } = useAuth()
@@ -19,7 +20,7 @@ export function PhasesSection({ items = [], loading = false }) {
     return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
   }
   return (
-    <section className="py-32 px-6 bg-[var(--bg-secondary)] relative section-gradient" id="bootcamps">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative section-gradient border-y border-[var(--border)]/40" id="bootcamps">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20">
           <SectionHeader
@@ -30,7 +31,7 @@ export function PhasesSection({ items = [], loading = false }) {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 gap-10 justify-center">
+          <StaggerReveal className="grid grid-cols-1 gap-10 justify-center" stagger={140}>
             <div className="card overflow-hidden flex flex-col lg:flex-row w-full max-w-5xl mx-auto" style={{ borderRadius: '18px' }}>
               <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0 flex items-center justify-center">
                 <Spinner size={28} />
@@ -41,13 +42,13 @@ export function PhasesSection({ items = [], loading = false }) {
                 <Skeleton className="h-3 w-40" />
               </div>
             </div>
-          </div>
+          </StaggerReveal>
         ) : items.length === 0 ? (
           <div className="card p-8 text-center">
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-10 justify-center">
+          <StaggerReveal className="grid grid-cols-1 gap-10 justify-center" stagger={140} variant="scale">
             {items.map((item, i) => {
               const accent = 'var(--accent)'
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
@@ -99,7 +100,7 @@ export function PhasesSection({ items = [], loading = false }) {
                 </div>
               )
             })}
-          </div>
+          </StaggerReveal>
         )}
       </div>
     </section>

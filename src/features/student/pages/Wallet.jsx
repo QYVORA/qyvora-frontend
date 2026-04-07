@@ -3,6 +3,7 @@ import { Card, StatCard, Badge, Skeleton } from '@/shared/components/ui'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useEffect, useState } from 'react'
 import { cpService } from '@/core/services'
+import { CP_COIN } from '@/features/marketing/data/landingData'
 
 function TxRow({ tx }) {
   const isEarned = tx.type === 'earned'
@@ -78,6 +79,9 @@ export default function WalletPage() {
       <div className="card border-accent/20 p-8 relative overflow-hidden isolate">
         <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
         <div className="absolute right-0 top-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -right-6 -bottom-10 w-40 h-40 opacity-20 pointer-events-none">
+          <img src={CP_COIN} alt="" className="w-full h-full object-contain" />
+        </div>
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-6">
             <div>

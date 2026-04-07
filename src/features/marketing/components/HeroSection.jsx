@@ -78,7 +78,7 @@ export function HeroSection({
     : undefined
   return (
     <section
-      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden section-gradient"
+      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden bg-[var(--bg-primary)]"
       style={lightTextVars}
     >
       <div className="cube-noise" />

@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
+import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function SocialSection() {
   return (
@@ -20,15 +21,14 @@ export function SocialSection() {
             Live channels • 24/7 updates
           </div>
         </div>
-
-        <div className="grid gap-5 md:grid-cols-2">
+        <StaggerReveal className="grid gap-5 md:grid-cols-2 justify-items-center items-stretch" stagger={110} variant="left">
           {SOCIAL_MEDIA.map(({ key, label, handle, url, icon: Icon, description }) => (
             <a
               key={key}
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="group card p-5 flex items-center gap-4 hover:border-accent/40 transition-colors text-left"
+              className="group card p-5 flex items-center gap-4 hover:border-accent/40 transition-colors text-left mx-auto w-full max-w-lg h-full"
             >
               <div className="w-12 h-12 shrink-0 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                 <Icon size={22} />
@@ -44,7 +44,7 @@ export function SocialSection() {
               </div>
             </a>
           ))}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   )

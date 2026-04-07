@@ -5,7 +5,7 @@ export function LoginTopBar() {
   return (
     <div className="flex items-center justify-between p-6">
       <Link to="/" className="lg:hidden flex items-center">
-        <Logo size="sm" className="h-[40px]" />
+        <Logo size="md" className="h-[48px] sm:h-[56px]" />
       </Link>
       <div className="ml-auto flex items-center gap-3">
         <Link to="/register" className="text-sm text-[var(--text-secondary)] hover:text-accent transition-colors">

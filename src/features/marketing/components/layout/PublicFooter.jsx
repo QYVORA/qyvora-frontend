@@ -4,9 +4,8 @@ import { Logo } from '@/shared/components/brand/Logo'
 
 export function PublicFooter() {
   return (
-    <footer className="mt-20 overflow-hidden relative section-gradient">
+    <footer className="mt-20 overflow-hidden relative bg-[var(--bg-primary)] border-t border-[var(--border)]">
       <div className="cube-noise" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row justify-between items-center gap-8 relative">
         <div className="flex flex-col items-center lg:items-start gap-2 text-center lg:text-left">
           <p className="text-[var(--text-muted)] text-sm font-mono">© 2026 HSOCIETY</p>

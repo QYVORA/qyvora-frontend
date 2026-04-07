@@ -6,11 +6,11 @@ export function StudentMobileNav({ navItems, solid }) {
   return (
     <nav
       className={clsx(
-        'lg:hidden fixed bottom-0 left-0 right-0 border-t border-[var(--border)] px-3 pb-safe-area-inset-bottom z-40',
-        solid ? 'bg-[var(--bg-secondary)]' : 'bg-[var(--bg-secondary)]/95 backdrop-blur-md'
+        'lg:hidden fixed bottom-0 left-0 right-0 border-t border-[var(--border)]/60 px-4 pb-safe-area-inset-bottom z-40 shadow-[0_-12px_30px_-28px_rgba(0,0,0,0.45)]',
+        solid ? 'bg-[var(--bg-primary)]' : 'bg-[var(--bg-primary)]/96 backdrop-blur-md'
       )}
     >
-      <div className="flex items-center justify-around h-20">
+      <div className="flex items-center justify-around h-24">
         {mobileItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
@@ -21,8 +21,8 @@ export function StudentMobileNav({ navItems, solid }) {
               }`
             }
           >
-            <Icon size={22} />
-            <span className="text-[11px] font-semibold uppercase tracking-tight">
+            <Icon size={24} />
+            <span className="text-[12.5px] font-semibold uppercase tracking-tight">
               {label === 'CP Wallet' ? 'Wallet' : label === 'Notifications' ? 'Alerts' : label}
             </span>
           </NavLink>

@@ -14,7 +14,7 @@ export function LoginSidePanel() {
     >
       <div className="relative z-10">
         <Link to="/" className="flex items-center">
-          <Logo size="lg" className="h-[40px]" />
+          <Logo size="xl" className="h-[64px]" />
         </Link>
       </div>
       <div className="relative z-10">

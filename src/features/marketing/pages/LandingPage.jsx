@@ -8,6 +8,7 @@ import { MarketplaceSection } from '@/features/marketing/components/MarketplaceS
 import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
+import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
 
@@ -62,17 +63,33 @@ export default function LandingPage() {
 
   return (
     <div className="relative overflow-x-hidden">
-      <HeroSection
-        stats={stats}
-        loading={loadingStats}
-      />
-      <FlowSection stats={stats} loading={loadingStats} />
-      <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />
-      <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
-      <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
-      <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
-      <SocialSection />
-      <CtaSection />
+      <ScrollReveal variant="fade">
+        <HeroSection
+          stats={stats}
+          loading={loadingStats}
+        />
+      </ScrollReveal>
+      <ScrollReveal delay={80}>
+        <FlowSection stats={stats} loading={loadingStats} />
+      </ScrollReveal>
+      <ScrollReveal delay={120}>
+        <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />
+      </ScrollReveal>
+      <ScrollReveal delay={140}>
+        <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
+      </ScrollReveal>
+      <ScrollReveal delay={160}>
+        <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
+      </ScrollReveal>
+      <ScrollReveal delay={180}>
+        <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
+      </ScrollReveal>
+      <ScrollReveal delay={200} variant="up">
+        <SocialSection />
+      </ScrollReveal>
+      <ScrollReveal delay={220} variant="up">
+        <CtaSection />
+      </ScrollReveal>
     </div>
   )
 }
