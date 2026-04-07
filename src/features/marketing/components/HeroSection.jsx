@@ -2,6 +2,7 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { CTA_BG } from '@/features/marketing/data/landingData'
 // import { HeroStats } from '@/features/marketing/components/HeroStats'
 const TypingHeadline = memo(function TypingHeadline() {
   const phrases = useMemo(
@@ -79,8 +80,15 @@ export function HeroSection({
   return (
     <section
       className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden bg-[var(--bg-primary)]"
-      style={lightTextVars}
+      style={{
+        ...lightTextVars,
+        backgroundImage: `url(${CTA_BG})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
+      <div className="absolute inset-0 backdrop-blur-sm bg-[var(--bg-primary)]/30" />
       <div className="cube-noise" />
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
         {/* <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">

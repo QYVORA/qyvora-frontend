@@ -70,7 +70,12 @@ export default function LandingPage() {
         />
       </ScrollReveal>
       <ScrollReveal delay={80}>
-        <FlowSection stats={stats} loading={loadingStats} />
+        <FlowSection
+          stats={stats}
+          loading={loadingStats}
+          leaderboard={leaderboard}
+          loadingLeaderboard={loadingLeaderboard}
+        />
       </ScrollReveal>
       <ScrollReveal delay={120}>
         <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />

@@ -8,7 +8,7 @@ export function LiveTickerSection({ leaderboard = [], loading = false }) {
   const glow = isDark ? 'bg-accent/10' : 'bg-accent/20'
 
   return (
-    <section className="py-28 px-6 relative section-gradient" id="live-ticker">
+    <section className="py-28 px-6 relative section-gradient operator-economy-bg" id="live-ticker">
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute -top-10 right-10 w-72 h-72 rounded-full blur-3xl ${glow}`} />
       </div>
