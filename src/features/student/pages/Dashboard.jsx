@@ -8,7 +8,6 @@ import { DashboardHeader } from '@/features/student/components/dashboard/Dashboa
 import { PhaseProgressCard } from '@/features/student/components/dashboard/PhaseProgressCard'
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
 import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
-import { RecentActivity } from '@/features/student/components/dashboard/RecentActivity'
 import { OnboardingWelcomeCard } from '@/features/student/components/onboarding/OnboardingWelcomeCard'
 import { OnboardingTour } from '@/features/student/components/onboarding/OnboardingTour'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
@@ -24,7 +23,6 @@ export default function StudentDashboard() {
   const [overview, setOverview] = useState(null)
   const [xpSummary, setXpSummary] = useState(null)
   const [balance, setBalance] = useState(null)
-  const [activity, setActivity] = useState([])
   const [bootcamps, setBootcamps] = useState([])
   const [tourActive, setTourActive] = useState(false)
   const [onboardingDone, setOnboardingDone] = useState(false)
@@ -55,12 +53,11 @@ export default function StudentDashboard() {
     let mounted = true
     const load = async () => {
       try {
-        const [profileRes, overviewRes, xpRes, balanceRes, txRes, bootcampsRes] = await Promise.all([
+        const [profileRes, overviewRes, xpRes, balanceRes, bootcampsRes] = await Promise.all([
           profileService.getProfile(),
           studentService.getOverview(),
           studentService.getXpSummary(),
           cpService.getBalance(),
-          cpService.getTransactions(6),
           api.get('/public/bootcamps'),
         ])
         if (!mounted) return
@@ -68,13 +65,6 @@ export default function StudentDashboard() {
         setOverview(overviewRes.data || null)
         setXpSummary(xpRes.data || null)
         setBalance(balanceRes.data || null)
-        const items = txRes.data?.items || []
-        setActivity(items.map((tx) => ({
-          id: tx._id || tx.id,
-          label: tx.note || tx.type || 'CP activity',
-          time: new Date(tx.createdAt || Date.now()).toLocaleString(),
-          points: Number(tx.points || 0),
-        })))
         setBootcamps(bootcampsRes.data?.items || [])
         if (profileRes.data) updateUser(profileRes.data)
       } catch {
@@ -295,7 +285,6 @@ export default function StudentDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <QuickLinks user={profile || sessionUser} />
-        <RecentActivity items={activity} />
       </div>
 
       {hasActiveModule && bootcampSection}
