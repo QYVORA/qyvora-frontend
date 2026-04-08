@@ -30,6 +30,8 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           src={CP_COIN}
           alt=""
           className="pointer-events-none absolute -right-2 -bottom-2 w-20 h-20 opacity-70 drop-shadow-xl rotate-12"
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <StatCard label="Overall Progress" value={`${overallProgress || 0}%`} sub="Bootcamp progress" icon={Trophy} color="var(--accent)" className="h-full" />

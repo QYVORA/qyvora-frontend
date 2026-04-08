@@ -44,6 +44,8 @@ export function FlowSection({ stats, loading = false, leaderboard = [], loadingL
                         alt=""
                         className="absolute inset-0 w-full h-full object-cover"
                         style={{ filter: 'brightness(0.8) saturate(1.05)' }}
+                        loading="lazy"
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-gradient-to-br from-accent/12 via-transparent to-transparent" />
                       <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-[var(--bg-primary)] text-accent border border-accent/40 font-bold font-mono text-xs flex items-center justify-center shadow-lg">

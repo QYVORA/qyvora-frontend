@@ -14,6 +14,8 @@ export function MarketplaceItemCard({ item, user, onBuy, onDownload, purchased =
             alt={item.title}
             className="w-full h-full object-cover"
             style={{ filter: 'brightness(0.8) saturate(1.1)' }}
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--text-muted)]">

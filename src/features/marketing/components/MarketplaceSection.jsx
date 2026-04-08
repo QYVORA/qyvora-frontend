@@ -26,6 +26,8 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                   alt="Zero-Day Market"
                   className="w-full h-full object-cover"
                   style={{ filter: 'brightness(0.5) saturate(1.2)' }}
+                  loading="lazy"
+                  decoding="async"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent" />
@@ -92,7 +94,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
               </div>
               <div className="card p-8 border-accent/25 shadow-2xl shadow-accent/8 rounded-2xl relative overflow-hidden">
                 <div className={`absolute -right-12 -bottom-12 w-64 h-64 pointer-events-none rotate-12 ${isDark ? 'opacity-10' : 'opacity-25'}`}>
-                  <img src={CP_COIN} alt="" className="w-full h-full object-contain" />
+                  <img src={CP_COIN} alt="" className="w-full h-full object-contain" loading="lazy" decoding="async" />
                 </div>
                 <div className="flex items-center justify-between mb-8 relative z-10">
                   <div>
@@ -117,7 +119,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                     )}
                   </div>
                   <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/25 flex items-center justify-center overflow-hidden">
-                    <img src={CP_COIN} alt="CP Coin" className="w-10 h-10 object-contain" />
+                    <img src={CP_COIN} alt="CP Coin" className="w-10 h-10 object-contain" loading="lazy" decoding="async" />
                   </div>
                 </div>
 

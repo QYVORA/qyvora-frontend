@@ -215,6 +215,8 @@ export default function BootcampPage() {
                     src={cover}
                     alt={item.title || 'Bootcamp'}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div
                     className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"

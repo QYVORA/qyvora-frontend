@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Joyride, { EVENTS, STATUS } from 'react-joyride'
+import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { studentService } from '@/core/services'
@@ -171,15 +171,25 @@ export function OnboardingTour({ active, onComplete }) {
   }, [onComplete, toast, updateUser])
 
   const handleCallback = useCallback((data) => {
-    const { status, type, index } = data
+    const { status, type, index, action } = data
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       completeTour()
       return
     }
     if (type === EVENTS.TARGET_NOT_FOUND) {
-      setStepIndex(index + 1)
+      setStepIndex(Math.min(index + 1, steps.length - 1))
+      return
     }
-  }, [completeTour])
+    if (type === EVENTS.STEP_AFTER || type === EVENTS.STEP_BEFORE) {
+      const delta = action === ACTIONS.PREV ? -1 : 1
+      setStepIndex((prev) => {
+        const next = prev + delta
+        if (next < 0) return 0
+        if (next >= steps.length) return steps.length - 1
+        return next
+      })
+    }
+  }, [completeTour, steps.length])
 
   if (!active) return null
 
@@ -193,6 +203,9 @@ export function OnboardingTour({ active, onComplete }) {
       showSkipButton
       showProgress
       disableOverlayClose
+      scrollOffset={120}
+      scrollDuration={400}
+      disableScrollParentFix
       callback={handleCallback}
       styles={{
         options: {

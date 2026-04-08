@@ -9,7 +9,13 @@ export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitl
       <div className="flex flex-col lg:flex-row">
         {bootcampImage && (
           <div className="h-40 lg:h-auto lg:w-60 w-full overflow-hidden shrink-0">
-            <img src={bootcampImage} alt={bootcampTitle || 'Bootcamp'} className="w-full h-full object-cover" />
+            <img
+              src={bootcampImage}
+              alt={bootcampTitle || 'Bootcamp'}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         )}
         <div className="flex-1 p-6 flex flex-col gap-4">

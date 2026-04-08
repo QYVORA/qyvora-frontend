@@ -36,7 +36,7 @@ export function PublicFooter() {
         <div className="max-w-7xl mx-auto px-6 pb-6 flex justify-center overflow-hidden">
           <div className="w-full h-[18vh] sm:h-[24vh] lg:h-[30vh] flex items-center justify-center overflow-hidden">
             <img
-              src="/HSOCIETY_LOGO.png"
+              src="/HSOCIETY_LOGO.webp"
               alt="HSOCIETY"
               className="w-[80vw] max-w-[1800px] opacity-70 h-auto object-contain"
               loading="lazy"
