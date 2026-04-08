@@ -3,8 +3,7 @@ import { useTheme } from '@/core/contexts/ThemeContext'
 
 export function LiveTickerSection({ leaderboard = [], loading = false }) {
   const { isDark } = useTheme()
-  const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
-  const totalCp = totalXp
+  const totalCp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
   const glow = isDark ? 'bg-accent/10' : 'bg-accent/20'
 
   return (
@@ -16,13 +15,12 @@ export function LiveTickerSection({ leaderboard = [], loading = false }) {
         <div>
           <SectionHeader
             kicker="// operator economy"
-            title="XP & CP Live Ticker"
+            title="CP Live Ticker"
             subtitle="Live totals pulled from operator activity across the platform."
             align="left"
           />
           <p className="text-[var(--text-secondary)] text-base leading-relaxed mt-5">
-            See how the operator economy moves in real-time. XP converts directly into CP, so the
-            entire ecosystem scales with community output.
+            See how the operator economy moves in real-time as CP flows across the platform.
           </p>
         </div>
         <div className="card p-8 border border-accent/25 text-left">
@@ -35,10 +33,6 @@ export function LiveTickerSection({ leaderboard = [], loading = false }) {
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-[var(--text-secondary)]">Total XP Tracked</span>
-                <span className="font-mono text-lg text-accent">{Number(totalXp).toLocaleString()} XP</span>
-              </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-[var(--text-secondary)]">CP In Circulation</span>
                 <span className="font-mono text-lg text-[var(--text-primary)]">{Number(totalCp).toLocaleString()} CP</span>

@@ -18,17 +18,17 @@ export function ProfileLeaderboard({ user, entries = [] }) {
               key={entry.id || entry.handle || i}
               className={`flex items-center gap-4 p-3 rounded-xl ${isMe ? 'bg-accent/5 border border-accent/20' : 'hover:bg-[var(--bg-secondary)]'} transition-colors`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-mono shrink-0 ${i === 0 ? 'bg-accent/20 text-accent' : i === 1 ? 'bg-accent/15 text-accent' : i === 2 ? 'bg-accent/10 text-accent' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'}`}>
-                {entry.rank}
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono shrink-0 ${i === 0 ? 'bg-accent/20 text-accent' : i === 1 ? 'bg-accent/15 text-accent' : i === 2 ? 'bg-accent/10 text-accent' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'}`}>
+                {String(i + 1).padStart(2, '0')}
               </div>
               <Avatar username={handle} size="sm" />
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium ${isMe ? 'text-accent' : 'text-[var(--text-primary)]'}`}>
+                <p className={`text-sm font-medium truncate ${isMe ? 'text-accent' : 'text-[var(--text-primary)]'}`} title={handle}>
                   {handle} {isMe && <span className="text-xs text-accent">(you)</span>}
                 </p>
-                <p className="text-xs text-[var(--text-muted)]">{entry.rank}</p>
+                <p className="text-xs text-[var(--text-muted)] truncate" title={entry.rank}>{entry.rank}</p>
               </div>
-              <span className="font-mono text-sm font-bold text-[var(--text-primary)]">{Number(entry.totalXp || 0).toLocaleString()} XP</span>
+              <span className="font-mono text-sm font-bold text-[var(--text-primary)]">{Number(entry.totalXp || 0).toLocaleString()} CP</span>
             </div>
           )
         })}

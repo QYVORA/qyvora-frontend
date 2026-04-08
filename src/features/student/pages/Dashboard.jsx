@@ -21,7 +21,6 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState(null)
   const [overview, setOverview] = useState(null)
-  const [xpSummary, setXpSummary] = useState(null)
   const [balance, setBalance] = useState(null)
   const [bootcamps, setBootcamps] = useState([])
   const [tourActive, setTourActive] = useState(false)
@@ -53,17 +52,15 @@ export default function StudentDashboard() {
     let mounted = true
     const load = async () => {
       try {
-        const [profileRes, overviewRes, xpRes, balanceRes, bootcampsRes] = await Promise.all([
+        const [profileRes, overviewRes, balanceRes, bootcampsRes] = await Promise.all([
           profileService.getProfile(),
           studentService.getOverview(),
-          studentService.getXpSummary(),
           cpService.getBalance(),
           api.get('/public/bootcamps'),
         ])
         if (!mounted) return
         setProfile(profileRes.data || null)
         setOverview(overviewRes.data || null)
-        setXpSummary(xpRes.data || null)
         setBalance(balanceRes.data || null)
         setBootcamps(bootcampsRes.data?.items || [])
         if (profileRes.data) updateUser(profileRes.data)
@@ -78,8 +75,8 @@ export default function StudentDashboard() {
   }, [updateUser])
 
   const displayName = profile?.hackerHandle || profile?.name || profile?.email || sessionUser?.hackerHandle || sessionUser?.name
-  const totalXp = xpSummary?.totalXp ?? profile?.xpSummary?.totalXp ?? 0
-  const rankLabel = xpSummary?.rank || profile?.xpSummary?.rank || 'Operator'
+  const totalCp = profile?.cpPoints ?? 0
+  const rankLabel = profile?.xpSummary?.rank || 'Operator'
   const currentModule = useMemo(() => {
     return overview?.progressMeta?.currentPhase
       ? { title: overview.progressMeta.currentPhase.title, status: 'in-progress' }
@@ -283,7 +280,7 @@ export default function StudentDashboard() {
         bootcampImage={currentBootcamp?.image ? resolveImageUrl(currentBootcamp.image) : ''}
         isEnrolled={(overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'}
       />
-      <RankProgressCard xp={totalXp} rankLabel={rankLabel} />
+      <RankProgressCard cp={totalCp} rankLabel={rankLabel} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <QuickLinks user={profile || sessionUser} />

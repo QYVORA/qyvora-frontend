@@ -1,7 +1,7 @@
-import { Calendar, Edit3, Shield, Star, X, Zap } from 'lucide-react'
+import { Calendar, Edit3, Shield, Star, X } from 'lucide-react'
 import { Avatar, Badge, Button, Card, ProgressBar } from '@/shared/components/ui'
 
-export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggleEdit, totalXp }) {
+export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggleEdit, totalCp }) {
   const displayName = user?.hackerHandle || user?.name || user?.email
   return (
     <Card className="relative overflow-hidden isolate">
@@ -31,8 +31,7 @@ export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggle
 
           <div className="flex flex-wrap gap-4 mt-4">
             {[
-              { label: 'XP', value: Number(totalXp || 0).toLocaleString(), icon: Zap },
-              { label: 'CP', value: Number(user?.cpPoints || 0).toLocaleString(), icon: Star },
+              { label: 'CP', value: Number(totalCp || 0).toLocaleString(), icon: Star },
               { label: 'Role', value: user?.role || 'student', icon: Shield },
               { label: 'Joined', value: user?.createdAt ? new Date(user.createdAt).getFullYear() : '—', icon: Calendar },
             ].map(({ label, value, icon: Icon }) => (
@@ -46,10 +45,10 @@ export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggle
 
           <div className="mt-4 max-w-sm">
             <ProgressBar
-              value={Number(totalXp || 0)}
-              max={Number(totalXp || 1)}
+              value={Number(totalCp || 0)}
+              max={Number(totalCp || 1)}
               color="var(--accent)"
-              label={`${Number(totalXp || 0).toLocaleString()} XP`}
+              label={`${Number(totalCp || 0).toLocaleString()} CP`}
               showPercent={false}
             />
           </div>

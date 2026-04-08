@@ -4,7 +4,6 @@ import { useTheme } from '@/core/contexts/ThemeContext'
 
 export function BootcampPreviewSection({ rewards }) {
   const { isDark } = useTheme()
-  const earnedXp = rewards?.totals?.xp || 0
   const earnedCp = rewards?.totals?.cp || 0
   const accentGlow = isDark ? 'bg-accent/12' : 'bg-accent/18'
 
@@ -46,20 +45,13 @@ export function BootcampPreviewSection({ rewards }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="rounded-xl border border-[var(--border)] p-4">
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Bonus Wallet</p>
                   <p className="text-2xl font-display font-bold text-[var(--text-primary)] mt-2">
                     {Number(earnedCp).toLocaleString()} <span className="text-sm text-[var(--text-muted)]">CP</span>
                   </p>
                   <p className="text-xs text-[var(--text-muted)] mt-1">Live preview balance</p>
-                </div>
-                <div className="rounded-xl border border-[var(--border)] p-4">
-                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">XP Earned</p>
-                  <p className="text-2xl font-display font-bold text-accent mt-2">
-                    {Number(earnedXp).toLocaleString()} <span className="text-sm text-[var(--text-muted)]">XP</span>
-                  </p>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">Session tally</p>
                 </div>
               </div>
 

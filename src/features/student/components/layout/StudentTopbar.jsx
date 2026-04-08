@@ -1,4 +1,4 @@
-import { LogOut, Bell, Zap } from 'lucide-react'
+import { LogOut, Bell, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { clsx } from 'clsx'
@@ -54,8 +54,8 @@ export function StudentTopbar({ user, onLogout, solid }) {
         <Logo size="md" scale={1.7} offsetY={-2} className="h-[40px]" />
       </Link>
       <div className="hidden lg:flex items-center gap-2 text-[var(--text-muted)] text-sm">
-        <Zap size={14} className="text-accent" />
-        <span className="font-mono">Rank {user?.xpSummary?.rank || 'Operator'} — {Number(user?.xpSummary?.totalXp || 0).toLocaleString()} XP</span>
+        <Star size={14} className="text-accent" />
+        <span className="font-mono">Rank {user?.xpSummary?.rank || 'Operator'} — {Number(user?.cpPoints || 0).toLocaleString()} CP</span>
       </div>
       <div className="flex items-center gap-2 ml-auto">
         <div className="relative group">

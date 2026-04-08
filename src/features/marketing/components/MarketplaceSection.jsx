@@ -9,7 +9,6 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
   const { isDark } = useTheme()
   const previewItems = items.slice(0, 3)
   const earnedCp = rewards?.totals?.cp || 0
-  const earnedXp = rewards?.totals?.xp || 0
   return (
     <section className="py-32 px-6 relative section-gradient" id="marketplace">
       <div className="max-w-7xl mx-auto">
@@ -56,15 +55,9 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                     {Number(earnedCp).toLocaleString()} CP
                   </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">XP Earned</p>
-                  <p className="text-lg font-semibold text-accent">
-                    {Number(earnedXp).toLocaleString()} XP
-                  </p>
-                </div>
               </div>
               <p className="text-xs text-[var(--text-muted)] mt-2">
-                CP and XP totals update as you complete modules and challenges.
+                CP totals update as you complete milestones and earn rewards.
               </p>
             </div>
             <StaggerReveal as="ul" className="space-y-4" stagger={80}>

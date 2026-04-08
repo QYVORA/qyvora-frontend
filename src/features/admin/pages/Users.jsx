@@ -193,7 +193,7 @@ export default function AdminUsers() {
                 <tr className="border-b border-[var(--border)] text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
                   <th className="text-left p-4">User</th>
                   <th className="text-left p-4">Rank / Phase</th>
-                  <th className="text-left p-4">XP / CP</th>
+                  <th className="text-left p-4">CP</th>
                   <th className="text-left p-4">Joined</th>
                   <th className="text-left p-4">Status</th>
                   <th className="text-right p-4">Actions</th>

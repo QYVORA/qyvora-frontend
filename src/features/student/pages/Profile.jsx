@@ -66,7 +66,7 @@ export default function ProfilePage() {
   }, [toast, updateUser])
 
   const rankLabel = profile?.xpSummary?.rank || 'Operator'
-  const totalXp = profile?.xpSummary?.totalXp || 0
+  const totalCp = profile?.cpPoints || 0
   const leaderboardPos = leaderboard.findIndex(e => (e.handle || e.name) === (profile?.hackerHandle || profile?.name)) + 1
 
   const handleSave = async () => {
@@ -111,7 +111,7 @@ export default function ProfilePage() {
           leaderboardPos={leaderboardPos}
           editing={editing}
           onToggleEdit={() => setEditing(e => !e)}
-          totalXp={totalXp}
+          totalCp={totalCp}
         />
       )}
 
@@ -170,7 +170,7 @@ export default function ProfilePage() {
           <Skeleton className="h-4 w-full" />
         </Card>
       ) : (
-        <ProfileStats user={profile || user} rankLabel={rankLabel} totalXp={totalXp} />
+        <ProfileStats user={profile || user} rankLabel={rankLabel} totalCp={totalCp} />
       )}
       {loading ? (
         <Card className="space-y-3">

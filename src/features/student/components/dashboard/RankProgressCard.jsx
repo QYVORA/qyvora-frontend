@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react'
 import { Card } from '@/shared/components/ui'
 
-export function RankProgressCard({ xp, rankLabel }) {
+export function RankProgressCard({ cp, rankLabel }) {
   return (
     <Card>
       <div className="flex items-center gap-2 mb-4">
@@ -17,7 +17,7 @@ export function RankProgressCard({ xp, rankLabel }) {
           <div className="progress-fill" style={{ width: '100%', background: 'var(--accent)' }} />
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs text-[var(--text-muted)]">{Number(xp || 0).toLocaleString()} XP</span>
+          <span className="text-xs text-[var(--text-muted)]">{Number(cp || 0).toLocaleString()} CP</span>
           <span className="text-xs text-[var(--text-muted)]">Live rank</span>
         </div>
       </div>

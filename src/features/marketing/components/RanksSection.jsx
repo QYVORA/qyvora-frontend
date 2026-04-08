@@ -2,9 +2,7 @@ import { Avatar, SectionHeader, Spinner } from '@/shared/components/ui'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function RanksSection({ leaderboard = [], loading = false, rewards }) {
-  const totalXp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
-  const totalCp = totalXp
-  const earnedXp = rewards?.totals?.xp || 0
+  const totalCp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
   const earnedCp = rewards?.totals?.cp || 0
   return (
     <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden section-gradient border-y border-[var(--border)]/40">
@@ -15,7 +13,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
         <SectionHeader
           kicker="// progression"
           title="Rise Through the Ranks"
-          subtitle="XP never lies. Your rank reflects your actual skill level."
+          subtitle="Your rank reflects your earned CP over time."
         />
 
         <StaggerReveal as="div" className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6" stagger={120} variant="fade">
@@ -26,10 +24,6 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
             </div>
           ) : (
             <>
-              <div className="card px-5 py-3">
-                <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Total XP</p>
-                <p className="font-display font-bold text-xl text-accent">{Number(totalXp + earnedXp).toLocaleString()} XP</p>
-              </div>
               <div className="card px-5 py-3">
                 <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Total CP</p>
                 <p className="font-display font-bold text-xl text-[var(--text-primary)]">{Number(totalCp + earnedCp).toLocaleString()} CP</p>
@@ -81,7 +75,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                     {rankLabel}
                   </p>
                   <p className="text-xs font-mono relative z-10" style={{ color }}>
-                    {Number(entry.totalXp || 0).toLocaleString()} XP
+                    {Number(entry.totalXp || 0).toLocaleString()} CP
                   </p>
                 </div>
               )

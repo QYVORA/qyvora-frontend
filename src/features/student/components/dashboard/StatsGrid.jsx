@@ -1,8 +1,8 @@
-import { Zap, Trophy, Wallet, Target } from 'lucide-react'
+import { Star, Trophy, Wallet, Target } from 'lucide-react'
 import { CP_COIN } from '@/features/marketing/data/landingData'
 import { StatCard } from '@/shared/components/ui'
 
-export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, showCurrentModule = true }) {
+export function StatsGrid({ currentModule, totalCp, cpBalance, overallProgress, showCurrentModule = true }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-tour="stats-grid">
       {showCurrentModule && (
@@ -16,7 +16,7 @@ export function StatsGrid({ currentModule, totalXp, cpBalance, overallProgress, 
           valueClassName="text-lg leading-snug"
         />
       )}
-      <StatCard label="Total XP" value={Number(totalXp || 0).toLocaleString()} sub="Experience points" icon={Zap} color="var(--accent)" className="h-full" />
+      <StatCard label="Total CP" value={Number(totalCp || 0).toLocaleString()} sub="Rank points" icon={Star} color="var(--accent)" className="h-full" />
       <div className="relative overflow-hidden rounded-2xl min-h-[150px] h-full" data-tour="cp-balance">
         <StatCard
           label="CP Balance"
