@@ -6,6 +6,7 @@ import { Avatar } from '@/shared/components/ui'
 import { Logo } from '@/shared/components/brand/Logo'
 import { notificationsService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
+import { resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 
 export function StudentTopbar({ user, onLogout, solid }) {
   const { toast } = useToast()
@@ -126,7 +127,18 @@ export function StudentTopbar({ user, onLogout, solid }) {
             className="btn-ghost px-3 py-1.5 rounded-lg flex items-center gap-2.5 max-w-[220px]"
             data-tour="topbar-profile"
           >
-            <Avatar username={user?.hackerHandle || user?.name || user?.email} size="sm" />
+            <Avatar
+              username={user?.hackerHandle || user?.name || user?.email}
+              size="sm"
+              src={user?.avatarUrl}
+              seed={resolveAvatarSeed({
+                id: user?.id,
+                _id: user?._id,
+                email: user?.email,
+                hackerHandle: user?.hackerHandle,
+                name: user?.name,
+              })}
+            />
             <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:block truncate">
               {user?.hackerHandle || user?.name || user?.email}
             </span>

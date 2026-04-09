@@ -10,7 +10,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
   const previewItems = items.slice(0, 3)
   const earnedCp = rewards?.totals?.cp || 0
   return (
-    <section className="py-32 px-6 relative section-gradient" id="marketplace">
+    <section className="py-32 px-6 relative" id="marketplace">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           <div className="flex flex-col">

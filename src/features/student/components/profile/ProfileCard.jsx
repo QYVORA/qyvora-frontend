@@ -1,14 +1,22 @@
 import { Calendar, Edit3, Shield, Star, X } from 'lucide-react'
 import { Avatar, Badge, Button, Card, ProgressBar } from '@/shared/components/ui'
+import { resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 
 export function ProfileCard({ user, rankLabel, leaderboardPos, editing, onToggleEdit, totalCp }) {
   const displayName = user?.hackerHandle || user?.name || user?.email
+  const avatarSeed = resolveAvatarSeed({
+    id: user?.id,
+    _id: user?._id,
+    email: user?.email,
+    hackerHandle: user?.hackerHandle,
+    name: user?.name,
+  })
   return (
     <Card className="relative overflow-hidden isolate">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
       <div className="relative z-10 flex flex-col sm:flex-row items-start gap-6">
         <div className="relative">
-          <Avatar username={displayName} size="xl" />
+          <Avatar username={displayName} size="xl" src={user?.avatarUrl} seed={avatarSeed} />
           <div
             className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-[var(--bg-card)] flex items-center justify-center"
             style={{ background: 'var(--accent)' }}

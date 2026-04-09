@@ -20,7 +20,7 @@ export function PhasesSection({ items = [], loading = false }) {
     return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
   }
   return (
-    <section className="py-32 px-6 bg-[var(--bg-primary)] relative section-gradient border-y border-[var(--border)]/40" id="bootcamps">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative border-y border-[var(--border)]/40" id="bootcamps">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20">
           <SectionHeader

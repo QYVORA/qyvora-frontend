@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Search, Ban, Eye, Users, CheckCircle } from 'lucide-react'
 import { Badge, Avatar, Button, EmptyState, Skeleton, Card } from '@/shared/components/ui'
+import { resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useModal } from '@/core/contexts/ModalContext'
 import { adminService } from '@/core/services'
@@ -204,7 +205,18 @@ export default function AdminUsers() {
                   <tr key={u.id} className="hover:bg-[var(--bg-secondary)] transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <Avatar username={u.hackerHandle || u.name || u.email} size="sm" />
+                        <Avatar
+                          username={u.hackerHandle || u.name || u.email}
+                          size="sm"
+                          src={u.avatarUrl}
+                          seed={resolveAvatarSeed({
+                            id: u.id,
+                            _id: u._id,
+                            email: u.email,
+                            hackerHandle: u.hackerHandle,
+                            name: u.name,
+                          })}
+                        />
                         <div>
                           <p className="text-sm font-medium text-[var(--text-primary)]">{u.hackerHandle || u.name || u.email}</p>
                           <p className="text-xs text-[var(--text-muted)]">{u.email}</p>

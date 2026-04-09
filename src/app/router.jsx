@@ -8,6 +8,7 @@ import NotFoundPage from '@/shared/pages/NotFoundPage'
 const LandingPage = lazy(() => import('@/features/marketing/pages/LandingPage'))
 const PrivacyPage = lazy(() => import('@/features/marketing/pages/PrivacyPage'))
 const TermsPage = lazy(() => import('@/features/marketing/pages/TermsPage'))
+const IdenticonPreviewPage = lazy(() => import('@/shared/pages/IdenticonPreviewPage'))
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/features/auth/pages/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('@/features/auth/pages/ForgotPasswordPage'))
@@ -57,6 +58,7 @@ export function AppRouter() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/identicon-preview" element={<IdenticonPreviewPage />} />
           <Route path="*" element={<NotFoundPage />} />
           </Route>
 

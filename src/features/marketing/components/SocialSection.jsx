@@ -4,7 +4,7 @@ import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function SocialSection() {
   return (
-    <section className="px-6 py-24 relative section-gradient">
+    <section className="px-6 py-24 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
       <div className="max-w-6xl mx-auto relative">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 text-center md:text-left items-center">

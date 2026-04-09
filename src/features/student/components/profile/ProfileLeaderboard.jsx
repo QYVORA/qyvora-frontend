@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react'
 import { Avatar, Card } from '@/shared/components/ui'
+import { resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 
 export function ProfileLeaderboard({ user, entries = [] }) {
   return (
@@ -13,6 +14,13 @@ export function ProfileLeaderboard({ user, entries = [] }) {
         ) : entries.map((entry, i) => {
           const handle = entry.handle || entry.name
           const isMe = handle === (user?.hackerHandle || user?.name)
+          const avatarSeed = resolveAvatarSeed({
+            id: entry.id,
+            _id: entry.userId,
+            email: entry.email,
+            handle,
+            name: entry.name,
+          })
           return (
             <div
               key={entry.id || entry.handle || i}
@@ -21,7 +29,7 @@ export function ProfileLeaderboard({ user, entries = [] }) {
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono shrink-0 ${i === 0 ? 'bg-accent/20 text-accent' : i === 1 ? 'bg-accent/15 text-accent' : i === 2 ? 'bg-accent/10 text-accent' : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'}`}>
                 {String(i + 1).padStart(2, '0')}
               </div>
-              <Avatar username={handle} size="sm" />
+              <Avatar username={handle} size="sm" src={entry.avatarUrl} seed={avatarSeed} />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-medium truncate ${isMe ? 'text-accent' : 'text-[var(--text-primary)]'}`} title={handle}>
                   {handle} {isMe && <span className="text-xs text-accent">(you)</span>}

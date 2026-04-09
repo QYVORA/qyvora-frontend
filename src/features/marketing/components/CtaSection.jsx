@@ -14,7 +14,7 @@ export function CtaSection() {
     }
     : undefined
   return (
-    <section className="py-36 px-0 relative overflow-hidden section-gradient" style={lightTextVars}>
+    <section className="py-36 px-0 relative overflow-hidden" style={lightTextVars}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

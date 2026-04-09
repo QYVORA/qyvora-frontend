@@ -8,7 +8,7 @@ export function BootcampPreviewSection({ rewards }) {
   const accentGlow = isDark ? 'bg-accent/12' : 'bg-accent/18'
 
   return (
-    <section className="py-28 px-6 relative section-gradient">
+    <section className="py-28 px-6 relative">
       <div className={`absolute -top-20 right-6 sm:right-12 w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] lg:w-[420px] lg:h-[420px] ${accentGlow} rounded-full blur-3xl opacity-70 pointer-events-none`} />
       <div className="max-w-7xl mx-auto relative">
         <div className="mb-16">

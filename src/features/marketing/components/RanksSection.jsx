@@ -1,11 +1,12 @@
 import { Avatar, SectionHeader, Spinner } from '@/shared/components/ui'
+import { resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function RanksSection({ leaderboard = [], loading = false, rewards }) {
   const totalCp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
   const earnedCp = rewards?.totals?.cp || 0
   return (
-    <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden section-gradient border-y border-[var(--border)]/40">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden border-y border-[var(--border)]/40">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/50 via-transparent to-[var(--bg-primary)]/50 pointer-events-none" />
 
@@ -46,7 +47,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
           </div>
         ) : (
           <StaggerReveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16" stagger={90} variant="scale">
-            {leaderboard.slice(0, 6).map((entry) => {
+            {leaderboard.slice(0, 6).map((entry, idx) => {
               const color = 'var(--accent)'
               const handle = entry.handle || entry.name || 'Anonymous'
               const displayHandle = handle.length > 14 ? `${handle.slice(0, 12)}…` : handle
@@ -63,7 +64,18 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                     style={{ background: `radial-gradient(ellipse at center, ${color}10 0%, transparent 70%)` }}
                   />
                   <div className="relative z-10">
-                    <Avatar username={handle} size="lg" />
+                    <Avatar
+                      username={handle}
+                      size="lg"
+                      src={entry.avatarUrl}
+                      seed={resolveAvatarSeed({
+                        id: entry.id,
+                        _id: entry.userId,
+                        email: entry.email,
+                        handle,
+                        name: entry.name,
+                      })}
+                    />
                   </div>
                   <p
                     className="font-display font-bold text-[var(--text-primary)] text-sm sm:text-base text-center relative z-10 truncate max-w-[140px]"
