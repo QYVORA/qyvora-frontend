@@ -10,7 +10,7 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2.5 group px-3 sm:px-0 pl-3 sm:pl-0 md:pl-2">
-            <Logo size="md" scale={2.6} offsetY={-3} className="h-[40px] ml-2 sm:ml-0 md:ml-0" />
+            <Logo size="md" scale={2.6} offsetY={-3} className="h-[70px] ml-3 sm:ml-0 md:ml-0" />
           </Link>
         </div>
 
