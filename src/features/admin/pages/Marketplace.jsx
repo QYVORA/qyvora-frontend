@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ShoppingBag, X, Eye, Star, UploadCloud, ToggleLeft, BadgeCheck, BadgeX } from 'lucide-react'
+import { ShoppingBag, X, Eye, Star, UploadCloud, ToggleLeft, BadgeCheck, BadgeX, Edit3 } from 'lucide-react'
 import { Badge, Button, Card, Input, Select, Skeleton } from '@/shared/components/ui'
 import { useToast } from '@/core/contexts/ToastContext'
 import { adminService } from '@/core/services'
@@ -9,6 +9,8 @@ export default function AdminMarketplace() {
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [file, setFile] = useState(null)
+  const [coverFile, setCoverFile] = useState(null)
+  const [editingId, setEditingId] = useState('')
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -20,6 +22,7 @@ export default function AdminMarketplace() {
     coverUrl: '',
   })
   const fileRef = useRef()
+  const coverRef = useRef()
   const { toast } = useToast()
 
   useEffect(() => {
@@ -55,12 +58,54 @@ export default function AdminMarketplace() {
     setFile(next)
   }
 
-  const handleCreate = async () => {
+  const handleCoverSelect = (e) => {
+    const next = e.target.files?.[0]
+    if (!next) return
+    setCoverFile(next)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingId('')
+    setForm({
+      title: '',
+      description: '',
+      cpPrice: '',
+      type: 'pdf',
+      sortOrder: '0',
+      isActive: true,
+      isFree: false,
+      coverUrl: '',
+    })
+    setFile(null)
+    setCoverFile(null)
+    if (fileRef.current) fileRef.current.value = ''
+    if (coverRef.current) coverRef.current.value = ''
+  }
+
+  const handleEdit = (item) => {
+    setEditingId(item._id || item.id || '')
+    setForm({
+      title: item.title || '',
+      description: item.description || '',
+      cpPrice: String(item.cpPrice ?? ''),
+      type: item.type || 'pdf',
+      sortOrder: String(item.sortOrder ?? 0),
+      isActive: item.isActive !== false,
+      isFree: Number(item.cpPrice || 0) === 0,
+      coverUrl: item.coverUrl || '',
+    })
+    setFile(null)
+    setCoverFile(null)
+    if (fileRef.current) fileRef.current.value = ''
+    if (coverRef.current) coverRef.current.value = ''
+  }
+
+  const handleSave = async () => {
     if (!form.title.trim()) {
       toast({ type: 'error', message: 'Title is required.' })
       return
     }
-    if (!file) {
+    if (!editingId && !file) {
       toast({ type: 'error', message: 'Please upload a PDF file.' })
       return
     }
@@ -72,57 +117,84 @@ export default function AdminMarketplace() {
 
     setUploading(true)
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      const uploadRes = await adminService.uploadCPProduct(fd)
-      const fileId = uploadRes.data?.fileId
-      const fileName = uploadRes.data?.originalName || ''
-      const fileSize = uploadRes.data?.size || 0
-      const fileMime = uploadRes.data?.mime || ''
-      if (!fileId) {
-        throw new Error('Upload failed')
+      let coverUrl = form.coverUrl || ''
+      if (coverFile) {
+        const coverData = new FormData()
+        coverData.append('file', coverFile)
+        const coverRes = await adminService.uploadCPProductCover(coverData)
+        coverUrl = coverRes.data?.url || coverRes.data?.relativeUrl || ''
+      }
+
+      let fileId = ''
+      let fileName = ''
+      let fileSize = 0
+      let fileMime = ''
+      if (file) {
+        const fd = new FormData()
+        fd.append('file', file)
+        const uploadRes = await adminService.uploadCPProduct(fd)
+        fileId = uploadRes.data?.fileId
+        fileName = uploadRes.data?.originalName || ''
+        fileSize = uploadRes.data?.size || 0
+        fileMime = uploadRes.data?.mime || ''
+        if (!fileId) {
+          throw new Error('Upload failed')
+        }
       }
 
       const payload = {
         title: form.title.trim(),
         description: form.description.trim(),
         cpPrice: price,
-        coverUrl: form.coverUrl.trim(),
+        coverUrl,
         productUrl: '',
-        fileId,
-        fileName,
-        fileSize,
-        fileMime,
         type: form.type || 'pdf',
         sortOrder: Number(form.sortOrder || 0),
         isActive: Boolean(form.isActive),
       }
 
-      const created = await adminService.createCPProduct(payload)
-      const newItem = created.data
-      setAllItems(prev => {
-        const next = [newItem, ...prev]
-        return next.sort((a, b) => {
-          const orderDiff = Number(a.sortOrder || 0) - Number(b.sortOrder || 0)
-          if (orderDiff !== 0) return orderDiff
-          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+      if (fileId) {
+        payload.fileId = fileId
+        payload.fileName = fileName
+        payload.fileSize = fileSize
+        payload.fileMime = fileMime
+      }
+
+      if (editingId) {
+        const updated = await adminService.updateCPProduct(editingId, payload)
+        const nextItem = updated.data
+        setAllItems(prev => prev.map(item => (item._id === editingId || item.id === editingId ? nextItem : item)))
+        handleCancelEdit()
+        toast({ type: 'success', message: 'CP product updated.' })
+      } else {
+        const created = await adminService.createCPProduct(payload)
+        const newItem = created.data
+        setAllItems(prev => {
+          const next = [newItem, ...prev]
+          return next.sort((a, b) => {
+            const orderDiff = Number(a.sortOrder || 0) - Number(b.sortOrder || 0)
+            if (orderDiff !== 0) return orderDiff
+            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+          })
         })
-      })
-      setForm({
-        title: '',
-        description: '',
-        cpPrice: '',
-        type: 'pdf',
-        sortOrder: '0',
-        isActive: true,
-        isFree: false,
-        coverUrl: '',
-      })
-      setFile(null)
-      if (fileRef.current) fileRef.current.value = ''
-      toast({ type: 'success', title: 'CP Product created', message: `"${newItem.title}" is now live.` })
+        setForm({
+          title: '',
+          description: '',
+          cpPrice: '',
+          type: 'pdf',
+          sortOrder: '0',
+          isActive: true,
+          isFree: false,
+          coverUrl: '',
+        })
+        setFile(null)
+        setCoverFile(null)
+        if (fileRef.current) fileRef.current.value = ''
+        if (coverRef.current) coverRef.current.value = ''
+        toast({ type: 'success', title: 'CP Product created', message: `"${newItem.title}" is now live.` })
+      }
     } catch {
-      toast({ type: 'error', message: 'Failed to create CP product.' })
+      toast({ type: 'error', message: editingId ? 'Failed to update CP product.' : 'Failed to create CP product.' })
     } finally {
       setUploading(false)
     }
@@ -150,7 +222,7 @@ export default function AdminMarketplace() {
 
       <Card>
         <h3 className="font-semibold text-[var(--text-primary)] mb-5 flex items-center gap-2">
-          <UploadCloud size={16} className="text-accent" /> Create CP Product
+          <UploadCloud size={16} className="text-accent" /> {editingId ? 'Edit CP Product' : 'Create CP Product'}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
@@ -199,16 +271,25 @@ export default function AdminMarketplace() {
           />
         </div>
         <div className="mt-4">
-          <Input
-            label="Cover Image URL (optional)"
-            placeholder="https://..."
-            value={form.coverUrl}
-            onChange={(e) => setForm(prev => ({ ...prev, coverUrl: e.target.value }))}
+          <label className="label">Cover Image (optional)</label>
+          <input
+            ref={coverRef}
+            type="file"
+            accept="image/*"
+            onChange={handleCoverSelect}
+            className="block w-full text-sm text-[var(--text-secondary)] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-accent/15 file:text-accent hover:file:bg-accent/25"
           />
+          {!coverFile && form.coverUrl && (
+            <div className="mt-3 flex items-center gap-3">
+              <img src={form.coverUrl} alt="" className="w-16 h-10 object-cover rounded-md border border-[var(--border)]" />
+              <span className="text-xs text-[var(--text-muted)]">Current cover</span>
+            </div>
+          )}
+          {coverFile && <p className="text-xs text-[var(--text-muted)] mt-2">Selected: {coverFile.name}</p>}
         </div>
         <div className="mt-4 flex flex-col md:flex-row gap-4 items-start md:items-center">
           <div className="flex-1">
-            <label className="label">PDF File</label>
+            <label className="label">{editingId ? 'Replace PDF File (optional)' : 'PDF File'}</label>
             <input
               ref={fileRef}
               type="file"
@@ -219,6 +300,11 @@ export default function AdminMarketplace() {
             {file && <p className="text-xs text-[var(--text-muted)] mt-2">Selected: {file.name}</p>}
           </div>
           <div className="flex items-center gap-3">
+            {editingId && (
+              <Button variant="ghost" onClick={handleCancelEdit}>
+                Cancel Edit
+              </Button>
+            )}
             <label className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
               <input
                 type="checkbox"
@@ -242,8 +328,8 @@ export default function AdminMarketplace() {
               />
               Active
             </label>
-            <Button variant="primary" onClick={handleCreate} disabled={uploading}>
-              {uploading ? 'Uploading...' : 'Create Product'}
+            <Button variant="primary" onClick={handleSave} disabled={uploading}>
+              {uploading ? 'Uploading...' : editingId ? 'Update Product' : 'Create Product'}
             </Button>
           </div>
         </div>
@@ -301,6 +387,14 @@ export default function AdminMarketplace() {
                     <td className="p-3 text-sm text-[var(--text-muted)] font-mono">{item.createdBy || '—'}</td>
                     <td className="p-3">
                       <div className="flex items-center justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={Edit3}
+                          onClick={() => handleEdit(item)}
+                        >
+                          Edit
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

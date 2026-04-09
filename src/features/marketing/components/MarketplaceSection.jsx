@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronRight } from 'lucide-react'
+import { ArrowRight, ChevronRight, FileText } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
@@ -127,7 +127,18 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                   ) : (
                     previewItems.map((item) => (
                       <div key={item._id || item.id} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                        <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-7 rounded-md overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
+                            {item.coverUrl ? (
+                              <img src={item.coverUrl} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)]">
+                                <FileText size={12} />
+                              </div>
+                            )}
+                          </div>
+                          <span className="text-sm text-[var(--text-secondary)]">{item.title}</span>
+                        </div>
                         <span className="text-sm font-mono font-bold text-accent">{item.cpPrice} CP</span>
                       </div>
                     ))
@@ -150,7 +161,18 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                     <StaggerReveal className="divide-y divide-[var(--border)]" stagger={70} variant="right">
                       {previewItems.map(item => (
                         <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3">
-                          <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-6 rounded-md overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
+                              {item.coverUrl ? (
+                                <img src={item.coverUrl} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)]">
+                                  <FileText size={10} />
+                                </div>
+                              )}
+                            </div>
+                            <span className="text-xs text-[var(--text-secondary)]">{item.title}</span>
+                          </div>
                           <span className="text-xs font-mono font-bold text-accent">{item.cpPrice} CP</span>
                         </div>
                       ))}

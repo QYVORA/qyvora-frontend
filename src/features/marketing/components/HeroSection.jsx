@@ -98,7 +98,7 @@ export function HeroSection({
         <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full overflow-hidden h-[10rem] md:h-[9.5rem] lg:h-[12rem]">
           <TypingHeadline />
         </h1>
-        <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed text-center">
+        <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed text-center">
           HSOCIETY OFFSEC is an offensive security company training the next generation of security talent across Africa.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
