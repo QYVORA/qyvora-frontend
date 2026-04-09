@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell, Layers } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -11,6 +11,7 @@ import { StudentMobileNav } from '@/features/student/components/layout/StudentMo
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/learn', label: 'Learn', icon: Layers },
   { to: '/bootcamp', label: 'Bootcamp', icon: BookOpen },
   { to: '/wallet', label: 'CP Wallet', icon: Wallet },
   { to: '/marketplace', label: 'Marketplace', icon: ShoppingBag },

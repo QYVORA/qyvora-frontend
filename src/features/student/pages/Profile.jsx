@@ -22,6 +22,7 @@ export default function ProfilePage() {
   const [form, setForm] = useState({ name: '', hackerHandle: '' })
   const [loading, setLoading] = useState(true)
   const [recoveryToken, setRecoveryToken] = useState('')
+  const [showRecoveryToken, setShowRecoveryToken] = useState(false)
   const [recoveryLoading, setRecoveryLoading] = useState(false)
 
   const withTimeout = (promise, ms = 8000) => Promise.race([
@@ -68,6 +69,7 @@ export default function ProfilePage() {
   const rankLabel = profile?.xpSummary?.rank || 'Operator'
   const totalCp = profile?.cpPoints || 0
   const leaderboardPos = leaderboard.findIndex(e => (e.handle || e.name) === (profile?.hackerHandle || profile?.name)) + 1
+  const completedRooms = profile?.learn?.completedRooms || []
 
   const handleSave = async () => {
     try {
@@ -123,35 +125,51 @@ export default function ProfilePage() {
               Save this token somewhere safe. It can recover your account if you lose access.
             </p>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!recoveryToken}
-            onClick={async () => {
-              try {
-                setRecoveryLoading(true)
-                const ok = await copyText(recoveryToken)
-                if (ok) {
-                  try {
-                    await profileService.acknowledgeRecoveryToken()
-                  } catch {
-                    // ignore acknowledgement failures
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={!recoveryToken}
+              onClick={() => setShowRecoveryToken((prev) => !prev)}
+            >
+              {showRecoveryToken ? 'Hide' : 'Show'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!recoveryToken}
+              onClick={async () => {
+                try {
+                  setRecoveryLoading(true)
+                  const ok = await copyText(recoveryToken)
+                  if (ok) {
+                    try {
+                      await profileService.acknowledgeRecoveryToken()
+                    } catch {
+                      // ignore acknowledgement failures
+                    }
+                    toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
+                  } else {
+                    toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
                   }
-                  toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
-                } else {
-                  toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
+                } finally {
+                  setRecoveryLoading(false)
                 }
-              } finally {
-                setRecoveryLoading(false)
-              }
-            }}
-            loading={recoveryLoading}
-          >
-            Copy Token
-          </Button>
+              }}
+              loading={recoveryLoading}
+            >
+              Copy Token
+            </Button>
+          </div>
         </div>
         <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-          {loading ? <Skeleton className="h-4 w-full" /> : (recoveryToken || 'Recovery tokens are shown only once during registration. Contact support if you lost yours.')}
+          {loading ? (
+            <Skeleton className="h-4 w-full" />
+          ) : (
+            recoveryToken
+              ? (showRecoveryToken ? recoveryToken : '••••••••••••••••••••••••')
+              : 'Recovery tokens are shown only once during registration. Contact support if you lost yours.'
+          )}
         </div>
       </Card>
 
@@ -180,6 +198,38 @@ export default function ProfilePage() {
         </Card>
       ) : (
         <PhaseProgress items={overview?.learningPath || []} />
+      )}
+      {loading ? (
+        <Card className="space-y-3">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-full" />
+        </Card>
+      ) : (
+        <Card className="space-y-3">
+          <h3 className="font-display font-semibold text-lg text-[var(--text-primary)]">Completed Rooms</h3>
+          {completedRooms.length === 0 ? (
+            <p className="text-sm text-[var(--text-secondary)]">Complete a room to see it here.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {completedRooms.map((room) => (
+                <div key={room.id} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-card)]">
+                  <div className="w-10 h-10 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] flex items-center justify-center overflow-hidden">
+                    {room.logoUrl ? (
+                      <img src={room.logoUrl} alt={room.title} className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">Room</span>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{room.title}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{room.level || 'Beginner'}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
       )}
       {loading ? (
         <Card className="space-y-3">

@@ -207,10 +207,10 @@ export default function BootcampPage() {
             return (
                 <div
                   key={item.id}
-                  className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
+                  className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto min-h-[280px]"
                   style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
                 >
-                <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
+                <div className="relative h-56 lg:h-full lg:w-2/5 overflow-hidden shrink-0 self-stretch">
                   <img
                     src={cover}
                     alt={item.title || 'Bootcamp'}

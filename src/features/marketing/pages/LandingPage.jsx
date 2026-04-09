@@ -4,6 +4,7 @@ import { FlowSection } from '@/features/marketing/components/FlowSection'
 import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
 import { BootcampPreviewSection } from '@/features/marketing/components/BootcampPreviewSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
+import { RoomsPreviewSection } from '@/features/marketing/components/RoomsPreviewSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
 import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
@@ -16,10 +17,12 @@ export default function LandingPage() {
   const [stats, setStats] = useState(null)
   const [items, setItems] = useState([])
   const [bootcamps, setBootcamps] = useState([])
+  const [rooms, setRooms] = useState([])
   const [leaderboard, setLeaderboard] = useState([])
   const [loadingStats, setLoadingStats] = useState(true)
   const [loadingItems, setLoadingItems] = useState(true)
   const [loadingBootcamps, setLoadingBootcamps] = useState(true)
+  const [loadingRooms, setLoadingRooms] = useState(true)
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true)
   const rewards = useLandingRewards()
 
@@ -29,22 +32,26 @@ export default function LandingPage() {
       setLoadingStats(true)
       setLoadingItems(true)
       setLoadingBootcamps(true)
+      setLoadingRooms(true)
       setLoadingLeaderboard(true)
       try {
-        const [statsRes, itemsRes, bootcampsRes, leaderboardRes] = await Promise.all([
+        const [statsRes, itemsRes, bootcampsRes, roomsRes, leaderboardRes] = await Promise.all([
           api.get('/public/landing-stats'),
           api.get('/public/cp-products'),
           api.get('/public/bootcamps'),
+          api.get('/public/rooms'),
           api.get('/public/leaderboard'),
         ])
         if (!mounted) return
         setStats(statsRes.data || null)
         setItems(itemsRes.data?.items || [])
         setBootcamps(bootcampsRes.data?.items || [])
+        setRooms(roomsRes.data?.items || [])
         setLeaderboard(leaderboardRes.data?.leaderboard || [])
         setLoadingStats(false)
         setLoadingItems(false)
         setLoadingBootcamps(false)
+        setLoadingRooms(false)
         setLoadingLeaderboard(false)
       } catch {
         // ignore public fetch errors
@@ -52,6 +59,7 @@ export default function LandingPage() {
         setLoadingStats(false)
         setLoadingItems(false)
         setLoadingBootcamps(false)
+        setLoadingRooms(false)
         setLoadingLeaderboard(false)
       }
     }
@@ -82,6 +90,9 @@ export default function LandingPage() {
       </ScrollReveal>
       <ScrollReveal delay={140}>
         <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
+      </ScrollReveal>
+      <ScrollReveal delay={150}>
+        <RoomsPreviewSection items={rooms} loading={loadingRooms} />
       </ScrollReveal>
       <ScrollReveal delay={160}>
         <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />

@@ -15,4 +15,7 @@ export const studentService = {
   getCourseProgress: (params) => api.get('/student/course/progress', { params }),
   getBootcampResources: (params) => api.get('/student/bootcamp/resources', { params }),
   requestQuiz: (payload) => api.post('/student/quiz', payload),
+  getRooms: () => api.get('/student/rooms'),
+  getRoom: (slug) => api.get(`/student/rooms/${slug}`),
+  completeRoom: (roomId) => api.post(`/student/rooms/${roomId}/complete`),
 }

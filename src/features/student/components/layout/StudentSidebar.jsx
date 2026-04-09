@@ -11,6 +11,7 @@ export function StudentSidebar({
   const navTemplate = mobile ? undefined : { gridTemplateRows: `repeat(${navItems.length}, minmax(0, 1fr))` }
   const tourMap = {
     '/dashboard': 'nav-dashboard',
+    '/learn': 'nav-learn',
     '/bootcamp': 'nav-bootcamp',
     '/wallet': 'nav-wallet',
     '/marketplace': 'nav-marketplace',

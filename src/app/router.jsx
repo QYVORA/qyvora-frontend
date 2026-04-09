@@ -22,6 +22,9 @@ const BootcampRoom = lazy(() => import('@/features/student/pages/BootcampRoom'))
 const StudentPayments = lazy(() => import('@/features/student/pages/StudentPayments'))
 const WalletPage = lazy(() => import('@/features/student/pages/Wallet'))
 const MarketplacePage = lazy(() => import('@/features/student/pages/Marketplace'))
+const LearnPage = lazy(() => import('@/features/student/pages/Learn'))
+const RoomsPage = lazy(() => import('@/features/student/pages/Rooms'))
+const RoomDetailPage = lazy(() => import('@/features/student/pages/RoomDetail'))
 const ProfilePage = lazy(() => import('@/features/student/pages/Profile'))
 const NotificationsPage = lazy(() => import('@/features/student/pages/Notifications'))
 const AdminDashboard = lazy(() => import('@/features/admin/pages/Dashboard'))
@@ -32,6 +35,8 @@ const AdminBootcampManagement = lazy(() => import('@/features/admin/pages/Bootca
 const AdminMarketplace = lazy(() => import('@/features/admin/pages/Marketplace'))
 const AdminNotifications = lazy(() => import('@/features/admin/pages/Notifications'))
 const AdminSecurityEvents = lazy(() => import('@/features/admin/pages/SecurityEvents'))
+const AdminRooms = lazy(() => import('@/features/admin/pages/LearnRooms'))
+const AdminLearnRules = lazy(() => import('@/features/admin/pages/LearnRules'))
 
 function ProtectedRoute({ children, role }) {
   const { user, loading } = useAuth()
@@ -80,6 +85,11 @@ export function AppRouter() {
           <Route path="/wallet" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
             <Route index element={<WalletPage />} />
           </Route>
+          <Route path="/learn" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
+            <Route index element={<LearnPage />} />
+            <Route path="rooms" element={<RoomsPage />} />
+            <Route path="rooms/:slug" element={<RoomDetailPage />} />
+          </Route>
           <Route path="/marketplace" element={<ProtectedRoute role="student"><StudentLayout /></ProtectedRoute>}>
           <Route index element={<MarketplacePage />} />
         </Route>
@@ -99,6 +109,8 @@ export function AppRouter() {
           <Route path="bootcamps" element={<AdminBootcamps />} />
           <Route path="bootcamp-management" element={<AdminBootcampManagement />} />
           <Route path="content" element={<AdminContent />} />
+          <Route path="rooms" element={<AdminRooms />} />
+          <Route path="learn-rules" element={<AdminLearnRules />} />
           <Route path="marketplace" element={<AdminMarketplace />} />
           <Route path="notifications" element={<AdminNotifications />} />
           <Route path="security-events" element={<AdminSecurityEvents />} />

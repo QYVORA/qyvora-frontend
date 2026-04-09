@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck } from 'lucide-react'
+import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck, Layers, ListChecks } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { AdminSidebar } from '@/features/admin/components/layout/AdminSidebar'
@@ -13,6 +13,8 @@ const NAV_ITEMS = [
   { to: '/admin/bootcamps', label: 'Bootcamps', icon: GraduationCap },
   { to: '/admin/bootcamp-management', label: 'Bootcamp Access', icon: ShieldCheck },
   { to: '/admin/content', label: 'Content Upload', icon: Upload },
+  { to: '/admin/rooms', label: 'Learn Rooms', icon: Layers },
+  { to: '/admin/learn-rules', label: 'Learn Rules', icon: ListChecks },
   { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag },
   { to: '/admin/notifications', label: 'Notifications', icon: Bell },
   { to: '/admin/security-events', label: 'Security Events', icon: AlertTriangle },
