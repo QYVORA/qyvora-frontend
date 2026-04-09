@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Plus, Trash2, Edit3, Save, RefreshCcw } from 'lucide-react'
 import { Button, Card, Input, Skeleton, Toggle } from '@/shared/components/ui'
 import { adminService } from '@/core/services'
+import { API_ORIGIN } from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
 
 const emptySection = () => ({
@@ -32,7 +33,18 @@ export default function LearnRooms() {
   const [saving, setSaving] = useState(false)
   const [editingId, setEditingId] = useState('')
   const [form, setForm] = useState(emptyForm)
+  const [uploadingCover, setUploadingCover] = useState(false)
+  const [uploadingLogo, setUploadingLogo] = useState(false)
   const { toast } = useToast()
+  const resolveImageUrl = (value) => {
+    const src = String(value || '').trim()
+    if (!src) return ''
+    if (src.startsWith('data:')) return src
+    if (/^https?:\/\//i.test(src)) return src
+    if (src.startsWith('//')) return `${window.location.protocol}${src}`
+    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
+    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
+  }
 
   useEffect(() => {
     let mounted = true
@@ -126,6 +138,25 @@ export default function LearnRooms() {
     }
   }
 
+  const handleImageUpload = async (file, field) => {
+    if (!file) return
+    const setUploading = field === 'coverImage' ? setUploadingCover : setUploadingLogo
+    try {
+      setUploading(true)
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await adminService.uploadRoomImage(formData)
+      const url = res.data?.url || ''
+      if (!url) throw new Error('Upload failed')
+      setForm((prev) => ({ ...prev, [field]: url }))
+      toast({ type: 'success', message: 'Image uploaded.' })
+    } catch {
+      toast({ type: 'error', message: 'Failed to upload image.' })
+    } finally {
+      setUploading(false)
+    }
+  }
+
   const handleEdit = (room) => {
     setEditingId(room._id)
     setForm({
@@ -193,8 +224,68 @@ export default function LearnRooms() {
           <Input label="Level" value={form.level} onChange={(e) => setForm((prev) => ({ ...prev, level: e.target.value }))} />
           <Input label="Estimated Minutes" type="number" value={form.estimatedMinutes} onChange={(e) => setForm((prev) => ({ ...prev, estimatedMinutes: e.target.value }))} />
           <Input label="Tags (comma separated)" value={form.tags} onChange={(e) => setForm((prev) => ({ ...prev, tags: e.target.value }))} className="md:col-span-2" />
-          <Input label="Cover Image URL" value={form.coverImage} onChange={(e) => setForm((prev) => ({ ...prev, coverImage: e.target.value }))} className="md:col-span-2" />
-          <Input label="Logo URL" value={form.logoUrl} onChange={(e) => setForm((prev) => ({ ...prev, logoUrl: e.target.value }))} />
+          <div className="md:col-span-2 space-y-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <input
+                className="input-field flex-1"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handleImageUpload(file, 'coverImage')
+                  e.target.value = ''
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setForm((prev) => ({ ...prev, coverImage: '' }))}
+                disabled={uploadingCover}
+              >
+                Clear Cover
+              </Button>
+            </div>
+            <Input label="Cover Image URL" value={form.coverImage} readOnly />
+            {form.coverImage && (
+              <div className="overflow-hidden rounded-lg border border-[var(--border)]">
+                <img src={resolveImageUrl(form.coverImage)} alt="Cover preview" className="w-full h-48 object-cover" />
+              </div>
+            )}
+            {uploadingCover && (
+              <p className="text-xs text-[var(--text-secondary)]">Uploading cover image...</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <input
+                className="input-field flex-1"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handleImageUpload(file, 'logoUrl')
+                  e.target.value = ''
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setForm((prev) => ({ ...prev, logoUrl: '' }))}
+                disabled={uploadingLogo}
+              >
+                Clear Logo
+              </Button>
+            </div>
+            <Input label="Logo URL" value={form.logoUrl} readOnly />
+            {form.logoUrl && (
+              <div className="overflow-hidden rounded-lg border border-[var(--border)]">
+                <img src={resolveImageUrl(form.logoUrl)} alt="Logo preview" className="w-full h-32 object-contain bg-white" />
+              </div>
+            )}
+            {uploadingLogo && (
+              <p className="text-xs text-[var(--text-secondary)]">Uploading logo...</p>
+            )}
+          </div>
           <Input label="Accent Color" value={form.accentColor} onChange={(e) => setForm((prev) => ({ ...prev, accentColor: e.target.value }))} />
           <Input label="Sort Order" type="number" value={form.sortOrder} onChange={(e) => setForm((prev) => ({ ...prev, sortOrder: e.target.value }))} />
           <div className="flex items-center gap-2">

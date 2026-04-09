@@ -17,6 +17,9 @@ export const adminService = {
   uploadCPProductCover: (formData) => api.post('/admin/uploads/cp-product-images', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
+  uploadRoomImage: (formData) => api.post('/admin/uploads/room-images', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
   uploadCPProduct: (formData) => api.post('/admin/uploads/cp-products', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
