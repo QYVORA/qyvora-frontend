@@ -28,6 +28,7 @@ export const PHASE_IMGS = [
   '/images/Curriculum-images/phase5.webp',
 ]
 
+/**Remove  Phase based cards And Content  */
 export const PHASE_PREVIEW = [
   { id: 1, title: 'Phase 01 — Reconnaissance', status: 'in-progress', roomsCompleted: 4, roomsTotal: 8, progress: 50 },
   { id: 2, title: 'Phase 02 — Exploitation', status: 'next', roomsCompleted: 1, roomsTotal: 10, progress: 10 },

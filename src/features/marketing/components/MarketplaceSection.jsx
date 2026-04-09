@@ -128,12 +128,12 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                     previewItems.map((item) => (
                       <div key={item._id || item.id} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-7 rounded-md overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
+                          <div className="w-16 h-12 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
                             {item.coverUrl ? (
                               <img src={item.coverUrl} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)]">
-                                <FileText size={12} />
+                                <FileText size={16} />
                               </div>
                             )}
                           </div>
@@ -162,12 +162,12 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                       {previewItems.map(item => (
                         <div key={item._id || item.id} className="flex items-center justify-between px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-6 rounded-md overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
+                            <div className="w-14 h-10 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--bg-secondary)]">
                               {item.coverUrl ? (
                                 <img src={item.coverUrl} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)]">
-                                  <FileText size={10} />
+                                  <FileText size={14} />
                                 </div>
                               )}
                             </div>
