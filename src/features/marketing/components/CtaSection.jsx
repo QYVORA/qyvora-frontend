@@ -37,7 +37,7 @@ export function CtaSection() {
             Ready to Operate?
           </h2>
           <p className="text-[var(--text-secondary)] mb-10 text-base sm:text-xl leading-relaxed max-w-xl mx-auto">
-            Join 1,800+ operators training in offensive security. No experience required. Just commitment.
+            Join 100+ Elite operators training in offensive security. No experience required. Just commitment.
           </p>
           <Link to="/register" className="btn-primary text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-xl inline-flex items-center gap-3 group">
             Begin Phase 01

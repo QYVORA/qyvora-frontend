@@ -58,6 +58,11 @@
     min-height: 100%;
   }
 
+  html,
+  body {
+    height: 100%;
+  }
+
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -65,6 +70,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -245,6 +252,7 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .stats-marquee::-webkit-scrollbar {
@@ -417,6 +425,17 @@
     overflow: hidden;
   }
 
+  @supports not (height: 100dvh) {
+    .min-h-dvh {
+      min-height: 100vh;
+    }
+  }
+
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
   .tour-target-active {
     outline: 2px solid rgba(var(--accent-rgb), 0.9);
     outline-offset: 4px;
@@ -461,6 +480,26 @@
 @keyframes preview-float {
   0%, 100% { transform: rotateX(8deg)  rotateY(-10deg) rotateZ(1deg)   translateY(0px); }
   50%       { transform: rotateX(5deg)  rotateY(-7deg)  rotateZ(0.5deg) translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .cube-noise,
+  .platform-preview-device {
+    animation: none;
+  }
+
+  .stats-marquee {
+    scroll-snap-type: x proximity;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 /* ─── H Skeleton Loader ─────────────────────────────────────────── */
