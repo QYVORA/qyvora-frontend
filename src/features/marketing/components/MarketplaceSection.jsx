@@ -3,12 +3,17 @@ import { ArrowRight, ChevronRight, FileText, ShoppingBag } from 'lucide-react'
 import { CP_COIN, CP_MARKET_BG } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { useAuth } from '@/core/contexts/AuthContext'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function MarketplaceSection({ items = [], stats, loading = false, rewards }) {
   const { isDark } = useTheme()
+  const { user } = useAuth()
   const previewItems = items.slice(0, 4)
   const earnedCp = rewards?.totals?.cp || 0
+  const buyHref = user
+    ? (user.role === 'admin' ? '/admin/marketplace' : '/marketplace')
+    : '/login?intent=marketplace'
 
   return (
     <section className="py-32 px-6 relative border-t border-accent/10" id="marketplace">
@@ -117,11 +122,14 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
             </div>
           ) : (
             <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center" stagger={80} variant="scale">
-              {previewItems.map((item) => (
-                <div
-                  key={item._id || item.id}
-                  className="card overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300 w-full max-w-sm sm:max-w-none"
-                >
+              {previewItems.map((item) => {
+                const priceValue = Number(item.cpPrice || 0)
+                const priceLabel = `${priceValue.toLocaleString()} CP`
+                return (
+                  <div
+                    key={item._id || item.id}
+                    className="card overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300 w-full max-w-sm sm:max-w-none"
+                  >
                   {/* Cover image — tall and prominent */}
                   <div className="relative h-44 bg-[var(--bg-secondary)] overflow-hidden shrink-0">
                     {item.coverUrl ? (
@@ -139,7 +147,7 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded-full bg-accent text-[var(--bg-primary)] text-[10px] font-bold font-mono uppercase tracking-widest">
-                      {item.cpPrice} CP
+                      {priceLabel}
                     </div>
                   </div>
 
@@ -157,13 +165,19 @@ export function MarketplaceSection({ items = [], stats, loading = false, rewards
                       <span className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">
                         {item.category || 'Tool'}
                       </span>
-                      <span className="text-xs text-accent font-mono font-semibold flex items-center gap-1">
-                        Unlock <ChevronRight size={12} />
-                      </span>
+                      <span className="text-xs font-mono text-[var(--text-muted)]">{priceLabel}</span>
                     </div>
+                    <Link
+                      to={buyHref}
+                      className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-accent text-[var(--bg-primary)] px-4 py-2.5 text-sm font-semibold shadow-lg shadow-accent/20 transition-all duration-200 hover:shadow-accent/30 hover:-translate-y-0.5 active:translate-y-0"
+                    >
+                      <ShoppingBag size={14} />
+                      Buy Now
+                    </Link>
                   </div>
                 </div>
-              ))}
+                )
+              })}
             </StaggerReveal>
           )}
         </div>

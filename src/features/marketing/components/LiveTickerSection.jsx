@@ -39,14 +39,18 @@ export function LiveTickerSection({ leaderboard = [], loading = false, stats }) 
               <span className="text-sm font-mono">Loading stats...</span>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statRows.map(({ label, value, icon: Icon }) => (
-                <div key={label} className="flex flex-col gap-2 p-4 rounded-xl bg-[var(--bg-secondary)] border border-accent/15">
-                  <div className="flex items-center gap-2 text-[var(--text-muted)]">
-                    <Icon size={14} className="text-accent" />
-                    <span className="text-xs font-mono uppercase tracking-widest">{label}</span>
+                <div key={label} className="flex flex-col gap-2 p-4 rounded-xl bg-[var(--bg-secondary)] border border-accent/15 min-w-0">
+                  <div className="flex items-center gap-2 text-[var(--text-muted)] min-w-0">
+                    <Icon size={14} className="text-accent shrink-0" />
+                    <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest leading-snug break-words">
+                      {label}
+                    </span>
                   </div>
-                  <p className="font-mono text-lg font-semibold text-[var(--text-primary)]">{value}</p>
+                  <p className="font-mono text-base sm:text-lg font-semibold text-[var(--text-primary)] leading-tight break-words">
+                    {value}
+                  </p>
                 </div>
               ))}
             </div>
