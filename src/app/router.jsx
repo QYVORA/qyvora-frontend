@@ -37,6 +37,7 @@ const AdminNotifications = lazy(() => import('@/features/admin/pages/Notificatio
 const AdminSecurityEvents = lazy(() => import('@/features/admin/pages/SecurityEvents'))
 const AdminRooms = lazy(() => import('@/features/admin/pages/LearnRooms'))
 const AdminLearnRules = lazy(() => import('@/features/admin/pages/LearnRules'))
+const AdminCPAudit = lazy(() => import('@/features/admin/pages/CPAudit'))
 
 function ProtectedRoute({ children, role }) {
   const { user, loading } = useAuth()
@@ -113,6 +114,7 @@ export function AppRouter() {
           <Route path="learn-rules" element={<AdminLearnRules />} />
           <Route path="marketplace" element={<AdminMarketplace />} />
           <Route path="notifications" element={<AdminNotifications />} />
+          <Route path="cp-audit" element={<AdminCPAudit />} />
           <Route path="security-events" element={<AdminSecurityEvents />} />
         </Route>
 

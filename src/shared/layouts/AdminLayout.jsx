@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck, Layers, ListChecks } from 'lucide-react'
+import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck, Layers, ListChecks, Coins } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { AdminSidebar } from '@/features/admin/components/layout/AdminSidebar'
@@ -8,16 +8,24 @@ import { AdminTopbar } from '@/features/admin/components/layout/AdminTopbar'
 import { AdminMobileNav } from '@/features/admin/components/layout/AdminMobileNav'
 
 const NAV_ITEMS = [
-  { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true },
-  { to: '/admin/users', label: 'Users', icon: Users },
-  { to: '/admin/bootcamps', label: 'Bootcamps', icon: GraduationCap },
-  { to: '/admin/bootcamp-management', label: 'Bootcamp Access', icon: ShieldCheck },
-  { to: '/admin/content', label: 'Content Upload', icon: Upload },
-  { to: '/admin/rooms', label: 'Learn Rooms', icon: Layers },
-  { to: '/admin/learn-rules', label: 'Learn Rules', icon: ListChecks },
-  { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag },
-  { to: '/admin/notifications', label: 'Notifications', icon: Bell },
-  { to: '/admin/security-events', label: 'Security Events', icon: AlertTriangle },
+  { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true, group: 'core' },
+  { to: '/admin/users', label: 'Users', icon: Users, group: 'core' },
+  { to: '/admin/notifications', label: 'Notifications', icon: Bell, group: 'core' },
+  { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag, group: 'core' },
+  { to: '/admin/bootcamps', label: 'Bootcamps', icon: GraduationCap, group: 'learning' },
+  { to: '/admin/bootcamp-management', label: 'Bootcamp Access', icon: ShieldCheck, group: 'learning' },
+  { to: '/admin/rooms', label: 'Learn Rooms', icon: Layers, group: 'learning' },
+  { to: '/admin/learn-rules', label: 'Learn Rules', icon: ListChecks, group: 'learning' },
+  { to: '/admin/content', label: 'Content Upload', icon: Upload, group: 'content' },
+  { to: '/admin/cp-audit', label: 'CP Audit', icon: Coins, group: 'ops' },
+  { to: '/admin/security-events', label: 'Security Events', icon: AlertTriangle, group: 'ops' },
+]
+
+const MOBILE_NAV_ITEMS = [
+  NAV_ITEMS[0],
+  NAV_ITEMS[1],
+  NAV_ITEMS[3],
+  NAV_ITEMS[2],
 ]
 
 export default function AdminLayout() {
@@ -56,7 +64,7 @@ export default function AdminLayout() {
         <main className={`flex-1 pb-24 lg:pb-8 animate-enter ${isDashboard ? 'p-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8'}`}>
           <Outlet />
         </main>
-        <AdminMobileNav navItems={NAV_ITEMS} solid={isDashboard} />
+        <AdminMobileNav navItems={MOBILE_NAV_ITEMS} solid={isDashboard} onOpenSidebar={() => setSidebarOpen(true)} />
       </div>
     </div>
   )

@@ -12,6 +12,12 @@ export default function AdminUsers() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [selectedIds, setSelectedIds] = useState([])
+  const [cpScope, setCpScope] = useState('selected')
+  const [cpAction, setCpAction] = useState('grant')
+  const [cpAmount, setCpAmount] = useState('')
+  const [cpReason, setCpReason] = useState('')
+  const [cpLoading, setCpLoading] = useState(false)
   const { toast } = useToast()
   const { openModal } = useModal()
 
@@ -137,6 +143,76 @@ export default function AdminUsers() {
       .catch(() => toast({ type: 'error', message: 'Failed to update user.' }))
   }
 
+  const toggleSelect = (userId) => {
+    setSelectedIds((prev) => (
+      prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId]
+    ))
+  }
+
+  const toggleSelectAll = () => {
+    const filteredIds = filtered.map(u => u.id)
+    const allSelected = filteredIds.length > 0 && filteredIds.every(id => selectedIds.includes(id))
+    setSelectedIds(allSelected ? [] : filteredIds)
+  }
+
+  const applyCpUpdate = async () => {
+    const amount = Number(cpAmount)
+    if (cpAction === 'set' && (Number.isNaN(amount) || amount < 0)) {
+      toast({ type: 'error', message: 'Enter a valid CP value (0 or more).' })
+      return
+    }
+    if (cpAction !== 'set' && (!amount || amount <= 0)) {
+      toast({ type: 'error', message: 'Enter a CP amount greater than 0.' })
+      return
+    }
+    if (cpScope === 'selected' && selectedIds.length === 0) {
+      toast({ type: 'error', message: 'Select at least one user or switch to "All users".' })
+      return
+    }
+
+    setCpLoading(true)
+    try {
+      if (cpAction === 'grant') {
+        if (cpScope === 'all') await adminService.grantCpAll({ points: amount, reason: cpReason })
+        else await adminService.grantCp({ userIds: selectedIds, points: amount, reason: cpReason })
+      } else if (cpAction === 'deduct') {
+        if (cpScope === 'all') await adminService.deductCpAll({ points: amount, reason: cpReason })
+        else await adminService.deductCp({ userIds: selectedIds, points: amount, reason: cpReason })
+      } else {
+        if (cpScope === 'all') await adminService.setCpAll({ value: amount, reason: cpReason })
+        else await adminService.setCp({ userIds: selectedIds, value: amount, reason: cpReason })
+      }
+
+      const res = await adminService.getUsers()
+      setUsers(res.data || [])
+      toast({ type: 'success', message: 'CP points updated.' })
+      setCpAmount('')
+      setCpReason('')
+    } catch {
+      toast({ type: 'error', message: 'Failed to update CP points.' })
+    } finally {
+      setCpLoading(false)
+    }
+  }
+
+  const handleCpSubmit = () => {
+    if (cpScope !== 'all') {
+      applyCpUpdate()
+      return
+    }
+    const actionLabel = cpAction === 'set' ? 'set CP for all users' : `${cpAction} CP for all users`
+    openModal({
+      title: 'Confirm bulk CP update',
+      badge: 'ADMIN ACTION',
+      description: `You are about to ${actionLabel}. This affects every user in the system.`,
+      confirmLabel: 'Yes, apply to all',
+      cancelLabel: 'Cancel',
+      danger: cpAction !== 'grant',
+      onConfirm: applyCpUpdate,
+      onCancel: () => {},
+    })
+  }
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
@@ -144,6 +220,74 @@ export default function AdminUsers() {
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Users</h1>
         <p className="text-[var(--text-secondary)] text-sm mt-1">{users.length} registered operators.</p>
       </div>
+
+      <Card className="p-6 space-y-4">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">CP manager</p>
+            <p className="text-sm text-[var(--text-secondary)]">Grant, deduct, or set CP for selected users or everyone.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCpScope('selected')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide border transition-all ${
+                cpScope === 'selected'
+                  ? 'bg-accent/10 text-accent border-accent/30'
+                  : 'border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              Selected ({selectedIds.length})
+            </button>
+            <button
+              onClick={() => setCpScope('all')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide border transition-all ${
+                cpScope === 'all'
+                  ? 'bg-accent/10 text-accent border-accent/30'
+                  : 'border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              All users
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[220px_180px_1fr_auto] gap-3">
+          <div className="flex items-center gap-2">
+            {['grant', 'deduct', 'set'].map(action => (
+              <button
+                key={action}
+                onClick={() => setCpAction(action)}
+                className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wide border transition-all ${
+                  cpAction === action
+                    ? 'bg-accent/10 text-accent border-accent/30'
+                    : 'border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {action}
+              </button>
+            ))}
+          </div>
+          <input
+            className="input-field py-2.5"
+            type="number"
+            min="0"
+            placeholder={cpAction === 'set' ? 'Set to…' : 'Amount'}
+            value={cpAmount}
+            onChange={(e) => setCpAmount(e.target.value)}
+          />
+          <input
+            className="input-field py-2.5"
+            placeholder="Reason (optional)"
+            value={cpReason}
+            onChange={(e) => setCpReason(e.target.value)}
+          />
+          <Button onClick={handleCpSubmit} disabled={cpLoading}>
+            {cpLoading ? 'Updating…' : 'Apply'}
+          </Button>
+        </div>
+        <p className="text-xs text-[var(--text-muted)]">
+          Deduct and set actions never drop a user below 0 CP.
+        </p>
+      </Card>
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -192,6 +336,14 @@ export default function AdminUsers() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border)] text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                  <th className="text-left p-4 w-10">
+                    <input
+                      type="checkbox"
+                      aria-label="Select all"
+                      checked={filtered.length > 0 && filtered.every(u => selectedIds.includes(u.id))}
+                      onChange={toggleSelectAll}
+                    />
+                  </th>
                   <th className="text-left p-4">User</th>
                   <th className="text-left p-4">Rank / Phase</th>
                   <th className="text-left p-4">CP</th>
@@ -203,6 +355,14 @@ export default function AdminUsers() {
               <tbody className="divide-y divide-[var(--border)]">
                 {filtered.map(u => (
                   <tr key={u.id} className="hover:bg-[var(--bg-secondary)] transition-colors">
+                    <td className="p-4">
+                      <input
+                        type="checkbox"
+                        aria-label={`Select ${u.hackerHandle || u.name || u.email}`}
+                        checked={selectedIds.includes(u.id)}
+                        onChange={() => toggleSelect(u.id)}
+                      />
+                    </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <Avatar

@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { clsx } from 'clsx'
+import { Menu } from 'lucide-react'
 
-export function AdminMobileNav({ navItems, solid }) {
+export function AdminMobileNav({ navItems, solid, onOpenSidebar }) {
   return (
     <nav
       className={clsx(
@@ -26,6 +27,14 @@ export function AdminMobileNav({ navItems, solid }) {
             </span>
           </NavLink>
         ))}
+        <button
+          type="button"
+          onClick={onOpenSidebar}
+          className="flex flex-col items-center justify-center gap-1 w-full h-full text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+        >
+          <Menu size={22} />
+          <span className="text-[11px] font-semibold uppercase tracking-tight">More</span>
+        </button>
       </div>
     </nav>
   )

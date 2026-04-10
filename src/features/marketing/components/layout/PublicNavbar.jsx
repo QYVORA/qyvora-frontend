@@ -15,7 +15,7 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#marketplace', 'Market']].map(([href, label]) => (
+          {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#rooms', 'Rooms'], ['/#marketplace', 'Market']].map(([href, label]) => (
             <a key={label} href={href} className="btn-ghost text-sm">{label}</a>
           ))}
         </div>
@@ -41,7 +41,7 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
       {menuOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] p-6 space-y-6 animate-fade-in shadow-xl">
           <div className="flex flex-col gap-4">
-            {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#marketplace', 'Market']].map(([href, label]) => (
+            {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#rooms', 'Rooms'], ['/#marketplace', 'Market']].map(([href, label]) => (
               <a
                 key={label}
                 href={href}

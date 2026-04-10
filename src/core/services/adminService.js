@@ -35,5 +35,12 @@ export const adminService = {
   createCPProduct: (data) => api.post('/admin/cp-products', data),
   updateCPProduct: (id, data) => api.patch(`/admin/cp-products/${id}`, data),
   deleteCPProduct: (id) => api.delete(`/admin/cp-products/${id}`),
+  grantCp: (data) => api.post('/admin/cp/grant', data),
+  deductCp: (data) => api.post('/admin/cp/deduct', data),
+  setCp: (data) => api.post('/admin/cp/set', data),
+  grantCpAll: (data) => api.post('/admin/cp/grant-all', data),
+  deductCpAll: (data) => api.post('/admin/cp/deduct-all', data),
+  setCpAll: (data) => api.post('/admin/cp/set-all', data),
+  getCpTransactions: (params) => api.get('/admin/cp/transactions', { params }),
   getSecurityEvents: (params) => api.get('/admin/security/events', { params }),
 }
