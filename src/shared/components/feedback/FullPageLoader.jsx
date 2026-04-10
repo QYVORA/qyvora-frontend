@@ -1,9 +1,19 @@
-export function FullPageLoader({ label = 'Loading' }) {
+export function FullPageLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex items-center gap-3 text-[var(--text-secondary)]">
-        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-        <span className="text-sm font-mono">{label}...</span>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+      <div className="h-loader" aria-label="Loading">
+        {/* Left leg */}
+        <div className="h-leg h-leg-left">
+          <div className="h-beam" />
+        </div>
+        {/* Crossbar */}
+        <div className="h-crossbar">
+          <div className="h-beam" />
+        </div>
+        {/* Right leg */}
+        <div className="h-leg h-leg-right">
+          <div className="h-beam" />
+        </div>
       </div>
     </div>
   )

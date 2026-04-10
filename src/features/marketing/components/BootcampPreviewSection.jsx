@@ -8,7 +8,7 @@ export function BootcampPreviewSection({ rewards }) {
   const accentGlow = isDark ? 'bg-accent/12' : 'bg-accent/18'
 
   return (
-    <section className="py-28 px-6 relative">
+    <section className="py-28 px-6 relative border-t border-accent/10">
       <div className={`absolute -top-20 right-6 sm:right-12 w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] lg:w-[420px] lg:h-[420px] ${accentGlow} rounded-full blur-3xl opacity-70 pointer-events-none`} />
       <div className="max-w-7xl mx-auto relative">
         <div className="mb-16">
@@ -36,7 +36,7 @@ export function BootcampPreviewSection({ rewards }) {
                 You are about to probe a controlled test host. Your first move should gather service intel without noisy floods.
               </p>
 
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 mb-6">
+              <div className="rounded-2xl border border-accent/20 bg-[var(--bg-secondary)] p-4 mb-6">
                 <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-2">Terminal</p>
                 <div className="font-mono text-xs text-[var(--text-primary)] space-y-2">
                   <p>$ target: <span className="text-accent">127.0.0.1</span></p>
@@ -46,7 +46,7 @@ export function BootcampPreviewSection({ rewards }) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-xl border border-[var(--border)] p-4">
+                <div className="rounded-xl border border-accent/20 p-4">
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Bonus Wallet</p>
                   <p className="text-2xl font-display font-bold text-[var(--text-primary)] mt-2">
                     {Number(earnedCp).toLocaleString()} <span className="text-sm text-[var(--text-muted)]">CP</span>
@@ -72,7 +72,7 @@ export function BootcampPreviewSection({ rewards }) {
             </div>
           </div>
 
-          <div className="card p-8 border border-[var(--border)] relative overflow-hidden">
+          <div className="card p-8 relative overflow-hidden hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300">
             <div className="absolute -left-10 bottom-0 w-32 h-32 sm:w-44 sm:h-44 lg:w-56 lg:h-56 rounded-full bg-accent/10 blur-3xl" />
             <div className="relative z-10">
               <div className="flex items-center justify-between gap-4 mb-6">
@@ -89,7 +89,7 @@ export function BootcampPreviewSection({ rewards }) {
                 Every module rewards careful reconnaissance, clean execution, and documented outcomes. Progress compounds quickly when you choose safe, precise moves.
               </p>
 
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 font-mono text-xs text-[var(--text-primary)]">
+              <div className="rounded-xl border border-accent/20 bg-[var(--bg-secondary)] p-4 font-mono text-xs text-[var(--text-primary)]">
                 $ mindset: <span className="text-accent">validate first, act second</span>
               </div>
             </div>

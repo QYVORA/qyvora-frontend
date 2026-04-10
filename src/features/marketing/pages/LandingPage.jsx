@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
 import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
-import { BootcampPreviewSection } from '@/features/marketing/components/BootcampPreviewSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
 import { RoomsPreviewSection } from '@/features/marketing/components/RoomsPreviewSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
@@ -72,11 +71,10 @@ export default function LandingPage() {
   return (
     <div className="relative overflow-x-hidden">
       <ScrollReveal variant="fade">
-        <HeroSection
-          stats={stats}
-          loading={loadingStats}
-        />
+        <HeroSection stats={stats} loading={loadingStats} />
       </ScrollReveal>
+
+      {/* How It Works — pipeline steps + live stats */}
       <ScrollReveal delay={80}>
         <FlowSection
           stats={stats}
@@ -85,26 +83,35 @@ export default function LandingPage() {
           loadingLeaderboard={loadingLeaderboard}
         />
       </ScrollReveal>
+
+      {/* Live economy ticker */}
       <ScrollReveal delay={120}>
-        <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} />
+        <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} stats={stats} />
       </ScrollReveal>
+
       <ScrollReveal delay={140}>
         <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
       </ScrollReveal>
+
       <ScrollReveal delay={150}>
         <RoomsPreviewSection items={rooms} loading={loadingRooms} />
       </ScrollReveal>
+
       <ScrollReveal delay={160}>
         <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
       </ScrollReveal>
+
       <ScrollReveal delay={180}>
         <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
       </ScrollReveal>
+
+      {/* CTA before Social — higher intent action comes first */}
       <ScrollReveal delay={200} variant="up">
-        <SocialSection />
-      </ScrollReveal>
-      <ScrollReveal delay={220} variant="up">
         <CtaSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={220} variant="up">
+        <SocialSection />
       </ScrollReveal>
     </div>
   )

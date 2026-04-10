@@ -90,13 +90,25 @@
 
 @layer components {
   .card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08), rgba(0,0,0,0) 60%), var(--bg-card);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    position: relative;
+    transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.08);
+    pointer-events: none;
   }
 
   .card-hover {
-    @apply card transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5;
+    @apply card transition-all duration-200 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/10;
   }
 
   .btn-primary {
@@ -200,14 +212,12 @@
 }
 
 /* Stats marquee */
-.stats-marquee {
+.stats-marquee-wrapper {
   position: relative;
-  overflow: hidden;
-  padding: 6px 0 16px;
 }
 
-.stats-marquee::before,
-.stats-marquee::after {
+.stats-marquee-wrapper::before,
+.stats-marquee-wrapper::after {
   content: '';
   position: absolute;
   top: 0;
@@ -217,36 +227,38 @@
   pointer-events: none;
 }
 
-.stats-marquee::before {
+.stats-marquee-wrapper::before {
   left: 0;
   background: linear-gradient(90deg, var(--bg-primary) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
-.stats-marquee::after {
+.stats-marquee-wrapper::after {
   right: 0;
   background: linear-gradient(270deg, var(--bg-primary) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.stats-marquee {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 6px 0 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stats-marquee::-webkit-scrollbar {
+  display: none;
 }
 
 .stats-marquee-track {
   display: flex;
   gap: 24px;
   width: max-content;
-  will-change: transform;
 }
 
-.stats-marquee--static {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.stats-marquee-track--static {
-  width: fit-content;
-}
-
-.stats-marquee--static::-webkit-scrollbar {
-  display: none;
+.stats-card {
+  scroll-snap-align: start;
 }
 
 .stats-card {
@@ -277,8 +289,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stats-marquee-track {
-    transform: none;
+  .stats-marquee {
+    scroll-behavior: auto;
   }
 }
 
@@ -417,4 +429,79 @@
 /* Fade animations */
 .animate-enter {
   animation: fadeIn 0.25s ease-out, slideUp 0.25s ease-out;
+}
+
+/* ─── H Skeleton Loader ─────────────────────────────────────────── */
+.h-loader {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: 72px;
+  height: 96px;
+}
+
+.h-leg {
+  width: 14px;
+  border-radius: 4px;
+  background: rgba(var(--accent-rgb), 0.12);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.h-crossbar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 14px;
+  border-radius: 3px;
+  background: rgba(var(--accent-rgb), 0.12);
+  overflow: hidden;
+}
+
+/* wrapper needs relative for crossbar absolute positioning */
+.h-loader {
+  position: relative;
+}
+
+.h-beam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.9) 40%,
+    rgba(var(--accent-rgb), 1) 50%,
+    rgba(var(--accent-rgb), 0.9) 60%,
+    transparent 100%
+  );
+  animation: h-sweep 1.4s ease-in-out infinite;
+}
+
+.h-crossbar .h-beam {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), 0.9) 40%,
+    rgba(var(--accent-rgb), 1) 50%,
+    rgba(var(--accent-rgb), 0.9) 60%,
+    transparent 100%
+  );
+  animation: h-sweep-x 1.4s ease-in-out infinite;
+}
+
+.h-leg-left .h-beam  { animation-delay: 0ms; }
+.h-crossbar .h-beam  { animation-delay: 200ms; }
+.h-leg-right .h-beam { animation-delay: 400ms; }
+
+@keyframes h-sweep {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes h-sweep-x {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }

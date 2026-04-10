@@ -1,13 +1,21 @@
 import { SectionHeader, Spinner } from '@/shared/components/ui'
 import { useTheme } from '@/core/contexts/ThemeContext'
+import { Activity, Coins, BookOpen, ShoppingBag } from 'lucide-react'
 
-export function LiveTickerSection({ leaderboard = [], loading = false }) {
+export function LiveTickerSection({ leaderboard = [], loading = false, stats }) {
   const { isDark } = useTheme()
   const totalCp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
   const glow = isDark ? 'bg-accent/10' : 'bg-accent/20'
 
+  const statRows = [
+    { label: 'CP In Circulation', value: `${Number(totalCp).toLocaleString()} CP`, icon: Coins },
+    { label: 'Active Operators', value: Number(stats?.stats?.pentestersActive || 0).toLocaleString(), icon: Activity },
+    { label: 'Bootcamps Live', value: Number(stats?.stats?.bootcampsCount || 0).toLocaleString(), icon: BookOpen },
+    { label: 'Zero-Day Products', value: Number(stats?.stats?.zeroDayProductsCount || 0).toLocaleString(), icon: ShoppingBag },
+  ]
+
   return (
-    <section className="py-28 px-6 relative section-gradient operator-economy-bg" id="live-ticker">
+    <section className="py-20 px-6 relative section-gradient border-t border-accent/10" id="live-ticker">
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute -top-10 right-10 w-72 h-72 rounded-full blur-3xl ${glow}`} />
       </div>
@@ -23,25 +31,29 @@ export function LiveTickerSection({ leaderboard = [], loading = false }) {
             See how the operator economy moves in real-time as CP flows across the platform.
           </p>
         </div>
-        <div className="card p-8 border border-accent/25 text-left">
-          <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-2">Operator Economy</p>
-          <h3 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-4">Live Leaderboard Totals</h3>
+        <div className="card p-8 border-accent/25 text-left hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300">
+          <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mb-5">Operator Economy</p>
           {loading ? (
             <div className="flex items-center gap-3 text-[var(--text-secondary)]">
               <Spinner size={24} />
               <span className="text-sm font-mono">Loading stats...</span>
             </div>
           ) : (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-[var(--text-secondary)]">CP In Circulation</span>
-                <span className="font-mono text-lg text-[var(--text-primary)]">{Number(totalCp).toLocaleString()} CP</span>
-              </div>
-              <p className="text-xs text-[var(--text-muted)]">
-                Live leaderboard totals from active operators.
-              </p>
+            <div className="grid grid-cols-2 gap-4">
+              {statRows.map(({ label, value, icon: Icon }) => (
+                <div key={label} className="flex flex-col gap-2 p-4 rounded-xl bg-[var(--bg-secondary)] border border-accent/15">
+                  <div className="flex items-center gap-2 text-[var(--text-muted)]">
+                    <Icon size={14} className="text-accent" />
+                    <span className="text-xs font-mono uppercase tracking-widest">{label}</span>
+                  </div>
+                  <p className="font-mono text-lg font-semibold text-[var(--text-primary)]">{value}</p>
+                </div>
+              ))}
             </div>
           )}
+          <p className="text-xs text-[var(--text-muted)] mt-4 font-mono">
+            ● Live — updates with operator activity
+          </p>
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ const resolveImageUrl = (value) => {
 
 export function RoomsPreviewSection({ items = [], loading = false }) {
   return (
-    <section className="py-32 px-6 bg-[var(--bg-primary)] relative border-y border-[var(--border)]/40" id="rooms">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative border-t border-accent/10" id="rooms">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-16">
           <SectionHeader
@@ -65,7 +65,7 @@ export function RoomsPreviewSection({ items = [], loading = false }) {
                     </div>
                     <div className="p-5 space-y-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] flex items-center justify-center overflow-hidden">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] border border-accent/20 flex items-center justify-center overflow-hidden">
                           {logo ? (
                             <img src={logo} alt="Room logo" className="w-full h-full object-contain" />
                           ) : (

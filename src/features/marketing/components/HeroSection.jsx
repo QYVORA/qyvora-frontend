@@ -88,13 +88,15 @@ export function HeroSection({
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="absolute inset-0 backdrop-blur-sm bg-[var(--bg-primary)]/30" />
+      {/* Lighter overlay so the background image reads through */}
+      <div className="absolute inset-0 bg-[var(--bg-primary)]/60" />
       <div className="cube-noise" />
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
-        {/* <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse-slow" />
+        {/* Platform badge — restored */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/40 bg-accent/8 text-accent text-sm font-mono mb-8">
+          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           Offensive Security Training Platform
-        </div> */}
+        </div>
         <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full overflow-hidden h-[10rem] md:h-[9.5rem] lg:h-[12rem]">
           <TypingHeadline />
         </h1>
@@ -102,7 +104,10 @@ export function HeroSection({
           HSOCIETY OFFSEC is an offensive security company training the next generation of security talent across Africa.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-          <Link to="/register" className="btn-primary text-base px-8 py-4 rounded-xl flex items-center justify-center gap-2 group w-full sm:w-auto">
+          <Link
+            to="/register"
+            className="btn-primary text-base px-8 py-4 rounded-xl flex items-center justify-center gap-2 group w-full sm:w-auto shadow-lg shadow-accent/30"
+          >
             Start Training
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -113,7 +118,6 @@ export function HeroSection({
             Log In
           </Link>
         </div>
-        {/* <HeroStats stats={stats} loading={loading} /> */}
       </div>
     </section>
   )

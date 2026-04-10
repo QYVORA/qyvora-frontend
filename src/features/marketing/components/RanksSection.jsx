@@ -6,7 +6,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
   const totalCp = leaderboard.reduce((acc, entry) => acc + Number(entry.totalXp || 0), 0)
   const earnedCp = rewards?.totals?.cp || 0
   return (
-    <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden border-y border-[var(--border)]/40">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative overflow-hidden border-t border-accent/10">
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/50 via-transparent to-[var(--bg-primary)]/50 pointer-events-none" />
 
@@ -25,7 +25,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
             </div>
           ) : (
             <>
-              <div className="card px-5 py-3">
+              <div className="card px-5 py-3 hover:shadow-lg hover:shadow-accent/10 transition-all duration-300">
                 <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Total CP</p>
                 <p className="font-display font-bold text-xl text-[var(--text-primary)]">{Number(totalCp + earnedCp).toLocaleString()} CP</p>
               </div>
@@ -59,6 +59,13 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                   style={{ borderColor: `${color}35`, borderRadius: '18px' }}
                 >
                   <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: color, opacity: 0.6 }} />
+                  {/* Position badge */}
+                  <div
+                    className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold z-10"
+                    style={{ background: `${color}20`, color, border: `1px solid ${color}40` }}
+                  >
+                    {idx + 1}
+                  </div>
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{ background: `radial-gradient(ellipse at center, ${color}10 0%, transparent 70%)` }}

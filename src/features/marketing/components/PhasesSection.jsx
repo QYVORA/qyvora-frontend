@@ -7,7 +7,6 @@ import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function PhasesSection({ items = [], loading = false }) {
   const { user } = useAuth()
-  const badgeBackdrop = 'none'
   const bootcampStatus = user?.bootcampStatus || 'not_enrolled'
   const isEnrolled = bootcampStatus !== 'not_enrolled'
   const resolveImageUrl = (value) => {
@@ -20,7 +19,7 @@ export function PhasesSection({ items = [], loading = false }) {
     return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
   }
   return (
-    <section className="py-32 px-6 bg-[var(--bg-primary)] relative border-y border-[var(--border)]/40" id="bootcamps">
+    <section className="py-32 px-6 bg-[var(--bg-primary)] relative" id="bootcamps">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20">
           <SectionHeader
@@ -48,7 +47,7 @@ export function PhasesSection({ items = [], loading = false }) {
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </div>
         ) : (
-          <StaggerReveal className="grid grid-cols-1 gap-10 justify-center" stagger={140} variant="scale">
+          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center" stagger={140} variant="scale">
             {items.map((item, i) => {
               const accent = 'var(--accent)'
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
@@ -61,10 +60,11 @@ export function PhasesSection({ items = [], loading = false }) {
               return (
                 <div
                   key={item.id}
-                  className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
+                  className="card overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300 w-full max-w-sm md:max-w-none"
                   style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
                 >
-                  <div className="relative h-56 lg:h-64 lg:w-2/5 overflow-hidden shrink-0">
+                  {/* Cover image */}
+                  <div className="relative h-52 overflow-hidden shrink-0">
                     <img
                       src={cover}
                       alt={item.title || 'Bootcamp'}
@@ -72,28 +72,34 @@ export function PhasesSection({ items = [], loading = false }) {
                       loading="lazy"
                       decoding="async"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div
                       className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
                       style={{
                         color: accent,
                         borderColor: `${accent}50`,
                         background: `${accent}15`,
-                        backdropFilter: badgeBackdrop,
                       }}
                     >
                       BOOTCAMP
                     </div>
+                    <div className="absolute bottom-3 left-4">
+                      <span className="font-mono text-xs text-white/60 uppercase tracking-widest">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="p-6 lg:p-8 flex flex-col flex-1">
-                    <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
+                  {/* Content */}
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-2 leading-snug">{item.title}</h3>
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
                       {item.description || 'Curated offensive security track built for real-world mastery.'}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                      {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
-                      {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
-                      {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                      {item.level && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.level}</span>}
+                      {item.duration && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.duration}</span>}
+                      {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.priceLabel}</span>}
                     </div>
                     <Link to={ctaTarget} className="btn-primary mt-5 inline-flex items-center justify-center">
                       Enroll
