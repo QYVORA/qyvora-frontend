@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
+import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
 import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
@@ -72,6 +73,11 @@ export default function LandingPage() {
     <div className="relative overflow-x-hidden">
       <ScrollReveal variant="fade">
         <HeroSection stats={stats} loading={loadingStats} />
+      </ScrollReveal>
+
+      {/* Platform preview — 3D phone mockup, immediately after hero */}
+      <ScrollReveal delay={60} variant="up">
+        <PlatformPreviewSection />
       </ScrollReveal>
 
       {/* How It Works — pipeline steps + live stats */}

@@ -431,6 +431,38 @@
   animation: fadeIn 0.25s ease-out, slideUp 0.25s ease-out;
 }
 
+/* ─── Platform Preview 3D Mockup ───────────────────────────────── */
+.platform-preview-wrapper {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.platform-preview-device {
+  transform: rotateX(8deg) rotateY(-10deg) rotateZ(1deg);
+  transform-style: preserve-3d;
+  transition: transform 500ms ease;
+  max-width: min(420px, 90vw);
+  width: 100%;
+  animation: preview-float 7s ease-in-out infinite;
+}
+
+.platform-preview-wrapper:hover .platform-preview-device {
+  transform: rotateX(2deg) rotateY(-3deg) rotateZ(0deg);
+}
+
+.platform-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes preview-float {
+  0%, 100% { transform: rotateX(8deg)  rotateY(-10deg) rotateZ(1deg)   translateY(0px); }
+  50%       { transform: rotateX(5deg)  rotateY(-7deg)  rotateZ(0.5deg) translateY(-12px); }
+}
+
 /* ─── H Skeleton Loader ─────────────────────────────────────────── */
 .h-loader {
   display: flex;
