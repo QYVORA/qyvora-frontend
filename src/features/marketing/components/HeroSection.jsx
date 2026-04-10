@@ -79,7 +79,7 @@ export function HeroSection({
     : undefined
   return (
     <section
-      className="relative isolate min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden bg-[var(--bg-primary)]"
+      className="relative isolate min-h-dvh flex flex-col items-center justify-center text-center px-6 pt-28 pb-20 overflow-hidden bg-[var(--bg-primary)]"
       style={{
         ...lightTextVars,
         backgroundImage: `url(${CTA_BG})`,
@@ -97,7 +97,7 @@ export function HeroSection({
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           Offensive Security Training Platform
         </div>
-        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full overflow-hidden h-[10rem] md:h-[9.5rem] lg:h-[12rem]">
+        <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[1.05] tracking-tight mb-8 text-center w-full min-h-[10rem] md:min-h-[9.5rem] lg:min-h-[12rem]">
           <TypingHeadline />
         </h1>
         <p className="text-[var(--text-secondary)] text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed text-center">

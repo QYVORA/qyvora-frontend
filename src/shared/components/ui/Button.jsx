@@ -1,5 +1,4 @@
 import { clsx } from 'clsx'
-import { Loader2 } from 'lucide-react'
 
 export function Button({
   variant = 'primary',
@@ -29,7 +28,13 @@ export function Button({
       disabled={loading || props.disabled}
       {...props}
     >
-      {loading ? <Loader2 size={16} className="animate-spin" /> : Icon && <Icon size={16} />}
+      {loading ? (
+        <div className="h-loader" style={{ width: 18, height: 24 }} aria-label="Loading">
+          <div className="h-leg h-leg-left"><div className="h-beam" /></div>
+          <div className="h-crossbar"><div className="h-beam" /></div>
+          <div className="h-leg h-leg-right"><div className="h-beam" /></div>
+        </div>
+      ) : Icon && <Icon size={16} />}
       {children}
     </button>
   )
