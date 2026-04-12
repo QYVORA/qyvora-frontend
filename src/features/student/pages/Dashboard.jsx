@@ -8,8 +8,6 @@ import { DashboardHeader } from '@/features/student/components/dashboard/Dashboa
 import { PhaseProgressCard } from '@/features/student/components/dashboard/PhaseProgressCard'
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
 import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
-import { OnboardingWelcomeCard } from '@/features/student/components/onboarding/OnboardingWelcomeCard'
-import { OnboardingTour } from '@/features/student/components/onboarding/OnboardingTour'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 import { Card, Skeleton } from '@/shared/components/ui'
 
@@ -23,8 +21,6 @@ export default function StudentDashboard() {
   const [overview, setOverview] = useState(null)
   const [balance, setBalance] = useState(null)
   const [bootcamps, setBootcamps] = useState([])
-  const [tourActive, setTourActive] = useState(false)
-  const [onboardingDone, setOnboardingDone] = useState(false)
 
   const resolveImageUrl = (value) => {
     const src = String(value || '').trim()
@@ -65,7 +61,7 @@ export default function StudentDashboard() {
         setBootcamps(bootcampsRes.data?.items || [])
         if (profileRes.data) updateUser(profileRes.data)
       } catch {
-        // ignore errors for now
+        // ignore
       } finally {
         if (mounted) setLoading(false)
       }
@@ -93,13 +89,6 @@ export default function StudentDashboard() {
   const progressSnapshot = overview?.snapshot?.find((s) => s.id === 'progress')?.value || '0%'
   const progressPercent = Number(String(progressSnapshot).replace('%', '')) || 0
   const cpBalance = balance?.balance ?? profile?.cpPoints ?? 0
-  const onboardingComplete = onboardingDone || Boolean(overview?.onboarding?.completed || sessionUser?.onboardingCompletedAt)
-
-  useEffect(() => {
-    if (!loading && !onboardingComplete) {
-      setTourActive(true)
-    }
-  }, [loading, onboardingComplete])
 
   if (loading) {
     return (
@@ -112,7 +101,6 @@ export default function StudentDashboard() {
           </div>
           <Skeleton className="h-7 w-28" />
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i} className="p-5 flex items-start gap-4">
@@ -125,75 +113,18 @@ export default function StudentDashboard() {
             </Card>
           ))}
         </div>
-
         <Card className="space-y-4">
           <Skeleton className="h-4 w-36" />
           <Skeleton className="h-5 w-1/2" />
-          <Skeleton className="h-3 w-2/3" />
           <Skeleton className="h-2 w-full" />
           <Skeleton className="h-10 w-40" />
         </Card>
-
-        <Card className="space-y-3">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-2 w-full" />
-          <div className="flex justify-between">
-            <Skeleton className="h-3 w-20" />
-            <Skeleton className="h-3 w-16" />
-          </div>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="space-y-3">
-            <Skeleton className="h-4 w-32" />
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} className="p-4 flex items-center gap-4">
-                <Skeleton className="h-9 w-9 rounded-xl" />
-                <div className="space-y-2">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-3 w-32" />
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="lg:col-span-2">
-            <Skeleton className="h-4 w-32 mb-3" />
-            <Card className="divide-y divide-[var(--border)]">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="p-4 flex items-center justify-between">
-                  <div className="space-y-2">
-                    <Skeleton className="h-3 w-48" />
-                    <Skeleton className="h-3 w-32" />
-                  </div>
-                  <Skeleton className="h-3 w-12" />
-                </div>
-              ))}
-            </Card>
-          </div>
-        </div>
-
-        <div>
-          <Skeleton className="h-4 w-40 mb-4" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Card key={i} className="p-4 space-y-3">
-                <Skeleton className="h-3 w-20" />
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-2 w-full" />
-                <div className="flex justify-between">
-                  <Skeleton className="h-3 w-10" />
-                  <Skeleton className="h-3 w-10" />
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
       </div>
     )
   }
 
   const bootcampSection = (
-    <div className="space-y-4 pb-24 sm:pb-4" data-tour="bootcamp-cards">
+    <div className="space-y-4 pb-24 sm:pb-4">
       <h3 className="font-semibold text-[var(--text-primary)]">Available Bootcamps</h3>
       {bootcamps.length === 0 ? (
         <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
@@ -222,11 +153,7 @@ export default function StudentDashboard() {
                   />
                   <div
                     className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
-                    style={{
-                      color: accent,
-                      borderColor: `${accent}50`,
-                      background: `${accent}15`,
-                    }}
+                    style={{ color: accent, borderColor: `${accent}50`, background: `${accent}15` }}
                   >
                     BOOTCAMP
                   </div>
@@ -248,7 +175,8 @@ export default function StudentDashboard() {
                   )}
                 </div>
               </div>
-          )})}
+            )
+          })}
         </div>
       )}
     </div>
@@ -256,21 +184,6 @@ export default function StudentDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 px-2 sm:px-0">
-      {!loading && !onboardingComplete && (
-        <OnboardingWelcomeCard
-          onStart={() => setTourActive(true)}
-          onSocialClick={(key) => {
-            window.dispatchEvent(new CustomEvent('hsociety:onboarding-social', { detail: { key } }))
-          }}
-        />
-      )}
-      <OnboardingTour
-        active={tourActive && !onboardingComplete}
-        onComplete={() => {
-          setTourActive(false)
-          setOnboardingDone(true)
-        }}
-      />
       <DashboardHeader displayName={displayName} rankLabel={rankLabel} />
       {!hasActiveModule && bootcampSection}
       <PhaseProgressCard
@@ -281,11 +194,9 @@ export default function StudentDashboard() {
         isEnrolled={(overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'}
       />
       <RankProgressCard cp={totalCp} rankLabel={rankLabel} />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <QuickLinks user={profile || sessionUser} />
       </div>
-
       {hasActiveModule && bootcampSection}
       <div className="h-24 sm:h-0" />
     </div>

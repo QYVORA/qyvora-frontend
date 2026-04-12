@@ -9,15 +9,6 @@ export function StudentSidebar({
   onClose = () => {},
 }) {
   const navTemplate = mobile ? undefined : { gridTemplateRows: `repeat(${navItems.length}, minmax(0, 1fr))` }
-  const tourMap = {
-    '/dashboard': 'nav-dashboard',
-    '/learn': 'nav-learn',
-    '/bootcamp': 'nav-bootcamp',
-    '/wallet': 'nav-wallet',
-    '/marketplace': 'nav-marketplace',
-    '/notifications': 'nav-notifications',
-    '/profile': 'nav-profile',
-  }
 
   return (
     <aside className={`${mobile ? 'fixed inset-y-0 left-0 z-50 w-[85vw] max-w-[320px]' : 'hidden lg:flex w-72 h-screen sticky top-0 shrink-0'} flex flex-col bg-[var(--bg-primary)] border-r border-[var(--border)]/60 shadow-[12px_0_30px_-28px_rgba(0,0,0,0.35)] overflow-hidden`}>
@@ -41,7 +32,6 @@ export function StudentSidebar({
               key={to}
               to={to}
               onClick={onClose}
-              data-tour={tourMap[to]}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 rounded-2xl text-base font-semibold h-full transition-all duration-150 ${
                   isActive

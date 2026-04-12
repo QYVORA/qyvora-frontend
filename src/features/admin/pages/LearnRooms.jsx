@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { clsx } from 'clsx'
 import { Plus, Trash2, Edit3, Save, RefreshCcw } from 'lucide-react'
 import { Button, Card, Input, Skeleton, Toggle } from '@/shared/components/ui'
 import { adminService } from '@/core/services'
@@ -225,65 +226,75 @@ export default function LearnRooms() {
           <Input label="Estimated Minutes" type="number" value={form.estimatedMinutes} onChange={(e) => setForm((prev) => ({ ...prev, estimatedMinutes: e.target.value }))} />
           <Input label="Tags (comma separated)" value={form.tags} onChange={(e) => setForm((prev) => ({ ...prev, tags: e.target.value }))} className="md:col-span-2" />
           <div className="md:col-span-2 space-y-2">
+            <label className="label">Cover Image</label>
             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-              <input
-                className="input-field flex-1"
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) handleImageUpload(file, 'coverImage')
-                  e.target.value = ''
-                }}
-              />
+              <label className={clsx(
+                'inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] text-sm font-semibold cursor-pointer transition-all duration-200',
+                'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:border-accent/50 hover:text-[var(--text-primary)] hover:bg-[var(--bg-card-hover)]',
+                uploadingCover && 'opacity-50 pointer-events-none'
+              )}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                {uploadingCover ? 'Uploading...' : 'Upload Cover Image'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handleImageUpload(file, 'coverImage')
+                    e.target.value = ''
+                  }}
+                />
+              </label>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setForm((prev) => ({ ...prev, coverImage: '' }))}
-                disabled={uploadingCover}
+                disabled={uploadingCover || !form.coverImage}
               >
-                Clear Cover
+                Clear
               </Button>
             </div>
-            <Input label="Cover Image URL" value={form.coverImage} readOnly />
             {form.coverImage && (
               <div className="overflow-hidden rounded-lg border border-[var(--border)]">
                 <img src={resolveImageUrl(form.coverImage)} alt="Cover preview" className="w-full h-48 object-cover" />
               </div>
             )}
-            {uploadingCover && (
-              <p className="text-xs text-[var(--text-secondary)]">Uploading cover image...</p>
-            )}
           </div>
           <div className="space-y-2">
+            <label className="label">Logo Image</label>
             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-              <input
-                className="input-field flex-1"
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) handleImageUpload(file, 'logoUrl')
-                  e.target.value = ''
-                }}
-              />
+              <label className={clsx(
+                'inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] text-sm font-semibold cursor-pointer transition-all duration-200',
+                'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:border-accent/50 hover:text-[var(--text-primary)] hover:bg-[var(--bg-card-hover)]',
+                uploadingLogo && 'opacity-50 pointer-events-none'
+              )}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handleImageUpload(file, 'logoUrl')
+                    e.target.value = ''
+                  }}
+                />
+              </label>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setForm((prev) => ({ ...prev, logoUrl: '' }))}
-                disabled={uploadingLogo}
+                disabled={uploadingLogo || !form.logoUrl}
               >
-                Clear Logo
+                Clear
               </Button>
             </div>
-            <Input label="Logo URL" value={form.logoUrl} readOnly />
             {form.logoUrl && (
               <div className="overflow-hidden rounded-lg border border-[var(--border)]">
                 <img src={resolveImageUrl(form.logoUrl)} alt="Logo preview" className="w-full h-32 object-contain bg-white" />
               </div>
-            )}
-            {uploadingLogo && (
-              <p className="text-xs text-[var(--text-secondary)]">Uploading logo...</p>
             )}
           </div>
           <Input label="Accent Color" value={form.accentColor} onChange={(e) => setForm((prev) => ({ ...prev, accentColor: e.target.value }))} />
@@ -368,7 +379,14 @@ export default function LearnRooms() {
                 <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] font-mono text-[var(--text-muted)]">
                   <span className="px-2 py-1 rounded-full border border-[var(--border)]">{room.level || 'Beginner'}</span>
                   <span className="px-2 py-1 rounded-full border border-[var(--border)]">Sections: {room.sections?.length || 0}</span>
-                  <span className="px-2 py-1 rounded-full border border-[var(--border)]">{room.isActive ? 'Active' : 'Hidden'}</span>
+                  <span className={clsx(
+                    'px-2 py-1 rounded-full border text-[10px] uppercase tracking-[0.2em] font-mono',
+                    room.isActive
+                      ? 'border-accent/50 bg-accent/10 text-accent'
+                      : 'border-[var(--border)] text-[var(--text-muted)]'
+                  )}>
+                    {room.isActive ? '● Active' : '○ Hidden'}
+                  </span>
                 </div>
               </Card>
             ))}

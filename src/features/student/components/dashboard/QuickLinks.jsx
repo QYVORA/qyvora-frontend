@@ -3,11 +3,6 @@ import { Wallet, ShoppingBag, BookOpen, ChevronRight } from 'lucide-react'
 
 export function QuickLinks({ user }) {
   const cp = user?.cpPoints ?? user?.cp ?? 0
-  const tourMap = {
-    '/wallet': 'quick-wallet',
-    '/marketplace': 'quick-marketplace',
-    '/bootcamp': 'quick-bootcamp',
-  }
   const links = [
     { to: '/wallet', label: 'CP Wallet', sub: `${cp} CP available`, icon: Wallet, color: 'var(--accent)' },
     { to: '/marketplace', label: 'Marketplace', sub: 'Browse items', icon: ShoppingBag, color: 'var(--accent)' },
@@ -21,7 +16,7 @@ export function QuickLinks({ user }) {
         Quick Access
       </h3>
       {links.map(({ to, label, sub, icon: Icon, color }) => (
-        <Link key={to} to={to} data-tour={tourMap[to]} className="card-hover flex items-center gap-4 p-4 group min-h-[72px]">
+        <Link key={to} to={to} className="card-hover flex items-center gap-4 p-4 group min-h-[72px]">
           <div className="p-2.5 rounded-xl shrink-0 transition-transform group-hover:scale-110" style={{ background: `${color}15`, color }}>
             <Icon size={18} />
           </div>

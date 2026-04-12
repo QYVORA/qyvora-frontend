@@ -5,7 +5,7 @@ import { Card, ProgressBar, Badge } from '@/shared/components/ui'
 export function PhaseProgressCard({ currentModule, progressPercent, bootcampTitle, bootcampImage, isEnrolled }) {
   const accent = 'var(--accent)'
   return (
-    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: accent }} data-tour="overview-card">
+    <Card className="p-0 overflow-hidden border-l-4" style={{ borderLeftColor: accent }}>
       <div className="flex flex-col lg:flex-row">
         {bootcampImage && (
           <div className="h-40 lg:h-auto lg:w-60 w-full overflow-hidden shrink-0">

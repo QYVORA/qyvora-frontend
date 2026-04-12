@@ -9,9 +9,10 @@ export function AdminSidebar({
   onClose = () => {},
 }) {
   const groups = [
-    { key: 'core', label: 'Core' },
+    { key: 'dashboard', label: null },
+    { key: 'users', label: 'Users & Comms' },
     { key: 'learning', label: 'Learning' },
-    { key: 'content', label: 'Content' },
+    { key: 'store', label: 'Store & Content' },
     { key: 'ops', label: 'Ops' },
   ]
   const grouped = navItems.reduce((acc, item) => {
@@ -39,7 +40,9 @@ export function AdminSidebar({
             if (!items.length) return null
             return (
               <div key={group.key} className="space-y-1.5">
-                <p className="px-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">{group.label}</p>
+                {group.label && (
+                  <p className="px-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">{group.label}</p>
+                )}
                 {items.map(({ to, label, icon: Icon, end }) => (
                   <NavLink
                     key={to}

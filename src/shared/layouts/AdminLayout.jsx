@@ -8,15 +8,24 @@ import { AdminTopbar } from '@/features/admin/components/layout/AdminTopbar'
 import { AdminMobileNav } from '@/features/admin/components/layout/AdminMobileNav'
 
 const NAV_ITEMS = [
-  { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true, group: 'core' },
-  { to: '/admin/users', label: 'Users', icon: Users, group: 'core' },
-  { to: '/admin/notifications', label: 'Notifications', icon: Bell, group: 'core' },
-  { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag, group: 'core' },
+  // Dashboard
+  { to: '/admin', label: 'Overview', icon: LayoutDashboard, end: true, group: 'dashboard' },
+
+  // Users & Comms
+  { to: '/admin/users', label: 'Users', icon: Users, group: 'users' },
+  { to: '/admin/notifications', label: 'Notifications', icon: Bell, group: 'users' },
+
+  // Learning
   { to: '/admin/bootcamps', label: 'Bootcamps', icon: GraduationCap, group: 'learning' },
   { to: '/admin/bootcamp-management', label: 'Bootcamp Access', icon: ShieldCheck, group: 'learning' },
   { to: '/admin/rooms', label: 'Learn Rooms', icon: Layers, group: 'learning' },
   { to: '/admin/learn-rules', label: 'Learn Rules', icon: ListChecks, group: 'learning' },
-  { to: '/admin/content', label: 'Content Upload', icon: Upload, group: 'content' },
+
+  // Store & Content
+  { to: '/admin/marketplace', label: 'Marketplace', icon: ShoppingBag, group: 'store' },
+  { to: '/admin/content', label: 'Content Upload', icon: Upload, group: 'store' },
+
+  // Ops
   { to: '/admin/cp-audit', label: 'CP Audit', icon: Coins, group: 'ops' },
   { to: '/admin/security-events', label: 'Security Events', icon: AlertTriangle, group: 'ops' },
 ]
