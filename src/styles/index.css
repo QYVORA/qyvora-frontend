@@ -393,28 +393,52 @@
 }
 
 .markdown-content h1 {
-  @apply font-display font-bold text-2xl text-[var(--text-primary)] mt-6 mb-3;
+  @apply font-display font-bold text-2xl text-[var(--text-primary)] mt-8 mb-4;
 }
 .markdown-content h2 {
-  @apply font-display font-semibold text-xl text-[var(--text-primary)] mt-5 mb-3;
+  @apply font-display font-semibold text-xl text-[var(--text-primary)] mt-7 mb-3;
 }
 .markdown-content h3 {
-  @apply font-display font-semibold text-lg text-[var(--text-primary)] mt-4 mb-2;
+  @apply font-display font-semibold text-lg text-[var(--text-primary)] mt-6 mb-2;
+}
+.markdown-content h4 {
+  @apply font-semibold text-base text-[var(--text-primary)] mt-5 mb-2;
 }
 .markdown-content p {
-  @apply text-sm text-[var(--text-secondary)] leading-relaxed mb-3;
+  @apply text-sm text-[var(--text-secondary)] leading-relaxed mb-4;
 }
 .markdown-content ul {
-  @apply list-disc pl-5 mb-3 space-y-1 text-sm text-[var(--text-secondary)];
+  @apply list-disc pl-5 mb-4 space-y-1.5 text-sm text-[var(--text-secondary)];
 }
 .markdown-content ol {
-  @apply list-decimal pl-5 mb-3 space-y-1 text-sm text-[var(--text-secondary)];
+  @apply list-decimal pl-5 mb-4 space-y-1.5 text-sm text-[var(--text-secondary)];
+}
+.markdown-content li {
+  @apply text-sm text-[var(--text-secondary)] leading-relaxed;
+}
+.markdown-content strong {
+  @apply font-semibold text-[var(--text-primary)];
 }
 .markdown-content a {
   @apply text-accent underline decoration-accent/40 hover:decoration-accent;
 }
 .markdown-content blockquote {
-  @apply border-l-4 border-accent/40 pl-4 py-2 text-[var(--text-muted)] italic bg-[var(--bg-card)] rounded-r-lg;
+  @apply border-l-4 border-accent/50 pl-4 py-1 my-4 text-[var(--text-secondary)] italic bg-accent/5 rounded-r-lg;
+}
+.markdown-content hr {
+  @apply my-6 border-[var(--border)];
+}
+.markdown-content table {
+  @apply w-full text-sm my-4 border border-[var(--border)] rounded-xl overflow-hidden;
+}
+.markdown-content th {
+  @apply px-4 py-2.5 text-left text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] bg-[var(--bg-secondary)];
+}
+.markdown-content td {
+  @apply px-4 py-2.5 text-sm text-[var(--text-secondary)] border-t border-[var(--border)];
+}
+.markdown-content code {
+  @apply rounded-md bg-[var(--bg-secondary)] border border-[var(--border)] px-1.5 py-0.5 font-mono text-xs text-accent;
 }
 
 @layer utilities {
