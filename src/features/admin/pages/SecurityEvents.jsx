@@ -4,10 +4,11 @@ import { adminService } from '@/core/services'
 import { useToast } from '@/core/contexts/ToastContext'
 import { Button, Card, Badge, Skeleton } from '@/shared/components/ui'
 
-const severityVariant = (severity) => {
-  if (severity === 'high') return 'danger'
-  if (severity === 'medium') return 'warning'
-  return 'accent'
+const severityFromStatus = (statusCode) => {
+  const code = Number(statusCode || 0)
+  if (code >= 500) return { label: 'error', variant: 'danger' }
+  if (code >= 400) return { label: 'warn', variant: 'warning' }
+  return { label: 'info', variant: 'accent' }
 }
 
 export default function AdminSecurityEvents() {
@@ -28,9 +29,7 @@ export default function AdminSecurityEvents() {
     }
   }, [toast])
 
-  useEffect(() => {
-    load()
-  }, [load])
+  useEffect(() => { load() }, [load])
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -48,7 +47,7 @@ export default function AdminSecurityEvents() {
       </div>
 
       {loading ? (
-        <Card className="space-y-4">
+        <Card className="space-y-4 p-5">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center justify-between gap-4">
               <div className="space-y-2">
@@ -60,8 +59,8 @@ export default function AdminSecurityEvents() {
           ))}
         </Card>
       ) : items.length === 0 ? (
-        <Card>
-          <div className="text-sm text-[var(--text-secondary)]">No recent events.</div>
+        <Card className="p-5">
+          <p className="text-sm text-[var(--text-secondary)]">No recent events.</p>
         </Card>
       ) : (
         <Card className="overflow-hidden">
@@ -69,32 +68,37 @@ export default function AdminSecurityEvents() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border)] text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
-                  <th className="text-left p-3">Event</th>
+                  <th className="text-left p-3">Event / Path</th>
                   <th className="text-left p-3">Action</th>
-                  <th className="text-left p-3">Severity</th>
+                  <th className="text-left p-3">Status</th>
                   <th className="text-left p-3">User</th>
                   <th className="text-left p-3">Time</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border)]">
-                {items.map((ev) => (
-                  <tr key={ev.id || ev._id} className="hover:bg-[var(--bg-secondary)] transition-colors">
-                    <td className="p-3">
-                      <p className="text-sm text-[var(--text-primary)]">{ev.title || ev.eventType || 'Security event'}</p>
-                      {ev.path && <p className="text-xs text-[var(--text-muted)] font-mono">{ev.path}</p>}
-                    </td>
-                    <td className="p-3 text-sm text-[var(--text-secondary)]">{ev.action || '—'}</td>
-                    <td className="p-3">
-                      <Badge variant={severityVariant(ev.severity)}>{ev.severity || 'info'}</Badge>
-                    </td>
-                    <td className="p-3 text-xs text-[var(--text-muted)] font-mono">
-                      {ev.userId || ev.user?.id || '—'}
-                    </td>
-                    <td className="p-3 text-xs text-[var(--text-muted)] font-mono">
-                      {ev.createdAt ? new Date(ev.createdAt).toLocaleString() : '—'}
-                    </td>
-                  </tr>
-                ))}
+                {items.map((ev) => {
+                  const sev = severityFromStatus(ev.statusCode)
+                  return (
+                    <tr key={ev.id || ev._id} className="hover:bg-[var(--bg-secondary)] transition-colors">
+                      <td className="p-3">
+                        <p className="text-sm text-[var(--text-primary)]">{ev.eventType || 'event'}</p>
+                        {ev.path && <p className="text-xs text-[var(--text-muted)] font-mono">{ev.path}</p>}
+                      </td>
+                      <td className="p-3 text-sm text-[var(--text-secondary)]">{ev.action || '—'}</td>
+                      <td className="p-3">
+                        <Badge variant={sev.variant}>
+                          {ev.statusCode ? `${ev.statusCode} ${sev.label}` : sev.label}
+                        </Badge>
+                      </td>
+                      <td className="p-3 text-xs text-[var(--text-muted)] font-mono">
+                        {ev.user?.email || ev.user?.name || (ev.userId ? String(ev.userId).slice(-8) : '—')}
+                      </td>
+                      <td className="p-3 text-xs text-[var(--text-muted)] font-mono">
+                        {ev.createdAt ? new Date(ev.createdAt).toLocaleString() : '—'}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

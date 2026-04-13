@@ -194,7 +194,11 @@ export default function LearnRules() {
                 <p className="text-sm text-[var(--text-secondary)] line-clamp-2">{rule.description || 'No description.'}</p>
                 <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] font-mono text-[var(--text-muted)]">
                   <span className="px-2 py-1 rounded-full border border-[var(--border)]">{rule.points || 0} {rule.unit || 'CP'}</span>
-                  <span className="px-2 py-1 rounded-full border border-[var(--border)]">{rule.isActive ? 'Active' : 'Hidden'}</span>
+                  <span className={`px-2 py-1 rounded-full border text-[10px] uppercase tracking-[0.2em] font-mono ${
+                    rule.isActive ? 'border-accent/50 bg-accent/10 text-accent' : 'border-[var(--border)] text-[var(--text-muted)]'
+                  }`}>
+                    {rule.isActive ? '● Active' : '○ Hidden'}
+                  </span>
                 </div>
               </Card>
             ))}

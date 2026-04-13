@@ -3,17 +3,7 @@ import { Link } from 'react-router-dom'
 import { BookOpenCheck } from 'lucide-react'
 import { Card, Skeleton } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
-import { API_ORIGIN } from '@/core/services/api'
-
-const resolveImageUrl = (value) => {
-  const src = String(value || '').trim()
-  if (!src) return ''
-  if (src.startsWith('data:')) return src
-  if (/^https?:\/\//i.test(src)) return src
-  if (src.startsWith('//')) return `${window.location.protocol}${src}`
-  if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-  return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-}
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 
 export default function RoomsPage() {
   const [rooms, setRooms] = useState([])
@@ -49,7 +39,7 @@ export default function RoomsPage() {
       <div>
         <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Rooms</h1>
         <p className="text-sm text-[var(--text-secondary)] mt-1">
-          Self-paced missions with curated walkthroughs.
+          Self-paced missions with curated labs and content.
         </p>
       </div>
 

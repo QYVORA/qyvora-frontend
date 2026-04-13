@@ -48,7 +48,9 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
         ) : (
           <StaggerReveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 justify-center mt-16" stagger={90} variant="scale">
             {leaderboard.slice(0, 6).map((entry, idx) => {
-              const color = 'var(--accent)'
+              // Gold / silver / bronze for top 3, accent for the rest
+              const podiumColors = ['#FFD700', '#C0C0C0', '#CD7F32']
+              const color = idx < 3 ? podiumColors[idx] : 'var(--accent)'
               const handle = entry.handle || entry.name || 'Anonymous'
               const displayHandle = handle.length > 14 ? `${handle.slice(0, 12)}…` : handle
               const rankLabel = entry.rank || 'Operator'
@@ -56,19 +58,19 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                 <div
                   key={entry.id || entry.handle || idx}
                   className="card p-5 sm:p-7 flex flex-col items-center gap-3 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
-                  style={{ borderColor: `${color}35`, borderRadius: '18px' }}
+                  style={{ borderColor: `${color}50`, borderRadius: '18px', willChange: 'transform' }}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: color, opacity: 0.6 }} />
+                  <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: color, opacity: 0.7 }} />
                   {/* Position badge */}
                   <div
                     className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold z-10"
-                    style={{ background: `${color}20`, color, border: `1px solid ${color}40` }}
+                    style={{ background: `${color}25`, color, border: `1px solid ${color}50` }}
                   >
                     {idx + 1}
                   </div>
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                    style={{ background: `radial-gradient(ellipse at center, ${color}10 0%, transparent 70%)` }}
+                    style={{ background: `radial-gradient(ellipse at center, ${color}12 0%, transparent 70%)` }}
                   />
                   <div className="relative z-10">
                     <Avatar
@@ -90,9 +92,7 @@ export function RanksSection({ leaderboard = [], loading = false, rewards }) {
                   >
                     {displayHandle}
                   </p>
-                  <p className="text-xs font-mono text-[var(--text-muted)] relative z-10">
-                    {rankLabel}
-                  </p>
+                  <p className="text-xs font-mono text-[var(--text-muted)] relative z-10">{rankLabel}</p>
                   <p className="text-xs font-mono relative z-10" style={{ color }}>
                     {Number(entry.totalXp || 0).toLocaleString()} CP
                   </p>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ShoppingBag, X, Eye, Star, UploadCloud, ToggleLeft, BadgeCheck, BadgeX, Edit3 } from 'lucide-react'
+import { ShoppingBag, X, UploadCloud, ToggleLeft, BadgeCheck, BadgeX, Edit3 } from 'lucide-react'
 import { Badge, Button, Card, Input, Select, Skeleton } from '@/shared/components/ui'
 import { useToast } from '@/core/contexts/ToastContext'
 import { adminService } from '@/core/services'
@@ -200,8 +200,6 @@ export default function AdminMarketplace() {
     }
   }
 
-  const approvedItems = allItems
-
   const updateItem = (id, updates) => {
     adminService.updateCPProduct(id, updates)
       .then((res) => {
@@ -338,7 +336,7 @@ export default function AdminMarketplace() {
       {/* Active listings */}
       <Card>
         <h3 className="font-semibold text-[var(--text-primary)] mb-5 flex items-center gap-2">
-          <ShoppingBag size={16} className="text-accent" /> Active Listings ({approvedItems.length})
+          <ShoppingBag size={16} className="text-accent" /> Active Listings ({allItems.length})
         </h3>
         {loading ? (
           <div className="space-y-3">
@@ -362,46 +360,35 @@ export default function AdminMarketplace() {
                   <th className="text-left p-3">Item</th>
                   <th className="text-left p-3">Category</th>
                   <th className="text-left p-3">Price</th>
-                  <th className="text-left p-3">Rating</th>
-                  <th className="text-left p-3">Downloads</th>
-                  <th className="text-left p-3">Seller</th>
+                  <th className="text-left p-3">Status</th>
                   <th className="text-right p-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border)]">
-                {approvedItems.map(item => (
+                {allItems.map(item => (
                   <tr key={item._id || item.id} className="hover:bg-[var(--bg-secondary)] transition-colors">
                     <td className="p-3">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-[var(--text-primary)] max-w-[180px] truncate">{item.title}</p>
-                      </div>
+                      <p className="text-sm font-medium text-[var(--text-primary)] max-w-[200px] truncate">{item.title}</p>
                     </td>
                     <td className="p-3"><Badge variant="default">{item.type || 'General'}</Badge></td>
                     <td className="p-3 font-mono text-sm text-accent">
                       {Number(item.cpPrice || 0) === 0 ? 'Free' : `${item.cpPrice} CP`}
                     </td>
-                    <td className="p-3 text-sm text-[var(--text-secondary)] flex items-center gap-1">
-                      <Star size={12} className="text-accent" />—
+                    <td className="p-3">
+                      <Badge variant={item.isActive ? 'success' : 'default'}>
+                        {item.isActive ? 'Active' : 'Inactive'}
+                      </Badge>
                     </td>
-                    <td className="p-3 text-sm text-[var(--text-secondary)] font-mono">—</td>
-                    <td className="p-3 text-sm text-[var(--text-muted)] font-mono">{item.createdBy || '—'}</td>
                     <td className="p-3">
                       <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          icon={Edit3}
-                          onClick={() => handleEdit(item)}
-                        >
-                          Edit
-                        </Button>
+                        <Button variant="ghost" size="sm" icon={Edit3} onClick={() => handleEdit(item)}>Edit</Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           icon={item.isActive ? BadgeCheck : BadgeX}
                           onClick={() => updateItem(item._id || item.id, { isActive: !item.isActive })}
                         >
-                          {item.isActive ? 'Active' : 'Inactive'}
+                          {item.isActive ? 'Disable' : 'Enable'}
                         </Button>
                         <Button
                           variant="ghost"
@@ -412,7 +399,6 @@ export default function AdminMarketplace() {
                         >
                           Make Free
                         </Button>
-                        <Button variant="ghost" size="sm" icon={Eye}>View</Button>
                         <Button variant="danger" size="sm" icon={X} onClick={() => reject(item._id || item.id, item.title)}>Remove</Button>
                       </div>
                     </td>

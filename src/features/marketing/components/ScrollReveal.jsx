@@ -1,10 +1,14 @@
 import { Children, cloneElement, isValidElement, useEffect, useRef, useState } from 'react'
 
-const reduceMotionQuery = '(prefers-reduced-motion: reduce)'
-
 const prefersReducedMotion = () => {
   if (typeof window === 'undefined' || !window.matchMedia) return false
-  return window.matchMedia(reduceMotionQuery).matches
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+// Lower threshold on mobile so tall sections still trigger
+const getThreshold = () => {
+  if (typeof window === 'undefined') return 0.12
+  return window.innerWidth < 640 ? 0.06 : 0.12
 }
 
 export function ScrollReveal({
@@ -18,28 +22,18 @@ export function ScrollReveal({
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setVisible(true)
-      return undefined
-    }
+    if (prefersReducedMotion()) { setVisible(true); return undefined }
     const node = ref.current
-    if (!node || typeof IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return undefined
-    }
+    if (!node || typeof IntersectionObserver === 'undefined') { setVisible(true); return undefined }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true)
-            observer.unobserve(entry.target)
-          }
+          if (entry.isIntersecting) { setVisible(true); observer.unobserve(entry.target) }
         })
       },
-      { threshold: 0.18, rootMargin: '0px 0px -12% 0px' }
+      { threshold: getThreshold(), rootMargin: '0px 0px -8% 0px' }
     )
-
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
@@ -67,40 +61,28 @@ export function StaggerReveal({
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setVisible(true)
-      return undefined
-    }
+    if (prefersReducedMotion()) { setVisible(true); return undefined }
     const node = ref.current
-    if (!node || typeof IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return undefined
-    }
+    if (!node || typeof IntersectionObserver === 'undefined') { setVisible(true); return undefined }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true)
-            observer.unobserve(entry.target)
-          }
+          if (entry.isIntersecting) { setVisible(true); observer.unobserve(entry.target) }
         })
       },
-      { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+      { threshold: getThreshold(), rootMargin: '0px 0px -8% 0px' }
     )
-
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
 
   const items = Children.toArray(children).map((child, index) => {
     if (!isValidElement(child)) return child
-    const childClass = `${child.props?.className || ''} reveal-item reveal-${variant}`.trim()
-    const childStyle = {
-      ...(child.props?.style || {}),
-      '--reveal-index': index,
-    }
-    return cloneElement(child, { className: childClass, style: childStyle })
+    return cloneElement(child, {
+      className: `${child.props?.className || ''} reveal-item reveal-${variant}`.trim(),
+      style: { ...(child.props?.style || {}), '--reveal-index': index },
+    })
   })
 
   return (

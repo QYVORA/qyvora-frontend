@@ -3,7 +3,7 @@ import { clsx } from 'clsx'
 import { Plus, Trash2, Edit3, Save, RefreshCcw } from 'lucide-react'
 import { Button, Card, Input, Skeleton, Toggle } from '@/shared/components/ui'
 import { adminService } from '@/core/services'
-import { API_ORIGIN } from '@/core/services/api'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { useToast } from '@/core/contexts/ToastContext'
 
 const emptySection = () => ({
@@ -37,15 +37,6 @@ export default function LearnRooms() {
   const [uploadingCover, setUploadingCover] = useState(false)
   const [uploadingLogo, setUploadingLogo] = useState(false)
   const { toast } = useToast()
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (src.startsWith('data:')) return src
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('//')) return `${window.location.protocol}${src}`
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
 
   useEffect(() => {
     let mounted = true

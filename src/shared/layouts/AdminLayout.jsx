@@ -30,12 +30,10 @@ const NAV_ITEMS = [
   { to: '/admin/security-events', label: 'Security Events', icon: AlertTriangle, group: 'ops' },
 ]
 
-const MOBILE_NAV_ITEMS = [
-  NAV_ITEMS[0],
-  NAV_ITEMS[1],
-  NAV_ITEMS[3],
-  NAV_ITEMS[2],
-]
+// Fix MOBILE_NAV_ITEMS — use path matching instead of fragile index references
+const MOBILE_NAV_ITEMS = ['/admin', '/admin/users', '/admin/bootcamps', '/admin/notifications']
+  .map(path => NAV_ITEMS.find(item => item.to === path))
+  .filter(Boolean)
 
 export default function AdminLayout() {
   const { logout } = useAuth()

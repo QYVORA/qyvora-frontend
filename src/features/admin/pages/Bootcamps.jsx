@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useToast } from '@/core/contexts/ToastContext'
 import { adminService } from '@/core/services'
-import { API_ORIGIN } from '@/core/services/api'
-import { Card } from '@/shared/components/ui'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
+import { Button, Card, Input, Toggle } from '@/shared/components/ui'
+import { clsx } from 'clsx'
 
 const emptyForm = {
   title: '',
@@ -24,15 +25,6 @@ export default function AdminBootcamps() {
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState('')
   const [uploadingImage, setUploadingImage] = useState(false)
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (src.startsWith('data:')) return src
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('//')) return `${window.location.protocol}${src}`
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
 
   useEffect(() => {
     let mounted = true
@@ -246,76 +238,79 @@ export default function AdminBootcamps() {
 
       <Card className="p-6 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            className="input-field"
+          <Input
+            label="Title"
             placeholder="Bootcamp title"
             value={form.title}
             onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
           />
-          <input
-            className="input-field"
-            placeholder="Level (e.g. Beginner, Advanced)"
+          <Input
+            label="Level"
+            placeholder="e.g. Beginner, Advanced"
             value={form.level}
             onChange={(e) => setForm((prev) => ({ ...prev, level: e.target.value }))}
           />
-          <input
-            className="input-field"
-            placeholder="Duration (e.g. 6 weeks)"
+          <Input
+            label="Duration"
+            placeholder="e.g. 6 weeks"
             value={form.duration}
             onChange={(e) => setForm((prev) => ({ ...prev, duration: e.target.value }))}
           />
-            <input
-              className="input-field"
-              placeholder="Price label (e.g. Free, $299)"
-              value={form.priceLabel}
-              onChange={(e) => setForm((prev) => ({ ...prev, priceLabel: e.target.value }))}
-            />
+          <Input
+            label="Price Label"
+            placeholder="e.g. Free, $299"
+            value={form.priceLabel}
+            onChange={(e) => setForm((prev) => ({ ...prev, priceLabel: e.target.value }))}
+          />
           <div className="md:col-span-2 space-y-2">
+            <label className="label">Cover Image</label>
             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-              <input
-                className="input-field flex-1"
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) handleImageUpload(file)
-                  e.target.value = ''
-                }}
-              />
-              <button
-                type="button"
-                className="btn-secondary px-4 py-2"
+              <label className={clsx(
+                'inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] text-sm font-semibold cursor-pointer transition-all duration-200',
+                'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:border-accent/50 hover:text-[var(--text-primary)] hover:bg-[var(--bg-card-hover)]',
+                uploadingImage && 'opacity-50 pointer-events-none'
+              )}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) handleImageUpload(file)
+                    e.target.value = ''
+                  }}
+                />
+              </label>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setForm((prev) => ({ ...prev, image: '' }))}
-                disabled={uploadingImage}
+                disabled={uploadingImage || !form.image}
               >
-                Clear Image
-              </button>
+                Clear
+              </Button>
             </div>
-            <input
-              className="input-field"
-              placeholder="Uploaded image URL"
-              value={form.image}
-              readOnly
-            />
             {form.image && (
               <div className="overflow-hidden rounded-lg border border-[var(--border)]">
                 <img src={resolveImageUrl(form.image)} alt="Bootcamp preview" className="w-full h-48 object-cover" />
               </div>
             )}
-            {uploadingImage && (
-              <p className="text-xs text-[var(--text-secondary)]">Uploading image...</p>
-            )}
           </div>
-          <textarea
-            className="input-field md:col-span-2 min-h-[90px]"
-            placeholder="Short description"
-            value={form.description}
-            onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-          />
+          <div className="md:col-span-2">
+            <label className="label">Description</label>
+            <textarea
+              className="input-field min-h-[90px]"
+              placeholder="Short description"
+              value={form.description}
+              onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
+            />
+          </div>
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-[var(--text-primary)]">Modules</p>
-              <button className="btn-secondary px-4 py-2" onClick={addModule}>Add Module</button>
+              <Button variant="secondary" size="sm" onClick={addModule}>Add Module</Button>
             </div>
             {(form.modules || []).length === 0 ? (
               <Card className="p-4 text-sm text-[var(--text-secondary)]">No modules yet.</Card>
@@ -323,22 +318,20 @@ export default function AdminBootcamps() {
               (form.modules || []).map((module, moduleIndex) => (
                 <Card key={`${moduleIndex}`} className="p-4 space-y-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <input
-                      className="input-field w-24"
+                    <Input
+                      className="w-24"
                       type="number"
                       placeholder="ID"
                       value={module.moduleId || ''}
                       onChange={(e) => updateModule(moduleIndex, { moduleId: Number(e.target.value) })}
                     />
-                    <input
-                      className="input-field flex-1 min-w-[220px]"
+                    <Input
+                      className="flex-1 min-w-[220px]"
                       placeholder="Module title"
                       value={module.title || ''}
                       onChange={(e) => updateModule(moduleIndex, { title: e.target.value })}
                     />
-                    <button className="btn-ghost px-3 py-2 text-accent" onClick={() => removeModule(moduleIndex)}>
-                      Remove
-                    </button>
+                    <Button variant="ghost" size="sm" onClick={() => removeModule(moduleIndex)}>Remove</Button>
                   </div>
                   <textarea
                     className="input-field min-h-[80px]"
@@ -349,7 +342,7 @@ export default function AdminBootcamps() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Rooms</p>
-                      <button className="btn-secondary px-3 py-1.5" onClick={() => addRoom(moduleIndex)}>Add Room</button>
+                      <Button variant="secondary" size="sm" onClick={() => addRoom(moduleIndex)}>Add Room</Button>
                     </div>
                     {(module.rooms || []).length === 0 ? (
                       <Card className="p-3 text-xs text-[var(--text-secondary)]">No rooms yet.</Card>
@@ -357,22 +350,20 @@ export default function AdminBootcamps() {
                       (module.rooms || []).map((room, roomIndex) => (
                         <div key={`${moduleIndex}-${roomIndex}`} className="border border-[var(--border)] rounded-lg p-3 space-y-2">
                           <div className="flex flex-wrap items-center gap-3">
-                            <input
-                              className="input-field w-24"
+                            <Input
+                              className="w-24"
                               type="number"
                               placeholder="ID"
                               value={room.roomId || ''}
                               onChange={(e) => updateRoom(moduleIndex, roomIndex, { roomId: Number(e.target.value) })}
                             />
-                            <input
-                              className="input-field flex-1 min-w-[200px]"
+                            <Input
+                              className="flex-1 min-w-[200px]"
                               placeholder="Room title"
                               value={room.title || ''}
                               onChange={(e) => updateRoom(moduleIndex, roomIndex, { title: e.target.value })}
                             />
-                            <button className="btn-ghost px-3 py-1.5 text-accent" onClick={() => removeRoom(moduleIndex, roomIndex)}>
-                              Remove
-                            </button>
+                            <Button variant="ghost" size="sm" onClick={() => removeRoom(moduleIndex, roomIndex)}>Remove</Button>
                           </div>
                           <textarea
                             className="input-field min-h-[70px]"
@@ -380,8 +371,7 @@ export default function AdminBootcamps() {
                             value={room.overview || ''}
                             onChange={(e) => updateRoom(moduleIndex, roomIndex, { overview: e.target.value })}
                           />
-                          <input
-                            className="input-field"
+                          <Input
                             placeholder="Room bullets (comma separated)"
                             value={(room.bullets || []).join(', ')}
                             onChange={(e) => updateRoom(moduleIndex, roomIndex, {
@@ -397,31 +387,25 @@ export default function AdminBootcamps() {
             )}
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <label className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-              <input
-                type="checkbox"
-                checked={form.isActive}
-                onChange={(e) => setForm((prev) => ({ ...prev, isActive: e.target.checked }))}
-              />
-              Active
-            </label>
-            <input
-              className="input-field w-32"
+            <div className="flex items-center gap-2">
+              <Toggle checked={form.isActive} onChange={(val) => setForm((prev) => ({ ...prev, isActive: val }))} />
+              <span className="text-sm text-[var(--text-secondary)]">Active</span>
+            </div>
+            <Input
+              className="w-32"
               type="number"
-              placeholder="Sort"
+              placeholder="Sort order"
               value={form.sortOrder}
               onChange={(e) => setForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))}
             />
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
-          <button className="btn-primary px-5 py-2.5" onClick={handleSubmit}>
+          <Button variant="primary" onClick={handleSubmit}>
             {editingId ? 'Update Bootcamp' : 'Add Bootcamp'}
-          </button>
+          </Button>
           {editingId && (
-            <button className="btn-ghost px-5 py-2.5" onClick={resetForm}>
-              Cancel Edit
-            </button>
+            <Button variant="ghost" onClick={resetForm}>Cancel Edit</Button>
           )}
         </div>
       </Card>
@@ -452,15 +436,11 @@ export default function AdminBootcamps() {
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
-                <button className="btn-ghost px-4 py-2" onClick={() => handleEdit(item)}>
-                  Edit
-                </button>
-                <button className="btn-secondary px-4 py-2" onClick={() => toggleActive(item.id)}>
+                <Button variant="ghost" size="sm" onClick={() => handleEdit(item)}>Edit</Button>
+                <Button variant="outline" size="sm" onClick={() => toggleActive(item.id)}>
                   {item.isActive ? 'Disable' : 'Enable'}
-                </button>
-                <button className="btn-ghost px-4 py-2 text-accent hover:text-accent/80" onClick={() => handleDelete(item.id)}>
-                  Delete
-                </button>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => handleDelete(item.id)}>Delete</Button>
               </div>
             </Card>
           ))

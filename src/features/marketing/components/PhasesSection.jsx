@@ -2,22 +2,13 @@ import { Link } from 'react-router-dom'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 import { SectionHeader, Spinner, Skeleton } from '@/shared/components/ui'
 import { useAuth } from '@/core/contexts/AuthContext'
-import { API_ORIGIN } from '@/core/services/api'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 export function PhasesSection({ items = [], loading = false }) {
   const { user } = useAuth()
   const bootcampStatus = user?.bootcampStatus || 'not_enrolled'
   const isEnrolled = bootcampStatus !== 'not_enrolled'
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (src.startsWith('data:')) return src
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('//')) return `${window.location.protocol}${src}`
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
   return (
     <section className="py-32 px-6 bg-[var(--bg-primary)] relative" id="bootcamps">
       <div className="max-w-7xl mx-auto relative z-10">

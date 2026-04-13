@@ -40,7 +40,7 @@ export default function ProfilePage() {
           withTimeout(studentService.getOverview()),
           withTimeout(api.get('/public/leaderboard')),
         ])
-        const [profileRes, overviewRes, leaderboardRes] = results.map((res) => (res.status === 'fulfilled' ? res.value : null))
+        const [profileRes, overviewRes, leaderboardRes] = results.map((r) => (r.status === 'fulfilled' ? r.value : null))
         if (!mounted) return
         setProfile(profileRes?.data || null)
         setOverview(overviewRes?.data || null)
@@ -50,14 +50,14 @@ export default function ProfilePage() {
           hackerHandle: profileRes?.data?.hackerHandle || '',
         })
         if (profileRes?.data) {
-          updateUser(profileRes.data || {})
+          updateUser(profileRes.data)
           setRecoveryToken(profileRes.data?.recoveryToken || '')
         }
         if (results.some((r) => r.status === 'rejected')) {
-          toast({ type: 'warning', title: 'Partial load', message: 'Some profile data did not load. Refresh to try again.' })
+          toast({ type: 'warning', message: 'Some profile data did not load. Refresh to try again.' })
         }
       } catch {
-        toast({ type: 'error', title: 'Profile unavailable', message: 'Please refresh the page.' })
+        toast({ type: 'error', message: 'Profile unavailable. Please refresh.' })
       } finally {
         if (mounted) setLoading(false)
       }
@@ -73,25 +73,21 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     try {
-      const res = await profileService.updateProfile({
-        name: form.name,
-        hackerHandle: form.hackerHandle,
-      })
+      const res = await profileService.updateProfile({ name: form.name, hackerHandle: form.hackerHandle })
       setProfile(res.data)
       updateUser(res.data)
       setEditing(false)
-      toast({ type: 'success', title: 'Profile updated', message: 'Your changes have been saved.' })
+      toast({ type: 'success', message: 'Profile updated.' })
     } catch {
-      toast({ type: 'error', title: 'Update failed', message: 'Please try again.' })
+      toast({ type: 'error', message: 'Update failed. Please try again.' })
     }
   }
 
-  return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <ProfileHeader />
-
-      {loading ? (
-        <Card className="space-y-4">
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-8">
+        <ProfileHeader />
+        <Card className="p-6 space-y-4">
           <div className="flex items-center gap-4">
             <Skeleton className="w-16 h-16 rounded-full" />
             <div className="space-y-2">
@@ -100,146 +96,112 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-4 w-24" />
-            ))}
+            {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-4 w-24" />)}
           </div>
           <Skeleton className="h-2 w-full" />
         </Card>
-      ) : (
-        <ProfileCard
-          user={profile || user}
-          rankLabel={rankLabel}
-          leaderboardPos={leaderboardPos}
-          editing={editing}
-          onToggleEdit={() => setEditing(e => !e)}
-          totalCp={totalCp}
-        />
+        <Card className="p-6 space-y-3">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-full" />
+        </Card>
+        <Card className="p-6 space-y-3">
+          <Skeleton className="h-4 w-32" />
+          {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-3 w-full" />)}
+        </Card>
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-8">
+      <ProfileHeader />
+
+      <ProfileCard
+        user={profile || user}
+        rankLabel={rankLabel}
+        leaderboardPos={leaderboardPos}
+        editing={editing}
+        onToggleEdit={() => setEditing(e => !e)}
+        totalCp={totalCp}
+      />
+
+      {editing && (
+        <EditProfileForm form={form} onChange={setForm} onSave={handleSave} />
       )}
 
-      <Card className="space-y-3">
+      {/* Recovery Token */}
+      <Card className="p-5 space-y-3">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="font-display font-bold text-lg text-[var(--text-primary)]">Recovery Token</h3>
             <p className="text-sm text-[var(--text-secondary)]">
-              Save this token somewhere safe. It can recover your account if you lose access.
+              Save this somewhere safe — it can recover your account if you lose access.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={!recoveryToken}
-              onClick={() => setShowRecoveryToken((prev) => !prev)}
-            >
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="ghost" size="sm" disabled={!recoveryToken} onClick={() => setShowRecoveryToken(p => !p)}>
               {showRecoveryToken ? 'Hide' : 'Show'}
             </Button>
             <Button
               variant="outline"
               size="sm"
               disabled={!recoveryToken}
+              loading={recoveryLoading}
               onClick={async () => {
+                setRecoveryLoading(true)
                 try {
-                  setRecoveryLoading(true)
                   const ok = await copyText(recoveryToken)
                   if (ok) {
-                    try {
-                      await profileService.acknowledgeRecoveryToken()
-                    } catch {
-                      // ignore acknowledgement failures
-                    }
-                    toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
+                    try { await profileService.acknowledgeRecoveryToken() } catch { /* ignore */ }
+                    toast({ type: 'success', message: 'Recovery token copied.' })
                   } else {
-                    toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
+                    toast({ type: 'error', message: 'Copy failed — copy it manually.' })
                   }
                 } finally {
                   setRecoveryLoading(false)
                 }
               }}
-              loading={recoveryLoading}
             >
               Copy Token
             </Button>
           </div>
         </div>
-        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all">
-          {loading ? (
-            <Skeleton className="h-4 w-full" />
-          ) : (
-            recoveryToken
-              ? (showRecoveryToken ? recoveryToken : '••••••••••••••••••••••••')
-              : 'Recovery tokens are shown only once during registration. Contact support if you lost yours.'
-          )}
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg px-4 py-3 font-mono text-sm break-all select-all">
+          {recoveryToken
+            ? (showRecoveryToken ? recoveryToken : `${'•'.repeat(Math.min(recoveryToken.length, 32))}`)
+            : 'Recovery token shown once at registration. Contact support if lost.'}
         </div>
       </Card>
 
-      {editing && (
-        <EditProfileForm
-          form={form}
-          onChange={setForm}
-          onSave={handleSave}
-        />
-      )}
+      <ProfileStats user={profile || user} rankLabel={rankLabel} totalCp={totalCp} />
 
-      {loading ? (
-        <Card className="space-y-3">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-        </Card>
-      ) : (
-        <ProfileStats user={profile || user} rankLabel={rankLabel} totalCp={totalCp} />
-      )}
-      {loading ? (
-        <Card className="space-y-3">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-full" />
-        </Card>
-      ) : (
-        <PhaseProgress items={overview?.learningPath || []} />
-      )}
-      {loading ? (
-        <Card className="space-y-3">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-full" />
-        </Card>
-      ) : (
-        <Card className="space-y-3">
-          <h3 className="font-display font-semibold text-lg text-[var(--text-primary)]">Completed Rooms</h3>
-          {completedRooms.length === 0 ? (
-            <p className="text-sm text-[var(--text-secondary)]">Complete a room to see it here.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {completedRooms.map((room) => (
-                <div key={room.id} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-card)]">
-                  <div className="w-10 h-10 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] flex items-center justify-center overflow-hidden">
-                    {room.logoUrl ? (
-                      <img src={room.logoUrl} alt={room.title} className="w-full h-full object-contain" />
-                    ) : (
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">Room</span>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{room.title}</p>
-                    <p className="text-xs text-[var(--text-muted)]">{room.level || 'Beginner'}</p>
-                  </div>
+      <PhaseProgress items={overview?.learningPath || []} />
+
+      {/* Completed Rooms */}
+      <Card className="p-5 space-y-3">
+        <h3 className="font-display font-semibold text-lg text-[var(--text-primary)]">Completed Rooms</h3>
+        {completedRooms.length === 0 ? (
+          <p className="text-sm text-[var(--text-secondary)]">Complete a room to see it here.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {completedRooms.map((room) => (
+              <div key={room.id} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--bg-card)]">
+                <div className="w-10 h-10 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] flex items-center justify-center overflow-hidden shrink-0">
+                  {room.logoUrl
+                    ? <img src={room.logoUrl} alt={room.title} className="w-full h-full object-contain" />
+                    : <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">Room</span>}
                 </div>
-              ))}
-            </div>
-          )}
-        </Card>
-      )}
-      {loading ? (
-        <Card className="space-y-3">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-full" />
-        </Card>
-      ) : (
-        <ProfileLeaderboard user={profile || user} entries={leaderboard} />
-      )}
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{room.title}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{room.level || 'Beginner'}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+
+      <ProfileLeaderboard user={profile || user} entries={leaderboard} />
     </div>
   )
 }

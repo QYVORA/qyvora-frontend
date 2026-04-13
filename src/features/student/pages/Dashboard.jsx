@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
-import { cpService, profileService, studentService } from '@/core/services'
-import api, { API_ORIGIN } from '@/core/services/api'
+import { profileService, studentService } from '@/core/services'
+import api from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { DashboardHeader } from '@/features/student/components/dashboard/DashboardHeader'
 import { PhaseProgressCard } from '@/features/student/components/dashboard/PhaseProgressCard'
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
@@ -19,18 +20,7 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState(null)
   const [overview, setOverview] = useState(null)
-  const [balance, setBalance] = useState(null)
   const [bootcamps, setBootcamps] = useState([])
-
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (src.startsWith('data:')) return src
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('//')) return `${window.location.protocol}${src}`
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
 
   useEffect(() => {
     const paymentResult = location.state?.paymentResult
@@ -48,16 +38,14 @@ export default function StudentDashboard() {
     let mounted = true
     const load = async () => {
       try {
-        const [profileRes, overviewRes, balanceRes, bootcampsRes] = await Promise.all([
+        const [profileRes, overviewRes, bootcampsRes] = await Promise.all([
           profileService.getProfile(),
           studentService.getOverview(),
-          cpService.getBalance(),
           api.get('/public/bootcamps'),
         ])
         if (!mounted) return
         setProfile(profileRes.data || null)
         setOverview(overviewRes.data || null)
-        setBalance(balanceRes.data || null)
         setBootcamps(bootcampsRes.data?.items || [])
         if (profileRes.data) updateUser(profileRes.data)
       } catch {
@@ -88,37 +76,39 @@ export default function StudentDashboard() {
 
   const progressSnapshot = overview?.snapshot?.find((s) => s.id === 'progress')?.value || '0%'
   const progressPercent = Number(String(progressSnapshot).replace('%', '')) || 0
-  const cpBalance = balance?.balance ?? profile?.cpPoints ?? 0
 
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto space-y-8 px-2 sm:px-0">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="space-y-3">
-            <Skeleton className="h-3 w-32" />
-            <Skeleton className="h-8 w-72" />
+            <Skeleton className="h-5 w-36" />
+            <Skeleton className="h-8 w-56" />
             <Skeleton className="h-3 w-40" />
           </div>
-          <Skeleton className="h-7 w-28" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="p-5 flex items-start gap-4">
-              <Skeleton className="h-10 w-10 rounded-xl" />
-              <div className="space-y-2">
-                <Skeleton className="h-3 w-24" />
-                <Skeleton className="h-6 w-20" />
-                <Skeleton className="h-3 w-28" />
-              </div>
-            </Card>
-          ))}
-        </div>
-        <Card className="space-y-4">
+        <Card className="space-y-4 p-6">
           <Skeleton className="h-4 w-36" />
           <Skeleton className="h-5 w-1/2" />
           <Skeleton className="h-2 w-full" />
           <Skeleton className="h-10 w-40" />
         </Card>
+        <Card className="p-5 space-y-3">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-2 w-full" />
+          <Skeleton className="h-3 w-24" />
+        </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Card key={i} className="p-4 flex items-center gap-4">
+              <Skeleton className="h-9 w-9 rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-3 w-28" />
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
     )
   }
@@ -169,9 +159,9 @@ export default function StudentDashboard() {
                     {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
                   </div>
                   {isEnrolledHere ? (
-                    <a href={`/bootcamp/${item.id}`} className="btn-primary mt-5 inline-flex items-center justify-center">Continue</a>
+                    <Link to={`/bootcamp/${item.id}`} className="btn-primary mt-5 inline-flex items-center justify-center">Continue</Link>
                   ) : (
-                    <a href={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary mt-5 inline-flex items-center justify-center">Enroll</a>
+                    <Link to={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary mt-5 inline-flex items-center justify-center">Enroll</Link>
                   )}
                 </div>
               </div>
@@ -194,9 +184,7 @@ export default function StudentDashboard() {
         isEnrolled={(overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'}
       />
       <RankProgressCard cp={totalCp} rankLabel={rankLabel} />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <QuickLinks user={profile || sessionUser} />
-      </div>
+      <QuickLinks user={profile || sessionUser} />
       {hasActiveModule && bootcampSection}
       <div className="h-24 sm:h-0" />
     </div>

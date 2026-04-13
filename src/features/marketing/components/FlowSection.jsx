@@ -31,9 +31,13 @@ export function FlowSection({ stats, loading = false, leaderboard = [], loadingL
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-20">
           {FLOW_STEPS.map((step, i) => (
             <div key={step.label} className="flex flex-col items-center text-center gap-3 relative">
-              {/* connector line between steps */}
+              {/* horizontal connector — desktop only */}
               {i < FLOW_STEPS.length - 1 && (
                 <div className="hidden lg:block absolute top-5 left-[calc(50%+20px)] right-[-50%] h-px bg-gradient-to-r from-accent/40 to-transparent" />
+              )}
+              {/* vertical connector — mobile/tablet */}
+              {i < FLOW_STEPS.length - 1 && (
+                <div className="lg:hidden absolute top-10 left-1/2 -translate-x-1/2 w-px h-6 bg-gradient-to-b from-accent/40 to-transparent" />
               )}
               <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0 relative z-10">
                 <step.icon size={18} />

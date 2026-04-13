@@ -3,18 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ShieldCheck } from 'lucide-react'
 import { Button, Card, Skeleton } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
-import { API_ORIGIN } from '@/core/services/api'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { MarkdownRenderer } from '@/shared/components/markdown/MarkdownRenderer'
-
-const resolveImageUrl = (value) => {
-  const src = String(value || '').trim()
-  if (!src) return ''
-  if (src.startsWith('data:')) return src
-  if (/^https?:\/\//i.test(src)) return src
-  if (src.startsWith('//')) return `${window.location.protocol}${src}`
-  if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-  return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-}
 
 export default function RoomDetailPage() {
   const { slug } = useParams()

@@ -3,7 +3,8 @@ import { Users, ShoppingBag, FileText, Activity, AlertCircle, Layers, ArrowRight
 import { StatCard, Card, Badge, Skeleton } from '@/shared/components/ui'
 import { Link } from 'react-router-dom'
 import { adminService } from '@/core/services'
-import api, { API_ORIGIN } from '@/core/services/api'
+import api from '@/core/services/api'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 
 export default function AdminDashboard() {
   const [overview, setOverview] = useState(null)
@@ -13,14 +14,6 @@ export default function AdminDashboard() {
   const [events, setEvents] = useState([])
   const [rooms, setRooms] = useState([])
   const [loading, setLoading] = useState(true)
-
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
 
   useEffect(() => {
     let mounted = true
@@ -69,7 +62,6 @@ export default function AdminDashboard() {
         <p className="text-[var(--text-secondary)] text-sm mt-1">Platform health and management console.</p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
@@ -216,12 +208,14 @@ export default function AdminDashboard() {
                 </div>
               ))
             ) : events.length === 0 ? (
-              <div className="text-sm text-[var(--text-secondary)]">No recent events.</div>
+              <p className="text-sm text-[var(--text-secondary)]">No recent events.</p>
             ) : events.map((ev, i) => (
               <div key={ev.id || i} className="flex items-start gap-3 p-2.5 rounded-xl">
-                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${ev.statusCode >= 400 ? 'bg-accent' : 'bg-[var(--primary-60)]'}`} />
+                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${Number(ev.statusCode || 0) >= 400 ? 'bg-red-500' : 'bg-[var(--primary-60)]'}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-[var(--text-primary)]">{ev.action || 'Security event'} <span className="text-[var(--text-muted)]">{ev.path}</span></p>
+                  <p className="text-sm text-[var(--text-primary)] truncate">
+                    {ev.action || 'event'}{ev.path ? <span className="text-[var(--text-muted)]"> {ev.path}</span> : null}
+                  </p>
                   <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
                     {ev.createdAt ? new Date(ev.createdAt).toLocaleString() : '—'}
                   </p>

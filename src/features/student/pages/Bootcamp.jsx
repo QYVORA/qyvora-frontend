@@ -3,7 +3,8 @@ import { Card, Button, Spinner } from '@/shared/components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { studentService } from '@/core/services'
-import api, { API_ORIGIN } from '@/core/services/api'
+import api from '@/core/services/api'
+import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
@@ -31,16 +32,6 @@ export default function BootcampPage() {
   const { user, updateUser } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-
-  const resolveImageUrl = (value) => {
-    const src = String(value || '').trim()
-    if (!src) return ''
-    if (src.startsWith('data:')) return src
-    if (/^https?:\/\//i.test(src)) return src
-    if (src.startsWith('//')) return `${window.location.protocol}${src}`
-    if (src.startsWith('/')) return `${API_ORIGIN}${src}`
-    return `${API_ORIGIN}/${src.replace(/^\/+/, '')}`
-  }
 
   useEffect(() => {
     let mounted = true

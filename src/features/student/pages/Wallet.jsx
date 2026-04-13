@@ -45,7 +45,7 @@ export default function WalletPage() {
       try {
         const [balRes, txRes] = await Promise.all([
           cpService.getBalance(),
-          cpService.getTransactions(20),
+          cpService.getTransactions(200),
         ])
         if (!mounted) return
         setBalance(balRes.data || null)
