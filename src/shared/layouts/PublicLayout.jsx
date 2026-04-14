@@ -13,7 +13,7 @@ export default function PublicLayout() {
         onToggleMenu={() => setMenuOpen(o => !o)}
       />
 
-      <main className="pt-16">
+      <main className="pt-[72px]">
         <Outlet />
       </main>
 

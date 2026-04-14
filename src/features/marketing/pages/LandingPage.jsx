@@ -9,6 +9,7 @@ import { MarketplaceSection } from '@/features/marketing/components/MarketplaceS
 import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
+import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
@@ -114,6 +115,10 @@ export default function LandingPage() {
       {/* CTA before Social — higher intent action comes first */}
       <ScrollReveal delay={200} variant="up">
         <CtaSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={210} variant="up">
+        <ServicesTeaser />
       </ScrollReveal>
 
       <ScrollReveal delay={220} variant="up">

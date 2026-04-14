@@ -1,71 +1,125 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
+const NAV_LINKS = [
+  { href: '/', label: 'Home', exact: true },
+  { href: '/#bootcamps', label: 'Bootcamps' },
+  { href: '/#rooms', label: 'Rooms' },
+  { href: '/services', label: 'Services' },
+  { href: '/contact', label: 'Contact' },
+]
+
 export function PublicNavbar({ menuOpen, onToggleMenu }) {
   const { user } = useAuth()
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-black shadow-[0_12px_30px_-24px_rgba(0,0,0,0.6)]">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5 group px-3 sm:px-0 pl-3 sm:pl-0 md:pl-2">
-            <Logo size="md" scale={2.6} offsetY={-3} className="h-[70px] ml-3 sm:ml-0 md:ml-0" />
-          </Link>
-        </div>
 
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)]/60 bg-[var(--bg-primary)]/90 backdrop-blur-md shadow-[0_4px_24px_-8px_rgba(0,0,0,0.25)]">
+      <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between" style={{ height: '72px' }}>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center shrink-0">
+          <Logo size="md" className="h-10" />
+        </Link>
+
+        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
-          {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#rooms', 'Rooms'], ['/#marketplace', 'Market']].map(([href, label]) => (
-            <a key={label} href={href} className="btn-ghost text-sm">{label}</a>
+          {NAV_LINKS.map(({ href, label }) => (
+            href.startsWith('/#') ? (
+              <a key={label} href={href} className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] rounded-lg transition-all">
+                {label}
+              </a>
+            ) : (
+              <NavLink
+                key={label}
+                to={href}
+                end={href === '/'}
+                className={({ isActive }) =>
+                  `px-3 py-2 text-sm font-medium rounded-lg transition-all ${
+                    isActive
+                      ? 'text-accent bg-accent/8'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            )
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
-          {!user && (
+        {/* Desktop CTAs */}
+        <div className="hidden md:flex items-center gap-3">
+          {!user ? (
             <>
-              <Link to="/login" className="hidden md:inline-flex btn-ghost text-sm border border-[var(--border)] px-4 py-2 rounded-lg">Log in</Link>
-              <Link to="/register" className="btn-primary text-sm hidden md:inline-flex">Start Training</Link>
+              <Link to="/login" className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] border border-[var(--border)] rounded-lg hover:border-accent/40 hover:text-[var(--text-primary)] transition-all">
+                Log in
+              </Link>
+              <Link to="/register" className="btn-primary text-sm">
+                Start Training
+              </Link>
             </>
-          )}
-          {user && (
-            <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} className="hidden md:inline-flex btn-primary text-sm">
-              Go to Dashboard
+          ) : (
+            <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} className="btn-primary text-sm">
+              Dashboard
             </Link>
           )}
-          <button className="md:hidden btn-ghost p-2" onClick={onToggleMenu}>
-            {menuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors"
+          onClick={onToggleMenu}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </div>
 
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] p-6 space-y-6 animate-fade-in shadow-xl">
-          <div className="flex flex-col gap-4">
-            {[['/', 'Home'], ['/#bootcamps', 'Bootcamps'], ['/#rooms', 'Rooms'], ['/#marketplace', 'Market']].map(([href, label]) => (
+        <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] px-6 py-5 space-y-1 shadow-xl">
+          {NAV_LINKS.map(({ href, label }) => (
+            href.startsWith('/#') ? (
               <a
                 key={label}
                 href={href}
                 onClick={onToggleMenu}
-                className="text-lg font-medium text-[var(--text-secondary)] hover:text-accent transition-colors py-2 border-b border-[var(--border)]/50 last:border-0"
+                className="block px-3 py-3 text-base font-medium text-[var(--text-secondary)] hover:text-accent hover:bg-[var(--bg-secondary)] rounded-lg transition-all"
               >
                 {label}
               </a>
-            ))}
-          </div>
-          <div className="space-y-3 pt-2">
-            {!user && (
+            ) : (
+              <NavLink
+                key={label}
+                to={href}
+                end={href === '/'}
+                onClick={onToggleMenu}
+                className={({ isActive }) =>
+                  `block px-3 py-3 text-base font-medium rounded-lg transition-all ${
+                    isActive ? 'text-accent bg-accent/8' : 'text-[var(--text-secondary)] hover:text-accent hover:bg-[var(--bg-secondary)]'
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            )
+          ))}
+          <div className="pt-3 space-y-2 border-t border-[var(--border)] mt-3">
+            {!user ? (
               <>
-                <Link to="/login" onClick={onToggleMenu} className="block w-full btn-ghost py-3.5 text-center rounded-xl border border-[var(--border)] font-semibold">
+                <Link to="/login" onClick={onToggleMenu} className="block w-full text-center px-4 py-3 text-sm font-semibold border border-[var(--border)] rounded-xl text-[var(--text-secondary)] hover:border-accent/40 transition-all">
                   Log in
                 </Link>
-                <Link to="/register" onClick={onToggleMenu} className="block w-full btn-primary text-center py-3.5 rounded-xl font-bold shadow-lg shadow-accent/20">
+                <Link to="/register" onClick={onToggleMenu} className="block w-full btn-primary text-center py-3 rounded-xl font-bold shadow-lg shadow-accent/20">
                   Start Training
                 </Link>
               </>
-            )}
-            {user && (
-              <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} onClick={onToggleMenu} className="block w-full btn-primary text-center py-3.5 rounded-xl font-bold shadow-lg shadow-accent/20">
-                Go to Dashboard
+            ) : (
+              <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} onClick={onToggleMenu} className="block w-full btn-primary text-center py-3 rounded-xl font-bold">
+                Dashboard
               </Link>
             )}
           </div>
