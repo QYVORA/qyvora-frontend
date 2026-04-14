@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const PREVIEW_IMG = '/images/previews/on-phine-herosection-preview.png'
+const PREVIEW_IMG = '/images/previews/phone-dashbord-visual.png'
 
 export function PlatformPreviewSection() {
   return (
