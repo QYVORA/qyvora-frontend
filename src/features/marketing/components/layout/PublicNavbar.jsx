@@ -1,18 +1,36 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
 const NAV_LINKS = [
   { href: '/', label: 'Home', exact: true },
-  { href: '/#bootcamps', label: 'Bootcamps' },
-  { href: '/#rooms', label: 'Rooms' },
+  { href: '/#bootcamps', label: 'Bootcamps', section: 'bootcamps' },
+  { href: '/#rooms', label: 'Rooms', section: 'rooms' },
   { href: '/services', label: 'Services' },
   { href: '/contact', label: 'Contact' },
 ]
 
 export function PublicNavbar({ menuOpen, onToggleMenu }) {
   const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleSectionClick = (e, section, onClose) => {
+    e.preventDefault()
+    if (onClose) onClose()
+    const scrollTo = () => {
+      const el = document.getElementById(section)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    if (location.pathname === '/') {
+      scrollTo()
+    } else {
+      navigate('/')
+      // wait for landing page to mount then scroll
+      setTimeout(scrollTo, 300)
+    }
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)]/60 bg-[var(--bg-primary)]/90 backdrop-blur-md shadow-[0_4px_24px_-8px_rgba(0,0,0,0.25)]">
@@ -25,9 +43,14 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map(({ href, label }) => (
-            href.startsWith('/#') ? (
-              <a key={label} href={href} className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] rounded-lg transition-all">
+          {NAV_LINKS.map(({ href, label, section }) => (
+            section ? (
+              <a
+                key={label}
+                href={href}
+                onClick={(e) => handleSectionClick(e, section)}
+                className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] rounded-lg transition-all cursor-pointer"
+              >
                 {label}
               </a>
             ) : (
@@ -81,13 +104,13 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-[var(--bg-primary)] px-6 py-5 space-y-1 shadow-xl">
-          {NAV_LINKS.map(({ href, label }) => (
-            href.startsWith('/#') ? (
+          {NAV_LINKS.map(({ href, label, section }) => (
+            section ? (
               <a
                 key={label}
                 href={href}
-                onClick={onToggleMenu}
-                className="block px-3 py-3 text-base font-medium text-[var(--text-secondary)] hover:text-accent hover:bg-[var(--bg-secondary)] rounded-lg transition-all"
+                onClick={(e) => handleSectionClick(e, section, onToggleMenu)}
+                className="block px-3 py-3 text-base font-medium text-[var(--text-secondary)] hover:text-accent hover:bg-[var(--bg-secondary)] rounded-lg transition-all cursor-pointer"
               >
                 {label}
               </a>

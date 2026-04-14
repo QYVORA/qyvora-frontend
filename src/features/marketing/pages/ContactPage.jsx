@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Mail, MapPin, MessageSquare, Phone, Send } from 'lucide-react'
+import { Mail, MapPin, MessageSquare, MessageCircle, Send } from 'lucide-react'
+import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 
 const CONTACT_REASONS = [
   'Penetration Testing',
@@ -69,21 +70,60 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-5">
-              {[
-                { icon: Mail, label: 'Email', value: 'info@hsociety.io' },
-                { icon: Phone, label: 'Phone', value: '+27 (0) 000 000 0000' },
-                { icon: MapPin, label: 'Location', value: 'South Africa · Remote Worldwide' },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
-                    <Icon size={18} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">{label}</p>
-                    <p className="text-sm text-[var(--text-primary)] mt-0.5">{value}</p>
-                  </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                  <Mail size={18} />
                 </div>
-              ))}
+                <div>
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Email</p>
+                  <a href="mailto:info@hsociety.io" className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors">
+                    info@hsociety.io
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                  <MessageCircle size={18} />
+                </div>
+                <div>
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">WhatsApp Community</p>
+                  <a
+                    href="https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors"
+                  >
+                    Join the briefing room
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                  <MapPin size={18} />
+                </div>
+                <div>
+                  <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Location</p>
+                  <p className="text-sm text-[var(--text-primary)] mt-0.5">South Africa · Remote Worldwide</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social links */}
+            <div className="space-y-3">
+              <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Follow Us</p>
+              <div className="flex flex-wrap gap-3">
+                {SOCIAL_MEDIA.map(({ key, label, url, icon: Icon }) => (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-accent hover:border-accent/40 transition-all"
+                  >
+                    <Icon size={14} /> {label}
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div className="p-5 rounded-2xl border border-accent/20 bg-accent/5 space-y-2">
