@@ -17,7 +17,6 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    // Simulate — replace with real endpoint when ready
     await new Promise((r) => setTimeout(r, 900))
     setSubmitted(true)
     setLoading(false)
@@ -25,14 +24,20 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <section className="relative py-24 px-6 border-b border-[var(--border)] overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{ backgroundImage: `linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)`, backgroundSize: '48px 48px' }} />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/8 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Hero header */}
+      <section className="relative py-32 px-6 border-b border-[var(--border)] overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1400&q=60"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/50 to-[var(--bg-primary)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <p className="font-mono text-accent text-xs uppercase tracking-widest mb-3">// get in touch</p>
-          <h1 className="font-display font-black text-4xl md:text-5xl text-[var(--text-primary)] mb-4">Contact Us</h1>
+          <h1 className="font-display font-black text-4xl md:text-6xl text-[var(--text-primary)] mb-4">Contact Us</h1>
           <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
             Ready to secure your organisation or train your team? Tell us what you need and we'll get back to you within 24 hours.
           </p>
@@ -42,8 +47,20 @@ export default function ContactPage() {
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
 
-          {/* Left — info */}
+          {/* Left — info + image */}
           <div className="lg:col-span-2 space-y-8">
+
+            {/* Office/team image */}
+            <div className="rounded-2xl overflow-hidden h-48 border border-[var(--border)]">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=75"
+                alt="HSOCIETY team"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
             <div>
               <h2 className="font-display font-bold text-2xl text-[var(--text-primary)] mb-2">Let's talk</h2>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
@@ -84,8 +101,16 @@ export default function ContactPage() {
           <div className="lg:col-span-3">
             {submitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center py-16 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-accent/15 flex items-center justify-center">
-                  <Send size={28} className="text-accent" />
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/30 mb-2">
+                  <img
+                    src="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=200&q=75"
+                    alt=""
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="w-14 h-14 rounded-full bg-accent/15 flex items-center justify-center">
+                  <Send size={26} className="text-accent" />
                 </div>
                 <h3 className="font-display font-bold text-2xl text-[var(--text-primary)]">Message sent</h3>
                 <p className="text-[var(--text-secondary)] max-w-sm">
@@ -104,80 +129,35 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="label">Full Name *</label>
-                    <input
-                      required
-                      className="input-field"
-                      placeholder="John Doe"
-                      value={form.name}
-                      onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                    />
+                    <input required className="input-field" placeholder="John Doe" value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} />
                   </div>
                   <div>
                     <label className="label">Work Email *</label>
-                    <input
-                      required
-                      type="email"
-                      className="input-field"
-                      placeholder="john@company.com"
-                      value={form.email}
-                      onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                    />
+                    <input required type="email" className="input-field" placeholder="john@company.com" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} />
                   </div>
                 </div>
-
                 <div>
                   <label className="label">Company / Organisation</label>
-                  <input
-                    className="input-field"
-                    placeholder="Acme Corp"
-                    value={form.company}
-                    onChange={(e) => setForm((p) => ({ ...p, company: e.target.value }))}
-                  />
+                  <input className="input-field" placeholder="Acme Corp" value={form.company} onChange={(e) => setForm((p) => ({ ...p, company: e.target.value }))} />
                 </div>
-
                 <div>
                   <label className="label">What can we help with? *</label>
-                  <select
-                    required
-                    className="input-field"
-                    value={form.reason}
-                    onChange={(e) => setForm((p) => ({ ...p, reason: e.target.value }))}
-                  >
+                  <select required className="input-field" value={form.reason} onChange={(e) => setForm((p) => ({ ...p, reason: e.target.value }))}>
                     <option value="">Select a service...</option>
-                    {CONTACT_REASONS.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
+                    {CONTACT_REASONS.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
-
                 <div>
                   <label className="label">Message *</label>
-                  <textarea
-                    required
-                    className="input-field min-h-[140px] resize-none"
-                    placeholder="Tell us about your organisation, team size, and what you're looking to achieve..."
-                    value={form.message}
-                    onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
-                  />
+                  <textarea required className="input-field min-h-[140px] resize-none" placeholder="Tell us about your organisation, team size, and what you're looking to achieve..." value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} />
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base rounded-xl shadow-lg shadow-accent/25 disabled:opacity-60"
-                >
+                <button type="submit" disabled={loading} className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base rounded-xl shadow-lg shadow-accent/25 disabled:opacity-60">
                   {loading ? (
-                    <>
-                      <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                      Sending...
-                    </>
+                    <><div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Sending...</>
                   ) : (
-                    <>
-                      <Send size={17} /> Send Message
-                    </>
+                    <><Send size={17} /> Send Message</>
                   )}
                 </button>
-
                 <p className="text-xs text-[var(--text-muted)] text-center">
                   No pricing is shown — all engagements are scoped and quoted individually.
                 </p>
