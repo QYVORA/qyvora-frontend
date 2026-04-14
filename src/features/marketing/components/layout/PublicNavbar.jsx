@@ -20,7 +20,7 @@ export function PublicNavbar({ menuOpen, onToggleMenu }) {
 
         {/* Logo */}
         <Link to="/" className="flex items-center shrink-0">
-          <Logo size="md" className="h-10" />
+          <Logo size="nav" className="h-16 w-auto" />
         </Link>
 
         {/* Desktop nav */}

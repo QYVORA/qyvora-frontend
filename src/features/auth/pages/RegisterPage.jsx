@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useModal } from '@/core/contexts/ModalContext'
 import { authService, profileService } from '@/core/services'
-import { AuthTopActions } from '@/features/auth/components/AuthTopActions'
-import { RegisterHeader } from '@/features/auth/components/RegisterHeader'
+import { LoginSidePanel } from '@/features/auth/components/LoginSidePanel'
 import { RegisterForm } from '@/features/auth/components/RegisterForm'
+import { Logo } from '@/shared/components/brand/Logo'
 import { copyText } from '@/shared/utils/clipboard'
 
 function getPasswordStrength(pw) {
@@ -46,11 +46,9 @@ export default function RegisterPage() {
     setEmailChecking(true)
     try {
       const res = await authService.checkEmail(email)
-      if (res.data?.exists) {
-        setErrors((prev) => ({ ...prev, email: 'An account with this email already exists' }))
-      }
+      if (res.data?.exists) setErrors((prev) => ({ ...prev, email: 'An account with this email already exists' }))
     } catch {
-      // ignore check failures
+      // ignore
     } finally {
       setEmailChecking(false)
     }
@@ -70,22 +68,16 @@ export default function RegisterPage() {
       }
       const result = await register(payload)
       const recoveryToken = result?.recoveryToken
+
       const showRecoveryModal = (onDone) => {
-        if (!recoveryToken) {
-          if (onDone) onDone()
-          return
-        }
+        if (!recoveryToken) { if (onDone) onDone(); return }
         openModal({
           badge: 'Recovery Token',
           title: 'Save Your Recovery Token',
           description: 'This token can recover your account if you ever lose access. Copy it and store it somewhere safe.',
           confirmLabel: 'I saved it',
           onConfirm: async () => {
-            try {
-              await profileService.acknowledgeRecoveryToken()
-            } catch {
-              // ignore acknowledgement failures
-            }
+            try { await profileService.acknowledgeRecoveryToken() } catch { /* ignore */ }
             if (onDone) onDone()
           },
           content: (
@@ -98,11 +90,9 @@ export default function RegisterPage() {
                 className="btn-primary w-full justify-center py-2.5"
                 onClick={async () => {
                   const ok = await copyText(recoveryToken)
-                  if (ok) {
-                    toast({ type: 'success', title: 'Copied', message: 'Recovery token copied to clipboard.' })
-                  } else {
-                    toast({ type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
-                  }
+                  toast(ok
+                    ? { type: 'success', title: 'Copied', message: 'Recovery token copied.' }
+                    : { type: 'error', title: 'Copy failed', message: 'Please copy the token manually.' })
                 }}
               >
                 Copy Token
@@ -126,26 +116,19 @@ export default function RegisterPage() {
     } catch (err) {
       const status = err?.response?.status
       const apiMessage = err?.response?.data?.error
-
       if (status === 409) {
         setErrors({ email: 'An account with this email already exists' })
         toast({ type: 'error', title: 'Email already registered', message: 'Try logging in instead.' })
         return
       }
-
       if (status === 400 && apiMessage) {
         const lowered = apiMessage.toLowerCase()
         if (lowered.includes('password')) setErrors({ password: apiMessage })
         else if (lowered.includes('email')) setErrors({ email: apiMessage })
-        else if (lowered.includes('name') || lowered.includes('handle') || lowered.includes('username')) {
-          setErrors({ username: apiMessage })
-        } else {
-          setErrors({})
-        }
+        else if (lowered.includes('name') || lowered.includes('handle') || lowered.includes('username')) setErrors({ username: apiMessage })
         toast({ type: 'error', title: 'Registration failed', message: apiMessage })
         return
       }
-
       toast({ type: 'error', title: 'Registration failed', message: 'Please try again.' })
     } finally {
       setLoading(false)
@@ -153,29 +136,49 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="relative isolate min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] p-6">
+    <div className="min-h-screen flex bg-[var(--bg-primary)]">
+      {/* Left side panel — identical to login */}
+      <LoginSidePanel />
 
-      <div className="relative z-10 w-full max-w-md">
-        <AuthTopActions
-          linkTo="/login"
-          linkLabel="Already registered?"
-          linkText="Log in"
-        />
+      {/* Right — form */}
+      <div className="flex-1 flex flex-col">
+        {/* Top bar */}
+        <div className="flex items-center justify-between p-4 sm:p-6">
+          <Link to="/" className="lg:hidden flex items-center">
+            <Logo size="lg" />
+          </Link>
+          <div className="ml-auto flex items-center gap-3">
+            <Link to="/login" className="text-sm text-[var(--text-secondary)] hover:text-accent transition-colors">
+              Already registered? <span className="text-accent">Log in</span>
+            </Link>
+          </div>
+        </div>
 
-        <RegisterHeader />
+        {/* Form area */}
+        <div className="flex-1 flex items-center justify-center px-6 py-8">
+          <div className="w-full max-w-md space-y-6">
+            {/* Header */}
+            <div>
+              <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// create account</p>
+              <h1 className="font-display font-bold text-3xl text-[var(--text-primary)]">Join the Platform</h1>
+              <p className="text-[var(--text-secondary)] text-sm mt-1">Begin your offensive security journey.</p>
+            </div>
 
-      <RegisterForm
-        form={form}
-        errors={errors}
-        strength={strength}
-        loading={loading}
-        showPass={showPass}
-        onTogglePass={() => setShowPass(s => !s)}
-        onChange={setForm}
-        onEmailBlur={handleEmailBlur}
-        emailChecking={emailChecking}
-        onSubmit={handleSubmit}
-      />
+            {/* Form card */}
+            <RegisterForm
+              form={form}
+              errors={errors}
+              strength={strength}
+              loading={loading}
+              showPass={showPass}
+              onTogglePass={() => setShowPass((s) => !s)}
+              onChange={setForm}
+              onEmailBlur={handleEmailBlur}
+              emailChecking={emailChecking}
+              onSubmit={handleSubmit}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )

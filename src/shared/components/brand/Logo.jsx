@@ -1,11 +1,15 @@
 import { clsx } from 'clsx'
 
+// The HSOCIETY logo PNG has a transparent background with the wordmark
+// centered in a large canvas — we need a tall enough container so the
+// actual text is legible, and object-contain keeps the aspect ratio.
 export function Logo({ size = 'md', className }) {
   const sizes = {
-    sm: 'h-8',
-    md: 'h-10',
-    lg: 'h-14',
-    xl: 'h-20',
+    sm:  'h-10',   // ~40px — sidebars, small contexts
+    md:  'h-14',   // ~56px — standard nav
+    nav: 'h-16',   // ~64px — public navbar (accounts for canvas padding)
+    lg:  'h-20',   // ~80px — auth pages
+    xl:  'h-28',   // ~112px — login side panel
   }
   return (
     <img
