@@ -1,29 +1,15 @@
 import { useEffect, useState, useCallback } from 'react'
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 
-// Reads all images from /gallery/ — add your images there and list them here.
-// When you add images to public/gallery/, add their filenames to this array.
-const GALLERY_FILES = [
-  // e.g. 'event-1.webp', 'team-photo.jpg'
-  // populated automatically once files are added to public/gallery/
-]
-
 function useGalleryImages() {
-  // Dynamically discover images via Vite's import.meta.glob
   const [images, setImages] = useState([])
   useEffect(() => {
-    // Vite glob — picks up any image added to public/gallery at build time
     const modules = import.meta.glob('/public/gallery/*.{jpg,jpeg,png,webp,avif,gif}', { eager: true, as: 'url' })
     const urls = Object.entries(modules).map(([path, url]) => ({
       src: url,
       name: path.split('/').pop(),
     }))
-    // Fallback: if no images found via glob, use GALLERY_FILES list
-    if (urls.length === 0 && GALLERY_FILES.length > 0) {
-      setImages(GALLERY_FILES.map(f => ({ src: `/gallery/${f}`, name: f })))
-    } else {
-      setImages(urls)
-    }
+    setImages(urls)
   }, [])
   return images
 }
@@ -31,7 +17,6 @@ function useGalleryImages() {
 export function GallerySection() {
   const images = useGalleryImages()
   const [selected, setSelected] = useState(null)
-  const [loaded, setLoaded] = useState({})
 
   const open = (idx) => setSelected(idx)
   const close = () => setSelected(null)
@@ -57,7 +42,6 @@ export function GallerySection() {
     return () => window.removeEventListener('keydown', handler)
   }, [selected, prev, next])
 
-  // Don't render if no images
   if (images.length === 0) return null
 
   return (
@@ -71,51 +55,56 @@ export function GallerySection() {
           <p className="text-[var(--text-secondary)] text-sm mt-2">Events, operators, and moments from the HSOCIETY community.</p>
         </div>
 
-        {/* Masonry-style animated grid */}
+        {/*
+          CSS columns masonry — images fill columns top-to-bottom naturally.
+          No fixed aspect ratios, no empty grid cells, no uneven bottom gaps.
+        */}
         <div
-          className="grid gap-1"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}
+          style={{
+            columns: 'var(--gallery-cols, 3)',
+            columnGap: '4px',
+          }}
+          className="[--gallery-cols:2] sm:[--gallery-cols:3] lg:[--gallery-cols:4]"
         >
           {images.map((img, i) => (
             <button
               key={img.src}
               type="button"
               onClick={() => open(i)}
-              className="group relative overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border)] hover:border-accent/50 transition-all duration-300 focus:outline-none focus:border-accent"
+              className="group relative block w-full overflow-hidden border border-[var(--border)] hover:border-accent/50 focus:outline-none focus:border-accent transition-colors duration-200"
               style={{
-                aspectRatio: i % 5 === 0 ? '16/9' : i % 3 === 0 ? '1/1' : '4/3',
-                gridColumn: i % 7 === 0 ? 'span 2' : 'span 1',
-                animation: `gallery-in 0.5s ${i * 60}ms cubic-bezier(0.22,1,0.36,1) both`,
+                breakInside: 'avoid',
+                marginBottom: '4px',
+                display: 'block',
+                animation: `gallery-in 0.45s ${Math.min(i * 50, 400)}ms cubic-bezier(0.22,1,0.36,1) both`,
               }}
               aria-label={`View ${img.name}`}
             >
-              {!loaded[i] && (
-                <div className="absolute inset-0 bg-[var(--bg-secondary)] animate-pulse" />
-              )}
               <img
                 src={img.src}
                 alt={img.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
-                onLoad={() => setLoaded(l => ({ ...l, [i]: true }))}
               />
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/45 transition-colors duration-300 flex items-center justify-center">
+                <ZoomIn
+                  size={22}
+                  className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"
+                />
               </div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Lightbox modal */}
+      {/* Lightbox */}
       {selected !== null && (
         <div
-          className="fixed inset-0 z-[100] bg-black/92 flex items-center justify-center"
+          className="fixed inset-0 z-[100] bg-black/94 flex items-center justify-center"
           onClick={close}
         >
-          {/* Close */}
           <button
             type="button"
             onClick={close}
@@ -125,7 +114,6 @@ export function GallerySection() {
             <X size={18} />
           </button>
 
-          {/* Prev */}
           {images.length > 1 && (
             <button
               type="button"
@@ -137,27 +125,24 @@ export function GallerySection() {
             </button>
           )}
 
-          {/* Image */}
           <div
-            className="relative max-w-5xl max-h-[85vh] w-full mx-16 flex items-center justify-center"
+            className="relative max-w-5xl max-h-[88vh] w-full mx-16 flex flex-col items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               key={selected}
               src={images[selected].src}
               alt={images[selected].name}
-              className="max-w-full max-h-[85vh] object-contain border border-white/10"
-              style={{ animation: 'lightbox-in 0.3s cubic-bezier(0.22,1,0.36,1) both' }}
+              className="max-w-full max-h-[82vh] w-auto h-auto object-contain border border-white/10"
+              style={{ animation: 'lightbox-in 0.25s cubic-bezier(0.22,1,0.36,1) both' }}
             />
-            {/* Caption */}
-            <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-black/60 border-t border-white/10">
-              <p className="font-mono text-xs text-white/50 text-center">
-                {selected + 1} / {images.length} — {images[selected].name}
+            <div className="w-full px-2 py-2 bg-black/50 border-t border-white/10 mt-0">
+              <p className="font-mono text-xs text-white/40 text-center">
+                {selected + 1} / {images.length}
               </p>
             </div>
           </div>
 
-          {/* Next */}
           {images.length > 1 && (
             <button
               type="button"
@@ -173,11 +158,11 @@ export function GallerySection() {
 
       <style>{`
         @keyframes gallery-in {
-          from { opacity: 0; transform: scale(0.95); }
+          from { opacity: 0; transform: scale(0.97); }
           to   { opacity: 1; transform: scale(1); }
         }
         @keyframes lightbox-in {
-          from { opacity: 0; transform: scale(0.96); }
+          from { opacity: 0; transform: scale(0.97); }
           to   { opacity: 1; transform: scale(1); }
         }
       `}</style>
