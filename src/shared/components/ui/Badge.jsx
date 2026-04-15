@@ -11,7 +11,7 @@ export function Badge({ variant = 'default', children, className }) {
     purple:   'bg-purple-500/15 text-purple-600 border border-purple-500/30 dark:text-purple-400',
   }
   return (
-    <span className={clsx('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-medium', variants[variant] ?? variants.default, className)}>
+    <span className={clsx('inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-mono font-medium uppercase tracking-[0.08em]', variants[variant] ?? variants.default, className)}>
       {children}
     </span>
   )

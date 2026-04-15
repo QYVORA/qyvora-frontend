@@ -12,7 +12,7 @@ export function StatCard({ label, value, sub, icon: Icon, trend, color, classNam
       )}
       <div className="min-w-0">
         <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-mono">{label}</p>
-        <p className={clsx('font-display font-bold text-2xl text-[var(--text-primary)] mt-1 truncate', valueClassName)}>{value}</p>
+        <p className={clsx('font-mono font-bold text-2xl text-[var(--text-primary)] mt-1 truncate', valueClassName)}>{value}</p>
         {sub && <p className="text-xs text-[var(--text-secondary)] mt-0.5">{sub}</p>}
         {trend !== undefined && (
           <p className={`text-xs font-medium mt-1 ${trend >= 0 ? 'text-accent' : 'text-[var(--text-primary)]'}`}>

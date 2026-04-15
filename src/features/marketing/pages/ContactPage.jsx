@@ -1,26 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Mail, MapPin, MessageSquare, MessageCircle, Send } from 'lucide-react'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
-
-const CONTACT_REASONS = [
-  'Penetration Testing',
-  'Web Application Security Audit',
-  'Employee Security Training',
-  'Bootcamp Enrollment',
-  'General Inquiry',
-]
+import { CONTACT_REASONS } from '@/features/marketing/data/servicesData'
+import api from '@/core/services/api'
+import { useToast } from '@/core/contexts/ToastContext'
 
 export default function ContactPage() {
+  const location = useLocation()
+  const { toast } = useToast()
   const [form, setForm] = useState({ name: '', email: '', company: '', reason: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const preselectedReason = location.state?.reason
+    if (preselectedReason && CONTACT_REASONS.includes(preselectedReason)) {
+      setForm((prev) => ({ ...prev, reason: prev.reason || preselectedReason }))
+    }
+  }, [location.state])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 900))
-    setSubmitted(true)
-    setLoading(false)
+    setError('')
+    try {
+      await api.post('/public/subscribe', {
+        email: form.email,
+        name: form.name,
+        source: `contact:${form.reason || 'general'}`,
+      })
+      await api.post('/public/security-events', {
+        eventType: 'contact_form',
+        action: 'contact_form_submitted',
+        path: '/contact',
+        metadata: {
+          company: form.company || '',
+          reason: form.reason || '',
+          message: form.message || '',
+        },
+      })
+      setSubmitted(true)
+      toast({ type: 'success', message: 'Message sent. We will contact you shortly.' })
+    } catch (err) {
+      setError(err?.response?.data?.error || 'Failed to send message. Please try again.')
+      toast({ type: 'error', message: 'Could not send your message right now.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -29,7 +57,7 @@ export default function ContactPage() {
       {/* Hero header */}
       <section className="relative py-32 px-6 border-b border-[var(--border)] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1400&q=60"
+          src="/images/cta-setion-background/cta-background.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
           loading="eager"
@@ -54,7 +82,7 @@ export default function ContactPage() {
             {/* Office/team image */}
             <div className="rounded-2xl overflow-hidden h-48 border border-[var(--border)]">
               <img
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=75"
+                src="/images/how-it-works-section/Learners-Trained.webp"
                 alt="HSOCIETY team"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -143,7 +171,7 @@ export default function ContactPage() {
               <div className="h-full flex flex-col items-center justify-center text-center py-16 space-y-4">
                 <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/30 mb-2">
                   <img
-                    src="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=200&q=75"
+                    src="/HSOCIETY-H-LOGO.webp"
                     alt=""
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -201,6 +229,9 @@ export default function ContactPage() {
                 <p className="text-xs text-[var(--text-muted)] text-center">
                   No pricing is shown — all engagements are scoped and quoted individually.
                 </p>
+                {error && (
+                  <p className="text-xs text-red-400 text-center">{error}</p>
+                )}
               </form>
             )}
           </div>

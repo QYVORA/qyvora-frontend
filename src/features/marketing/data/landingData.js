@@ -13,11 +13,11 @@ export const HOW_IT_WORKS_IMGS = [
 ]
 
 export const FLOW_IMGS = [
-  'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&q=75',
-  'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=75',
-  'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&q=75',
-  'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&q=75',
-  'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&q=75',
+  HOW_IT_WORKS_IMGS[0],
+  HOW_IT_WORKS_IMGS[1],
+  HOW_IT_WORKS_IMGS[2],
+  HOW_IT_WORKS_IMGS[3],
+  PHASES_SECTION_BG,
 ]
 
 export const PHASE_IMGS = [
@@ -26,15 +26,6 @@ export const PHASE_IMGS = [
   '/images/Curriculum-images/phase3.webp',
   '/images/Curriculum-images/phase4.webp',
   '/images/Curriculum-images/phase5.webp',
-]
-
-/**Remove  Phase based cards And Content  */
-export const PHASE_PREVIEW = [
-  { id: 1, title: 'Phase 01 — Reconnaissance', status: 'in-progress', roomsCompleted: 4, roomsTotal: 8, progress: 50 },
-  { id: 2, title: 'Phase 02 — Exploitation', status: 'next', roomsCompleted: 1, roomsTotal: 10, progress: 10 },
-  { id: 3, title: 'Phase 03 — Post-Exploitation', status: 'locked', roomsCompleted: 0, roomsTotal: 9, progress: 0 },
-  { id: 4, title: 'Phase 04 — Persistence', status: 'locked', roomsCompleted: 0, roomsTotal: 7, progress: 0 },
-  { id: 5, title: 'Phase 05 — Zero-Day', status: 'locked', roomsCompleted: 0, roomsTotal: 6, progress: 0 },
 ]
 
 export const FLOW_STEPS = [

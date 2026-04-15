@@ -1,77 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Bug, GraduationCap, Globe, Shield, Users } from 'lucide-react'
-
-const SERVICES = [
-  {
-    icon: Shield,
-    title: 'Penetration Testing',
-    tag: 'For Organisations',
-    img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=75',
-    description: 'Full-scope penetration tests conducted by certified offensive security professionals. We simulate real-world attacks against your infrastructure, applications, and people to identify vulnerabilities before adversaries do.',
-    bullets: [
-      'Network and infrastructure penetration testing',
-      'Internal and external attack simulation',
-      'Detailed findings report with remediation guidance',
-      'Executive summary for leadership',
-      'Re-test included after remediation',
-    ],
-  },
-  {
-    icon: Globe,
-    title: 'Web Application Security Audit',
-    tag: 'For Organisations',
-    img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=75',
-    description: 'Comprehensive security assessment of your web applications covering OWASP Top 10 and beyond. We test authentication, authorisation, injection flaws, business logic, and API security.',
-    bullets: [
-      'OWASP Top 10 full coverage',
-      'API and authentication testing',
-      'Business logic vulnerability analysis',
-      'Source code review (optional)',
-      'Severity-rated findings with proof-of-concept',
-    ],
-  },
-  {
-    icon: Bug,
-    title: 'Vulnerability Assessment',
-    tag: 'For Organisations',
-    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=75',
-    description: 'Systematic identification and prioritisation of security weaknesses across your attack surface. Ideal for organisations that need a clear picture of their risk posture without a full penetration test.',
-    bullets: [
-      'Automated and manual scanning',
-      'Risk-rated vulnerability inventory',
-      'Prioritised remediation roadmap',
-      'Compliance-ready reporting',
-    ],
-  },
-  {
-    icon: Users,
-    title: 'Employee Security Training',
-    tag: 'For Teams',
-    img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=75',
-    description: 'Hands-on offensive security training for your technical teams. We run structured bootcamps and workshops that teach your developers, IT staff, and security teams to think like attackers.',
-    bullets: [
-      'Custom curriculum for your team skill level',
-      'Hands-on labs and real-world scenarios',
-      'Phishing simulation and awareness training',
-      'Secure development practices for developers',
-      'Ongoing access to HSOCIETY platform',
-    ],
-  },
-  {
-    icon: GraduationCap,
-    title: 'Corporate Security Bootcamp',
-    tag: 'For Teams',
-    img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=75',
-    description: 'Structured multi-week offensive security bootcamp delivered to your organisation. Teams go from fundamentals to advanced techniques through guided modules, live sessions, and supervised engagements.',
-    bullets: [
-      'Beginner to advanced tracks available',
-      'Live instructor-led sessions',
-      'CTF challenges and supervised engagements',
-      'Certificates of completion',
-      'Post-training support',
-    ],
-  },
-]
+import { ArrowRight } from 'lucide-react'
+import { SERVICES } from '@/features/marketing/data/servicesData'
 
 export default function ServicesPage() {
   return (
@@ -80,7 +9,7 @@ export default function ServicesPage() {
       {/* Hero header with background image */}
       <section className="relative py-32 px-6 border-b border-[var(--border)] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1400&q=60"
+          src="/images/how-it-works-section/Engagements-4Completed.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
           loading="eager"
@@ -164,7 +93,7 @@ export default function ServicesPage() {
       {/* Bottom CTA with background */}
       <section className="relative py-24 px-6 border-t border-[var(--border)] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1400&q=60"
+          src="/images/cta-setion-background/cta-background.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
           loading="lazy"

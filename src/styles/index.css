@@ -4,47 +4,47 @@
 
 @layer base {
   :root {
-    --primary: #000000;
-    --primary-10: rgba(0, 0, 0, 0.1);
-    --primary-20: rgba(0, 0, 0, 0.2);
-    --primary-25: rgba(0, 0, 0, 0.25);
-    --primary-40: rgba(0, 0, 0, 0.4);
-    --primary-60: rgba(0, 0, 0, 0.6);
+    --primary: #f2f8f0;
+    --primary-10: rgba(242, 248, 240, 0.1);
+    --primary-20: rgba(242, 248, 240, 0.2);
+    --primary-25: rgba(242, 248, 240, 0.25);
+    --primary-40: rgba(242, 248, 240, 0.4);
+    --primary-60: rgba(242, 248, 240, 0.6);
     --accent: #88AD7C;
     --accent-rgb: 136, 173, 124;
-    --bg-primary: #ffffff;
-    --bg-secondary: rgba(0, 0, 0, 0.04);
-    --bg-card: #ffffff;
-    --bg-card-hover: rgba(0, 0, 0, 0.06);
-    --border: rgba(0, 0, 0, 0.18);
+    --bg-primary: #030404;
+    --bg-secondary: rgba(136, 173, 124, 0.08);
+    --bg-card: #070808;
+    --bg-card-hover: rgba(136, 173, 124, 0.12);
+    --border: rgba(136, 173, 124, 0.28);
     --text-primary: var(--primary);
-    --text-secondary: rgba(0, 0, 0, 0.72);
-    --text-muted: rgba(0, 0, 0, 0.52);
+    --text-secondary: rgba(242, 248, 240, 0.78);
+    --text-muted: rgba(242, 248, 240, 0.52);
     --tera-accent-1: rgba(136, 173, 124, 0.35);
     --tera-accent-2: rgba(136, 173, 124, 0.2);
-    --tera-neutral-1: rgba(0, 0, 0, 0.22);
-    --tera-neutral-2: rgba(0, 0, 0, 0.08);
+    --tera-neutral-1: rgba(242, 248, 240, 0.22);
+    --tera-neutral-2: rgba(242, 248, 240, 0.08);
   }
 
   .dark {
-    --primary: #ffffff;
-    --primary-10: rgba(255, 255, 255, 0.1);
-    --primary-20: rgba(255, 255, 255, 0.2);
-    --primary-25: rgba(255, 255, 255, 0.25);
-    --primary-40: rgba(255, 255, 255, 0.4);
-    --primary-60: rgba(255, 255, 255, 0.6);
-    --bg-primary: #000000;
-    --bg-secondary: rgba(255, 255, 255, 0.06);
-    --bg-card: rgba(255, 255, 255, 0.04);
-    --bg-card-hover: rgba(255, 255, 255, 0.08);
-    --border: rgba(255, 255, 255, 0.2);
+    --primary: #f2f8f0;
+    --primary-10: rgba(242, 248, 240, 0.1);
+    --primary-20: rgba(242, 248, 240, 0.2);
+    --primary-25: rgba(242, 248, 240, 0.25);
+    --primary-40: rgba(242, 248, 240, 0.4);
+    --primary-60: rgba(242, 248, 240, 0.6);
+    --bg-primary: #030404;
+    --bg-secondary: rgba(136, 173, 124, 0.08);
+    --bg-card: rgba(8, 10, 9, 0.95);
+    --bg-card-hover: rgba(136, 173, 124, 0.12);
+    --border: rgba(136, 173, 124, 0.3);
     --text-primary: var(--primary);
-    --text-secondary: rgba(255, 255, 255, 0.78);
-    --text-muted: rgba(255, 255, 255, 0.58);
+    --text-secondary: rgba(242, 248, 240, 0.78);
+    --text-muted: rgba(242, 248, 240, 0.58);
     --tera-accent-1: rgba(136, 173, 124, 0.35);
     --tera-accent-2: rgba(136, 173, 124, 0.2);
-    --tera-neutral-1: rgba(255, 255, 255, 0.18);
-    --tera-neutral-2: rgba(255, 255, 255, 0.08);
+    --tera-neutral-1: rgba(242, 248, 240, 0.18);
+    --tera-neutral-2: rgba(242, 248, 240, 0.08);
   }
 
   * {
@@ -66,7 +66,7 @@
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'JetBrains Mono', 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -97,10 +97,10 @@
 
 @layer components {
   .card {
-    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08), rgba(0,0,0,0) 60%), var(--bg-card);
-    border: 1px solid rgba(var(--accent-rgb), 0.18);
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(0,0,0,0) 64%), var(--bg-card);
+    border: 1px solid rgba(var(--accent-rgb), 0.26);
+    border-radius: 12px;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.28);
     position: relative;
     transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
   }
@@ -109,8 +109,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 16px;
-    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.08);
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.14);
     pointer-events: none;
   }
 
@@ -119,24 +119,31 @@
   }
 
   .btn-primary {
-    @apply bg-accent text-[var(--text-primary)] font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25 active:scale-95;
+    @apply bg-accent text-black font-semibold px-5 py-2.5 rounded-md transition-all duration-200 hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25 active:scale-95;
+    letter-spacing: 0.06em;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .btn-secondary {
-    @apply border border-current text-accent px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-accent/10 active:scale-95;
+    @apply border border-current text-accent px-5 py-2.5 rounded-md transition-all duration-200 hover:bg-accent/10 active:scale-95;
+    letter-spacing: 0.06em;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .btn-ghost {
-    @apply text-[var(--text-secondary)] px-4 py-2 rounded-lg transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+    @apply text-[var(--text-secondary)] px-4 py-2 rounded-md transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .input-field {
-    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-lg px-4 py-3 outline-none transition-all duration-200 focus:border-accent/60 focus:ring-2 focus:ring-accent/10;
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-md px-4 py-3 outline-none transition-all duration-200 focus:border-accent/70 focus:ring-2 focus:ring-accent/15;
+    font-family: 'JetBrains Mono', monospace;
   }
 
 
   .label {
-    @apply text-sm font-medium text-[var(--text-secondary)] mb-1.5 block;
+    @apply text-xs font-medium text-[var(--text-secondary)] mb-1.5 block uppercase tracking-wider;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .tag {
@@ -144,11 +151,12 @@
   }
 
   .section-title {
-    @apply font-display font-bold text-3xl md:text-4xl text-[var(--text-primary)];
+    @apply font-mono font-bold text-3xl md:text-4xl text-[var(--text-primary)] uppercase tracking-tight;
   }
 
   .section-sub {
-    @apply text-[var(--text-secondary)] text-lg mt-3 max-w-2xl;
+    @apply text-[var(--text-secondary)] text-base mt-3 max-w-2xl;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .mono {

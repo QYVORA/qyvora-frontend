@@ -1,38 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Bug, GraduationCap, Globe, Shield, Users } from 'lucide-react'
-
-const SERVICES = [
-  {
-    icon: Shield,
-    title: 'Penetration Testing',
-    desc: 'Full-scope attack simulation against your infrastructure and applications.',
-    img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&q=70',
-  },
-  {
-    icon: Globe,
-    title: 'Web App Security Audit',
-    desc: 'OWASP Top 10 and beyond — APIs, auth, business logic, and more.',
-    img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&q=70',
-  },
-  {
-    icon: Bug,
-    title: 'Vulnerability Assessment',
-    desc: 'Risk-rated inventory of weaknesses across your entire attack surface.',
-    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&q=70',
-  },
-  {
-    icon: Users,
-    title: 'Employee Training',
-    desc: 'Teach your team to think like attackers with hands-on labs and workshops.',
-    img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=70',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Corporate Bootcamp',
-    desc: 'Multi-week structured offensive security programme for your organisation.',
-    img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&q=70',
-  },
-]
+import { ArrowRight } from 'lucide-react'
+import { SERVICES } from '@/features/marketing/data/servicesData'
 
 export function ServicesTeaser() {
   return (
@@ -97,7 +65,7 @@ export function ServicesTeaser() {
           >
             <div className="relative h-40 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=400&q=70"
+                src="/images/cta-setion-background/cta-background.webp"
                 alt=""
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 brightness-50"
                 loading="lazy"
