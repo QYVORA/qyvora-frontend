@@ -21,7 +21,8 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.0",
     "remark-gfm": "^4.0.0",
-    "three": "^0.183.2"
+    "three": "^0.183.2",
+    "three.js": "^0.77.1"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
