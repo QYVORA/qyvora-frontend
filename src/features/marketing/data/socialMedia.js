@@ -1,14 +1,6 @@
-import { Youtube, Twitter, Linkedin, MessageCircle } from 'lucide-react'
+import { Twitter, Linkedin, MessageCircle } from 'lucide-react'
 
 export const SOCIAL_MEDIA = [
-  {
-    key: 'youtube',
-    label: 'YouTube',
-    handle: '@hsocietyoffsec',
-    url: 'https://www.youtube.com/@hsocietyoffsec',
-    icon: Youtube,
-    description: 'Video drops, walkthroughs, and live ops.',
-  },
   {
     key: 'x',
     label: 'X',

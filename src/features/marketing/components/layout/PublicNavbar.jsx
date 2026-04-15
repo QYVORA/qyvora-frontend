@@ -12,6 +12,7 @@ const NAV_ITEMS = [
       { label: 'Bootcamps', href: '/#bootcamps', section: 'bootcamps', icon: BookOpen, desc: 'Phase-based offensive security tracks' },
       { label: 'Rooms', href: '/#rooms', section: 'rooms', icon: Target, desc: 'Self-paced hands-on labs' },
       { label: 'Marketplace', href: '/#marketplace', section: 'marketplace', icon: ShoppingBag, desc: 'Zero-Day Market — spend your CP' },
+      { label: 'Zero-Day Market', href: '/zero-day-market', icon: ArrowRight, desc: 'Browse beginner resources & guides' },
     ],
   },
   { label: 'Services', href: '/services' },

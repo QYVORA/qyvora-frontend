@@ -1,4 +1,4 @@
-import { Shield, Users, Megaphone, Palette } from 'lucide-react'
+import { Shield, Users, Palette } from 'lucide-react'
 
 export const TEAM = [
   {
