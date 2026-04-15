@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { LayoutDashboard, Users, Upload, ShoppingBag, Bell, AlertTriangle, GraduationCap, ShieldCheck, Layers, ListChecks, Coins } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -40,7 +40,6 @@ export default function AdminLayout() {
   const { toast } = useToast()
   const navigate = useNavigate()
   const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const isDashboard = location.pathname === '/admin'
 
   const handleLogout = () => {
@@ -49,29 +48,35 @@ export default function AdminLayout() {
     navigate('/')
   }
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined
+    let meta = document.querySelector('meta[name="robots"]')
+    const previous = meta?.getAttribute('content') || ''
+    if (!meta) {
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'robots')
+      document.head.appendChild(meta)
+    }
+    meta.setAttribute('content', 'noindex, nofollow')
+    return () => {
+      if (!meta) return
+      if (previous) meta.setAttribute('content', previous)
+      else meta.remove()
+    }
+  }, [])
+
   return (
     <div className="min-h-screen flex bg-[var(--bg-primary)]">
       <AdminSidebar
         navItems={NAV_ITEMS}
         onLogout={handleLogout}
       />
-      {sidebarOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
-          <AdminSidebar
-            mobile
-            navItems={NAV_ITEMS}
-            onLogout={handleLogout}
-            onClose={() => setSidebarOpen(false)}
-          />
-        </>
-      )}
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminTopbar onOpenSidebar={() => setSidebarOpen(true)} />
+        <AdminTopbar />
         <main className={`flex-1 pb-24 lg:pb-8 animate-enter ${isDashboard ? 'p-0 sm:p-6 lg:p-8' : 'p-6 lg:p-8'}`}>
           <Outlet />
         </main>
-        <AdminMobileNav navItems={MOBILE_NAV_ITEMS} solid={isDashboard} onOpenSidebar={() => setSidebarOpen(true)} />
+        <AdminMobileNav navItems={MOBILE_NAV_ITEMS} solid={isDashboard} />
       </div>
     </div>
   )

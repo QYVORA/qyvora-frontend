@@ -131,7 +131,7 @@ export default function StudentDashboard() {
               <div
                 key={item.id}
                 className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
-                style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
+                style={{ borderColor: `${accent}35` }}
               >
                 <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
                   <img
@@ -142,7 +142,7 @@ export default function StudentDashboard() {
                     decoding="async"
                   />
                   <div
-                    className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
+                    className="absolute top-3 right-3 px-2.5 py-0.5 rounded-none font-mono text-[10px] uppercase tracking-widest border"
                     style={{ color: accent, borderColor: `${accent}50`, background: `${accent}15` }}
                   >
                     BOOTCAMP
@@ -154,9 +154,9 @@ export default function StudentDashboard() {
                     {item.description || 'Curated offensive security track built for real-world mastery.'}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                    {item.level && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.level}</span>}
-                    {item.duration && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.duration}</span>}
-                    {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-[var(--border)]">{item.priceLabel}</span>}
+                    {item.level && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.level}</span>}
+                    {item.duration && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.duration}</span>}
+                    {item.priceLabel && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.priceLabel}</span>}
                   </div>
                   {isEnrolledHere ? (
                     <Link to={`/bootcamp/${item.id}`} className="btn-primary mt-5 inline-flex items-center justify-center">Continue</Link>

@@ -1,4 +1,4 @@
-import { Zap } from 'lucide-react'
+import { Zap, CheckCircle2 } from 'lucide-react'
 import { Card, Button, Spinner } from '@/shared/components/ui'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -9,6 +9,8 @@ import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
+
+const PENDING_ENROLLMENT_KEY = 'hs_pending_bootcamp_enrollment'
 
 export default function BootcampPage() {
   const [overview, setOverview] = useState(null)
@@ -64,6 +66,28 @@ export default function BootcampPage() {
     return () => { mounted = false }
   }, [updateUser])
 
+  useEffect(() => {
+    if (loading || bootcampStatus === 'not_enrolled' || bootcamps.length === 0) return
+    const raw = localStorage.getItem(PENDING_ENROLLMENT_KEY)
+    if (!raw) return
+    try {
+      const pending = JSON.parse(raw)
+      const pendingId = String(pending?.bootcampId || '')
+      if (!pendingId) return
+      const pendingBootcamp = bootcamps.find((item) => String(item.id) === pendingId)
+      if (!pendingBootcamp) return
+      setSelectedBootcamp(pendingBootcamp)
+      setShowPayment(true)
+      setEnrollSuccess(true)
+      if (pending?.application && typeof pending.application === 'object') {
+        setApplication((prev) => ({ ...prev, ...pending.application }))
+      }
+      toast({ type: 'info', title: 'Payment pending', message: 'Resume your payment to complete enrollment.' })
+    } catch {
+      localStorage.removeItem(PENDING_ENROLLMENT_KEY)
+    }
+  }, [bootcamps, bootcampStatus, loading, toast])
+
   const bootcampStatus = overview?.bootcampStatus || user?.bootcampStatus || 'not_enrolled'
   const currentBootcampId = useMemo(() => {
     if (overview?.bootcampId) return overview.bootcampId
@@ -114,11 +138,18 @@ export default function BootcampPage() {
       toast({ type: 'success', message: 'Bootcamp registration successful.' })
       const bootcamp = bootcamps.find((item) => item.id === bootcampId)
       if (bootcamp && isPaidBootcamp(bootcamp)) {
+        localStorage.setItem(PENDING_ENROLLMENT_KEY, JSON.stringify({
+          bootcampId,
+          application,
+          createdAt: Date.now(),
+        }))
         setShowPayment(true)
       } else {
+        localStorage.removeItem(PENDING_ENROLLMENT_KEY)
         navigate(`/bootcamp/${bootcampId}`, { state: { enrolled: true } })
       }
     } catch (err) {
+      localStorage.removeItem(PENDING_ENROLLMENT_KEY)
       toast({ type: 'error', message: err?.response?.data?.error || 'Enrollment failed.' })
     } finally {
       setEnrollingId('')
@@ -159,12 +190,17 @@ export default function BootcampPage() {
       const res = await studentService.initializeBootcampPayment({ method })
       const url = res.data?.authorizationUrl
       if (url) {
+        localStorage.removeItem(PENDING_ENROLLMENT_KEY)
         window.location.href = url
       } else {
         toast({ type: 'error', message: 'Payment link unavailable.' })
       }
     } catch (err) {
-      toast({ type: 'error', message: err?.response?.data?.error || 'Payment initialization failed.' })
+      toast({
+        type: 'warning',
+        title: 'Payment initialization failed',
+        message: `${err?.response?.data?.error || 'Unable to start payment.'} Please retry; your enrollment is saved.`,
+      })
     } finally {
       setPaymentLoading('')
     }
@@ -331,7 +367,12 @@ export default function BootcampPage() {
                     }}
                   >
                     <Icon size={14} />
-                    {visited ? `${platform.label} visited` : `Visit ${platform.label}`}
+                    {visited ? (
+                      <>
+                        <span>{platform.label} visited</span>
+                        <CheckCircle2 size={14} className="text-green-500" />
+                      </>
+                    ) : `Visit ${platform.label}`}
                   </Button>
                 )
               })}

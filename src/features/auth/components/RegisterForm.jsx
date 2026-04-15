@@ -11,6 +11,8 @@ export function RegisterForm({
   loading,
   showPass,
   onTogglePass,
+  showConfirmPass,
+  onToggleConfirmPass,
   onChange,
   onSubmit,
   onEmailBlur,
@@ -72,13 +74,23 @@ export function RegisterForm({
         </div>
         <div>
           <label className="label">Confirm Password</label>
-          <input
-            type="password"
-            placeholder="••••••••"
-            className={`input-field ${errors.confirm ? 'border-accent/60' : ''}`}
-            value={form.confirm}
-            onChange={e => onChange({ ...form, confirm: e.target.value })}
-          />
+          <div className="relative">
+            <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+            <input
+              type={showConfirmPass ? 'text' : 'password'}
+              placeholder="••••••••"
+              className={`input-field pl-10 pr-10 ${errors.confirm ? 'border-accent/60' : ''}`}
+              value={form.confirm}
+              onChange={e => onChange({ ...form, confirm: e.target.value })}
+            />
+            <button
+              type="button"
+              onClick={onToggleConfirmPass}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+            >
+              {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
           {errors.confirm && <p className="mt-1.5 text-xs text-accent">{errors.confirm}</p>}
         </div>
 

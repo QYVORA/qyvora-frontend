@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -21,6 +21,7 @@ function getPasswordStrength(pw) {
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '', confirm: '' })
   const [showPass, setShowPass] = useState(false)
+  const [showConfirmPass, setShowConfirmPass] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const [emailChecking, setEmailChecking] = useState(false)
@@ -28,6 +29,11 @@ export default function RegisterPage() {
   const { toast } = useToast()
   const { openModal } = useModal()
   const navigate = useNavigate()
+  const emailCheckTimeoutRef = useRef(null)
+
+  useEffect(() => () => {
+    if (emailCheckTimeoutRef.current) clearTimeout(emailCheckTimeoutRef.current)
+  }, [])
 
   const strength = getPasswordStrength(form.password)
 
@@ -43,15 +49,18 @@ export default function RegisterPage() {
   const handleEmailBlur = async () => {
     const email = form.email.trim()
     if (!email || !/\S+@\S+\.\S+/.test(email)) return
+    if (emailCheckTimeoutRef.current) clearTimeout(emailCheckTimeoutRef.current)
     setEmailChecking(true)
-    try {
-      const res = await authService.checkEmail(email)
-      if (res.data?.exists) setErrors((prev) => ({ ...prev, email: 'An account with this email already exists' }))
-    } catch {
-      // ignore
-    } finally {
-      setEmailChecking(false)
-    }
+    emailCheckTimeoutRef.current = setTimeout(async () => {
+      try {
+        const res = await authService.checkEmail(email)
+        if (res.data?.exists) setErrors((prev) => ({ ...prev, email: 'An account with this email already exists' }))
+      } catch {
+        // ignore
+      } finally {
+        setEmailChecking(false)
+      }
+    }, 500)
   }
 
   const handleSubmit = async (e) => {
@@ -76,6 +85,8 @@ export default function RegisterPage() {
           title: 'Save Your Recovery Token',
           description: 'This token can recover your account if you ever lose access. Copy it and store it somewhere safe.',
           confirmLabel: 'I saved it',
+          requireConfirmCheck: true,
+          confirmCheckLabel: 'I have copied this token',
           onConfirm: async () => {
             try { await profileService.acknowledgeRecoveryToken() } catch { /* ignore */ }
             if (onDone) onDone()
@@ -172,6 +183,8 @@ export default function RegisterPage() {
               loading={loading}
               showPass={showPass}
               onTogglePass={() => setShowPass((s) => !s)}
+              showConfirmPass={showConfirmPass}
+              onToggleConfirmPass={() => setShowConfirmPass((s) => !s)}
               onChange={setForm}
               onEmailBlur={handleEmailBlur}
               emailChecking={emailChecking}

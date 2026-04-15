@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useToast } from '@/core/contexts/ToastContext'
 import { adminService } from '@/core/services'
 import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
@@ -22,18 +22,20 @@ export default function AdminBootcamps() {
   const [form, setForm] = useState(emptyForm)
   const [bootcamps, setBootcamps] = useState([])
   const [rawContent, setRawContent] = useState(null)
+  const [contentVersion, setContentVersion] = useState(1)
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState('')
   const [uploadingImage, setUploadingImage] = useState(false)
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     let mounted = true
-    const load = async () => {
+    const run = async () => {
       setLoading(true)
       try {
         const res = await adminService.getContent()
         if (!mounted) return
         setRawContent(res.data || null)
+        setContentVersion(Number(res.data?.version || 1))
         setBootcamps(res.data?.learn?.bootcamps || [])
       } catch {
         if (!mounted) return
@@ -42,9 +44,15 @@ export default function AdminBootcamps() {
         if (mounted) setLoading(false)
       }
     }
-    load()
+    await run()
     return () => { mounted = false }
   }, [])
+
+  useEffect(() => {
+    let cleanup = () => {}
+    load().then((fn) => { if (typeof fn === 'function') cleanup = fn })
+    return () => { cleanup() }
+  }, [load])
 
   const sortedBootcamps = useMemo(
     () => [...bootcamps].sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0)),
@@ -54,6 +62,7 @@ export default function AdminBootcamps() {
   const updateBootcamps = async (next) => {
     const payload = {
       ...(rawContent || {}),
+      version: contentVersion,
       learn: {
         ...(rawContent?.learn || {}),
         bootcamps: next,
@@ -61,6 +70,7 @@ export default function AdminBootcamps() {
     }
     const res = await adminService.updateContent(payload)
     setRawContent(res.data || payload)
+    setContentVersion(Number(res.data?.version || contentVersion))
     setBootcamps(res.data?.learn?.bootcamps || next)
   }
 
@@ -101,7 +111,12 @@ export default function AdminBootcamps() {
       await updateBootcamps(next)
       resetForm()
       toast({ type: 'success', message: editingId ? 'Bootcamp updated.' : 'Bootcamp added.' })
-    } catch {
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Bootcamps changed elsewhere. Reloaded latest version.' })
+        await load()
+        return
+      }
       toast({ type: 'error', message: 'Failed to save bootcamp.' })
     }
   }
@@ -111,7 +126,12 @@ export default function AdminBootcamps() {
     try {
       await updateBootcamps(next)
       toast({ type: 'info', message: 'Bootcamp removed.' })
-    } catch {
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Bootcamps changed elsewhere. Reloaded latest version.' })
+        await load()
+        return
+      }
       toast({ type: 'error', message: 'Failed to delete bootcamp.' })
     }
   }
@@ -121,7 +141,12 @@ export default function AdminBootcamps() {
     try {
       await updateBootcamps(next)
       toast({ type: 'success', message: 'Bootcamp updated.' })
-    } catch {
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Bootcamps changed elsewhere. Reloaded latest version.' })
+        await load()
+        return
+      }
       toast({ type: 'error', message: 'Failed to update bootcamp.' })
     }
   }

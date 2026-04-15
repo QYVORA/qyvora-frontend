@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell, Layers } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAuth } from '@/core/contexts/AuthContext'
@@ -24,7 +24,6 @@ export default function StudentLayout() {
   const { toast } = useToast()
   const navigate = useNavigate()
   const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const isDashboard = location.pathname === '/dashboard'
 
   const handleLogout = () => {
@@ -48,6 +47,23 @@ export default function StudentLayout() {
     return () => { mounted = false }
   }, [updateUser])
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined
+    let meta = document.querySelector('meta[name="robots"]')
+    const previous = meta?.getAttribute('content') || ''
+    if (!meta) {
+      meta = document.createElement('meta')
+      meta.setAttribute('name', 'robots')
+      document.head.appendChild(meta)
+    }
+    meta.setAttribute('content', 'noindex, nofollow')
+    return () => {
+      if (!meta) return
+      if (previous) meta.setAttribute('content', previous)
+      else meta.remove()
+    }
+  }, [])
+
   return (
     <div className="min-h-screen flex bg-[var(--bg-primary)]">
       {/* Desktop sidebar */}
@@ -56,20 +72,6 @@ export default function StudentLayout() {
         user={user}
         onLogout={handleLogout}
       />
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
-        <StudentSidebar
-          mobile
-          navItems={NAV_ITEMS}
-          user={user}
-          onLogout={handleLogout}
-          onClose={() => setSidebarOpen(false)}
-        />
-        </>
-      )}
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">

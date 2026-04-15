@@ -15,21 +15,41 @@ export default function AdminSecurityEvents() {
   const { toast } = useToast()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [newCount, setNewCount] = useState(0)
 
-  const load = useCallback(async () => {
-    setLoading(true)
+  const load = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setLoading(true)
     try {
       const res = await adminService.getSecurityEvents({ limit: 50 })
-      setItems(res.data?.items || [])
+      const nextItems = res.data?.items || []
+      if (silent) {
+        setItems((prev) => {
+          const existing = new Set(prev.map((item) => String(item.id || item._id)))
+          const fresh = nextItems.filter((item) => !existing.has(String(item.id || item._id)))
+          if (fresh.length) setNewCount((count) => count + fresh.length)
+          return fresh.length ? [...fresh, ...prev].slice(0, 50) : prev
+        })
+      } else {
+        setItems(nextItems)
+      }
     } catch {
-      toast({ type: 'error', title: 'Failed to load events', message: 'Please try again.' })
-      setItems([])
+      if (!silent) {
+        toast({ type: 'error', title: 'Failed to load events', message: 'Please try again.' })
+        setItems([])
+      }
     } finally {
-      setLoading(false)
+      if (!silent) setLoading(false)
     }
   }, [toast])
 
   useEffect(() => { load() }, [load])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      load({ silent: true })
+    }, 30000)
+    return () => clearInterval(timer)
+  }, [load])
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -45,6 +65,15 @@ export default function AdminSecurityEvents() {
           Refresh
         </Button>
       </div>
+
+      {newCount > 0 && (
+        <div className="inline-flex items-center gap-3 rounded-lg border border-accent/40 bg-accent/10 px-3 py-2 text-sm text-accent">
+          <span>{newCount} new events</span>
+          <button type="button" className="text-xs underline" onClick={() => setNewCount(0)}>
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <Card className="space-y-4 p-5">

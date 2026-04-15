@@ -76,7 +76,7 @@ export function ServicesTeaser() {
             <div className="p-5 flex flex-col gap-3 flex-1 bg-accent/5">
               <p className="font-display font-bold text-lg text-[var(--text-primary)]">Not sure what you need?</p>
               <p className="text-sm text-[var(--text-secondary)] flex-1">Tell us about your organisation and we will recommend the right engagement.</p>
-              <div className="btn-primary flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm">
+              <div className="btn-primary flex items-center justify-center gap-2 rounded-none py-2.5 text-sm">
                 Contact Us <ArrowRight size={14} />
               </div>
             </div>

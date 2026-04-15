@@ -17,7 +17,7 @@ export function StatsGrid({ currentModule, totalCp, cpBalance, overallProgress, 
         />
       )}
       <StatCard label="Total CP" value={Number(totalCp || 0).toLocaleString()} sub="Rank points" icon={Star} color="var(--accent)" className="h-full" />
-      <div className="relative overflow-hidden rounded-2xl min-h-[150px] h-full">
+      <div className="relative overflow-hidden rounded-none min-h-[150px] h-full">
         <StatCard
           label="CP Balance"
           value={Number(cpBalance || 0).toLocaleString()}

@@ -3,7 +3,7 @@ export function FullPageLoader() {
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
       <div className="flex flex-col items-center gap-4">
         <div
-          className="w-14 h-14 rounded-full border-4 border-[var(--border)] border-t-accent animate-spin"
+          className="w-14 h-14 border-2 border-[var(--border)] border-t-accent animate-spin"
           aria-label="Loading"
           role="status"
         />

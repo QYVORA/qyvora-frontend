@@ -39,7 +39,7 @@ export function CtaSection() {
           <p className="text-[var(--text-secondary)] mb-10 text-base sm:text-xl leading-relaxed max-w-xl mx-auto">
             Join 100+ Elite operators training in offensive security. No experience required. Just commitment.
           </p>
-          <Link to="/register" className="btn-primary text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-xl inline-flex items-center gap-3 group">
+          <Link to="/register" className="btn-primary text-base sm:text-lg px-10 sm:px-12 py-4 sm:py-5 rounded-none inline-flex items-center gap-3 group">
             Begin Phase 01
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>

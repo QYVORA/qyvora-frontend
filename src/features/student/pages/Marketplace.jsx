@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useModal } from '@/core/contexts/ModalContext'
@@ -6,6 +7,24 @@ import { cpService, marketplaceService } from '@/core/services'
 import { MarketplaceHeader } from '@/features/student/components/marketplace/MarketplaceHeader'
 import { MarketplaceFilters } from '@/features/student/components/marketplace/MarketplaceFilters'
 import { MarketplaceGrid } from '@/features/student/components/marketplace/MarketplaceGrid'
+
+const toSlug = (value) =>
+  String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+const resolveFilenameFromDisposition = (contentDisposition, fallback) => {
+  const src = String(contentDisposition || '')
+  const utf8Match = src.match(/filename\*\s*=\s*UTF-8''([^;]+)/i)
+  if (utf8Match?.[1]) return decodeURIComponent(utf8Match[1]).replace(/["']/g, '')
+  const quotedMatch = src.match(/filename\s*=\s*"([^"]+)"/i)
+  if (quotedMatch?.[1]) return quotedMatch[1]
+  const bareMatch = src.match(/filename\s*=\s*([^;]+)/i)
+  if (bareMatch?.[1]) return bareMatch[1].trim().replace(/["']/g, '')
+  return fallback
+}
 
 export default function MarketplacePage() {
   const [category, setCategory] = useState('All')
@@ -92,8 +111,8 @@ export default function MarketplacePage() {
     cpService.download(item._id || item.id)
       .then((res) => {
         const contentDisposition = res.headers?.['content-disposition'] || ''
-        const match = contentDisposition.match(/filename="([^"]+)"/)
-        const filename = match?.[1] || `${item.title || 'cp-product'}.pdf`
+        const fallbackSlug = toSlug(item.slug || item.title || item.id || 'cp-product') || 'cp-product'
+        const filename = resolveFilenameFromDisposition(contentDisposition, `${fallbackSlug}.pdf`)
         const blob = new Blob([res.data], { type: res.data?.type || 'application/pdf' })
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -127,6 +146,12 @@ export default function MarketplacePage() {
         purchasedIds={purchasedIds}
         loading={loading}
       />
+      {Number(user?.cpPoints ?? user?.cp ?? 0) === 0 && (
+        <p className="text-sm text-[var(--text-secondary)]">
+          You currently have 0 CP. Earn CP by completing tasks in{' '}
+          <Link to="/learn" className="text-accent hover:underline">Learn</Link>.
+        </p>
+      )}
     </div>
   )
 }

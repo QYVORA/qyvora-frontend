@@ -6,7 +6,7 @@ export function StatCard({ label, value, sub, icon: Icon, trend, color, classNam
   return (
     <div className={clsx('card p-5 flex items-start gap-4 min-w-0 overflow-hidden', className)}>
       {Icon && (
-        <div className="p-2.5 rounded-xl shrink-0" style={{ background: resolvedBg, color: resolvedColor }}>
+        <div className="p-2.5 rounded-none shrink-0" style={{ background: resolvedBg, color: resolvedColor }}>
           <Icon size={20} />
         </div>
       )}

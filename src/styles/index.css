@@ -66,12 +66,17 @@
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', 'DM Sans', sans-serif;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  p, span, li, a, button, input, textarea, select, label {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
   }
 
   ::selection {
@@ -97,10 +102,10 @@
 
 @layer components {
   .card {
-    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(0,0,0,0) 64%), var(--bg-card);
-    border: 1px solid rgba(var(--accent-rgb), 0.26);
-    border-radius: 12px;
-    box-shadow: 0 12px 26px rgba(0,0,0,0.28);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.06), rgba(0, 0, 0, 0) 45%), rgba(0, 0, 0, 0.56);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: 0 !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.32);
     position: relative;
     transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
   }
@@ -109,8 +114,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 12px;
-    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.14);
+    border-radius: 0 !important;
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.1);
     pointer-events: none;
   }
 
@@ -119,24 +124,44 @@
   }
 
   .btn-primary {
-    @apply bg-accent text-black font-semibold px-5 py-2.5 rounded-md transition-all duration-200 hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25 active:scale-95;
-    letter-spacing: 0.06em;
+    @apply bg-accent text-black font-semibold uppercase px-5 py-2.5 rounded-none transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 active:scale-95;
+    letter-spacing: 0.08em;
+    border: 1px solid #88ad7c;
     font-family: 'JetBrains Mono', monospace;
   }
 
   .btn-secondary {
-    @apply border border-current text-accent px-5 py-2.5 rounded-md transition-all duration-200 hover:bg-accent/10 active:scale-95;
-    letter-spacing: 0.06em;
+    @apply bg-transparent text-[var(--text-muted)] font-medium uppercase px-5 py-2.5 rounded-none transition-all duration-200 active:scale-95;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  .btn-primary:hover {
+    background: #a0c490;
+    border-color: #a0c490;
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    color: var(--text-primary);
+    background: rgba(var(--accent-rgb), 0.08);
   }
 
   .btn-ghost {
-    @apply text-[var(--text-secondary)] px-4 py-2 rounded-md transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+    @apply text-[var(--text-muted)] px-4 py-2 rounded-none transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
     font-family: 'JetBrains Mono', monospace;
   }
 
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    border-radius: 0 !important;
+  }
+
   .input-field {
-    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-md px-4 py-3 outline-none transition-all duration-200 focus:border-accent/70 focus:ring-2 focus:ring-accent/15;
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-none px-4 py-3 outline-none transition-all duration-200 focus:border-accent/70 focus:ring-2 focus:ring-accent/15;
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -147,15 +172,15 @@
   }
 
   .tag {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-none text-xs font-mono font-medium;
   }
 
   .section-title {
-    @apply font-mono font-bold text-3xl md:text-4xl text-[var(--text-primary)] uppercase tracking-tight;
+    @apply font-mono font-black text-3xl md:text-4xl text-[var(--text-primary)] uppercase tracking-tight;
   }
 
   .section-sub {
-    @apply text-[var(--text-secondary)] text-base mt-3 max-w-2xl;
+    @apply text-[var(--text-muted)] text-base mt-3 max-w-2xl;
     font-family: 'JetBrains Mono', monospace;
   }
 

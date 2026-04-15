@@ -196,16 +196,16 @@ export default function AdminUsers() {
   }
 
   const handleCpSubmit = () => {
-    if (cpScope !== 'all') {
-      applyCpUpdate()
-      return
-    }
-    const actionLabel = cpAction === 'set' ? 'set CP for all users' : `${cpAction} CP for all users`
+    const affectedCount = cpScope === 'all'
+      ? users.length
+      : users.filter((user) => selectedIds.includes(user.id)).length
+    const scopeLabel = cpScope === 'all' ? 'all users' : 'selected users'
+    const actionLabel = cpAction === 'set' ? 'set CP' : `${cpAction} CP`
     openModal({
       title: 'Confirm bulk CP update',
       badge: 'ADMIN ACTION',
-      description: `You are about to ${actionLabel}. This affects every user in the system.`,
-      confirmLabel: 'Yes, apply to all',
+      description: `You are about to ${actionLabel} for ${scopeLabel}. This affects exactly ${affectedCount} users.`,
+      confirmLabel: 'Yes, apply update',
       cancelLabel: 'Cancel',
       danger: cpAction !== 'grant',
       onConfirm: applyCpUpdate,

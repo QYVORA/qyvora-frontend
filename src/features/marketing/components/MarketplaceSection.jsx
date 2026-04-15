@@ -33,7 +33,7 @@ export function MarketplaceSection({ items = [], loading = false, rewards }) {
         </div>
 
         {/* Hero banner */}
-        <div className="relative rounded-2xl overflow-hidden h-52 sm:h-64 mb-12">
+        <div className="relative rounded-none overflow-hidden h-52 sm:h-64 mb-12">
           {loading ? (
             <div className="w-full h-full bg-[var(--bg-secondary)] flex items-center justify-center">
               <Spinner size={28} />
@@ -169,7 +169,7 @@ export function MarketplaceSection({ items = [], loading = false, rewards }) {
                     </div>
                     <Link
                       to={buyHref}
-                      className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-accent text-[var(--bg-primary)] px-4 py-2.5 text-sm font-semibold shadow-lg shadow-accent/20 transition-all duration-200 hover:shadow-accent/30 hover:-translate-y-0.5 active:translate-y-0"
+                      className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-none bg-accent text-[var(--bg-primary)] px-4 py-2.5 text-sm font-semibold shadow-lg shadow-accent/20 transition-all duration-200 hover:shadow-accent/30 hover:-translate-y-0.5 active:translate-y-0"
                     >
                       <ShoppingBag size={14} />
                       Buy Now

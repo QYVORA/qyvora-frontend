@@ -9,11 +9,11 @@ export function Button({
   className,
   ...props
 }) {
-  const base = 'inline-flex items-center justify-center gap-2 font-semibold rounded-md transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none font-mono uppercase tracking-[0.08em]'
+  const base = 'inline-flex items-center justify-center gap-2 font-semibold rounded-none transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none font-mono uppercase tracking-[0.08em]'
   const variants = {
-    primary: 'bg-accent text-[var(--text-primary)] hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/25',
-    secondary: 'border border-accent text-accent hover:bg-accent/10',
-    ghost: 'text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]',
+    primary: 'bg-accent text-black border border-accent hover:bg-[#a0c490] hover:border-[#a0c490] hover:shadow-lg hover:shadow-accent/20',
+    secondary: 'bg-transparent border border-white/15 text-[var(--text-muted)] hover:border-accent/50 hover:text-[var(--text-primary)] hover:bg-accent/10',
+    ghost: 'text-[var(--text-muted)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]',
     danger: 'bg-[var(--text-primary)] text-accent hover:bg-[color:var(--text-primary)]/90',
     outline: 'border border-[var(--border)] text-[var(--text-primary)] hover:border-accent/40 hover:bg-[var(--bg-card-hover)]',
   }

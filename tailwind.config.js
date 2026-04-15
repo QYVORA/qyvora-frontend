@@ -14,8 +14,8 @@ export default {
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        display: ['Syne', 'sans-serif'],
+        sans: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

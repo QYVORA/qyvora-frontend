@@ -5,9 +5,16 @@ const ModalContext = createContext(null)
 
 export function ModalProvider({ children }) {
   const [modal, setModal] = useState(null)
+  const [confirmedCheck, setConfirmedCheck] = useState(false)
 
-  const openModal = useCallback((config) => setModal(config), [])
-  const closeModal = useCallback(() => setModal(null), [])
+  const openModal = useCallback((config) => {
+    setConfirmedCheck(false)
+    setModal(config)
+  }, [])
+  const closeModal = useCallback(() => {
+    setModal(null)
+    setConfirmedCheck(false)
+  }, [])
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal }}>
@@ -36,6 +43,17 @@ export function ModalProvider({ children }) {
                 <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">{modal.description}</p>
               )}
               {modal.content}
+              {modal.requireConfirmCheck && (
+                <label className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+                  <input
+                    type="checkbox"
+                    className="accent-[var(--accent)]"
+                    checked={confirmedCheck}
+                    onChange={(e) => setConfirmedCheck(Boolean(e.target.checked))}
+                  />
+                  {modal.confirmCheckLabel || 'I have copied this token'}
+                </label>
+              )}
             </div>
             {/* Footer */}
             {(modal.onConfirm || modal.onCancel) && (
@@ -48,7 +66,8 @@ export function ModalProvider({ children }) {
                 {modal.onConfirm && (
                   <button
                     onClick={() => { modal.onConfirm(); closeModal() }}
-                    className={`flex-1 py-2.5 rounded-lg font-semibold transition-all duration-200 ${modal.danger ? 'bg-[var(--text-primary)] text-accent hover:bg-[color:var(--text-primary)]/90' : 'btn-primary'}`}
+                    disabled={Boolean(modal.confirmDisabled || (modal.requireConfirmCheck && !confirmedCheck))}
+                    className={`flex-1 py-2.5 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${modal.danger ? 'bg-[var(--text-primary)] text-accent hover:bg-[color:var(--text-primary)]/90' : 'btn-primary'}`}
                   >
                     {modal.confirmLabel || 'Confirm'}
                   </button>

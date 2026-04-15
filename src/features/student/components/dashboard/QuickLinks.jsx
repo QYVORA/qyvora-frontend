@@ -18,7 +18,7 @@ export function QuickLinks({ user }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {links.map(({ to, label, sub, icon: Icon, color }) => (
           <Link key={to} to={to} className="card-hover flex items-center gap-4 p-4 group">
-            <div className="p-2.5 rounded-xl shrink-0 transition-transform group-hover:scale-110" style={{ background: `${color}15`, color }}>
+            <div className="p-2.5 rounded-none shrink-0 transition-transform group-hover:scale-110" style={{ background: `${color}15`, color }}>
               <Icon size={18} />
             </div>
             <div className="min-w-0 flex-1">

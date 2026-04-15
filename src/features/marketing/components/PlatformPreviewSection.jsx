@@ -25,7 +25,7 @@ export function PlatformPreviewSection() {
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Link
                 to="/register"
-                className="btn-primary px-7 py-3.5 rounded-xl inline-flex items-center justify-center gap-2 group shadow-lg shadow-accent/25"
+                className="btn-primary px-7 py-3.5 rounded-none inline-flex items-center justify-center gap-2 group shadow-lg shadow-accent/25"
               >
                 Start Training
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

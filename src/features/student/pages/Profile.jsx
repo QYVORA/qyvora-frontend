@@ -152,7 +152,6 @@ export default function ProfilePage() {
                 try {
                   const ok = await copyText(recoveryToken)
                   if (ok) {
-                    try { await profileService.acknowledgeRecoveryToken() } catch { /* ignore */ }
                     toast({ type: 'success', message: 'Recovery token copied.' })
                   } else {
                     toast({ type: 'error', message: 'Copy failed — copy it manually.' })

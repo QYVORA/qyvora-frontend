@@ -89,6 +89,10 @@ export default function BootcampRoom() {
       setQuizResult(res.data || null)
       toast({ type: 'success', message: 'Quiz submitted. Score recorded.' })
     } catch (err) {
+      if (err?.response?.status === 410) {
+        setQuizError('This quiz is no longer available')
+        return
+      }
       toast({ type: 'error', message: err?.response?.data?.error || 'Quiz submission failed.' })
     } finally {
       setQuizLoading(false)

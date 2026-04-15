@@ -68,20 +68,47 @@ const getCookie = (name) => {
 
 const CSRF_STORAGE_KEY = 'hs_csrf'
 
-const getStoredCsrf = () => {
-  if (typeof window === 'undefined') return ''
-  return localStorage.getItem(CSRF_STORAGE_KEY) || ''
-}
-
 const setStoredCsrf = (token) => {
   if (typeof window === 'undefined') return
-  if (!token) return
-  localStorage.setItem(CSRF_STORAGE_KEY, token)
+  if (!token) {
+    localStorage.removeItem(CSRF_STORAGE_KEY)
+    return
+  }
+  localStorage.setItem(CSRF_STORAGE_KEY, String(token))
+}
+
+const clearSessionAndRedirect = () => {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem('hs_user')
+  localStorage.removeItem(CSRF_STORAGE_KEY)
+  if (!isAuthPage()) {
+    window.location.href = '/login'
+  }
+}
+
+const readCsrfFromCookie = () => {
+  const cookieToken = getCookie('csrf_token')
+  if (!cookieToken) {
+    setStoredCsrf('')
+    return ''
+  }
+  // Cookie is source of truth; keep localStorage synced for legacy reads.
+  setStoredCsrf(cookieToken)
+  return cookieToken
+}
+
+const ensureCsrfOrReauth = () => {
+  const csrfToken = readCsrfFromCookie()
+  if (csrfToken) return csrfToken
+  if (typeof window !== 'undefined' && localStorage.getItem('hs_user')) {
+    clearSessionAndRedirect()
+  }
+  return ''
 }
 
 // Attach CSRF token when available (cookie-based auth)
 api.interceptors.request.use((config) => {
-  const csrfToken = getStoredCsrf() || getCookie('csrf_token')
+  const csrfToken = ensureCsrfOrReauth()
   if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
   return config
 })
@@ -108,24 +135,24 @@ api.interceptors.response.use(
     if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
       try {
-        const hasCsrf = Boolean(getStoredCsrf() || getCookie('csrf_token'))
+        const hasCsrf = Boolean(ensureCsrfOrReauth())
         if (!hasCsrf) {
           throw new Error('No CSRF token; skip refresh')
         }
         await refreshSession()
         return api(originalRequest)
       } catch (refreshErr) {
-        localStorage.removeItem('hs_user')
-        if (!isAuthPage()) {
-          window.location.href = '/login'
-        }
+        clearSessionAndRedirect()
         return Promise.reject(refreshErr)
       }
     }
     const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
     if (err.response?.status === 401 && hasStoredSession && !isAuthPage() && !url.includes('/auth/me')) {
-      localStorage.removeItem('hs_user')
-      window.location.href = '/login'
+      clearSessionAndRedirect()
+    }
+
+    if (url.includes('/auth/refresh')) {
+      clearSessionAndRedirect()
     }
     return Promise.reject(err)
   }

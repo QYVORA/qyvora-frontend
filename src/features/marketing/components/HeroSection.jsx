@@ -144,23 +144,6 @@ export function HeroSection({ stats, loading = false }) {
           <span>HSOCIETY://OFFSEC — SYSTEM ONLINE</span>
         </div>
 
-        {/* ── logo ── */}
-        <div className="mb-8 sm:mb-10">
-          <img
-            src="/HSOCIETY_LOGO.webp"
-            alt="HSOCIETY"
-            loading="eager"
-            decoding="async"
-            style={{
-              height: 'clamp(36px, 7vw, 72px)',
-              width: 'auto',
-              objectFit: 'contain',
-              objectPosition: 'left center',
-              opacity: 0.82,
-            }}
-          />
-        </div>
-
         {/* ── headline ── */}
         <div className="mb-6 sm:mb-8">
           <h1

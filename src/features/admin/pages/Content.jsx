@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useToast } from '@/core/contexts/ToastContext'
 import { ContentHeader } from '@/features/admin/components/content/ContentHeader'
 import { ContentUploadForm } from '@/features/admin/components/content/ContentUploadForm'
@@ -13,38 +13,42 @@ export default function AdminContent() {
   const [content, setContent] = useState([])
   const [rawContent, setRawContent] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [contentVersion, setContentVersion] = useState(1)
   const fileRef = useRef()
+  const isMountedRef = useRef(true)
   const { toast } = useToast()
 
-  useEffect(() => {
-    let mounted = true
-    const load = async () => {
+  const load = useCallback(async () => {
+    try {
       setLoading(true)
-      try {
-        const res = await adminService.getContent()
-        if (!mounted) return
-        setRawContent(res.data || null)
-        const freeResources = res.data?.learn?.freeResources || []
-        setContent(freeResources.map((item, index) => ({
-          id: item.id || String(index + 1),
-          name: item.title || 'Untitled',
-          phase: '—',
-          type: item.type || 'link',
-          size: '—',
-          uploaded: res.data?.updatedAt ? new Date(res.data.updatedAt).toLocaleDateString() : '—',
-          status: 'published',
-          url: item.url || '',
-          description: item.description || '',
-        })))
-      } catch {
-        setContent([])
-      } finally {
-        if (mounted) setLoading(false)
-      }
+      const res = await adminService.getContent()
+      if (!isMountedRef.current) return
+      setRawContent(res.data || null)
+      setContentVersion(Number(res.data?.version || 1))
+      const freeResources = res.data?.learn?.freeResources || []
+      setContent(freeResources.map((item, index) => ({
+        id: item.id || String(index + 1),
+        name: item.title || 'Untitled',
+        phase: '—',
+        type: item.type || 'link',
+        size: '—',
+        uploaded: res.data?.updatedAt ? new Date(res.data.updatedAt).toLocaleDateString() : '—',
+        status: 'published',
+        url: item.url || '',
+        description: item.description || '',
+      })))
+    } catch {
+      setContent([])
+    } finally {
+      if (isMountedRef.current) setLoading(false)
     }
-    load()
-    return () => { mounted = false }
   }, [])
+
+  useEffect(() => {
+    isMountedRef.current = true
+    load()
+    return () => { isMountedRef.current = false }
+  }, [load])
 
   const handleDrop = (e) => {
     e.preventDefault()
@@ -81,6 +85,7 @@ export default function AdminContent() {
 
       const nextContent = {
         ...(rawContent || {}),
+        version: contentVersion,
         learn: {
           ...(rawContent?.learn || {}),
           freeResources: [newResource, ...(rawContent?.learn?.freeResources || [])],
@@ -89,6 +94,7 @@ export default function AdminContent() {
 
       const res = await adminService.updateContent(nextContent)
       setRawContent(res.data || nextContent)
+      setContentVersion(Number(res.data?.version || contentVersion))
       const freeResources = res.data?.learn?.freeResources || nextContent.learn.freeResources || []
       setContent(freeResources.map((item, index) => ({
         id: item.id || String(index + 1),
@@ -105,7 +111,12 @@ export default function AdminContent() {
       setForm({ title: '', phase: '', type: 'PDF', description: '' })
       setFiles([])
       toast({ type: 'success', title: 'Content published!', message: `"${newResource.title}" is now live.` })
-    } catch {
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Content changed elsewhere. Reloaded latest version.' })
+        await load()
+        return
+      }
       toast({ type: 'error', message: 'Upload failed.' })
     } finally {
       setUploading(false)
@@ -118,9 +129,11 @@ export default function AdminContent() {
     try {
       const res = await adminService.updateContent({
         ...(rawContent || {}),
+        version: contentVersion,
         learn: { ...(rawContent?.learn || {}), freeResources: next },
       })
       setRawContent(res.data || null)
+      setContentVersion(Number(res.data?.version || contentVersion))
       const freeResources = res.data?.learn?.freeResources || next
       setContent(freeResources.map((item, index) => ({
         id: item.id || String(index + 1),
@@ -134,7 +147,12 @@ export default function AdminContent() {
         description: item.description || '',
       })))
       toast({ type: 'info', message: 'Content removed.' })
-    } catch {
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Content changed elsewhere. Reloaded latest version.' })
+        await load()
+        return
+      }
       toast({ type: 'error', message: 'Failed to remove content.' })
     }
   }

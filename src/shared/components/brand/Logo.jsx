@@ -7,7 +7,7 @@ export function Logo({ size = 'md', className }) {
   const sizes = {
     sm:  'h-10',   // ~40px — sidebars, small contexts
     md:  'h-14',   // ~56px — standard nav
-    nav: 'h-16',   // ~64px — public navbar (accounts for canvas padding)
+    nav: 'h-20',   // ~80px — public navbar (accounts for canvas padding)
     lg:  'h-20',   // ~80px — auth pages
     xl:  'h-28',   // ~112px — login side panel
   }

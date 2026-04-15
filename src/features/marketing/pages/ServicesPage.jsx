@@ -107,7 +107,7 @@ export default function ServicesPage() {
             Every organisation is different. Pricing is determined by scope, team size, and engagement type.
             Reach out and we will put together a proposal tailored to your needs.
           </p>
-          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 group px-8 py-4 rounded-xl text-base shadow-lg shadow-accent/25">
+          <Link to="/contact" className="btn-primary inline-flex items-center gap-2 group px-8 py-4 rounded-none text-base shadow-lg shadow-accent/25">
             Contact Us
             <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
           </Link>

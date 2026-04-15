@@ -80,7 +80,7 @@ export default function ContactPage() {
           <div className="lg:col-span-2 space-y-8">
 
             {/* Office/team image */}
-            <div className="rounded-2xl overflow-hidden h-48 border border-[var(--border)]">
+            <div className="rounded-none overflow-hidden h-48 border border-[var(--border)]">
               <img
                 src="/images/how-it-works-section/Learners-Trained.webp"
                 alt="HSOCIETY team"
@@ -146,7 +146,7 @@ export default function ContactPage() {
                     href={url}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-accent hover:border-accent/40 transition-all"
+                    className="flex items-center gap-2 px-3 py-2 rounded-none border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-accent hover:border-accent/40 transition-all"
                   >
                     <Icon size={14} /> {label}
                   </a>
@@ -154,7 +154,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl border border-accent/20 bg-accent/5 space-y-2">
+            <div className="p-5 rounded-none border border-accent/20 bg-accent/5 space-y-2">
               <div className="flex items-center gap-2">
                 <MessageSquare size={16} className="text-accent" />
                 <p className="text-sm font-semibold text-[var(--text-primary)]">Response time</p>
@@ -219,7 +219,7 @@ export default function ContactPage() {
                   <label className="label">Message *</label>
                   <textarea required className="input-field min-h-[140px] resize-none" placeholder="Tell us about your organisation, team size, and what you're looking to achieve..." value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} />
                 </div>
-                <button type="submit" disabled={loading} className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base rounded-xl shadow-lg shadow-accent/25 disabled:opacity-60">
+                <button type="submit" disabled={loading} className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base rounded-none shadow-lg shadow-accent/25 disabled:opacity-60">
                   {loading ? (
                     <><div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Sending...</>
                   ) : (

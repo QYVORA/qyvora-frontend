@@ -8,6 +8,7 @@ import { useModal } from '@/core/contexts/ModalContext'
 export default function AdminBootcampManagement() {
   const [bootcamps, setBootcamps] = useState([])
   const [rawContent, setRawContent] = useState(null)
+  const [contentVersion, setContentVersion] = useState(1)
   const [users, setUsers] = useState([])
   const [selectedBootcampId, setSelectedBootcampId] = useState('')
   const [search, setSearch] = useState('')
@@ -32,6 +33,7 @@ export default function AdminBootcampManagement() {
         if (!mounted) return
         const nextBootcamps = contentRes.data?.learn?.bootcamps || []
         setRawContent(contentRes.data || null)
+        setContentVersion(Number(contentRes.data?.version || 1))
         setBootcamps(nextBootcamps)
         setUsers(usersRes.data || [])
         if (nextBootcamps.length) {
@@ -115,27 +117,66 @@ export default function AdminBootcampManagement() {
   const updateBootcamps = async (next) => {
     const payload = {
       ...(rawContent || {}),
+      version: contentVersion,
       learn: {
         ...(rawContent?.learn || {}),
         bootcamps: next,
       },
     }
-    const res = await adminService.updateContent(payload)
-    setRawContent(res.data || payload)
-    setBootcamps(res.data?.learn?.bootcamps || next)
+    try {
+      const res = await adminService.updateContent(payload)
+      setRawContent(res.data || payload)
+      setContentVersion(Number(res.data?.version || contentVersion))
+      setBootcamps(res.data?.learn?.bootcamps || next)
+      return res.data || payload
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Bootcamp data changed elsewhere. Reloaded latest version.' })
+        const [contentRes, usersRes] = await Promise.all([
+          adminService.getContent(),
+          adminService.getUsers(),
+        ])
+        const latestBootcamps = contentRes.data?.learn?.bootcamps || []
+        setRawContent(contentRes.data || null)
+        setContentVersion(Number(contentRes.data?.version || 1))
+        setBootcamps(latestBootcamps)
+        setUsers(usersRes.data || [])
+        throw Object.assign(new Error('conflict_handled'), { code: 'conflict_handled' })
+      }
+      throw err
+    }
   }
 
   const updateLearnContent = async (updates) => {
     const payload = {
       ...(rawContent || {}),
+      version: contentVersion,
       learn: {
         ...(rawContent?.learn || {}),
         ...(updates || {}),
       },
     }
-    const res = await adminService.updateContent(payload)
-    setRawContent(res.data || payload)
-    return res.data || payload
+    try {
+      const res = await adminService.updateContent(payload)
+      setRawContent(res.data || payload)
+      setContentVersion(Number(res.data?.version || contentVersion))
+      return res.data || payload
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        toast({ type: 'warning', title: 'Conflict detected', message: 'Bootcamp data changed elsewhere. Reloaded latest version.' })
+        const [contentRes, usersRes] = await Promise.all([
+          adminService.getContent(),
+          adminService.getUsers(),
+        ])
+        const latestBootcamps = contentRes.data?.learn?.bootcamps || []
+        setRawContent(contentRes.data || null)
+        setContentVersion(Number(contentRes.data?.version || 1))
+        setBootcamps(latestBootcamps)
+        setUsers(usersRes.data || [])
+        throw Object.assign(new Error('conflict_handled'), { code: 'conflict_handled' })
+      }
+      throw err
+    }
   }
 
   const updateBootcampAccess = async (bootcampId, updater) => {
@@ -145,17 +186,10 @@ export default function AdminBootcampManagement() {
       const current = normalizeAccess(accessRoot?.[bootcampId] || {})
       const nextAccess = typeof updater === 'function' ? updater(current) : { ...current, ...(updater || {}) }
       const nextRoot = { ...(accessRoot || {}), [bootcampId]: nextAccess }
-      const payload = {
-        ...(rawContent || {}),
-        learn: {
-          ...(rawContent?.learn || {}),
-          bootcampAccess: nextRoot,
-        },
-      }
-      const res = await adminService.updateContent(payload)
-      setRawContent(res.data || payload)
+      await updateLearnContent({ bootcampAccess: nextRoot })
       toast({ type: 'success', message: 'Bootcamp access updated.' })
-    } catch {
+    } catch (err) {
+      if (err?.code === 'conflict_handled') return
       toast({ type: 'error', message: 'Failed to update bootcamp access.' })
     } finally {
       setSavingAccess(false)
@@ -181,7 +215,8 @@ export default function AdminBootcampManagement() {
 
       await updateBootcamps(nextBootcamps)
       toast({ type: 'success', message: 'Quiz access updated.' })
-    } catch {
+    } catch (err) {
+      if (err?.code === 'conflict_handled') return
       toast({ type: 'error', message: 'Failed to update quiz access.' })
     } finally {
       setSavingUserId('')
@@ -291,7 +326,8 @@ export default function AdminBootcampManagement() {
           await updateBootcampAccess(selectedBootcampId, (current) => markQuizReleased(current, scope))
           toast({ type: 'success', message: 'Quiz released.' })
           closeModal()
-        } catch {
+        } catch (err) {
+          if (err?.code === 'conflict_handled') return
           toast({ type: 'error', message: 'Failed to release quiz.' })
         } finally {
           setSubmitting(false)
@@ -408,7 +444,8 @@ export default function AdminBootcampManagement() {
           await updateLearnContent({ bootcampRoomLinks: nextLinks })
           toast({ type: 'success', message: 'Room link saved.' })
           closeModal()
-        } catch {
+        } catch (err) {
+          if (err?.code === 'conflict_handled') return
           toast({ type: 'error', message: 'Failed to save room link.' })
         } finally {
           setSaving(false)
@@ -501,7 +538,8 @@ export default function AdminBootcampManagement() {
           await updateLearnContent({ bootcampResources: nextResources })
           toast({ type: 'success', message: 'Room resources saved.' })
           closeModal()
-        } catch {
+        } catch (err) {
+          if (err?.code === 'conflict_handled') return
           toast({ type: 'error', message: 'Failed to save room resources.' })
         } finally {
           setSaving(false)

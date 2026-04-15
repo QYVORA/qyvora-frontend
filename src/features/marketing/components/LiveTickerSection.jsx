@@ -77,7 +77,7 @@ export function LiveTickerSection({ leaderboard = [], loading = false, stats }) 
             {statRows.map(({ label, value, unit, icon: Icon, color, bg }) => (
               <div
                 key={label}
-                className={`relative group rounded-2xl border p-5 flex flex-col gap-4 bg-[var(--bg-secondary)] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ${bg}`}
+                className={`relative group rounded-none border p-5 flex flex-col gap-4 bg-[var(--bg-secondary)] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ${bg}`}
               >
                 {/* Icon */}
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${bg}`}>
@@ -101,7 +101,7 @@ export function LiveTickerSection({ leaderboard = [], loading = false, stats }) 
         )}
 
         {/* Bottom description bar */}
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="rounded-none border border-[var(--border)] bg-[var(--bg-secondary)] px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-xl">
             The CP economy is operator-driven — every module completed, challenge solved, and engagement closed moves the ticker.
           </p>
