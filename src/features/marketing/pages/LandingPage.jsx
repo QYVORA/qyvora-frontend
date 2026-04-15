@@ -11,6 +11,8 @@ import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
 import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
+import { TeamSection } from '@/features/marketing/components/TeamSection'
+import { BlogPreviewSection } from '@/features/marketing/components/BlogPreviewSection'
 import { GallerySection } from '@/features/marketing/components/GallerySection'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
@@ -128,6 +130,14 @@ export default function LandingPage() {
 
       <ScrollReveal delay={220} variant="up">
         <SocialSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={230} variant="up">
+        <TeamSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={240} variant="up">
+        <BlogPreviewSection />
       </ScrollReveal>
 
       {/* Gallery — above footer */}

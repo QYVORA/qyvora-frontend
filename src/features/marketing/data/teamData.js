@@ -1,0 +1,83 @@
+import { Shield, Users, Megaphone, Palette } from 'lucide-react'
+
+export const TEAM = [
+  {
+    id: 'president',
+    role: 'Team President',
+    name: 'HSOCIETY President',
+    bio: 'Leading the mission to build Africa\'s premier offensive security training platform. Driving strategy, partnerships, and operator growth.',
+    icon: Shield,
+    avatar: null,
+    social: { x: 'https://x.com/hsocietyoffsec', linkedin: 'https://www.linkedin.com/company/hsociety-offsec/' },
+  },
+  {
+    id: 'vp',
+    role: 'Vice Team President',
+    name: 'HSOCIETY VP',
+    bio: 'Supporting platform operations, curriculum development, and ensuring every operator gets the best training experience.',
+    icon: Shield,
+    avatar: null,
+    social: { x: 'https://x.com/hsocietyoffsec' },
+  },
+  {
+    id: 'community',
+    role: 'Community Manager',
+    name: 'Community Lead',
+    bio: 'Building and nurturing the HSOCIETY operator community. Running briefings, events, and keeping the network tight.',
+    icon: Users,
+    avatar: null,
+    social: { x: 'https://x.com/hsocietyoffsec', whatsapp: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5' },
+  },
+  {
+    id: 'brand',
+    role: 'Brand Lead',
+    name: 'Brand & Design',
+    bio: 'Crafting the HSOCIETY visual identity, brand voice, and making sure every pixel reflects the operator ethos.',
+    icon: Palette,
+    avatar: null,
+    social: { x: 'https://x.com/hsocietyoffsec', linkedin: 'https://www.linkedin.com/company/hsociety-offsec/' },
+  },
+]
+
+export const BLOG_POSTS = [
+  {
+    id: '1',
+    slug: 'what-is-offensive-security',
+    title: 'What Is Offensive Security?',
+    excerpt: 'A breakdown of offensive security — what it means, why it matters, and how HSOCIETY trains operators to think like attackers.',
+    category: 'Education',
+    date: '2026-03-10',
+    readTime: '5 min read',
+    img: '/images/how-it-works-section/Engagements-4Completed.webp',
+  },
+  {
+    id: '2',
+    slug: 'cp-economy-explained',
+    title: 'The CP Economy Explained',
+    excerpt: 'How Cyber Points work on the HSOCIETY platform — earning, spending, and what the Zero-Day Market means for operators.',
+    category: 'Platform',
+    date: '2026-03-18',
+    readTime: '4 min read',
+    img: '/images/cp-card-background/zeroday-maket-background.webp',
+  },
+  {
+    id: '3',
+    slug: 'operator-bootcamp-guide',
+    title: 'Your First Bootcamp: A Guide',
+    excerpt: 'Everything you need to know before starting your first HSOCIETY bootcamp — phases, rooms, and how to earn your rank.',
+    category: 'Training',
+    date: '2026-04-01',
+    readTime: '6 min read',
+    img: '/images/Curriculum-images/phase1.webp',
+  },
+  {
+    id: '4',
+    slug: 'pentest-for-organisations',
+    title: 'Why Your Organisation Needs a Pentest',
+    excerpt: 'The real cost of skipping a penetration test. What organisations miss and how HSOCIETY OFFSEC can help close the gap.',
+    category: 'Services',
+    date: '2026-04-08',
+    readTime: '7 min read',
+    img: '/images/how-it-works-section/Pentesters-Active.webp',
+  },
+]

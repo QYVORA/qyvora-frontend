@@ -10,6 +10,8 @@ const PrivacyPage = lazy(() => import('@/features/marketing/pages/PrivacyPage'))
 const TermsPage = lazy(() => import('@/features/marketing/pages/TermsPage'))
 const ServicesPage = lazy(() => import('@/features/marketing/pages/ServicesPage'))
 const ContactPage = lazy(() => import('@/features/marketing/pages/ContactPage'))
+const TeamPage = lazy(() => import('@/features/marketing/pages/TeamPage'))
+const BlogPage = lazy(() => import('@/features/marketing/pages/BlogPage'))
 const IdenticonPreviewPage = lazy(() => import('@/shared/pages/IdenticonPreviewPage'))
 const PublicProfilePage = lazy(() => import('@/shared/pages/PublicProfilePage'))
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
@@ -69,6 +71,9 @@ export function AppRouter() {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPage />} />
           <Route path="/identicon-preview" element={<IdenticonPreviewPage />} />
           <Route path="/:handle" element={<PublicProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
