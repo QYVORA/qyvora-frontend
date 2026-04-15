@@ -28,7 +28,7 @@ const NAV_ITEMS = [
 function DropdownMenu({ items, onClose, onSectionClick }) {
   return (
     <div
-      className="absolute top-full left-0 mt-0 w-64 bg-[var(--bg-primary)] border border-[var(--border)] shadow-2xl shadow-black/40 z-50"
+      className="absolute top-full left-0 mt-0 w-80 bg-[var(--bg-primary)] border border-[var(--border)] shadow-2xl shadow-black/40 z-50"
       style={{ animation: 'dropdown-in 0.18s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       {items.map((item) => (
