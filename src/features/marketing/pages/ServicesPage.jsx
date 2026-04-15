@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { SERVICES } from '@/features/marketing/data/servicesData'
+import { useSEO } from '@/core/utils/useSEO'
 
 export default function ServicesPage() {
+  useSEO({
+    title: 'Offensive Security Services',
+    description: 'Penetration testing, web application security audits, vulnerability assessments, and corporate security training. Scoped and priced individually for your organisation.',
+    path: '/services',
+  })
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
 

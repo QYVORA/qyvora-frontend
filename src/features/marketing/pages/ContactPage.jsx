@@ -5,8 +5,14 @@ import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 import { CONTACT_REASONS } from '@/features/marketing/data/servicesData'
 import api from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
+import { useSEO } from '@/core/utils/useSEO'
 
 export default function ContactPage() {
+  useSEO({
+    title: 'Contact Us',
+    description: 'Get in touch with HSOCIETY OFFSEC. Request a penetration test, security audit, or corporate training. We respond within 24 hours.',
+    path: '/contact',
+  })
   const location = useLocation()
   const { toast } = useToast()
   const [form, setForm] = useState({ name: '', email: '', company: '', reason: '', message: '' })

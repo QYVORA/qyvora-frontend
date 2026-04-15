@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, Tag, ArrowRight } from 'lucide-react'
 import { BLOG_POSTS } from '@/features/marketing/data/teamData'
+import { useSEO } from '@/core/utils/useSEO'
 
 function PostCard({ post }) {
   return (
@@ -27,6 +28,12 @@ function PostCard({ post }) {
 
 function BlogPost({ slug }) {
   const post = BLOG_POSTS.find(p => p.slug === slug)
+  useSEO(post ? {
+    title: post.title,
+    description: post.excerpt,
+    path: `/blog/${post.slug}`,
+    image: `https://hsociety.io${post.img}`,
+  } : { title: 'Post Not Found', path: '/blog' })
   if (!post) return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
       <p className="font-mono text-[var(--text-muted)] text-sm">Post not found.</p>
@@ -75,6 +82,11 @@ function BlogPost({ slug }) {
 
 export default function BlogPage() {
   const { slug } = useParams()
+  useSEO({
+    title: 'Blog — Operator Guides & Security Insights',
+    description: 'Offensive security guides, platform updates, and intel drops from the HSOCIETY OFFSEC team.',
+    path: '/blog',
+  })
   if (slug) return <BlogPost slug={slug} />
 
   return (

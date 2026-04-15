@@ -1,4 +1,7 @@
+import { useSEO } from '@/core/utils/useSEO'
+
 export default function TermsPage() {
+  useSEO({ title: 'Terms of Service', description: 'Terms and conditions for using the HSOCIETY OFFSEC platform, training, and engagement services.', path: '/terms' })
   return (
     <div className="max-w-4xl mx-auto px-6 py-16 space-y-10">
       <div className="text-center space-y-3">

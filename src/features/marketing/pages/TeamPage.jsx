@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom'
 import { Twitter, Linkedin, MessageCircle, ArrowRight } from 'lucide-react'
 import { TEAM } from '@/features/marketing/data/teamData'
+import { useSEO } from '@/core/utils/useSEO'
 
 export default function TeamPage() {
+  useSEO({
+    title: 'Meet the Team',
+    description: 'Meet the operators behind HSOCIETY OFFSEC — the team building Africa\'s premier offensive security training platform.',
+    path: '/team',
+  })
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
 

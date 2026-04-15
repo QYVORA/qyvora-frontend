@@ -1,4 +1,7 @@
+import { useSEO } from '@/core/utils/useSEO'
+
 export default function PrivacyPage() {
+  useSEO({ title: 'Privacy Policy', description: 'How HSOCIETY OFFSEC collects, uses, and protects your data.', path: '/privacy' })
   return (
     <div className="max-w-4xl mx-auto px-6 py-16 space-y-10">
       <div className="text-center space-y-3">

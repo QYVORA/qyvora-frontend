@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSEO } from '@/core/utils/useSEO'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
 import { MarketingCarousel } from '@/features/marketing/components/MarketingCarousel'
 import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
@@ -74,21 +75,22 @@ export default function LandingPage() {
 
   const learningPath = bootcamps
 
+  useSEO({
+    title: 'Offensive Security Training Platform',
+    description: 'Train like a hacker. Become a hacker. Phase-based bootcamps, hands-on rooms, CP economy, and real-world offensive security engagements. Africa\'s premier offsec platform.',
+    path: '/',
+  })
+
   return (
     <div className="relative overflow-x-hidden">
       <ScrollReveal variant="fade">
         <HeroSection stats={stats} loading={loadingStats} />
       </ScrollReveal>
 
-      {/* Auto-play marketing carousel — right under hero */}
+      {/* 2. Carousel — immediate value prop for all platform areas */}
       <MarketingCarousel />
 
-      {/* Platform preview — 3D phone mockup */}
-      <ScrollReveal delay={60} variant="up">
-        <PlatformPreviewSection />
-      </ScrollReveal>
-
-      {/* How It Works — pipeline steps + live stats */}
+      {/* 3. How It Works — explain the system before showing products */}
       <ScrollReveal delay={80}>
         <FlowSection
           stats={stats}
@@ -98,49 +100,62 @@ export default function LandingPage() {
         />
       </ScrollReveal>
 
-      {/* Live economy ticker */}
-      <ScrollReveal delay={120}>
+      {/* 4. Live Ticker — social proof, platform is alive */}
+      <ScrollReveal delay={100}>
         <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} stats={stats} />
       </ScrollReveal>
 
-      <ScrollReveal delay={140}>
+      {/* 5. Bootcamps — core product */}
+      <ScrollReveal delay={120}>
         <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
       </ScrollReveal>
 
-      <ScrollReveal delay={150}>
+      {/* 6. Rooms — secondary product */}
+      <ScrollReveal delay={130}>
         <RoomsPreviewSection items={rooms} loading={loadingRooms} />
       </ScrollReveal>
 
-      <ScrollReveal delay={160}>
+      {/* 7. Marketplace — reward loop, CP spend */}
+      <ScrollReveal delay={140}>
         <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
       </ScrollReveal>
 
-      <ScrollReveal delay={180}>
+      {/* 8. Platform Preview — show the UI after they understand the value */}
+      <ScrollReveal delay={150} variant="up">
+        <PlatformPreviewSection />
+      </ScrollReveal>
+
+      {/* 9. Ranks — community aspiration, leaderboard */}
+      <ScrollReveal delay={160}>
         <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
       </ScrollReveal>
 
-      {/* CTA before Social — higher intent action comes first */}
-      <ScrollReveal delay={200} variant="up">
-        <CtaSection />
-      </ScrollReveal>
-
-      <ScrollReveal delay={210} variant="up">
+      {/* 10. Services — B2B audience */}
+      <ScrollReveal delay={170} variant="up">
         <ServicesTeaser />
       </ScrollReveal>
 
-      <ScrollReveal delay={220} variant="up">
-        <SocialSection />
-      </ScrollReveal>
-
-      <ScrollReveal delay={230} variant="up">
+      {/* 11. Team — trust and credibility */}
+      <ScrollReveal delay={180} variant="up">
         <TeamSection />
       </ScrollReveal>
 
-      <ScrollReveal delay={240} variant="up">
+      {/* 12. Blog — content authority */}
+      <ScrollReveal delay={190} variant="up">
         <BlogPreviewSection />
       </ScrollReveal>
 
-      {/* Gallery — above footer */}
+      {/* 13. Social — follow channels */}
+      <ScrollReveal delay={200} variant="up">
+        <SocialSection />
+      </ScrollReveal>
+
+      {/* 14. CTA — final conversion push after full page consumption */}
+      <ScrollReveal delay={210} variant="up">
+        <CtaSection />
+      </ScrollReveal>
+
+      {/* 15. Gallery — community moments, above footer */}
       <GallerySection />
     </div>
   )
