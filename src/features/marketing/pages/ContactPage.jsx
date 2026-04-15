@@ -99,7 +99,7 @@ export default function ContactPage() {
 
             <div className="space-y-5">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 border border-accent/30 bg-accent/10 text-accent flex items-center justify-center shrink-0">
                   <Mail size={18} />
                 </div>
                 <div>
@@ -110,7 +110,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 border border-accent/30 bg-accent/10 text-accent flex items-center justify-center shrink-0">
                   <MessageCircle size={18} />
                 </div>
                 <div>
@@ -126,7 +126,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 border border-accent/30 bg-accent/10 text-accent flex items-center justify-center shrink-0">
                   <MapPin size={18} />
                 </div>
                 <div>
@@ -169,7 +169,7 @@ export default function ContactPage() {
           <div className="lg:col-span-3">
             {submitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center py-16 space-y-4">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/30 mb-2">
+                <div className="w-20 h-20 overflow-hidden border-2 border-accent/30 mb-2">
                   <img
                     src="/HSOCIETY-H-LOGO.webp"
                     alt=""
@@ -177,7 +177,7 @@ export default function ContactPage() {
                     loading="lazy"
                   />
                 </div>
-                <div className="w-14 h-14 rounded-full bg-accent/15 flex items-center justify-center">
+                <div className="w-14 h-14 border border-accent/30 bg-accent/15 flex items-center justify-center">
                   <Send size={26} className="text-accent" />
                 </div>
                 <h3 className="font-display font-bold text-2xl text-[var(--text-primary)]">Message sent</h3>
@@ -221,7 +221,7 @@ export default function ContactPage() {
                 </div>
                 <button type="submit" disabled={loading} className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base rounded-none shadow-lg shadow-accent/25 disabled:opacity-60">
                   {loading ? (
-                    <><div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" /> Sending...</>
+                    <><div className="spinner" style={{ width: 16, height: 16, borderWidth: 2 }} /> Sending...</>
                   ) : (
                     <><Send size={17} /> Send Message</>
                   )}

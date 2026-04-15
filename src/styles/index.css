@@ -108,6 +108,7 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.32);
     position: relative;
     transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+    width: 100%;
   }
 
   .card::after {
@@ -157,6 +158,11 @@
   .btn-primary,
   .btn-secondary,
   .btn-ghost {
+    border-radius: 0 !important;
+  }
+
+  /* Box UI — strip rounding from structural elements */
+  .card *:not(.spinner):not([class*="rounded-full"]):not(img):not(canvas) {
     border-radius: 0 !important;
   }
 
@@ -557,6 +563,20 @@
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+}
+
+/* ─── Round Spinner ─────────────────────────────────────────────── */
+.spinner {
+  border-radius: 50%;
+  border-style: solid;
+  border-color: var(--border);
+  border-top-color: var(--accent, #00ff88);
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ─── H Skeleton Loader ─────────────────────────────────────────── */

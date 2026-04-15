@@ -60,7 +60,7 @@ export function LiveTickerSection({ leaderboard = [], loading = false, stats }) 
             subtitle="Real-time CP flow across the platform — driven by operator activity."
             align="left"
           />
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5 w-fit shrink-0">
+          <div className="flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/5 w-fit shrink-0">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             <span className="text-xs font-mono text-accent tracking-widest uppercase">Live</span>
           </div>
@@ -80,7 +80,7 @@ export function LiveTickerSection({ leaderboard = [], loading = false, stats }) 
                 className={`relative group rounded-none border p-5 flex flex-col gap-4 bg-[var(--bg-secondary)] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ${bg}`}
               >
                 {/* Icon */}
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${bg}`}>
+                <div className={`w-9 h-9 border flex items-center justify-center ${bg}`}>
                   <Icon size={16} className={color} />
                 </div>
 

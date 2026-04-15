@@ -97,9 +97,19 @@ const readCsrfFromCookie = () => {
   return cookieToken
 }
 
-const ensureCsrfOrReauth = () => {
+const ensureCsrfOrReauth = (config) => {
   const csrfToken = readCsrfFromCookie()
   if (csrfToken) return csrfToken
+  // Don't redirect during auth routes — CSRF cookie arrives with the login response
+  const url = String(config?.url || '')
+  const isAuthRoute = url.includes('/auth/login')
+    || url.includes('/auth/register')
+    || url.includes('/auth/refresh')
+    || url.includes('/auth/password-reset')
+    || url.includes('/auth/verify-email')
+    || url.includes('/auth/logout')
+    || url.includes('/public/')
+  if (isAuthRoute) return ''
   if (typeof window !== 'undefined' && localStorage.getItem('hs_user')) {
     clearSessionAndRedirect()
   }
@@ -108,7 +118,7 @@ const ensureCsrfOrReauth = () => {
 
 // Attach CSRF token when available (cookie-based auth)
 api.interceptors.request.use((config) => {
-  const csrfToken = ensureCsrfOrReauth()
+  const csrfToken = ensureCsrfOrReauth(config)
   if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
   return config
 })
@@ -135,7 +145,7 @@ api.interceptors.response.use(
     if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true
       try {
-        const hasCsrf = Boolean(ensureCsrfOrReauth())
+        const hasCsrf = Boolean(readCsrfFromCookie())
         if (!hasCsrf) {
           throw new Error('No CSRF token; skip refresh')
         }
@@ -147,7 +157,7 @@ api.interceptors.response.use(
       }
     }
     const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
-    if (err.response?.status === 401 && hasStoredSession && !isAuthPage() && !url.includes('/auth/me')) {
+    if (err.response?.status === 401 && hasStoredSession && !isAuthPage() && !url.includes('/auth/me') && !isAuthRoute) {
       clearSessionAndRedirect()
     }
 
