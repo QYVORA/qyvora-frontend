@@ -41,7 +41,7 @@ export function ServicesTeaser() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-3 left-4 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-accent/20 backdrop-blur-sm border border-accent/30 flex items-center justify-center text-accent">
+                  <div className="w-8 h-8 bg-accent/20 backdrop-blur-sm border border-accent/30 flex items-center justify-center text-accent">
                     <s.icon size={16} />
                   </div>
                 </div>

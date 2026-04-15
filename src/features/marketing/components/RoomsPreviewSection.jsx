@@ -54,7 +54,7 @@ export function RoomsPreviewSection({ items = [], loading = false }) {
                     </div>
                     <div className="p-5 space-y-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] border border-accent/20 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="w-10 h-10 bg-[var(--bg-secondary)] border border-accent/20 flex items-center justify-center overflow-hidden shrink-0">
                           {logo ? (
                             <img src={logo} alt="Room logo" className="w-full h-full object-contain" />
                           ) : (

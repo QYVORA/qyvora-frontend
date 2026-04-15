@@ -30,7 +30,7 @@ export function SocialSection() {
               rel="noreferrer"
               className="group card p-5 flex items-center gap-4 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-0.5 transition-all duration-300 text-left mx-auto w-full max-w-lg h-full"
             >
-              <div className="w-12 h-12 shrink-0 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+              <div className="w-12 h-12 shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                 <Icon size={22} />
               </div>
               <div className="min-w-0 flex-1">
