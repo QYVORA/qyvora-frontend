@@ -10,7 +10,7 @@ import { PhaseProgressCard } from '@/features/student/components/dashboard/Phase
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
 import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
-import { Skeleton } from '@/shared/components/ui'
+import { Skeleton, Card } from '@/shared/components/ui'
 
 export default function StudentDashboard() {
   const { user: sessionUser, updateUser } = useAuth()

@@ -1,21 +1,19 @@
 import { useEffect, useState, useCallback } from 'react'
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 
-function useGalleryImages() {
-  const [images, setImages] = useState([])
-  useEffect(() => {
-    const modules = import.meta.glob('/public/gallery/*.{jpg,jpeg,png,webp,avif,gif}', { eager: true, as: 'url' })
-    const urls = Object.entries(modules).map(([path, url]) => ({
-      src: url,
-      name: path.split('/').pop(),
-    }))
-    setImages(urls)
-  }, [])
-  return images
-}
+// Static list — files live in public/gallery/ and are served as-is.
+// Using static URLs instead of import.meta.glob avoids filename/space issues.
+const GALLERY_IMAGES = [
+  { src: '/gallery/gallery-01.jpeg', name: 'gallery-01' },
+  { src: '/gallery/gallery-02.jpeg', name: 'gallery-02' },
+  { src: '/gallery/gallery-03.jpeg', name: 'gallery-03' },
+  { src: '/gallery/gallery-04.jpeg', name: 'gallery-04' },
+  { src: '/gallery/gallery-05.jpeg', name: 'gallery-05' },
+  { src: '/gallery/gallery-06.png',  name: 'gallery-06' },
+]
 
 export function GallerySection() {
-  const images = useGalleryImages()
+  const images = GALLERY_IMAGES
   const [selected, setSelected] = useState(null)
 
   const open = (idx) => setSelected(idx)
