@@ -10,7 +10,7 @@ import { PhaseProgressCard } from '@/features/student/components/dashboard/Phase
 import { RankProgressCard } from '@/features/student/components/dashboard/RankProgressCard'
 import { QuickLinks } from '@/features/student/components/dashboard/QuickLinks'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
-import { Card, Skeleton } from '@/shared/components/ui'
+import { Skeleton } from '@/shared/components/ui'
 
 export default function StudentDashboard() {
   const { user: sessionUser, updateUser } = useAuth()
@@ -115,58 +115,85 @@ export default function StudentDashboard() {
 
   const bootcampSection = (
     <div className="space-y-4 pb-24 sm:pb-4">
-      <h3 className="font-semibold text-[var(--text-primary)]">Available Bootcamps</h3>
-      {bootcamps.length === 0 ? (
-        <Card className="p-6 text-sm text-[var(--text-secondary)]">No bootcamps available yet.</Card>
-      ) : (
-        <div className="grid grid-cols-1 gap-10 justify-center">
-          {bootcamps.map((item, i) => {
-            const accent = 'var(--accent)'
-            const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
-            const isEnrolledHere =
-              (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
-              && overview?.bootcampId
-              && String(overview.bootcampId) === String(item.id)
-            return (
-              <div
-                key={item.id}
-                className="card overflow-hidden flex flex-col lg:flex-row group cursor-default hover:shadow-2xl transition-all duration-400 w-full max-w-5xl mx-auto"
-                style={{ borderColor: `${accent}35` }}
-              >
-                <div className="relative h-56 lg:h-auto lg:w-2/5 overflow-hidden shrink-0">
-                  <img
-                    src={cover}
-                    alt={item.title || 'Bootcamp'}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div
-                    className="absolute top-3 right-3 px-2.5 py-0.5 rounded-none font-mono text-[10px] uppercase tracking-widest border"
-                    style={{ color: accent, borderColor: `${accent}50`, background: `${accent}15` }}
-                  >
-                    BOOTCAMP
+      <h3 className="font-semibold text-[var(--text-primary)] text-sm font-mono uppercase tracking-widest">Learning Hub</h3>
+
+      {/* Mini cards grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {/* Rooms card */}
+        <Link to="/learn/rooms" className="card group p-4 flex flex-col gap-3 hover:border-accent/50 hover:-translate-y-0.5 transition-all duration-200">
+          <div className="w-8 h-8 border border-accent/30 bg-accent/8 flex items-center justify-center text-accent shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div>
+            <p className="font-mono font-bold text-xs text-[var(--text-primary)]">Rooms</p>
+            <p className="font-mono text-[10px] text-[var(--text-muted)] mt-0.5">Self-paced labs</p>
+          </div>
+        </Link>
+
+        {/* Bootcamp card */}
+        <Link to="/bootcamp" className="card group p-4 flex flex-col gap-3 hover:border-accent/50 hover:-translate-y-0.5 transition-all duration-200">
+          <div className="w-8 h-8 border border-accent/30 bg-accent/8 flex items-center justify-center text-accent shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <p className="font-mono font-bold text-xs text-[var(--text-primary)]">Bootcamps</p>
+            <p className="font-mono text-[10px] text-[var(--text-muted)] mt-0.5">Structured tracks</p>
+          </div>
+        </Link>
+
+        {/* Marketplace card */}
+        <Link to="/marketplace" className="card group p-4 flex flex-col gap-3 hover:border-accent/50 hover:-translate-y-0.5 transition-all duration-200">
+          <div className="w-8 h-8 border border-accent/30 bg-accent/8 flex items-center justify-center text-accent shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <div>
+            <p className="font-mono font-bold text-xs text-[var(--text-primary)]">Marketplace</p>
+            <p className="font-mono text-[10px] text-[var(--text-muted)] mt-0.5">Spend your CP</p>
+          </div>
+        </Link>
+
+        {/* Wallet card */}
+        <Link to="/wallet" className="card group p-4 flex flex-col gap-3 hover:border-accent/50 hover:-translate-y-0.5 transition-all duration-200">
+          <div className="w-8 h-8 border border-accent/30 bg-accent/8 flex items-center justify-center text-accent shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div>
+            <p className="font-mono font-bold text-xs text-[var(--text-primary)]">CP Wallet</p>
+            <p className="font-mono text-[10px] text-accent mt-0.5">{Number(totalCp).toLocaleString()} CP</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Bootcamp list — compact */}
+      {bootcamps.length > 0 && (
+        <div className="space-y-3 mt-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">// available bootcamps</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {bootcamps.map((item, i) => {
+              const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
+              const isEnrolledHere =
+                (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
+                && overview?.bootcampId
+                && String(overview.bootcampId) === String(item.id)
+              return (
+                <div key={item.id} className="card group flex gap-0 overflow-hidden hover:border-accent/50 transition-all duration-200">
+                  <div className="relative w-24 shrink-0 overflow-hidden">
+                    <img src={cover} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/40" />
+                  </div>
+                  <div className="flex flex-col gap-1.5 p-3 flex-1 min-w-0">
+                    <p className="font-mono font-bold text-xs text-[var(--text-primary)] truncate">{item.title}</p>
+                    <p className="font-mono text-[10px] text-[var(--text-muted)] truncate">{item.level || 'Beginner'} {item.duration ? `· ${item.duration}` : ''}</p>
+                    {isEnrolledHere ? (
+                      <Link to={`/bootcamp/${item.id}`} className="btn-primary text-[10px] px-2 py-1 mt-auto w-fit">Continue</Link>
+                    ) : (
+                      <Link to={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary text-[10px] px-2 py-1 mt-auto w-fit">Enroll</Link>
+                    )}
                   </div>
                 </div>
-                <div className="p-6 lg:p-8 flex flex-col flex-1">
-                  <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-3">{item.title}</h3>
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
-                    {item.description || 'Curated offensive security track built for real-world mastery.'}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                    {item.level && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.level}</span>}
-                    {item.duration && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.duration}</span>}
-                    {item.priceLabel && <span className="px-2.5 py-1 rounded-none border border-[var(--border)]">{item.priceLabel}</span>}
-                  </div>
-                  {isEnrolledHere ? (
-                    <Link to={`/bootcamp/${item.id}`} className="btn-primary mt-5 inline-flex items-center justify-center">Continue</Link>
-                  ) : (
-                    <Link to={`/bootcamp?bootcampId=${encodeURIComponent(item.id)}`} className="btn-primary mt-5 inline-flex items-center justify-center">Enroll</Link>
-                  )}
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
-import { Menu, X, ChevronDown, BookOpen, Target, ShoppingBag, Shield, Users, Palette, FileText, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, BookOpen, Target, ShoppingBag, Users, FileText, ArrowRight, Globe } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
       { label: 'Rooms', href: '/#rooms', section: 'rooms', icon: Target, desc: 'Self-paced hands-on labs' },
       { label: 'Marketplace', href: '/#marketplace', section: 'marketplace', icon: ShoppingBag, desc: 'Zero-Day Market — spend your CP' },
       { label: 'Zero-Day Market', href: '/zero-day-market', icon: ArrowRight, desc: 'Browse beginner resources & guides' },
+      { label: 'Domain Recon', href: '/recon', icon: Globe, desc: 'Live DNS & IP geolocation globe' },
     ],
   },
   { label: 'Services', href: '/services' },
