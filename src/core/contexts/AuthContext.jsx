@@ -24,14 +24,22 @@ export function AuthProvider({ children }) {
     try {
       const res = await authService.me()
       setUser(res.data)
-    } catch {
-      clearSession()
+    } catch (err) {
+      // Only clear session on an explicit 401 — not on network errors, timeouts, etc.
+      const status = err?.response?.status
+      if (status === 401 || status === 403) {
+        clearSession()
+      }
+      // For any other error (network, 5xx, timeout) keep the stored session intact
+      // so the user isn't logged out due to a backend hiccup
     } finally {
       setLoading(false)
     }
   }, [clearSession])
 
   useEffect(() => {
+    // Don't re-run session load if user is already in state (e.g. just logged in)
+    if (user) { setLoading(false); return }
     loadSession()
   }, [loadSession])
 
@@ -39,7 +47,7 @@ export function AuthProvider({ children }) {
     const res = await authService.login(email, password)
     const data = res.data || {}
     setAuthState(data)
-    if (data.user && data.token) {
+    if (data.user) {
       setUser(data.user)
       localStorage.setItem('hs_user', JSON.stringify(data.user))
     }
@@ -50,7 +58,7 @@ export function AuthProvider({ children }) {
     const res = await authService.register(payload)
     const data = res.data || {}
     setAuthState(data)
-    if (data.user && data.token) {
+    if (data.user) {
       setUser(data.user)
       localStorage.setItem('hs_user', JSON.stringify(data.user))
     }

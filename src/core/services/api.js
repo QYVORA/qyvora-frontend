@@ -19,13 +19,10 @@ const normalizeBaseUrl = (value) => {
 
 const resolveBaseUrl = () => {
   if (!ENV_BASE_URL) return DEFAULT_BASE_URL
-
-  // Safety guard: never ship localhost API URLs in production bundles.
   if (import.meta.env.PROD && isLocalhostUrl(ENV_BASE_URL)) {
     console.warn(`Ignoring localhost API URL in production (${ENV_BASE_URL}); falling back to Render backend`)
     return RENDER_BASE_URL
   }
-
   return ENV_BASE_URL
 }
 
@@ -33,13 +30,9 @@ const BASE_URL = normalizeBaseUrl(resolveBaseUrl())
 export const API_BASE_URL = BASE_URL
 export const API_ORIGIN = BASE_URL.replace(/\/api\/?$/, '')
 
-if (import.meta.env.PROD && !ENV_BASE_URL) {
-  console.warn('VITE_API_URL/VITE_API_BASE_URL not set; falling back to Render backend')
-}
-
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 })
@@ -49,20 +42,32 @@ const isAuthPage = () => {
   return ['/login', '/register', '/forgot-password', '/verify-email', '/change-password'].includes(window.location.pathname)
 }
 
+// Routes that should never trigger a session-clear redirect
+const isSafeRoute = (url) => {
+  const u = String(url || '')
+  return (
+    u.includes('/auth/login') ||
+    u.includes('/auth/register') ||
+    u.includes('/auth/refresh') ||
+    u.includes('/auth/password-reset') ||
+    u.includes('/auth/verify-email') ||
+    u.includes('/auth/logout') ||
+    u.includes('/auth/me') ||       // ← never redirect on /me failures
+    u.includes('/public/')
+  )
+}
+
 let refreshPromise = null
 const refreshSession = () => {
   if (!refreshPromise) {
-    refreshPromise = api.post('/auth/refresh').finally(() => {
-      refreshPromise = null
-    })
+    refreshPromise = api.post('/auth/refresh').finally(() => { refreshPromise = null })
   }
   return refreshPromise
 }
 
 const getCookie = (name) => {
   if (typeof document === 'undefined') return ''
-  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const match = document.cookie.match(new RegExp(`(?:^|; )${escaped}=([^;]*)`))
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}=([^;]*)`))
   return match ? decodeURIComponent(match[1]) : ''
 }
 
@@ -70,10 +75,7 @@ const CSRF_STORAGE_KEY = 'hs_csrf'
 
 const setStoredCsrf = (token) => {
   if (typeof window === 'undefined') return
-  if (!token) {
-    localStorage.removeItem(CSRF_STORAGE_KEY)
-    return
-  }
+  if (!token) { localStorage.removeItem(CSRF_STORAGE_KEY); return }
   localStorage.setItem(CSRF_STORAGE_KEY, String(token))
 }
 
@@ -81,89 +83,66 @@ const clearSessionAndRedirect = () => {
   if (typeof window === 'undefined') return
   localStorage.removeItem('hs_user')
   localStorage.removeItem(CSRF_STORAGE_KEY)
-  if (!isAuthPage()) {
-    window.location.href = '/login'
-  }
+  if (!isAuthPage()) window.location.href = '/login'
 }
 
 const readCsrfFromCookie = () => {
-  const cookieToken = getCookie('csrf_token')
-  if (!cookieToken) {
-    setStoredCsrf('')
-    return ''
-  }
-  // Cookie is source of truth; keep localStorage synced for legacy reads.
-  setStoredCsrf(cookieToken)
-  return cookieToken
+  const token = getCookie('csrf_token')
+  if (!token) { setStoredCsrf(''); return '' }
+  setStoredCsrf(token)
+  return token
 }
 
-const ensureCsrfOrReauth = (config) => {
+// Request interceptor — attach CSRF token, never redirect on safe routes
+api.interceptors.request.use((config) => {
   const csrfToken = readCsrfFromCookie()
-  if (csrfToken) return csrfToken
-  // Don't redirect during auth routes — CSRF cookie arrives with the login response
-  const url = String(config?.url || '')
-  const isAuthRoute = url.includes('/auth/login')
-    || url.includes('/auth/register')
-    || url.includes('/auth/refresh')
-    || url.includes('/auth/password-reset')
-    || url.includes('/auth/verify-email')
-    || url.includes('/auth/logout')
-    || url.includes('/public/')
-  if (isAuthRoute) return ''
-  if (typeof window !== 'undefined' && localStorage.getItem('hs_user')) {
+  if (csrfToken) {
+    config.headers['X-CSRF-Token'] = csrfToken
+  } else if (!isSafeRoute(config.url) && localStorage.getItem('hs_user')) {
+    // Only redirect if we have a stored session but no CSRF — means session is stale
     clearSessionAndRedirect()
   }
-  return ''
-}
-
-// Attach CSRF token when available (cookie-based auth)
-api.interceptors.request.use((config) => {
-  const csrfToken = ensureCsrfOrReauth(config)
-  if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken
   return config
 })
 
-// Handle auth errors globally
+// Response interceptor
 api.interceptors.response.use(
   (res) => {
+    // Sync CSRF token from response headers/body
     const headerToken = res?.headers?.['x-csrf-token'] || res?.headers?.['X-CSRF-Token']
     const bodyToken = res?.data?.csrfToken
-    setStoredCsrf(headerToken || bodyToken)
+    if (headerToken || bodyToken) setStoredCsrf(headerToken || bodyToken)
     return res
   },
   async (err) => {
     const originalRequest = err.config
     const status = err.response?.status
     const url = String(originalRequest?.url || '')
-    const isAuthRoute = url.includes('/auth/login')
-      || url.includes('/auth/register')
-      || url.includes('/auth/refresh')
-      || url.includes('/auth/password-reset')
-      || url.includes('/auth/verify-email')
-      || url.includes('/auth/logout')
 
-    if (status === 401 && originalRequest && !originalRequest._retry && !isAuthRoute) {
+    // Attempt token refresh on 401 for non-auth, non-safe routes
+    if (status === 401 && originalRequest && !originalRequest._retry && !isSafeRoute(url)) {
       originalRequest._retry = true
       try {
         const hasCsrf = Boolean(readCsrfFromCookie())
-        if (!hasCsrf) {
-          throw new Error('No CSRF token; skip refresh')
-        }
+        if (!hasCsrf) throw new Error('No CSRF — skip refresh')
         await refreshSession()
         return api(originalRequest)
-      } catch (refreshErr) {
+      } catch {
         clearSessionAndRedirect()
-        return Promise.reject(refreshErr)
+        return Promise.reject(err)
       }
     }
-    const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
-    if (err.response?.status === 401 && hasStoredSession && !isAuthPage() && !url.includes('/auth/me') && !isAuthRoute) {
+
+    // Hard 401 on non-safe routes with a stored session → clear and redirect
+    if (
+      status === 401 &&
+      !isSafeRoute(url) &&
+      !isAuthPage() &&
+      localStorage.getItem('hs_user')
+    ) {
       clearSessionAndRedirect()
     }
 
-    if (url.includes('/auth/refresh')) {
-      clearSessionAndRedirect()
-    }
     return Promise.reject(err)
   }
 )
