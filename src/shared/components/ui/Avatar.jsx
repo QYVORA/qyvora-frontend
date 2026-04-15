@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { clsx } from 'clsx'
 import { buildHackerMaskIdenticonDataUri, resolveAvatarSeed } from '@/shared/utils/hackerMaskIdenticon'
 

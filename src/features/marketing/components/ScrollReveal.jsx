@@ -24,9 +24,10 @@ export function ScrollReveal({
   useEffect(() => {
     if (prefersReducedMotion()) { setVisible(true); return undefined }
     const node = ref.current
-    if (!node || typeof IntersectionObserver === 'undefined') { setVisible(true); return undefined }
+    const IntersectionObserverApi = typeof window !== 'undefined' ? window.IntersectionObserver : undefined
+    if (!node || !IntersectionObserverApi) { setVisible(true); return undefined }
 
-    const observer = new IntersectionObserver(
+    const observer = new IntersectionObserverApi(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) { setVisible(true); observer.unobserve(entry.target) }
@@ -63,9 +64,10 @@ export function StaggerReveal({
   useEffect(() => {
     if (prefersReducedMotion()) { setVisible(true); return undefined }
     const node = ref.current
-    if (!node || typeof IntersectionObserver === 'undefined') { setVisible(true); return undefined }
+    const IntersectionObserverApi = typeof window !== 'undefined' ? window.IntersectionObserver : undefined
+    if (!node || !IntersectionObserverApi) { setVisible(true); return undefined }
 
-    const observer = new IntersectionObserver(
+    const observer = new IntersectionObserverApi(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) { setVisible(true); observer.unobserve(entry.target) }

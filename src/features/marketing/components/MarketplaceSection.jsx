@@ -6,7 +6,7 @@ import { useTheme } from '@/core/contexts/ThemeContext'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
-export function MarketplaceSection({ items = [], stats, loading = false, rewards }) {
+export function MarketplaceSection({ items = [], loading = false, rewards }) {
   const { isDark } = useTheme()
   const { user } = useAuth()
   const previewItems = items.slice(0, 4)

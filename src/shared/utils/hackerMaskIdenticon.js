@@ -8,7 +8,6 @@ const PALETTE = {
   accentDim: ['#4C6F55', '#3D5944', '#5B7F5B'],
 }
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 const fmt = (value) => Number(value.toFixed(2))
 
 const hashSeed = (seed) => {

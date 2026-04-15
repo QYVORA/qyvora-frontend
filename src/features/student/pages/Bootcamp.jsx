@@ -1,6 +1,6 @@
 import { Zap } from 'lucide-react'
 import { Card, Button, Spinner } from '@/shared/components/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { studentService } from '@/core/services'
 import api from '@/core/services/api'
@@ -125,7 +125,7 @@ export default function BootcampPage() {
     }
   }
 
-  const handleStartEnroll = (item) => {
+  const handleStartEnroll = useCallback((item) => {
     setSelectedBootcamp(item)
     setShowPayment(false)
     setSocialProgress({})
@@ -138,7 +138,7 @@ export default function BootcampPage() {
       experience: '',
       goals: '',
     })
-  }
+  }, [user?.email, user?.name])
 
   useEffect(() => {
     const targetId = searchParams.get('bootcampId')
@@ -151,7 +151,7 @@ export default function BootcampPage() {
     if (target && selectedBootcamp?.id !== target.id) {
       handleStartEnroll(target)
     }
-  }, [bootcampStatus, bootcamps, loading, navigate, searchParams, selectedBootcamp?.id])
+  }, [bootcampStatus, bootcamps, handleStartEnroll, loading, navigate, searchParams, selectedBootcamp?.id])
 
   const handlePayment = async (method) => {
     setPaymentLoading(method)

@@ -48,7 +48,6 @@ export default function RoomDetailPage() {
   const prevSection = sections[currentIndex - 1] || null
   const nextSection = sections[currentIndex + 1] || null
 
-  const accent = room?.accentColor || 'var(--accent)'
   const cover = resolveImageUrl(room?.coverImage)
   const logo = resolveImageUrl(room?.logoUrl)
   const levelStyle = LEVEL_STYLES[room?.level] || {}
@@ -278,7 +277,7 @@ export default function RoomDetailPage() {
                 </div>
                 {/* Progress dots */}
                 <div className="hidden sm:flex items-center gap-1 shrink-0 mt-1">
-                  {sections.map((s, i) => (
+                  {sections.map((s) => (
                     <button
                       key={s.sectionId}
                       type="button"

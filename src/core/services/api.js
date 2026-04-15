@@ -4,6 +4,12 @@ const ENV_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BA
 const RENDER_BASE_URL = 'https://hsociety-backend.onrender.com/api'
 const DEFAULT_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : RENDER_BASE_URL
 
+const isLocalhostUrl = (value) => {
+  const src = String(value || '').trim()
+  if (!src) return false
+  return /(^|\/\/)(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?(\/|$)/i.test(src)
+}
+
 const normalizeBaseUrl = (value) => {
   if (!value) return value
   const trimmed = String(value).replace(/\/+$/, '')
@@ -11,7 +17,19 @@ const normalizeBaseUrl = (value) => {
   return `${trimmed}/api`
 }
 
-const BASE_URL = normalizeBaseUrl(ENV_BASE_URL || DEFAULT_BASE_URL)
+const resolveBaseUrl = () => {
+  if (!ENV_BASE_URL) return DEFAULT_BASE_URL
+
+  // Safety guard: never ship localhost API URLs in production bundles.
+  if (import.meta.env.PROD && isLocalhostUrl(ENV_BASE_URL)) {
+    console.warn(`Ignoring localhost API URL in production (${ENV_BASE_URL}); falling back to Render backend`)
+    return RENDER_BASE_URL
+  }
+
+  return ENV_BASE_URL
+}
+
+const BASE_URL = normalizeBaseUrl(resolveBaseUrl())
 export const API_BASE_URL = BASE_URL
 export const API_ORIGIN = BASE_URL.replace(/\/api\/?$/, '')
 

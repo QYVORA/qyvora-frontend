@@ -38,7 +38,7 @@ export function PhasesSection({ items = [], loading = false }) {
             <p className="text-sm text-[var(--text-secondary)]">Bootcamps will appear here soon.</p>
           </div>
         ) : (
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center" stagger={140} variant="scale">
+          <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" stagger={120} variant="scale">
             {items.map((item, i) => {
               const accent = 'var(--accent)'
               const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
@@ -49,13 +49,9 @@ export function PhasesSection({ items = [], loading = false }) {
               const enrolledTarget = bootcampId ? `/bootcamp/${bootcampId}` : '/bootcamp'
               const ctaTarget = user ? (isEnrolled ? enrolledTarget : '/bootcamp') : loginTarget
               return (
-                <div
-                  key={item.id}
-                  className="card overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1 transition-all duration-300 w-full max-w-sm md:max-w-none"
-                  style={{ borderColor: `${accent}35`, borderRadius: '18px' }}
-                >
-                  {/* Cover image */}
-                  <div className="relative h-52 overflow-hidden shrink-0">
+                <Link key={item.id} to={ctaTarget} className="block">
+                  <div className="card overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style={{ willChange: 'transform' }}>
+                    <div className="relative h-36 bg-[var(--bg-secondary)] overflow-hidden">
                     <img
                       src={cover}
                       alt={item.title || 'Bootcamp'}
@@ -63,40 +59,28 @@ export function PhasesSection({ items = [], loading = false }) {
                       loading="lazy"
                       decoding="async"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div
-                      className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full font-mono text-[10px] uppercase tracking-widest border"
-                      style={{
-                        color: accent,
-                        borderColor: `${accent}50`,
-                        background: `${accent}15`,
-                      }}
-                    >
-                      BOOTCAMP
                     </div>
-                    <div className="absolute bottom-3 left-4">
-                      <span className="font-mono text-xs text-white/60 uppercase tracking-widest">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
+                    <div className="p-5 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--bg-secondary)] border border-accent/20 flex items-center justify-center overflow-hidden shrink-0">
+                          <div className="w-6 h-6 rounded-full" style={{ background: `${accent}40` }} />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-display font-semibold text-lg text-[var(--text-primary)] truncate">{item.title}</h3>
+                          <p className="text-xs text-[var(--text-muted)]">{item.level || 'Beginner'}</p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-2">
+                        {item.description || 'Curated offensive security track built for real-world mastery.'}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 text-[10px] uppercase tracking-[0.2em] font-mono text-accent">
+                        {item.duration && <span>{item.duration}</span>}
+                        {item.priceLabel && <span>• {item.priceLabel}</span>}
+                      </div>
+                      <div className="text-[10px] uppercase tracking-[0.2em] font-mono text-accent">Enroll →</div>
                     </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-display font-bold text-xl text-[var(--text-primary)] mb-2 leading-snug">{item.title}</h3>
-                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
-                      {item.description || 'Curated offensive security track built for real-world mastery.'}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-mono">
-                      {item.level && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.level}</span>}
-                      {item.duration && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.duration}</span>}
-                      {item.priceLabel && <span className="px-2.5 py-1 rounded-full border border-accent/25 text-accent/70">{item.priceLabel}</span>}
-                    </div>
-                    <Link to={ctaTarget} className="btn-primary mt-5 inline-flex items-center justify-center">
-                      Enroll
-                    </Link>
-                  </div>
-                </div>
+                </Link>
               )
             })}
           </StaggerReveal>
