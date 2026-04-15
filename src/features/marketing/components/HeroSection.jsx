@@ -10,7 +10,7 @@ function HexStream() {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    const HEX = '0123456789ABCDEF'
+    const HEX = '010101101010110101011101010110110101'
     let cols, drops
 
     function resize() {
@@ -130,7 +130,7 @@ export function HeroSection({ stats, loading = false }) {
         {/* ── terminal status bar ── */}
         <div
           className="inline-flex items-center gap-3 mb-10 px-4 py-2 border text-xs font-mono"
-          style={{
+          style={{ 
             borderColor: 'rgba(136,173,124,0.35)',
             background: 'rgba(136,173,124,0.06)',
             color: '#88AD7C',
@@ -141,7 +141,7 @@ export function HeroSection({ stats, loading = false }) {
             className="w-2 h-2 rounded-full animate-pulse"
             style={{ background: '#88AD7C', boxShadow: '0 0 6px #88AD7C' }}
           />
-          <span>HSOCIETY://OFFSEC — SYSTEM ONLINE</span>
+          <span>Offensive Security | Africa</span>
         </div>
 
         {/* ── headline ── */}
