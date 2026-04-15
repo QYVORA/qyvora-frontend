@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
+import { MarketingCarousel } from '@/features/marketing/components/MarketingCarousel'
 import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
 import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
@@ -10,6 +11,7 @@ import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
 import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
+import { GallerySection } from '@/features/marketing/components/GallerySection'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
@@ -76,7 +78,10 @@ export default function LandingPage() {
         <HeroSection stats={stats} loading={loadingStats} />
       </ScrollReveal>
 
-      {/* Platform preview — 3D phone mockup, immediately after hero */}
+      {/* Auto-play marketing carousel — right under hero */}
+      <MarketingCarousel />
+
+      {/* Platform preview — 3D phone mockup */}
       <ScrollReveal delay={60} variant="up">
         <PlatformPreviewSection />
       </ScrollReveal>
@@ -124,6 +129,9 @@ export default function LandingPage() {
       <ScrollReveal delay={220} variant="up">
         <SocialSection />
       </ScrollReveal>
+
+      {/* Gallery — above footer */}
+      <GallerySection />
     </div>
   )
 }

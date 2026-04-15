@@ -32,11 +32,11 @@ export default function ServicesPage() {
 
       {/* Services cards */}
       <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-0 border border-[var(--border)]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
           {SERVICES.map((service) => (
             <div
               key={service.title}
-              className="card group flex flex-col border-0 border-b border-r border-[var(--border)] hover:bg-[var(--bg-secondary)] transition-colors duration-200 last:border-b-0"
+              className="card group flex flex-col hover:border-accent/50 hover:-translate-y-1 transition-all duration-200"
             >
               {/* Cover image */}
               <div className="relative h-44 w-full overflow-hidden shrink-0">
