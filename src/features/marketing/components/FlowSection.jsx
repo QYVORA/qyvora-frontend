@@ -88,8 +88,8 @@ export function FlowSection({ stats, loading = false, leaderboard = [], loadingL
                   <step.icon size={18} />
                 </div>
                 <div>
-                  <p className="font-mono font-bold text-sm text-[var(--text-primary)]">{step.label}</p>
-                  <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">{step.desc}</p>
+                  <p className="font-mono font-bold text-base text-[var(--text-primary)]">{step.label}</p>
+                  <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed">{step.desc}</p>
                 </div>
                 {i < FLOW_STEPS.length - 1 && (
                   <span className="hidden sm:block absolute -right-2.5 top-1/2 -translate-y-1/2 text-accent/40 text-lg z-10">›</span>
@@ -139,11 +139,11 @@ export function FlowSection({ stats, loading = false, leaderboard = [], loadingL
                   <p className={`font-mono text-2xl font-bold leading-none ${item.color}`}>
                     {Number(item.value || 0).toLocaleString()}
                   </p>
-                  <p className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-widest mt-1">{item.unit}</p>
+                  <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest mt-1">{item.unit}</p>
                 </div>
 
                 {/* Label */}
-                <p className="relative z-10 text-xs text-[var(--text-secondary)] leading-snug">{item.label}</p>
+                <p className="relative z-10 text-sm text-[var(--text-secondary)] leading-snug">{item.label}</p>
 
                 {/* Decorative icon */}
                 <TrendingUp size={36} className={`absolute bottom-3 right-3 opacity-[0.06] ${item.color}`} />

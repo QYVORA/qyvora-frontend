@@ -69,7 +69,7 @@ export default function ServicesPage() {
               <div className="flex flex-col gap-4 p-6 flex-1">
                 <div>
                   <h2 className="font-mono font-bold text-base sm:text-lg text-[var(--text-primary)] leading-snug">{service.title}</h2>
-                  <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">{service.desc}</p>
+                  <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed">{service.desc}</p>
                 </div>
 
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{service.description}</p>
@@ -77,7 +77,7 @@ export default function ServicesPage() {
                 {/* Bullets */}
                 <ul className="space-y-1.5 flex-1">
                   {service.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
+                    <li key={b} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
                       <ChevronRight size={11} className="text-accent shrink-0 mt-0.5" />
                       <span>{b}</span>
                     </li>

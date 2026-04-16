@@ -5,12 +5,12 @@ import { OWASP_TOP_10 } from '@/features/marketing/data/owaspData'
 import { StaggerReveal } from '@/features/marketing/components/ScrollReveal'
 
 function AttackFlowDiagram({ steps, hex, large = false }) {
-  const h = large ? 140 : 90
-  const boxW = large ? 160 : 100
-  const gap = large ? 44 : 30
-  const vw = large ? 840 : 520
+  const h = large ? 140 : 96
+  const boxW = large ? 160 : 112
+  const gap = large ? 44 : 24
+  const vw = large ? 840 : 620
   return (
-    <svg viewBox={`0 0 ${vw} ${h}`} xmlns="http://www.w3.org/2000/svg" className="w-full h-auto" aria-hidden="true">
+    <svg viewBox={`0 0 ${vw} ${h}`} xmlns="http://www.w3.org/2000/svg" className={`${large ? 'w-full' : 'w-[620px] sm:w-full'} h-auto`} aria-hidden="true">
       <rect width={vw} height={h} fill="rgba(0,0,0,0.5)" rx="8" />
       {Array.from({ length: 8 }).map((_, i) => (
         <line key={i} x1={i * (vw / 8)} y1="0" x2={i * (vw / 8)} y2={h} stroke={hex} strokeWidth="0.3" opacity="0.08" />
@@ -47,13 +47,13 @@ function AttackFlowDiagram({ steps, hex, large = false }) {
 function AttackVisualCard({ item, onZoom }) {
   const Icon = item.icon
   return (
-    <div className="relative overflow-hidden border aspect-[16/6] flex items-center justify-center group"
+    <div className="relative overflow-hidden border aspect-[16/8] sm:aspect-[16/6] flex items-center justify-center group"
       style={{ borderColor: `${item.hex}35`, background: `linear-gradient(135deg, ${item.hex}10 0%, rgba(0,0,0,0) 60%), var(--bg-secondary)` }}>
       <div className="absolute inset-0 opacity-[0.05]"
         style={{ backgroundImage: `linear-gradient(${item.hex} 1px, transparent 1px), linear-gradient(90deg, ${item.hex} 1px, transparent 1px)`, backgroundSize: '28px 28px' }} />
       <span className="absolute right-4 top-1/2 -translate-y-1/2 font-mono font-black select-none pointer-events-none"
         style={{ fontSize: 'clamp(52px, 9vw, 100px)', color: item.hex, opacity: 0.07, lineHeight: 1 }}>{item.id}</span>
-      <div className="relative z-10 w-full px-5 py-3">
+      <div className="relative z-10 w-full overflow-x-auto overflow-y-hidden px-3 sm:px-5 py-3">
         <AttackFlowDiagram steps={item.attackSteps} hex={item.hex} />
       </div>
       <div className="absolute top-3 left-3 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest border"
@@ -61,7 +61,7 @@ function AttackVisualCard({ item, onZoom }) {
       <div className="absolute bottom-3 right-12 w-8 h-8 border flex items-center justify-center"
         style={{ borderColor: `${item.hex}40`, background: `${item.hex}18` }}><Icon size={14} style={{ color: item.hex }} /></div>
       <button type="button" onClick={onZoom}
-        className="absolute bottom-3 right-3 w-8 h-8 border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        className="absolute bottom-3 right-3 w-8 h-8 border flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200"
         style={{ borderColor: `${item.hex}60`, background: `${item.hex}25`, color: item.hex }} aria-label="View full diagram">
         <ZoomIn size={13} />
       </button>
@@ -77,7 +77,7 @@ function DiagramModal({ item, onClose }) {
       <button type="button" onClick={onClose}
         className="absolute top-4 right-4 w-10 h-10 border border-white/20 text-white flex items-center justify-center hover:border-accent/60 hover:text-accent transition-all z-10"
         aria-label="Close"><X size={18} /></button>
-      <div className="w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 border flex items-center justify-center"
             style={{ borderColor: `${item.hex}50`, background: `${item.hex}18` }}><Icon size={20} style={{ color: item.hex }} /></div>
@@ -88,7 +88,7 @@ function DiagramModal({ item, onClose }) {
           <div className="ml-auto px-3 py-1 border font-mono text-xs uppercase tracking-widest"
             style={{ color: item.hex, borderColor: `${item.hex}40`, background: `${item.hex}15` }}>{item.severity}</div>
         </div>
-        <div className="relative overflow-hidden border p-6"
+        <div className="relative overflow-x-auto overflow-y-hidden border p-4 sm:p-6"
           style={{ borderColor: `${item.hex}30`, background: `linear-gradient(135deg, ${item.hex}08, rgba(0,0,0,0) 60%), rgba(0,0,0,0.6)` }}>
           <div className="absolute inset-0 opacity-[0.04]"
             style={{ backgroundImage: `linear-gradient(${item.hex} 1px, transparent 1px), linear-gradient(90deg, ${item.hex} 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
@@ -115,38 +115,38 @@ function OwaspCard({ item, defaultOpen = false, onZoom }) {
       style={{ borderColor: open ? `${item.hex}35` : 'var(--border)' }}>
       <AttackVisualCard item={item} onZoom={() => onZoom(item)} />
       <button type="button"
-        className="w-full flex items-start gap-5 px-6 py-5 text-left hover:bg-[var(--bg-secondary)] transition-colors duration-200"
+        className="w-full flex items-start gap-4 sm:gap-5 px-4 sm:px-6 py-5 text-left hover:bg-[var(--bg-secondary)] transition-colors duration-200"
         onClick={() => setOpen((v) => !v)} aria-expanded={open}>
         <div className="flex-1 min-w-0">
           <span className="font-mono text-[10px] uppercase tracking-widest block mb-1.5" style={{ color: item.hex }}>{item.rank}</span>
-          <h3 className="font-mono font-black text-lg text-[var(--text-primary)] leading-snug">{item.title}</h3>
-          <p className="text-sm text-[var(--text-secondary)] mt-1 leading-relaxed">{item.short}</p>
+          <h3 className="font-mono font-black text-lg sm:text-xl text-[var(--text-primary)] leading-snug">{item.title}</h3>
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1 leading-relaxed">{item.short}</p>
         </div>
         <div className="shrink-0 mt-1" style={{ color: item.hex }}>
           {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
         </div>
       </button>
       {open && (
-        <div className="px-6 pb-6 grid grid-cols-1 lg:grid-cols-3 gap-8 border-t" style={{ borderColor: `${item.hex}20` }}>
-          <div className="lg:col-span-2 pt-6">
+        <div className="px-4 sm:px-6 pb-6 grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 border-t" style={{ borderColor: `${item.hex}20` }}>
+          <div className="lg:col-span-2 pt-5 sm:pt-6">
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">Description</p>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.description}</p>
+            <p className="text-base text-[var(--text-secondary)] leading-relaxed">{item.description}</p>
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mt-6 mb-3">Real-World Examples</p>
             <ul className="space-y-2">
               {item.examples.map((ex) => (
-                <li key={ex} className="flex items-start gap-3 text-sm text-[var(--text-secondary)]">
+                <li key={ex} className="flex items-start gap-3 text-sm sm:text-base text-[var(--text-secondary)]">
                   <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ background: item.hex }} />{ex}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="pt-6">
+          <div className="pt-1 sm:pt-6">
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">CWE References</p>
             <div className="flex flex-wrap gap-2">
               {item.cwe.map((cwe) => (
                 <a key={cwe} href={`https://cwe.mitre.org/data/definitions/${cwe.replace('CWE-', '')}.html`}
                   target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs hover:opacity-80 transition-opacity"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border font-mono text-sm hover:opacity-80 transition-opacity"
                   style={{ color: item.hex, borderColor: `${item.hex}40`, background: `${item.hex}10` }}>
                   {cwe} <ExternalLink size={10} />
                 </a>
@@ -171,18 +171,26 @@ export default function OwaspPage() {
   const closeModal = useCallback(() => setModalItem(null), [])
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      <section className="py-24 px-4 sm:px-6 border-b border-accent/10 relative overflow-hidden">
+      <section className="py-20 sm:py-24 px-4 sm:px-6 border-b border-accent/10 relative overflow-hidden">
+        <img
+          src="/images/how-it-works-section/Findings-Identified.webp"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.10] pointer-events-none"
+          loading="eager"
+          decoding="async"
+        />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 right-0 w-96 h-96 rounded-full bg-red-500/5 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-accent/5 blur-3xl" />
         </div>
+        <div className="absolute inset-0 bg-[var(--bg-primary)]/70 pointer-events-none" />
         <div className="max-w-4xl mx-auto relative">
           <Link to="/" className="inline-flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] hover:text-accent transition-colors mb-10 uppercase tracking-widest">
             <ArrowLeft size={13} /> Back to Home
           </Link>
           <p className="font-mono text-accent text-xs uppercase tracking-widest mb-4">// security fundamentals</p>
           <h1 className="font-mono font-black text-4xl sm:text-5xl md:text-6xl text-[var(--text-primary)] leading-tight mb-6">OWASP Top 10</h1>
-          <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
+          <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed max-w-3xl mb-8">
             The ten most critical web application security risks. Each card has a visual attack flow diagram — hover and click the zoom icon to view it full size.
           </p>
           <div className="flex flex-wrap gap-6 text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">

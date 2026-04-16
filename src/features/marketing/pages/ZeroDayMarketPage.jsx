@@ -38,11 +38,11 @@ function ProductCard({ product }) {
         <Icon size={18} className="text-accent" />
       </div>
       <div className="flex-1 space-y-2">
-        <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] leading-snug">{product.title}</h3>
-        <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{product.desc}</p>
+        <h3 className="font-mono font-bold text-base text-[var(--text-primary)] leading-snug">{product.title}</h3>
+        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{product.desc}</p>
       </div>
       <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-3">
-        <span className="font-mono text-accent font-bold text-sm">{product.price} CP</span>
+        <span className="font-mono text-accent font-bold text-base">{product.price} CP</span>
         <Link to="/register" className="btn-primary inline-flex items-center gap-1.5 text-xs px-3 py-1.5">
           <Lock size={11} /> Unlock with CP
         </Link>
@@ -80,8 +80,8 @@ export default function ZeroDayMarketPage() {
             {HOW_IT_WORKS.map((item) => (
               <div key={item.step} className="flex flex-col gap-2 px-6 py-6 sm:py-4">
                 <span className="font-mono text-accent text-xs tracking-widest">{item.step}</span>
-                <span className="font-mono font-bold text-sm text-[var(--text-primary)]">{item.label}</span>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+                <span className="font-mono font-bold text-base text-[var(--text-primary)]">{item.label}</span>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>

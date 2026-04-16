@@ -61,6 +61,14 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <section className="relative py-24 px-4 sm:px-6 border-b border-[var(--border)] overflow-hidden">
+        <img
+          src="/images/how-it-works-section/Findings-Identified.webp"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-[var(--bg-primary)]/72 pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-accent/5 blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
@@ -81,14 +89,14 @@ export default function PrivacyPage() {
           </aside>
           <main className="flex-1 min-w-0 space-y-8">
             {SECTIONS.map((s) => (
-              <section key={s.id} id={s.id} className="border-l-2 border-accent/40 pl-5 py-1 scroll-mt-24">
-                <h2 className="font-mono font-bold text-base text-[var(--text-primary)] mb-3">{s.title}</h2>
+              <section key={s.id} id={s.id} className="border-l-2 border-accent/40 pl-4 sm:pl-5 py-1 scroll-mt-24">
+                <h2 className="font-mono font-bold text-lg text-[var(--text-primary)] mb-3">{s.title}</h2>
                 {s.type === 'ul' ? (
-                  <ul className="text-sm text-[var(--text-secondary)] space-y-2 font-mono">
-                    {s.items.map((item, i) => <li key={i}>{item}</li>)}
+                  <ul className="text-base text-[var(--text-secondary)] space-y-2 font-mono">
+                    {s.items.map((item, i) => <li key={i} className="break-words">{item}</li>)}
                   </ul>
                 ) : (
-                  <p className="text-sm text-[var(--text-secondary)] font-mono leading-relaxed">{s.body}</p>
+                  <p className="text-base text-[var(--text-secondary)] font-mono leading-relaxed break-words">{s.body}</p>
                 )}
               </section>
             ))}

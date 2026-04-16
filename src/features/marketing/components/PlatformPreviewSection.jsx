@@ -32,7 +32,7 @@ export function PlatformPreviewSection() {
               </Link>
             </div>
             {/* Small trust indicators */}
-            <div className="flex items-center gap-6 text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-6 text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">
               <span>Mobile-first</span>
               <span className="w-1 h-1 rounded-full bg-accent/40" />
               <span>Dark mode</span>
