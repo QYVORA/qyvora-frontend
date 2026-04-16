@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/core/contexts'
 import { FullPageLoader } from '@/shared/components/feedback'
 import { PublicLayout, StudentLayout, AdminLayout } from '@/shared/layouts'
@@ -49,8 +49,13 @@ const AdminCPAudit = lazy(() => import('@/features/admin/pages/CPAudit'))
 
 function ProtectedRoute({ children, role }) {
   const { user, loading } = useAuth()
+  const location = useLocation()
   if (loading) return <FullPageLoader />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) {
+    const nextPath = `${location.pathname}${location.search || ''}${location.hash || ''}`
+    const loginPath = `/login?next=${encodeURIComponent(nextPath)}`
+    return <Navigate to={loginPath} replace />
+  }
   if (role && user.role !== role) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
   return children
 }
@@ -58,8 +63,7 @@ function ProtectedRoute({ children, role }) {
 function GuestRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <FullPageLoader />
-  const hasStoredSession = Boolean(localStorage.getItem('hs_user'))
-  if (user && hasStoredSession) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
+  if (user) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
   return children
 }
 

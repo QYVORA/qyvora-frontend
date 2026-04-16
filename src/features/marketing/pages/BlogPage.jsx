@@ -1,7 +1,17 @@
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, Tag, ArrowRight } from 'lucide-react'
-import { BLOG_POSTS } from '@/features/marketing/data/teamData'
 import { useSEO } from '@/core/utils/useSEO'
+import api from '@/core/services/api'
+
+const DEFAULT_BLOG_IMG = '/images/how-it-works-section/Engagements-4Completed.webp'
+
+const toSlug = (value = '') =>
+  String(value)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 
 function PostCard({ post }) {
   return (
@@ -26,8 +36,8 @@ function PostCard({ post }) {
   )
 }
 
-function BlogPost({ slug }) {
-  const post = BLOG_POSTS.find(p => p.slug === slug)
+function BlogPost({ slug, posts }) {
+  const post = posts.find((p) => p.slug === slug)
   useSEO(post ? {
     title: post.title,
     description: post.excerpt,
@@ -72,7 +82,7 @@ function BlogPost({ slug }) {
         <div className="mt-12">
           <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-muted)] mb-6">// more posts</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {BLOG_POSTS.filter(p => p.slug !== slug).slice(0, 2).map(p => <PostCard key={p.id} post={p} />)}
+            {posts.filter((p) => p.slug !== slug).slice(0, 2).map((p) => <PostCard key={p.id} post={p} />)}
           </div>
         </div>
       </div>
@@ -82,12 +92,54 @@ function BlogPost({ slug }) {
 
 export default function BlogPage() {
   const { slug } = useParams()
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let mounted = true
+    const loadPosts = async () => {
+      try {
+        const res = await api.get('/public/blog-posts')
+        const source = Array.isArray(res.data?.posts) ? res.data.posts : []
+        if (!mounted) return
+        const normalized = source
+          .map((post, index) => {
+            const title = String(post?.title || '').trim()
+            const summary = String(post?.summary || '').trim()
+            if (!title || !summary) return null
+            const baseSlug = toSlug(post?.slug || title) || `post-${index + 1}`
+            return {
+              id: String(post?.id || index + 1),
+              slug: baseSlug,
+              title,
+              excerpt: summary,
+              category: String(post?.category || 'Insights').trim() || 'Insights',
+              date: String(post?.date || new Date().toISOString()).trim(),
+              readTime: String(post?.readTime || '3 min read').trim() || '3 min read',
+              img: String(post?.image || post?.img || DEFAULT_BLOG_IMG).trim() || DEFAULT_BLOG_IMG,
+            }
+          })
+          .filter(Boolean)
+        setPosts(normalized)
+      } catch {
+        if (!mounted) return
+        setPosts([])
+      } finally {
+        if (mounted) setLoading(false)
+      }
+    }
+    loadPosts()
+    return () => { mounted = false }
+  }, [])
+
+  const activePost = useMemo(() => posts.find((p) => p.slug === slug), [posts, slug])
+
   useSEO({
-    title: 'Blog — Operator Guides & Security Insights',
-    description: 'Offensive security guides, platform updates, and intel drops from the HSOCIETY OFFSEC team.',
-    path: '/blog',
+    title: activePost?.title || 'Blog — Operator Guides & Security Insights',
+    description: activePost?.excerpt || 'Offensive security guides, platform updates, and intel drops from the HSOCIETY OFFSEC team.',
+    path: slug ? `/blog/${slug}` : '/blog',
   })
-  if (slug) return <BlogPost slug={slug} />
+  if (slug) return <BlogPost slug={slug} posts={posts} />
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
@@ -106,9 +158,17 @@ export default function BlogPage() {
 
       {/* Posts grid */}
       <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {BLOG_POSTS.map(post => <PostCard key={post.id} post={post} />)}
-        </div>
+        {loading ? (
+          <div className="max-w-6xl mx-auto text-sm text-[var(--text-secondary)]">Loading posts...</div>
+        ) : posts.length === 0 ? (
+          <div className="max-w-6xl mx-auto card p-6 text-sm text-[var(--text-secondary)]">
+            No blog posts published yet.
+          </div>
+        ) : (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {posts.map((post) => <PostCard key={post.id} post={post} />)}
+          </div>
+        )}
       </section>
     </div>
   )

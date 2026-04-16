@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Mail, MapPin, MessageSquare, MessageCircle, Send } from 'lucide-react'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
+import { CONTACT_INFO } from '@/features/marketing/data/siteConfig'
 import { CONTACT_REASONS } from '@/features/marketing/data/servicesData'
 import api from '@/core/services/api'
 import { useToast } from '@/core/contexts/ToastContext'
@@ -110,8 +111,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Email</p>
-                  <a href="mailto:info@hsociety.io" className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors">
-                    info@hsociety.io
+                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors">
+                    {CONTACT_INFO.email}
                   </a>
                 </div>
               </div>
@@ -122,12 +123,12 @@ export default function ContactPage() {
                 <div>
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">WhatsApp Community</p>
                   <a
-                    href="https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5"
+                    href={CONTACT_INFO.whatsappUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors"
                   >
-                    Join the briefing room
+                    {CONTACT_INFO.whatsappLabel}
                   </a>
                 </div>
               </div>
@@ -137,7 +138,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Location</p>
-                  <p className="text-sm text-[var(--text-primary)] mt-0.5">South Africa · Remote Worldwide</p>
+                  <p className="text-sm text-[var(--text-primary)] mt-0.5">{CONTACT_INFO.location}</p>
                 </div>
               </div>
             </div>

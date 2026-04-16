@@ -1,34 +1,78 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Card, Skeleton } from '@/shared/components/ui'
+import NotFoundPage from '@/shared/pages/NotFoundPage'
 import api from '@/core/services/api'
 
+const HANDLE_PATTERN = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]{0,30}[a-zA-Z0-9])?$/
+const RESERVED_HANDLES = new Set([
+  'admin',
+  'blog',
+  'bootcamp',
+  'change-password',
+  'contact',
+  'dashboard',
+  'forgot-password',
+  'identicon-preview',
+  'learn',
+  'login',
+  'marketplace',
+  'notifications',
+  'owasp-top-10',
+  'privacy',
+  'profile',
+  'recon',
+  'register',
+  'services',
+  'student-payments',
+  'team',
+  'terms',
+  'verify-email',
+  'wallet',
+  'zero-day-market',
+])
+
 export default function PublicProfilePage() {
-  const { handle } = useParams()
+  const rawHandle = String(useParams().handle || '').trim()
+  const normalizedHandle = rawHandle.toLowerCase()
+  const isValidHandle = Boolean(
+    rawHandle &&
+    HANDLE_PATTERN.test(rawHandle) &&
+    !RESERVED_HANDLES.has(normalizedHandle),
+  )
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [notFound, setNotFound] = useState(false)
   const [profile, setProfile] = useState(null)
 
   useEffect(() => {
+    if (!isValidHandle) {
+      setProfile(null)
+      setNotFound(true)
+      setLoading(false)
+      return
+    }
+
     let mounted = true
     const load = async () => {
       setLoading(true)
-      setError('')
+      setNotFound(false)
       try {
-        const res = await api.get(`/public/users/${encodeURIComponent(handle || '')}`)
+        const res = await api.get(`/public/users/${encodeURIComponent(rawHandle)}`)
         if (!mounted) return
         setProfile(res.data || null)
       } catch (err) {
         if (!mounted) return
         setProfile(null)
-        setError(err?.response?.status === 404 ? 'Profile not found.' : 'Failed to load profile.')
+        setNotFound(true)
       } finally {
         if (mounted) setLoading(false)
       }
     }
     load()
     return () => { mounted = false }
-  }, [handle])
+  }, [rawHandle, isValidHandle])
+
+  if (notFound) return <NotFoundPage />
 
   return (
     <section className="py-28 px-6 min-h-[70vh]">
@@ -36,7 +80,7 @@ export default function PublicProfilePage() {
         <div>
           <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// public profile</p>
           <h1 className="font-mono font-black text-4xl text-[var(--text-primary)]">
-            @{handle}
+            @{rawHandle}
           </h1>
         </div>
 
@@ -46,11 +90,6 @@ export default function PublicProfilePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-16 w-full" />)}
             </div>
-          </Card>
-        ) : error ? (
-          <Card className="p-6">
-            <p className="text-sm text-[var(--text-secondary)]">{error}</p>
-            <Link to="/" className="btn-secondary inline-flex mt-4">Back Home</Link>
           </Card>
         ) : (
           <>
@@ -62,7 +101,7 @@ export default function PublicProfilePage() {
                 </div>
                 <div className="border border-[var(--border)] p-3">
                   <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">Profile</p>
-                  <p className="text-sm text-accent mt-1">@{profile?.handle || handle}</p>
+                  <p className="text-sm text-accent mt-1">@{profile?.handle || rawHandle}</p>
                 </div>
                 <div className="border border-[var(--border)] p-3">
                   <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">CP</p>
@@ -104,4 +143,3 @@ export default function PublicProfilePage() {
     </section>
   )
 }
-

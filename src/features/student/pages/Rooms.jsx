@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpenCheck, CheckCircle2, Clock, Filter, Layers, Search, X } from 'lucide-react'
+import { BookOpenCheck, CheckCircle2, Clock, Filter, Layers, PlayCircle, Search, Sparkles, X } from 'lucide-react'
 import { Card, Skeleton } from '@/shared/components/ui'
 import { studentService } from '@/core/services'
 import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
@@ -23,7 +23,7 @@ function LevelBadge({ level }) {
   )
 }
 
-function RoomCard({ room }) {
+function RoomCard({ room, stepIndex = 0, isNext = false }) {
   const accent = room.accentColor || 'var(--accent)'
   const cover = resolveImageUrl(room.coverImage)
   const logo = resolveImageUrl(room.logoUrl)
@@ -63,6 +63,12 @@ function RoomCard({ room }) {
 
         {/* Content */}
         <div className="flex-1 p-4 flex flex-col gap-2 min-w-0">
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest">
+            <span className="px-2 py-0.5 border border-[var(--border)] text-[var(--text-muted)]">Step {stepIndex + 1}</span>
+            {isNext && !room.completed && (
+              <span className="px-2 py-0.5 border border-accent/40 text-accent bg-accent/10">Recommended Next</span>
+            )}
+          </div>
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-display font-semibold text-base text-[var(--text-primary)] leading-snug group-hover:text-accent transition-colors">
               {room.title}
@@ -146,6 +152,12 @@ export default function RoomsPage() {
     const completed = rooms.filter((r) => r.completed).length
     return { total: rooms.length, completed, pct: rooms.length ? Math.round((completed / rooms.length) * 100) : 0 }
   }, [rooms])
+  const nextRoom = useMemo(() => filtered.find((room) => !room.completed) || filtered[0] || null, [filtered])
+  const walkthroughSteps = [
+    { id: 'pick', label: 'Pick a room', desc: 'Choose your next mission based on level and tags.' },
+    { id: 'execute', label: 'Execute tasks', desc: 'Work through guided tasks and apply each technique.' },
+    { id: 'complete', label: 'Mark completion', desc: 'Complete the room to update your learning progress.' },
+  ]
 
   const hasActiveFilters = levelFilter !== 'All' || statusFilter !== 'All' || search
   const clearFilters = () => { setSearch(''); setLevelFilter('All'); setStatusFilter('All') }
@@ -182,6 +194,37 @@ export default function RoomsPage() {
           </div>
         )}
       </div>
+
+      {/* Walkthrough */}
+      {!loading && rooms.length > 0 && (
+        <Card className="p-5 sm:p-6 space-y-5 border-accent/25 bg-gradient-to-br from-accent/10 to-transparent">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-1">Mission Walkthrough</p>
+              <p className="text-sm text-[var(--text-secondary)]">Follow this flow instead of jumping randomly between rooms.</p>
+            </div>
+            {nextRoom && (
+              <Link to={`/learn/rooms/${nextRoom.slug}`} className="btn-primary inline-flex items-center justify-center gap-2 text-xs px-4 py-2.5">
+                <PlayCircle size={14} />
+                Continue: {nextRoom.title}
+              </Link>
+            )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {walkthroughSteps.map((step, index) => (
+              <div key={step.id} className="border border-[var(--border)] bg-[var(--bg-card)] p-4">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-accent mb-1">Step {index + 1}</p>
+                <p className="text-sm font-semibold text-[var(--text-primary)]">{step.label}</p>
+                <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--text-secondary)]">
+            <span className="inline-flex items-center gap-1.5"><Sparkles size={13} className="text-accent" /> Your next recommended room is highlighted below.</span>
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 size={13} className="text-accent" /> Completed rooms remain visible for revision.</span>
+          </div>
+        </Card>
+      )}
 
       {/* Search + filter bar */}
       {!loading && rooms.length > 0 && (
@@ -300,7 +343,14 @@ export default function RoomsPage() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {filtered.map((room) => <RoomCard key={room.id || room._id} room={room} />)}
+          {filtered.map((room, index) => (
+            <RoomCard
+              key={room.id || room._id}
+              room={room}
+              stepIndex={index}
+              isNext={Boolean(nextRoom && (nextRoom.id || nextRoom._id) === (room.id || room._id))}
+            />
+          ))}
         </div>
       )}
     </div>

@@ -1,6 +1,14 @@
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Twitter, Linkedin, MessageCircle } from 'lucide-react'
-import { TEAM } from '@/features/marketing/data/teamData'
+import { ArrowRight, Twitter, Linkedin, MessageCircle, Users } from 'lucide-react'
+import api from '@/core/services/api'
+
+const SOCIAL_ICON_BY_PLATFORM = {
+  x: Twitter,
+  twitter: Twitter,
+  linkedin: Linkedin,
+  whatsapp: MessageCircle,
+}
 
 function TeamCard({ member }) {
   return (
@@ -12,7 +20,7 @@ function TeamCard({ member }) {
         ) : (
           <div className="flex flex-col items-center gap-3">
             <div className="w-16 h-16 border border-accent/40 bg-accent/10 flex items-center justify-center text-accent">
-              <member.icon size={28} />
+              <Users size={28} />
             </div>
             <span className="font-mono text-xs text-[var(--text-muted)] uppercase tracking-widest">Photo TBA</span>
           </div>
@@ -30,21 +38,16 @@ function TeamCard({ member }) {
 
         {/* Socials */}
         <div className="flex items-center gap-2 pt-2 border-t border-[var(--border)]">
-          {member.social?.x && (
-            <a href={member.social.x} target="_blank" rel="noreferrer" className="w-7 h-7 border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-accent hover:border-accent/40 transition-all">
-              <Twitter size={12} />
-            </a>
-          )}
-          {member.social?.linkedin && (
-            <a href={member.social.linkedin} target="_blank" rel="noreferrer" className="w-7 h-7 border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-accent hover:border-accent/40 transition-all">
-              <Linkedin size={12} />
-            </a>
-          )}
-          {member.social?.whatsapp && (
-            <a href={member.social.whatsapp} target="_blank" rel="noreferrer" className="w-7 h-7 border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-accent hover:border-accent/40 transition-all">
-              <MessageCircle size={12} />
-            </a>
-          )}
+          {(member.socials || []).map((social) => {
+            const platform = String(social.platform || '').toLowerCase()
+            const Icon = SOCIAL_ICON_BY_PLATFORM[platform]
+            if (!Icon || !social.url) return null
+            return (
+              <a key={`${member.id}-${platform}`} href={social.url} target="_blank" rel="noreferrer" className="w-7 h-7 border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-accent hover:border-accent/40 transition-all">
+                <Icon size={12} />
+              </a>
+            )
+          })}
         </div>
       </div>
     </div>
@@ -52,6 +55,36 @@ function TeamCard({ member }) {
 }
 
 export function TeamSection() {
+  const [members, setMembers] = useState([])
+
+  useEffect(() => {
+    let mounted = true
+    const load = async () => {
+      try {
+        const res = await api.get('/public/content/team')
+        if (!mounted) return
+        const source = Array.isArray(res.data?.team?.leadership?.members) ? res.data.team.leadership.members : []
+        const mapped = source
+          .map((member, index) => ({
+            id: String(member?.name || `member-${index + 1}`).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            role: String(member?.role || '').trim(),
+            name: String(member?.name || '').trim(),
+            bio: String(member?.focus || '').trim(),
+            avatar: String(member?.image || '').trim() || null,
+            socials: Array.isArray(member?.socials) ? member.socials : [],
+          }))
+          .filter((member) => member.name)
+        setMembers(mapped)
+      } catch {
+        if (mounted) setMembers([])
+      }
+    }
+    load()
+    return () => { mounted = false }
+  }, [])
+
+  const visibleMembers = useMemo(() => members.slice(0, 4), [members])
+
   return (
     <section className="py-24 px-4 sm:px-6 border-t border-accent/10" id="team">
       <div className="max-w-6xl mx-auto">
@@ -68,9 +101,15 @@ export function TeamSection() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {TEAM.map(member => <TeamCard key={member.id} member={member} />)}
-        </div>
+        {visibleMembers.length === 0 ? (
+          <div className="card p-6 text-sm text-[var(--text-secondary)] text-center">
+            Team profiles will appear here once published.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {visibleMembers.map((member) => <TeamCard key={member.id} member={member} />)}
+          </div>
+        )}
       </div>
     </section>
   )

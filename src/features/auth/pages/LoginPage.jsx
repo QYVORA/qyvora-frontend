@@ -54,16 +54,30 @@ export default function LoginPage() {
       const bootcampId = params.get('bootcampId')
       const next = params.get('next')
       const safeNext = next && next.startsWith('/') ? next : null
+      if (safeNext) {
+        navigate(safeNext)
+        return
+      }
+      if (intent === 'rooms') {
+        navigate('/learn/rooms')
+        return
+      }
+      if (intent === 'marketplace') {
+        navigate('/marketplace')
+        return
+      }
       if (intent === 'bootcamp') {
         const enrolled = (user.bootcampStatus || 'not_enrolled') !== 'not_enrolled'
-        if (enrolled && bootcampId) {
-          navigate(`/bootcamp/${bootcampId}`)
+        if (enrolled) {
+          const enrolledBootcampId = String(user.bootcampId || '').trim()
+          navigate(enrolledBootcampId ? `/bootcamp/${enrolledBootcampId}` : '/bootcamp')
         } else {
-          navigate('/bootcamp')
+          const target = bootcampId ? `/bootcamp?bootcampId=${encodeURIComponent(bootcampId)}` : '/bootcamp'
+          navigate(target)
         }
         return
       }
-      navigate(safeNext || '/dashboard')
+      navigate('/dashboard')
     } catch {
       toast({ type: 'error', title: 'Login failed', message: 'Invalid credentials. Try again.' })
     } finally {

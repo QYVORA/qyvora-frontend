@@ -93,14 +93,11 @@ const readCsrfFromCookie = () => {
   return token
 }
 
-// Request interceptor — attach CSRF token, never redirect on safe routes
+// Request interceptor — attach CSRF token when present
 api.interceptors.request.use((config) => {
   const csrfToken = readCsrfFromCookie()
   if (csrfToken) {
     config.headers['X-CSRF-Token'] = csrfToken
-  } else if (!isSafeRoute(config.url) && localStorage.getItem('hs_user')) {
-    // Only redirect if we have a stored session but no CSRF — means session is stale
-    clearSessionAndRedirect()
   }
   return config
 })
@@ -119,12 +116,14 @@ api.interceptors.response.use(
     const status = err.response?.status
     const url = String(originalRequest?.url || '')
 
-    // Attempt token refresh on 401 for non-auth, non-safe routes
-    if (status === 401 && originalRequest && !originalRequest._retry && !isSafeRoute(url)) {
+    const isCsrfFailure =
+      status === 403 &&
+      String(err?.response?.data?.error || '').toLowerCase().includes('csrf')
+
+    // Attempt token refresh on auth failures for non-safe routes
+    if ((status === 401 || isCsrfFailure) && originalRequest && !originalRequest._retry && !isSafeRoute(url)) {
       originalRequest._retry = true
       try {
-        const hasCsrf = Boolean(readCsrfFromCookie())
-        if (!hasCsrf) throw new Error('No CSRF — skip refresh')
         await refreshSession()
         return api(originalRequest)
       } catch {

@@ -8,6 +8,7 @@ import { useToast } from '@/core/contexts/ToastContext'
 
 export default function BootcampDashboard() {
   const { bootcampId } = useParams()
+  const isSameId = (a, b) => String(a || '') === String(b || '')
   const [bootcamp, setBootcamp] = useState(null)
   const [overview, setOverview] = useState(null)
   const [progress, setProgress] = useState(null)
@@ -38,7 +39,7 @@ export default function BootcampDashboard() {
         if (!mounted) return
         if (bootcampsRes.status === 'fulfilled') {
           const items = bootcampsRes.value?.data?.items || []
-          setBootcamp(items.find((item) => item.id === bootcampId) || null)
+          setBootcamp(items.find((item) => isSameId(item.id, bootcampId)) || null)
         }
         if (overviewRes.status === 'fulfilled') setOverview(overviewRes.value?.data || null)
         if (progressRes.status === 'fulfilled') {

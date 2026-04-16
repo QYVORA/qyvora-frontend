@@ -1,4 +1,5 @@
 import { useSEO } from '@/core/utils/useSEO'
+import { CONTACT_INFO } from '@/features/marketing/data/siteConfig'
 
 const SECTIONS = [
   {
@@ -50,7 +51,7 @@ const SECTIONS = [
   {
     id: 'contact',
     title: 'Contact',
-    body: 'Questions about privacy? Email us at info@hsociety.io',
+    body: `Questions about privacy? Email us at ${CONTACT_INFO.email}`,
     type: 'p',
   },
 ]

@@ -1,4 +1,4 @@
-import { Zap, CheckCircle2 } from 'lucide-react'
+import { Zap } from 'lucide-react'
 import { Card, Button, Spinner } from '@/shared/components/ui'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -7,10 +7,10 @@ import api from '@/core/services/api'
 import { resolveImageUrl } from '@/shared/utils/resolveImageUrl'
 import { useToast } from '@/core/contexts/ToastContext'
 import { useAuth } from '@/core/contexts/AuthContext'
-import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
 import { PHASE_IMGS } from '@/features/marketing/data/landingData'
 
 const PENDING_ENROLLMENT_KEY = 'hs_pending_bootcamp_enrollment'
+const isSameId = (a, b) => String(a || '') === String(b || '')
 
 export default function BootcampPage() {
   const [overview, setOverview] = useState(null)
@@ -18,7 +18,6 @@ export default function BootcampPage() {
   const [loading, setLoading] = useState(true)
   const [enrollingId, setEnrollingId] = useState('')
   const [selectedBootcamp, setSelectedBootcamp] = useState(null)
-  const [socialProgress, setSocialProgress] = useState({})
   const [phoneError, setPhoneError] = useState('')
   const [enrollSuccess, setEnrollSuccess] = useState(false)
   const [application, setApplication] = useState({
@@ -74,7 +73,7 @@ export default function BootcampPage() {
       const pending = JSON.parse(raw)
       const pendingId = String(pending?.bootcampId || '')
       if (!pendingId) return
-      const pendingBootcamp = bootcamps.find((item) => String(item.id) === pendingId)
+      const pendingBootcamp = bootcamps.find((item) => isSameId(item.id, pendingId))
       if (!pendingBootcamp) return
       setSelectedBootcamp(pendingBootcamp)
       setShowPayment(true)
@@ -159,7 +158,6 @@ export default function BootcampPage() {
   const handleStartEnroll = useCallback((item) => {
     setSelectedBootcamp(item)
     setShowPayment(false)
-    setSocialProgress({})
     setPhoneError('')
     setEnrollSuccess(false)
     setApplication({
@@ -175,14 +173,14 @@ export default function BootcampPage() {
     const targetId = searchParams.get('bootcampId')
     if (!targetId || loading || bootcamps.length === 0) return
     if (bootcampStatus !== 'not_enrolled') {
-      navigate(`/bootcamp/${targetId}`)
+      navigate(currentBootcampId ? `/bootcamp/${currentBootcampId}` : '/bootcamp')
       return
     }
-    const target = bootcamps.find((item) => String(item.id) === String(targetId))
+    const target = bootcamps.find((item) => isSameId(item.id, targetId))
     if (target && selectedBootcamp?.id !== target.id) {
       handleStartEnroll(target)
     }
-  }, [bootcampStatus, bootcamps, handleStartEnroll, loading, navigate, searchParams, selectedBootcamp?.id])
+  }, [bootcampStatus, bootcamps, currentBootcampId, handleStartEnroll, loading, navigate, searchParams, selectedBootcamp?.id])
 
   const handlePayment = async (method) => {
     setPaymentLoading(method)
@@ -228,7 +226,7 @@ export default function BootcampPage() {
           </Card>
         ) : (
           bootcamps.map((item, i) => {
-            const isEnrolledHere = bootcampStatus !== 'not_enrolled' && currentBootcampId === item.id
+            const isEnrolledHere = bootcampStatus !== 'not_enrolled' && isSameId(currentBootcampId, item.id)
             const accent = 'var(--accent)'
             const cover = resolveImageUrl(item.image) || PHASE_IMGS[i % PHASE_IMGS.length]
             return (
@@ -347,46 +345,13 @@ export default function BootcampPage() {
             />
           </div>
 
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 space-y-3">
-            <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Follow to unlock</p>
-            <p className="text-sm text-[var(--text-secondary)]">
-              Visit all channels below before continuing your registration.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {SOCIAL_MEDIA.map((platform) => {
-                const Icon = platform.icon
-                const visited = socialProgress[platform.key]
-                return (
-                  <Button
-                    key={platform.key}
-                    variant={visited ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => {
-                      window.open(platform.url, '_blank', 'noopener,noreferrer')
-                      setSocialProgress((prev) => ({ ...prev, [platform.key]: true }))
-                    }}
-                  >
-                    <Icon size={14} />
-                    {visited ? (
-                      <>
-                        <span>{platform.label} visited</span>
-                        <CheckCircle2 size={14} className="text-green-500" />
-                      </>
-                    ) : `Visit ${platform.label}`}
-                  </Button>
-                )
-              })}
-            </div>
-          </div>
-
           <div className="flex flex-wrap gap-3">
             <Button
               variant="primary"
               loading={enrollingId === selectedBootcamp.id}
-              disabled={!SOCIAL_MEDIA.every((platform) => socialProgress[platform.key])}
               onClick={() => handleEnroll(selectedBootcamp.id)}
             >
-              Continue
+              Submit Enrollment
             </Button>
             <Button variant="ghost" onClick={() => setSelectedBootcamp(null)}>
               Cancel
@@ -443,7 +408,7 @@ export default function BootcampPage() {
           <div className="flex-1">
             <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Current bootcamp</p>
             <p className="font-display font-semibold text-lg text-[var(--text-primary)]">
-              {bootcamps.find((item) => item.id === currentBootcampId)?.title || 'Bootcamp'}
+              {bootcamps.find((item) => isSameId(item.id, currentBootcampId))?.title || 'Bootcamp'}
             </p>
           </div>
           <Button
