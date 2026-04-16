@@ -4,7 +4,7 @@ import { HeroSection } from '@/features/marketing/components/HeroSection'
 import { MarketingCarousel } from '@/features/marketing/components/MarketingCarousel'
 import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
-import { LiveTickerSection } from '@/features/marketing/components/LiveTickerSection'
+import { VideoSection } from '@/features/marketing/components/VideoSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
 import { RoomsPreviewSection } from '@/features/marketing/components/RoomsPreviewSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
@@ -90,7 +90,7 @@ export default function LandingPage() {
       {/* 2. Carousel — immediate value prop for all platform areas */}
       <MarketingCarousel />
 
-      {/* 3. How It Works — explain the system before showing products */}
+      {/* 3. How It Works — pipeline steps + live stats (merged, no duplicate) */}
       <ScrollReveal delay={80}>
         <FlowSection
           stats={stats}
@@ -100,9 +100,9 @@ export default function LandingPage() {
         />
       </ScrollReveal>
 
-      {/* 4. Live Ticker — social proof, platform is alive */}
-      <ScrollReveal delay={100}>
-        <LiveTickerSection leaderboard={leaderboard} loading={loadingLeaderboard} stats={stats} />
+      {/* 4. Video — platform walkthrough */}
+      <ScrollReveal delay={100} variant="up">
+        <VideoSection />
       </ScrollReveal>
 
       {/* 5. Bootcamps — core product */}

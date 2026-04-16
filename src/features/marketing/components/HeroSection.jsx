@@ -10,7 +10,7 @@ function HexStream() {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    const HEX = '010101101010110101011101010110110101'
+    const HEX = 'HSOCIETY OFFSEC 101100110101010110101010101'
     let cols, drops
 
     function resize() {
@@ -179,10 +179,10 @@ export function HeroSection({ stats, loading = false }) {
             color: 'rgba(255,255,255,0.5)',
           }}
         >
-          The offensive security training platform built for the next generation
-          of African security talent.{' '}
+          An offensive security company operating at the intersection of education and
+          execution — focused on building a strong cybersecurity ecosystem in Africa.          
           <span style={{ color: 'rgba(136,173,124,0.8)' }}>
-            Train. Validate. Earn. Deploy.
+            Cybersecurity in Africa is booming. We are building the people behind it.            
           </span>
         </p>
 
