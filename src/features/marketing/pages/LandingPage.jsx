@@ -17,6 +17,7 @@ import { TeamSection } from '@/features/marketing/components/TeamSection'
 import { BlogPreviewSection } from '@/features/marketing/components/BlogPreviewSection'
 import { GallerySection } from '@/features/marketing/components/GallerySection'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
+import { TiTi } from '@/features/marketing/components/TiTi'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
 
@@ -163,6 +164,9 @@ export default function LandingPage() {
 
       {/* 15. Gallery — community moments, above footer */}
       <GallerySection />
+
+      {/* TiTi — the floating avatar */}
+      <TiTi />
     </div>
   )
 }
