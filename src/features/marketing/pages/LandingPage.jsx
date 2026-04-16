@@ -5,6 +5,7 @@ import { MarketingCarousel } from '@/features/marketing/components/MarketingCaro
 import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
 import { VideoSection } from '@/features/marketing/components/VideoSection'
+import { OwaspSection } from '@/features/marketing/components/OwaspSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
 import { RoomsPreviewSection } from '@/features/marketing/components/RoomsPreviewSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
@@ -105,7 +106,12 @@ export default function LandingPage() {
         <VideoSection />
       </ScrollReveal>
 
-      {/* 5. Bootcamps — core product */}
+      {/* 5. OWASP Top 10 — security fundamentals teaser */}
+      <ScrollReveal delay={110} variant="up">
+        <OwaspSection />
+      </ScrollReveal>
+
+      {/* 6. Bootcamps — core product */}
       <ScrollReveal delay={120}>
         <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
       </ScrollReveal>

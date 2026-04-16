@@ -14,6 +14,7 @@ const TeamPage = lazy(() => import('@/features/marketing/pages/TeamPage'))
 const BlogPage = lazy(() => import('@/features/marketing/pages/BlogPage'))
 const ZeroDayMarketPage = lazy(() => import('@/features/marketing/pages/ZeroDayMarketPage'))
 const ReconPage = lazy(() => import('@/features/marketing/pages/ReconPage'))
+const OwaspPage = lazy(() => import('@/features/marketing/pages/OwaspPage'))
 const IdenticonPreviewPage = lazy(() => import('@/shared/pages/IdenticonPreviewPage'))
 const PublicProfilePage = lazy(() => import('@/shared/pages/PublicProfilePage'))
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
@@ -78,6 +79,7 @@ export function AppRouter() {
           <Route path="/blog/:slug" element={<BlogPage />} />
           <Route path="/zero-day-market" element={<ZeroDayMarketPage />} />
           <Route path="/recon" element={<ReconPage />} />
+          <Route path="/owasp-top-10" element={<OwaspPage />} />
           <Route path="/identicon-preview" element={<IdenticonPreviewPage />} />
           <Route path="/:handle" element={<PublicProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
