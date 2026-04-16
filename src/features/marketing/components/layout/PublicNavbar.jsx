@@ -14,6 +14,7 @@ const NAV_ITEMS = [
       { label: 'Marketplace', href: '/#marketplace', section: 'marketplace', icon: ShoppingBag, desc: 'Zero-Day Market — spend your CP' },
       { label: 'Zero-Day Market', href: '/zero-day-market', icon: ArrowRight, desc: 'Browse beginner resources & guides' },
       { label: 'Domain Recon', href: '/recon', icon: Globe, desc: 'Live DNS & IP geolocation globe' },
+      { label: 'Field Playbooks', href: '/playbooks', icon: FileText, desc: 'Step-by-step hacking walkthroughs' },
     ],
   },
   { label: 'Services', href: '/services' },

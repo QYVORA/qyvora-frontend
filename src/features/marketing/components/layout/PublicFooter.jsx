@@ -17,6 +17,7 @@ const PLATFORM_LINKS = [
   { label: 'Marketplace', section: 'marketplace' },
   { label: 'Zero-Day Market', to: '/zero-day-market' },
   { label: 'Domain Recon', to: '/recon' },
+  { label: 'Field Playbooks', to: '/playbooks' },
 ]
 
 export function PublicFooter() {

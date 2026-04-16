@@ -15,6 +15,7 @@ import { SocialSection } from '@/features/marketing/components/SocialSection'
 import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
 import { TeamSection } from '@/features/marketing/components/TeamSection'
 import { BlogPreviewSection } from '@/features/marketing/components/BlogPreviewSection'
+import { PlaybooksTeaser } from '@/features/marketing/components/PlaybooksTeaser'
 import { GallerySection } from '@/features/marketing/components/GallerySection'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { TiTi } from '@/features/marketing/components/TiTi'
@@ -150,6 +151,11 @@ export default function LandingPage() {
       {/* 12. Blog — content authority */}
       <ScrollReveal delay={190} variant="up">
         <BlogPreviewSection />
+      </ScrollReveal>
+
+      {/* 12b. Playbooks — methodology walkthroughs */}
+      <ScrollReveal delay={195} variant="up">
+        <PlaybooksTeaser />
       </ScrollReveal>
 
       {/* 13. Social — follow channels */}
