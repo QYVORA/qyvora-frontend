@@ -20,83 +20,141 @@ const MESSAGES = [
 
 const EMOTIONS = ['idle', 'suspicious', 'excited', 'thinking', 'watching', 'spooked']
 
-// TiTi SVG face — matches the dark/accent brand
-function TiTiFace({ emotion, lookX, lookY, size = 56 }) {
-  // Eye offset based on cursor direction
+// TiTi SVG — realistic robot/AI assistant design
+function TiTiFace({ emotion, lookX, lookY, size = 60 }) {
   const ex = Math.max(-3, Math.min(3, lookX * 4))
   const ey = Math.max(-2, Math.min(2, lookY * 3))
 
-  const eyeColor = '#88AD7C' // accent
-  const faceColor = '#111'
-  const borderColor = '#88AD7C'
+  const acc = '#88AD7C'
+  const accDim = 'rgba(136,173,124,0.3)'
+  const bg = '#0a0f0a'
+  const panel = '#111a11'
+  const screenBg = '#050d05'
 
-  const mouthPath = {
-    idle:       'M 20 38 Q 28 43 36 38',
-    suspicious: 'M 20 40 Q 28 37 36 40',
-    excited:    'M 18 36 Q 28 46 38 36',
-    thinking:   'M 22 39 L 34 39',
-    watching:   'M 20 38 Q 28 41 36 38',
-    spooked:    'M 22 34 Q 28 44 34 34',
-  }
+  // Eye glow intensity by emotion
+  const eyeGlow = {
+    idle: 0.7, suspicious: 0.5, excited: 1, thinking: 0.6, watching: 0.9, spooked: 1,
+  }[emotion] ?? 0.7
 
-  const eyeShape = {
-    idle:       { ry: 5 },
-    suspicious: { ry: 2.5 },
-    excited:    { ry: 6 },
-    thinking:   { ry: 4 },
-    watching:   { ry: 6 },
-    spooked:    { ry: 6 },
-  }
-
-  const { ry } = eyeShape[emotion] || eyeShape.idle
+  const eyeH = { idle: 8, suspicious: 4, excited: 9, thinking: 7, watching: 9, spooked: 9 }[emotion] ?? 8
 
   return (
-    <svg width={size} height={size} viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
-      {/* Body */}
-      <circle cx="28" cy="28" r="26" fill={faceColor} stroke={borderColor} strokeWidth="1.5" />
+    <svg width={size} height={size} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow-strong">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1a2a1a" />
+          <stop offset="100%" stopColor="#0a0f0a" />
+        </linearGradient>
+        <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0d1f0d" />
+          <stop offset="100%" stopColor="#050d05" />
+        </linearGradient>
+      </defs>
 
       {/* Antenna */}
-      <line x1="28" y1="2" x2="28" y2="10" stroke={borderColor} strokeWidth="1.5" />
-      <circle cx="28" cy="2" r="2" fill={eyeColor} />
+      <line x1="30" y1="1" x2="30" y2="9" stroke={acc} strokeWidth="1.2" opacity="0.8" />
+      <circle cx="30" cy="1" r="1.8" fill={acc} filter="url(#glow)" />
+      {/* Antenna side arms */}
+      <line x1="26" y1="5" x2="30" y2="5" stroke={accDim} strokeWidth="0.8" />
+      <line x1="30" y1="5" x2="34" y2="5" stroke={accDim} strokeWidth="0.8" />
+      <circle cx="25" cy="5" r="1.2" fill={accDim} />
+      <circle cx="35" cy="5" r="1.2" fill={accDim} />
 
-      {/* Left eye white */}
-      <ellipse cx={17 + ex} cy={22 + ey} rx="5" ry={ry} fill="rgba(255,255,255,0.9)" />
-      {/* Left pupil */}
-      <circle cx={17 + ex} cy={22 + ey} r="2.5" fill={eyeColor} />
-      <circle cx={17.8 + ex} cy={21.2 + ey} r="0.8" fill="white" />
+      {/* Head body */}
+      <rect x="6" y="9" width="48" height="44" rx="4" fill="url(#bodyGrad)" stroke={acc} strokeWidth="1" opacity="0.9" />
 
-      {/* Right eye white */}
-      <ellipse cx={39 + ex} cy={22 + ey} rx="5" ry={ry} fill="rgba(255,255,255,0.9)" />
-      {/* Right pupil */}
-      <circle cx={39 + ex} cy={22 + ey} r="2.5" fill={eyeColor} />
-      <circle cx={39.8 + ex} cy={21.2 + ey} r="0.8" fill="white" />
+      {/* Inner panel / screen area */}
+      <rect x="10" y="13" width="40" height="36" rx="2" fill="url(#screenGrad)" stroke={accDim} strokeWidth="0.8" />
 
-      {/* Suspicious eyebrow */}
-      {emotion === 'suspicious' && (
-        <>
-          <line x1="13" y1="15" x2="21" y2="17" stroke={eyeColor} strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="35" y1="17" x2="43" y2="15" stroke={eyeColor} strokeWidth="1.5" strokeLinecap="round" />
-        </>
+      {/* Corner screws */}
+      {[[11.5,14.5],[48.5,14.5],[11.5,47.5],[48.5,47.5]].map(([cx,cy],i) => (
+        <circle key={i} cx={cx} cy={cy} r="1.2" fill="none" stroke={accDim} strokeWidth="0.8" />
+      ))}
+
+      {/* Eyes — hexagonal scanners */}
+      {[18, 42].map((cx, i) => (
+        <g key={i} transform={`translate(${cx + ex}, ${26 + ey})`}>
+          {/* Outer hex ring */}
+          <polygon
+            points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5"
+            fill="none"
+            stroke={acc}
+            strokeWidth="0.8"
+            opacity="0.4"
+            transform="scale(0.9)"
+          />
+          {/* Eye screen */}
+          <rect x="-7" y={-eyeH / 2} width="14" height={eyeH} rx="1.5"
+            fill={screenBg} stroke={acc} strokeWidth="0.8" />
+          {/* Iris glow */}
+          <rect x="-5" y={-eyeH / 2 + 1} width="10" height={eyeH - 2} rx="1"
+            fill={acc} opacity={eyeGlow * 0.25} />
+          {/* Pupil — vertical bar */}
+          <rect x="-1.5" y={-eyeH / 2 + 1} width="3" height={eyeH - 2} rx="0.8"
+            fill={acc} opacity={eyeGlow} filter="url(#glow)" />
+          {/* Scan line */}
+          <line x1="-6" y1="0" x2="6" y2="0" stroke={acc} strokeWidth="0.5" opacity="0.4" />
+        </g>
+      ))}
+
+      {/* Nose — small sensor dot */}
+      <circle cx="30" cy="34" r="1.5" fill={acc} opacity="0.5" />
+      <circle cx="30" cy="34" r="0.7" fill={acc} filter="url(#glow)" />
+
+      {/* Mouth — LED bar display */}
+      <rect x="16" y="39" width="28" height="5" rx="1" fill={screenBg} stroke={accDim} strokeWidth="0.7" />
+      {emotion === 'idle' && (
+        <rect x="18" y="40.5" width="24" height="2" rx="0.5" fill={acc} opacity="0.5" />
       )}
-      {emotion === 'thinking' && (
-        <line x1="13" y1="16" x2="21" y2="16" stroke={eyeColor} strokeWidth="1.5" strokeLinecap="round" />
-      )}
-
-      {/* Mouth */}
-      <path d={mouthPath[emotion] || mouthPath.idle} stroke={eyeColor} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-
-      {/* Blush on excited */}
       {emotion === 'excited' && (
         <>
-          <ellipse cx="12" cy="30" rx="4" ry="2.5" fill="#f472b6" opacity="0.35" />
-          <ellipse cx="44" cy="30" rx="4" ry="2.5" fill="#f472b6" opacity="0.35" />
+          {[0,4,8,12,16,20].map(x => (
+            <rect key={x} x={18+x} y="40" width="3" height="3" rx="0.3" fill={acc} opacity="0.8" filter="url(#glow)" />
+          ))}
+        </>
+      )}
+      {emotion === 'suspicious' && (
+        <rect x="18" y="41" width="24" height="1.5" rx="0.5" fill={acc} opacity="0.4" />
+      )}
+      {emotion === 'thinking' && (
+        <>
+          {[0,6,12,18].map(x => (
+            <rect key={x} x={18+x} y="40.5" width="4" height="2" rx="0.3" fill={acc} opacity={0.3 + (x/18)*0.5} />
+          ))}
+        </>
+      )}
+      {emotion === 'watching' && (
+        <>
+          <rect x="18" y="40.5" width="24" height="2" rx="0.5" fill={acc} opacity="0.7" filter="url(#glow)" />
+        </>
+      )}
+      {emotion === 'spooked' && (
+        <>
+          {[0,8,16].map(x => (
+            <rect key={x} x={18+x} y="39.5" width="5" height="4" rx="0.5" fill={acc} opacity="0.9" filter="url(#glow-strong)" />
+          ))}
         </>
       )}
 
-      {/* Sweat on spooked */}
-      {emotion === 'spooked' && (
-        <ellipse cx="42" cy="18" rx="2" ry="3.5" fill="#60a5fa" opacity="0.6" />
-      )}
+      {/* Status LED — top right */}
+      <circle cx="46" cy="15" r="2" fill={emotion === 'spooked' ? '#f87171' : acc}
+        opacity={emotion === 'excited' ? 1 : 0.7} filter="url(#glow)" />
+
+      {/* Side vents */}
+      {[16,20,24].map(y => (
+        <line key={y} x1="6" y1={y} x2="9" y2={y} stroke={accDim} strokeWidth="0.8" />
+      ))}
+      {[16,20,24].map(y => (
+        <line key={y} x1="51" y1={y} x2="54" y2={y} stroke={accDim} strokeWidth="0.8" />
+      ))}
     </svg>
   )
 }
@@ -246,7 +304,7 @@ export function TiTi() {
 
       {/* Avatar */}
       <div style={{ filter: 'drop-shadow(0 4px 12px rgba(136,173,124,0.3))' }}>
-        <TiTiFace emotion={emotion} lookX={lookDir.x} lookY={lookDir.y} size={56} />
+        <TiTiFace emotion={emotion} lookX={lookDir.x} lookY={lookDir.y} size={60} />
       </div>
 
       {/* Name tag */}

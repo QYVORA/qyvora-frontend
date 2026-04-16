@@ -1,6 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
-import { CONTACT_INFO } from '@/features/marketing/data/siteConfig'
 
 const COMPANY_LINKS = [
   { label: 'Services', to: '/services' },
@@ -16,8 +15,12 @@ const PLATFORM_LINKS = [
   { label: 'Rooms', section: 'rooms' },
   { label: 'Marketplace', section: 'marketplace' },
   { label: 'Zero-Day Market', to: '/zero-day-market' },
+]
+
+const TOOLS_LINKS = [
   { label: 'Domain Recon', to: '/recon' },
   { label: 'Field Playbooks', to: '/playbooks' },
+  { label: 'OWASP Top 10', to: '/owasp-top-10' },
 ]
 
 export function PublicFooter() {
@@ -40,16 +43,18 @@ export function PublicFooter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 relative">
 
         <div className="flex flex-col gap-8 lg:flex-row lg:justify-between lg:items-start">
+
           {/* Brand */}
           <div className="space-y-3 lg:max-w-xs">
             <p className="text-sm text-[var(--text-secondary)] font-mono leading-relaxed">
               Train Like a Hacker. Become a Hacker.
             </p>
-            <p className="text-xs font-mono text-[var(--text-muted)]">{CONTACT_INFO.email}</p>
+            <p className="text-xs font-mono text-[var(--text-muted)]">info@hsociety.io</p>
           </div>
 
-          {/* Link columns */}
-          <div className="grid grid-cols-3 gap-6 sm:gap-10">
+          {/* Link columns — 4 cols on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+
             {/* Company */}
             <div className="space-y-2">
               <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">Company</p>
@@ -81,6 +86,16 @@ export function PublicFooter() {
               )}
             </div>
 
+            {/* Tools */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">Tools</p>
+              {TOOLS_LINKS.map(({ label, to }) => (
+                <Link key={label} to={to} className="block text-sm text-[var(--text-secondary)] hover:text-accent transition-colors">
+                  {label}
+                </Link>
+              ))}
+            </div>
+
             {/* Follow */}
             <div className="space-y-2">
               <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">Follow</p>
@@ -88,11 +103,12 @@ export function PublicFooter() {
                 {SOCIAL_MEDIA.map(({ key, label, url, icon: Icon }) => (
                   <a key={key} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-accent transition-colors">
                     <Icon size={14} />
-                    <span className="hidden sm:inline">{label}</span>
+                    <span>{label}</span>
                   </a>
                 ))}
               </div>
             </div>
+
           </div>
         </div>
 

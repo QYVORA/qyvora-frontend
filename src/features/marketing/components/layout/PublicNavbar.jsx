@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
-import { Menu, X, ChevronDown, BookOpen, Target, ShoppingBag, Users, FileText, ArrowRight, Globe } from 'lucide-react'
+import { Menu, X, ChevronDown, BookOpen, Target, ShoppingBag, Users, FileText, ArrowRight, Globe, Wrench, Terminal, Search, Wifi } from 'lucide-react'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { Logo } from '@/shared/components/brand/Logo'
 
-// Nav structure — items with `children` get a dropdown
 const NAV_ITEMS = [
   {
     label: 'Platform',
@@ -12,9 +11,15 @@ const NAV_ITEMS = [
       { label: 'Bootcamps', href: '/#bootcamps', section: 'bootcamps', icon: BookOpen, desc: 'Phase-based offensive security tracks' },
       { label: 'Rooms', href: '/#rooms', section: 'rooms', icon: Target, desc: 'Self-paced hands-on labs' },
       { label: 'Marketplace', href: '/#marketplace', section: 'marketplace', icon: ShoppingBag, desc: 'Zero-Day Market — spend your CP' },
-      { label: 'Zero-Day Market', href: '/zero-day-market', icon: ArrowRight, desc: 'Browse beginner resources & guides' },
-      { label: 'Domain Recon', href: '/recon', icon: Globe, desc: 'Live DNS & IP geolocation globe' },
-      { label: 'Field Playbooks', href: '/playbooks', icon: FileText, desc: 'Step-by-step hacking walkthroughs' },
+      { label: 'Zero-Day Market', href: '/zero-day-market', icon: ShoppingBag, desc: 'Browse beginner resources & guides' },
+    ],
+  },
+  {
+    label: 'Tools',
+    children: [
+      { label: 'Domain Recon', href: '/recon', icon: Globe, desc: 'Live DNS lookup & IP geolocation globe' },
+      { label: 'Field Playbooks', href: '/playbooks', icon: Terminal, desc: 'Step-by-step hacking walkthroughs' },
+      { label: 'OWASP Top 10', href: '/owasp-top-10', icon: Search, desc: 'Web vulnerability reference guide' },
     ],
   },
   { label: 'Services', href: '/services' },
@@ -90,22 +95,14 @@ export function PublicNavbar() {
     else { navigate('/'); setTimeout(scrollTo, 300) }
   }
 
-  const openMenu = (label) => {
-    clearTimeout(closeTimer.current)
-    setOpenDropdown(label)
-  }
-
-  const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => setOpenDropdown(null), 120)
-  }
-
+  const openMenu = (label) => { clearTimeout(closeTimer.current); setOpenDropdown(label) }
+  const scheduleClose = () => { closeTimer.current = setTimeout(() => setOpenDropdown(null), 120) }
   useEffect(() => () => clearTimeout(closeTimer.current), [])
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)]/60 bg-[var(--bg-primary)]/95 backdrop-blur-md shadow-[0_4px_24px_-8px_rgba(0,0,0,0.3)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between" style={{ height: '72px' }}>
 
-        {/* Logo */}
         <Link to="/" className="flex items-center shrink-0" onClick={() => setMenuOpen(false)}>
           <Logo size="nav" className="w-auto" />
         </Link>
@@ -114,12 +111,7 @@ export function PublicNavbar() {
         <div className="hidden md:flex items-center gap-0">
           {NAV_ITEMS.map((item) => (
             item.children ? (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => openMenu(item.label)}
-                onMouseLeave={scheduleClose}
-              >
+              <div key={item.label} className="relative" onMouseEnter={() => openMenu(item.label)} onMouseLeave={scheduleClose}>
                 <button
                   type="button"
                   className={`flex items-center gap-1 px-3 py-2 text-sm font-mono transition-all ${openDropdown === item.label ? 'text-accent' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
@@ -128,11 +120,7 @@ export function PublicNavbar() {
                   <ChevronDown size={13} className={`transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180 text-accent' : ''}`} />
                 </button>
                 {openDropdown === item.label && (
-                  <DropdownMenu
-                    items={item.children}
-                    onClose={() => setOpenDropdown(null)}
-                    onSectionClick={handleSectionClick}
-                  />
+                  <DropdownMenu items={item.children} onClose={() => setOpenDropdown(null)} onSectionClick={handleSectionClick} />
                 )}
               </div>
             ) : (
@@ -154,9 +142,7 @@ export function PublicNavbar() {
         <div className="hidden md:flex items-center gap-3">
           {!user ? (
             <>
-              <Link to="/login" className="px-4 py-2 text-sm font-mono text-[var(--text-secondary)] border border-[var(--border)] hover:border-accent/40 hover:text-[var(--text-primary)] transition-all">
-                Log in
-              </Link>
+              <Link to="/login" className="px-4 py-2 text-sm font-mono text-[var(--text-secondary)] border border-[var(--border)] hover:border-accent/40 hover:text-[var(--text-primary)] transition-all">Log in</Link>
               <Link to="/register" className="btn-primary text-sm">Start Training</Link>
             </>
           ) : (
