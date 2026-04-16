@@ -3,10 +3,42 @@ import { ArrowRight } from 'lucide-react'
 import { OWASP_TOP_10 } from '@/features/marketing/data/owaspData'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 
+function MiniFlowDiagram({ steps, hex }) {
+  const boxW = 52
+  const gap = 14
+  const totalW = steps.length * boxW + (steps.length - 1) * gap
+  const svgW = totalW + 16
+  return (
+    <svg viewBox={`0 0 ${svgW} 48`} xmlns="http://www.w3.org/2000/svg" className="w-full h-auto" aria-hidden="true">
+      <rect width={svgW} height="48" fill="rgba(0,0,0,0.3)" rx="4" />
+      {steps.map((step, i) => {
+        const x = 8 + i * (boxW + gap)
+        const isLast = i === steps.length - 1
+        return (
+          <g key={step.label}>
+            <rect x={x} y={6} width={boxW} height={36} rx="3"
+              fill={isLast ? `${hex}20` : 'rgba(255,255,255,0.04)'}
+              stroke={isLast ? hex : 'rgba(255,255,255,0.1)'}
+              strokeWidth={isLast ? 1.2 : 0.8}
+            />
+            <text x={x + boxW / 2} y={20} textAnchor="middle" fontSize="6" fontFamily="monospace" fontWeight="bold" fill="rgba(255,255,255,0.85)">{step.label}</text>
+            <text x={x + boxW / 2} y={32} textAnchor="middle" fontSize="5" fontFamily="monospace" fill="rgba(255,255,255,0.4)">{step.detail}</text>
+            {!isLast && (
+              <g>
+                <line x1={x + boxW + 1} y1={24} x2={x + boxW + gap - 2} y2={24} stroke={hex} strokeWidth="0.8" opacity="0.5" strokeDasharray="2 1.5" />
+                <polygon points={`${x + boxW + gap - 2},21 ${x + boxW + gap + 2},24 ${x + boxW + gap - 2},27`} fill={hex} opacity="0.6" />
+              </g>
+            )}
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
 export function OwaspSection() {
   return (
     <section className="py-24 px-4 sm:px-6 relative border-t border-accent/10 overflow-hidden">
-      {/* Ambient glow */}
       <div className="absolute -top-20 left-1/4 w-96 h-96 rounded-full bg-red-500/5 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative">
@@ -17,66 +49,63 @@ export function OwaspSection() {
             <p className="font-mono text-accent text-xs uppercase tracking-widest mb-3">// security fundamentals</p>
             <h2 className="font-mono font-black text-3xl sm:text-4xl text-[var(--text-primary)]">OWASP Top 10</h2>
             <p className="text-[var(--text-secondary)] text-sm mt-3 max-w-xl leading-relaxed">
-              The ten most critical web application security risks. Every operator trains against these vectors.
+              The ten most critical web application security risks — each with a visual attack flow. Every operator trains against these vectors.
             </p>
           </div>
-          <Link
-            to="/owasp-top-10"
-            className="btn-primary inline-flex items-center gap-2 self-start lg:self-auto shrink-0"
-          >
+          <Link to="/owasp-top-10" className="btn-primary inline-flex items-center gap-2 self-start lg:self-auto shrink-0">
             Explore All 10 <ArrowRight size={15} />
           </Link>
         </div>
 
-        {/* Grid — numbered cards */}
-        <ScrollReveal
-          as="div"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-[var(--border)]"
-          variant="fade"
-        >
-          {OWASP_TOP_10.map((item, i) => (
+        {/* Grid */}
+        <ScrollReveal as="div" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-[var(--border)]" variant="fade">
+          {OWASP_TOP_10.map((item) => (
             <Link
               key={item.id}
               to={`/owasp-top-10#${item.id}`}
-              className={`group relative flex flex-col gap-4 p-5 bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)] transition-colors duration-200 ${i >= 5 ? 'lg:col-span-1' : ''}`}
+              className="group flex flex-col bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)] transition-colors duration-200"
             >
-              {/* Rank + severity */}
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-widest">{item.rank}</span>
-                <span className={`font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 border ${item.bg} ${item.color}`}>
-                  {item.severity}
+              {/* Mini attack flow visual */}
+              <div
+                className="relative overflow-hidden p-3 border-b"
+                style={{ borderColor: `${item.hex}20`, background: `linear-gradient(135deg, ${item.hex}08, transparent 70%)` }}
+              >
+                <MiniFlowDiagram steps={item.attackSteps} hex={item.hex} />
+                {/* Faded rank watermark */}
+                <span
+                  className="absolute right-2 top-1/2 -translate-y-1/2 font-mono font-black pointer-events-none select-none"
+                  style={{ fontSize: 28, color: item.hex, opacity: 0.08, lineHeight: 1 }}
+                >
+                  {item.id}
                 </span>
               </div>
 
-              {/* Icon */}
-              <div className={`w-9 h-9 border flex items-center justify-center ${item.bg}`}>
-                <item.icon size={16} className={item.color} />
-              </div>
-
-              {/* Title */}
-              <div>
-                <p className="font-mono font-bold text-sm text-[var(--text-primary)] leading-snug group-hover:text-accent transition-colors duration-200">
+              {/* Card body */}
+              <div className="p-4 flex flex-col gap-2 flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: item.hex }}>{item.rank}</span>
+                  <span
+                    className="font-mono text-[8px] uppercase tracking-widest px-1.5 py-0.5 border"
+                    style={{ color: item.hex, borderColor: `${item.hex}40`, background: `${item.hex}12` }}
+                  >
+                    {item.severity}
+                  </span>
+                </div>
+                <div className="w-7 h-7 border flex items-center justify-center" style={{ borderColor: `${item.hex}40`, background: `${item.hex}12` }}>
+                  <item.icon size={13} style={{ color: item.hex }} />
+                </div>
+                <p className="font-mono font-bold text-xs text-[var(--text-primary)] leading-snug group-hover:underline" style={{ textDecorationColor: item.hex }}>
                   {item.title}
                 </p>
-                <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed line-clamp-2">
-                  {item.short}
-                </p>
+                <p className="text-[11px] text-[var(--text-muted)] leading-relaxed line-clamp-2">{item.short}</p>
               </div>
-
-              {/* Hover arrow */}
-              <ArrowRight
-                size={14}
-                className={`absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${item.color}`}
-              />
             </Link>
           ))}
         </ScrollReveal>
 
         {/* Bottom bar */}
         <div className="mt-px border border-[var(--border)] bg-[var(--bg-secondary)] px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-xs text-[var(--text-muted)] font-mono">
-            Source: OWASP Foundation — owasp.org/Top10 — 2021 Edition
-          </p>
+          <p className="text-xs text-[var(--text-muted)] font-mono">Source: OWASP Foundation — owasp.org/Top10 — 2021 Edition</p>
           <Link to="/owasp-top-10" className="text-xs text-accent font-mono hover:underline flex items-center gap-1 shrink-0">
             Full breakdown <ArrowRight size={11} />
           </Link>
