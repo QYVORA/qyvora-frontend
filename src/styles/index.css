@@ -104,7 +104,7 @@
   .card {
     background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.06), rgba(0, 0, 0, 0) 45%), rgba(0, 0, 0, 0.56);
     border: 1px solid rgba(var(--accent-rgb), 0.3);
-    border-radius: 0 !important;
+    border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.32);
     position: relative;
     transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
@@ -130,7 +130,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 0 !important;
+    border-radius: 8px;
     box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.1);
     pointer-events: none;
   }
@@ -140,16 +140,18 @@
   }
 
   .btn-primary {
-    @apply bg-accent text-black font-semibold uppercase px-5 py-2.5 rounded-none transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 active:scale-95;
+    @apply bg-accent text-black font-semibold uppercase px-5 py-2.5 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 active:scale-95;
     letter-spacing: 0.08em;
     border: 1px solid #88ad7c;
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
   }
 
   .btn-secondary {
-    @apply bg-transparent text-[var(--text-muted)] font-medium uppercase px-5 py-2.5 rounded-none transition-all duration-200 active:scale-95;
+    @apply bg-transparent text-[var(--text-muted)] font-medium uppercase px-5 py-2.5 transition-all duration-200 active:scale-95;
     letter-spacing: 0.08em;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -165,7 +167,8 @@
   }
 
   .btn-ghost {
-    @apply text-[var(--text-muted)] px-4 py-2 rounded-none transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+    @apply text-[var(--text-muted)] px-4 py-2 transition-all duration-200 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)];
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -173,16 +176,12 @@
   .btn-primary,
   .btn-secondary,
   .btn-ghost {
-    border-radius: 0 !important;
-  }
-
-  /* Box UI — strip rounding from structural elements */
-  .card *:not(.spinner):not([class*="rounded-full"]):not(img):not(canvas) {
-    border-radius: 0 !important;
+    border-radius: 6px;
   }
 
   .input-field {
-    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-none px-4 py-3 outline-none transition-all duration-200 focus:border-accent/70 focus:ring-2 focus:ring-accent/15;
+    @apply w-full bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] px-4 py-3 outline-none transition-all duration-200 focus:border-accent/70 focus:ring-2 focus:ring-accent/15;
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
   }
 
