@@ -1,26 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useSEO } from '@/core/utils/useSEO'
 import { HeroSection } from '@/features/marketing/components/HeroSection'
-import { MarketingCarousel } from '@/features/marketing/components/MarketingCarousel'
-import { PlatformPreviewSection } from '@/features/marketing/components/PlatformPreviewSection'
 import { FlowSection } from '@/features/marketing/components/FlowSection'
-import { VideoSection } from '@/features/marketing/components/VideoSection'
-import { OwaspSection } from '@/features/marketing/components/OwaspSection'
 import { PhasesSection } from '@/features/marketing/components/PhasesSection'
 import { RoomsPreviewSection } from '@/features/marketing/components/RoomsPreviewSection'
 import { MarketplaceSection } from '@/features/marketing/components/MarketplaceSection'
+import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
 import { RanksSection } from '@/features/marketing/components/RanksSection'
 import { CtaSection } from '@/features/marketing/components/CtaSection'
 import { SocialSection } from '@/features/marketing/components/SocialSection'
-import { ServicesTeaser } from '@/features/marketing/components/ServicesTeaser'
-import { TeamSection } from '@/features/marketing/components/TeamSection'
-import { BlogPreviewSection } from '@/features/marketing/components/BlogPreviewSection'
-import { PlaybooksTeaser } from '@/features/marketing/components/PlaybooksTeaser'
 import { GallerySection } from '@/features/marketing/components/GallerySection'
 import { ScrollReveal } from '@/features/marketing/components/ScrollReveal'
 import { TiTi } from '@/features/marketing/components/TiTi'
 import { useLandingRewards } from '@/features/marketing/hooks/useLandingRewards'
 import api from '@/core/services/api'
+
+// Removed: MarketingCarousel, VideoSection, OwaspSection, PlatformPreviewSection,
+// TeamSection, BlogPreviewSection, PlaybooksTeaser — these are all accessible
+// from the nav. The landing page now tells a single focused story.
 
 export default function LandingPage() {
   const [stats, setStats] = useState(null)
@@ -38,11 +35,6 @@ export default function LandingPage() {
   useEffect(() => {
     let mounted = true
     const load = async () => {
-      setLoadingStats(true)
-      setLoadingItems(true)
-      setLoadingBootcamps(true)
-      setLoadingRooms(true)
-      setLoadingLeaderboard(true)
       try {
         const [statsRes, itemsRes, bootcampsRes, roomsRes, leaderboardRes] = await Promise.all([
           api.get('/public/landing-stats'),
@@ -57,13 +49,8 @@ export default function LandingPage() {
         setBootcamps(bootcampsRes.data?.items || [])
         setRooms(roomsRes.data?.items || [])
         setLeaderboard(leaderboardRes.data?.leaderboard || [])
-        setLoadingStats(false)
-        setLoadingItems(false)
-        setLoadingBootcamps(false)
-        setLoadingRooms(false)
-        setLoadingLeaderboard(false)
-      } catch {
-        // ignore public fetch errors
+      } catch { /* ignore */ }
+      finally {
         if (!mounted) return
         setLoadingStats(false)
         setLoadingItems(false)
@@ -76,25 +63,22 @@ export default function LandingPage() {
     return () => { mounted = false }
   }, [])
 
-  const learningPath = bootcamps
-
   useSEO({
     title: 'Offensive Security Training Platform',
-    description: 'Train like a hacker. Become a hacker. Phase-based bootcamps, hands-on rooms, CP economy, and real-world offensive security engagements. Africa\'s premier offsec platform.',
+    description: "Train like a hacker. Become a hacker. Phase-based bootcamps, hands-on rooms, CP economy, and real-world offensive security engagements. Africa's premier offsec platform.",
     path: '/',
   })
 
   return (
     <div className="relative overflow-x-hidden">
+
+      {/* 1. Hero — full viewport, typing animation, live stats */}
       <ScrollReveal variant="fade">
         <HeroSection stats={stats} loading={loadingStats} />
       </ScrollReveal>
 
-      {/* 2. Carousel — immediate value prop for all platform areas */}
-      <MarketingCarousel />
-
-      {/* 3. How It Works — pipeline steps + live stats (merged, no duplicate) */}
-      <ScrollReveal delay={80}>
+      {/* 2. How It Works — the pipeline story */}
+      <ScrollReveal delay={60}>
         <FlowSection
           stats={stats}
           loading={loadingStats}
@@ -103,75 +87,44 @@ export default function LandingPage() {
         />
       </ScrollReveal>
 
-      {/* 4. Video — platform walkthrough */}
-      <ScrollReveal delay={100} variant="up">
-        <VideoSection />
+      {/* 3. Bootcamps — core product */}
+      <ScrollReveal delay={80}>
+        <PhasesSection items={bootcamps} loading={loadingBootcamps} rewards={rewards} />
       </ScrollReveal>
 
-      {/* 5. OWASP Top 10 — security fundamentals teaser */}
-      <ScrollReveal delay={110} variant="up">
-        <OwaspSection />
-      </ScrollReveal>
-
-      {/* 6. Bootcamps — core product */}
-      <ScrollReveal delay={120}>
-        <PhasesSection items={learningPath} loading={loadingBootcamps} rewards={rewards} />
-      </ScrollReveal>
-
-      {/* 6. Rooms — secondary product */}
-      <ScrollReveal delay={130}>
+      {/* 4. Rooms — secondary product */}
+      <ScrollReveal delay={100}>
         <RoomsPreviewSection items={rooms} loading={loadingRooms} />
       </ScrollReveal>
 
-      {/* 7. Marketplace — reward loop, CP spend */}
-      <ScrollReveal delay={140}>
+      {/* 5. Marketplace — the reward loop */}
+      <ScrollReveal delay={120}>
         <MarketplaceSection items={items} stats={stats} loading={loadingItems} rewards={rewards} />
       </ScrollReveal>
 
-      {/* 8. Platform Preview — show the UI after they understand the value */}
-      <ScrollReveal delay={150} variant="up">
-        <PlatformPreviewSection />
-      </ScrollReveal>
-
-      {/* 9. Ranks — community aspiration, leaderboard */}
-      <ScrollReveal delay={160}>
+      {/* 6. Ranks — community & aspiration */}
+      <ScrollReveal delay={140}>
         <RanksSection leaderboard={leaderboard} loading={loadingLeaderboard} rewards={rewards} />
       </ScrollReveal>
 
-      {/* 10. Services — B2B audience */}
-      <ScrollReveal delay={170} variant="up">
+      {/* 7. Services — B2B */}
+      <ScrollReveal delay={160} variant="up">
         <ServicesTeaser />
       </ScrollReveal>
 
-      {/* 11. Team — trust and credibility */}
+      {/* 8. Social */}
       <ScrollReveal delay={180} variant="up">
-        <TeamSection />
-      </ScrollReveal>
-
-      {/* 12. Blog — content authority */}
-      <ScrollReveal delay={190} variant="up">
-        <BlogPreviewSection />
-      </ScrollReveal>
-
-      {/* 12b. Playbooks — methodology walkthroughs */}
-      <ScrollReveal delay={195} variant="up">
-        <PlaybooksTeaser />
-      </ScrollReveal>
-
-      {/* 13. Social — follow channels */}
-      <ScrollReveal delay={200} variant="up">
         <SocialSection />
       </ScrollReveal>
 
-      {/* 14. CTA — final conversion push after full page consumption */}
-      <ScrollReveal delay={210} variant="up">
+      {/* 9. CTA — final push */}
+      <ScrollReveal delay={200} variant="up">
         <CtaSection />
       </ScrollReveal>
 
-      {/* 15. Gallery — community moments, above footer */}
+      {/* Gallery — above footer */}
       <GallerySection />
 
-      {/* TiTi — the floating avatar */}
       <TiTi />
     </div>
   )
