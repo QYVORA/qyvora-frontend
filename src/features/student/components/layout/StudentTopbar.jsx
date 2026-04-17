@@ -27,10 +27,10 @@ export function StudentTopbar({ user, onLogout, solid, navItems = [] }) {
                 end={to === '/dashboard'}
                 className={({ isActive }) =>
                   clsx(
-                    'inline-flex items-center gap-1.5 px-3 py-1.5 border text-xs font-mono uppercase tracking-widest transition-all',
+                    'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono uppercase tracking-widest transition-all',
                     isActive
-                      ? 'border-accent/40 text-accent bg-accent/10'
-                      : 'border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-accent/30'
+                      ? 'text-accent bg-accent/10'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
                   )
                 }
               >
@@ -44,7 +44,7 @@ export function StudentTopbar({ user, onLogout, solid, navItems = [] }) {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/profile"
-            className="border border-[var(--border)] hover:border-accent/30 px-2 py-1.5 flex items-center gap-2 transition-colors"
+            className="hover:bg-[var(--bg-secondary)] px-2 py-1.5 flex items-center gap-2 transition-colors"
             aria-label="Profile"
           >
             <Avatar
@@ -67,7 +67,7 @@ export function StudentTopbar({ user, onLogout, solid, navItems = [] }) {
           <button
             type="button"
             onClick={onLogout}
-            className="border border-[var(--border)] hover:border-accent/30 hover:text-accent px-2.5 py-2 text-[var(--text-secondary)] transition-colors"
+            className="hover:bg-[var(--bg-secondary)] hover:text-accent px-2.5 py-2 text-[var(--text-secondary)] transition-colors"
             aria-label="Logout"
           >
             <LogOut size={15} />
