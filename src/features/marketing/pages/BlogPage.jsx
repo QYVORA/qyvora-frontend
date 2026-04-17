@@ -5,6 +5,7 @@ import { useSEO } from '@/core/utils/useSEO'
 import api from '@/core/services/api'
 
 const DEFAULT_BLOG_IMG = '/images/how-it-works-section/Engagements-4Completed.webp'
+const SITE_URL = 'https://hsocietyoffsec.netlify.app'
 
 const toSlug = (value = '') =>
   String(value)
@@ -42,7 +43,7 @@ function BlogPost({ slug, posts }) {
     title: post.title,
     description: post.excerpt,
     path: `/blog/${post.slug}`,
-    image: `https://hsociety.io${post.img}`,
+    image: `${SITE_URL}${post.img}`,
   } : { title: 'Post Not Found', path: '/blog' })
   if (!post) return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">

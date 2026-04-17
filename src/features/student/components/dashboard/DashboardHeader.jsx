@@ -5,7 +5,7 @@ export function DashboardHeader({ displayName }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
       <div className="min-w-0">
-        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// operator console</p>
+        <p className="font-mono text-accent text-xs uppercase tracking-widest mb-2">// learning hub</p>
         <h1 className="font-mono font-black text-3xl text-[var(--text-primary)] leading-tight">
           <span className="block text-[var(--text-secondary)] text-lg font-medium">{greeting},</span>
           <span className="block text-accent break-words">{displayName || 'Operator'}</span>

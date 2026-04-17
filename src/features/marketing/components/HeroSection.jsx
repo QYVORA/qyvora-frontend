@@ -80,16 +80,8 @@ function TypedLine({ text, delay = 0, className = '', style }) {
   )
 }
 
-const formatCount = (value) => Number(value || 0).toLocaleString()
-
-export function HeroSection({ stats, loading = false }) {
+export function HeroSection() {
   const [ready, setReady] = useState(false)
-  const liveStats = [
-    { value: `${formatCount(stats?.stats?.studentsCount || stats?.stats?.learnersTrained)}`, label: 'Trained Operators' },
-    { value: `${formatCount(stats?.stats?.bootcampsCount)}`, label: 'Bootcamps Live' },
-    { value: `${formatCount(stats?.stats?.zeroDayProductsCount)}`, label: 'Zero-Day Products' },
-    { value: `${formatCount(stats?.stats?.vulnerabilitiesIdentified)}`, label: 'Validated Findings' },
-  ]
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 80)
@@ -239,36 +231,6 @@ export function HeroSection({ stats, loading = false }) {
           </span>
         </div>
 
-        {/* ── stats row ── */}
-        <div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-px"
-          style={{ borderTop: '1px solid rgba(136,173,124,0.12)' }}
-        >
-          {(loading ? Array.from({ length: liveStats.length }, () => ({ value: '...', label: 'Loading' })) : liveStats).map(({ value, label }, i) => (
-            <div
-              key={i}
-              className="pt-5 pr-6"
-              style={{ borderRight: i < liveStats.length - 1 ? '1px solid rgba(136,173,124,0.08)' : 'none' }}
-            >
-              <div
-                className="font-mono font-black mb-1"
-                style={{
-                  fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
-                  color: '#88AD7C',
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                {value}
-              </div>
-              <div
-                className="font-mono text-xs"
-                style={{ color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}
-              >
-                {label.toUpperCase()}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* ── bottom scan line ── */}

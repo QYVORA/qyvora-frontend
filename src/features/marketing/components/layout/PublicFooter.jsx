@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { SOCIAL_MEDIA } from '@/features/marketing/data/socialMedia'
+import { CONTACT_INFO } from '@/features/marketing/data/siteConfig'
 
 const COMPANY_LINKS = [
   { label: 'Services', to: '/services' },
@@ -49,7 +50,7 @@ export function PublicFooter() {
             <p className="text-sm text-[var(--text-secondary)] font-mono leading-relaxed">
               Train Like a Hacker. Become a Hacker.
             </p>
-            <p className="text-xs font-mono text-[var(--text-muted)]">info@hsociety.io</p>
+            <p className="text-xs font-mono text-[var(--text-muted)]">{CONTACT_INFO.email}</p>
           </div>
 
           {/* Link columns — 4 cols on desktop */}

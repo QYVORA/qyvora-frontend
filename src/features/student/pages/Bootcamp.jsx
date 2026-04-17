@@ -66,7 +66,9 @@ export default function BootcampPage() {
   }, [updateUser])
 
   useEffect(() => {
-    if (loading || bootcampStatus === 'not_enrolled' || bootcamps.length === 0) return
+    if (loading || bootcamps.length === 0) return
+    const status = overview?.bootcampStatus || user?.bootcampStatus || 'not_enrolled'
+    if (status === 'not_enrolled') return
     const raw = localStorage.getItem(PENDING_ENROLLMENT_KEY)
     if (!raw) return
     try {
@@ -85,7 +87,7 @@ export default function BootcampPage() {
     } catch {
       localStorage.removeItem(PENDING_ENROLLMENT_KEY)
     }
-  }, [bootcamps, bootcampStatus, loading, toast])
+  }, [bootcamps, loading, overview?.bootcampStatus, user?.bootcampStatus, toast])
 
   const bootcampStatus = overview?.bootcampStatus || user?.bootcampStatus || 'not_enrolled'
   const currentBootcampId = useMemo(() => {

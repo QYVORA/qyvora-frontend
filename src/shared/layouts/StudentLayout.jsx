@@ -1,21 +1,26 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Bell, Layers } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Wallet, ShoppingBag, User, Layers } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAuth } from '@/core/contexts/AuthContext'
 import { useToast } from '@/core/contexts/ToastContext'
 import { profileService } from '@/core/services'
-import { StudentSidebar } from '@/features/student/components/layout/StudentSidebar'
 import { StudentTopbar } from '@/features/student/components/layout/StudentTopbar'
-import { StudentMobileNav } from '@/features/student/components/layout/StudentMobileNav'
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/learn', label: 'Learn', icon: Layers },
   { to: '/bootcamp', label: 'Bootcamp', icon: BookOpen },
-  { to: '/wallet', label: 'CP Wallet', icon: Wallet },
-  { to: '/marketplace', label: 'Marketplace', icon: ShoppingBag },
-  { to: '/notifications', label: 'Notifications', icon: Bell },
+  { to: '/wallet', label: 'Wallet', icon: Wallet },
+  { to: '/marketplace', label: 'Market', icon: ShoppingBag },
+  { to: '/profile', label: 'Profile', icon: User },
+]
+
+const MOBILE_NAV = [
+  { to: '/dashboard', label: 'Home', icon: LayoutDashboard },
+  { to: '/bootcamp', label: 'Bootcamp', icon: BookOpen },
+  { to: '/learn/rooms', label: 'Rooms', icon: Layers },
+  { to: '/wallet', label: 'Wallet', icon: Wallet },
   { to: '/profile', label: 'Profile', icon: User },
 ]
 
@@ -65,37 +70,43 @@ export default function StudentLayout() {
   }, [])
 
   return (
-    <div className="min-h-screen flex bg-[var(--bg-primary)]">
-      {/* Desktop sidebar */}
-      <StudentSidebar
-        navItems={NAV_ITEMS}
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <StudentTopbar
         user={user}
         onLogout={handleLogout}
+        solid={isDashboard}
+        navItems={NAV_ITEMS}
       />
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
-        <StudentTopbar
-          user={user}
-          onLogout={handleLogout}
-          solid={isDashboard}
-        />
+      <main
+        className={clsx(
+          'animate-enter max-w-7xl mx-auto w-full',
+          isDashboard ? 'pt-0 px-3 sm:px-6 lg:px-8' : 'px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8',
+          'pb-24 sm:pb-8'
+        )}
+      >
+        <Outlet />
+      </main>
 
-        {/* Page content */}
-        <main
-          className={clsx(
-            'flex-1 animate-enter',
-            isDashboard ? 'pt-0 px-0 sm:p-6 lg:p-8' : 'px-3 py-4 sm:p-6 lg:p-8',
-            'pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-24 lg:pb-8',
-          )}
-        >
-          <Outlet />
-        </main>
-
-        {/* Bottom Nav (Mobile Only) */}
-        <StudentMobileNav navItems={NAV_ITEMS} solid={isDashboard} />
-      </div>
+      {/* Mobile bottom nav */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-primary)] border-t border-[var(--border)] flex items-stretch">
+        {MOBILE_NAV.map(({ to, label, icon: Icon }) => {
+          const active = location.pathname === to || (to !== '/dashboard' && location.pathname.startsWith(to))
+          return (
+            <Link
+              key={to}
+              to={to}
+              className={clsx(
+                'flex-1 flex flex-col items-center justify-center gap-1 py-2 transition-colors',
+                active ? 'text-accent' : 'text-[var(--text-muted)]'
+              )}
+            >
+              <Icon size={20} />
+              <span className="font-mono text-[9px] uppercase tracking-wide">{label}</span>
+            </Link>
+          )
+        })}
+      </nav>
     </div>
   )
 }

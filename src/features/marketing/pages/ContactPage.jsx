@@ -111,9 +111,15 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)]">Email</p>
-                  <a href={`mailto:${CONTACT_INFO.email}`} className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors">
-                    {CONTACT_INFO.email}
-                  </a>
+                  {CONTACT_INFO.emailHref ? (
+                    <a href={CONTACT_INFO.emailHref} className="text-sm text-[var(--text-primary)] mt-0.5 hover:text-accent transition-colors">
+                      {CONTACT_INFO.email}
+                    </a>
+                  ) : (
+                    <p className="text-sm text-[var(--text-primary)] mt-0.5">
+                      {CONTACT_INFO.email}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex items-start gap-4">

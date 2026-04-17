@@ -1,8 +1,9 @@
 export const CONTACT_INFO = {
-  email: 'info@hsociety.io',
-  location: 'South Africa · Remote Worldwide',
+  email: 'hsocietyoffsec@proton.me',
+  emailHref: 'mailto:hsocietyoffsec@proton.me',
+  location: 'Ghana · Remote Worldwide',
   whatsappUrl: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
-  whatsappLabel: 'Join the briefing room',
+  whatsappLabel: 'Join the community',
 }
 
 export const SOCIAL_LINKS = [

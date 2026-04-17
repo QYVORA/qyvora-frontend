@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 const BASE = 'HSOCIETY OFFSEC'
-const BASE_URL = 'https://hsociety.io'
+const BASE_URL = 'https://hsocietyoffsec.netlify.app'
 const DEFAULT_IMG = `${BASE_URL}/HSOCIETY_LOGO.webp`
 
 export function useSEO({ title, description, path = '', image = DEFAULT_IMG } = {}) {

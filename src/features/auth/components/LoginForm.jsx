@@ -14,7 +14,7 @@ export function LoginForm({ form, errors, loading, showPass, onTogglePass, onCha
           <Input
             label="Email"
             type="email"
-            placeholder="you@hsociety.io"
+            placeholder="you@example.com"
             icon={Mail}
             value={form.email}
             onChange={e => onChange({ ...form, email: e.target.value })}

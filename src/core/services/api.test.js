@@ -9,6 +9,7 @@ describe('api interceptors', () => {
   beforeEach(() => {
     mock = new MockAdapter(api)
     mock.resetHistory()
+    localStorage.removeItem('hs_csrf')
     document.cookie = 'csrf_token=csrf123'
   })
 
@@ -17,6 +18,17 @@ describe('api interceptors', () => {
     await api.get('/ping')
     const headers = mock.history.get[0].headers || {}
     expect(headers['X-CSRF-Token']).toBe('csrf123')
+  })
+
+  it('falls back to stored CSRF token when cookie is unavailable', async () => {
+    document.cookie = 'csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+    localStorage.setItem('hs_csrf', 'stored_csrf_token')
+
+    mock.onPost('/auth/logout').reply(200, { success: true })
+    await api.post('/auth/logout')
+
+    const headers = mock.history.post[0].headers || {}
+    expect(headers['X-CSRF-Token']).toBe('stored_csrf_token')
   })
 
   it('uses a single refresh call for concurrent 401s', async () => {

@@ -1,9 +1,10 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/core/contexts'
 import { FullPageLoader } from '@/shared/components/feedback'
 import { PublicLayout, StudentLayout, AdminLayout } from '@/shared/layouts'
 import NotFoundPage from '@/shared/pages/NotFoundPage'
+import OwaspPage from '@/features/marketing/pages/OwaspPage'
 
 const LandingPage = lazy(() => import('@/features/marketing/pages/LandingPage'))
 const PrivacyPage = lazy(() => import('@/features/marketing/pages/PrivacyPage'))
@@ -14,7 +15,6 @@ const TeamPage = lazy(() => import('@/features/marketing/pages/TeamPage'))
 const BlogPage = lazy(() => import('@/features/marketing/pages/BlogPage'))
 const ZeroDayMarketPage = lazy(() => import('@/features/marketing/pages/ZeroDayMarketPage'))
 const ReconPage = lazy(() => import('@/features/marketing/pages/ReconPage'))
-const OwaspPage = lazy(() => import('@/features/marketing/pages/OwaspPage'))
 const PlaybooksPage = lazy(() => import('@/features/marketing/pages/PlaybooksPage'))
 const IdenticonPreviewPage = lazy(() => import('@/shared/pages/IdenticonPreviewPage'))
 const PublicProfilePage = lazy(() => import('@/shared/pages/PublicProfilePage'))
@@ -68,10 +68,21 @@ function GuestRoute({ children }) {
   return children
 }
 
+function ScrollToTopOnRouteChange() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname])
+
+  return null
+}
+
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Suspense fallback={<FullPageLoader />}>
+        <ScrollToTopOnRouteChange />
         <Routes>
           <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />

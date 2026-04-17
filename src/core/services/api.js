@@ -79,6 +79,11 @@ const setStoredCsrf = (token) => {
   localStorage.setItem(CSRF_STORAGE_KEY, String(token))
 }
 
+const getStoredCsrf = () => {
+  if (typeof window === 'undefined') return ''
+  return String(localStorage.getItem(CSRF_STORAGE_KEY) || '').trim()
+}
+
 const clearSessionAndRedirect = () => {
   if (typeof window === 'undefined') return
   localStorage.removeItem('hs_user')
@@ -88,14 +93,14 @@ const clearSessionAndRedirect = () => {
 
 const readCsrfFromCookie = () => {
   const token = getCookie('csrf_token')
-  if (!token) { setStoredCsrf(''); return '' }
+  if (!token) return ''
   setStoredCsrf(token)
   return token
 }
 
 // Request interceptor — attach CSRF token when present
 api.interceptors.request.use((config) => {
-  const csrfToken = readCsrfFromCookie()
+  const csrfToken = readCsrfFromCookie() || getStoredCsrf()
   if (csrfToken) {
     config.headers['X-CSRF-Token'] = csrfToken
   }
