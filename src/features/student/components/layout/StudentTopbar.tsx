@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Zap, Terminal, Monitor, ShoppingBag, User, LogOut, Bell, Settings, MoreHorizontal, X, BookOpen, Wallet } from 'lucide-react';
+import { Zap, Terminal, Monitor, ShoppingBag, User, LogOut, Bell, Settings, MoreHorizontal, X, BookOpen, Wallet, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
+import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
@@ -36,6 +37,7 @@ const MOBILE_MORE = [
 const StudentTopbar = () => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [unreadCount, setUnreadCount] = useState(0);
@@ -122,6 +124,15 @@ const StudentTopbar = () => {
             >
               <Settings className="w-5 h-5" />
             </Link>
+
+            {/* Theme toggle — desktop only */}
+            <button
+              onClick={toggleTheme}
+              className="hidden md:flex p-2.5 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
 
             <button
               onClick={handleLogout}
@@ -235,7 +246,14 @@ const StudentTopbar = () => {
               </div>
 
               {/* Logout */}
-              <div className="px-4 pb-4">
+              <div className="px-4 pb-4 space-y-3">
+                {/* Theme toggle */}
+                <button
+                  onClick={toggleTheme}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border text-text-muted text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all active:scale-95"
+                >
+                  {theme === 'dark' ? <><Sun className="w-4 h-4" /> Light Mode</> : <><Moon className="w-4 h-4" /> Dark Mode</>}
+                </button>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-400/20 text-red-400 text-sm font-bold uppercase tracking-widest hover:bg-red-400/10 transition-all active:scale-95"

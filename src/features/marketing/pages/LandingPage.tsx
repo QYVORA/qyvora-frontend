@@ -206,9 +206,9 @@ const Landing: React.FC = () => {
             <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-3">How The Loop Works</h2>
             <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">Create your operator account, complete phased bootcamp modules, validate skills in challenges, earn CP, and unlock the Zero-Day Market.</p>
           </ScrollReveal>
-          <div className="flex overflow-x-auto gap-5 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-5 md:gap-8 no-scrollbar mb-10 md:mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-5 mb-10 md:mb-20">
             {[{ title: 'JOIN', desc: 'Create your operator account.' }, { title: 'TRAIN', desc: 'Complete phased bootcamp modules.' }, { title: 'VALIDATE', desc: 'Prove skills in live challenges.' }, { title: 'EARN', desc: 'Collect CP for your progress.' }, { title: 'UNLOCK', desc: 'Access the Zero-Day Market.' }].map((step, idx) => (
-              <ScrollReveal key={idx} delay={idx * 0.1} className="relative group flex-none w-48 md:w-auto text-left">
+              <ScrollReveal key={idx} delay={idx * 0.1} className="relative group text-left">
                 <div className="text-4xl md:text-5xl font-extrabold text-accent/20 font-mono mb-3 group-hover:text-accent transition-colors">0{idx + 1}</div>
                 <h3 className="text-base md:text-xl font-bold text-text-primary mb-2 uppercase tracking-tighter">{step.title}</h3>
                 <p className="text-xs md:text-sm text-text-muted leading-relaxed">{step.desc}</p>

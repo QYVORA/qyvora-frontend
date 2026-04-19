@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Lock, LogIn, Github, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
@@ -280,17 +280,6 @@ const Login: React.FC = () => {
                     {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-4 h-4" />
                   </button>
                 </form>
-
-                <div className="mt-6">
-                  <div className="relative flex items-center gap-4 mb-6">
-                    <div className="flex-1 h-px bg-border" />
-                    <span className="text-[10px] text-text-muted uppercase tracking-widest">or</span>
-                    <div className="flex-1 h-px bg-border" />
-                  </div>
-                  <button className="w-full border border-border bg-bg-card hover:border-accent text-text-primary py-3 rounded-lg flex items-center justify-center gap-3 transition-colors text-sm font-bold">
-                    <Github className="w-4 h-4" /> Continue with GitHub
-                  </button>
-                </div>
 
                 <p className="mt-8 text-center text-sm text-text-muted">
                   No operator UID?{' '}

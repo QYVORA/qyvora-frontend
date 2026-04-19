@@ -14,6 +14,19 @@
   --color-border: rgba(136, 173, 124, 0.18);
 }
 
+/* ── Light theme overrides ── */
+[data-theme="light"] {
+  --color-bg: #f4f7f4;
+  --color-bg-card: #ffffff;
+  --color-accent: #2d7a1f;
+  --color-accent-dim: rgba(45, 122, 31, 0.10);
+  --color-accent-glow: rgba(45, 122, 31, 0.18);
+  --color-text-primary: #0f1a0e;
+  --color-text-secondary: rgba(15, 26, 14, 0.72);
+  --color-text-muted: rgba(15, 26, 14, 0.45);
+  --color-border: rgba(45, 122, 31, 0.20);
+}
+
 @layer base {
   body {
     @apply bg-bg text-text-primary font-mono selection:bg-accent selection:text-bg;
