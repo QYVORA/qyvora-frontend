@@ -1,8 +1,0 @@
-User-agent: *
-Disallow: /admin
-Disallow: /dashboard
-Disallow: /wallet
-Disallow: /profile
-Disallow: /bootcamp
-Disallow: /marketplace
-Disallow: /notifications

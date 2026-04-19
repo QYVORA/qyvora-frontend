@@ -1,8 +1,0 @@
-export { default as api } from './api'
-export { authService } from './authService'
-export { studentService } from './studentService'
-export { cpService } from './cpService'
-export { marketplaceService } from './marketplaceService'
-export { adminService } from './adminService'
-export { profileService } from './profileService'
-export { notificationsService } from './notificationsService'
