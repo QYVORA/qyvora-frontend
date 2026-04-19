@@ -18,21 +18,22 @@
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  /* Warm off-white base — not pure white, gives depth */
-  --color-bg: #f0f4ef;
-  --color-bg-card: #ffffff;
-  /* Rich forest green accent — strong, readable, on-brand */
+  /* Slightly warm, tinted off-white — not blinding */
+  --color-bg: #e8ede7;
+  /* Cards are lighter than bg so they pop */
+  --color-bg-card: #f3f7f2;
+  /* Deep forest green — strong, on-brand */
   --color-accent: #1a6b0e;
-  --color-accent-dim: rgba(26, 107, 14, 0.12);
+  --color-accent-dim: rgba(26, 107, 14, 0.13);
   --color-accent-glow: rgba(26, 107, 14, 0.22);
-  /* Near-black text for maximum contrast */
+  /* Near-black text */
   --color-text-primary: #0a140a;
-  --color-text-secondary: rgba(10, 20, 10, 0.75);
+  --color-text-secondary: rgba(10, 20, 10, 0.72);
   --color-text-muted: rgba(10, 20, 10, 0.48);
   /* Visible green-tinted border */
-  --color-border: rgba(26, 107, 14, 0.22);
-  /* Dot grid: dark green dots, clearly visible on light bg */
-  --dot-color: rgba(26, 107, 14, 0.14);
+  --color-border: rgba(26, 107, 14, 0.20);
+  /* Dot grid: dark green, clearly visible */
+  --dot-color: rgba(26, 107, 14, 0.16);
 }
 
 @layer base {
@@ -97,9 +98,37 @@
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
-  /* Logo wrapper — gives the logo a pill background so it's visible on any theme */
+  /* Logo wrapper — dark bg in light mode so white logo text is always visible */
   .logo-wrap {
-    @apply bg-bg-card border border-border rounded-md px-2 py-1 flex items-center justify-center;
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+  [data-theme="light"] .logo-wrap {
+    background-color: #0c0f0c !important;
+    border-color: rgba(183, 255, 153, 0.22) !important;
+  }
+
+  /* Footer logo banner: dark bg in light mode */
+  .footer-logo-banner {
+    background-color: var(--color-bg);
+  }
+  [data-theme="light"] .footer-logo-banner {
+    background-color: #0c0f0c;
+    border-top: 1px solid rgba(183, 255, 153, 0.12);
+    border-bottom: 1px solid rgba(183, 255, 153, 0.12);
+  }
+
+  /* Cards get depth in light mode */
+  [data-theme="light"] .card-hsociety {
+    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.08), 0 4px 12px rgba(10, 20, 10, 0.06);
+  }
+  [data-theme="light"] .card-hsociety:hover {
+    box-shadow: 0 4px 24px rgba(26, 107, 14, 0.18);
   }
 }

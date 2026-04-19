@@ -224,12 +224,13 @@ const Landing: React.FC = () => {
               { label: 'Trained Operators', value: stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0, icon: Zap, img: '/images/how-it-works-section/Findings-Identified.webp', suffix: '+' },
               { label: 'CP Distributed', value: Math.round(totalCp / 1000), icon: ShoppingBag, img: '/images/cp-card-background/zeroday-maket-background.webp', suffix: 'K+' },
             ].map((card, idx) => (
-              <ScrollReveal key={idx} delay={idx * 0.05} className="relative h-40 md:h-48 rounded-lg overflow-hidden group">
-                <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
+              <ScrollReveal key={idx} delay={idx * 0.05} className="relative h-40 md:h-48 rounded-lg overflow-hidden group border border-border">
+                <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
+                {/* Always-dark overlay so text is readable on both themes */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050706]/90 via-[#050706]/40 to-[#050706]/10" />
                 <div className="absolute bottom-3 left-3">
-                  <div className="text-xl md:text-2xl font-bold text-accent font-mono"><StatCounter end={card.value} suffix={card.suffix} /></div>
-                  <div className="flex items-center gap-1 text-[9px] font-bold text-text-muted uppercase tracking-widest mt-0.5"><card.icon className="w-3 h-3" /> {card.label}</div>
+                  <div className="text-xl md:text-2xl font-bold text-[#B7FF99] font-mono"><StatCounter end={card.value} suffix={card.suffix} /></div>
+                  <div className="flex items-center gap-1 text-[9px] font-bold text-white/60 uppercase tracking-widest mt-0.5"><card.icon className="w-3 h-3" /> {card.label}</div>
                 </div>
               </ScrollReveal>
             ))}
@@ -444,7 +445,10 @@ const Landing: React.FC = () => {
             ].map((serv, idx) => (
               <ScrollReveal key={idx} delay={idx * 0.1}>
                 <div className="card-hsociety overflow-hidden flex flex-col h-full group">
-                  <div className="h-40 md:h-48 overflow-hidden"><img src={serv.img} alt="" className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700" /></div>
+                  <div className="h-40 md:h-48 overflow-hidden relative">
+                    <img src={serv.img} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+                    <div className="absolute inset-0 bg-[#050706]/50 group-hover:bg-[#050706]/20 transition-all duration-700" />
+                  </div>
                   <div className="p-6 md:p-8 flex flex-col flex-grow">
                     <span className="text-[10px] font-bold text-accent border border-accent/30 rounded px-2 py-0.5 w-fit mb-3">{serv.category}</span>
                     <h3 className="text-lg md:text-xl font-bold text-text-primary mb-3">{serv.title}</h3>

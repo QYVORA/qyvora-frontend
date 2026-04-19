@@ -79,8 +79,8 @@ const Footer: React.FC = () => (
       </div>
     </div>
 
-    {/* Logo banner — driven by width, centred */}
-    <div style={{ width: '100%', overflow: 'hidden', height: '180px', position: 'relative' }}>
+    {/* Logo banner — dark bg so the light logo is always visible */}
+    <div className="footer-logo-banner" style={{ width: '100%', overflow: 'hidden', height: '180px', position: 'relative' }}>
       <img
         src="/HSOCIETY_LOGO.png"
         alt="HSociety"
