@@ -133,7 +133,7 @@ const Landing: React.FC = () => {
       {/* ── 1. HERO ── */}
       <section ref={heroRef} className="relative min-h-screen w-full overflow-hidden scanlines">
         <div className="absolute inset-0 bg-bg z-0" />
-        <div className="absolute inset-0 dot-grid opacity-30 z-0" />
+        <div className="absolute inset-0 dot-grid hero-dot-grid opacity-30 z-0" />
         <HeroCanvas />
         <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10" />
         <motion.div style={{ y: heroY, opacity: heroOpacity }}

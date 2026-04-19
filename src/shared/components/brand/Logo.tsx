@@ -8,10 +8,8 @@ interface LogoProps {
 }
 
 // PNG is 1536×1024 (3:2) with the text mark in the centre ~40% of the height.
-// Strategy: render the image at 2.5× the desired visual height so the mark
-// fills the container height, then clip top/bottom with overflow-hidden.
-// Width is set explicitly (imgH × 1.5 aspect × 2.5 scale factor) so the
-// container never collapses in a flex row.
+// We render the image at 2.5× the desired visual height so the mark fills the
+// container, then clip with overflow-hidden.
 const sizes: Record<string, { containerH: string; containerW: string; imgH: string }> = {
   sm: { containerH: 'h-6',  containerW: 'w-[90px]',  imgH: 'h-[56px]'  },
   md: { containerH: 'h-7',  containerW: 'w-[110px]', imgH: 'h-[66px]'  },
@@ -22,19 +20,24 @@ const sizes: Record<string, { containerH: string; containerW: string; imgH: stri
 const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
   const { containerH, containerW, imgH } = sizes[size];
   return (
-    <div className={`${containerH} ${containerW} overflow-hidden flex-none flex items-center justify-center ${className}`}>
-      <img
-        src={LOGO_SRC}
-        alt="HSociety"
-        className={`${imgH} w-auto object-contain flex-none`}
-      />
+    // logo-wrap gives a bg-bg-card pill so the white logo text is always visible
+    <div className={`logo-wrap ${className}`}>
+      <div className={`${containerH} ${containerW} overflow-hidden flex-none flex items-center justify-center`}>
+        <img
+          src={LOGO_SRC}
+          alt="HSociety"
+          className={`${imgH} w-auto object-contain flex-none`}
+        />
+      </div>
     </div>
   );
 };
 
 export const HSocietyLogo: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`h-8 w-[130px] overflow-hidden flex-none flex items-center justify-center ${className}`}>
-    <img src={LOGO_SRC} alt="HSociety" className="h-[76px] w-auto object-contain flex-none" />
+  <div className={`logo-wrap ${className}`}>
+    <div className="h-8 w-[130px] overflow-hidden flex-none flex items-center justify-center">
+      <img src={LOGO_SRC} alt="HSociety" className="h-[76px] w-auto object-contain flex-none" />
+    </div>
   </div>
 );
 

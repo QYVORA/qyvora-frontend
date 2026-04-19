@@ -3,6 +3,7 @@
 
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
+  /* ── Dark theme (default) ── */
   --color-bg: #050706;
   --color-bg-card: #0c0f0c;
   --color-accent: #B7FF99;
@@ -12,30 +13,38 @@
   --color-text-secondary: rgba(238, 244, 236, 0.72);
   --color-text-muted: rgba(238, 244, 236, 0.42);
   --color-border: rgba(136, 173, 124, 0.18);
+  --dot-color: rgba(183, 255, 153, 0.18);
 }
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  --color-bg: #f4f7f4;
+  /* Warm off-white base — not pure white, gives depth */
+  --color-bg: #f0f4ef;
   --color-bg-card: #ffffff;
-  --color-accent: #2d7a1f;
-  --color-accent-dim: rgba(45, 122, 31, 0.10);
-  --color-accent-glow: rgba(45, 122, 31, 0.18);
-  --color-text-primary: #0f1a0e;
-  --color-text-secondary: rgba(15, 26, 14, 0.72);
-  --color-text-muted: rgba(15, 26, 14, 0.45);
-  --color-border: rgba(45, 122, 31, 0.20);
+  /* Rich forest green accent — strong, readable, on-brand */
+  --color-accent: #1a6b0e;
+  --color-accent-dim: rgba(26, 107, 14, 0.12);
+  --color-accent-glow: rgba(26, 107, 14, 0.22);
+  /* Near-black text for maximum contrast */
+  --color-text-primary: #0a140a;
+  --color-text-secondary: rgba(10, 20, 10, 0.75);
+  --color-text-muted: rgba(10, 20, 10, 0.48);
+  /* Visible green-tinted border */
+  --color-border: rgba(26, 107, 14, 0.22);
+  /* Dot grid: dark green dots, clearly visible on light bg */
+  --dot-color: rgba(26, 107, 14, 0.14);
 }
 
 @layer base {
   body {
     @apply bg-bg text-text-primary font-mono selection:bg-accent selection:text-bg;
     overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* Dot Grid Pattern */
+  /* Dot Grid Pattern — uses --dot-color so it's visible in both themes */
   .dot-grid {
-    background-image: radial-gradient(var(--color-accent-dim) 1px, transparent 1px);
+    background-image: radial-gradient(var(--dot-color, var(--color-accent-dim)) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
@@ -48,10 +57,7 @@
     content: " ";
     display: block;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 0; left: 0; bottom: 0; right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
                 linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
     z-index: 20;
@@ -60,24 +66,18 @@
     opacity: 0.03;
   }
 
-  /* Custom Glow Shadow */
+  /* Glow shadow */
   .glow-shadow {
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
-  /* Hide scrollbars globally for no-scrollbar utility */
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-  .animate-blink {
-    animation: blink 1s step-end infinite;
+  /* Hide scrollbars */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Hero dot grid — stronger opacity in light mode */
+  [data-theme="light"] .hero-dot-grid {
+    opacity: 0.55 !important;
   }
 }
 
@@ -85,7 +85,7 @@
   .btn-primary {
     @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-md px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)];
   }
-  
+
   .btn-secondary {
     @apply bg-transparent border border-accent text-accent font-bold uppercase tracking-[0.08em] rounded-md px-7 py-3 transition-all cursor-pointer hover:bg-accent-dim active:scale-95;
   }
@@ -95,5 +95,11 @@
   }
   .card-hsociety:hover {
     box-shadow: 0 8px 32px var(--color-accent-glow);
+  }
+
+  /* Logo wrapper — gives the logo a pill background so it's visible on any theme */
+  .logo-wrap {
+    @apply bg-bg-card border border-border rounded-md px-2 py-1 flex items-center justify-center;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 }
