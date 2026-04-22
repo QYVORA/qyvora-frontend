@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, type Variants } from 'motion/react';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -11,17 +11,17 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, className = '', d
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.15 });
 
-  const variants = {
+  const variants: Variants = {
     hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.6, 
-        ease: 'easeOut', 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
         staggerChildren: 0.1,
         delay: delay
-      } 
+      }
     }
   };
 

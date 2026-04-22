@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
 
+export type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
+
 interface BootcampCardProps {
   image: string;
-  level: 'Novice' | 'Operator' | 'Specialist' | 'Elite';
+  level: BootcampLevel;
   title: string;
   duration: string;
   price: string;

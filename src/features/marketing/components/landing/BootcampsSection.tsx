@@ -3,12 +3,18 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import BootcampCard from '../../../student/components/BootcampCard';
+import type { BootcampLevel } from '../../../student/components/BootcampCard';
 import { PHASE_IMGS, type Bootcamp } from './types';
 import { resolveImg } from './helpers';
 
 interface BootcampsSectionProps {
   bootcamps: Bootcamp[];
 }
+
+const BOOTCAMP_LEVELS: BootcampLevel[] = ['Novice', 'Operator', 'Specialist', 'Elite'];
+
+const normalizeBootcampLevel = (level?: string): BootcampLevel =>
+  BOOTCAMP_LEVELS.includes(level as BootcampLevel) ? (level as BootcampLevel) : 'Operator';
 
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps }) => (
   <section className="py-16 md:py-24 bg-bg-card border-y border-border">
@@ -44,7 +50,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps }) => (
             <ScrollReveal key={bc.id} delay={i * 0.1}>
               <BootcampCard
                 image={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
-                level={bc.level || 'Operator'}
+                level={normalizeBootcampLevel(bc.level)}
                 title={bc.title}
                 duration={bc.duration || ''}
                 price={bc.priceLabel || 'Free'}
@@ -58,4 +64,3 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps }) => (
 );
 
 export default BootcampsSection;
-
