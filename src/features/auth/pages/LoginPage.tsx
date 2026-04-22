@@ -10,12 +10,6 @@ import api from '../../../core/services/api';
 
 type Mode = 'login' | 'register' | 'forgot' | 'reset-confirm' | 'verify-email' | 'change-password';
 
-const HERO_STATS = [
-  { label: 'Trained Operators', value: '847+' },
-  { label: 'Live Labs', value: '42' },
-  { label: 'CP Distributed', value: '85K+' },
-];
-
 const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-11 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm';
 
 const PasswordInput = ({
@@ -72,14 +66,6 @@ const AuthHero: React.FC = () => (
         <p className="text-text-muted text-sm max-w-sm leading-relaxed">
           Real labs. Real techniques. Join the sharpest security community on the continent.
         </p>
-      </div>
-      <div className="flex gap-8">
-        {HERO_STATS.map((s) => (
-          <div key={s.label}>
-            <div className="text-2xl font-black text-accent font-mono">{s.value}</div>
-            <div className="text-[9px] uppercase tracking-widest text-text-muted">{s.label}</div>
-          </div>
-        ))}
       </div>
       <div className="flex flex-col gap-3">
         {[
@@ -222,18 +208,8 @@ const Login: React.FC = () => {
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
         {/* Mobile logo */}
-        <div className="lg:hidden mb-6 self-start">
+        <div className="lg:hidden mb-6 w-full flex justify-center">
           <Link to="/"><Logo size="md" /></Link>
-        </div>
-
-        {/* Mobile mini stats strip */}
-        <div className="lg:hidden w-full flex gap-3 mb-6 overflow-x-auto no-scrollbar pb-1">
-          {HERO_STATS.map((s) => (
-            <div key={s.label} className="flex-none px-4 py-2.5 bg-bg-card border border-border rounded-lg text-center min-w-[100px]">
-              <div className="text-base font-black text-accent font-mono">{s.value}</div>
-              <div className="text-[9px] uppercase tracking-widest text-text-muted whitespace-nowrap">{s.label}</div>
-            </div>
-          ))}
         </div>
 
         <div className="w-full max-w-md relative z-10">
