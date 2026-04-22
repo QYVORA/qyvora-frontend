@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Linkedin, Youtube, Mail } from 'lucide-react';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandXIcon from '../../../../shared/components/icons/BrandXIcon';
+import { useTheme } from '../../../../core/contexts/ThemeContext';
+import { DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
 const FOOTER_COLS = [
   {
@@ -15,8 +17,12 @@ const FOOTER_COLS = [
   },
 ];
 
-const Footer: React.FC = () => (
-  <footer className="relative bg-bg border-t border-border">
+const Footer: React.FC = () => {
+  const { theme } = useTheme();
+  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
+
+  return (
+    <footer className="relative bg-bg border-t border-border">
     <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 md:pt-16 pb-0 relative z-10">
 
       {/* Top row — brand + nav columns */}
@@ -62,9 +68,9 @@ const Footer: React.FC = () => (
     </div>
 
     {/* Logo banner — dark bg so the light logo is always visible */}
-    <div className="footer-logo-banner" style={{ width: '100%', overflow: 'hidden', height: '180px', position: 'relative' }}>
+    <div className="footer-logo-banner relative w-full overflow-hidden h-[130px] md:h-[180px]">
       <img
-        src="/HSOCIETY_LOGO.png"
+        src={logoSrc}
         alt="HSociety"
         style={{
           position: 'absolute',
@@ -86,7 +92,8 @@ const Footer: React.FC = () => (
         ))}
       </div>
     </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 export default Footer;

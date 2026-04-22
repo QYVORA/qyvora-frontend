@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTheme } from '../../../core/contexts/ThemeContext';
 
-const LOGO_SRC = '/HSOCIETY_LOGO.png';
+export const DARK_LOGO_SRC = '/HSOCIETY_LOGO.png';
+export const LIGHT_LOGO_SRC = '/HSOCIETY_LOGO_LIGHT.png';
 
 interface LogoProps {
   className?: string;
@@ -17,12 +19,14 @@ const sizes: Record<string, { containerH: string; containerW: string; imgH: stri
 };
 
 const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
+  const { theme } = useTheme();
   const { containerH, containerW, imgH } = sizes[size];
+  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap ${className}`}>
       <div className={`${containerH} ${containerW} overflow-hidden flex-none flex items-center justify-center`}>
         <img
-          src={LOGO_SRC}
+          src={logoSrc}
           alt="HSociety"
           className={`${imgH} w-auto object-contain flex-none`}
         />
@@ -31,12 +35,16 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
   );
 };
 
-export const HSocietyLogo: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`logo-wrap ${className}`}>
-    <div className="h-12 w-[180px] overflow-hidden flex-none flex items-center justify-center">
-      <img src={LOGO_SRC} alt="HSociety" className="h-[108px] w-auto object-contain flex-none" />
+export const HSocietyLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+  const { theme } = useTheme();
+  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
+  return (
+    <div className={`logo-wrap ${className}`}>
+      <div className="h-12 w-[180px] overflow-hidden flex-none flex items-center justify-center">
+        <img src={logoSrc} alt="HSociety" className="h-[108px] w-auto object-contain flex-none" />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Logo;

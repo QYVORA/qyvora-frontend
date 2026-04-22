@@ -109,14 +109,9 @@
     padding: 0;
   }
 
-  /* Footer logo banner: dark bg in light mode */
+  /* Footer logo banner: transparent in both themes */
   .footer-logo-banner {
-    background-color: var(--color-bg);
-  }
-  [data-theme="light"] .footer-logo-banner {
-    background-color: #0c0f0c;
-    border-top: 1px solid rgba(183, 255, 153, 0.12);
-    border-bottom: 1px solid rgba(183, 255, 153, 0.12);
+    background-color: transparent;
   }
 
   /* Cards get depth in light mode */
@@ -139,5 +134,24 @@
     --color-border: rgba(136, 173, 124, 0.10);
     /* Dimmer accent fill */
     --color-accent-dim: rgba(183, 255, 153, 0.07);
+  }
+
+  @media (max-width: 767px) {
+    .btn-primary,
+    .btn-secondary {
+      min-height: 44px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    .card-hsociety {
+      transform: none !important;
+    }
+
+    .card-hsociety:hover {
+      box-shadow: 0 4px 16px var(--color-accent-glow);
+    }
   }
 }

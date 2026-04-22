@@ -14,7 +14,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
   <section className="py-16 md:py-24 bg-bg relative isolate">
     <div className="absolute inset-0 scanlines opacity-[0.02] pointer-events-none" />
     <div className="max-w-7xl mx-auto px-4 md:px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
         <div className="lg:col-span-5">
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// THE ECONOMY</span>
@@ -25,7 +25,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
                 <li key={i} className="flex items-center gap-3 text-text-primary font-medium text-sm"><div className="w-2 h-2 rounded-full bg-accent flex-none" /> {item}</li>
               ))}
             </ul>
-            <div className="p-5 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group">
+            <div className="p-4 md:p-5 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><ShoppingBag className="w-20 h-20" /></div>
               <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">OPERATOR_WALLET</div>
               <div className="text-2xl md:text-3xl font-bold text-accent font-mono mb-3">{totalCp.toLocaleString()} CP</div>
@@ -39,7 +39,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
             </div>
           </ScrollReveal>
         </div>
-        <div className="lg:col-span-7 grid grid-cols-2 gap-3 md:gap-4">
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
           {marketItems.length === 0 ? (
             [0, 1, 2, 3].map((i) => (
               <div key={i} className="card-hsociety p-3 md:p-4 animate-pulse">
@@ -69,4 +69,3 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
 );
 
 export default EconomySection;
-

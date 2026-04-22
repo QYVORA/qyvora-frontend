@@ -27,7 +27,32 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           </div>
         </ScrollReveal>
       </div>
-      <ScrollReveal delay={0.3} className="overflow-x-auto border border-border rounded-lg bg-bg">
+      <ScrollReveal delay={0.3} className="md:hidden space-y-3">
+        {(leaderboard.length > 0 ? leaderboard : []).slice(0, 5).map((u, idx) => {
+          const handle = u.handle || u.name || 'Anonymous';
+          return (
+            <div key={u.id || idx} className="rounded-lg border border-border bg-bg p-3 flex items-center gap-3">
+              <div className="text-xl font-bold font-mono text-accent w-10 flex-none">#{idx + 1}</div>
+              {u.avatarUrl
+                ? <img src={resolveImg(u.avatarUrl)} alt="" className="w-9 h-9 rounded-full border border-border flex-none" />
+                : <div className="w-9 h-9 rounded-full border border-border bg-accent-dim flex items-center justify-center flex-none text-accent text-xs font-bold">{handle[0]?.toUpperCase()}</div>
+              }
+              <div className="min-w-0 flex-1">
+                <div className="font-mono text-sm font-medium text-text-primary truncate">{handle}</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted">{u.rank || 'Operator'}</div>
+              </div>
+              <div className="text-right">
+                <div className="font-mono font-bold text-accent text-sm">{Number(u.totalXp || 0).toLocaleString()}</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted">CP</div>
+              </div>
+            </div>
+          );
+        })}
+        {leaderboard.length === 0 && (
+          <div className="p-6 text-center text-text-muted text-sm border border-border rounded-lg bg-bg">No operators on the board yet.</div>
+        )}
+      </ScrollReveal>
+      <ScrollReveal delay={0.3} className="hidden md:block overflow-x-auto border border-border rounded-lg bg-bg">
         <div className="min-w-[520px]">
           <div className="grid grid-cols-5 p-3 md:p-4 border-b border-border bg-accent-dim/5 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
             <div>Rank</div><div className="col-span-2">Operator</div><div>Role</div><div className="text-right">CP</div>
@@ -61,4 +86,3 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 );
 
 export default LeaderboardSection;
-
