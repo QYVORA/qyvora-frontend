@@ -12,8 +12,14 @@ interface EconomySectionProps {
 
 const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems }) => (
   <section className="py-16 md:py-24 bg-bg relative isolate">
+    <img
+      src="/images/section-backgrounds/offsec-grid-background.png"
+      alt=""
+      className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
+    />
+    <div className="absolute inset-0 bg-bg/38 pointer-events-none" />
     <div className="absolute inset-0 scanlines opacity-[0.02] pointer-events-none" />
-    <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
         <div className="lg:col-span-5">
           <ScrollReveal>

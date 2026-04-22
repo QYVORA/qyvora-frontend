@@ -6,8 +6,14 @@ import { MARKETING_SERVICES } from '../../content/services';
 import { SITE_CONFIG } from '../../content/siteConfig';
 
 const ServicesSection: React.FC = () => (
-  <section className="py-16 md:py-24 bg-bg">
-    <div className="max-w-7xl mx-auto px-4 md:px-8">
+  <section className="py-16 md:py-24 bg-bg relative overflow-hidden">
+    <img
+      src="/images/section-backgrounds/offsec-grid-background.png"
+      alt=""
+      className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
+    />
+    <div className="absolute inset-0 bg-bg/36 pointer-events-none" />
+    <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <ScrollReveal className="text-center mb-10 md:mb-16">
         <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// OPERATIONS</span>
         <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-3">Security Services</h2>
@@ -46,4 +52,3 @@ const ServicesSection: React.FC = () => (
 );
 
 export default ServicesSection;
-

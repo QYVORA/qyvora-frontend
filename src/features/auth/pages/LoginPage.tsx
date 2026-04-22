@@ -207,12 +207,12 @@ const Login: React.FC = () => {
       <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
-        {/* Mobile logo */}
-        <div className="lg:hidden mb-6 w-full flex justify-center">
-          <Link to="/"><Logo size="md" /></Link>
-        </div>
-
         <div className="w-full max-w-md relative z-10">
+          {/* Mobile/tablet logo: centered on small screens, aligned with form on desktop widths */}
+          <div className="lg:hidden mb-6 flex justify-center md:justify-start">
+            <Link to="/"><Logo size="md" /></Link>
+          </div>
+
           <AnimatePresence mode="wait">
             {/* ── LOGIN ── */}
             {mode === 'login' && (

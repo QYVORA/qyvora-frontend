@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
+import { useTheme } from '../../../core/contexts/ThemeContext';
 
 const HeroCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,9 +44,10 @@ const HeroCanvas: React.FC = () => {
           if (y < -fontSize || y > height) continue;
 
           // Head char is brightest, tail fades out
-          const alpha = (1 - i / trailLength) * 0.18;
+          const maxAlpha = theme === 'light' ? 0.28 : 0.18;
+          const alpha = (1 - i / trailLength) * maxAlpha;
           ctx.globalAlpha = Math.max(alpha, 0.02);
-          ctx.fillStyle = '#88AD7C';
+          ctx.fillStyle = theme === 'light' ? '#1a6b0e' : '#88AD7C';
           ctx.fillText(stream.seq[i], x, y);
         }
 
@@ -79,12 +82,12 @@ const HeroCanvas: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-60 z-0"
+      className={`absolute top-0 left-0 w-full h-full pointer-events-none z-0 ${theme === 'light' ? 'opacity-75' : 'opacity-60'}`}
     />
   );
 };

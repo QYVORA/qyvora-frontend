@@ -17,8 +17,14 @@ const normalizeBootcampLevel = (level?: string): BootcampLevel =>
   BOOTCAMP_LEVELS.includes(level as BootcampLevel) ? (level as BootcampLevel) : 'Operator';
 
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps }) => (
-  <section className="py-16 md:py-24 bg-bg-card border-y border-border">
-    <div className="max-w-7xl mx-auto px-4 md:px-8">
+  <section className="py-16 md:py-24 bg-bg-card border-y border-border relative overflow-hidden">
+    <img
+      src="/images/section-backgrounds/offsec-grid-background.png"
+      alt=""
+      className="absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
+    />
+    <div className="absolute inset-0 bg-bg/35 pointer-events-none" />
+    <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">
         <ScrollReveal>
           <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
