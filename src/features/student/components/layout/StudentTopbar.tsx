@@ -34,6 +34,16 @@ const MOBILE_MORE = [
   { label: 'Settings', icon: Settings, path: '/settings' },
 ];
 
+interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  read: boolean;
+  createdAt?: string;
+}
+
+const NOTIF_PREVIEW_LIMIT = 6;
+
 const StudentTopbar = () => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
@@ -41,20 +51,65 @@ const StudentTopbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const loadNotificationsSnapshot = async () => {
+    setNotifLoading(true);
+    try {
+      const res = await api.get('/notifications');
+      const items = Array.isArray(res.data) ? res.data : [];
+      setUnreadCount(items.filter((n: any) => !n.read).length);
+      setNotificationsPreview(
+        items.slice(0, NOTIF_PREVIEW_LIMIT).map((item: any) => ({
+          id: String(item?.id || ''),
+          title: String(item?.title || 'Notification'),
+          message: String(item?.message || ''),
+          read: Boolean(item?.read),
+          createdAt: String(item?.createdAt || ''),
+        }))
+      );
+    } catch {
+      setNotificationsPreview([]);
+    } finally {
+      setNotifLoading(false);
+    }
+  };
+
+  const markAllNotificationsRead = async () => {
+    try {
+      await api.post('/notifications/read-all', {});
+      setUnreadCount(0);
+      setNotificationsPreview((prev) => prev.map((item) => ({ ...item, read: true })));
+      addToast('All notifications marked as read.', 'success');
+    } catch {
+      addToast('Could not mark notifications as read.', 'error');
+    }
+  };
 
   useEffect(() => {
-    api.get('/notifications')
-      .then((res) => {
-        const items = Array.isArray(res.data) ? res.data : [];
-        setUnreadCount(items.filter((n: any) => !n.read).length);
-      })
-      .catch(() => {});
+    loadNotificationsSnapshot();
   }, [location.pathname]);
 
   // Close sheet on route change
-  useEffect(() => { setMoreOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    setMoreOpen(false);
+    setNotifOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!notifOpen) return undefined;
+    const onPointerDown = (event: MouseEvent) => {
+      if (!notifRef.current || notifRef.current.contains(event.target as Node)) return;
+      setNotifOpen(false);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [notifOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -98,48 +153,110 @@ const StudentTopbar = () => {
               </span>
               <span className="text-[10px] text-accent font-mono">{user?.rank || '—'}</span>
             </div>
-            <div className="w-9 h-9 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-sm flex-none">
+            <div className="w-10 h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-base flex-none">
               {user?.username?.substring(0, 2).toUpperCase() || 'OP'}
             </div>
 
             {/* Notifications — visible on all sizes */}
-            <Link
-              to="/notifications"
-              className="relative p-2.5 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
-              aria-label="Notifications"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
-              )}
-            </Link>
+            <div ref={notifRef} className="relative">
+              <button
+                onClick={() => {
+                  const next = !notifOpen;
+                  setNotifOpen(next);
+                  if (next) loadNotificationsSnapshot();
+                }}
+                className="relative p-3 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
+                aria-label="Notifications"
+              >
+                <Bell className="w-6 h-6" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              <AnimatePresence>
+                {notifOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    className="absolute right-0 top-full mt-2 w-[92vw] max-w-sm rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                  >
+                    <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                      <div>
+                        <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
+                        <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
+                      </div>
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={markAllNotificationsRead}
+                          className="text-[10px] font-bold text-accent hover:underline"
+                        >
+                          Mark all read
+                        </button>
+                      )}
+                    </div>
+
+                    {notifLoading ? (
+                      <div className="p-4 text-xs text-text-muted">Loading...</div>
+                    ) : notificationsPreview.length === 0 ? (
+                      <div className="p-4 text-xs text-text-muted">No notifications yet.</div>
+                    ) : (
+                      <div className="max-h-80 overflow-auto divide-y divide-border/50">
+                        {notificationsPreview.map((item) => (
+                          <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-70' : ''}`}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
+                              {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}
+                            </div>
+                            <p className="text-[11px] text-text-secondary line-clamp-2 mt-1">{item.message}</p>
+                            <div className="text-[10px] text-text-muted mt-1">
+                              {item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="px-4 py-3 border-t border-border">
+                      <Link
+                        to="/notifications"
+                        className="block w-full text-center text-xs font-bold text-accent hover:underline"
+                      >
+                        View all notifications
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Settings — desktop only */}
             <Link
               to="/settings"
-              className="hidden md:flex p-2.5 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
+              className="hidden md:flex p-3 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
               aria-label="Settings"
             >
-              <Settings className="w-5 h-5" />
+              <Settings className="w-6 h-6" />
             </Link>
 
             {/* Theme toggle — desktop only */}
             <button
               onClick={toggleTheme}
-              className="hidden md:flex p-2.5 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
+              className="hidden md:flex p-3 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === 'dark' ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
             </button>
 
             <button
               onClick={handleLogout}
-              className="hidden md:flex p-2.5 text-text-muted hover:text-red-400 transition-colors rounded-lg hover:bg-red-400/10"
+              className="hidden md:flex p-3 text-text-muted hover:text-red-400 transition-colors rounded-lg hover:bg-red-400/10"
               aria-label="Log out"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -154,10 +271,10 @@ const StudentTopbar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[56px] active:bg-accent-dim/30 transition-colors"
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-3.5 min-h-[64px] active:bg-accent-dim/30 transition-colors"
             >
-              <item.icon className={`w-5 h-5 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
-              <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
+              <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
+              <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
                 {item.label}
               </span>
             </Link>
@@ -167,11 +284,11 @@ const StudentTopbar = () => {
         {/* More button */}
         <button
           onClick={() => setMoreOpen(true)}
-          className="flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[56px] active:bg-accent-dim/30 transition-colors relative"
+          className="flex-1 flex flex-col items-center justify-center gap-1 py-3.5 min-h-[64px] active:bg-accent-dim/30 transition-colors relative"
           aria-label="More navigation"
         >
-          <MoreHorizontal className="w-5 h-5 text-text-muted" />
-          <span className="text-[10px] font-bold uppercase tracking-wide text-text-muted">More</span>
+          <MoreHorizontal className="w-6 h-6 text-text-muted" />
+          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
           {unreadCount > 0 && (
             <span className="absolute top-2 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
               {unreadCount > 9 ? '9+' : unreadCount}
@@ -233,8 +350,8 @@ const StudentTopbar = () => {
                           : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
                       }`}
                     >
-                      <item.icon className="w-5 h-5" />
-                      <span className="text-[10px] font-bold uppercase tracking-wide text-center leading-tight">{item.label}</span>
+                      <item.icon className="w-6 h-6" />
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-center leading-tight">{item.label}</span>
                       {isNotif && unreadCount > 0 && (
                         <span className="absolute top-2 right-2 w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                           {unreadCount > 9 ? '9+' : unreadCount}

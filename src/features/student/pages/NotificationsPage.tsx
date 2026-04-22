@@ -25,18 +25,23 @@ const TYPE_COLORS: Record<string, string> = {
   landing_reward: 'text-accent border-accent/30 bg-accent/5',
 };
 
+const PAGE_SIZE = 12;
+
 const Notifications: React.FC = () => {
   const { addToast } = useToast();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [markingAll, setMarkingAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const fetchNotifications = async () => {
     try {
       const res = await api.get('/notifications');
       setNotifications(Array.isArray(res.data) ? res.data : []);
+      setVisibleCount(PAGE_SIZE);
     } catch {
       setNotifications([]);
+      setVisibleCount(PAGE_SIZE);
     } finally {
       setLoading(false);
     }
@@ -71,6 +76,8 @@ const Notifications: React.FC = () => {
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+  const visibleItems = notifications.slice(0, visibleCount);
+  const hasMore = visibleCount < notifications.length;
 
   return (
     <div className="min-h-screen bg-bg pb-4">
@@ -118,7 +125,7 @@ const Notifications: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {notifications.map((n) => {
+            {visibleItems.map((n) => {
               const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border bg-bg-card';
               return (
                 <ScrollReveal key={n.id}>
@@ -161,6 +168,17 @@ const Notifications: React.FC = () => {
                 </ScrollReveal>
               );
             })}
+
+            {hasMore && (
+              <div className="pt-3 text-center">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+                  className="px-4 py-2 bg-bg-card border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
+                >
+                  Load more ({notifications.length - visibleCount} remaining)
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -4,11 +4,14 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 
+const PAGE_SIZE = 10;
+
 const Wallet: React.FC = () => {
   const { user } = useAuth();
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
     let mounted = true;
@@ -16,11 +19,12 @@ const Wallet: React.FC = () => {
       try {
         const [balanceRes, txRes] = await Promise.all([
           api.get('/cp/balance'),
-          api.get('/cp/transactions?limit=20'),
+          api.get('/cp/transactions?limit=100'),
         ]);
         if (!mounted) return;
         setBalance(Number(balanceRes.data?.balance || 0));
         setTransactions(Array.isArray(txRes.data?.items) ? txRes.data.items : []);
+        setVisibleCount(PAGE_SIZE);
       } catch {
         if (!mounted) return;
       } finally {
@@ -31,7 +35,7 @@ const Wallet: React.FC = () => {
   }, []);
 
   const txRows = useMemo(() => {
-    return transactions.slice(0, 20).map((tx: any, idx) => ({
+    return transactions.map((tx: any, idx) => ({
       id: String(tx?._id || tx?.id || `TXN-${idx + 1}`),
       shortId: String(tx?._id || tx?.id || `TXN-${idx + 1}`).slice(-8).toUpperCase(),
       desc: String(tx?.note || tx?.type || 'CP transaction'),
@@ -40,6 +44,8 @@ const Wallet: React.FC = () => {
     }));
   }, [transactions]);
 
+  const visibleTxRows = txRows.slice(0, visibleCount);
+  const hasMore = visibleCount < txRows.length;
   const totalEarned = txRows.filter((t) => t.value > 0).reduce((a, t) => a + t.value, 0);
   const totalSpent = Math.abs(txRows.filter((t) => t.value < 0).reduce((a, t) => a + t.value, 0));
 
@@ -126,7 +132,7 @@ const Wallet: React.FC = () => {
               <div className="py-12 text-center text-text-muted text-sm">No transactions yet.</div>
             ) : (
               <div className="divide-y divide-border/50">
-                {txRows.map((tx, idx) => (
+                {visibleTxRows.map((tx, idx) => (
                   <div key={idx} className="px-5 py-4 flex items-center gap-4 hover:bg-accent-dim/5 transition-colors">
                     {/* Icon */}
                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-none border ${
@@ -150,6 +156,16 @@ const Wallet: React.FC = () => {
                     </div>
                   </div>
                 ))}
+                {hasMore && (
+                  <div className="px-5 py-4 flex justify-center">
+                    <button
+                      onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+                      className="px-4 py-2 bg-bg border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
+                    >
+                      Load more ({txRows.length - visibleCount} remaining)
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
