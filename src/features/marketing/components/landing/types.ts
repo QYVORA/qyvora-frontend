@@ -18,16 +18,6 @@ export interface Bootcamp {
   image?: string;
 }
 
-export interface Room {
-  id: string;
-  slug?: string;
-  title: string;
-  level?: string;
-  description?: string;
-  coverImage?: string;
-  logoUrl?: string;
-}
-
 export interface LeaderboardEntry {
   id?: string;
   handle?: string;
@@ -52,4 +42,3 @@ export const PHASE_IMGS = [
   '/images/Curriculum-images/phase4.webp',
   '/images/Curriculum-images/phase5.webp',
 ];
-

@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Zap, Terminal, Monitor, ShoppingBag, User, LogOut, Bell, Settings, MoreHorizontal, X, BookOpen, Wallet, Sun, Moon } from 'lucide-react';
+import { Zap, Terminal, ShoppingBag, User, LogOut, Bell, Settings, MoreHorizontal, X, BookOpen, Wallet, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
@@ -12,7 +12,6 @@ const NAV = [
   { label: 'Dashboard', path: '/dashboard' },
   { label: 'Learn', path: '/learn' },
   { label: 'Bootcamp', path: '/bootcamps' },
-  { label: 'Rooms', path: '/rooms' },
   { label: 'Wallet', path: '/wallet' },
   { label: 'Market', path: '/marketplace' },
   { label: 'Profile', path: '/profile' },
@@ -22,7 +21,7 @@ const NAV = [
 const MOBILE_PRIMARY = [
   { label: 'Home', icon: Zap, path: '/dashboard' },
   { label: 'Learn', icon: Terminal, path: '/learn' },
-  { label: 'Rooms', icon: Monitor, path: '/rooms' },
+  { label: 'Bootcamp', icon: BookOpen, path: '/bootcamps' },
   { label: 'Market', icon: ShoppingBag, path: '/marketplace' },
 ];
 
@@ -192,15 +191,15 @@ const StudentTopbar = () => {
                     exit={{ opacity: 0, y: -6 }}
                     className="absolute right-0 top-full mt-2 w-[92vw] max-w-sm rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
                   >
-                    <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-                      <div>
+                    <div className="px-4 py-3 border-b border-border flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="min-w-0">
                         <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
                         <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
                       </div>
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllNotificationsRead}
-                          className="text-[10px] font-bold text-accent hover:underline"
+                          className="text-[10px] font-bold text-accent hover:underline self-start sm:self-auto whitespace-nowrap"
                         >
                           Mark all read
                         </button>

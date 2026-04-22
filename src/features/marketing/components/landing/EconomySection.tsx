@@ -25,9 +25,9 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// THE ECONOMY</span>
             <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-5">Zero-Day Market</h2>
-            <p className="text-text-secondary text-sm md:text-base mb-6 leading-relaxed">Earn Cyber Points (CP) by completing rooms and finishing bootcamps. Use CP in the marketplace and track your progress on the leaderboard.</p>
+            <p className="text-text-secondary text-sm md:text-base mb-6 leading-relaxed">Earn Cyber Points (CP) by completing bootcamps and challenges. Use CP in the marketplace and track your progress on the leaderboard.</p>
             <ul className="flex flex-col space-y-3 mb-8">
-              {['Complete rooms to earn CP', 'Finish bootcamps to earn more CP', 'Build your rank on the leaderboard', 'Spend CP in the marketplace'].map((item, i) => (
+              {['Complete bootcamps to earn CP', 'Finish challenges to earn more CP', 'Build your rank on the leaderboard', 'Spend CP in the marketplace'].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-text-primary font-medium text-sm"><div className="w-2 h-2 rounded-full bg-accent flex-none" /> {item}</li>
               ))}
             </ul>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail, Globe } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import { MARKETING_SERVICES } from '../../content/services';
 import { SITE_CONFIG } from '../../content/siteConfig';
@@ -43,8 +43,8 @@ const ServicesSection: React.FC = () => (
         <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-3">Not sure which service fits?</h3>
         <p className="text-text-muted text-sm mb-6 max-w-lg mx-auto">Our strategic advisory team can map our capabilities to your threat model.</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href={SITE_CONFIG.contact.whatsappUrl} target="_blank" rel="noreferrer" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-sm"><MessageSquare className="w-4 h-4" /> Message on WhatsApp</a>
-          <a href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`} className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2 text-sm"><Mail className="w-4 h-4" /> Email Security Desk</a>
+          <a href={SITE_CONFIG.contact.whatsappUrl} target="_blank" rel="noreferrer" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-sm"><Globe className="w-4 h-4" /> Visit Website</a>
+          <a href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`} className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2 text-sm"><Mail className="w-4 h-4" /> Email Us</a>
         </div>
       </ScrollReveal>
     </div>

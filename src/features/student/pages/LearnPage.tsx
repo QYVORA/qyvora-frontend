@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { BookOpen, Monitor, ArrowRight, Play, Clock, ChevronRight } from 'lucide-react';
+import { BookOpen, ArrowRight, Play, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -47,7 +47,6 @@ const SkeletonCard = ({ wide = false }: { wide?: boolean }) => (
 
 const Learn: React.FC = () => {
   const [bootcamps, setBootcamps] = useState<any[]>([]);
-  const [rooms, setRooms] = useState<any[]>([]);
   const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -55,12 +54,10 @@ const Learn: React.FC = () => {
     let mounted = true;
     Promise.all([
       api.get('/public/bootcamps'),
-      api.get('/student/rooms'),
       api.get('/student/overview').catch(() => null),
-    ]).then(([bcRes, roomsRes, ovRes]) => {
+    ]).then(([bcRes, ovRes]) => {
       if (!mounted) return;
       setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
-      setRooms(Array.isArray(roomsRes.data?.items) ? roomsRes.data.items : []);
       if (ovRes?.data) setOverview(ovRes.data);
     }).finally(() => {
       if (mounted) setLoading(false);
@@ -70,9 +67,6 @@ const Learn: React.FC = () => {
 
   const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
   const currentPhase = overview?.progressMeta?.currentPhase?.title;
-  const completedRooms = new Set<string>(
-    (overview?.learnRooms ? Object.keys(overview.learnRooms) : [])
-  );
 
   return (
     <div className="min-h-screen bg-bg pb-8">
@@ -87,7 +81,7 @@ const Learn: React.FC = () => {
                 Learning Hub
               </h1>
               <p className="text-text-muted max-w-xl">
-                All your training in one place — bootcamp programs and self-paced rooms.
+                All your training in one place.
               </p>
             </div>
 
@@ -180,86 +174,6 @@ const Learn: React.FC = () => {
                             {progress > 0 ? 'Continue' : 'Start Bootcamp'}
                             <ChevronRight className="w-3 h-3 ml-auto group-hover:translate-x-1 transition-transform" />
                           </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </ScrollReveal>
-                );
-              })}
-            </div>
-          )}
-        </section>
-
-        {/* ── ROOMS ── */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
-              <Monitor className="w-5 h-5 text-accent" /> Self-Paced Rooms
-            </h2>
-            <Link to="/rooms" className="text-xs font-bold text-accent hover:underline flex items-center gap-1">
-              View all <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {[0,1,2,3,4,5].map((i) => <div key={i}><SkeletonCard /></div>)}
-            </div>
-          ) : rooms.length === 0 ? (
-            <div className="p-10 bg-bg-card border border-border rounded-xl text-center">
-              <Monitor className="w-8 h-8 text-text-muted mx-auto mb-3 opacity-40" />
-              <p className="text-text-muted text-sm mb-4">No rooms available yet.</p>
-              <Link to="/rooms" className="btn-primary text-xs !py-2 !px-4">Browse Rooms</Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {rooms.map((room, i) => {
-                const done = completedRooms.has(room.id || room._id || '');
-                return (
-                  <ScrollReveal key={room.id || i} delay={i * 0.05}>
-                    <Link to="/rooms" className="card-hsociety overflow-hidden flex flex-col group block hover:border-accent/40 transition-all">
-                      <div className="relative aspect-video overflow-hidden">
-                        <img
-                          src={resolveImg(room.coverImage, `/gallery/gallery-0${(i % 6) + 1}.jpeg`)}
-                          alt={room.title}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                        />
-                        {room.logoUrl && (
-                          <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-bg border border-border p-1 flex items-center justify-center overflow-hidden">
-                            <img src={resolveImg(room.logoUrl)} alt="" className="w-full h-full object-contain" />
-                          </div>
-                        )}
-                        {done && (
-                          <div className="absolute top-3 right-3 px-2 py-0.5 bg-accent text-bg text-[9px] font-black uppercase rounded tracking-widest">
-                            ✓ Done
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-4 flex flex-col flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          {room.level && (
-                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-accent-dim text-accent border border-accent/20">
-                              {room.level}
-                            </span>
-                          )}
-                          {room.estimatedMinutes > 0 && (
-                            <span className="text-[10px] text-text-muted flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> {room.estimatedMinutes}m
-                            </span>
-                          )}
-                        </div>
-                        <h3 className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors mb-1 line-clamp-1">
-                          {room.title}
-                        </h3>
-                        {room.description && (
-                          <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{room.description}</p>
-                        )}
-                        <div className={`mt-auto w-full py-2 rounded font-bold text-[10px] uppercase text-center transition-colors ${
-                          done
-                            ? 'bg-accent/10 text-accent border border-accent/20'
-                            : 'bg-accent-dim text-accent border border-accent/20 group-hover:bg-accent/20'
-                        }`}>
-                          {done ? '✓ Completed' : 'Enter Room'}
                         </div>
                       </div>
                     </Link>

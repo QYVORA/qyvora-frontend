@@ -5,13 +5,11 @@ import type {
   Bootcamp,
   LeaderboardEntry,
   MarketplaceItem,
-  Room,
 } from '../components/landing/types';
 
 export const useLandingData = () => {
   const [stats, setStats] = useState<BackendStats | null>(null);
   const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
-  const [rooms, setRooms] = useState<Room[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [marketItems, setMarketItems] = useState<MarketplaceItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,14 +19,12 @@ export const useLandingData = () => {
     Promise.all([
       api.get('/public/landing-stats').catch(() => null),
       api.get('/public/bootcamps').catch(() => null),
-      api.get('/public/rooms').catch(() => null),
       api.get('/public/leaderboard').catch(() => null),
       api.get('/public/cp-products').catch(() => null),
-    ]).then(([statsRes, bootcampsRes, roomsRes, leaderboardRes, marketRes]) => {
+    ]).then(([statsRes, bootcampsRes, leaderboardRes, marketRes]) => {
       if (!mounted) return;
       if (statsRes?.data) setStats(statsRes.data);
       if (bootcampsRes?.data?.items) setBootcamps(bootcampsRes.data.items);
-      if (roomsRes?.data?.items) setRooms(roomsRes.data.items);
       if (leaderboardRes?.data?.leaderboard) setLeaderboard(leaderboardRes.data.leaderboard);
       if (marketRes?.data?.items) setMarketItems(marketRes.data.items);
     }).finally(() => {
@@ -37,5 +33,5 @@ export const useLandingData = () => {
     return () => { mounted = false; };
   }, []);
 
-  return { stats, bootcamps, rooms, leaderboard, marketItems, loading };
+  return { stats, bootcamps, leaderboard, marketItems, loading };
 };

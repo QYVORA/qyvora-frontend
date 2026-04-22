@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronDown, Monitor, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
+import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
@@ -10,7 +10,6 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 
 const ICON_BY_KEY = {
   bootcamps: Terminal,
-  rooms: Monitor,
   marketplace: ShoppingBag,
   leaderboard: Trophy,
   zero_day_market: Shield,

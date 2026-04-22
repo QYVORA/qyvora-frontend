@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Zap, Trophy, Shield, Terminal, ArrowRight, Wallet, ShoppingBag, BookOpen, Monitor } from 'lucide-react';
+import { Zap, Trophy, Shield, Terminal, ArrowRight, Wallet, ShoppingBag, BookOpen } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 
@@ -35,14 +35,6 @@ const SkeletonRow = () => (
   </div>
 );
 
-const SkeletonCard = () => (
-  <div className="card-hsociety p-4 animate-pulse">
-    <div className="w-full h-32 rounded bg-accent-dim/30 mb-4" />
-    <div className="h-3 bg-accent-dim/30 rounded w-3/4 mb-2" />
-    <div className="h-8 bg-accent-dim/20 rounded w-full mt-4" />
-  </div>
-);
-
 const numericStatValue = (value: string | number) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
   const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
@@ -53,22 +45,19 @@ const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
-  const [rooms, setRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const [overviewRes, bootcampsRes, roomsRes] = await Promise.all([
+        const [overviewRes, bootcampsRes] = await Promise.all([
           api.get('/student/overview'),
           api.get('/public/bootcamps'),
-          api.get('/student/rooms'),
         ]);
         if (!mounted) return;
         setOverview(overviewRes.data || null);
         setBootcamps(Array.isArray(bootcampsRes.data?.items) ? bootcampsRes.data.items : []);
-        setRooms(Array.isArray(roomsRes.data?.items) ? roomsRes.data.items : []);
       } catch {
         // silently fall through — state stays at defaults
       } finally {
@@ -91,17 +80,6 @@ const Dashboard: React.FC = () => {
       };
     });
   }, [overview, bootcamps]);
-
-  const recentRooms = useMemo(() => {
-    return rooms.slice(0, 2).map((room: any) => ({
-      id: room.id || room._id || '',
-      slug: room.slug || '',
-      title: room.title || 'Room',
-      level: String(room.level || 'Medium'),
-      completed: Boolean(room.completed),
-      img: resolveImg(room.coverImage, '/gallery/gallery-05.jpeg'),
-    }));
-  }, [rooms]);
 
   const progressValue = overview?.snapshot?.find((item: any) => item?.id === 'progress')?.value || '0%';
   const summaryStats = [
@@ -228,42 +206,6 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Recent Rooms */}
-          <div>
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h2 className="text-base md:text-lg font-bold text-text-primary flex items-center gap-2">
-                <Monitor className="w-4 h-4 text-accent" /> RECENT ROOMS
-              </h2>
-              <Link to="/rooms" className="text-xs font-bold text-accent hover:underline">All Rooms →</Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {loading ? (
-                <><SkeletonCard /><SkeletonCard /></>
-              ) : recentRooms.length === 0 ? (
-                <div className="sm:col-span-2 p-5 md:p-6 bg-bg-card border border-border rounded-lg text-center">
-                  <p className="text-sm text-text-muted mb-3">No rooms available yet.</p>
-                  <Link to="/rooms" className="btn-primary text-xs !py-2 !px-4">Browse Rooms</Link>
-                </div>
-              ) : (
-                recentRooms.map((room) => (
-                  <Link to="/rooms" key={room.id} className="card-hsociety p-4 block group">
-                    <img src={room.img} alt="" className="w-full h-28 md:h-32 object-cover rounded mb-3 md:mb-4 grayscale group-hover:grayscale-0 transition-all duration-500" />
-                    <div className="flex justify-between items-start mb-3">
-                      <h4 className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">{room.title}</h4>
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-bg text-text-muted border border-border flex-none ml-2">{room.level}</span>
-                    </div>
-                    <div className={`w-full py-2 rounded font-bold text-[10px] uppercase text-center transition-colors ${
-                      room.completed
-                        ? 'bg-accent/10 text-accent border border-accent/20'
-                        : 'bg-accent-dim text-accent border border-accent/20 hover:bg-accent/20'
-                    }`}>
-                      {room.completed ? '✓ Completed' : 'Enter Room'}
-                    </div>
-                  </Link>
-                ))
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Right Panel */}
@@ -302,7 +244,7 @@ const Dashboard: React.FC = () => {
               <div className="h-full bg-accent rounded-full" style={{ width: progressValue }} />
             </div>
             <p className="text-[10px] text-text-muted text-center italic">
-              Complete modules and rooms to advance your rank.
+              Complete modules to advance your rank.
             </p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import { Mail, MessageSquare, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
+import { Mail, Globe, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import api from '../../../core/services/api';
 import { SITE_CONFIG } from '../content/siteConfig';
 
@@ -51,7 +51,7 @@ const Contact: React.FC = () => {
               </div>
               <div className="flex items-start gap-6">
                 <div className="w-12 h-12 rounded-lg bg-accent-dim border border-accent/20 flex items-center justify-center text-accent shrink-0">
-                  <MessageSquare className="w-6 h-6" />
+                  <Globe className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">{SITE_CONFIG.contactPage.whatsappHeading}</h3>

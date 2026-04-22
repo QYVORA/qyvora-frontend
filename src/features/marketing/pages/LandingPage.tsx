@@ -5,7 +5,6 @@ import { useLandingData } from '../hooks/useLandingData';
 import HeroSection from '../components/landing/HeroSection';
 import ProcessSection from '../components/landing/ProcessSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
-import RoomsSection from '../components/landing/RoomsSection';
 import EconomySection from '../components/landing/EconomySection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
@@ -14,7 +13,7 @@ import FinalCtaSection from '../components/landing/FinalCtaSection';
 
 const Landing: React.FC = () => {
   const { user } = useAuth();
-  const { stats, bootcamps, rooms, leaderboard, marketItems } = useLandingData();
+  const { stats, bootcamps, leaderboard, marketItems } = useLandingData();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
@@ -46,7 +45,6 @@ const Landing: React.FC = () => {
       />
       <ProcessSection stats={stats} totalCp={totalCp} />
       <BootcampsSection bootcamps={bootcamps} />
-      <RoomsSection rooms={rooms} />
       <EconomySection totalCp={totalCp} marketItems={marketItems} />
       <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} />
       <ServicesSection />
@@ -57,4 +55,3 @@ const Landing: React.FC = () => {
 };
 
 export default Landing;
-

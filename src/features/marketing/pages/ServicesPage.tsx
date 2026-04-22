@@ -1,6 +1,6 @@
 import React from 'react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail, Globe } from 'lucide-react';
 import { MARKETING_SERVICES } from '../content/services';
 import { SITE_CONFIG } from '../content/siteConfig';
 
@@ -44,7 +44,7 @@ const Services: React.FC = () => {
           <h2 className="text-2xl font-bold text-text-primary mb-4">Request Operational Support</h2>
           <p className="text-text-muted mb-8 max-w-lg mx-auto">Our security desk is ready to triage your requirements. Reach out for a confidential briefing.</p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <a href={SITE_CONFIG.contact.whatsappUrl} target="_blank" rel="noreferrer" className="btn-primary flex items-center gap-2"><MessageSquare className="w-4 h-4" /> WhatsApp</a>
+            <a href={SITE_CONFIG.contact.whatsappUrl} target="_blank" rel="noreferrer" className="btn-primary flex items-center gap-2"><Globe className="w-4 h-4" /> Website</a>
             <a href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`} className="btn-secondary flex items-center gap-2"><Mail className="w-4 h-4" /> Email us</a>
           </div>
         </ScrollReveal>

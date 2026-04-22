@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Trophy, Zap, Terminal, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award } from 'lucide-react';
+import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -135,7 +135,6 @@ const Profile: React.FC = () => {
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
   const profileStats = [
     { label: 'CP Balance', value: profileData.cp.toLocaleString(), icon: Zap },
-    { label: 'Rooms Cleared', value: profileData.completedRooms.length, icon: Terminal },
     { label: 'Modules Done', value: profileData.unlockedModules.length, icon: Award },
     { label: 'Streak', value: `${profileData.streakDays}d`, icon: Trophy },
   ]
@@ -253,38 +252,6 @@ const Profile: React.FC = () => {
 
           {/* RIGHT — activity */}
           <div className="lg:col-span-2 space-y-6">
-
-            {/* Completed rooms */}
-            <ScrollReveal delay={0.1}>
-              <div className="card-hsociety overflow-hidden">
-                <div className="p-5 border-b border-border bg-accent-dim/5 flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-accent" />
-                  <h3 className="text-sm font-bold text-text-primary uppercase tracking-widest">Completed Rooms</h3>
-                </div>
-                {profileData.completedRooms.length === 0 ? (
-                  <div className="p-8 text-center text-text-muted text-sm">No rooms completed yet.</div>
-                ) : (
-                  <div className="divide-y divide-border/50">
-                    {profileData.completedRooms.slice(0, 6).map((room: any, i: number) => (
-                      <div key={i} className="px-5 py-3 flex items-center justify-between hover:bg-accent-dim/5 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-accent flex-none" />
-                          <div>
-                            <div className="text-xs font-bold text-text-primary">{room.title || room.slug}</div>
-                            {room.level && <div className="text-[10px] text-text-muted uppercase">{room.level}</div>}
-                          </div>
-                        </div>
-                        {room.completedAt && (
-                          <div className="text-[10px] text-text-muted font-mono">
-                            {new Date(room.completedAt).toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </ScrollReveal>
 
             {/* Achievements placeholder */}
             <ScrollReveal delay={0.2}>

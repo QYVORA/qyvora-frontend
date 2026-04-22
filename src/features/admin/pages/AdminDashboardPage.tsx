@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Shield, 
-  Terminal, 
   Users, 
   ShoppingBag, 
   LayoutDashboard, 
@@ -27,7 +26,7 @@ const AdminDashboard: React.FC = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'users' | 'bootcamps' | 'rooms'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'bootcamps'>('users');
   const [overview, setOverview] = useState<any>(null);
 
   const handleLogout = async () => {
@@ -48,21 +47,14 @@ const AdminDashboard: React.FC = () => {
     { id: '3', title: 'AV Evasion Pro', students: 42, status: 'Draft' },
   ]);
 
-  const [rooms, setRooms] = useState([
-    { id: '1', title: 'Rooting Solaris', difficulty: 'Med', clears: 156 },
-    { id: '2', title: 'AD Ghost Town', difficulty: 'Hard', clears: 142 },
-    { id: '3', title: 'Blind SQLi Mastery', difficulty: 'Spec', clears: 128 },
-  ]);
-
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const [overviewRes, usersRes, bootcampsRes, roomsRes] = await Promise.all([
+        const [overviewRes, usersRes, bootcampsRes] = await Promise.all([
           api.get('/admin/overview'),
           api.get('/admin/users'),
           api.get('/public/bootcamps'),
-          api.get('/admin/rooms'),
         ]);
         if (!mounted) return;
 
@@ -93,17 +85,6 @@ const AdminDashboard: React.FC = () => {
           );
         }
 
-        const roomItems = Array.isArray(roomsRes.data?.items) ? roomsRes.data.items : [];
-        if (roomItems.length) {
-          setRooms(
-            roomItems.map((item: any) => ({
-              id: String(item?.id || ''),
-              title: String(item?.title || 'Room'),
-              difficulty: String(item?.level || 'Medium'),
-              clears: 0,
-            }))
-          );
-        }
       } catch {
         if (!mounted) return;
         setOverview(null);
@@ -158,12 +139,6 @@ const AdminDashboard: React.FC = () => {
              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded text-sm font-medium transition-colors ${activeTab === 'bootcamps' ? 'text-accent bg-accent-dim' : 'text-text-muted hover:bg-accent-dim'}`}
           >
             <Shield className="w-4 h-4" /> Bootcamps
-          </button>
-          <button 
-             onClick={() => setActiveTab('rooms')}
-             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded text-sm font-medium transition-colors ${activeTab === 'rooms' ? 'text-accent bg-accent-dim' : 'text-text-muted hover:bg-accent-dim'}`}
-          >
-            <Terminal className="w-4 h-4" /> Rooms
           </button>
         </nav>
 
@@ -285,39 +260,6 @@ const AdminDashboard: React.FC = () => {
               </table>
             )}
 
-            {activeTab === 'rooms' && (
-              <table className="w-full text-left">
-                <thead className="bg-bg border-b border-border">
-                  <tr>
-                    <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Room Name</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Diff</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Total Clears</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {rooms.map((r) => (
-                    <tr key={r.id} className="hover:bg-accent-dim/5 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-bold text-text-primary">{r.title}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded border bg-bg text-text-muted border-border">
-                          {r.difficulty.toUpperCase()}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-text-secondary font-mono">{r.clears} NODES</td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button className="p-2 text-text-muted hover:text-accent transition-colors"><Edit className="w-4 h-4" /></button>
-                          <button className="p-2 text-text-muted hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4" /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
           </div>
         </div>
 
