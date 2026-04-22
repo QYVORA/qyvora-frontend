@@ -51,10 +51,10 @@ const AuthHero: React.FC = () => (
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
     <HeroCanvas />
     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-bg/60 z-10" />
-    <div className="relative z-20">
-      <Link to="/"><Logo size="lg" /></Link>
+    <div className="relative z-20 w-full max-w-[440px]">
+      <Link to="/" className="inline-flex"><Logo size="lg" /></Link>
     </div>
-    <div className="relative z-20 flex flex-col gap-8">
+    <div className="relative z-20 w-full max-w-[440px] flex flex-col gap-8">
       <div>
         <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-4">
           // AFRICA'S OFFENSIVE SECURITY PLATFORM
@@ -82,7 +82,7 @@ const AuthHero: React.FC = () => (
         ))}
       </div>
     </div>
-    <div className="relative z-20 font-mono text-[9px] text-accent/50 tracking-tighter">
+    <div className="relative z-20 w-full max-w-[440px] font-mono text-[9px] text-accent/50 tracking-tighter">
       [ SECURE_CHANNEL_ESTABLISHED ] // TLS 1.3 // AES-256-GCM
     </div>
   </div>

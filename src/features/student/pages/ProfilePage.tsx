@@ -6,6 +6,12 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 
+const numericStatValue = (value: string | number) => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+  const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
+  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+};
+
 /* ── inline edit modal ── */
 interface EditModalProps {
   initial: { name: string; hackerHandle: string; bio: string; organization: string };
@@ -127,6 +133,14 @@ const Profile: React.FC = () => {
     completedRooms: Array.isArray(profileApi?.learn?.completedRooms) ? profileApi.learn.completedRooms : [],
     unlockedModules: Array.isArray(profileApi?.emblems?.unlockedModules) ? profileApi.emblems.unlockedModules : [],
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
+  const profileStats = [
+    { label: 'CP Balance', value: profileData.cp.toLocaleString(), icon: Zap },
+    { label: 'Rooms Cleared', value: profileData.completedRooms.length, icon: Terminal },
+    { label: 'Modules Done', value: profileData.unlockedModules.length, icon: Award },
+    { label: 'Streak', value: `${profileData.streakDays}d`, icon: Trophy },
+  ]
+    .map((stat, index) => ({ ...stat, index, sortValue: numericStatValue(stat.value) }))
+    .sort((a, b) => (b.sortValue - a.sortValue) || (a.index - b.index));
 
   const editInitial = {
     name: profileData.name,
@@ -205,12 +219,7 @@ const Profile: React.FC = () => {
           <div className="space-y-6">
             <ScrollReveal delay={0.1}>
               <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: 'CP Balance', value: profileData.cp.toLocaleString(), icon: Zap },
-                  { label: 'Rooms Cleared', value: profileData.completedRooms.length, icon: Terminal },
-                  { label: 'Modules Done', value: profileData.unlockedModules.length, icon: Award },
-                  { label: 'Streak', value: `${profileData.streakDays}d`, icon: Trophy },
-                ].map((s, i) => (
+                {profileStats.map((s, i) => (
                   <div key={i} className="p-4 bg-bg border border-border rounded-xl">
                     <s.icon className="w-4 h-4 text-accent mb-2" />
                     <div className="text-xl font-black text-text-primary font-mono">{s.value}</div>

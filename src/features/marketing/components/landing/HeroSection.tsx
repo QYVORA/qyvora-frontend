@@ -30,7 +30,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     { label: 'Bootcamps Live', value: stats?.stats?.bootcampsCount ?? 0, suffix: '' },
     { label: 'Zero-Day Products', value: stats?.stats?.zeroDayProductsCount ?? 0, suffix: '+' },
     { label: 'Validated Findings', value: stats?.stats?.vulnerabilitiesIdentified ?? 0, suffix: '' },
-  ];
+  ].sort((a, b) => Number(b.value) - Number(a.value));
 
   return (
     <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full overflow-hidden scanlines">

@@ -43,6 +43,12 @@ const SkeletonCard = () => (
   </div>
 );
 
+const numericStatValue = (value: string | number) => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+  const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
+  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+};
+
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
@@ -98,6 +104,14 @@ const Dashboard: React.FC = () => {
   }, [rooms]);
 
   const progressValue = overview?.snapshot?.find((item: any) => item?.id === 'progress')?.value || '0%';
+  const summaryStats = [
+    { label: 'Rank', value: user?.rank || '—', icon: Shield },
+    { label: 'CP Balance', value: user?.cp?.toLocaleString() ?? '0', icon: Wallet },
+    { label: 'Progress', value: progressValue, icon: Zap },
+    { label: 'Status', value: overview?.bootcampStatus || 'not_enrolled', icon: Terminal },
+  ]
+    .map((stat, index) => ({ ...stat, index, sortValue: numericStatValue(stat.value) }))
+    .sort((a, b) => (b.sortValue - a.sortValue) || (a.index - b.index));
 
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-8 py-5 md:py-8">
@@ -154,12 +168,7 @@ const Dashboard: React.FC = () => {
 
       {/* STAT PILLS */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-5 md:mb-8">
-        {[
-          { label: 'Rank', value: user?.rank || '—', icon: Shield },
-          { label: 'CP Balance', value: user?.cp?.toLocaleString() ?? '0', icon: Wallet },
-          { label: 'Progress', value: progressValue, icon: Zap },
-          { label: 'Status', value: overview?.bootcampStatus || 'not_enrolled', icon: Terminal },
-        ].map((stat, idx) => (
+        {summaryStats.map((stat, idx) => (
           <div key={idx} className="p-3 md:p-4 bg-bg border border-border rounded-lg flex items-center gap-3 md:gap-4">
             <div className="w-9 h-9 md:w-10 md:h-10 rounded-md bg-accent-dim flex items-center justify-center text-accent flex-none">
               <stat.icon className="w-4 h-4 md:w-5 md:h-5" />
