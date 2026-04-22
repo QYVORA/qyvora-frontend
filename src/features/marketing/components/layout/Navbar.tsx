@@ -1,40 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronDown, Monitor, Shield, ShoppingBag, Terminal, Users, BookOpen, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
+import { Menu, X, ChevronDown, Monitor, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
+import { SITE_CONFIG } from '../../content/siteConfig';
+
+const ICON_BY_KEY = {
+  bootcamps: Terminal,
+  rooms: Monitor,
+  marketplace: ShoppingBag,
+  leaderboard: Trophy,
+  zero_day_market: Shield,
+  contact: Mail,
+} as const;
 
 const NAV_GROUPS = [
   {
     label: 'Platform',
-    items: [
-      { label: 'Bootcamps', icon: Terminal, desc: 'Intensive operator training', path: '/bootcamps' },
-      { label: 'Rooms', icon: Monitor, desc: 'Real environments, real techniques', path: '/rooms' },
-      { label: 'Marketplace', icon: ShoppingBag, desc: 'The hacker economy', path: '/marketplace' },
-      { label: 'Leaderboard', icon: Trophy, desc: 'Hall of Shadows', path: '/leaderboard' },
-      { label: 'Zero-Day Market', icon: Shield, desc: 'Exclusive findings', path: '/zero-day-market' },
-    ]
+    items: SITE_CONFIG.nav.platform.map((item) => ({
+      ...item,
+      icon: ICON_BY_KEY[item.key],
+    })),
   },
   {
-    label: 'Tools',
-    items: [
-      { label: 'Domain Recon', icon: Monitor, desc: 'Visualise the attack surface', path: '/domain-recon' },
-      { label: 'Field Playbooks', icon: BookOpen, desc: 'Operator methodology', path: '/field-playbooks' },
-      { label: 'OWASP Top 10', icon: Shield, desc: 'Critical vulnerabilities', path: '/owasp-top-10' },
-    ]
+    label: SITE_CONFIG.nav.services.label,
+    path: SITE_CONFIG.nav.services.path,
   },
-  { label: 'Services', path: '/services' },
   {
     label: 'Company',
-    items: [
-      { label: 'Team', icon: Users, desc: 'The operators behind HSOCIETY', path: '/team' },
-      { label: 'Blog', icon: BookOpen, desc: 'Latest research & findings', path: '/blog' },
-      { label: 'Contact', icon: Mail, desc: 'Get in touch', path: '/contact' },
-    ]
-  }
+    items: SITE_CONFIG.nav.company.map((item) => ({
+      ...item,
+      icon: ICON_BY_KEY[item.key],
+    })),
+  },
 ];
 
 const Navbar: React.FC = () => {

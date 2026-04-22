@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import api from '../../../core/services/api';
-
-interface LandingStats {
-  studentsCount?: number;
-  learnersTrained?: number;
-  bootcampsCount?: number;
-  zeroDayProductsCount?: number;
-  vulnerabilitiesIdentified?: number;
-  pentestersActive?: number;
-}
+import type {
+  BackendStats,
+  Bootcamp,
+  LeaderboardEntry,
+  MarketplaceItem,
+  Room,
+} from '../components/landing/types';
 
 export const useLandingData = () => {
-  const [stats, setStats] = useState<{ stats?: LandingStats } | null>(null);
-  const [bootcamps, setBootcamps] = useState<any[]>([]);
-  const [rooms, setRooms] = useState<any[]>([]);
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
-  const [marketItems, setMarketItems] = useState<any[]>([]);
+  const [stats, setStats] = useState<BackendStats | null>(null);
+  const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [marketItems, setMarketItems] = useState<MarketplaceItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

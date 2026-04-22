@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { Mail, MessageSquare, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import api from '../../../core/services/api';
+import { SITE_CONFIG } from '../content/siteConfig';
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -27,10 +28,10 @@ const Contact: React.FC = () => {
     <div className="pt-32 pb-24 min-h-screen bg-bg">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <ScrollReveal className="text-center mb-16">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">// TRANSMISSION</span>
-          <h1 className="text-4xl md:text-6xl font-black text-text-primary mb-6">Contact the Desk</h1>
+          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">{SITE_CONFIG.contactPage.heroTag}</span>
+          <h1 className="text-4xl md:text-6xl font-black text-text-primary mb-6">{SITE_CONFIG.contactPage.heroTitle}</h1>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Establishing a secure channel for inquiries, partnerships, and operational support.
+            {SITE_CONFIG.contactPage.heroSubtitle}
           </p>
         </ScrollReveal>
 
@@ -43,9 +44,9 @@ const Contact: React.FC = () => {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">Email Intelligence</h3>
-                  <p className="text-sm text-text-muted mb-4">Direct secure channel to our operations desk.</p>
-                  <a href="mailto:ops@hsociety.africa" className="text-accent font-mono font-bold hover:underline">ops@hsociety.africa</a>
+                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">{SITE_CONFIG.contactPage.emailHeading}</h3>
+                  <p className="text-sm text-text-muted mb-4">{SITE_CONFIG.contactPage.emailDescription}</p>
+                  <a href={`mailto:${SITE_CONFIG.contact.opsEmail}`} className="text-accent font-mono font-bold hover:underline">{SITE_CONFIG.contact.opsEmail}</a>
                 </div>
               </div>
               <div className="flex items-start gap-6">
@@ -53,9 +54,9 @@ const Contact: React.FC = () => {
                   <MessageSquare className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">WhatsApp</h3>
-                  <p className="text-sm text-text-muted mb-4">Encrypted messaging for rapid triage.</p>
-                  <a href="https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5" target="_blank" rel="noreferrer" className="text-accent font-mono font-bold hover:underline">Join the War Room</a>
+                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">{SITE_CONFIG.contactPage.whatsappHeading}</h3>
+                  <p className="text-sm text-text-muted mb-4">{SITE_CONFIG.contactPage.whatsappDescription}</p>
+                  <a href={SITE_CONFIG.contact.whatsappUrl} target="_blank" rel="noreferrer" className="text-accent font-mono font-bold hover:underline">{SITE_CONFIG.contact.whatsappLabel}</a>
                 </div>
               </div>
               <div className="flex items-start gap-6">
@@ -63,9 +64,9 @@ const Contact: React.FC = () => {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">HQ Coordinates</h3>
-                  <p className="text-sm text-text-muted mb-4">Cape Town, South Africa. Remote operations globally.</p>
-                  <address className="not-italic text-accent font-mono font-bold">Cape Town, South Africa</address>
+                  <h3 className="text-lg font-bold text-text-primary mb-1 uppercase tracking-tight">{SITE_CONFIG.contactPage.hqHeading}</h3>
+                  <p className="text-sm text-text-muted mb-4">{SITE_CONFIG.contact.headquarters}. {SITE_CONFIG.contactPage.hqDescriptionSuffix}</p>
+                  <address className="not-italic text-accent font-mono font-bold">{SITE_CONFIG.contact.headquarters}</address>
                 </div>
               </div>
             </div>
@@ -73,52 +74,51 @@ const Contact: React.FC = () => {
 
           {/* Form Side */}
           <ScrollReveal delay={0.2} className="card-hsociety p-8">
-            <h2 className="text-2xl font-bold text-text-primary mb-8 uppercase tracking-tighter">Secure Message Form</h2>
+            <h2 className="text-2xl font-bold text-text-primary mb-8 uppercase tracking-tighter">{SITE_CONFIG.contactPage.formTitle}</h2>
 
             {status === 'sent' ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
                 <CheckCircle className="w-12 h-12 text-accent" />
-                <h3 className="text-lg font-bold text-text-primary">Transmission Received</h3>
-                <p className="text-sm text-text-muted">We'll respond to your operator email within 24 hours.</p>
-                <button onClick={() => setStatus('idle')} className="btn-secondary text-xs !py-2 !px-4 mt-2">Send Another</button>
+                <h3 className="text-lg font-bold text-text-primary">{SITE_CONFIG.contactPage.sentTitle}</h3>
+                <p className="text-sm text-text-muted">We'll respond to your operator email {SITE_CONFIG.contact.responseTime}.</p>
+                <button onClick={() => setStatus('idle')} className="btn-secondary text-xs !py-2 !px-4 mt-2">{SITE_CONFIG.contactPage.sentButtonLabel}</button>
               </div>
             ) : (
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Name</label>
-                    <input name="name" type="text" required placeholder="Operator Zero"
+                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{SITE_CONFIG.contactPage.labels.name}</label>
+                    <input name="name" type="text" required placeholder={SITE_CONFIG.contactPage.placeholders.name}
                       className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Email</label>
-                    <input name="email" type="email" required placeholder="secure@email.com"
+                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{SITE_CONFIG.contactPage.labels.email}</label>
+                    <input name="email" type="email" required placeholder={SITE_CONFIG.contactPage.placeholders.email}
                       className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Subject</label>
+                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{SITE_CONFIG.contactPage.labels.subject}</label>
                   <select name="subject" className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm appearance-none cursor-pointer">
-                    <option value="">Select Mission Type</option>
-                    <option value="b2b">B2B Security Consultation</option>
-                    <option value="bootcamp">Bootcamp Inquiries</option>
-                    <option value="media">Media &amp; Partnerships</option>
-                    <option value="other">Other Operational Needs</option>
+                    <option value="">{SITE_CONFIG.contactPage.selectSubjectPlaceholder}</option>
+                    {SITE_CONFIG.contactSubjects.map((subject) => (
+                      <option key={subject.value} value={subject.value}>{subject.label}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Message</label>
-                  <textarea name="message" rows={5} required placeholder="Encrypted transmission here..."
+                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{SITE_CONFIG.contactPage.labels.message}</label>
+                  <textarea name="message" rows={5} required placeholder={SITE_CONFIG.contactPage.placeholders.message}
                     className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm resize-none transition-colors" />
                 </div>
                 {status === 'error' && (
-                  <p className="text-xs text-red-400 font-mono">Transmission failed. Try emailing us directly at ops@hsociety.africa</p>
+                  <p className="text-xs text-red-400 font-mono">{SITE_CONFIG.contactPage.errorPrefix} {SITE_CONFIG.contact.opsEmail}</p>
                 )}
                 <button type="submit" disabled={status === 'sending'}
                   className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-60">
                   {status === 'sending'
-                    ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
-                    : <><Send className="w-4 h-4" /> Send Transmission</>}
+                    ? <><Loader2 className="w-4 h-4 animate-spin" /> {SITE_CONFIG.contactPage.sendingLabel}</>
+                    : <><Send className="w-4 h-4" /> {SITE_CONFIG.contactPage.submitLabel}</>}
                 </button>
               </form>
             )}

@@ -98,25 +98,15 @@
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
-  /* Logo wrapper — only needed in light mode so white logo text is visible */
+  /* Logo wrapper */
   .logo-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
-  }
-  /* Light mode: dark pill so white logo text reads */
-  [data-theme="light"] .logo-wrap,
-  :root:not(.dark) .logo-wrap {
-    background-color: #0c0f0c;
-    border: 1px solid rgba(183, 255, 153, 0.22);
-  }
-  /* Dark mode: no background, no border — logo sits naturally */
-  .dark .logo-wrap {
     background-color: transparent;
     border: none;
+    border-radius: 0;
+    padding: 0;
   }
 
   /* Footer logo banner: dark bg in light mode */

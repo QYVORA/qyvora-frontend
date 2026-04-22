@@ -1,35 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Twitter, Linkedin, Youtube, Mail } from 'lucide-react';
-import Logo from '../../../../shared/components/brand/Logo';
+import { Linkedin, Youtube, Mail } from 'lucide-react';
+import { SITE_CONFIG } from '../../content/siteConfig';
+import BrandXIcon from '../../../../shared/components/icons/BrandXIcon';
 
 const FOOTER_COLS = [
   {
     heading: 'Company',
-    links: [
-      { label: 'Team', path: '/team' },
-      { label: 'Blog', path: '/blog' },
-      { label: 'Careers', path: '/careers' },
-      { label: 'Contact', path: '/contact' },
-    ],
+    links: SITE_CONFIG.nav.company.map((item) => ({ label: item.label, path: item.path })),
   },
   {
     heading: 'Platform',
-    links: [
-      { label: 'Bootcamps', path: '/bootcamps' },
-      { label: 'Rooms', path: '/rooms' },
-      { label: 'Marketplace', path: '/marketplace' },
-      { label: 'Zero-Day Market', path: '/zero-day-market' },
-      { label: 'Leaderboard', path: '/leaderboard' },
-    ],
-  },
-  {
-    heading: 'Tools',
-    links: [
-      { label: 'Domain Recon', path: '/domain-recon' },
-      { label: 'Field Playbooks', path: '/field-playbooks' },
-      { label: 'OWASP Top 10', path: '/owasp-top-10' },
-    ],
+    links: SITE_CONFIG.nav.platform.map((item) => ({ label: item.label, path: item.path })),
   },
 ];
 
@@ -43,14 +25,14 @@ const Footer: React.FC = () => (
         {/* Brand */}
         <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
           <p className="text-text-secondary text-xs md:text-sm leading-relaxed max-w-xs">
-            Africa's premier offensive security training platform. Training the next generation of cybersecurity operators.
+            {SITE_CONFIG.brand.description}
           </p>
           <div className="flex items-center gap-3">
             {[
-              { icon: Twitter, href: 'https://x.com/hsocietyoffsec', label: 'X' },
-              { icon: Linkedin, href: 'https://www.linkedin.com/company/hsociety-offsec/', label: 'LinkedIn' },
-              { icon: Youtube, href: 'https://youtube.com/@hsocietyoffsec', label: 'YouTube' },
-              { icon: Mail, href: 'mailto:ops@hsociety.africa', label: 'Email' },
+              { icon: BrandXIcon, href: SITE_CONFIG.social.find((item) => item.key === 'x')?.href || '#', label: 'X' },
+              { icon: Linkedin, href: SITE_CONFIG.social.find((item) => item.key === 'linkedin')?.href || '#', label: 'LinkedIn' },
+              { icon: Youtube, href: SITE_CONFIG.social.find((item) => item.key === 'youtube')?.href || '#', label: 'YouTube' },
+              { icon: Mail, href: `mailto:${SITE_CONFIG.contact.opsEmail}`, label: 'Email' },
             ].map(({ icon: Icon, href, label }, i) => (
               <a key={i} href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noreferrer" aria-label={label}
                 className="p-2 bg-bg-card border border-border rounded-md text-text-muted hover:text-accent hover:border-accent transition-all">
@@ -99,9 +81,9 @@ const Footer: React.FC = () => (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex flex-col sm:flex-row items-center justify-between text-text-muted text-[10px] gap-3 border-t border-border/30">
       <p>© {new Date().getFullYear()} HSOCIETY OFFSEC. ALL RIGHTS RESERVED.</p>
       <div className="flex items-center gap-4 flex-wrap justify-center">
-        <a href="#" className="hover:text-text-secondary transition-colors">PRIVACY POLICY</a>
-        <a href="#" className="hover:text-text-secondary transition-colors">TERMS OF SERVICE</a>
-        <a href="#" className="hover:text-text-secondary transition-colors">HALL OF FAME</a>
+        {SITE_CONFIG.footer.links.map((item) => (
+          <a key={item.label} href={item.path} className="hover:text-text-secondary transition-colors">{item.label}</a>
+        ))}
       </div>
     </div>
   </footer>

@@ -14,12 +14,8 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 
 // Marketing pages
 const LandingPage = lazy(() => import('../features/marketing/pages/LandingPage'));
-const BlogPage = lazy(() => import('../features/marketing/pages/BlogPage'));
 const ContactPage = lazy(() => import('../features/marketing/pages/ContactPage'));
 const ServicesPage = lazy(() => import('../features/marketing/pages/ServicesPage'));
-const TeamPage = lazy(() => import('../features/marketing/pages/TeamPage'));
-const OWASPPage = lazy(() => import('../features/marketing/pages/OWASPPage'));
-const ToolPage = lazy(() => import('../features/marketing/pages/ToolPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -87,15 +83,9 @@ export const AppRouter = () => {
         {/* Public routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Wrap><LandingPage /></Wrap>} />
-          <Route path="/blog" element={<Wrap><BlogPage /></Wrap>} />
           <Route path="/contact" element={<Wrap><ContactPage /></Wrap>} />
           <Route path="/services" element={<Wrap><ServicesPage /></Wrap>} />
-          <Route path="/team" element={<Wrap><TeamPage /></Wrap>} />
-          <Route path="/careers" element={<Wrap><TeamPage /></Wrap>} />
-          <Route path="/owasp-top-10" element={<Wrap><OWASPPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap><LeaderboardPage /></Wrap>} />
-          <Route path="/domain-recon" element={<Wrap><ToolPage title="Domain Recon" kicker="// VISUAL INTELLIGENCE" subtitle="Real-time attack surface visualisation." description="Track assets, identify weak points, and visualise your target organisation's footprint on a global scale." hasGlobe /></Wrap>} />
-          <Route path="/field-playbooks" element={<Wrap><ToolPage title="Field Playbooks" kicker="// METHODOLOGY" subtitle="Step-by-step offensive workflows." description="Access curated methodologies for internal network pivoting, infrastructure setup, and data exfiltration." /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap><MarketplacePage /></Wrap>} />
         </Route>
 
