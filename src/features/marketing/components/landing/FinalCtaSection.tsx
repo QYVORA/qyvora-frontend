@@ -26,9 +26,9 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => (
         <p className="text-text-secondary text-sm md:text-lg mb-10 max-w-2xl mx-auto">Join operators training in offensive security. No experience required, just commitment.</p>
         <div className="flex items-center justify-center">
           {user ? (
-            <Link to="/dashboard" className="btn-primary !px-10 !py-4 text-sm flex items-center gap-3"><LayoutDashboard className="w-5 h-5" /> Go to Dashboard</Link>
+            <Link to="/dashboard" className="btn-primary !px-6 md:!px-10 !py-3 md:!py-4 text-sm flex items-center gap-3"><LayoutDashboard className="w-5 h-5" /> Go to Dashboard</Link>
           ) : (
-            <Link to="/register" className="btn-primary !px-10 !py-4 text-sm">Start Training →</Link>
+            <Link to="/register" className="btn-primary !px-6 md:!px-10 !py-3 md:!py-4 text-sm">Start Training →</Link>
           )}
         </div>
       </ScrollReveal>
@@ -37,4 +37,3 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => (
 );
 
 export default FinalCtaSection;
-

@@ -49,6 +49,14 @@ const Navbar: React.FC = () => {
   const isScrolled = scrollY > 80;
 
   useEffect(() => { setIsOpen(false); setActiveDropdown(null); setMobileExpanded(null); }, [location]);
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
 
   return (
     <nav 
@@ -161,8 +169,11 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden text-text-primary p-2"
+          className="md:hidden text-text-primary p-2 min-h-11 min-w-11 flex items-center justify-center"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
+          aria-controls="mobile-nav-drawer"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -180,12 +191,13 @@ const Navbar: React.FC = () => {
             <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+              id="mobile-nav-drawer"
               className="fixed top-0 right-0 h-full w-[88vw] max-w-sm bg-bg border-l border-border z-50 flex flex-col md:hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-4 border-b border-border">
                 <Logo size="md" />
-                <button onClick={() => setIsOpen(false)} className="p-2 text-text-muted hover:text-accent transition-colors">
+                <button onClick={() => setIsOpen(false)} className="p-2 min-h-11 min-w-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -222,7 +234,7 @@ const Navbar: React.FC = () => {
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
                             >
-                              <div className="grid grid-cols-2 gap-2 px-2 pb-3 pt-1">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 pb-3 pt-1">
                                 {group.items.map((item) => (
                                   <Link
                                     key={item.label}
@@ -247,7 +259,7 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Auth buttons pinned to bottom */}
-              <div className="px-4 py-5 border-t border-border space-y-3">
+              <div className="px-4 py-5 border-t border-border space-y-3 pb-[calc(env(safe-area-inset-bottom)+1.25rem)]">
                 {/* Theme toggle */}
                 <button
                   onClick={toggleTheme}
@@ -267,7 +279,7 @@ const Navbar: React.FC = () => {
                     </Link>
                   </>
                 ) : (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <Link to="/login" className="flex items-center justify-center border border-accent text-accent rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all">
                       Log In
                     </Link>

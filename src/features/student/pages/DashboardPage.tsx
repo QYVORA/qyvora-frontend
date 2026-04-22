@@ -113,11 +113,11 @@ const Dashboard: React.FC = () => {
                 <div className="text-[10px] font-bold text-text-muted uppercase tracking-[0.3em] mb-1">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase()}
                 </div>
-                <h1 className="text-2xl md:text-4xl font-black text-accent font-mono flex items-center gap-3">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-black text-accent font-mono flex items-center gap-2 md:gap-3 break-words">
                   WELCOME BACK, {user?.username || '—'} <span className="w-2 h-6 md:h-8 bg-accent animate-pulse" />
                 </h1>
               </div>
-              <div className="flex gap-2 md:gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3 w-full sm:w-auto">
                 <div className="px-3 py-1.5 bg-accent text-bg rounded font-bold text-xs">
                   🔥 {Number(overview?.xpSummary?.streakDays || 0)}-DAY STREAK
                 </div>
@@ -196,7 +196,7 @@ const Dashboard: React.FC = () => {
                 </div>
               ) : (
                 enrolledBootcamps.map((item) => (
-                  <Link to="/bootcamps" key={item.id} className="group p-3 md:p-4 bg-bg-card border border-border rounded-lg flex items-center justify-between transition-colors hover:bg-accent-dim/10 active:bg-accent-dim/20 block">
+                  <Link to="/bootcamps" key={item.id} className="group p-3 md:p-4 bg-bg-card border border-border rounded-lg flex items-center justify-between transition-colors hover:bg-accent-dim/10 active:bg-accent-dim/20 block min-h-[76px]">
                     <div className="flex items-center gap-3 md:gap-4 min-w-0">
                       <img src={item.img} alt="" className="w-14 h-10 md:w-16 md:h-12 object-cover rounded border border-border flex-none" />
                       <div className="min-w-0">

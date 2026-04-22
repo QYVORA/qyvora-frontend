@@ -37,9 +37,16 @@
 }
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-bg text-text-primary font-mono selection:bg-accent selection:text-bg;
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 

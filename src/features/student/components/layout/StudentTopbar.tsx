@@ -110,6 +110,14 @@ const StudentTopbar = () => {
     document.addEventListener('mousedown', onPointerDown);
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [notifOpen]);
+  useEffect(() => {
+    if (!moreOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [moreOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -121,7 +129,7 @@ const StudentTopbar = () => {
     <>
       {/* ── Desktop / tablet topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
           {/* Logo + nav */}
           <div className="flex items-center gap-6">
             <Link to="/"><Logo size="md" /></Link>
@@ -153,7 +161,7 @@ const StudentTopbar = () => {
               </span>
               <span className="text-[10px] text-accent font-mono">{user?.rank || '—'}</span>
             </div>
-            <div className="w-10 h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-base flex-none">
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-sm md:text-base flex-none">
               {user?.username?.substring(0, 2).toUpperCase() || 'OP'}
             </div>
 
@@ -165,10 +173,10 @@ const StudentTopbar = () => {
                   setNotifOpen(next);
                   if (next) loadNotificationsSnapshot();
                 }}
-                className="relative p-3 text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
+                className="relative p-2.5 md:p-3 min-h-11 min-w-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-lg hover:bg-accent-dim/50"
                 aria-label="Notifications"
               >
-                <Bell className="w-6 h-6" />
+                <Bell className="w-5 h-5 md:w-6 md:h-6" />
                 {unreadCount > 0 && (
                   <span className="absolute top-1.5 right-1.5 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                     {unreadCount > 9 ? '9+' : unreadCount}
@@ -272,6 +280,7 @@ const StudentTopbar = () => {
               key={item.path}
               to={item.path}
               className="flex-1 flex flex-col items-center justify-center gap-1 py-3.5 min-h-[64px] active:bg-accent-dim/30 transition-colors"
+              aria-current={active ? 'page' : undefined}
             >
               <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
               <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
@@ -286,6 +295,7 @@ const StudentTopbar = () => {
           onClick={() => setMoreOpen(true)}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-3.5 min-h-[64px] active:bg-accent-dim/30 transition-colors relative"
           aria-label="More navigation"
+          aria-expanded={moreOpen}
         >
           <MoreHorizontal className="w-6 h-6 text-text-muted" />
           <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
@@ -316,7 +326,7 @@ const StudentTopbar = () => {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed bottom-0 left-0 right-0 z-[70] md:hidden bg-bg-card border-t border-border rounded-t-2xl"
+              className="fixed bottom-0 left-0 right-0 z-[70] md:hidden bg-bg-card border-t border-border rounded-t-2xl max-h-[82svh] overflow-y-auto"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
               {/* Handle */}
@@ -336,7 +346,7 @@ const StudentTopbar = () => {
               </div>
 
               {/* Nav grid */}
-              <div className="grid grid-cols-3 gap-3 p-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4">
                 {MOBILE_MORE.map((item) => {
                   const active = location.pathname === item.path;
                   const isNotif = item.path === '/notifications';

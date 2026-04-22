@@ -76,7 +76,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             )}
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.8 }}
-            className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden whitespace-nowrap md:whitespace-nowrap">
+            className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden whitespace-normal break-words md:whitespace-nowrap">
             {terminalText}<span className="animate-blink italic">_</span>
           </motion.div>
 

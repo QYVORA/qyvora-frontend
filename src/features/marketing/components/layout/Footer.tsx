@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 md:pt-16 pb-0 relative z-10">
 
       {/* Top row — brand + nav columns */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10 md:mb-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10 md:mb-14">
 
         {/* Brand */}
         <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
@@ -52,11 +52,11 @@ const Footer: React.FC = () => {
         {FOOTER_COLS.map((col) => (
           <div key={col.heading}>
             <h4 className="text-accent font-bold uppercase tracking-widest text-[10px] mb-4">{col.heading}</h4>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+            <ul className="grid grid-cols-1 gap-y-2">
               {col.links.map((link) => (
                 <li key={link.label}>
                   <Link to={link.path}
-                    className="text-text-secondary hover:text-accent text-xs transition-colors whitespace-nowrap">
+                    className="text-text-secondary hover:text-accent text-xs transition-colors">
                     {link.label}
                   </Link>
                 </li>
