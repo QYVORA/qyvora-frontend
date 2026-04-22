@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
+      className={`fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
         isScrolled ? 'bg-bg/85 backdrop-blur-md border-bottom border-border' : 'bg-transparent'
       }`}
     >
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
           {NAV_GROUPS.map((group) => (
             <div 
               key={group.label}
-              className="relative group h-[72px] flex items-center"
+              className="relative group h-[72px] flex items-center overflow-visible"
               onMouseEnter={() => group.items && setActiveDropdown(group.label)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-[72px] left-1/2 -translate-x-1/2 w-[520px] bg-bg-card border border-border rounded-lg shadow-2xl p-5"
+                    className="absolute z-[80] top-[72px] left-1/2 -translate-x-1/2 w-[520px] bg-bg-card border border-border rounded-lg shadow-2xl p-5"
                   >
                     <div className="grid grid-cols-2 gap-3">
                       {group.items.map((item) => (
