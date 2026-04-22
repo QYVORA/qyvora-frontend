@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
           {user ? (
             <div className="flex items-center gap-3">
               {user.isAdmin && (
-                <Link to="/mr-robot" className="text-sm font-bold uppercase tracking-wider text-accent border border-accent/30 rounded-md px-4 py-2 hover:bg-accent-dim transition-all flex items-center gap-2">
+                <Link to="/mr-robot/dashboard" className="text-sm font-bold uppercase tracking-wider text-accent border border-accent/30 rounded-md px-4 py-2 hover:bg-accent-dim transition-all flex items-center gap-2">
                    <Lock className="w-3.5 h-3.5" /> Admin Console
                 </Link>
               )}
@@ -269,7 +269,7 @@ const Navbar: React.FC = () => {
                 {user ? (
                   <>
                     {user.isAdmin && (
-                      <Link to="/mr-robot" className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all">
+                      <Link to="/mr-robot/dashboard" className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all">
                         <Lock className="w-4 h-4" /> Admin Console
                       </Link>
                     )}

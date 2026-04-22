@@ -15,6 +15,9 @@ import {
   Ban,
   Unlock,
   Search,
+  Menu,
+  X,
+  RefreshCw,
 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -32,7 +35,6 @@ type AdminUser = {
   cpPoints: number;
   bootcampAccessRevoked: boolean;
   blockedUntil?: string | null;
-  createdAt?: string;
 };
 
 type Bootcamp = {
@@ -55,10 +57,6 @@ type CPProduct = {
   cpPrice: number;
   coverUrl: string;
   productUrl: string;
-  fileName: string;
-  fileId?: string;
-  fileSize?: number;
-  fileMime?: string;
   type: string;
   isActive: boolean;
   sortOrder: number;
@@ -106,6 +104,7 @@ const AdminDashboardPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<AdminTab>('users');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -212,9 +211,22 @@ const AdminDashboardPage: React.FC = () => {
     setModulesText(JSON.stringify(selectedBootcamp.modules || [], null, 2));
   }, [selectedBootcamp]);
 
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [mobileNavOpen]);
+
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/mr-robot');
   };
 
   const patchUser = async (id: string, payload: Record<string, unknown>, successMessage: string) => {
@@ -432,25 +444,25 @@ const AdminDashboardPage: React.FC = () => {
     }
   };
 
-  const tabs: Array<{ id: AdminTab; label: string; icon: React.ComponentType<{ className?: string }> }> = [
-    { id: 'users', label: 'User Management', icon: Users },
-    { id: 'bootcamps', label: 'Bootcamp Management', icon: Shield },
-    { id: 'zero_day', label: 'Zero-Day Market', icon: Database },
-    { id: 'cp', label: 'CP Management', icon: Coins },
-    { id: 'security', label: 'Security Management', icon: AlertTriangle },
-    { id: 'contacts', label: 'Contact Messages', icon: Mail },
+  const tabs: Array<{ id: AdminTab; label: string; short: string; icon: React.ComponentType<{ className?: string }> }> = [
+    { id: 'users', label: 'User Management', short: 'Users', icon: Users },
+    { id: 'bootcamps', label: 'Bootcamp Management', short: 'Bootcamps', icon: Shield },
+    { id: 'zero_day', label: 'Zero-Day Market', short: 'Market', icon: Database },
+    { id: 'cp', label: 'CP Management', short: 'CP', icon: Coins },
+    { id: 'security', label: 'Security Management', short: 'Security', icon: AlertTriangle },
+    { id: 'contacts', label: 'Contact Messages', short: 'Contacts', icon: Mail },
   ];
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col md:flex-row">
-      <aside className="w-full md:w-72 border-r border-border bg-bg-card p-6 flex flex-col">
+    <div className="min-h-screen bg-black text-zinc-100 flex">
+      <aside className="hidden md:flex md:w-72 border-r border-zinc-800 bg-zinc-950 p-6 flex-col">
         <div className="mb-8">
           <Link to="/"><Logo size="md" className="mb-2" /></Link>
-          <div className="text-[10px] font-bold text-accent font-mono tracking-[0.2em]">ADMIN_CONSOLE // LIVE</div>
+          <div className="text-[10px] font-bold text-zinc-500 font-mono tracking-[0.2em]">ADMIN_CONSOLE // BLACK</div>
         </div>
 
         <div className="space-y-2 flex-1">
-          <Link to="/dashboard" className="w-full flex items-center gap-2 px-3 py-2 rounded border border-border text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/40 transition-colors">
+          <Link to="/dashboard" className="w-full flex items-center gap-2 px-3 py-2 rounded border border-zinc-800 text-xs font-bold uppercase text-zinc-400 hover:text-zinc-200 hover:border-zinc-600 transition-colors">
             <LayoutDashboard className="w-4 h-4" /> Operator View
           </Link>
           {tabs.map((tab) => (
@@ -459,8 +471,8 @@ const AdminDashboardPage: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`w-full flex items-center gap-2 px-3 py-2 rounded text-xs font-bold uppercase tracking-wider transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-accent-dim text-accent border border-accent/30'
-                  : 'text-text-muted border border-transparent hover:border-border hover:text-text-primary'
+                  ? 'bg-zinc-900 text-red-300 border border-red-800/50'
+                  : 'text-zinc-400 border border-transparent hover:border-zinc-800 hover:text-zinc-200'
               }`}
             >
               <tab.icon className="w-4 h-4" /> {tab.label}
@@ -468,283 +480,171 @@ const AdminDashboardPage: React.FC = () => {
           ))}
         </div>
 
-        <div className="pt-6 mt-6 border-t border-border">
-          <div className="text-xs text-text-muted mb-3">Signed in as <span className="text-text-primary font-bold">{user?.email || user?.username || 'admin'}</span></div>
-          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wider text-red-400 border border-red-400/30 rounded hover:bg-red-400/10 transition-colors">
+        <div className="pt-6 mt-6 border-t border-zinc-800">
+          <div className="text-xs text-zinc-400 mb-3">Signed in as <span className="text-zinc-200 font-bold">{user?.email || user?.username || 'admin'}</span></div>
+          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wider text-red-300 border border-red-800/50 rounded hover:bg-red-950/40 transition-colors">
             <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-xl md:text-2xl font-black text-text-primary uppercase tracking-tight">{tabs.find((t) => t.id === activeTab)?.label}</h1>
-          <button onClick={() => void loadAll()} className="btn-secondary text-xs !py-2 !px-4">Refresh</button>
-        </div>
+      <div className="flex-1 min-w-0">
+        <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
+          <div className="h-16 px-4 flex items-center justify-between gap-3">
+            <button onClick={() => setMobileNavOpen(true)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
+              <Menu className="w-5 h-5" />
+            </button>
+            <div className="text-sm font-bold uppercase tracking-wide text-zinc-100">{tabs.find((t) => t.id === activeTab)?.short}</div>
+            <button onClick={() => void loadAll()} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
+              <RefreshCw className="w-5 h-5" />
+            </button>
+          </div>
+        </header>
 
-        {loading ? (
-          <div className="text-sm text-text-muted">Loading admin data...</div>
-        ) : (
-          <>
-            {activeTab === 'users' && (
-              <section className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Total Users</div>
-                    <div className="text-lg font-black text-text-primary">{Number((overview?.users as { total?: number })?.total || 0)}</div>
-                  </div>
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Active 24h</div>
-                    <div className="text-lg font-black text-text-primary">{Number((overview?.users as { active24h?: number })?.active24h || 0)}</div>
-                  </div>
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Admins</div>
-                    <div className="text-lg font-black text-text-primary">{users.filter((u) => u.role === 'admin').length}</div>
-                  </div>
-                </div>
-
-                <div className="relative max-w-md">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                  <input
-                    type="text"
-                    value={userQuery}
-                    onChange={(e) => setUserQuery(e.target.value)}
-                    placeholder="Search users"
-                    className="w-full bg-bg-card border border-border rounded pl-10 pr-3 py-2 text-sm"
-                  />
-                </div>
-
-                <div className="bg-bg-card border border-border rounded overflow-auto">
-                  <table className="w-full text-left min-w-[900px]">
-                    <thead className="border-b border-border bg-bg">
-                      <tr>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">User</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Role</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">CP</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Bootcamp Access</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Account</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredUsers.map((item) => (
-                        <tr key={item.id} className="border-b border-border/70">
-                          <td className="px-4 py-3">
-                            <div className="font-bold text-sm">{item.hackerHandle || item.name || item.email}</div>
-                            <div className="text-[11px] text-text-muted">{item.email}</div>
-                          </td>
-                          <td className="px-4 py-3 text-xs uppercase">{item.role}</td>
-                          <td className="px-4 py-3 text-sm font-mono">{Number(item.cpPoints || 0).toLocaleString()}</td>
-                          <td className="px-4 py-3">
-                            <button
-                              onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Bootcamp access restored' : 'Bootcamp access revoked')}
-                              className={`text-[11px] px-2 py-1 rounded border ${item.bootcampAccessRevoked ? 'text-red-300 border-red-400/30' : 'text-green-300 border-green-400/30'}`}
-                            >
-                              {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
-                            </button>
-                          </td>
-                          <td className="px-4 py-3 text-[11px]">
-                            {isUserBlocked(item) ? (
-                              <span className="text-red-300">Blocked</span>
-                            ) : (
-                              <span className="text-green-300">Active</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => void handleUserBlockToggle(item)}
-                                className="px-2 py-1 text-[11px] rounded border border-border hover:border-accent/40"
-                              >
-                                {isUserBlocked(item) ? <span className="inline-flex items-center gap-1"><Unlock className="w-3 h-3" />Unblock</span> : <span className="inline-flex items-center gap-1"><Ban className="w-3 h-3" />Block</span>}
-                              </button>
-                              <button
-                                onClick={() => void handleDeleteUser(item)}
-                                className="px-2 py-1 text-[11px] rounded border border-red-400/30 text-red-300 hover:bg-red-400/10"
-                              >
-                                <span className="inline-flex items-center gap-1"><Trash2 className="w-3 h-3" />Delete</span>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            )}
-
-            {activeTab === 'bootcamps' && (
-              <section className="space-y-4">
-                <div className="flex flex-wrap items-center gap-2">
+        {mobileNavOpen && (
+          <div className="md:hidden fixed inset-0 z-50">
+            <button className="absolute inset-0 bg-black/70" onClick={() => setMobileNavOpen(false)} />
+            <div className="absolute left-0 top-0 h-full w-[86vw] max-w-xs bg-zinc-950 border-r border-zinc-800 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <Logo size="sm" />
+                <button onClick={() => setMobileNavOpen(false)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="space-y-2 pt-2">
+                {tabs.map((tab) => (
                   <button
-                    onClick={() => {
-                      const next = emptyBootcamp();
-                      setBootcamps((prev) => [...prev, next]);
-                      setSelectedBootcampId(next.id);
-                    }}
-                    className="btn-secondary text-xs !py-2 !px-4 inline-flex items-center gap-2"
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full text-left px-3 py-3 rounded text-xs font-bold uppercase tracking-wider border ${
+                      activeTab === tab.id ? 'border-red-800/60 bg-zinc-900 text-red-300' : 'border-zinc-800 text-zinc-300'
+                    }`}
                   >
-                    <Plus className="w-4 h-4" /> Add Bootcamp
+                    {tab.label}
                   </button>
-                  <button
-                    onClick={() => void saveBootcamps()}
-                    disabled={saving}
-                    className="btn-primary text-xs !py-2 !px-4 inline-flex items-center gap-2 disabled:opacity-60"
-                  >
-                    <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Bootcamp Content'}
-                  </button>
-                </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                  <div className="bg-bg-card border border-border rounded p-3 space-y-2 max-h-[560px] overflow-auto">
-                    {bootcamps.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setSelectedBootcampId(item.id)}
-                        className={`w-full text-left p-3 rounded border transition-colors ${selectedBootcampId === item.id ? 'border-accent/40 bg-accent-dim/20' : 'border-border hover:border-accent/20'}`}
-                      >
-                        <div className="text-xs font-bold uppercase text-text-primary">{item.title || 'Untitled bootcamp'}</div>
-                        <div className="text-[11px] text-text-muted">ID: {item.id}</div>
-                      </button>
+        <main className="px-4 md:px-8 pt-20 md:pt-8 pb-28 md:pb-8 overflow-y-auto">
+          <div className="mb-6 hidden md:flex items-center justify-between gap-3">
+            <h1 className="text-xl md:text-2xl font-black text-zinc-100 uppercase tracking-tight">{tabs.find((t) => t.id === activeTab)?.label}</h1>
+            <button onClick={() => void loadAll()} className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-500">Refresh</button>
+          </div>
+
+          {loading ? (
+            <div className="text-sm text-zinc-400">Loading admin data...</div>
+          ) : (
+            <>
+              {activeTab === 'users' && (
+                <section className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Total Users</div>
+                      <div className="text-lg font-black text-zinc-100">{Number((overview?.users as { total?: number })?.total || 0)}</div>
+                    </div>
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Active 24h</div>
+                      <div className="text-lg font-black text-zinc-100">{Number((overview?.users as { active24h?: number })?.active24h || 0)}</div>
+                    </div>
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Admins</div>
+                      <div className="text-lg font-black text-zinc-100">{users.filter((u) => u.role === 'admin').length}</div>
+                    </div>
+                  </div>
+
+                  <div className="relative max-w-md">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                    <input
+                      type="text"
+                      value={userQuery}
+                      onChange={(e) => setUserQuery(e.target.value)}
+                      placeholder="Search users"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded pl-10 pr-3 py-2 text-sm text-zinc-100"
+                    />
+                  </div>
+
+                  <div className="md:hidden space-y-3">
+                    {filteredUsers.map((item) => (
+                      <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-3">
+                        <div>
+                          <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
+                          <div className="text-[11px] text-zinc-500">{item.email}</div>
+                        </div>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="uppercase text-zinc-400">{item.role}</span>
+                          <span className="font-mono text-zinc-200">CP {Number(item.cpPoints || 0).toLocaleString()}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Bootcamp access restored' : 'Bootcamp access revoked')}
+                            className={`px-2 py-2 text-[11px] rounded border ${item.bootcampAccessRevoked ? 'text-red-300 border-red-800/60' : 'text-emerald-300 border-emerald-800/60'}`}
+                          >
+                            {item.bootcampAccessRevoked ? 'Access Revoked' : 'Access Allowed'}
+                          </button>
+                          <button
+                            onClick={() => void handleUserBlockToggle(item)}
+                            className="px-2 py-2 text-[11px] rounded border border-zinc-700"
+                          >
+                            {isUserBlocked(item) ? 'Unblock' : 'Block'}
+                          </button>
+                          <button
+                            onClick={() => void handleDeleteUser(item)}
+                            className="col-span-2 px-2 py-2 text-[11px] rounded border border-red-800/60 text-red-300"
+                          >
+                            Delete User
+                          </button>
+                        </div>
+                      </div>
                     ))}
                   </div>
 
-                  <div className="lg:col-span-2 bg-bg-card border border-border rounded p-4 space-y-3">
-                    {selectedBootcamp ? (
-                      <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <input value={selectedBootcamp.id} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, id: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Bootcamp ID" />
-                          <input value={selectedBootcamp.title} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, title: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Title" />
-                          <input value={selectedBootcamp.level} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, level: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Level" />
-                          <input value={selectedBootcamp.duration} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, duration: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Duration" />
-                          <input value={selectedBootcamp.priceLabel} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, priceLabel: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Price label" />
-                          <input value={selectedBootcamp.image} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, image: e.target.value })} className="bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Image URL" />
-                        </div>
-                        <textarea value={selectedBootcamp.description} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, description: e.target.value })} className="w-full min-h-[90px] bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Description" />
-
-                        <div>
-                          <div className="text-[11px] font-bold uppercase text-text-muted mb-1">Modules JSON (sections/rooms/videos metadata)</div>
-                          <textarea
-                            value={modulesText}
-                            onChange={(e) => setModulesText(e.target.value)}
-                            className="w-full min-h-[180px] bg-bg border border-border rounded px-3 py-2 text-xs font-mono"
-                          />
-                          <div className="flex items-center gap-2 mt-2">
-                            <button
-                              onClick={() => {
-                                try {
-                                  const parsed = JSON.parse(modulesText) as unknown[];
-                                  applyBootcampDraft({ ...selectedBootcamp, modules: Array.isArray(parsed) ? parsed : [] });
-                                  addToast('Modules JSON applied', 'success');
-                                } catch {
-                                  addToast('Invalid JSON in modules field', 'error');
-                                }
-                              }}
-                              className="btn-secondary text-xs !py-2 !px-4"
-                            >
-                              Apply Modules JSON
-                            </button>
-                            <label className="text-xs inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                checked={selectedBootcamp.isActive}
-                                onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, isActive: e.target.checked })}
-                              />
-                              Active
-                            </label>
-                            <button
-                              onClick={() => {
-                                const ok = window.confirm('Remove this bootcamp from content?');
-                                if (!ok) return;
-                                setBootcamps((prev) => prev.filter((item) => item.id !== selectedBootcamp.id));
-                                setSelectedBootcampId('');
-                              }}
-                              className="ml-auto px-3 py-2 rounded border border-red-400/30 text-red-300 text-xs hover:bg-red-400/10"
-                            >
-                              Delete Bootcamp
-                            </button>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-sm text-text-muted">Select a bootcamp to edit.</div>
-                    )}
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {activeTab === 'zero_day' && (
-              <section className="space-y-4">
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                  <div className="bg-bg-card border border-border rounded p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-text-muted">Create / Edit Product</div>
-                    <input value={productForm.title} onChange={(e) => setProductForm((p) => ({ ...p, title: e.target.value }))} placeholder="Title" className="w-full bg-bg border border-border rounded px-3 py-2 text-sm" />
-                    <textarea value={productForm.description} onChange={(e) => setProductForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" className="w-full min-h-[90px] bg-bg border border-border rounded px-3 py-2 text-sm" />
-                    <div className="grid grid-cols-2 gap-2">
-                      <input type="number" value={productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="CP price" className="bg-bg border border-border rounded px-3 py-2 text-sm" />
-                      <input type="number" value={productForm.sortOrder} onChange={(e) => setProductForm((p) => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="Sort order" className="bg-bg border border-border rounded px-3 py-2 text-sm" />
-                    </div>
-                    <input value={productForm.type} onChange={(e) => setProductForm((p) => ({ ...p, type: e.target.value }))} placeholder="Type (book/tool/etc)" className="w-full bg-bg border border-border rounded px-3 py-2 text-sm" />
-                    <input value={productForm.productUrl} onChange={(e) => setProductForm((p) => ({ ...p, productUrl: e.target.value }))} placeholder="Optional external product URL" className="w-full bg-bg border border-border rounded px-3 py-2 text-sm" />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      <label className="space-y-1">
-                        <span className="text-text-muted uppercase">Cover image</span>
-                        <input type="file" accept="image/*" onChange={(e) => setCoverFile(e.target.files?.[0] || null)} className="block w-full" />
-                      </label>
-                      <label className="space-y-1">
-                        <span className="text-text-muted uppercase">Product PDF</span>
-                        <input type="file" accept="application/pdf" onChange={(e) => setProductFile(e.target.files?.[0] || null)} className="block w-full" />
-                      </label>
-                    </div>
-                    <label className="text-xs inline-flex items-center gap-2">
-                      <input type="checkbox" checked={productForm.isActive} onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.checked }))} /> Active
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => void saveProduct()} className="btn-primary text-xs !py-2 !px-4">{productForm.id ? 'Update Product' : 'Create Product'}</button>
-                      <button onClick={resetProductForm} className="btn-secondary text-xs !py-2 !px-4">Clear</button>
-                    </div>
-                  </div>
-
-                  <div className="bg-bg-card border border-border rounded overflow-auto max-h-[620px]">
-                    <table className="w-full text-left min-w-[700px]">
-                      <thead className="border-b border-border bg-bg">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                    <table className="w-full text-left min-w-[900px]">
+                      <thead className="border-b border-zinc-800 bg-black">
                         <tr>
-                          <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Title</th>
-                          <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Price</th>
-                          <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Type</th>
-                          <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Status</th>
-                          <th className="px-4 py-3 text-[10px] uppercase text-text-muted text-right">Actions</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">User</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Role</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">CP</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Bootcamp Access</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Account</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500 text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {products.map((item) => (
-                          <tr key={item._id} className="border-b border-border/70">
-                            <td className="px-4 py-3 text-sm font-bold">{item.title}</td>
-                            <td className="px-4 py-3 text-sm font-mono">{item.cpPrice}</td>
-                            <td className="px-4 py-3 text-xs uppercase">{item.type}</td>
-                            <td className="px-4 py-3 text-xs">{item.isActive ? 'Active' : 'Inactive'}</td>
-                            <td className="px-4 py-3 text-right">
-                              <div className="inline-flex gap-2">
+                        {filteredUsers.map((item) => (
+                          <tr key={item.id} className="border-b border-zinc-800/80">
+                            <td className="px-4 py-3">
+                              <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
+                              <div className="text-[11px] text-zinc-500">{item.email}</div>
+                            </td>
+                            <td className="px-4 py-3 text-xs uppercase text-zinc-300">{item.role}</td>
+                            <td className="px-4 py-3 text-sm font-mono text-zinc-100">{Number(item.cpPoints || 0).toLocaleString()}</td>
+                            <td className="px-4 py-3">
+                              <button
+                                onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Bootcamp access restored' : 'Bootcamp access revoked')}
+                                className={`text-[11px] px-2 py-1 rounded border ${item.bootcampAccessRevoked ? 'text-red-300 border-red-800/60' : 'text-emerald-300 border-emerald-800/60'}`}
+                              >
+                                {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
+                              </button>
+                            </td>
+                            <td className="px-4 py-3 text-[11px] text-zinc-300">{isUserBlocked(item) ? 'Blocked' : 'Active'}</td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center justify-end gap-2">
                                 <button
-                                  onClick={() => {
-                                    setProductForm({
-                                      id: item._id,
-                                      title: item.title || '',
-                                      description: item.description || '',
-                                      cpPrice: Number(item.cpPrice || 0),
-                                      type: item.type || 'book',
-                                      sortOrder: Number(item.sortOrder || 0),
-                                      productUrl: item.productUrl || '',
-                                      isActive: item.isActive !== false,
-                                    });
-                                  }}
-                                  className="px-2 py-1 rounded border border-border text-xs"
+                                  onClick={() => void handleUserBlockToggle(item)}
+                                  className="px-2 py-1 text-[11px] rounded border border-zinc-700 hover:border-zinc-500"
                                 >
-                                  Edit
+                                  {isUserBlocked(item) ? <span className="inline-flex items-center gap-1"><Unlock className="w-3 h-3" />Unblock</span> : <span className="inline-flex items-center gap-1"><Ban className="w-3 h-3" />Block</span>}
                                 </button>
-                                <button onClick={() => void deleteProduct(item._id)} className="px-2 py-1 rounded border border-red-400/30 text-red-300 text-xs">Delete</button>
+                                <button
+                                  onClick={() => void handleDeleteUser(item)}
+                                  className="px-2 py-1 text-[11px] rounded border border-red-800/60 text-red-300 hover:bg-red-950/40"
+                                >
+                                  <span className="inline-flex items-center gap-1"><Trash2 className="w-3 h-3" />Delete</span>
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -752,126 +652,394 @@ const AdminDashboardPage: React.FC = () => {
                       </tbody>
                     </table>
                   </div>
-                </div>
-              </section>
-            )}
+                </section>
+              )}
 
-            {activeTab === 'cp' && (
-              <section className="space-y-4 max-w-2xl">
-                <div className="bg-bg-card border border-border rounded p-4 space-y-3">
-                  <div className="text-xs font-bold uppercase text-text-muted">Cyber Points Control</div>
-                  <select value={cpUserId} onChange={(e) => setCpUserId(e.target.value)} className="w-full bg-bg border border-border rounded px-3 py-2 text-sm">
-                    {users.map((u) => (
-                      <option key={u.id} value={u.id}>{u.hackerHandle || u.name || u.email} ({u.email})</option>
+              {activeTab === 'bootcamps' && (
+                <section className="space-y-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      onClick={() => {
+                        const next = emptyBootcamp();
+                        setBootcamps((prev) => [...prev, next]);
+                        setSelectedBootcampId(next.id);
+                      }}
+                      className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase inline-flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" /> Add Bootcamp
+                    </button>
+                    <button
+                      onClick={() => void saveBootcamps()}
+                      disabled={saving}
+                      className="px-3 py-2 border border-red-800/60 bg-zinc-900 rounded text-xs font-bold uppercase text-red-300 inline-flex items-center gap-2 disabled:opacity-60"
+                    >
+                      <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Bootcamp Content'}
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2 max-h-[560px] overflow-auto">
+                      {bootcamps.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => setSelectedBootcampId(item.id)}
+                          className={`w-full text-left p-3 rounded border transition-colors ${selectedBootcampId === item.id ? 'border-red-800/60 bg-zinc-900' : 'border-zinc-800 hover:border-zinc-600'}`}
+                        >
+                          <div className="text-xs font-bold uppercase text-zinc-100">{item.title || 'Untitled bootcamp'}</div>
+                          <div className="text-[11px] text-zinc-500">ID: {item.id}</div>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="lg:col-span-2 bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
+                      {selectedBootcamp ? (
+                        <>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input value={selectedBootcamp.id} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, id: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Bootcamp ID" />
+                            <input value={selectedBootcamp.title} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, title: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Title" />
+                            <input value={selectedBootcamp.level} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, level: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Level" />
+                            <input value={selectedBootcamp.duration} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, duration: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Duration" />
+                            <input value={selectedBootcamp.priceLabel} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, priceLabel: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Price label" />
+                            <input value={selectedBootcamp.image} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, image: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Image URL" />
+                          </div>
+                          <textarea value={selectedBootcamp.description} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, description: e.target.value })} className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Description" />
+
+                          <div>
+                            <div className="text-[11px] font-bold uppercase text-zinc-500 mb-1">Modules JSON (sections/rooms/videos metadata)</div>
+                            <textarea
+                              value={modulesText}
+                              onChange={(e) => setModulesText(e.target.value)}
+                              className="w-full min-h-[180px] bg-black border border-zinc-800 rounded px-3 py-2 text-xs font-mono text-zinc-100"
+                            />
+                            <div className="flex flex-wrap items-center gap-2 mt-2">
+                              <button
+                                onClick={() => {
+                                  try {
+                                    const parsed = JSON.parse(modulesText) as unknown[];
+                                    applyBootcampDraft({ ...selectedBootcamp, modules: Array.isArray(parsed) ? parsed : [] });
+                                    addToast('Modules JSON applied', 'success');
+                                  } catch {
+                                    addToast('Invalid JSON in modules field', 'error');
+                                  }
+                                }}
+                                className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase"
+                              >
+                                Apply Modules JSON
+                              </button>
+                              <label className="text-xs inline-flex items-center gap-2 text-zinc-300">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedBootcamp.isActive}
+                                  onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, isActive: e.target.checked })}
+                                />
+                                Active
+                              </label>
+                              <button
+                                onClick={() => {
+                                  const ok = window.confirm('Remove this bootcamp from content?');
+                                  if (!ok) return;
+                                  setBootcamps((prev) => prev.filter((item) => item.id !== selectedBootcamp.id));
+                                  setSelectedBootcampId('');
+                                }}
+                                className="ml-auto px-3 py-2 rounded border border-red-800/60 text-red-300 text-xs"
+                              >
+                                Delete Bootcamp
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-sm text-zinc-500">Select a bootcamp to edit.</div>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeTab === 'zero_day' && (
+                <section className="space-y-4">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
+                      <div className="text-xs font-bold uppercase text-zinc-500">Create / Edit Product</div>
+                      <input value={productForm.title} onChange={(e) => setProductForm((p) => ({ ...p, title: e.target.value }))} placeholder="Title" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                      <textarea value={productForm.description} onChange={(e) => setProductForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                      <div className="grid grid-cols-2 gap-2">
+                        <input type="number" value={productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="CP price" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                        <input type="number" value={productForm.sortOrder} onChange={(e) => setProductForm((p) => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="Sort order" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                      </div>
+                      <input value={productForm.type} onChange={(e) => setProductForm((p) => ({ ...p, type: e.target.value }))} placeholder="Type (book/tool/etc)" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                      <input value={productForm.productUrl} onChange={(e) => setProductForm((p) => ({ ...p, productUrl: e.target.value }))} placeholder="Optional external product URL" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-zinc-300">
+                        <label className="space-y-1">
+                          <span className="text-zinc-500 uppercase">Cover image</span>
+                          <input type="file" accept="image/*" onChange={(e) => setCoverFile(e.target.files?.[0] || null)} className="block w-full" />
+                        </label>
+                        <label className="space-y-1">
+                          <span className="text-zinc-500 uppercase">Product PDF</span>
+                          <input type="file" accept="application/pdf" onChange={(e) => setProductFile(e.target.files?.[0] || null)} className="block w-full" />
+                        </label>
+                      </div>
+                      <label className="text-xs inline-flex items-center gap-2 text-zinc-300">
+                        <input type="checkbox" checked={productForm.isActive} onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.checked }))} /> Active
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => void saveProduct()} className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300">{productForm.id ? 'Update Product' : 'Create Product'}</button>
+                        <button onClick={resetProductForm} className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase">Clear</button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="md:hidden space-y-3 max-h-[620px] overflow-auto">
+                        {products.map((item) => (
+                          <div key={item._id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
+                            <div className="font-bold text-sm text-zinc-100">{item.title}</div>
+                            <div className="text-xs text-zinc-400">{item.type} • {item.cpPrice} CP • {item.isActive ? 'Active' : 'Inactive'}</div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                onClick={() => {
+                                  setProductForm({
+                                    id: item._id,
+                                    title: item.title || '',
+                                    description: item.description || '',
+                                    cpPrice: Number(item.cpPrice || 0),
+                                    type: item.type || 'book',
+                                    sortOrder: Number(item.sortOrder || 0),
+                                    productUrl: item.productUrl || '',
+                                    isActive: item.isActive !== false,
+                                  });
+                                }}
+                                className="px-2 py-2 rounded border border-zinc-700 text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button onClick={() => void deleteProduct(item._id)} className="px-2 py-2 rounded border border-red-800/60 text-red-300 text-xs">Delete</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto max-h-[620px]">
+                        <table className="w-full text-left min-w-[700px]">
+                          <thead className="border-b border-zinc-800 bg-black">
+                            <tr>
+                              <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Title</th>
+                              <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Price</th>
+                              <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Type</th>
+                              <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Status</th>
+                              <th className="px-4 py-3 text-[10px] uppercase text-zinc-500 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {products.map((item) => (
+                              <tr key={item._id} className="border-b border-zinc-800/80">
+                                <td className="px-4 py-3 text-sm font-bold text-zinc-100">{item.title}</td>
+                                <td className="px-4 py-3 text-sm font-mono text-zinc-200">{item.cpPrice}</td>
+                                <td className="px-4 py-3 text-xs uppercase text-zinc-300">{item.type}</td>
+                                <td className="px-4 py-3 text-xs text-zinc-300">{item.isActive ? 'Active' : 'Inactive'}</td>
+                                <td className="px-4 py-3 text-right">
+                                  <div className="inline-flex gap-2">
+                                    <button
+                                      onClick={() => {
+                                        setProductForm({
+                                          id: item._id,
+                                          title: item.title || '',
+                                          description: item.description || '',
+                                          cpPrice: Number(item.cpPrice || 0),
+                                          type: item.type || 'book',
+                                          sortOrder: Number(item.sortOrder || 0),
+                                          productUrl: item.productUrl || '',
+                                          isActive: item.isActive !== false,
+                                        });
+                                      }}
+                                      className="px-2 py-1 rounded border border-zinc-700 text-xs"
+                                    >
+                                      Edit
+                                    </button>
+                                    <button onClick={() => void deleteProduct(item._id)} className="px-2 py-1 rounded border border-red-800/60 text-red-300 text-xs">Delete</button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeTab === 'cp' && (
+                <section className="space-y-4 max-w-2xl">
+                  <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
+                    <div className="text-xs font-bold uppercase text-zinc-500">Cyber Points Control</div>
+                    <select value={cpUserId} onChange={(e) => setCpUserId(e.target.value)} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100">
+                      {users.map((u) => (
+                        <option key={u.id} value={u.id}>{u.hackerHandle || u.name || u.email} ({u.email})</option>
+                      ))}
+                    </select>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button onClick={() => setCpAction('grant')} className={`px-3 py-2 rounded border text-xs font-bold uppercase ${cpAction === 'grant' ? 'border-red-800/60 text-red-300' : 'border-zinc-800 text-zinc-300'}`}>Grant</button>
+                      <button onClick={() => setCpAction('deduct')} className={`px-3 py-2 rounded border text-xs font-bold uppercase ${cpAction === 'deduct' ? 'border-red-800/60 text-red-300' : 'border-zinc-800 text-zinc-300'}`}>Deduct</button>
+                      <button onClick={() => setCpAction('set')} className={`px-3 py-2 rounded border text-xs font-bold uppercase ${cpAction === 'set' ? 'border-red-800/60 text-red-300' : 'border-zinc-800 text-zinc-300'}`}>Set</button>
+                    </div>
+                    <input type="number" value={cpValue} onChange={(e) => setCpValue(Number(e.target.value || 0))} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder={cpAction === 'set' ? 'Target CP value' : 'Points'} />
+                    <input value={cpReason} onChange={(e) => setCpReason(e.target.value)} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Reason (optional)" />
+                    <button onClick={() => void runCpAction()} className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300">Execute CP Action</button>
+                  </div>
+                </section>
+              )}
+
+              {activeTab === 'security' && (
+                <section className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Events 24h</div>
+                      <div className="text-lg font-black text-zinc-100">{Number(securitySummary?.events24h || 0)}</div>
+                    </div>
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Unique IPs 24h</div>
+                      <div className="text-lg font-black text-zinc-100">{Number(securitySummary?.uniqueIps24h || 0)}</div>
+                    </div>
+                    <div className="bg-zinc-950 border border-zinc-800 rounded p-4">
+                      <div className="text-[10px] uppercase text-zinc-500">Auth Failures 24h</div>
+                      <div className="text-lg font-black text-zinc-100">{Number(securitySummary?.authFailures24h || 0)}</div>
+                    </div>
+                  </div>
+
+                  <div className="md:hidden space-y-3">
+                    {securityEvents.map((item) => (
+                      <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 text-xs space-y-1">
+                        <div className="text-zinc-400">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</div>
+                        <div className="font-bold text-zinc-100 uppercase">{item.eventType}</div>
+                        <div className="text-zinc-300">{item.action}</div>
+                        <div className="font-mono text-zinc-500">{item.path || '-'}</div>
+                        <div className="text-zinc-300">HTTP {item.statusCode} • {item.ipAddress || '-'}</div>
+                      </div>
                     ))}
-                  </select>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button onClick={() => setCpAction('grant')} className={`px-3 py-2 rounded border text-xs ${cpAction === 'grant' ? 'border-accent/50 text-accent' : 'border-border'}`}>Grant</button>
-                    <button onClick={() => setCpAction('deduct')} className={`px-3 py-2 rounded border text-xs ${cpAction === 'deduct' ? 'border-accent/50 text-accent' : 'border-border'}`}>Deduct</button>
-                    <button onClick={() => setCpAction('set')} className={`px-3 py-2 rounded border text-xs ${cpAction === 'set' ? 'border-accent/50 text-accent' : 'border-border'}`}>Set</button>
                   </div>
-                  <input type="number" value={cpValue} onChange={(e) => setCpValue(Number(e.target.value || 0))} className="w-full bg-bg border border-border rounded px-3 py-2 text-sm" placeholder={cpAction === 'set' ? 'Target CP value' : 'Points'} />
-                  <input value={cpReason} onChange={(e) => setCpReason(e.target.value)} className="w-full bg-bg border border-border rounded px-3 py-2 text-sm" placeholder="Reason (optional)" />
-                  <button onClick={() => void runCpAction()} className="btn-primary text-xs !py-2 !px-4">Execute CP Action</button>
-                </div>
-              </section>
-            )}
 
-            {activeTab === 'security' && (
-              <section className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Events 24h</div>
-                    <div className="text-lg font-black">{Number(securitySummary?.events24h || 0)}</div>
-                  </div>
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Unique IPs 24h</div>
-                    <div className="text-lg font-black">{Number(securitySummary?.uniqueIps24h || 0)}</div>
-                  </div>
-                  <div className="bg-bg-card border border-border rounded p-4">
-                    <div className="text-[10px] uppercase text-text-muted">Auth Failures 24h</div>
-                    <div className="text-lg font-black">{Number(securitySummary?.authFailures24h || 0)}</div>
-                  </div>
-                </div>
-
-                <div className="bg-bg-card border border-border rounded overflow-auto">
-                  <table className="w-full text-left min-w-[900px]">
-                    <thead className="border-b border-border bg-bg">
-                      <tr>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Time</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Type</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Action</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Path</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Code</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">IP</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {securityEvents.map((item) => (
-                        <tr key={item.id} className="border-b border-border/70 text-xs">
-                          <td className="px-4 py-3">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td>
-                          <td className="px-4 py-3 uppercase">{item.eventType}</td>
-                          <td className="px-4 py-3">{item.action}</td>
-                          <td className="px-4 py-3 font-mono">{item.path || '-'}</td>
-                          <td className="px-4 py-3">{item.statusCode}</td>
-                          <td className="px-4 py-3 font-mono">{item.ipAddress || '-'}</td>
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                    <table className="w-full text-left min-w-[900px]">
+                      <thead className="border-b border-zinc-800 bg-black">
+                        <tr>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Time</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Type</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Action</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Path</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Code</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">IP</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            )}
+                      </thead>
+                      <tbody>
+                        {securityEvents.map((item) => (
+                          <tr key={item.id} className="border-b border-zinc-800/80 text-xs">
+                            <td className="px-4 py-3 text-zinc-300">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td>
+                            <td className="px-4 py-3 uppercase text-zinc-200">{item.eventType}</td>
+                            <td className="px-4 py-3 text-zinc-300">{item.action}</td>
+                            <td className="px-4 py-3 font-mono text-zinc-500">{item.path || '-'}</td>
+                            <td className="px-4 py-3 text-zinc-300">{item.statusCode}</td>
+                            <td className="px-4 py-3 font-mono text-zinc-300">{item.ipAddress || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
 
-            {activeTab === 'contacts' && (
-              <section className="space-y-4">
-                <div className="bg-bg-card border border-border rounded overflow-auto">
-                  <table className="w-full text-left min-w-[980px]">
-                    <thead className="border-b border-border bg-bg">
-                      <tr>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">From</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Subject</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Message</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Status</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted">Date</th>
-                        <th className="px-4 py-3 text-[10px] uppercase text-text-muted text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {contactMessages.map((item) => (
-                        <tr key={item.id} className="border-b border-border/70 align-top">
-                          <td className="px-4 py-3 text-sm">
-                            <div className="font-bold">{item.name}</div>
-                            <div className="text-[11px] text-text-muted">{item.email}</div>
-                          </td>
-                          <td className="px-4 py-3 text-xs">{item.subject || '-'}</td>
-                          <td className="px-4 py-3 text-xs max-w-[360px] whitespace-pre-wrap">{item.message}</td>
-                          <td className="px-4 py-3">
-                            <select
-                              value={item.status}
-                              onChange={(e) => void updateContactStatus(item.id, e.target.value as ContactMessage['status'])}
-                              className="bg-bg border border-border rounded px-2 py-1 text-xs"
-                            >
-                              <option value="new">new</option>
-                              <option value="in_progress">in_progress</option>
-                              <option value="resolved">resolved</option>
-                              <option value="archived">archived</option>
-                            </select>
-                          </td>
-                          <td className="px-4 py-3 text-[11px] text-text-muted">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td>
-                          <td className="px-4 py-3 text-right">
-                            <button onClick={() => void deleteContactMessage(item.id)} className="px-2 py-1 rounded border border-red-400/30 text-red-300 text-xs">Delete</button>
-                          </td>
+              {activeTab === 'contacts' && (
+                <section className="space-y-4">
+                  <div className="md:hidden space-y-3">
+                    {contactMessages.map((item) => (
+                      <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
+                        <div>
+                          <div className="font-bold text-sm text-zinc-100">{item.name}</div>
+                          <div className="text-[11px] text-zinc-500">{item.email}</div>
+                        </div>
+                        <div className="text-xs text-zinc-300">{item.subject || '-'}</div>
+                        <div className="text-xs text-zinc-400 whitespace-pre-wrap">{item.message}</div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <select
+                            value={item.status}
+                            onChange={(e) => void updateContactStatus(item.id, e.target.value as ContactMessage['status'])}
+                            className="bg-black border border-zinc-800 rounded px-2 py-2 text-xs text-zinc-100"
+                          >
+                            <option value="new">new</option>
+                            <option value="in_progress">in_progress</option>
+                            <option value="resolved">resolved</option>
+                            <option value="archived">archived</option>
+                          </select>
+                          <button onClick={() => void deleteContactMessage(item.id)} className="px-2 py-2 rounded border border-red-800/60 text-red-300 text-xs">Delete</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                    <table className="w-full text-left min-w-[980px]">
+                      <thead className="border-b border-zinc-800 bg-black">
+                        <tr>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">From</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Subject</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Message</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Status</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Date</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500 text-right">Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            )}
-          </>
-        )}
-      </main>
+                      </thead>
+                      <tbody>
+                        {contactMessages.map((item) => (
+                          <tr key={item.id} className="border-b border-zinc-800/80 align-top">
+                            <td className="px-4 py-3 text-sm">
+                              <div className="font-bold text-zinc-100">{item.name}</div>
+                              <div className="text-[11px] text-zinc-500">{item.email}</div>
+                            </td>
+                            <td className="px-4 py-3 text-xs text-zinc-300">{item.subject || '-'}</td>
+                            <td className="px-4 py-3 text-xs text-zinc-300 max-w-[360px] whitespace-pre-wrap">{item.message}</td>
+                            <td className="px-4 py-3">
+                              <select
+                                value={item.status}
+                                onChange={(e) => void updateContactStatus(item.id, e.target.value as ContactMessage['status'])}
+                                className="bg-black border border-zinc-800 rounded px-2 py-1 text-xs text-zinc-100"
+                              >
+                                <option value="new">new</option>
+                                <option value="in_progress">in_progress</option>
+                                <option value="resolved">resolved</option>
+                                <option value="archived">archived</option>
+                              </select>
+                            </td>
+                            <td className="px-4 py-3 text-[11px] text-zinc-500">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td>
+                            <td className="px-4 py-3 text-right">
+                              <button onClick={() => void deleteContactMessage(item.id)} className="px-2 py-1 rounded border border-red-800/60 text-red-300 text-xs">Delete</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+            </>
+          )}
+        </main>
+
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950 border-t border-zinc-800 pb-[calc(env(safe-area-inset-bottom)+0.35rem)]">
+          <div className="grid grid-cols-6 gap-1 px-1 pt-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`min-h-14 rounded-md text-[10px] font-bold uppercase tracking-tight flex flex-col items-center justify-center gap-1 ${
+                  activeTab === tab.id ? 'text-red-300 bg-zinc-900' : 'text-zinc-400'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                <span>{tab.short}</span>
+              </button>
+            ))}
+          </div>
+        </nav>
+      </div>
     </div>
   );
 };

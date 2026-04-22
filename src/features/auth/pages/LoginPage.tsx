@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
@@ -89,7 +89,7 @@ const AuthHero: React.FC = () => (
 );
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, logout, user: sessionUser, loading: sessionLoading } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,8 +97,10 @@ const Login: React.FC = () => {
   const params = new URLSearchParams(location.search);
   const urlToken = params.get('token') || '';
   const urlEmail = params.get('email') || '';
+  const isAdminLoginRoute = location.pathname === '/mr-robot';
 
   const initialMode: Mode =
+    isAdminLoginRoute ? 'login' :
     location.pathname === '/register' ? 'register' :
     location.pathname === '/forgot-password' ? 'forgot' :
     location.pathname === '/verify-email' ? 'verify-email' :
@@ -109,6 +111,13 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState(urlEmail);
   const [verifyEmail, setVerifyEmail] = useState(urlEmail);
+
+  useEffect(() => {
+    if (sessionLoading || !isAdminLoginRoute) return;
+    if (sessionUser?.isAdmin) {
+      navigate('/mr-robot/dashboard', { replace: true });
+    }
+  }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,7 +170,12 @@ const Login: React.FC = () => {
           setAccessToken(res.data.token);
         }
         addToast('Password changed. Session established.', 'success');
-        navigate('/dashboard');
+        const meRes = await api.get('/auth/me').catch(() => null);
+        if (String(meRes?.data?.role || '').toLowerCase() === 'admin') {
+          navigate('/mr-robot/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
 
       } else if (mode === 'register') {
         const handle = String(formData.get('handle') || '').trim();
@@ -183,6 +197,18 @@ const Login: React.FC = () => {
 
       } else {
         await login({ email, password });
+        const meRes = await api.get('/auth/me').catch(() => null);
+        const isAdmin = String(meRes?.data?.role || '').toLowerCase() === 'admin';
+        if (isAdmin) {
+          addToast('Admin session established.', 'success');
+          navigate('/mr-robot/dashboard');
+          return;
+        }
+        if (isAdminLoginRoute) {
+          await logout();
+          addToast('Admin credentials required for this route.', 'error');
+          return;
+        }
         addToast('Session established. Welcome back, Operator.', 'success');
         navigate('/dashboard');
       }
@@ -201,8 +227,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg grid grid-cols-1 lg:grid-cols-2">
-      <AuthHero />
+    <div className={`min-h-screen ${isAdminLoginRoute ? 'bg-black' : 'bg-bg'} grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
+      {!isAdminLoginRoute && <AuthHero />}
 
       <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
@@ -221,8 +247,12 @@ const Login: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
                 <div className="mb-8">
-                  <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight mb-1">Operator Login</h1>
-                  <p className="text-text-muted text-sm">Enter credentials to establish secure session.</p>
+                  <h1 className={`text-2xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-zinc-100' : 'text-text-primary'}`}>
+                    {isAdminLoginRoute ? 'Admin Access' : 'Operator Login'}
+                  </h1>
+                  <p className={`text-sm ${isAdminLoginRoute ? 'text-zinc-400' : 'text-text-muted'}`}>
+                    {isAdminLoginRoute ? 'Restricted route. Enter admin credentials.' : 'Enter credentials to establish secure session.'}
+                  </p>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
@@ -240,21 +270,29 @@ const Login: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Password</label>
-                      <button type="button" onClick={() => setMode('forgot')} className="text-[10px] font-bold text-accent hover:underline">Forgot?</button>
+                      {!isAdminLoginRoute && (
+                        <button type="button" onClick={() => setMode('forgot')} className="text-[10px] font-bold text-accent hover:underline">Forgot?</button>
+                      )}
                     </div>
                     <PasswordInput name="password" />
                   </div>
 
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
+                    className={`w-full !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50 rounded-lg text-sm font-bold uppercase tracking-wider ${
+                      isAdminLoginRoute
+                        ? 'bg-zinc-900 border border-zinc-700 text-zinc-100 hover:bg-zinc-800'
+                        : 'btn-primary'
+                    }`}>
                     {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-4 h-4" />
                   </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-text-muted">
-                  No operator UID?{' '}
-                  <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Request Access</button>
-                </p>
+                {!isAdminLoginRoute && (
+                  <p className="mt-8 text-center text-sm text-text-muted">
+                    No operator UID?{' '}
+                    <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Request Access</button>
+                  </p>
+                )}
               </motion.div>
             )}
 

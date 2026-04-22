@@ -61,14 +61,14 @@ const StudentOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
   if (!user) return <Navigate to="/login" replace />;
-  if (user.isAdmin) return <Navigate to="/mr-robot" replace />;
+  if (user.isAdmin) return <Navigate to="/mr-robot/dashboard" replace />;
   return <>{children}</>;
 };
 
 const AdminOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/mr-robot" replace />;
   if (!user.isAdmin) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 };
@@ -95,6 +95,7 @@ export const AppRouter = () => {
         <Route path="/reset-password" element={<Wrap><LoginPage /></Wrap>} />
         <Route path="/verify-email" element={<Wrap><LoginPage /></Wrap>} />
         <Route path="/change-password" element={<Wrap><LoginPage /></Wrap>} />
+        <Route path="/mr-robot" element={<Wrap><LoginPage /></Wrap>} />
 
         {/* Student routes */}
         <Route element={<StudentLayout />}>
@@ -113,7 +114,7 @@ export const AppRouter = () => {
 
         {/* Admin routes */}
         <Route element={<AdminLayout />}>
-          <Route path="/mr-robot" element={<Wrap><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
+          <Route path="/mr-robot/dashboard" element={<Wrap><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
         {/* 404 */}
