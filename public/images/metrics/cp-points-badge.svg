@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cpRing" x1="14" y1="14" x2="114" y2="114" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E7E9EE"/>
+      <stop offset="1" stop-color="#A0A8B4"/>
+    </linearGradient>
+    <linearGradient id="cpCore" x1="30" y1="30" x2="98" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2A3140"/>
+      <stop offset="1" stop-color="#11151F"/>
+    </linearGradient>
+    <linearGradient id="cpText" x1="43" y1="50" x2="87" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8F2FF"/>
+      <stop offset="1" stop-color="#8EA9C9"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="64" cy="64" r="53" fill="url(#cpRing)"/>
+  <circle cx="64" cy="64" r="44" fill="url(#cpCore)"/>
+  <circle cx="64" cy="64" r="42" stroke="#5F6C80" stroke-opacity="0.5" stroke-width="2"/>
+
+  <circle cx="64" cy="64" r="30" fill="#0B1018" stroke="#4B586B" stroke-opacity="0.5"/>
+  <path d="M64 26L69 34L78 36L72 43L73.5 52L64 48L54.5 52L56 43L50 36L59 34L64 26Z" fill="#E7EDF8" fill-opacity="0.9"/>
+  <path d="M64 102L59 94L50 92L56 85L54.5 76L64 80L73.5 76L72 85L78 92L69 94L64 102Z" fill="#E7EDF8" fill-opacity="0.65"/>
+
+  <path d="M49 82V46H72.5V52H56.5V61.5H69V67.5H56.5V82H49Z" fill="url(#cpText)"/>
+  <path d="M76.5 82V46H92.5C99.5 46 104 50.1 104 56.6C104 61.2 101.8 64.2 98.2 65.8C103 67.3 106 71.1 106 76.2C106 83.7 100.6 88 92.4 88H76.5V82ZM84 61.8H92.2C95.5 61.8 97.4 60 97.4 57.1C97.4 54.3 95.5 52.5 92.2 52.5H84V61.8ZM84 81.5H92.6C96.4 81.5 98.7 79.5 98.7 76.1C98.7 72.7 96.4 70.6 92.6 70.6H84V81.5Z" fill="url(#cpText)"/>
+</svg>

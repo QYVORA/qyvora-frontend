@@ -6,6 +6,8 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
 
+const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
+
 interface LeaderboardSectionProps {
   leaderboard: LeaderboardEntry[];
   totalCp: number;
@@ -22,7 +24,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
         </ScrollReveal>
         <ScrollReveal delay={0.2}>
           <div className="text-left md:text-right">
-            <div className="text-3xl md:text-4xl font-bold text-accent font-mono"><StatCounter end={totalCp} suffix=" CP" /></div>
+            <div className="text-3xl md:text-4xl font-bold text-accent font-mono inline-flex items-center gap-2">
+              <img src={CP_POINTS_BADGE} alt="CP Points" className="w-6 h-6 object-contain" />
+              <StatCounter end={totalCp} suffix=" CP" />
+            </div>
             <div className="text-[10px] uppercase tracking-widest text-text-muted">Total Community CP Earned</div>
           </div>
         </ScrollReveal>
@@ -42,7 +47,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                 <div className="text-[10px] uppercase tracking-widest text-text-muted">{u.rank || 'Operator'}</div>
               </div>
               <div className="text-right">
-                <div className="font-mono font-bold text-accent text-sm">{Number(u.totalXp || 0).toLocaleString()}</div>
+                <div className="font-mono font-bold text-accent text-sm inline-flex items-center gap-1">
+                  <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                  {Number(u.totalXp || 0).toLocaleString()}
+                </div>
                 <div className="text-[10px] uppercase tracking-widest text-text-muted">CP</div>
               </div>
             </div>
@@ -72,7 +80,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                   <span className="font-mono text-text-primary text-xs md:text-sm font-medium truncate">{handle}</span>
                 </div>
                 <div className="font-mono text-text-secondary text-xs md:text-sm">{u.rank || 'Operator'}</div>
-                <div className="text-right font-mono font-bold text-accent text-xs md:text-sm">{Number(u.totalXp || 0).toLocaleString()} CP</div>
+                <div className="text-right font-mono font-bold text-accent text-xs md:text-sm inline-flex items-center gap-1 justify-end">
+                  <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                  {Number(u.totalXp || 0).toLocaleString()} CP
+                </div>
               </div>
             );
           })}

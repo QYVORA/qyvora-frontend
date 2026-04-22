@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="streakOuter" x1="16" y1="14" x2="110" y2="114" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFCC7A"/>
+      <stop offset="0.5" stop-color="#FF7B3D"/>
+      <stop offset="1" stop-color="#9E1D0C"/>
+    </linearGradient>
+    <radialGradient id="streakInner" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64 56) rotate(90) scale(50 42)">
+      <stop stop-color="#FFF2D0"/>
+      <stop offset="0.45" stop-color="#FFB563"/>
+      <stop offset="1" stop-color="#D5471B"/>
+    </radialGradient>
+    <linearGradient id="bolt" x1="55" y1="44" x2="76" y2="85" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF5E8"/>
+      <stop offset="1" stop-color="#FFD58D"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="64" cy="64" r="53" fill="#170D0A"/>
+  <circle cx="64" cy="64" r="52" stroke="url(#streakOuter)" stroke-width="4"/>
+  <circle cx="64" cy="64" r="42" fill="#250F0A" stroke="#6F2A16" stroke-opacity="0.55" stroke-width="2"/>
+
+  <path d="M64 22C74.5 33 83 42.4 83 55.2C83 68.5 74.1 78 64 78C53.9 78 45 68.5 45 55.2C45 42.4 53.5 33 64 22Z" fill="url(#streakInner)"/>
+  <path d="M64 79C80.2 79 93.5 90.2 95.8 105.7H32.2C34.5 90.2 47.8 79 64 79Z" fill="#3A1710" stroke="#7C2F1A" stroke-width="2"/>
+  <path d="M62.5 44L54 63H63L58 84L76 59H66.5L72.5 44H62.5Z" fill="url(#bolt)"/>
+</svg>

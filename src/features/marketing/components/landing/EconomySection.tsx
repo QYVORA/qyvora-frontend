@@ -5,6 +5,8 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import { resolveImg } from './helpers';
 import type { MarketplaceItem } from './types';
 
+const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
+
 interface EconomySectionProps {
   totalCp: number;
   marketItems: MarketplaceItem[];
@@ -34,7 +36,10 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
             <div className="p-4 md:p-5 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform"><ShoppingBag className="w-20 h-20" /></div>
               <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">OPERATOR_WALLET</div>
-              <div className="text-2xl md:text-3xl font-bold text-accent font-mono mb-3">{totalCp.toLocaleString()} CP</div>
+              <div className="text-2xl md:text-3xl font-bold text-accent font-mono mb-3 inline-flex items-center gap-2">
+                <img src={CP_POINTS_BADGE} alt="CP Points" className="w-6 h-6 object-contain" />
+                {totalCp.toLocaleString()} CP
+              </div>
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center border border-accent/40"><Trophy className="w-4 h-4 text-accent" /></div>
                 <div>
@@ -61,7 +66,10 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
                   <img src={resolveImg(prod.coverUrl, '/images/how-it-works-section/Engagements-4Completed.webp')} alt="" className="w-full h-24 md:h-32 object-cover rounded mb-3" />
                   <h4 className="text-xs md:text-sm font-bold text-text-primary mb-2 line-clamp-1">{prod.title}</h4>
                   <div className="mt-auto flex flex-col gap-2">
-                    <span className="text-xs font-mono text-accent py-0.5 px-2 bg-accent-dim border border-accent/20 rounded w-fit">{prod.cpPrice ?? 0} CP</span>
+                    <span className="text-xs font-mono text-accent py-0.5 px-2 bg-accent-dim border border-accent/20 rounded w-fit inline-flex items-center gap-1">
+                      <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                      {prod.cpPrice ?? 0} CP
+                    </span>
                     <Link to="/marketplace" className="w-full py-2 bg-accent text-bg font-bold text-[10px] uppercase tracking-tighter rounded hover:brightness-110 text-center block">Buy with CP</Link>
                   </div>
                 </div>

@@ -4,6 +4,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 
+const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
+
 const PAGE_SIZE = 10;
 
 const Wallet: React.FC = () => {
@@ -66,7 +68,8 @@ const Wallet: React.FC = () => {
               <WalletIcon className="w-40 h-40 md:w-56 md:h-56" />
             </div>
             <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">Available Balance</div>
-            <div className="text-4xl md:text-5xl font-black text-accent font-mono mb-6">
+            <div className="text-4xl md:text-5xl font-black text-accent font-mono mb-6 inline-flex items-center gap-2">
+              <img src={CP_POINTS_BADGE} alt="CP Points" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
               {loading ? '—' : balance.toLocaleString()}
               <span className="text-base md:text-lg ml-2 opacity-60">CP</span>
             </div>
@@ -78,7 +81,10 @@ const Wallet: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Earned</div>
-                  <div className="text-sm font-mono font-bold text-text-primary">{totalEarned.toLocaleString()} CP</div>
+                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1">
+                    <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                    {totalEarned.toLocaleString()} CP
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-bg/50 border border-border rounded-xl">
@@ -87,7 +93,10 @@ const Wallet: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Spent</div>
-                  <div className="text-sm font-mono font-bold text-text-primary">{totalSpent.toLocaleString()} CP</div>
+                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1">
+                    <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                    {totalSpent.toLocaleString()} CP
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,7 +161,10 @@ const Wallet: React.FC = () => {
                     </div>
                     {/* Value */}
                     <div className={`text-sm font-mono font-bold flex-none ${tx.value < 0 ? 'text-red-400' : 'text-accent'}`}>
-                      {tx.value > 0 ? '+' : ''}{tx.value} CP
+                      <span className="inline-flex items-center gap-1">
+                        <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain" />
+                        {tx.value > 0 ? '+' : ''}{tx.value} CP
+                      </span>
                     </div>
                   </div>
                 ))}

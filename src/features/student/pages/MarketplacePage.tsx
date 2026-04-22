@@ -4,6 +4,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 
+const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
+
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
   if (!src) return fallback;
@@ -131,7 +133,10 @@ const Marketplace: React.FC = () => {
             {balance !== null && (
               <div className="px-4 py-2 bg-accent-dim border border-accent/20 rounded-lg">
                 <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest block">Your Balance</span>
-                <span className="text-lg font-black text-accent font-mono">{balance.toLocaleString()} CP</span>
+                <span className="text-lg font-black text-accent font-mono inline-flex items-center gap-1">
+                  <img src={CP_POINTS_BADGE} alt="CP Points" className="w-4 h-4 object-contain" />
+                  {balance.toLocaleString()} CP
+                </span>
               </div>
             )}
             <div className="relative">
@@ -193,7 +198,7 @@ const Marketplace: React.FC = () => {
                       <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{prod.description}</p>
                     )}
                     <div className="flex items-center gap-2 mb-4">
-                      <ShoppingBag className="w-3 h-3 text-accent flex-none" />
+                      <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3.5 h-3.5 object-contain flex-none" />
                       <span className="text-sm font-mono font-bold text-accent">{Number(prod.cpPrice || 0).toLocaleString()} CP</span>
                     </div>
 

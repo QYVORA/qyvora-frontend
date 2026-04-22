@@ -5,6 +5,9 @@ import { Zap, Trophy, Shield, Terminal, ArrowRight, Wallet, ShoppingBag, BookOpe
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 
+const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
+const STREAK_BADGE = '/images/metrics/streak-badge.svg';
+
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
   if (!src) return fallback;
@@ -110,10 +113,12 @@ const Dashboard: React.FC = () => {
                 </h1>
               </div>
               <div className="flex flex-wrap gap-2 md:gap-3 w-full sm:w-auto">
-                <div className="px-3 py-1.5 bg-accent text-bg rounded font-bold text-xs">
-                  🔥 {Number(overview?.xpSummary?.streakDays || 0)}-DAY STREAK
+                <div className="px-3 py-1.5 bg-accent text-bg rounded font-bold text-xs inline-flex items-center gap-2">
+                  <img src={STREAK_BADGE} alt="Streak" className="w-4 h-4 object-contain" />
+                  {Number(overview?.xpSummary?.streakDays || 0)}-DAY STREAK
                 </div>
-                <div className="px-3 py-1.5 bg-bg border border-border rounded font-mono font-bold text-xs text-accent text-center min-w-[72px]">
+                <div className="px-3 py-1.5 bg-bg border border-border rounded font-mono font-bold text-xs text-accent text-center min-w-[72px] inline-flex items-center gap-2">
+                  <img src={CP_POINTS_BADGE} alt="CP Points" className="w-4 h-4 object-contain" />
                   {user?.cp?.toLocaleString() ?? 0} CP
                 </div>
               </div>
@@ -146,11 +151,13 @@ const Dashboard: React.FC = () => {
 
       {/* STAT PILLS */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-5 md:mb-8">
-        {summaryStats.map((stat, idx) => (
-          <div key={idx} className="p-3 md:p-4 bg-bg border border-border rounded-lg flex items-center gap-3 md:gap-4">
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-md bg-accent-dim flex items-center justify-center text-accent flex-none">
-              <stat.icon className="w-4 h-4 md:w-5 md:h-5" />
-            </div>
+            {summaryStats.map((stat, idx) => (
+              <div key={idx} className="p-3 md:p-4 bg-bg border border-border rounded-lg flex items-center gap-3 md:gap-4">
+                <div className="w-9 h-9 md:w-10 md:h-10 rounded-md bg-accent-dim flex items-center justify-center text-accent flex-none">
+                  {stat.label === 'CP Balance'
+                    ? <img src={CP_POINTS_BADGE} alt="CP Points" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
+                    : <stat.icon className="w-4 h-4 md:w-5 md:h-5" />}
+                </div>
             <div className="flex flex-col min-w-0">
               <span className="text-[9px] md:text-[10px] font-bold text-text-muted uppercase tracking-widest">{stat.label}</span>
               <span className="text-sm md:text-lg font-bold text-text-primary truncate">{stat.value}</span>
