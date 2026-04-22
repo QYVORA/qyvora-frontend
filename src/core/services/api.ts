@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 
-const ACCESS_TOKEN_KEY = 'hsociety_access_token';
 const CSRF_TOKEN_KEY = 'hsociety_csrf_token';
 
 const DEFAULT_API_BASE = 'http://localhost:3000/api';
