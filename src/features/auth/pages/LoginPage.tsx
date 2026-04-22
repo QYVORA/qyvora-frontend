@@ -185,12 +185,6 @@ const Login: React.FC = () => {
           addToast('Passwords do not match.', 'error');
           return;
         }
-        // Check email availability first
-        const checkRes = await api.post('/auth/check-email', { email }).catch(() => null);
-        if (checkRes?.data?.exists) {
-          addToast('An account with that email already exists.', 'error');
-          return;
-        }
         await api.post('/auth/register', {
           role: 'student',
           inviteCode: '',
