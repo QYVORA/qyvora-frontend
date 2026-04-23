@@ -5,6 +5,7 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
+import CpLogo from '../../../../shared/components/CpLogo';
 
 interface LeaderboardSectionProps {
   leaderboard: LeaderboardEntry[];
@@ -23,9 +24,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
         <ScrollReveal delay={0.2}>
           <div className="text-left md:text-right">
             <div className="text-3xl md:text-4xl font-bold text-accent font-mono inline-flex items-center gap-2">
-              <StatCounter end={totalCp} suffix=" CP" />
+              <StatCounter end={totalCp} />
+              <CpLogo className="w-7 h-7 md:w-8 md:h-8" />
             </div>
-            <div className="text-[10px] uppercase tracking-widest text-text-muted">Total Community CP Earned</div>
+            <div className="text-[10px] uppercase tracking-widest text-text-muted">Total Community Points Earned</div>
           </div>
         </ScrollReveal>
       </div>
@@ -45,7 +47,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               </div>
               <div className="text-right">
                 <div className="font-mono font-bold text-accent text-sm">{Number(u.totalXp || 0).toLocaleString()}</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted">CP</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted inline-flex items-center justify-end"><CpLogo className="w-3.5 h-3.5" /></div>
               </div>
             </div>
           );
@@ -70,7 +72,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               </div>
               <div className="text-right">
                 <div className="font-mono font-bold text-accent text-base lg:text-lg">{Number(u.totalXp || 0).toLocaleString()}</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted">CP</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted inline-flex items-center justify-end"><CpLogo className="w-3.5 h-3.5" /></div>
               </div>
             </div>
           );

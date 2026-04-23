@@ -3,6 +3,7 @@ import { ShoppingBag, Search, Loader2, Download, CheckCircle2 } from 'lucide-rea
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
+import CpLogo from '../../../shared/components/CpLogo';
 
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
@@ -79,7 +80,7 @@ const Marketplace: React.FC = () => {
       const balRes = await api.get('/cp/balance').catch(() => null);
       if (balRes?.data?.balance !== undefined) setBalance(Number(balRes.data.balance));
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Purchase failed. Check your CP balance.';
+      const msg = err?.response?.data?.error || 'Purchase failed. Check your points balance.';
       addToast(msg, 'error');
     } finally {
       setPurchasing(null);
@@ -131,7 +132,10 @@ const Marketplace: React.FC = () => {
             {balance !== null && (
               <div className="px-4 py-2 bg-accent-dim border border-accent/20 rounded-lg">
                 <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest block">Your Balance</span>
-                <span className="text-lg font-black text-accent font-mono">{balance.toLocaleString()} CP</span>
+                <span className="text-lg font-black text-accent font-mono inline-flex items-center gap-2">
+                  <CpLogo className="w-5 h-5" />
+                  {balance.toLocaleString()}
+                </span>
               </div>
             )}
             <div className="relative">
@@ -193,7 +197,7 @@ const Marketplace: React.FC = () => {
                       <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{prod.description}</p>
                     )}
                     <div className="mb-4">
-                      <span className="text-sm font-mono font-bold text-accent">{Number(prod.cpPrice || 0).toLocaleString()} CP</span>
+                      <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></span>
                     </div>
 
                     {hasPurchased ? (

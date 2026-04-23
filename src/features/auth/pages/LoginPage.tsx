@@ -5,6 +5,7 @@ import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, E
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
+import CpLogo from '../../../shared/components/CpLogo';
 import HeroCanvas from '../../marketing/components/HeroCanvas';
 import api from '../../../core/services/api';
 
@@ -71,9 +72,9 @@ const AuthHero: React.FC = () => (
         {[
           { icon: Shield, text: 'Hands-on penetration testing labs' },
           { icon: Terminal, text: 'Real CVE exploitation challenges' },
-          { icon: Zap, text: 'Earn CP and unlock exclusive tools' },
-        ].map(({ icon: Icon, text }) => (
-          <div key={text} className="flex items-center gap-3">
+          { icon: Zap, text: <span>Earn <CpLogo className="w-4 h-4 mx-1" /> and unlock exclusive tools</span> },
+        ].map(({ icon: Icon, text }, idx) => (
+          <div key={idx} className="flex items-center gap-3">
             <div className="w-7 h-7 rounded bg-accent-dim border border-accent/20 flex items-center justify-center flex-none">
               <Icon className="w-3.5 h-3.5 text-accent" />
             </div>

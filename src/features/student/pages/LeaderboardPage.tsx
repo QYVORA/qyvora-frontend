@@ -3,6 +3,7 @@ import { Trophy, ChevronRight, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
+import CpLogo from '../../../shared/components/CpLogo';
 
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
@@ -53,7 +54,7 @@ const Leaderboard: React.FC = () => {
         <ScrollReveal className="text-center mb-12">
           <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">// HALL_OF_SHADOWS</span>
           <h1 className="text-5xl md:text-6xl font-black text-text-primary tracking-tighter uppercase mb-4">Leaderboard</h1>
-          <p className="text-text-muted max-w-xl mx-auto">The elite operators of HSOCIETY, ranked by CP earned.</p>
+          <p className="text-text-muted max-w-xl mx-auto">The elite operators of HSOCIETY, ranked by points earned.</p>
         </ScrollReveal>
 
         {loading ? (
@@ -95,8 +96,8 @@ const Leaderboard: React.FC = () => {
                         <div className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: podiumColors[i] }}>
                           {op.rank || 'Operator'}
                         </div>
-                        <div className="text-2xl font-black font-mono" style={{ color: podiumColors[i] }}>
-                          {Number(op.totalXp || 0).toLocaleString()} CP
+                        <div className="text-2xl font-black font-mono inline-flex items-center gap-2" style={{ color: podiumColors[i] }}>
+                          {Number(op.totalXp || 0).toLocaleString()} <CpLogo className="w-5 h-5" />
                         </div>
                         <Link to={`/profile/${handle}`}
                           className="mt-6 w-full flex items-center justify-center gap-2 py-2.5 bg-bg border border-border hover:border-accent/40 rounded transition-all text-[10px] font-bold text-text-primary uppercase">
@@ -128,7 +129,7 @@ const Leaderboard: React.FC = () => {
                         <th className="px-6 py-4"># Rank</th>
                         <th className="px-6 py-4">Operator</th>
                         <th className="px-6 py-4">Tier</th>
-                        <th className="px-6 py-4 text-right">CP Total</th>
+                        <th className="px-6 py-4 text-right">Points Total</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/50 font-mono">

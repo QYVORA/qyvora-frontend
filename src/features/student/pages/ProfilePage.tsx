@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import CpLogo from '../../../shared/components/CpLogo';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 
@@ -134,7 +135,7 @@ const Profile: React.FC = () => {
     unlockedModules: Array.isArray(profileApi?.emblems?.unlockedModules) ? profileApi.emblems.unlockedModules : [],
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
   const profileStats = [
-    { label: 'CP Balance', value: profileData.cp.toLocaleString(), icon: Zap },
+    { label: 'Balance', value: profileData.cp.toLocaleString(), icon: Zap },
     { label: 'Modules Done', value: profileData.unlockedModules.length, icon: Award },
     { label: 'Streak', value: `${profileData.streakDays}d`, icon: Trophy },
   ]
@@ -233,7 +234,7 @@ const Profile: React.FC = () => {
                 <div className="grid grid-cols-1 gap-3">
                   <Link to="/wallet" className="p-5 bg-accent-dim border border-accent/20 rounded-xl hover:bg-accent-dim/50 transition-all group">
                     <h4 className="text-xs font-bold text-accent mb-1 uppercase">Operator Wallet</h4>
-                    <p className="text-[11px] text-text-muted mb-3">Manage CP and transaction history.</p>
+                    <p className="text-[11px] text-text-muted mb-3">Manage <CpLogo className="w-3.5 h-3.5 mx-1" /> and transaction history.</p>
                     <div className="flex items-center gap-1 text-[10px] font-bold text-text-primary uppercase group-hover:translate-x-1 transition-transform">
                       Open <ChevronRight className="w-3 h-3" />
                     </div>

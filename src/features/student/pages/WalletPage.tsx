@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Wallet as WalletIcon, Zap, Shield, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { Zap, Shield, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import CpLogo from '../../../shared/components/CpLogo';
 
 const PAGE_SIZE = 10;
 
@@ -38,7 +39,7 @@ const Wallet: React.FC = () => {
     return transactions.map((tx: any, idx) => ({
       id: String(tx?._id || tx?.id || `TXN-${idx + 1}`),
       shortId: String(tx?._id || tx?.id || `TXN-${idx + 1}`).slice(-8).toUpperCase(),
-      desc: String(tx?.note || tx?.type || 'CP transaction'),
+      desc: String(tx?.note || tx?.type || 'Points transaction'),
       date: tx?.createdAt ? new Date(tx.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—',
       value: Number(tx?.points || 0),
     }));
@@ -62,13 +63,17 @@ const Wallet: React.FC = () => {
         {/* Balance card — full width on mobile */}
         <ScrollReveal className="mb-4 md:mb-6">
           <div className="relative p-6 md:p-8 bg-accent-dim border border-accent/20 rounded-2xl overflow-hidden">
-            <div className="absolute top-0 right-0 opacity-5 pointer-events-none">
-              <WalletIcon className="w-40 h-40 md:w-56 md:h-56" />
+            <div className="absolute top-3 right-3 opacity-15 pointer-events-none">
+              <img
+                src="/images/cp-images/CYBER_POINTS_LOGO.png"
+                alt=""
+                className="w-28 h-28 md:w-36 md:h-36 object-contain"
+              />
             </div>
             <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">Available Balance</div>
-            <div className="text-4xl md:text-5xl font-black text-accent font-mono mb-6">
+            <div className="text-4xl md:text-5xl font-black text-accent font-mono mb-6 inline-flex items-center gap-2">
               {loading ? '—' : balance.toLocaleString()}
-              <span className="text-base md:text-lg ml-2 opacity-60">CP</span>
+              <CpLogo className="w-7 h-7 md:w-8 md:h-8 opacity-75" />
             </div>
             {/* Stats row */}
             <div className="grid grid-cols-2 gap-3">
@@ -78,7 +83,7 @@ const Wallet: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Earned</div>
-                  <div className="text-sm font-mono font-bold text-text-primary">{totalEarned.toLocaleString()} CP</div>
+                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1">{totalEarned.toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></div>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-bg/50 border border-border rounded-xl">
@@ -87,7 +92,7 @@ const Wallet: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Spent</div>
-                  <div className="text-sm font-mono font-bold text-text-primary">{totalSpent.toLocaleString()} CP</div>
+                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1">{totalSpent.toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></div>
                 </div>
               </div>
             </div>
@@ -152,7 +157,7 @@ const Wallet: React.FC = () => {
                     </div>
                     {/* Value */}
                     <div className={`text-sm font-mono font-bold flex-none ${tx.value < 0 ? 'text-red-400' : 'text-accent'}`}>
-                      <span>{tx.value > 0 ? '+' : ''}{tx.value} CP</span>
+                      <span className="inline-flex items-center gap-1">{tx.value > 0 ? '+' : ''}{tx.value} <CpLogo className="w-3.5 h-3.5" /></span>
                     </div>
                   </div>
                 ))}

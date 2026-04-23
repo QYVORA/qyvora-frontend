@@ -4,6 +4,7 @@ import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
+import CpLogo from '../../../../shared/components/CpLogo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
@@ -338,7 +339,9 @@ const StudentTopbar = () => {
                 <div>
                   <div className="text-xs font-black text-text-primary uppercase tracking-widest">{user?.username || 'Operator'}</div>
                   <div className="text-[10px] text-accent font-mono inline-flex items-center gap-1">
-                    <span>{user?.rank || 'Candidate'} · {user?.cp?.toLocaleString() ?? 0} CP</span>
+                    <span className="inline-flex items-center gap-1">
+                      {user?.rank || 'Candidate'} · {user?.cp?.toLocaleString() ?? 0} <CpLogo className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
                 <button onClick={() => setMoreOpen(false)} className="p-2 text-text-muted hover:text-accent transition-colors">

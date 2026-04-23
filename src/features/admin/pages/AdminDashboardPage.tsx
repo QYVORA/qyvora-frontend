@@ -22,6 +22,7 @@ import {
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
+import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 
 type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts';
@@ -537,10 +538,10 @@ const AdminDashboardPage: React.FC = () => {
       } else {
         await api.post('/admin/cp/set', { userIds: [cpUserId], value: cpValue, reason: cpReason });
       }
-      addToast('CP operation completed', 'success');
+      addToast('Points operation completed', 'success');
       await loadAll();
     } catch (err: unknown) {
-      const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'CP operation failed';
+      const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Points operation failed';
       addToast(String(message), 'error');
     }
   };
@@ -573,7 +574,7 @@ const AdminDashboardPage: React.FC = () => {
     { id: 'users', label: 'User Management', short: 'Users', icon: Users },
     { id: 'bootcamps', label: 'Bootcamp Management', short: 'Bootcamps', icon: Shield },
     { id: 'zero_day', label: 'Zero-Day Market', short: 'Market', icon: Database },
-    { id: 'cp', label: 'CP Management', short: 'CP', icon: Coins },
+    { id: 'cp', label: 'Points Management', short: 'Points', icon: Coins },
     { id: 'security', label: 'Security Management', short: 'Security', icon: AlertTriangle },
     { id: 'contacts', label: 'Contact Messages', short: 'Contacts', icon: Mail },
   ];
@@ -732,7 +733,7 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                         <div className="flex items-center justify-between text-xs">
                           <span className="uppercase text-zinc-400">{item.role}</span>
-                          <span className="font-mono text-zinc-200">CP {Number(item.cpPoints || 0).toLocaleString()}</span>
+                          <span className="font-mono text-zinc-200 inline-flex items-center gap-1"><CpLogo className="w-3.5 h-3.5" /> {Number(item.cpPoints || 0).toLocaleString()}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <button
@@ -764,7 +765,7 @@ const AdminDashboardPage: React.FC = () => {
                         <tr>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">User</th>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Role</th>
-                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">CP</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Points</th>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Bootcamp Access</th>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Account</th>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500 text-right">Actions</th>
@@ -1033,7 +1034,7 @@ const AdminDashboardPage: React.FC = () => {
                       <input value={productForm.title} onChange={(e) => setProductForm((p) => ({ ...p, title: e.target.value }))} placeholder="Title" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       <textarea value={productForm.description} onChange={(e) => setProductForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       <div className="grid grid-cols-2 gap-2">
-                        <input type="number" value={productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="CP price" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                        <input type="number" value={productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="Points price" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                         <input type="number" value={productForm.sortOrder} onChange={(e) => setProductForm((p) => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="Sort order" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       </div>
                       <input value={productForm.type} onChange={(e) => setProductForm((p) => ({ ...p, type: e.target.value }))} placeholder="Type (book/tool/etc)" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
@@ -1062,7 +1063,7 @@ const AdminDashboardPage: React.FC = () => {
                         {products.map((item) => (
                           <div key={item._id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
                             <div className="font-bold text-sm text-zinc-100">{item.title}</div>
-                            <div className="text-xs text-zinc-400">{item.type} • {item.cpPrice} CP • {item.isActive ? 'Active' : 'Inactive'}</div>
+                            <div className="text-xs text-zinc-400 inline-flex items-center gap-1">{item.type} • {item.cpPrice} <CpLogo className="w-3.5 h-3.5" /> • {item.isActive ? 'Active' : 'Inactive'}</div>
                             <div className="grid grid-cols-2 gap-2">
                               <button
                                 onClick={() => {
@@ -1140,7 +1141,7 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'cp' && (
                 <section className="space-y-4 max-w-2xl">
                   <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-zinc-500">Cyber Points Control</div>
+                    <div className="text-xs font-bold uppercase text-zinc-500">Points Control</div>
                     <select value={cpUserId} onChange={(e) => setCpUserId(e.target.value)} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100">
                       {users.map((u) => (
                         <option key={u.id} value={u.id}>{u.hackerHandle || u.name || u.email} ({u.email})</option>
@@ -1151,9 +1152,9 @@ const AdminDashboardPage: React.FC = () => {
                       <button onClick={() => setCpAction('deduct')} className={`px-3 py-2 rounded border text-xs font-bold uppercase ${cpAction === 'deduct' ? 'border-red-800/60 text-red-300' : 'border-zinc-800 text-zinc-300'}`}>Deduct</button>
                       <button onClick={() => setCpAction('set')} className={`px-3 py-2 rounded border text-xs font-bold uppercase ${cpAction === 'set' ? 'border-red-800/60 text-red-300' : 'border-zinc-800 text-zinc-300'}`}>Set</button>
                     </div>
-                    <input type="number" value={cpValue} onChange={(e) => setCpValue(Number(e.target.value || 0))} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder={cpAction === 'set' ? 'Target CP value' : 'Points'} />
+                    <input type="number" value={cpValue} onChange={(e) => setCpValue(Number(e.target.value || 0))} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder={cpAction === 'set' ? 'Target value' : 'Points'} />
                     <input value={cpReason} onChange={(e) => setCpReason(e.target.value)} className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Reason (optional)" />
-                    <button onClick={() => void runCpAction()} className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300">Execute CP Action</button>
+                    <button onClick={() => void runCpAction()} className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300">Execute Points Action</button>
                   </div>
                 </section>
               )}

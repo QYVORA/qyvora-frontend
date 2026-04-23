@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Zap, Trophy, Shield, Terminal, ArrowRight, Wallet, ShoppingBag, BookOpen } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
+import CpLogo from '../../../shared/components/CpLogo';
 
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
@@ -84,7 +85,7 @@ const Dashboard: React.FC = () => {
   const progressValue = overview?.snapshot?.find((item: any) => item?.id === 'progress')?.value || '0%';
   const summaryStats = [
     { label: 'Rank', value: user?.rank || '—', icon: Shield },
-    { label: 'CP Balance', value: user?.cp?.toLocaleString() ?? '0', icon: Wallet },
+    { label: 'Balance', value: user?.cp?.toLocaleString() ?? '0', icon: Wallet },
     { label: 'Progress', value: progressValue, icon: Zap },
     { label: 'Status', value: overview?.bootcampStatus || 'not_enrolled', icon: Terminal },
   ]
@@ -114,7 +115,10 @@ const Dashboard: React.FC = () => {
                   {Number(overview?.xpSummary?.streakDays || 0)}-DAY STREAK
                 </div>
                 <div className="px-3 py-1.5 bg-bg border border-border rounded font-mono font-bold text-xs text-accent text-center min-w-[72px]">
-                  {user?.cp?.toLocaleString() ?? 0} CP
+                  <span className="inline-flex items-center gap-2">
+                    {user?.cp?.toLocaleString() ?? 0}
+                    <CpLogo className="w-4 h-4" />
+                  </span>
                 </div>
               </div>
             </div>
