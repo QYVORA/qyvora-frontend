@@ -50,6 +50,29 @@ type Bootcamp = {
   modules: unknown[];
 };
 
+type BootcampSessionRoomSummary = {
+  moduleId: number;
+  moduleTitle: string;
+  roomId: number;
+  roomTitle: string;
+  totalStudents: number;
+  participantsCount: number;
+  nonParticipantsCount: number;
+  totalOpenCount: number;
+  lastOpenedAt?: string | null;
+};
+
+type BootcampSessionSummary = {
+  bootcamp?: { id?: string; title?: string };
+  totals?: {
+    students?: number;
+    participants?: number;
+    nonParticipants?: number;
+    totalOpenCount?: number;
+  };
+  rooms?: BootcampSessionRoomSummary[];
+};
+
 type CPProduct = {
   _id: string;
   title: string;
@@ -111,11 +134,27 @@ const AdminDashboardPage: React.FC = () => {
   const [overview, setOverview] = useState<Record<string, unknown> | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [userQuery, setUserQuery] = useState('');
+  const [userPage, setUserPage] = useState(1);
+  const [userPageSize, setUserPageSize] = useState(25);
 
   const [contentVersion, setContentVersion] = useState(1);
   const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
   const [selectedBootcampId, setSelectedBootcampId] = useState<string>('');
   const [modulesText, setModulesText] = useState('[]');
+  const [sessionSummary, setSessionSummary] = useState<BootcampSessionSummary | null>(null);
+  const [sessionSummaryLoading, setSessionSummaryLoading] = useState(false);
+  const [quizModuleId, setQuizModuleId] = useState<number>(1);
+  const [quizRoomId, setQuizRoomId] = useState<number>(1);
+  const [quizTitle, setQuizTitle] = useState('Room Quiz');
+  const [quizMessage, setQuizMessage] = useState('A new quiz is ready for this room.');
+  const [quizQuestionsText, setQuizQuestionsText] = useState(JSON.stringify([
+    {
+      id: 'q1',
+      text: 'Sample question',
+      options: ['Option A', 'Option B'],
+      correctIndex: 0,
+    },
+  ], null, 2));
 
   const [products, setProducts] = useState<CPProduct[]>([]);
   const [productForm, setProductForm] = useState({
@@ -154,6 +193,17 @@ const AdminDashboardPage: React.FC = () => {
       return joined.includes(q);
     });
   }, [users, userQuery]);
+
+  const totalUserPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredUsers.length / Math.max(1, userPageSize))),
+    [filteredUsers.length, userPageSize]
+  );
+
+  const paginatedUsers = useMemo(() => {
+    const page = Math.min(Math.max(1, userPage), totalUserPages);
+    const start = (page - 1) * userPageSize;
+    return filteredUsers.slice(start, start + userPageSize);
+  }, [filteredUsers, userPage, userPageSize, totalUserPages]);
 
   const loadAll = async () => {
     setLoading(true);
@@ -212,6 +262,24 @@ const AdminDashboardPage: React.FC = () => {
   }, [selectedBootcamp]);
 
   useEffect(() => {
+    if (!selectedBootcampId) {
+      setSessionSummary(null);
+      return;
+    }
+    void (async () => {
+      setSessionSummaryLoading(true);
+      try {
+        const res = await api.get(`/admin/bootcamp/session-summary?bootcampId=${encodeURIComponent(selectedBootcampId)}`);
+        setSessionSummary((res?.data as BootcampSessionSummary) || null);
+      } catch {
+        setSessionSummary(null);
+      } finally {
+        setSessionSummaryLoading(false);
+      }
+    })();
+  }, [selectedBootcampId]);
+
+  useEffect(() => {
     setMobileNavOpen(false);
   }, [activeTab]);
 
@@ -223,6 +291,10 @@ const AdminDashboardPage: React.FC = () => {
       document.body.style.overflow = prev;
     };
   }, [mobileNavOpen]);
+
+  useEffect(() => {
+    setUserPage(1);
+  }, [userQuery, users.length, userPageSize]);
 
   const handleLogout = async () => {
     await logout();
@@ -292,6 +364,59 @@ const AdminDashboardPage: React.FC = () => {
       }
     } finally {
       setSaving(false);
+    }
+  };
+
+  const refreshSessionSummary = async () => {
+    if (!selectedBootcampId) return;
+    setSessionSummaryLoading(true);
+    try {
+      const res = await api.get(`/admin/bootcamp/session-summary?bootcampId=${encodeURIComponent(selectedBootcampId)}`);
+      setSessionSummary((res?.data as BootcampSessionSummary) || null);
+    } catch {
+      setSessionSummary(null);
+      addToast('Could not load session summary.', 'error');
+    } finally {
+      setSessionSummaryLoading(false);
+    }
+  };
+
+  const releaseRoomQuiz = async () => {
+    if (!selectedBootcampId) {
+      addToast('Select a bootcamp first.', 'error');
+      return;
+    }
+    if (quizModuleId <= 0 || quizRoomId <= 0) {
+      addToast('Module ID and Room ID must be valid.', 'error');
+      return;
+    }
+    let parsedQuestions: unknown[] = [];
+    try {
+      const parsed = JSON.parse(quizQuestionsText) as unknown;
+      parsedQuestions = Array.isArray(parsed) ? parsed : [];
+      if (!parsedQuestions.length) throw new Error('empty');
+    } catch {
+      addToast('Invalid quiz questions JSON.', 'error');
+      return;
+    }
+
+    try {
+      await api.post('/admin/bootcamp/quizzes/release', {
+        scope: {
+          type: 'room',
+          id: String(quizRoomId),
+          moduleId: String(quizModuleId),
+          courseId: selectedBootcampId,
+        },
+        title: quizTitle,
+        message: quizMessage,
+        audience: 'students',
+        questions: parsedQuestions,
+      });
+      addToast('Room quiz released.', 'success');
+    } catch (err: unknown) {
+      const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Could not release quiz.';
+      addToast(String(message), 'error');
     }
   };
 
@@ -454,8 +579,8 @@ const AdminDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 flex">
-      <aside className="hidden md:flex md:w-72 border-r border-zinc-800 bg-zinc-950 p-6 flex-col">
+    <div className="h-screen bg-black text-zinc-100 flex overflow-hidden">
+      <aside className="hidden md:flex md:w-72 h-screen sticky top-0 border-r border-zinc-800 bg-zinc-950 p-6 flex-col">
         <div className="mb-8">
           <Link to="/"><Logo size="md" className="mb-2" /></Link>
           <div className="text-[10px] font-bold text-zinc-500 font-mono tracking-[0.2em]">ADMIN_CONSOLE // BLACK</div>
@@ -488,7 +613,7 @@ const AdminDashboardPage: React.FC = () => {
         </div>
       </aside>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 h-screen">
         <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
           <div className="h-16 px-4 flex items-center justify-between gap-3">
             <button onClick={() => setMobileNavOpen(true)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
@@ -555,19 +680,51 @@ const AdminDashboardPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="relative max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                    <input
-                      type="text"
-                      value={userQuery}
-                      onChange={(e) => setUserQuery(e.target.value)}
-                      placeholder="Search users"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded pl-10 pr-3 py-2 text-sm text-zinc-100"
-                    />
+                  <div className="bg-zinc-950 border border-zinc-800 rounded p-3 md:p-4">
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+                      <div className="relative max-w-md w-full">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                        <input
+                          type="text"
+                          value={userQuery}
+                          onChange={(e) => setUserQuery(e.target.value)}
+                          placeholder="Search users"
+                          className="w-full bg-black border border-zinc-800 rounded pl-10 pr-3 py-2 text-sm text-zinc-100"
+                        />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="text-zinc-400">Users: <span className="font-bold text-zinc-100">{filteredUsers.length}</span></span>
+                        <select
+                          value={userPageSize}
+                          onChange={(e) => setUserPageSize(Number(e.target.value || 25))}
+                          className="bg-black border border-zinc-800 rounded px-2 py-2 text-xs text-zinc-100"
+                        >
+                          <option value={10}>10 / page</option>
+                          <option value={25}>25 / page</option>
+                          <option value={50}>50 / page</option>
+                          <option value={100}>100 / page</option>
+                        </select>
+                        <button
+                          onClick={() => setUserPage((prev) => Math.max(1, prev - 1))}
+                          disabled={userPage <= 1}
+                          className="px-2 py-2 rounded border border-zinc-700 disabled:opacity-40"
+                        >
+                          Prev
+                        </button>
+                        <span className="text-zinc-400">Page <span className="font-bold text-zinc-100">{Math.min(userPage, totalUserPages)}</span> / {totalUserPages}</span>
+                        <button
+                          onClick={() => setUserPage((prev) => Math.min(totalUserPages, prev + 1))}
+                          disabled={userPage >= totalUserPages}
+                          className="px-2 py-2 rounded border border-zinc-700 disabled:opacity-40"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="md:hidden space-y-3">
-                    {filteredUsers.map((item) => (
+                  <div className="md:hidden space-y-3 max-h-[56vh] overflow-auto pr-1">
+                    {paginatedUsers.map((item) => (
                       <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-3">
                         <div>
                           <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
@@ -601,9 +758,9 @@ const AdminDashboardPage: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded max-h-[62vh] overflow-auto">
                     <table className="w-full text-left min-w-[900px]">
-                      <thead className="border-b border-zinc-800 bg-black">
+                      <thead className="border-b border-zinc-800 bg-black sticky top-0 z-10">
                         <tr>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">User</th>
                           <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Role</th>
@@ -614,7 +771,7 @@ const AdminDashboardPage: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredUsers.map((item) => (
+                        {paginatedUsers.map((item) => (
                           <tr key={item.id} className="border-b border-zinc-800/80">
                             <td className="px-4 py-3">
                               <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
@@ -705,7 +862,7 @@ const AdminDashboardPage: React.FC = () => {
                           <textarea value={selectedBootcamp.description} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, description: e.target.value })} className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Description" />
 
                           <div>
-                            <div className="text-[11px] font-bold uppercase text-zinc-500 mb-1">Modules JSON (sections/rooms/videos metadata)</div>
+                            <div className="text-[11px] font-bold uppercase text-zinc-500 mb-1">Modules JSON (phases/rooms metadata, e.g. readingContent, readingLinks, meetingLink)</div>
                             <textarea
                               value={modulesText}
                               onChange={(e) => setModulesText(e.target.value)}
@@ -752,6 +909,118 @@ const AdminDashboardPage: React.FC = () => {
                         <div className="text-sm text-zinc-500">Select a bootcamp to edit.</div>
                       )}
                     </div>
+                  </div>
+
+                  <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <div className="text-xs font-bold uppercase text-zinc-300">Room Session Analytics</div>
+                        <div className="text-[11px] text-zinc-500">Tracks room meeting link opens (participation proxy).</div>
+                      </div>
+                      <button
+                        onClick={() => void refreshSessionSummary()}
+                        disabled={!selectedBootcampId || sessionSummaryLoading}
+                        className="px-3 py-2 border border-zinc-700 rounded text-[11px] font-bold uppercase disabled:opacity-60"
+                      >
+                        {sessionSummaryLoading ? 'Refreshing...' : 'Refresh'}
+                      </button>
+                    </div>
+
+                    {sessionSummary ? (
+                      <>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                          <div className="border border-zinc-800 rounded p-2">
+                            <div className="text-[10px] uppercase text-zinc-500">Students</div>
+                            <div className="text-sm font-bold text-zinc-100">{Number(sessionSummary.totals?.students || 0)}</div>
+                          </div>
+                          <div className="border border-zinc-800 rounded p-2">
+                            <div className="text-[10px] uppercase text-zinc-500">Joined</div>
+                            <div className="text-sm font-bold text-emerald-300">{Number(sessionSummary.totals?.participants || 0)}</div>
+                          </div>
+                          <div className="border border-zinc-800 rounded p-2">
+                            <div className="text-[10px] uppercase text-zinc-500">Not Joined</div>
+                            <div className="text-sm font-bold text-amber-300">{Number(sessionSummary.totals?.nonParticipants || 0)}</div>
+                          </div>
+                          <div className="border border-zinc-800 rounded p-2">
+                            <div className="text-[10px] uppercase text-zinc-500">Total Opens</div>
+                            <div className="text-sm font-bold text-red-300">{Number(sessionSummary.totals?.totalOpenCount || 0)}</div>
+                          </div>
+                        </div>
+
+                        <div className="max-h-[320px] overflow-auto border border-zinc-800 rounded">
+                          <table className="w-full text-left min-w-[760px]">
+                            <thead className="border-b border-zinc-800 bg-black">
+                              <tr>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Phase</th>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Room</th>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Joined</th>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Not Joined</th>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Open Count</th>
+                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Last Opened</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {(sessionSummary.rooms || []).map((room) => (
+                                <tr key={`${room.moduleId}-${room.roomId}`} className="border-b border-zinc-800/80 text-xs">
+                                  <td className="px-3 py-2 text-zinc-300">{room.moduleTitle || `Module ${room.moduleId}`}</td>
+                                  <td className="px-3 py-2 text-zinc-100 font-semibold">{room.roomTitle || `Room ${room.roomId}`}</td>
+                                  <td className="px-3 py-2 text-emerald-300">{Number(room.participantsCount || 0)}</td>
+                                  <td className="px-3 py-2 text-amber-300">{Number(room.nonParticipantsCount || 0)}</td>
+                                  <td className="px-3 py-2 text-red-300">{Number(room.totalOpenCount || 0)}</td>
+                                  <td className="px-3 py-2 text-zinc-400">{room.lastOpenedAt ? new Date(room.lastOpenedAt).toLocaleString() : '-'}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-xs text-zinc-500">No session analytics available yet for this bootcamp.</div>
+                    )}
+                  </div>
+
+                  <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
+                    <div className="text-xs font-bold uppercase text-zinc-300">Room Quiz Release</div>
+                    <div className="text-[11px] text-zinc-500">Create or update a room quiz and release it to students.</div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <input
+                        type="number"
+                        value={quizModuleId}
+                        onChange={(e) => setQuizModuleId(Number(e.target.value || 0))}
+                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
+                        placeholder="Module ID"
+                      />
+                      <input
+                        type="number"
+                        value={quizRoomId}
+                        onChange={(e) => setQuizRoomId(Number(e.target.value || 0))}
+                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
+                        placeholder="Room ID"
+                      />
+                      <input
+                        value={quizTitle}
+                        onChange={(e) => setQuizTitle(e.target.value)}
+                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100 col-span-2"
+                        placeholder="Quiz title"
+                      />
+                    </div>
+                    <input
+                      value={quizMessage}
+                      onChange={(e) => setQuizMessage(e.target.value)}
+                      className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
+                      placeholder="Quiz message"
+                    />
+                    <textarea
+                      value={quizQuestionsText}
+                      onChange={(e) => setQuizQuestionsText(e.target.value)}
+                      className="w-full min-h-[140px] bg-black border border-zinc-800 rounded px-3 py-2 text-xs font-mono text-zinc-100"
+                    />
+                    <button
+                      onClick={() => void releaseRoomQuiz()}
+                      className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300"
+                    >
+                      Release Room Quiz
+                    </button>
                   </div>
                 </section>
               )}

@@ -3,20 +3,55 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   BookOpen, Lock, CheckCircle2, ChevronDown, ChevronRight,
-  Loader2, Flag, ArrowLeft, CreditCard, Smartphone, Zap
+  Loader2, Flag, ArrowLeft, CreditCard, Smartphone, Zap, ExternalLink, Video, FileText
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
 
-interface Room { roomId: number; title: string; overview: string; locked: boolean; }
+interface ReadingLink { title: string; url: string; }
+interface LiveClass { title: string; instructor?: string; time?: string; link: string; }
+interface Room {
+  roomId: number;
+  title: string;
+  overview: string;
+  locked: boolean;
+  image?: string;
+  completed?: boolean;
+  readingContent?: string;
+  readingLinks?: ReadingLink[];
+  meetingLink?: string;
+  liveClass?: LiveClass;
+}
 interface Module {
   moduleId: number; title: string; description: string; codename: string;
   roleTitle: string; badge: string; ctf: string; locked: boolean;
   rooms: Room[]; progress?: number; roomsCompleted?: number; roomsTotal?: number; ctfCompleted?: boolean;
 }
 interface Course { id: string; title: string; modules: Module[]; }
+
+interface QuizQuestion {
+  id: string;
+  text: string;
+  options: string[];
+}
+
+interface RoomQuiz {
+  scope?: { type?: string; id?: string | number; moduleId?: string | number; courseId?: string };
+  questions: QuizQuestion[];
+}
+
+const ROOM_CARD_IMAGES = [
+  '/images/Curriculum-images/phase1.webp',
+  '/images/Curriculum-images/phase2.webp',
+  '/images/Curriculum-images/phase3.webp',
+  '/images/Curriculum-images/phase4.webp',
+  '/images/Curriculum-images/phase5.webp',
+];
+
+const resolveRoomImage = (room: Room, idx: number) =>
+  String(room.image || '').trim() || ROOM_CARD_IMAGES[idx % ROOM_CARD_IMAGES.length];
 
 const BootcampCourse: React.FC = () => {
   const { bootcampId } = useParams<{ bootcampId?: string }>();
@@ -35,17 +70,29 @@ const BootcampCourse: React.FC = () => {
   const [btcHash, setBtcHash] = useState('');
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+  const [joiningSessionKey, setJoiningSessionKey] = useState<string | null>(null);
+  const [quizLoadingKey, setQuizLoadingKey] = useState<string | null>(null);
+  const [activeQuiz, setActiveQuiz] = useState<RoomQuiz | null>(null);
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  const [submittingQuiz, setSubmittingQuiz] = useState(false);
 
   const load = async () => {
     try {
+      const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
       const [ovRes, courseRes] = await Promise.all([
         api.get('/student/overview'),
-        api.get('/student/course').catch(() => null),
+        api.get(`/student/course${query}`).catch(() => null),
       ]);
       setOverview(ovRes.data || null);
       setBootcampStatus(ovRes.data?.bootcampStatus || 'not_enrolled');
       setPaymentStatus(ovRes.data?.bootcampPaymentStatus || 'unpaid');
-      if (courseRes?.data) setCourse(courseRes.data);
+      if (courseRes?.data) {
+        const nextCourse = courseRes.data as Course;
+        setCourse(nextCourse);
+        if (Array.isArray(nextCourse.modules) && nextCourse.modules.length > 0) {
+          setExpandedModule((prev) => (prev === null ? Number(nextCourse.modules[0].moduleId) : prev));
+        }
+      }
     } catch {
       // silently fail
     } finally {
@@ -53,7 +100,7 @@ const BootcampCourse: React.FC = () => {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [bootcampId]);
 
   const enroll = async () => {
     setEnrolling(true);
@@ -141,6 +188,86 @@ const BootcampCourse: React.FC = () => {
     }
   };
 
+  const joinRoomSession = async (moduleId: number, room: Room) => {
+    const meetingLink = String(room.liveClass?.link || room.meetingLink || '').trim();
+    if (!meetingLink) {
+      addToast('No meeting link has been configured for this room yet.', 'error');
+      return;
+    }
+    const key = `${moduleId}-${room.roomId}`;
+    setJoiningSessionKey(key);
+    try {
+      await api.post(`/student/modules/${moduleId}/rooms/${room.roomId}/session-open`, { meetingLink });
+      window.open(meetingLink, '_blank', 'noopener,noreferrer');
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Could not open session link.', 'error');
+    } finally {
+      setJoiningSessionKey(null);
+    }
+  };
+
+  const openRoomQuiz = async (moduleId: number, roomId: number) => {
+    const key = `${moduleId}-${roomId}`;
+    setQuizLoadingKey(key);
+    try {
+      const res = await api.post('/student/quiz', {
+        type: 'room',
+        id: String(roomId),
+        moduleId: String(moduleId),
+        courseId: String(course?.id || bootcampId || ''),
+      });
+      const quiz = (res?.data || {}) as RoomQuiz;
+      if (!Array.isArray(quiz.questions) || quiz.questions.length === 0) {
+        addToast('Quiz is not available for this room yet.', 'error');
+        return;
+      }
+      setActiveQuiz({
+        scope: quiz.scope || {
+          type: 'room',
+          id: String(roomId),
+          moduleId: String(moduleId),
+          courseId: String(course?.id || bootcampId || ''),
+        },
+        questions: quiz.questions,
+      });
+      setQuizAnswers({});
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Quiz is not available yet.', 'error');
+    } finally {
+      setQuizLoadingKey(null);
+    }
+  };
+
+  const submitActiveQuiz = async () => {
+    if (!activeQuiz?.scope) return;
+    const total = activeQuiz.questions.length;
+    if (Object.keys(quizAnswers).length < total) {
+      addToast('Please answer all questions before submitting.', 'error');
+      return;
+    }
+    setSubmittingQuiz(true);
+    try {
+      const res = await api.post('/student/quiz', {
+        scope: activeQuiz.scope,
+        answers: quizAnswers,
+      });
+      const score = Number(res?.data?.score || 0);
+      const passed = Boolean(res?.data?.passed);
+      addToast(
+        passed
+          ? `Quiz passed (${score}%).`
+          : `Quiz submitted (${score}%).`,
+        passed ? 'success' : 'info'
+      );
+      setActiveQuiz(null);
+      setQuizAnswers({});
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Could not submit quiz.', 'error');
+    } finally {
+      setSubmittingQuiz(false);
+    }
+  };
+
   const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
   const moduleProgressMap = new Map<number, any>(
     (overview?.modules || []).map((m: any) => [Number(m.id), m])
@@ -148,8 +275,20 @@ const BootcampCourse: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-accent animate-spin" />
+      <div className="min-h-screen bg-bg pb-8">
+        <div className="max-w-4xl mx-auto px-4 md:px-8 pt-8">
+          <div className="mb-8 h-4 w-36 rounded bg-bg-card border border-border animate-pulse" />
+          <div className="p-6 md:p-8 bg-bg-card border border-border rounded-2xl animate-pulse">
+            <div className="h-3 w-28 rounded bg-accent/20 mb-4" />
+            <div className="h-8 w-64 rounded bg-bg mb-4" />
+            <div className="h-2 w-full rounded bg-accent-dim" />
+          </div>
+          <div className="mt-4 space-y-4">
+            <div className="h-24 rounded-xl bg-bg-card border border-border animate-pulse" />
+            <div className="h-24 rounded-xl bg-bg-card border border-border animate-pulse" />
+            <div className="h-24 rounded-xl bg-bg-card border border-border animate-pulse" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -316,9 +455,12 @@ const BootcampCourse: React.FC = () => {
                         {progress > 0 && <span className="text-accent">{progress}%</span>}
                       </div>
                     </div>
-                    {!isLocked && (
-                      isExpanded ? <ChevronDown className="w-4 h-4 text-text-muted flex-none" /> : <ChevronRight className="w-4 h-4 text-text-muted flex-none" />
-                    )}
+                    {isLocked
+                      ? <Lock className="w-4 h-4 text-text-muted flex-none" />
+                      : isExpanded
+                        ? <ChevronDown className="w-4 h-4 text-text-muted flex-none" />
+                        : <ChevronRight className="w-4 h-4 text-text-muted flex-none" />
+                    }
                   </button>
 
                   {isExpanded && !isLocked && (
@@ -328,37 +470,105 @@ const BootcampCourse: React.FC = () => {
                       )}
 
                       {/* Rooms */}
-                      {(mod.rooms || []).map((room) => {
-                        const roomDone = Boolean(
-                          (overview?.modules || [])
-                            .find((m: any) => Number(m.id) === mod.moduleId)
-                        );
-                        const completingKey = `${mod.moduleId}-${room.roomId}`;
-                        const isRoomLocked = room.locked;
-                        return (
-                          <div key={room.roomId} className={`px-5 py-3 flex items-center justify-between border-b border-border/30 ${isRoomLocked ? 'opacity-50' : ''}`}>
-                            <div className="flex items-center gap-3">
-                              <div className={`w-6 h-6 rounded flex items-center justify-center flex-none ${isRoomLocked ? 'bg-bg border border-border' : 'bg-accent-dim border border-accent/20'}`}>
-                                {isRoomLocked ? <Lock className="w-3 h-3 text-text-muted" /> : <BookOpen className="w-3 h-3 text-accent" />}
-                              </div>
-                              <div>
-                                <div className="text-xs font-bold text-text-primary">{room.title}</div>
-                                {room.overview && <div className="text-[10px] text-text-muted line-clamp-1">{room.overview}</div>}
-                              </div>
-                            </div>
-                            {!isRoomLocked && (
-                              <button
-                                onClick={() => completeRoom(mod.moduleId, room.roomId)}
-                                disabled={completing === completingKey}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-accent-dim border border-accent/20 hover:bg-accent/20 rounded text-[10px] font-bold text-accent uppercase transition-all disabled:opacity-50 flex-none"
+                      <div className="p-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                          {(mod.rooms || []).map((room, roomIdx) => {
+                            const roomDone = Boolean(room.completed);
+                            const key = `${mod.moduleId}-${room.roomId}`;
+                            const isRoomLocked = room.locked;
+                            const hasSessionLink = Boolean(String(room.liveClass?.link || room.meetingLink || '').trim());
+                            const hasReading = Boolean(
+                              String(room.readingContent || '').trim() ||
+                              (Array.isArray(room.readingLinks) && room.readingLinks.length > 0)
+                            );
+                            return (
+                              <div
+                                key={room.roomId}
+                                className={`rounded-xl border overflow-hidden bg-bg/50 flex flex-col ${isRoomLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}
                               >
-                                {completing === completingKey ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
-                                Complete
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
+                                <img
+                                  src={resolveRoomImage(room, roomIdx)}
+                                  alt={room.title || 'Room cover'}
+                                  className={`w-full h-32 object-cover ${isRoomLocked ? 'grayscale' : ''}`}
+                                />
+                                <div className="p-4 flex flex-col gap-3 h-full">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div className="min-w-0">
+                                      <div className="text-xs font-bold text-text-primary truncate">{room.title || `Room ${room.roomId}`}</div>
+                                      {room.overview && <div className="text-[10px] text-text-muted line-clamp-2 mt-1">{room.overview}</div>}
+                                    </div>
+                                    <div className={`w-6 h-6 rounded flex items-center justify-center flex-none ${isRoomLocked ? 'bg-bg border border-border' : roomDone ? 'bg-accent border border-accent' : 'bg-accent-dim border border-accent/20'}`}>
+                                      {roomDone ? <CheckCircle2 className="w-3 h-3 text-bg" /> : isRoomLocked ? <Lock className="w-3 h-3 text-text-muted" /> : <BookOpen className="w-3 h-3 text-accent" />}
+                                    </div>
+                                  </div>
+
+                                  {isRoomLocked ? (
+                                    <div className="mt-auto text-[10px] uppercase tracking-widest font-bold text-text-muted">Locked by admin</div>
+                                  ) : (
+                                    <>
+                                      {hasReading && (
+                                        <div className="space-y-2">
+                                          {room.readingContent && (
+                                            <p className="text-[11px] leading-relaxed text-text-secondary line-clamp-4">{room.readingContent}</p>
+                                          )}
+                                          {Array.isArray(room.readingLinks) && room.readingLinks.length > 0 && (
+                                            <div className="flex flex-col gap-1">
+                                              {room.readingLinks.slice(0, 3).map((item, idx) => {
+                                                const href = String(item.url || '').trim();
+                                                return (
+                                                  <a
+                                                    key={`${room.roomId}-${idx}`}
+                                                    href={href || '#'}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className={`text-[11px] font-medium inline-flex items-center gap-1 ${href ? 'text-accent hover:underline' : 'text-text-muted pointer-events-none'}`}
+                                                  >
+                                                    <ExternalLink className="w-3 h-3" />
+                                                    {item.title || 'Reading resource'}
+                                                  </a>
+                                                );
+                                              })}
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+
+                                      <div className="mt-auto grid grid-cols-1 gap-2">
+                                        {hasSessionLink && (
+                                          <button
+                                            onClick={() => joinRoomSession(mod.moduleId, room)}
+                                            disabled={joiningSessionKey === key}
+                                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/20 rounded text-[10px] font-bold text-blue-300 uppercase transition-all disabled:opacity-50"
+                                          >
+                                            {joiningSessionKey === key ? <Loader2 className="w-3 h-3 animate-spin" /> : <Video className="w-3 h-3" />}
+                                            Join Session
+                                          </button>
+                                        )}
+                                        <button
+                                          onClick={() => openRoomQuiz(mod.moduleId, room.roomId)}
+                                          disabled={quizLoadingKey === key}
+                                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-yellow-500/10 border border-yellow-500/20 hover:bg-yellow-500/20 rounded text-[10px] font-bold text-yellow-500 uppercase transition-all disabled:opacity-50"
+                                        >
+                                          {quizLoadingKey === key ? <Loader2 className="w-3 h-3 animate-spin" /> : <FileText className="w-3 h-3" />}
+                                          Quiz
+                                        </button>
+                                        <button
+                                          onClick={() => completeRoom(mod.moduleId, room.roomId)}
+                                          disabled={completing === key || roomDone}
+                                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-accent-dim border border-accent/20 hover:bg-accent/20 rounded text-[10px] font-bold text-accent uppercase transition-all disabled:opacity-50"
+                                        >
+                                          {completing === key ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
+                                          {roomDone ? 'Done' : 'Complete'}
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
 
                       {/* CTF */}
                       {mod.ctf && (
@@ -406,6 +616,55 @@ const BootcampCourse: React.FC = () => {
             );
           })}
         </div>
+
+        {activeQuiz && (
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="max-w-2xl mx-auto mt-8 bg-bg-card border border-border rounded-xl p-5 md:p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-black text-text-primary">Room Quiz</h3>
+                <button
+                  onClick={() => {
+                    if (submittingQuiz) return;
+                    setActiveQuiz(null);
+                    setQuizAnswers({});
+                  }}
+                  className="text-xs font-bold text-text-muted hover:text-text-primary uppercase"
+                >
+                  Close
+                </button>
+              </div>
+              <div className="space-y-4">
+                {activeQuiz.questions.map((question, index) => (
+                  <div key={question.id || index} className="p-3 border border-border rounded-lg">
+                    <div className="text-sm font-bold text-text-primary mb-2">{index + 1}. {question.text}</div>
+                    <div className="space-y-2">
+                      {(question.options || []).map((option, optIdx) => (
+                        <label key={`${question.id}-${optIdx}`} className="flex items-start gap-2 text-xs text-text-secondary">
+                          <input
+                            type="radio"
+                            name={question.id}
+                            checked={Number(quizAnswers[question.id]) === optIdx}
+                            onChange={() => setQuizAnswers((prev) => ({ ...prev, [question.id]: optIdx }))}
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 flex justify-end">
+                <button
+                  onClick={submitActiveQuiz}
+                  disabled={submittingQuiz}
+                  className="btn-primary !py-2.5 text-xs disabled:opacity-50 inline-flex items-center gap-2"
+                >
+                  {submittingQuiz ? <><Loader2 className="w-3 h-3 animate-spin" /> Submitting...</> : 'Submit Quiz'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

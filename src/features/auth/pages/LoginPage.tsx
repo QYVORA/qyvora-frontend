@@ -200,13 +200,13 @@ const Login: React.FC = () => {
         const meRes = await api.get('/auth/me').catch(() => null);
         const isAdmin = String(meRes?.data?.role || '').toLowerCase() === 'admin';
         if (isAdmin) {
-          addToast('Admin session established.', 'success');
+          addToast('Session established.', 'success');
           navigate('/mr-robot/dashboard');
           return;
         }
         if (isAdminLoginRoute) {
           await logout();
-          addToast('Admin credentials required for this route.', 'error');
+          addToast('Credentials not valid for this workspace.', 'error');
           return;
         }
         addToast('Session established. Welcome back, Operator.', 'success');
@@ -227,7 +227,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isAdminLoginRoute ? 'bg-black' : 'bg-bg'} grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
+    <div className={`min-h-screen bg-bg grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
       {!isAdminLoginRoute && <AuthHero />}
 
       <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
@@ -247,11 +247,11 @@ const Login: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
                 <div className="mb-8">
-                  <h1 className={`text-2xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-zinc-100' : 'text-text-primary'}`}>
-                    {isAdminLoginRoute ? 'Admin Access' : 'Operator Login'}
+                  <h1 className={`text-2xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-text-primary' : 'text-text-primary'}`}>
+                    {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
                   </h1>
-                  <p className={`text-sm ${isAdminLoginRoute ? 'text-zinc-400' : 'text-text-muted'}`}>
-                    {isAdminLoginRoute ? 'Restricted route. Enter admin credentials.' : 'Enter credentials to establish secure session.'}
+                  <p className={`text-sm ${isAdminLoginRoute ? 'text-text-muted' : 'text-text-muted'}`}>
+                    {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Enter credentials to establish secure session.'}
                   </p>
                 </div>
 
@@ -280,7 +280,7 @@ const Login: React.FC = () => {
                   <button type="submit" disabled={isLoading}
                     className={`w-full !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50 rounded-lg text-sm font-bold uppercase tracking-wider ${
                       isAdminLoginRoute
-                        ? 'bg-zinc-900 border border-zinc-700 text-zinc-100 hover:bg-zinc-800'
+                        ? 'bg-bg-card border border-border text-text-primary hover:border-accent/40'
                         : 'btn-primary'
                     }`}>
                     {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-4 h-4" />

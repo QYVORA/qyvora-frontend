@@ -1,6 +1,7 @@
 export const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
   if (!src) return fallback;
+  if (/^(blob:|data:)/i.test(src)) return src;
   if (/^https?:\/\//i.test(src)) return src;
   const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
