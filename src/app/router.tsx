@@ -31,7 +31,6 @@ const LeaderboardPage = lazy(() => import('../features/student/pages/Leaderboard
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage = lazy(() => import('../features/student/pages/SettingsPage'));
 const BootcampCoursePage = lazy(() => import('../features/student/pages/BootcampCoursePage'));
-const StudentPaymentsPage = lazy(() => import('../features/student/pages/StudentPaymentsPage'));
 
 // Admin pages
 const AdminDashboardPage = lazy(() => import('../features/admin/pages/AdminDashboardPage'));
@@ -109,7 +108,6 @@ export const AppRouter = () => {
           <Route path="/profile/:username" element={<Wrap><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications" element={<Wrap><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/settings" element={<Wrap><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
-          <Route path="/student-payments" element={<Wrap><StudentOnly><StudentPaymentsPage /></StudentOnly></Wrap>} />
         </Route>
 
         {/* Admin routes */}

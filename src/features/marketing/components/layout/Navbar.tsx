@@ -50,9 +50,12 @@ const Navbar: React.FC = () => {
   useEffect(() => { setIsOpen(false); setActiveDropdown(null); setMobileExpanded(null); }, [location]);
   useEffect(() => {
     if (!isOpen) return undefined;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
@@ -184,17 +187,17 @@ const Navbar: React.FC = () => {
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/72 backdrop-blur-sm z-[95] md:hidden"
               onClick={() => setIsOpen(false)}
             />
             <motion.div
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 220 }}
               id="mobile-nav-drawer"
-              className="fixed top-0 right-0 h-full w-[88vw] max-w-sm bg-bg border-l border-border z-50 flex flex-col md:hidden"
+              className="fixed top-0 right-0 h-[100dvh] w-[92vw] max-w-sm bg-bg-card border-l border-border shadow-2xl shadow-black/40 z-[100] flex flex-col md:hidden overflow-hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-bg-card/95 backdrop-blur-md">
                 <Logo size="md" />
                 <button onClick={() => setIsOpen(false)} className="p-2 min-h-11 min-w-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
                   <X className="w-5 h-5" />
@@ -202,7 +205,7 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Nav items — scrollable */}
-              <div className="flex-1 overflow-y-auto py-4 px-4 space-y-1">
+              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar py-4 px-4 space-y-2">
                 {NAV_GROUPS.map((group) => (
                   <div key={group.label}>
                     {group.path ? (
@@ -233,12 +236,12 @@ const Navbar: React.FC = () => {
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
                             >
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 pb-3 pt-1">
+                              <div className="grid grid-cols-1 gap-2 px-2 pb-3 pt-1">
                                 {group.items.map((item) => (
                                   <Link
                                     key={item.label}
                                     to={item.path}
-                                    className="flex flex-col gap-1.5 p-3 rounded-lg bg-bg-card border border-border hover:border-accent/40 hover:bg-accent-dim transition-all active:scale-95"
+                                    className="flex flex-col gap-1.5 p-3 rounded-lg bg-bg border border-border hover:border-accent/40 hover:bg-accent-dim transition-all active:scale-95"
                                   >
                                     <div className="flex items-center gap-2">
                                       <item.icon className="w-3.5 h-3.5 text-accent flex-none" />
@@ -258,7 +261,7 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Auth buttons pinned to bottom */}
-              <div className="px-4 py-5 border-t border-border space-y-3 pb-[calc(env(safe-area-inset-bottom)+1.25rem)]">
+              <div className="px-4 pt-4 border-t border-border bg-bg-card/95 backdrop-blur-md space-y-3 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
                 {/* Theme toggle */}
                 <button
                   onClick={toggleTheme}
@@ -278,7 +281,7 @@ const Navbar: React.FC = () => {
                     </Link>
                   </>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     <Link to="/login" className="flex items-center justify-center border border-accent text-accent rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all">
                       Log In
                     </Link>

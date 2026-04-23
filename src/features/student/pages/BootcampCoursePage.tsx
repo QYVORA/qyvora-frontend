@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   BookOpen, Lock, CheckCircle2, ChevronDown, ChevronRight,
-  Loader2, Flag, ArrowLeft, CreditCard, Smartphone, Zap, ExternalLink, Video, FileText
+  Loader2, Flag, ArrowLeft, ExternalLink, Video, FileText
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -62,14 +62,9 @@ const BootcampCourse: React.FC = () => {
   const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
-  const [paymentStatus, setPaymentStatus] = useState('unpaid');
   const [expandedModule, setExpandedModule] = useState<number | null>(null);
   const [completing, setCompleting] = useState<string | null>(null);
   const [enrolling, setEnrolling] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'momo' | 'card' | 'btc'>('momo');
-  const [btcHash, setBtcHash] = useState('');
-  const [paymentLoading, setPaymentLoading] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
   const [joiningSessionKey, setJoiningSessionKey] = useState<string | null>(null);
   const [quizLoadingKey, setQuizLoadingKey] = useState<string | null>(null);
   const [activeQuiz, setActiveQuiz] = useState<RoomQuiz | null>(null);
@@ -85,7 +80,6 @@ const BootcampCourse: React.FC = () => {
       ]);
       setOverview(ovRes.data || null);
       setBootcampStatus(ovRes.data?.bootcampStatus || 'not_enrolled');
-      setPaymentStatus(ovRes.data?.bootcampPaymentStatus || 'unpaid');
       if (courseRes?.data) {
         const nextCourse = courseRes.data as Course;
         setCourse(nextCourse);
@@ -107,7 +101,6 @@ const BootcampCourse: React.FC = () => {
     try {
       const res = await api.post('/student/bootcamp', { bootcampId: bootcampId || '' });
       setBootcampStatus(res.data?.bootcampStatus || 'enrolled');
-      setPaymentStatus(res.data?.bootcampPaymentStatus || 'unpaid');
       await refreshMe();
       addToast('Enrolled in bootcamp.', 'success');
       await load();
@@ -115,34 +108,6 @@ const BootcampCourse: React.FC = () => {
       addToast(err?.response?.data?.error || 'Enrollment failed.', 'error');
     } finally {
       setEnrolling(false);
-    }
-  };
-
-  const initPayment = async () => {
-    if (paymentMethod === 'btc') {
-      if (!btcHash.trim()) { addToast('Enter your BTC transaction hash.', 'error'); return; }
-      setPaymentLoading(true);
-      try {
-        await api.post('/student/bootcamp/payments/btc', { txHash: btcHash.trim() });
-        setPaymentStatus('pending');
-        addToast('BTC payment submitted. Awaiting admin approval.', 'success');
-        setShowPayment(false);
-      } catch (err: any) {
-        addToast(err?.response?.data?.error || 'BTC submission failed.', 'error');
-      } finally {
-        setPaymentLoading(false);
-      }
-      return;
-    }
-    setPaymentLoading(true);
-    try {
-      const res = await api.post('/student/bootcamp/payments/initialize', { method: paymentMethod });
-      if (res.data?.authorizationUrl) {
-        window.location.href = res.data.authorizationUrl;
-      }
-    } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Payment initialization failed.', 'error');
-      setPaymentLoading(false);
     }
   };
 
@@ -318,82 +283,7 @@ const BootcampCourse: React.FC = () => {
     );
   }
 
-  // Enrolled but unpaid
-  if (paymentStatus !== 'paid') {
-    return (
-      <div className="min-h-screen bg-bg pb-8">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 pt-8">
-          <Link to="/bootcamps" className="flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Bootcamps
-          </Link>
-          <div className="p-10 bg-bg-card border border-border rounded-2xl">
-            <h1 className="text-2xl font-black text-text-primary mb-2">Complete Payment</h1>
-            <p className="text-text-muted text-sm mb-2">
-              {paymentStatus === 'pending'
-                ? 'Your payment is pending verification. If you paid via BTC, an admin will approve it shortly.'
-                : 'Payment is required to access the full bootcamp curriculum.'}
-            </p>
-
-            {paymentStatus === 'pending' ? (
-              <div className="mt-6 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg text-sm text-yellow-400 font-bold">
-                ⏳ Payment pending — awaiting confirmation.
-              </div>
-            ) : (
-              <>
-                {!showPayment ? (
-                  <button onClick={() => setShowPayment(true)} className="btn-primary mt-6 inline-flex items-center gap-2">
-                    <CreditCard className="w-4 h-4" /> Pay Now
-                  </button>
-                ) : (
-                  <div className="mt-6 space-y-5">
-                    <div className="flex gap-3">
-                      {(['momo', 'card', 'btc'] as const).map((m) => (
-                        <button
-                          key={m}
-                          onClick={() => setPaymentMethod(m)}
-                          className={`flex-1 py-2.5 rounded-lg border text-xs font-bold uppercase transition-all ${
-                            paymentMethod === m
-                              ? 'bg-accent text-bg border-accent'
-                              : 'bg-bg border-border text-text-muted hover:border-accent/40'
-                          }`}
-                        >
-                          {m === 'momo' ? <><Smartphone className="w-3 h-3 inline mr-1" />MoMo</> : m === 'card' ? <><CreditCard className="w-3 h-3 inline mr-1" />Card</> : '₿ BTC'}
-                        </button>
-                      ))}
-                    </div>
-
-                    {paymentMethod === 'btc' && (
-                      <div>
-                        <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5">BTC Transaction Hash</label>
-                        <input
-                          type="text"
-                          value={btcHash}
-                          onChange={(e) => setBtcHash(e.target.value)}
-                          placeholder="Paste your BTC txid here"
-                          className="w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none font-mono"
-                        />
-                        <p className="text-[10px] text-text-muted mt-1">Send payment to the BTC address provided by admin, then paste the transaction hash above.</p>
-                      </div>
-                    )}
-
-                    <button
-                      onClick={initPayment}
-                      disabled={paymentLoading}
-                      className="w-full btn-primary !py-3 flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      {paymentLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : <><Zap className="w-4 h-4" /> Proceed to Payment</>}
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Paid — show course
+  // Enrolled — show course
   return (
     <div className="min-h-screen bg-bg pb-8">
       <div className="max-w-4xl mx-auto px-4 md:px-8 pt-8">
