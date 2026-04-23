@@ -6,9 +6,6 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 
-const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
-const STREAK_BADGE = '/images/metrics/streak-badge.svg';
-
 const numericStatValue = (value: string | number) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
   const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
@@ -197,7 +194,7 @@ const Profile: React.FC = () => {
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <img src={STREAK_BADGE} alt="Streak" className="w-4 h-4 object-contain" /> {profileData.streakDays}-day streak
+                    <Trophy className="w-4 h-4 text-accent" /> {profileData.streakDays}-day streak
                   </div>
                 </div>
               </div>
@@ -223,11 +220,7 @@ const Profile: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 {profileStats.map((s, i) => (
                   <div key={i} className="p-4 bg-bg border border-border rounded-xl">
-                    {s.label === 'CP Balance'
-                      ? <img src={CP_POINTS_BADGE} alt="CP Points" className="w-5 h-5 object-contain mb-2" />
-                      : s.label === 'Streak'
-                        ? <img src={STREAK_BADGE} alt="Streak" className="w-5 h-5 object-contain mb-2" />
-                        : <s.icon className="w-4 h-4 text-accent mb-2" />}
+                    <s.icon className="w-4 h-4 text-accent mb-2" />
                     <div className="text-xl font-black text-text-primary font-mono">{s.value}</div>
                     <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{s.label}</div>
                   </div>

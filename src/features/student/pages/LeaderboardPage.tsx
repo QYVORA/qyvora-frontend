@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 
-const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
-
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
   if (!src) return fallback;
@@ -97,8 +95,7 @@ const Leaderboard: React.FC = () => {
                         <div className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: podiumColors[i] }}>
                           {op.rank || 'Operator'}
                         </div>
-                        <div className="text-2xl font-black font-mono inline-flex items-center gap-2" style={{ color: podiumColors[i] }}>
-                          <img src={CP_POINTS_BADGE} alt="CP Points" className="w-5 h-5 object-contain" />
+                        <div className="text-2xl font-black font-mono" style={{ color: podiumColors[i] }}>
                           {Number(op.totalXp || 0).toLocaleString()} CP
                         </div>
                         <Link to={`/profile/${handle}`}
@@ -159,10 +156,7 @@ const Leaderboard: React.FC = () => {
                             </td>
                             <td className="px-6 py-4 text-[10px] font-bold text-text-muted uppercase">{op.rank || 'Operator'}</td>
                             <td className="px-6 py-4 text-right text-sm font-black text-accent">
-                              <span className="inline-flex items-center gap-1 justify-end">
-                                <img src={CP_POINTS_BADGE} alt="CP Points" className="w-4 h-4 object-contain" />
-                                {Number(op.totalXp || 0).toLocaleString()}
-                              </span>
+                              <span>{Number(op.totalXp || 0).toLocaleString()}</span>
                             </td>
                           </tr>
                         );

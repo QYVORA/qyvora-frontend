@@ -8,8 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
 
-const CP_POINTS_BADGE = '/images/metrics/cp-points-badge.svg';
-
 const NAV = [
   { label: 'Dashboard', path: '/dashboard' },
   { label: 'Learn', path: '/learn' },
@@ -340,9 +338,7 @@ const StudentTopbar = () => {
                 <div>
                   <div className="text-xs font-black text-text-primary uppercase tracking-widest">{user?.username || 'Operator'}</div>
                   <div className="text-[10px] text-accent font-mono inline-flex items-center gap-1">
-                    <span>{user?.rank || 'Candidate'} ·</span>
-                    <img src={CP_POINTS_BADGE} alt="CP Points" className="w-3 h-3 object-contain" />
-                    <span>{user?.cp?.toLocaleString() ?? 0} CP</span>
+                    <span>{user?.rank || 'Candidate'} · {user?.cp?.toLocaleString() ?? 0} CP</span>
                   </div>
                 </div>
                 <button onClick={() => setMoreOpen(false)} className="p-2 text-text-muted hover:text-accent transition-colors">
