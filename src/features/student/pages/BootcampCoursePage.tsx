@@ -50,8 +50,43 @@ const ROOM_CARD_IMAGES = [
   '/images/Curriculum-images/phase5.webp',
 ];
 
-const resolveRoomImage = (room: Room, idx: number) =>
-  String(room.image || '').trim() || ROOM_CARD_IMAGES[idx % ROOM_CARD_IMAGES.length];
+const ROOM_PHASE_IMAGE_MAP: Record<string, string> = {
+  hackermindset: '/images/bootcamp-room-images/hackermindset.png',
+  linuxfoundations: '/images/bootcamp-room-images/LinuxFoundations.png',
+  networking: '/images/bootcamp-room-images/networking.png',
+  socialengineering: '/images/bootcamp-room-images/socialengineering.png',
+  webandbackendsystems: '/images/bootcamp-room-images/webandbackendsystems.png',
+};
+
+const normalizeToken = (value = '') =>
+  String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+const resolveRoomPhaseImage = (...values: string[]) => {
+  const text = normalizeToken(values.join(' '));
+  if (text.includes('hackermindset')) return ROOM_PHASE_IMAGE_MAP.hackermindset;
+  if (text.includes('linuxfoundation') || text.includes('linuxfundamental') || text.includes('linux')) return ROOM_PHASE_IMAGE_MAP.linuxfoundations;
+  if (text.includes('network')) return ROOM_PHASE_IMAGE_MAP.networking;
+  if (text.includes('socialengineering') || (text.includes('social') && text.includes('engineering'))) {
+    return ROOM_PHASE_IMAGE_MAP.socialengineering;
+  }
+  if (text.includes('webandbackendsystem') || (text.includes('web') && text.includes('backend'))) {
+    return ROOM_PHASE_IMAGE_MAP.webandbackendsystems;
+  }
+  return '';
+};
+
+const resolveRoomImage = (room: Room, idx: number, module?: Module) => {
+  const explicit = String(room.image || '').trim();
+  if (explicit) return explicit;
+  const mapped = resolveRoomPhaseImage(
+    module?.title || '',
+    module?.codename || '',
+    module?.description || '',
+    room.title || '',
+    room.overview || ''
+  );
+  return mapped || ROOM_CARD_IMAGES[idx % ROOM_CARD_IMAGES.length];
+};
 
 const BootcampCourse: React.FC = () => {
   const { bootcampId } = useParams<{ bootcampId?: string }>();
@@ -377,7 +412,7 @@ const BootcampCourse: React.FC = () => {
                                 className={`w-full max-w-[320px] rounded-xl border overflow-hidden bg-bg/50 flex flex-col ${isRoomLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}
                               >
                                 <img
-                                  src={resolveRoomImage(room, roomIdx)}
+                                  src={resolveRoomImage(room, roomIdx, mod)}
                                   alt={room.title || 'Room cover'}
                                   className={`w-full h-32 object-cover ${isRoomLocked ? 'grayscale' : ''}`}
                                 />
