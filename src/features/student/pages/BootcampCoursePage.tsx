@@ -421,7 +421,7 @@ const BootcampCourse: React.FC = () => {
         </ScrollReveal>
 
         {/* Modules */}
-        <div className="space-y-4">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,360px))] justify-start items-start gap-4">
           {(course?.modules || []).map((mod, idx) => {
             const prog = moduleProgressMap.get(Number(mod.moduleId));
             const progress = Number(prog?.progress || 0);
@@ -433,7 +433,7 @@ const BootcampCourse: React.FC = () => {
 
             return (
               <ScrollReveal key={mod.moduleId} delay={idx * 0.05}>
-                <div className={`bg-bg-card border rounded-xl overflow-hidden transition-all ${isLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}>
+                <div className={`w-full max-w-[360px] bg-bg-card border rounded-xl overflow-hidden transition-all ${isLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}>
                   <button
                     onClick={() => !isLocked && setExpandedModule(isExpanded ? null : mod.moduleId)}
                     className="w-full p-5 flex items-center gap-4 text-left"
@@ -471,7 +471,7 @@ const BootcampCourse: React.FC = () => {
 
                       {/* Rooms */}
                       <div className="p-5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,320px))] justify-start gap-4">
                           {(mod.rooms || []).map((room, roomIdx) => {
                             const roomDone = Boolean(room.completed);
                             const key = `${mod.moduleId}-${room.roomId}`;
@@ -484,7 +484,7 @@ const BootcampCourse: React.FC = () => {
                             return (
                               <div
                                 key={room.roomId}
-                                className={`rounded-xl border overflow-hidden bg-bg/50 flex flex-col ${isRoomLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}
+                                className={`w-full max-w-[320px] rounded-xl border overflow-hidden bg-bg/50 flex flex-col ${isRoomLocked ? 'border-border opacity-60' : 'border-border hover:border-accent/30'}`}
                               >
                                 <img
                                   src={resolveRoomImage(room, roomIdx)}
