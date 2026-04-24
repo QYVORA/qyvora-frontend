@@ -5,35 +5,45 @@ export interface MarketingService {
   category: string;
   icon: typeof Shield;
   img: string;
+  tagline: string;
   bullet: string[];
 }
 
 export const MARKETING_SERVICES: MarketingService[] = [
   {
-    title: 'Corporate Penetration Testing',
+    title: 'Corporate Security Assessments',
     category: 'STAGE 04 // REVENUE ENGINE',
     icon: Shield,
     img: '/images/how-it-works-section/Engagements-4Completed.webp',
+    tagline: 'Find the gaps before attackers do.',
     bullet: [
-      'Paid security audits and penetration tests for established companies.',
+      'Full-scope security audits for businesses and organisations.',
+      'Vulnerability identification across networks, apps, and infrastructure.',
+      'Detailed findings report with remediation roadmap.',
     ],
   },
   {
-    title: 'Employee Cybersecurity Training',
+    title: 'Employee Security Training',
     category: 'FOR COMPANY TEAMS',
     icon: UserCheck,
     img: '/images/Curriculum-images/phase1.webp',
+    tagline: 'Your people are your first line of defence.',
     bullet: [
-      'Security awareness training covering safer personal habits, device security, and day-to-day work practices.',
+      'Security awareness workshops for non-technical staff.',
+      'Covers phishing, device hygiene, and safe work practices.',
+      'Tailored to your team size and threat environment.',
     ],
   },
   {
-    title: 'Authentic Security Tooling',
+    title: 'Proprietary Security Tooling',
     category: 'HSOCIETY OFFSEC PRODUCT',
     icon: Wrench,
     img: '/images/how-it-works-section/Findings-Identified.webp',
+    tagline: 'Tools built by operators, for operators.',
     bullet: [
-      'We build proprietary cybersecurity tools that security teams can subscribe to and use in their operations.',
+      'In-house cybersecurity tools built for real-world use.',
+      'Subscription access for security teams and professionals.',
+      'Continuously updated based on active threat intelligence.',
     ],
   },
   {
@@ -41,8 +51,11 @@ export const MARKETING_SERVICES: MarketingService[] = [
     category: 'AUTOMATED DEFENSE',
     icon: BrainCircuit,
     img: '/images/how-it-works-section/Pentesters-Active.webp',
+    tagline: 'Intelligent systems that respond at machine speed.',
     bullet: [
-      'AI-enabled security products (for example AI-based firewalls) that detect and respond to threats with reduced manual intervention.',
+      'AI-powered threat detection and automated response systems.',
+      'Reduces manual intervention and analyst fatigue.',
+      'Integrates with existing security infrastructure.',
     ],
   },
 ];

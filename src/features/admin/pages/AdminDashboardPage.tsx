@@ -25,7 +25,7 @@ import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 
-type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts';
+type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications';
 
 type AdminUser = {
   id: string;
@@ -83,6 +83,7 @@ type CPProduct = {
   productUrl: string;
   type: string;
   isActive: boolean;
+  isFree: boolean;
   sortOrder: number;
 };
 
@@ -167,6 +168,7 @@ const AdminDashboardPage: React.FC = () => {
     sortOrder: 0,
     productUrl: '',
     isActive: true,
+    isFree: false,
   });
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [productFile, setProductFile] = useState<File | null>(null);
@@ -180,6 +182,7 @@ const AdminDashboardPage: React.FC = () => {
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
 
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
 
   const selectedBootcamp = useMemo(
     () => bootcamps.find((b) => b.id === selectedBootcampId) || null,
@@ -243,6 +246,9 @@ const AdminDashboardPage: React.FC = () => {
       setContactMessages(
         Array.isArray(contactsRes?.data?.items) ? (contactsRes?.data.items as ContactMessage[]) : []
       );
+
+      const appsRes = await api.get('/admin/bootcamp-applications').catch(() => null);
+      setApplications(Array.isArray(appsRes?.data?.items) ? appsRes.data.items : []);
 
       if (userItems.length && !cpUserId) setCpUserId(userItems[0].id);
     } finally {
@@ -456,6 +462,7 @@ const AdminDashboardPage: React.FC = () => {
       sortOrder: 0,
       productUrl: '',
       isActive: true,
+      isFree: false,
     });
     setCoverFile(null);
     setProductFile(null);
@@ -474,11 +481,12 @@ const AdminDashboardPage: React.FC = () => {
       const payload: Record<string, unknown> = {
         title: productForm.title,
         description: productForm.description,
-        cpPrice: Number(productForm.cpPrice || 0),
+        cpPrice: productForm.isFree ? 0 : Number(productForm.cpPrice || 0),
         type: productForm.type,
         sortOrder: Number(productForm.sortOrder || 0),
         productUrl: productForm.productUrl,
         isActive: productForm.isActive,
+        isFree: productForm.isFree,
       };
       if (coverUrl) payload.coverUrl = coverUrl;
       if (fileMeta) {
@@ -573,6 +581,7 @@ const AdminDashboardPage: React.FC = () => {
   const tabs: Array<{ id: AdminTab; label: string; short: string; icon: React.ComponentType<{ className?: string }> }> = [
     { id: 'users', label: 'User Management', short: 'Users', icon: Users },
     { id: 'bootcamps', label: 'Bootcamp Management', short: 'Bootcamps', icon: Shield },
+    { id: 'applications', label: 'Enrollment Applications', short: 'Applications', icon: Users },
     { id: 'zero_day', label: 'Zero-Day Market', short: 'Market', icon: Database },
     { id: 'cp', label: 'Points Management', short: 'Points', icon: Coins },
     { id: 'security', label: 'Security Management', short: 'Security', icon: AlertTriangle },
@@ -1034,7 +1043,7 @@ const AdminDashboardPage: React.FC = () => {
                       <input value={productForm.title} onChange={(e) => setProductForm((p) => ({ ...p, title: e.target.value }))} placeholder="Title" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       <textarea value={productForm.description} onChange={(e) => setProductForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       <div className="grid grid-cols-2 gap-2">
-                        <input type="number" value={productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="Points price" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
+                        <input type="number" value={productForm.isFree ? 0 : productForm.cpPrice} onChange={(e) => setProductForm((p) => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="Points price" disabled={productForm.isFree} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100 disabled:opacity-40" />
                         <input type="number" value={productForm.sortOrder} onChange={(e) => setProductForm((p) => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="Sort order" className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
                       </div>
                       <input value={productForm.type} onChange={(e) => setProductForm((p) => ({ ...p, type: e.target.value }))} placeholder="Type (book/tool/etc)" className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" />
@@ -1051,6 +1060,9 @@ const AdminDashboardPage: React.FC = () => {
                       </div>
                       <label className="text-xs inline-flex items-center gap-2 text-zinc-300">
                         <input type="checkbox" checked={productForm.isActive} onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.checked }))} /> Active
+                      </label>
+                      <label className="text-xs inline-flex items-center gap-2 text-zinc-300">
+                        <input type="checkbox" checked={productForm.isFree} onChange={(e) => setProductForm((p) => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} /> Free (no CP required)
                       </label>
                       <div className="flex items-center gap-2">
                         <button onClick={() => void saveProduct()} className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300">{productForm.id ? 'Update Product' : 'Create Product'}</button>
@@ -1076,6 +1088,7 @@ const AdminDashboardPage: React.FC = () => {
                                     sortOrder: Number(item.sortOrder || 0),
                                     productUrl: item.productUrl || '',
                                     isActive: item.isActive !== false,
+                                    isFree: item.isFree === true,
                                   });
                                 }}
                                 className="px-2 py-2 rounded border border-zinc-700 text-xs"
@@ -1103,7 +1116,7 @@ const AdminDashboardPage: React.FC = () => {
                             {products.map((item) => (
                               <tr key={item._id} className="border-b border-zinc-800/80">
                                 <td className="px-4 py-3 text-sm font-bold text-zinc-100">{item.title}</td>
-                                <td className="px-4 py-3 text-sm font-mono text-zinc-200">{item.cpPrice}</td>
+                                <td className="px-4 py-3 text-sm font-mono text-zinc-200">{item.isFree ? <span className="text-emerald-300">FREE</span> : item.cpPrice}</td>
                                 <td className="px-4 py-3 text-xs uppercase text-zinc-300">{item.type}</td>
                                 <td className="px-4 py-3 text-xs text-zinc-300">{item.isActive ? 'Active' : 'Inactive'}</td>
                                 <td className="px-4 py-3 text-right">
@@ -1119,6 +1132,7 @@ const AdminDashboardPage: React.FC = () => {
                                           sortOrder: Number(item.sortOrder || 0),
                                           productUrl: item.productUrl || '',
                                           isActive: item.isActive !== false,
+                                          isFree: item.isFree === true,
                                         });
                                       }}
                                       className="px-2 py-1 rounded border border-zinc-700 text-xs"
@@ -1209,6 +1223,74 @@ const AdminDashboardPage: React.FC = () => {
                             <td className="px-4 py-3 font-mono text-zinc-500">{item.path || '-'}</td>
                             <td className="px-4 py-3 text-zinc-300">{item.statusCode}</td>
                             <td className="px-4 py-3 font-mono text-zinc-300">{item.ipAddress || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+
+              {activeTab === 'applications' && (
+                <section className="space-y-4">
+                  <div className="text-xs text-zinc-400 mb-2">
+                    {applications.length} enrollment application{applications.length !== 1 ? 's' : ''} submitted
+                  </div>
+
+                  {/* Mobile */}
+                  <div className="md:hidden space-y-3 max-h-[70vh] overflow-auto">
+                    {applications.length === 0 ? (
+                      <div className="text-sm text-zinc-500 py-8 text-center">No applications yet.</div>
+                    ) : applications.map((app) => (
+                      <div key={app.userId} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
+                        <div className="font-bold text-sm text-zinc-100">{app.hackerHandle || app.name || app.email}</div>
+                        <div className="text-[11px] text-zinc-500">{app.email}</div>
+                        <div className="text-[11px] text-zinc-400">Bootcamp: <span className="text-zinc-200">{app.application.bootcampTitle || app.bootcampId || '—'}</span></div>
+                        <div className="text-[11px] text-zinc-400">Why: <span className="text-zinc-200">{app.application.motivation || '—'}</span></div>
+                        <div className="text-[11px] text-zinc-400">Level: <span className="text-zinc-200">{app.application.level || '—'}</span></div>
+                        <div className="text-[11px] text-zinc-400">Goal: <span className="text-zinc-200">{app.application.goal || '—'}</span></div>
+                        <div className="text-[11px] text-zinc-400">Commitment: <span className="text-zinc-200">{app.application.commitment || '—'}</span></div>
+                        <div className="text-[11px] text-zinc-400">Phone: <span className="text-zinc-200">{app.application.phone || '—'}</span></div>
+                        {app.application.submittedAt && (
+                          <div className="text-[10px] text-zinc-600">{new Date(app.application.submittedAt).toLocaleString()}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Desktop */}
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto max-h-[70vh]">
+                    <table className="w-full text-left min-w-[900px]">
+                      <thead className="border-b border-zinc-800 bg-black sticky top-0 z-10">
+                        <tr>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Operator</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Bootcamp</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Why Joining</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Level</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Goal</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Commitment</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Phone</th>
+                          <th className="px-4 py-3 text-[10px] uppercase text-zinc-500">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {applications.length === 0 ? (
+                          <tr><td colSpan={8} className="px-4 py-8 text-center text-zinc-500 text-sm">No applications yet.</td></tr>
+                        ) : applications.map((app) => (
+                          <tr key={app.userId} className="border-b border-zinc-800/80 text-xs">
+                            <td className="px-4 py-3">
+                              <div className="font-bold text-zinc-100">{app.hackerHandle || app.name || '—'}</div>
+                              <div className="text-zinc-500">{app.email}</div>
+                            </td>
+                            <td className="px-4 py-3 text-zinc-300">{app.application.bootcampTitle || app.bootcampId || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-300 max-w-[180px] truncate">{app.application.motivation || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-300">{app.application.level || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-300 max-w-[160px] truncate">{app.application.goal || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-300">{app.application.commitment || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-300 font-mono">{app.application.phone || '—'}</td>
+                            <td className="px-4 py-3 text-zinc-500">
+                              {app.application.submittedAt ? new Date(app.application.submittedAt).toLocaleDateString() : '—'}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

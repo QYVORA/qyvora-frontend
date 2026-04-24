@@ -310,6 +310,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
+
+    // Detect theme
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
     let w = el.clientWidth, h = el.clientHeight;
 
     /* ── Renderer ── */
@@ -330,17 +334,23 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     /* ── Subtle limb atmosphere ── */
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.19, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0x0d1a11, transparent: true, opacity: 0.07, side: THREE.BackSide }),
+      new THREE.MeshBasicMaterial({
+        color: isLight ? 0xd0e8cc : 0x0d1a11,
+        transparent: true,
+        opacity: isLight ? 0.12 : 0.07,
+        side: THREE.BackSide,
+      }),
     ));
 
-    /* ── Ocean — near-black ── */
+    /* ── Ocean — near-black in dark, soft grey-white in light ── */
     globe.add(new THREE.Mesh(
       new THREE.SphereGeometry(0.994, 64, 64),
-      new THREE.MeshBasicMaterial({ color: 0x050908 }),
+      new THREE.MeshBasicMaterial({ color: isLight ? 0xdce8da : 0x050908 }),
     ));
 
-    /* ── Grid — barely perceptible dark green-grey ── */
-    const gridMat = new THREE.LineBasicMaterial({ color: 0x141e18, transparent: true, opacity: 1 });
+    /* ── Grid — barely perceptible ── */
+    const gridColor = isLight ? 0xb0c8aa : 0x141e18;
+    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.35 : 1 });
     for (let lat = -75; lat <= 75; lat += 20) {
       const phi = (90 - lat) * (Math.PI / 180);
       const r = Math.sin(phi), y = Math.cos(phi);
@@ -386,14 +396,22 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const wGeo = new THREE.BufferGeometry();
     wGeo.setAttribute('position', new THREE.Float32BufferAttribute(worldPos, 3));
     globe.add(new THREE.Points(wGeo, new THREE.PointsMaterial({
-      color: 0x253020, size: 0.0065, transparent: true, opacity: 0.85, sizeAttenuation: true,
+      color: isLight ? 0x8ab88a : 0x253020,
+      size: 0.0065,
+      transparent: true,
+      opacity: isLight ? 0.55 : 0.85,
+      sizeAttenuation: true,
     })));
 
     // Africa — full accent brightness
     const aGeo = new THREE.BufferGeometry();
     aGeo.setAttribute('position', new THREE.Float32BufferAttribute(africaPos, 3));
     globe.add(new THREE.Points(aGeo, new THREE.PointsMaterial({
-      color: SAGE, size: 0.0090, transparent: true, opacity: 0.78, sizeAttenuation: true,
+      color: isLight ? 0x1a6b0e : SAGE,
+      size: 0.0090,
+      transparent: true,
+      opacity: isLight ? 0.90 : 0.78,
+      sizeAttenuation: true,
     })));
 
     /* ── Ghana glow cluster ──
@@ -411,7 +429,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const ghGeo = new THREE.BufferGeometry();
     ghGeo.setAttribute('position', new THREE.Float32BufferAttribute(ghanaPos, 3));
     globe.add(new THREE.Points(ghGeo, new THREE.PointsMaterial({
-      color: SAGE, size: 0.014, transparent: true, opacity: 0.40, sizeAttenuation: true,
+      color: isLight ? 0x1a6b0e : SAGE,
+      size: 0.014,
+      transparent: true,
+      opacity: isLight ? 0.55 : 0.40,
+      sizeAttenuation: true,
     })));
 
     /* ── Target pins ── */
@@ -494,9 +516,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       const geo   = new THREE.BufferGeometry();
       const isAcc = a === 0 || b === 0;
       globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
-        color:       isAcc ? SAGE   : 0x1e2e24,
+        color:       isAcc ? (isLight ? 0x1a6b0e : SAGE) : (isLight ? 0x8ab88a : 0x1e2e24),
         transparent: true,
-        opacity:     isAcc ? 0.28   : 0.55,
+        opacity:     isAcc ? (isLight ? 0.45 : 0.28) : (isLight ? 0.30 : 0.55),
       })));
       arcs.push({ curve, geo, progress: Math.random(), speed: 0.0014 + Math.random() * 0.002 });
     });
@@ -517,13 +539,21 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     ].forEach(cfg => {
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.003, 5, 5),
-        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 }),
+        new THREE.MeshBasicMaterial({
+          color: isLight ? 0x1a6b0e : 0xffffff,
+          transparent: true,
+          opacity: isLight ? 0.50 : 0.35,
+        }),
       );
       scene.add(dot);
       const trailPts = Array.from({ length: TRAIL }, () => new THREE.Vector3());
       const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
       scene.add(new THREE.Line(trailGeo,
-        new THREE.LineBasicMaterial({ color: 0x2e4038, transparent: true, opacity: 0.22 }),
+        new THREE.LineBasicMaterial({
+          color: isLight ? 0x8ab88a : 0x2e4038,
+          transparent: true,
+          opacity: isLight ? 0.28 : 0.22,
+        }),
       ));
       sats.push({ dot, trailGeo, trailPts, head: 0, ...cfg });
     });
@@ -602,7 +632,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       last = now; tick += dt * 0.001;
 
       if (!drag) {
-        globe.rotation.y += 0.0010 + vel.y * 0.12;
+        globe.rotation.y += 0.0015 + vel.y * 0.12;
         globe.rotation.x  = Math.max(-Math.PI/3, Math.min(Math.PI/3, globe.rotation.x + vel.x*0.12));
         vel.x *= 0.93; vel.y *= 0.93;
       } else {
@@ -679,11 +709,14 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         ref={tooltipRef}
         style={{
           display: 'none', position: 'absolute', pointerEvents: 'none',
-          background: 'rgba(3,5,4,0.92)',
+          background: document.documentElement.getAttribute('data-theme') === 'light'
+            ? 'rgba(232,237,231,0.95)'
+            : 'rgba(3,5,4,0.92)',
           border: '1px solid rgba(136,173,124,0.20)',
           borderRadius: '3px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-          color: '#8aab84', zIndex: 10, lineHeight: 1.75,
+          color: document.documentElement.getAttribute('data-theme') === 'light' ? '#1a6b0e' : '#8aab84',
+          zIndex: 10, lineHeight: 1.75,
           whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
         }}
       />

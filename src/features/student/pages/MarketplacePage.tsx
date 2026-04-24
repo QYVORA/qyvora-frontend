@@ -5,6 +5,8 @@ import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
 
+const CACHE_KEY = 'hsociety_marketplace_cache_v1';
+
 const resolveImg = (value?: string, fallback = '') => {
   const src = String(value || '').trim();
   if (!src) return fallback;
@@ -45,6 +47,15 @@ const Marketplace: React.FC = () => {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
+    // Hydrate from cache immediately
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const cached = JSON.parse(raw);
+        if (Array.isArray(cached)) setProducts(cached);
+      }
+    } catch { /* ignore */ }
+
     let mounted = true;
     Promise.all([
       api.get('/public/cp-products'),
@@ -52,9 +63,10 @@ const Marketplace: React.FC = () => {
       api.get('/cp/transactions?limit=100').catch(() => null),
     ]).then(([prodRes, balRes, txRes]) => {
       if (!mounted) return;
-      setProducts(Array.isArray(prodRes.data?.items) ? prodRes.data.items : []);
+      const items = Array.isArray(prodRes.data?.items) ? prodRes.data.items : [];
+      setProducts(items);
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch { /* ignore */ }
       if (balRes?.data?.balance !== undefined) setBalance(Number(balRes.data.balance));
-      // Build set of purchased product IDs from transactions
       const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
       const purchasedIds = new Set<string>(
         txItems
@@ -63,7 +75,7 @@ const Marketplace: React.FC = () => {
       );
       setPurchased(purchasedIds);
     }).catch(() => {
-      if (mounted) setProducts([]);
+      if (mounted && products.length === 0) setProducts([]);
     }).finally(() => {
       if (mounted) setLoading(false);
     });
@@ -191,16 +203,27 @@ const Marketplace: React.FC = () => {
                           </span>
                         </div>
                       )}
+                      {prod.isFree && !hasPurchased && (
+                        <div className="absolute top-2 left-2">
+                          <span className="bg-emerald-500/80 text-white rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest">
+                            FREE
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <h3 className="text-sm font-bold text-text-primary mb-1 line-clamp-2 flex-1">{prod.title}</h3>
                     {prod.description && (
                       <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{prod.description}</p>
                     )}
                     <div className="mb-4">
-                      <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></span>
+                      {prod.isFree ? (
+                        <span className="text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">FREE</span>
+                      ) : (
+                        <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></span>
+                      )}
                     </div>
 
-                    {hasPurchased ? (
+                    {(hasPurchased || prod.isFree) ? (
                       <button
                         onClick={() => handleDownload(prod)}
                         disabled={isDownloading}
