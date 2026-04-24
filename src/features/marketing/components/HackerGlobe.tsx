@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { useTheme } from '../../../core/contexts/ThemeContext';
 
 /* ═══════════════════════════════════════════════
    BRAND PALETTE
@@ -306,13 +307,14 @@ interface HackerGlobeProps {
 const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   const mountRef   = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const { theme }  = useTheme();
 
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
 
-    // Detect theme
-    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    // Derive from the live theme prop — not from DOM attribute
+    const isLight = theme === 'light';
 
     let w = el.clientWidth, h = el.clientHeight;
 
@@ -701,7 +703,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [scale]);
+  }, [scale, theme]);
 
   return (
     <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'grab' }}>
@@ -709,13 +711,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         ref={tooltipRef}
         style={{
           display: 'none', position: 'absolute', pointerEvents: 'none',
-          background: document.documentElement.getAttribute('data-theme') === 'light'
-            ? 'rgba(232,237,231,0.95)'
-            : 'rgba(3,5,4,0.92)',
+          background: theme === 'light' ? 'rgba(232,237,231,0.95)' : 'rgba(3,5,4,0.92)',
           border: '1px solid rgba(136,173,124,0.20)',
           borderRadius: '3px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-          color: document.documentElement.getAttribute('data-theme') === 'light' ? '#1a6b0e' : '#8aab84',
+          color: theme === 'light' ? '#1a6b0e' : '#8aab84',
           zIndex: 10, lineHeight: 1.75,
           whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
         }}
