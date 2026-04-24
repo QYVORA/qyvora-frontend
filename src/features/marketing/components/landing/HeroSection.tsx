@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, type MotionValue } from 'motion/react';
+import { motion, useReducedMotion, type MotionValue } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard } from 'lucide-react';
 import HeroCanvas from '../HeroCanvas';
@@ -17,6 +17,9 @@ interface HeroSectionProps {
   stats: BackendStats | null;
 }
 
+// Fixed order — no dynamic sorting that causes layout jumps (#1)
+const STAT_ORDER = ['Trained Operators', 'Bootcamps Live', 'Zero-Day Products', 'Validated Findings'];
+
 const HeroSection: React.FC<HeroSectionProps> = ({
   heroRef,
   heroY,
@@ -27,24 +30,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const heroStats = [
     { label: 'Trained Operators', value: stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0, suffix: '+' },
-    { label: 'Bootcamps Live', value: stats?.stats?.bootcampsCount ?? 0, suffix: '' },
-    { label: 'Zero-Day Products', value: stats?.stats?.zeroDayProductsCount ?? 0, suffix: '+' },
-    { label: 'Validated Findings', value: stats?.stats?.vulnerabilitiesIdentified ?? 0, suffix: '' },
-  ].sort((a, b) => Number(b.value) - Number(a.value));
+    { label: 'Bootcamps Live',    value: stats?.stats?.bootcampsCount ?? 0,                                 suffix: ''  },
+    { label: 'Zero-Day Products', value: stats?.stats?.zeroDayProductsCount ?? 0,                           suffix: '+' },
+    { label: 'Validated Findings',value: stats?.stats?.vulnerabilitiesIdentified ?? 0,                      suffix: ''  },
+  ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
+    // Fix #2: heroRef is now attached to the section element
     <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full overflow-hidden scanlines">
       <div className="absolute inset-0 bg-bg z-0" />
       <div className="absolute inset-0 dot-grid hero-dot-grid opacity-30 z-0" />
       <HeroCanvas />
       <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10" />
-      <motion.div style={{ y: heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-[92svh] md:min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 md:pt-24 pb-10 md:pb-36">
+      <motion.div
+        style={{ y: heroY, opacity: heroOpacity }}
+        className="relative z-30 min-h-[92svh] md:min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 md:pt-24 pb-10 md:pb-36"
+      >
         <div className="flex flex-col items-start">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+            className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm"
+          >
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">AFRICA'S OFFENSIVE SECURITY PLATFORM</span>
           </motion.div>
+
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-5">
             <motion.span className="inline-block">
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
@@ -60,14 +69,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               ))}
             </motion.span>
           </h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.2 }}
-            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-7">
+
+          <motion.p
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.2 }}
+            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-7"
+          >
             {SITE_CONFIG.brand.description}
           </motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.5 }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-7 md:mb-8">
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.5 }}
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-7 md:mb-8"
+          >
             {user ? (
-              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm"><LayoutDashboard className="w-4 h-4" /> Dashboard</Link>
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm">
+                <LayoutDashboard className="w-4 h-4" /> Dashboard
+              </Link>
             ) : (
               <>
                 <Link to="/register" className="btn-primary text-sm !px-6 text-center">Start Training</Link>
@@ -75,13 +92,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </>
             )}
           </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.8 }}
-            className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden whitespace-normal break-words md:whitespace-nowrap">
+
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.8 }}
+            className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden whitespace-normal break-words md:whitespace-nowrap"
+          >
             {terminalText}<span className="animate-blink italic">_</span>
           </motion.div>
 
-          {/* Mobile stats */}
-          <div className="grid grid-cols-2 gap-3 mt-6 md:hidden w-full">
+          {/* Mobile stats — shown on all screens below lg (#3: was md:hidden, globe only shows lg+) */}
+          <div className="grid grid-cols-2 gap-3 mt-6 lg:hidden w-full">
             {heroStats.map((s, i) => (
               <div key={i} className="rounded-lg border border-border bg-bg/70 backdrop-blur-sm px-3 py-3">
                 <div className="text-xl font-bold text-accent font-mono leading-none">
@@ -92,18 +112,28 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ))}
           </div>
         </div>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.4 }}
-          className="hidden lg:flex relative h-[430px] xl:h-[480px] max-w-[520px] w-full items-center justify-center justify-self-center">
+
+        {/* Globe — only on lg+ */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.4 }}
+          className="hidden lg:flex relative h-[430px] xl:h-[480px] max-w-[520px] w-full items-center justify-center justify-self-center"
+        >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
           <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
-          <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">SAT-02 // ORBIT</div>
+          <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">
+            SAT-02 // ORBIT
+          </div>
         </motion.div>
       </motion.div>
-      <div className="absolute bottom-0 left-0 w-full border-t border-border bg-bg/60 backdrop-blur-sm z-30 py-4 md:py-5 hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+
+      {/* Bottom stats bar — desktop only (lg+) */}
+      <div className="absolute bottom-0 left-0 w-full border-t border-border bg-bg/60 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-4 gap-3 md:gap-4">
           {heroStats.map((s, i) => (
             <div key={i} className="flex flex-col">
-              <div className="text-xl md:text-2xl lg:text-3xl font-bold text-accent font-mono"><StatCounter end={s.value} suffix={s.suffix} /></div>
+              <div className="text-xl md:text-2xl lg:text-3xl font-bold text-accent font-mono">
+                <StatCounter end={s.value} suffix={s.suffix} />
+              </div>
               <div className="text-[9px] md:text-[10px] uppercase tracking-widest text-text-muted">{s.label}</div>
             </div>
           ))}

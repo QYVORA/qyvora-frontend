@@ -14,7 +14,8 @@ import FinalCtaSection from '../components/landing/FinalCtaSection';
 
 const Landing: React.FC = () => {
   const { user } = useAuth();
-  const { stats, bootcamps, leaderboard, marketItems } = useLandingData();
+  // Fix #24: destructure loading and pass it to sections
+  const { stats, bootcamps, leaderboard, marketItems, loading } = useLandingData();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
@@ -24,10 +25,18 @@ const Landing: React.FC = () => {
 
   useEffect(() => {
     let i = 0;
+    let resetting = false;
     const iv = setInterval(() => {
-      setTerminalText(fullText.substring(0, i));
+      if (resetting) return;
       i++;
-      if (i > fullText.length) setTimeout(() => { i = 0; }, 2000);
+      setTerminalText(fullText.substring(0, i));
+      if (i >= fullText.length) {
+        resetting = true;
+        setTimeout(() => {
+          i = 0;
+          resetting = false;
+        }, 2000);
+      }
     }, 50);
     return () => clearInterval(iv);
   }, []);
@@ -45,10 +54,11 @@ const Landing: React.FC = () => {
         stats={stats}
       />
       <ProcessSection stats={stats} totalCp={totalCp} />
-      <BootcampsSection bootcamps={bootcamps} />
-      <EconomySection totalCp={totalCp} marketItems={marketItems} />
+      {/* Fix #24: pass loading so sections can show consistent skeletons */}
+      <BootcampsSection bootcamps={bootcamps} loading={loading} />
+      <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
       <CyberPointsCtaSection totalCp={totalCp} />
-      <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} />
+      <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
       <ServicesSection />
       <SocialSection />
       <FinalCtaSection user={user} />

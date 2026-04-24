@@ -19,7 +19,7 @@ const ServicesSection: React.FC = () => (
         <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-3">Security Services</h2>
         <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">Core offerings aligned with our company operating loop, including Stage 04 corporate services and productized security solutions.</p>
       </ScrollReveal>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-7 mb-6 md:mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-7 mb-6 md:mb-8">
         {MARKETING_SERVICES.map((serv, idx) => (
           <ScrollReveal key={idx} delay={idx * 0.1}>
             <div className="card-hsociety overflow-hidden flex flex-col h-full group">
@@ -39,7 +39,7 @@ const ServicesSection: React.FC = () => (
           </ScrollReveal>
         ))}
       </div>
-      <ScrollReveal className="card-hsociety p-6 md:p-12 text-center bg-accent-dim/10">
+      <ScrollReveal className="card-hsociety p-6 md:p-12 text-center" style={{ background: 'var(--color-accent-dim)' }}>
         <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-3">Not sure which service fits?</h3>
         <p className="text-text-muted text-sm mb-6 max-w-lg mx-auto">Our strategic advisory team can map our capabilities to your threat model.</p>
         <div className="flex items-center justify-center">
