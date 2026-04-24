@@ -614,7 +614,7 @@ const AdminDashboardPage: React.FC = () => {
         </div>
       </aside>
 
-      <div className="flex-1 min-w-0 h-screen">
+      <div className="flex-1 min-w-0 h-screen overflow-hidden flex flex-col">
         <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
           <div className="h-16 px-4 flex items-center justify-between gap-3">
             <button onClick={() => setMobileNavOpen(true)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
@@ -654,7 +654,7 @@ const AdminDashboardPage: React.FC = () => {
           </div>
         )}
 
-        <main className="px-4 md:px-8 pt-20 md:pt-8 pb-28 md:pb-8 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto px-4 md:px-8 pt-20 md:pt-8 pb-16 md:pb-12">
           <div className="mb-6 hidden md:flex items-center justify-between gap-3">
             <h1 className="text-xl md:text-2xl font-black text-zinc-100 uppercase tracking-tight">{tabs.find((t) => t.id === activeTab)?.label}</h1>
             <button onClick={() => void loadAll()} className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-500">Refresh</button>
