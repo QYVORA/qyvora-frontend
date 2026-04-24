@@ -68,7 +68,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               ))}
             </motion.span>
             <br />
-            <motion.span className="inline-block">
+            <motion.span className="inline-block text-accent">
               {'Become a Hacker.'.split(' ').map((w, i) => (
                 <motion.span key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }} className="inline-block mr-2 md:mr-3">{w}</motion.span>
