@@ -37,17 +37,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     // Fix #2: heroRef is now attached to the section element
-    <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full overflow-hidden scanlines">
-      <div className="absolute inset-0 bg-bg z-0" />
-      <img
-        src="/images/hero-section/hero-background.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none hero-bg-img"
-      />
-      <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
-      <HeroCanvas />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />
+    <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full">
+      {/* Scanlines + background layers — overflow-hidden scoped here so globe atmosphere isn't clipped */}
+      <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
+        <div className="absolute inset-0 bg-bg" />
+        <img
+          src="/images/hero-section/hero-background.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.18] pointer-events-none hero-bg-img"
+        />
+        <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20" />
+        <HeroCanvas />
+        <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />
+      </div>
       <motion.div
         style={{ y: heroY, opacity: heroOpacity }}
         className="relative z-30 min-h-[92svh] md:min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 md:pt-24 pb-10 md:pb-36"
@@ -123,9 +126,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Globe — only on lg+ */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.4 }}
-          className="hidden lg:flex relative h-[430px] xl:h-[480px] max-w-[520px] w-full items-center justify-center justify-self-center"
+          className="hidden lg:flex relative h-[500px] xl:h-[560px] max-w-[560px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+          {/* Extra padding so the atmosphere sphere never gets clipped by the canvas edge */}
           <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
           {/* L2: bg-bg-card/80 instead of bg-bg/70 */}
           <div className="absolute top-8 right-6 px-2 py-1 bg-bg-card/80 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">

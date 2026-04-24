@@ -326,8 +326,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     el.appendChild(renderer.domElement);
 
     const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
-    camera.position.z = 3.0;
+    const camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
+    camera.position.z = 3.2;
 
     const globe = new THREE.Group();
     globe.scale.setScalar(scale);
