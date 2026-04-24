@@ -27,11 +27,10 @@ const MOBILE_PRIMARY = [
 ];
 
 const MOBILE_MORE = [
-  { label: 'Bootcamp', icon: BookOpen, path: '/bootcamps' },
-  { label: 'Wallet', icon: Wallet, path: '/wallet' },
-  { label: 'Profile', icon: User, path: '/profile' },
-  { label: 'Notifications', icon: Bell, path: '/notifications' },
-  { label: 'Settings', icon: Settings, path: '/settings' },
+  { label: 'Wallet',        icon: Wallet,    path: '/wallet'        },
+  { label: 'Profile',       icon: User,      path: '/profile'       },
+  { label: 'Notifications', icon: Bell,      path: '/notifications' },
+  { label: 'Settings',      icon: Settings,  path: '/settings'      },
 ];
 
 interface NotificationItem {
@@ -160,6 +159,11 @@ const StudentTopbar = () => {
                 {user?.username || '—'}
               </span>
               <span className="text-[10px] text-accent font-mono">{user?.rank || '—'}</span>
+            </div>
+            {/* CP balance pill — desktop */}
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-accent-dim border border-accent/20 rounded-lg">
+              <CpLogo className="w-3.5 h-3.5" />
+              <span className="text-xs font-bold text-accent font-mono">{user?.cp?.toLocaleString() ?? 0}</span>
             </div>
             <div className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-sm md:text-base flex-none">
               {user?.username?.substring(0, 2).toUpperCase() || 'OP'}

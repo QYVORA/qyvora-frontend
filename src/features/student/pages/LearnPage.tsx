@@ -70,7 +70,7 @@ const Learn: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
 
         {/* ── HEADER ── */}
         <ScrollReveal className="mb-10">
@@ -134,12 +134,12 @@ const Learn: React.FC = () => {
                 const progress = Number(related?.progress || 0);
                 return (
                   <ScrollReveal key={bc.id || i} delay={i * 0.08}>
-                    <Link to="/bootcamps" className="group relative bg-bg-card border border-border rounded-xl overflow-hidden flex flex-col md:flex-row hover:border-accent/40 transition-all block">
+                    <Link to={`/bootcamps/${bc.id || i}`} className="group relative bg-bg-card border border-border rounded-xl overflow-hidden flex flex-col md:flex-row hover:border-accent/40 transition-all block">
                       <div className="md:w-2/5 h-44 md:h-auto relative overflow-hidden flex-none">
                         <img
                           src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
                           alt={bc.title}
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                          className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-500"
                         />
                         {bc.level && (
                           <span className="absolute top-3 left-3 px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border rounded text-[9px] font-bold uppercase text-accent tracking-widest">

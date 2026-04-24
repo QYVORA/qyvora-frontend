@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, Clock, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -9,19 +9,11 @@ const resolveImg = (value?: string, fallback = '') => {
   if (!src) return fallback;
   if (/^https?:\/\//i.test(src)) return src;
   const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
-
   if (src.startsWith('/uploads/')) {
-    if (/^https?:\/\//i.test(apiBase)) {
-      const origin = apiBase.replace(/\/api\/?$/, '');
-      return `${origin}${src}`;
-    }
-    if (apiBase.startsWith('/api')) {
-      return `/api${src}`;
-    }
+    if (/^https?:\/\//i.test(apiBase)) return `${apiBase.replace(/\/api\/?$/, '')}${src}`;
+    if (apiBase.startsWith('/api')) return `/api${src}`;
   }
-
-  const base = apiBase.replace(/\/api\/?$/, '');
-  return `${base}${src.startsWith('/') ? '' : '/'}${src}`;
+  return `${apiBase.replace(/\/api\/?$/, '')}${src.startsWith('/') ? '' : '/'}${src}`;
 };
 
 const PHASE_IMGS = [
@@ -53,13 +45,18 @@ const Bootcamp: React.FC = () => {
     return () => { mounted = false; };
   }, []);
 
-  const moduleProgressMap = new Map<number, any>(
-    (overview?.modules || []).map((m: any, i: number) => [i, m])
+  // Key progress by bootcamp ID, not array index
+  const moduleProgressById = new Map<string, any>(
+    (Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) => [
+      String(m.bootcampId || m.id || ''),
+      m,
+    ])
   );
 
   return (
     <div className="min-h-screen bg-bg pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
+      {/* pt-20 md:pt-24 clears the fixed student topbar */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
         <ScrollReveal className="mb-10">
           <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
           <h1 className="text-4xl md:text-5xl font-black text-text-primary mb-3">Bootcamp Programs</h1>
@@ -70,7 +67,7 @@ const Bootcamp: React.FC = () => {
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[0,1,2,3].map((i) => (
+            {[0, 1, 2, 3].map((i) => (
               <div key={i} className="card-hsociety overflow-hidden animate-pulse">
                 <div className="aspect-video bg-accent-dim/30" />
                 <div className="p-5 space-y-3">
@@ -90,8 +87,11 @@ const Bootcamp: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {bootcamps.map((bc, i) => {
-              const prog = moduleProgressMap.get(i);
+              const prog = moduleProgressById.get(String(bc.id || ''));
               const progress = Number(prog?.progress || 0);
+              const isEnrolled = prog !== undefined;
+              const isComplete = progress === 100;
+
               return (
                 <ScrollReveal key={bc.id || i} delay={i * 0.08}>
                   <div className="card-hsociety overflow-hidden flex flex-col group hover:border-accent/40 transition-all">
@@ -99,19 +99,35 @@ const Bootcamp: React.FC = () => {
                       <img
                         src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
                         alt={bc.title}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        // No grayscale on mobile — only apply on desktop hover
+                        className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-500"
                       />
-                      {bc.level && (
-                        <span className="absolute top-3 left-3 px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border rounded text-[9px] font-bold uppercase text-accent tracking-widest">
-                          {bc.level}
-                        </span>
-                      )}
+                      {/* Status badge */}
+                      <div className="absolute top-3 left-3 flex items-center gap-2">
+                        {bc.level && (
+                          <span className="px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border rounded text-[9px] font-bold uppercase text-accent tracking-widest">
+                            {bc.level}
+                          </span>
+                        )}
+                        {isComplete && (
+                          <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-bold uppercase tracking-widest flex items-center gap-1">
+                            <CheckCircle2 className="w-2.5 h-2.5" /> Done
+                          </span>
+                        )}
+                        {isEnrolled && !isComplete && (
+                          <span className="px-2 py-0.5 bg-blue-500/20 border border-blue-500/30 text-blue-300 rounded text-[9px] font-bold uppercase tracking-widest">
+                            In Progress
+                          </span>
+                        )}
+                      </div>
+                      {/* Progress bar on image bottom */}
                       {progress > 0 && (
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-bg/50">
-                          <div className="h-full bg-accent" style={{ width: `${progress}%` }} />
+                          <div className="h-full bg-accent transition-all" style={{ width: `${progress}%` }} />
                         </div>
                       )}
                     </div>
+
                     <div className="p-5 flex flex-col flex-1">
                       <h3 className="text-base font-bold text-text-primary group-hover:text-accent transition-colors mb-2">{bc.title}</h3>
                       {bc.description && (
@@ -120,13 +136,14 @@ const Bootcamp: React.FC = () => {
                       <div className="flex items-center gap-4 text-[10px] font-bold text-text-muted uppercase mb-4">
                         {bc.duration && <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {bc.duration}</span>}
                         {bc.priceLabel && <span>{bc.priceLabel}</span>}
-                        {progress > 0 && <span className="text-accent">{progress}% done</span>}
+                        {progress > 0 && <span className="text-accent ml-auto">{progress}% done</span>}
                       </div>
                       <Link
                         to={`/bootcamps/${bc.id || i}`}
                         className="mt-auto w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
                       >
-                        {progress > 0 ? 'Continue' : 'Enroll Now'} <ArrowRight className="w-3.5 h-3.5" />
+                        {isComplete ? 'Review' : isEnrolled ? 'Continue' : 'Enroll Now'}
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </div>
