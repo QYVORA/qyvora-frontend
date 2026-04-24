@@ -335,7 +335,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
     /* ── Subtle limb atmosphere ── */
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.19, 32, 32),
+      new THREE.SphereGeometry(1.08, 32, 32),
       new THREE.MeshBasicMaterial({
         color: isLight ? 0x4a9e3f : 0x0d1a11,
         transparent: true,
