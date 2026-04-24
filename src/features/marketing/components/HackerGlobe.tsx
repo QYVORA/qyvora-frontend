@@ -376,16 +376,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     }
 
     /* ── Land poles ──
-       Each land sample becomes a tiny cylinder (pole) that stands
-       radially outward from the globe surface, giving a 3-D raised-map look.
-       Two passes:
-         • World  → short, dim poles
-         • Africa → taller, brighter accent poles
-       We use InstancedMesh for performance (thousands of instances, 1 draw call each).
+       Each land sample becomes a cylinder (pole) standing radially outward
+       from the globe surface — giving a 3-D raised-map look.
+       InstancedMesh = one draw call per group, no perf hit.
     ── */
-    const STEP = 1.4; // degree step — balance between density and perf
+    const STEP = 1.8; // degree step — dense enough to read as solid continents
 
-    // Collect positions
     const worldSamples: THREE.Vector3[]  = [];
     const africaSamples: THREE.Vector3[] = [];
 
@@ -399,20 +395,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       }
     }
 
-    // Helper: build an InstancedMesh of poles for a set of surface positions
-    // Each pole is a cylinder whose base sits at radius `baseR` and tip at `baseR + height`,
-    // oriented radially outward (along the surface normal = the position vector itself).
+    // Build an InstancedMesh of poles.
+    // Each pole: base flush on the surface, tip pointing outward.
     const buildPoles = (
       samples: THREE.Vector3[],
       color: number,
-      height: number,
-      radius: number,
+      height: number,   // pole height in globe-radius units
+      radius: number,   // base radius
       opacity: number,
     ): THREE.InstancedMesh => {
-      const geo = new THREE.CylinderGeometry(radius * 0.4, radius, height, 4, 1);
-      // Shift geometry so the base is at y=0 and tip at y=height
+      // Taper: tip is 30% of base radius for a spike look
+      const geo = new THREE.CylinderGeometry(radius * 0.3, radius, height, 5, 1);
+      // Shift so base sits at y=0, tip at y=height
       geo.translate(0, height / 2, 0);
-      const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
+      const mat = new THREE.MeshBasicMaterial({ color, transparent: opacity < 1, opacity });
       const mesh = new THREE.InstancedMesh(geo, mat, samples.length);
       mesh.frustumCulled = false;
 
@@ -420,11 +416,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       const up = new THREE.Vector3(0, 1, 0);
 
       samples.forEach((pos, i) => {
-        // Place at surface
         dummy.position.copy(pos);
-        // Orient: align local Y-axis with the outward normal (= pos.normalize())
-        const normal = pos.clone().normalize();
-        dummy.quaternion.setFromUnitVectors(up, normal);
+        // Align local Y with the outward surface normal
+        dummy.quaternion.setFromUnitVectors(up, pos.clone().normalize());
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
       });
@@ -432,28 +426,28 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       return mesh;
     };
 
-    // World poles — short, receding
+    // World poles — visible but receding behind Africa
     globe.add(buildPoles(
       worldSamples,
-      isLight ? 0x6aaa60 : 0x253020,
-      isLight ? 0.0055 : 0.0045,
-      0.0030,
-      isLight ? 0.70 : 0.80,
+      isLight ? 0x5a9e50 : 0x2a3d28,
+      isLight ? 0.028 : 0.022,   // height — clearly visible spikes
+      0.0055,                     // base radius
+      isLight ? 0.75 : 0.90,
     ));
 
-    // Africa poles — taller, accent colour
+    // Africa poles — taller, full accent colour, dominant
     globe.add(buildPoles(
       africaSamples,
       isLight ? 0x1a6b0e : SAGE,
-      isLight ? 0.0090 : 0.0075,
-      0.0038,
-      isLight ? 0.95 : 0.85,
+      isLight ? 0.042 : 0.036,   // noticeably taller than world
+      0.0065,
+      1.0,
     ));
 
-    /* ── Ghana glow cluster — extra-tall poles ── */
+    /* ── Ghana cluster — extra-tall landmark poles ── */
     const ghanaSamples: THREE.Vector3[] = [];
-    for (let dlat = -2.5; dlat <= 2.5; dlat += 0.55) {
-      for (let dlng = -2.5; dlng <= 2.5; dlng += 0.55) {
+    for (let dlat = -2.5; dlat <= 2.5; dlat += 0.7) {
+      for (let dlng = -2.5; dlng <= 2.5; dlng += 0.7) {
         const la = 5.60 + dlat, ln = -0.19 + dlng;
         if (!isAfrica(la, ln)) continue;
         ghanaSamples.push(latLngToVec3(la, ln, 1.0));
@@ -462,9 +456,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     globe.add(buildPoles(
       ghanaSamples,
       isLight ? 0x1a6b0e : SAGE,
-      isLight ? 0.016 : 0.013,
-      0.0055,
-      isLight ? 0.65 : 0.50,
+      isLight ? 0.065 : 0.055,   // tallest — Ghana stands out
+      0.0080,
+      1.0,
     ));
 
     /* ── Target pins ── */
