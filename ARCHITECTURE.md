@@ -1,39 +1,39 @@
 # HSOCIETY Platform — Full Architecture Flowchart
 
-> Open this file in VS Code with the **Markdown Preview Mermaid Support** extension installed.
-> Press `Ctrl+Shift+V` (or `Cmd+Shift+V` on Mac) to open the preview.
+> Open in VS Code with **Markdown Preview Mermaid Support** installed.
+> Press `Ctrl+Shift+V` to preview.
 
 ---
 
-## 1. Request Lifecycle — Every API Call
+## 1. Request Lifecycle
 
 ```mermaid
 flowchart TD
-    CLIENT([Browser / React App]) -->|HTTP Request| MW_CORS[CORS Check\nAllowedOrigins list]
-    MW_CORS -->|Blocked| ERR_CORS[403 CORS Error]
-    MW_CORS -->|Allowed| MW_HELMET[Helmet Security Headers\nHSTS · CSP · X-Frame-Options]
-    MW_HELMET --> MW_CSRF{CSRF Guard\nPOST/PUT/PATCH/DELETE?}
-    MW_CSRF -->|GET / exempt path| MW_RATE[Rate Limiter\nRedis-backed per IP]
-    MW_CSRF -->|Cookie token ≠ header token| ERR_CSRF[403 Invalid CSRF Token]
-    MW_CSRF -->|Tokens match| MW_RATE
-    MW_RATE -->|Too many requests| ERR_429[429 Too Many Requests]
-    MW_RATE -->|OK| MW_SANITIZE[Request Sanitizer\nStrip $ keys · dot keys]
-    MW_SANITIZE --> MW_SECURITY[Security Event Logger\nLogs 4xx/5xx to SecurityEvent collection]
-    MW_SECURITY --> ROUTER{API Router}
+    CLIENT([Browser]) --> CORS[CORS Check]
+    CORS -->|Blocked| E1[403 CORS Error]
+    CORS -->|Allowed| HELMET[Helmet Headers]
+    HELMET --> CSRF{CSRF Guard}
+    CSRF -->|GET or exempt| RATE[Rate Limiter]
+    CSRF -->|Token mismatch| E2[403 CSRF Error]
+    CSRF -->|Tokens match| RATE
+    RATE -->|Exceeded| E3[429 Too Many Requests]
+    RATE -->|OK| SANITIZE[Input Sanitizer]
+    SANITIZE --> SECLOG[Security Event Logger]
+    SECLOG --> ROUTER{API Router}
 
-    ROUTER -->|/api/public/*| PUBLIC_ROUTES[Public Routes\nNo auth]
-    ROUTER -->|/api/auth/*| AUTH_ROUTES[Auth Routes\nRate limited ×4]
-    ROUTER -->|/api/student/*| MW_AUTH1[requireAuth JWT]
-    ROUTER -->|/api/profile/*| MW_AUTH2[requireAuth JWT]
-    ROUTER -->|/api/notifications/*| MW_AUTH3[requireAuth JWT]
-    ROUTER -->|/api/cp/*| MW_AUTH4[requireAuth JWT]
-    ROUTER -->|/api/admin/*| MW_AUTH5[requireAuth + requireAdmin]
+    ROUTER -->|/api/public| PUB[Public Routes - no auth]
+    ROUTER -->|/api/auth| AUTH[Auth Routes]
+    ROUTER -->|/api/student| MW1[requireAuth]
+    ROUTER -->|/api/profile| MW2[requireAuth]
+    ROUTER -->|/api/notifications| MW3[requireAuth]
+    ROUTER -->|/api/cp| MW4[requireAuth]
+    ROUTER -->|/api/admin| MW5[requireAuth + requireAdmin]
 
-    MW_AUTH1 --> STUDENT_ROUTES[Student Routes]
-    MW_AUTH2 --> PROFILE_ROUTES[Profile Routes]
-    MW_AUTH3 --> NOTIF_ROUTES[Notification Routes]
-    MW_AUTH4 --> CP_ROUTES[CP Routes]
-    MW_AUTH5 --> ADMIN_ROUTES[Admin Routes]
+    MW1 --> SR[Student Routes]
+    MW2 --> PR[Profile Routes]
+    MW3 --> NR[Notification Routes]
+    MW4 --> CR[CP Routes]
+    MW5 --> AR[Admin Routes]
 ```
 
 ---
@@ -42,41 +42,48 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    VISITOR([Visitor]) --> CHOOSE{Which path?}
+    V([Visitor]) --> CHOOSE{Action}
 
-    CHOOSE -->|New user| REGISTER[POST /api/auth/register\nbody: email · password · handle · fullName]
-    REGISTER --> REG_VALIDATE[Joi validation\nhandle uniqueness check\npassword strength check]
-    REG_VALIDATE -->|Invalid| REG_ERR[400 Validation Error]
-    REG_VALIDATE -->|Valid| REG_CREATE[Create User doc\nrole: student\nbcrypt hash password\ngenerate recovery token]
-    REG_CREATE --> REG_TOKENS[Issue JWT access token 15m\n+ refresh token 7d\nSet httpOnly cookies\nReturn csrfToken]
-    REG_TOKENS --> DASHBOARD[/dashboard]
+    CHOOSE -->|Register| REG[POST /api/auth/register]
+    REG --> REG_VAL[Joi validation + handle uniqueness]
+    REG_VAL -->|Fail| RE1[400 Validation Error]
+    REG_VAL -->|Pass| REG_CREATE[Create User - bcrypt hash - recovery token]
+    REG_CREATE --> REG_TOKENS[JWT 15min + Refresh 7d - httpOnly cookies - csrfToken]
+    REG_TOKENS --> DASH[/dashboard]
 
-    CHOOSE -->|Existing user| LOGIN[POST /api/auth/login\nbody: email · password]
-    LOGIN --> LOGIN_CHECK{User exists?\nPassword matches?\nNot blocked?}
-    LOGIN_CHECK -->|No| LOGIN_ERR[401 Invalid credentials\nLog SecurityEvent]
-    LOGIN_CHECK -->|Email unverified| VERIFY_ERR[403 verificationRequired: true]
-    LOGIN_CHECK -->|mustChangePassword| CHANGE_PWD_TOKEN[Return passwordChangeToken\nFrontend → /change-password]
-    LOGIN_CHECK -->|OK| LOGIN_TOKENS[Issue JWT + refresh\nSet cookies + csrfToken]
-    LOGIN_TOKENS --> ROLE{User role?}
-    ROLE -->|student| DASHBOARD
-    ROLE -->|admin| ADMIN_DASH[/mr-robot/dashboard]
+    CHOOSE -->|Login| LOGIN[POST /api/auth/login]
+    LOGIN --> LC{Valid credentials?}
+    LC -->|No| LE1[401 - Log SecurityEvent]
+    LC -->|Email unverified| LE2[403 verificationRequired]
+    LC -->|mustChangePassword| LE3[Return passwordChangeToken]
+    LE3 --> CPW[/change-password]
+    LC -->|OK| LT[Issue JWT + Refresh + csrfToken]
+    LT --> ROLE{Role?}
+    ROLE -->|student| DASH
+    ROLE -->|admin| ADASH[/mr-robot/dashboard]
 
-    CHOOSE -->|Forgot password| FORGOT[POST /api/auth/password-reset/request\nbody: email]
-    FORGOT --> FORGOT_STORE[Generate JWT reset token\nStore SHA-256 hash on User\nExpiry: 20 min]
-    FORGOT_STORE --> RESET[POST /api/auth/password-reset/confirm\nbody: email · token · password]
-    RESET --> RESET_VERIFY{JWT valid?\nHash matches?\nNot expired?}
-    RESET_VERIFY -->|No| RESET_ERR[401 Invalid token]
-    RESET_VERIFY -->|Yes| RESET_SAVE[bcrypt new password\nClear reset token]
-    RESET_SAVE --> LOGIN
+    CHOOSE -->|Forgot password| FP[POST /api/auth/password-reset/request]
+    FP --> FP_STORE[Generate JWT reset token - store SHA256 hash - 20min expiry]
+    FP_STORE --> RC[POST /api/auth/password-reset/confirm]
+    RC --> RCV{JWT valid + hash match?}
+    RCV -->|No| RE2[401 Invalid token]
+    RCV -->|Yes| RCS[bcrypt new password - clear reset token]
+    RCS --> LOGIN
 
-    CHOOSE -->|Token refresh| REFRESH[POST /api/auth/refresh\nReads httpOnly cookie]
-    REFRESH --> REFRESH_CHECK{Refresh token valid?\nNot revoked?}
-    REFRESH_CHECK -->|No| REFRESH_ERR[401 → Clear cookies → /login]
-    REFRESH_CHECK -->|Yes| REFRESH_NEW[Issue new access token\nRotate refresh token]
+    CHOOSE -->|Refresh| RF[POST /api/auth/refresh - reads httpOnly cookie]
+    RF --> RFC{Token valid + not revoked?}
+    RFC -->|No| RFE[401 - clear cookies]
+    RFC -->|Yes| RFN[New access token - rotate refresh]
 
-    CHOOSE -->|Logout| LOGOUT[POST /api/auth/logout]
-    LOGOUT --> LOGOUT_REVOKE[Invalidate all refresh tokens\nClear httpOnly cookies]
-    LOGOUT_REVOKE --> HOME[/]
+    CHOOSE -->|Logout| LO[POST /api/auth/logout]
+    LO --> LOC[Invalidate all refresh tokens - clear cookies]
+    LOC --> HOME[/]
+
+    CHOOSE -->|Verify email| VE[POST /api/auth/verify-email/confirm]
+    VE --> VEC{Token valid?}
+    VEC -->|No| VEE[401]
+    VEC -->|Yes| VES[emailVerified = true]
+    VES --> LOGIN
 ```
 
 ---
@@ -85,40 +92,46 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    BROWSER([Browser]) --> ROUTER{React Router\nAnimatePresence}
+    BROWSER([Browser]) --> ROUTER{React Router}
 
-    ROUTER --> PUBLIC_LAYOUT[PublicLayout\nNavbar + Footer]
-    PUBLIC_LAYOUT --> PUB_LANDING[/ Landing Page\nGlobe · Stats · Bootcamps · Leaderboard · Services]
-    PUBLIC_LAYOUT --> PUB_SERVICES[/services\nServices Page + Hero]
-    PUBLIC_LAYOUT --> PUB_CONTACT[/contact\nContact Form → POST /api/public/contact]
-    PUBLIC_LAYOUT --> PUB_CP[/cyber-points\nCP explainer page]
-    PUBLIC_LAYOUT --> PUB_LEADERBOARD[/leaderboard\nGET /api/public/leaderboard\nPaginated · Cached localStorage]
-    PUBLIC_LAYOUT --> PUB_MARKET[/zero-day-market\nGET /api/public/cp-products\nPublic product listing]
-    PUBLIC_LAYOUT --> PUB_PROFILE[/u/:handle\nGET /api/public/users/:handle\nPublic operator profile]
+    ROUTER --> PL[PublicLayout - Navbar + Footer]
+    PL --> R1[/ - Landing Page]
+    PL --> R2[/services]
+    PL --> R3[/contact]
+    PL --> R4[/cyber-points]
+    PL --> R5[/leaderboard - paginated - localStorage cache]
+    PL --> R6[/zero-day-market - public product listing]
+    PL --> R7[/u/:handle - Public Operator Profile]
 
-    ROUTER --> AUTH_PAGES[No Layout\nAuth Pages]
-    AUTH_PAGES --> AUTH_LOGIN[/login · /register\n/forgot-password · /reset-password\n/verify-email · /change-password\n/mr-robot admin login]
+    ROUTER --> AL[No Layout - Auth Pages]
+    AL --> A1[/login]
+    AL --> A2[/register]
+    AL --> A3[/forgot-password]
+    AL --> A4[/reset-password]
+    AL --> A5[/verify-email]
+    AL --> A6[/change-password]
+    AL --> A7[/mr-robot - admin login]
 
-    ROUTER --> STUDENT_LAYOUT[StudentLayout\nTopbar + Bottom Nav]
-    STUDENT_LAYOUT --> AUTH_GUARD{StudentOnly guard\nrequireAuth}
-    AUTH_GUARD -->|Not logged in| REDIRECT_LOGIN[→ /login]
-    AUTH_GUARD -->|Is admin| REDIRECT_ADMIN[→ /mr-robot/dashboard]
-    AUTH_GUARD -->|Student OK| STUDENT_PAGES
+    ROUTER --> SL[StudentLayout - Topbar]
+    SL --> SG{StudentOnly Guard}
+    SG -->|Not logged in| SG1[Redirect /login]
+    SG -->|Is admin| SG2[Redirect /mr-robot/dashboard]
+    SG -->|Student OK| SP[Student Pages]
 
-    STUDENT_PAGES --> STU_DASH[/dashboard\nOverview · Progress · Quick Actions]
-    STUDENT_PAGES --> STU_LEARN[/learn\nBootcamp listing with progress]
-    STUDENT_PAGES --> STU_BOOTCAMPS[/bootcamps\nBootcamp cards\nEnroll → Questionnaire Modal]
-    STUDENT_PAGES --> STU_COURSE[/bootcamps/:id\nCourse page · Modules · Rooms · CTF · Quiz]
-    STUDENT_PAGES --> STU_MARKET[/marketplace\nCP products · Purchase · Download]
-    STUDENT_PAGES --> STU_WALLET[/wallet\nBalance · Transaction history]
-    STUDENT_PAGES --> STU_PROFILE[/profile\nEdit profile · Public profile link]
-    STUDENT_PAGES --> STU_NOTIF[/notifications\nRead · Mark all read]
-    STUDENT_PAGES --> STU_SETTINGS[/settings\nChange password · Recovery token]
+    SP --> S1[/dashboard]
+    SP --> S2[/learn]
+    SP --> S3[/bootcamps]
+    SP --> S4[/bootcamps/:id - Course Page]
+    SP --> S5[/marketplace]
+    SP --> S6[/wallet]
+    SP --> S7[/profile]
+    SP --> S8[/notifications]
+    SP --> S9[/settings]
 
-    ROUTER --> ADMIN_LAYOUT[AdminLayout]
-    ADMIN_LAYOUT --> ADMIN_GUARD{AdminOnly guard}
-    ADMIN_GUARD -->|Not admin| REDIRECT_DASH[→ /dashboard]
-    ADMIN_GUARD -->|Admin OK| ADMIN_DASH[/mr-robot/dashboard\n6 tabs]
+    ROUTER --> ADML[AdminLayout]
+    ADML --> AG{AdminOnly Guard}
+    AG -->|Not admin| AG1[Redirect /dashboard]
+    AG -->|Admin OK| AD1[/mr-robot/dashboard]
 ```
 
 ---
@@ -127,39 +140,44 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    STU([Student]) --> BOOTCAMP_PAGE[/bootcamps\nGET /api/public/bootcamps]
-    BOOTCAMP_PAGE --> BC_STATUS{Bootcamp status?}
-    BC_STATUS -->|isActive false| LOCKED_MODAL[Locked Modal\nLaunch date · Join Community WhatsApp]
-    BC_STATUS -->|Active + not enrolled| ENROLL_MODAL[Enrollment Questionnaire Modal\n5 steps: motivation · level · goal · commitment · phone]
-    ENROLL_MODAL --> ENROLL_API[POST /api/student/bootcamp\nbody: bootcampId · application\nStores in StudentProfile.snapshot.bootcampApplication]
-    ENROLL_API --> COMMUNITY[Join WhatsApp Community\nSuccess screen]
-    ENROLL_API --> COURSE_PAGE
+    STU([Student]) --> BP[/bootcamps - GET /api/public/bootcamps]
+    BP --> BS{Bootcamp status?}
+    BS -->|isActive false| LM[Locked Modal - launch date - Join WhatsApp]
+    BS -->|Active - not enrolled| EM[Enrollment Modal - 5 steps]
+    EM --> ES1[Step 1 - Why joining?]
+    ES1 --> ES2[Step 2 - Current level?]
+    ES2 --> ES3[Step 3 - 6-month goal?]
+    ES3 --> ES4[Step 4 - Hours per week?]
+    ES4 --> ES5[Step 5 - WhatsApp number]
+    ES5 --> EAPI[POST /api/student/bootcamp - stores application in StudentProfile]
+    EAPI --> COMM[Join WhatsApp Community]
+    EAPI --> CP2[Course Page]
 
-    BC_STATUS -->|Enrolled| COURSE_PAGE[/bootcamps/:id\nGET /api/student/course?bootcampId=X\nGET /api/student/overview]
+    BS -->|Enrolled| CP2[/bootcamps/:id - GET /api/student/course]
 
-    COURSE_PAGE --> MODULE{Select Module}
-    MODULE -->|Locked by admin| LOCKED_ROOM[🔒 Locked — admin must unlock]
-    MODULE -->|Unlocked| ROOM_LIST[Room cards grid]
+    CP2 --> MOD{Select Module}
+    MOD -->|Locked by admin| ML[Locked - admin must unlock]
+    MOD -->|Unlocked| ROOMS[Room cards grid]
 
-    ROOM_LIST --> ROOM_ACTIONS{Room actions}
-    ROOM_ACTIONS --> JOIN_SESSION[Join Live Session\nPOST /api/student/modules/:id/rooms/:id/session-open\nOpens meetingLink · Logs BootcampRoomSession]
-    ROOM_ACTIONS --> TAKE_QUIZ[Take Quiz\nPOST /api/student/quiz\nbody: type·room · id · moduleId · courseId]
-    TAKE_QUIZ --> QUIZ_CHECK{Quiz released\nby admin?}
-    QUIZ_CHECK -->|No| QUIZ_ERR[Quiz not available yet]
-    QUIZ_CHECK -->|Yes| QUIZ_MODAL[Quiz Modal\nMultiple choice · Submit answers]
-    QUIZ_MODAL --> QUIZ_SUBMIT[POST /api/student/quiz\nbody: scope · answers\nReturns score · passed]
+    ROOMS --> RA{Room action}
+    RA --> JS[Join Live Session - POST /api/student/modules/:id/rooms/:id/session-open - logs BootcampRoomSession]
+    RA --> TQ[Take Quiz - POST /api/student/quiz]
+    TQ --> QC{Quiz released by admin?}
+    QC -->|No| QE[Quiz not available yet]
+    QC -->|Yes| QM[Quiz Modal - multiple choice]
+    QM --> QS[Submit - POST /api/student/quiz - returns score + passed]
 
-    ROOM_ACTIONS --> COMPLETE_ROOM[Mark Room Complete\nPOST /api/student/modules/:id/rooms/:id/complete]
-    COMPLETE_ROOM --> CP_ROOM[+15 CP\nCPTransaction created\nNotification emitted]
-    CP_ROOM --> CHECK_MODULE{All rooms done?}
-    CHECK_MODULE -->|No| ROOM_LIST
-    CHECK_MODULE -->|Yes| COMPLETE_CTF[Complete CTF\nPOST /api/student/modules/:id/ctf/complete]
-    COMPLETE_CTF --> CP_CTF[+25 CP]
-    CP_CTF --> COMPLETE_MODULE[Mark Module Complete\nPOST /api/student/modules/:id/complete]
-    COMPLETE_MODULE --> CP_MODULE[+35 CP\nRank recalculated\nNotification if rank changed]
-    CP_MODULE --> NEXT_MODULE{More modules?}
-    NEXT_MODULE -->|Yes| MODULE
-    NEXT_MODULE -->|No| BOOTCAMP_DONE[Bootcamp Complete 🎉]
+    RA --> CR[Mark Room Complete - POST /api/student/modules/:id/rooms/:id/complete]
+    CR --> CP_R[+15 CP - CPTransaction - Notification]
+    CP_R --> CM{All rooms done?}
+    CM -->|No| ROOMS
+    CM -->|Yes| CTF[Complete CTF - POST /api/student/modules/:id/ctf/complete]
+    CTF --> CP_C[+25 CP]
+    CP_C --> CM2[Mark Module Complete - POST /api/student/modules/:id/complete]
+    CM2 --> CP_M[+35 CP - rank recalculated - notification if rank changed]
+    CP_M --> NM{More modules?}
+    NM -->|Yes| MOD
+    NM -->|No| DONE[Bootcamp Complete]
 ```
 
 ---
@@ -168,34 +186,34 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    CP_SOURCES([CP Sources]) --> EARN_ROOM[Room Complete → +15 CP]
-    CP_SOURCES --> EARN_CTF[CTF Complete → +25 CP]
-    CP_SOURCES --> EARN_MODULE[Module Complete → +35 CP]
-    CP_SOURCES --> ADMIN_GRANT[Admin Grant\nPOST /api/admin/cp/grant]
+    SRC([CP Sources]) --> E1[Room Complete - plus 15 CP]
+    SRC --> E2[CTF Complete - plus 25 CP]
+    SRC --> E3[Module Complete - plus 35 CP]
+    SRC --> E4[Admin Grant - POST /api/admin/cp/grant]
 
-    EARN_ROOM & EARN_CTF & EARN_MODULE & ADMIN_GRANT --> ATOMIC_INC[MongoDB atomic\nUser.findByIdAndUpdate\n$inc cpPoints\nCPTransaction created]
+    E1 & E2 & E3 & E4 --> ATOMIC[MongoDB atomic - User findByIdAndUpdate - inc cpPoints - CPTransaction created]
 
-    ATOMIC_INC --> BALANCE[User.cpPoints balance]
+    ATOMIC --> BAL[User.cpPoints balance]
 
-    BALANCE --> SPEND{Spend CP?}
-    SPEND --> PURCHASE[POST /api/cp/purchase\nbody: productId]
-    PURCHASE --> SPEND_CHECK{cpPoints >= price?}
-    SPEND_CHECK -->|No| SPEND_ERR[400 Insufficient CP]
-    SPEND_CHECK -->|Yes| ATOMIC_DEC[MongoDB atomic\nfindOneAndUpdate\ncpPoints gte cost\n$inc -cost\nCPTransaction created]
-    ATOMIC_DEC --> DOWNLOAD[GET /api/cp/products/:id/download\nVerify CPTransaction exists\nStream file from GridFS]
+    BAL --> SPEND{Spend CP?}
+    SPEND --> PUR[POST /api/cp/purchase - productId]
+    PUR --> PC{cpPoints >= price?}
+    PC -->|No| PE[400 Insufficient CP]
+    PC -->|Yes| DEC[Atomic findOneAndUpdate - cpPoints gte cost - dec cost - CPTransaction created]
+    DEC --> DL[GET /api/cp/products/:id/download - verify CPTransaction - stream from GridFS]
 
-    BALANCE --> FREE_PRODUCT{isFree product?}
-    FREE_PRODUCT -->|Yes| DIRECT_DOWNLOAD[Direct download\nNo CP deducted]
+    BAL --> FREE{isFree product?}
+    FREE -->|Yes| FDL[Direct download - no CP deducted]
 
-    ADMIN_GRANT --> ADMIN_DEDUCT[Admin Deduct\nPOST /api/admin/cp/deduct]
-    ADMIN_GRANT --> ADMIN_SET[Admin Set\nPOST /api/admin/cp/set]
+    E4 --> AD[Admin Deduct - POST /api/admin/cp/deduct]
+    E4 --> AS[Admin Set - POST /api/admin/cp/set]
 
-    BALANCE --> RANK{Rank threshold}
-    RANK -->|0 CP| CANDIDATE[Candidate]
-    RANK -->|150+ CP| CONTRIBUTOR[Contributor]
-    RANK -->|450+ CP| SPECIALIST[Specialist]
-    RANK -->|900+ CP| ARCHITECT[Architect]
-    RANK -->|1500+ CP| VANGUARD[Vanguard]
+    BAL --> RANK{Rank threshold}
+    RANK -->|0 CP| R1[Candidate]
+    RANK -->|150+ CP| R2[Contributor]
+    RANK -->|450+ CP| R3[Specialist]
+    RANK -->|900+ CP| R4[Architect]
+    RANK -->|1500+ CP| R5[Vanguard]
 ```
 
 ---
@@ -204,47 +222,47 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    ADMIN([Admin]) --> ADMIN_LOGIN[POST /api/auth/login\n/mr-robot route]
-    ADMIN_LOGIN --> ADMIN_DASH[/mr-robot/dashboard\nGET /api/admin/overview\nGET /api/admin/users\nGET /api/admin/content\nGET /api/admin/cp-products\nGET /api/admin/security/summary\nGET /api/admin/contact-messages\nGET /api/admin/bootcamp-applications]
+    ADM([Admin]) --> AL[POST /api/auth/login via /mr-robot]
+    AL --> AD[/mr-robot/dashboard - loads overview + users + content + products + security + contacts + applications]
 
-    ADMIN_DASH --> TAB_USERS[Users Tab]
-    TAB_USERS --> USER_SEARCH[Search · Paginate]
-    TAB_USERS --> USER_BLOCK[PATCH /api/admin/users/:id/block]
-    TAB_USERS --> USER_REVOKE[PATCH /api/admin/users/:id\nbootcampAccessRevoked]
-    TAB_USERS --> USER_DELETE[DELETE /api/admin/users/:id]
+    AD --> T1[Users Tab]
+    T1 --> T1A[Search and paginate users]
+    T1 --> T1B[PATCH /api/admin/users/:id/block]
+    T1 --> T1C[PATCH /api/admin/users/:id - bootcampAccessRevoked]
+    T1 --> T1D[DELETE /api/admin/users/:id]
 
-    ADMIN_DASH --> TAB_BOOTCAMPS[Bootcamps Tab]
-    TAB_BOOTCAMPS --> BC_EDIT[Edit bootcamp JSON\nPATCH /api/admin/content\nlearn.bootcamps array]
-    TAB_BOOTCAMPS --> BC_MODULES[Edit modules JSON\nphases · rooms · meetingLink\nreadingContent · readingLinks]
-    TAB_BOOTCAMPS --> BC_ANALYTICS[Session Analytics\nGET /api/admin/bootcamp/session-summary\nRoom open counts · Participation]
-    TAB_BOOTCAMPS --> BC_QUIZ[Release Room Quiz\nPOST /api/admin/bootcamp/quizzes/release\nScope: room · moduleId · roomId]
+    AD --> T2[Bootcamps Tab]
+    T2 --> T2A[Edit bootcamp JSON - PATCH /api/admin/content]
+    T2 --> T2B[Edit modules - phases - rooms - meetingLink - readingContent]
+    T2 --> T2C[Session Analytics - GET /api/admin/bootcamp/session-summary]
+    T2 --> T2D[Release Quiz - POST /api/admin/bootcamp/quizzes/release]
 
-    ADMIN_DASH --> TAB_APPS[Enrollment Applications Tab]
-    TAB_APPS --> APPS_LIST[GET /api/admin/bootcamp-applications\nWhy joined · Level · Goal · Commitment · Phone]
+    AD --> T3[Enrollment Applications Tab]
+    T3 --> T3A[GET /api/admin/bootcamp-applications - why joined - level - goal - commitment - phone]
 
-    ADMIN_DASH --> TAB_MARKET[Zero-Day Market Tab]
-    TAB_MARKET --> PROD_CREATE[POST /api/admin/cp-products\nUpload cover image → GridFS\nUpload PDF → GridFS\nisFree flag · cpPrice · type]
-    TAB_MARKET --> PROD_EDIT[PATCH /api/admin/cp-products/:id]
-    TAB_MARKET --> PROD_DELETE[DELETE /api/admin/cp-products/:id\nDeletes GridFS file too]
+    AD --> T4[Zero-Day Market Tab]
+    T4 --> T4A[POST /api/admin/cp-products - upload cover to GridFS - upload PDF to GridFS - isFree - cpPrice]
+    T4 --> T4B[PATCH /api/admin/cp-products/:id]
+    T4 --> T4C[DELETE /api/admin/cp-products/:id - deletes GridFS file]
 
-    ADMIN_DASH --> TAB_CP[Points Tab]
-    TAB_CP --> CP_GRANT[POST /api/admin/cp/grant]
-    TAB_CP --> CP_DEDUCT[POST /api/admin/cp/deduct]
-    TAB_CP --> CP_SET[POST /api/admin/cp/set]
+    AD --> T5[Points Tab]
+    T5 --> T5A[POST /api/admin/cp/grant]
+    T5 --> T5B[POST /api/admin/cp/deduct]
+    T5 --> T5C[POST /api/admin/cp/set]
 
-    ADMIN_DASH --> TAB_SECURITY[Security Tab]
-    TAB_SECURITY --> SEC_SUMMARY[GET /api/admin/security/summary]
-    TAB_SECURITY --> SEC_EVENTS[GET /api/admin/security/events\nAll 4xx/5xx logged with IP · path · userId]
+    AD --> T6[Security Tab]
+    T6 --> T6A[GET /api/admin/security/summary]
+    T6 --> T6B[GET /api/admin/security/events - all 4xx/5xx with IP + path + userId]
 
-    ADMIN_DASH --> TAB_CONTACTS[Contacts Tab]
-    TAB_CONTACTS --> CONTACT_LIST[GET /api/admin/contact-messages]
-    TAB_CONTACTS --> CONTACT_STATUS[PATCH /api/admin/contact-messages/:id\nnew → in_progress → resolved → archived]
-    TAB_CONTACTS --> CONTACT_DELETE[DELETE /api/admin/contact-messages/:id]
+    AD --> T7[Contacts Tab]
+    T7 --> T7A[GET /api/admin/contact-messages]
+    T7 --> T7B[PATCH status - new to in_progress to resolved to archived]
+    T7 --> T7C[DELETE /api/admin/contact-messages/:id]
 ```
 
 ---
 
-## 7. Data Models (MongoDB Collections)
+## 7. Data Models
 
 ```mermaid
 erDiagram
@@ -270,9 +288,8 @@ erDiagram
     StudentProfile {
         ObjectId _id
         ObjectId userId
-        object snapshot
         object snapshot_progressState
-        object snapshot_activity_visitDates
+        array snapshot_activity_visitDates
         object snapshot_bootcampApplication
         object snapshot_onboarding
     }
@@ -285,13 +302,11 @@ erDiagram
         number points
         number balanceAfter
         string note
-        object metadata
     }
 
     CPProduct {
         ObjectId _id
         string title
-        string description
         number cpPrice
         boolean isFree
         string coverUrl
@@ -309,7 +324,6 @@ erDiagram
         string title
         string message
         boolean read
-        object metadata
     }
 
     BootcampRoomSession {
@@ -342,12 +356,10 @@ erDiagram
     SecurityEvent {
         ObjectId _id
         string eventType
-        string action
         string path
         number statusCode
         string ipAddress
         ObjectId userId
-        object metadata
     }
 
     ContactMessage {
@@ -357,7 +369,6 @@ erDiagram
         string subject
         string message
         string status
-        string source
     }
 
     SiteContent {
@@ -365,11 +376,10 @@ erDiagram
         string key
         object learn_bootcamps
         object learn_bootcampAccess
-        object learn_bootcampRoomLinks
         number version
     }
 
-    User ||--o{ CPTransaction : "earns/spends"
+    User ||--o{ CPTransaction : "earns and spends"
     User ||--o| StudentProfile : "has profile"
     User ||--o{ Notification : "receives"
     User ||--o{ BootcampRoomSession : "opens rooms"
@@ -383,68 +393,73 @@ erDiagram
 
 ```mermaid
 flowchart LR
-    subgraph TRANSPORT[Transport Layer]
-        TLS[TLS 1.3\nHTTPS only]
-        HSTS[HSTS\n1 year preload]
+    subgraph T[Transport]
+        TLS[TLS 1.3 HTTPS only]
+        HSTS[HSTS 1 year preload]
     end
 
-    subgraph APP[Application Layer]
-        HELMET[Helmet\nCSP · X-Frame · Referrer]
-        CORS[CORS\nAllowedOrigins whitelist]
-        CSRF[CSRF Double-Submit\nCookie + Header token]
-        RATE[Rate Limiting\nAuth: 60/15min\nPublic: 600/15min\nAPI: 300/15min]
-        SANITIZE[Input Sanitizer\nStrip MongoDB operators\nStrip dot-notation keys]
+    subgraph A[Application]
+        H[Helmet CSP X-Frame Referrer]
+        C[CORS AllowedOrigins whitelist]
+        CS[CSRF Double-Submit Cookie + Header]
+        RL[Rate Limiting Auth 60/15min Public 600/15min API 300/15min]
+        SI[Input Sanitizer Strip MongoDB operators]
     end
 
-    subgraph AUTH[Auth Layer]
-        JWT[JWT Access Token\n15min · memory only\nnever localStorage]
-        REFRESH[Refresh Token\n7 days · httpOnly cookie\nRotated on use]
-        BCRYPT[bcrypt password hash\ncost factor 12]
-        RECOVERY[Recovery Token\nSHA-256 stored\nAcknowledge flow]
+    subgraph AU[Auth]
+        JW[JWT Access Token 15min memory only never localStorage]
+        RT[Refresh Token 7d httpOnly cookie rotated on use]
+        BC[bcrypt cost factor 12]
+        RK[Recovery Token SHA-256 stored]
     end
 
-    subgraph DATA[Data Layer]
-        ATOMIC[Atomic MongoDB ops\n$inc for CP\nNo race conditions]
-        GRIDFS[GridFS file storage\nNo direct filesystem access]
-        AUDIT[SecurityEvent log\nAll 4xx/5xx recorded]
+    subgraph D[Data]
+        AT[Atomic MongoDB ops inc for CP no race conditions]
+        GF[GridFS file storage no direct filesystem]
+        SE[SecurityEvent log all 4xx/5xx recorded]
     end
 
-    TRANSPORT --> APP --> AUTH --> DATA
+    T --> A --> AU --> D
 ```
 
 ---
 
-## 9. File Upload Flow (GridFS)
+## 9. File Upload Flow
 
 ```mermaid
 flowchart TD
-    ADMIN_UPLOAD([Admin uploads file]) --> MULTER[Multer middleware\nmemoryStorage\nMax 30MB PDF · 5MB image]
-    MULTER --> VALIDATE{File type valid?}
-    VALIDATE -->|Invalid| UPLOAD_ERR[400 Wrong file type]
-    VALIDATE -->|PDF| GRIDFS_PRODUCTS[GridFS bucket: cp-products\nStream to MongoDB]
-    VALIDATE -->|Image| GRIDFS_IMAGES[GridFS bucket: cp-product-images\nStream to MongoDB]
-    GRIDFS_PRODUCTS --> STORE_META[Store fileId · fileName · fileSize · fileMime\non CPProduct document]
-    GRIDFS_IMAGES --> STORE_URL[Store relativeUrl\n/uploads/cp-products/filename\non CPProduct.coverUrl]
+    UP([Admin uploads]) --> MU[Multer - memoryStorage - max 30MB PDF or 5MB image]
+    MU --> FT{File type?}
+    FT -->|Invalid| FE[400 Wrong file type]
+    FT -->|PDF| GFP[GridFS bucket cp-products - stream to MongoDB]
+    FT -->|Image| GFI[GridFS bucket cp-product-images - stream to MongoDB]
+    GFP --> SM[Store fileId + fileName + fileSize + fileMime on CPProduct]
+    GFI --> SU[Store relativeUrl on CPProduct.coverUrl]
 
-    STUDENT_DOWNLOAD([Student downloads]) --> DL_AUTH[GET /api/cp/products/:id/download\nrequireAuth]
-    DL_AUTH --> DL_CHECK{isFree OR\nCPTransaction exists?}
-    DL_CHECK -->|No| DL_ERR[403 Purchase required]
-    DL_CHECK -->|Yes| DL_STREAM[Open GridFS stream\nby fileId\nStream to response]
+    DL([Student downloads]) --> DA[GET /api/cp/products/:id/download - requireAuth]
+    DA --> DC{isFree OR CPTransaction exists?}
+    DC -->|No| DE[403 Purchase required]
+    DC -->|Yes| DS[Open GridFS stream by fileId - pipe to response]
 ```
 
 ---
 
-## 10. Landing Page Data Cache
+## 10. Landing Page Cache Strategy
 
 ```mermaid
 flowchart TD
-    LANDING([User visits /]) --> CACHE_CHECK{localStorage\nhsociety_landing_cache_v1\nexists?}
-    CACHE_CHECK -->|Yes| HYDRATE[Hydrate state from cache\nInstant render — no flash]
-    CACHE_CHECK -->|No| LOADING[Show skeleton loaders]
+    V([User visits /]) --> CC{localStorage cache exists?}
+    CC -->|Yes| HY[Hydrate state instantly - no loading flash]
+    CC -->|No| SK[Show skeleton loaders]
 
-    HYDRATE --> FETCH_FRESH[Parallel fetch\nGET /api/public/landing-stats\nGET /api/public/bootcamps\nGET /api/public/leaderboard\nGET /api/public/cp-products]
-    LOADING --> FETCH_FRESH
+    HY --> FF[Parallel fetch in background]
+    SK --> FF
 
-    FETCH_FRESH --> UPDATE[Update React state\nWrite new snapshot to localStorage\nWarm image cache via Cache API]
-    UPDATE --> RENDERED[Fully rendered landing page\nGlobe · Stats · Bootcamps · Leaderboard · Services · Market]
+    FF --> F1[GET /api/public/landing-stats]
+    FF --> F2[GET /api/public/bootcamps]
+    FF --> F3[GET /api/public/leaderboard]
+    FF --> F4[GET /api/public/cp-products]
+
+    F1 & F2 & F3 & F4 --> UP[Update React state - write to localStorage - warm Cache API with images]
+    UP --> FULL[Fully rendered - Globe - Stats - Bootcamps - Leaderboard - Services - Market]
 ```
