@@ -92,25 +92,23 @@
 
   /* WebKit (Chrome, Safari, Edge) */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-bg-card);
+    background: var(--color-bg);
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb {
     background: var(--color-accent);
     border-radius: 999px;
-    border: 1px solid var(--color-bg-card);
+    border: 2px solid var(--color-bg);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-accent);
-    opacity: 0.8;
     filter: brightness(1.15);
   }
   ::-webkit-scrollbar-corner {
-    background: var(--color-bg-card);
+    background: var(--color-bg);
   }
 
   /* Hero dot grid — stronger opacity in light mode */
