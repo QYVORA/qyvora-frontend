@@ -4,21 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
+import { resolveImg } from '../../../shared/utils/resolveImg';
 
 const CACHE_KEY = 'hsociety_leaderboard_cache_v1';
 const PAGE_SIZE = 10;
-
-const resolveImg = (value?: string, fallback = '') => {
-  const src = String(value || '').trim();
-  if (!src) return fallback;
-  if (/^https?:\/\//i.test(src)) return src;
-  const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
-  if (src.startsWith('/uploads/')) {
-    if (/^https?:\/\//i.test(apiBase)) return `${apiBase.replace(/\/api\/?$/, '')}${src}`;
-    if (apiBase.startsWith('/api')) return `/api${src}`;
-  }
-  return `${apiBase.replace(/\/api\/?$/, '')}${src.startsWith('/') ? '' : '/'}${src}`;
-};
 
 const podiumColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
 

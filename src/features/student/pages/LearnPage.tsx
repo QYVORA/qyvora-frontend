@@ -4,26 +4,7 @@ import { BookOpen, ArrowRight, Play, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
-
-const resolveImg = (value?: string, fallback = '') => {
-  const src = String(value || '').trim();
-  if (!src) return fallback;
-  if (/^https?:\/\//i.test(src)) return src;
-  const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
-
-  if (src.startsWith('/uploads/')) {
-    if (/^https?:\/\//i.test(apiBase)) {
-      const origin = apiBase.replace(/\/api\/?$/, '');
-      return `${origin}${src}`;
-    }
-    if (apiBase.startsWith('/api')) {
-      return `/api${src}`;
-    }
-  }
-
-  const base = apiBase.replace(/\/api\/?$/, '');
-  return `${base}${src.startsWith('/') ? '' : '/'}${src}`;
-};
+import { resolveImg } from '../../../shared/utils/resolveImg';
 
 const PHASE_IMGS = [
   '/images/Curriculum-images/phase1.webp',
@@ -130,7 +111,7 @@ const Learn: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {bootcamps.slice(0, 4).map((bc, i) => {
                 const moduleProgress = Array.isArray(overview?.modules) ? overview.modules : [];
-                const related = moduleProgress[i];
+                const related = moduleProgress.find((m: any) => String(m.bootcampId || m.id || '') === String(bc.id || ''));
                 const progress = Number(related?.progress || 0);
                 return (
                   <ScrollReveal key={bc.id || i} delay={i * 0.08}>

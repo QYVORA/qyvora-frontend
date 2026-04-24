@@ -6,17 +6,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import EnrollmentModal from '../components/EnrollmentModal';
 
-const resolveImg = (value?: string, fallback = '') => {
-  const src = String(value || '').trim();
-  if (!src) return fallback;
-  if (/^https?:\/\//i.test(src)) return src;
-  const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
-  if (src.startsWith('/uploads/')) {
-    if (/^https?:\/\//i.test(apiBase)) return `${apiBase.replace(/\/api\/?$/, '')}${src}`;
-    if (apiBase.startsWith('/api')) return `/api${src}`;
-  }
-  return `${apiBase.replace(/\/api\/?$/, '')}${src.startsWith('/') ? '' : '/'}${src}`;
-};
+import { resolveImg } from '../../../shared/utils/resolveImg';
 
 const PHASE_IMGS = [
   '/images/Curriculum-images/phase1.webp',
