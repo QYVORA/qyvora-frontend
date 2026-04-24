@@ -11,8 +11,15 @@ const CyberPointsPage: React.FC = () => (
     {/* ── Hero ── */}
     <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines">
       <div className="absolute inset-0 bg-bg z-0" />
-      <div className="absolute inset-0 dot-grid hero-dot-grid opacity-30 z-0" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10" />
+      {/* cp-visual as a subtle background texture */}
+      <img
+        src="/images/cp-images/cp-visual.jpeg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
+      />
+      <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-70 z-10" />
 
       {/* Two-column grid — matches HeroSection pattern */}
       <div className="relative z-20 min-h-[80svh] md:min-h-[75vh] max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 pb-10 md:pt-28 md:pb-16">
@@ -161,8 +168,15 @@ const CyberPointsPage: React.FC = () => (
 
       {/* How to use — full width banner */}
       <ScrollReveal>
-        <div className="card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
-          <div className="flex-1">
+        <div className="relative card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 overflow-hidden">
+          <img
+            src="/images/cp-images/cp-visual.jpeg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/80 to-transparent pointer-events-none" />
+          <div className="flex-1 relative z-10">
             <h3 className="text-xl md:text-2xl font-black text-text-primary mb-1 inline-flex items-center gap-2">
               How To Use <CpLogo className="w-5 h-5 md:w-6 md:h-6" />
             </h3>
@@ -172,7 +186,7 @@ const CyberPointsPage: React.FC = () => (
               resources, and operator assets. Every skill you prove translates directly into purchasing power.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none">
+          <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none relative z-10">
             <Link to="/bootcamps" className="btn-secondary !py-3 text-sm inline-flex items-center justify-center gap-2">
               <BookOpen className="w-4 h-4" /> Start Training
             </Link>

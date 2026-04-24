@@ -19,6 +19,13 @@ const EARN_PATHS = [
 const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }) => (
   <section className="py-16 md:py-24 bg-bg relative overflow-hidden">
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
+    {/* cp-visual background */}
+    <img
+      src="/images/cp-images/cp-visual.jpeg"
+      alt=""
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none"
+    />
     {/* accent glow blob */}
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
 
