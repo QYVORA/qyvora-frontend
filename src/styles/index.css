@@ -87,6 +87,16 @@
   [data-theme="light"] .hero-dot-grid {
     opacity: 0.55 !important;
   }
+
+  /* Hero vignette — reduce in light mode so it doesn't wash white */
+  [data-theme="light"] .hero-vignette {
+    opacity: 0.25 !important;
+  }
+
+  /* Hero background image — slightly more visible in light mode */
+  [data-theme="light"] .hero-bg-img {
+    opacity: 0.12 !important;
+  }
 }
 
 @layer components {

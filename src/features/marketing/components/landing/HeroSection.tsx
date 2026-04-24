@@ -43,11 +43,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         src="/images/hero-section/hero-background.png"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none hero-bg-img"
       />
       <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
       <HeroCanvas />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />
       <motion.div
         style={{ y: heroY, opacity: heroOpacity }}
         className="relative z-30 min-h-[92svh] md:min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 md:pt-24 pb-10 md:pb-36"
