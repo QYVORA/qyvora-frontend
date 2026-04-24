@@ -39,7 +39,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     // Fix #2: heroRef is now attached to the section element
     <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full overflow-hidden scanlines">
       <div className="absolute inset-0 bg-bg z-0" />
-      <div className="absolute inset-0 dot-grid hero-dot-grid opacity-30 z-0" />
+      <img
+        src="/images/hero-section/hero-background.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
+      />
+      <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
       <HeroCanvas />
       <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10" />
       <motion.div
