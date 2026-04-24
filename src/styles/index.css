@@ -83,6 +83,36 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
+  /* ── Global scrollbar styling ── */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) var(--color-bg-card);
+  }
+
+  /* WebKit (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-card);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 999px;
+    border: 1px solid var(--color-bg-card);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+    opacity: 0.8;
+    filter: brightness(1.15);
+  }
+  ::-webkit-scrollbar-corner {
+    background: var(--color-bg-card);
+  }
+
   /* Hero dot grid — stronger opacity in light mode */
   [data-theme="light"] .hero-dot-grid {
     opacity: 0.55 !important;

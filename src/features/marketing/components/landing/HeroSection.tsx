@@ -135,7 +135,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </motion.div>
 
       {/* L3: bg-bg-card/80 instead of bg-bg/60 — provides contrast in both themes */}
-      <div className="absolute bottom-0 left-0 w-full border-t border-border bg-bg-card/80 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
+      <div className="absolute bottom-0 left-0 w-full bg-bg-card/80 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-4 gap-3 md:gap-4">
           {heroStats.map((s, i) => (
             <div key={i} className="flex flex-col">

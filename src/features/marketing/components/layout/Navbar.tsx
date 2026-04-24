@@ -203,6 +203,7 @@ const Navbar: React.FC = () => {
       className={`fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
         isScrolled ? 'bg-bg/85 backdrop-blur-md' : 'bg-transparent'
       }`}
+      style={{ boxShadow: 'none', outline: 'none', borderBottom: 'none' }}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         {/* Logo */}
