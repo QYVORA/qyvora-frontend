@@ -50,7 +50,8 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ stats, totalCp }) => {
                 delay={idx * 0.1}
                 className="relative shrink-0 group text-left snap-start w-[76vw] sm:w-[54vw] md:w-auto rounded-xl border border-border bg-bg-card/65 md:bg-transparent md:border-none p-4 md:p-0"
               >
-                <div className="text-4xl md:text-5xl font-extrabold text-accent/20 font-mono mb-3 group-hover:text-accent/60 transition-colors">
+                {/* L5: text-accent/40 — visible in both themes (was /20 which vanishes in light) */}
+                <div className="text-4xl md:text-5xl font-extrabold text-accent/40 font-mono mb-3 group-hover:text-accent/70 transition-colors">
                   0{idx + 1}
                 </div>
                 <h3 className="text-base md:text-xl font-bold text-text-primary mb-2 uppercase tracking-tighter">{step.title}</h3>
@@ -68,12 +69,14 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ stats, totalCp }) => {
           {statCards.map((card, idx) => (
             <ScrollReveal key={idx} delay={idx * 0.05} className="relative h-36 sm:h-40 md:h-48 rounded-lg overflow-hidden group border border-border">
               <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050706]/90 via-[#050706]/40 to-[#050706]/10" />
+              {/* L4: theme-aware overlay — dark in dark mode, lighter in light mode */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
               <div className="absolute bottom-3 left-3 right-3">
-                <div className="text-xl md:text-2xl font-bold text-[#B7FF99] font-mono">
+                {/* L4: use text-accent instead of hardcoded lime so it adapts to theme */}
+                <div className="text-xl md:text-2xl font-bold text-accent font-mono">
                   <StatCounter end={card.value} suffix={card.suffix} />
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-bold text-white/70 uppercase tracking-widest mt-0.5">
+                <div className="flex items-center gap-1 text-[9px] font-bold text-white/80 uppercase tracking-widest mt-0.5">
                   <card.icon className="w-3 h-3 flex-none" />
                   <span className="truncate">{card.label}</span>
                 </div>

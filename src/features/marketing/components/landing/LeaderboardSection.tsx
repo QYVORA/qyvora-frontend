@@ -28,7 +28,8 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry; rank: number }> = ({ e
           className="w-9 h-9 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full border border-border flex-none"
         />
       ) : (
-        <div className="w-9 h-9 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full border border-border bg-accent-dim flex items-center justify-center flex-none text-accent text-xs md:text-sm font-bold">
+        // L12: bg-accent text-bg for avatar fallback — high contrast in both themes
+        <div className="w-9 h-9 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full border border-accent/30 bg-accent flex items-center justify-center flex-none text-bg text-xs md:text-sm font-bold">
           {handle[0]?.toUpperCase()}
         </div>
       )}

@@ -16,15 +16,18 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
     <section className="relative py-20 md:py-32 overflow-hidden bg-bg scanlines">
       <div className="absolute inset-0 z-0">
         <img src="/images/cta-section-background/cta-background.webp" alt="" className="w-full h-full object-cover grayscale opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg via-transparent to-bg" />
+        {/* L18: use bg/80 fade instead of from-bg so it works in both themes */}
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-bg/90" />
       </div>
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
         <ScrollReveal>
           {/* Fix #20: no blur animation when reduced motion is preferred */}
+          {/* L19: shadow uses accent-glow CSS var — adapts to theme */}
           <motion.div
             animate={shouldReduceMotion ? {} : { opacity: [0.5, 1, 0.5], filter: ['blur(0px)', 'blur(1px)', 'blur(0px)'] }}
             transition={{ duration: 4, repeat: Infinity }}
-            className="inline-block mb-5 px-4 py-1.5 border border-accent bg-accent-dim text-accent rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-[0_0_15px_rgba(136,173,124,0.3)]"
+            className="inline-block mb-5 px-4 py-1.5 border border-accent bg-accent-dim text-accent rounded-full text-xs font-bold uppercase tracking-[0.3em]"
+            style={{ boxShadow: '0 0 15px var(--color-accent-glow)' }}
           >
             {/* Fix #21: badge copy changes for logged-in users */}
             {user ? 'TRAINING IN PROGRESS' : 'ENROLLMENT OPEN'}

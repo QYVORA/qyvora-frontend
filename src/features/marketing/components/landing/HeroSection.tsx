@@ -106,10 +106,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {terminalText}<span className="animate-blink italic">_</span>
           </motion.div>
 
-          {/* Mobile stats — shown on all screens below lg (#3: was md:hidden, globe only shows lg+) */}
+          {/* Mobile stats — shown on all screens below lg */}
           <div className="grid grid-cols-2 gap-3 mt-6 lg:hidden w-full">
             {heroStats.map((s, i) => (
-              <div key={i} className="rounded-lg border border-border bg-bg/70 backdrop-blur-sm px-3 py-3">
+              // L1: bg-bg-card/80 instead of bg-bg/70 — no white wash in light mode
+              <div key={i} className="rounded-lg border border-border bg-bg-card/80 backdrop-blur-sm px-3 py-3">
                 <div className="text-xl font-bold text-accent font-mono leading-none">
                   <StatCounter end={s.value} suffix={s.suffix} />
                 </div>
@@ -126,14 +127,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
           <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
-          <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">
+          {/* L2: bg-bg-card/80 instead of bg-bg/70 */}
+          <div className="absolute top-8 right-6 px-2 py-1 bg-bg-card/80 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">
             SAT-02 // ORBIT
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Bottom stats bar — desktop only (lg+) */}
-      <div className="absolute bottom-0 left-0 w-full border-t border-border bg-bg/60 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
+      {/* L3: bg-bg-card/80 instead of bg-bg/60 — provides contrast in both themes */}
+      <div className="absolute bottom-0 left-0 w-full border-t border-border bg-bg-card/80 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-4 gap-3 md:gap-4">
           {heroStats.map((s, i) => (
             <div key={i} className="flex flex-col">

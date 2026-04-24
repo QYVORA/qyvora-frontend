@@ -39,15 +39,17 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
           <ScrollReveal className="flex items-center justify-center order-2 lg:order-1">
             <div className="relative flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none scale-110" />
-              {/* Fix #14: no animation when prefers-reduced-motion is set */}
+              {/* L11: drop-shadow uses accent-glow CSS var so it adapts to theme */}
               <motion.img
                 src="/images/cp-images/CYBER_POINTS_LOGO.png"
                 alt="Cyber Points"
-                className="w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-contain relative z-10 drop-shadow-[0_0_60px_rgba(183,255,153,0.25)]"
+                className="w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-contain relative z-10"
+                style={{ filter: 'drop-shadow(0 0 40px var(--color-accent-glow))' }}
                 animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               />
-              <div className="absolute bottom-4 right-0 lg:right-4 px-3 py-2 bg-bg/80 border border-accent/20 rounded-lg backdrop-blur-sm">
+              {/* L10: bg-bg-card/90 instead of bg-bg/80 — keeps dark feel in both themes */}
+              <div className="absolute bottom-4 right-0 lg:right-4 px-3 py-2 bg-bg-card/90 border border-accent/20 rounded-lg backdrop-blur-sm">
                 <div className="text-[9px] uppercase tracking-widest text-text-muted mb-0.5">Community Pool</div>
                 <div className="text-lg font-bold text-accent font-mono inline-flex items-center gap-1.5">
                   {totalCp.toLocaleString()} <CpLogo className="w-4 h-4" />

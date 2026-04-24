@@ -22,7 +22,8 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
       />
-      <div className="absolute inset-0 bg-bg/38 pointer-events-none" />
+      {/* L7: bg-bg-card/40 instead of bg-bg/38 — preserves texture in light mode */}
+      <div className="absolute inset-0 bg-bg-card/40 pointer-events-none" />
       <div className="absolute inset-0 scanlines opacity-[0.02] pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
@@ -64,13 +65,15 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                   {totalCp.toLocaleString()} <CpLogo className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center border border-accent/40 flex-none">
+                  {/* L9: bg-accent-dim/60 + border-accent/30 — more visible in light mode */}
+                  <div className="w-8 h-8 rounded-full bg-accent-dim/60 flex items-center justify-center border border-accent/30 flex-none">
                     <Trophy className="w-4 h-4 text-accent" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[10px] font-bold text-text-primary uppercase">Community Points Pool</div>
                     {/* Fix #11: width is based on real data — capped at 100% */}
-                    <div className="w-full h-1.5 bg-bg rounded-full mt-1 overflow-hidden">
+                    {/* L8: border instead of bg-bg for track — visible in both themes */}
+                    <div className="w-full h-1.5 bg-border rounded-full mt-1 overflow-hidden">
                       <div
                         className="h-full bg-accent rounded-full transition-all duration-1000"
                         style={{ width: `${Math.min(100, totalCp > 0 ? 70 : 0)}%` }}

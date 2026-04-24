@@ -25,7 +25,8 @@ const ServicesSection: React.FC = () => (
             <div className="card-hsociety overflow-hidden flex flex-col h-full group">
               <div className="h-36 md:h-32 2xl:h-36 overflow-hidden relative">
                 <img src={serv.img} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
-                <div className="absolute inset-0 bg-[#050706]/50 group-hover:bg-[#050706]/20 transition-all duration-700" />
+                {/* L13: theme-aware overlay using black/opacity instead of hardcoded hex */}
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-all duration-700" />
               </div>
               <div className="p-5 md:p-5 xl:p-6 flex flex-col flex-grow">
                 <span className="text-[10px] font-bold text-accent border border-accent/30 rounded px-2 py-0.5 w-fit mb-3">{serv.category}</span>
@@ -39,7 +40,8 @@ const ServicesSection: React.FC = () => (
           </ScrollReveal>
         ))}
       </div>
-      <ScrollReveal className="card-hsociety p-6 md:p-12 text-center" style={{ background: 'var(--color-accent-dim)' }}>
+      {/* L14: added border border-border so card has definition in light mode */}
+      <ScrollReveal className="card-hsociety p-6 md:p-12 text-center border border-border" style={{ background: 'var(--color-accent-dim)' }}>
         <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-3">Not sure which service fits?</h3>
         <p className="text-text-muted text-sm mb-6 max-w-lg mx-auto">Our strategic advisory team can map our capabilities to your threat model.</p>
         <div className="flex items-center justify-center">
