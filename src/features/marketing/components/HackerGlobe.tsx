@@ -337,9 +337,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.19, 32, 32),
       new THREE.MeshBasicMaterial({
-        color: isLight ? 0xd0e8cc : 0x0d1a11,
+        color: isLight ? 0x4a9e3f : 0x0d1a11,
         transparent: true,
-        opacity: isLight ? 0.12 : 0.07,
+        opacity: isLight ? 0.18 : 0.07,
         side: THREE.BackSide,
       }),
     ));
@@ -351,8 +351,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     ));
 
     /* ── Grid — barely perceptible ── */
-    const gridColor = isLight ? 0xb0c8aa : 0x141e18;
-    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.35 : 1 });
+    const gridColor = isLight ? 0x7ab870 : 0x141e18;
+    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.55 : 1 });
     for (let lat = -75; lat <= 75; lat += 20) {
       const phi = (90 - lat) * (Math.PI / 180);
       const r = Math.sin(phi), y = Math.cos(phi);
@@ -375,68 +375,97 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
     }
 
-    /* ── Land dot clouds ──
-       Two separate Points objects:
-       • World  → very dark muted grey-green  (recedes into bg)
-       • Africa → sage accent                 (stands out)
+    /* ── Land poles ──
+       Each land sample becomes a tiny cylinder (pole) that stands
+       radially outward from the globe surface, giving a 3-D raised-map look.
+       Two passes:
+         • World  → short, dim poles
+         • Africa → taller, brighter accent poles
+       We use InstancedMesh for performance (thousands of instances, 1 draw call each).
     ── */
-    const worldPos: number[]  = [];
-    const africaPos: number[] = [];
+    const STEP = 1.4; // degree step — balance between density and perf
 
-    const STEP = 1.1;  // degree step — fine resolution
+    // Collect positions
+    const worldSamples: THREE.Vector3[]  = [];
+    const africaSamples: THREE.Vector3[] = [];
+
     for (let lat = -85; lat <= 85; lat += STEP) {
       for (let lng = -180; lng <= 180; lng += STEP) {
         const africa = isAfrica(lat, lng);
         if (!africa && !OTHER_POLYS.some(p => pip(lat, lng, p))) continue;
-        const v = latLngToVec3(lat, lng, 1.001);
-        if (africa) africaPos.push(v.x, v.y, v.z);
-        else        worldPos.push(v.x, v.y, v.z);
+        const v = latLngToVec3(lat, lng, 1.0);
+        if (africa) africaSamples.push(v);
+        else        worldSamples.push(v);
       }
     }
 
-    // World — dim, barely lit, let Africa dominate
-    const wGeo = new THREE.BufferGeometry();
-    wGeo.setAttribute('position', new THREE.Float32BufferAttribute(worldPos, 3));
-    globe.add(new THREE.Points(wGeo, new THREE.PointsMaterial({
-      color: isLight ? 0x8ab88a : 0x253020,
-      size: 0.0065,
-      transparent: true,
-      opacity: isLight ? 0.55 : 0.85,
-      sizeAttenuation: true,
-    })));
+    // Helper: build an InstancedMesh of poles for a set of surface positions
+    // Each pole is a cylinder whose base sits at radius `baseR` and tip at `baseR + height`,
+    // oriented radially outward (along the surface normal = the position vector itself).
+    const buildPoles = (
+      samples: THREE.Vector3[],
+      color: number,
+      height: number,
+      radius: number,
+      opacity: number,
+    ): THREE.InstancedMesh => {
+      const geo = new THREE.CylinderGeometry(radius * 0.4, radius, height, 4, 1);
+      // Shift geometry so the base is at y=0 and tip at y=height
+      geo.translate(0, height / 2, 0);
+      const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
+      const mesh = new THREE.InstancedMesh(geo, mat, samples.length);
+      mesh.frustumCulled = false;
 
-    // Africa — full accent brightness
-    const aGeo = new THREE.BufferGeometry();
-    aGeo.setAttribute('position', new THREE.Float32BufferAttribute(africaPos, 3));
-    globe.add(new THREE.Points(aGeo, new THREE.PointsMaterial({
-      color: isLight ? 0x1a6b0e : SAGE,
-      size: 0.0090,
-      transparent: true,
-      opacity: isLight ? 0.90 : 0.78,
-      sizeAttenuation: true,
-    })));
+      const dummy = new THREE.Object3D();
+      const up = new THREE.Vector3(0, 1, 0);
 
-    /* ── Ghana glow cluster ──
-       Extra bright dot layer centered on Accra ±3°
-       to make Ghana visually distinct even at a glance.
-    ── */
-    const ghanaPos: number[] = [];
-    for (let dlat = -2.5; dlat <= 2.5; dlat += 0.45) {
-      for (let dlng = -2.5; dlng <= 2.5; dlng += 0.45) {
+      samples.forEach((pos, i) => {
+        // Place at surface
+        dummy.position.copy(pos);
+        // Orient: align local Y-axis with the outward normal (= pos.normalize())
+        const normal = pos.clone().normalize();
+        dummy.quaternion.setFromUnitVectors(up, normal);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+      });
+      mesh.instanceMatrix.needsUpdate = true;
+      return mesh;
+    };
+
+    // World poles — short, receding
+    globe.add(buildPoles(
+      worldSamples,
+      isLight ? 0x6aaa60 : 0x253020,
+      isLight ? 0.0055 : 0.0045,
+      0.0030,
+      isLight ? 0.70 : 0.80,
+    ));
+
+    // Africa poles — taller, accent colour
+    globe.add(buildPoles(
+      africaSamples,
+      isLight ? 0x1a6b0e : SAGE,
+      isLight ? 0.0090 : 0.0075,
+      0.0038,
+      isLight ? 0.95 : 0.85,
+    ));
+
+    /* ── Ghana glow cluster — extra-tall poles ── */
+    const ghanaSamples: THREE.Vector3[] = [];
+    for (let dlat = -2.5; dlat <= 2.5; dlat += 0.55) {
+      for (let dlng = -2.5; dlng <= 2.5; dlng += 0.55) {
         const la = 5.60 + dlat, ln = -0.19 + dlng;
         if (!isAfrica(la, ln)) continue;
-        ghanaPos.push(...latLngToVec3(la, ln, 1.004).toArray());
+        ghanaSamples.push(latLngToVec3(la, ln, 1.0));
       }
     }
-    const ghGeo = new THREE.BufferGeometry();
-    ghGeo.setAttribute('position', new THREE.Float32BufferAttribute(ghanaPos, 3));
-    globe.add(new THREE.Points(ghGeo, new THREE.PointsMaterial({
-      color: isLight ? 0x1a6b0e : SAGE,
-      size: 0.014,
-      transparent: true,
-      opacity: isLight ? 0.55 : 0.40,
-      sizeAttenuation: true,
-    })));
+    globe.add(buildPoles(
+      ghanaSamples,
+      isLight ? 0x1a6b0e : SAGE,
+      isLight ? 0.016 : 0.013,
+      0.0055,
+      isLight ? 0.65 : 0.50,
+    ));
 
     /* ── Target pins ── */
     type PingObj = { ring: THREE.Mesh; phase: number; isHome: boolean };
