@@ -52,16 +52,6 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems })
           </ScrollReveal>
         </div>
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-          <ScrollReveal>
-            <Link to="/cyber-points" className="card-hsociety p-3 md:p-4 flex flex-col h-full border-accent/20 hover:border-accent/40">
-              <img src="/images/cp-images/CYBER_POINTS_LOGO.png" alt="Cyber Points" className="w-full h-24 md:h-32 object-contain rounded mb-3 bg-bg/50 border border-border" />
-              <h4 className="text-xs md:text-sm font-bold text-text-primary mb-2">Understand Points Rewards</h4>
-              <div className="mt-auto flex flex-col gap-2">
-                <span className="text-[11px] text-text-muted">Learn what Cyber Points means, how to earn it, and where to spend it.</span>
-                <span className="w-full py-2 bg-accent text-bg font-bold text-[10px] uppercase tracking-tighter rounded text-center block">Open Points Guide</span>
-              </div>
-            </Link>
-          </ScrollReveal>
           {marketItems.length === 0 ? (
             [0, 1, 2].map((i) => (
               <div key={i} className="card-hsociety p-3 md:p-4 animate-pulse">

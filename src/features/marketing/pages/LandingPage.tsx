@@ -6,6 +6,7 @@ import HeroSection from '../components/landing/HeroSection';
 import ProcessSection from '../components/landing/ProcessSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
+import CyberPointsCtaSection from '../components/landing/CyberPointsCtaSection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
 import SocialSection from '../components/landing/SocialSection';
@@ -46,6 +47,7 @@ const Landing: React.FC = () => {
       <ProcessSection stats={stats} totalCp={totalCp} />
       <BootcampsSection bootcamps={bootcamps} />
       <EconomySection totalCp={totalCp} marketItems={marketItems} />
+      <CyberPointsCtaSection totalCp={totalCp} />
       <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} />
       <ServicesSection />
       <SocialSection />
