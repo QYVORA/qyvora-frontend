@@ -87,7 +87,7 @@ const Leaderboard: React.FC = () => {
                         className={`relative p-6 bg-bg-card border-2 rounded-2xl text-center cursor-pointer group transition-all hover:-translate-y-1 ${
                           i === 0 ? 'border-accent md:-translate-y-3' : 'border-border'
                         }`}
-                        onClick={() => navigate(`/profile/${handle}`)}
+                        onClick={() => navigate(`/u/${handle}`)}
                       >
                         {i === 0 && (
                           <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-accent text-bg px-3 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap">
@@ -157,7 +157,7 @@ const Leaderboard: React.FC = () => {
                             <tr
                               key={op.id || i}
                               className="group hover:bg-accent-dim/5 transition-colors cursor-pointer"
-                              onClick={() => navigate(`/profile/${handle}`)}
+                              onClick={() => navigate(`/u/${handle}`)}
                             >
                               <td className="px-5 py-3.5">
                                 <span className="text-sm font-black text-text-muted">{String(globalRank).padStart(2, '0')}</span>

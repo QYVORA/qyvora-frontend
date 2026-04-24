@@ -28,6 +28,7 @@ const BootcampPage = lazy(() => import('../features/student/pages/BootcampPage')
 const MarketplacePage = lazy(() => import('../features/student/pages/MarketplacePage'));
 const WalletPage = lazy(() => import('../features/student/pages/WalletPage'));
 const ProfilePage = lazy(() => import('../features/student/pages/ProfilePage'));
+const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicProfilePage'));
 const LeaderboardPage = lazy(() => import('../features/student/pages/LeaderboardPage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage = lazy(() => import('../features/student/pages/SettingsPage'));
@@ -79,7 +80,7 @@ export const AppRouter = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location}>
-        {/* Public routes */}
+        {/* Public routes — no auth required */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Wrap><LandingPage /></Wrap>} />
           <Route path="/contact" element={<Wrap><ContactPage /></Wrap>} />
@@ -87,6 +88,8 @@ export const AppRouter = () => {
           <Route path="/cyber-points" element={<Wrap><CyberPointsPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap><MarketplacePage /></Wrap>} />
+          {/* Public operator profile — /u/handle */}
+          <Route path="/u/:handle" element={<Wrap><PublicProfilePage /></Wrap>} />
         </Route>
 
         {/* Auth routes (no layout) */}
@@ -98,7 +101,7 @@ export const AppRouter = () => {
         <Route path="/change-password" element={<Wrap><LoginPage /></Wrap>} />
         <Route path="/mr-robot" element={<Wrap><LoginPage /></Wrap>} />
 
-        {/* Student routes */}
+        {/* Student routes — auth required */}
         <Route element={<StudentLayout />}>
           <Route path="/dashboard" element={<Wrap><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
           <Route path="/learn" element={<Wrap><StudentOnly><LearnPage /></StudentOnly></Wrap>} />
@@ -107,7 +110,6 @@ export const AppRouter = () => {
           <Route path="/marketplace" element={<Wrap><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/wallet" element={<Wrap><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/profile" element={<Wrap><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
-          <Route path="/profile/:username" element={<Wrap><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications" element={<Wrap><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/settings" element={<Wrap><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
         </Route>

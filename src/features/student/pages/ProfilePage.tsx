@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award } from 'lucide-react';
+import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award, ExternalLink } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -202,12 +202,22 @@ const Profile: React.FC = () => {
 
               {/* Actions */}
               {isOwnProfile && (
-                <button
-                  onClick={() => setEditOpen(true)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-bg border border-border hover:border-accent/50 rounded-lg text-xs font-bold text-text-primary transition-all active:scale-95 flex-none"
-                >
-                  <Edit3 className="w-4 h-4" /> EDIT PROFILE
-                </button>
+                <div className="flex items-center gap-2 flex-none flex-wrap">
+                  <a
+                    href={`/u/${profileData.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-bg border border-border hover:border-accent/50 rounded-lg text-xs font-bold text-text-muted transition-all active:scale-95"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" /> Public Profile
+                  </a>
+                  <button
+                    onClick={() => setEditOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-bg border border-border hover:border-accent/50 rounded-lg text-xs font-bold text-text-primary transition-all active:scale-95"
+                  >
+                    <Edit3 className="w-4 h-4" /> Edit Profile
+                  </button>
+                </div>
               )}
             </div>
           </div>
