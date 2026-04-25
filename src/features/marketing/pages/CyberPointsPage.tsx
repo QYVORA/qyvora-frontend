@@ -196,6 +196,29 @@ const CyberPointsPage: React.FC = () => (
           </div>
         </div>
       </ScrollReveal>
+
+      {/* CTA — join / leaderboard */}
+      <ScrollReveal>
+        <div className="card-hsociety p-8 md:p-12 text-center flex flex-col items-center gap-5">
+          <div className="px-3 py-1 border border-border bg-accent-dim rounded-sm mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// GET STARTED</span>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-black text-text-primary">
+            Start Earning <CpLogo className="w-7 h-7 mx-1" /> Today
+          </h3>
+          <p className="text-sm text-text-secondary max-w-md">
+            Create a free account, get 2,000 <CpLogo className="w-4 h-4 mx-0.5" /> on signup, and start building your operator profile.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 mt-2">
+            <Link to="/register" className="btn-primary !px-8 !py-3 text-sm inline-flex items-center justify-center gap-2">
+              <Zap className="w-4 h-4" /> Create Account <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link to="/leaderboard" className="btn-secondary !px-8 !py-3 text-sm inline-flex items-center justify-center gap-2">
+              <Trophy className="w-4 h-4" /> View Leaderboard
+            </Link>
+          </div>
+        </div>
+      </ScrollReveal>
     </div>
   </div>
 );

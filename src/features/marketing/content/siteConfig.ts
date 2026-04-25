@@ -86,9 +86,9 @@ export const SITE_CONFIG = {
   ],
   footer: {
     links: [
-      { label: 'PRIVACY POLICY', path: '#' },
-      { label: 'TERMS OF SERVICE', path: '#' },
-      { label: 'HALL OF FAME', path: '#' },
+      { label: 'Privacy Policy', path: '/privacy' },
+      { label: 'Terms of Service', path: '/terms' },
+      { label: 'Contact', path: '/contact' },
     ],
   },
 } as const;

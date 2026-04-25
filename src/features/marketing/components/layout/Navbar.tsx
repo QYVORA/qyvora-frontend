@@ -178,12 +178,18 @@ const Navbar: React.FC = () => {
                       <Lock className="w-4 h-4" /> Admin Console
                     </Link>
                   )}
+                  <Link to="/cyber-points" className="w-full flex items-center justify-center gap-2 border border-border text-text-muted rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all">
+                    <Zap className="w-4 h-4" /> Cyber Points
+                  </Link>
                   <Link to="/dashboard" className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-accent/20">
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
                 </>
               ) : (
                 <div className="grid grid-cols-1 gap-3">
+                  <Link to="/cyber-points" className="flex items-center justify-center gap-2 border border-border text-text-muted rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all">
+                    <Zap className="w-4 h-4" /> Cyber Points
+                  </Link>
                   <Link to="/login" className="flex items-center justify-center border border-accent text-accent rounded-lg py-3 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all">
                     Log In
                   </Link>
@@ -293,12 +299,18 @@ const Navbar: React.FC = () => {
                    <Lock className="w-3.5 h-3.5" /> Admin Console
                 </Link>
               )}
+              <Link to="/cyber-points" className="text-sm font-bold uppercase tracking-wider text-text-muted hover:text-accent transition-colors flex items-center gap-1.5">
+                <Zap className="w-4 h-4" /> Cyber Points
+              </Link>
               <Link to="/dashboard" className="btn-primary !px-5 !py-2 text-sm flex items-center gap-2">
                 <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
               </Link>
             </div>
           ) : (
             <>
+              <Link to="/cyber-points" className="text-sm font-bold uppercase tracking-wider text-text-muted hover:text-accent transition-colors flex items-center gap-1.5">
+                <Zap className="w-4 h-4" /> Cyber Points
+              </Link>
               <Link to="/login" className="text-sm font-bold uppercase tracking-wider text-accent border border-accent rounded-md px-5 py-2 hover:bg-accent-dim transition-all">
                 Log In
               </Link>

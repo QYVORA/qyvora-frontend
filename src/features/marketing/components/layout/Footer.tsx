@@ -15,6 +15,16 @@ const FOOTER_COLS = [
     heading: 'Platform',
     links: SITE_CONFIG.nav.platform.map((item) => ({ label: item.label, path: item.path })),
   },
+  {
+    heading: 'Quick Links',
+    links: [
+      { label: 'Leaderboard', path: '/leaderboard' },
+      { label: 'Cyber Points', path: '/cyber-points' },
+      { label: 'Services', path: '/services' },
+      { label: 'Register', path: '/register' },
+      { label: 'Log In', path: '/login' },
+    ],
+  },
 ];
 
 const Footer: React.FC = () => {
@@ -26,10 +36,10 @@ const Footer: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 md:pt-16 pb-0 relative z-10">
 
       {/* Top row — brand + nav columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10 md:mb-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 md:mb-14">
 
         {/* Brand */}
-        <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
+        <div className="col-span-1 sm:col-span-2 md:col-span-2 flex flex-col gap-4">
           <p className="text-text-secondary text-xs md:text-sm leading-relaxed max-w-xs">
             {SITE_CONFIG.brand.description}
           </p>
@@ -88,7 +98,7 @@ const Footer: React.FC = () => {
       <p>© {new Date().getFullYear()} HSOCIETY OFFSEC. ALL RIGHTS RESERVED.</p>
       <div className="flex items-center gap-4 flex-wrap justify-center">
         {SITE_CONFIG.footer.links.map((item) => (
-          <a key={item.label} href={item.path} className="hover:text-text-secondary transition-colors">{item.label}</a>
+          <Link key={item.label} to={item.path} className="hover:text-text-secondary transition-colors">{item.label}</Link>
         ))}
       </div>
     </div>
