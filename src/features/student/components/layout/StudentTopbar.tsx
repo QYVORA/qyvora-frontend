@@ -154,20 +154,28 @@ const StudentTopbar = () => {
 
           {/* User info + actions */}
           <div className="flex items-center gap-2 md:gap-3">
-            <div className="hidden md:flex flex-col items-end">
+            <Link
+              to="/profile"
+              className="hidden md:flex flex-col items-end hover:opacity-80 transition-opacity"
+              aria-label="Go to account"
+            >
               <span className="text-xs font-bold text-text-primary font-mono tracking-tighter">
                 {user?.username || '—'}
               </span>
               <span className="text-[10px] text-accent font-mono">{user?.rank || '—'}</span>
-            </div>
+            </Link>
             {/* CP balance pill — desktop */}
             <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-accent-dim border border-accent/20 rounded-lg">
               <CpLogo className="w-3.5 h-3.5" />
               <span className="text-xs font-bold text-accent font-mono">{user?.cp?.toLocaleString() ?? 0}</span>
             </div>
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-sm md:text-base flex-none">
+            <Link
+              to="/profile"
+              aria-label="Go to account"
+              className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-border bg-accent-dim flex items-center justify-center text-accent font-bold text-sm md:text-base flex-none hover:border-accent/60 transition-colors"
+            >
               {user?.username?.substring(0, 2).toUpperCase() || 'OP'}
-            </div>
+            </Link>
 
             {/* Notifications — visible on all sizes */}
             <div ref={notifRef} className="relative">

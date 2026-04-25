@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
-import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon } from 'lucide-react';
+import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon, Zap } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
@@ -14,6 +14,7 @@ const ICON_BY_KEY = {
   marketplace: ShoppingBag,
   leaderboard: Trophy,
   zero_day_market: Shield,
+  cyber_points: Zap,
   contact: Mail,
 } as const;
 

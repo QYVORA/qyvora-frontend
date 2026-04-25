@@ -73,6 +73,7 @@ export const SITE_CONFIG = {
       { key: 'marketplace', label: 'Marketplace', path: '/marketplace', desc: 'The hacker economy' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Hall of Shadows' },
       { key: 'zero_day_market', label: 'Zero-Day Market', path: '/zero-day-market', desc: 'Exclusive findings' },
+      { key: 'cyber_points', label: 'Cyber Points', path: '/cyber-points', desc: 'Earn and spend CP' },
     ],
     services: { label: 'Services', path: '/services' },
     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' }],
