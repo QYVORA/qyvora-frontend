@@ -63,8 +63,21 @@ const Bootcamp: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [lockedBootcamp, setLockedBootcamp] = useState<any>(null);
   const [enrollTarget, setEnrollTarget] = useState<any>(null);
-  // Track newly enrolled IDs in this session
-  const [sessionEnrolled, setSessionEnrolled] = useState<Set<string>>(new Set());
+
+  const load = async () => {
+    try {
+      const [bcRes, ovRes] = await Promise.all([
+        api.get('/public/bootcamps'),
+        api.get('/student/overview').catch(() => null),
+      ]);
+      setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
+      if (ovRes?.data) setOverview(ovRes.data);
+    } catch {
+      setBootcamps([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -82,6 +95,18 @@ const Bootcamp: React.FC = () => {
     return () => { mounted = false; };
   }, []);
 
+  // Build enrolled set from overview — check both bootcampId and id fields
+  const enrolledIds = new Set<string>(
+    (Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) =>
+      String(m.bootcampId || m.id || '')
+    )
+  );
+
+  // Also treat any non-'not_enrolled' bootcampStatus + bootcampId as enrolled
+  if (overview?.bootcampStatus && overview.bootcampStatus !== 'not_enrolled' && overview?.bootcampId) {
+    enrolledIds.add(String(overview.bootcampId));
+  }
+
   const moduleProgressById = new Map<string, any>(
     (Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) => [
       String(m.bootcampId || m.id || ''),
@@ -89,13 +114,15 @@ const Bootcamp: React.FC = () => {
     ])
   );
 
-  const enrolledIds = new Set<string>([
-    ...(Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) => String(m.bootcampId || m.id || '')),
-    ...sessionEnrolled,
-  ]);
-
-  const handleEnrolled = (bootcampId: string) => {
-    setSessionEnrolled((prev) => new Set([...prev, bootcampId]));
+  const handleEnrolled = async () => {
+    // Re-fetch overview so the card state updates immediately without needing a page refresh
+    try {
+      const ovRes = await api.get('/student/overview');
+      if (ovRes?.data) setOverview(ovRes.data);
+    } catch {
+      // silently ignore — the card will update on next load
+    }
+    setEnrollTarget(null);
   };
 
   return (
@@ -108,10 +135,7 @@ const Bootcamp: React.FC = () => {
           <EnrollmentModal
             bootcamp={enrollTarget}
             onClose={() => setEnrollTarget(null)}
-            onEnrolled={(id) => {
-              handleEnrolled(id);
-              setEnrollTarget(null);
-            }}
+            onEnrolled={() => { void handleEnrolled(); }}
           />
         )}
       </AnimatePresence>

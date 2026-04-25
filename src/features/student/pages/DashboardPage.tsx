@@ -51,6 +51,20 @@ const Dashboard: React.FC = () => {
     ])
   );
 
+  // Also handle single-bootcamp enrollment via overview.bootcampId
+  if (
+    overview?.bootcampStatus &&
+    overview.bootcampStatus !== 'not_enrolled' &&
+    overview?.bootcampId &&
+    !moduleProgressById.has(String(overview.bootcampId))
+  ) {
+    moduleProgressById.set(String(overview.bootcampId), {
+      bootcampId: overview.bootcampId,
+      progress: 0,
+      title: '',
+    });
+  }
+
   // Enrolled bootcamps: only those with actual progress data
   const enrolledBootcamps = bootcamps
     .map((item: any) => {

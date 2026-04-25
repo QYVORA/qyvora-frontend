@@ -43,8 +43,21 @@ const BootcampCourse: React.FC = () => {
         api.get('/student/overview'),
         api.get(`/student/course${query}`).catch(() => null),
       ]);
-      setOverview(ovRes.data || null);
-      setBootcampStatus(ovRes.data?.bootcampStatus || 'not_enrolled');
+      const ov = ovRes.data || null;
+      setOverview(ov);
+
+      // Determine enrollment for THIS specific bootcamp
+      // Check 1: overview.bootcampId matches (single-bootcamp model)
+      // Check 2: overview.modules contains an entry for this bootcamp
+      const enrolledViaStatus =
+        ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
+        String(ov?.bootcampId || '') === String(bootcampId || '');
+      const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
+        (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
+      );
+      const enrolled = enrolledViaStatus || enrolledViaModules;
+      setBootcampStatus(enrolled ? 'enrolled' : 'not_enrolled');
+
       if (courseRes?.data) {
         const nextCourse = courseRes.data as Course;
         setCourse(nextCourse);

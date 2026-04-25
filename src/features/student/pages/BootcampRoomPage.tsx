@@ -56,8 +56,16 @@ const BootcampRoomPage: React.FC = () => {
           api.get('/student/overview'),
           api.get(`/student/course${query}`).catch(() => null),
         ]);
-        const status = ovRes.data?.bootcampStatus || 'not_enrolled';
-        setBootcampStatus(status);
+        const ov = ovRes.data;
+        // Check enrollment for this specific bootcamp
+        const enrolledViaStatus =
+          ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
+          String(ov?.bootcampId || '') === String(bootcampId || '');
+        const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
+          (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
+        );
+        const enrolled = enrolledViaStatus || enrolledViaModules;
+        setBootcampStatus(enrolled ? 'enrolled' : 'not_enrolled');
         if (courseRes?.data) setCourse(courseRes.data as Course);
       } catch {
         // silently fail

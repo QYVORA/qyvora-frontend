@@ -78,7 +78,7 @@ const STEPS: Step[] = [
 interface EnrollmentModalProps {
   bootcamp: { id: string; title: string };
   onClose: () => void;
-  onEnrolled: (bootcampId: string) => void;
+  onEnrolled: () => void;
 }
 
 const slideVariants = {
@@ -143,7 +143,7 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
         },
       });
       setDone(true);
-      onEnrolled(bootcamp.id);
+      onEnrolled();
     } catch (err: any) {
       const msg = err?.response?.data?.error || 'Enrollment failed. Please try again.';
       setError(msg);

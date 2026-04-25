@@ -162,7 +162,9 @@ const StudentTopbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80]"
+                        className={`absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80] ${
+                          group.label === 'Operate' ? 'right-0' : 'left-0'
+                        }`}
                       >
                         {group.items.map((item) => {
                           const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
@@ -223,7 +225,8 @@ const StudentTopbar = () => {
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    className="absolute right-0 top-full mt-2 w-[92vw] max-w-sm rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                    className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] max-w-sm rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                    style={{ right: 'max(0px, calc(50% - 50vw + 1rem))' }}
                   >
                     <div className="px-4 py-3 border-b border-border flex items-center justify-between">
                       <div>

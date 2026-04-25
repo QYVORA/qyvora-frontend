@@ -28,15 +28,15 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <ToastContext.Provider value={{ addToast }}>
       {children}
-      <div className="fixed bottom-8 right-8 z-[100] flex flex-col gap-3 pointer-events-none">
+      <div className="fixed bottom-20 md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[100] flex flex-col gap-3 pointer-events-none md:max-w-sm md:w-full">
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
               key={toast.id}
-              initial={{ opacity: 0, x: 20, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.9 }}
-              className={`pointer-events-auto p-4 rounded-lg bg-bg-card border shadow-2xl flex items-center gap-4 min-w-[300px] ${
+              initial={{ opacity: 0, y: 8, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.95 }}
+              className={`pointer-events-auto p-4 rounded-lg bg-bg-card border shadow-2xl flex items-center gap-4 w-full ${
                 toast.type === 'success' ? 'border-accent/40' : toast.type === 'error' ? 'border-red-500/40' : 'border-blue-500/40'
               }`}
             >
