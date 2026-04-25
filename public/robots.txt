@@ -1,0 +1,25 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /bootcamps
+Disallow: /marketplace
+Disallow: /wallet
+Disallow: /profile
+Disallow: /notifications
+Disallow: /settings
+Disallow: /mr-robot
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /change-password
+
+Allow: /
+Allow: /services
+Allow: /contact
+Allow: /cyber-points
+Allow: /leaderboard
+Allow: /zero-day-market
+Allow: /u/
+
+Sitemap: https://hsociety.com/sitemap.xml

@@ -424,43 +424,48 @@ const AdminDashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="h-screen bg-black text-zinc-100 flex overflow-hidden">
-      <aside className="hidden md:flex md:w-72 h-screen sticky top-0 border-r border-zinc-800 bg-zinc-950 p-6 flex-col">
-        <div className="mb-8">
+    <div className="h-screen bg-black text-zinc-100 md:flex overflow-hidden">
+      {/* ── Desktop sidebar ── */}
+      <aside className="hidden md:flex md:w-64 lg:w-72 shrink-0 border-r border-zinc-800 bg-zinc-950 p-5 flex-col h-screen overflow-y-auto">
+        <div className="mb-6">
           <Link to="/"><Logo size="md" className="mb-2" /></Link>
           <div className="text-[10px] font-bold text-zinc-500 font-mono tracking-[0.2em]">ADMIN_CONSOLE // BLACK</div>
         </div>
 
-        <div className="space-y-2 flex-1">
-          <Link to="/dashboard" className="w-full flex items-center gap-2 px-3 py-2 rounded border border-zinc-800 text-xs font-bold uppercase text-zinc-400 hover:text-zinc-200 hover:border-zinc-600 transition-colors">
-            <LayoutDashboard className="w-4 h-4" /> Operator View
+        <nav className="space-y-1 flex-1">
+          <Link to="/dashboard" className="w-full flex items-center gap-2 px-3 py-2.5 rounded border border-zinc-800 text-xs font-bold uppercase text-zinc-400 hover:text-zinc-200 hover:border-zinc-600 transition-colors">
+            <LayoutDashboard className="w-4 h-4 shrink-0" /> Operator View
           </Link>
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-2 px-3 py-2 rounded text-xs font-bold uppercase tracking-wider transition-colors ${
+              className={`w-full flex items-center gap-2 px-3 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition-colors text-left ${
                 activeTab === tab.id
                   ? 'bg-zinc-900 text-red-300 border border-red-800/50'
                   : 'text-zinc-400 border border-transparent hover:border-zinc-800 hover:text-zinc-200'
               }`}
             >
-              <tab.icon className="w-4 h-4" /> {tab.label}
+              <tab.icon className="w-4 h-4 shrink-0" /> {tab.label}
             </button>
           ))}
-        </div>
+        </nav>
 
-        <div className="pt-6 mt-6 border-t border-zinc-800">
-          <div className="text-xs text-zinc-400 mb-3">Signed in as <span className="text-zinc-200 font-bold">{user?.email || user?.username || 'admin'}</span></div>
-          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wider text-red-300 border border-red-800/50 rounded hover:bg-red-950/40 transition-colors">
+        <div className="pt-5 mt-5 border-t border-zinc-800">
+          <div className="text-xs text-zinc-400 mb-3 truncate">
+            Signed in as <span className="text-zinc-200 font-bold">{user?.email || user?.username || 'admin'}</span>
+          </div>
+          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-red-300 border border-red-800/50 rounded hover:bg-red-950/40 transition-colors">
             <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
       </aside>
 
-      <div className="flex-1 min-w-0 h-screen overflow-hidden flex flex-col">
-        <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
-          <div className="h-16 px-4 flex items-center justify-between gap-3">
+      {/* ── Main content area ── */}
+      <div className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
+        {/* Mobile top header */}
+        <header className="md:hidden sticky top-0 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
+          <div className="h-14 px-4 flex items-center justify-between gap-3">
             <button onClick={() => setMobileNavOpen(true)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
               <Menu className="w-5 h-5" />
             </button>
@@ -471,17 +476,18 @@ const AdminDashboardPage: React.FC = () => {
           </div>
         </header>
 
+        {/* Mobile drawer */}
         {mobileNavOpen && (
           <div className="md:hidden fixed inset-0 z-50">
             <button className="absolute inset-0 bg-black/70" onClick={() => setMobileNavOpen(false)} />
-            <div className="absolute left-0 top-0 h-full w-[86vw] max-w-xs bg-zinc-950 border-r border-zinc-800 p-4 space-y-3">
-              <div className="flex items-center justify-between">
+            <div className="absolute left-0 top-0 h-full w-[80vw] max-w-xs bg-zinc-950 border-r border-zinc-800 p-4 flex flex-col overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
                 <Logo size="sm" />
                 <button onClick={() => setMobileNavOpen(false)} className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200">
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="space-y-2 pt-2">
+              <div className="space-y-1 flex-1">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -494,20 +500,26 @@ const AdminDashboardPage: React.FC = () => {
                   </button>
                 ))}
               </div>
+              <div className="pt-4 mt-4 border-t border-zinc-800">
+                <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-red-300 border border-red-800/50 rounded hover:bg-red-950/40 transition-colors">
+                  <LogOut className="w-4 h-4" /> Logout
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        <main className="flex-1 overflow-y-auto px-4 md:px-8 pt-20 md:pt-8 pb-16 md:pb-12">
-          <div className="mb-6 hidden md:flex items-center justify-between gap-3">
-            <h1 className="text-xl md:text-2xl font-black text-zinc-100 uppercase tracking-tight">{tabs.find((t) => t.id === activeTab)?.label}</h1>
-            <button onClick={() => void loadAll()} className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-500">Refresh</button>
+        {/* Page content */}
+        <main className="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 lg:px-8 py-6 pb-28 md:pb-8 flex flex-col">
+          <div className="mb-5 hidden md:flex items-center justify-between gap-3">
+            <h1 className="text-xl font-black text-zinc-100 uppercase tracking-tight">{tabs.find((t) => t.id === activeTab)?.label}</h1>
+            <button onClick={() => void loadAll()} className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-500 transition-colors">Refresh</button>
           </div>
 
           {loading ? (
             <div className="text-sm text-zinc-400">Loading admin data...</div>
           ) : (
-            <>
+            <div className="flex-1 min-h-0 flex flex-col">
               {activeTab === 'users' && (
                 <section className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -568,7 +580,7 @@ const AdminDashboardPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="md:hidden space-y-3 max-h-[56vh] overflow-auto pr-1">
+                  <div className="md:hidden space-y-3 overflow-auto" style={{ maxHeight: 'calc(100vh - 26rem)' }}>
                     {paginatedUsers.map((item) => (
                       <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-3">
                         <div>
@@ -603,7 +615,7 @@ const AdminDashboardPage: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded max-h-[62vh] overflow-auto">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto" style={{ maxHeight: 'calc(100vh - 22rem)' }}>
                     <table className="w-full text-left min-w-[900px]">
                       <thead className="border-b border-zinc-800 bg-black sticky top-0 z-10">
                         <tr>
@@ -658,7 +670,7 @@ const AdminDashboardPage: React.FC = () => {
               )}
 
               {activeTab === 'bootcamps' && (
-                <section className="h-[calc(100vh-12rem)]">
+                <section className="flex flex-col flex-1 min-h-0 h-full">
                   <BootcampManager
                     bootcamps={bootcamps}
                     selectedBootcampId={selectedBootcampId}
@@ -728,7 +740,7 @@ const AdminDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-3">
-                      <div className="md:hidden space-y-3 max-h-[620px] overflow-auto">
+                      <div className="md:hidden space-y-3 overflow-auto" style={{ maxHeight: 'calc(100vh - 22rem)' }}>
                         {products.map((item) => (
                           <div key={item._id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
                             <div className="font-bold text-sm text-zinc-100">{item.title}</div>
@@ -758,7 +770,7 @@ const AdminDashboardPage: React.FC = () => {
                         ))}
                       </div>
 
-                      <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto max-h-[620px]">
+                      <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto" style={{ maxHeight: 'calc(100vh - 22rem)' }}>
                         <table className="w-full text-left min-w-[700px]">
                           <thead className="border-b border-zinc-800 bg-black">
                             <tr>
@@ -847,7 +859,7 @@ const AdminDashboardPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="md:hidden space-y-3">
+                  <div className="md:hidden space-y-3 overflow-auto" style={{ maxHeight: 'calc(100vh - 22rem)' }}>
                     {securityEvents.map((item) => (
                       <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 text-xs space-y-1">
                         <div className="text-zinc-400">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</div>
@@ -859,7 +871,7 @@ const AdminDashboardPage: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto" style={{ maxHeight: 'calc(100vh - 22rem)' }}>
                     <table className="w-full text-left min-w-[900px]">
                       <thead className="border-b border-zinc-800 bg-black">
                         <tr>
@@ -895,7 +907,7 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Mobile */}
-                  <div className="md:hidden space-y-3 max-h-[70vh] overflow-auto">
+                  <div className="md:hidden space-y-3 overflow-auto" style={{ maxHeight: 'calc(100vh - 18rem)' }}>
                     {applications.length === 0 ? (
                       <div className="text-sm text-zinc-500 py-8 text-center">No applications yet.</div>
                     ) : applications.map((app) => (
@@ -916,7 +928,7 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Desktop */}
-                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto max-h-[70vh]">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto" style={{ maxHeight: 'calc(100vh - 18rem)' }}>
                     <table className="w-full text-left min-w-[900px]">
                       <thead className="border-b border-zinc-800 bg-black sticky top-0 z-10">
                         <tr>
@@ -958,7 +970,7 @@ const AdminDashboardPage: React.FC = () => {
 
               {activeTab === 'contacts' && (
                 <section className="space-y-4">
-                  <div className="md:hidden space-y-3">
+                  <div className="md:hidden space-y-3 overflow-auto" style={{ maxHeight: 'calc(100vh - 18rem)' }}>
                     {contactMessages.map((item) => (
                       <div key={item.id} className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2">
                         <div>
@@ -984,7 +996,7 @@ const AdminDashboardPage: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto">
+                  <div className="hidden md:block bg-zinc-950 border border-zinc-800 rounded overflow-auto" style={{ maxHeight: 'calc(100vh - 18rem)' }}>
                     <table className="w-full text-left min-w-[980px]">
                       <thead className="border-b border-zinc-800 bg-black">
                         <tr>
@@ -1028,26 +1040,9 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
                 </section>
               )}
-            </>
+            </div>
           )}
         </main>
-
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950 border-t border-zinc-800 pb-[calc(env(safe-area-inset-bottom)+0.35rem)]">
-          <div className="grid grid-cols-6 gap-1 px-1 pt-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`min-h-14 rounded-md text-[10px] font-bold uppercase tracking-tight flex flex-col items-center justify-center gap-1 ${
-                  activeTab === tab.id ? 'text-red-300 bg-zinc-900' : 'text-zinc-400'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                <span>{tab.short}</span>
-              </button>
-            ))}
-          </div>
-        </nav>
       </div>
     </div>
   );
