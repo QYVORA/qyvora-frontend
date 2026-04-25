@@ -16,7 +16,6 @@ import {
   X,
   RefreshCw,
   Trash2,
-  Plus,
 } from 'lucide-react';
 import BootcampManager from '../components/BootcampManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
