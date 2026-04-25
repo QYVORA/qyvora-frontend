@@ -852,9 +852,221 @@ function QuizzesTab({
   );
 }
 
+// ─── Room Completion Tab ──────────────────────────────────────────────────────
+
+type EnrolledStudent = {
+  id: string;
+  name: string;
+  hackerHandle: string;
+  email: string;
+  bootcampStatus: string;
+  cpPoints: number;
+  completedRooms: string[];
+};
+
+function RoomCompletionTab({
+  bootcamp,
+  api,
+  addToast,
+}: {
+  bootcamp: Bootcamp | undefined;
+  api: ApiClient;
+  addToast: (msg: string, type: string) => void;
+}) {
+  const [selectedModuleId, setSelectedModuleId] = useState<number | "">("");
+  const [selectedRoomId, setSelectedRoomId] = useState<number | "">("");
+  const [students, setStudents] = useState<EnrolledStudent[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
+  const [loadingStudents, setLoadingStudents] = useState(false);
+  const [completing, setCompleting] = useState(false);
+
+  const selectedModule = bootcamp?.modules.find((m) => m.moduleId === selectedModuleId);
+  const selectedRoom = selectedModule?.rooms.find((r) => r.roomId === selectedRoomId);
+
+  useEffect(() => {
+    if (!bootcamp) return;
+    setLoadingStudents(true);
+    api
+      .get(`/admin/bootcamp/enrolled-students?bootcampId=${encodeURIComponent(bootcamp.id)}`)
+      .then((res) => setStudents(Array.isArray(res.data?.students) ? res.data.students : []))
+      .catch(() => addToast("Failed to load students", "error"))
+      .finally(() => setLoadingStudents(false));
+  }, [bootcamp?.id]);
+
+  function toggleStudent(id: string) {
+    setSelectedUserIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    if (selectedUserIds.size === students.length) {
+      setSelectedUserIds(new Set());
+    } else {
+      setSelectedUserIds(new Set(students.map((s) => s.id)));
+    }
+  }
+
+  async function markComplete() {
+    if (!bootcamp || !selectedModuleId || !selectedRoomId || selectedUserIds.size === 0) {
+      addToast("Select a module, room, and at least one student", "error");
+      return;
+    }
+    setCompleting(true);
+    try {
+      const res = await api.post("/admin/bootcamp/rooms/complete", {
+        bootcampId: bootcamp.id,
+        moduleId: selectedModuleId,
+        roomId: selectedRoomId,
+        userIds: Array.from(selectedUserIds),
+      });
+      const updated = Array.isArray(res.data?.updated) ? res.data.updated : [];
+      const granted = updated.filter((u: any) => !u.skipped).length;
+      const skipped = updated.filter((u: any) => u.skipped).length;
+      addToast(`Done — ${granted} student(s) marked complete${skipped ? `, ${skipped} already done` : ""}`, "success");
+      setSelectedUserIds(new Set());
+      // Refresh student list
+      const refreshed = await api.get(`/admin/bootcamp/enrolled-students?bootcampId=${encodeURIComponent(bootcamp.id)}`);
+      setStudents(Array.isArray(refreshed.data?.students) ? refreshed.data.students : []);
+    } catch {
+      addToast("Failed to mark rooms complete", "error");
+    } finally {
+      setCompleting(false);
+    }
+  }
+
+  if (!bootcamp) return <p className="text-zinc-500 text-sm">No bootcamp selected.</p>;
+
+  const roomKey = selectedModuleId && selectedRoomId ? `${selectedModuleId}:${selectedRoomId}` : null;
+
+  return (
+    <div className="flex flex-col gap-5">
+      <p className="text-xs text-zinc-400">
+        Select a phase and room, then choose which enrolled students to mark as complete. CP will be granted automatically.
+      </p>
+
+      {/* Module + Room selectors */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-zinc-400">Phase (Module)</label>
+          <select
+            value={selectedModuleId}
+            onChange={(e) => { setSelectedModuleId(e.target.value === "" ? "" : Number(e.target.value)); setSelectedRoomId(""); }}
+            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-2 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+          >
+            <option value="">— Select Phase —</option>
+            {bootcamp.modules.map((m) => (
+              <option key={m.moduleId} value={m.moduleId}>
+                Module {m.moduleId}: {m.title || "(untitled)"}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-zinc-400">Room</label>
+          <select
+            value={selectedRoomId}
+            onChange={(e) => setSelectedRoomId(e.target.value === "" ? "" : Number(e.target.value))}
+            disabled={!selectedModule}
+            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-2 text-sm text-zinc-100 focus:outline-none focus:border-red-500 disabled:opacity-40"
+          >
+            <option value="">— Select Room —</option>
+            {(selectedModule?.rooms || []).map((r) => (
+              <option key={r.roomId} value={r.roomId}>
+                Room {r.roomId}: {r.title || "(untitled)"}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {selectedRoom && (
+        <div className="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded text-xs text-zinc-300">
+          <span className="text-zinc-500">Selected: </span>
+          <span className="font-bold text-zinc-100">{selectedRoom.title}</span>
+          <span className="text-zinc-500 ml-2">— CP reward: </span>
+          <span className="font-bold text-red-300">{Math.max(250, selectedRoom.cpReward || 250)} CP</span>
+        </div>
+      )}
+
+      {/* Student list */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-zinc-400 uppercase tracking-wide">
+            Enrolled Students ({students.length})
+          </p>
+          {students.length > 0 && (
+            <button
+              type="button"
+              onClick={toggleAll}
+              className="text-xs text-red-400 hover:text-red-300"
+            >
+              {selectedUserIds.size === students.length ? "Deselect All" : "Select All"}
+            </button>
+          )}
+        </div>
+
+        {loadingStudents ? (
+          <p className="text-zinc-500 text-sm">Loading students…</p>
+        ) : students.length === 0 ? (
+          <p className="text-zinc-500 text-sm">No enrolled students yet.</p>
+        ) : (
+          <div className="border border-zinc-800 rounded-lg overflow-hidden max-h-80 overflow-y-auto">
+            {students.map((s) => {
+              const alreadyDone = roomKey ? s.completedRooms.includes(roomKey) : false;
+              const checked = selectedUserIds.has(s.id);
+              return (
+                <label
+                  key={s.id}
+                  className={`flex items-center gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 cursor-pointer transition-colors ${
+                    alreadyDone ? "opacity-50" : "hover:bg-zinc-900"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={alreadyDone}
+                    onChange={() => !alreadyDone && toggleStudent(s.id)}
+                    className="accent-red-500 shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-zinc-100 truncate">
+                      {s.hackerHandle || s.name || s.email}
+                    </div>
+                    <div className="text-xs text-zinc-500 truncate">{s.email}</div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {alreadyDone && (
+                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Done</span>
+                    )}
+                    <span className="text-[10px] text-zinc-500 font-mono">{s.cpPoints.toLocaleString()} CP</span>
+                  </div>
+                </label>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <button
+        type="button"
+        disabled={completing || selectedUserIds.size === 0 || !selectedModuleId || !selectedRoomId}
+        onClick={markComplete}
+        className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-40 text-white text-sm px-4 py-2.5 rounded w-fit font-bold"
+      >
+        {completing ? "Marking…" : `Mark Complete for ${selectedUserIds.size} Student${selectedUserIds.size !== 1 ? "s" : ""}`}
+      </button>
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-type Tab = "content" | "access" | "quizzes";
+type Tab = "content" | "access" | "quizzes" | "completion";
 
 export default function BootcampManager({
   bootcamps,
@@ -874,6 +1086,7 @@ export default function BootcampManager({
     { id: "content", label: "Content" },
     { id: "access", label: "Phase Access" },
     { id: "quizzes", label: "Quizzes" },
+    { id: "completion", label: "Room Completion" },
   ];
 
   return (
@@ -916,6 +1129,13 @@ export default function BootcampManager({
           />
         )}
         {tab === "quizzes" && <QuizzesTab api={api} addToast={addToast} />}
+        {tab === "completion" && (
+          <RoomCompletionTab
+            bootcamp={selectedBootcamp}
+            api={api}
+            addToast={addToast}
+          />
+        )}
       </div>
     </div>
   );
