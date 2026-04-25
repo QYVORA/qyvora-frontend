@@ -9,16 +9,16 @@ import {
   Coins,
   AlertTriangle,
   Mail,
-  Save,
-  Plus,
-  Trash2,
   Ban,
   Unlock,
   Search,
   Menu,
   X,
   RefreshCw,
+  Trash2,
+  Plus,
 } from 'lucide-react';
+import BootcampManager from '../components/BootcampManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
@@ -48,30 +48,7 @@ type Bootcamp = {
   image: string;
   isActive: boolean;
   sortOrder: number;
-  modules: unknown[];
-};
-
-type BootcampSessionRoomSummary = {
-  moduleId: number;
-  moduleTitle: string;
-  roomId: number;
-  roomTitle: string;
-  totalStudents: number;
-  participantsCount: number;
-  nonParticipantsCount: number;
-  totalOpenCount: number;
-  lastOpenedAt?: string | null;
-};
-
-type BootcampSessionSummary = {
-  bootcamp?: { id?: string; title?: string };
-  totals?: {
-    students?: number;
-    participants?: number;
-    nonParticipants?: number;
-    totalOpenCount?: number;
-  };
-  rooms?: BootcampSessionRoomSummary[];
+  modules: any[];
 };
 
 type CPProduct = {
@@ -107,19 +84,6 @@ type SecurityEventItem = {
   ipAddress: string;
 };
 
-const emptyBootcamp = (): Bootcamp => ({
-  id: `bootcamp-${Date.now()}`,
-  title: 'New Bootcamp',
-  description: '',
-  level: '',
-  duration: '',
-  priceLabel: '',
-  image: '',
-  isActive: true,
-  sortOrder: 0,
-  modules: [],
-});
-
 const isUserBlocked = (user: AdminUser) =>
   Boolean(user.blockedUntil && new Date(user.blockedUntil).getTime() > Date.now());
 
@@ -142,21 +106,6 @@ const AdminDashboardPage: React.FC = () => {
   const [contentVersion, setContentVersion] = useState(1);
   const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
   const [selectedBootcampId, setSelectedBootcampId] = useState<string>('');
-  const [modulesText, setModulesText] = useState('[]');
-  const [sessionSummary, setSessionSummary] = useState<BootcampSessionSummary | null>(null);
-  const [sessionSummaryLoading, setSessionSummaryLoading] = useState(false);
-  const [quizModuleId, setQuizModuleId] = useState<number>(1);
-  const [quizRoomId, setQuizRoomId] = useState<number>(1);
-  const [quizTitle, setQuizTitle] = useState('Room Quiz');
-  const [quizMessage, setQuizMessage] = useState('A new quiz is ready for this room.');
-  const [quizQuestionsText, setQuizQuestionsText] = useState(JSON.stringify([
-    {
-      id: 'q1',
-      text: 'Sample question',
-      options: ['Option A', 'Option B'],
-      correctIndex: 0,
-    },
-  ], null, 2));
 
   const [products, setProducts] = useState<CPProduct[]>([]);
   const [productForm, setProductForm] = useState({
@@ -183,11 +132,6 @@ const AdminDashboardPage: React.FC = () => {
 
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
-
-  const selectedBootcamp = useMemo(
-    () => bootcamps.find((b) => b.id === selectedBootcampId) || null,
-    [bootcamps, selectedBootcampId]
-  );
 
   const filteredUsers = useMemo(() => {
     const q = userQuery.trim().toLowerCase();
@@ -261,32 +205,6 @@ const AdminDashboardPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedBootcamp) {
-      setModulesText('[]');
-      return;
-    }
-    setModulesText(JSON.stringify(selectedBootcamp.modules || [], null, 2));
-  }, [selectedBootcamp]);
-
-  useEffect(() => {
-    if (!selectedBootcampId) {
-      setSessionSummary(null);
-      return;
-    }
-    void (async () => {
-      setSessionSummaryLoading(true);
-      try {
-        const res = await api.get(`/admin/bootcamp/session-summary?bootcampId=${encodeURIComponent(selectedBootcampId)}`);
-        setSessionSummary((res?.data as BootcampSessionSummary) || null);
-      } catch {
-        setSessionSummary(null);
-      } finally {
-        setSessionSummaryLoading(false);
-      }
-    })();
-  }, [selectedBootcampId]);
-
-  useEffect(() => {
     setMobileNavOpen(false);
   }, [activeTab]);
 
@@ -341,88 +259,6 @@ const AdminDashboardPage: React.FC = () => {
       await loadAll();
     } catch (err: unknown) {
       const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Delete failed';
-      addToast(String(message), 'error');
-    }
-  };
-
-  const applyBootcampDraft = (next: Bootcamp) => {
-    setBootcamps((prev) => prev.map((item) => (item.id === next.id ? next : item)));
-  };
-
-  const saveBootcamps = async () => {
-    setSaving(true);
-    try {
-      await api.patch('/admin/content', {
-        version: contentVersion,
-        learn: {
-          bootcamps,
-        },
-      });
-      addToast('Bootcamps updated', 'success');
-      await loadAll();
-    } catch (err: unknown) {
-      const code = (err as { response?: { data?: { code?: string; error?: string } } })?.response?.data?.code;
-      if (code === 'content_version_conflict') {
-        addToast('Version conflict detected, reloading latest content.', 'error');
-        await loadAll();
-      } else {
-        const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Failed to save bootcamps';
-        addToast(String(message), 'error');
-      }
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const refreshSessionSummary = async () => {
-    if (!selectedBootcampId) return;
-    setSessionSummaryLoading(true);
-    try {
-      const res = await api.get(`/admin/bootcamp/session-summary?bootcampId=${encodeURIComponent(selectedBootcampId)}`);
-      setSessionSummary((res?.data as BootcampSessionSummary) || null);
-    } catch {
-      setSessionSummary(null);
-      addToast('Could not load session summary.', 'error');
-    } finally {
-      setSessionSummaryLoading(false);
-    }
-  };
-
-  const releaseRoomQuiz = async () => {
-    if (!selectedBootcampId) {
-      addToast('Select a bootcamp first.', 'error');
-      return;
-    }
-    if (quizModuleId <= 0 || quizRoomId <= 0) {
-      addToast('Module ID and Room ID must be valid.', 'error');
-      return;
-    }
-    let parsedQuestions: unknown[] = [];
-    try {
-      const parsed = JSON.parse(quizQuestionsText) as unknown;
-      parsedQuestions = Array.isArray(parsed) ? parsed : [];
-      if (!parsedQuestions.length) throw new Error('empty');
-    } catch {
-      addToast('Invalid quiz questions JSON.', 'error');
-      return;
-    }
-
-    try {
-      await api.post('/admin/bootcamp/quizzes/release', {
-        scope: {
-          type: 'room',
-          id: String(quizRoomId),
-          moduleId: String(quizModuleId),
-          courseId: selectedBootcampId,
-        },
-        title: quizTitle,
-        message: quizMessage,
-        audience: 'students',
-        questions: parsedQuestions,
-      });
-      addToast('Room quiz released.', 'success');
-    } catch (err: unknown) {
-      const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Could not release quiz.';
       addToast(String(message), 'error');
     }
   };
@@ -823,215 +659,37 @@ const AdminDashboardPage: React.FC = () => {
               )}
 
               {activeTab === 'bootcamps' && (
-                <section className="space-y-4">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      onClick={() => {
-                        const next = emptyBootcamp();
-                        setBootcamps((prev) => [...prev, next]);
-                        setSelectedBootcampId(next.id);
-                      }}
-                      className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase inline-flex items-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" /> Add Bootcamp
-                    </button>
-                    <button
-                      onClick={() => void saveBootcamps()}
-                      disabled={saving}
-                      className="px-3 py-2 border border-red-800/60 bg-zinc-900 rounded text-xs font-bold uppercase text-red-300 inline-flex items-center gap-2 disabled:opacity-60"
-                    >
-                      <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Bootcamp Content'}
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div className="bg-zinc-950 border border-zinc-800 rounded p-3 space-y-2 max-h-[560px] overflow-auto">
-                      {bootcamps.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => setSelectedBootcampId(item.id)}
-                          className={`w-full text-left p-3 rounded border transition-colors ${selectedBootcampId === item.id ? 'border-red-800/60 bg-zinc-900' : 'border-zinc-800 hover:border-zinc-600'}`}
-                        >
-                          <div className="text-xs font-bold uppercase text-zinc-100">{item.title || 'Untitled bootcamp'}</div>
-                          <div className="text-[11px] text-zinc-500">ID: {item.id}</div>
-                        </button>
-                      ))}
-                    </div>
-
-                    <div className="lg:col-span-2 bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
-                      {selectedBootcamp ? (
-                        <>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input value={selectedBootcamp.id} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, id: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Bootcamp ID" />
-                            <input value={selectedBootcamp.title} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, title: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Title" />
-                            <input value={selectedBootcamp.level} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, level: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Level" />
-                            <input value={selectedBootcamp.duration} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, duration: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Duration" />
-                            <input value={selectedBootcamp.priceLabel} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, priceLabel: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Price label" />
-                            <input value={selectedBootcamp.image} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, image: e.target.value })} className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Image URL" />
-                          </div>
-                          <textarea value={selectedBootcamp.description} onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, description: e.target.value })} className="w-full min-h-[90px] bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100" placeholder="Description" />
-
-                          <div>
-                            <div className="text-[11px] font-bold uppercase text-zinc-500 mb-1">Modules JSON (phases/rooms metadata, e.g. readingContent, readingLinks, meetingLink)</div>
-                            <textarea
-                              value={modulesText}
-                              onChange={(e) => setModulesText(e.target.value)}
-                              className="w-full min-h-[180px] bg-black border border-zinc-800 rounded px-3 py-2 text-xs font-mono text-zinc-100"
-                            />
-                            <div className="flex flex-wrap items-center gap-2 mt-2">
-                              <button
-                                onClick={() => {
-                                  try {
-                                    const parsed = JSON.parse(modulesText) as unknown[];
-                                    applyBootcampDraft({ ...selectedBootcamp, modules: Array.isArray(parsed) ? parsed : [] });
-                                    addToast('Modules JSON applied', 'success');
-                                  } catch {
-                                    addToast('Invalid JSON in modules field', 'error');
-                                  }
-                                }}
-                                className="px-3 py-2 border border-zinc-700 rounded text-xs font-bold uppercase"
-                              >
-                                Apply Modules JSON
-                              </button>
-                              <label className="text-xs inline-flex items-center gap-2 text-zinc-300">
-                                <input
-                                  type="checkbox"
-                                  checked={selectedBootcamp.isActive}
-                                  onChange={(e) => applyBootcampDraft({ ...selectedBootcamp, isActive: e.target.checked })}
-                                />
-                                Active
-                              </label>
-                              <button
-                                onClick={() => {
-                                  const ok = window.confirm('Remove this bootcamp from content?');
-                                  if (!ok) return;
-                                  setBootcamps((prev) => prev.filter((item) => item.id !== selectedBootcamp.id));
-                                  setSelectedBootcampId('');
-                                }}
-                                className="ml-auto px-3 py-2 rounded border border-red-800/60 text-red-300 text-xs"
-                              >
-                                Delete Bootcamp
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-sm text-zinc-500">Select a bootcamp to edit.</div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <div>
-                        <div className="text-xs font-bold uppercase text-zinc-300">Room Session Analytics</div>
-                        <div className="text-[11px] text-zinc-500">Tracks room meeting link opens (participation proxy).</div>
-                      </div>
-                      <button
-                        onClick={() => void refreshSessionSummary()}
-                        disabled={!selectedBootcampId || sessionSummaryLoading}
-                        className="px-3 py-2 border border-zinc-700 rounded text-[11px] font-bold uppercase disabled:opacity-60"
-                      >
-                        {sessionSummaryLoading ? 'Refreshing...' : 'Refresh'}
-                      </button>
-                    </div>
-
-                    {sessionSummary ? (
-                      <>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                          <div className="border border-zinc-800 rounded p-2">
-                            <div className="text-[10px] uppercase text-zinc-500">Students</div>
-                            <div className="text-sm font-bold text-zinc-100">{Number(sessionSummary.totals?.students || 0)}</div>
-                          </div>
-                          <div className="border border-zinc-800 rounded p-2">
-                            <div className="text-[10px] uppercase text-zinc-500">Joined</div>
-                            <div className="text-sm font-bold text-emerald-300">{Number(sessionSummary.totals?.participants || 0)}</div>
-                          </div>
-                          <div className="border border-zinc-800 rounded p-2">
-                            <div className="text-[10px] uppercase text-zinc-500">Not Joined</div>
-                            <div className="text-sm font-bold text-amber-300">{Number(sessionSummary.totals?.nonParticipants || 0)}</div>
-                          </div>
-                          <div className="border border-zinc-800 rounded p-2">
-                            <div className="text-[10px] uppercase text-zinc-500">Total Opens</div>
-                            <div className="text-sm font-bold text-red-300">{Number(sessionSummary.totals?.totalOpenCount || 0)}</div>
-                          </div>
-                        </div>
-
-                        <div className="max-h-[320px] overflow-auto border border-zinc-800 rounded">
-                          <table className="w-full text-left min-w-[760px]">
-                            <thead className="border-b border-zinc-800 bg-black">
-                              <tr>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Phase</th>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Room</th>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Joined</th>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Not Joined</th>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Open Count</th>
-                                <th className="px-3 py-2 text-[10px] uppercase text-zinc-500">Last Opened</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {(sessionSummary.rooms || []).map((room) => (
-                                <tr key={`${room.moduleId}-${room.roomId}`} className="border-b border-zinc-800/80 text-xs">
-                                  <td className="px-3 py-2 text-zinc-300">{room.moduleTitle || `Module ${room.moduleId}`}</td>
-                                  <td className="px-3 py-2 text-zinc-100 font-semibold">{room.roomTitle || `Room ${room.roomId}`}</td>
-                                  <td className="px-3 py-2 text-emerald-300">{Number(room.participantsCount || 0)}</td>
-                                  <td className="px-3 py-2 text-amber-300">{Number(room.nonParticipantsCount || 0)}</td>
-                                  <td className="px-3 py-2 text-red-300">{Number(room.totalOpenCount || 0)}</td>
-                                  <td className="px-3 py-2 text-zinc-400">{room.lastOpenedAt ? new Date(room.lastOpenedAt).toLocaleString() : '-'}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-xs text-zinc-500">No session analytics available yet for this bootcamp.</div>
-                    )}
-                  </div>
-
-                  <div className="bg-zinc-950 border border-zinc-800 rounded p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-zinc-300">Room Quiz Release</div>
-                    <div className="text-[11px] text-zinc-500">Create or update a room quiz and release it to students.</div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                      <input
-                        type="number"
-                        value={quizModuleId}
-                        onChange={(e) => setQuizModuleId(Number(e.target.value || 0))}
-                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
-                        placeholder="Module ID"
-                      />
-                      <input
-                        type="number"
-                        value={quizRoomId}
-                        onChange={(e) => setQuizRoomId(Number(e.target.value || 0))}
-                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
-                        placeholder="Room ID"
-                      />
-                      <input
-                        value={quizTitle}
-                        onChange={(e) => setQuizTitle(e.target.value)}
-                        className="bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100 col-span-2"
-                        placeholder="Quiz title"
-                      />
-                    </div>
-                    <input
-                      value={quizMessage}
-                      onChange={(e) => setQuizMessage(e.target.value)}
-                      className="w-full bg-black border border-zinc-800 rounded px-3 py-2 text-sm text-zinc-100"
-                      placeholder="Quiz message"
-                    />
-                    <textarea
-                      value={quizQuestionsText}
-                      onChange={(e) => setQuizQuestionsText(e.target.value)}
-                      className="w-full min-h-[140px] bg-black border border-zinc-800 rounded px-3 py-2 text-xs font-mono text-zinc-100"
-                    />
-                    <button
-                      onClick={() => void releaseRoomQuiz()}
-                      className="px-3 py-2 border border-red-800/60 rounded text-xs font-bold uppercase text-red-300"
-                    >
-                      Release Room Quiz
-                    </button>
-                  </div>
+                <section className="h-[calc(100vh-12rem)]">
+                  <BootcampManager
+                    bootcamps={bootcamps}
+                    selectedBootcampId={selectedBootcampId}
+                    setSelectedBootcampId={setSelectedBootcampId}
+                    contentVersion={contentVersion}
+                    onSave={async (updated) => {
+                      setSaving(true);
+                      try {
+                        await api.patch('/admin/content', {
+                          version: contentVersion,
+                          learn: { bootcamps: updated },
+                        });
+                        addToast('Bootcamps saved', 'success');
+                        await loadAll();
+                      } catch (err: unknown) {
+                        const code = (err as { response?: { data?: { code?: string } } })?.response?.data?.code;
+                        if (code === 'content_version_conflict') {
+                          addToast('Version conflict — reloading latest.', 'error');
+                          await loadAll();
+                        } else {
+                          addToast('Failed to save bootcamps', 'error');
+                        }
+                      } finally {
+                        setSaving(false);
+                      }
+                    }}
+                    saving={saving}
+                    addToast={addToast}
+                    api={api}
+                  />
                 </section>
               )}
 
