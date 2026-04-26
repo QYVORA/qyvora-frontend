@@ -17,9 +17,6 @@ type Room = {
   overview: string;
   meetingLink: string;
   cpReward: number;
-  readingContent: string;
-  readingLinks: { title: string; url: string }[];
-  bullets: string[];
 };
 
 type Module = {
@@ -90,9 +87,6 @@ function newRoom(): Room {
     overview: "",
     meetingLink: "",
     cpReward: 250,
-    readingContent: "",
-    readingLinks: [],
-    bullets: [],
   };
 }
 
@@ -167,18 +161,9 @@ function RoomEditor({
         <div className="px-3 pb-3 grid grid-cols-2 gap-3">
           {field("roomId", "Room ID", "number")}
           {field("title", "Title")}
-          {field("overview", "Overview")}
+          <div className="col-span-2">{field("overview", "Overview")}</div>
           {field("meetingLink", "Meeting Link")}
           {field("cpReward", "CP Reward", "number")}
-          <div className="col-span-2 flex flex-col gap-1">
-            <label className="text-xs text-zinc-400">Reading Content</label>
-            <textarea
-              rows={3}
-              value={room.readingContent}
-              onChange={(e) => onChange({ ...room, readingContent: e.target.value })}
-              className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500 resize-y"
-            />
-          </div>
         </div>
       )}
     </div>
@@ -1082,17 +1067,7 @@ const JSON_IMPORT_EXAMPLE = {
           title: "Introduction to OSINT",
           overview: "Understand what OSINT is, why it matters, and the mindset of an intelligence operator.",
           cpReward: 250,
-          bullets: [
-            "What is Open Source Intelligence (OSINT)?",
-            "Legal and ethical boundaries of OSINT",
-            "Tools overview: Maltego, Shodan, theHarvester"
-          ],
-          readingContent: "OSINT is the collection and analysis of information gathered from publicly available sources...",
-          meetingLink: "",
-          readingLinks: [
-            { title: "OSINT Framework", url: "https://osintframework.com" },
-            { title: "Shodan Docs", url: "https://help.shodan.io" }
-          ]
+          meetingLink: ""
         }
       ]
     }
