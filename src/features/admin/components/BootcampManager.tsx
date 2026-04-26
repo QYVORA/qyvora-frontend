@@ -117,7 +117,7 @@ function RoomEditor({
   function field(key: keyof Room, label: string, type = "text") {
     return (
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-zinc-400">{label}</label>
+        <label className="text-xs text-text-muted">{label}</label>
         <input
           type={type}
           min={type === "number" ? 250 : undefined}
@@ -128,18 +128,18 @@ function RoomEditor({
               [key]: type === "number" ? Number(e.target.value) : e.target.value,
             })
           }
-          className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+          className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
         />
       </div>
     );
   }
 
   return (
-    <div className="border border-zinc-700 rounded-lg bg-zinc-900 mb-2">
+    <div className="border border-border rounded-xl bg-bg-card mb-2">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800 rounded-lg"
+        className="w-full flex items-center justify-between px-3 py-2.5 text-sm text-text-primary hover:bg-accent-dim/30 rounded-xl transition-colors"
       >
         <span className="flex items-center gap-2">
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
@@ -151,7 +151,7 @@ function RoomEditor({
             e.stopPropagation();
             onRemove();
           }}
-          className="text-red-400 hover:text-red-300 p-1"
+          className="text-red-400 hover:text-red-300 p-1 transition-colors"
         >
           <Trash2 size={14} />
         </button>
@@ -184,7 +184,7 @@ function ModuleEditor({
   function field(key: keyof Module, label: string) {
     return (
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-zinc-400">{label}</label>
+        <label className="text-xs text-text-muted">{label}</label>
         <input
           type={key === "moduleId" ? "number" : "text"}
           value={mod[key] as string | number}
@@ -194,18 +194,18 @@ function ModuleEditor({
               [key]: key === "moduleId" ? Number(e.target.value) : e.target.value,
             })
           }
-          className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+          className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
         />
       </div>
     );
   }
 
   return (
-    <div className="border border-zinc-700 rounded-lg bg-zinc-950 mb-3">
+    <div className="border border-border rounded-xl bg-bg-card mb-3">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-3 py-2 text-sm text-zinc-100 hover:bg-zinc-800 rounded-lg"
+        className="w-full flex items-center justify-between px-3 py-2.5 text-sm text-text-primary hover:bg-accent-dim/30 rounded-xl transition-colors"
       >
         <span className="flex items-center gap-2">
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
@@ -217,7 +217,7 @@ function ModuleEditor({
             e.stopPropagation();
             onRemove();
           }}
-          className="text-red-400 hover:text-red-300 p-1"
+          className="text-red-400 hover:text-red-300 p-1 transition-colors"
         >
           <Trash2 size={14} />
         </button>
@@ -233,7 +233,7 @@ function ModuleEditor({
             {field("ctf", "CTF")}
           </div>
 
-          <p className="text-xs text-zinc-400 mb-2 font-medium uppercase tracking-wide">Rooms</p>
+          <p className="text-xs text-text-muted mb-2 font-medium uppercase tracking-wide">Rooms</p>
           {mod.rooms.map((room, ri) => (
             <RoomEditor
               key={room.roomId}
@@ -251,7 +251,7 @@ function ModuleEditor({
           <button
             type="button"
             onClick={() => onChange({ ...mod, rooms: [...mod.rooms, newRoom()] })}
-            className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 mt-1"
+            className="flex items-center gap-1 text-xs text-accent hover:text-accent/70 mt-1 transition-colors"
           >
             <Plus size={12} /> Add Room
           </button>
@@ -296,12 +296,12 @@ function ContentTab({
     if (!selected) return null;
     if (type === "checkbox") {
       return (
-        <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
+        <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
           <input
             type="checkbox"
             checked={selected[key] as boolean}
             onChange={(e) => updateBootcamp({ ...selected, [key]: e.target.checked })}
-            className="accent-red-500"
+            className="accent-accent"
           />
           {label}
         </label>
@@ -309,7 +309,7 @@ function ContentTab({
     }
     return (
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-zinc-400">{label}</label>
+        <label className="text-xs text-text-muted">{label}</label>
         <input
           type={type}
           value={selected[key] as string | number}
@@ -319,7 +319,7 @@ function ContentTab({
               [key]: type === "number" ? Number(e.target.value) : e.target.value,
             })
           }
-          className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+          className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
         />
       </div>
     );
@@ -329,7 +329,7 @@ function ContentTab({
     <div className="flex gap-4 h-full">
       {/* Bootcamp list */}
       <div className="w-48 shrink-0 flex flex-col gap-1">
-        <p className="text-xs text-zinc-500 uppercase tracking-wide mb-2">Bootcamps</p>
+        <p className="text-xs text-text-muted uppercase tracking-wide mb-2">Bootcamps</p>
         {local.map((b) => (
           <button
             key={b.id}
@@ -337,8 +337,8 @@ function ContentTab({
             onClick={() => setSelectedBootcampId(b.id)}
             className={`text-left px-3 py-2 rounded text-sm truncate ${
               b.id === selectedBootcampId
-                ? "bg-red-900/40 text-red-300 border border-red-700"
-                : "text-zinc-300 hover:bg-zinc-800"
+                ? "bg-accent-dim text-accent border border-accent/30"
+                : "text-text-secondary hover:bg-accent-dim/30"
             }`}
           >
             {b.title || b.id}
@@ -362,7 +362,7 @@ function ContentTab({
             setLocal((prev) => [...prev, nb]);
             setSelectedBootcampId(nb.id);
           }}
-          className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 mt-2 px-2"
+          className="flex items-center gap-1 text-xs text-accent hover:text-accent/70 mt-2 px-2 transition-colors"
         >
           <Plus size={12} /> New Bootcamp
         </button>
@@ -371,7 +371,7 @@ function ContentTab({
       {/* Editor */}
       {selected && (
         <div className="flex-1 overflow-y-auto pr-1">
-          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Metadata</p>
+          <p className="text-xs text-text-muted uppercase tracking-wide mb-3">Metadata</p>
           <div className="grid grid-cols-2 gap-3 mb-4">
             {metaField("id", "ID")}
             {metaField("title", "Title")}
@@ -383,16 +383,16 @@ function ContentTab({
             <div className="flex items-end pb-1">{metaField("isActive", "Active", "checkbox")}</div>
           </div>
           <div className="flex flex-col gap-1 mb-4">
-            <label className="text-xs text-zinc-400">Description</label>
+            <label className="text-xs text-text-muted">Description</label>
             <textarea
               rows={3}
               value={selected.description}
               onChange={(e) => updateBootcamp({ ...selected, description: e.target.value })}
-              className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500 resize-y"
+              className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors resize-y"
             />
           </div>
 
-          <p className="text-xs text-zinc-500 uppercase tracking-wide mb-3">Modules</p>
+          <p className="text-xs text-text-muted uppercase tracking-wide mb-3">Modules</p>
           {selected.modules.map((mod, mi) => (
             <ModuleEditor
               key={mod.moduleId}
@@ -415,7 +415,7 @@ function ContentTab({
             onClick={() =>
               updateBootcamp({ ...selected, modules: [...selected.modules, newModule()] })
             }
-            className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 mb-6"
+            className="flex items-center gap-1 text-xs text-accent hover:text-accent/70 transition-colors mb-6"
           >
             <Plus size={12} /> Add Module
           </button>
@@ -424,7 +424,7 @@ function ContentTab({
             type="button"
             disabled={saving}
             onClick={() => onSave(local)}
-            className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-50 text-white text-sm px-4 py-2 rounded"
+            className="flex items-center gap-2 btn-primary text-sm disabled:opacity-50"
           >
             <Save size={14} />
             {saving ? "Saving…" : "Save All"}
@@ -533,7 +533,7 @@ function PhaseAccessTab({
         <div
           onClick={() => setAccess((p) => ({ ...p, started: !p.started }))}
           className={`w-10 h-5 rounded-full transition-colors ${
-            access.started ? "bg-red-600" : "bg-zinc-700"
+            access.started ? "bg-accent" : "bg-border"
           } relative`}
         >
           <span
@@ -542,7 +542,7 @@ function PhaseAccessTab({
             }`}
           />
         </div>
-        <span className="text-sm text-zinc-200">Bootcamp Started</span>
+        <span className="text-sm text-text-primary">Bootcamp Started</span>
       </label>
 
       {/* Module / room tree */}
@@ -550,15 +550,15 @@ function PhaseAccessTab({
         {bootcamp.modules.map((mod) => {
           const modUnlocked = access.unlockedModules.includes(mod.moduleId);
           return (
-            <div key={mod.moduleId} className="border border-zinc-800 rounded-lg p-3">
+            <div key={mod.moduleId} className="border border-border rounded-xl p-3">
               <label className="flex items-center gap-2 cursor-pointer mb-2">
                 <input
                   type="checkbox"
                   checked={modUnlocked}
                   onChange={() => toggleModule(mod.moduleId)}
-                  className="accent-red-500"
+                  className="accent-accent"
                 />
-                <span className="text-sm text-zinc-200 flex items-center gap-1">
+                <span className="text-sm text-text-primary flex items-center gap-1">
                   {modUnlocked ? (
                     <Unlock size={13} className="text-red-400" />
                   ) : (
@@ -580,9 +580,9 @@ function PhaseAccessTab({
                           type="checkbox"
                           checked={roomUnlocked}
                           onChange={() => toggleRoom(mod.moduleId, room.roomId)}
-                          className="accent-red-500"
+                          className="accent-accent"
                         />
-                        <span className="text-xs text-zinc-300 flex items-center gap-1">
+                        <span className="text-xs text-text-secondary flex items-center gap-1">
                           {roomUnlocked ? (
                             <Unlock size={11} className="text-red-400" />
                           ) : (
@@ -604,7 +604,7 @@ function PhaseAccessTab({
         type="button"
         disabled={saving}
         onClick={saveAccess}
-        className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-50 text-white text-sm px-4 py-2 rounded w-fit"
+        className="flex items-center gap-2 btn-primary text-sm disabled:opacity-50 w-fit"
       >
         <Save size={14} />
         {saving ? "Saving…" : "Save Access Config"}
@@ -707,57 +707,57 @@ function QuizzesTab({
       {/* Header fields */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Module ID</label>
+          <label className="text-xs text-text-muted">Module ID</label>
           <input
             type="number"
             value={moduleId}
             onChange={(e) => setModuleId(e.target.value === "" ? "" : Number(e.target.value))}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+            className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Room ID</label>
+          <label className="text-xs text-text-muted">Room ID</label>
           <input
             type="number"
             value={roomId}
             onChange={(e) => setRoomId(e.target.value === "" ? "" : Number(e.target.value))}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+            className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Quiz Title</label>
+          <label className="text-xs text-text-muted">Quiz Title</label>
           <input
             type="text"
             value={quizTitle}
             onChange={(e) => setQuizTitle(e.target.value)}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+            className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Quiz Message</label>
+          <label className="text-xs text-text-muted">Quiz Message</label>
           <input
             type="text"
             value={quizMessage}
             onChange={(e) => setQuizMessage(e.target.value)}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+            className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
           />
         </div>
       </div>
 
       {/* Questions */}
       <div className="flex flex-col gap-4">
-        <p className="text-xs text-zinc-500 uppercase tracking-wide">Questions</p>
+        <p className="text-xs text-text-muted uppercase tracking-wide">Questions</p>
         {questions.map((q, qi) => (
-          <div key={q.id} className="border border-zinc-800 rounded-lg p-3 flex flex-col gap-3">
+          <div key={q.id} className="border border-border rounded-xl p-3 flex flex-col gap-3">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 flex flex-col gap-1">
-                <label className="text-xs text-zinc-400">Question {qi + 1}</label>
+                <label className="text-xs text-text-muted">Question {qi + 1}</label>
                 <input
                   type="text"
                   value={q.text}
                   onChange={(e) => updateQuestion(q.id, { text: e.target.value })}
                   placeholder="Enter question text…"
-                  className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+                  className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
               <button
@@ -770,7 +770,7 @@ function QuizzesTab({
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs text-zinc-400">Options</p>
+              <p className="text-xs text-text-muted">Options</p>
               {q.options.map((opt, oi) => (
                 <div key={oi} className="flex items-center gap-2">
                   <input
@@ -778,7 +778,7 @@ function QuizzesTab({
                     name={`correct-${q.id}`}
                     checked={q.correctIndex === oi}
                     onChange={() => updateQuestion(q.id, { correctIndex: oi })}
-                    className="accent-red-500 shrink-0"
+                    className="accent-accent shrink-0"
                     title="Mark as correct answer"
                   />
                   <input
@@ -786,7 +786,7 @@ function QuizzesTab({
                     value={opt}
                     onChange={(e) => updateOption(q.id, oi, e.target.value)}
                     placeholder={`Option ${oi + 1}`}
-                    className="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+                    className="flex-1 bg-bg border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
                   />
                   {q.options.length > 2 && (
                     <button
@@ -799,14 +799,14 @@ function QuizzesTab({
                   )}
                 </div>
               ))}
-              <p className="text-xs text-zinc-500 italic">
+              <p className="text-xs text-text-muted italic">
                 Radio button = correct answer
               </p>
               {q.options.length < 4 && (
                 <button
                   type="button"
                   onClick={() => addOption(q.id)}
-                  className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 w-fit"
+                  className="flex items-center gap-1 text-xs text-accent hover:text-accent/70 w-fit transition-colors"
                 >
                   <Plus size={11} /> Add Option
                 </button>
@@ -818,7 +818,7 @@ function QuizzesTab({
         <button
           type="button"
           onClick={addQuestion}
-          className="flex items-center gap-1 text-sm text-red-400 hover:text-red-300 w-fit"
+          className="flex items-center gap-1 text-sm text-accent hover:text-accent/70 w-fit transition-colors"
         >
           <Plus size={14} /> Add Question
         </button>
@@ -828,7 +828,7 @@ function QuizzesTab({
         type="button"
         disabled={releasing}
         onClick={releaseQuiz}
-        className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-50 text-white text-sm px-4 py-2 rounded w-fit"
+        className="flex items-center gap-2 btn-primary text-sm disabled:opacity-50 w-fit"
       >
         <Save size={14} />
         {releasing ? "Releasing…" : "Release Quiz"}
@@ -929,18 +929,18 @@ function RoomCompletionTab({
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-xs text-zinc-400">
+      <p className="text-xs text-text-muted">
         Select a phase and room, then choose which enrolled students to mark as complete. CP will be granted automatically.
       </p>
 
       {/* Module + Room selectors */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Phase (Module)</label>
+          <label className="text-xs text-text-muted">Phase (Module)</label>
           <select
             value={selectedModuleId}
             onChange={(e) => { setSelectedModuleId(e.target.value === "" ? "" : Number(e.target.value)); setSelectedRoomId(""); }}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-2 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+            className="bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
           >
             <option value="">— Select Phase —</option>
             {bootcamp.modules.map((m) => (
@@ -952,12 +952,12 @@ function RoomCompletionTab({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-400">Room</label>
+          <label className="text-xs text-text-muted">Room</label>
           <select
             value={selectedRoomId}
             onChange={(e) => setSelectedRoomId(e.target.value === "" ? "" : Number(e.target.value))}
             disabled={!selectedModule}
-            className="bg-zinc-900 border border-zinc-700 rounded px-2 py-2 text-sm text-zinc-100 focus:outline-none focus:border-red-500 disabled:opacity-40"
+            className="bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors disabled:opacity-40"
           >
             <option value="">— Select Room —</option>
             {(selectedModule?.rooms || []).map((r) => (
@@ -970,25 +970,25 @@ function RoomCompletionTab({
       </div>
 
       {selectedRoom && (
-        <div className="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded text-xs text-zinc-300">
-          <span className="text-zinc-500">Selected: </span>
-          <span className="font-bold text-zinc-100">{selectedRoom.title}</span>
-          <span className="text-zinc-500 ml-2">— CP reward: </span>
-          <span className="font-bold text-red-300">{Math.max(250, selectedRoom.cpReward || 250)} CP</span>
+        <div className="px-3 py-2 bg-bg-card border border-border rounded-xl text-xs text-text-secondary">
+          <span className="text-text-muted">Selected: </span>
+          <span className="font-bold text-text-primary">{selectedRoom.title}</span>
+          <span className="text-text-muted ml-2">— CP reward: </span>
+          <span className="font-bold text-accent">{Math.max(250, selectedRoom.cpReward || 250)} CP</span>
         </div>
       )}
 
       {/* Student list */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <p className="text-xs text-zinc-400 uppercase tracking-wide">
+          <p className="text-xs text-text-muted uppercase tracking-wide">
             Enrolled Students ({students.length})
           </p>
           {students.length > 0 && (
             <button
               type="button"
               onClick={toggleAll}
-              className="text-xs text-red-400 hover:text-red-300"
+              className="text-xs text-accent hover:text-accent/70 transition-colors"
             >
               {selectedUserIds.size === students.length ? "Deselect All" : "Select All"}
             </button>
@@ -1000,15 +1000,15 @@ function RoomCompletionTab({
         ) : students.length === 0 ? (
           <p className="text-zinc-500 text-sm">No enrolled students yet.</p>
         ) : (
-          <div className="border border-zinc-800 rounded-lg overflow-hidden max-h-80 overflow-y-auto">
+          <div className="border border-border rounded-xl overflow-hidden max-h-80 overflow-y-auto">
             {students.map((s) => {
               const alreadyDone = roomKey ? s.completedRooms.includes(roomKey) : false;
               const checked = selectedUserIds.has(s.id);
               return (
                 <label
                   key={s.id}
-                  className={`flex items-center gap-3 px-4 py-3 border-b border-zinc-800 last:border-0 cursor-pointer transition-colors ${
-                    alreadyDone ? "opacity-50" : "hover:bg-zinc-900"
+                  className={`flex items-center gap-3 px-4 py-3 border-b border-border last:border-0 cursor-pointer transition-colors ${
+                    alreadyDone ? "opacity-50" : "hover:bg-accent-dim/20"
                   }`}
                 >
                   <input
@@ -1016,19 +1016,19 @@ function RoomCompletionTab({
                     checked={checked}
                     disabled={alreadyDone}
                     onChange={() => !alreadyDone && toggleStudent(s.id)}
-                    className="accent-red-500 shrink-0"
+                    className="accent-accent shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-zinc-100 truncate">
+                    <div className="text-sm font-bold text-text-primary truncate">
                       {s.hackerHandle || s.name || s.email}
                     </div>
-                    <div className="text-xs text-zinc-500 truncate">{s.email}</div>
+                    <div className="text-xs text-text-muted truncate">{s.email}</div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {alreadyDone && (
                       <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Done</span>
                     )}
-                    <span className="text-[10px] text-zinc-500 font-mono">{s.cpPoints.toLocaleString()} CP</span>
+                    <span className="text-[10px] text-text-muted font-mono">{s.cpPoints.toLocaleString()} CP</span>
                   </div>
                 </label>
               );
@@ -1041,7 +1041,7 @@ function RoomCompletionTab({
         type="button"
         disabled={completing || selectedUserIds.size === 0 || !selectedModuleId || !selectedRoomId}
         onClick={markComplete}
-        className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-40 text-white text-sm px-4 py-2.5 rounded w-fit font-bold"
+        className="flex items-center gap-2 bg-red-700 hover:bg-accent disabled:opacity-40 text-white text-sm px-4 py-2.5 rounded w-fit font-bold"
       >
         {completing ? "Marking…" : `Mark Complete for ${selectedUserIds.size} Student${selectedUserIds.size !== 1 ? "s" : ""}`}
       </button>
@@ -1134,7 +1134,7 @@ function JsonImportTab({
 
   return (
     <div className="space-y-4 max-w-3xl">
-      <div className="text-xs text-zinc-400 leading-relaxed">
+      <div className="text-xs text-text-muted leading-relaxed">
         Paste a bootcamp JSON object (or array of objects) below. The import will merge modules into the matching bootcamp by <code className="text-red-300">id</code>. Existing metadata is preserved unless you include it in the JSON.
       </div>
 
@@ -1142,14 +1142,14 @@ function JsonImportTab({
       <button
         type="button"
         onClick={() => setShowExample((v) => !v)}
-        className="text-xs font-bold text-red-400 hover:text-red-300 uppercase tracking-widest"
+        className="text-xs font-bold text-accent hover:text-accent/70 uppercase tracking-widest transition-colors"
       >
         {showExample ? '▲ Hide example' : '▼ Show example JSON'}
       </button>
 
       {showExample && (
-        <div className="bg-black border border-zinc-700 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-[11px] text-zinc-300 font-mono whitespace-pre leading-relaxed">
+        <div className="bg-bg border border-border rounded-xl p-4 overflow-x-auto">
+          <pre className="text-[11px] text-text-secondary font-mono whitespace-pre leading-relaxed">
             {JSON.stringify(JSON_IMPORT_EXAMPLE, null, 2)}
           </pre>
         </div>
@@ -1161,11 +1161,11 @@ function JsonImportTab({
         onChange={(e) => { setJsonText(e.target.value); setParseError(''); setPreview(null); }}
         rows={16}
         placeholder={'Paste your bootcamp JSON here...\n\n{ "id": "bc_...", "modules": [...] }'}
-        className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-100 font-mono resize-y focus:outline-none focus:border-red-500"
+        className="w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary font-mono resize-y focus:outline-none focus:border-accent transition-colors"
       />
 
       {parseError && (
-        <div className="text-xs text-red-400 font-mono bg-red-950/30 border border-red-800/40 rounded px-3 py-2">
+        <div className="text-xs text-red-400 font-mono bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2">
           {parseError}
         </div>
       )}
@@ -1176,7 +1176,7 @@ function JsonImportTab({
           type="button"
           onClick={handleParse}
           disabled={!jsonText.trim()}
-          className="px-4 py-2 border border-zinc-600 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-400 disabled:opacity-40 transition-colors"
+          className="px-4 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:border-accent/30 hover:text-accent disabled:opacity-40 transition-colors"
         >
           Validate JSON
         </button>
@@ -1185,7 +1185,7 @@ function JsonImportTab({
             type="button"
             onClick={() => void handleImport()}
             disabled={saving}
-            className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-50 text-white text-xs font-bold uppercase px-4 py-2 rounded transition-colors"
+            className="flex items-center gap-2 bg-red-700 hover:bg-accent disabled:opacity-50 text-white text-xs font-bold uppercase px-4 py-2 rounded transition-colors"
           >
             <Save size={13} />
             {saving ? 'Importing…' : `Import ${preview.length} bootcamp${preview.length !== 1 ? 's' : ''}`}
@@ -1195,15 +1195,15 @@ function JsonImportTab({
 
       {/* Preview summary */}
       {preview && (
-        <div className="border border-zinc-700 rounded-lg overflow-hidden">
-          <div className="px-4 py-2 bg-zinc-900 border-b border-zinc-700 text-[10px] font-bold uppercase text-zinc-400 tracking-widest">
+        <div className="border border-border rounded-xl overflow-hidden">
+          <div className="px-4 py-2 bg-bg-card border-b border-border text-[10px] font-bold uppercase text-text-muted tracking-widest">
             Preview — {preview.length} bootcamp{preview.length !== 1 ? 's' : ''}
           </div>
           {preview.map((bc: any, i: number) => (
-            <div key={i} className="px-4 py-3 border-b border-zinc-800 last:border-0">
-              <div className="text-sm font-bold text-zinc-100">{bc.title || bc.id || `Bootcamp ${i + 1}`}</div>
-              <div className="text-xs text-zinc-500 mt-0.5">
-                id: <span className="text-zinc-300 font-mono">{bc.id || '—'}</span>
+            <div key={i} className="px-4 py-3 border-b border-border last:border-0">
+              <div className="text-sm font-bold text-text-primary">{bc.title || bc.id || `Bootcamp ${i + 1}`}</div>
+              <div className="text-xs text-text-muted mt-0.5">
+                id: <span className="text-text-secondary font-mono">{bc.id || '—'}</span>
                 {' · '}
                 {Array.isArray(bc.modules) ? bc.modules.length : 0} module{(Array.isArray(bc.modules) ? bc.modules.length : 0) !== 1 ? 's' : ''}
                 {' · '}
@@ -1242,9 +1242,9 @@ export default function BootcampManager({
   ];
 
   return (
-    <div className="flex flex-col h-full bg-zinc-950 text-zinc-100">
+    <div className="flex flex-col h-full bg-bg text-text-primary">
       {/* Sub-tab bar */}
-      <div className="flex gap-1 border-b border-zinc-800 mb-4 shrink-0">
+      <div className="flex gap-1 border-b border-border mb-4 shrink-0">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -1252,8 +1252,8 @@ export default function BootcampManager({
             onClick={() => setTab(t.id)}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               tab === t.id
-                ? "text-red-300 border-b-2 border-red-500 -mb-px"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "text-accent border-b-2 border-accent -mb-px"
+                : "text-text-muted hover:text-text-primary"
             }`}
           >
             {t.label}

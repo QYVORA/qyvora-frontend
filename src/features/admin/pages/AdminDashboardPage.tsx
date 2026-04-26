@@ -41,23 +41,23 @@ const isUserBlocked = (u: AdminUser) =>
   Boolean(u.blockedUntil && new Date(u.blockedUntil).getTime() > Date.now());
 
 // ── Shared input class ────────────────────────────────────────────────────────
-const inp = 'w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-red-500 transition-colors';
-const btn = 'inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border text-xs font-bold uppercase tracking-wide transition-colors min-h-[44px]';
+const inp = 'w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted';
+const btn = 'inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border text-xs font-bold uppercase tracking-wide transition-colors min-h-[44px]';
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 const Skeleton = () => (
   <div className="space-y-3 p-1">
     {[0,1,2,3,4].map(i => (
-      <div key={i} className="h-14 rounded-lg bg-zinc-800 animate-pulse" style={{ opacity: 1 - i * 0.15 }} />
+      <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" style={{ opacity: 1 - i * 0.15 }} />
     ))}
   </div>
 );
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
 const StatCard = ({ label, value }: { label: string; value: number | string }) => (
-  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-    <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">{label}</div>
-    <div className="text-2xl font-black text-zinc-100">{value}</div>
+  <div className="bg-bg-card border border-border rounded-xl p-4">
+    <div className="text-[10px] uppercase tracking-widest text-text-muted mb-1">{label}</div>
+    <div className="text-2xl font-black text-text-primary">{value}</div>
   </div>
 );
 
@@ -284,19 +284,19 @@ const AdminDashboardPage: React.FC = () => {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-svh bg-black text-zinc-100 overflow-hidden">
+    <div className="flex h-svh bg-bg text-text-primary overflow-hidden">
 
       {/* ── Desktop sidebar ─────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex w-56 lg:w-64 shrink-0 border-r border-zinc-800 bg-zinc-950 flex-col h-full">
-        <div className="p-4 border-b border-zinc-800">
+      <aside className="hidden md:flex w-56 lg:w-64 shrink-0 border-r border-border bg-bg-card flex-col h-full">
+        <div className="p-4 border-b border-border">
           <Link to="/"><Logo size="sm" /></Link>
-          <div className="text-[9px] font-bold text-zinc-600 font-mono tracking-[0.2em] mt-1">ADMIN_CONSOLE</div>
+          <div className="text-[9px] font-bold text-text-muted font-mono tracking-[0.2em] mt-1">ADMIN_CONSOLE</div>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
           <Link
             to="/dashboard"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide text-text-muted hover:text-text-primary hover:bg-accent-dim/50 transition-colors"
           >
             <LayoutDashboard className="w-4 h-4 shrink-0" /> Operator View
           </Link>
@@ -306,8 +306,8 @@ const AdminDashboardPage: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors text-left ${
                 activeTab === tab.id
-                  ? 'bg-red-950/60 text-red-300 border border-red-800/40'
-                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'
+                  ? 'bg-accent-dim text-accent border border-accent/30'
+                  : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
               }`}
             >
               <tab.icon className="w-4 h-4 shrink-0" />
@@ -316,13 +316,13 @@ const AdminDashboardPage: React.FC = () => {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-zinc-800 space-y-2">
-          <div className="text-[10px] text-zinc-500 truncate">
+        <div className="p-4 border-t border-border space-y-2">
+          <div className="text-[10px] text-text-muted truncate">
             {user?.email || user?.username || 'admin'}
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-red-400 border border-red-800/40 rounded-lg hover:bg-red-950/40 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-text-primary hover:border-accent/30 transition-colors"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
@@ -333,18 +333,18 @@ const AdminDashboardPage: React.FC = () => {
       <div className="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
 
         {/* Mobile topbar */}
-        <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 border-b border-zinc-800 bg-zinc-950 shrink-0">
+        <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 border-b border-border bg-bg-card shrink-0">
           <button
             onClick={() => setMobileNavOpen(true)}
-            className="w-11 h-11 flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200"
+            className="w-11 h-11 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5" />
           </button>
-          <span className="text-sm font-bold uppercase tracking-wide text-zinc-100 truncate">{activeLabel}</span>
+          <span className="text-sm font-bold uppercase tracking-wide text-text-primary truncate">{activeLabel}</span>
           <button
             onClick={() => void loadAll()}
-            className="w-11 h-11 flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200"
+            className="w-11 h-11 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
             aria-label="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -356,18 +356,18 @@ const AdminDashboardPage: React.FC = () => {
           <div className="md:hidden fixed inset-0 z-50 flex">
             {/* Backdrop */}
             <button
-              className="absolute inset-0 bg-black/70"
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setMobileNavOpen(false)}
               aria-label="Close menu"
             />
             {/* Drawer */}
-            <div className="relative w-72 max-w-[85vw] bg-zinc-950 border-r border-zinc-800 flex flex-col h-full"
+            <div className="relative w-72 max-w-[85vw] bg-bg-card border-r border-border flex flex-col h-full"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-              <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+              <div className="flex items-center justify-between p-4 border-b border-border">
                 <Logo size="sm" />
                 <button
                   onClick={() => setMobileNavOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-200"
+                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-5 h-5" />
@@ -376,7 +376,7 @@ const AdminDashboardPage: React.FC = () => {
               <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
                 <Link
                   to="/dashboard"
-                  className="flex items-center gap-2.5 px-3 py-3 rounded-lg text-sm font-bold uppercase tracking-wide text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold uppercase tracking-wide text-text-muted hover:text-text-primary hover:bg-accent-dim/50 transition-colors"
                 >
                   <LayoutDashboard className="w-5 h-5 shrink-0" /> Operator View
                 </Link>
@@ -386,8 +386,8 @@ const AdminDashboardPage: React.FC = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors text-left ${
                       activeTab === tab.id
-                        ? 'bg-red-950/60 text-red-300 border border-red-800/40'
-                        : 'text-zinc-300 hover:bg-zinc-800'
+                        ? 'bg-accent-dim text-accent border border-accent/30'
+                        : 'text-text-secondary hover:bg-accent-dim/50'
                     }`}
                   >
                     <tab.icon className="w-5 h-5 shrink-0" />
@@ -395,10 +395,10 @@ const AdminDashboardPage: React.FC = () => {
                   </button>
                 ))}
               </nav>
-              <div className="p-4 border-t border-zinc-800">
+              <div className="p-4 border-t border-border">
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold uppercase text-red-400 border border-red-800/40 rounded-lg hover:bg-red-950/40 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold uppercase text-text-muted border border-border rounded-xl hover:text-text-primary hover:border-accent/30 transition-colors"
                 >
                   <LogOut className="w-5 h-5" /> Logout
                 </button>
@@ -408,11 +408,11 @@ const AdminDashboardPage: React.FC = () => {
         )}
 
         {/* Desktop page header */}
-        <div className="hidden md:flex items-center justify-between px-6 py-4 border-b border-zinc-800 shrink-0">
-          <h1 className="text-base font-black text-zinc-100 uppercase tracking-tight">{activeLabel}</h1>
+        <div className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
+          <h1 className="text-base font-black text-text-primary uppercase tracking-tight">{activeLabel}</h1>
           <button
             onClick={() => void loadAll()}
-            className="flex items-center gap-1.5 px-3 py-2 border border-zinc-700 rounded-lg text-xs font-bold uppercase text-zinc-300 hover:border-zinc-500 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Refresh
           </button>
@@ -434,23 +434,23 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Search + pagination controls */}
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 space-y-3">
+                  <div className="bg-bg-card border border-border rounded-xl p-3 space-y-3">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
                       <input
                         type="text"
                         value={userQuery}
                         onChange={e => setUserQuery(e.target.value)}
                         placeholder="Search by name, handle, email…"
-                        className="w-full bg-black border border-zinc-700 rounded-lg pl-10 pr-3 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-red-500"
+                        className="w-full bg-bg border border-border rounded-xl pl-10 pr-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent"
                       />
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs">
-                      <span className="text-zinc-400">{filteredUsers.length} users</span>
+                      <span className="text-text-muted">{filteredUsers.length} users</span>
                       <select
                         value={userPageSize}
                         onChange={e => setUserPageSize(Number(e.target.value))}
-                        className="bg-black border border-zinc-700 rounded-lg px-2 py-2 text-xs text-zinc-100 min-h-[36px]"
+                        className="bg-bg border border-border rounded-xl px-2 py-2 text-xs text-text-primary min-h-[36px]"
                       >
                         {[10,25,50,100].map(n => <option key={n} value={n}>{n} / page</option>)}
                       </select>
@@ -458,13 +458,13 @@ const AdminDashboardPage: React.FC = () => {
                         <button
                           onClick={() => setUserPage(p => Math.max(1, p - 1))}
                           disabled={userPage <= 1}
-                          className="w-9 h-9 flex items-center justify-center rounded-lg border border-zinc-700 disabled:opacity-40"
+                          className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted disabled:opacity-40 hover:border-accent/30 hover:text-accent transition-colors"
                         ><ChevronLeft className="w-4 h-4" /></button>
-                        <span className="px-2 text-zinc-400 text-xs">{Math.min(userPage, totalUserPages)} / {totalUserPages}</span>
+                        <span className="px-2 text-text-muted text-xs">{Math.min(userPage, totalUserPages)} / {totalUserPages}</span>
                         <button
                           onClick={() => setUserPage(p => Math.min(totalUserPages, p + 1))}
                           disabled={userPage >= totalUserPages}
-                          className="w-9 h-9 flex items-center justify-center rounded-lg border border-zinc-700 disabled:opacity-40"
+                          className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted disabled:opacity-40 hover:border-accent/30 hover:text-accent transition-colors"
                         ><ChevronRight className="w-4 h-4" /></button>
                       </div>
                     </div>
@@ -473,13 +473,13 @@ const AdminDashboardPage: React.FC = () => {
                   {/* Mobile cards */}
                   <div className="md:hidden space-y-3">
                     {paginatedUsers.map(item => (
-                      <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+                      <div key={item.id} className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
                         <div>
-                          <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
-                          <div className="text-xs text-zinc-500 mt-0.5">{item.email}</div>
+                          <div className="font-bold text-sm text-text-primary">{item.hackerHandle || item.name || item.email}</div>
+                          <div className="text-xs text-text-muted mt-0.5">{item.email}</div>
                           <div className="flex items-center gap-3 mt-1.5 text-xs">
-                            <span className="uppercase text-zinc-400">{item.role}</span>
-                            <span className="font-mono text-zinc-300 inline-flex items-center gap-1">
+                            <span className="uppercase text-text-muted">{item.role}</span>
+                            <span className="font-mono text-text-secondary inline-flex items-center gap-1">
                               <CpLogo className="w-3.5 h-3.5" /> {Number(item.cpPoints || 0).toLocaleString()}
                             </span>
                             {isUserBlocked(item) && <span className="text-red-400 font-bold">BLOCKED</span>}
@@ -488,19 +488,19 @@ const AdminDashboardPage: React.FC = () => {
                         <div className="grid grid-cols-2 gap-2">
                           <button
                             onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
-                            className={`${btn} ${item.bootcampAccessRevoked ? 'border-red-800/60 text-red-300' : 'border-emerald-800/60 text-emerald-300'}`}
+                            className={`${btn} ${item.bootcampAccessRevoked ? 'border-red-500/30 text-red-400' : 'border-emerald-500/30 text-emerald-400'}`}
                           >
                             {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
                           </button>
                           <button
                             onClick={() => void handleUserBlockToggle(item)}
-                            className={`${btn} border-zinc-700 text-zinc-300`}
+                            className={`${btn} border-border text-text-muted hover:border-accent/30 hover:text-accent`}
                           >
                             {isUserBlocked(item) ? <><Unlock className="w-3.5 h-3.5" />Unblock</> : <><Ban className="w-3.5 h-3.5" />Block</>}
                           </button>
                           <button
                             onClick={() => void handleDeleteUser(item)}
-                            className={`col-span-2 ${btn} border-red-800/60 text-red-300`}
+                            className={`col-span-2 ${btn} border-red-500/30 text-red-400 hover:bg-red-500/10`}
                           >
                             <Trash2 className="w-3.5 h-3.5" /> Delete User
                           </button>
@@ -510,45 +510,45 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Desktop table */}
-                  <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  <div className="hidden md:block bg-bg-card border border-border rounded-xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left min-w-[860px]">
-                        <thead className="border-b border-zinc-800 bg-black">
+                        <thead className="border-b border-border bg-bg">
                           <tr>
                             {['User','Role','Points','Bootcamp Access','Status','Actions'].map(h => (
-                              <th key={h} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-zinc-500 ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
+                              <th key={h} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60">
+                        <tbody className="divide-y divide-border">
                           {paginatedUsers.map(item => (
-                            <tr key={item.id} className="hover:bg-zinc-800/30 transition-colors">
+                            <tr key={item.id} className="hover:bg-accent-dim/20 transition-colors">
                               <td className="px-4 py-3">
-                                <div className="font-bold text-sm text-zinc-100">{item.hackerHandle || item.name || item.email}</div>
-                                <div className="text-[11px] text-zinc-500">{item.email}</div>
+                                <div className="font-bold text-sm text-text-primary">{item.hackerHandle || item.name || item.email}</div>
+                                <div className="text-[11px] text-text-muted">{item.email}</div>
                               </td>
-                              <td className="px-4 py-3 text-xs uppercase text-zinc-300">{item.role}</td>
-                              <td className="px-4 py-3 text-sm font-mono text-zinc-200">{Number(item.cpPoints || 0).toLocaleString()}</td>
+                              <td className="px-4 py-3 text-xs uppercase text-text-secondary">{item.role}</td>
+                              <td className="px-4 py-3 text-sm font-mono text-text-primary">{Number(item.cpPoints || 0).toLocaleString()}</td>
                               <td className="px-4 py-3">
                                 <button
                                   onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
-                                  className={`text-[11px] px-2.5 py-1.5 rounded-lg border min-h-[32px] ${item.bootcampAccessRevoked ? 'text-red-300 border-red-800/60' : 'text-emerald-300 border-emerald-800/60'}`}
+                                  className={`text-[11px] px-2.5 py-1.5 rounded-lg border min-h-[32px] ${item.bootcampAccessRevoked ? 'text-red-400 border-red-500/30' : 'text-emerald-400 border-emerald-500/30'}`}
                                 >
                                   {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
                                 </button>
                               </td>
-                              <td className="px-4 py-3 text-xs text-zinc-300">{isUserBlocked(item) ? <span className="text-red-400">Blocked</span> : 'Active'}</td>
+                              <td className="px-4 py-3 text-xs text-text-secondary">{isUserBlocked(item) ? <span className="text-red-400">Blocked</span> : 'Active'}</td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center justify-end gap-2">
                                   <button
                                     onClick={() => void handleUserBlockToggle(item)}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-lg border border-zinc-700 hover:border-zinc-500 min-h-[32px]"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-xl border border-border hover:border-accent/30 hover:text-accent min-h-[32px] transition-colors"
                                   >
                                     {isUserBlocked(item) ? <><Unlock className="w-3 h-3" />Unblock</> : <><Ban className="w-3 h-3" />Block</>}
                                   </button>
                                   <button
                                     onClick={() => void handleDeleteUser(item)}
-                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-lg border border-red-800/60 text-red-300 hover:bg-red-950/40 min-h-[32px]"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 min-h-[32px] transition-colors"
                                   >
                                     <Trash2 className="w-3 h-3" />Delete
                                   </button>
@@ -593,16 +593,16 @@ const AdminDashboardPage: React.FC = () => {
               {/* ── APPLICATIONS ──────────────────────────────────────────── */}
               {activeTab === 'applications' && (
                 <div className="space-y-4">
-                  <div className="text-xs text-zinc-400">{applications.length} application{applications.length !== 1 ? 's' : ''}</div>
+                  <div className="text-xs text-text-muted">{applications.length} application{applications.length !== 1 ? 's' : ''}</div>
 
                   {/* Mobile */}
                   <div className="md:hidden space-y-3">
                     {applications.length === 0 ? (
-                      <div className="text-sm text-zinc-500 py-10 text-center">No applications yet.</div>
+                      <div className="text-sm text-text-muted py-10 text-center">No applications yet.</div>
                     ) : applications.map(app => (
-                      <div key={app.userId} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
-                        <div className="font-bold text-sm text-zinc-100">{app.hackerHandle || app.name || app.email}</div>
-                        <div className="text-xs text-zinc-500">{app.email}</div>
+                      <div key={app.userId} className="bg-bg-card border border-border rounded-xl p-4 space-y-2">
+                        <div className="font-bold text-sm text-text-primary">{app.hackerHandle || app.name || app.email}</div>
+                        <div className="text-xs text-text-muted">{app.email}</div>
                         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs mt-2">
                           {[
                             ['Bootcamp', app.application.bootcampTitle || app.bootcampId],
@@ -610,49 +610,49 @@ const AdminDashboardPage: React.FC = () => {
                             ['Commitment', app.application.commitment],
                             ['Phone', app.application.phone],
                           ].map(([k, v]) => v ? (
-                            <div key={k}><span className="text-zinc-500">{k}: </span><span className="text-zinc-200">{v}</span></div>
+                            <div key={k}><span className="text-text-muted">{k}: </span><span className="text-text-primary">{v}</span></div>
                           ) : null)}
                         </div>
                         {app.application.motivation && (
-                          <div className="text-xs text-zinc-400 mt-1 line-clamp-3">
-                            <span className="text-zinc-500">Why: </span>{app.application.motivation}
+                          <div className="text-xs text-text-muted mt-1 line-clamp-3">
+                            <span className="text-text-muted">Why: </span>{app.application.motivation}
                           </div>
                         )}
                         {app.application.submittedAt && (
-                          <div className="text-[10px] text-zinc-600">{new Date(app.application.submittedAt).toLocaleString()}</div>
+                          <div className="text-[10px] text-text-muted">{new Date(app.application.submittedAt).toLocaleString()}</div>
                         )}
                       </div>
                     ))}
                   </div>
 
                   {/* Desktop */}
-                  <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  <div className="hidden md:block bg-bg-card border border-border rounded-xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left min-w-[900px]">
-                        <thead className="border-b border-zinc-800 bg-black">
+                        <thead className="border-b border-border bg-bg">
                           <tr>
                             {['Operator','Bootcamp','Why Joining','Level','Commitment','Phone','Date'].map(h => (
-                              <th key={h} className="px-4 py-3 text-[10px] uppercase tracking-widest text-zinc-500">{h}</th>
+                              <th key={h} className="px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted">{h}</th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60">
+                        <tbody className="divide-y divide-border">
                           {applications.length === 0 ? (
                             <tr><td colSpan={7} className="px-4 py-10 text-center text-zinc-500 text-sm">No applications yet.</td></tr>
                           ) : applications.map(app => (
-                            <tr key={app.userId} className="text-xs hover:bg-zinc-800/30 transition-colors">
+                            <tr key={app.userId} className="text-xs hover:bg-accent-dim/20 transition-colors">
                               <td className="px-4 py-3">
-                                <div className="font-bold text-zinc-100">{app.hackerHandle || app.name || '—'}</div>
-                                <div className="text-zinc-500">{app.email}</div>
+                                <div className="font-bold text-text-primary">{app.hackerHandle || app.name || '—'}</div>
+                                <div className="text-text-muted">{app.email}</div>
                               </td>
-                              <td className="px-4 py-3 text-zinc-300">{app.application.bootcampTitle || app.bootcampId || '—'}</td>
-                              <td className="px-4 py-3 text-zinc-300 max-w-[200px]">
+                              <td className="px-4 py-3 text-text-secondary">{app.application.bootcampTitle || app.bootcampId || '—'}</td>
+                              <td className="px-4 py-3 text-text-secondary max-w-[200px]">
                                 <div className="line-clamp-2">{app.application.motivation || '—'}</div>
                               </td>
-                              <td className="px-4 py-3 text-zinc-300">{app.application.level || '—'}</td>
-                              <td className="px-4 py-3 text-zinc-300">{app.application.commitment || '—'}</td>
-                              <td className="px-4 py-3 text-zinc-300 font-mono">{app.application.phone || '—'}</td>
-                              <td className="px-4 py-3 text-zinc-500">{app.application.submittedAt ? new Date(app.application.submittedAt).toLocaleDateString() : '—'}</td>
+                              <td className="px-4 py-3 text-text-secondary">{app.application.level || '—'}</td>
+                              <td className="px-4 py-3 text-text-secondary">{app.application.commitment || '—'}</td>
+                              <td className="px-4 py-3 text-text-secondary font-mono">{app.application.phone || '—'}</td>
+                              <td className="px-4 py-3 text-text-muted">{app.application.submittedAt ? new Date(app.application.submittedAt).toLocaleDateString() : '—'}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -666,8 +666,8 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'zero_day' && (
                 <div className="space-y-4">
                   {/* Form */}
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-zinc-400 tracking-widest">
+                  <div className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
+                    <div className="text-xs font-bold uppercase text-text-muted tracking-widest">
                       {productForm.id ? 'Edit Product' : 'New Product'}
                     </div>
                     <input value={productForm.title} onChange={e => setProductForm(p => ({ ...p, title: e.target.value }))} placeholder="Title *" className={inp} />
@@ -679,20 +679,20 @@ const AdminDashboardPage: React.FC = () => {
                     <input value={productForm.type} onChange={e => setProductForm(p => ({ ...p, type: e.target.value }))} placeholder="Type (book / tool / etc)" className={inp} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <label className="space-y-1.5">
-                        <span className="text-[10px] uppercase text-zinc-500 tracking-widest">Cover image</span>
-                        <input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-xs text-zinc-300 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border file:border-zinc-700 file:text-xs file:bg-zinc-800 file:text-zinc-200" />
+                        <span className="text-[10px] uppercase text-text-muted tracking-widest">Cover image</span>
+                        <input type="file" accept="image/*" onChange={e => setCoverFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-secondary file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border file:border-border file:text-xs file:bg-bg-card file:text-text-primary" />
                       </label>
                       <label className="space-y-1.5">
-                        <span className="text-[10px] uppercase text-zinc-500 tracking-widest">Product PDF *</span>
-                        <input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-xs text-zinc-300 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border file:border-zinc-700 file:text-xs file:bg-zinc-800 file:text-zinc-200" />
+                        <span className="text-[10px] uppercase text-text-muted tracking-widest">Product PDF *</span>
+                        <input type="file" accept="application/pdf" onChange={e => setProductFile(e.target.files?.[0] || null)} className="block w-full text-xs text-text-secondary file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border file:border-border file:text-xs file:bg-bg-card file:text-text-primary" />
                       </label>
                     </div>
                     <div className="flex flex-wrap gap-4">
-                      <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
-                        <input type="checkbox" checked={productForm.isActive} onChange={e => setProductForm(p => ({ ...p, isActive: e.target.checked }))} className="accent-red-500 w-4 h-4" /> Active
+                      <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
+                        <input type="checkbox" checked={productForm.isActive} onChange={e => setProductForm(p => ({ ...p, isActive: e.target.checked }))} className="accent-accent w-4 h-4" /> Active
                       </label>
-                      <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
-                        <input type="checkbox" checked={productForm.isFree} onChange={e => setProductForm(p => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} className="accent-red-500 w-4 h-4" /> Free
+                      <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
+                        <input type="checkbox" checked={productForm.isFree} onChange={e => setProductForm(p => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} className="accent-accent w-4 h-4" /> Free
                       </label>
                     </div>
                     <div className="flex gap-2 pt-1">
@@ -706,9 +706,9 @@ const AdminDashboardPage: React.FC = () => {
                   {/* Product list — mobile */}
                   <div className="md:hidden space-y-3">
                     {products.map(item => (
-                      <div key={item._id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
-                        <div className="font-bold text-sm text-zinc-100">{item.title}</div>
-                        <div className="text-xs text-zinc-400 flex items-center gap-2">
+                      <div key={item._id} className="bg-bg-card border border-border rounded-xl p-4 space-y-2">
+                        <div className="font-bold text-sm text-text-primary">{item.title}</div>
+                        <div className="text-xs text-text-muted flex items-center gap-2">
                           <span className="uppercase">{item.type}</span>
                           <span>·</span>
                           {item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3 h-3" /></span>}
@@ -718,7 +718,7 @@ const AdminDashboardPage: React.FC = () => {
                         <div className="grid grid-cols-2 gap-2 pt-1">
                           <button
                             onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), productUrl: item.productUrl || '', isActive: item.isActive !== false, isFree: item.isFree === true })}
-                            className={`${btn} border-zinc-700 text-zinc-300`}
+                            className={`${btn} border-border text-text-muted hover:border-accent/30 hover:text-accent`}
                           >Edit</button>
                           <button onClick={() => void deleteProduct(item._id)} className={`${btn} border-red-800/60 text-red-300`}>Delete</button>
                         </div>
@@ -727,30 +727,30 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Product list — desktop */}
-                  <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  <div className="hidden md:block bg-bg-card border border-border rounded-xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left min-w-[640px]">
-                        <thead className="border-b border-zinc-800 bg-black">
+                        <thead className="border-b border-border bg-bg">
                           <tr>
                             {['Title','Price','Type','Status','Actions'].map(h => (
-                              <th key={h} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-zinc-500 ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
+                              <th key={h} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60">
+                        <tbody className="divide-y divide-border">
                           {products.map(item => (
-                            <tr key={item._id} className="hover:bg-zinc-800/30 transition-colors">
-                              <td className="px-4 py-3 text-sm font-bold text-zinc-100">{item.title}</td>
-                              <td className="px-4 py-3 text-sm font-mono">{item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="text-zinc-200 inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3.5 h-3.5" /></span>}</td>
-                              <td className="px-4 py-3 text-xs uppercase text-zinc-300">{item.type}</td>
-                              <td className="px-4 py-3 text-xs text-zinc-300">{item.isActive ? 'Active' : 'Inactive'}</td>
+                            <tr key={item._id} className="hover:bg-accent-dim/20 transition-colors">
+                              <td className="px-4 py-3 text-sm font-bold text-text-primary">{item.title}</td>
+                              <td className="px-4 py-3 text-sm font-mono">{item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="text-text-primary inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3.5 h-3.5" /></span>}</td>
+                              <td className="px-4 py-3 text-xs uppercase text-text-secondary">{item.type}</td>
+                              <td className="px-4 py-3 text-xs text-text-secondary">{item.isActive ? 'Active' : 'Inactive'}</td>
                               <td className="px-4 py-3 text-right">
                                 <div className="inline-flex gap-2">
                                   <button
                                     onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), productUrl: item.productUrl || '', isActive: item.isActive !== false, isFree: item.isFree === true })}
-                                    className="px-2.5 py-1.5 rounded-lg border border-zinc-700 text-xs hover:border-zinc-500 min-h-[32px]"
+                                    className="px-2.5 py-1.5 rounded-xl border border-border text-xs text-text-muted hover:border-accent/30 hover:text-accent min-h-[32px] transition-colors"
                                   >Edit</button>
-                                  <button onClick={() => void deleteProduct(item._id)} className="px-2.5 py-1.5 rounded-lg border border-red-800/60 text-red-300 text-xs hover:bg-red-950/40 min-h-[32px]">Delete</button>
+                                  <button onClick={() => void deleteProduct(item._id)} className="px-2.5 py-1.5 rounded-xl border border-red-500/30 text-red-400 text-xs hover:bg-red-500/10 min-h-[32px] transition-colors">Delete</button>
                                 </div>
                               </td>
                             </tr>
@@ -765,10 +765,10 @@ const AdminDashboardPage: React.FC = () => {
               {/* ── POINTS ────────────────────────────────────────────────── */}
               {activeTab === 'cp' && (
                 <div className="max-w-lg space-y-4">
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Points Control</div>
+                  <div className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
+                    <div className="text-xs font-bold uppercase text-text-muted tracking-widest">Points Control</div>
                     <div>
-                      <label className="text-[10px] uppercase text-zinc-500 tracking-widest block mb-1.5">User</label>
+                      <label className="text-[10px] uppercase text-text-muted tracking-widest block mb-1.5">User</label>
                       <select value={cpUserId} onChange={e => setCpUserId(e.target.value)} className={inp}>
                         {users.map(u => (
                           <option key={u.id} value={u.id}>{u.hackerHandle || u.name || u.email}</option>
@@ -777,14 +777,14 @@ const AdminDashboardPage: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-3 gap-2">
                       {(['grant','deduct','set'] as const).map(a => (
-                        <button key={a} onClick={() => setCpAction(a)} className={`${btn} ${cpAction === a ? 'border-red-800/60 text-red-300 bg-red-950/30' : 'border-zinc-700 text-zinc-300'}`}>
+                        <button key={a} onClick={() => setCpAction(a)} className={`${btn} ${cpAction === a ? 'border-accent/40 text-accent bg-accent-dim' : 'border-border text-text-muted'}`}>
                           {a}
                         </button>
                       ))}
                     </div>
                     <input type="number" value={cpValue} onChange={e => setCpValue(Number(e.target.value || 0))} placeholder={cpAction === 'set' ? 'Target value' : 'Points'} className={inp} />
                     <input value={cpReason} onChange={e => setCpReason(e.target.value)} placeholder="Reason (optional)" className={inp} />
-                    <button onClick={() => void runCpAction()} className={`${btn} border-red-800/60 text-red-300 hover:bg-red-950/40 w-full`}>
+                    <button onClick={() => void runCpAction()} className={`${btn} border-accent/40 text-accent hover:bg-accent-dim w-full`}>
                       Execute
                     </button>
                   </div>
@@ -803,36 +803,36 @@ const AdminDashboardPage: React.FC = () => {
                   {/* Mobile */}
                   <div className="md:hidden space-y-3">
                     {securityEvents.map(item => (
-                      <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-1.5 text-xs">
-                        <div className="text-zinc-500">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</div>
-                        <div className="font-bold text-zinc-100 uppercase">{item.eventType}</div>
-                        <div className="text-zinc-300">{item.action}</div>
-                        <div className="font-mono text-zinc-500 break-all">{item.path || '—'}</div>
-                        <div className="text-zinc-400">HTTP {item.statusCode} · {item.ipAddress || '—'}</div>
+                      <div key={item.id} className="bg-bg-card border border-border rounded-xl p-4 space-y-1.5 text-xs">
+                        <div className="text-text-muted">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</div>
+                        <div className="font-bold text-text-primary uppercase">{item.eventType}</div>
+                        <div className="text-text-secondary">{item.action}</div>
+                        <div className="font-mono text-text-muted break-all">{item.path || '—'}</div>
+                        <div className="text-text-muted">HTTP {item.statusCode} · {item.ipAddress || '—'}</div>
                       </div>
                     ))}
                   </div>
 
                   {/* Desktop */}
-                  <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  <div className="hidden md:block bg-bg-card border border-border rounded-xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left min-w-[860px]">
-                        <thead className="border-b border-zinc-800 bg-black">
+                        <thead className="border-b border-border bg-bg">
                           <tr>
                             {['Time','Type','Action','Path','Code','IP'].map(h => (
-                              <th key={h} className="px-4 py-3 text-[10px] uppercase tracking-widest text-zinc-500">{h}</th>
+                              <th key={h} className="px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted">{h}</th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60">
+                        <tbody className="divide-y divide-border">
                           {securityEvents.map(item => (
-                            <tr key={item.id} className="text-xs hover:bg-zinc-800/30 transition-colors">
-                              <td className="px-4 py-3 text-zinc-400 whitespace-nowrap">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</td>
-                              <td className="px-4 py-3 uppercase text-zinc-200">{item.eventType}</td>
-                              <td className="px-4 py-3 text-zinc-300">{item.action}</td>
-                              <td className="px-4 py-3 font-mono text-zinc-500 max-w-[200px] truncate">{item.path || '—'}</td>
-                              <td className="px-4 py-3 text-zinc-300">{item.statusCode}</td>
-                              <td className="px-4 py-3 font-mono text-zinc-300">{item.ipAddress || '—'}</td>
+                            <tr key={item.id} className="text-xs hover:bg-accent-dim/20 transition-colors">
+                              <td className="px-4 py-3 text-text-muted whitespace-nowrap">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</td>
+                              <td className="px-4 py-3 uppercase text-text-primary">{item.eventType}</td>
+                              <td className="px-4 py-3 text-text-secondary">{item.action}</td>
+                              <td className="px-4 py-3 font-mono text-text-muted max-w-[200px] truncate">{item.path || '—'}</td>
+                              <td className="px-4 py-3 text-text-secondary">{item.statusCode}</td>
+                              <td className="px-4 py-3 font-mono text-text-secondary">{item.ipAddress || '—'}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -848,20 +848,20 @@ const AdminDashboardPage: React.FC = () => {
                   {/* Mobile */}
                   <div className="md:hidden space-y-3">
                     {contactMessages.length === 0 ? (
-                      <div className="text-sm text-zinc-500 py-10 text-center">No messages yet.</div>
+                      <div className="text-sm text-text-muted py-10 text-center">No messages yet.</div>
                     ) : contactMessages.map(item => (
-                      <div key={item.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
+                      <div key={item.id} className="bg-bg-card border border-border rounded-xl p-4 space-y-2">
                         <div>
-                          <div className="font-bold text-sm text-zinc-100">{item.name}</div>
-                          <div className="text-xs text-zinc-500">{item.email}</div>
+                          <div className="font-bold text-sm text-text-primary">{item.name}</div>
+                          <div className="text-xs text-text-muted">{item.email}</div>
                         </div>
-                        {item.subject && <div className="text-xs font-bold text-zinc-300">{item.subject}</div>}
-                        <div className="text-xs text-zinc-400 line-clamp-4">{item.message}</div>
+                        {item.subject && <div className="text-xs font-bold text-text-primary">{item.subject}</div>}
+                        <div className="text-xs text-text-muted line-clamp-4">{item.message}</div>
                         <div className="flex gap-2 pt-1">
                           <select
                             value={item.status}
                             onChange={e => void updateContactStatus(item.id, e.target.value as ContactMessage['status'])}
-                            className="flex-1 bg-black border border-zinc-700 rounded-lg px-2 py-2.5 text-xs text-zinc-100 min-h-[44px]"
+                            className="flex-1 bg-bg border border-border rounded-xl px-2 py-2.5 text-xs text-text-primary min-h-[44px]"
                           >
                             <option value="new">New</option>
                             <option value="in_progress">In Progress</option>
@@ -877,34 +877,34 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   {/* Desktop */}
-                  <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                  <div className="hidden md:block bg-bg-card border border-border rounded-xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left min-w-[900px]">
-                        <thead className="border-b border-zinc-800 bg-black">
+                        <thead className="border-b border-border bg-bg">
                           <tr>
                             {['From','Subject','Message','Status','Date',''].map((h,i) => (
-                              <th key={i} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-zinc-500 ${i === 5 ? 'text-right' : ''}`}>{h}</th>
+                              <th key={i} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted ${i === 5 ? 'text-right' : ''}`}>{h}</th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60">
+                        <tbody className="divide-y divide-border">
                           {contactMessages.length === 0 ? (
                             <tr><td colSpan={6} className="px-4 py-10 text-center text-zinc-500 text-sm">No messages yet.</td></tr>
                           ) : contactMessages.map(item => (
-                            <tr key={item.id} className="align-top hover:bg-zinc-800/30 transition-colors">
+                            <tr key={item.id} className="align-top hover:bg-accent-dim/20 transition-colors">
                               <td className="px-4 py-3 text-sm">
-                                <div className="font-bold text-zinc-100">{item.name}</div>
-                                <div className="text-[11px] text-zinc-500">{item.email}</div>
+                                <div className="font-bold text-text-primary">{item.name}</div>
+                                <div className="text-[11px] text-text-muted">{item.email}</div>
                               </td>
-                              <td className="px-4 py-3 text-xs text-zinc-300">{item.subject || '—'}</td>
-                              <td className="px-4 py-3 text-xs text-zinc-300 max-w-[300px]">
+                              <td className="px-4 py-3 text-xs text-text-secondary">{item.subject || '—'}</td>
+                              <td className="px-4 py-3 text-xs text-text-secondary max-w-[300px]">
                                 <div className="line-clamp-3">{item.message}</div>
                               </td>
                               <td className="px-4 py-3">
                                 <select
                                   value={item.status}
                                   onChange={e => void updateContactStatus(item.id, e.target.value as ContactMessage['status'])}
-                                  className="bg-black border border-zinc-700 rounded-lg px-2 py-1.5 text-xs text-zinc-100 min-h-[32px]"
+                                  className="bg-bg border border-border rounded-xl px-2 py-1.5 text-xs text-text-primary min-h-[32px]"
                                 >
                                   <option value="new">New</option>
                                   <option value="in_progress">In Progress</option>
@@ -912,9 +912,9 @@ const AdminDashboardPage: React.FC = () => {
                                   <option value="archived">Archived</option>
                                 </select>
                               </td>
-                              <td className="px-4 py-3 text-[11px] text-zinc-500 whitespace-nowrap">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</td>
+                              <td className="px-4 py-3 text-[11px] text-text-muted whitespace-nowrap">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</td>
                               <td className="px-4 py-3 text-right">
-                                <button onClick={() => void deleteContactMessage(item.id)} className="px-2.5 py-1.5 rounded-lg border border-red-800/60 text-red-300 text-xs hover:bg-red-950/40 min-h-[32px]">Delete</button>
+                                <button onClick={() => void deleteContactMessage(item.id)} className="px-2.5 py-1.5 rounded-xl border border-red-500/30 text-red-400 text-xs hover:bg-red-500/10 min-h-[32px] transition-colors">Delete</button>
                               </td>
                             </tr>
                           ))}
