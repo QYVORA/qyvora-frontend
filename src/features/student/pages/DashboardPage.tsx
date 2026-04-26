@@ -176,7 +176,7 @@ const Dashboard: React.FC = () => {
                         {handle}
                         <motion.span
                           animate={{ opacity: [1, 0, 1] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: 'steps(1)' }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                           className="w-[3px] h-9 md:h-11 bg-accent flex-none"
                         />
                       </h1>

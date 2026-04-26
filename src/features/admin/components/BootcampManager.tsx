@@ -63,6 +63,7 @@ type ApiClient = {
   get: (url: string) => Promise<{ data: any }>;
   post: (url: string, data?: any) => Promise<{ data: any }>;
   patch: (url: string, data?: any) => Promise<{ data: any }>;
+  delete: (url: string) => Promise<{ data: any }>;
 };
 
 // ─── Props ────────────────────────────────────────────────────────────────────
