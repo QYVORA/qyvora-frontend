@@ -19,7 +19,6 @@ export interface Bootcamp {
 }
 
 export interface LeaderboardEntry {
-  id?: string;
   handle?: string;
   name?: string;
   totalXp?: number;
@@ -29,7 +28,6 @@ export interface LeaderboardEntry {
 
 export interface MarketplaceItem {
   id?: string;
-  _id?: string;
   title: string;
   cpPrice?: number;
   coverUrl?: string;

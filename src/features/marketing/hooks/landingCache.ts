@@ -6,7 +6,7 @@ import type {
 } from '../components/landing/types';
 import { resolveImg } from '../components/landing/helpers';
 
-const LANDING_CACHE_KEY = 'hsociety_landing_cache_v1';
+const LANDING_CACHE_KEY = 'hsociety_landing_cache_v2';
 const LANDING_IMAGE_CACHE = 'hsociety-landing-images-v1';
 
 export interface LandingSnapshot {

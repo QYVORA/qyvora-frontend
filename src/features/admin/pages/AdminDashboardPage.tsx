@@ -16,15 +16,17 @@ import {
   X,
   RefreshCw,
   Trash2,
+  BookOpen,
 } from 'lucide-react';
 import BootcampManager from '../components/BootcampManager';
+import QuizManager from '../components/QuizManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 
-type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications';
+type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications' | 'quizzes';
 
 type AdminUser = {
   id: string;
@@ -421,6 +423,7 @@ const AdminDashboardPage: React.FC = () => {
     { id: 'cp', label: 'Points Management', short: 'Points', icon: Coins },
     { id: 'security', label: 'Security Management', short: 'Security', icon: AlertTriangle },
     { id: 'contacts', label: 'Contact Messages', short: 'Contacts', icon: Mail },
+    { id: 'quizzes', label: 'Quiz Management', short: 'Quizzes', icon: BookOpen },
   ];
 
   return (
@@ -1039,6 +1042,10 @@ const AdminDashboardPage: React.FC = () => {
                     </table>
                   </div>
                 </section>
+              )}
+
+              {activeTab === 'quizzes' && (
+                <QuizManager bootcamps={bootcamps} addToast={addToast} api={api} />
               )}
             </div>
           )}

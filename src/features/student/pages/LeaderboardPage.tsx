@@ -6,7 +6,7 @@ import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 
-const CACHE_KEY = 'hsociety_leaderboard_cache_v1';
+const CACHE_KEY = 'hsociety_leaderboard_cache_v2';
 const PAGE_SIZE = 10;
 
 const podiumColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
@@ -82,7 +82,7 @@ const Leaderboard: React.FC = () => {
                 {top3.map((op, i) => {
                   const handle = op.handle || op.name || 'Anonymous';
                   return (
-                    <ScrollReveal key={op.id || i} delay={i * 0.1}>
+                    <ScrollReveal key={op.handle || i} delay={i * 0.1}>
                       <div
                         className={`relative p-6 bg-bg-card border-2 rounded-2xl text-center cursor-pointer group transition-all hover:-translate-y-1 ${
                           i === 0 ? 'border-accent md:-translate-y-3' : 'border-border'
@@ -155,7 +155,7 @@ const Leaderboard: React.FC = () => {
                           const globalRank = (query ? filtered.indexOf(op) : 3 + (page - 1) * PAGE_SIZE + i) + 1;
                           return (
                             <tr
-                              key={op.id || i}
+                              key={op.handle || i}
                               className="group hover:bg-accent-dim/5 transition-colors cursor-pointer"
                               onClick={() => navigate(`/u/${handle}`)}
                             >

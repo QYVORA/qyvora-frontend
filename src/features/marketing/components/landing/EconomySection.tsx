@@ -97,7 +97,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
               ))
             ) : (
               displayedItems.map((prod, idx) => (
-                <ScrollReveal key={prod._id || prod.id || idx} delay={idx * 0.1}>
+                <ScrollReveal key={prod.id || idx} delay={idx * 0.1}>
                   <div className="card-hsociety p-3 md:p-4 flex flex-col h-full">
                     <img
                       src={resolveImg(prod.coverUrl, '/images/how-it-works-section/Engagements-4Completed.webp')}

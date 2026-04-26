@@ -1064,9 +1064,185 @@ function RoomCompletionTab({
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ─── JSON Import Tab ──────────────────────────────────────────────────────────
 
-type Tab = "content" | "access" | "quizzes" | "completion";
+const JSON_IMPORT_EXAMPLE = {
+  id: "bc_1775270338500",
+  modules: [
+    {
+      moduleId: 1,
+      title: "Reconnaissance & OSINT",
+      description: "Learn passive and active recon techniques used by real operators.",
+      codename: "GHOST_EYE",
+      roleTitle: "Intelligence Analyst",
+      ctf: "",
+      rooms: [
+        {
+          roomId: 1,
+          title: "Introduction to OSINT",
+          overview: "Understand what OSINT is, why it matters, and the mindset of an intelligence operator.",
+          cpReward: 250,
+          bullets: [
+            "What is Open Source Intelligence (OSINT)?",
+            "Legal and ethical boundaries of OSINT",
+            "Tools overview: Maltego, Shodan, theHarvester"
+          ],
+          readingContent: "OSINT is the collection and analysis of information gathered from publicly available sources...",
+          meetingLink: "",
+          readingLinks: [
+            { title: "OSINT Framework", url: "https://osintframework.com" },
+            { title: "Shodan Docs", url: "https://help.shodan.io" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+function JsonImportTab({
+  bootcamps,
+  selectedBootcampId,
+  contentVersion,
+  onSave,
+  saving,
+  addToast,
+}: {
+  bootcamps: Bootcamp[];
+  selectedBootcampId: string;
+  contentVersion: number;
+  onSave: (bootcamps: any[]) => Promise<void>;
+  saving: boolean;
+  addToast: (msg: string, type: string) => void;
+}) {
+  const [jsonText, setJsonText] = useState('');
+  const [showExample, setShowExample] = useState(false);
+  const [preview, setPreview] = useState<any>(null);
+  const [parseError, setParseError] = useState('');
+
+  const handleParse = () => {
+    setParseError('');
+    setPreview(null);
+    try {
+      const parsed = JSON.parse(jsonText);
+      // Accept either a single bootcamp object or an array
+      const asArray = Array.isArray(parsed) ? parsed : [parsed];
+      setPreview(asArray);
+    } catch (e: any) {
+      setParseError(`JSON parse error: ${e.message}`);
+    }
+  };
+
+  const handleImport = async () => {
+    if (!preview) return;
+    // Merge: replace matching bootcamps by id, append new ones
+    const merged = [...bootcamps];
+    for (const incoming of preview) {
+      const idx = merged.findIndex((b) => b.id === incoming.id);
+      if (idx >= 0) {
+        // Preserve top-level meta, only replace modules if provided
+        merged[idx] = {
+          ...merged[idx],
+          ...(incoming.title ? { title: incoming.title } : {}),
+          ...(incoming.description ? { description: incoming.description } : {}),
+          ...(incoming.level ? { level: incoming.level } : {}),
+          ...(incoming.duration ? { duration: incoming.duration } : {}),
+          ...(incoming.modules ? { modules: incoming.modules } : {}),
+        };
+      } else {
+        merged.push(incoming);
+      }
+    }
+    await onSave(merged);
+    setJsonText('');
+    setPreview(null);
+  };
+
+  return (
+    <div className="space-y-4 max-w-3xl">
+      <div className="text-xs text-zinc-400 leading-relaxed">
+        Paste a bootcamp JSON object (or array of objects) below. The import will merge modules into the matching bootcamp by <code className="text-red-300">id</code>. Existing metadata is preserved unless you include it in the JSON.
+      </div>
+
+      {/* Toggle example */}
+      <button
+        type="button"
+        onClick={() => setShowExample((v) => !v)}
+        className="text-xs font-bold text-red-400 hover:text-red-300 uppercase tracking-widest"
+      >
+        {showExample ? '▲ Hide example' : '▼ Show example JSON'}
+      </button>
+
+      {showExample && (
+        <div className="bg-black border border-zinc-700 rounded-lg p-4 overflow-x-auto">
+          <pre className="text-[11px] text-zinc-300 font-mono whitespace-pre leading-relaxed">
+            {JSON.stringify(JSON_IMPORT_EXAMPLE, null, 2)}
+          </pre>
+        </div>
+      )}
+
+      {/* Textarea */}
+      <textarea
+        value={jsonText}
+        onChange={(e) => { setJsonText(e.target.value); setParseError(''); setPreview(null); }}
+        rows={16}
+        placeholder={'Paste your bootcamp JSON here...\n\n{ "id": "bc_...", "modules": [...] }'}
+        className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-100 font-mono resize-y focus:outline-none focus:border-red-500"
+      />
+
+      {parseError && (
+        <div className="text-xs text-red-400 font-mono bg-red-950/30 border border-red-800/40 rounded px-3 py-2">
+          {parseError}
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={handleParse}
+          disabled={!jsonText.trim()}
+          className="px-4 py-2 border border-zinc-600 rounded text-xs font-bold uppercase text-zinc-200 hover:border-zinc-400 disabled:opacity-40 transition-colors"
+        >
+          Validate JSON
+        </button>
+        {preview && (
+          <button
+            type="button"
+            onClick={() => void handleImport()}
+            disabled={saving}
+            className="flex items-center gap-2 bg-red-700 hover:bg-red-600 disabled:opacity-50 text-white text-xs font-bold uppercase px-4 py-2 rounded transition-colors"
+          >
+            <Save size={13} />
+            {saving ? 'Importing…' : `Import ${preview.length} bootcamp${preview.length !== 1 ? 's' : ''}`}
+          </button>
+        )}
+      </div>
+
+      {/* Preview summary */}
+      {preview && (
+        <div className="border border-zinc-700 rounded-lg overflow-hidden">
+          <div className="px-4 py-2 bg-zinc-900 border-b border-zinc-700 text-[10px] font-bold uppercase text-zinc-400 tracking-widest">
+            Preview — {preview.length} bootcamp{preview.length !== 1 ? 's' : ''}
+          </div>
+          {preview.map((bc: any, i: number) => (
+            <div key={i} className="px-4 py-3 border-b border-zinc-800 last:border-0">
+              <div className="text-sm font-bold text-zinc-100">{bc.title || bc.id || `Bootcamp ${i + 1}`}</div>
+              <div className="text-xs text-zinc-500 mt-0.5">
+                id: <span className="text-zinc-300 font-mono">{bc.id || '—'}</span>
+                {' · '}
+                {Array.isArray(bc.modules) ? bc.modules.length : 0} module{(Array.isArray(bc.modules) ? bc.modules.length : 0) !== 1 ? 's' : ''}
+                {' · '}
+                {Array.isArray(bc.modules) ? bc.modules.reduce((acc: number, m: any) => acc + (Array.isArray(m.rooms) ? m.rooms.length : 0), 0) : 0} rooms
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type Tab = "content" | "access" | "quizzes" | "completion" | "import";
 
 export default function BootcampManager({
   bootcamps,
@@ -1087,6 +1263,7 @@ export default function BootcampManager({
     { id: "access", label: "Phase Access" },
     { id: "quizzes", label: "Quizzes" },
     { id: "completion", label: "Room Completion" },
+    { id: "import", label: "JSON Import" },
   ];
 
   return (
@@ -1133,6 +1310,16 @@ export default function BootcampManager({
           <RoomCompletionTab
             bootcamp={selectedBootcamp}
             api={api}
+            addToast={addToast}
+          />
+        )}
+        {tab === "import" && (
+          <JsonImportTab
+            bootcamps={bootcamps}
+            selectedBootcampId={selectedBootcampId}
+            contentVersion={contentVersion}
+            onSave={onSave}
+            saving={saving}
             addToast={addToast}
           />
         )}

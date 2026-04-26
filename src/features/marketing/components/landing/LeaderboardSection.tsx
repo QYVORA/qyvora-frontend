@@ -91,7 +91,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           </div>
         ) : (
           leaderboard.slice(0, 5).map((u, idx) => (
-            <LeaderboardRow key={u.id || idx} entry={u} rank={idx + 1} />
+            <LeaderboardRow key={u.handle || idx} entry={u} rank={idx + 1} />
           ))
         )}
       </ScrollReveal>

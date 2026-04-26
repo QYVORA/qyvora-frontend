@@ -7,7 +7,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 
 import { resolveImg } from '../../../shared/utils/resolveImg';
 
-const CACHE_KEY = 'hsociety_marketplace_cache_v1';
+const CACHE_KEY = 'hsociety_marketplace_cache_v2';
 
 const SkeletonCard = () => (
   <div className="card-hsociety p-4 animate-pulse">
@@ -65,7 +65,7 @@ const Marketplace: React.FC = () => {
   }, []);
 
   const handlePurchase = async (product: any) => {
-    const id = String(product._id || product.id || '');
+    const id = String(product.id || '');
     setPurchasing(id);
     try {
       await api.post('/cp/purchase', { productId: id });
@@ -82,7 +82,7 @@ const Marketplace: React.FC = () => {
   };
 
   const handleDownload = async (product: any) => {
-    const id = String(product._id || product.id || '');
+    const id = String(product.id || '');
     setDownloading(id);
     try {
       const base = String(import.meta.env.VITE_API_BASE_URL || '/api');
@@ -158,7 +158,7 @@ const Marketplace: React.FC = () => {
             </div>
           ) : (
             filtered.map((prod, idx) => {
-              const id = String(prod._id || prod.id || '');
+      const id = String(prod.id || '');
               const isBuying = purchasing === id;
               const isDownloading = downloading === id;
               const hasPurchased = purchased.has(id);

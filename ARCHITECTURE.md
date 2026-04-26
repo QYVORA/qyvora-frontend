@@ -310,7 +310,7 @@ Layer 2 — Cache API (image preloading):
 ## Environment Variables
 
 ```env
-VITE_API_URL=https://api.hsociety.com
+VITE_API_URL=https://api.hsociety.com   //  fix thiswe dont have a domain we are using render
 ```
 
 All other config is handled at build time via Vite.
