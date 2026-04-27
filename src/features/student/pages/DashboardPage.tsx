@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Wallet, ShoppingBag, Bell, Settings, Terminal,
-  Flame, BookOpen, Zap,
+  Flame, BookOpen,
 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
@@ -241,53 +241,6 @@ const Dashboard: React.FC = () => {
 
               </div>
             </motion.section>
-
-            {/* ══════════════════════════════════════════════════════════════
-                STAT PILLS ROW
-            ══════════════════════════════════════════════════════════════ */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1, ease: 'easeOut' }}
-              className="grid grid-cols-3 gap-3"
-            >
-              {[
-                {
-                  icon: <CpLogo className="w-5 h-5" />,
-                  value: loading ? '—' : <AnimatedNumber value={cpBalance} />,
-                  label: 'Cyber Points',
-                  color: 'text-text-primary',
-                },
-                {
-                  icon: <Flame className="w-5 h-5 text-emerald-400" />,
-                  value: loading ? '—' : <AnimatedNumber value={streakDays} />,
-                  label: 'Day Streak',
-                  color: 'text-emerald-400',
-                },
-                {
-                  icon: <Zap className="w-5 h-5 text-accent" />,
-                  value: loading ? '—' : `${progressNum}%`,
-                  label: 'Progress',
-                  color: 'text-accent',
-                },
-              ].map(({ icon, value, label, color }, i) => (
-                <div
-                  key={i}
-                  className="relative rounded-xl border border-border bg-bg-card p-4 flex flex-col items-center gap-2 overflow-hidden"
-                  style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.06)' }}
-                >
-                  {/* Subtle top glow */}
-                  <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-8 rounded-full pointer-events-none"
-                    style={{ background: 'radial-gradient(ellipse, var(--color-accent-glow) 0%, transparent 80%)' }}
-                  />
-                  <div className="relative z-10 flex flex-col items-center gap-1.5">
-                    {icon}
-                    <span className={`text-xl md:text-2xl font-mono font-black leading-none ${color}`}>{value}</span>
-                    <span className="text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] text-center">{label}</span>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
 
             {/* ══════════════════════════════════════════════════════════════
                 MY BOOTCAMPS

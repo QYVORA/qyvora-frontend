@@ -62,10 +62,10 @@ const Wallet: React.FC = () => {
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           {/* LEFT COLUMN — balance + stats */}
-          <div className="w-full lg:w-80 xl:w-96 flex-none space-y-4">
+          <div className="w-full lg:w-80 xl:w-96 flex-none space-y-6">
 
         {/* Balance card */}
-        <ScrollReveal className="mb-0">
+        <ScrollReveal>
           <div className="relative p-6 md:p-8 bg-accent-dim border border-accent/20 rounded-2xl overflow-hidden">
             <div className="absolute top-3 right-3 opacity-15 pointer-events-none">
               <img
@@ -104,7 +104,7 @@ const Wallet: React.FC = () => {
         </ScrollReveal>
 
         {/* Rank pill */}
-        <ScrollReveal className="mb-6 md:mb-8">
+        <ScrollReveal>
           <div className="flex items-center gap-3 p-4 bg-bg-card border border-border rounded-xl">
             <div className="w-10 h-10 rounded-lg bg-accent-dim border border-accent/30 flex items-center justify-center text-accent flex-none">
               <Shield className="w-5 h-5" />
