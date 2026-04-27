@@ -1,4 +1,17 @@
+# ============================================================
+#  _   _ ____   ___   ____ ___ _____ _______   __
+# | | | / ___| / _ \ / ___|_ _| ____|_   _\ \ / /
+# | |_| \___ \| | | | |    | ||  _|   | |  \ V /
+# |  _  |___) | |_| | |___ | || |___  | |   | |
+# |_| |_|____/ \___/ \____|___|_____| |_|   |_|
+#
+#  HSOCIETY OFFSEC — Africa's Offensive Security Platform
+#  https://hsocietyoffsec.netlify.app
+# ============================================================
+
 User-agent: *
+
+# Block authenticated / private routes
 Disallow: /dashboard
 Disallow: /bootcamps
 Disallow: /marketplace
@@ -6,7 +19,11 @@ Disallow: /wallet
 Disallow: /profile
 Disallow: /notifications
 Disallow: /settings
+Disallow: /learn
 Disallow: /mr-robot
+Disallow: /mr-robot/dashboard
+
+# Block auth flows
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
@@ -14,6 +31,7 @@ Disallow: /reset-password
 Disallow: /verify-email
 Disallow: /change-password
 
+# Allow public marketing pages
 Allow: /
 Allow: /services
 Allow: /contact
@@ -22,4 +40,4 @@ Allow: /leaderboard
 Allow: /zero-day-market
 Allow: /u/
 
-Sitemap: https://hsociety.com/sitemap.xml
+Sitemap: https://hsocietyoffsec.netlify.app/sitemap.xml

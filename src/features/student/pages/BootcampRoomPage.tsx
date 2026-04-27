@@ -219,8 +219,10 @@ const BootcampRoomPage: React.FC = () => {
                 onClick={() => void trackSessionOpen()}
                 className="inline-flex items-center gap-3 px-6 py-4 bg-[#1a73e8] hover:bg-[#1557b0] text-white font-bold rounded-xl transition-colors text-sm"
               >
-                <Video className="w-5 h-5" />
-                Join Google Meet Session
+                {joiningSession
+                  ? <><Loader2 className="w-5 h-5 animate-spin" /> Joining...</>
+                  : <><Video className="w-5 h-5" /> Join Google Meet Session</>
+                }
               </a>
             </div>
           </ScrollReveal>

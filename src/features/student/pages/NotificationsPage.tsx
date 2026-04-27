@@ -16,7 +16,11 @@ interface Notification {
 
 const TYPE_COLORS: Record<string, string> = {
   cp_earned: 'text-accent border-accent/30 bg-accent/5',
+  cp_points_granted: 'text-accent border-accent/30 bg-accent/5',
+  cp_points_deducted: 'text-red-400 border-red-400/30 bg-red-400/5',
+  cp_points_set: 'text-accent border-accent/30 bg-accent/5',
   rank_change: 'text-purple-400 border-purple-400/30 bg-purple-400/5',
+  room_completed: 'text-accent border-accent/30 bg-accent/5',
   payment_confirmed: 'text-green-400 border-green-400/30 bg-green-400/5',
   payment_failed: 'text-red-400 border-red-400/30 bg-red-400/5',
   quiz_available: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/5',
