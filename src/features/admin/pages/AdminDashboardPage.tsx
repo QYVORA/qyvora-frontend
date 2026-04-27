@@ -5,13 +5,118 @@ import {
   AlertTriangle, Mail, Ban, Unlock, Search, Menu, X,
   RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight,
 } from 'lucide-react';
-import BootcampManager from '../components/BootcampManager';
 import QuizManager from '../components/QuizManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
+
+const HACKER_PROTOCOL_ID = 'bc_1775270338500';
+
+// ── MVP Bootcamp Access Panel ─────────────────────────────────────────────────
+const BOOTCAMP_MODULES = [
+  { moduleId: 1, title: 'Hacker Mindset' },
+  { moduleId: 2, title: 'Linux Foundations' },
+  { moduleId: 3, title: 'Networking' },
+  { moduleId: 4, title: 'Web & Backend Systems' },
+  { moduleId: 5, title: 'Social Engineering' },
+];
+
+const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => void; api: typeof import('../../../core/services/api').default }> = ({ addToast }) => {
+  const [started, setStarted] = React.useState(false);
+  const [unlockedModules, setUnlockedModules] = React.useState<number[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [saving, setSaving] = React.useState(false);
+
+  React.useEffect(() => {
+    api.get(`/admin/bootcamp/access?bootcampId=${HACKER_PROTOCOL_ID}`)
+      .then(res => {
+        setStarted(Boolean(res.data?.access?.started));
+        setUnlockedModules(Array.isArray(res.data?.access?.unlockedModules) ? res.data.access.unlockedModules : []);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const toggleModule = (moduleId: number) => {
+    setUnlockedModules(prev =>
+      prev.includes(moduleId) ? prev.filter(id => id !== moduleId) : [...prev, moduleId]
+    );
+  };
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await api.patch('/admin/bootcamp/access', {
+        bootcampId: HACKER_PROTOCOL_ID,
+        started,
+        unlockedModules,
+      });
+      addToast('Bootcamp access updated', 'success');
+    } catch (e: any) {
+      addToast(e?.response?.data?.error || 'Failed to update access', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <div className="p-6 text-text-muted text-sm animate-pulse">Loading access config...</div>;
+
+  return (
+    <div className="max-w-lg space-y-6">
+      <div>
+        <h2 className="text-sm font-black text-text-primary uppercase tracking-widest mb-1">Hacker Protocol — Access Control</h2>
+        <p className="text-xs text-text-muted">Control which modules students can access. Unlocking a module unlocks all its rooms.</p>
+      </div>
+
+      {/* Started toggle */}
+      <div className="flex items-center justify-between p-4 bg-bg-card border border-border rounded-xl">
+        <div>
+          <div className="text-sm font-bold text-text-primary">Bootcamp Started</div>
+          <div className="text-xs text-text-muted">Students can see content only when this is on</div>
+        </div>
+        <button
+          onClick={() => setStarted(s => !s)}
+          className={`w-12 h-6 rounded-full transition-colors relative flex-none ${started ? 'bg-accent' : 'bg-border'}`}
+        >
+          <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${started ? 'translate-x-7' : 'translate-x-1'}`} />
+        </button>
+      </div>
+
+      {/* Module unlocks */}
+      <div className="space-y-2">
+        <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Unlocked Modules</p>
+        {BOOTCAMP_MODULES.map(mod => {
+          const unlocked = unlockedModules.includes(mod.moduleId);
+          return (
+            <label key={mod.moduleId} className="flex items-center gap-3 p-3 bg-bg-card border border-border rounded-xl cursor-pointer hover:border-accent/30 transition-colors">
+              <input
+                type="checkbox"
+                checked={unlocked}
+                onChange={() => toggleModule(mod.moduleId)}
+                className="accent-accent w-4 h-4"
+              />
+              <span className="text-sm font-bold text-text-primary">
+                <span className="text-text-muted font-mono mr-2">0{mod.moduleId}</span>
+                {mod.title}
+              </span>
+              {unlocked && <span className="ml-auto text-[9px] font-bold text-accent uppercase tracking-widest">Unlocked</span>}
+            </label>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={save}
+        disabled={saving}
+        className="btn-primary text-sm flex items-center gap-2 disabled:opacity-50"
+      >
+        {saving ? <><span className="w-4 h-4 border-2 border-bg border-t-transparent rounded-full animate-spin inline-block" /> Saving...</> : 'Save Access Config'}
+      </button>
+    </div>
+  );
+};
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications' | 'quizzes';
@@ -81,7 +186,6 @@ const AdminDashboardPage: React.FC = () => {
   const [contentVersion, setContentVersion] = useState(1);
   const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
   const [selectedBootcampId, setSelectedBootcampId] = useState<string>('');
-
   const [products, setProducts] = useState<CPProduct[]>([]);
   const [productForm, setProductForm] = useState({
     id: '', title: '', description: '', cpPrice: 0, type: 'book',
@@ -565,29 +669,7 @@ const AdminDashboardPage: React.FC = () => {
 
               {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
               {activeTab === 'bootcamps' && (
-                <div className="h-[calc(100svh-10rem)] md:h-[calc(100svh-8rem)] flex flex-col">
-                  <BootcampManager
-                    bootcamps={bootcamps}
-                    selectedBootcampId={selectedBootcampId}
-                    setSelectedBootcampId={setSelectedBootcampId}
-                    contentVersion={contentVersion}
-                    onSave={async updated => {
-                      setSaving(true);
-                      try {
-                        await api.patch('/admin/content', { version: contentVersion, learn: { bootcamps: updated } });
-                        addToast('Bootcamps saved', 'success');
-                        await loadAll();
-                      } catch (e: any) {
-                        if (e?.response?.data?.code === 'content_version_conflict') {
-                          addToast('Version conflict — reloading.', 'error'); await loadAll();
-                        } else { addToast('Failed to save bootcamps', 'error'); }
-                      } finally { setSaving(false); }
-                    }}
-                    saving={saving}
-                    addToast={addToast}
-                    api={api}
-                  />
-                </div>
+                <BootcampAccessPanel addToast={addToast} api={api} />
               )}
 
               {/* ── APPLICATIONS ──────────────────────────────────────────── */}

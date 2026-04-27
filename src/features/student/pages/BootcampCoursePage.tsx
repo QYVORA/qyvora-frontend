@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   ArrowLeft, ChevronRight, ChevronDown, Lock, CheckCircle2,
-  BookOpen, Loader2, Video, FileText,
+  BookOpen, Loader2, Video,
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -235,8 +235,7 @@ const BootcampCourse: React.FC = () => {
                         {(mod.rooms || []).map((room, roomIdx) => {
                           const isRoomLocked = room.locked;
                           const roomDone = Boolean(room.completed);
-                          const hasMeetingLink = Boolean(String(room.liveClass?.link || room.meetingLink || '').trim());
-                          const hasContent = Boolean(String(room.readingContent || '').trim());
+                          // MVP: no meeting links — all rooms have WhatsApp session
 
                           return (
                             <div
@@ -267,16 +266,9 @@ const BootcampCourse: React.FC = () => {
 
                               {/* Indicators */}
                               <div className="flex items-center gap-2 shrink-0">
-                                {hasMeetingLink && (
-                                  <span className="inline-flex items-center gap-1 text-[9px] font-bold text-[#1a73e8] uppercase tracking-widest">
-                                    <Video className="w-3 h-3" /> Meet
-                                  </span>
-                                )}
-                                {hasContent && (
-                                  <span className="inline-flex items-center gap-1 text-[9px] font-bold text-text-muted uppercase tracking-widest">
-                                    <FileText className="w-3 h-3" /> Content
-                                  </span>
-                                )}
+                                <span className="inline-flex items-center gap-1 text-[9px] font-bold text-accent/70 uppercase tracking-widest">
+                                  <Video className="w-3 h-3" /> WhatsApp
+                                </span>
                                 {!isRoomLocked && (
                                   <ChevronRight className="w-4 h-4 text-text-muted" />
                                 )}

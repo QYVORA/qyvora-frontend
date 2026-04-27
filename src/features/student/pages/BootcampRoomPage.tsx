@@ -37,6 +37,7 @@ const BootcampRoomPage: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [submittingQuiz, setSubmittingQuiz] = useState(false);
   const [joiningSession, setJoiningSession] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -67,15 +68,21 @@ const BootcampRoomPage: React.FC = () => {
 
   const mod = course?.modules.find(m => String(m.moduleId) === String(moduleId));
   const room = mod?.rooms.find(r => String(r.roomId) === String(roomId));
-  const meetingLink = String(room?.meetingLink || '').trim();
 
-  const trackSessionOpen = async () => {
-    if (!meetingLink) return;
+  const openRoom = async () => {
+    if (hasOpened) return;
     setJoiningSession(true);
     try {
-      await api.post(`/student/modules/${moduleId}/rooms/${roomId}/session-open`, { meetingLink });
-    } catch { /* non-blocking */ }
-    finally { setJoiningSession(false); }
+      const res = await api.post(`/student/modules/${moduleId}/rooms/${roomId}/session-open`, {});
+      if (res.data?.reward) {
+        addToast(`Room opened! You earned ${res.data.reward.points} CP.`, 'success');
+      }
+      setHasOpened(true);
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Could not open room.', 'error');
+    } finally {
+      setJoiningSession(false);
+    }
   };
 
   const openQuiz = async () => {
@@ -207,26 +214,35 @@ const BootcampRoomPage: React.FC = () => {
           </header>
         </ScrollReveal>
 
-        {/* Live session */}
-        {meetingLink && (
-          <ScrollReveal delay={0.08}>
-            <div className="mb-8 p-5 bg-bg-card border border-border rounded-xl">
-              <p className="text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Live Session</p>
-              <a
-                href={meetingLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => void trackSessionOpen()}
-                className="inline-flex items-center gap-3 px-6 py-4 bg-[#1a73e8] hover:bg-[#1557b0] text-white font-bold rounded-xl transition-colors text-sm"
-              >
-                {joiningSession
-                  ? <><Loader2 className="w-5 h-5 animate-spin" /> Joining...</>
-                  : <><Video className="w-5 h-5" /> Join Google Meet Session</>
-                }
-              </a>
+        {/* Session — WhatsApp group for link (MVP) */}
+        <ScrollReveal delay={0.08}>
+          <div className="mb-8 p-5 bg-bg-card border border-border rounded-xl">
+            <p className="text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Live Session</p>
+            <div className="flex items-start gap-3 p-4 rounded-lg mb-4"
+              style={{ background: 'var(--color-accent-dim)', border: '1px solid rgba(183,255,153,0.2)' }}>
+              <span className="text-accent text-lg flex-none">📱</span>
+              <div>
+                <p className="text-sm font-bold text-text-primary mb-1">Check the WhatsApp Group</p>
+                <p className="text-xs text-text-muted">The session link for this room is shared in the Hacker Protocol WhatsApp group before each class.</p>
+              </div>
             </div>
-          </ScrollReveal>
-        )}
+            <button
+              onClick={openRoom}
+              disabled={joiningSession || hasOpened || Boolean(room.completed)}
+              className="inline-flex items-center gap-2 px-5 py-3 bg-accent text-bg font-bold rounded-xl transition-all text-sm disabled:opacity-60 hover:brightness-110 active:scale-95"
+            >
+              {joiningSession
+                ? <><Loader2 className="w-4 h-4 animate-spin" /> Opening...</>
+                : (hasOpened || room.completed)
+                  ? <><CheckCircle2 className="w-4 h-4" /> Room Opened</>
+                  : <><Video className="w-4 h-4" /> Mark Room as Opened</>
+              }
+            </button>
+            {(hasOpened || room.completed) && (
+              <p className="text-xs text-accent mt-2 font-bold">✓ CP reward granted</p>
+            )}
+          </div>
+        </ScrollReveal>
 
         {/* Quiz */}
         <ScrollReveal delay={0.1}>
