@@ -13,13 +13,13 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative py-20 md:py-32 overflow-hidden bg-bg scanlines">
+    <section className="relative min-h-[60vh] py-20 md:py-32 overflow-hidden bg-bg scanlines flex items-center">
       <div className="absolute inset-0 z-0">
         <img src="/images/cta-section-background/cta-background.webp" alt="" className="w-full h-full object-cover grayscale opacity-20" />
         {/* L18: use bg/80 fade instead of from-bg so it works in both themes */}
         <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-bg/90" />
       </div>
-      <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+      <div className="max-w-4xl mx-auto px-4 text-center relative z-10 w-full">
         <ScrollReveal>
           {/* Fix #20: no blur animation when reduced motion is preferred */}
           {/* L19: shadow uses accent-glow CSS var — adapts to theme */}

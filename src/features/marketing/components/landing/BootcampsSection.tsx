@@ -27,7 +27,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const displayed = bootcamps.slice(0, 3);
 
   return (
-    <section className="py-16 md:py-24 bg-bg-card border-y border-border relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative overflow-hidden">
       <img
         src="/images/section-backgrounds/offsec-grid-background.png"
         alt=""

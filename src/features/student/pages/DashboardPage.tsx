@@ -101,7 +101,7 @@ const Dashboard: React.FC = () => {
   const initials = handle.substring(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-[calc(100svh-5rem)] md:min-h-[calc(100svh-6rem)]">
+    <div className="w-full min-h-[calc(100svh-5rem)] md:min-h-[calc(100svh-6rem)] bg-bg">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-10">
         <div className="flex gap-6 lg:gap-8 items-start">
 

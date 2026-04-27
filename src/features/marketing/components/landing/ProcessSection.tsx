@@ -20,7 +20,7 @@ const STEPS = [
 const ProcessSection: React.FC<ProcessSectionProps> = () => {
 
   return (
-    <section className="py-16 md:py-24 bg-bg relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-bg relative overflow-hidden">
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <ScrollReveal className="text-center mb-10 md:mb-20">
@@ -38,7 +38,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
               <ScrollReveal
                 key={idx}
                 delay={idx * 0.1}
-                className="relative shrink-0 group text-left snap-start w-[76vw] sm:w-[54vw] md:w-auto rounded-xl border border-border bg-bg-card/65 md:bg-transparent md:border-none p-4 md:p-0"
+                className="relative shrink-0 group text-left snap-start w-[85vw] sm:w-[60vw] md:w-auto rounded-xl border border-border bg-bg-card/65 md:bg-transparent md:border-none p-4 md:p-0"
               >
                 {/* L5: text-accent/40 — visible in both themes (was /20 which vanishes in light) */}
                 <div className="text-4xl md:text-5xl font-extrabold text-accent/40 font-mono mb-3 group-hover:text-accent/70 transition-colors">

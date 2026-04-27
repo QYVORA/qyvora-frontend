@@ -37,7 +37,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     // Fix #2: heroRef is now attached to the section element
-    <section ref={heroRef} className="relative min-h-[92svh] md:min-h-screen w-full">
+    <section ref={heroRef} className="relative min-h-screen w-full">
       {/* Scanlines + background layers — overflow-hidden scoped here so globe atmosphere isn't clipped */}
       <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
         <div className="absolute inset-0 bg-bg" />
@@ -53,7 +53,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
       <motion.div
         style={{ y: heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-[92svh] md:min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-24 md:pt-24 pb-10 md:pb-36"
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-16 md:pt-20 pb-10 md:pb-36"
       >
         <div className="flex flex-col items-start">
           <motion.div
@@ -139,8 +139,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </motion.div>
 
       {/* L3: bg-bg-card/80 instead of bg-bg/60 — provides contrast in both themes */}
-      <div className="absolute bottom-0 left-0 w-full bg-bg-card/80 backdrop-blur-sm z-30 py-4 md:py-5 hidden lg:block">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-4 gap-3 md:gap-4">
+      <div className="absolute bottom-0 left-0 w-full bg-bg-card/80 backdrop-blur-sm z-30 py-3 md:py-5 hidden lg:block">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-4 gap-3 md:gap-6">
           {heroStats.map((s, i) => (
             <div key={i} className="flex flex-col">
               <div className="text-xl md:text-2xl lg:text-3xl font-bold text-accent font-mono">

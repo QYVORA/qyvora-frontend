@@ -32,7 +32,7 @@ const PLATFORM_META: Record<string, {
 };
 
 const SocialSection: React.FC = () => (
-  <section className="py-16 md:py-24 bg-bg border-t border-border">
+  <section className="py-20 md:py-32 bg-bg border-t border-border">
     <div className="max-w-7xl mx-auto px-4 md:px-8">
 
       <ScrollReveal className="text-center mb-10 md:mb-14">

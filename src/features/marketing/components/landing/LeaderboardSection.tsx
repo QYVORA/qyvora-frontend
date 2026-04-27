@@ -50,7 +50,7 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry; rank: number }> = ({ e
 };
 
 const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, totalCp, loading = false }) => (
-  <section className="py-16 md:py-24 bg-bg-card border-y border-border relative">
+  <section className="py-20 md:py-32 bg-bg-card border-y border-border relative">
     <div className="max-w-7xl mx-auto px-4 md:px-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 md:mb-16 gap-4">
         <ScrollReveal>

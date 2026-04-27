@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { Loader2 } from 'lucide-react';
 import { useAuth } from '../core/contexts/AuthContext';
 
 // Layouts
@@ -41,7 +40,7 @@ const AdminDashboardPage = lazy(() => import('../features/admin/pages/AdminDashb
 
 const PageLoader = () => (
   <div className="h-screen w-full bg-bg flex items-center justify-center">
-    <Loader2 className="animate-spin text-accent w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24" />
+    <div className="w-10 h-10 rounded-full border-4 border-border border-t-accent animate-spin" />
   </div>
 );
 

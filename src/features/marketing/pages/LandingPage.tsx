@@ -44,7 +44,7 @@ const Landing: React.FC = () => {
   const totalCp = leaderboard.reduce((acc, e) => acc + Number(e.totalXp || 0), 0);
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-x-hidden">
       <HeroSection
         heroRef={heroRef}
         heroY={heroY}
