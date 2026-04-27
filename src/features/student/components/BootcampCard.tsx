@@ -8,6 +8,7 @@ interface BootcampCardProps {
   image: string;
   level: BootcampLevel;
   title: string;
+  description?: string;
   duration: string;
   price: string;
   // href is optional — if not provided the card is non-navigable (e.g. skeleton)
@@ -15,7 +16,7 @@ interface BootcampCardProps {
 }
 
 // Fix #8: card is now a Link so clicking anywhere navigates to the bootcamp
-const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, duration, price, href = '/register' }) => (
+const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, description, duration, price, href = '/register' }) => (
   <Link to={href} className="card-hsociety group overflow-hidden flex flex-col block hover:border-accent/40 transition-all">
     <div className="relative aspect-video overflow-hidden">
       <img
@@ -33,10 +34,13 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, durati
       </div>
     </div>
     <div className="p-6 flex flex-col flex-1">
-      <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors flex-1">
+      <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
         {title}
       </h3>
-      <div className="flex items-center justify-between text-xs text-text-muted mb-6">
+      {description && (
+        <p className="text-xs text-text-muted line-clamp-2 mb-3">{description}</p>
+      )}
+      <div className="flex items-center justify-between text-xs text-text-muted mb-6 mt-auto">
         <span>{duration}</span>
         <span className="text-text-secondary font-mono">{price}</span>
       </div>

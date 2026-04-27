@@ -17,6 +17,12 @@ const BOOTCAMP_LEVELS: BootcampLevel[] = ['Novice', 'Operator', 'Specialist', 'E
 const normalizeBootcampLevel = (level?: string): BootcampLevel =>
   BOOTCAMP_LEVELS.includes(level as BootcampLevel) ? (level as BootcampLevel) : 'Operator';
 
+const HPB_ID = 'bc_1775270338500';
+const HPB_TITLE = 'Hacker Protocol Bootcamp';
+const HPB_DESCRIPTION =
+  'Hacker Protocol Bootcamp (HPB) teaches beginners to think like hackers — covering networking, Linux, web, and social engineering with hands-on labs and CTFs.';
+const HPB_IMAGE = '/HPB-image.png';
+
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading = false }) => {
   const displayed = bootcamps.slice(0, 3);
 
@@ -63,18 +69,25 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             displayed.length === 2 ? 'sm:grid-cols-2 max-w-2xl' :
             'sm:grid-cols-2 lg:grid-cols-3'
           }`}>
-            {displayed.map((bc, i) => (
-              <ScrollReveal key={bc.id} delay={i * 0.1}>
-                <BootcampCard
-                  image={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
-                  level={normalizeBootcampLevel(bc.level)}
-                  title={bc.title}
-                  duration={bc.duration || ''}
-                  price={bc.priceLabel || 'Free'}
-                  href={`/register`}
-                />
-              </ScrollReveal>
-            ))}
+            {displayed.map((bc, i) => {
+              const isHPB = bc.id === HPB_ID;
+              const title = isHPB ? HPB_TITLE : bc.title;
+              const description = isHPB ? HPB_DESCRIPTION : (bc.description || '');
+              const image = resolveImg(isHPB ? HPB_IMAGE : bc.image, PHASE_IMGS[i % PHASE_IMGS.length]);
+              return (
+                <ScrollReveal key={bc.id} delay={i * 0.1}>
+                  <BootcampCard
+                    image={image}
+                    level={normalizeBootcampLevel(bc.level)}
+                    title={title}
+                    description={description}
+                    duration={bc.duration || ''}
+                    price={bc.priceLabel || 'Free'}
+                    href={`/register`}
+                  />
+                </ScrollReveal>
+              );
+            })}
           </div>
         )}
       </div>

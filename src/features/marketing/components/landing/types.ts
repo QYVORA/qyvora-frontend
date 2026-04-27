@@ -12,6 +12,7 @@ export interface BackendStats {
 export interface Bootcamp {
   id: string;
   title: string;
+  description?: string;
   level?: string;
   duration?: string;
   priceLabel?: string;

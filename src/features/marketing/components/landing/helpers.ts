@@ -7,6 +7,9 @@ export const resolveImg = (value?: string, fallback = '') => {
   // Public-folder assets — served by the frontend, no API prefix needed
   if (src.startsWith('/images/') || src.startsWith('/public/')) return src;
 
+  // Any other root-relative path that isn't an upload — treat as a local public asset
+  if (src.startsWith('/') && !src.startsWith('/uploads/')) return src;
+
   const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
   if (src.startsWith('/uploads/')) {
