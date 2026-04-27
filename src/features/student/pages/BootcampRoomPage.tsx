@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, ChevronRight, Video, FileText, Lock, Loader2, CheckCircle2, BookOpen,
+  ArrowLeft, ChevronRight, Video, Lock, Loader2, CheckCircle2, BookOpen,
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -35,6 +35,8 @@ const BootcampRoomPage: React.FC = () => {
   const [quizLoading, setQuizLoading] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<RoomQuiz | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  const [quizError, setQuizError] = useState<string>('');
+  const [quizLoadedForRoom, setQuizLoadedForRoom] = useState<string>('');
   const [submittingQuiz, setSubmittingQuiz] = useState(false);
   const [joiningSession, setJoiningSession] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
@@ -68,6 +70,13 @@ const BootcampRoomPage: React.FC = () => {
 
   const mod = course?.modules.find(m => String(m.moduleId) === String(moduleId));
   const room = mod?.rooms.find(r => String(r.roomId) === String(roomId));
+  const roomScopeKey = `${String(bootcampId || '')}:${String(moduleId || '')}:${String(roomId || '')}`;
+
+  useEffect(() => {
+    setActiveQuiz(null);
+    setQuizAnswers({});
+    setQuizError('');
+  }, [roomScopeKey]);
 
   const openRoom = async () => {
     if (hasOpened) return;
@@ -86,6 +95,7 @@ const BootcampRoomPage: React.FC = () => {
   };
 
   const openQuiz = async () => {
+    setQuizError('');
     setQuizLoading(true);
     try {
       const res = await api.post('/student/quiz', {
@@ -96,7 +106,8 @@ const BootcampRoomPage: React.FC = () => {
       });
       const quiz = (res?.data || {}) as RoomQuiz;
       if (!Array.isArray(quiz.questions) || quiz.questions.length === 0) {
-        addToast('Quiz is not available for this room yet.', 'error');
+        setActiveQuiz(null);
+        setQuizError('Quiz is not available for this room yet.');
         return;
       }
       setActiveQuiz({
@@ -105,9 +116,23 @@ const BootcampRoomPage: React.FC = () => {
       });
       setQuizAnswers({});
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Quiz is not available yet.', 'error');
+      setActiveQuiz(null);
+      const status = Number(err?.response?.status || 0);
+      const backendMessage = String(err?.response?.data?.error || '');
+      if (status === 403) {
+        setQuizError(backendMessage || 'Quiz access is currently restricted for this room.');
+      } else {
+        setQuizError(backendMessage || 'Quiz is not available yet.');
+      }
     } finally { setQuizLoading(false); }
   };
+
+  useEffect(() => {
+    if (loading || !course || !mod || !room || room.locked) return;
+    if (quizLoadedForRoom === roomScopeKey) return;
+    setQuizLoadedForRoom(roomScopeKey);
+    void openQuiz();
+  }, [loading, course, mod, room, roomScopeKey, quizLoadedForRoom]);
 
   const submitQuiz = async () => {
     if (!activeQuiz?.scope) return;
@@ -121,7 +146,6 @@ const BootcampRoomPage: React.FC = () => {
       const score = Number(res?.data?.score || 0);
       const passed = Boolean(res?.data?.passed);
       addToast(passed ? `Quiz passed (${score}%).` : `Quiz submitted (${score}%).`, passed ? 'success' : 'info');
-      setActiveQuiz(null);
       setQuizAnswers({});
     } catch (err: any) {
       addToast(err?.response?.data?.error || 'Could not submit quiz.', 'error');
@@ -246,93 +270,86 @@ const BootcampRoomPage: React.FC = () => {
 
         {/* Quiz */}
         <ScrollReveal delay={0.1}>
-          <div className="mb-8">
-            <button
-              onClick={openQuiz}
-              disabled={quizLoading}
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-accent-dim border border-accent/30 hover:bg-accent/20 text-accent font-bold rounded-xl transition-colors text-sm disabled:opacity-50"
-            >
-              {quizLoading
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> Loading Quiz...</>
-                : <><FileText className="w-4 h-4" /> Take Quiz</>
-              }
-            </button>
+          <div className="mb-8 p-5 bg-bg-card border border-border rounded-xl">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-sm font-black text-text-primary uppercase tracking-widest">Room Quiz</h2>
+              {activeQuiz && (
+                <p className="text-[10px] text-text-muted uppercase tracking-widest">
+                  {Object.keys(quizAnswers).length} / {activeQuiz.questions.length} answered
+                </p>
+              )}
+            </div>
+
+            {quizLoading && (
+              <div className="inline-flex items-center gap-2 text-sm text-text-secondary">
+                <Loader2 className="w-4 h-4 animate-spin text-accent" />
+                Loading quiz questions...
+              </div>
+            )}
+
+            {!quizLoading && quizError && (
+              <div className="text-sm text-text-secondary rounded-lg border border-border bg-bg px-4 py-3">
+                {quizError}
+              </div>
+            )}
+
+            {!quizLoading && activeQuiz && (
+              <>
+                <div className="h-1 bg-accent-dim rounded-full mb-5 overflow-hidden">
+                  <div
+                    className="h-full bg-accent transition-all duration-300"
+                    style={{ width: `${(Object.keys(quizAnswers).length / activeQuiz.questions.length) * 100}%` }}
+                  />
+                </div>
+
+                <div className="space-y-5">
+                  {activeQuiz.questions.map((question, index) => (
+                    <div key={question.id || index} className="p-4 border border-border rounded-xl bg-bg">
+                      <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">
+                        Question {index + 1} of {activeQuiz.questions.length}
+                      </div>
+                      <div className="text-sm font-bold text-text-primary mb-3">{question.text}</div>
+                      <div className="space-y-2">
+                        {(question.options || []).map((option, optIdx) => {
+                          const selected = Number(quizAnswers[question.id]) === optIdx;
+                          return (
+                            <button
+                              key={`${question.id}-${optIdx}`}
+                              onClick={() => setQuizAnswers(prev => ({ ...prev, [question.id]: optIdx }))}
+                              className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all ${
+                                selected
+                                  ? 'border-accent bg-accent-dim text-accent font-bold'
+                                  : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/30'
+                              }`}
+                            >
+                              <span className="font-mono text-[10px] mr-2 opacity-60">{String.fromCharCode(65 + optIdx)}.</span>
+                              {option}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 flex justify-end">
+                  <button
+                    onClick={submitQuiz}
+                    disabled={submittingQuiz || Object.keys(quizAnswers).length < activeQuiz.questions.length}
+                    className="btn-primary !py-2.5 text-sm disabled:opacity-50 inline-flex items-center gap-2"
+                  >
+                    {submittingQuiz
+                      ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Submitting...</>
+                      : 'Submit Quiz'
+                    }
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </ScrollReveal>
 
       </div>
-
-      {/* Quiz modal */}
-      {activeQuiz && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm p-4 overflow-y-auto flex items-start justify-center">
-          <div className="w-full max-w-2xl mt-8 mb-8 bg-bg-card border border-border rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-black text-text-primary">Room Quiz</h3>
-                <p className="text-[10px] text-text-muted uppercase tracking-widest mt-0.5">
-                  {Object.keys(quizAnswers).length} / {activeQuiz.questions.length} answered
-                </p>
-              </div>
-              <button
-                onClick={() => { if (!submittingQuiz) { setActiveQuiz(null); setQuizAnswers({}); } }}
-                className="text-xs font-bold text-text-muted hover:text-text-primary uppercase tracking-widest px-3 py-1.5 border border-border rounded-lg hover:border-accent/30 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="h-1 bg-accent-dim">
-              <div
-                className="h-full bg-accent transition-all duration-300"
-                style={{ width: `${(Object.keys(quizAnswers).length / activeQuiz.questions.length) * 100}%` }}
-              />
-            </div>
-
-            <div className="p-5 space-y-5">
-              {activeQuiz.questions.map((question, index) => (
-                <div key={question.id || index} className="p-4 border border-border rounded-xl bg-bg">
-                  <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">
-                    Question {index + 1} of {activeQuiz.questions.length}
-                  </div>
-                  <div className="text-sm font-bold text-text-primary mb-3">{question.text}</div>
-                  <div className="space-y-2">
-                    {(question.options || []).map((option, optIdx) => {
-                      const selected = Number(quizAnswers[question.id]) === optIdx;
-                      return (
-                        <button
-                          key={`${question.id}-${optIdx}`}
-                          onClick={() => setQuizAnswers(prev => ({ ...prev, [question.id]: optIdx }))}
-                          className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all ${
-                            selected
-                              ? 'border-accent bg-accent-dim text-accent font-bold'
-                              : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/30'
-                          }`}
-                        >
-                          <span className="font-mono text-[10px] mr-2 opacity-60">{String.fromCharCode(65 + optIdx)}.</span>
-                          {option}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="px-5 pb-5 flex justify-end">
-              <button
-                onClick={submitQuiz}
-                disabled={submittingQuiz || Object.keys(quizAnswers).length < activeQuiz.questions.length}
-                className="btn-primary !py-2.5 text-sm disabled:opacity-50 inline-flex items-center gap-2"
-              >
-                {submittingQuiz
-                  ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Submitting...</>
-                  : 'Submit Quiz'
-                }
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
