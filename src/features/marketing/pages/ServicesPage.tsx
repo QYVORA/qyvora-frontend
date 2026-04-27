@@ -15,7 +15,7 @@ const Services: React.FC = () => (
         src="/images/section-backgrounds/offsec-grid-background.png"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
       />
       <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
       <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />

@@ -10,9 +10,9 @@ const ServicesSection: React.FC = () => (
     <img
       src="/images/section-backgrounds/offsec-grid-background.png"
       alt=""
-      className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
+      className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
     />
-    <div className="absolute inset-0 bg-bg/20 pointer-events-none" />
+    <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
 
       <ScrollReveal className="mb-10 md:mb-14">

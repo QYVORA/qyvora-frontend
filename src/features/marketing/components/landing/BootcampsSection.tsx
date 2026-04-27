@@ -25,10 +25,9 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       <img
         src="/images/section-backgrounds/offsec-grid-background.png"
         alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
       />
-      {/* L6: bg-bg-card/20 instead of bg-bg/35 — preserves texture in light mode */}
-      <div className="absolute inset-0 bg-bg-card/20 pointer-events-none" />
+      <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">
           <ScrollReveal>

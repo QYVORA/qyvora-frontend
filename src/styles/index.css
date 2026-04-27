@@ -125,6 +125,24 @@
   [data-theme="light"] .hero-bg-img {
     opacity: 0.22 !important;
   }
+
+  /* Section background images — more visible in light mode */
+  [data-theme="light"] .section-bg-img {
+    opacity: 0.35 !important;
+  }
+
+  /* Radial vignette — reduce heavily in light mode so it doesn't ash-wash */
+  [data-theme="light"] .bg-radial-vignette {
+    opacity: 0.08 !important;
+  }
+
+  /* Section overlay — transparent in light mode, keeps dark tint in dark mode */
+  .section-bg-overlay {
+    background: rgba(5, 7, 6, 0.20); /* dark mode: slight dark tint */
+  }
+  [data-theme="light"] .section-bg-overlay {
+    background: transparent !important;
+  }
 }
 
 @layer components {
