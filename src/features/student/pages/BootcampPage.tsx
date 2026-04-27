@@ -184,7 +184,7 @@ const Bootcamp: React.FC = () => {
                       <img
                         src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
                         alt={bc.title}
-                        className={`w-full h-full object-cover transition-all duration-500 ${isLocked ? 'grayscale brightness-50' : 'md:grayscale md:group-hover:grayscale-0'}`}
+                        className={`w-full h-full object-cover transition-all duration-500 ${isLocked ? 'grayscale brightness-50' : ''}`}
                       />
                       <div className="absolute top-3 left-3 flex items-center gap-2 flex-wrap">
                         {bc.level && (

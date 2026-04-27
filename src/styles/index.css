@@ -18,10 +18,10 @@
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  /* Slightly warm, tinted off-white — not blinding */
-  --color-bg: #e8ede7;
-  /* Cards are lighter than bg so they pop */
-  --color-bg-card: #f3f7f2;
+  /* Warm olive-tinted background — not blinding white */
+  --color-bg: #d6ddd5;
+  /* Cards slightly lighter than bg */
+  --color-bg-card: #e2e9e1;
   /* Deep forest green — strong, on-brand */
   --color-accent: #1a6b0e;
   --color-accent-dim: rgba(26, 107, 14, 0.13);
@@ -121,9 +121,9 @@
     opacity: 0.25 !important;
   }
 
-  /* Hero background image — slightly more visible in light mode */
+  /* Hero background image — more visible in light mode */
   [data-theme="light"] .hero-bg-img {
-    opacity: 0.12 !important;
+    opacity: 0.22 !important;
   }
 }
 

@@ -12,7 +12,7 @@ const ServicesSection: React.FC = () => (
       alt=""
       className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
     />
-    <div className="absolute inset-0 bg-bg/40 pointer-events-none" />
+    <div className="absolute inset-0 bg-bg/20 pointer-events-none" />
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
 
       <ScrollReveal className="mb-10 md:mb-14">
@@ -44,7 +44,7 @@ const ServicesSection: React.FC = () => (
                 <img
                   src={serv.img}
                   alt=""
-                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700"
+                  className="w-full h-full object-cover transition-all duration-700"
                 />
                 <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
                 <div aria-hidden className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"

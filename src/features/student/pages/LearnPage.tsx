@@ -120,7 +120,7 @@ const Learn: React.FC = () => {
                         <img
                           src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
                           alt={bc.title}
-                          className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-500"
+                          className="w-full h-full object-cover transition-all duration-500"
                         />
                         {bc.level && (
                           <span className="absolute top-3 left-3 px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border rounded text-[9px] font-bold uppercase text-accent tracking-widest">

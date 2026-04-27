@@ -297,7 +297,7 @@ const Dashboard: React.FC = () => {
                           <img
                             src={item.img}
                             alt=""
-                            className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-500"
+                            className="w-full h-full object-cover transition-all duration-500"
                           />
                           {/* Scanline on image */}
                           <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />

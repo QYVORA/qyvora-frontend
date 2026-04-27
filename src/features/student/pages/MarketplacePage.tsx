@@ -169,7 +169,7 @@ const Marketplace: React.FC = () => {
                       <img
                         src={resolveImg(prod.coverUrl, '/images/how-it-works-section/Engagements-4Completed.webp')}
                         alt={prod.title}
-                        className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500"
+                        className="w-full h-full object-cover transition-all duration-500"
                       />
                       {prod.type && (
                         <div className="absolute top-2 right-2">

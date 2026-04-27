@@ -22,8 +22,8 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
       />
-      {/* L7: bg-bg-card/40 instead of bg-bg/38 — preserves texture in light mode */}
-      <div className="absolute inset-0 bg-bg-card/40 pointer-events-none" />
+      {/* L7: bg-bg-card/20 instead of bg-bg/38 — preserves texture in light mode */}
+      <div className="absolute inset-0 bg-bg-card/20 pointer-events-none" />
       <div className="absolute inset-0 scanlines opacity-[0.02] pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
