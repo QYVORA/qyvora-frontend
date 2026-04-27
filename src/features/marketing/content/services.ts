@@ -14,7 +14,7 @@ export const MARKETING_SERVICES: MarketingService[] = [
     title: 'Corporate Security Assessments',
     category: 'STAGE 04 // REVENUE ENGINE',
     icon: Shield,
-    img: '/images/how-it-works-section/Engagements-4Completed.webp',
+    img: '/images/services/corporate-security-assessment.png',
     tagline: 'Find the gaps before attackers do.',
     bullet: [
       'Full-scope security audits for businesses and organisations.',
@@ -26,7 +26,7 @@ export const MARKETING_SERVICES: MarketingService[] = [
     title: 'Employee Security Training',
     category: 'FOR COMPANY TEAMS',
     icon: UserCheck,
-    img: '/images/Curriculum-images/phase1.webp',
+    img: '/images/services/employee-security-training.png',
     tagline: 'Your people are your first line of defence.',
     bullet: [
       'Security awareness workshops for non-technical staff.',
@@ -38,7 +38,7 @@ export const MARKETING_SERVICES: MarketingService[] = [
     title: 'Proprietary Security Tooling',
     category: 'HSOCIETY OFFSEC PRODUCT',
     icon: Wrench,
-    img: '/images/how-it-works-section/Findings-Identified.webp',
+    img: '/images/services/proprietary-security-tooling.png',
     tagline: 'Tools built by operators, for operators.',
     bullet: [
       'In-house cybersecurity tools built for real-world use.',
@@ -50,7 +50,7 @@ export const MARKETING_SERVICES: MarketingService[] = [
     title: 'AI-Integrated Security Solutions',
     category: 'AUTOMATED DEFENSE',
     icon: BrainCircuit,
-    img: '/images/how-it-works-section/Pentesters-Active.webp',
+    img: '/images/services/ai-integrated-solutions.png',
     tagline: 'Intelligent systems that respond at machine speed.',
     bullet: [
       'AI-powered threat detection and automated response systems.',

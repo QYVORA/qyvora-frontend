@@ -52,7 +52,7 @@ const Wallet: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-4xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
 
         {/* Header */}
         <ScrollReveal className="mb-6 md:mb-10">
@@ -60,8 +60,12 @@ const Wallet: React.FC = () => {
           <h1 className="text-3xl md:text-4xl font-black text-text-primary">Operator Wallet</h1>
         </ScrollReveal>
 
-        {/* Balance card — full width on mobile */}
-        <ScrollReveal className="mb-4 md:mb-6">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+          {/* LEFT COLUMN — balance + stats */}
+          <div className="w-full lg:w-80 xl:w-96 flex-none space-y-4">
+
+        {/* Balance card */}
+        <ScrollReveal className="mb-0">
           <div className="relative p-6 md:p-8 bg-accent-dim border border-accent/20 rounded-2xl overflow-hidden">
             <div className="absolute top-3 right-3 opacity-15 pointer-events-none">
               <img
@@ -112,7 +116,10 @@ const Wallet: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Transaction list */}
+          </div>{/* end left column */}
+
+          {/* RIGHT COLUMN — transactions */}
+          <div className="flex-1 min-w-0">
         <ScrollReveal>
           <div className="bg-bg-card border border-border rounded-2xl overflow-hidden">
             <div className="px-5 py-4 border-b border-border flex items-center gap-2">
@@ -176,6 +183,8 @@ const Wallet: React.FC = () => {
           </div>
         </ScrollReveal>
 
+          </div>{/* end right column */}
+        </div>{/* end two-col */}
       </div>
     </div>
   );

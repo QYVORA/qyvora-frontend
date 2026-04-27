@@ -111,14 +111,16 @@ const Settings: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-2xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
         <ScrollReveal className="mb-8">
           <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-2 block">// SECURITY</span>
           <h1 className="text-3xl font-black text-text-primary">Account Settings</h1>
         </ScrollReveal>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
         {/* ── CHANGE PASSWORD ── */}
-        <ScrollReveal className="mb-8">
+        <ScrollReveal className="mb-0">
           <div className="bg-bg-card border border-border rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-accent-dim/5 flex items-center gap-3">
               <Shield className="w-4 h-4 text-accent" />
@@ -140,7 +142,7 @@ const Settings: React.FC = () => {
         </ScrollReveal>
 
         {/* ── RECOVERY TOKEN ── */}
-        <ScrollReveal>
+        <ScrollReveal className="mb-0">
           <div className="bg-bg-card border border-border rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-accent-dim/5 flex items-center gap-3">
               <Key className="w-4 h-4 text-accent" />
@@ -209,6 +211,7 @@ const Settings: React.FC = () => {
             </div>
           </div>
         </ScrollReveal>
+        </div>{/* end grid */}
       </div>
     </div>
   );

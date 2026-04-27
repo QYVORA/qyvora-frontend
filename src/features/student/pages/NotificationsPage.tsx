@@ -81,7 +81,7 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-3xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
+      <div className="max-w-4xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
         <ScrollReveal className="mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
