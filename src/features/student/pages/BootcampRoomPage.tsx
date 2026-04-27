@@ -287,9 +287,10 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             )}
 
-            {!quizLoading && quizError && (
+    {!quizLoading && quizError && (
               <div className="text-sm text-text-secondary rounded-lg border border-border bg-bg px-4 py-3">
-                {quizError}
+                {/* 403 just means no quiz released yet — show neutral message */}
+                No quiz available for this room yet. Check back after your session.
               </div>
             )}
 

@@ -3,6 +3,10 @@ export const resolveImg = (value?: string, fallback = '') => {
   if (!src) return fallback;
   if (/^(blob:|data:)/i.test(src)) return src;
   if (/^https?:\/\//i.test(src)) return src;
+
+  // Public-folder assets — served by the frontend, no API prefix needed
+  if (src.startsWith('/images/') || src.startsWith('/public/')) return src;
+
   const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
   if (src.startsWith('/uploads/')) {
@@ -13,6 +17,7 @@ export const resolveImg = (value?: string, fallback = '') => {
     if (apiBase.startsWith('/api')) {
       return `/api${src}`;
     }
+    return src;
   }
 
   const base = apiBase.replace(/\/api\/?$/, '');
