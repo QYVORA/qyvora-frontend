@@ -18,21 +18,15 @@
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  /* Warm olive-tinted background — not blinding white */
   --color-bg: #d6ddd5;
-  /* Cards slightly lighter than bg */
   --color-bg-card: #e2e9e1;
-  /* Deep forest green — strong, on-brand */
   --color-accent: #1a6b0e;
   --color-accent-dim: rgba(26, 107, 14, 0.13);
   --color-accent-glow: rgba(26, 107, 14, 0.22);
-  /* Near-black text */
   --color-text-primary: #0a140a;
   --color-text-secondary: rgba(10, 20, 10, 0.72);
   --color-text-muted: rgba(10, 20, 10, 0.48);
-  /* Visible green-tinted border */
   --color-border: rgba(26, 107, 14, 0.20);
-  /* Dot grid: dark green, clearly visible */
   --dot-color: rgba(26, 107, 14, 0.16);
 }
 
@@ -50,13 +44,11 @@
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* Dot Grid Pattern — uses --dot-color so it's visible in both themes */
   .dot-grid {
     background-image: radial-gradient(var(--dot-color, var(--color-accent-dim)) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
-  /* CRT Scanline Effect */
   .scanlines {
     position: relative;
     overflow: hidden;
@@ -74,59 +66,34 @@
     opacity: 0.03;
   }
 
-  /* Glow shadow */
   .glow-shadow {
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
-  /* Hide scrollbars */
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
-  /* ── Global scrollbar styling ── */
-  /* Firefox */
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-accent) var(--color-bg-card);
   }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; border: 2px solid var(--color-bg); }
+  ::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
+  ::-webkit-scrollbar-corner { background: var(--color-bg); }
 
-  /* WebKit (Chrome, Safari, Edge) */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--color-bg);
-    border-radius: 999px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-accent);
-    border-radius: 999px;
-    border: 2px solid var(--color-bg);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    filter: brightness(1.15);
-  }
-  ::-webkit-scrollbar-corner {
-    background: var(--color-bg);
-  }
+  /* ─────────────────────────────────────────────────────────────────────────
+     LIGHT THEME — background image & overlay rules
+     Images are fully visible. All ash/white overlay blurs are removed.
+  ───────────────────────────────────────────────────────────────────────── */
 
-  /* Hero dot grid — stronger opacity in light mode */
-  [data-theme="light"] .hero-dot-grid {
-    opacity: 0.55 !important;
-  }
-
-  /* Hero vignette — remove in light mode */
-  [data-theme="light"] .hero-vignette {
-    opacity: 0 !important;
-  }
-
-  /* Section background images — more visible in light mode */
+  /* Section background images — visible in light mode */
   [data-theme="light"] .section-bg-img {
-    opacity: 0 !important;
+    opacity: 0.35 !important;
   }
 
-  /* Section overlay — transparent in light mode, keeps dark tint in dark mode */
+  /* Section overlay div — transparent in light mode (no ash blur) */
   .section-bg-overlay {
     background: rgba(5, 7, 6, 0.20);
   }
@@ -134,22 +101,24 @@
     background: transparent !important;
   }
 
-  /* Radial vignette — remove in light mode */
+  /* Hero background image — visible in light mode */
+  [data-theme="light"] .hero-bg-img {
+    opacity: 0.25 !important;
+  }
+
+  /* Hero vignette — removed in light mode */
+  [data-theme="light"] .hero-vignette {
+    opacity: 0 !important;
+  }
+
+  /* Radial vignette — removed in light mode */
   [data-theme="light"] .bg-radial-vignette {
     opacity: 0 !important;
   }
 
-  /* Hero background image — remove in light mode */
-  [data-theme="light"] .hero-bg-img {
-    opacity: 0 !important;
-  }
-
-  /* Section overlay — transparent in light mode, keeps dark tint in dark mode */
-  .section-bg-overlay {
-    background: rgba(5, 7, 6, 0.20); /* dark mode: slight dark tint */
-  }
-  [data-theme="light"] .section-bg-overlay {
-    background: transparent !important;
+  /* Hero dot grid — visible in light mode */
+  [data-theme="light"] .hero-dot-grid {
+    opacity: 0.4 !important;
   }
 }
 
@@ -169,7 +138,6 @@
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
-  /* Logo wrapper */
   .logo-wrap {
     display: flex;
     align-items: center;
@@ -180,12 +148,10 @@
     padding: 0;
   }
 
-  /* Footer logo banner: transparent in both themes */
   .footer-logo-banner {
     background-color: transparent;
   }
 
-  /* Cards get depth in light mode */
   [data-theme="light"] .card-hsociety {
     box-shadow: 0 1px 3px rgba(10, 20, 10, 0.08), 0 4px 12px rgba(10, 20, 10, 0.06);
   }
@@ -193,17 +159,9 @@
     box-shadow: 0 4px 24px rgba(26, 107, 14, 0.18);
   }
 
-  /*
-   * Dark mode accent toning — the bright lime #B7FF99 bleeds green everywhere
-   * when used at full opacity on borders/backgrounds. These overrides pull it back
-   * so cards feel dark/neutral rather than greenhouse-green.
-   */
   :root:not([data-theme="light"]) {
-    /* Reduce accent glow so card hover shadows don't flood green */
     --color-accent-glow: rgba(183, 255, 153, 0.12);
-    /* Softer border tint */
     --color-border: rgba(136, 173, 124, 0.10);
-    /* Dimmer accent fill */
     --color-accent-dim: rgba(183, 255, 153, 0.07);
   }
 
@@ -216,13 +174,7 @@
       font-size: 0.75rem;
       letter-spacing: 0.06em;
     }
-
-    .card-hsociety {
-      transform: none !important;
-    }
-
-    .card-hsociety:hover {
-      box-shadow: 0 4px 16px var(--color-accent-glow);
-    }
+    .card-hsociety { transform: none !important; }
+    .card-hsociety:hover { box-shadow: 0 4px 16px var(--color-accent-glow); }
   }
 }
