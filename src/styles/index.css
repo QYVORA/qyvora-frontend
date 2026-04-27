@@ -116,24 +116,32 @@
     opacity: 0.55 !important;
   }
 
-  /* Hero vignette — reduce in light mode so it doesn't wash white */
+  /* Hero vignette — remove in light mode */
   [data-theme="light"] .hero-vignette {
-    opacity: 0.25 !important;
-  }
-
-  /* Hero background image — more visible in light mode */
-  [data-theme="light"] .hero-bg-img {
-    opacity: 0.22 !important;
+    opacity: 0 !important;
   }
 
   /* Section background images — more visible in light mode */
   [data-theme="light"] .section-bg-img {
-    opacity: 0.35 !important;
+    opacity: 0 !important;
   }
 
-  /* Radial vignette — reduce heavily in light mode so it doesn't ash-wash */
+  /* Section overlay — transparent in light mode, keeps dark tint in dark mode */
+  .section-bg-overlay {
+    background: rgba(5, 7, 6, 0.20);
+  }
+  [data-theme="light"] .section-bg-overlay {
+    background: transparent !important;
+  }
+
+  /* Radial vignette — remove in light mode */
   [data-theme="light"] .bg-radial-vignette {
-    opacity: 0.08 !important;
+    opacity: 0 !important;
+  }
+
+  /* Hero background image — remove in light mode */
+  [data-theme="light"] .hero-bg-img {
+    opacity: 0 !important;
   }
 
   /* Section overlay — transparent in light mode, keeps dark tint in dark mode */
