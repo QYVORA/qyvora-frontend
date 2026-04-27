@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, ChevronRight, Video, Lock, Loader2, CheckCircle2, BookOpen,
+  ArrowLeft, ChevronRight, Lock, Loader2, CheckCircle2, BookOpen,
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -38,8 +38,6 @@ const BootcampRoomPage: React.FC = () => {
   const [quizError, setQuizError] = useState<string>('');
   const [quizLoadedForRoom, setQuizLoadedForRoom] = useState<string>('');
   const [submittingQuiz, setSubmittingQuiz] = useState(false);
-  const [joiningSession, setJoiningSession] = useState(false);
-  const [hasOpened, setHasOpened] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -77,22 +75,6 @@ const BootcampRoomPage: React.FC = () => {
     setQuizAnswers({});
     setQuizError('');
   }, [roomScopeKey]);
-
-  const openRoom = async () => {
-    if (hasOpened) return;
-    setJoiningSession(true);
-    try {
-      const res = await api.post(`/student/modules/${moduleId}/rooms/${roomId}/session-open`, {});
-      if (res.data?.reward) {
-        addToast(`Room opened! You earned ${res.data.reward.points} CP.`, 'success');
-      }
-      setHasOpened(true);
-    } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Could not open room.', 'error');
-    } finally {
-      setJoiningSession(false);
-    }
-  };
 
   const openQuiz = async () => {
     setQuizError('');
@@ -156,7 +138,7 @@ const BootcampRoomPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 pt-20 md:pt-24 space-y-4">
+        <div className="max-w-3xl mx-auto px-4 md:px-8 pt-20 md:pt-24 space-y-4">
           <div className="h-4 w-40 rounded-lg bg-bg-card border border-border animate-pulse" />
           <div className="h-10 w-3/4 rounded-lg bg-bg-card border border-border animate-pulse" />
           <div className="h-4 w-full rounded-lg bg-bg-card border border-border animate-pulse" />
@@ -168,7 +150,7 @@ const BootcampRoomPage: React.FC = () => {
   if (!mod || !room) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
+        <div className="max-w-3xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
           <Link to={`/bootcamps/${bootcampId}`} className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Back
           </Link>
@@ -185,7 +167,7 @@ const BootcampRoomPage: React.FC = () => {
   if (room.locked) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
+        <div className="max-w-3xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
           <Link to={`/bootcamps/${bootcampId}`} className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Back
           </Link>
@@ -202,7 +184,7 @@ const BootcampRoomPage: React.FC = () => {
   // ── Room page ─────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-bg pb-16">
-      <div className="max-w-2xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
 
         {/* Back */}
         <Link to={`/bootcamps/${bootcampId}`} className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
@@ -241,30 +223,10 @@ const BootcampRoomPage: React.FC = () => {
         {/* Session — WhatsApp group for link (MVP) */}
         <ScrollReveal delay={0.08}>
           <div className="mb-8 p-5 bg-bg-card border border-border rounded-xl">
-            <p className="text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Live Session</p>
-            <div className="flex items-start gap-3 p-4 rounded-lg mb-4"
-              style={{ background: 'var(--color-accent-dim)', border: '1px solid rgba(183,255,153,0.2)' }}>
-              <span className="text-accent text-lg flex-none">📱</span>
-              <div>
-                <p className="text-sm font-bold text-text-primary mb-1">Check the WhatsApp Group</p>
-                <p className="text-xs text-text-muted">The session link for this room is shared in the Hacker Protocol WhatsApp group before each class.</p>
-              </div>
-            </div>
-            <button
-              onClick={openRoom}
-              disabled={joiningSession || hasOpened || Boolean(room.completed)}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-accent text-bg font-bold rounded-xl transition-all text-sm disabled:opacity-60 hover:brightness-110 active:scale-95"
-            >
-              {joiningSession
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> Opening...</>
-                : (hasOpened || room.completed)
-                  ? <><CheckCircle2 className="w-4 h-4" /> Room Opened</>
-                  : <><Video className="w-4 h-4" /> Mark Room as Opened</>
-              }
-            </button>
-            {(hasOpened || room.completed) && (
-              <p className="text-xs text-accent mt-2 font-bold">✓ CP reward granted</p>
-            )}
+            <p className="text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Session</p>
+            <p className="text-sm text-text-secondary">
+              Your instructor will share the session details in the bootcamp group. Attend the live session, then complete the quiz below to earn your CP.
+            </p>
           </div>
         </ScrollReveal>
 
