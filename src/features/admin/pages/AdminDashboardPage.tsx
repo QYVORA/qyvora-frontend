@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, LogOut, Shield, Users, Database, Coins,
   AlertTriangle, Mail, Ban, Unlock, Search, Menu, X,
-  RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight,
+  RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight, CheckCircle2,
 } from 'lucide-react';
 import QuizManager from '../components/QuizManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
@@ -14,106 +14,147 @@ import api from '../../../core/services/api';
 
 const HACKER_PROTOCOL_ID = 'bc_1775270338500';
 
-// ── MVP Bootcamp Access Panel ─────────────────────────────────────────────────
+// ── MVP Bootcamp Control Panel ────────────────────────────────────────────────
 const BOOTCAMP_MODULES = [
-  { moduleId: 1, title: 'Hacker Mindset' },
-  { moduleId: 2, title: 'Linux Foundations' },
-  { moduleId: 3, title: 'Networking' },
-  { moduleId: 4, title: 'Web & Backend Systems' },
-  { moduleId: 5, title: 'Social Engineering' },
+  { moduleId: 1, title: 'Hacker Mindset', rooms: 3 },
+  { moduleId: 2, title: 'Linux Foundations', rooms: 4 },
+  { moduleId: 3, title: 'Networking', rooms: 4 },
+  { moduleId: 4, title: 'Web & Backend Systems', rooms: 5 },
+  { moduleId: 5, title: 'Social Engineering', rooms: 3 },
 ];
 
 const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => void; api: typeof import('../../../core/services/api').default }> = ({ addToast }) => {
-  const [started, setStarted] = React.useState(false);
-  const [unlockedModules, setUnlockedModules] = React.useState<number[]>([]);
+  const [panel, setPanel] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [saving, setSaving] = React.useState(false);
 
-  React.useEffect(() => {
-    api.get(`/admin/bootcamp/access?bootcampId=${HACKER_PROTOCOL_ID}`)
-      .then(res => {
-        setStarted(Boolean(res.data?.access?.started));
-        setUnlockedModules(Array.isArray(res.data?.access?.unlockedModules) ? res.data.access.unlockedModules : []);
-      })
+  const load = () => {
+    setLoading(true);
+    api.get(`/admin/bootcamp/control-panel?bootcampId=${HACKER_PROTOCOL_ID}`)
+      .then(res => setPanel(res.data || null))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
-
-  const toggleModule = (moduleId: number) => {
-    setUnlockedModules(prev =>
-      prev.includes(moduleId) ? prev.filter(id => id !== moduleId) : [...prev, moduleId]
-    );
   };
 
-  const save = async () => {
+  React.useEffect(() => { load(); }, []);
+
+  const patch = async (body: Record<string, unknown>, msg: string) => {
     setSaving(true);
     try {
-      await api.patch('/admin/bootcamp/access', {
-        bootcampId: HACKER_PROTOCOL_ID,
-        started,
-        unlockedModules,
-      });
-      addToast('Bootcamp access updated', 'success');
+      const res = await api.patch('/admin/bootcamp/access', { bootcampId: HACKER_PROTOCOL_ID, ...body });
+      setPanel((p: any) => ({ ...p, ...res.data?.controlPanel, bootcampStarted: res.data?.access?.started, unlockedModules: res.data?.access?.unlockedModules }));
+      addToast(msg, 'success');
     } catch (e: any) {
-      addToast(e?.response?.data?.error || 'Failed to update access', 'error');
+      addToast(e?.response?.data?.error || 'Failed', 'error');
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <div className="p-6 text-text-muted text-sm animate-pulse">Loading access config...</div>;
+  if (loading) return <div className="p-6 text-text-muted text-sm animate-pulse">Loading control panel…</div>;
+
+  const started = Boolean(panel?.bootcampStarted);
+  const unlockedModules: number[] = Array.isArray(panel?.unlockedModules) ? panel.unlockedModules : [];
+  const enrolledStudents = Number(panel?.enrolledStudents || 0);
+  const currentModule = panel?.currentModule || null;
+  const nextModule = panel?.nextModule || null;
+  const engagement = Number(panel?.engagement?.studentsInCurrentModule || 0);
 
   return (
-    <div className="max-w-lg space-y-6">
-      <div>
-        <h2 className="text-sm font-black text-text-primary uppercase tracking-widest mb-1">Hacker Protocol — Access Control</h2>
-        <p className="text-xs text-text-muted">Control which modules students can access. Unlocking a module unlocks all its rooms.</p>
+    <div className="space-y-8 max-w-3xl">
+      {/* Header stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { label: 'Enrolled', value: enrolledStudents },
+          { label: 'Modules Unlocked', value: `${unlockedModules.length} / ${BOOTCAMP_MODULES.length}` },
+          { label: 'In Current Module', value: engagement },
+          { label: 'Status', value: started ? 'LIVE' : 'PAUSED' },
+        ].map(({ label, value }) => (
+          <div key={label} className="bg-bg-card border border-border rounded-xl p-4">
+            <div className="text-[10px] uppercase tracking-widest text-text-muted mb-1">{label}</div>
+            <div className={`text-xl font-black ${label === 'Status' ? (started ? 'text-accent' : 'text-text-muted') : 'text-text-primary'}`}>{value}</div>
+          </div>
+        ))}
       </div>
 
-      {/* Started toggle */}
-      <div className="flex items-center justify-between p-4 bg-bg-card border border-border rounded-xl">
+      {/* Start / Stop toggle */}
+      <div className="flex items-center justify-between p-5 bg-bg-card border border-border rounded-xl">
         <div>
-          <div className="text-sm font-bold text-text-primary">Bootcamp Started</div>
-          <div className="text-xs text-text-muted">Students can see content only when this is on</div>
+          <div className="text-sm font-black text-text-primary uppercase tracking-wide mb-1">Bootcamp Started</div>
+          <div className="text-xs text-text-muted">Students can access content only when this is on</div>
         </div>
         <button
-          onClick={() => setStarted(s => !s)}
-          className={`w-12 h-6 rounded-full transition-colors relative flex-none ${started ? 'bg-accent' : 'bg-border'}`}
+          onClick={() => void patch({ started: !started }, started ? 'Bootcamp paused' : 'Bootcamp started!')}
+          disabled={saving}
+          className={`w-14 h-7 rounded-full transition-colors relative flex-none disabled:opacity-50 ${started ? 'bg-accent' : 'bg-border'}`}
         >
-          <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${started ? 'translate-x-7' : 'translate-x-1'}`} />
+          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${started ? 'translate-x-8' : 'translate-x-1'}`} />
         </button>
       </div>
 
-      {/* Module unlocks */}
-      <div className="space-y-2">
-        <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Unlocked Modules</p>
-        {BOOTCAMP_MODULES.map(mod => {
-          const unlocked = unlockedModules.includes(mod.moduleId);
-          return (
-            <label key={mod.moduleId} className="flex items-center gap-3 p-3 bg-bg-card border border-border rounded-xl cursor-pointer hover:border-accent/30 transition-colors">
-              <input
-                type="checkbox"
-                checked={unlocked}
-                onChange={() => toggleModule(mod.moduleId)}
-                className="accent-accent w-4 h-4"
-              />
-              <span className="text-sm font-bold text-text-primary">
-                <span className="text-text-muted font-mono mr-2">0{mod.moduleId}</span>
-                {mod.title}
-              </span>
-              {unlocked && <span className="ml-auto text-[9px] font-bold text-accent uppercase tracking-widest">Unlocked</span>}
-            </label>
-          );
-        })}
-      </div>
+      {/* Unlock next module — 1-click */}
+      <div className="p-5 bg-bg-card border border-border rounded-xl space-y-4">
+        <div>
+          <div className="text-sm font-black text-text-primary uppercase tracking-wide mb-1">Module Control</div>
+          <div className="text-xs text-text-muted">Unlocking a module automatically unlocks all its rooms</div>
+        </div>
 
-      <button
-        onClick={save}
-        disabled={saving}
-        className="btn-primary text-sm flex items-center gap-2 disabled:opacity-50"
-      >
-        {saving ? <><span className="w-4 h-4 border-2 border-bg border-t-transparent rounded-full animate-spin inline-block" /> Saving...</> : 'Save Access Config'}
-      </button>
+        {currentModule && (
+          <div className="flex items-center gap-3 p-3 bg-accent-dim/40 border border-accent/20 rounded-xl">
+            <div className="w-2 h-2 rounded-full bg-accent animate-pulse flex-none" />
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-accent font-bold mb-0.5">Current Module</div>
+              <div className="text-sm font-bold text-text-primary">{currentModule.title}</div>
+              <div className="text-[10px] text-text-muted">{currentModule.roomCount} rooms · {engagement} students active</div>
+            </div>
+          </div>
+        )}
+
+        {nextModule ? (
+          <button
+            onClick={() => void patch({ unlockNext: true }, `Module "${nextModule.title}" unlocked`)}
+            disabled={saving || !started}
+            className="w-full flex items-center justify-between gap-3 p-4 bg-bg border border-border rounded-xl hover:border-accent/40 hover:bg-accent-dim/20 transition-all disabled:opacity-40 group"
+          >
+            <div className="text-left">
+              <div className="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">Unlock Next Module</div>
+              <div className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">{nextModule.title}</div>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-accent-dim border border-accent/30 flex items-center justify-center flex-none">
+              <Unlock className="w-4 h-4 text-accent" />
+            </div>
+          </button>
+        ) : (
+          <div className="p-4 border border-border rounded-xl text-sm text-text-muted text-center">
+            All modules are unlocked
+          </div>
+        )}
+
+        {/* Module list */}
+        <div className="space-y-2 pt-2">
+          <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">All Modules</div>
+          {BOOTCAMP_MODULES.map(mod => {
+            const unlocked = unlockedModules.includes(mod.moduleId);
+            const isCurrent = currentModule?.moduleId === mod.moduleId;
+            return (
+              <div key={mod.moduleId} className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors ${
+                isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border bg-bg-card' : 'border-border/50 bg-bg opacity-50'
+              }`}>
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-none text-xs font-black ${
+                  unlocked ? 'bg-accent text-bg' : 'bg-bg border border-border text-text-muted'
+                }`}>
+                  {unlocked ? <CheckCircle2 className="w-3.5 h-3.5" /> : String(mod.moduleId).padStart(2, '0')}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-bold text-text-primary truncate">{mod.title}</div>
+                  <div className="text-[10px] text-text-muted">{mod.rooms} rooms</div>
+                </div>
+                {unlocked && <span className="text-[9px] font-bold text-accent uppercase tracking-widest">Unlocked</span>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
@@ -523,7 +564,7 @@ const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Scrollable content */}
-        <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6">
+        <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-8 lg:p-10">
           {loading ? <Skeleton /> : (
             <>
 

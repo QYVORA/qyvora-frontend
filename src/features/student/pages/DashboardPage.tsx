@@ -109,41 +109,16 @@ const Dashboard: React.FC = () => {
           <div className="flex-1 min-w-0 space-y-6 md:space-y-8">
 
             {/* ══════════════════════════════════════════════════════════════
-                HERO / OVERVIEW CARD
-                Full-bleed card with ambient glow, dot grid, scanlines
+                HERO / OVERVIEW — no card wrapper, content directly on bg
             ══════════════════════════════════════════════════════════════ */}
             <motion.section
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="relative rounded-2xl border border-border bg-bg-card overflow-hidden"
+              className="relative py-2"
             >
-              {/* Ambient glow blob — top-left */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-16 -left-16 w-72 h-72 rounded-full"
-                style={{ background: 'radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%)' }}
-              />
-              {/* Ambient glow blob — bottom-right */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -bottom-20 -right-10 w-56 h-56 rounded-full"
-                style={{ background: 'radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%)' }}
-              />
-
-              {/* Dot grid texture */}
-              <div aria-hidden className="dot-grid absolute inset-0 opacity-60 pointer-events-none" />
-
-              {/* Scanline overlay */}
-              <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
-
-              {/* Top accent bar */}
-              <div className="absolute top-0 left-0 right-0 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
-              />
-
               {/* Card content */}
-              <div className="relative z-10 p-6 md:p-8">
+              <div className="relative z-10">
 
                 {/* Row 1 — avatar + name + stats */}
                 <div className="flex items-center gap-5 md:gap-8 mb-7">

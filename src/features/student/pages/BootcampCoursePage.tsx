@@ -137,7 +137,7 @@ const BootcampCourse: React.FC = () => {
   // ── Enrolled ──
   return (
     <div className="min-h-screen bg-bg pb-16">
-      <div className="max-w-4xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-text-muted mb-6">
@@ -149,10 +149,10 @@ const BootcampCourse: React.FC = () => {
         </div>
 
         {/* Progress header */}
-        <ScrollReveal className="mb-8">
-          <div className="p-6 md:p-8 bg-bg-card border border-border rounded-2xl">
-            <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-2 block">// CURRICULUM</span>
-            <h1 className="text-2xl md:text-3xl font-black text-text-primary mb-4">{course?.title || 'Bootcamp'}</h1>
+        <ScrollReveal className="mb-10">
+          <div className="p-7 md:p-10 bg-bg-card border border-border rounded-2xl">
+            <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">// CURRICULUM</span>
+            <h1 className="text-3xl md:text-4xl font-black text-text-primary mb-5">{course?.title || 'Bootcamp'}</h1>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-bold text-text-primary">Overall Progress</span>
               <span className="text-sm font-mono text-accent">{progressValue}</span>
@@ -186,7 +186,7 @@ const BootcampCourse: React.FC = () => {
                   {/* Phase header — clickable */}
                   <button
                     onClick={() => !isLocked && setExpandedModule(isExpanded ? null : mod.moduleId)}
-                    className="w-full p-5 flex items-center gap-4 text-left"
+                    className="w-full p-6 md:p-7 flex items-center gap-5 text-left"
                     disabled={isLocked}
                   >
                     {/* Phase number / status icon */}
@@ -240,7 +240,7 @@ const BootcampCourse: React.FC = () => {
                           return (
                             <div
                               key={room.roomId}
-                              className={`flex items-center gap-4 px-5 py-4 transition-colors ${
+                              className={`flex items-center gap-4 px-6 md:px-7 py-4 md:py-5 transition-colors ${
                                 isRoomLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent-dim/20 cursor-pointer'
                               }`}
                               onClick={() => {
@@ -258,9 +258,9 @@ const BootcampCourse: React.FC = () => {
 
                               {/* Room info */}
                               <div className="flex-1 min-w-0">
-                                <div className="text-sm font-bold text-text-primary truncate">{room.title || `Room ${room.roomId}`}</div>
+                                <div className="text-sm md:text-base font-bold text-text-primary truncate">{room.title || `Room ${room.roomId}`}</div>
                                 {room.overview && (
-                                  <div className="text-[11px] text-text-muted truncate mt-0.5">{room.overview}</div>
+                                  <div className="text-xs text-text-muted truncate mt-0.5">{room.overview}</div>
                                 )}
                               </div>
 
