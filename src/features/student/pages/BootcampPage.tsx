@@ -7,6 +7,8 @@ import api from '../../../core/services/api';
 import EnrollmentModal from '../components/EnrollmentModal';
 
 import { resolveImg } from '../../../shared/utils/resolveImg';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 const PHASE_IMGS = [
   '/HPB-image.png',
@@ -140,36 +142,51 @@ const Bootcamp: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
-        <ScrollReveal className="mb-10">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
-          <h1 className="text-4xl md:text-5xl font-black text-text-primary mb-3">Bootcamp Programs</h1>
-          <p className="text-text-secondary max-w-2xl text-sm">
-            Phased bootcamp modules building practical offensive security skills from fundamentals to advanced operations.
-          </p>
+      <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 md:px-10 md:pt-24">
+        <ScrollReveal className="mb-10 md:mb-12">
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
+              <div className="absolute -left-24 top-0 h-72 w-72 rounded-full bg-accent/14 blur-3xl" />
+              <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl" />
+            </div>
+            <OptionalDecorImage
+              src={STUDENT_DECOR.bootcampListMascot}
+              className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[160px] w-auto opacity-95 sm:block md:max-h-[200px]"
+            />
+            <div className="relative z-10 max-w-3xl">
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Arsenal</span>
+              <h1 className="mb-4 text-4xl font-black uppercase tracking-tight text-text-primary sm:text-5xl md:text-6xl">
+                Bootcamp programs
+              </h1>
+              <p className="text-base leading-relaxed text-text-secondary md:text-lg">
+                Pick a track, enroll, and grind through phased labs — recon to ops — with checkpoints that feel like a game
+                map, not a boring syllabus.
+              </p>
+            </div>
+          </div>
         </ScrollReveal>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="card-hsociety overflow-hidden animate-pulse">
+              <div key={i} className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card animate-pulse">
                 <div className="aspect-video bg-accent-dim/30" />
-                <div className="p-5 space-y-3">
-                  <div className="h-3 bg-accent-dim/30 rounded w-1/4" />
-                  <div className="h-4 bg-accent-dim/30 rounded w-3/4" />
-                  <div className="h-3 bg-accent-dim/20 rounded w-1/2" />
-                  <div className="h-10 bg-accent-dim/20 rounded w-full mt-4" />
+                <div className="space-y-3 p-6">
+                  <div className="h-3 w-1/4 rounded bg-accent-dim/30" />
+                  <div className="h-5 w-3/4 rounded bg-accent-dim/30" />
+                  <div className="h-3 w-1/2 rounded bg-accent-dim/20" />
+                  <div className="mt-4 h-11 w-full rounded-xl bg-accent-dim/20" />
                 </div>
               </div>
             ))}
           </div>
         ) : bootcamps.length === 0 ? (
-          <div className="py-20 text-center">
-            <BookOpen className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
-            <p className="text-text-muted text-sm">No bootcamps available yet. Check back soon.</p>
+          <div className="rounded-2xl border-2 border-dashed border-border py-20 text-center">
+            <BookOpen className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
+            <p className="text-text-muted md:text-lg">No bootcamps available yet. Check back soon.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
             {bootcamps.map((bc, i) => {
               const prog = moduleProgressById.get(String(bc.id || ''));
               const progress = Number(prog?.progress || 0);
@@ -179,7 +196,12 @@ const Bootcamp: React.FC = () => {
 
               return (
                 <ScrollReveal key={bc.id || i} delay={i * 0.08}>
-                  <div className={`card-hsociety overflow-hidden flex flex-col group transition-all ${isLocked ? 'opacity-75' : 'hover:border-accent/40'}`}>
+                  <div
+                    className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 border-border bg-bg-card transition-all ${
+                      isLocked ? 'opacity-75' : 'hover:border-accent/45'
+                    }`}
+                    style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.04)' }}
+                  >
                     <div className="relative aspect-video overflow-hidden">
                       <img
                         src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
@@ -215,14 +237,14 @@ const Bootcamp: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="p-5 flex flex-col flex-1">
-                      <h3 className={`text-base font-bold mb-2 transition-colors ${isLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'}`}>
+                    <div className="flex flex-1 flex-col p-5 md:p-6">
+                      <h3 className={`mb-2 text-lg font-black transition-colors md:text-xl ${isLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'}`}>
                         {bc.title}
                       </h3>
                       {bc.description && (
-                        <p className="text-xs text-text-muted line-clamp-2 mb-3">{bc.description}</p>
+                        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-text-muted">{bc.description}</p>
                       )}
-                      <div className="flex items-center gap-4 text-[10px] font-bold text-text-muted uppercase mb-4">
+                      <div className="mb-5 flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase text-text-muted">
                         {bc.duration && <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {bc.duration}</span>}
                         {bc.priceLabel && <span>{bc.priceLabel}</span>}
                         {progress > 0 && !isLocked && <span className="text-accent ml-auto">{progress}% done</span>}
@@ -231,23 +253,23 @@ const Bootcamp: React.FC = () => {
                       {isLocked ? (
                         <button
                           onClick={() => setLockedBootcamp(bc)}
-                          className="mt-auto w-full btn-secondary !py-2.5 text-xs flex items-center justify-center gap-2 opacity-80"
+                          className="btn-secondary mt-auto flex w-full items-center justify-center gap-2 py-3 text-sm font-black uppercase opacity-90"
                         >
-                          <Lock className="w-3.5 h-3.5" /> Coming Soon
+                          <Lock className="h-4 w-4" /> Coming soon
                         </button>
                       ) : isEnrolled ? (
                         <Link
                           to={`/bootcamps/${bc.id || i}`}
-                          className="mt-auto w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
+                          className="btn-primary mt-auto flex w-full items-center justify-center gap-2 py-3 text-sm font-black uppercase"
                         >
-                          {isComplete ? 'Review' : 'Continue'} <ArrowRight className="w-3.5 h-3.5" />
+                          {isComplete ? 'Review' : 'Continue'} <ArrowRight className="h-4 w-4" />
                         </Link>
                       ) : (
                         <button
                           onClick={() => setEnrollTarget({ id: String(bc.id || i), title: bc.title })}
-                          className="mt-auto w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
+                          className="btn-primary mt-auto flex w-full items-center justify-center gap-2 py-3 text-sm font-black uppercase"
                         >
-                          Enroll Now <ArrowRight className="w-3.5 h-3.5" />
+                          Enroll now <ArrowRight className="h-4 w-4" />
                         </button>
                       )}
                     </div>

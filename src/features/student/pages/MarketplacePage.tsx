@@ -113,21 +113,22 @@ const Marketplace: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-bg pb-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
+    <div className="min-h-screen bg-bg pb-12">
+      <div className="mx-auto max-w-6xl px-4 pt-8 md:px-10 md:pt-10">
 
         {/* Header */}
-        <ScrollReveal className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
-            <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">// THE ECONOMY</span>
-            <h1 className="text-4xl md:text-5xl font-black text-text-primary">Zero-Day Market</h1>
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Zero-day vault</span>
+            <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
+            <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
           </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             {balance !== null && (
-              <div className="px-4 py-2 bg-accent-dim border border-accent/20 rounded-lg">
-                <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest block">Your Balance</span>
-                <span className="text-lg font-black text-accent font-mono inline-flex items-center gap-2">
-                  <CpLogo className="w-5 h-5" />
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-5 py-3">
+                <span className="mb-1 block text-xs font-black uppercase tracking-widest text-text-muted">Balance</span>
+                <span className="inline-flex items-center gap-2 font-mono text-2xl font-black text-accent md:text-3xl">
+                  <CpLogo className="h-7 w-7" />
                   {balance.toLocaleString()}
                 </span>
               </div>
@@ -138,7 +139,7 @@ const Marketplace: React.FC = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="bg-bg-card border border-border rounded-lg py-2.5 pl-10 pr-4 text-sm text-text-primary focus:border-accent outline-none w-full md:w-56 transition-colors"
+                className="w-full rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none md:w-64"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
             </div>

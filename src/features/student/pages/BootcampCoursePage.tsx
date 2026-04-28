@@ -9,6 +9,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 interface LiveClass { title: string; instructor?: string; time?: string; link: string; }
 interface Room {
@@ -97,16 +99,16 @@ const BootcampCourse: React.FC = () => {
   // ── Loading ──
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg pb-8">
-        <div className="max-w-4xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
-          <div className="mb-6 h-4 w-36 rounded bg-bg-card border border-border animate-pulse" />
-          <div className="p-6 bg-bg-card border border-border rounded-2xl animate-pulse mb-6">
-            <div className="h-3 w-28 rounded bg-accent/20 mb-4" />
-            <div className="h-8 w-64 rounded bg-bg mb-4" />
-            <div className="h-2 w-full rounded bg-accent-dim" />
+      <div className="min-h-screen bg-bg pb-12">
+        <div className="mx-auto max-w-5xl px-4 pt-20 md:px-10 md:pt-24">
+          <div className="mb-6 h-6 w-40 animate-pulse rounded-lg bg-accent-dim/40" />
+          <div className="mb-8 animate-pulse overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
+            <div className="mb-6 h-4 w-36 rounded-lg bg-accent/20" />
+            <div className="mb-4 h-10 max-w-xl rounded-xl bg-accent-dim/30" />
+            <div className="mb-8 h-3.5 w-full max-w-xl rounded-full bg-accent-dim" />
           </div>
           {[0, 1, 2].map((i) => (
-            <div key={i} className="h-16 rounded-xl bg-bg-card border border-border animate-pulse mb-3" />
+            <div key={i} className="mb-4 h-20 animate-pulse rounded-2xl border border-border bg-bg-card" />
           ))}
         </div>
       </div>
@@ -116,18 +118,36 @@ const BootcampCourse: React.FC = () => {
   // ── Not enrolled ──
   if (bootcampStatus === 'not_enrolled') {
     return (
-      <div className="min-h-screen bg-bg pb-8">
-        <div className="max-w-2xl mx-auto px-4 md:px-8 pt-20 md:pt-24">
-          <Link to="/bootcamps" className="flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Bootcamps
+      <div className="min-h-screen bg-bg pb-12">
+        <div className="mx-auto max-w-2xl px-4 pt-20 md:px-10 md:pt-24">
+          <Link
+            to="/bootcamps"
+            className="mb-10 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted transition-colors hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to bootcamps
           </Link>
-          <div className="p-10 bg-bg-card border border-border rounded-2xl text-center">
-            <BookOpen className="w-12 h-12 text-accent mx-auto mb-6 opacity-60" />
-            <h1 className="text-2xl font-black text-text-primary mb-3">Enroll to Access</h1>
-            <p className="text-text-muted text-sm mb-8">Register for this bootcamp to unlock the curriculum.</p>
-            <button onClick={enroll} disabled={enrolling} className="btn-primary inline-flex items-center gap-2 disabled:opacity-50">
-              {enrolling ? <><Loader2 className="w-4 h-4 animate-spin" /> Enrolling...</> : 'Enroll Now'}
-            </button>
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card px-8 py-12 text-center md:px-12 md:py-14">
+            <div className="pointer-events-none absolute inset-0" aria-hidden>
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
+            </div>
+            <OptionalDecorImage
+              src={STUDENT_DECOR.courseCurriculumMascot}
+              className="pointer-events-none absolute -bottom-4 right-4 z-[1] hidden max-h-[140px] w-auto opacity-90 md:block"
+            />
+            <div className="relative z-10">
+              <BookOpen className="mx-auto mb-6 h-14 w-14 text-accent opacity-80 md:h-16 md:w-16" />
+              <h1 className="mb-3 text-3xl font-black text-text-primary md:text-4xl">Enroll to unlock</h1>
+              <p className="mb-10 text-base text-text-muted md:text-lg">Join this bootcamp to open the full curriculum map.</p>
+              <button onClick={enroll} disabled={enrolling} className="btn-primary inline-flex items-center gap-3 px-10 py-4 text-base font-black uppercase disabled:opacity-50">
+                {enrolling ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" /> Enrolling…
+                  </>
+                ) : (
+                  'Enroll now'
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -137,39 +157,52 @@ const BootcampCourse: React.FC = () => {
   // ── Enrolled ──
   return (
     <div className="min-h-screen bg-bg pb-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24">
+      <div className="mx-auto max-w-5xl px-4 pt-20 sm:px-6 md:px-10 md:pt-24">
 
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-text-muted mb-6">
-          <Link to="/bootcamps" className="hover:text-accent transition-colors flex items-center gap-1 font-bold uppercase tracking-widest">
-            <ArrowLeft className="w-3.5 h-3.5" /> Bootcamps
+        <div className="mb-8 flex flex-wrap items-center gap-2 text-sm text-text-muted">
+          <Link
+            to="/bootcamps"
+            className="inline-flex items-center gap-1 font-black uppercase tracking-widest transition-colors hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4" /> Bootcamps
           </Link>
-          <ChevronRight className="w-3 h-3 opacity-40" />
-          <span className="text-text-primary font-bold uppercase tracking-widest truncate">{course?.title || 'Course'}</span>
+          <ChevronRight className="h-4 w-4 opacity-40" />
+          <span className="truncate font-black uppercase tracking-wide text-text-primary">{course?.title || 'Course'}</span>
         </div>
 
-        {/* Progress header */}
-        <ScrollReveal className="mb-10">
-          <div className="p-7 md:p-10 bg-bg-card border border-border rounded-2xl">
-            <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">// CURRICULUM</span>
-            <h1 className="text-3xl md:text-4xl font-black text-text-primary mb-5">{course?.title || 'Bootcamp'}</h1>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-bold text-text-primary">Overall Progress</span>
-              <span className="text-sm font-mono text-accent">{progressValue}</span>
+        <ScrollReveal className="mb-10 md:mb-12">
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
+              <div className="absolute -right-16 -top-20 h-72 w-72 rounded-full bg-accent/14 blur-3xl" />
+              <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
             </div>
-            <div className="h-2 w-full bg-accent-dim rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: progressValue }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-                className="h-full bg-accent rounded-full"
-              />
+            <OptionalDecorImage
+              src={STUDENT_DECOR.courseCurriculumMascot}
+              className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[200px] w-auto opacity-95 md:block md:max-h-[240px]"
+            />
+            <div className="relative z-10 max-w-3xl">
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Curriculum map</span>
+              <h1 className="mb-6 text-3xl font-black text-text-primary sm:text-4xl md:text-5xl">{course?.title || 'Bootcamp'}</h1>
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                <span className="text-base font-black uppercase tracking-tight text-text-primary md:text-lg">Overall progress</span>
+                <span className="font-mono text-2xl font-black text-accent md:text-3xl">{progressValue}</span>
+              </div>
+              <div className="relative h-3.5 w-full max-w-2xl overflow-hidden rounded-full bg-accent-dim md:h-4">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: progressValue }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                  className="h-full rounded-full bg-accent"
+                  style={{ boxShadow: '0 0 20px var(--color-accent-glow)' }}
+                />
+              </div>
             </div>
           </div>
         </ScrollReveal>
 
-        {/* Phases (modules) */}
-        <div className="space-y-3">
+        <h2 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-text-muted md:text-sm">Phases & rooms</h2>
+
+        <div className="space-y-4 md:space-y-5">
           {(course?.modules || []).map((mod, idx) => {
             const prog = moduleProgressMap.get(Number(mod.moduleId));
             const progress = Number(prog?.progress || 0);
@@ -180,47 +213,44 @@ const BootcampCourse: React.FC = () => {
 
             return (
               <ScrollReveal key={mod.moduleId} delay={idx * 0.04}>
-                <div className={`w-full bg-bg-card border rounded-xl overflow-hidden transition-all ${
-                  isLocked ? 'border-border opacity-60' : isExpanded ? 'border-accent/30' : 'border-border hover:border-accent/20'
+                <div className={`w-full overflow-hidden rounded-2xl border-2 transition-all ${
+                  isLocked ? 'border-border bg-bg-card/80 opacity-60' : isExpanded ? 'border-accent/35 bg-bg-card shadow-[inset_0_1px_0_rgba(183,255,153,0.05)]' : 'border-border bg-bg-card hover:border-accent/25'
                 }`}>
-                  {/* Phase header — clickable */}
                   <button
                     onClick={() => !isLocked && setExpandedModule(isExpanded ? null : mod.moduleId)}
-                    className="w-full p-6 md:p-7 flex items-center gap-5 text-left"
+                    className="flex w-full items-center gap-5 p-5 text-left md:gap-6 md:p-7"
                     disabled={isLocked}
                   >
-                    {/* Phase number / status icon */}
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-none text-sm font-black font-mono shrink-0 ${
-                      progress === 100 ? 'bg-accent text-bg' : isLocked ? 'bg-bg border border-border text-text-muted' : 'bg-accent-dim text-accent border border-accent/20'
+                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-base font-black font-mono md:h-14 md:w-14 ${
+                      progress === 100 ? 'border-accent/30 bg-accent text-bg' : isLocked ? 'border-border bg-bg text-text-muted' : 'border-accent/25 bg-accent-dim text-accent'
                     }`}>
-                      {progress === 100 ? <CheckCircle2 className="w-5 h-5" /> : isLocked ? <Lock className="w-4 h-4" /> : String(idx + 1).padStart(2, '0')}
+                      {progress === 100 ? <CheckCircle2 className="h-6 w-6" /> : isLocked ? <Lock className="h-5 w-5" /> : String(idx + 1).padStart(2, '0')}
                     </div>
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mb-1">
-                        <h3 className="text-sm font-bold text-text-primary">{mod.title}</h3>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                        <h3 className="text-base font-black text-text-primary md:text-lg">{mod.title}</h3>
                         {mod.roleTitle && (
-                          <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{mod.roleTitle}</span>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">{mod.roleTitle}</span>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 text-[10px] text-text-muted font-bold uppercase">
+                      <div className="flex items-center gap-4 text-xs font-bold uppercase text-text-muted">
                         <span>{roomsDone}/{roomsTotal} rooms</span>
                         {progress > 0 && <span className="text-accent">{progress}%</span>}
                       </div>
                     </div>
 
-                    {/* Mini progress bar */}
                     {!isLocked && progress > 0 && progress < 100 && (
-                      <div className="hidden sm:block w-20 h-1.5 bg-accent-dim rounded-full overflow-hidden shrink-0">
-                        <div className="h-full bg-accent rounded-full" style={{ width: `${progress}%` }} />
+                      <div className="hidden h-2 w-24 shrink-0 overflow-hidden rounded-full bg-accent-dim sm:block">
+                        <div className="h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
                       </div>
                     )}
 
                     {isLocked
-                      ? <Lock className="w-4 h-4 text-text-muted shrink-0" />
+                      ? <Lock className="h-5 w-5 shrink-0 text-text-muted" />
                       : isExpanded
-                        ? <ChevronDown className="w-4 h-4 text-text-muted shrink-0" />
-                        : <ChevronRight className="w-4 h-4 text-text-muted shrink-0" />
+                        ? <ChevronDown className="h-5 w-5 shrink-0 text-text-muted" />
+                        : <ChevronRight className="h-5 w-5 shrink-0 text-text-muted" />
                     }
                   </button>
 

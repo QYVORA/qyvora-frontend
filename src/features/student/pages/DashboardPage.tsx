@@ -8,6 +8,8 @@ import {
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 // ── Sidebar nav items ────────────────────────────────────────────────────────
 const RAIL_LINKS = [
@@ -176,18 +178,15 @@ const Dashboard: React.FC = () => {
                 className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10"
                 style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(183,255,153,0.06)' }}
               >
-                {/* Playful watermark illustrations (subtle, THM-style energy without clutter) */}
-                <img
-                  src="/images/metrics/cp-points-badge.svg"
-                  alt=""
-                  className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 opacity-[0.07] select-none sm:h-44 sm:w-44 md:-right-4 md:-top-4 md:h-52 md:w-52 md:opacity-[0.1]"
-                  aria-hidden
-                />
-                <img
-                  src="/images/metrics/streak-badge.svg"
-                  alt=""
-                  className="pointer-events-none absolute -bottom-8 -left-6 h-32 w-32 opacity-[0.08] select-none sm:h-40 sm:w-40 md:opacity-[0.11]"
-                  aria-hidden
+                {/* Ambient shapes (always on) + optional cartoon PNG in public/images/student/ */}
+                <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
+                  <div className="absolute -right-24 -top-28 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+                  <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-orange-400/12 blur-3xl" />
+                  <div className="absolute right-1/4 bottom-0 h-32 w-64 rounded-full bg-purple-500/5 blur-2xl" />
+                </div>
+                <OptionalDecorImage
+                  src={STUDENT_DECOR.hubPanelMascot}
+                  className="pointer-events-none absolute -bottom-6 -right-4 z-[1] hidden max-h-[200px] w-auto select-none opacity-90 saturate-[1.05] sm:block md:-bottom-8 md:right-2 md:max-h-[220px]"
                 />
 
                 <div className="relative z-10">

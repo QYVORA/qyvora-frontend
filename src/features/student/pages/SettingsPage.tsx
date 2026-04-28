@@ -136,21 +136,21 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-5xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
-        <ScrollReveal className="mb-8">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-2 block">// SECURITY</span>
-          <h1 className="text-3xl font-black text-text-primary">Account Settings</h1>
+    <div className="min-h-screen bg-bg pb-10">
+      <div className="mx-auto max-w-5xl px-4 pt-8 md:px-10 md:pt-10">
+        <ScrollReveal className="mb-10">
+          <span className="mb-2 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-5xl">Account settings</h1>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
 
           {/* ── CHANGE PASSWORD ── */}
           <ScrollReveal className="mb-0">
-            <div className="bg-bg-card border border-border rounded-xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-border bg-accent-dim/5 flex items-center gap-3">
-                <Shield className="w-4 h-4 text-accent" />
-                <h2 className="text-sm font-bold text-text-primary uppercase tracking-widest">Change Password</h2>
+            <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+              <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
+                <Shield className="h-5 w-5 text-accent" />
+                <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Change password</h2>
               </div>
               <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
                 <PasswordField name="current_password" label="Current Password" placeholder="Your current password" />

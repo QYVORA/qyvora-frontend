@@ -55,12 +55,12 @@ const Leaderboard: React.FC = () => {
   const pagedRest = rest.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <div className="min-h-screen bg-bg pb-12 scanlines">
-      <div className="max-w-5xl mx-auto px-4 md:px-8 py-10">
-        <ScrollReveal className="text-center mb-10">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">// HALL_OF_SHADOWS</span>
-          <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter uppercase mb-3">Leaderboard</h1>
-          <p className="text-text-muted max-w-xl mx-auto text-sm">The elite operators of HSOCIETY, ranked by points earned.</p>
+    <div className="min-h-screen bg-bg pb-16 scanlines">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:px-10 md:py-14">
+        <ScrollReveal className="mb-12 text-center md:mb-14">
+          <span className="mb-4 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Hall of shadows</span>
+          <h1 className="mb-4 text-4xl font-black uppercase tracking-tight text-text-primary md:text-6xl">Leaderboard</h1>
+          <p className="mx-auto max-w-xl text-base text-text-muted md:text-lg">Elite operators ranked by CP — chase the podium.</p>
         </ScrollReveal>
 
         {loading && operators.length === 0 ? (

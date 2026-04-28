@@ -150,12 +150,12 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-8 scanlines">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
+    <div className="min-h-screen bg-bg pb-12 scanlines">
+      <div className="mx-auto max-w-6xl px-4 pt-8 md:px-10">
 
         {/* HEADER */}
         <ScrollReveal>
-          <div className="relative p-6 md:p-10 bg-bg-card border border-border rounded-2xl overflow-hidden mb-10 group">
+          <div className="group relative mb-12 overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-12">
             <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 

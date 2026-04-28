@@ -4,6 +4,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import CpLogo from '../../../shared/components/CpLogo';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 const PAGE_SIZE = 10;
 
@@ -51,13 +53,13 @@ const Wallet: React.FC = () => {
   const totalSpent = Math.abs(txRows.filter((t) => t.value < 0).reduce((a, t) => a + t.value, 0));
 
   return (
-    <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
+    <div className="min-h-screen bg-bg pb-8">
+      <div className="mx-auto max-w-6xl px-4 pt-8 md:px-10 md:pt-10">
 
-        {/* Header */}
-        <ScrollReveal className="mb-6 md:mb-10">
-          <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-2 block">// ECONOMY</span>
-          <h1 className="text-3xl md:text-4xl font-black text-text-primary">Operator Wallet</h1>
+        <ScrollReveal className="mb-8 md:mb-12">
+          <span className="mb-2 block text-xs font-black uppercase tracking-[0.3em] text-accent md:text-sm">Economy</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-5xl">Operator wallet</h1>
+          <p className="mt-2 max-w-xl text-base text-text-muted md:text-lg">Your CP balance and ledger — same energy as the dashboard hub.</p>
         </ScrollReveal>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
@@ -66,22 +68,20 @@ const Wallet: React.FC = () => {
 
         {/* Balance card */}
         <ScrollReveal>
-          <div className="relative p-6 md:p-8 bg-accent-dim border border-accent/20 rounded-2xl overflow-hidden">
-            <div className="absolute top-3 right-3 opacity-15 pointer-events-none">
-              <img
-                src="/images/cp-images/CYBER_POINTS_LOGO.png"
-                alt=""
-                className="w-28 h-28 md:w-36 md:h-36 object-contain"
-              />
-            </div>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">Available Balance</div>
-            <div className="text-4xl md:text-5xl font-black text-accent font-mono mb-6 inline-flex items-center gap-2">
+          <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6 md:p-9">
+            <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
+            <OptionalDecorImage
+              src={STUDENT_DECOR.walletMascot}
+              className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[140px] w-auto -translate-y-1/2 object-contain opacity-95 md:max-h-[160px]"
+            />
+            <div className="relative z-10 mb-2 text-xs font-black uppercase tracking-widest text-text-muted">Available balance</div>
+            <div className="relative z-10 mb-8 inline-flex items-center gap-2 font-mono text-4xl font-black text-accent md:text-6xl">
               {loading ? '—' : balance.toLocaleString()}
               <CpLogo className="w-7 h-7 md:w-8 md:h-8 opacity-75" />
             </div>
             {/* Stats row */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-3 p-3 bg-bg/50 border border-border rounded-xl">
+            <div className="relative z-10 grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-bg/60 p-3">
                 <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none">
                   <ArrowDownLeft className="w-4 h-4 text-accent" />
                 </div>
@@ -90,7 +90,7 @@ const Wallet: React.FC = () => {
                   <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1">{totalEarned.toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></div>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-bg/50 border border-border rounded-xl">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-bg/60 p-3">
                 <div className="w-8 h-8 rounded-lg bg-red-400/10 border border-red-400/20 flex items-center justify-center flex-none">
                   <ArrowUpRight className="w-4 h-4 text-red-400" />
                 </div>
@@ -105,7 +105,7 @@ const Wallet: React.FC = () => {
 
         {/* Rank pill */}
         <ScrollReveal>
-          <div className="flex items-center gap-3 p-4 bg-bg-card border border-border rounded-xl">
+          <div className="flex items-center gap-4 rounded-2xl border-2 border-border bg-bg-card p-5">
             <div className="w-10 h-10 rounded-lg bg-accent-dim border border-accent/30 flex items-center justify-center text-accent flex-none">
               <Shield className="w-5 h-5" />
             </div>
@@ -121,10 +121,10 @@ const Wallet: React.FC = () => {
           {/* RIGHT COLUMN — transactions */}
           <div className="flex-1 min-w-0">
         <ScrollReveal>
-          <div className="bg-bg-card border border-border rounded-2xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-border flex items-center gap-2">
-              <Zap className="w-4 h-4 text-accent" />
-              <h3 className="text-sm font-bold text-text-primary uppercase tracking-widest">Transaction History</h3>
+          <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+            <div className="flex items-center gap-2 border-b border-border px-5 py-5">
+              <Zap className="h-5 w-5 text-accent" />
+              <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Transactions</h3>
             </div>
 
             {loading ? (

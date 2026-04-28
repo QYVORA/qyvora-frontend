@@ -84,13 +84,13 @@ const Notifications: React.FC = () => {
   const hasMore = visibleCount < notifications.length;
 
   return (
-    <div className="min-h-screen bg-bg pb-4">
-      <div className="max-w-4xl mx-auto px-4 md:px-8 pt-6 md:pt-8">
-        <ScrollReveal className="mb-8">
+    <div className="min-h-screen bg-bg pb-10">
+      <div className="mx-auto max-w-4xl px-4 pt-8 md:px-10 md:pt-10">
+        <ScrollReveal className="mb-10">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-2 block">// COMMS</span>
-              <h1 className="text-2xl sm:text-3xl font-black text-text-primary flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="mb-2 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
+              <h1 className="flex flex-wrap items-center gap-2 text-3xl font-black text-text-primary sm:gap-3 sm:text-4xl md:text-5xl">
                 Notifications
                 {unreadCount > 0 && (
                   <span className="px-2 py-0.5 bg-accent text-bg text-xs font-black rounded-full">
@@ -113,9 +113,9 @@ const Notifications: React.FC = () => {
         </ScrollReveal>
 
         {loading ? (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="p-5 bg-bg-card border border-border rounded-xl animate-pulse">
+              <div key={i} className="animate-pulse rounded-2xl border border-border bg-bg-card p-6 md:p-7">
                 <div className="h-3 bg-accent-dim/30 rounded w-1/4 mb-2" />
                 <div className="h-4 bg-accent-dim/30 rounded w-2/3 mb-2" />
                 <div className="h-3 bg-accent-dim/20 rounded w-full" />
@@ -123,18 +123,18 @@ const Notifications: React.FC = () => {
             ))}
           </div>
         ) : notifications.length === 0 ? (
-          <div className="py-20 text-center">
-            <BellOff className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
-            <p className="text-text-muted text-sm">No notifications yet.</p>
+          <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center md:py-20">
+            <BellOff className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
+            <p className="text-base text-text-muted md:text-lg">No notifications yet — you&apos;re clear.</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {visibleItems.map((n) => {
               const colorCls = TYPE_COLORS[n.type] || 'text-text-primary border-border bg-bg-card';
               return (
                 <ScrollReveal key={n.id}>
                   <div
-                    className={`relative p-4 sm:p-5 border rounded-xl transition-all ${
+                    className={`relative rounded-2xl border-2 p-5 transition-all sm:p-6 ${
                       n.read ? 'bg-bg-card border-border opacity-60' : `${colorCls} border`
                     }`}
                   >
