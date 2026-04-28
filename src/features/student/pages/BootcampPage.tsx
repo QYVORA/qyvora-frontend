@@ -9,11 +9,11 @@ import EnrollmentModal from '../components/EnrollmentModal';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 
 const PHASE_IMGS = [
-  '/images/Curriculum-images/phase1.webp',
-  '/images/Curriculum-images/phase2.webp',
-  '/images/Curriculum-images/phase3.webp',
-  '/images/Curriculum-images/phase4.webp',
-  '/images/Curriculum-images/phase5.webp',
+  '/HPB-image.png',
+  '/HPB-image.png',
+  '/HPB-image.png',
+  '/HPB-image.png',
+  '/HPB-image.png',
 ];
 
 const COMMUNITY_LINK = 'https://chat.whatsapp.com/hsociety';

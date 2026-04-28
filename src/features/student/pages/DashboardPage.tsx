@@ -132,7 +132,7 @@ const Dashboard: React.FC = () => {
       priceLabel: String(item.priceLabel || '').trim(),
       currentModule: prog?.title ? String(prog.title) : null,
       progress: Number(prog?.progress || 0),
-      img: resolveImg(item.image, '/images/bootcamp-room-images/hackermindset.png'),
+      img: resolveImg(item.image, '/HPB-image.png'),
     }));
 
   const activeBootcamp = bootcamps.find((bc: any) =>
