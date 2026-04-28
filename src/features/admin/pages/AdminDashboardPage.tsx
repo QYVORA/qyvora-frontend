@@ -62,26 +62,33 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8 px-0">
-      {/* Header stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Key metrics only — module list + toggle carry the rest (no duplicate counts / status) */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[
-          { label: 'Enrolled', value: enrolledStudents },
-          { label: 'Modules Unlocked', value: `${unlockedModules.length} / ${BOOTCAMP_MODULES.length}` },
-          { label: 'In Current Module', value: engagement },
-          { label: 'Status', value: started ? 'LIVE' : 'PAUSED' },
+          { label: 'Enrolled students', value: enrolledStudents },
+          { label: 'Active in current phase', value: engagement },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-bg-card border border-border rounded-xl p-4">
-            <div className="text-[10px] uppercase tracking-widest text-text-muted mb-1">{label}</div>
-            <div className={`text-xl font-black ${label === 'Status' ? (started ? 'text-accent' : 'text-text-muted') : 'text-text-primary'}`}>{value}</div>
+          <div key={label} className="rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
+            <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
+            <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
           </div>
         ))}
       </div>
 
-      {/* Start / Stop toggle */}
-      <div className="flex items-center justify-between gap-6 p-5 bg-bg-card border border-border rounded-xl">
-        <div>
-          <div className="text-sm font-black text-text-primary uppercase tracking-wide mb-1">Bootcamp Started</div>
-          <div className="text-xs text-text-muted">Students can access content only when this is on</div>
+      {/* Start / Stop toggle — LIVE / PAUSED shown here only */}
+      <div className="flex flex-col gap-4 rounded-2xl border-2 border-border bg-bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
+        <div className="min-w-0">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">Bootcamp live</span>
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest ${
+                started ? 'bg-accent/20 text-accent' : 'bg-border text-text-muted'
+              }`}
+            >
+              {started ? 'Live' : 'Paused'}
+            </span>
+          </div>
+          <div className="text-sm text-text-muted md:text-base">When off, learners cannot open new phases.</div>
         </div>
         {/* Toggle — padded track + overflow clip so the thumb stays inside the pill */}
         <button
@@ -99,63 +106,68 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
       </div>
 
       {/* Unlock next module — 1-click */}
-      <div className="p-5 bg-bg-card border border-border rounded-xl space-y-4">
+      <div className="space-y-5 rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
         <div>
-          <div className="text-sm font-black text-text-primary uppercase tracking-wide mb-1">Module Control</div>
-          <div className="text-xs text-text-muted">Unlocking a module automatically unlocks all its rooms</div>
+          <div className="mb-1 text-base font-black uppercase tracking-wide text-text-primary md:text-lg">Phase control</div>
+          <div className="text-sm text-text-muted md:text-base">
+            {unlockedModules.length} of {BOOTCAMP_MODULES.length} phases unlocked · unlock adds all rooms in that phase
+          </div>
         </div>
 
         {currentModule && (
-          <div className="flex items-center gap-3 p-3 bg-accent-dim/40 border border-accent/20 rounded-xl">
-            <div className="w-2 h-2 rounded-full bg-accent animate-pulse flex-none" />
-            <div>
-              <div className="text-[10px] uppercase tracking-widest text-accent font-bold mb-0.5">Current Module</div>
-              <div className="text-sm font-bold text-text-primary">{currentModule.title}</div>
-              <div className="text-[10px] text-text-muted">{currentModule.roomCount} rooms · {engagement} students active</div>
+          <div className="flex items-center gap-4 rounded-2xl border border-accent/25 bg-accent-dim/40 p-4 md:p-5">
+            <div className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-accent" />
+            <div className="min-w-0">
+              <div className="mb-1 text-xs font-black uppercase tracking-widest text-accent">Current phase</div>
+              <div className="text-base font-black text-text-primary md:text-lg">{currentModule.title}</div>
+              <div className="mt-1 text-sm text-text-muted">{currentModule.roomCount} rooms in this phase</div>
             </div>
           </div>
         )}
 
         {nextModule ? (
           <button
+            type="button"
             onClick={() => void patch({ unlockNext: true }, `Module "${nextModule.title}" unlocked`)}
             disabled={saving || !started}
-            className="w-full flex items-center justify-between gap-3 p-4 bg-bg border border-border rounded-xl hover:border-accent/40 hover:bg-accent-dim/20 transition-all disabled:opacity-40 group"
+            className="group flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-border bg-bg p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-40 md:p-5"
           >
-            <div className="text-left">
-              <div className="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">Unlock Next Module</div>
-              <div className="text-sm font-bold text-text-primary group-hover:text-accent transition-colors">{nextModule.title}</div>
+            <div className="min-w-0 text-left">
+              <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Unlock next phase</div>
+              <div className="text-base font-black text-text-primary transition-colors group-hover:text-accent md:text-lg">
+                {nextModule.title}
+              </div>
             </div>
-            <div className="w-9 h-9 rounded-xl bg-accent-dim border border-accent/30 flex items-center justify-center flex-none">
-              <Unlock className="w-4 h-4 text-accent" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim">
+              <Unlock className="h-5 w-5 text-accent" />
             </div>
           </button>
         ) : (
-          <div className="p-4 border border-border rounded-xl text-sm text-text-muted text-center">
-            All modules are unlocked
+          <div className="rounded-2xl border border-border p-4 text-center text-sm text-text-muted md:text-base">
+            All phases are unlocked
           </div>
         )}
 
         {/* Module list */}
-        <div className="space-y-2 pt-2">
-          <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">All Modules</div>
+        <div className="space-y-2 pt-1">
+          <div className="text-xs font-black uppercase tracking-widest text-text-muted">All phases</div>
           {BOOTCAMP_MODULES.map(mod => {
             const unlocked = unlockedModules.includes(mod.moduleId);
             const isCurrent = currentModule?.moduleId === mod.moduleId;
             return (
-              <div key={mod.moduleId} className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors ${
-                isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border bg-bg-card' : 'border-border/50 bg-bg opacity-50'
+              <div key={mod.moduleId} className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors md:px-5 md:py-3.5 ${
+                isCurrent ? 'border-accent/30 bg-accent-dim/30' : unlocked ? 'border-border bg-bg' : 'border-border/50 bg-bg/80 opacity-50'
               }`}>
-                <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-none text-xs font-black ${
-                  unlocked ? 'bg-accent text-bg' : 'bg-bg border border-border text-text-muted'
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${
+                  unlocked ? 'bg-accent text-bg' : 'border border-border bg-bg text-text-muted'
                 }`}>
-                  {unlocked ? <CheckCircle2 className="w-3.5 h-3.5" /> : String(mod.moduleId).padStart(2, '0')}
+                  {unlocked ? <CheckCircle2 className="h-4 w-4" /> : String(mod.moduleId).padStart(2, '0')}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-bold text-text-primary truncate">{mod.title}</div>
-                  <div className="text-[10px] text-text-muted">{mod.rooms} rooms</div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-bold text-text-primary md:text-base">{mod.title}</div>
+                  <div className="text-xs text-text-muted">{mod.rooms} rooms</div>
                 </div>
-                {unlocked && <span className="text-[9px] font-bold text-accent uppercase tracking-widest">Unlocked</span>}
+                {unlocked && <span className="shrink-0 text-[10px] font-black uppercase tracking-widest text-accent">Unlocked</span>}
               </div>
             );
           })}
@@ -207,9 +219,9 @@ const Skeleton = () => (
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
 const StatCard = ({ label, value }: { label: string; value: number | string }) => (
-  <div className="bg-bg-card border border-border rounded-xl p-4">
-    <div className="text-[10px] uppercase tracking-widest text-text-muted mb-1">{label}</div>
-    <div className="text-2xl font-black text-text-primary">{value}</div>
+  <div className="rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
+    <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
+    <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
   </div>
 );
 
@@ -559,8 +571,8 @@ const AdminDashboardPage: React.FC = () => {
         )}
 
         {/* Desktop page header */}
-        <div className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
-          <h1 className="text-base font-black text-text-primary uppercase tracking-tight">{activeLabel}</h1>
+        <div className="hidden shrink-0 items-center justify-between border-b border-border px-6 py-5 md:flex lg:px-8">
+          <h1 className="text-lg font-black uppercase tracking-tight text-text-primary lg:text-xl">{activeLabel}</h1>
           <button
             onClick={() => void loadAll()}
             className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
@@ -570,7 +582,7 @@ const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Scrollable content */}
-        <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-8 lg:p-10">
+        <main className="flex-1 min-h-0 overflow-y-auto p-5 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10">
           {loading ? <Skeleton /> : (
             <>
 
