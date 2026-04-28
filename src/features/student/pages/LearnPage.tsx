@@ -59,7 +59,7 @@ const Learn: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 md:px-10 md:pt-24">
+      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 md:px-8 md:pt-24">
 
         <ScrollReveal className="mb-10 md:mb-12">
           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">

@@ -100,7 +100,7 @@ const BootcampCourse: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg pb-12">
-        <div className="mx-auto max-w-5xl px-4 pt-20 md:px-10 md:pt-24">
+        <div className="mx-auto max-w-6xl px-4 pt-20 md:px-8 md:pt-24">
           <div className="mb-6 h-6 w-40 animate-pulse rounded-lg bg-accent-dim/40" />
           <div className="mb-8 animate-pulse overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
             <div className="mb-6 h-4 w-36 rounded-lg bg-accent/20" />
@@ -157,7 +157,7 @@ const BootcampCourse: React.FC = () => {
   // ── Enrolled ──
   return (
     <div className="min-h-screen bg-bg pb-16">
-      <div className="mx-auto max-w-5xl px-4 pt-20 sm:px-6 md:px-10 md:pt-24">
+      <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 md:px-8 md:pt-24">
 
         <div className="mb-8 flex flex-wrap items-center gap-2 text-sm text-text-muted">
           <Link

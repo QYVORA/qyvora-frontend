@@ -61,7 +61,7 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
   const engagement = Number(panel?.engagement?.studentsInCurrentModule || 0);
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-8 px-0">
+    <div className="w-full space-y-8">
       {/* Key metrics only — module list + toggle carry the rest (no duplicate counts / status) */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[
@@ -90,17 +90,17 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
           </div>
           <div className="text-sm text-text-muted md:text-base">When off, learners cannot open new phases.</div>
         </div>
-        {/* Toggle — padded track + overflow clip so the thumb stays inside the pill */}
+        {/* Toggle */}
         <button
           type="button"
           role="switch"
           aria-checked={started}
           onClick={() => void patch({ started: !started }, started ? 'Bootcamp paused' : 'Bootcamp started!')}
           disabled={saving}
-          className={`relative flex h-8 w-14 flex-none cursor-pointer items-center rounded-full p-1 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:opacity-50 overflow-hidden ${started ? 'bg-accent' : 'bg-border'}`}
+          className={`relative flex h-7 w-12 flex-none cursor-pointer items-center rounded-full px-0.5 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:opacity-50 ${started ? 'bg-accent' : 'bg-border'}`}
         >
           <span
-            className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${started ? 'translate-x-6' : 'translate-x-0'}`}
+            className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${started ? 'translate-x-5' : 'translate-x-0'}`}
           />
         </button>
       </div>
@@ -583,6 +583,7 @@ const AdminDashboardPage: React.FC = () => {
 
         {/* Scrollable content */}
         <main className="flex-1 min-h-0 overflow-y-auto p-5 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10">
+          <div className="mx-auto w-full max-w-5xl">
           {loading ? <Skeleton /> : (
             <>
 
@@ -1072,6 +1073,7 @@ const AdminDashboardPage: React.FC = () => {
               )}
             </>
           )}
+          </div>
         </main>
       </div>
     </div>

@@ -114,7 +114,7 @@ const Marketplace: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-6xl px-4 pt-8 md:px-10 md:pt-10">
+      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
 
         {/* Header */}
         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">

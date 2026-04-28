@@ -56,7 +56,7 @@ const Leaderboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-16 scanlines">
-      <div className="mx-auto max-w-6xl px-4 py-10 md:px-10 md:py-14">
+      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-14">
         <ScrollReveal className="mb-12 text-center md:mb-14">
           <span className="mb-4 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Hall of shadows</span>
           <h1 className="mb-4 text-4xl font-black uppercase tracking-tight text-text-primary md:text-6xl">Leaderboard</h1>

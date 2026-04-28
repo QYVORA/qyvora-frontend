@@ -151,7 +151,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-12 scanlines">
-      <div className="mx-auto max-w-6xl px-4 pt-8 md:px-10">
+      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8">
 
         {/* HEADER */}
         <ScrollReveal>

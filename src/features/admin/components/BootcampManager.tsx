@@ -537,13 +537,13 @@ function PhaseAccessTab({
           aria-checked={access.started}
           aria-label="Bootcamp started"
           onClick={() => setAccess((p) => ({ ...p, started: !p.started }))}
-          className={`relative flex h-8 w-14 shrink-0 items-center rounded-full p-1 transition-colors overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+          className={`relative flex h-7 w-12 flex-none cursor-pointer items-center rounded-full px-0.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
             access.started ? "bg-accent" : "bg-border"
           }`}
         >
           <span
             className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${
-              access.started ? "translate-x-6" : "translate-x-0"
+              access.started ? "translate-x-5" : "translate-x-0"
             }`}
           />
         </button>

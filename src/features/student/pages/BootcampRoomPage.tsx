@@ -152,7 +152,7 @@ const BootcampRoomPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24 space-y-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 space-y-4">
           <div className="h-4 w-40 rounded-lg bg-bg-card border border-border animate-pulse" />
           <div className="h-10 w-3/4 rounded-lg bg-bg-card border border-border animate-pulse" />
           <div className="h-4 w-full rounded-lg bg-bg-card border border-border animate-pulse" />
@@ -164,7 +164,7 @@ const BootcampRoomPage: React.FC = () => {
   if (!mod || !room) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
           <Link to={`/bootcamps/${bootcampId}`} className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Back
           </Link>
@@ -181,7 +181,7 @@ const BootcampRoomPage: React.FC = () => {
   if (room.locked) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
           <Link to={`/bootcamps/${bootcampId}`} className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Back
           </Link>
@@ -198,7 +198,7 @@ const BootcampRoomPage: React.FC = () => {
   // ── Room page ─────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-bg pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-20 md:pt-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
 
         {/* Back */}
         <Link
