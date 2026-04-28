@@ -245,7 +245,7 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute z-[80] top-[72px] left-1/2 -translate-x-1/2 w-[520px] bg-bg-card border border-border rounded-lg shadow-2xl p-5"
+                    className="absolute z-[80] top-[72px] left-1/2 -translate-x-1/2 w-[480px] max-w-[calc(100vw-2rem)] bg-bg-card border border-border rounded-xl shadow-2xl p-5"
                   >
                     <div className="grid grid-cols-2 gap-3">
                       {group.items.map((item) => (

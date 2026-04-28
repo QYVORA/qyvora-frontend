@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
+import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 // Layouts
 import PublicLayout from '../shared/layouts/PublicLayout';
@@ -44,15 +45,17 @@ const PageLoader = () => (
   </div>
 );
 
-const Wrap = ({ children }: { children: ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.25 }}
-  >
-    <Suspense fallback={<PageLoader />}>{children}</Suspense>
-  </motion.div>
+const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
+  <ErrorBoundary scope={scope}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      <Suspense fallback={<PageLoader />}>{children}</Suspense>
+    </motion.div>
+  </ErrorBoundary>
 );
 
 const StudentOnly = ({ children }: { children: ReactNode }) => {
@@ -79,42 +82,41 @@ export const AppRouter = () => {
       <Routes location={location}>
         {/* Public routes — no auth required */}
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<Wrap><LandingPage /></Wrap>} />
-          <Route path="/contact" element={<Wrap><ContactPage /></Wrap>} />
-          <Route path="/services" element={<Wrap><ServicesPage /></Wrap>} />
-          <Route path="/cyber-points" element={<Wrap><CyberPointsPage /></Wrap>} />
-          <Route path="/leaderboard" element={<Wrap><LeaderboardPage /></Wrap>} />
-          <Route path="/zero-day-market" element={<Wrap><MarketplacePage /></Wrap>} />
-          {/* Public operator profile — /u/handle */}
-          <Route path="/u/:handle" element={<Wrap><PublicProfilePage /></Wrap>} />
+          <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
+          <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
+          <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
+          <Route path="/cyber-points" element={<Wrap scope="Cyber Points"><CyberPointsPage /></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
+          <Route path="/zero-day-market" element={<Wrap scope="Marketplace"><MarketplacePage /></Wrap>} />
+          <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         </Route>
 
         {/* Auth routes (no layout) */}
-        <Route path="/login" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/register" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/forgot-password" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/reset-password" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/verify-email" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/change-password" element={<Wrap><LoginPage /></Wrap>} />
-        <Route path="/mr-robot" element={<Wrap><LoginPage /></Wrap>} />
+        <Route path="/login" element={<Wrap scope="Login"><LoginPage /></Wrap>} />
+        <Route path="/register" element={<Wrap scope="Register"><LoginPage /></Wrap>} />
+        <Route path="/forgot-password" element={<Wrap scope="Forgot Password"><LoginPage /></Wrap>} />
+        <Route path="/reset-password" element={<Wrap scope="Reset Password"><LoginPage /></Wrap>} />
+        <Route path="/verify-email" element={<Wrap scope="Verify Email"><LoginPage /></Wrap>} />
+        <Route path="/change-password" element={<Wrap scope="Change Password"><LoginPage /></Wrap>} />
+        <Route path="/mr-robot" element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
         {/* Student routes — auth required */}
         <Route element={<StudentLayout />}>
-          <Route path="/dashboard" element={<Wrap><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
-          <Route path="/learn" element={<Wrap><StudentOnly><LearnPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps" element={<Wrap><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId" element={<Wrap><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-          <Route path="/marketplace" element={<Wrap><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
-          <Route path="/wallet" element={<Wrap><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
-          <Route path="/profile" element={<Wrap><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
-          <Route path="/notifications" element={<Wrap><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
-          <Route path="/settings" element={<Wrap><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
+          <Route path="/learn" element={<Wrap scope="Learn"><StudentOnly><LearnPage /></StudentOnly></Wrap>} />
+          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
+          <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
+          <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
+          <Route path="/marketplace" element={<Wrap scope="Marketplace"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
+          <Route path="/wallet" element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
+          <Route path="/profile" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
+          <Route path="/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
+          <Route path="/settings" element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
         </Route>
 
         {/* Admin routes */}
         <Route element={<AdminLayout />}>
-          <Route path="/mr-robot/dashboard" element={<Wrap><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
+          <Route path="/mr-robot/dashboard" element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
         {/* 404 */}

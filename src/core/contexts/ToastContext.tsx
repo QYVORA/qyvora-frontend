@@ -28,29 +28,32 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <ToastContext.Provider value={{ addToast }}>
       {children}
-      <div className="fixed bottom-20 md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[100] flex flex-col gap-3 pointer-events-none md:max-w-sm md:w-full">
+      {/* Toast container — above mobile bottom nav, bottom-right on desktop */}
+      <div className="fixed bottom-[88px] md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[100] flex flex-col gap-2.5 pointer-events-none md:w-80">
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
               key={toast.id}
-              initial={{ opacity: 0, y: 8, scale: 0.95 }}
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.95 }}
-              className={`pointer-events-auto p-4 rounded-lg bg-bg-card border shadow-2xl flex items-center gap-4 w-full ${
+              transition={{ duration: 0.2 }}
+              className={`pointer-events-auto px-4 py-3.5 rounded-xl bg-bg-card border shadow-2xl flex items-start gap-3 w-full ${
                 toast.type === 'success' ? 'border-accent/40' : toast.type === 'error' ? 'border-red-500/40' : 'border-blue-500/40'
               }`}
             >
-              <div className={
-                toast.type === 'success' ? 'text-accent' : toast.type === 'error' ? 'text-red-500' : 'text-blue-500'
-              }>
-                {toast.type === 'success' && <CheckCircle className="w-5 h-5" />}
-                {toast.type === 'error' && <ShieldAlert className="w-5 h-5" />}
-                {toast.type === 'info' && <Info className="w-5 h-5" />}
+              <div className={`flex-none mt-0.5 ${
+                toast.type === 'success' ? 'text-accent' : toast.type === 'error' ? 'text-red-400' : 'text-blue-400'
+              }`}>
+                {toast.type === 'success' && <CheckCircle className="w-4 h-4" />}
+                {toast.type === 'error' && <ShieldAlert className="w-4 h-4" />}
+                {toast.type === 'info' && <Info className="w-4 h-4" />}
               </div>
-              <p className="text-sm font-medium text-text-primary">{toast.message}</p>
-              <button 
+              <p className="text-sm text-text-primary flex-1 leading-snug">{toast.message}</p>
+              <button
                 onClick={() => setToasts((prev) => prev.filter((t) => t.id !== toast.id))}
-                className="ml-auto text-text-muted hover:text-text-primary"
+                className="flex-none text-text-muted hover:text-text-primary transition-colors mt-0.5"
+                aria-label="Dismiss"
               >
                 <X className="w-4 h-4" />
               </button>
