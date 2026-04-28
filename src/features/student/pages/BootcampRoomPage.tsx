@@ -36,6 +36,7 @@ const BootcampRoomPage: React.FC = () => {
   const [activeQuiz, setActiveQuiz] = useState<RoomQuiz | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [quizResult, setQuizResult] = useState<{ score: number; passed: boolean; reward?: number } | null>(null);
+  const [quizError, setQuizError] = useState<string>('');
   const [submittingQuiz, setSubmittingQuiz] = useState(false);
   const [quizLoadedForModule, setQuizLoadedForModule] = useState<string>('');
 
@@ -75,6 +76,7 @@ const BootcampRoomPage: React.FC = () => {
     setActiveQuiz(null);
     setQuizAnswers({});
     setQuizResult(null);
+    setQuizError('');
   }, [moduleScopeKey]);
 
   // Auto-open session + load quiz when room is ready
@@ -84,10 +86,11 @@ const BootcampRoomPage: React.FC = () => {
     // Fire session-open (auto-completes room + grants CP)
     api.post(`/student/modules/${moduleId}/rooms/${roomId}/session-open`, {}).catch(() => {});
 
-    // Load module quiz — always attempt, no gating
+    // Load module quiz — always available for unlocked modules
     if (quizLoadedForModule === moduleScopeKey) return;
     setQuizLoadedForModule(moduleScopeKey);
     setQuizLoading(true);
+    setQuizError('');
     api.post('/student/quiz', {
       moduleId: String(moduleId),
       courseId: String(course?.id || bootcampId || ''),
@@ -104,9 +107,19 @@ const BootcampRoomPage: React.FC = () => {
             },
             questions: quiz.questions,
           });
+        } else {
+          setQuizError('No questions found for this module.');
         }
       })
-      .catch(() => { /* quiz not available yet — silent */ })
+      .catch((err: any) => {
+        const msg = String(err?.response?.data?.error || '');
+        // Module locked — don't show an error, just nothing
+        if (err?.response?.status === 403) {
+          setQuizError('');
+        } else {
+          setQuizError(msg || 'Could not load quiz.');
+        }
+      })
       .finally(() => setQuizLoading(false));
   }, [loading, course, mod, room, moduleScopeKey, quizLoadedForModule]);
 
@@ -300,8 +313,10 @@ const BootcampRoomPage: React.FC = () => {
 
                 {!quizLoading && !activeQuiz && !quizResult && (
                   <div className="text-sm text-text-muted py-4 text-center">
-                    <p>Quiz will be available after your session.</p>
-                    <p className="text-[10px] mt-1 text-text-muted/60">Check back once your instructor releases it.</p>
+                    {quizError
+                      ? <p className="text-red-400 text-xs">{quizError}</p>
+                      : <p className="text-text-muted text-xs">Quiz not available for this module yet.</p>
+                    }
                   </div>
                 )}
 
