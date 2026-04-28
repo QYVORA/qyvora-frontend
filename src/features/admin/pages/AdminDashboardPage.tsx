@@ -61,9 +61,9 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
   const engagement = Number(panel?.engagement?.studentsInCurrentModule || 0);
 
   return (
-    <div className="space-y-8 max-w-3xl">
+    <div className="mx-auto w-full max-w-5xl space-y-8 px-0">
       {/* Header stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Enrolled', value: enrolledStudents },
           { label: 'Modules Unlocked', value: `${unlockedModules.length} / ${BOOTCAMP_MODULES.length}` },
@@ -78,17 +78,23 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
       </div>
 
       {/* Start / Stop toggle */}
-      <div className="flex items-center justify-between p-5 bg-bg-card border border-border rounded-xl">
+      <div className="flex items-center justify-between gap-6 p-5 bg-bg-card border border-border rounded-xl">
         <div>
           <div className="text-sm font-black text-text-primary uppercase tracking-wide mb-1">Bootcamp Started</div>
           <div className="text-xs text-text-muted">Students can access content only when this is on</div>
         </div>
+        {/* Toggle — padded track + overflow clip so the thumb stays inside the pill */}
         <button
+          type="button"
+          role="switch"
+          aria-checked={started}
           onClick={() => void patch({ started: !started }, started ? 'Bootcamp paused' : 'Bootcamp started!')}
           disabled={saving}
-          className={`w-14 h-7 rounded-full transition-colors relative flex-none disabled:opacity-50 ${started ? 'bg-accent' : 'bg-border'}`}
+          className={`relative flex h-8 w-14 flex-none cursor-pointer items-center rounded-full p-1 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:opacity-50 overflow-hidden ${started ? 'bg-accent' : 'bg-border'}`}
         >
-          <span className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform ${started ? 'translate-x-8' : 'translate-x-1'}`} />
+          <span
+            className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${started ? 'translate-x-6' : 'translate-x-0'}`}
+          />
         </button>
       </div>
 

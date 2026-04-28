@@ -530,21 +530,25 @@ function PhaseAccessTab({
   return (
     <div className="flex flex-col gap-4">
       {/* Started toggle */}
-      <label className="flex items-center gap-3 cursor-pointer w-fit">
-        <div
+      <div className="flex items-center gap-3 w-fit">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={access.started}
+          aria-label="Bootcamp started"
           onClick={() => setAccess((p) => ({ ...p, started: !p.started }))}
-          className={`w-10 h-5 rounded-full transition-colors ${
+          className={`relative flex h-8 w-14 shrink-0 items-center rounded-full p-1 transition-colors overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
             access.started ? "bg-accent" : "bg-border"
-          } relative`}
+          }`}
         >
           <span
-            className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-              access.started ? "translate-x-5" : ""
+            className={`pointer-events-none block h-6 w-6 shrink-0 rounded-full bg-white shadow-md transition-transform duration-200 ease-out ${
+              access.started ? "translate-x-6" : "translate-x-0"
             }`}
           />
-        </div>
-        <span className="text-sm text-text-primary">Bootcamp Started</span>
-      </label>
+        </button>
+        <span className="text-sm text-text-primary select-none">Bootcamp Started</span>
+      </div>
 
       {/* Module / room tree */}
       <div className="flex flex-col gap-3">

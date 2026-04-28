@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Wallet, ShoppingBag, Bell, Settings, Terminal,
-  Flame, BookOpen, Zap, Trophy, Target, ChevronRight, Star,
+  Flame, BookOpen, Target, ChevronRight, Star,
 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
-import { resolveImg } from '../../../shared/utils/resolveImg';
 
 // ── Sidebar nav items ────────────────────────────────────────────────────────
 const RAIL_LINKS = [
@@ -85,7 +84,6 @@ const Dashboard: React.FC = () => {
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [streakCelebrated, setStreakCelebrated] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -149,11 +147,6 @@ const Dashboard: React.FC = () => {
 
   // Rank info
   const { rank: rankInfo, next: nextRank, progress: rankProgress } = getRankInfo(cpBalance);
-
-  // Snapshot stats
-  const modulesCompleted = Number(overview?.snapshot?.find((s: any) => s?.id === 'modules')?.value || 0);
-  const roomsCompleted = Number(overview?.snapshot?.find((s: any) => s?.id === 'rooms')?.value || 0);
-  const ctfsCompleted = Number(overview?.snapshot?.find((s: any) => s?.id === 'ctfs')?.value || 0);
 
   // Next mission — first unlocked, incomplete module
   const nextMission = (overview?.learningPath || []).find(
@@ -328,40 +321,6 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             </motion.section>
-
-            {/* ══ STATS TILES ══ */}
-            {!loading && isEnrolled && (
-              <motion.section
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-              >
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {[
-                    { icon: Trophy,  label: 'Modules',  value: modulesCompleted, color: 'text-amber-400',  bg: 'bg-amber-500/10' },
-                    { icon: BookOpen, label: 'Rooms',   value: roomsCompleted,   color: 'text-blue-400',   bg: 'bg-blue-500/10'  },
-                    { icon: Target,  label: 'CTFs',     value: ctfsCompleted,    color: 'text-purple-400', bg: 'bg-purple-500/10'},
-                    { icon: Zap,     label: 'CP Total', value: cpBalance,        color: 'text-accent',     bg: 'bg-accent-dim'   },
-                  ].map(({ icon: Icon, label, value, color, bg }, i) => (
-                    <motion.div
-                      key={label}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.2 + i * 0.06 }}
-                      className="bg-bg-card border border-border rounded-xl p-4 flex flex-col gap-2"
-                    >
-                      <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center`}>
-                        <Icon className={`w-4 h-4 ${color}`} />
-                      </div>
-                      <div className={`text-2xl font-black font-mono ${color}`}>
-                        <AnimatedNumber value={value} />
-                      </div>
-                      <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{label}</div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.section>
-            )}
 
             {/* ══ NEXT MISSION ══ */}
             {!loading && isEnrolled && nextMission && (
