@@ -6,6 +6,12 @@ import {
   BookOpen, Loader2, ArrowRight,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
+import ScrollReveal from '../../../shared/components/ScrollReveal';
+import api from '../../../core/services/api';
+import { useToast } from '../../../core/contexts/ToastContext';
+import { useAuth } from '../../../core/contexts/AuthContext';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 // Per-phase room card images — one image per phase, shown on every room card in that phase
 const PHASE_ROOM_IMAGES: Record<string, string> = {
@@ -14,14 +20,8 @@ const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase3: '/images/bootcamp-room-images/LinuxFoundations.png',
   phase4: '/images/bootcamp-room-images/webandbackendsystems.png',
   phase5: '/images/bootcamp-room-images/socialengineering.png',
-  phase6: '/images/bootcamp-room-images/hackermindset.png', // CTF reuses mindset image
+  phase6: '/images/bootcamp-room-images/hackermindset.png',
 };
-import ScrollReveal from '../../../shared/components/ScrollReveal';
-import api from '../../../core/services/api';
-import { useToast } from '../../../core/contexts/ToastContext';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 interface LiveClass { title: string; instructor?: string; time?: string; link: string; }
 interface Room {
@@ -327,17 +327,17 @@ const BootcampCourse: React.FC = () => {
 
                           {/* Card body */}
                           <div className="flex flex-1 flex-col p-5">
-                            {/* Room title */}
+                            {/* Room title — always from config (source of truth) */}
                             <h3 className={`mb-2 text-base font-black leading-snug transition-colors ${
                               isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
                             }`}>
-                              {room.title || `Room ${roomIdx + 1}`}
+                              {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
                             </h3>
 
-                            {/* Room overview */}
-                            {room.overview && (
+                            {/* Room overview — prefer config overview */}
+                            {(configRoom?.overview || room.overview) && (
                               <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted">
-                                {room.overview}
+                                {configRoom?.overview || room.overview}
                               </p>
                             )}
 

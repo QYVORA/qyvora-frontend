@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
   CheckCircle2, BookOpen, ImageOff, Menu, X,
-  ClipboardList, Sparkles,
+  ClipboardList,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import api from '../../../core/services/api';
@@ -12,7 +12,6 @@ import {
   BOOTCAMP_CONFIG,
   buildStepImagePath,
   type BootcampPhase,
-  type BootcampRoom,
   type BootcampStep,
 } from '../constants/bootcampConfig';
 
@@ -54,38 +53,32 @@ interface RoomQuiz {
 const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ src, alt, stepNum }) => {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
 
-  // Reset status whenever the src changes (different room/step)
   useEffect(() => {
     setStatus('loading');
   }, [src]);
 
   return (
-    <div className="mt-5 w-full overflow-hidden rounded-xl border border-border bg-bg">
-      {/* Loading spinner — shown until image loads or errors */}
+    <div className="mt-4 w-full max-w-full overflow-hidden rounded-xl border border-border bg-bg">
       {status === 'loading' && (
-        <div className="flex items-center justify-center py-14">
+        <div className="flex items-center justify-center py-10">
           <Loader2 className="h-5 w-5 animate-spin text-accent opacity-50" />
         </div>
       )}
-
-      {/* Error fallback */}
       {status === 'error' && (
-        <div className="flex flex-col items-center justify-center gap-2 py-12 text-text-muted">
-          <ImageOff className="h-7 w-7 opacity-25" />
-          <span className="text-[11px] font-bold uppercase tracking-widest opacity-40">
+        <div className="flex flex-col items-center justify-center gap-2 py-8 text-text-muted">
+          <ImageOff className="h-6 w-6 opacity-25" />
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
             Step {stepNum} image not available
           </span>
         </div>
       )}
-
-      {/* The actual image — always in DOM so browser can load it */}
       <img
         src={src}
         alt={alt}
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
         style={{ display: status === 'loaded' ? 'block' : 'none' }}
-        className="w-full rounded-xl object-contain"
+        className="w-full max-w-full h-auto rounded-xl object-contain"
       />
     </div>
   );
@@ -95,9 +88,9 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
 // STEP PLACEHOLDER (no image defined in config)
 // ─────────────────────────────────────────────────────────────────────────────
 const StepPlaceholder: React.FC<{ stepNum: number }> = ({ stepNum }) => (
-  <div className="mt-4 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-bg py-10 text-text-muted">
-    <ImageOff className="h-6 w-6 opacity-25" />
-    <span className="text-[11px] font-bold uppercase tracking-widest opacity-35">
+  <div className="mt-3 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-bg py-8 text-text-muted">
+    <ImageOff className="h-5 w-5 opacity-25" />
+    <span className="text-[10px] font-bold uppercase tracking-widest opacity-35">
       Step {stepNum} — image coming soon
     </span>
   </div>
@@ -132,7 +125,7 @@ const StepCard: React.FC<{
     <div
       ref={ref}
       onClick={onClick}
-      className={`relative cursor-pointer rounded-2xl border-2 p-6 md:p-8 transition-all duration-200 ${
+      className={`relative cursor-pointer rounded-xl border-2 p-3 sm:p-5 transition-all duration-200 overflow-hidden ${
         isActive
           ? 'border-accent/60 bg-bg-card shadow-[0_0_32px_rgba(183,255,153,0.08)]'
           : isViewed
@@ -141,9 +134,9 @@ const StepCard: React.FC<{
       }`}
     >
       {/* Step header */}
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-3 flex items-center gap-2.5">
         <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-xs font-black transition-colors ${
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-xs font-black transition-colors ${
             isViewed && !isActive
               ? 'border-accent/40 bg-accent text-bg'
               : isActive
@@ -152,29 +145,29 @@ const StepCard: React.FC<{
           }`}
         >
           {isViewed && !isActive ? (
-            <CheckCircle2 className="h-4 w-4" />
+            <CheckCircle2 className="h-3.5 w-3.5" />
           ) : (
             String(stepNum).padStart(2, '0')
           )}
         </div>
-        <div className="flex-1 min-w-0">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <span className="block truncate text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
             {step.title}
           </span>
-          <span className="ml-3 text-[10px] text-text-muted opacity-40">
+          <span className="text-[9px] text-text-muted opacity-40">
             {stepNum} / {total}
           </span>
         </div>
         {isActive && (
-          <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-accent">
-            Current
+          <span className="shrink-0 rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent">
+            Active
           </span>
         )}
       </div>
 
       {/* Instruction */}
       <p
-        className={`text-base leading-relaxed transition-colors ${
+        className={`text-sm leading-relaxed transition-colors ${
           isActive ? 'text-text-primary font-medium' : 'text-text-secondary'
         }`}
       >
@@ -194,47 +187,6 @@ const StepCard: React.FC<{
     </div>
   );
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SIDEBAR ITEM
-// ─────────────────────────────────────────────────────────────────────────────
-const SidebarRoomItem: React.FC<{
-  phase: BootcampPhase;
-  room: BootcampRoom;
-  isActive: boolean;
-  isCompleted: boolean;
-  isLocked: boolean;
-  bootcampId: string;
-  onClick: () => void;
-}> = ({ phase, room, isActive, isCompleted, isLocked, onClick }) => (
-  <button
-    onClick={onClick}
-    disabled={isLocked}
-    className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-all ${
-      isActive
-        ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
-        : isLocked
-        ? 'opacity-40 cursor-not-allowed text-text-muted'
-        : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
-    }`}
-  >
-    <span
-      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${
-        isCompleted
-          ? 'border-accent/40 bg-accent text-bg'
-          : isActive
-          ? 'border-accent/40 bg-accent-dim text-accent'
-          : isLocked
-          ? 'border-border bg-bg text-text-muted'
-          : 'border-border bg-bg text-text-muted'
-      }`}
-    >
-      {isCompleted ? <CheckCircle2 className="h-3 w-3" /> : isLocked ? <Lock className="h-3 w-3" /> : null}
-    </span>
-    <span className="truncate">{room.title}</span>
-  </button>
-);
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LEFT SIDEBAR
@@ -261,44 +213,59 @@ const Sidebar: React.FC<{
   onMobileClose,
 }) => {
   const content = (
-    <nav className="flex flex-col gap-1 p-4">
-      <div className="mb-4 px-1">
+    <nav className="flex flex-col gap-1 p-3 pb-6">
+      <div className="mb-3 px-1">
         <Link
           to={`/bootcamps/${bootcampId}`}
           className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           onClick={onMobileClose}
         >
-          <ArrowLeft className="h-3 w-3" /> Curriculum
+          <ArrowLeft className="h-3 w-3" /> Back to Curriculum
         </Link>
       </div>
 
       {phases.map((phase) => (
         <div key={phase.id} className="mb-3">
-          {/* Phase label */}
-          <p className="mb-1.5 px-3 text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+          <p className="mb-1.5 px-2 text-[9px] font-black uppercase tracking-[0.3em] text-accent">
             {phase.codename} — {phase.title}
           </p>
-
-          {/* Rooms — always visible, no collapse */}
-          <div className="space-y-0.5 border-l border-border/50 ml-2 pl-3">
+          <div className="space-y-0.5 border-l border-border/50 ml-2 pl-2">
             {phase.rooms.map((room) => {
               const key = `${phase.id}:${room.id}`;
+              const isActive = phase.id === activePhaseId && room.id === activeRoomId;
+              const isCompleted = completedRooms.has(key);
+              const isLocked = lockedRooms.has(key);
               return (
-                <SidebarRoomItem
+                <button
                   key={key}
-                  phase={phase}
-                  room={room}
-                  isActive={phase.id === activePhaseId && room.id === activeRoomId}
-                  isCompleted={completedRooms.has(key)}
-                  isLocked={lockedRooms.has(key)}
-                  bootcampId={bootcampId}
                   onClick={() => {
-                    if (!lockedRooms.has(key)) {
+                    if (!isLocked) {
                       onNavigate(phase.id, room.id);
                       onMobileClose();
                     }
                   }}
-                />
+                  disabled={isLocked}
+                  className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-left text-sm transition-all min-h-[44px] ${
+                    isActive
+                      ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
+                      : isLocked
+                      ? 'opacity-40 cursor-not-allowed text-text-muted'
+                      : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  <span
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-[9px] font-black font-mono ${
+                      isCompleted
+                        ? 'border-accent/40 bg-accent text-bg'
+                        : isActive
+                        ? 'border-accent/40 bg-accent-dim text-accent'
+                        : 'border-border bg-bg text-text-muted'
+                    }`}
+                  >
+                    {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
+                  </span>
+                  <span className="truncate text-xs">{room.title}</span>
+                </button>
               );
             })}
           </div>
@@ -310,33 +277,51 @@ const Sidebar: React.FC<{
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col w-64 xl:w-72 shrink-0 sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-bg-card">
+      <aside className="hidden lg:flex lg:flex-col w-60 xl:w-68 shrink-0 sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-bg-card">
         {content}
       </aside>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={onMobileClose}
-          />
-          <aside className="absolute left-0 top-0 bottom-0 w-72 overflow-y-auto bg-bg-card border-r border-border shadow-2xl">
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <span className="text-xs font-black uppercase tracking-widest text-text-primary">
-                Curriculum
-              </span>
-              <button
-                onClick={onMobileClose}
-                className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-text-muted hover:text-text-primary transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            {content}
-          </aside>
-        </div>
-      )}
+      {/* Mobile drawer — full-screen overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm lg:hidden"
+              onClick={onMobileClose}
+            />
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+              className="fixed left-0 top-0 bottom-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden"
+            >
+              {/* Drawer header */}
+              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Curriculum</p>
+                  <p className="text-xs font-black text-text-primary">Room Navigator</p>
+                </div>
+                <button
+                  onClick={onMobileClose}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-border text-text-muted hover:text-text-primary hover:border-accent/40 transition-colors"
+                  aria-label="Close curriculum"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              {/* Scrollable content */}
+              <div className="flex-1 overflow-y-auto overscroll-contain">
+                {content}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };
@@ -791,13 +776,15 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-bg pb-20">
+    <div className="min-h-screen bg-bg pb-24 md:pb-20 overflow-x-hidden">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal
           moduleId={quizModuleId}
           courseId={quizCourseId}
           onClose={() => setQuizOpen(false)}
+        />
+      )}alse)}
         />
       )}
 
@@ -871,29 +858,41 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-8 pt-20 md:pt-24">
 
-        {/* ── Mobile topbar ── */}
-        <div className="mb-6 flex items-center gap-3 lg:hidden">
+        {/* ── Mobile topbar — sticky curriculum button + breadcrumb ── */}
+        <div className="mb-4 flex items-center gap-2 lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-text-primary transition-colors"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:bg-accent-dim/70 transition-colors"
+            aria-label="Open curriculum"
           >
             <Menu className="h-4 w-4" />
           </button>
-          <nav className="flex min-w-0 flex-1 items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-text-muted">
-            <Link to={`/bootcamps/${bootcampId}`} className="hover:text-accent transition-colors shrink-0">
-              Bootcamp
-            </Link>
-            <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-            <span className="text-[9px] text-accent shrink-0">{phase.codename}</span>
-            <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-            <span className="truncate text-text-primary">{room.title}</span>
-          </nav>
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <nav className="flex min-w-0 items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-text-muted overflow-hidden">
+              <Link to={`/bootcamps/${bootcampId}`} className="hover:text-accent transition-colors shrink-0">
+                Bootcamp
+              </Link>
+              <ChevronRight className="h-2.5 w-2.5 opacity-40 shrink-0" />
+              <span className="text-accent shrink-0 truncate max-w-[80px]">{phase.codename}</span>
+            </nav>
+            <p className="truncate text-xs font-black text-text-primary leading-tight">{room.title}</p>
+          </div>
+          {/* Quiz shortcut on mobile */}
+          {quizModuleId && (
+            <button
+              onClick={() => setQuizOpen(true)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
+              aria-label="Take quiz"
+            >
+              <ClipboardList className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {/* ── Main layout: sidebar + content ── */}
-        <div className="flex gap-8 xl:gap-10 items-start">
+        <div className="flex gap-4 lg:gap-8 xl:gap-10 items-start min-w-0">
 
           {/* LEFT SIDEBAR */}
           <Sidebar
@@ -909,7 +908,7 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* MAIN CONTENT */}
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 overflow-hidden">
 
             {/* Desktop breadcrumb */}
             <nav className="mb-8 hidden items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-text-muted lg:flex">
@@ -925,46 +924,46 @@ const BootcampRoomPage: React.FC = () => {
             </nav>
 
             {/* Room header */}
-            <div className="mb-8">
-              <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+            <div className="mb-5">
+              <span className="mb-1 block text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                 {phase.codename} — {phase.title}
               </span>
-              <h1 className="mb-3 text-3xl font-black leading-tight text-text-primary md:text-4xl">
+              <h1 className="mb-2 text-lg font-black leading-tight text-text-primary sm:text-2xl md:text-3xl break-words">
                 {room.title}
               </h1>
-              <p className="border-l-2 border-accent pl-4 text-base leading-relaxed text-text-secondary">
+              <p className="border-l-2 border-accent pl-3 text-sm leading-relaxed text-text-secondary">
                 {room.overview}
               </p>
               {isRoomComplete && (
-                <div className="mt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
-                  <CheckCircle2 className="h-4 w-4" /> Room Complete
+                <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-accent">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Room Complete
                 </div>
               )}
             </div>
 
             {/* Step progress bar */}
-            <div className="mb-6 rounded-2xl border border-border bg-bg-card p-4">
-              <div className="mb-3 flex items-center justify-between gap-2">
+            <div className="mb-5 rounded-xl border border-border bg-bg-card p-3 sm:p-4">
+              <div className="mb-2 flex items-center justify-between gap-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                   Progress
                 </span>
-                <span className="font-mono text-sm font-black text-accent">
+                <span className="font-mono text-xs font-black text-accent">
                   {viewedSteps.size} / {room.steps.length} steps
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-accent-dim">
+              <div className="h-1.5 overflow-hidden rounded-full bg-accent-dim">
                 <div
                   className="h-full rounded-full bg-accent transition-all duration-500"
                   style={{ width: `${(viewedSteps.size / room.steps.length) * 100}%` }}
                 />
               </div>
               {/* Step dots */}
-              <div className="mt-3 flex gap-2 flex-wrap">
+              <div className="mt-2.5 flex gap-1.5 flex-wrap">
                 {room.steps.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => goToStep(idx)}
-                    className={`h-2 flex-1 min-w-[20px] max-w-[40px] rounded-full transition-all ${
+                    className={`h-1.5 flex-1 min-w-[16px] max-w-[36px] rounded-full transition-all ${
                       idx === currentStepIdx
                         ? 'bg-accent'
                         : viewedSteps.has(idx)
@@ -995,77 +994,78 @@ const BootcampRoomPage: React.FC = () => {
             </div>
 
             {/* Step navigation buttons */}
-            <div className="mb-10 flex items-center justify-between gap-4">
+            <div className="mb-6 flex items-center justify-between gap-2">
               <button
                 onClick={goPrev}
                 disabled={currentStepIdx === 0}
-                className="btn-secondary inline-flex items-center gap-2 text-sm disabled:opacity-40"
+                className="btn-secondary inline-flex items-center gap-1.5 text-xs disabled:opacity-40 px-3 sm:px-4 py-2.5"
               >
-                <ArrowLeft className="h-4 w-4" /> Previous
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>Prev</span>
               </button>
 
-              <span className="text-xs font-bold text-text-muted">
-                Step {currentStepIdx + 1} of {room.steps.length}
+              <span className="text-[10px] font-bold text-text-muted whitespace-nowrap">
+                {currentStepIdx + 1} / {room.steps.length}
               </span>
 
               <button
                 onClick={goNext}
-                className="btn-primary inline-flex items-center gap-2 text-sm disabled:opacity-40"
+                className="btn-primary inline-flex items-center gap-1.5 text-xs px-3 sm:px-4 py-2.5"
               >
                 {isLastStep ? (
                   isRoomComplete ? (
-                    <>Done <CheckCircle2 className="h-4 w-4" /></>
+                    <><span>Done</span><CheckCircle2 className="h-3.5 w-3.5" /></>
                   ) : (
-                    <>Complete Room <CheckCircle2 className="h-4 w-4" /></>
+                    <><span>Complete</span><CheckCircle2 className="h-3.5 w-3.5" /></>
                   )
                 ) : (
-                  <>Next <ArrowRight className="h-4 w-4" /></>
+                  <><span>Next</span><ArrowRight className="h-3.5 w-3.5" /></>
                 )}
               </button>
             </div>
 
             {/* ── ACTION BAR: Session info + Quiz button ── */}
-            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-stretch">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-stretch">
               {/* Session info */}
-              <div className="flex-1 rounded-2xl border border-border bg-bg-card p-5">
-                <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+              <div className="flex-1 rounded-xl border border-border bg-bg-card p-3 sm:p-4">
+                <p className="mb-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">
                   Live Session
                 </p>
-                <p className="text-sm leading-relaxed text-text-secondary">
+                <p className="text-xs leading-relaxed text-text-secondary">
                   Your instructor will share the session link in the bootcamp WhatsApp group.
                 </p>
-                <div className="mt-3 flex items-center gap-2 text-xs font-bold text-accent">
-                  <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                <div className="mt-1.5 flex items-center gap-2 text-xs font-bold text-accent">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                   Check WhatsApp group for link
                 </div>
               </div>
 
-              {/* Quiz button */}
+              {/* Quiz button — hidden on mobile since it's in the topbar */}
               {quizModuleId && (
                 <button
                   onClick={() => setQuizOpen(true)}
-                  className="flex items-center justify-center gap-3 rounded-2xl border-2 border-accent/40 bg-accent-dim/30 px-6 py-5 text-left transition-all hover:border-accent/70 hover:bg-accent-dim/50 sm:flex-col sm:min-w-[160px]"
+                  className="hidden sm:flex items-center gap-3 rounded-xl border-2 border-accent/40 bg-accent-dim/30 px-4 py-4 transition-all hover:border-accent/70 hover:bg-accent-dim/50 sm:flex-col sm:items-center sm:justify-center sm:min-w-[130px]"
                 >
-                  <ClipboardList className="h-6 w-6 shrink-0 text-accent" />
-                  <div>
-                    <p className="text-sm font-black uppercase tracking-wide text-accent">Take Quiz</p>
-                    <p className="text-[10px] text-text-muted">Earn CP reward</p>
+                  <ClipboardList className="h-5 w-5 shrink-0 text-accent" />
+                  <div className="text-center">
+                    <p className="text-xs font-black uppercase tracking-wide text-accent">Take Quiz</p>
+                    <p className="text-[9px] text-text-muted">Earn CP reward</p>
                   </div>
                 </button>
               )}
             </div>
 
             {/* Prev / Next room navigation */}
-            <div className="flex items-stretch gap-4">
+            <div className="flex items-stretch gap-2 sm:gap-3 pb-4">
               {prevRoom ? (
                 <button
                   onClick={() => handleNavigate(prevRoom.phaseId, prevRoom.roomId)}
-                  className="flex flex-1 items-center gap-3 rounded-2xl border border-border bg-bg-card p-4 text-left transition-all hover:border-accent/30 hover:bg-accent-dim/20"
+                  className="flex flex-1 items-center gap-2 rounded-xl border border-border bg-bg-card p-3 text-left transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden"
                 >
-                  <ArrowLeft className="h-5 w-5 shrink-0 text-text-muted" />
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Previous</p>
-                    <p className="truncate text-sm font-bold text-text-primary">{prevRoom.title}</p>
+                  <ArrowLeft className="h-3.5 w-3.5 shrink-0 text-text-muted" />
+                  <div className="min-w-0 overflow-hidden">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Prev</p>
+                    <p className="truncate text-xs font-bold text-text-primary">{prevRoom.title}</p>
                   </div>
                 </button>
               ) : (
@@ -1074,13 +1074,13 @@ const BootcampRoomPage: React.FC = () => {
               {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
                 <button
                   onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
-                  className="flex flex-1 items-center justify-end gap-3 rounded-2xl border border-border bg-bg-card p-4 text-right transition-all hover:border-accent/30 hover:bg-accent-dim/20"
+                  className="flex flex-1 items-center justify-end gap-2 rounded-xl border border-border bg-bg-card p-3 text-right transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden"
                 >
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Next</p>
-                    <p className="truncate text-sm font-bold text-text-primary">{nextRoom.title}</p>
+                  <div className="min-w-0 overflow-hidden">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Next</p>
+                    <p className="truncate text-xs font-bold text-text-primary">{nextRoom.title}</p>
                   </div>
-                  <ArrowRight className="h-5 w-5 shrink-0 text-text-muted" />
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-text-muted" />
                 </button>
               ) : (
                 <div className="flex-1" />

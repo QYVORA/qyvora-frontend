@@ -1,44 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Hash, Shield, Link2 } from 'lucide-react';
+import { ArrowRight, Shield, Link2, Hash } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import ChainLogo from '../../../../shared/components/ChainLogo';
 import CpLogo from '../../../../shared/components/CpLogo';
 
 const CHAIN_FACTS = [
-  { icon: Link2,         label: 'Immutable blocks',    desc: 'Every CP event is a SHA-256 hashed block, chained to the previous one.' },
-  { icon: Shield,        label: 'Proof-of-Authority',  desc: 'Single trusted validator — no mining, no gas fees, no public exposure.' },
-  { icon: Hash,          label: 'Tamper-proof',        desc: 'If any record is altered, the hash chain breaks and the check catches it.' },
-  { icon: CheckCircle2,  label: 'Verifiable history',  desc: 'Share a block hash to prove your rank and CP were earned legitimately.' },
+  { icon: Link2,   label: 'Immutable blocks',   desc: 'Every CP event is a SHA-256 hashed block, chained to the previous one.' },
+  { icon: Shield,  label: 'Proof-of-Authority', desc: 'Single trusted validator — no mining, no gas fees, no public exposure.' },
+  { icon: Hash,    label: 'Tamper-proof',        desc: 'Alter any record and the hash chain breaks instantly.' },
 ];
 
 const ChainSection: React.FC = () => (
-  <section className="py-16 md:py-24 bg-bg border-t border-border relative overflow-hidden">
-    {/* Background texture */}
+  <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-    <div className="pointer-events-none absolute -left-32 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-accent/5 blur-[120px]" />
+    {/* Chain visuals background */}
+    <img
+      src="/images/HSOCIETY-CHAIN-LOGO-VISUALS.png"
+      alt=""
+      aria-hidden="true"
+      className="absolute right-0 top-1/2 -translate-y-1/2 h-full max-h-[600px] w-auto opacity-[0.06] object-contain pointer-events-none"
+    />
+    <div className="pointer-events-none absolute -left-32 top-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-accent/5 blur-[100px]" />
 
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
 
         {/* Left — text */}
         <div>
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// HSOCIETY CHAIN</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-primary leading-[1.1] mb-5">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-primary leading-[1.1] mb-4">
               Your CP is<br />
               <span className="text-accent">chain-verified</span>
             </h2>
-            <p className="text-text-secondary text-sm md:text-base mb-8 max-w-lg leading-relaxed">
+            <p className="text-text-secondary text-sm md:text-base mb-7 max-w-md leading-relaxed">
               Every time you earn <CpLogo className="w-4 h-4 mx-0.5" />, the HSOCIETY Chain writes an
-              immutable block to a private Proof-of-Authority ledger. Your rank, your progress,
-              your history — tamper-proof and independently verifiable.
+              immutable block to a private ledger. Your rank, your progress, your history —
+              tamper-proof and independently verifiable.
             </p>
           </ScrollReveal>
 
-          <ScrollReveal className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+          <ScrollReveal className="flex flex-col gap-3 mb-7">
             {CHAIN_FACTS.map(({ icon: Icon, label, desc }) => (
-              <div key={label} className="flex items-start gap-3 rounded-xl border border-border bg-bg-card p-4 hover:border-accent/30 transition-colors">
+              <div key={label} className="flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors">
                 <Icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                 <div>
                   <div className="text-xs font-bold text-text-primary mb-0.5">{label}</div>
@@ -49,25 +54,20 @@ const ChainSection: React.FC = () => (
           </ScrollReveal>
 
           <ScrollReveal className="flex flex-col sm:flex-row gap-3">
-            <Link
-              to="/chain"
-              className="btn-primary text-sm !px-7 inline-flex items-center justify-center gap-2"
-            >
+            <Link to="/chain" className="btn-primary text-sm !px-7 inline-flex items-center justify-center gap-2">
               Explore the Chain <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link
-              to="/cyber-points"
-              className="btn-secondary text-sm !px-7 inline-flex items-center justify-center gap-2"
-            >
+            <Link to="/cyber-points" className="btn-secondary text-sm !px-7 inline-flex items-center justify-center gap-2">
               <CpLogo className="w-4 h-4" /> Learn About CP
             </Link>
           </ScrollReveal>
         </div>
 
-        {/* Right — chain logo + block visualisation */}
+        {/* Right — 3D chain logo + 2 sample blocks */}
         <ScrollReveal className="flex flex-col gap-4">
-          <div className="flex items-center gap-4 mb-2">
-            <ChainLogo size={52} showLabel labelClassName="text-sm" />
+          {/* 3D logo */}
+          <div className="flex items-center gap-4 mb-1">
+            <ChainLogo variant="3d" size={110} className="drop-shadow-[0_0_30px_rgba(136,173,124,0.35)]" />
             <div className="flex flex-col gap-1">
               <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest">Proof-of-Authority · SHA-256</span>
               <span className="text-[9px] font-mono text-accent uppercase tracking-widest flex items-center gap-1.5">
@@ -77,25 +77,24 @@ const ChainSection: React.FC = () => (
             </div>
           </div>
 
-          {/* Visual chain blocks */}
+          {/* 2 sample blocks */}
           {[
-            { index: 41, type: 'ROOM_COMPLETED',   cp: 250,  hash: 'b7ff99a3c2…', prev: '4e1a8f02d9…' },
-            { index: 42, type: 'CP_REWARD',         cp: 250,  hash: '9c4d2e7b1a…', prev: 'b7ff99a3c2…' },
-            { index: 43, type: 'MODULE_COMPLETED',  cp: 750,  hash: '1f8a3c9e4d…', prev: '9c4d2e7b1a…' },
+            { index: 41, type: 'ROOM_COMPLETED',  cp: 250, hash: 'b7ff99a3c2…', prev: '4e1a8f02d9…' },
+            { index: 42, type: 'CP_REWARD',        cp: 250, hash: '9c4d2e7b1a…', prev: 'b7ff99a3c2…' },
           ].map((block, i) => (
             <div
               key={block.index}
               className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
-              style={{ opacity: 1 - i * 0.08 }}
+              style={{ opacity: 1 - i * 0.1 }}
             >
               <div className="flex items-center gap-3 border-b border-border px-4 py-2.5 bg-accent/5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-accent/30 bg-accent-dim font-mono text-[10px] font-black text-accent">
+                <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-accent/30 bg-accent-dim font-mono text-[9px] font-black text-accent">
                   #{block.index}
                 </div>
                 <span className={`rounded-lg border px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${
-                  block.type === 'ROOM_COMPLETED'   ? 'border-accent/30 bg-accent/10 text-accent' :
-                  block.type === 'CP_REWARD'        ? 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400' :
-                                                      'border-blue-400/30 bg-blue-400/10 text-blue-400'
+                  block.type === 'ROOM_COMPLETED'
+                    ? 'border-accent/30 bg-accent/10 text-accent'
+                    : 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400'
                 }`}>
                   {block.type.replace(/_/g, ' ')}
                 </span>
@@ -105,19 +104,19 @@ const ChainSection: React.FC = () => (
               </div>
               <div className="px-4 py-2.5 space-y-1 font-mono text-[10px]">
                 <div className="flex gap-2">
-                  <span className="text-text-muted w-16 shrink-0">hash</span>
+                  <span className="text-text-muted w-14 shrink-0">hash</span>
                   <span className="text-accent">{block.hash}</span>
                 </div>
                 <div className="flex gap-2">
-                  <span className="text-text-muted w-16 shrink-0">prevHash</span>
+                  <span className="text-text-muted w-14 shrink-0">prevHash</span>
                   <span className="text-text-muted">{block.prev}</span>
                 </div>
               </div>
             </div>
           ))}
 
-          <div className="text-center text-[10px] font-mono text-text-muted uppercase tracking-widest">
-            ↑ live blocks from HSOCIETY CHAIN
+          <div className="text-center text-[10px] font-mono text-text-muted uppercase tracking-widest opacity-60">
+            ↑ sample blocks from HSOCIETY CHAIN
           </div>
         </ScrollReveal>
       </div>

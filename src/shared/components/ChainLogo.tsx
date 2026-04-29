@@ -1,15 +1,16 @@
 import React from 'react';
+
 /**
  * HSOCIETY CHAIN — Logo Component
  *
- * Uses the generated PNG logo by default.
- * Falls back to inline SVG for very small sizes.
+ * variant="3d"   → 3D render (HSOCIETY-CHAIN-3D.png)  — use in hero sections & large displays
+ * variant="flat" → flat transparent PNG (HSOCIETY_CHAIN_LOGO.png) — use inline & small sizes
  *
  * Usage:
- *   <ChainLogo />                    — default 40×40 PNG
- *   <ChainLogo size={64} />          — custom size
- *   <ChainLogo className="w-8 h-8" /> — Tailwind sizing
- *   <ChainLogo showLabel />          — with "HSOCIETY CHAIN" wordmark
+ *   <ChainLogo />                          — default flat, 40×40
+ *   <ChainLogo variant="3d" size={220} />  — 3D hero version
+ *   <ChainLogo size={18} />                — small inline flat
+ *   <ChainLogo showLabel />                — with "HSOCIETY CHAIN" wordmark
  */
 
 interface ChainLogoProps {
@@ -17,17 +18,25 @@ interface ChainLogoProps {
   className?: string;
   showLabel?: boolean;
   labelClassName?: string;
+  /** "3d" = 3D render for hero/large; "flat" = transparent PNG for small/inline (default) */
+  variant?: '3d' | 'flat';
 }
+
+const LOGO_SRC: Record<'3d' | 'flat', string> = {
+  '3d':   '/images/chain-images/HSOCIETY-CHAIN-3D.png',
+  'flat': '/images/chain-images/HSOCIETY_CHAIN_LOGO.png',
+};
 
 const ChainLogo: React.FC<ChainLogoProps> = ({
   size = 40,
   className = '',
   showLabel = false,
   labelClassName = '',
+  variant = 'flat',
 }) => (
   <span className={`inline-flex items-center gap-2 ${className}`}>
     <img
-      src="/images/HSOCIETY_CHAIN_LOGO.png"
+      src={LOGO_SRC[variant]}
       alt="HSOCIETY CHAIN"
       width={size}
       height={size}
