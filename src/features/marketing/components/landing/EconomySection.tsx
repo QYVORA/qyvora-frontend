@@ -5,6 +5,7 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import { resolveImg } from './helpers';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
+import ChainLogo from '../../../../shared/components/ChainLogo';
 
 interface EconomySectionProps {
   totalCp: number;
@@ -41,7 +42,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
               >
                 Learn Cyber Points <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <ul className="flex flex-col space-y-3 mb-8">
+              <ul className="flex flex-col space-y-3 mb-6">
                 {[
                   'Complete bootcamps to earn points',
                   'Finish challenges to earn more points',
@@ -53,6 +54,12 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                   </li>
                 ))}
               </ul>
+
+              {/* Chain badge */}
+              <div className="flex items-center gap-2 mb-6 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5 w-fit">
+                <ChainLogo size={18} />
+                <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Verified by HSOCIETY Chain</span>
+              </div>
 
               {/* Community pool widget — fix #11: progress bar width is data-driven */}
               <div className="p-4 md:p-5 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group">
