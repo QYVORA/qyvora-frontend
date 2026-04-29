@@ -3,6 +3,7 @@ import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTrian
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
+import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
 
@@ -47,6 +48,7 @@ const Settings: React.FC = () => {
   const [acking, setAcking] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
   const [confirmRegenerate, setConfirmRegenerate] = useState(false);
+  const [dataSaver, setDataSaver] = useState(getDataSaverEnabled());
 
   useEffect(() => {
     let mounted = true;
@@ -144,6 +146,34 @@ const Settings: React.FC = () => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <ScrollReveal className="mb-0 lg:col-span-2">
+            <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+              <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
+                <Shield className="h-5 w-5 text-accent" />
+                <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Mobile Data Saver</h2>
+              </div>
+              <div className="p-6">
+                <p className="text-sm text-text-secondary mb-4">
+                  Reduce image-heavy visuals and decorative assets for lower bandwidth and smoother performance on mobile networks.
+                </p>
+                <button
+                  onClick={() => {
+                    const next = !dataSaver;
+                    setDataSaver(next);
+                    setDataSaverEnabled(next);
+                    addToast(next ? 'Data Saver enabled.' : 'Data Saver disabled.', 'success');
+                  }}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold border transition-colors ${
+                    dataSaver
+                      ? 'bg-accent-dim border-accent/40 text-accent'
+                      : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                  }`}
+                >
+                  {dataSaver ? 'Data Saver: ON' : 'Data Saver: OFF'}
+                </button>
+              </div>
+            </div>
+          </ScrollReveal>
 
           {/* ── CHANGE PASSWORD ── */}
           <ScrollReveal className="mb-0">

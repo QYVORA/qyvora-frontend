@@ -12,6 +12,7 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import { formatSyncLabel, getDataSaverEnabled, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
 
 // Per-phase room card images — one image per phase, shown on every room card in that phase
 const PHASE_ROOM_IMAGES: Record<string, string> = {
@@ -46,6 +47,9 @@ const BootcampCourse: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
   const [enrolling, setEnrolling] = useState(false);
+  const [syncError, setSyncError] = useState('');
+  const [lastSync, setLastSync] = useState<string | null>(getLastSync('bootcamp-course'));
+  const [dataSaver] = useState(getDataSaverEnabled());
 
   const load = async () => {
     try {
@@ -73,8 +77,10 @@ const BootcampCourse: React.FC = () => {
         const nextCourse = courseRes.data as Course;
         setCourse(nextCourse);
       }
+      setLastSync(setLastSyncNow('bootcamp-course'));
+      setSyncError('');
     } catch {
-      // silently fail
+      setSyncError('Could not sync full course state. Displaying available data.');
     } finally {
       setLoading(false);
     }
@@ -185,7 +191,7 @@ const BootcampCourse: React.FC = () => {
               <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
             </div>
             <OptionalDecorImage
-              src={STUDENT_DECOR.courseCurriculumMascot}
+              src={dataSaver ? undefined : STUDENT_DECOR.courseCurriculumMascot}
               className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[200px] w-auto opacity-95 md:block md:max-h-[240px]"
             />
             <div className="relative z-10 max-w-3xl">
@@ -204,6 +210,22 @@ const BootcampCourse: React.FC = () => {
                   style={{ boxShadow: '0 0 20px var(--color-accent-glow)' }}
                 />
               </div>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <Link to={resolveNextRoomPath(String(bootcampId || '')) || '#'} className="btn-primary px-4 py-2 text-xs">
+                  Resume Exact Mission
+                </Link>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(`My next HSOCIETY mission: ${resolveNextRoomPath(String(bootcampId || '')) || '/bootcamps'}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary px-4 py-2 text-xs"
+                >
+                  Share mission on WhatsApp
+                </a>
+              </div>
+              <p className={`mt-3 text-xs ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+                {syncError || formatSyncLabel(lastSync)}
+              </p>
             </div>
           </div>
         </ScrollReveal>
@@ -218,7 +240,8 @@ const BootcampCourse: React.FC = () => {
             const isLocked = mod.locked;
 
             // Map API module index → config phase
-            const configPhase = BOOTCAMP_CONFIG.phases[modIdx];
+            const configPhase = BOOTCAMP_CONFIG.phases.find((p) => p.title.toLowerCase() === String(mod.title || '').toLowerCase())
+              || BOOTCAMP_CONFIG.phases[modIdx];
 
             return (
               <ScrollReveal key={mod.moduleId} delay={modIdx * 0.05}>
@@ -273,7 +296,8 @@ const BootcampCourse: React.FC = () => {
                       const isRoomLocked = room.locked;
                       const roomDone = Boolean(room.completed);
 
-                      const configRoom = configPhase?.rooms[roomIdx];
+                      const configRoom = configPhase?.rooms.find((r) => r.title.toLowerCase() === String(room.title || '').toLowerCase())
+                        || configPhase?.rooms[roomIdx];
                       const roomPath = configPhase && configRoom
                         ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
                         : null;
@@ -283,9 +307,9 @@ const BootcampCourse: React.FC = () => {
                         : '/images/HPB-image.png';
 
                       return (
-                        <div
+                        <Link
                           key={room.roomId}
-                          onClick={() => { if (!isRoomLocked && roomPath) navigate(roomPath); }}
+                          to={!isRoomLocked && roomPath ? roomPath : '#'}
                           className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-all duration-200 ${
                             isRoomLocked
                               ? 'border-border opacity-50 cursor-not-allowed'
@@ -299,6 +323,7 @@ const BootcampCourse: React.FC = () => {
                             <img
                               src={roomImg}
                               alt={room.title}
+                              loading="lazy"
                               className={`w-full h-full object-cover transition-all duration-500 ${
                                 isRoomLocked
                                   ? 'grayscale brightness-50'
@@ -352,7 +377,7 @@ const BootcampCourse: React.FC = () => {
                               <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
                             )}
                           </div>
-                        </div>
+                        </Link>
                       );
                     })}
                   </div>

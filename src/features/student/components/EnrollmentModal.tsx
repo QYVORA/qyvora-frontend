@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ArrowRight, Users, ExternalLink, CheckCircle2, ChevronLeft } from 'lucide-react';
 import api from '../../../core/services/api';
-
-const COMMUNITY_LINK = 'https://chat.whatsapp.com/hsociety';
-
-// Bootcamp-specific WhatsApp group links
-const BOOTCAMP_GROUP_LINKS: Record<string, string> = {
-  bc_1775270338500: 'https://chat.whatsapp.com/JpWNj3yy1TKGBoRjm6zksp',
-};
-
-const getBootcampGroupLink = (bootcampId: string): string | null =>
-  BOOTCAMP_GROUP_LINKS[bootcampId] ?? null;
+import { getBootcampGroupLink, getConfiguredCommunityLink } from '../constants/communityLinks';
 
 interface Step {
   id: string;
@@ -258,7 +249,7 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
                       Join the operator community on WhatsApp to get updates, connect with other operators, and stay ahead.
                     </p>
                     <a
-                      href={COMMUNITY_LINK}
+                      href={getConfiguredCommunityLink(bootcamp.id)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-primary text-sm w-full flex items-center justify-center gap-2 mb-3"

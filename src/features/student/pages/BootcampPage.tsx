@@ -9,6 +9,8 @@ import EnrollmentModal from '../components/EnrollmentModal';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import { getConfiguredCommunityLink } from '../constants/communityLinks';
+import { formatSyncLabel, getDataSaverEnabled, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -22,8 +24,6 @@ const PHASE_IMGS = [
   '/images/bootcamp-room-images/webandbackendsystems.png',
   '/images/bootcamp-room-images/socialengineering.png',
 ];
-
-const COMMUNITY_LINK = 'https://chat.whatsapp.com/hsociety';
 
 interface LockedModalProps {
   bootcamp: any;
@@ -48,13 +48,13 @@ const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => (
       <p className="text-accent text-xs font-bold text-center mb-5 uppercase tracking-wider">
         Launching: {bootcamp.launchDate
           ? new Date(bootcamp.launchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-          : '1st May 2025'}
+          : 'To be announced'}
       </p>
       <p className="text-text-secondary text-xs text-center mb-6">
         Join the community to get notified when this bootcamp opens.
       </p>
       <div className="flex flex-col gap-3">
-        <a href={COMMUNITY_LINK} target="_blank" rel="noopener noreferrer"
+        <a href={getConfiguredCommunityLink(String(bootcamp?.id || ''))} target="_blank" rel="noopener noreferrer"
           className="btn-primary text-sm text-center flex items-center justify-center gap-2">
           <Users className="w-4 h-4" /> Join the Community <ExternalLink className="w-3.5 h-3.5" />
         </a>
@@ -70,6 +70,9 @@ const Bootcamp: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [lockedBootcamp, setLockedBootcamp] = useState<any>(null);
   const [enrollTarget, setEnrollTarget] = useState<any>(null);
+  const [syncError, setSyncError] = useState('');
+  const [lastSync, setLastSync] = useState<string | null>(getLastSync('bootcamps'));
+  const [dataSaver] = useState(getDataSaverEnabled());
 
   const load = async () => {
     try {
@@ -79,8 +82,11 @@ const Bootcamp: React.FC = () => {
       ]);
       setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
       if (ovRes?.data) setOverview(ovRes.data);
+      setLastSync(setLastSyncNow('bootcamps'));
+      setSyncError('');
     } catch {
       setBootcamps([]);
+      setSyncError('Could not refresh bootcamps. Showing the last available state.');
     } finally {
       setLoading(false);
     }
@@ -96,8 +102,13 @@ const Bootcamp: React.FC = () => {
         if (!mounted) return;
         setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
         if (ovRes?.data) setOverview(ovRes.data);
+        setLastSync(setLastSyncNow('bootcamps'));
+        setSyncError('');
       })
-      .catch(() => { if (mounted) setBootcamps([]); })
+      .catch(() => {
+        if (mounted) setBootcamps([]);
+        if (mounted) setSyncError('Could not refresh bootcamps. Showing the last available state.');
+      })
       .finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; };
   }, []);
@@ -155,7 +166,7 @@ const Bootcamp: React.FC = () => {
               <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl" />
             </div>
             <OptionalDecorImage
-              src={STUDENT_DECOR.bootcampListMascot}
+              src={dataSaver ? undefined : STUDENT_DECOR.bootcampListMascot}
               className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[160px] w-auto opacity-95 sm:block md:max-h-[200px]"
             />
             <div className="relative z-10 max-w-3xl">
@@ -164,8 +175,10 @@ const Bootcamp: React.FC = () => {
                 Bootcamp programs
               </h1>
               <p className="text-base leading-relaxed text-text-secondary md:text-lg">
-                Pick a track, enroll, and grind through phased labs — recon to ops — with checkpoints that feel like a game
-                map, not a boring syllabus.
+                Pick a track with clear outcomes, enroll, and grind through phased labs with mission-based checkpoints.
+              </p>
+              <p className="mt-3 text-sm text-text-muted">
+                {syncError || formatSyncLabel(lastSync)}
               </p>
             </div>
           </div>
@@ -211,6 +224,7 @@ const Bootcamp: React.FC = () => {
                       <img
                         src={resolveImg(bc.image, BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length])}
                         alt={bc.title}
+                        loading="lazy"
                         className={`w-full h-full object-cover transition-all duration-500 ${isLocked ? 'grayscale brightness-50' : ''}`}
                       />
                       <div className="absolute top-3 left-3 flex items-center gap-2 flex-wrap">
@@ -246,6 +260,9 @@ const Bootcamp: React.FC = () => {
                       <h3 className={`mb-2 text-lg font-black transition-colors md:text-xl ${isLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'}`}>
                         {bc.title}
                       </h3>
+                      <p className="mb-2 text-xs font-bold uppercase tracking-wide text-accent">
+                        Outcome: Build practical offensive security execution skill
+                      </p>
                       {bc.description && (
                         <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-text-muted">{bc.description}</p>
                       )}
@@ -277,6 +294,14 @@ const Bootcamp: React.FC = () => {
                           Enroll now <ArrowRight className="h-4 w-4" />
                         </button>
                       )}
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(`I'm joining ${bc.title} on HSOCIETY OFFSEC. Join my squad and let's build together.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-flex items-center justify-center gap-2 text-xs font-bold text-accent hover:underline"
+                      >
+                        Invite your squad on WhatsApp
+                      </a>
                     </div>
                   </div>
                 </ScrollReveal>

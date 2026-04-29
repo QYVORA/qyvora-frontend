@@ -350,7 +350,7 @@ const StepCard: React.FC<{
     <div
       ref={ref}
       onClick={onClick}
-      className={`relative cursor-pointer rounded-xl border-2 p-3 sm:p-5 transition-all duration-200 overflow-hidden ${
+      className={`relative cursor-pointer rounded-xl border-2 p-3.5 sm:p-5 transition-all duration-200 overflow-hidden ${
         isActive
           ? 'border-accent/60 bg-bg-card shadow-[0_0_32px_rgba(183,255,153,0.08)]'
           : isViewed
@@ -361,7 +361,7 @@ const StepCard: React.FC<{
       {/* Step header */}
       <div className="mb-3 flex items-center gap-2.5">
         <div
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-xs font-black transition-colors ${
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-xs font-black transition-colors ${
             isViewed && !isActive
               ? 'border-accent/40 bg-accent text-bg'
               : isActive
@@ -376,10 +376,10 @@ const StepCard: React.FC<{
           )}
         </div>
         <div className="flex-1 min-w-0 overflow-hidden">
-          <span className="block truncate text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
+          <span className="block truncate text-[11px] font-black uppercase tracking-[0.2em] text-text-muted">
             {step.title}
           </span>
-          <span className="text-[9px] text-text-muted opacity-40">
+          <span className="text-[10px] text-text-muted opacity-50">
             {stepNum} / {total}
           </span>
         </div>
@@ -502,7 +502,7 @@ const Sidebar: React.FC<{
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col w-60 xl:w-68 shrink-0 sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-bg-card">
+      <aside className="hidden lg:flex lg:flex-col w-60 xl:w-68 shrink-0 sticky top-24 self-start rounded-2xl border border-border bg-bg-card">
         {content}
       </aside>
 
@@ -523,7 +523,7 @@ const Sidebar: React.FC<{
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-0 bottom-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden"
+              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden"
             >
               {/* Drawer header */}
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
@@ -540,7 +540,7 @@ const Sidebar: React.FC<{
                 </button>
               </div>
               {/* Scrollable content */}
-              <div className="flex-1 overflow-y-auto overscroll-contain">
+              <div className="flex-1">
                 {content}
               </div>
             </motion.aside>
@@ -1085,32 +1085,32 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-8 pt-20 md:pt-24">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-8 pt-16 md:pt-24">
 
         {/* ── Mobile topbar — sticky curriculum button + breadcrumb ── */}
-        <div className="mb-4 flex items-center gap-2 lg:hidden">
+        <div className="sticky top-14 z-30 -mx-3 mb-4 flex items-center gap-2 border-y border-border bg-bg/95 px-3 py-2 backdrop-blur supports-[backdrop-filter]:bg-bg/80 sm:-mx-4 sm:px-4 lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:bg-accent-dim/70 transition-colors"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:bg-accent-dim/70 transition-colors"
             aria-label="Open curriculum"
           >
-            <Menu className="h-4 w-4" />
+            <Menu className="h-4.5 w-4.5" />
           </button>
           <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-            <nav className="flex min-w-0 items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-text-muted overflow-hidden">
+            <nav className="flex min-w-0 items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted overflow-hidden">
               <Link to={`/bootcamps/${bootcampId}`} className="hover:text-accent transition-colors shrink-0">
                 Bootcamp
               </Link>
               <ChevronRight className="h-2.5 w-2.5 opacity-40 shrink-0" />
-              <span className="text-accent shrink-0 truncate max-w-[80px]">{phase.codename}</span>
+              <span className="text-accent shrink-0 truncate max-w-[110px]">{phase.codename}</span>
             </nav>
-            <p className="truncate text-xs font-black text-text-primary leading-tight">{room.title}</p>
+            <p className="truncate text-sm font-black text-text-primary leading-tight">{room.title}</p>
           </div>
           {/* Quiz shortcut on mobile */}
           {quizModuleId && (
             <button
               onClick={() => setQuizOpen(true)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
               aria-label="Take quiz"
             >
               <ClipboardList className="h-4 w-4" />
@@ -1152,13 +1152,13 @@ const BootcampRoomPage: React.FC = () => {
 
             {/* Room header */}
             <div className="mb-5">
-              <span className="mb-1 block text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+              <span className="mb-1.5 block text-[10px] font-black uppercase tracking-[0.22em] text-accent">
                 {phase.codename} — {phase.title}
               </span>
-              <h1 className="mb-2 text-lg font-black leading-tight text-text-primary sm:text-2xl md:text-3xl break-words">
+              <h1 className="mb-2 text-xl font-black leading-tight text-text-primary sm:text-2xl md:text-3xl break-words">
                 {room.title}
               </h1>
-              <p className="border-l-2 border-accent pl-3 text-sm leading-relaxed text-text-secondary">
+              <p className="border-l-2 border-accent pl-3 text-[15px] leading-relaxed text-text-secondary sm:text-sm">
                 {room.overview}
               </p>
               {isRoomComplete && (
@@ -1169,12 +1169,12 @@ const BootcampRoomPage: React.FC = () => {
             </div>
 
             {/* Step progress bar */}
-            <div className="mb-5 rounded-xl border border-border bg-bg-card p-3 sm:p-4">
+            <div className="mb-5 rounded-xl border border-border bg-bg-card p-3.5 sm:p-4">
               <div className="mb-2 flex items-center justify-between gap-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-text-muted">
                   Progress
                 </span>
-                <span className="font-mono text-xs font-black text-accent">
+                <span className="font-mono text-sm font-black text-accent">
                   {viewedSteps.size} / {room.steps.length} steps
                 </span>
               </div>
@@ -1185,12 +1185,12 @@ const BootcampRoomPage: React.FC = () => {
                 />
               </div>
               {/* Step dots */}
-              <div className="mt-2.5 flex gap-1.5 flex-wrap">
+              <div className="mt-3 flex gap-2 flex-wrap">
                 {room.steps.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => goToStep(idx)}
-                    className={`h-1.5 flex-1 min-w-[16px] max-w-[36px] rounded-full transition-all ${
+                    className={`h-2.5 flex-1 min-w-[22px] max-w-[42px] rounded-full transition-all ${
                       idx === currentStepIdx
                         ? 'bg-accent'
                         : viewedSteps.has(idx)
@@ -1225,19 +1225,19 @@ const BootcampRoomPage: React.FC = () => {
               <button
                 onClick={goPrev}
                 disabled={currentStepIdx === 0}
-                className="btn-secondary inline-flex items-center gap-1.5 text-xs disabled:opacity-40 px-3 sm:px-4 py-2.5"
+                className="btn-secondary inline-flex min-h-[44px] items-center gap-1.5 text-sm disabled:opacity-40 px-4 py-2.5"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 <span>Prev</span>
               </button>
 
-              <span className="text-[10px] font-bold text-text-muted whitespace-nowrap">
+              <span className="text-xs font-bold text-text-muted whitespace-nowrap">
                 {currentStepIdx + 1} / {room.steps.length}
               </span>
 
               <button
                 onClick={goNext}
-                className="btn-primary inline-flex items-center gap-1.5 text-xs px-3 sm:px-4 py-2.5"
+                className="btn-primary inline-flex min-h-[44px] items-center gap-1.5 text-sm px-4 py-2.5"
               >
                 {isLastStep ? (
                   isRoomComplete ? (
@@ -1287,12 +1287,12 @@ const BootcampRoomPage: React.FC = () => {
               {prevRoom ? (
                 <button
                   onClick={() => handleNavigate(prevRoom.phaseId, prevRoom.roomId)}
-                  className="flex flex-1 items-center gap-2 rounded-xl border border-border bg-bg-card p-3 text-left transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden"
+                  className="flex flex-1 items-center gap-2 rounded-xl border border-border bg-bg-card p-3 text-left transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden min-h-[52px]"
                 >
                   <ArrowLeft className="h-3.5 w-3.5 shrink-0 text-text-muted" />
                   <div className="min-w-0 overflow-hidden">
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Prev</p>
-                    <p className="truncate text-xs font-bold text-text-primary">{prevRoom.title}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Prev</p>
+                    <p className="truncate text-sm font-bold text-text-primary">{prevRoom.title}</p>
                   </div>
                 </button>
               ) : (
@@ -1301,11 +1301,11 @@ const BootcampRoomPage: React.FC = () => {
               {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
                 <button
                   onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
-                  className="flex flex-1 items-center justify-end gap-2 rounded-xl border border-border bg-bg-card p-3 text-right transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden"
+                  className="flex flex-1 items-center justify-end gap-2 rounded-xl border border-border bg-bg-card p-3 text-right transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden min-h-[52px]"
                 >
                   <div className="min-w-0 overflow-hidden">
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Next</p>
-                    <p className="truncate text-xs font-bold text-text-primary">{nextRoom.title}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Next</p>
+                    <p className="truncate text-sm font-bold text-text-primary">{nextRoom.title}</p>
                   </div>
                   <ArrowRight className="h-3.5 w-3.5 shrink-0 text-text-muted" />
                 </button>

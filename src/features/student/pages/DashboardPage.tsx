@@ -3,13 +3,24 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Wallet, ShoppingBag, Bell, Settings, Terminal,
-  Flame, BookOpen, Target, ChevronRight, Star,
+  Flame, BookOpen, Target, ChevronRight, Star, Users, MessageCircle, CheckCircle2, RefreshCw,
 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import { getConfiguredCommunityLink } from '../constants/communityLinks';
+import {
+  completeDailyMission,
+  formatSyncLabel,
+  getBootcampProgressMap,
+  getDailyMission,
+  getLastSync,
+  getDataSaverEnabled,
+  resolveNextRoomPath,
+  setLastSyncNow,
+} from '../utils/studentExperience';
 
 // ── Sidebar nav items ────────────────────────────────────────────────────────
 const RAIL_LINKS = [
@@ -95,6 +106,10 @@ const Dashboard: React.FC = () => {
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncError, setSyncError] = useState('');
+  const [lastSync, setLastSync] = useState<string | null>(getLastSync('dashboard'));
+  const [dailyMission, setDailyMission] = useState(getDailyMission());
+  const [dataSaver] = useState(getDataSaverEnabled());
 
   useEffect(() => {
     let mounted = true;
@@ -107,26 +122,18 @@ const Dashboard: React.FC = () => {
         if (!mounted) return;
         setOverview(ovRes.data || null);
         setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
-      } catch { /* silent */ }
+        setSyncError('');
+        setLastSync(setLastSyncNow('dashboard'));
+      } catch {
+        setSyncError('Could not sync your latest progress. Showing cached view where possible.');
+      }
       finally { if (mounted) setLoading(false); }
     })();
     return () => { mounted = false; };
   }, []);
 
   // ── Derived data ─────────────────────────────────────────────────────────
-  const moduleProgressById = new Map<string, any>(
-    (Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) => [
-      String(m.bootcampId || m.id || ''), m,
-    ])
-  );
-  if (
-    overview?.bootcampStatus && overview.bootcampStatus !== 'not_enrolled' &&
-    overview?.bootcampId && !moduleProgressById.has(String(overview.bootcampId))
-  ) {
-    moduleProgressById.set(String(overview.bootcampId), {
-      bootcampId: overview.bootcampId, progress: 0, title: '',
-    });
-  }
+  const moduleProgressById = getBootcampProgressMap(overview);
 
   const enrolledBootcamps = bootcamps
     .map((item: any) => ({ item, prog: moduleProgressById.get(String(item.id || '')) }))
@@ -147,7 +154,8 @@ const Dashboard: React.FC = () => {
   const activeBootcamp = bootcamps.find((bc: any) =>
     moduleProgressById.get(String(bc.id || '')) !== undefined
   );
-  const continuePath = activeBootcamp ? `/bootcamps/${activeBootcamp.id}` : '/bootcamps';
+  const nextRoomPath = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) : null;
+  const continuePath = nextRoomPath || (activeBootcamp ? `/bootcamps/${activeBootcamp.id}` : '/bootcamps');
   const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
   const progressNum = parseInt(progressValue, 10) || 0;
@@ -193,10 +201,12 @@ const Dashboard: React.FC = () => {
                   <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-orange-400/12 blur-3xl" />
                   <div className="absolute right-1/4 bottom-0 h-32 w-64 rounded-full bg-purple-500/5 blur-2xl" />
                 </div>
-                <OptionalDecorImage
-                  src={STUDENT_DECOR.hubPanelMascot}
-                  className="pointer-events-none absolute -bottom-6 -right-4 z-[1] hidden max-h-[200px] w-auto select-none opacity-90 saturate-[1.05] sm:block md:-bottom-8 md:right-2 md:max-h-[220px]"
-                />
+                {!dataSaver && (
+                  <OptionalDecorImage
+                    src={STUDENT_DECOR.hubPanelMascot}
+                    className="pointer-events-none absolute -bottom-6 -right-4 z-[1] hidden max-h-[200px] w-auto select-none opacity-90 saturate-[1.05] sm:block md:-bottom-8 md:right-2 md:max-h-[220px]"
+                  />
+                )}
 
                 <div className="relative z-10">
                   <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10 mb-8 md:mb-10">
@@ -340,13 +350,77 @@ const Dashboard: React.FC = () => {
                       to={continuePath}
                       className="btn-primary inline-flex w-full items-center justify-center gap-3 py-4 text-base font-black uppercase tracking-wide sm:w-auto md:px-10 md:text-lg"
                     >
-                      {isEnrolled ? 'Continue learning' : 'Browse bootcamps'}
+                      {isEnrolled ? 'Resume mission' : 'Browse bootcamps'}
                       <ArrowRight className="h-6 w-6" />
                     </Link>
+                    {isEnrolled && (
+                      <p className="text-xs font-bold text-text-muted">
+                        {nextRoomPath ? '1 tap to your exact next room' : 'Continue from your active bootcamp'}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             </motion.section>
+
+            <section className="rounded-2xl border border-border bg-bg-card p-4 md:p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h2 className="text-sm font-black uppercase tracking-[0.2em] text-text-primary">Daily recon</h2>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">{dailyMission.date}</span>
+              </div>
+              <p className="text-sm text-text-secondary">{dailyMission.text}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setDailyMission(completeDailyMission())}
+                  disabled={dailyMission.completed}
+                  className="btn-primary inline-flex items-center gap-2 px-4 py-2 text-xs disabled:opacity-50"
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  {dailyMission.completed ? 'Mission completed' : 'Mark complete (+10 CP)'}
+                </button>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(`HSOCIETY Daily Recon: ${dailyMission.text}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary inline-flex items-center gap-2 px-4 py-2 text-xs"
+                >
+                  <MessageCircle className="h-4 w-4" /> Share to WhatsApp
+                </a>
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-border bg-bg-card p-4 md:p-5">
+              <div className="mb-2 flex items-center gap-2">
+                <Users className="h-5 w-5 text-accent" />
+                <h2 className="text-sm font-black uppercase tracking-[0.2em] text-text-primary">Squad Momentum</h2>
+              </div>
+              <p className="text-sm text-text-secondary">
+                Build a 3-8 person squad, run weekly objectives, and push your names up the Hall of Shadows.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a href={getConfiguredCommunityLink(String(activeBootcamp?.id || ''))} target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 text-xs">
+                  Open Squad Group
+                </a>
+                <Link to="/leaderboard" className="btn-secondary px-4 py-2 text-xs">View Squad Ranking</Link>
+                <a href={getConfiguredCommunityLink(String(activeBootcamp?.id || ''))} target="_blank" rel="noopener noreferrer" className="btn-secondary px-4 py-2 text-xs">
+                  Join WhatsApp Squad
+                </a>
+              </div>
+            </section>
+
+            <section className="rounded-xl border border-border bg-bg-card/70 p-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className={`text-xs ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+                  {syncError || formatSyncLabel(lastSync)}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-accent"
+                >
+                  <RefreshCw className="h-3.5 w-3.5" /> Retry sync
+                </button>
+              </div>
+            </section>
 
             {/* ══ NEXT MISSION (module-level — not a repeat of overall % above) ══ */}
             {!loading && isEnrolled && nextMission && (
@@ -459,6 +533,7 @@ const Dashboard: React.FC = () => {
                           <img
                             src={item.img}
                             alt=""
+                            loading="lazy"
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           <div aria-hidden className="scanlines pointer-events-none absolute inset-0" />
@@ -512,6 +587,7 @@ const Dashboard: React.FC = () => {
                           <img
                             src={item.img}
                             alt={item.title}
+                            loading="lazy"
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           <div aria-hidden className="scanlines pointer-events-none absolute inset-0" />
