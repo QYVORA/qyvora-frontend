@@ -52,30 +52,38 @@ interface RoomQuiz {
 const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ src, alt, stepNum }) => {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
 
+  // Reset status whenever the src changes (different room/step)
+  useEffect(() => {
+    setStatus('loading');
+  }, [src]);
+
   return (
-    <div className="mt-4 w-full overflow-hidden rounded-xl border border-border bg-bg">
+    <div className="mt-5 w-full overflow-hidden rounded-xl border border-border bg-bg">
+      {/* Loading spinner — shown until image loads or errors */}
       {status === 'loading' && (
-        <div className="flex items-center justify-center py-12 text-text-muted">
-          <Loader2 className="h-5 w-5 animate-spin opacity-40" />
+        <div className="flex items-center justify-center py-14">
+          <Loader2 className="h-5 w-5 animate-spin text-accent opacity-50" />
         </div>
       )}
+
+      {/* Error fallback */}
       {status === 'error' && (
-        <div className="flex flex-col items-center justify-center gap-2 py-10 text-text-muted">
-          <ImageOff className="h-6 w-6 opacity-30" />
+        <div className="flex flex-col items-center justify-center gap-2 py-12 text-text-muted">
+          <ImageOff className="h-7 w-7 opacity-25" />
           <span className="text-[11px] font-bold uppercase tracking-widest opacity-40">
             Step {stepNum} image not available
           </span>
         </div>
       )}
+
+      {/* The actual image — always in DOM so browser can load it */}
       <img
         src={src}
         alt={alt}
         onLoad={() => setStatus('loaded')}
         onError={() => setStatus('error')}
-        className={`w-full object-contain transition-opacity duration-300 ${
-          status === 'loaded' ? 'opacity-100' : 'opacity-0 h-0'
-        }`}
-        loading="lazy"
+        style={{ display: status === 'loaded' ? 'block' : 'none' }}
+        className="w-full rounded-xl object-contain"
       />
     </div>
   );
@@ -104,28 +112,34 @@ const StepCard: React.FC<{
   roomId: string;
   isActive: boolean;
   isViewed: boolean;
-}> = ({ step, stepNum, total, phaseId, roomId, isActive, isViewed }) => {
+  onClick: () => void;
+}> = ({ step, stepNum, total, phaseId, roomId, isActive, isViewed, onClick }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isActive && ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Small delay so the border transition is visible before scroll
+      const t = setTimeout(() => {
+        ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 80);
+      return () => clearTimeout(t);
     }
   }, [isActive]);
 
   return (
     <div
       ref={ref}
-      className={`relative rounded-2xl border-2 p-6 md:p-8 transition-all duration-200 ${
+      onClick={onClick}
+      className={`relative cursor-pointer rounded-2xl border-2 p-6 md:p-8 transition-all duration-200 ${
         isActive
-          ? 'border-accent/50 bg-bg-card shadow-[0_0_24px_rgba(183,255,153,0.06)]'
+          ? 'border-accent/60 bg-bg-card shadow-[0_0_32px_rgba(183,255,153,0.08)]'
           : isViewed
-          ? 'border-border bg-bg-card/60'
-          : 'border-border/50 bg-bg-card/40'
+          ? 'border-accent/20 bg-bg-card hover:border-accent/35'
+          : 'border-border bg-bg-card hover:border-border/80'
       }`}
     >
       {/* Step header */}
-      <div className="mb-5 flex items-center gap-3">
+      <div className="mb-4 flex items-center gap-3">
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-xs font-black transition-colors ${
             isViewed && !isActive
@@ -145,7 +159,7 @@ const StepCard: React.FC<{
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
             {step.title}
           </span>
-          <span className="ml-3 text-[10px] text-text-muted opacity-50">
+          <span className="ml-3 text-[10px] text-text-muted opacity-40">
             {stepNum} / {total}
           </span>
         </div>
@@ -159,13 +173,13 @@ const StepCard: React.FC<{
       {/* Instruction */}
       <p
         className={`text-base leading-relaxed transition-colors ${
-          isActive ? 'text-text-primary' : 'text-text-secondary'
+          isActive ? 'text-text-primary font-medium' : 'text-text-secondary'
         }`}
       >
         {step.instruction}
       </p>
 
-      {/* Image */}
+      {/* Image — always rendered so browser loads it */}
       {step.image ? (
         <StepImage
           src={buildStepImagePath(phaseId, roomId, step.image)}
@@ -871,6 +885,7 @@ const BootcampRoomPage: React.FC = () => {
                   roomId={roomId || ''}
                   isActive={idx === currentStepIdx}
                   isViewed={viewedSteps.has(idx)}
+                  onClick={() => goToStep(idx)}
                 />
               ))}
             </div>
