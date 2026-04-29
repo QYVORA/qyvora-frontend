@@ -88,7 +88,7 @@ React Component
 api.ts (Axios instance)
   ├── Request interceptor: attaches X-CSRF-Token header from cookie
   ↓
-Backend API (https://api.hsociety.com/api/v1/...)
+Backend API (https://hsociety-backend.onrender.com/api/...)
   ↓
 Response interceptor:
   ├── 401 → clear auth state → redirect /login
@@ -310,7 +310,7 @@ Layer 2 — Cache API (image preloading):
 ## Environment Variables
 
 ```env
-VITE_API_URL=https://api.hsociety.com   //  fix thiswe dont have a domain we are using render
+VITE_API_URL=https://hsociety-backend.onrender.com/api
 ```
 
 All other config is handled at build time via Vite.

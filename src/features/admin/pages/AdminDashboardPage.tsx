@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, LogOut, Shield, Users, Database, Coins,
   AlertTriangle, Mail, Ban, Unlock, Search, Menu, X,
-  RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight, CheckCircle2,
+  RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight, CheckCircle2, Link2,
 } from 'lucide-react';
 import QuizManager from '../components/QuizManager';
+import ChainExplorer from '../components/ChainExplorer';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
@@ -178,7 +179,7 @@ const BootcampAccessPanel: React.FC<{ addToast: (msg: string, type: string) => v
 };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications' | 'quizzes';
+type AdminTab = 'users' | 'bootcamps' | 'zero_day' | 'cp' | 'security' | 'contacts' | 'applications' | 'quizzes' | 'chain';
 
 type AdminUser = {
   id: string; name: string; hackerHandle: string; email: string;
@@ -438,6 +439,7 @@ const AdminDashboardPage: React.FC = () => {
     { id: 'applications', label: 'Applications', icon: Users        },
     { id: 'zero_day',     label: 'Market',       icon: Database     },
     { id: 'cp',           label: 'Points',       icon: Coins        },
+    { id: 'chain',        label: 'Chain',        icon: Link2        },
     { id: 'security',     label: 'Security',     icon: AlertTriangle},
     { id: 'contacts',     label: 'Contacts',     icon: Mail         },
     { id: 'quizzes',      label: 'Quizzes',      icon: BookOpen     },
@@ -1070,6 +1072,11 @@ const AdminDashboardPage: React.FC = () => {
               {/* ── QUIZZES ───────────────────────────────────────────────── */}
               {activeTab === 'quizzes' && (
                 <QuizManager bootcamps={bootcamps} addToast={addToast} api={api} />
+              )}
+
+              {/* ── CHAIN EXPLORER ────────────────────────────────────────── */}
+              {activeTab === 'chain' && (
+                <ChainExplorer />
               )}
             </>
           )}
