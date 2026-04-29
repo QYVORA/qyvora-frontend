@@ -3,8 +3,9 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
   CheckCircle2, BookOpen, ImageOff, Menu, X,
-  ClipboardList,
+  ClipboardList, Sparkles,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import {
@@ -577,6 +578,9 @@ const BootcampRoomPage: React.FC = () => {
   // ── Quiz modal ─────────────────────────────────────────────────────────────
   const [quizOpen, setQuizOpen] = useState(false);
 
+  // ── Room complete overlay ──────────────────────────────────────────────────
+  const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
+
   // ── Completed rooms (localStorage) ────────────────────────────────────────
   const storageKey = `hpb_completed_${bootcampId || 'hpb'}`;
   const [completedRooms, setCompletedRooms] = useState<Set<string>>(() => {
@@ -693,9 +697,9 @@ const BootcampRoomPage: React.FC = () => {
     if (nextIdx < room.steps.length) {
       goToStep(nextIdx);
     } else {
-      // All steps viewed — mark room complete
+      // All steps viewed — mark room complete and show overlay
       if (phaseId && roomId) markRoomComplete(phaseId, roomId);
-      addToast('Room complete!', 'success');
+      setShowCompleteOverlay(true);
     }
   };
 
@@ -796,6 +800,76 @@ const BootcampRoomPage: React.FC = () => {
           onClose={() => setQuizOpen(false)}
         />
       )}
+
+      {/* Room complete overlay */}
+      <AnimatePresence>
+        {showCompleteOverlay && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: -10 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="relative z-10 w-full max-w-sm rounded-3xl border-2 border-accent/40 bg-bg-card p-8 text-center shadow-[0_0_60px_rgba(183,255,153,0.15)]"
+            >
+              {/* Animated checkmark */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.15, type: 'spring', stiffness: 400, damping: 20 }}
+                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-accent/40 bg-accent-dim"
+              >
+                <CheckCircle2 className="h-8 w-8 text-accent" />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+              >
+                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                  Room Complete
+                </p>
+                <h2 className="mb-2 text-xl font-black text-text-primary">{room.title}</h2>
+                <p className="mb-6 text-sm text-text-muted">
+                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)
+                    ? `Ready for the next room: ${nextRoom.title}`
+                    : 'You\'ve finished all available rooms in this phase.'}
+                </p>
+
+                <div className="flex flex-col gap-3">
+                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
+                    <button
+                      onClick={() => {
+                        setShowCompleteOverlay(false);
+                        handleNavigate(nextRoom.phaseId, nextRoom.roomId);
+                      }}
+                      className="btn-primary flex items-center justify-center gap-2 py-3 text-sm font-black"
+                    >
+                      Next Room <ArrowRight className="h-4 w-4" />
+                    </button>
+                  ) : null}
+                  <button
+                    onClick={() => {
+                      setShowCompleteOverlay(false);
+                      navigate(`/bootcamps/${bootcampId}`);
+                    }}
+                    className="btn-secondary py-3 text-sm"
+                  >
+                    Back to Curriculum
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
 

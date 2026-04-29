@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Zap, Shield, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { Zap, Shield, ArrowUpRight, ArrowDownLeft, Link2, CheckCircle2 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 
 const PAGE_SIZE = 10;
 
@@ -15,6 +16,8 @@ const Wallet: React.FC = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [chainHistory, setChainHistory] = useState<ChainBlock[]>([]);
+  const [chainLoading, setChainLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -35,6 +38,14 @@ const Wallet: React.FC = () => {
       }
     })();
     return () => { mounted = false; };
+  }, []);
+
+  // Load chain history separately (degrades silently if chain is offline)
+  useEffect(() => {
+    getChainHistory()
+      .then(setChainHistory)
+      .catch(() => setChainHistory([]))
+      .finally(() => setChainLoading(false));
   }, []);
 
   const txRows = useMemo(() => {
@@ -185,6 +196,61 @@ const Wallet: React.FC = () => {
 
           </div>{/* end right column */}
         </div>{/* end two-col */}
+
+        {/* CHAIN LEDGER — verifiable audit trail */}
+        <ScrollReveal className="mt-8">
+          <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+            <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+              <Link2 className="h-5 w-5 text-accent shrink-0" />
+              <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Chain Ledger</h3>
+              <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                HSOCIETY CHAIN — tamper-proof
+              </span>
+            </div>
+
+            {chainLoading ? (
+              <div className="divide-y divide-border/50">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="px-5 py-4 flex items-center gap-3 animate-pulse">
+                    <div className="w-8 h-8 rounded-lg bg-accent-dim/30 flex-none" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-3 bg-accent-dim/30 rounded w-1/3" />
+                      <div className="h-2 bg-accent-dim/20 rounded w-2/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : chainHistory.length === 0 ? (
+              <div className="py-10 text-center text-sm text-text-muted">
+                No chain records yet — complete rooms to generate verified blocks.
+              </div>
+            ) : (
+              <div className="divide-y divide-border/50">
+                {chainHistory.slice(0, 20).map((block) => (
+                  <div key={block.hash} className="px-5 py-3.5 flex items-center gap-3 hover:bg-accent-dim/5 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none shrink-0">
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-bold text-text-primary">
+                        {CHAIN_EVENT_LABELS[block.data.type] ?? block.data.type}
+                      </div>
+                      <div className="text-[10px] font-mono text-text-muted mt-0.5 truncate">
+                        #{block.index} · {new Date(block.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })} · {block.hash.slice(0, 20)}…
+                      </div>
+                    </div>
+                    {block.data.cpPoints != null && block.data.cpPoints > 0 && (
+                      <div className="text-sm font-mono font-bold text-accent flex-none shrink-0 inline-flex items-center gap-1">
+                        +{block.data.cpPoints} <CpLogo className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </ScrollReveal>
+
       </div>
     </div>
   );
