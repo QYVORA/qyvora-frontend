@@ -13,22 +13,23 @@ const SAGE     = 0x88ad7c;
 const SAGE_HEX = '#88ad7c';
 
 /* ═══════════════════════════════════════════════
-   TARGETS  (Accra is index 0 — the home node)
+   TARGETS  — Only Tamale, Ghana is shown as a named location.
+   All other dots are silent background nodes (no label shown on hover).
 ═══════════════════════════════════════════════ */
 const TARGETS = [
-  { lat:   5.60, lng:  -0.19, label: 'ACCRA',        status: 'home',    region: 'africa' },
-  { lat:  -1.29, lng:  36.82, label: 'NAIROBI',       status: 'secured', region: 'africa' },
-  { lat: -26.20, lng:  28.05, label: 'JOHANNESBURG',  status:'scanning', region: 'africa' },
-  { lat:  -4.32, lng:  15.32, label: 'KINSHASA',      status:'scanning', region: 'africa' },
-  { lat:   6.37, lng:   2.39, label: 'LAGOS',         status: 'breach',  region: 'africa' },
-  { lat:  33.89, lng:   9.54, label: 'TUNIS',         status: 'secured', region: 'africa' },
-  { lat:  40.71, lng: -74.01, label: 'NEW YORK',      status: 'breach',  region: 'world'  },
-  { lat:  51.51, lng:  -0.13, label: 'LONDON',        status: 'secured', region: 'world'  },
-  { lat:  35.68, lng: 139.69, label: 'TOKYO',         status:'scanning', region: 'world'  },
-  { lat:   1.35, lng: 103.82, label: 'SINGAPORE',     status: 'secured', region: 'world'  },
-  { lat:  48.85, lng:   2.35, label: 'PARIS',         status: 'breach',  region: 'world'  },
-  { lat:  37.77, lng:-122.42, label: 'SAN FRANCISCO', status: 'secured', region: 'world'  },
-  { lat:  31.23, lng: 121.47, label: 'SHANGHAI',      status:'scanning', region: 'world'  },
+  { lat:   9.40, lng:  -0.85, label: 'TAMALE',        status: 'home',    region: 'africa' },
+  { lat:  -1.29, lng:  36.82, label: '',               status: 'secured', region: 'africa' },
+  { lat: -26.20, lng:  28.05, label: '',               status:'scanning', region: 'africa' },
+  { lat:  -4.32, lng:  15.32, label: '',               status:'scanning', region: 'africa' },
+  { lat:   6.37, lng:   2.39, label: '',               status: 'breach',  region: 'africa' },
+  { lat:  33.89, lng:   9.54, label: '',               status: 'secured', region: 'africa' },
+  { lat:  40.71, lng: -74.01, label: '',               status: 'breach',  region: 'world'  },
+  { lat:  51.51, lng:  -0.13, label: '',               status: 'secured', region: 'world'  },
+  { lat:  35.68, lng: 139.69, label: '',               status:'scanning', region: 'world'  },
+  { lat:   1.35, lng: 103.82, label: '',               status: 'secured', region: 'world'  },
+  { lat:  48.85, lng:   2.35, label: '',               status: 'breach',  region: 'world'  },
+  { lat:  37.77, lng:-122.42, label: '',               status: 'secured', region: 'world'  },
+  { lat:  31.23, lng: 121.47, label: '',               status:'scanning', region: 'world'  },
 ];
 
 const STATUS_COLOR: Record<string, number> = {
@@ -444,11 +445,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       1.0,
     ));
 
-    /* ── Ghana cluster — extra-tall landmark poles ── */
+    /* ── Ghana cluster — extra-tall landmark poles around Tamale ── */
     const ghanaSamples: THREE.Vector3[] = [];
     for (let dlat = -2.5; dlat <= 2.5; dlat += 0.7) {
       for (let dlng = -2.5; dlng <= 2.5; dlng += 0.7) {
-        const la = 5.60 + dlat, ln = -0.19 + dlng;
+        const la = 9.40 + dlat, ln = -0.85 + dlng;
         if (!isAfrica(la, ln)) continue;
         ghanaSamples.push(latLngToVec3(la, ln, 1.0));
       }
@@ -622,12 +623,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       if (!tip) return;
       if (hits.length) {
         const idx = hitMeshes.indexOf(hits[0].object as THREE.Mesh);
-        if (idx < 0) {
-          tip.style.display = 'none';
-          return;
-        }
-        const d   = TARGETS[idx];
-        const sc  = STATUS_HEX[d.status] || SAGE_HEX;
+        if (idx < 0) { tip.style.display = 'none'; return; }
+        const d = TARGETS[idx];
+        // Only show tooltip for named locations (Tamale)
+        if (!d.label) { tip.style.display = 'none'; return; }
+        const sc = STATUS_HEX[d.status] || SAGE_HEX;
         tip.style.display = 'block';
         tip.style.left    = `${e.clientX-rect.left+16}px`;
         tip.style.top     = `${e.clientY-rect.top-12}px`;
@@ -638,7 +638,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const st  = Object.assign(document.createElement('span'), {
           textContent: d.status==='home' ? '◈ HQ · GHANA' : `● ${d.status.toUpperCase()}`,
         });
-        st.style.cssText  = `font-size:9px;letter-spacing:.12em;color:${sc}`;
+        st.style.cssText = `font-size:9px;letter-spacing:.12em;color:${sc}`;
         tip.append(lbl, br, st);
       } else {
         tip.style.display = 'none';

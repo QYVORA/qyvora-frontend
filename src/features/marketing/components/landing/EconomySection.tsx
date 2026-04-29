@@ -37,10 +37,10 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                 Earn Cyber Points by completing bootcamps and challenges. Use <CpLogo className="w-4 h-4 mx-1" /> in the marketplace and track your progress on the leaderboard.
               </p>
               <Link
-                to="/cyber-points"
+                to="/chain"
                 className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent border border-accent/30 rounded-md px-4 py-2 mb-6 hover:bg-accent-dim transition-all"
               >
-                Learn Cyber Points <ArrowRight className="w-3.5 h-3.5" />
+                CP &amp; Chain <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <ul className="flex flex-col space-y-3 mb-6">
                 {[

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, BookOpen, ShoppingBag, Trophy, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, ShoppingBag, Trophy, Zap, Link2 } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import CpLogo from '../../../../shared/components/CpLogo';
+import ChainLogo from '../../../../shared/components/ChainLogo';
 
 interface CyberPointsCtaSectionProps {
   totalCp: number;
@@ -14,6 +15,7 @@ const EARN_PATHS = [
   { icon: Zap,         label: 'Finish Module Challenges'  },
   { icon: Trophy,      label: 'Climb the Leaderboard'     },
   { icon: ShoppingBag, label: 'Spend in Zero-Day Market'  },
+  { icon: Link2,       label: 'Chain-verified history'    },
 ];
 
 const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }) => {
@@ -67,7 +69,9 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
               </h2>
               <p className="text-text-secondary text-sm md:text-base mb-8 max-w-lg leading-relaxed">
                 Cyber Points (<CpLogo className="w-4 h-4 mx-0.5" />) is HSOCIETY's proof-of-skill currency.
-                Earn it by training, spend it in the Zero-Day Market to unlock tools and operator resources.
+                Earn it by training, spend it in the Zero-Day Market — and every transaction is
+                recorded on the <span className="text-accent font-bold">HSOCIETY Chain</span>, a
+                tamper-proof ledger that makes your history verifiable.
               </p>
             </ScrollReveal>
 
@@ -85,13 +89,20 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
             </ScrollReveal>
 
             <ScrollReveal className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <Link to="/cyber-points" className="btn-primary text-sm !px-7 inline-flex items-center justify-center gap-2">
-                Learn Cyber Points <ArrowRight className="w-4 h-4" />
+              <Link to="/chain" className="btn-primary text-sm !px-7 inline-flex items-center justify-center gap-2">
+                CP &amp; Chain <ArrowRight className="w-4 h-4" />
               </Link>
-              {/* Fix #13: public visitors go to /register, not the auth-gated /bootcamps */}
               <Link to="/register" className="btn-secondary text-sm !px-7 inline-flex items-center justify-center gap-2">
                 <BookOpen className="w-4 h-4" /> Start Earning
               </Link>
+            </ScrollReveal>
+
+            {/* Chain badge */}
+            <ScrollReveal className="mt-5">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5 w-fit">
+                <ChainLogo size={16} />
+                <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Verified by HSOCIETY Chain</span>
+              </div>
             </ScrollReveal>
           </div>
         </div>
