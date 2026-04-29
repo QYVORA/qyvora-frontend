@@ -162,7 +162,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="w-full min-h-[calc(100svh-5rem)] md:min-h-[calc(100svh-6rem)] bg-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-12">
-        <div className="flex gap-6 lg:gap-10 items-start">
+        <div className="flex items-start lg:pr-20">
 
           {/* ── MAIN COLUMN ──────────────────────────────────────────────── */}
           <div className="flex-1 min-w-0 space-y-8 md:space-y-10">
@@ -563,8 +563,11 @@ const Dashboard: React.FC = () => {
 
           </div>
 
-          {/* ── RIGHT RAIL — desktop only ─────────────────────────────────── */}
-          <aside className="hidden w-16 shrink-0 flex-col items-center justify-center gap-4 self-stretch lg:flex">
+          {/* ── RIGHT RAIL — desktop only (fixed to viewport right, scroll-independent) ── */}
+          <aside
+            className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-center gap-3"
+            aria-label="Quick navigation"
+          >
             {RAIL_LINKS.map(({ icon: Icon, path, label }) => (
               <Link
                 key={path}
