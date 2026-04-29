@@ -82,7 +82,7 @@ function getRankGreeting(rankName: string, handle: string): string {
 
 // Bootcamp ID → cover image (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
-  bc_1775270338500: '/images/bootcamp-room-images/hackermindset.png',
+  bc_1775270338500: '/images/HPB-image.png',
 };
 const BOOTCAMP_FALLBACK_IMG = '/images/HPB-image.png';
 

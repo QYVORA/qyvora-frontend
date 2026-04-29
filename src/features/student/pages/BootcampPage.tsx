@@ -12,7 +12,7 @@ import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
-  bc_1775270338500: '/images/bootcamp-room-images/hackermindset.png',
+  bc_1775270338500: '/images/HPB-image.png',
 };
 // Fallback order for unknown bootcamps (index-based)
 const PHASE_IMGS = [
