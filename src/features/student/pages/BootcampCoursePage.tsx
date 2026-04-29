@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
-  ArrowLeft, ChevronRight, ChevronDown, Lock, CheckCircle2,
-  BookOpen, Loader2,
+  ArrowLeft, ChevronRight, Lock, CheckCircle2,
+  BookOpen, Loader2, ArrowRight,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -36,7 +36,6 @@ const BootcampCourse: React.FC = () => {
   const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
-  const [expandedModule, setExpandedModule] = useState<number | null>(null);
   const [enrolling, setEnrolling] = useState(false);
 
   const load = async () => {
@@ -64,9 +63,6 @@ const BootcampCourse: React.FC = () => {
       if (courseRes?.data) {
         const nextCourse = courseRes.data as Course;
         setCourse(nextCourse);
-        if (Array.isArray(nextCourse.modules) && nextCourse.modules.length > 0) {
-          setExpandedModule((prev) => (prev === null ? Number(nextCourse.modules[0].moduleId) : prev));
-        }
       }
     } catch {
       // silently fail
@@ -160,6 +156,7 @@ const BootcampCourse: React.FC = () => {
     <div className="min-h-screen bg-bg pb-16">
       <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 md:px-8 md:pt-24">
 
+        {/* Breadcrumb */}
         <div className="mb-8 flex flex-wrap items-center gap-2 text-sm text-text-muted">
           <Link
             to="/bootcamps"
@@ -171,7 +168,8 @@ const BootcampCourse: React.FC = () => {
           <span className="truncate font-black uppercase tracking-wide text-text-primary">{course?.title || 'Course'}</span>
         </div>
 
-        <ScrollReveal className="mb-10 md:mb-12">
+        {/* Hero card */}
+        <ScrollReveal className="mb-12">
           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
               <div className="absolute -right-16 -top-20 h-72 w-72 rounded-full bg-accent/14 blur-3xl" />
@@ -201,124 +199,141 @@ const BootcampCourse: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        <h2 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-text-muted md:text-sm">Phases & rooms</h2>
-
-        <div className="space-y-4 md:space-y-5">
-          {(course?.modules || []).map((mod, idx) => {
+        {/* ── Phase sections with room cards ── */}
+        <div className="space-y-12">
+          {(course?.modules || []).map((mod, modIdx) => {
             const prog = moduleProgressMap.get(Number(mod.moduleId));
             const progress = Number(prog?.progress || 0);
             const roomsDone = Number(prog?.roomsCompleted || 0);
             const roomsTotal = Number(prog?.roomsTotal || mod.rooms?.length || 0);
-            const isExpanded = expandedModule === mod.moduleId;
             const isLocked = mod.locked;
 
+            // Map API module index → config phase
+            const configPhase = BOOTCAMP_CONFIG.phases[modIdx];
+
             return (
-              <ScrollReveal key={mod.moduleId} delay={idx * 0.04}>
-                <div className={`w-full overflow-hidden rounded-2xl border-2 transition-all ${
-                  isLocked ? 'border-border bg-bg-card/80 opacity-60' : isExpanded ? 'border-accent/35 bg-bg-card shadow-[inset_0_1px_0_rgba(183,255,153,0.05)]' : 'border-border bg-bg-card hover:border-accent/25'
-                }`}>
-                  <button
-                    onClick={() => !isLocked && setExpandedModule(isExpanded ? null : mod.moduleId)}
-                    className="flex w-full items-center gap-5 p-5 text-left md:gap-6 md:p-7"
-                    disabled={isLocked}
-                  >
-                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-base font-black font-mono md:h-14 md:w-14 ${
-                      progress === 100 ? 'border-accent/30 bg-accent text-bg' : isLocked ? 'border-border bg-bg text-text-muted' : 'border-accent/25 bg-accent-dim text-accent'
+              <ScrollReveal key={mod.moduleId} delay={modIdx * 0.05}>
+                {/* Phase header */}
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
+                      progress === 100
+                        ? 'border-accent/30 bg-accent text-bg'
+                        : isLocked
+                        ? 'border-border bg-bg text-text-muted'
+                        : 'border-accent/30 bg-accent-dim text-accent'
                     }`}>
-                      {progress === 100 ? <CheckCircle2 className="h-6 w-6" /> : isLocked ? <Lock className="h-5 w-5" /> : String(idx + 1).padStart(2, '0')}
+                      {progress === 100 ? <CheckCircle2 className="h-5 w-5" /> : isLocked ? <Lock className="h-4 w-4" /> : String(modIdx + 1).padStart(2, '0')}
                     </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="mb-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
-                        <h3 className="text-base font-black text-text-primary md:text-lg">{mod.title}</h3>
-                        {mod.roleTitle && (
-                          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">{mod.roleTitle}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-4 text-xs font-bold uppercase text-text-muted">
-                        <span>{roomsDone}/{roomsTotal} rooms</span>
-                        {progress > 0 && <span className="text-accent">{progress}%</span>}
-                      </div>
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                        {configPhase?.codename || `Phase ${modIdx + 1}`}
+                      </p>
+                      <h2 className="text-lg font-black text-text-primary md:text-xl">{mod.title}</h2>
                     </div>
-
-                    {!isLocked && progress > 0 && progress < 100 && (
-                      <div className="hidden h-2 w-24 shrink-0 overflow-hidden rounded-full bg-accent-dim sm:block">
-                        <div className="h-full rounded-full bg-accent" style={{ width: `${progress}%` }} />
-                      </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
+                      {roomsDone}/{roomsTotal} rooms
+                    </span>
+                    {progress > 0 && (
+                      <span className="font-mono text-sm font-black text-accent">{progress}%</span>
                     )}
-
-                    {isLocked
-                      ? <Lock className="h-5 w-5 shrink-0 text-text-muted" />
-                      : isExpanded
-                        ? <ChevronDown className="h-5 w-5 shrink-0 text-text-muted" />
-                        : <ChevronRight className="h-5 w-5 shrink-0 text-text-muted" />
-                    }
-                  </button>
-
-                  {/* Rooms list */}
-                  {isExpanded && !isLocked && (
-                    <div className="border-t border-border">
-                      {mod.description && (
-                        <p className="px-5 py-3 text-xs text-text-muted border-b border-border/50">{mod.description}</p>
-                      )}
-
-                      <div className="divide-y divide-border/50">
-                        {(mod.rooms || []).map((room, roomIdx) => {
-                          const isRoomLocked = room.locked;
-                          const roomDone = Boolean(room.completed);
-                          // MVP: no meeting links — all rooms have WhatsApp session
-
-                          // Map API module index → config phaseId, API room index → config roomId
-                          const configPhase = BOOTCAMP_CONFIG.phases[idx];
-                          const configRoom = configPhase?.rooms[roomIdx];
-                          const roomPath = configPhase && configRoom
-                            ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
-                            : null;
-
-                          return (
-                            <div
-                              key={room.roomId}
-                              className={`flex items-center gap-4 px-6 md:px-7 py-4 md:py-5 transition-colors ${
-                                isRoomLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent-dim/20 cursor-pointer'
-                              }`}
-                              onClick={() => {
-                                if (!isRoomLocked && roomPath) {
-                                  navigate(roomPath);
-                                }
-                              }}
-                            >
-                              {/* Room number */}
-                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-black font-mono ${
-                                roomDone ? 'bg-accent text-bg' : isRoomLocked ? 'bg-bg border border-border text-text-muted' : 'bg-bg border border-border text-text-muted'
-                              }`}>
-                                {roomDone ? <CheckCircle2 className="w-4 h-4" /> : isRoomLocked ? <Lock className="w-3.5 h-3.5" /> : `${roomIdx + 1}`}
-                              </div>
-
-                              {/* Room info */}
-                              <div className="flex-1 min-w-0">
-                                <div className="text-sm md:text-base font-bold text-text-primary truncate">{room.title || `Room ${room.roomId}`}</div>
-                                {room.overview && (
-                                  <div className="text-xs text-text-muted truncate mt-0.5">{room.overview}</div>
-                                )}
-                              </div>
-
-                              {/* Indicators */}
-                              <div className="flex items-center gap-2 shrink-0">
-                                {!isRoomLocked && (
-                                  <ChevronRight className="w-4 h-4 text-text-muted" />
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
+
+                {/* Phase progress bar */}
+                {progress > 0 && (
+                  <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-accent-dim">
+                    <div
+                      className="h-full rounded-full bg-accent transition-all duration-700"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                )}
+
+                {/* Room cards grid */}
+                {isLocked ? (
+                  <div className="flex items-center gap-3 rounded-2xl border border-border bg-bg-card/60 p-5 opacity-60">
+                    <Lock className="h-5 w-5 shrink-0 text-text-muted" />
+                    <p className="text-sm text-text-muted">This phase is locked. Your instructor will unlock it when it's time.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {(mod.rooms || []).map((room, roomIdx) => {
+                      const isRoomLocked = room.locked;
+                      const roomDone = Boolean(room.completed);
+
+                      const configRoom = configPhase?.rooms[roomIdx];
+                      const roomPath = configPhase && configRoom
+                        ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
+                        : null;
+
+                      return (
+                        <div
+                          key={room.roomId}
+                          onClick={() => { if (!isRoomLocked && roomPath) navigate(roomPath); }}
+                          className={`group relative flex flex-col rounded-2xl border-2 bg-bg-card p-5 transition-all duration-200 ${
+                            isRoomLocked
+                              ? 'border-border opacity-50 cursor-not-allowed'
+                              : roomDone
+                              ? 'border-accent/30 cursor-pointer hover:border-accent/60 hover:shadow-[0_0_20px_rgba(183,255,153,0.06)]'
+                              : 'border-border cursor-pointer hover:border-accent/40 hover:shadow-[0_0_20px_rgba(183,255,153,0.05)]'
+                          }`}
+                        >
+                          {/* Room number + status */}
+                          <div className="mb-4 flex items-center justify-between gap-2">
+                            <div className={`flex h-8 w-8 items-center justify-center rounded-lg border font-mono text-xs font-black ${
+                              roomDone
+                                ? 'border-accent/40 bg-accent text-bg'
+                                : isRoomLocked
+                                ? 'border-border bg-bg text-text-muted'
+                                : 'border-accent/25 bg-accent-dim text-accent'
+                            }`}>
+                              {roomDone ? <CheckCircle2 className="h-4 w-4" /> : isRoomLocked ? <Lock className="h-3.5 w-3.5" /> : String(roomIdx + 1).padStart(2, '0')}
+                            </div>
+                            {roomDone && (
+                              <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+                                Complete
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Room title */}
+                          <h3 className={`mb-2 text-base font-black leading-snug transition-colors ${
+                            isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
+                          }`}>
+                            {room.title || `Room ${roomIdx + 1}`}
+                          </h3>
+
+                          {/* Room overview */}
+                          {room.overview && (
+                            <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted">
+                              {room.overview}
+                            </p>
+                          )}
+
+                          {/* Step count from config */}
+                          {configRoom && (
+                            <p className="mt-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                              {configRoom.steps.length} {configRoom.steps.length === 1 ? 'step' : 'steps'}
+                            </p>
+                          )}
+
+                          {/* Arrow */}
+                          {!isRoomLocked && (
+                            <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </ScrollReveal>
             );
           })}
         </div>
+
       </div>
     </div>
   );

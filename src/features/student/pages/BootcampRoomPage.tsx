@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
-  CheckCircle2, BookOpen, ImageOff, Menu, X, ChevronDown,
+  CheckCircle2, BookOpen, ImageOff, Menu, X,
+  ClipboardList,
 } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -258,8 +259,6 @@ const Sidebar: React.FC<{
   mobileOpen,
   onMobileClose,
 }) => {
-  const [expandedPhase, setExpandedPhase] = useState<string>(activePhaseId);
-
   const content = (
     <nav className="flex flex-col gap-1 p-4">
       <div className="mb-4 px-1">
@@ -272,53 +271,38 @@ const Sidebar: React.FC<{
         </Link>
       </div>
 
-      {phases.map((phase) => {
-        const isExpanded = expandedPhase === phase.id;
-        return (
-          <div key={phase.id} className="mb-1">
-            {/* Phase header */}
-            <button
-              onClick={() => setExpandedPhase(isExpanded ? '' : phase.id)}
-              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left transition-colors hover:bg-accent-dim/20"
-            >
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent flex-1">
-                {phase.codename} — {phase.title}
-              </span>
-              <ChevronDown
-                className={`h-3.5 w-3.5 shrink-0 text-text-muted transition-transform duration-200 ${
-                  isExpanded ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
+      {phases.map((phase) => (
+        <div key={phase.id} className="mb-3">
+          {/* Phase label */}
+          <p className="mb-1.5 px-3 text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+            {phase.codename} — {phase.title}
+          </p>
 
-            {/* Rooms */}
-            {isExpanded && (
-              <div className="ml-2 mt-1 space-y-0.5 border-l border-border/50 pl-3">
-                {phase.rooms.map((room) => {
-                  const key = `${phase.id}:${room.id}`;
-                  return (
-                    <SidebarRoomItem
-                      key={key}
-                      phase={phase}
-                      room={room}
-                      isActive={phase.id === activePhaseId && room.id === activeRoomId}
-                      isCompleted={completedRooms.has(key)}
-                      isLocked={lockedRooms.has(key)}
-                      bootcampId={bootcampId}
-                      onClick={() => {
-                        if (!lockedRooms.has(key)) {
-                          onNavigate(phase.id, room.id);
-                          onMobileClose();
-                        }
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            )}
+          {/* Rooms — always visible, no collapse */}
+          <div className="space-y-0.5 border-l border-border/50 ml-2 pl-3">
+            {phase.rooms.map((room) => {
+              const key = `${phase.id}:${room.id}`;
+              return (
+                <SidebarRoomItem
+                  key={key}
+                  phase={phase}
+                  room={room}
+                  isActive={phase.id === activePhaseId && room.id === activeRoomId}
+                  isCompleted={completedRooms.has(key)}
+                  isLocked={lockedRooms.has(key)}
+                  bootcampId={bootcampId}
+                  onClick={() => {
+                    if (!lockedRooms.has(key)) {
+                      onNavigate(phase.id, room.id);
+                      onMobileClose();
+                    }
+                  }}
+                />
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </nav>
   );
 
@@ -358,13 +342,13 @@ const Sidebar: React.FC<{
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// QUIZ PANEL
+// QUIZ MODAL
 // ─────────────────────────────────────────────────────────────────────────────
-const QuizPanel: React.FC<{
+const QuizModal: React.FC<{
   moduleId: string;
   courseId: string;
-  bootcampId: string;
-}> = ({ moduleId, courseId, bootcampId }) => {
+  onClose: () => void;
+}> = ({ moduleId, courseId, onClose }) => {
   const { addToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<RoomQuiz | null>(null);
@@ -375,10 +359,6 @@ const QuizPanel: React.FC<{
 
   useEffect(() => {
     setLoading(true);
-    setQuiz(null);
-    setAnswers({});
-    setResult(null);
-    setError('');
     api
       .post('/student/quiz', { moduleId, courseId })
       .then((res) => {
@@ -421,111 +401,150 @@ const QuizPanel: React.FC<{
     }
   };
 
+  // Close on backdrop click or Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   return (
-    <div className="rounded-2xl border border-border bg-bg-card p-6">
-      <h2 className="mb-5 text-sm font-black uppercase tracking-widest text-text-primary">
-        Module Quiz
-      </h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-      {loading && (
-        <div className="flex items-center gap-2 py-6 text-sm text-text-muted">
-          <Loader2 className="h-4 w-4 animate-spin text-accent" />
-          Loading quiz…
+      {/* Modal */}
+      <div className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-bg-card shadow-2xl">
+        {/* Header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-bg-card px-6 py-4">
+          <div className="flex items-center gap-2">
+            <ClipboardList className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">
+              Module Quiz
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-text-muted hover:text-text-primary transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
-      )}
 
-      {!loading && !quiz && !result && (
-        <p className={`py-4 text-center text-xs ${error ? 'text-red-400' : 'text-text-muted'}`}>
-          {error || 'Quiz not available for this module yet.'}
-        </p>
-      )}
-
-      {!loading && result && (
-        <div className="space-y-4 py-4 text-center">
-          <div className={`text-5xl font-black ${result.passed ? 'text-accent' : 'text-text-primary'}`}>
-            {result.score}%
-          </div>
-          <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-text-muted'}`}>
-            {result.passed ? '✓ Passed' : 'Keep going'}
-          </div>
-          {result.passed && result.reward && result.reward > 0 && (
-            <div className="text-xs text-text-muted">+{result.reward} CP earned</div>
+        <div className="p-6">
+          {/* Loading */}
+          {loading && (
+            <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">
+              <Loader2 className="h-4 w-4 animate-spin text-accent" />
+              Loading quiz…
+            </div>
           )}
-          {!result.passed && (
-            <button
-              onClick={() => { setResult(null); setAnswers({}); }}
-              className="btn-secondary text-xs"
-            >
-              Try Again
-            </button>
+
+          {/* Error / unavailable */}
+          {!loading && !quiz && !result && (
+            <p className={`py-8 text-center text-sm ${error ? 'text-red-400' : 'text-text-muted'}`}>
+              {error || 'Quiz not available for this module yet.'}
+            </p>
           )}
-        </div>
-      )}
 
-      {!loading && quiz && !result && (
-        <>
-          {/* Progress bar */}
-          <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-accent-dim">
-            <div
-              className="h-full rounded-full bg-accent transition-all duration-300"
-              style={{ width: `${(Object.keys(answers).length / quiz.questions.length) * 100}%` }}
-            />
-          </div>
-
-          <div className="space-y-6">
-            {quiz.questions.map((q, idx) => (
-              <div key={q.id || idx} className="space-y-3">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                  Q{idx + 1} of {quiz.questions.length}
-                </div>
-                <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>
-                <div className="space-y-2">
-                  {(q.options || []).map((opt, optIdx) => {
-                    const selected = Number(answers[q.id]) === optIdx;
-                    return (
-                      <button
-                        key={`${q.id}-${optIdx}`}
-                        onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
-                        className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-all ${
-                          selected
-                            ? 'border-accent bg-accent-dim font-bold text-accent'
-                            : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/20'
-                        }`}
-                      >
-                        <span className="mr-2 font-mono text-[10px] opacity-50">
-                          {String.fromCharCode(65 + optIdx)}.
-                        </span>
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
+          {/* Result */}
+          {!loading && result && (
+            <div className="space-y-5 py-6 text-center">
+              <div className={`text-6xl font-black ${result.passed ? 'text-accent' : 'text-text-primary'}`}>
+                {result.score}%
               </div>
-            ))}
-          </div>
-
-          <div className="mt-6">
-            <button
-              onClick={submit}
-              disabled={submitting || Object.keys(answers).length < quiz.questions.length}
-              className="btn-primary inline-flex w-full items-center justify-center gap-2 py-3 text-sm disabled:opacity-50"
-            >
-              {submitting ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting…
-                </>
-              ) : (
-                'Submit Quiz'
+              <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-text-muted'}`}>
+                {result.passed ? '✓ Passed' : 'Keep going'}
+              </div>
+              {result.passed && result.reward && result.reward > 0 && (
+                <div className="text-sm font-bold text-text-muted">+{result.reward} CP earned</div>
               )}
-            </button>
-            {Object.keys(answers).length < quiz.questions.length && (
-              <p className="mt-2 text-center text-[10px] text-text-muted">
-                Answer all {quiz.questions.length} questions to submit
-              </p>
-            )}
-          </div>
-        </>
-      )}
+              <div className="flex justify-center gap-3 pt-2">
+                {!result.passed && (
+                  <button
+                    onClick={() => { setResult(null); setAnswers({}); }}
+                    className="btn-secondary text-sm"
+                  >
+                    Try Again
+                  </button>
+                )}
+                <button onClick={onClose} className="btn-primary text-sm">
+                  {result.passed ? 'Continue' : 'Close'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Questions */}
+          {!loading && quiz && !result && (
+            <>
+              {/* Answer progress */}
+              <div className="mb-6 h-1.5 overflow-hidden rounded-full bg-accent-dim">
+                <div
+                  className="h-full rounded-full bg-accent transition-all duration-300"
+                  style={{ width: `${(Object.keys(answers).length / quiz.questions.length) * 100}%` }}
+                />
+              </div>
+
+              <div className="space-y-7">
+                {quiz.questions.map((q, idx) => (
+                  <div key={q.id || idx} className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 rounded-lg border border-border bg-bg px-2 py-0.5 font-mono text-[10px] font-black text-text-muted">
+                        Q{idx + 1}
+                      </span>
+                      <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>
+                    </div>
+                    <div className="space-y-2">
+                      {(q.options || []).map((opt, optIdx) => {
+                        const selected = Number(answers[q.id]) === optIdx;
+                        return (
+                          <button
+                            key={`${q.id}-${optIdx}`}
+                            onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
+                            className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-all ${
+                              selected
+                                ? 'border-accent bg-accent-dim font-bold text-accent'
+                                : 'border-border text-text-secondary hover:border-accent/30 hover:bg-accent-dim/20'
+                            }`}
+                          >
+                            <span className="mr-2 font-mono text-[10px] opacity-50">
+                              {String.fromCharCode(65 + optIdx)}.
+                            </span>
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 space-y-2">
+                <button
+                  onClick={submit}
+                  disabled={submitting || Object.keys(answers).length < quiz.questions.length}
+                  className="btn-primary inline-flex w-full items-center justify-center gap-2 py-3 text-sm disabled:opacity-50"
+                >
+                  {submitting ? (
+                    <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting…</>
+                  ) : (
+                    'Submit Quiz'
+                  )}
+                </button>
+                {Object.keys(answers).length < quiz.questions.length && (
+                  <p className="text-center text-[10px] text-text-muted">
+                    {quiz.questions.length - Object.keys(answers).length} question{quiz.questions.length - Object.keys(answers).length !== 1 ? 's' : ''} remaining
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
@@ -554,6 +573,9 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Mobile sidebar ─────────────────────────────────────────────────────────
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // ── Quiz modal ─────────────────────────────────────────────────────────────
+  const [quizOpen, setQuizOpen] = useState(false);
 
   // ── Completed rooms (localStorage) ────────────────────────────────────────
   const storageKey = `hpb_completed_${bootcampId || 'hpb'}`;
@@ -681,7 +703,6 @@ const BootcampRoomPage: React.FC = () => {
     if (currentStepIdx > 0) goToStep(currentStepIdx - 1);
   };
 
-  const allStepsViewed = room ? viewedSteps.size >= room.steps.length : false;
   const isLastStep = room ? currentStepIdx === room.steps.length - 1 : false;
 
   // ── Find prev/next room for navigation ────────────────────────────────────
@@ -767,6 +788,15 @@ const BootcampRoomPage: React.FC = () => {
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-bg pb-20">
+      {/* Quiz modal */}
+      {quizOpen && quizModuleId && (
+        <QuizModal
+          moduleId={quizModuleId}
+          courseId={quizCourseId}
+          onClose={() => setQuizOpen(false)}
+        />
+      )}
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
 
         {/* ── Mobile topbar ── */}
@@ -873,7 +903,7 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Steps */}
+            {/* ── WALKTHROUGH STEPS — main content ── */}
             <div className="space-y-4 mb-8">
               {room.steps.map((step, idx) => (
                 <StepCard
@@ -906,11 +936,7 @@ const BootcampRoomPage: React.FC = () => {
 
               <button
                 onClick={goNext}
-                className={`inline-flex items-center gap-2 text-sm font-black uppercase tracking-wide ${
-                  isLastStep && allStepsViewed
-                    ? 'btn-primary'
-                    : 'btn-primary'
-                } disabled:opacity-40`}
+                className="btn-primary inline-flex items-center gap-2 text-sm disabled:opacity-40"
               >
                 {isLastStep ? (
                   isRoomComplete ? (
@@ -924,30 +950,36 @@ const BootcampRoomPage: React.FC = () => {
               </button>
             </div>
 
-            {/* Session info */}
-            <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                Live Session
-              </p>
-              <p className="text-sm leading-relaxed text-text-secondary">
-                Your instructor will share the session link in the bootcamp WhatsApp group. Attend the live session, then complete the module quiz below to earn your CP reward.
-              </p>
-              <div className="mt-3 flex items-center gap-2 text-xs font-bold text-accent">
-                <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                Check WhatsApp group for session link
+            {/* ── ACTION BAR: Session info + Quiz button ── */}
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-stretch">
+              {/* Session info */}
+              <div className="flex-1 rounded-2xl border border-border bg-bg-card p-5">
+                <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                  Live Session
+                </p>
+                <p className="text-sm leading-relaxed text-text-secondary">
+                  Your instructor will share the session link in the bootcamp WhatsApp group.
+                </p>
+                <div className="mt-3 flex items-center gap-2 text-xs font-bold text-accent">
+                  <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                  Check WhatsApp group for link
+                </div>
               </div>
-            </div>
 
-            {/* Quiz */}
-            {quizModuleId && (
-              <div className="mb-10">
-                <QuizPanel
-                  moduleId={quizModuleId}
-                  courseId={quizCourseId}
-                  bootcampId={bootcampId || ''}
-                />
-              </div>
-            )}
+              {/* Quiz button */}
+              {quizModuleId && (
+                <button
+                  onClick={() => setQuizOpen(true)}
+                  className="flex items-center justify-center gap-3 rounded-2xl border-2 border-accent/40 bg-accent-dim/30 px-6 py-5 text-left transition-all hover:border-accent/70 hover:bg-accent-dim/50 sm:flex-col sm:min-w-[160px]"
+                >
+                  <ClipboardList className="h-6 w-6 shrink-0 text-accent" />
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-wide text-accent">Take Quiz</p>
+                    <p className="text-[10px] text-text-muted">Earn CP reward</p>
+                  </div>
+                </button>
+              )}
+            </div>
 
             {/* Prev / Next room navigation */}
             <div className="flex items-stretch gap-4">
