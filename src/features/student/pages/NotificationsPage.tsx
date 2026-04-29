@@ -114,7 +114,7 @@ const Notifications: React.FC = () => {
 
         {loading ? (
           <div className="space-y-4">
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
               <div key={i} className="animate-pulse rounded-2xl border border-border bg-bg-card p-6 md:p-7">
                 <div className="h-3 bg-accent-dim/30 rounded w-1/4 mb-2" />
                 <div className="h-4 bg-accent-dim/30 rounded w-2/3 mb-2" />

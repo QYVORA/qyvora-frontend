@@ -108,6 +108,7 @@ export const AppRouter = () => {
           <Route path="/learn" element={<Wrap scope="Learn"><StudentOnly><LearnPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
+          {/* Legacy route — moduleId maps to phaseId by number: module 1 = phase1, etc. */}
           <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/marketplace" element={<Wrap scope="Marketplace"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />

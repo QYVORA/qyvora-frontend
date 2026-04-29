@@ -16,11 +16,10 @@ import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 // Per-phase room card images — one image per phase, shown on every room card in that phase
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/images/bootcamp-room-images/hackermindset.png',
-  phase2: '/images/bootcamp-room-images/networking.png',
-  phase3: '/images/bootcamp-room-images/LinuxFoundations.png',
+  phase2: '/images/bootcamp-room-images/LinuxFoundations.png',
+  phase3: '/images/bootcamp-room-images/networking.png',
   phase4: '/images/bootcamp-room-images/webandbackendsystems.png',
   phase5: '/images/bootcamp-room-images/socialengineering.png',
-  phase6: '/images/bootcamp-room-images/hackermindset.png',
 };
 
 interface LiveClass { title: string; instructor?: string; time?: string; link: string; }

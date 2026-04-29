@@ -404,7 +404,7 @@ const Dashboard: React.FC = () => {
               <div className={multipleEnrolledBootcamps ? 'grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6' : ''}>
                 {loading ? (
                   multipleEnrolledBootcamps ? (
-                    [0, 1].map((i) => (
+                    [0, 1, 2, 3].map((i) => (
                       <div key={i} className="animate-pulse overflow-hidden rounded-2xl border-2 border-border bg-bg-card">
                         <div className="h-40 bg-accent-dim/30" />
                         <div className="space-y-2 p-5">

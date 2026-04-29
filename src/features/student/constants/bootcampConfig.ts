@@ -1,14 +1,23 @@
 /**
  * HACKER PROTOCOL BOOTCAMP — STATIC CONFIG
  * =========================================
- * This is the SINGLE SOURCE OF TRUTH for the bootcamp structure.
- * UI must render ONLY from this config.
- * DO NOT add phases, rooms, or steps that are not defined here.
+ * Single source of truth for the bootcamp walkthrough structure.
+ * MUST mirror the backend bootcamp.config.js exactly:
+ *   - Same number of modules/phases
+ *   - Same number of rooms per module
+ *   - Same titles (used for title-based matching in BootcampRoomPage)
  *
  * Image paths resolve to:
  *   /HPB-Walkthrough-images/{phaseId}/{roomId}/{image}
  *
- * If an image filename is null → render placeholder.
+ * image: null → renders placeholder (upload image later)
+ *
+ * Backend module → Frontend phase mapping (by index):
+ *   moduleId 1 → phase1  (Hacker Mindset,       3 rooms)
+ *   moduleId 2 → phase2  (Linux Foundations,     4 rooms)
+ *   moduleId 3 → phase3  (Networking,            4 rooms)
+ *   moduleId 4 → phase4  (Web & Backend Systems, 5 rooms)
+ *   moduleId 5 → phase5  (Social Engineering,    3 rooms)
  */
 
 export interface BootcampStep {
@@ -19,16 +28,16 @@ export interface BootcampStep {
 }
 
 export interface BootcampRoom {
-  id: string;          // e.g. "room1"
-  title: string;
+  id: string;       // e.g. "room1"
+  title: string;    // MUST match backend room title exactly (case-insensitive)
   overview: string;
   steps: BootcampStep[];
 }
 
 export interface BootcampPhase {
-  id: string;          // e.g. "phase1"
-  title: string;
-  codename: string;    // short label shown in sidebar
+  id: string;       // e.g. "phase1"
+  title: string;    // MUST match backend module title exactly (case-insensitive)
+  codename: string;
   rooms: BootcampRoom[];
 }
 
@@ -52,324 +61,617 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
   id: 'hpb',
   title: 'Hacker Protocol Bootcamp',
   phases: [
-    // ── PHASE 1: MINDSET ────────────────────────────────────────────────────
+
+    // ── PHASE 1: HACKER MINDSET (moduleId: 1, 3 rooms) ──────────────────────
     {
       id: 'phase1',
-      title: 'Mindset',
+      title: 'Hacker Mindset',
       codename: 'PHASE 1',
       rooms: [
         {
           id: 'room1',
-          title: 'Observing a System',
+          title: 'Introduction to Offensive Security',
           overview:
-            'When you open a website, you\'re not just looking at a page — you\'re looking at a system designed to respond to your actions. This room trains your brain to see systems instead of surfaces.',
+            'What is offensive security, why it matters, and how HSOCIETY operates. This room sets the foundation for everything that follows.',
           steps: [
             {
               title: 'STEP 1',
               instruction:
-                'Open the target website in your browser and take a moment to observe the full layout before interacting with anything. Notice the structure — headers, sections, footers.',
-              image: '01-open-website.png',
+                'Your instructor will introduce the concept of offensive security. Listen carefully and note the difference between offensive and defensive security.',
+              image: '01-intro.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Study the overall layout. Where are the navigation elements? What sections exist? Sketch or note the page structure before touching anything.',
-              image: '02-layout.png',
+                'Understand the HSOCIETY operating model: education, execution, and community. Write down what each pillar means to you as a future operator.',
+              image: '02-model.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Identify all visible input fields, buttons, forms, and interactive elements on the page. Ask: what can a user submit or trigger here?',
-              image: '03-inputs.png',
-            },
-            {
-              title: 'STEP 4',
-              instruction:
-                'Open your notes and write down your observations. What is this system doing? What data does it collect? What actions does it allow?',
-              image: '04-notes.png',
+                'Explore the landscape: red teams, penetration testers, bug bounty hunters, and security researchers. Which role interests you most and why?',
+              image: '03-roles.png',
             },
           ],
         },
         {
           id: 'room2',
-          title: 'Thinking in Systems',
+          title: 'The Hacker Mindset',
           overview:
-            'Every application follows a flow: user acts → logic processes → data is returned. This room teaches you to break any app into its core layers.',
+            'How attackers think — curiosity, persistence, and creative problem solving. The mindset is the most important tool you will ever develop.',
           steps: [
             {
               title: 'STEP 1',
               instruction:
-                'Open your notes application. You\'re going to map out the system you observed in Room 1 into its three core layers: frontend, backend, and database.',
-              image: '01-open-notes.png',
+                'Your instructor will walk through the core traits of the hacker mindset: curiosity, persistence, and lateral thinking. Take notes on each.',
+              image: '01-mindset.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Look at the application again. Identify what the user sees (frontend), what processes the logic (backend), and what stores the data (database).',
-              image: '02-app.png',
+                'Apply the mindset to a simple object in your environment. Ask: how was this built? How could it be misused? What assumptions does it make about the user?',
+              image: '02-apply.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Draw or write out the three-layer breakdown. Label each layer and describe what it does in this specific application.',
-              image: '03-breakdown.png',
+                'Discuss with your group: what separates a hacker from someone who just runs tools? Write your answer in your notes.',
+              image: '03-discuss.png',
+            },
+          ],
+        },
+        {
+          id: 'room3',
+          title: 'Ethics & Legal Boundaries',
+          overview:
+            'Responsible disclosure, scope, and operating within the law. Understanding the legal and ethical framework is non-negotiable for every operator.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Your instructor will cover the Computer Misuse Act and equivalent laws in your jurisdiction. Note the key offences and their consequences.',
+              image: '01-law.png',
             },
             {
-              title: 'STEP 4',
+              title: 'STEP 2',
               instruction:
-                'Trace a single user action — like clicking Login — through all three layers. Describe what happens at each layer when that action is triggered.',
-              image: '04-flow.png',
+                'Learn what "scope" means in a penetration test. Why is written authorisation critical before touching any system?',
+              image: '02-scope.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Study responsible disclosure: what it is, how to report a vulnerability, and why it matters for the security community.',
+              image: '03-disclosure.png',
             },
           ],
         },
       ],
     },
 
-    // ── PHASE 2: NETWORKING ─────────────────────────────────────────────────
+    // ── PHASE 2: LINUX FOUNDATIONS (moduleId: 2, 4 rooms) ───────────────────
     {
       id: 'phase2',
-      title: 'Networking',
+      title: 'Linux Foundations',
       codename: 'PHASE 2',
       rooms: [
         {
           id: 'room1',
-          title: 'Ping & Connectivity',
+          title: 'Linux Basics & Navigation',
           overview:
-            'Before you understand applications, you need to understand communication. Ping is the most basic tool for testing whether a system is reachable on a network.',
+            'File system, permissions, and essential commands. The terminal is your primary weapon — learn to move through it with confidence.',
           steps: [
             {
               title: 'STEP 1',
               instruction:
-                'Open your terminal. This is where you\'ll run all networking commands. Familiarise yourself with the interface before proceeding.',
+                'Open your terminal. Run: pwd — this shows your current working directory. Then run: ls -la — observe all files including hidden ones.',
               image: '01-terminal.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Run the ping command against a known host: ping google.com — observe the output. Note the IP address resolved and the response times.',
-              image: '02-ping-command.png',
+                'Navigate the filesystem: use cd to move into directories, cd .. to go up, and ls -la at each level to see what\'s there.',
+              image: '02-navigate.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Read the ping output carefully. What is the round-trip time? Are all packets returned? What does packet loss indicate about connectivity?',
-              image: '03-ping-output.png',
-            },
-          ],
-        },
-        {
-          id: 'room2',
-          title: 'DNS Lookup',
-          overview:
-            'Humans use names. Computers use numbers. DNS translates domain names into IP addresses. Understanding DNS is fundamental to understanding how the internet works.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Run: nslookup google.com in your terminal. Observe the DNS server being queried and the IP address returned for the domain.',
-              image: '01-nslookup.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Note the IP address returned. This is the actual address your computer will connect to when you visit that domain. Try nslookup on a few other domains.',
-              image: '02-ip.png',
-            },
-          ],
-        },
-        {
-          id: 'room3',
-          title: 'Nmap Scanning',
-          overview:
-            'Every system exposes services through ports. Nmap lets you discover what a system is exposing to the outside world. You\'re not attacking — you\'re observing.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Run a basic Nmap scan on the target IP provided by your instructor: nmap [target-ip] — observe which ports are listed as open.',
-              image: '01-nmap.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Review the scan results. List every open port and the service associated with it. What does each open port tell you about this system?',
-              image: '02-ports.png',
-            },
-          ],
-        },
-      ],
-    },
-
-    // ── PHASE 3: LINUX ──────────────────────────────────────────────────────
-    {
-      id: 'phase3',
-      title: 'Linux',
-      codename: 'PHASE 3',
-      rooms: [
-        {
-          id: 'room1',
-          title: 'File Navigation',
-          overview:
-            'The terminal gives you direct control over your system. Instead of clicking through folders, you move through them using commands. This room teaches you to navigate the Linux filesystem.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Open your terminal and run: ls -la — this lists all files and folders in your current directory, including hidden files, with their permissions and sizes.',
-              image: '01-ls.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Navigate into a directory using: cd [folder-name] — then run ls -la again to see its contents. Use cd .. to go back up one level.',
-              image: '02-cd.png',
-            },
-          ],
-        },
-        {
-          id: 'room2',
-          title: 'File Reading',
-          overview:
-            'Being able to read files directly from the terminal is a basic but powerful skill. When you use cat, you bypass interfaces and access raw content.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Navigate to a directory that contains a text file, then run: cat [filename] — this outputs the full contents of the file directly to your terminal.',
-              image: '01-cat.png',
-            },
-          ],
-        },
-      ],
-    },
-
-    // ── PHASE 4: WEB ────────────────────────────────────────────────────────
-    {
-      id: 'phase4',
-      title: 'Web',
-      codename: 'PHASE 4',
-      rooms: [
-        {
-          id: 'room1',
-          title: 'Inspecting a Website',
-          overview:
-            'Every website is built using structure and style. DevTools exposes what the browser hides from normal users. You\'re looking at the real version of the page, not just the polished surface.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Open the target website in Chrome or Firefox. Take a moment to observe the page as a normal user would see it.',
-              image: '01-site.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Press F12 (or right-click → Inspect) to open DevTools. This is your window into the underlying structure of the page.',
-              image: '02-inspect.png',
-            },
-            {
-              title: 'STEP 3',
-              instruction:
-                'In the Elements tab, hover over different HTML elements and observe how they highlight on the page. Read the structure — what tags are used? What classes?',
-              image: '03-elements.png',
-            },
-          ],
-        },
-        {
-          id: 'room2',
-          title: 'Network Analysis',
-          overview:
-            'The Network tab in DevTools shows every request your browser makes. This is how you see what data is being sent and received behind the scenes.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Open DevTools and click the Network tab. You\'ll see a list of all network requests made by the page.',
-              image: '01-network.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Reload the page while the Network tab is open. Watch all the requests populate in real time.',
-              image: '02-reload.png',
-            },
-            {
-              title: 'STEP 3',
-              instruction:
-                'Click on individual requests to inspect them. Look at the Request Headers, Response Headers, and the response body. What data is being exchanged?',
-              image: '03-requests.png',
-            },
-          ],
-        },
-        {
-          id: 'room3',
-          title: 'Demo Web App',
-          overview:
-            'Now you\'ll apply everything to a real demo application. You\'ll observe how a login flow works at the network level — what data is sent, what is returned.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Open the demo web application provided by your instructor. Observe the interface before interacting with it.',
-              image: '01-open-app.png',
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Navigate to the login page. Open DevTools Network tab before submitting anything — you want to capture the login request.',
-              image: '02-login.png',
-            },
-            {
-              title: 'STEP 3',
-              instruction:
-                'Open the Network tab in DevTools. Make sure it is recording before you submit the login form.',
-              image: '03-network.png',
+                'Read the permission string on a file (e.g. -rwxr-xr-x). Identify the owner, group, and world permissions. What does each character mean?',
+              image: '03-permissions.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Submit a login attempt. Watch the Network tab — find the request that was made. Click on it to inspect it.',
-              image: '04-requests.png',
+                'Use cat, less, and head to read file contents. Use grep to search inside files. Practice on the files in your home directory.',
+              image: '04-reading.png',
+            },
+          ],
+        },
+        {
+          id: 'room2',
+          title: 'Users, Groups & Permissions',
+          overview:
+            'Managing access control on Linux systems. Understanding who can do what is fundamental to both attacking and defending systems.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Run: id — this shows your current user, UID, and group memberships. Run: whoami — confirm your username.',
+              image: '01-id.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Examine /etc/passwd and /etc/group. What information do these files contain? Why are they important to an attacker?',
+              image: '02-passwd.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Use chmod to change file permissions and chown to change ownership. Practice creating a file and modifying its permissions.',
+              image: '03-chmod.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Understand sudo and the sudoers file. Run: sudo -l — what commands can your user run with elevated privileges?',
+              image: '04-sudo.png',
+            },
+          ],
+        },
+        {
+          id: 'room3',
+          title: 'Processes & Networking',
+          overview:
+            'Process management, ports, and basic network commands. Every running service is a potential attack surface.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Run: ps aux — list all running processes. Identify the PID, user, and command for each. What processes are running as root?',
+              image: '01-ps.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Run: netstat -tulnp or ss -tulnp — list all listening ports and the processes bound to them. Note every open port.',
+              image: '02-netstat.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Use ping to test connectivity and traceroute to trace the path to a host. What does each hop in the traceroute tell you?',
+              image: '03-ping.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Use kill and killall to terminate processes. Understand the difference between SIGTERM (15) and SIGKILL (9).',
+              image: '04-kill.png',
+            },
+          ],
+        },
+        {
+          id: 'room4',
+          title: 'Scripting Fundamentals',
+          overview:
+            'Bash scripting for automation and recon tasks. Operators who can script move faster and work smarter.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Create your first bash script: open a text editor, write #!/bin/bash on the first line, then echo "Hello, Operator". Save it and run: chmod +x script.sh && ./script.sh',
+              image: '01-script.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Add variables to your script. Use $1, $2 for arguments. Write a script that takes a hostname as an argument and pings it.',
+              image: '02-variables.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Add a for loop to your script. Write a script that iterates over a list of IP addresses and pings each one.',
+              image: '03-loop.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Add conditional logic with if/else. Write a script that checks if a port is open using nc (netcat) and prints the result.',
+              image: '04-conditional.png',
+            },
+          ],
+        },
+      ],
+    },
+
+    // ── PHASE 3: NETWORKING (moduleId: 3, 4 rooms) ──────────────────────────
+    {
+      id: 'phase3',
+      title: 'Networking',
+      codename: 'PHASE 3',
+      rooms: [
+        {
+          id: 'room1',
+          title: 'TCP/IP & OSI Model',
+          overview:
+            'How data moves across networks — protocols and layers. Every attack and defence starts with understanding how packets travel.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Your instructor will walk through the 7 layers of the OSI model. Draw the model and write one sentence describing what happens at each layer.',
+              image: '01-osi.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Understand the TCP three-way handshake: SYN → SYN-ACK → ACK. Draw the sequence and explain what each step establishes.',
+              image: '02-handshake.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Compare TCP and UDP. When would an attacker prefer UDP? What services run on UDP that are commonly targeted?',
+              image: '03-tcp-udp.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Use Wireshark or tcpdump to capture live traffic. Identify TCP, UDP, DNS, and HTTP packets in the capture.',
+              image: '04-capture.png',
+            },
+          ],
+        },
+        {
+          id: 'room2',
+          title: 'DNS, HTTP & Common Protocols',
+          overview:
+            'The protocols attackers abuse most. Understanding how DNS and HTTP work is essential for web and network attacks.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Run: nslookup google.com and dig google.com. Compare the output. What DNS record types exist and what does each one store?',
+              image: '01-dns.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Use curl to make an HTTP GET request: curl -v http://example.com. Read the request and response headers carefully.',
+              image: '02-http.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Understand HTTP methods: GET, POST, PUT, DELETE, OPTIONS. What does each method do and which ones are most relevant to attackers?',
+              image: '03-methods.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Explore SMTP, FTP, and SSH at a high level. What ports do they run on? What credentials or data do they expose if misconfigured?',
+              image: '04-protocols.png',
+            },
+          ],
+        },
+        {
+          id: 'room3',
+          title: 'Network Scanning & Enumeration',
+          overview:
+            'Using nmap and other tools to map a target network. Enumeration is the foundation of every successful engagement.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Run a basic nmap scan: nmap [target-ip]. Observe which ports are open and what services are detected.',
+              image: '01-nmap-basic.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Run a service version scan: nmap -sV [target-ip]. What versions are running? Why does version information matter to an attacker?',
+              image: '02-nmap-version.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Run an OS detection scan: nmap -O [target-ip]. What operating system is the target running? How confident is nmap in its guess?',
+              image: '03-nmap-os.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Use nmap scripts: nmap --script=default [target-ip]. Review the additional information gathered. What vulnerabilities or misconfigurations are flagged?',
+              image: '04-nmap-scripts.png',
+            },
+          ],
+        },
+        {
+          id: 'room4',
+          title: 'Packet Analysis',
+          overview:
+            'Reading traffic with Wireshark to understand what\'s happening on the wire. Packet analysis is a core skill for both attackers and defenders.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Open Wireshark and start a capture on your active network interface. Browse to a website and observe the traffic generated.',
+              image: '01-wireshark.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Apply a display filter: http — this shows only HTTP traffic. Find a GET request and inspect the full packet details.',
+              image: '02-filter.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Use "Follow TCP Stream" on an HTTP request. Read the full request and response as plain text. What sensitive data is visible?',
+              image: '03-stream.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Apply a filter for DNS traffic: dns. Find a DNS query and response. What domain was resolved and what IP was returned?',
+              image: '04-dns-capture.png',
+            },
+          ],
+        },
+      ],
+    },
+
+    // ── PHASE 4: WEB & BACKEND SYSTEMS (moduleId: 4, 5 rooms) ───────────────
+    {
+      id: 'phase4',
+      title: 'Web & Backend Systems',
+      codename: 'PHASE 4',
+      rooms: [
+        {
+          id: 'room1',
+          title: 'How the Web Works',
+          overview:
+            'HTTP, requests, responses, cookies, and sessions. Before you can attack a web application, you need to understand exactly how it communicates.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Open the target web application. Press F12 to open DevTools and navigate to the Network tab. Reload the page and observe all requests.',
+              image: '01-devtools.png',
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Click on the main HTML document request. Inspect the Request Headers and Response Headers. What information is revealed about the server?',
+              image: '02-headers.png',
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Navigate to the Application tab in DevTools. Inspect Cookies and Local Storage. What data is being stored client-side?',
+              image: '03-cookies.png',
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Log in to the application and observe the login request in the Network tab. What data is sent? What does the server return on success?',
+              image: '04-login-request.png',
+            },
+          ],
+        },
+        {
+          id: 'room2',
+          title: 'OWASP Top 10 Overview',
+          overview:
+            'The most critical web application security risks. The OWASP Top 10 is the industry standard reference for web vulnerabilities.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Your instructor will walk through the OWASP Top 10 list. For each item, write one sentence describing the vulnerability and one example of how it is exploited.',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Focus on the top 3: Broken Access Control, Cryptographic Failures, and Injection. For each, describe what a successful attack looks like.',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Using the demo application, identify which OWASP Top 10 categories are present. Document your findings with evidence.',
+              image: null,
+            },
+          ],
+        },
+        {
+          id: 'room3',
+          title: 'SQL Injection',
+          overview:
+            'Finding and exploiting SQL injection vulnerabilities. SQLi remains one of the most impactful vulnerabilities in web applications.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Navigate to the login form on the demo application. Enter a single quote ( \' ) in the username field and observe the response. Does the application throw an error?',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Try a basic SQLi payload in the username field: admin\'-- and any password. Observe whether you can bypass authentication.',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Your instructor will demonstrate a UNION-based injection to extract data from the database. Follow along and note the structure of the payload.',
+              image: null,
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Use sqlmap on the target URL (with permission): sqlmap -u "[url]" --dbs. Observe what databases are discovered.',
+              image: null,
             },
             {
               title: 'STEP 5',
               instruction:
-                'Inspect the response. What did the server return? Is there a token? A session cookie? What does a successful vs failed login response look like?',
-              image: '05-response.png',
+                'Document your findings: what data was accessible, what the injection point was, and how it could be remediated.',
+              image: null,
+            },
+          ],
+        },
+        {
+          id: 'room4',
+          title: 'XSS & CSRF',
+          overview:
+            'Client-side attacks and how to exploit them. XSS and CSRF target users of an application, not just the server.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Find an input field on the demo application that reflects user input. Enter: <script>alert(1)</script> and observe whether the script executes.',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Your instructor will demonstrate a stored XSS attack. Observe how the payload is stored and executed when another user views the page.',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Understand CSRF: how an attacker can trick a logged-in user into performing actions they didn\'t intend. Review the demo CSRF form.',
+              image: null,
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Document both vulnerabilities: the injection point, the payload used, the impact, and the recommended fix.',
+              image: null,
+            },
+          ],
+        },
+        {
+          id: 'room5',
+          title: 'Authentication Attacks',
+          overview:
+            'Broken auth, session hijacking, and credential attacks. Authentication is the front door — and it\'s often left unlocked.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Attempt a brute force attack on the demo login using Burp Suite Intruder or Hydra with a small wordlist. Observe the application\'s response to repeated failures.',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Inspect the session token (cookie) after logging in. Is it predictable? Is it properly invalidated on logout?',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Your instructor will demonstrate session fixation and session hijacking. Follow along and note how the attack is executed.',
+              image: null,
+            },
+            {
+              title: 'STEP 4',
+              instruction:
+                'Document your findings: what authentication weaknesses exist, how they were exploited, and what controls would prevent each attack.',
+              image: null,
             },
           ],
         },
       ],
     },
 
-    // ── PHASE 5: PSYCHOLOGY ─────────────────────────────────────────────────
+    // ── PHASE 5: SOCIAL ENGINEERING (moduleId: 5, 3 rooms) ──────────────────
     {
       id: 'phase5',
-      title: 'Psychology',
+      title: 'Social Engineering',
       codename: 'PHASE 5',
       rooms: [
         {
           id: 'room1',
-          title: 'Scenario Analysis',
+          title: 'Phishing & Pretexting',
           overview:
-            'Social engineering targets humans, not systems. In this room you\'ll analyse real-world scenarios to understand how attackers exploit trust, urgency, and authority.',
+            'Crafting convincing attacks that target people, not systems. The most sophisticated technical defences can be bypassed by a well-crafted email.',
           steps: [
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will present a social engineering scenario. Read through it carefully and identify every psychological technique being used.',
-              image: null, // No image yet — placeholder will render
+                'Your instructor will present examples of real phishing emails. Identify the psychological triggers used: urgency, authority, fear, curiosity.',
+              image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'For each technique identified, write down: what the attacker is exploiting (trust, fear, urgency, authority) and how a target would recognise it.',
+                'Understand pretexting: creating a believable scenario to manipulate a target. Write a pretext scenario for a simulated engagement.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Discuss with your group: what controls or awareness training would have prevented this attack from succeeding?',
+                'Analyse the anatomy of a phishing email: sender spoofing, lookalike domains, malicious links, and urgency language. Document each technique.',
+              image: null,
+            },
+          ],
+        },
+        {
+          id: 'room2',
+          title: 'OSINT Fundamentals',
+          overview:
+            'Open source intelligence gathering on targets. OSINT is the first step in any engagement — know your target before you touch anything.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Use Google dorking to find information about a target organisation. Try: site:[domain] filetype:pdf and site:[domain] inurl:admin',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Use theHarvester to gather email addresses and subdomains: theHarvester -d [domain] -b google. Document all findings.',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Search LinkedIn, Twitter/X, and other social platforms for employees of the target organisation. What information is publicly available that could aid an attack?',
+              image: null,
+            },
+          ],
+        },
+        {
+          id: 'room3',
+          title: 'Physical Security',
+          overview:
+            'Tailgating, badge cloning, and physical intrusion concepts. Physical access often bypasses all digital controls.',
+          steps: [
+            {
+              title: 'STEP 1',
+              instruction:
+                'Your instructor will cover tailgating and piggybacking. Discuss: what physical controls prevent unauthorised entry and how are they bypassed?',
+              image: null,
+            },
+            {
+              title: 'STEP 2',
+              instruction:
+                'Understand RFID/NFC badge cloning at a conceptual level. What tools are used? What are the legal implications of testing this?',
+              image: null,
+            },
+            {
+              title: 'STEP 3',
+              instruction:
+                'Discuss dumpster diving and shoulder surfing. What sensitive information can be obtained through physical observation? How do organisations defend against this?',
               image: null,
             },
           ],
@@ -377,39 +679,5 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
       ],
     },
 
-    // ── FINAL PHASE: CTF ────────────────────────────────────────────────────
-    {
-      id: 'phase6',
-      title: 'CTF',
-      codename: 'FINAL',
-      rooms: [
-        {
-          id: 'room1',
-          title: 'Basic Challenge',
-          overview:
-            'Apply everything you\'ve learned. This Capture The Flag challenge tests your ability to combine mindset, networking, Linux, and web skills to find the flag.',
-          steps: [
-            {
-              title: 'STEP 1',
-              instruction:
-                'Your instructor will provide the CTF environment details. Connect to the target system and begin your reconnaissance.',
-              image: null,
-            },
-            {
-              title: 'STEP 2',
-              instruction:
-                'Use the skills from all previous phases: observe the system, check open ports, navigate the filesystem, and inspect any web interfaces.',
-              image: null,
-            },
-            {
-              title: 'STEP 3',
-              instruction:
-                'Find the flag. It will be in the format FLAG{...}. Submit it to your instructor to complete the bootcamp.',
-              image: null,
-            },
-          ],
-        },
-      ],
-    },
   ],
 };

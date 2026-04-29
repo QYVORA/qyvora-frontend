@@ -149,7 +149,7 @@ const Marketplace: React.FC = () => {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {loading ? (
-            [0,1,2,3,4,5].map((i) => <SkeletonCard key={i} />)
+            [0,1,2,3,4,5,6,7].map((i) => <SkeletonCard key={i} />)
           ) : filtered.length === 0 ? (
             <div className="col-span-full py-20 text-center">
               <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />

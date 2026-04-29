@@ -123,6 +123,8 @@ const Learn: React.FC = () => {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
               <SkeletonCard wide />
               <SkeletonCard wide />
+              <SkeletonCard wide />
+              <SkeletonCard wide />
             </div>
           ) : bootcamps.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-border bg-bg-card/60 p-12 text-center md:p-14">
