@@ -21,7 +21,7 @@ const HPB_ID = 'bc_1775270338500';
 const HPB_TITLE = 'Hacker Protocol Bootcamp';
 const HPB_DESCRIPTION =
   'Hacker Protocol Bootcamp (HPB) teaches beginners to think like hackers — covering networking, Linux, web, and social engineering with hands-on labs and CTFs.';
-const HPB_IMAGE = '/HPB-image.png';
+const HPB_IMAGE = '/images/HPB-image.png';
 
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading = false }) => {
   const displayed = bootcamps.slice(0, 3);

@@ -280,8 +280,8 @@ const BootcampCourse: React.FC = () => {
                         : null;
 
                       const roomImg = configPhase
-                        ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/HPB-image.png'
-                        : '/HPB-image.png';
+                        ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/images/HPB-image.png'
+                        : '/images/HPB-image.png';
 
                       return (
                         <div

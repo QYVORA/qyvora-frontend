@@ -9,11 +9,11 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 const PHASE_IMGS = [
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
+  '/images/HPB-image.png',
+  '/images/HPB-image.png',
+  '/images/HPB-image.png',
+  '/images/HPB-image.png',
+  '/images/HPB-image.png',
 ];
 
 const SkeletonCard = ({ wide = false }: { wide?: boolean }) => (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from '../../../core/contexts/ThemeContext';
 
-export const DARK_LOGO_SRC = '/HSOCIETY_LOGO.png';
-export const LIGHT_LOGO_SRC = '/HSOCIETY_LOGO_LIGHT.png';
+export const DARK_LOGO_SRC = '/images/HSOCIETY_LOGO.png';
+export const LIGHT_LOGO_SRC = '/images/HSOCIETY_LOGO_LIGHT.png';
 
 interface LogoProps {
   className?: string;
