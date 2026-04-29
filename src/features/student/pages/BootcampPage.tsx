@@ -10,10 +10,15 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
+// Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
+const BOOTCAMP_COVER_IMGS: Record<string, string> = {
+  bc_1775270338500: '/images/bootcamp-room-images/hackermindset.png',
+};
+// Fallback order for unknown bootcamps (index-based)
 const PHASE_IMGS = [
   '/images/bootcamp-room-images/hackermindset.png',
-  '/images/bootcamp-room-images/networking.png',
   '/images/bootcamp-room-images/LinuxFoundations.png',
+  '/images/bootcamp-room-images/networking.png',
   '/images/bootcamp-room-images/webandbackendsystems.png',
   '/images/bootcamp-room-images/socialengineering.png',
 ];
@@ -204,7 +209,7 @@ const Bootcamp: React.FC = () => {
                   >
                     <div className="relative aspect-video overflow-hidden">
                       <img
-                        src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
+                        src={resolveImg(bc.image, BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length])}
                         alt={bc.title}
                         className={`w-full h-full object-cover transition-all duration-500 ${isLocked ? 'grayscale brightness-50' : ''}`}
                       />

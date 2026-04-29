@@ -9,11 +9,11 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 const PHASE_IMGS = [
-  '/images/HPB-image.png',
-  '/images/HPB-image.png',
-  '/images/HPB-image.png',
-  '/images/HPB-image.png',
-  '/images/HPB-image.png',
+  '/images/bootcamp-room-images/hackermindset.png',
+  '/images/bootcamp-room-images/LinuxFoundations.png',
+  '/images/bootcamp-room-images/networking.png',
+  '/images/bootcamp-room-images/webandbackendsystems.png',
+  '/images/bootcamp-room-images/socialengineering.png',
 ];
 
 const SkeletonCard = ({ wide = false }: { wide?: boolean }) => (

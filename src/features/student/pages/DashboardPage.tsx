@@ -80,7 +80,16 @@ function getRankGreeting(rankName: string, handle: string): string {
   return list[Math.floor(Date.now() / 86400000) % list.length];
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// Bootcamp ID → cover image (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
+const BOOTCAMP_COVER_IMGS: Record<string, string> = {
+  bc_1775270338500: '/images/bootcamp-room-images/hackermindset.png',
+};
+const BOOTCAMP_FALLBACK_IMG = '/images/HPB-image.png';
+
+function getBootcampImg(id: string, apiImage?: string): string {
+  if (apiImage && apiImage.trim()) return apiImage;
+  return BOOTCAMP_COVER_IMGS[id] ?? BOOTCAMP_FALLBACK_IMG;
+}
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
@@ -132,7 +141,7 @@ const Dashboard: React.FC = () => {
       priceLabel: String(item.priceLabel || '').trim(),
       currentModule: prog?.title ? String(prog.title) : null,
       progress: Number(prog?.progress || 0),
-      img: '/images/HPB-image.png',
+      img: getBootcampImg(String(item.id || ''), item.image),
     }));
 
   const activeBootcamp = bootcamps.find((bc: any) =>
