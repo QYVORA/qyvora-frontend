@@ -35,7 +35,6 @@ const NotificationsPage = lazy(() => import('../features/student/pages/Notificat
 const SettingsPage = lazy(() => import('../features/student/pages/SettingsPage'));
 const BootcampCoursePage = lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage = lazy(() => import('../features/student/pages/BootcampRoomPage'));
-const WalkthroughPage = lazy(() => import('../features/student/pages/WalkthroughPage'));
 
 // Admin pages
 const AdminDashboardPage = lazy(() => import('../features/admin/pages/AdminDashboardPage'));
@@ -108,7 +107,6 @@ export const AppRouter = () => {
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId/walkthrough" element={<Wrap scope="Walkthrough"><StudentOnly><WalkthroughPage /></StudentOnly></Wrap>} />
           <Route path="/marketplace" element={<Wrap scope="Marketplace"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/wallet" element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/profile" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />

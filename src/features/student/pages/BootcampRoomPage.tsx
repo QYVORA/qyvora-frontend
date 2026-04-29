@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, Loader2, CheckCircle2, BookOpen,
+  ChevronDown, ImageOff,
 } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
+import {
+  ROOM_WALKTHROUGHS,
+  buildWalkthroughImagePath,
+} from '../constants/walkthroughContent';
 
 interface Room {
   roomId: number; title: string; overview: string; locked: boolean;
@@ -21,6 +26,134 @@ interface RoomQuiz {
   questions: QuizQuestion[];
 }
 
+// ── Step image with fallback ──────────────────────────────────────────────────
+const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ src, alt, stepNum }) => {
+  const [errored, setErrored] = useState(false);
+  return errored ? (
+    <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-bg py-10 text-text-muted">
+      <ImageOff className="h-7 w-7 opacity-30" />
+      <span className="text-[11px] font-bold uppercase tracking-widest opacity-40">
+        Step {stepNum} image coming soon
+      </span>
+    </div>
+  ) : (
+    <img
+      src={src}
+      alt={alt}
+      onError={() => setErrored(true)}
+      className="w-full rounded-xl border border-border object-contain bg-bg"
+      loading="lazy"
+    />
+  );
+};
+
+// ── Walkthrough text renderer ─────────────────────────────────────────────────
+const WalkthroughText: React.FC<{ text: string }> = ({ text }) => (
+  <div className="space-y-2.5">
+    {text.split('\n').map((line, i) => {
+      const t = line.trim();
+      if (!t) return null;
+      if (t.startsWith('•')) {
+        return (
+          <div key={i} className="flex items-start gap-2 text-sm text-text-secondary leading-relaxed">
+            <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+            <span>{t.slice(1).trim()}</span>
+          </div>
+        );
+      }
+      if (t.startsWith('"') && t.endsWith('"')) {
+        return (
+          <p key={i} className="border-l-2 border-accent pl-4 text-sm italic text-accent leading-relaxed">{t}</p>
+        );
+      }
+      return <p key={i} className="text-sm text-text-secondary leading-relaxed">{t}</p>;
+    })}
+  </div>
+);
+
+// ── Walkthrough section (collapsible) ─────────────────────────────────────────
+const WalkthroughSection: React.FC<{ moduleId: string; roomId: string }> = ({ moduleId, roomId }) => {
+  const key = `${moduleId}:${roomId}`;
+  const content = ROOM_WALKTHROUGHS[key];
+  const [open, setOpen] = useState(false);
+
+  if (!content) return null;
+
+  const hasSteps = content.steps.length > 0;
+
+  return (
+    <div className="rounded-2xl border border-border bg-bg-card overflow-hidden">
+      {/* Toggle header */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-accent-dim/20 transition-colors"
+      >
+        <BookOpen className="h-4 w-4 text-accent shrink-0" />
+        <div className="flex-1 min-w-0">
+          <span className="text-sm font-black text-text-primary uppercase tracking-widest">
+            Walkthrough Guide
+          </span>
+          {!open && (
+            <span className="ml-3 text-[10px] font-bold text-text-muted uppercase tracking-widest">
+              {hasSteps ? `${content.steps.length} steps` : 'Overview only'}
+            </span>
+          )}
+        </div>
+        <ChevronDown
+          className={`h-4 w-4 text-text-muted shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {/* Content */}
+      {open && (
+        <div className="border-t border-border px-6 pb-6 pt-5 space-y-6">
+          {/* Overview text */}
+          <WalkthroughText text={content.walkthroughText} />
+
+          {/* Steps */}
+          {hasSteps && (
+            <div className="space-y-8 pt-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
+                Steps — {content.steps.length} total
+              </p>
+              {content.steps.map((step, idx) => {
+                const stepNum = idx + 1;
+                const imageSrc = buildWalkthroughImagePath(moduleId, roomId, step.image);
+                return (
+                  <div key={idx} className="relative pl-10 sm:pl-12">
+                    {/* Step badge */}
+                    <div className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-xl border-2 border-accent/30 bg-accent-dim text-accent font-black font-mono text-xs">
+                      {String(stepNum).padStart(2, '0')}
+                    </div>
+                    {/* Connector */}
+                    {idx < content.steps.length - 1 && (
+                      <div
+                        className="absolute left-[15px] top-9 bottom-[-24px] w-px bg-border"
+                        aria-hidden
+                      />
+                    )}
+                    <div className="space-y-3">
+                      <p className="text-sm font-bold text-text-primary leading-relaxed pt-0.5">
+                        {step.instruction}
+                      </p>
+                      <StepImage
+                        src={imageSrc}
+                        alt={`Step ${stepNum}: ${step.instruction}`}
+                        stepNum={stepNum}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── Main page ─────────────────────────────────────────────────────────────────
 const BootcampRoomPage: React.FC = () => {
   const { bootcampId, moduleId, roomId } = useParams<{
     bootcampId?: string; moduleId?: string; roomId?: string;
@@ -71,7 +204,6 @@ const BootcampRoomPage: React.FC = () => {
   const room = mod?.rooms.find(r => String(r.roomId) === String(roomId));
   const moduleScopeKey = `${String(bootcampId || '')}:${String(moduleId || '')}`;
 
-  // Reset quiz state when module changes
   useEffect(() => {
     setActiveQuiz(null);
     setQuizAnswers({});
@@ -79,14 +211,11 @@ const BootcampRoomPage: React.FC = () => {
     setQuizError('');
   }, [moduleScopeKey]);
 
-  // Auto-open session + load quiz when room is ready
   useEffect(() => {
     if (loading || !course || !mod || !room || room.locked) return;
 
-    // Fire session-open (auto-completes room + grants CP)
     api.post(`/student/modules/${moduleId}/rooms/${roomId}/session-open`, {}).catch(() => {});
 
-    // Load module quiz — always available for unlocked modules
     if (quizLoadedForModule === moduleScopeKey) return;
     setQuizLoadedForModule(moduleScopeKey);
     setQuizLoading(true);
@@ -112,12 +241,10 @@ const BootcampRoomPage: React.FC = () => {
         }
       })
       .catch((err: any) => {
-        const msg = String(err?.response?.data?.error || '');
-        // Module locked — don't show an error, just nothing
         if (err?.response?.status === 403) {
           setQuizError('');
         } else {
-          setQuizError(msg || 'Could not load quiz.');
+          setQuizError(String(err?.response?.data?.error || '') || 'Could not load quiz.');
         }
       })
       .finally(() => setQuizLoading(false));
@@ -148,7 +275,7 @@ const BootcampRoomPage: React.FC = () => {
     }
   };
 
-  // ── Loading ──────────────────────────────────────────────────────────────────
+  // ── Loading ───────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="min-h-screen bg-bg">
@@ -195,7 +322,7 @@ const BootcampRoomPage: React.FC = () => {
     );
   }
 
-  // ── Room page ─────────────────────────────────────────────────────────────────
+  // ── Room page ─────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-bg pb-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24">
@@ -221,11 +348,11 @@ const BootcampRoomPage: React.FC = () => {
           </nav>
         </ScrollReveal>
 
-        {/* Two-column layout on large screens */}
+        {/* Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 items-start">
 
           {/* ── LEFT: Room content ── */}
-          <div className="space-y-8 min-w-0">
+          <div className="space-y-6 min-w-0">
 
             {/* Header */}
             <ScrollReveal delay={0.04}>
@@ -257,8 +384,16 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             </ScrollReveal>
 
+            {/* ── Walkthrough Guide ── */}
+            <ScrollReveal delay={0.09}>
+              <WalkthroughSection
+                moduleId={String(moduleId || '')}
+                roomId={String(roomId || '')}
+              />
+            </ScrollReveal>
+
             {/* Other rooms in this module */}
-            <ScrollReveal delay={0.1}>
+            <ScrollReveal delay={0.11}>
               <div className="p-6 bg-bg-card border border-border rounded-2xl">
                 <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4">Other Rooms in {mod.title}</p>
                 <div className="space-y-2">
@@ -321,7 +456,7 @@ const BootcampRoomPage: React.FC = () => {
                 )}
 
                 {!quizLoading && quizResult && (
-                  <div className={`space-y-4 text-center py-4 ${quizResult.passed ? '' : ''}`}>
+                  <div className="space-y-4 text-center py-4">
                     <div className={`text-4xl font-black ${quizResult.passed ? 'text-accent' : 'text-text-primary'}`}>
                       {quizResult.score}%
                     </div>
@@ -344,7 +479,6 @@ const BootcampRoomPage: React.FC = () => {
 
                 {!quizLoading && activeQuiz && !quizResult && (
                   <>
-                    {/* Progress bar */}
                     <div className="h-1 bg-accent-dim rounded-full mb-5 overflow-hidden">
                       <div
                         className="h-full bg-accent transition-all duration-300"
@@ -404,6 +538,7 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             </ScrollReveal>
           </div>
+
         </div>
       </div>
     </div>
