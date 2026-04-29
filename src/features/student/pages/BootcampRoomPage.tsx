@@ -1013,8 +1013,6 @@ const BootcampRoomPage: React.FC = () => {
           courseId={quizCourseId}
           onClose={() => setQuizOpen(false)}
         />
-      )}alse)}
-        />
       )}
 
       {/* Room complete overlay */}
