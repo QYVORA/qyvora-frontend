@@ -6,6 +6,16 @@ import {
   BookOpen, Loader2, ArrowRight,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
+
+// Per-phase room card images — one image per phase, shown on every room card in that phase
+const PHASE_ROOM_IMAGES: Record<string, string> = {
+  phase1: '/images/bootcamp-room-images/hackermindset.png',
+  phase2: '/images/bootcamp-room-images/networking.png',
+  phase3: '/images/bootcamp-room-images/LinuxFoundations.png',
+  phase4: '/images/bootcamp-room-images/webandbackendsystems.png',
+  phase5: '/images/bootcamp-room-images/socialengineering.png',
+  phase6: '/images/bootcamp-room-images/hackermindset.png', // CTF reuses mindset image
+};
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -269,11 +279,15 @@ const BootcampCourse: React.FC = () => {
                         ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
                         : null;
 
+                      const roomImg = configPhase
+                        ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/HPB-image.png'
+                        : '/HPB-image.png';
+
                       return (
                         <div
                           key={room.roomId}
                           onClick={() => { if (!isRoomLocked && roomPath) navigate(roomPath); }}
-                          className={`group relative flex flex-col rounded-2xl border-2 bg-bg-card p-5 transition-all duration-200 ${
+                          className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-all duration-200 ${
                             isRoomLocked
                               ? 'border-border opacity-50 cursor-not-allowed'
                               : roomDone
@@ -281,49 +295,64 @@ const BootcampCourse: React.FC = () => {
                               : 'border-border cursor-pointer hover:border-accent/40 hover:shadow-[0_0_20px_rgba(183,255,153,0.05)]'
                           }`}
                         >
-                          {/* Room number + status */}
-                          <div className="mb-4 flex items-center justify-between gap-2">
-                            <div className={`flex h-8 w-8 items-center justify-center rounded-lg border font-mono text-xs font-black ${
-                              roomDone
-                                ? 'border-accent/40 bg-accent text-bg'
-                                : isRoomLocked
-                                ? 'border-border bg-bg text-text-muted'
-                                : 'border-accent/25 bg-accent-dim text-accent'
-                            }`}>
-                              {roomDone ? <CheckCircle2 className="h-4 w-4" /> : isRoomLocked ? <Lock className="h-3.5 w-3.5" /> : String(roomIdx + 1).padStart(2, '0')}
+                          {/* Room image */}
+                          <div className="relative aspect-video overflow-hidden">
+                            <img
+                              src={roomImg}
+                              alt={room.title}
+                              className={`w-full h-full object-cover transition-all duration-500 ${
+                                isRoomLocked
+                                  ? 'grayscale brightness-50'
+                                  : 'group-hover:scale-105'
+                              }`}
+                            />
+                            {/* Overlay badges */}
+                            <div className="absolute top-3 left-3 flex items-center gap-2">
+                              <div className={`flex h-7 w-7 items-center justify-center rounded-lg border font-mono text-xs font-black ${
+                                roomDone
+                                  ? 'border-accent/40 bg-accent text-bg'
+                                  : isRoomLocked
+                                  ? 'border-border bg-bg/80 text-text-muted'
+                                  : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
+                              }`}>
+                                {roomDone ? <CheckCircle2 className="h-3.5 w-3.5" /> : isRoomLocked ? <Lock className="h-3 w-3" /> : String(roomIdx + 1).padStart(2, '0')}
+                              </div>
+                              {roomDone && (
+                                <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-bold uppercase tracking-widest">
+                                  Complete
+                                </span>
+                              )}
                             </div>
-                            {roomDone && (
-                              <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                                Complete
-                              </span>
-                            )}
                           </div>
 
-                          {/* Room title */}
-                          <h3 className={`mb-2 text-base font-black leading-snug transition-colors ${
-                            isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
-                          }`}>
-                            {room.title || `Room ${roomIdx + 1}`}
-                          </h3>
+                          {/* Card body */}
+                          <div className="flex flex-1 flex-col p-5">
+                            {/* Room title */}
+                            <h3 className={`mb-2 text-base font-black leading-snug transition-colors ${
+                              isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
+                            }`}>
+                              {room.title || `Room ${roomIdx + 1}`}
+                            </h3>
 
-                          {/* Room overview */}
-                          {room.overview && (
-                            <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted">
-                              {room.overview}
-                            </p>
-                          )}
+                            {/* Room overview */}
+                            {room.overview && (
+                              <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted">
+                                {room.overview}
+                              </p>
+                            )}
 
-                          {/* Step count from config */}
-                          {configRoom && (
-                            <p className="mt-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                              {configRoom.steps.length} {configRoom.steps.length === 1 ? 'step' : 'steps'}
-                            </p>
-                          )}
+                            {/* Step count from config */}
+                            {configRoom && (
+                              <p className="mt-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                                {configRoom.steps.length} {configRoom.steps.length === 1 ? 'step' : 'steps'}
+                              </p>
+                            )}
 
-                          {/* Arrow */}
-                          {!isRoomLocked && (
-                            <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
-                          )}
+                            {/* Arrow */}
+                            {!isRoomLocked && (
+                              <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
+                            )}
+                          </div>
                         </div>
                       );
                     })}

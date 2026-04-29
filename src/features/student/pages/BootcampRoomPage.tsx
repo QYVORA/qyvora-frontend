@@ -593,7 +593,7 @@ const BootcampRoomPage: React.FC = () => {
     setCompletedRooms((prev) => {
       const next = new Set(prev);
       next.add(key);
-      try { localStorage.setItem(storageKey, JSON.stringify([...next])); } catch {}
+      try { localStorage.setItem(storageKey, JSON.stringify([...next])); } catch (_e) { /* localStorage unavailable */ }
       return next;
     });
   };

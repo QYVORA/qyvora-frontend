@@ -11,11 +11,11 @@ import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
 const PHASE_IMGS = [
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
-  '/HPB-image.png',
+  '/images/bootcamp-room-images/hackermindset.png',
+  '/images/bootcamp-room-images/networking.png',
+  '/images/bootcamp-room-images/LinuxFoundations.png',
+  '/images/bootcamp-room-images/webandbackendsystems.png',
+  '/images/bootcamp-room-images/socialengineering.png',
 ];
 
 const COMMUNITY_LINK = 'https://chat.whatsapp.com/hsociety';
