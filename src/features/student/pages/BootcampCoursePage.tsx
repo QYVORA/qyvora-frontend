@@ -5,6 +5,7 @@ import {
   ArrowLeft, ChevronRight, ChevronDown, Lock, CheckCircle2,
   BookOpen, Loader2,
 } from 'lucide-react';
+import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -267,6 +268,13 @@ const BootcampCourse: React.FC = () => {
                           const roomDone = Boolean(room.completed);
                           // MVP: no meeting links — all rooms have WhatsApp session
 
+                          // Map API module index → config phaseId, API room index → config roomId
+                          const configPhase = BOOTCAMP_CONFIG.phases[idx];
+                          const configRoom = configPhase?.rooms[roomIdx];
+                          const roomPath = configPhase && configRoom
+                            ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
+                            : null;
+
                           return (
                             <div
                               key={room.roomId}
@@ -274,8 +282,8 @@ const BootcampCourse: React.FC = () => {
                                 isRoomLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent-dim/20 cursor-pointer'
                               }`}
                               onClick={() => {
-                                if (!isRoomLocked) {
-                                  navigate(`/bootcamps/${bootcampId}/modules/${mod.moduleId}/rooms/${room.roomId}`);
+                                if (!isRoomLocked && roomPath) {
+                                  navigate(roomPath);
                                 }
                               }}
                             >
