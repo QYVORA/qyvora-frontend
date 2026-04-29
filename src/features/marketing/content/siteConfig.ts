@@ -74,6 +74,7 @@ export const SITE_CONFIG = {
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Hall of Shadows' },
       { key: 'zero_day_market', label: 'Zero-Day Market', path: '/zero-day-market', desc: 'Exclusive findings' },
       { key: 'cyber_points', label: 'Cyber Points', path: '/cyber-points', desc: 'Earn and spend CP' },
+      { key: 'hsociety_chain', label: 'HSOCIETY Chain', path: '/chain', desc: 'Tamper-proof skill ledger' },
     ],
     services: { label: 'Services', path: '/services' },
     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' }],

@@ -18,6 +18,7 @@ const LandingPage = lazy(() => import('../features/marketing/pages/LandingPage')
 const ContactPage = lazy(() => import('../features/marketing/pages/ContactPage'));
 const ServicesPage = lazy(() => import('../features/marketing/pages/ServicesPage'));
 const CyberPointsPage = lazy(() => import('../features/marketing/pages/CyberPointsPage'));
+const ChainPage = lazy(() => import('../features/marketing/pages/ChainPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -86,6 +87,7 @@ export const AppRouter = () => {
           <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/cyber-points" element={<Wrap scope="Cyber Points"><CyberPointsPage /></Wrap>} />
+          <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Marketplace"><MarketplacePage /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />

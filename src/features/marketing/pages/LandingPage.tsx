@@ -7,6 +7,7 @@ import ProcessSection from '../components/landing/ProcessSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
 import CyberPointsCtaSection from '../components/landing/CyberPointsCtaSection';
+import ChainSection from '../components/landing/ChainSection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
 import SocialSection from '../components/landing/SocialSection';
@@ -57,6 +58,7 @@ const Landing: React.FC = () => {
       {/* Fix #24: pass loading so sections can show consistent skeletons */}
       <BootcampsSection bootcamps={bootcamps} loading={loading} />
       <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
+      <ChainSection />
       <CyberPointsCtaSection totalCp={totalCp} />
       <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
       <ServicesSection />

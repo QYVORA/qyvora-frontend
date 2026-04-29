@@ -18,11 +18,12 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
-      { label: 'Leaderboard', path: '/leaderboard' },
-      { label: 'Cyber Points', path: '/cyber-points' },
-      { label: 'Services', path: '/services' },
-      { label: 'Register', path: '/register' },
-      { label: 'Log In', path: '/login' },
+      { label: 'Leaderboard',     path: '/leaderboard'   },
+      { label: 'Cyber Points',    path: '/cyber-points'  },
+      { label: 'HSOCIETY Chain',  path: '/chain'         },
+      { label: 'Services',        path: '/services'      },
+      { label: 'Register',        path: '/register'      },
+      { label: 'Log In',          path: '/login'         },
     ],
   },
 ];
