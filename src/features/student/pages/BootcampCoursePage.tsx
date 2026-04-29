@@ -196,6 +196,16 @@ const BootcampCourse: React.FC = () => {
                   style={{ boxShadow: '0 0 20px var(--color-accent-glow)' }}
                 />
               </div>
+              {/* Walkthrough link */}
+              <div className="mt-6">
+                <Link
+                  to={`/bootcamps/${bootcampId}/walkthrough`}
+                  className="inline-flex items-center gap-2 rounded-xl border border-accent/30 bg-accent-dim/40 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-accent transition-all hover:bg-accent-dim hover:border-accent/60"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  View Walkthrough Guide
+                </Link>
+              </div>
             </div>
           </div>
         </ScrollReveal>
