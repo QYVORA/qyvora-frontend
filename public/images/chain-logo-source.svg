@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Dark background matching HSOCIETY brand -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0d1a0d"/>
+      <stop offset="100%" stop-color="#050908"/>
+    </radialGradient>
+
+    <!-- Accent green gradient for the H mark -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b7ff99"/>
+      <stop offset="100%" stop-color="#88ad7c"/>
+    </linearGradient>
+
+    <!-- Subtle glow filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Tight glow for the chain links -->
+    <filter id="chainGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="url(#bgGlow)"/>
+
+  <!-- Outer ring — thin accent border -->
+  <circle cx="256" cy="256" r="240" fill="none" stroke="#88ad7c" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- Inner ring — even thinner -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#88ad7c" stroke-width="0.8" opacity="0.12"/>
+
+  <!-- ═══════════════════════════════════════
+       H LETTERFORM — bold, clean, HSOCIETY style
+       Two vertical bars + horizontal crossbar
+       Centered at 256,256
+  ═══════════════════════════════════════ -->
+
+  <!-- Left vertical bar of H -->
+  <rect x="148" y="148" width="52" height="216" rx="6" fill="url(#accentGrad)" filter="url(#glow)"/>
+
+  <!-- Right vertical bar of H -->
+  <rect x="312" y="148" width="52" height="216" rx="6" fill="url(#accentGrad)" filter="url(#glow)"/>
+
+  <!-- Horizontal crossbar of H -->
+  <rect x="148" y="230" width="216" height="52" rx="6" fill="url(#accentGrad)" filter="url(#glow)"/>
+
+  <!-- ═══════════════════════════════════════
+       CHAIN LINKS — two interlocked ovals
+       Positioned below the H, small and clean
+  ═══════════════════════════════════════ -->
+
+  <!-- Left chain link oval -->
+  <ellipse cx="218" cy="408" rx="38" ry="22"
+    fill="none" stroke="#88ad7c" stroke-width="7"
+    stroke-linecap="round"
+    transform="rotate(-30 218 408)"
+    filter="url(#chainGlow)"
+    opacity="0.9"/>
+
+  <!-- Right chain link oval (interlocked — slightly offset) -->
+  <ellipse cx="294" cy="408" rx="38" ry="22"
+    fill="none" stroke="#88ad7c" stroke-width="7"
+    stroke-linecap="round"
+    transform="rotate(-30 294 408)"
+    filter="url(#chainGlow)"
+    opacity="0.9"/>
+
+  <!-- Cover strip to create interlock illusion (left link passes behind right) -->
+  <rect x="256" y="390" width="20" height="36" fill="#050908" opacity="0.95"/>
+
+  <!-- ═══════════════════════════════════════
+       WORDMARK — "HSOCIETY CHAIN"
+       Small monospace text at bottom
+  ═══════════════════════════════════════ -->
+  <text
+    x="256" y="480"
+    text-anchor="middle"
+    font-family="'Courier New', Courier, monospace"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#88ad7c"
+    opacity="0.75"
+  >CHAIN</text>
+
+  <!-- Accent dot top-right — brand detail -->
+  <circle cx="390" cy="122" r="8" fill="#b7ff99" opacity="0.7"/>
+
+  <!-- Hash mark bottom-left — subtle brand detail -->
+  <text x="88" y="420" font-family="'Courier New', monospace" font-size="28" font-weight="900" fill="#88ad7c" opacity="0.25">#</text>
+</svg>
