@@ -35,9 +35,9 @@ export interface MarketplaceItem {
 }
 
 export const PHASE_IMGS = [
-  '/images/Curriculum-images/phase1.webp',
-  '/images/Curriculum-images/phase2.webp',
-  '/images/Curriculum-images/phase3.webp',
-  '/images/Curriculum-images/phase4.webp',
-  '/images/Curriculum-images/phase5.webp',
+  '/assets/sections/curriculum/phase-01.webp',
+  '/assets/sections/curriculum/phase-02.webp',
+  '/assets/sections/curriculum/phase-03.webp',
+  '/assets/sections/curriculum/phase-04.webp',
+  '/assets/sections/curriculum/phase-05.webp',
 ];

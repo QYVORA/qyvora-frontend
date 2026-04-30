@@ -8,7 +8,7 @@
  *   - Same titles (used for title-based matching in BootcampRoomPage)
  *
  * Image paths resolve to:
- *   /HPB-Walkthrough-images/{phaseId}/{roomId}/{image}
+ *   /walkthrough/hpb/phase-xx/room-xx/step-xx-*.png
  *
  * image: null → renders placeholder (upload image later)
  *
@@ -53,7 +53,19 @@ export function buildStepImagePath(
   roomId: string,
   filename: string
 ): string {
-  return `/HPB-Walkthrough-images/${phaseId}/${roomId}/${filename}`;
+  const phaseMatch = phaseId.match(/\d+/);
+  const roomMatch = roomId.match(/\d+/);
+  const phaseNum = phaseMatch ? Number(phaseMatch[0]) : 0;
+  const roomNum = roomMatch ? Number(roomMatch[0]) : 0;
+  const phaseDir = `phase-${String(phaseNum).padStart(2, '0')}`;
+  const roomDir = `room-${String(roomNum).padStart(2, '0')}`;
+
+  const normalized = filename.toLowerCase().replaceAll('_', '-');
+  const withStepPrefix = /^step-\d{2}-/.test(normalized)
+    ? normalized
+    : normalized.replace(/^(\d+)-/, (_m, n) => `step-${String(Number(n)).padStart(2, '0')}-`);
+
+  return `/walkthrough/hpb/${phaseDir}/${roomDir}/${withStepPrefix}`;
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────

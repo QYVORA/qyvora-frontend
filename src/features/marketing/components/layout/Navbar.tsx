@@ -203,9 +203,11 @@ const Navbar: React.FC = () => {
   return (
     <nav 
       className={`fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
-        isScrolled ? 'bg-bg/85 backdrop-blur-md' : 'bg-transparent'
+        isScrolled
+          ? 'bg-bg/90 backdrop-blur-md border-b border-border/60'
+          : 'bg-transparent'
       }`}
-      style={{ boxShadow: 'none', outline: 'none', borderBottom: 'none' }}
+      style={{ outline: 'none' }}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         {/* Logo */}
@@ -225,13 +227,19 @@ const Navbar: React.FC = () => {
               {group.path ? (
                 <Link 
                   to={group.path}
-                  className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-primary hover:text-accent transition-colors"
+                  className={`px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors ${
+                    location.pathname.startsWith(group.path)
+                      ? 'text-accent'
+                      : 'text-text-primary hover:text-accent'
+                  }`}
                 >
                   {group.label}
                 </Link>
               ) : (
                 <button 
-                  className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-primary hover:text-accent transition-colors flex items-center gap-1"
+                  className={`px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors flex items-center gap-1 ${
+                    activeDropdown === group.label ? 'text-accent' : 'text-text-primary hover:text-accent'
+                  }`}
                 >
                   {group.label}
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === group.label ? 'rotate-180' : ''}`} />
@@ -253,7 +261,11 @@ const Navbar: React.FC = () => {
                         <Link
                           key={item.label}
                           to={item.path}
-                          className="flex items-start gap-4 p-3 rounded-md hover:bg-accent-dim transition-colors group/item"
+                          className={`flex items-start gap-4 p-3 rounded-md transition-colors group/item ${
+                            location.pathname === item.path || location.pathname.startsWith(item.path + '/')
+                              ? 'bg-accent-dim text-accent'
+                              : 'hover:bg-accent-dim'
+                          }`}
                         >
                           <div className="p-2 rounded bg-bg border border-border group-hover/item:border-accent group-hover/item:text-accent transition-colors flex-none">
                             <item.icon className="w-4 h-4" />

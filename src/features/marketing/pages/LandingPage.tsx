@@ -52,6 +52,7 @@ const Landing: React.FC = () => {
         terminalText={terminalText}
         user={user}
         stats={stats}
+        totalCp={totalCp}
       />
       <ProcessSection stats={stats} totalCp={totalCp} />
       {/* Fix #24: pass loading so sections can show consistent skeletons */}

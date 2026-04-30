@@ -23,8 +23,8 @@ interface ChainLogoProps {
 }
 
 const LOGO_SRC: Record<'3d' | 'flat', string> = {
-  '3d':   '/images/chain-images/HSOCIETY-CHAIN-3D.png',
-  'flat': '/images/chain-images/HSOCIETY_CHAIN_LOGO.png',
+  '3d':   '/assets/branding/chain/hsociety-chain-3d.png',
+  'flat': '/assets/branding/chain/hsociety-chain-logo.png',
 };
 
 const ChainLogo: React.FC<ChainLogoProps> = ({

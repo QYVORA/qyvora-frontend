@@ -13,7 +13,7 @@ const CyberPointsPage: React.FC = () => (
     <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines">
       <div className="absolute inset-0 bg-bg z-0" />
       <img
-        src="/images/cp-images/cp-visual.jpeg"
+        src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
@@ -84,7 +84,7 @@ const CyberPointsPage: React.FC = () => (
         >
           <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
           <img
-            src="/images/cp-images/CYBER_POINTS_LOGO.png"
+            src="/assets/branding/logos/cyber-points-logo.png"
             alt="Cyber Points"
             className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_60px_rgba(183,255,153,0.3)]"
           />
@@ -158,7 +158,7 @@ const CyberPointsPage: React.FC = () => (
       <ScrollReveal>
         <div className="relative card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 overflow-hidden">
           <img
-            src="/images/cp-images/cp-visual.jpeg"
+            src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"

@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
-  BookOpen, Loader2, ArrowRight,
+  BookOpen, Loader2, ArrowRight, Play, ListChecks,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -16,11 +16,11 @@ import { formatSyncLabel, getDataSaverEnabled, getLastSync, resolveNextRoomPath,
 
 // Per-phase room card images — one image per phase, shown on every room card in that phase
 const PHASE_ROOM_IMAGES: Record<string, string> = {
-  phase1: '/images/bootcamp-room-images/hackermindset.png',
-  phase2: '/images/bootcamp-room-images/LinuxFoundations.png',
-  phase3: '/images/bootcamp-room-images/networking.png',
-  phase4: '/images/bootcamp-room-images/webandbackendsystems.png',
-  phase5: '/images/bootcamp-room-images/socialengineering.png',
+  phase1: '/assets/bootcamp/rooms/hacker-mindset.png',
+  phase2: '/assets/bootcamp/rooms/linux-foundations.png',
+  phase3: '/assets/bootcamp/rooms/networking.png',
+  phase4: '/assets/bootcamp/rooms/web-and-backend-systems.png',
+  phase5: '/assets/bootcamp/rooms/social-engineering.png',
 };
 
 interface LiveClass { title: string; instructor?: string; time?: string; link: string; }
@@ -184,7 +184,7 @@ const BootcampCourse: React.FC = () => {
         </div>
 
         {/* Hero card */}
-        <ScrollReveal className="mb-12">
+        <ScrollReveal className="mb-10">
           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
               <div className="absolute -right-16 -top-20 h-72 w-72 rounded-full bg-accent/14 blur-3xl" />
@@ -194,36 +194,44 @@ const BootcampCourse: React.FC = () => {
               src={dataSaver ? undefined : STUDENT_DECOR.courseCurriculumMascot}
               className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[200px] w-auto opacity-95 md:block md:max-h-[240px]"
             />
-            <div className="relative z-10 max-w-3xl">
-              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Curriculum map</span>
-              <h1 className="mb-6 text-3xl font-black text-text-primary sm:text-4xl md:text-5xl">{course?.title || 'Bootcamp'}</h1>
-              <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-                <span className="text-base font-black uppercase tracking-tight text-text-primary md:text-lg">Overall progress</span>
-                <span className="font-mono text-2xl font-black text-accent md:text-3xl">{progressValue}</span>
+            <div className="relative z-10 max-w-2xl">
+              <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.35em] text-accent">// Curriculum map</span>
+              <h1 className="mb-5 text-2xl font-black text-text-primary sm:text-3xl md:text-4xl">{course?.title || 'Bootcamp'}</h1>
+
+              {/* Progress */}
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Overall progress</span>
+                <span className="font-mono text-xl font-black text-accent">{progressValue}</span>
               </div>
-              <div className="relative h-3.5 w-full max-w-2xl overflow-hidden rounded-full bg-accent-dim md:h-4">
+              <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-accent-dim">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: progressValue }}
                   transition={{ duration: 1, ease: 'easeOut' }}
                   className="h-full rounded-full bg-accent"
-                  style={{ boxShadow: '0 0 20px var(--color-accent-glow)' }}
+                  style={{ boxShadow: '0 0 16px var(--color-accent-glow)' }}
                 />
               </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Link to={resolveNextRoomPath(String(bootcampId || '')) || '#'} className="btn-primary px-4 py-2 text-xs">
-                  Resume Exact Mission
+
+              {/* CTAs */}
+              <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                <Link
+                  to={resolveNextRoomPath(String(bootcampId || '')) || '#'}
+                  className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-black"
+                >
+                  <Play className="h-3.5 w-3.5 fill-current" /> Resume mission
                 </Link>
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent(`My next HSOCIETY mission: ${resolveNextRoomPath(String(bootcampId || '')) || '/bootcamps'}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary px-4 py-2 text-xs"
+                  className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 text-sm"
                 >
-                  Share mission on WhatsApp
+                  Share on WhatsApp
                 </a>
               </div>
-              <p className={`mt-3 text-xs ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+
+              <p className={`mt-3 text-[11px] ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
                 {syncError || formatSyncLabel(lastSync)}
               </p>
             </div>
@@ -231,13 +239,14 @@ const BootcampCourse: React.FC = () => {
         </ScrollReveal>
 
         {/* ── Phase sections with room cards ── */}
-        <div className="space-y-12">
+        <div className="space-y-10">
           {(course?.modules || []).map((mod, modIdx) => {
             const prog = moduleProgressMap.get(Number(mod.moduleId));
             const progress = Number(prog?.progress || 0);
             const roomsDone = Number(prog?.roomsCompleted || 0);
             const roomsTotal = Number(prog?.roomsTotal || mod.rooms?.length || 0);
             const isLocked = mod.locked;
+            const isComplete = progress === 100;
 
             // Map API module index → config phase
             const configPhase = BOOTCAMP_CONFIG.phases.find((p) => p.title.toLowerCase() === String(mod.title || '').toLowerCase())
@@ -246,52 +255,62 @@ const BootcampCourse: React.FC = () => {
             return (
               <ScrollReveal key={mod.moduleId} delay={modIdx * 0.05}>
                 {/* Phase header */}
-                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
-                      progress === 100
+                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
+                      isComplete
                         ? 'border-accent/30 bg-accent text-bg'
                         : isLocked
                         ? 'border-border bg-bg text-text-muted'
                         : 'border-accent/30 bg-accent-dim text-accent'
                     }`}>
-                      {progress === 100 ? <CheckCircle2 className="h-5 w-5" /> : isLocked ? <Lock className="h-4 w-4" /> : String(modIdx + 1).padStart(2, '0')}
+                      {isComplete ? <CheckCircle2 className="h-4 w-4" /> : isLocked ? <Lock className="h-3.5 w-3.5" /> : String(modIdx + 1).padStart(2, '0')}
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                         {configPhase?.codename || `Phase ${modIdx + 1}`}
                       </p>
-                      <h2 className="text-lg font-black text-text-primary md:text-xl">{mod.title}</h2>
+                      <h2 className="text-base font-black text-text-primary md:text-lg">{mod.title}</h2>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold uppercase tracking-widest text-text-muted">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-text-muted">
+                      <ListChecks className="h-3.5 w-3.5 opacity-50" />
                       {roomsDone}/{roomsTotal} rooms
                     </span>
                     {progress > 0 && (
-                      <span className="font-mono text-sm font-black text-accent">{progress}%</span>
+                      <span className="rounded-lg border border-accent/25 bg-accent-dim px-2 py-0.5 font-mono text-xs font-black text-accent">
+                        {progress}%
+                      </span>
                     )}
                   </div>
                 </div>
 
                 {/* Phase progress bar */}
                 {progress > 0 && (
-                  <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-accent-dim">
-                    <div
-                      className="h-full rounded-full bg-accent transition-all duration-700"
-                      style={{ width: `${progress}%` }}
+                  <div className="mb-4 h-1 overflow-hidden rounded-full bg-accent-dim">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                      className="h-full rounded-full bg-accent"
                     />
                   </div>
                 )}
 
                 {/* Room cards grid */}
                 {isLocked ? (
-                  <div className="flex items-center gap-3 rounded-2xl border border-border bg-bg-card/60 p-5 opacity-60">
-                    <Lock className="h-5 w-5 shrink-0 text-text-muted" />
-                    <p className="text-sm text-text-muted">This phase is locked. Your instructor will unlock it when it's time.</p>
+                  <div className="flex items-center gap-3 rounded-2xl border border-dashed border-border bg-bg-card/40 p-5">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-bg">
+                      <Lock className="h-4 w-4 text-text-muted opacity-50" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-text-muted">Phase locked</p>
+                      <p className="text-xs text-text-muted opacity-60">Your instructor will unlock this when it's time.</p>
+                    </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {(mod.rooms || []).map((room, roomIdx) => {
                       const isRoomLocked = room.locked;
                       const roomDone = Boolean(room.completed);
@@ -303,19 +322,20 @@ const BootcampCourse: React.FC = () => {
                         : null;
 
                       const roomImg = configPhase
-                        ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/images/HPB-image.png'
-                        : '/images/HPB-image.png';
+                        ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/assets/bootcamp/hpb-cover.png'
+                        : '/assets/bootcamp/hpb-cover.png';
 
                       return (
                         <Link
                           key={room.roomId}
                           to={!isRoomLocked && roomPath ? roomPath : '#'}
+                          onClick={isRoomLocked ? (e) => e.preventDefault() : undefined}
                           className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-all duration-200 ${
                             isRoomLocked
-                              ? 'border-border opacity-50 cursor-not-allowed'
+                              ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                               : roomDone
-                              ? 'border-accent/30 cursor-pointer hover:border-accent/60 hover:shadow-[0_0_20px_rgba(183,255,153,0.06)]'
-                              : 'border-border cursor-pointer hover:border-accent/40 hover:shadow-[0_0_20px_rgba(183,255,153,0.05)]'
+                              ? 'border-accent/30 hover:border-accent/60 hover:shadow-[0_0_24px_rgba(183,255,153,0.07)]'
+                              : 'border-border hover:border-accent/40 hover:shadow-[0_0_20px_rgba(183,255,153,0.05)]'
                           }`}
                         >
                           {/* Room image */}
@@ -325,56 +345,59 @@ const BootcampCourse: React.FC = () => {
                               alt={room.title}
                               loading="lazy"
                               className={`w-full h-full object-cover transition-all duration-500 ${
-                                isRoomLocked
-                                  ? 'grayscale brightness-50'
-                                  : 'group-hover:scale-105'
+                                isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.04]'
                               }`}
                             />
-                            {/* Overlay badges */}
-                            <div className="absolute top-3 left-3 flex items-center gap-2">
-                              <div className={`flex h-7 w-7 items-center justify-center rounded-lg border font-mono text-xs font-black ${
+                            {/* Gradient */}
+                            <div
+                              aria-hidden
+                              className="pointer-events-none absolute inset-0"
+                              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)' }}
+                            />
+                            {/* Badges */}
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                              <div className={`flex h-6 w-6 items-center justify-center rounded-lg border font-mono text-[10px] font-black ${
                                 roomDone
                                   ? 'border-accent/40 bg-accent text-bg'
                                   : isRoomLocked
                                   ? 'border-border bg-bg/80 text-text-muted'
                                   : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
                               }`}>
-                                {roomDone ? <CheckCircle2 className="h-3.5 w-3.5" /> : isRoomLocked ? <Lock className="h-3 w-3" /> : String(roomIdx + 1).padStart(2, '0')}
+                                {roomDone ? <CheckCircle2 className="h-3 w-3" /> : isRoomLocked ? <Lock className="h-2.5 w-2.5" /> : String(roomIdx + 1).padStart(2, '0')}
                               </div>
                               {roomDone && (
-                                <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-bold uppercase tracking-widest">
-                                  Complete
+                                <span className="px-1.5 py-0.5 bg-accent text-bg rounded text-[8px] font-black uppercase tracking-widest">
+                                  Done
                                 </span>
                               )}
                             </div>
+                            {/* Step count pill — bottom right of image */}
+                            {configRoom && (
+                              <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
+                                {configRoom.steps.length} steps
+                              </div>
+                            )}
                           </div>
 
                           {/* Card body */}
-                          <div className="flex flex-1 flex-col p-5">
-                            {/* Room title — always from config (source of truth) */}
-                            <h3 className={`mb-2 text-base font-black leading-snug transition-colors ${
+                          <div className="flex flex-1 flex-col p-4">
+                            <h3 className={`mb-1.5 text-sm font-black leading-snug transition-colors ${
                               isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
                             }`}>
                               {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
                             </h3>
 
-                            {/* Room overview — prefer config overview */}
                             {(configRoom?.overview || room.overview) && (
-                              <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-text-muted">
+                              <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted">
                                 {configRoom?.overview || room.overview}
                               </p>
                             )}
 
-                            {/* Step count from config */}
-                            {configRoom && (
-                              <p className="mt-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                                {configRoom.steps.length} {configRoom.steps.length === 1 ? 'step' : 'steps'}
-                              </p>
-                            )}
-
-                            {/* Arrow */}
+                            {/* Enter arrow */}
                             {!isRoomLocked && (
-                              <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
+                              <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all group-hover:opacity-100">
+                                Enter room <ArrowRight className="h-3 w-3" />
+                              </div>
                             )}
                           </div>
                         </Link>

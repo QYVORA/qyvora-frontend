@@ -168,7 +168,7 @@ const Marketplace: React.FC = () => {
                   <div className="card-hsociety p-4 flex flex-col h-full group">
                     <div className="relative aspect-square overflow-hidden rounded mb-4">
                       <img
-                        src={resolveImg(prod.coverUrl, '/images/how-it-works-section/Engagements-4Completed.webp')}
+                        src={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
                         alt={prod.title}
                         className="w-full h-full object-cover transition-all duration-500"
                       />

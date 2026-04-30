@@ -16,7 +16,7 @@ const ChainSection: React.FC = () => (
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
     {/* Chain visuals background */}
     <img
-      src="/images/HSOCIETY-CHAIN-LOGO-VISUALS.png"
+      src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
       alt=""
       aria-hidden="true"
       className="absolute right-0 top-1/2 -translate-y-1/2 h-full max-h-[600px] w-auto opacity-[0.06] object-contain pointer-events-none"

@@ -12,7 +12,7 @@ const Services: React.FC = () => (
     <section className="relative min-h-[60svh] md:min-h-[55vh] w-full overflow-hidden scanlines">
       <div className="absolute inset-0 bg-bg z-0" />
       <img
-        src="/images/section-backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/offsec-grid-background.png"
         alt=""
         aria-hidden="true"
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
@@ -84,7 +84,13 @@ const Services: React.FC = () => (
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
           {MARKETING_SERVICES.map((serv, idx) => (
-            <ScrollReveal key={idx} delay={idx * 0.08}>
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: idx * 0.09, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="group relative rounded-xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
                 style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}>
 
@@ -93,7 +99,7 @@ const Services: React.FC = () => (
                   <img
                     src={serv.img}
                     alt=""
-                    className="w-full h-full object-cover transition-all duration-700"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
                   {/* Scanlines on image */}
                   <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
@@ -160,7 +166,7 @@ const Services: React.FC = () => (
                 <div aria-hidden className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
                   style={{ boxShadow: '0 0 40px var(--color-accent-glow)' }} />
               </div>
-            </ScrollReveal>
+            </motion.div>
           ))}
         </div>
       </div>

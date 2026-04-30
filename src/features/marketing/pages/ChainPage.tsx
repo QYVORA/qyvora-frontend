@@ -14,7 +14,7 @@ const ChainPage: React.FC = () => (
       <div className="absolute inset-0 bg-bg z-0" />
       {/* Chain visuals background */}
       <img
-        src="/images/HSOCIETY-CHAIN-LOGO-VISUALS.png"
+        src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.07] z-0 pointer-events-none"
@@ -92,7 +92,7 @@ const ChainPage: React.FC = () => (
       {/* Subtle visuals watermark behind body content */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden -z-10">
         <img
-          src="/images/HSOCIETY-CHAIN-LOGO-VISUALS.png"
+          src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
           alt=""
           aria-hidden="true"
           className="absolute top-0 right-0 w-[600px] max-w-[60vw] opacity-[0.04] object-contain"

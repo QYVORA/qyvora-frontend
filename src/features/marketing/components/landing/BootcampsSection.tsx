@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import BootcampCard from '../../../student/components/BootcampCard';
 import type { BootcampLevel } from '../../../student/components/BootcampCard';
@@ -21,33 +22,38 @@ const HPB_ID = 'bc_1775270338500';
 const HPB_TITLE = 'Hacker Protocol Bootcamp';
 const HPB_DESCRIPTION =
   'Hacker Protocol Bootcamp (HPB) teaches beginners to think like hackers — covering networking, Linux, web, and social engineering with hands-on labs and CTFs.';
-const HPB_IMAGE = '/images/HPB-image.png';
+const HPB_IMAGE = '/assets/bootcamp/hpb-cover.png';
 
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading = false }) => {
+  const shouldReduceMotion = useReducedMotion();
   const displayed = bootcamps.slice(0, 3);
 
   return (
     <section className="py-20 md:py-32 bg-bg-card border-y border-border relative overflow-hidden">
       <img
-        src="/images/section-backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/offsec-grid-background.png"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
       />
       <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
             <h2 className="text-3xl md:text-4xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <Link to="/register" className="flex items-center gap-2 text-accent text-sm font-bold border-b border-accent/30 pb-1 hover:border-accent group w-fit">
+          <ScrollReveal delay={0.15}>
+            <Link
+              to="/register"
+              className="flex items-center gap-2 text-accent text-sm font-bold border-b border-accent/30 pb-1 hover:border-accent group w-fit transition-colors"
+            >
               View all <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </ScrollReveal>
         </div>
 
-        {/* Skeleton — show when loading OR no data yet */}
+        {/* Skeleton */}
         {loading || bootcamps.length === 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[0, 1, 2].map((i) => (
@@ -63,7 +69,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             ))}
           </div>
         ) : (
-          // Fix #9: grid cols matches actual count to avoid orphaned cards
           <div className={`grid gap-6 md:gap-8 grid-cols-1 ${
             displayed.length === 1 ? 'sm:grid-cols-1 max-w-md' :
             displayed.length === 2 ? 'sm:grid-cols-2 max-w-2xl' :
@@ -75,7 +80,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               const description = isHPB ? HPB_DESCRIPTION : (bc.description || '');
               const image = resolveImg(isHPB ? HPB_IMAGE : bc.image, PHASE_IMGS[i % PHASE_IMGS.length]);
               return (
-                <ScrollReveal key={bc.id} delay={i * 0.1}>
+                <motion.div
+                  key={bc.id}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={shouldReduceMotion ? {} : { y: -4 }}
+                >
                   <BootcampCard
                     image={image}
                     level={normalizeBootcampLevel(bc.level)}
@@ -83,9 +95,9 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                     description={description}
                     duration={bc.duration || ''}
                     price={bc.priceLabel || 'Free'}
-                    href={`/register`}
+                    href="/register"
                   />
-                </ScrollReveal>
+                </motion.div>
               );
             })}
           </div>

@@ -350,18 +350,23 @@ const StepCard: React.FC<{
     <div
       ref={ref}
       onClick={onClick}
-      className={`relative cursor-pointer rounded-xl border-2 p-3.5 sm:p-5 transition-all duration-200 overflow-hidden ${
+      className={`relative cursor-pointer rounded-xl border-2 p-6 sm:p-8 transition-all duration-200 overflow-hidden ${
         isActive
-          ? 'border-accent/60 bg-bg-card shadow-[0_0_32px_rgba(183,255,153,0.08)]'
+          ? 'border-accent/60 bg-bg-card shadow-[0_0_28px_rgba(183,255,153,0.07)]'
           : isViewed
           ? 'border-accent/20 bg-bg-card hover:border-accent/35'
-          : 'border-border bg-bg-card hover:border-border/80'
+          : 'border-border bg-bg-card hover:border-border/70'
       }`}
     >
+      {/* Active left-edge accent bar */}
+      {isActive && (
+        <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-accent" />
+      )}
+
       {/* Step header */}
       <div className="mb-3 flex items-center gap-2.5">
         <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-xs font-black transition-colors ${
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-base font-black transition-colors ${
             isViewed && !isActive
               ? 'border-accent/40 bg-accent text-bg'
               : isActive
@@ -370,17 +375,14 @@ const StepCard: React.FC<{
           }`}
         >
           {isViewed && !isActive ? (
-            <CheckCircle2 className="h-3.5 w-3.5" />
+            <CheckCircle2 className="h-5 w-5" />
           ) : (
             String(stepNum).padStart(2, '0')
           )}
         </div>
         <div className="flex-1 min-w-0 overflow-hidden">
-          <span className="block truncate text-[11px] font-black uppercase tracking-[0.2em] text-text-muted">
+          <span className="block truncate text-xs font-black uppercase tracking-[0.2em] text-text-muted">
             {step.title}
-          </span>
-          <span className="text-[10px] text-text-muted opacity-50">
-            {stepNum} / {total}
           </span>
         </div>
         {isActive && (
@@ -388,12 +390,17 @@ const StepCard: React.FC<{
             Active
           </span>
         )}
+        {isViewed && !isActive && (
+          <span className="shrink-0 text-[8px] font-black uppercase tracking-widest text-accent/60">
+            Viewed
+          </span>
+        )}
       </div>
 
       {/* Instruction */}
       <p
-        className={`text-sm leading-relaxed transition-colors ${
-          isActive ? 'text-text-primary font-medium' : 'text-text-secondary'
+        className={`text-base md:text-lg leading-relaxed transition-colors ${
+          isActive ? 'text-text-primary' : 'text-text-secondary'
         }`}
       >
         {step.instruction}
@@ -501,12 +508,10 @@ const Sidebar: React.FC<{
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col w-60 xl:w-68 shrink-0 sticky top-24 self-start rounded-2xl border border-border bg-bg-card">
+      {/* Desktop sidebar — hidden, main render has its own inline desktop sidebar */}
+      <aside className="hidden">
         {content}
       </aside>
-
-      {/* Mobile drawer — full-screen overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -851,14 +856,18 @@ const BootcampRoomPage: React.FC = () => {
     }
   }, [apiLoading, bootcampStatus, navigate]);
 
+  // ── Listen for quiz open event from navbar ────────────────────────────────
+  useEffect(() => {
+    const handler = () => setQuizOpen(true);
+    window.addEventListener('bootcamp:openQuiz', handler);
+    return () => window.removeEventListener('bootcamp:openQuiz', handler);
+  }, []);
+
   // ── Reset step index when room changes ────────────────────────────────────
   useEffect(() => {
     setCurrentStepIdx(0);
     setViewedSteps(new Set([0]));
   }, [phaseId, roomId]);
-
-  // ── Resolve config data ────────────────────────────────────────────────────
-  const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
   const room = phase?.rooms.find((r) => r.id === roomId);
 
   // Build locked rooms set from API data
@@ -1005,23 +1014,17 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-bg pb-24 md:pb-20 overflow-x-hidden">
+    <div className="bg-bg">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
-        <QuizModal
-          moduleId={quizModuleId}
-          courseId={quizCourseId}
-          onClose={() => setQuizOpen(false)}
-        />
+        <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
       )}
 
       {/* Room complete overlay */}
       <AnimatePresence>
         {showCompleteOverlay && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
             <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
@@ -1030,51 +1033,35 @@ const BootcampRoomPage: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: -10 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="relative z-10 w-full max-w-sm rounded-3xl border-2 border-accent/40 bg-bg-card p-8 text-center shadow-[0_0_60px_rgba(183,255,153,0.15)]"
+              className="relative z-10 w-full max-w-md rounded-3xl border-2 border-accent/40 bg-bg-card p-10 text-center shadow-[0_0_60px_rgba(183,255,153,0.15)]"
             >
-              {/* Animated checkmark */}
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
+                initial={{ scale: 0 }} animate={{ scale: 1 }}
                 transition={{ delay: 0.15, type: 'spring', stiffness: 400, damping: 20 }}
-                className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-accent/40 bg-accent-dim"
+                className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-accent/40 bg-accent-dim"
               >
-                <CheckCircle2 className="h-8 w-8 text-accent" />
+                <CheckCircle2 className="h-10 w-10 text-accent" />
               </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-              >
-                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
-                  Room Complete
-                </p>
-                <h2 className="mb-2 text-xl font-black text-text-primary">{room.title}</h2>
-                <p className="mb-6 text-sm text-text-muted">
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+                <p className="mb-2 text-[11px] font-black uppercase tracking-[0.3em] text-accent">Room Complete</p>
+                <h2 className="mb-3 text-2xl font-black text-text-primary">{room.title}</h2>
+                <p className="mb-8 text-base text-text-muted">
                   {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)
                     ? `Ready for the next room: ${nextRoom.title}`
-                    : 'You\'ve finished all available rooms in this phase.'}
+                    : "You've finished all available rooms in this phase."}
                 </p>
-
                 <div className="flex flex-col gap-3">
-                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
+                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) && (
                     <button
-                      onClick={() => {
-                        setShowCompleteOverlay(false);
-                        handleNavigate(nextRoom.phaseId, nextRoom.roomId);
-                      }}
-                      className="btn-primary flex items-center justify-center gap-2 py-3 text-sm font-black"
+                      onClick={() => { setShowCompleteOverlay(false); handleNavigate(nextRoom.phaseId, nextRoom.roomId); }}
+                      className="btn-primary flex items-center justify-center gap-2 py-4 text-base font-black"
                     >
-                      Next Room <ArrowRight className="h-4 w-4" />
+                      Next Room <ArrowRight className="h-5 w-5" />
                     </button>
-                  ) : null}
+                  )}
                   <button
-                    onClick={() => {
-                      setShowCompleteOverlay(false);
-                      navigate(`/bootcamps/${bootcampId}`);
-                    }}
-                    className="btn-secondary py-3 text-sm"
+                    onClick={() => { setShowCompleteOverlay(false); navigate(`/bootcamps/${bootcampId}`); }}
+                    className="btn-secondary py-4 text-base"
                   >
                     Back to Curriculum
                   </button>
@@ -1085,43 +1072,67 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-8 pt-16 md:pt-24">
-
-        {/* ── Mobile topbar — sticky curriculum button + breadcrumb ── */}
-        <div className="sticky top-14 z-30 -mx-3 mb-4 flex items-center gap-2 border-y border-border bg-bg/95 px-3 py-2 backdrop-blur supports-[backdrop-filter]:bg-bg/80 sm:-mx-4 sm:px-4 lg:hidden">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:bg-accent-dim/70 transition-colors"
-            aria-label="Open curriculum"
+      {/* ── MAIN SPLIT LAYOUT ── */}
+      {/* Mobile: normal page scroll. Desktop: fixed-height split, each column scrolls independently */}
+      <div className="min-h-0 lg:flex lg:h-[calc(100svh-5rem)] lg:overflow-hidden">
+        <div className="w-full flex flex-col lg:flex-row lg:h-full">
+          <aside
+            className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain"
+            style={{ height: '100%' }}
           >
-            <Menu className="h-4.5 w-4.5" />
-          </button>
-          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-            <nav className="flex min-w-0 items-center gap-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted overflow-hidden">
-              <Link to={`/bootcamps/${bootcampId}`} className="hover:text-accent transition-colors shrink-0">
-                Bootcamp
-              </Link>
-              <ChevronRight className="h-2.5 w-2.5 opacity-40 shrink-0" />
-              <span className="text-accent shrink-0 truncate max-w-[110px]">{phase.codename}</span>
+            <nav className="flex flex-col gap-1 p-4 pb-8">
+              {/* Back link */}
+              <div className="mb-4 px-1">
+                <Link
+                  to={`/bootcamps/${bootcampId}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum
+                </Link>
+              </div>
+
+              {BOOTCAMP_CONFIG.phases.map((phase_) => (
+                <div key={phase_.id} className="mb-4">
+                  <p className="mb-2 px-2 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                    {phase_.codename} — {phase_.title}
+                  </p>
+                  <div className="space-y-0.5 border-l-2 border-border/40 ml-2 pl-3">
+                    {phase_.rooms.map((room_) => {
+                      const key = `${phase_.id}:${room_.id}`;
+                      const isActive = phase_.id === phaseId && room_.id === roomId;
+                      const isCompleted = completedRooms.has(key);
+                      const isLocked = lockedRooms.has(key);
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => { if (!isLocked) handleNavigate(phase_.id, room_.id); }}
+                          disabled={isLocked}
+                          className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${
+                            isActive
+                              ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
+                              : isLocked
+                              ? 'opacity-40 cursor-not-allowed text-text-muted'
+                              : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                          }`}
+                        >
+                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${
+                            isCompleted ? 'border-accent/40 bg-accent text-bg'
+                              : isActive ? 'border-accent/40 bg-accent-dim text-accent'
+                              : 'border-border bg-bg text-text-muted'
+                          }`}>
+                            {isCompleted ? <CheckCircle2 className="h-3 w-3" /> : isLocked ? <Lock className="h-3 w-3" /> : null}
+                          </span>
+                          <span className="truncate text-sm">{room_.title}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </nav>
-            <p className="truncate text-sm font-black text-text-primary leading-tight">{room.title}</p>
-          </div>
-          {/* Quiz shortcut on mobile */}
-          {quizModuleId && (
-            <button
-              onClick={() => setQuizOpen(true)}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
-              aria-label="Take quiz"
-            >
-              <ClipboardList className="h-4 w-4" />
-            </button>
-          )}
-        </div>
+          </aside>
 
-        {/* ── Main layout: sidebar + content ── */}
-        <div className="flex gap-4 lg:gap-8 xl:gap-10 items-start min-w-0">
-
-          {/* LEFT SIDEBAR */}
+          {/* Mobile sidebar drawer */}
           <Sidebar
             phases={BOOTCAMP_CONFIG.phases}
             activePhaseId={phaseId || ''}
@@ -1134,187 +1145,127 @@ const BootcampRoomPage: React.FC = () => {
             onMobileClose={() => setSidebarOpen(false)}
           />
 
-          {/* MAIN CONTENT */}
-          <div className="min-w-0 flex-1 overflow-hidden">
-
-            {/* Desktop breadcrumb */}
-            <nav className="mb-8 hidden items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-text-muted lg:flex">
-              <Link to="/bootcamps" className="hover:text-accent transition-colors">Bootcamps</Link>
-              <ChevronRight className="h-3 w-3 opacity-40" />
-              <Link to={`/bootcamps/${bootcampId}`} className="hover:text-accent transition-colors">
-                {apiCourse?.title || 'Bootcamp'}
-              </Link>
-              <ChevronRight className="h-3 w-3 opacity-40" />
-              <span className="text-accent">{phase.codename} — {phase.title}</span>
-              <ChevronRight className="h-3 w-3 opacity-40" />
-              <span className="text-text-primary">{room.title}</span>
-            </nav>
-
-            {/* Room header */}
-            <div className="mb-5">
-              <span className="mb-1.5 block text-[10px] font-black uppercase tracking-[0.22em] text-accent">
-                {phase.codename} — {phase.title}
-              </span>
-              <h1 className="mb-2 text-xl font-black leading-tight text-text-primary sm:text-2xl md:text-3xl break-words">
-                {room.title}
-              </h1>
-              <p className="border-l-2 border-accent pl-3 text-[15px] leading-relaxed text-text-secondary sm:text-sm">
-                {room.overview}
-              </p>
-              {isRoomComplete && (
-                <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-accent">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Room Complete
-                </div>
-              )}
+          {/* ── WALKTHROUGH CONTENT — independent scroll ── */}
+          <main
+            className="flex-1 overflow-y-auto overscroll-contain lg:h-full"
+          >
+            {/* Mobile: curriculum open button (navbar handles breadcrumb) */}
+            <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent"
+                aria-label="Open curriculum"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+              <div className="flex min-w-0 flex-1 flex-col">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{phase.codename}</span>
+                <span className="truncate text-base font-black text-text-primary">{room.title}</span>
+              </div>
             </div>
 
-            {/* Step progress bar */}
-            <div className="mb-5 rounded-xl border border-border bg-bg-card p-3.5 sm:p-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-text-muted">
-                  Progress
+            {/* Content area */}
+            <div className="px-5 sm:px-8 md:px-12 xl:px-16 py-8 md:py-12 max-w-4xl">
+
+              {/* Room header */}
+              <div className="mb-8">
+                <span className="mb-2 block text-xs font-black uppercase tracking-[0.25em] text-accent">
+                  {phase.codename} — {phase.title}
                 </span>
-                <span className="font-mono text-sm font-black text-accent">
-                  {viewedSteps.size} / {room.steps.length} steps
-                </span>
+                <h1 className="mb-4 text-3xl font-black leading-tight text-text-primary sm:text-4xl md:text-5xl break-words">
+                  {room.title}
+                </h1>
+                <p className="border-l-4 border-accent/50 pl-4 text-base md:text-lg leading-relaxed text-text-secondary">
+                  {room.overview}
+                </p>
+                {isRoomComplete && (
+                  <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-dim px-4 py-1.5 text-xs font-black uppercase tracking-widest text-accent">
+                    <CheckCircle2 className="h-4 w-4" /> Room Complete
+                  </div>
+                )}
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-accent-dim">
-                <div
-                  className="h-full rounded-full bg-accent transition-all duration-500"
-                  style={{ width: `${(viewedSteps.size / room.steps.length) * 100}%` }}
-                />
+
+              {/* Step progress bar */}
+              <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>
+                  <span className="font-mono text-base font-black text-accent">
+                    {viewedSteps.size} / {room.steps.length} steps
+                  </span>
+                </div>
+                <div className="h-2.5 overflow-hidden rounded-full bg-accent-dim">
+                  <div
+                    className="h-full rounded-full bg-accent transition-all duration-500"
+                    style={{
+                      width: `${(viewedSteps.size / room.steps.length) * 100}%`,
+                      boxShadow: '0 0 10px var(--color-accent-glow)',
+                    }}
+                  />
+                </div>
+                <div className="mt-4 flex gap-2 flex-wrap">
+                  {room.steps.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => goToStep(idx)}
+                      className={`h-3 flex-1 min-w-[24px] max-w-[52px] rounded-full transition-all ${
+                        idx === currentStepIdx ? 'bg-accent scale-y-[1.3]'
+                          : viewedSteps.has(idx) ? 'bg-accent/45'
+                          : 'bg-accent-dim'
+                      }`}
+                      title={`Step ${idx + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
-              {/* Step dots */}
-              <div className="mt-3 flex gap-2 flex-wrap">
-                {room.steps.map((_, idx) => (
-                  <button
+
+              {/* Step cards */}
+              <div className="space-y-5 mb-10">
+                {room.steps.map((step, idx) => (
+                  <StepCard
                     key={idx}
+                    step={step}
+                    stepNum={idx + 1}
+                    total={room.steps.length}
+                    phaseId={phaseId || ''}
+                    roomId={roomId || ''}
+                    isActive={idx === currentStepIdx}
+                    isViewed={viewedSteps.has(idx)}
                     onClick={() => goToStep(idx)}
-                    className={`h-2.5 flex-1 min-w-[22px] max-w-[42px] rounded-full transition-all ${
-                      idx === currentStepIdx
-                        ? 'bg-accent'
-                        : viewedSteps.has(idx)
-                        ? 'bg-accent/40'
-                        : 'bg-accent-dim'
-                    }`}
-                    title={`Step ${idx + 1}`}
                   />
                 ))}
               </div>
-            </div>
 
-            {/* ── WALKTHROUGH STEPS — main content ── */}
-            <div className="space-y-4 mb-8">
-              {room.steps.map((step, idx) => (
-                <StepCard
-                  key={idx}
-                  step={step}
-                  stepNum={idx + 1}
-                  total={room.steps.length}
-                  phaseId={phaseId || ''}
-                  roomId={roomId || ''}
-                  isActive={idx === currentStepIdx}
-                  isViewed={viewedSteps.has(idx)}
-                  onClick={() => goToStep(idx)}
-                />
-              ))}
-            </div>
+              {/* Step navigation */}
+              <div className="flex items-center justify-between gap-4 pb-16">
+                <button
+                  onClick={goPrev}
+                  disabled={currentStepIdx === 0}
+                  className="btn-secondary inline-flex min-h-[56px] items-center gap-2 text-base disabled:opacity-30 px-8 py-4"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                  <span>Prev</span>
+                </button>
 
-            {/* Step navigation buttons */}
-            <div className="mb-6 flex items-center justify-between gap-2">
-              <button
-                onClick={goPrev}
-                disabled={currentStepIdx === 0}
-                className="btn-secondary inline-flex min-h-[44px] items-center gap-1.5 text-sm disabled:opacity-40 px-4 py-2.5"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" />
-                <span>Prev</span>
-              </button>
+                <span className="font-mono text-sm font-bold text-text-muted whitespace-nowrap">
+                  {currentStepIdx + 1} / {room.steps.length}
+                </span>
 
-              <span className="text-xs font-bold text-text-muted whitespace-nowrap">
-                {currentStepIdx + 1} / {room.steps.length}
-              </span>
-
-              <button
-                onClick={goNext}
-                className="btn-primary inline-flex min-h-[44px] items-center gap-1.5 text-sm px-4 py-2.5"
-              >
-                {isLastStep ? (
-                  isRoomComplete ? (
-                    <><span>Done</span><CheckCircle2 className="h-3.5 w-3.5" /></>
+                <button
+                  onClick={goNext}
+                  className="btn-primary inline-flex min-h-[56px] items-center gap-2 text-base px-8 py-4"
+                >
+                  {isLastStep ? (
+                    isRoomComplete
+                      ? <><span>Done</span><CheckCircle2 className="h-5 w-5" /></>
+                      : <><span>Complete room</span><CheckCircle2 className="h-5 w-5" /></>
                   ) : (
-                    <><span>Complete</span><CheckCircle2 className="h-3.5 w-3.5" /></>
-                  )
-                ) : (
-                  <><span>Next</span><ArrowRight className="h-3.5 w-3.5" /></>
-                )}
-              </button>
-            </div>
-
-            {/* ── ACTION BAR: Session info + Quiz button ── */}
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-stretch">
-              {/* Session info */}
-              <div className="flex-1 rounded-xl border border-border bg-bg-card p-3 sm:p-4">
-                <p className="mb-1 text-[9px] font-bold uppercase tracking-widest text-text-muted">
-                  Live Session
-                </p>
-                <p className="text-xs leading-relaxed text-text-secondary">
-                  Your instructor will share the session link in the bootcamp WhatsApp group.
-                </p>
-                <div className="mt-1.5 flex items-center gap-2 text-xs font-bold text-accent">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                  Check WhatsApp group for link
-                </div>
+                    <><span>Next step</span><ArrowRight className="h-5 w-5" /></>
+                  )}
+                </button>
               </div>
 
-              {/* Quiz button — hidden on mobile since it's in the topbar */}
-              {quizModuleId && (
-                <button
-                  onClick={() => setQuizOpen(true)}
-                  className="hidden sm:flex items-center gap-3 rounded-xl border-2 border-accent/40 bg-accent-dim/30 px-4 py-4 transition-all hover:border-accent/70 hover:bg-accent-dim/50 sm:flex-col sm:items-center sm:justify-center sm:min-w-[130px]"
-                >
-                  <ClipboardList className="h-5 w-5 shrink-0 text-accent" />
-                  <div className="text-center">
-                    <p className="text-xs font-black uppercase tracking-wide text-accent">Take Quiz</p>
-                    <p className="text-[9px] text-text-muted">Earn CP reward</p>
-                  </div>
-                </button>
-              )}
             </div>
-
-            {/* Prev / Next room navigation */}
-            <div className="flex items-stretch gap-2 sm:gap-3 pb-4">
-              {prevRoom ? (
-                <button
-                  onClick={() => handleNavigate(prevRoom.phaseId, prevRoom.roomId)}
-                  className="flex flex-1 items-center gap-2 rounded-xl border border-border bg-bg-card p-3 text-left transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden min-h-[52px]"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5 shrink-0 text-text-muted" />
-                  <div className="min-w-0 overflow-hidden">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Prev</p>
-                    <p className="truncate text-sm font-bold text-text-primary">{prevRoom.title}</p>
-                  </div>
-                </button>
-              ) : (
-                <div className="flex-1" />
-              )}
-              {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) ? (
-                <button
-                  onClick={() => handleNavigate(nextRoom.phaseId, nextRoom.roomId)}
-                  className="flex flex-1 items-center justify-end gap-2 rounded-xl border border-border bg-bg-card p-3 text-right transition-all hover:border-accent/30 hover:bg-accent-dim/20 min-w-0 overflow-hidden min-h-[52px]"
-                >
-                  <div className="min-w-0 overflow-hidden">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Next</p>
-                    <p className="truncate text-sm font-bold text-text-primary">{nextRoom.title}</p>
-                  </div>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-text-muted" />
-                </button>
-              ) : (
-                <div className="flex-1" />
-              )}
-            </div>
-
-          </div>
+          </main>
         </div>
       </div>
     </div>

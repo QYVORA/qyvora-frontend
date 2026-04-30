@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Trophy, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -13,6 +14,7 @@ const podiumColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
 
 const Leaderboard: React.FC = () => {
   const navigate = useNavigate();
+  const shouldReduceMotion = useReducedMotion();
   const [operators, setOperators] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
@@ -82,10 +84,15 @@ const Leaderboard: React.FC = () => {
                 {top3.map((op, i) => {
                   const handle = op.handle || op.name || 'Anonymous';
                   return (
-                    <ScrollReveal key={op.handle || i} delay={i * 0.1}>
+                    <motion.div
+                      key={op.handle || i}
+                      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    >
                       <div
                         className={`relative p-6 bg-bg-card border-2 rounded-2xl text-center cursor-pointer group transition-all hover:-translate-y-1 ${
-                          i === 0 ? 'border-accent md:-translate-y-3' : 'border-border'
+                          i === 0 ? 'border-accent md:-translate-y-3' : 'border-border hover:border-accent/30'
                         }`}
                         onClick={() => navigate(`/u/${handle}`)}
                       >
@@ -110,7 +117,7 @@ const Leaderboard: React.FC = () => {
                           {Number(op.totalXp || 0).toLocaleString()} <CpLogo className="w-4 h-4" />
                         </div>
                       </div>
-                    </ScrollReveal>
+                    </motion.div>
                   );
                 })}
               </div>
@@ -154,8 +161,11 @@ const Leaderboard: React.FC = () => {
                           const handle = op.handle || op.name || 'Anonymous';
                           const globalRank = (query ? filtered.indexOf(op) : 3 + (page - 1) * PAGE_SIZE + i) + 1;
                           return (
-                            <tr
+                            <motion.tr
                               key={op.handle || i}
+                              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
                               className="group hover:bg-accent-dim/5 transition-colors cursor-pointer"
                               onClick={() => navigate(`/u/${handle}`)}
                             >
@@ -180,7 +190,7 @@ const Leaderboard: React.FC = () => {
                                   {Number(op.totalXp || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" />
                                 </span>
                               </td>
-                            </tr>
+                            </motion.tr>
                           );
                         })
                       )}

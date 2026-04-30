@@ -1,8 +1,10 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
   Zap, Terminal, ShoppingBag, User, LogOut, Bell, Settings,
   X, BookOpen, Wallet, Sun, Moon, ChevronDown, LayoutDashboard, Trophy,
+  ArrowLeft, ClipboardList, ChevronRight,
 } from 'lucide-react';
+import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
@@ -60,6 +62,23 @@ const StudentTopbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ── Bootcamp room route detection ─────────────────────────────────────────
+  const roomMatch = useMatch('/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
+  const roomMatchLegacy = useMatch('/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
+  const activeRoomMatch = roomMatch || roomMatchLegacy;
+  const isRoomPage = Boolean(activeRoomMatch);
+
+  const roomBootcampId = activeRoomMatch?.params?.bootcampId ?? '';
+  const roomPhaseId = activeRoomMatch?.params?.phaseId
+    ?? (activeRoomMatch?.params?.moduleId ? `phase${activeRoomMatch.params.moduleId}` : '');
+  const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
+  const roomPhaseConfig = BOOTCAMP_CONFIG.phases.find((p) => p.id === roomPhaseId);
+  const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
+
+  // Fire a custom event so BootcampRoomPage can open its quiz modal
+  const openQuiz = () => window.dispatchEvent(new CustomEvent('bootcamp:openQuiz'));
+
+  // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
@@ -133,7 +152,112 @@ const StudentTopbar = () => {
     <>
       {/* ── Desktop topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 md:h-24 flex items-center justify-between">
+        {isRoomPage ? (
+          /* ══ BOOTCAMP ROOM MODE ══ */
+          <div className="max-w-[1600px] mx-auto px-4 md:px-6 h-20 md:h-24 flex items-center gap-3">
+
+            {/* Back to curriculum */}
+            <button
+              onClick={() => navigate(`/bootcamps/${roomBootcampId}`)}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
+              aria-label="Back to curriculum"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+
+            {/* Breadcrumb — desktop */}
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
+              <Link to={`/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
+                Curriculum
+              </Link>
+              {roomPhaseConfig && (
+                <>
+                  <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                  <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
+                </>
+              )}
+              {roomConfig && (
+                <>
+                  <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                  <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
+                </>
+              )}
+            </div>
+
+            {/* Mobile: phase + room title */}
+            <div className="flex sm:hidden flex-col min-w-0 flex-1">
+              {roomPhaseConfig && (
+                <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
+                  {roomPhaseConfig.codename}
+                </span>
+              )}
+              <span className="text-sm font-black text-text-primary truncate leading-tight">
+                {roomConfig?.title ?? 'Room'}
+              </span>
+            </div>
+
+            {/* Right: quiz + notif + profile */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={openQuiz}
+                className="flex items-center gap-2 h-11 px-4 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:border-accent/70 hover:bg-accent-dim/70 transition-colors text-sm font-black uppercase tracking-wide"
+              >
+                <ClipboardList className="h-4 w-4" />
+                <span className="hidden sm:inline">Quiz</span>
+              </button>
+
+              <div ref={notifRef} className="relative">
+                <button
+                  onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
+                  className="relative p-3 min-h-11 min-w-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                  aria-label="Notifications"
+                >
+                  <Bell className="w-5 h-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </button>
+                <AnimatePresence>
+                  {notifOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
+                      className="absolute right-0 top-full mt-2 w-80 rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                    >
+                      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                        <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
+                        {unreadCount > 0 && <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline">Mark all read</button>}
+                      </div>
+                      <div className="max-h-72 overflow-auto divide-y divide-border/50">
+                        {notifLoading ? <div className="p-4 text-xs text-text-muted">Loading...</div>
+                          : notificationsPreview.length === 0 ? <div className="p-4 text-xs text-text-muted">No notifications yet.</div>
+                          : notificationsPreview.map((item) => (
+                            <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`}>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
+                                {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}
+                              </div>
+                              <p className="text-[11px] text-text-secondary line-clamp-2 mt-0.5">{item.message}</p>
+                            </div>
+                          ))}
+                      </div>
+                      <div className="px-4 py-3 border-t border-border">
+                        <Link to="/notifications" onClick={() => setNotifOpen(false)} className="block w-full text-center text-xs font-bold text-accent hover:underline">View all</Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <Link to="/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
+                {user?.username?.substring(0, 2).toUpperCase() ?? 'OP'}
+              </Link>
+            </div>
+          </div>
+
+        ) : (
+          <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 md:h-24 flex items-center justify-between">
 
           {/* Left: Logo + dropdown nav */}
           <div className="flex items-center gap-8">
@@ -369,9 +493,12 @@ const StudentTopbar = () => {
             </button>
           </div>
         </div>
+        )}
       </header>
 
-      {/* ── Mobile bottom nav ── */}
+      {/* ── Mobile bottom nav — hidden on room pages ── */}
+      {!isRoomPage && (
+      <>
       <nav
         className="fixed bottom-0 left-0 w-full bg-bg-card/95 backdrop-blur-md border-t border-border flex md:hidden z-50"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
@@ -490,6 +617,8 @@ const StudentTopbar = () => {
           </>
         )}
       </AnimatePresence>
+      </>
+      )} {/* end !isRoomPage */}
     </>
   );
 };
