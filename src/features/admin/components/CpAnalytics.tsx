@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   TrendingUp, TrendingDown, Activity, Users, Coins,
   ArrowUpRight, ArrowDownLeft, RefreshCw, ChevronDown,
@@ -17,14 +17,6 @@ interface CpTx {
   note: string;
   createdAt: string;
   user?: { name?: string; email?: string; hackerHandle?: string };
-}
-
-interface ChartPoint {
-  date: string;       // "Apr 28"
-  issued: number;     // total CP minted/granted that day
-  burned: number;     // total CP spent/deducted that day
-  net: number;        // issued - burned
-  txCount: number;
 }
 
 interface KpiData {
@@ -46,46 +38,11 @@ const fmtShort = (n: number) => {
   return String(n);
 };
 
-function buildChartData(txs: CpTx[], days: number): ChartPoint[] {
-  const now = Date.now();
-  const buckets = new Map<string, { issued: number; burned: number; txCount: number }>();
-
-  // Pre-fill all days so the chart has no gaps
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(now - i * 86_400_000);
-    const key = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-    buckets.set(key, { issued: 0, burned: 0, txCount: 0 });
-  }
-
-  const cutoff = now - days * 86_400_000;
-  for (const tx of txs) {
-    const ts = new Date(tx.createdAt).getTime();
-    if (ts < cutoff) continue;
-    const key = new Date(ts).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
-    const b = buckets.get(key);
-    if (!b) continue;
-    const pts = Number(tx.points || 0);
-    if (pts > 0) b.issued += pts;
-    else b.burned += Math.abs(pts);
-    b.txCount++;
-  }
-
-  return Array.from(buckets.entries()).map(([date, b]) => ({
-    date,
-    issued: b.issued,
-    burned: b.burned,
-    net: b.issued - b.burned,
-    txCount: b.txCount,
-  }));
-}
-
 function buildKpis(txs: CpTx[], days: number): KpiData {
   const cutoff = Date.now() - days * 86_400_000;
   const recent = txs.filter(t => new Date(t.createdAt).getTime() >= cutoff);
-
   let totalIssued = 0, totalBurned = 0;
   const userEarnings = new Map<string, number>();
-
   for (const tx of recent) {
     const pts = Number(tx.points || 0);
     if (pts > 0) {
@@ -96,177 +53,227 @@ function buildKpis(txs: CpTx[], days: number): KpiData {
       totalBurned += Math.abs(pts);
     }
   }
-
   const uniqueUsers = new Set(recent.map(t => t.user?.email || t._id)).size;
   const avgPerTx = recent.length ? Math.round((totalIssued + totalBurned) / recent.length) : 0;
   const topEarner = [...userEarnings.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? '—';
-
   return { totalIssued, totalBurned, netFlow: totalIssued - totalBurned, uniqueUsers, avgPerTx, topEarner };
 }
 
-// ─── Forex-style SVG chart ────────────────────────────────────────────────────
-const ForexChart: React.FC<{ data: ChartPoint[]; metric: 'net' | 'issued' | 'burned' }> = ({ data, metric }) => {
+// ─── OHLC candle builder ──────────────────────────────────────────────────────
+interface Candle {
+  date: string; open: number; high: number; low: number; close: number;
+  volume: number; issued: number; burned: number; txCount: number; bullish: boolean;
+}
+
+function buildCandles(txs: CpTx[], days: number): Candle[] {
+  const now = Date.now();
+  const keys: string[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now - i * 86_400_000);
+    keys.push(d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }));
+  }
+  const buckets = new Map<string, { issued: number; burned: number; txCount: number }>();
+  keys.forEach(k => buckets.set(k, { issued: 0, burned: 0, txCount: 0 }));
+  const cutoff = now - days * 86_400_000;
+  for (const tx of txs) {
+    const ts = new Date(tx.createdAt).getTime();
+    if (ts < cutoff) continue;
+    const key = new Date(ts).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+    const b = buckets.get(key);
+    if (!b) continue;
+    const pts = Number(tx.points || 0);
+    if (pts > 0) b.issued += pts; else b.burned += Math.abs(pts);
+    b.txCount++;
+  }
+  let runningNet = 0;
+  return keys.map(key => {
+    const b = buckets.get(key)!;
+    const dayNet = b.issued - b.burned;
+    const open = runningNet;
+    const close = runningNet + dayNet;
+    const high = Math.max(open, close) + b.issued * 0.05;
+    const low = Math.min(open, close) - b.burned * 0.05;
+    runningNet = close;
+    return { date: key, open, high, low, close, volume: b.issued + b.burned, issued: b.issued, burned: b.burned, txCount: b.txCount, bullish: close >= open };
+  });
+}
+
+function sma(candles: Candle[], period: number): (number | null)[] {
+  return candles.map((_, i) => {
+    if (i < period - 1) return null;
+    return candles.slice(i - period + 1, i + 1).reduce((s, c) => s + c.close, 0) / period;
+  });
+}
+
+// ─── Trading Chart (candlestick + volume + SMA) ───────────────────────────────
+const TradingChart: React.FC<{ candles: Candle[]; range: Range }> = ({ candles, range }) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; point: ChartPoint } | null>(null);
+  const [hovered, setHovered] = useState<{ idx: number; x: number } | null>(null);
 
-  const values = data.map(d => d[metric]);
-  const maxVal = Math.max(...values, 1);
-  const minVal = Math.min(...values, 0);
-  const range = maxVal - minVal || 1;
-
-  const W = 800, H = 220, PAD = { top: 20, right: 20, bottom: 36, left: 52 };
+  const W = 900, MAIN_H = 280, VOL_H = 60, PAD = { top: 24, right: 16, bottom: 8, left: 64 };
   const chartW = W - PAD.left - PAD.right;
-  const chartH = H - PAD.top - PAD.bottom;
+  const mainH = MAIN_H - PAD.top - PAD.bottom;
+  const totalH = MAIN_H + VOL_H + 28;
 
-  const toX = (i: number) => PAD.left + (i / Math.max(data.length - 1, 1)) * chartW;
-  const toY = (v: number) => PAD.top + chartH - ((v - minVal) / range) * chartH;
+  const n = candles.length;
+  const gap = chartW / Math.max(n, 1);
+  const candleW = Math.max(2, Math.floor(gap * 0.65));
 
-  // Build smooth path
-  const linePath = data.map((d, i) => {
-    const x = toX(i), y = toY(d[metric]);
-    return i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`;
-  }).join(' ');
+  const prices = candles.flatMap(c => [c.high, c.low]);
+  const maxP = Math.max(...prices, 1);
+  const minP = Math.min(...prices, 0);
+  const priceRange = maxP - minP || 1;
+  const maxVol = Math.max(...candles.map(c => c.volume), 1);
 
-  // Area fill path
-  const areaPath = data.length
-    ? `${linePath} L ${toX(data.length - 1)} ${PAD.top + chartH} L ${toX(0)} ${PAD.top + chartH} Z`
-    : '';
+  const toX = (i: number) => PAD.left + i * gap + gap / 2;
+  const toY = (v: number) => PAD.top + mainH - ((v - minP) / priceRange) * mainH;
+  const toVolY = (v: number) => MAIN_H + VOL_H - (v / maxVol) * (VOL_H - 4);
 
-  const isPositive = metric === 'issued' || (metric === 'net' && (values[values.length - 1] ?? 0) >= 0);
-  const strokeColor = metric === 'burned' ? '#f87171' : isPositive ? '#88ad7c' : '#f87171';
-  const gradId = `cpGrad_${metric}`;
+  const sma7 = sma(candles, 7);
+  const sma20 = sma(candles, 20);
 
-  // Y-axis labels
-  const yTicks = 4;
+  const smaPath = (vals: (number | null)[], color: string) => {
+    let d = '';
+    vals.forEach((v, i) => {
+      if (v === null) return;
+      d += d === '' ? `M ${toX(i)} ${toY(v)}` : ` L ${toX(i)} ${toY(v)}`;
+    });
+    return d ? <path d={d} fill="none" stroke={color} strokeWidth="1.5" opacity="0.75" strokeLinejoin="round" /> : null;
+  };
+
+  const yTicks = 5;
   const yLabels = Array.from({ length: yTicks + 1 }, (_, i) => {
-    const v = minVal + (range * i) / yTicks;
+    const v = minP + (priceRange * i) / yTicks;
     return { y: toY(v), label: fmtShort(Math.round(v)) };
   });
-
-  // X-axis labels — show every Nth label to avoid crowding
-  const xStep = Math.max(1, Math.floor(data.length / 7));
-  const xLabels = data.filter((_, i) => i % xStep === 0 || i === data.length - 1);
+  const xStep = Math.max(1, Math.floor(n / 8));
+  const hoveredCandle = hovered !== null ? candles[hovered.idx] : null;
 
   const handleMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     const rect = svgRef.current?.getBoundingClientRect();
-    if (!rect || !data.length) return;
+    if (!rect || !n) return;
     const svgX = ((e.clientX - rect.left) / rect.width) * W;
-    const relX = svgX - PAD.left;
-    const idx = Math.round((relX / chartW) * (data.length - 1));
-    const clamped = Math.max(0, Math.min(data.length - 1, idx));
-    const point = data[clamped];
-    setTooltip({ x: toX(clamped), y: toY(point[metric]), point });
-  }, [data, metric]);
+    const idx = Math.round((svgX - PAD.left) / gap - 0.5);
+    const clamped = Math.max(0, Math.min(n - 1, idx));
+    setHovered({ idx: clamped, x: toX(clamped) });
+  }, [n, gap]);
+
+  const GREEN = '#88ad7c', RED = '#f87171', GRID = 'rgba(255,255,255,0.04)';
 
   return (
     <div className="relative w-full select-none">
+      {/* Ticker header */}
+      <div className="flex flex-wrap items-center gap-4 px-1 pb-3 border-b border-border/50 mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-base font-black font-mono text-text-primary">CP/NET</span>
+          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">HSOCIETY CHAIN · {range}</span>
+        </div>
+        {hoveredCandle ? (
+          <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono">
+            <span className="text-text-muted">{hoveredCandle.date}</span>
+            <span className="text-text-muted">O <span className="text-text-primary">{fmtShort(hoveredCandle.open)}</span></span>
+            <span className="text-text-muted">H <span style={{ color: hoveredCandle.bullish ? GREEN : RED }}>{fmtShort(hoveredCandle.high)}</span></span>
+            <span className="text-text-muted">L <span style={{ color: hoveredCandle.bullish ? GREEN : RED }}>{fmtShort(hoveredCandle.low)}</span></span>
+            <span className="text-text-muted">C <span style={{ color: hoveredCandle.bullish ? GREEN : RED }}>{fmtShort(hoveredCandle.close)}</span></span>
+            <span className="text-text-muted">Vol <span className="text-text-primary">{fmtShort(hoveredCandle.volume)}</span></span>
+            <span className="text-text-muted">+{fmt(hoveredCandle.issued)} <span style={{ color: GREEN }}>issued</span></span>
+            <span className="text-text-muted">-{fmt(hoveredCandle.burned)} <span style={{ color: RED }}>burned</span></span>
+            <span className="text-text-muted">{hoveredCandle.txCount} tx</span>
+          </div>
+        ) : candles.length > 0 ? (() => {
+          const last = candles[candles.length - 1];
+          const prev = candles[candles.length - 2];
+          const chg = prev ? last.close - prev.close : 0;
+          const pct = prev && prev.close !== 0 ? ((chg / Math.abs(prev.close)) * 100).toFixed(2) : '0.00';
+          const up = chg >= 0;
+          return (
+            <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono">
+              <span className="text-xl font-black" style={{ color: up ? GREEN : RED }}>{fmtShort(last.close)}</span>
+              <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: up ? 'rgba(136,173,124,0.15)' : 'rgba(248,113,113,0.15)', color: up ? GREEN : RED }}>
+                {up ? '▲' : '▼'} {Math.abs(Number(pct))}%
+              </span>
+              <span className="text-text-muted">SMA7 <span style={{ color: '#60a5fa' }}>{fmtShort(Math.round(sma7[sma7.length - 1] ?? 0))}</span></span>
+              <span className="text-text-muted">SMA20 <span style={{ color: '#f59e0b' }}>{fmtShort(Math.round(sma20[sma20.length - 1] ?? 0))}</span></span>
+            </div>
+          );
+        })() : null}
+      </div>
+
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${W} ${H}`}
+        viewBox={`0 0 ${W} ${totalH}`}
         className="w-full"
-        style={{ height: 220 }}
+        style={{ height: Math.round(totalH * 0.58) }}
         onMouseMove={handleMouseMove}
-        onMouseLeave={() => setTooltip(null)}
+        onMouseLeave={() => setHovered(null)}
       >
-        <defs>
-          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={strokeColor} stopOpacity="0.25" />
-            <stop offset="100%" stopColor={strokeColor} stopOpacity="0.01" />
-          </linearGradient>
-          {/* Horizontal grid lines */}
-          {yLabels.map((t, i) => (
-            <line key={i} x1={PAD.left} y1={t.y} x2={W - PAD.right} y2={t.y}
-              stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-          ))}
-        </defs>
-
-        {/* Grid lines */}
+        {/* Grid */}
         {yLabels.map((t, i) => (
-          <line key={i} x1={PAD.left} y1={t.y} x2={W - PAD.right} y2={t.y}
-            stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+          <line key={i} x1={PAD.left} y1={t.y} x2={W - PAD.right} y2={t.y} stroke={GRID} strokeWidth="1" />
         ))}
+        <line x1={PAD.left} y1={MAIN_H} x2={W - PAD.right} y2={MAIN_H} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
 
-        {/* Zero line */}
-        {minVal < 0 && (
-          <line x1={PAD.left} y1={toY(0)} x2={W - PAD.right} y2={toY(0)}
-            stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="4 4" />
-        )}
-
-        {/* Area fill */}
-        {areaPath && (
-          <path d={areaPath} fill={`url(#${gradId})`} />
-        )}
-
-        {/* Line */}
-        {linePath && (
-          <motion.path
-            d={linePath}
-            fill="none"
-            stroke={strokeColor}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
-          />
-        )}
-
-        {/* Y-axis labels */}
+        {/* Y labels */}
         {yLabels.map((t, i) => (
-          <text key={i} x={PAD.left - 6} y={t.y + 4} textAnchor="end"
-            fontSize="9" fill="rgba(255,255,255,0.35)" fontFamily="monospace">
-            {t.label}
-          </text>
+          <text key={i} x={PAD.left - 6} y={t.y + 4} textAnchor="end" fontSize="9" fill="rgba(255,255,255,0.3)" fontFamily="monospace">{t.label}</text>
         ))}
+        <text x={PAD.left - 6} y={MAIN_H + 14} textAnchor="end" fontSize="8" fill="rgba(255,255,255,0.22)" fontFamily="monospace">VOL</text>
 
-        {/* X-axis labels */}
-        {xLabels.map((d, i) => {
-          const idx = data.indexOf(d);
+        {/* Candles + volume bars */}
+        {candles.map((c, i) => {
+          const x = toX(i);
+          const bodyTop = toY(Math.max(c.open, c.close));
+          const bodyBot = toY(Math.min(c.open, c.close));
+          const bodyH = Math.max(1, bodyBot - bodyTop);
+          const color = c.bullish ? GREEN : RED;
+          const isHov = hovered?.idx === i;
           return (
-            <text key={i} x={toX(idx)} y={H - 6} textAnchor="middle"
-              fontSize="9" fill="rgba(255,255,255,0.35)" fontFamily="monospace">
-              {d.date}
-            </text>
+            <g key={i}>
+              <line x1={x} y1={toY(c.high)} x2={x} y2={toY(c.low)} stroke={color} strokeWidth="1" opacity={isHov ? 1 : 0.8} />
+              <rect x={x - candleW / 2} y={bodyTop} width={candleW} height={bodyH} fill={color} opacity={isHov ? 1 : 0.85} rx="0.5" />
+              <rect x={x - candleW / 2} y={toVolY(c.volume)} width={candleW} height={MAIN_H + VOL_H - toVolY(c.volume)} fill={color} opacity={isHov ? 0.7 : 0.3} rx="0.5" />
+            </g>
           );
         })}
 
-        {/* Tooltip crosshair */}
-        {tooltip && (
+        {/* SMA lines */}
+        {smaPath(sma7, '#60a5fa')}
+        {smaPath(sma20, '#f59e0b')}
+
+        {/* Crosshair */}
+        {hovered && (
           <>
-            <line x1={tooltip.x} y1={PAD.top} x2={tooltip.x} y2={PAD.top + chartH}
-              stroke={strokeColor} strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
-            <circle cx={tooltip.x} cy={tooltip.y} r="4" fill={strokeColor} stroke="#0a0f0a" strokeWidth="2" />
+            <line x1={hovered.x} y1={PAD.top} x2={hovered.x} y2={MAIN_H + VOL_H} stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeDasharray="3 3" />
+            {hoveredCandle && (
+              <line x1={PAD.left} y1={toY(hoveredCandle.close)} x2={W - PAD.right} y2={toY(hoveredCandle.close)} stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="3 3" />
+            )}
           </>
         )}
+
+        {/* X labels */}
+        {candles.map((c, i) => {
+          if (i % xStep !== 0 && i !== n - 1) return null;
+          return <text key={i} x={toX(i)} y={totalH - 4} textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.28)" fontFamily="monospace">{c.date}</text>;
+        })}
       </svg>
 
-      {/* Tooltip box */}
-      <AnimatePresence>
-        {tooltip && (
-          <motion.div
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            className="pointer-events-none absolute top-2 left-1/2 -translate-x-1/2 z-10 rounded-xl border border-border bg-bg-card/95 backdrop-blur-sm px-3 py-2 text-xs shadow-xl"
-          >
-            <div className="font-mono font-bold text-text-muted mb-1">{tooltip.point.date}</div>
-            <div className="flex items-center gap-3">
-              <span className="text-accent inline-flex items-center gap-1">
-                +{fmt(tooltip.point.issued)} <CpLogo className="w-3 h-3" />
-              </span>
-              <span className="text-red-400 inline-flex items-center gap-1">
-                -{fmt(tooltip.point.burned)} <CpLogo className="w-3 h-3" />
-              </span>
-              <span className={`font-bold inline-flex items-center gap-1 ${tooltip.point.net >= 0 ? 'text-accent' : 'text-red-400'}`}>
-                {tooltip.point.net >= 0 ? '+' : ''}{fmt(tooltip.point.net)} net
-              </span>
-            </div>
-            <div className="text-text-muted mt-0.5">{tooltip.point.txCount} transactions</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Legend */}
+      <div className="flex flex-wrap items-center gap-4 pt-2 px-1">
+        {[
+          { color: '#60a5fa', label: 'SMA 7', line: true },
+          { color: '#f59e0b', label: 'SMA 20', line: true },
+          { color: GREEN, label: 'Bullish (net +CP)', line: false },
+          { color: RED, label: 'Bearish (net −CP)', line: false },
+        ].map(({ color, label, line }) => (
+          <div key={label} className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted">
+            {line
+              ? <span className="w-5 h-0.5 inline-block rounded" style={{ background: color }} />
+              : <span className="w-3 h-3 inline-block rounded-sm opacity-85" style={{ background: color }} />
+            }
+            {label}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -345,7 +352,6 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
   const [txs, setTxs] = useState<CpTx[]>([]);
   const [loading, setLoading] = useState(true);
   const [range, setRange] = useState<Range>('30d');
-  const [chartMetric, setChartMetric] = useState<'net' | 'issued' | 'burned'>('net');
   const [txPage, setTxPage] = useState(1);
   const [txTotal, setTxTotal] = useState(0);
   const [txFilter, setTxFilter] = useState<'all' | 'credit' | 'purchase' | 'deduct'>('all');
@@ -389,7 +395,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       .catch(() => {});
   }, []);
 
-  const chartData = useMemo(() => buildChartData(allTxs, rangeDays), [allTxs, rangeDays]);
+  const candles = useMemo(() => buildCandles(allTxs, rangeDays), [allTxs, rangeDays]);
   const kpis = useMemo(() => buildKpis(allTxs, rangeDays), [allTxs, rangeDays]);
 
   // Type breakdown for bar chart
@@ -498,42 +504,24 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         />
       </div>
 
-      {/* ── Forex chart ── */}
+      {/* ── Trading chart ── */}
       <div className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
-          <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-accent" />
-            <span className="text-sm font-black uppercase tracking-wide text-text-primary">CP Flow Chart</span>
-            <span className="text-[10px] font-mono text-text-muted">last {range}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            {([
-              { key: 'net', label: 'Net', color: 'text-accent' },
-              { key: 'issued', label: 'Issued', color: 'text-emerald-400' },
-              { key: 'burned', label: 'Burned', color: 'text-red-400' },
-            ] as const).map(m => (
-              <button key={m.key} onClick={() => setChartMetric(m.key)}
-                className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-colors ${
-                  chartMetric === m.key
-                    ? `${m.color} bg-accent-dim border border-accent/20`
-                    : 'text-text-muted border border-transparent hover:border-border'
-                }`}>
-                {m.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+          <Zap className="w-4 h-4 text-accent" />
+          <span className="text-sm font-black uppercase tracking-wide text-text-primary">CP Trading Chart</span>
+          <span className="text-[10px] font-mono text-text-muted">candlestick · SMA · volume</span>
         </div>
-        <div className="p-4">
+        <div className="p-4 md:p-5">
           {loading && allTxs.length === 0 ? (
-            <div className="h-[220px] flex items-center justify-center">
+            <div className="h-[260px] flex items-center justify-center">
               <div className="w-8 h-8 rounded-full border-2 border-border border-t-accent animate-spin" />
             </div>
-          ) : chartData.every(d => d[chartMetric] === 0) ? (
-            <div className="h-[220px] flex items-center justify-center text-sm text-text-muted">
+          ) : candles.every(c => c.volume === 0) ? (
+            <div className="h-[260px] flex items-center justify-center text-sm text-text-muted">
               No CP activity in this period
             </div>
           ) : (
-            <ForexChart data={chartData} metric={chartMetric} />
+            <TradingChart candles={candles} range={range} />
           )}
         </div>
       </div>
