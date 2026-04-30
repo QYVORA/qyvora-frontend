@@ -56,6 +56,7 @@ const Marketplace: React.FC = () => {
       const parsedBalance = extractCpBalance(balRes?.data);
       if (typeof tokenBal === 'number' && tokenBal > 0) setBalance(tokenBal);
       else if (parsedBalance !== null) setBalance(parsedBalance);
+      const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
       const purchasedIds = new Set<string>(
         txItems
           .filter((tx: any) => tx.type === 'purchase' && tx.productId)

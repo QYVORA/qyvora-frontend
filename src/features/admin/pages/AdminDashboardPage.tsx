@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import QuizManager from '../components/QuizManager';
 import ChainExplorer from '../components/ChainExplorer';
+import CpAnalytics from '../components/CpAnalytics';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
@@ -254,11 +255,6 @@ const AdminDashboardPage: React.FC = () => {
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [productFile, setProductFile] = useState<File | null>(null);
 
-  const [cpAction, setCpAction] = useState<'grant' | 'deduct' | 'set'>('grant');
-  const [cpUserId, setCpUserId] = useState('');
-  const [cpValue, setCpValue] = useState(0);
-  const [cpReason, setCpReason] = useState('');
-
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
@@ -303,7 +299,6 @@ const AdminDashboardPage: React.FC = () => {
 
       const userItems = Array.isArray(usersRes?.data) ? (usersRes.data as AdminUser[]) : [];
       setUsers(userItems);
-      if (userItems.length && !cpUserId) setCpUserId(userItems[0].id);
 
       const cd = (contentRes?.data as any) || {};
       setContentVersion(Number(cd.version || 1));
@@ -407,18 +402,6 @@ const AdminDashboardPage: React.FC = () => {
     if (!window.confirm('Delete this product?')) return;
     try { await api.delete(`/admin/cp-products/${encodeURIComponent(id)}`); addToast('Product deleted', 'success'); await loadAll(); }
     catch (e: any) { addToast(e?.response?.data?.error || 'Failed to delete', 'error'); }
-  };
-
-  const runCpAction = async () => {
-    if (!cpUserId) { addToast('Select a user first.', 'error'); return; }
-    if (cpAction !== 'set' && cpValue <= 0) { addToast('Points must be > 0.', 'error'); return; }
-    if (cpAction === 'set' && cpValue < 0) { addToast('Value cannot be negative.', 'error'); return; }
-    try {
-      if (cpAction === 'grant') await api.post('/admin/cp/grant', { userIds: [cpUserId], points: cpValue, reason: cpReason });
-      else if (cpAction === 'deduct') await api.post('/admin/cp/deduct', { userIds: [cpUserId], points: cpValue, reason: cpReason });
-      else await api.post('/admin/cp/set', { userIds: [cpUserId], value: cpValue, reason: cpReason });
-      addToast('Points operation completed', 'success'); await loadAll();
-    } catch (e: any) { addToast(e?.response?.data?.error || 'Points operation failed', 'error'); }
   };
 
   const updateContactStatus = async (id: string, status: ContactMessage['status']) => {
@@ -906,33 +889,9 @@ const AdminDashboardPage: React.FC = () => {
                 </div>
               )}
 
-              {/* ── POINTS ────────────────────────────────────────────────── */}
+              {/* ── POINTS / CP ANALYTICS ────────────────────────────────── */}
               {activeTab === 'cp' && (
-                <div className="max-w-lg space-y-4">
-                  <div className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-text-muted tracking-widest">Points Control</div>
-                    <div>
-                      <label className="text-[10px] uppercase text-text-muted tracking-widest block mb-1.5">User</label>
-                      <select value={cpUserId} onChange={e => setCpUserId(e.target.value)} className={inp}>
-                        {users.map(u => (
-                          <option key={u.id} value={u.id}>{u.hackerHandle || u.name || u.email}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
-                      {(['grant','deduct','set'] as const).map(a => (
-                        <button key={a} onClick={() => setCpAction(a)} className={`${btn} ${cpAction === a ? 'border-accent/40 text-accent bg-accent-dim' : 'border-border text-text-muted'}`}>
-                          {a}
-                        </button>
-                      ))}
-                    </div>
-                    <input type="number" value={cpValue} onChange={e => setCpValue(Number(e.target.value || 0))} placeholder={cpAction === 'set' ? 'Target value' : 'Points'} className={inp} />
-                    <input value={cpReason} onChange={e => setCpReason(e.target.value)} placeholder="Reason (optional)" className={inp} />
-                    <button onClick={() => void runCpAction()} className={`${btn} border-accent/40 text-accent hover:bg-accent-dim w-full`}>
-                      Execute
-                    </button>
-                  </div>
-                </div>
+                <CpAnalytics users={users} addToast={addToast} />
               )}
 
               {/* ── SECURITY ──────────────────────────────────────────────── */}
