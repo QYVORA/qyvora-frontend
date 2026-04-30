@@ -54,9 +54,8 @@ const Marketplace: React.FC = () => {
       setProducts(items);
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch { /* ignore */ }
       const parsedBalance = extractCpBalance(balRes?.data);
-      if (typeof tokenBal === 'number' && Number.isFinite(tokenBal)) setBalance(tokenBal);
+      if (typeof tokenBal === 'number' && tokenBal > 0) setBalance(tokenBal);
       else if (parsedBalance !== null) setBalance(parsedBalance);
-      const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
       const purchasedIds = new Set<string>(
         txItems
           .filter((tx: any) => tx.type === 'purchase' && tx.productId)
@@ -83,7 +82,7 @@ const Marketplace: React.FC = () => {
         getTokenBalanceForUser(user?.uid || ''),
       ]);
       const parsedBalance = extractCpBalance(balRes?.data);
-      if (typeof tokenBal === 'number' && Number.isFinite(tokenBal)) setBalance(tokenBal);
+      if (typeof tokenBal === 'number' && tokenBal > 0) setBalance(tokenBal);
       else if (parsedBalance !== null) setBalance(parsedBalance);
     } catch (err: any) {
       const msg = err?.response?.data?.error || 'Purchase failed. Check your points balance.';

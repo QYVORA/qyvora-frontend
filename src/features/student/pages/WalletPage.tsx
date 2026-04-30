@@ -32,7 +32,14 @@ const Wallet: React.FC = () => {
         ]);
         if (!mounted) return;
         const parsedBalance = extractCpBalance(balanceRes?.data);
-        setBalance(tokenBalance ?? parsedBalance ?? 0);
+        // Prefer the backend balance (which has DB fallback built in).
+        // Only use the direct chain token balance if it's a positive number,
+        // since the chain returns 0 for users whose CP was never minted on-chain.
+        const resolvedBalance =
+          (typeof tokenBalance === 'number' && tokenBalance > 0)
+            ? tokenBalance
+            : (parsedBalance ?? 0);
+        setBalance(resolvedBalance);
         setTransactions(Array.isArray(txRes.data?.items) ? txRes.data.items : []);
         setVisibleCount(PAGE_SIZE);
       } catch {

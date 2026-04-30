@@ -136,7 +136,10 @@ const Dashboard: React.FC = () => {
         if (!mounted) return;
         setOverview(ovRes.data || null);
         setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
-        const cp = tokenBalance ?? extractCpBalance(balanceRes?.data);
+        const cp =
+          (typeof tokenBalance === 'number' && tokenBalance > 0)
+            ? tokenBalance
+            : extractCpBalance(balanceRes?.data);
         if (cp !== null) setCpBalanceState(cp);
         setSyncError('');
         setLastSync(setLastSyncNow('dashboard'));
