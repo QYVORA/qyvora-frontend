@@ -347,6 +347,13 @@ const BootcampCourse: React.FC = () => {
                               className={`w-full h-full object-cover transition-all duration-500 ${
                                 isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.04]'
                               }`}
+                              onError={(e) => {
+                                const el = e.currentTarget;
+                                if (!el.dataset.fallbackApplied) {
+                                  el.dataset.fallbackApplied = '1';
+                                  el.src = '/assets/bootcamp/hpb-cover.png';
+                                }
+                              }}
                             />
                             {/* Gradient */}
                             <div

@@ -186,7 +186,7 @@ const Bootcamp: React.FC = () => {
 
         {loading ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2].map((i) => (
               <div key={i} className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card animate-pulse">
                 <div className="aspect-video bg-accent-dim/30" />
                 <div className="space-y-3 p-6">
@@ -235,6 +235,13 @@ const Bootcamp: React.FC = () => {
                         className={`w-full h-full object-cover transition-all duration-500 ${
                           isLocked ? 'grayscale brightness-40' : 'group-hover:scale-[1.03]'
                         }`}
+                        onError={(e) => {
+                          const el = e.currentTarget;
+                          if (!el.dataset.fallbackApplied) {
+                            el.dataset.fallbackApplied = '1';
+                            el.src = BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length];
+                          }
+                        }}
                       />
                       {/* Bottom gradient for readability */}
                       <div

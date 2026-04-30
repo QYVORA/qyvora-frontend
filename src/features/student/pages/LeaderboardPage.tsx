@@ -67,7 +67,7 @@ const Leaderboard: React.FC = () => {
 
         {loading && operators.length === 0 ? (
           <div className="space-y-3">
-            {[0,1,2,3,4,5,6,7,8,9].map((i) => (
+            {[0,1,2,3,4].map((i) => (
               <div key={i} className="h-16 bg-bg-card border border-border rounded-lg animate-pulse" />
             ))}
           </div>

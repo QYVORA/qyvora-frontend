@@ -151,7 +151,7 @@ const Wallet: React.FC = () => {
 
             {loading ? (
               <div className="divide-y divide-border/50">
-                {[0,1,2,3,4,5,6,7,8,9].map((i) => (
+                {[0,1,2,3,4].map((i) => (
                   <div key={i} className="px-4 py-4 flex items-center gap-3 animate-pulse sm:px-5">
                     <div className="w-9 h-9 rounded-lg bg-accent-dim/30 flex-none shrink-0" />
                     <div className="flex-1 min-w-0 space-y-2">
@@ -221,7 +221,7 @@ const Wallet: React.FC = () => {
 
             {chainLoading ? (
               <div className="divide-y divide-border/50">
-                {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map((i) => (
+                {[0,1,2,3,4].map((i) => (
                   <div key={i} className="px-5 py-4 flex items-center gap-3 animate-pulse">
                     <div className="w-8 h-8 rounded-lg bg-accent-dim/30 flex-none" />
                     <div className="flex-1 space-y-2">

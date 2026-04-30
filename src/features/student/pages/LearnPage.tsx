@@ -153,6 +153,13 @@ const Learn: React.FC = () => {
                           src={resolveImg(bc.image, PHASE_IMGS[i % PHASE_IMGS.length])}
                           alt={bc.title}
                           className="h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
+                          onError={(e) => {
+                            const el = e.currentTarget;
+                            if (!el.dataset.fallbackApplied) {
+                              el.dataset.fallbackApplied = '1';
+                              el.src = PHASE_IMGS[i % PHASE_IMGS.length];
+                            }
+                          }}
                         />
                         <div aria-hidden className="scanlines pointer-events-none absolute inset-0" />
                         {bc.level && (
