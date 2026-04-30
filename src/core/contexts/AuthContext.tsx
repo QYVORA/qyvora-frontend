@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import api, { clearAuthStorage, setAccessToken } from '../services/api';
+import { extractCpBalance } from '../../shared/utils/cpBalance';
 
 interface User {
   uid: string;
@@ -32,7 +33,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const toFrontendUser = (backendUser: BackendUser): User => {
   const role = String(backendUser?.role || 'student');
-  const cp = Number(backendUser?.cpPoints || 0);
+  const cp = extractCpBalance(backendUser) ?? Number(backendUser?.cpPoints || 0);
   return {
     uid: String(backendUser?.id || ''),
     username: String(backendUser?.hackerHandle || backendUser?.name || 'OPERATOR'),

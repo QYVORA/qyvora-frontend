@@ -7,6 +7,8 @@ import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
+import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 
 const PAGE_SIZE = 10;
 
@@ -23,12 +25,14 @@ const Wallet: React.FC = () => {
     let mounted = true;
     (async () => {
       try {
-        const [balanceRes, txRes] = await Promise.all([
+        const [balanceRes, txRes, tokenBalance] = await Promise.all([
           api.get('/cp/balance'),
           api.get('/cp/transactions?limit=100'),
+          getTokenBalanceForUser(user?.uid || ''),
         ]);
         if (!mounted) return;
-        setBalance(Number(balanceRes.data?.balance || 0));
+        const parsedBalance = extractCpBalance(balanceRes?.data);
+        setBalance(tokenBalance ?? parsedBalance ?? 0);
         setTransactions(Array.isArray(txRes.data?.items) ? txRes.data.items : []);
         setVisibleCount(PAGE_SIZE);
       } catch {
@@ -38,7 +42,7 @@ const Wallet: React.FC = () => {
       }
     })();
     return () => { mounted = false; };
-  }, []);
+  }, [user?.uid]);
 
   // Load chain history separately (degrades silently if chain is offline)
   useEffect(() => {

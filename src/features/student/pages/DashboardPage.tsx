@@ -10,6 +10,7 @@ import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { getConfiguredCommunityLink } from '../constants/communityLinks';
 import {
   completeDailyMission,
@@ -21,6 +22,7 @@ import {
   resolveNextRoomPath,
   setLastSyncNow,
 } from '../utils/studentExperience';
+import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 
 // ── Sidebar nav items ────────────────────────────────────────────────────────
 const RAIL_LINKS = [
@@ -98,13 +100,23 @@ const BOOTCAMP_COVER_IMGS: Record<string, string> = {
 const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.png';
 
 function getBootcampImg(id: string, apiImage?: string): string {
-  if (apiImage && apiImage.trim()) return apiImage;
-  return BOOTCAMP_COVER_IMGS[id] ?? BOOTCAMP_FALLBACK_IMG;
+  const canonical = BOOTCAMP_COVER_IMGS[id] ?? BOOTCAMP_FALLBACK_IMG;
+  if (!apiImage || !apiImage.trim()) return canonical;
+  // Prefer local canonical assets to avoid stale/broken backend image paths.
+  return canonical;
+}
+
+function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
+  if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;
+  const fromOverview = extractCpBalance(overview?.xpSummary) ?? extractCpBalance(overview);
+  if (typeof fromOverview === 'number' && Number.isFinite(fromOverview)) return fromOverview;
+  return userCp;
 }
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
+  const [cpBalanceState, setCpBalanceState] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
   const [lastSync, setLastSync] = useState<string | null>(getLastSync('dashboard'));
@@ -115,13 +127,17 @@ const Dashboard: React.FC = () => {
     let mounted = true;
     (async () => {
       try {
-        const [ovRes, bcRes] = await Promise.all([
+        const [ovRes, bcRes, balanceRes, tokenBalance] = await Promise.all([
           api.get('/student/overview'),
           api.get('/public/bootcamps'),
+          api.get('/cp/balance').catch(() => null),
+          getTokenBalanceForUser(user?.uid || ''),
         ]);
         if (!mounted) return;
         setOverview(ovRes.data || null);
         setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
+        const cp = tokenBalance ?? extractCpBalance(balanceRes?.data);
+        if (cp !== null) setCpBalanceState(cp);
         setSyncError('');
         setLastSync(setLastSyncNow('dashboard'));
       } catch {
@@ -130,7 +146,7 @@ const Dashboard: React.FC = () => {
       finally { if (mounted) setLoading(false); }
     })();
     return () => { mounted = false; };
-  }, []);
+  }, [user?.uid]);
 
   // ── Derived data ─────────────────────────────────────────────────────────
   const moduleProgressById = getBootcampProgressMap(overview);
@@ -160,7 +176,7 @@ const Dashboard: React.FC = () => {
   const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
   const progressNum = parseInt(progressValue, 10) || 0;
   const streakDays = Number(overview?.xpSummary?.streakDays || 0);
-  const cpBalance = user?.cp ?? 0;
+  const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
   const handle = user?.username || 'OPERATOR';
   const initials = handle.substring(0, 2).toUpperCase();
 
@@ -534,6 +550,7 @@ const Dashboard: React.FC = () => {
                             src={item.img}
                             alt=""
                             loading="lazy"
+                            onError={(e) => { e.currentTarget.src = BOOTCAMP_FALLBACK_IMG; }}
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           <div aria-hidden className="scanlines pointer-events-none absolute inset-0" />
@@ -588,6 +605,7 @@ const Dashboard: React.FC = () => {
                             src={item.img}
                             alt={item.title}
                             loading="lazy"
+                            onError={(e) => { e.currentTarget.src = BOOTCAMP_FALLBACK_IMG; }}
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           <div aria-hidden className="scanlines pointer-events-none absolute inset-0" />
