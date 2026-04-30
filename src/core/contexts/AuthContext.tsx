@@ -12,6 +12,15 @@ interface User {
   role: string;
 }
 
+export class MustChangePasswordError extends Error {
+  passwordChangeToken: string;
+  constructor(token: string) {
+    super('Password change required');
+    this.name = 'MustChangePasswordError';
+    this.passwordChangeToken = token;
+  }
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -77,6 +86,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const email = String(credentials?.email || '').trim();
     const password = String(credentials?.password || '');
     const res = await api.post('/auth/login', { email, password });
+
+    // Backend signals that the password doesn't meet the new strength rules.
+    // Throw a typed error so the caller (LoginPage) can redirect to the
+    // change-password flow instead of treating this as a credential failure.
+    if (res.data?.mustChangePassword && res.data?.passwordChangeToken) {
+      throw new MustChangePasswordError(String(res.data.passwordChangeToken));
+    }
+
     if (res.data?.token) setAccessToken(String(res.data.token));
     if (res.data?.user) {
       setUser(toFrontendUser(res.data.user));

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -214,6 +215,13 @@ const Login: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
+      // Backend requires a password upgrade — redirect to the change-password
+      // flow with the token pre-loaded. This is NOT a credential failure.
+      if (err instanceof MustChangePasswordError) {
+        navigate(`/change-password?token=${encodeURIComponent(err.passwordChangeToken)}`, { replace: true });
+        addToast('Your password needs to be updated before continuing.', 'error');
+        return;
+      }
       const msg = err?.response?.data?.error || 'Authentication failed. Check credentials.';
       if (err?.response?.data?.verificationRequired) {
         setVerifyEmail(String((e.currentTarget as HTMLFormElement).querySelector<HTMLInputElement>('[name="email"]')?.value || ''));
