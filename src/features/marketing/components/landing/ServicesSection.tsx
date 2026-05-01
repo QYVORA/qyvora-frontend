@@ -48,7 +48,7 @@ const ServicesSection: React.FC = () => {
             >
               <div
                 className="group relative rounded-2xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}
+                style={{ boxShadow: 'var(--card-shimmer)' }}
               >
                 {/* Image panel */}
                 <div className="relative h-48 md:h-52 overflow-hidden flex-none">
@@ -71,7 +71,7 @@ const ServicesSection: React.FC = () => {
                   {/* Index */}
                   <div
                     className="absolute top-3 left-3 font-mono text-3xl font-black leading-none select-none pointer-events-none"
-                    style={{ color: 'rgba(183,255,153,0.18)' }}
+                    style={{ color: 'var(--color-accent-dim)' }}
                   >
                     0{idx + 1}
                   </div>
@@ -84,7 +84,7 @@ const ServicesSection: React.FC = () => {
                   {/* Icon */}
                   <div
                     className="absolute bottom-3 left-3 w-9 h-9 rounded-lg flex items-center justify-center"
-                    style={{ background: 'var(--color-accent-dim)', border: '1px solid rgba(183,255,153,0.25)' }}
+                    style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-border-strong)' }}
                   >
                     <serv.icon className="w-4 h-4 text-accent" />
                   </div>

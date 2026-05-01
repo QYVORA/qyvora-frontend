@@ -224,7 +224,7 @@ const Bootcamp: React.FC = () => {
                         ? 'border-accent/25 hover:border-accent/55'
                         : 'border-border hover:border-accent/40'
                     }`}
-                    style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.04)' }}
+                    style={{ boxShadow: 'var(--card-shimmer)' }}
                   >
                     {/* Cover image */}
                     <div className="relative aspect-video overflow-hidden">

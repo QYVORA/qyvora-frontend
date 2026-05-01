@@ -334,8 +334,8 @@ const BootcampCourse: React.FC = () => {
                             isRoomLocked
                               ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                               : roomDone
-                              ? 'border-accent/30 hover:border-accent/60 hover:shadow-[0_0_24px_rgba(183,255,153,0.07)]'
-                              : 'border-border hover:border-accent/40 hover:shadow-[0_0_20px_rgba(183,255,153,0.05)]'
+                              ? 'border-accent/30 hover:border-accent/60 hover:shadow-[0_0_24px_var(--color-accent-glow)]'
+                              : 'border-border hover:border-accent/40 hover:shadow-[0_0_20px_var(--color-accent-glow)]'
                           }`}
                         >
                           {/* Room image */}

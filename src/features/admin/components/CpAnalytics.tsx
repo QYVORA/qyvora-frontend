@@ -189,7 +189,7 @@ const TradingChart: React.FC<{ candles: Candle[]; range: Range }> = ({ candles, 
           return (
             <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono">
               <span className="text-xl font-black" style={{ color: up ? GREEN : RED }}>{fmtShort(last.close)}</span>
-              <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: up ? 'rgba(136,173,124,0.15)' : 'rgba(248,113,113,0.15)', color: up ? GREEN : RED }}>
+              <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: up ? 'var(--color-accent-dim)' : 'rgba(248,113,113,0.15)', color: up ? GREEN : RED }}>
                 {up ? '▲' : '▼'} {Math.abs(Number(pct))}%
               </span>
               <span className="text-text-muted">SMA7 <span style={{ color: '#60a5fa' }}>{fmtShort(Math.round(sma7[sma7.length - 1] ?? 0))}</span></span>

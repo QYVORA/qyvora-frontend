@@ -92,7 +92,7 @@ const Services: React.FC = () => (
               transition={{ duration: 0.5, delay: idx * 0.09, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="group relative rounded-xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}>
+                style={{ boxShadow: 'var(--card-shimmer)' }}>
 
                 {/* Image panel — full bleed with overlays */}
                 <div className="relative h-52 md:h-56 overflow-hidden flex-none">
@@ -111,7 +111,7 @@ const Services: React.FC = () => (
                     style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }} />
                   {/* Index number */}
                   <div className="absolute top-4 left-4 font-mono text-4xl font-black leading-none select-none pointer-events-none"
-                    style={{ color: 'rgba(183,255,153,0.18)' }}>
+                    style={{ color: 'var(--color-accent-dim)' }}>
                     0{idx + 1}
                   </div>
                   {/* Category tag */}
@@ -122,7 +122,7 @@ const Services: React.FC = () => (
                   </div>
                   {/* Icon badge bottom-left */}
                   <div className="absolute bottom-4 left-4 w-9 h-9 rounded-lg flex items-center justify-center"
-                    style={{ background: 'var(--color-accent-dim)', border: '1px solid rgba(183,255,153,0.25)' }}>
+                    style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-border-strong)' }}>
                     <serv.icon className="w-4 h-4 text-accent" />
                   </div>
                 </div>

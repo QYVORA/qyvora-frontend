@@ -212,7 +212,7 @@ const Dashboard: React.FC = () => {
             >
               <div
                 className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10"
-                style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.25), inset 0 1px 0 rgba(183,255,153,0.06)' }}
+                style={{ boxShadow: 'var(--card-shadow), var(--card-shimmer)' }}
               >
                 {/* Ambient shapes (always on) + optional cartoon PNG in public/images/student/ */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
@@ -546,7 +546,7 @@ const Dashboard: React.FC = () => {
                       <Link
                         to={`/bootcamps/${item.id}`}
                         className="group flex flex-col items-center gap-5 rounded-2xl border-2 border-border bg-bg-card p-6 transition-all hover:border-accent/40 sm:flex-row sm:items-stretch md:gap-8 md:p-8"
-                        style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}
+                        style={{ boxShadow: 'var(--card-shimmer)' }}
                       >
                         <div className="relative h-36 w-full shrink-0 overflow-hidden rounded-2xl bg-accent-dim/25 sm:h-auto sm:w-44 md:w-52">
                           <img
@@ -601,7 +601,7 @@ const Dashboard: React.FC = () => {
                       <Link
                         to={`/bootcamps/${item.id}`}
                         className="group flex flex-col overflow-hidden rounded-2xl border-2 border-border bg-bg-card transition-all hover:border-accent/40"
-                        style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.04)' }}
+                        style={{ boxShadow: 'var(--card-shimmer)' }}
                       >
                         <div className="relative h-40 overflow-hidden bg-accent-dim/20 md:h-44">
                           <img
@@ -681,7 +681,7 @@ const Dashboard: React.FC = () => {
                 aria-label={label}
                 title={label}
                 className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-border bg-bg-card text-text-muted transition-all hover:border-accent/40 hover:bg-accent-dim/30 hover:text-accent"
-                style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}
+                style={{ boxShadow: 'var(--card-shimmer)' }}
               >
                 <Icon className="h-6 w-6" />
               </Link>

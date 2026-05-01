@@ -4,30 +4,42 @@
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
   /* ── Dark theme (default) ── */
-  --color-bg: #050706;
-  --color-bg-card: #0c0f0c;
-  --color-accent: #B7FF99;
-  --color-accent-dim: rgba(183, 255, 153, 0.12);
-  --color-accent-glow: rgba(183, 255, 153, 0.25);
-  --color-text-primary: #eef4ec;
+  --color-bg:             #050706;
+  --color-bg-card:        #0c0f0c;
+  --color-bg-elevated:    #141a14;
+  --color-accent:         #B7FF99;
+  --color-accent-dim:     rgba(183, 255, 153, 0.12);
+  --color-accent-glow:    rgba(183, 255, 153, 0.25);
+  --color-text-primary:   #eef4ec;
   --color-text-secondary: rgba(238, 244, 236, 0.72);
-  --color-text-muted: rgba(238, 244, 236, 0.42);
-  --color-border: rgba(136, 173, 124, 0.10);
-  --dot-color: rgba(183, 255, 153, 0.10);
+  --color-text-muted:     rgba(238, 244, 236, 0.42);
+  --color-border:         rgba(136, 173, 124, 0.10);
+  --color-border-strong:  rgba(136, 173, 124, 0.22);
+  --dot-color:            rgba(183, 255, 153, 0.10);
+  /* ── Dark theme card shimmer (top-edge light line on dark surface) ── */
+  --card-shimmer:         inset 0 1px 0 rgba(183, 255, 153, 0.06);
+  /* ── Dark theme card shadow ── */
+  --card-shadow:          0 12px 40px rgba(0, 0, 0, 0.30);
 }
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  --color-bg: #eef2eb;
-  --color-bg-card: #f5f8f3;
-  --color-accent: #1a6b0e;
-  --color-accent-dim: rgba(26, 107, 14, 0.10);
-  --color-accent-glow: rgba(26, 107, 14, 0.20);
-  --color-text-primary: #0d1a0d;
-  --color-text-secondary: rgba(13, 26, 13, 0.70);
-  --color-text-muted: rgba(13, 26, 13, 0.45);
-  --color-border: rgba(26, 107, 14, 0.18);
-  --dot-color: rgba(26, 107, 14, 0.12);
+  --color-bg:             #e8ede6;
+  --color-bg-card:        #f2f6f0;
+  --color-bg-elevated:    #ffffff;
+  --color-accent:         #2d8a1a;
+  --color-accent-dim:     rgba(45, 138, 26, 0.10);
+  --color-accent-glow:    rgba(45, 138, 26, 0.18);
+  --color-text-primary:   #0a1a0a;
+  --color-text-secondary: rgba(10, 26, 10, 0.68);
+  --color-text-muted:     rgba(10, 26, 10, 0.42);
+  --color-border:         rgba(45, 138, 26, 0.22);
+  --color-border-strong:  rgba(45, 138, 26, 0.38);
+  --dot-color:            rgba(45, 138, 26, 0.10);
+  /* ── Light theme card shimmer (subtle dark inner edge on light surface) ── */
+  --card-shimmer:         inset 0 1px 0 rgba(0, 0, 0, 0.06);
+  /* ── Light theme card shadow (green-tinted, soft) ── */
+  --card-shadow:          0 4px 16px rgba(10, 26, 10, 0.08), 0 1px 3px rgba(10, 26, 10, 0.06);
 }
 
 @layer base {
@@ -66,6 +78,11 @@
     opacity: 0.03;
   }
 
+  /* Light mode: scanlines are invisible — no dark scan artifacts on light bg */
+  [data-theme="light"] .scanlines::after {
+    opacity: 0;
+  }
+
   .glow-shadow {
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
@@ -85,15 +102,14 @@
 
   /* ─────────────────────────────────────────────────────────────────────────
      LIGHT THEME — background image & overlay rules
-     Images are fully visible. All ash/white overlay blurs are removed.
   ───────────────────────────────────────────────────────────────────────── */
 
   /* Section background images — visible in light mode */
   [data-theme="light"] .section-bg-img {
-    opacity: 0.35 !important;
+    opacity: 0.22 !important;
   }
 
-  /* Section overlay div — transparent in light mode (no ash blur) */
+  /* Section overlay — transparent in light mode */
   .section-bg-overlay {
     background: rgba(5, 7, 6, 0.20);
   }
@@ -101,9 +117,9 @@
     background: transparent !important;
   }
 
-  /* Hero background image — visible in light mode */
+  /* Hero background image */
   [data-theme="light"] .hero-bg-img {
-    opacity: 0.25 !important;
+    opacity: 0.18 !important;
   }
 
   /* Hero vignette — removed in light mode */
@@ -116,9 +132,32 @@
     opacity: 0 !important;
   }
 
-  /* Hero dot grid — visible in light mode */
+  /* Hero dot grid — slightly more visible in light mode */
   [data-theme="light"] .hero-dot-grid {
-    opacity: 0.4 !important;
+    opacity: 0.35 !important;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LIGHT THEME — rank pill backgrounds
+     Dark theme uses dark-only Tailwind classes (zinc-800, blue-900, etc.)
+     These overrides replace them with light-appropriate tinted surfaces.
+  ───────────────────────────────────────────────────────────────────────── */
+  [data-theme="light"] .bg-zinc-800 {
+    background-color: rgba(100, 116, 100, 0.15) !important;
+  }
+  [data-theme="light"] .bg-blue-900\/40 {
+    background-color: rgba(37, 99, 235, 0.10) !important;
+  }
+  [data-theme="light"] .bg-purple-900\/40 {
+    background-color: rgba(126, 34, 206, 0.10) !important;
+  }
+  [data-theme="light"] .bg-amber-900\/40 {
+    background-color: rgba(180, 83, 9, 0.10) !important;
+  }
+
+  /* Rank text colors — keep semantic meaning, ensure contrast on light bg */
+  [data-theme="light"] .text-zinc-400 {
+    color: rgba(80, 100, 80, 0.85) !important;
   }
 }
 
@@ -133,9 +172,10 @@
 
   .card-hsociety {
     @apply bg-bg-card border border-border rounded-lg transition-all duration-300 cursor-default hover:-translate-y-1;
+    box-shadow: var(--card-shimmer);
   }
   .card-hsociety:hover {
-    box-shadow: 0 8px 32px var(--color-accent-glow);
+    box-shadow: var(--card-shimmer), 0 8px 32px var(--color-accent-glow);
   }
 
   .logo-wrap {
@@ -152,28 +192,36 @@
     background-color: transparent;
   }
 
+  /* ── Light theme card overrides ── */
   [data-theme="light"] .card-hsociety {
-    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.07), 0 4px 16px rgba(10, 20, 10, 0.05);
-    border-color: rgba(26, 107, 14, 0.16);
+    box-shadow: var(--card-shimmer), var(--card-shadow);
+    border-color: var(--color-border);
   }
   [data-theme="light"] .card-hsociety:hover {
-    box-shadow: 0 6px 28px rgba(26, 107, 14, 0.16);
+    box-shadow: var(--card-shimmer), 0 8px 28px rgba(45, 138, 26, 0.14), 0 2px 6px rgba(10, 26, 10, 0.08);
+    border-color: var(--color-border-strong);
+    transform: translateY(-2px);
   }
 
-  /* Light theme — give bordered cards a subtle lift */
-  [data-theme="light"] .border-border {
-    border-color: rgba(26, 107, 14, 0.18);
+  /* ── Light theme — elevated surfaces (dropdowns, modals, drawers) ── */
+  [data-theme="light"] .bg-bg-card {
+    background-color: var(--color-bg-card);
   }
 
-  /* Light theme — section backgrounds get a very subtle tinted wash */
+  /* ── Light theme — section alternation ── */
   [data-theme="light"] section {
     background-color: var(--color-bg);
   }
 
-  :root:not([data-theme="light"]) {
-    --color-accent-glow: rgba(183, 255, 153, 0.12);
-    --color-border: rgba(136, 173, 124, 0.10);
-    --color-accent-dim: rgba(183, 255, 153, 0.07);
+  /* ── Light theme — ambient glow blobs need more intensity ── */
+  [data-theme="light"] .bg-accent\/5 {
+    background-color: rgba(45, 138, 26, 0.08) !important;
+  }
+  [data-theme="light"] .bg-accent\/8 {
+    background-color: rgba(45, 138, 26, 0.12) !important;
+  }
+  [data-theme="light"] .bg-accent\/15 {
+    background-color: rgba(45, 138, 26, 0.18) !important;
   }
 
   @media (max-width: 767px) {
@@ -186,6 +234,8 @@
       letter-spacing: 0.06em;
     }
     .card-hsociety { transform: none !important; }
-    .card-hsociety:hover { box-shadow: 0 4px 16px var(--color-accent-glow); }
+    .card-hsociety:hover {
+      box-shadow: var(--card-shimmer), 0 4px 16px var(--color-accent-glow);
+    }
   }
 }

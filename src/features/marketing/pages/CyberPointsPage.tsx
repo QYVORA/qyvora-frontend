@@ -86,7 +86,7 @@ const CyberPointsPage: React.FC = () => (
           <img
             src="/assets/branding/logos/cyber-points-logo.png"
             alt="Cyber Points"
-            className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_60px_rgba(183,255,153,0.3)]"
+            className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_60px_var(--color-accent-glow)]"
           />
           <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">
             CP // ACTIVE
