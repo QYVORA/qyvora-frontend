@@ -868,6 +868,9 @@ const BootcampRoomPage: React.FC = () => {
     setCurrentStepIdx(0);
     setViewedSteps(new Set([0]));
   }, [phaseId, roomId]);
+
+  // ── Resolve phase and room from config ────────────────────────────────────
+  const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
   const room = phase?.rooms.find((r) => r.id === roomId);
 
   // Build locked rooms set from API data
