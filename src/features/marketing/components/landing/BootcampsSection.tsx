@@ -29,13 +29,13 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const displayed = bootcamps.slice(0, 3);
 
   return (
-    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative overflow-hidden has-bg-image">
       <img
-        src="/assets/sections/backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/employee-training-bg.png"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
       />
-      <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
+      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">

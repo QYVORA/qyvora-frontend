@@ -26,14 +26,14 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
   const displayedItems = marketItems.slice(0, 2);
 
   return (
-    <section className="py-16 md:py-24 bg-bg relative isolate">
+    <section className="py-16 md:py-24 bg-bg relative isolate has-bg-image">
       <img
-        src="/assets/sections/backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
         alt=""
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.13] pointer-events-none"
       />
-      <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
-      <div className="absolute inset-0 scanlines opacity-[0.02] pointer-events-none" />
+      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
+      <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">

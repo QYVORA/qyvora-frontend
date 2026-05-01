@@ -653,11 +653,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const animate = (now: number) => {
       rafId = requestAnimationFrame(animate);
       const dt = now - last;
-      if (dt < 30) return;
+      if (dt < 16) return;
       last = now; tick += dt * 0.001;
 
       if (!drag) {
-        globe.rotation.y += 0.0015 + vel.y * 0.12;
+        globe.rotation.y += 0.0096 + vel.y * 0.12;
         globe.rotation.x  = Math.max(-Math.PI/3, Math.min(Math.PI/3, globe.rotation.x + vel.x*0.12));
         vel.x *= 0.93; vel.y *= 0.93;
       } else {

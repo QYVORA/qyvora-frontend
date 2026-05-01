@@ -28,7 +28,13 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-bg">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24">
+      <section className="relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24 has-bg-image">
+        <img
+          src="/assets/sections/backgrounds/employee-training-bg.png"
+          alt=""
+          aria-hidden="true"
+          className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"
+        />
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         <div className="absolute -left-32 top-0 h-72 w-72 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">

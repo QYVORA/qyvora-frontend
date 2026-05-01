@@ -19,7 +19,13 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-20 md:py-32 bg-bg relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
+      <img
+        src="/assets/sections/backgrounds/corporate-security-bg.png"
+        alt=""
+        aria-hidden="true"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] md:opacity-[0.1] pointer-events-none"
+      />
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8">

@@ -39,10 +39,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <section ref={heroRef} className="relative min-h-screen w-full">
+    <section ref={heroRef} className="relative min-h-screen w-full has-bg-image">
       {/* Background layers */}
       <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
-        <div className="absolute inset-0 bg-bg" />
+        <div className="absolute inset-0 bg-bg light-theme-hide-bg-base" />
         <img
           src="/assets/sections/hero/hero-background.png"
           alt=""
@@ -179,12 +179,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             SAT-02 // ORBIT
           </motion.div>
-          {/* Operator illustration — floats in front of globe, md screens */}
+          {/* Operator illustration — stands in front of the globe without blocking all of it */}
           <img
             src="/assets/illustrations/hero-operator.png"
             alt=""
             aria-hidden="true"
-            className="absolute bottom-0 left-0 w-48 xl:w-56 h-auto object-contain pointer-events-none select-none opacity-90 drop-shadow-[0_0_40px_var(--color-accent-glow)]"
+            className="absolute bottom-[-14%] left-1/2 -translate-x-1/2 z-20 w-[66%] max-w-[390px] xl:max-w-[460px] h-auto object-contain pointer-events-none select-none opacity-95 drop-shadow-[0_0_50px_var(--color-accent-glow)]"
           />
         </motion.div>
       </motion.div>

@@ -12,15 +12,15 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative min-h-[60vh] py-20 md:py-32 overflow-hidden bg-bg scanlines flex items-center">
+    <section className="relative min-h-[60vh] py-20 md:py-32 overflow-hidden bg-bg scanlines flex items-center has-bg-image">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/sections/backgrounds/cta-background.webp"
+          src="/assets/sections/backgrounds/employee-training-bg.png"
           alt=""
           className="w-full h-full object-cover grayscale opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-bg/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-bg/90 light-theme-hide-bg-overlay" />
       </div>
 
       {/* Operator illustration — right side, desktop only */}
@@ -33,7 +33,9 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
 
       {/* Ambient glow */}
       <div
+        aria-hidden="true"
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full pointer-events-none z-0"
+        data-light-overlay="true"
         style={{ background: 'radial-gradient(ellipse, var(--color-accent-glow) 0%, transparent 70%)' }}
       />
 

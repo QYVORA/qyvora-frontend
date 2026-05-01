@@ -10,10 +10,10 @@ const CyberPointsPage: React.FC = () => (
   <div className="min-h-screen bg-bg">
 
     {/* ── Hero ── */}
-    <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines">
-      <div className="absolute inset-0 bg-bg z-0" />
+    <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines has-bg-image">
+      <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
       <img
-        src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
+        src="/assets/sections/backgrounds/ai-solutions-bg.png"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
@@ -158,7 +158,7 @@ const CyberPointsPage: React.FC = () => (
       <ScrollReveal>
         <div className="relative card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 overflow-hidden">
           <img
-            src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
+            src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"

@@ -9,13 +9,13 @@ import { SITE_CONFIG } from '../content/siteConfig';
 const Services: React.FC = () => (
   <div className="min-h-screen bg-bg">
     {/* HERO */}
-    <section className="relative min-h-[60svh] md:min-h-[55vh] w-full overflow-hidden scanlines">
-      <div className="absolute inset-0 bg-bg z-0" />
+    <section className="relative min-h-[60svh] md:min-h-[55vh] w-full overflow-hidden scanlines has-bg-image">
+      <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
       <img
-        src="/assets/sections/backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/corporate-security-bg.png"
         alt=""
         aria-hidden="true"
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
       />
       <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
       <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />
@@ -82,7 +82,7 @@ const Services: React.FC = () => (
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-7 xl:gap-8">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
@@ -94,34 +94,40 @@ const Services: React.FC = () => (
               <div className="group relative rounded-xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
                 style={{ boxShadow: 'var(--card-shimmer)' }}>
 
-                {/* Image panel — full bleed with overlays */}
-                <div className="relative h-52 md:h-56 overflow-hidden flex-none">
+                {/* Illustration panel — transparent PNG on dark bg */}
+                <div className="relative h-72 md:h-80 lg:h-[28rem] xl:h-[32rem] overflow-hidden flex-none bg-bg flex items-center justify-center p-4 md:p-6">
+                  <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse at center, var(--color-accent-dim) 0%, transparent 70%)' }}
+                  />
                   <img
                     src={serv.img}
                     alt=""
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="relative z-10 h-auto max-h-[94%] w-auto max-w-[94%] object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-[0_0_40px_var(--color-accent-glow)]"
                   />
                   {/* Scanlines on image */}
-                  <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
+                  <div aria-hidden className="scanlines absolute inset-0 pointer-events-none z-20" />
                   {/* Bottom gradient fade into card */}
-                  <div aria-hidden className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+                  <div aria-hidden className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-20"
                     style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }} />
                   {/* Top-left accent bar */}
-                  <div aria-hidden className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
+                  <div aria-hidden className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none z-20"
                     style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }} />
                   {/* Index number */}
-                  <div className="absolute top-4 left-4 font-mono text-4xl font-black leading-none select-none pointer-events-none"
+                  <div className="absolute top-4 left-4 z-30 font-mono text-4xl font-black leading-none select-none pointer-events-none"
                     style={{ color: 'var(--color-accent-dim)' }}>
                     0{idx + 1}
                   </div>
                   {/* Category tag */}
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 right-4 z-30">
                     <span className="text-[9px] font-bold text-accent border border-accent/30 bg-bg/80 backdrop-blur-sm rounded px-2 py-1 uppercase tracking-wider font-mono">
                       {serv.category}
                     </span>
                   </div>
                   {/* Icon badge bottom-left */}
-                  <div className="absolute bottom-4 left-4 w-9 h-9 rounded-lg flex items-center justify-center"
+                  <div className="absolute bottom-4 left-4 z-30 w-9 h-9 rounded-lg flex items-center justify-center"
                     style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-border-strong)' }}>
                     <serv.icon className="w-4 h-4 text-accent" />
                   </div>

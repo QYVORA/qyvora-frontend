@@ -10,13 +10,13 @@ const ServicesSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-16 md:py-24 bg-bg relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-bg relative overflow-hidden has-bg-image">
       <img
-        src="/assets/sections/backgrounds/offsec-grid-background.png"
+        src="/assets/sections/backgrounds/corporate-security-bg.png"
         alt=""
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.16] md:opacity-[0.2] pointer-events-none"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] md:opacity-[0.15] pointer-events-none"
       />
-      <div className="section-bg-overlay absolute inset-0 pointer-events-none" />
+      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <ScrollReveal className="mb-10 md:mb-14">
@@ -37,7 +37,7 @@ const ServicesSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7 xl:gap-8 mb-8">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
@@ -50,40 +50,46 @@ const ServicesSection: React.FC = () => {
                 className="group relative rounded-2xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                {/* Image panel */}
-                <div className="relative h-48 md:h-52 overflow-hidden flex-none">
+                {/* Illustration panel — transparent PNG on dark bg */}
+                <div className="relative h-64 md:h-72 lg:h-[26rem] xl:h-[30rem] overflow-hidden flex-none bg-bg flex items-center justify-center p-4 md:p-6">
+                  {/* Subtle dark bg with dot grid for depth */}
+                  <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse at center, var(--color-accent-dim) 0%, transparent 70%)' }}
+                  />
                   <img
                     src={serv.img}
                     alt=""
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                  <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
-                  <div
-                    aria-hidden
-                    className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
-                    style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }}
+                    className="relative z-10 h-auto max-h-[94%] w-auto max-w-[94%] object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-[0_0_32px_var(--color-accent-glow)]"
                   />
                   <div
                     aria-hidden
                     className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
                     style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }}
                   />
-                  {/* Index */}
                   <div
-                    className="absolute top-3 left-3 font-mono text-3xl font-black leading-none select-none pointer-events-none"
-                    style={{ color: 'var(--color-accent-dim)' }}
-                  >
-                    0{idx + 1}
-                  </div>
+                    aria-hidden
+                    className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+                    style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }}
+                  />
                   {/* Category */}
-                  <div className="absolute top-3 right-3">
+                  <div className="absolute top-3 right-3 z-20">
                     <span className="text-[9px] font-bold text-accent border border-accent/30 bg-bg/80 backdrop-blur-sm rounded px-2 py-0.5 uppercase tracking-wider font-mono">
                       {serv.category}
                     </span>
                   </div>
+                  {/* Index */}
+                  <div
+                    className="absolute top-3 left-3 z-20 font-mono text-3xl font-black leading-none select-none pointer-events-none"
+                    style={{ color: 'var(--color-accent-dim)' }}
+                  >
+                    0{idx + 1}
+                  </div>
                   {/* Icon */}
                   <div
-                    className="absolute bottom-3 left-3 w-9 h-9 rounded-lg flex items-center justify-center"
+                    className="absolute bottom-3 left-3 z-20 w-9 h-9 rounded-lg flex items-center justify-center"
                     style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-border-strong)' }}
                   >
                     <serv.icon className="w-4 h-4 text-accent" />
@@ -91,7 +97,7 @@ const ServicesSection: React.FC = () => {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 md:p-7 flex flex-col flex-1">
+                <div className="p-6 md:p-7 lg:p-8 flex flex-col flex-1">
                   <h3 className="text-base md:text-lg font-black text-text-primary mb-2 group-hover:text-accent transition-colors font-mono uppercase tracking-tight">
                     {serv.title}
                   </h3>

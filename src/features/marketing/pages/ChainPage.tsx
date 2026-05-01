@@ -10,11 +10,10 @@ const ChainPage: React.FC = () => (
   <div className="min-h-screen bg-bg">
 
     {/* ── Hero ── */}
-    <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines">
-      <div className="absolute inset-0 bg-bg z-0" />
-      {/* Chain visuals background */}
+    <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines has-bg-image">
+      <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
       <img
-        src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
+        src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.07] z-0 pointer-events-none"
@@ -92,7 +91,7 @@ const ChainPage: React.FC = () => (
       {/* Subtle visuals watermark behind body content */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden -z-10">
         <img
-          src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
+          src="/assets/sections/backgrounds/corporate-security-bg.png"
           alt=""
           aria-hidden="true"
           className="absolute top-0 right-0 w-[600px] max-w-[60vw] opacity-[0.04] object-contain"

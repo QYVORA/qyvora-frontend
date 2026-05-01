@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
-import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Sun, Moon, Zap, Link2 } from 'lucide-react';
+import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Zap, Link2 } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
-import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
 import { SITE_CONFIG } from '../../content/siteConfig';
 
@@ -42,7 +41,6 @@ const NAV_GROUPS = [
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
@@ -165,13 +163,6 @@ const Navbar: React.FC = () => {
 
             {/* Auth buttons pinned to bottom */}
             <div className="px-4 pt-4 border-t border-border bg-bg-card/95 backdrop-blur-md space-y-3 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-              {/* Theme toggle */}
-              <button
-                onClick={toggleTheme}
-                className="w-full flex items-center justify-center gap-2 border border-border rounded-lg py-3 text-sm font-bold uppercase tracking-widest text-text-muted hover:border-accent/40 hover:text-accent transition-all"
-              >
-                {theme === 'dark' ? <><Sun className="w-4 h-4" /> Light Mode</> : <><Moon className="w-4 h-4" /> Dark Mode</>}
-              </button>
               {user ? (
                 <>
                   {user.isAdmin && (
@@ -290,15 +281,6 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center space-x-3">
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg border border-border text-text-muted hover:text-accent hover:border-accent/40 transition-all"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-
           {user ? (
             <div className="flex items-center gap-3">
               {user.isAdmin && (

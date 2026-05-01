@@ -14,15 +14,15 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden has-bg-image">
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <img
-        src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
+        src="/assets/sections/backgrounds/ai-solutions-bg.png"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none"
       />
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[100px] pointer-events-none" />
+      <div data-light-overlay="true" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
@@ -30,7 +30,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
           {/* Left — CP logo */}
           <ScrollReveal className="flex items-center justify-center order-2 lg:order-1" direction="none">
             <div className="relative flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none scale-110" />
+              <div data-light-overlay="true" className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none scale-110" />
               <motion.img
                 src="/assets/branding/logos/cyber-points-logo.png"
                 alt="Cyber Points"

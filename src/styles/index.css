@@ -106,7 +106,7 @@
 
   /* Section background images — visible in light mode */
   [data-theme="light"] .section-bg-img {
-    opacity: 0.22 !important;
+    opacity: 0.42 !important;
   }
 
   /* Section overlay — transparent in light mode */
@@ -114,22 +114,64 @@
     background: rgba(5, 7, 6, 0.20);
   }
   [data-theme="light"] .section-bg-overlay {
-    background: transparent !important;
+    background: rgba(232, 237, 230, 0.24) !important;
+    display: block !important;
   }
 
   /* Hero background image */
   [data-theme="light"] .hero-bg-img {
-    opacity: 0.18 !important;
+    opacity: 0.36 !important;
   }
 
   /* Hero vignette — removed in light mode */
   [data-theme="light"] .hero-vignette {
-    opacity: 0 !important;
+    opacity: 0.32 !important;
+    display: block !important;
   }
 
   /* Radial vignette — removed in light mode */
   [data-theme="light"] .bg-radial-vignette {
-    opacity: 0 !important;
+    opacity: 0.24 !important;
+    display: block !important;
+  }
+
+  /* Light theme: remove blur/filter overlays on image-background sections */
+  [data-theme="light"] .section-bg-img + .section-bg-overlay,
+  [data-theme="light"] .section-bg-img ~ .hero-vignette,
+  [data-theme="light"] .section-bg-img ~ .bg-radial-vignette {
+    display: block !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    background: unset !important;
+  }
+
+  [data-theme="light"] main section .blur-3xl,
+  [data-theme="light"] main section .blur-\[100px\],
+  [data-theme="light"] main section .backdrop-blur-sm,
+  [data-theme="light"] main section .backdrop-blur-md {
+    backdrop-filter: none !important;
+    filter: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  [data-theme="light"] .light-theme-hide-bg-overlay,
+  [data-theme="light"] [data-light-overlay="true"] {
+    display: block !important;
+    opacity: revert-layer !important;
+    backdrop-filter: none !important;
+    filter: revert-layer !important;
+    background: revert-layer !important;
+    box-shadow: revert-layer !important;
+  }
+
+  [data-theme="light"] .has-bg-image {
+    background-color: transparent !important;
+  }
+
+  [data-theme="light"] .light-theme-hide-bg-base {
+    display: none !important;
+    background: transparent !important;
   }
 
   /* Hero dot grid — slightly more visible in light mode */
