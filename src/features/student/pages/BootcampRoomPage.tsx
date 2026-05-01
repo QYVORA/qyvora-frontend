@@ -1017,7 +1017,7 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-bg lg:h-full lg:flex lg:flex-col">
+    <div className="bg-bg">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
@@ -1076,10 +1076,20 @@ const BootcampRoomPage: React.FC = () => {
       </AnimatePresence>
 
       {/* ── MAIN SPLIT LAYOUT ── */}
-      {/* Mobile: natural page scroll. Desktop: fixed-height split, each column scrolls independently */}
-      <div className="lg:flex lg:flex-1 lg:min-h-0 lg:overflow-hidden">
-        <div className="w-full flex flex-col lg:flex-row lg:flex-1 lg:min-h-0">
-          <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card lg:overflow-y-auto lg:overscroll-contain">
+      {/*
+        Mobile  (<lg): normal document flow, page scrolls naturally.
+        Desktop (lg+):  fixed below the topbar (top-24), full width/height.
+                        Each column scrolls independently.
+                        Fixed positioning is completely independent of any
+                        parent height chain — no h-full / flex-1 juggling needed.
+      */}
+      <div className="
+        lg:fixed lg:inset-0 lg:top-24
+        lg:flex lg:flex-row
+        lg:overflow-hidden
+      ">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain">
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
               <div className="mb-4 px-1">
@@ -1149,6 +1159,20 @@ const BootcampRoomPage: React.FC = () => {
           <main className="flex-1 min-h-0 lg:overflow-y-auto lg:overscroll-contain">
             {/* Content area */}
             <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12 pb-safe-bottom">
+
+              {/* Mobile: curriculum open button — only visible below lg */}
+              <div className="flex items-center gap-3 mb-6 lg:hidden">
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent text-xs font-black uppercase tracking-widest"
+                  aria-label="Open curriculum"
+                >
+                  <Menu className="h-4 w-4" /> Curriculum
+                </button>
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted truncate">
+                  {phase.codename} — {room.title}
+                </span>
+              </div>
 
               {/* Room header */}
               <div className="mb-8">
@@ -1250,7 +1274,6 @@ const BootcampRoomPage: React.FC = () => {
             </div>
           </main>
         </div>
-      </div>
     </div>
   );
 };
