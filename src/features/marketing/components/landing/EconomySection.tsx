@@ -85,6 +85,13 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                 <div className="absolute top-0 right-0 p-4 opacity-15 group-hover:rotate-12 transition-transform duration-500 pointer-events-none">
                   <img src="/assets/branding/logos/cyber-points-logo.png" alt="" className="w-16 h-16 md:w-20 md:h-20 object-contain" />
                 </div>
+                {/* Phase badge illustration */}
+                <img
+                  src="/assets/illustrations/phase-complete-badge.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute bottom-2 right-2 w-14 h-14 object-contain opacity-60 pointer-events-none select-none"
+                />
                 <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-2">OPERATOR_WALLET</div>
                 <div className="text-2xl md:text-3xl font-bold text-accent font-mono mb-3 inline-flex items-center gap-2">
                   {totalCp.toLocaleString()} <CpLogo className="w-6 h-6" />

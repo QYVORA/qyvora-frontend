@@ -77,6 +77,16 @@ const ChainSection: React.FC = () => (
             </div>
           </div>
 
+          {/* Terminal panel illustration */}
+          <div className="relative flex justify-center mb-2">
+            <img
+              src="/assets/illustrations/hero-terminal-panel.png"
+              alt=""
+              aria-hidden="true"
+              className="w-full max-w-[320px] h-auto object-contain opacity-90 drop-shadow-[0_0_32px_var(--color-accent-glow)]"
+            />
+          </div>
+
           {/* 2 sample blocks */}
           {[
             { index: 41, type: 'ROOM_COMPLETED',  cp: 250, hash: 'b7ff99a3c2…', prev: '4e1a8f02d9…' },

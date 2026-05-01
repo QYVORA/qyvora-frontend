@@ -43,7 +43,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
             <h2 className="text-3xl md:text-4xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
           </ScrollReveal>
-          <ScrollReveal delay={0.15}>
+          <ScrollReveal delay={0.15} className="flex items-center gap-6">
+            {/* Bootcamp operator illustration */}
+            <img
+              src="/assets/illustrations/bootcamp-operator.png"
+              alt=""
+              aria-hidden="true"
+              className="hidden md:block w-20 h-20 object-contain opacity-80 drop-shadow-[0_0_20px_var(--color-accent-glow)] flex-none"
+            />
             <Link
               to="/register"
               className="flex items-center gap-2 text-accent text-sm font-bold border-b border-accent/30 pb-1 hover:border-accent group w-fit transition-colors"

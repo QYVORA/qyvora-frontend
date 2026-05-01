@@ -23,6 +23,14 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-bg/90" />
       </div>
 
+      {/* Operator illustration — right side, desktop only */}
+      <img
+        src="/assets/illustrations/cta-operator.png"
+        alt=""
+        aria-hidden="true"
+        className="hidden lg:block absolute right-0 bottom-0 h-[85%] w-auto object-contain pointer-events-none select-none opacity-80 z-[1]"
+      />
+
       {/* Ambient glow */}
       <div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full pointer-events-none z-0"

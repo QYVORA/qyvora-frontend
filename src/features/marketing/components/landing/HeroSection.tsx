@@ -179,6 +179,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             SAT-02 // ORBIT
           </motion.div>
+          {/* Operator illustration — floats in front of globe, md screens */}
+          <img
+            src="/assets/illustrations/hero-operator.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 w-48 xl:w-56 h-auto object-contain pointer-events-none select-none opacity-90 drop-shadow-[0_0_40px_var(--color-accent-glow)]"
+          />
         </motion.div>
       </motion.div>
 
