@@ -528,7 +528,7 @@ const Sidebar: React.FC<{
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden"
+              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden overflow-y-auto"
             >
               {/* Drawer header */}
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
@@ -1017,7 +1017,7 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-bg">
+    <div className="min-h-screen bg-bg">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
@@ -1077,11 +1077,10 @@ const BootcampRoomPage: React.FC = () => {
 
       {/* ── MAIN SPLIT LAYOUT ── */}
       {/* Mobile: normal page scroll. Desktop: fixed-height split, each column scrolls independently */}
-      <div className="min-h-0 lg:flex lg:h-[calc(100svh-5rem)] lg:overflow-hidden">
+      <div className="min-h-0 lg:flex lg:h-[calc(100svh-6rem)] lg:overflow-hidden">
         <div className="w-full flex flex-col lg:flex-row lg:h-full">
           <aside
-            className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain"
-            style={{ height: '100%' }}
+            className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain lg:h-full"
           >
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
@@ -1152,23 +1151,8 @@ const BootcampRoomPage: React.FC = () => {
           <main
             className="flex-1 overflow-y-auto overscroll-contain lg:h-full"
           >
-            {/* Mobile: curriculum open button (navbar handles breadcrumb) */}
-            <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-accent/40 bg-accent-dim text-accent"
-                aria-label="Open curriculum"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
-              <div className="flex min-w-0 flex-1 flex-col">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">{phase.codename}</span>
-                <span className="truncate text-base font-black text-text-primary">{room.title}</span>
-              </div>
-            </div>
-
             {/* Content area */}
-            <div className="px-5 sm:px-8 md:px-12 xl:px-16 py-8 md:py-12 max-w-4xl">
+            <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12">
 
               {/* Room header */}
               <div className="mb-8">
