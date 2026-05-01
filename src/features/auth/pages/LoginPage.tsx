@@ -66,7 +66,7 @@ const AuthHero: React.FC = () => (
           <span className="text-accent">Become</span> a Hacker.
         </h2>
         <p className="text-text-muted text-sm max-w-sm leading-relaxed">
-          Real labs. Real techniques. Join the sharpest security community on the continent.
+          Join the sharpest security community on the continent.
         </p>
       </div>
       <div className="flex flex-col gap-3">
@@ -85,7 +85,7 @@ const AuthHero: React.FC = () => (
       </div>
     </div>
     <div className="relative z-20 w-full max-w-[440px] font-mono text-[9px] text-accent/50 tracking-tighter">
-      [ SECURE_CHANNEL_ESTABLISHED ] // TLS 1.3 // AES-256-GCM
+      [ SECURE_CHANNEL_ESTABLISHED ] // TLS 1.3 // AES-256-GCM 
     </div>
   </div>
 );

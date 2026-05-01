@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   brand: {
     name: 'HSOCIETY OFFSEC',
     description:
-      'An offensive security company operating at the intersection of education and execution, focused on building a strong cybersecurity ecosystem in Africa.',
+      'An offensive security company focused on building a strong cybersecurity ecosystem in Africa.',
   },
   contact: {
     opsEmail: 'hsocietyoffsec@proton.me',

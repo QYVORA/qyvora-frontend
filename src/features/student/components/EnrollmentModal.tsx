@@ -24,7 +24,7 @@ const STEPS: Step[] = [
       'I want to start a career in cybersecurity',
       'I want to level up my existing skills',
       'I\'m curious and want to learn the basics',
-      'I want to work with HSOCIETY',
+      'I want to work with HSOCIETY OFFSEC',
       'Other',
     ],
   },
