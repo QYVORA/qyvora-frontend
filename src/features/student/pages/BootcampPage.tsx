@@ -144,7 +144,7 @@ const Bootcamp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-8">
+    <div className="min-h-screen bg-bg pb-8 overflow-x-hidden">
       <AnimatePresence>
         {lockedBootcamp && (
           <LockedModal bootcamp={lockedBootcamp} onClose={() => setLockedBootcamp(null)} />
@@ -158,7 +158,7 @@ const Bootcamp: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 md:px-8 md:pt-24">
+      <div className="mx-auto w-full max-w-[1400px] px-3.5 pt-20 sm:px-5 md:px-8 md:pt-24">
         <ScrollReveal className="mb-10 md:mb-12">
           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
             <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
@@ -169,7 +169,7 @@ const Bootcamp: React.FC = () => {
               src={dataSaver ? undefined : STUDENT_DECOR.bootcampListMascot}
               className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[160px] w-auto opacity-95 sm:block md:max-h-[200px]"
             />
-            <div className="relative z-10 max-w-3xl">
+            <div className="relative z-10 max-w-5xl">
               <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">// Arsenal</span>
               <h1 className="mb-3 text-3xl font-black uppercase tracking-tight text-text-primary sm:text-4xl md:text-5xl">
                 Bootcamp Programs
@@ -204,7 +204,7 @@ const Bootcamp: React.FC = () => {
             <p className="text-text-muted md:text-lg">No bootcamps available yet. Check back soon.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6">
             {bootcamps.map((bc, i) => {
               const prog = moduleProgressById.get(String(bc.id || ''));
               const progress = Number(prog?.progress || 0);

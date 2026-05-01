@@ -196,9 +196,9 @@ const Dashboard: React.FC = () => {
   const multipleEnrolledBootcamps = enrolledBootcamps.length > 1;
 
   return (
-    <div className="w-full min-h-[calc(100svh-5rem)] md:min-h-[calc(100svh-6rem)] bg-bg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-12">
-        <div className="flex items-start lg:pr-20">
+    <div className="w-full min-h-[calc(100svh-5rem)] md:min-h-[calc(100svh-6rem)] bg-bg overflow-x-hidden">
+      <div className="mx-auto w-full max-w-[1400px] px-3.5 sm:px-5 md:px-8 py-7 md:py-12">
+        <div className="flex items-start">
 
           {/* ── MAIN COLUMN ──────────────────────────────────────────────── */}
           <div className="flex-1 min-w-0 space-y-8 md:space-y-10">
@@ -245,7 +245,7 @@ const Dashboard: React.FC = () => {
                       {initials}
                     </Link>
 
-                    <div className="min-w-0 flex-1 space-y-4 text-center sm:text-left">
+                    <div className="min-w-0 flex-1 space-y-4 text-left">
                       <div>
                         <p className="mb-2 text-xs font-bold uppercase tracking-[0.25em] text-text-muted md:text-sm">
                           {loading ? 'Loading…' : getRankGreeting(rankInfo.name, handle)}
@@ -260,7 +260,7 @@ const Dashboard: React.FC = () => {
                         </h1>
                       </div>
 
-                      <div className="flex flex-wrap items-center justify-center gap-6 sm:justify-start md:gap-8">
+                      <div className="flex flex-wrap items-center justify-start gap-5 md:gap-8">
                         <div className="flex items-center gap-2.5">
                           <CpLogo className="h-8 w-8 md:h-9 md:w-9" />
                           <span className="font-mono text-2xl font-black leading-none text-text-primary md:text-4xl">
@@ -290,7 +290,7 @@ const Dashboard: React.FC = () => {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.15 }}
-                      className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-bg/80 p-4 backdrop-blur-sm md:p-5"
+                      className="mb-6 flex flex-wrap items-center gap-3.5 rounded-2xl border border-border bg-bg/80 p-4 backdrop-blur-sm md:p-5"
                     >
                       <div className={`flex items-center gap-2 rounded-xl px-3 py-2 md:px-4 md:py-2.5 ${rankInfo.bg}`}>
                         <span className="text-xl md:text-2xl">{rankInfo.emoji}</span>
@@ -456,7 +456,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <Link
                   to={continuePath}
-                  className="group flex items-center gap-5 rounded-2xl border-2 border-border bg-bg-card p-5 transition-all hover:border-accent/50 md:gap-6 md:p-6"
+                  className="group flex items-start gap-4 rounded-2xl border-2 border-border bg-bg-card p-4 transition-all hover:border-accent/50 sm:items-center md:gap-6 md:p-6"
                 >
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-accent/25 bg-accent-dim md:h-16 md:w-16">
                     <motion.div
@@ -545,7 +545,7 @@ const Dashboard: React.FC = () => {
                     >
                       <Link
                         to={`/bootcamps/${item.id}`}
-                        className="group flex flex-col items-center gap-5 rounded-2xl border-2 border-border bg-bg-card p-6 transition-all hover:border-accent/40 sm:flex-row sm:items-stretch md:gap-8 md:p-8"
+                        className="group flex flex-col items-start gap-4 rounded-2xl border-2 border-border bg-bg-card p-4 transition-all hover:border-accent/40 sm:flex-row sm:items-stretch md:gap-7 md:p-7"
                         style={{ boxShadow: 'var(--card-shimmer)' }}
                       >
                         <div className="relative h-36 w-full shrink-0 overflow-hidden rounded-2xl bg-accent-dim/25 sm:h-auto sm:w-44 md:w-52">
@@ -563,7 +563,7 @@ const Dashboard: React.FC = () => {
                             </div>
                           )}
                         </div>
-                        <div className="min-w-0 flex-1 text-center sm:text-left">
+                        <div className="min-w-0 flex-1 text-left">
                           <p className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Resume</p>
                           <h3 className="mb-2 text-xl font-black text-text-primary transition-colors group-hover:text-accent md:text-2xl">
                             {item.title}

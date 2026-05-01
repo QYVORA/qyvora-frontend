@@ -334,21 +334,8 @@ const StepCard: React.FC<{
   isViewed: boolean;
   onClick: () => void;
 }> = ({ step, stepNum, total, phaseId, roomId, isActive, isViewed, onClick }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isActive && ref.current) {
-      // Small delay so the border transition is visible before scroll
-      const t = setTimeout(() => {
-        ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
-      return () => clearTimeout(t);
-    }
-  }, [isActive]);
-
   return (
     <div
-      ref={ref}
       onClick={onClick}
       className={`relative cursor-pointer rounded-xl border-2 p-6 sm:p-8 transition-all duration-200 overflow-hidden ${
         isActive
@@ -1017,7 +1004,7 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-bg">
+    <div className="bg-bg overflow-x-hidden">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
@@ -1156,20 +1143,20 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 lg:overflow-y-auto lg:overscroll-contain">
+          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain">
             {/* Content area */}
-            <div className="mx-auto w-full max-w-4xl px-5 sm:px-8 md:px-12 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 md:px-10 lg:px-12 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
-              <div className="flex items-center gap-3 mb-6 lg:hidden">
+              <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">
                 <button
                   onClick={() => setSidebarOpen(true)}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent text-xs font-black uppercase tracking-widest"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent"
                   aria-label="Open curriculum"
                 >
                   <Menu className="h-4 w-4" /> Curriculum
                 </button>
-                <span className="text-xs font-black uppercase tracking-widest text-text-muted truncate">
+                <span className="min-w-0 flex-1 text-[11px] font-black uppercase tracking-[0.12em] text-text-muted">
                   {phase.codename} — {room.title}
                 </span>
               </div>
@@ -1241,23 +1228,23 @@ const BootcampRoomPage: React.FC = () => {
               </div>
 
               {/* Step navigation */}
-              <div className="flex items-center justify-between gap-3 pb-16">
+              <div className="flex flex-wrap items-center gap-3 pb-16">
                 <button
                   onClick={goPrev}
                   disabled={currentStepIdx === 0}
-                  className="btn-secondary inline-flex shrink-0 items-center gap-2 disabled:opacity-30"
+                  className="btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
                 >
                   <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                   <span>Prev</span>
                 </button>
 
-                <span className="font-mono text-sm font-bold text-text-muted whitespace-nowrap shrink-0">
+                <span className="order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
                   {currentStepIdx + 1} / {room.steps.length}
                 </span>
 
                 <button
                   onClick={goNext}
-                  className="btn-primary inline-flex shrink-0 items-center gap-2"
+                  className="btn-primary inline-flex flex-1 items-center justify-center gap-2 sm:flex-none"
                 >
                   {isLastStep ? (
                     isRoomComplete
