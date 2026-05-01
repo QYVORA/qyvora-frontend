@@ -1017,7 +1017,7 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-bg lg:h-full">
+    <div className="bg-bg lg:h-full lg:flex lg:flex-col">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
@@ -1077,9 +1077,9 @@ const BootcampRoomPage: React.FC = () => {
 
       {/* ── MAIN SPLIT LAYOUT ── */}
       {/* Mobile: natural page scroll. Desktop: fixed-height split, each column scrolls independently */}
-      <div className="lg:flex lg:h-full lg:overflow-hidden">
-        <div className="w-full flex flex-col lg:flex-row lg:h-full">
-          <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card lg:overflow-y-auto lg:overscroll-contain lg:h-full">
+      <div className="lg:flex lg:flex-1 lg:min-h-0 lg:overflow-hidden">
+        <div className="w-full flex flex-col lg:flex-row lg:flex-1 lg:min-h-0">
+          <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card lg:overflow-y-auto lg:overscroll-contain">
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
               <div className="mb-4 px-1">
@@ -1146,7 +1146,7 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 lg:overflow-y-auto lg:overscroll-contain lg:h-full">
+          <main className="flex-1 min-h-0 lg:overflow-y-auto lg:overscroll-contain">
             {/* Content area */}
             <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12 pb-safe-bottom">
 
