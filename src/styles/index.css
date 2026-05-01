@@ -270,9 +270,9 @@
     .btn-primary,
     .btn-secondary {
       min-height: 44px;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      font-size: 0.75rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      font-size: 0.8125rem;
       letter-spacing: 0.06em;
     }
     .card-hsociety { transform: none !important; }

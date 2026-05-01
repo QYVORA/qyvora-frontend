@@ -1243,30 +1243,30 @@ const BootcampRoomPage: React.FC = () => {
               </div>
 
               {/* Step navigation */}
-              <div className="flex items-center justify-between gap-4 pb-16">
+              <div className="flex items-center justify-between gap-3 pb-16">
                 <button
                   onClick={goPrev}
                   disabled={currentStepIdx === 0}
-                  className="btn-secondary inline-flex min-h-[56px] items-center gap-2 text-base disabled:opacity-30 px-8 py-4"
+                  className="btn-secondary inline-flex shrink-0 items-center gap-2 disabled:opacity-30"
                 >
-                  <ArrowLeft className="h-5 w-5" />
+                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                   <span>Prev</span>
                 </button>
 
-                <span className="font-mono text-sm font-bold text-text-muted whitespace-nowrap">
+                <span className="font-mono text-sm font-bold text-text-muted whitespace-nowrap shrink-0">
                   {currentStepIdx + 1} / {room.steps.length}
                 </span>
 
                 <button
                   onClick={goNext}
-                  className="btn-primary inline-flex min-h-[56px] items-center gap-2 text-base px-8 py-4"
+                  className="btn-primary inline-flex shrink-0 items-center gap-2"
                 >
                   {isLastStep ? (
                     isRoomComplete
-                      ? <><span>Done</span><CheckCircle2 className="h-5 w-5" /></>
-                      : <><span>Complete room</span><CheckCircle2 className="h-5 w-5" /></>
+                      ? <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                      : <><span className="hidden sm:inline">Complete room</span><span className="sm:hidden">Complete</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                   ) : (
-                    <><span>Next step</span><ArrowRight className="h-5 w-5" /></>
+                    <><span>Next</span><ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                   )}
                 </button>
               </div>
