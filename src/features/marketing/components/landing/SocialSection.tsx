@@ -45,7 +45,7 @@ const SocialSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           {SITE_CONFIG.social.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key];
             const meta = PLATFORM_META[social.key];
@@ -61,7 +61,7 @@ const SocialSection: React.FC = () => {
                 whileHover={shouldReduceMotion ? {} : { y: -4 }}
               >
                 <div
-                  className="group relative rounded-xl overflow-hidden flex flex-col h-full min-h-[320px] sm:min-h-[360px] cursor-pointer"
+                  className="group relative rounded-xl overflow-hidden flex flex-col h-full min-h-[280px] md:min-h-[360px] cursor-pointer"
                   style={{ border: `1px solid ${meta.border}` }}
                 >
                   {/* Background image with subtle zoom on hover */}

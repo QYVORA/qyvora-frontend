@@ -137,7 +137,7 @@ const ChainPage: React.FC = () => (
                 { label: 'Room Completed',   color: 'text-accent border-accent/30 bg-accent/10' },
                 { label: 'Module Completed', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10' },
                 { label: 'CP Reward',        color: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10' },
-                { label: 'Certification',    color: 'text-purple-400 border-purple-400/30 bg-purple-400/10' },
+                { label: 'Activity Log',     color: 'text-text-muted border-border bg-bg' },
               ].map(({ label, color }) => (
                 <div key={label} className={`rounded-xl border px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest ${color}`}>
                   {label}

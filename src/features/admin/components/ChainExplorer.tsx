@@ -38,27 +38,24 @@ interface ValidateResult {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const EVENT_COLORS: Record<string, string> = {
-  ROOM_COMPLETED:       'text-accent border-accent/30 bg-accent/10',
-  MODULE_COMPLETED:     'text-blue-400 border-blue-400/30 bg-blue-400/10',
-  CP_REWARD:            'text-yellow-400 border-yellow-400/30 bg-yellow-400/10',
-  CERTIFICATION_ISSUED: 'text-purple-400 border-purple-400/30 bg-purple-400/10',
-  USER_ACTIVITY_LOG:    'text-text-muted border-border bg-bg',
+  ROOM_COMPLETED:    'text-accent border-accent/30 bg-accent/10',
+  MODULE_COMPLETED:  'text-blue-400 border-blue-400/30 bg-blue-400/10',
+  CP_REWARD:         'text-yellow-400 border-yellow-400/30 bg-yellow-400/10',
+  USER_ACTIVITY_LOG: 'text-text-muted border-border bg-bg',
 };
 
 const EVENT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  ROOM_COMPLETED:       BookOpen,
-  MODULE_COMPLETED:     Award,
-  CP_REWARD:            Zap,
-  CERTIFICATION_ISSUED: Award,
-  USER_ACTIVITY_LOG:    Activity,
+  ROOM_COMPLETED:    BookOpen,
+  MODULE_COMPLETED:  Award,
+  CP_REWARD:         Zap,
+  USER_ACTIVITY_LOG: Activity,
 };
 
 const EVENT_LABELS: Record<string, string> = {
-  ROOM_COMPLETED:       'Room Completed',
-  MODULE_COMPLETED:     'Module Completed',
-  CP_REWARD:            'CP Reward',
-  CERTIFICATION_ISSUED: 'Certification',
-  USER_ACTIVITY_LOG:    'Activity Log',
+  ROOM_COMPLETED:    'Room Completed',
+  MODULE_COMPLETED:  'Module Completed',
+  CP_REWARD:         'CP Reward',
+  USER_ACTIVITY_LOG: 'Activity Log',
 };
 
 const shortHash = (h: string) => `${h.slice(0, 8)}…${h.slice(-6)}`;

@@ -42,7 +42,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
               >
                 {/* Connector line between steps — desktop only */}
                 {idx < STEPS.length - 1 && (
-                  <div className="hidden md:block absolute top-7 left-[calc(100%-1px)] w-full h-px bg-border z-0" />
+                  <div className="hidden md:block absolute top-7 left-14 right-0 h-px bg-border z-0" />
                 )}
 
                 <div className="relative z-10 md:pr-6 group">

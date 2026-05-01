@@ -18,16 +18,16 @@
 
 /* ── Light theme overrides ── */
 [data-theme="light"] {
-  --color-bg: #d6ddd5;
-  --color-bg-card: #e2e9e1;
+  --color-bg: #eef2eb;
+  --color-bg-card: #f5f8f3;
   --color-accent: #1a6b0e;
-  --color-accent-dim: rgba(26, 107, 14, 0.13);
-  --color-accent-glow: rgba(26, 107, 14, 0.22);
-  --color-text-primary: #0a140a;
-  --color-text-secondary: rgba(10, 20, 10, 0.72);
-  --color-text-muted: rgba(10, 20, 10, 0.48);
-  --color-border: rgba(26, 107, 14, 0.20);
-  --dot-color: rgba(26, 107, 14, 0.16);
+  --color-accent-dim: rgba(26, 107, 14, 0.10);
+  --color-accent-glow: rgba(26, 107, 14, 0.20);
+  --color-text-primary: #0d1a0d;
+  --color-text-secondary: rgba(13, 26, 13, 0.70);
+  --color-text-muted: rgba(13, 26, 13, 0.45);
+  --color-border: rgba(26, 107, 14, 0.18);
+  --dot-color: rgba(26, 107, 14, 0.12);
 }
 
 @layer base {
@@ -153,10 +153,21 @@
   }
 
   [data-theme="light"] .card-hsociety {
-    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.08), 0 4px 12px rgba(10, 20, 10, 0.06);
+    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.07), 0 4px 16px rgba(10, 20, 10, 0.05);
+    border-color: rgba(26, 107, 14, 0.16);
   }
   [data-theme="light"] .card-hsociety:hover {
-    box-shadow: 0 4px 24px rgba(26, 107, 14, 0.18);
+    box-shadow: 0 6px 28px rgba(26, 107, 14, 0.16);
+  }
+
+  /* Light theme — give bordered cards a subtle lift */
+  [data-theme="light"] .border-border {
+    border-color: rgba(26, 107, 14, 0.18);
+  }
+
+  /* Light theme — section backgrounds get a very subtle tinted wash */
+  [data-theme="light"] section {
+    background-color: var(--color-bg);
   }
 
   :root:not([data-theme="light"]) {

@@ -47,11 +47,11 @@ const ServicesSection: React.FC = () => {
               transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <div
-                className="group relative rounded-xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
+                className="group relative rounded-2xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
                 style={{ boxShadow: 'inset 0 1px 0 rgba(183,255,153,0.05)' }}
               >
                 {/* Image panel */}
-                <div className="relative h-44 md:h-48 overflow-hidden flex-none">
+                <div className="relative h-48 md:h-52 overflow-hidden flex-none">
                   <img
                     src={serv.img}
                     alt=""
@@ -60,7 +60,7 @@ const ServicesSection: React.FC = () => {
                   <div aria-hidden className="scanlines absolute inset-0 pointer-events-none" />
                   <div
                     aria-hidden
-                    className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+                    className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
                     style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }}
                   />
                   <div
@@ -83,7 +83,7 @@ const ServicesSection: React.FC = () => {
                   </div>
                   {/* Icon */}
                   <div
-                    className="absolute bottom-3 left-3 w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="absolute bottom-3 left-3 w-9 h-9 rounded-lg flex items-center justify-center"
                     style={{ background: 'var(--color-accent-dim)', border: '1px solid rgba(183,255,153,0.25)' }}
                   >
                     <serv.icon className="w-4 h-4 text-accent" />
@@ -91,31 +91,31 @@ const ServicesSection: React.FC = () => {
                 </div>
 
                 {/* Content */}
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="text-base font-black text-text-primary mb-1 group-hover:text-accent transition-colors font-mono uppercase tracking-tight">
+                <div className="p-6 md:p-7 flex flex-col flex-1">
+                  <h3 className="text-base md:text-lg font-black text-text-primary mb-2 group-hover:text-accent transition-colors font-mono uppercase tracking-tight">
                     {serv.title}
                   </h3>
-                  <p className="text-xs text-text-muted mb-4 font-mono">{serv.tagline}</p>
+                  <p className="text-sm text-text-muted mb-5 font-mono">{serv.tagline}</p>
 
-                  <ul className="flex flex-col gap-1.5 mb-5 flex-1">
+                  <ul className="flex flex-col gap-2.5 mb-6 flex-1">
                     {serv.bullet.slice(0, 2).map((b, i) => (
-                      <li key={i} className="text-xs text-text-secondary flex items-start gap-2">
-                        <span className="text-accent font-mono font-bold flex-none mt-0.5 text-[10px]">{'>'}</span>
+                      <li key={i} className="text-sm text-text-secondary flex items-start gap-2.5">
+                        <span className="text-accent font-mono font-bold flex-none mt-0.5 text-[11px]">{'>'}</span>
                         {b}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="flex gap-2 mt-auto pt-2 border-t border-border">
+                  <div className="flex gap-3 mt-auto">
                     <a
                       href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`}
-                      className="btn-primary !py-2 !px-3 text-xs flex items-center justify-center gap-1.5 flex-1"
+                      className="btn-primary !py-2.5 !px-4 text-xs flex items-center justify-center gap-1.5 flex-1"
                     >
                       <Mail className="w-3.5 h-3.5" /> Talk to Us
                     </a>
                     <Link
                       to="/services"
-                      className="btn-secondary !py-2 !px-3 text-xs flex items-center justify-center gap-1.5 flex-1"
+                      className="btn-secondary !py-2.5 !px-4 text-xs flex items-center justify-center gap-1.5 flex-1"
                     >
                       Learn More <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
