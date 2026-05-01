@@ -1225,21 +1225,19 @@ const BootcampRoomPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Step cards */}
-              <div className="space-y-5 mb-10">
-                {room.steps.map((step, idx) => (
-                  <StepCard
-                    key={idx}
-                    step={step}
-                    stepNum={idx + 1}
-                    total={room.steps.length}
-                    phaseId={phaseId || ''}
-                    roomId={roomId || ''}
-                    isActive={idx === currentStepIdx}
-                    isViewed={viewedSteps.has(idx)}
-                    onClick={() => goToStep(idx)}
-                  />
-                ))}
+              {/* Active step card */}
+              <div className="mb-10">
+                <StepCard
+                  key={currentStepIdx}
+                  step={room.steps[currentStepIdx]}
+                  stepNum={currentStepIdx + 1}
+                  total={room.steps.length}
+                  phaseId={phaseId || ''}
+                  roomId={roomId || ''}
+                  isActive
+                  isViewed={viewedSteps.has(currentStepIdx)}
+                  onClick={() => goToStep(currentStepIdx)}
+                />
               </div>
 
               {/* Step navigation */}
