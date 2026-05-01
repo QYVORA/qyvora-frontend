@@ -1017,7 +1017,7 @@ const BootcampRoomPage: React.FC = () => {
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="bg-bg lg:h-full">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
@@ -1076,12 +1076,10 @@ const BootcampRoomPage: React.FC = () => {
       </AnimatePresence>
 
       {/* ── MAIN SPLIT LAYOUT ── */}
-      {/* Mobile: normal page scroll. Desktop: fixed-height split, each column scrolls independently */}
-      <div className="min-h-0 lg:flex lg:h-[calc(100svh-6rem)] lg:overflow-hidden">
+      {/* Mobile: natural page scroll. Desktop: fixed-height split, each column scrolls independently */}
+      <div className="lg:flex lg:h-full lg:overflow-hidden">
         <div className="w-full flex flex-col lg:flex-row lg:h-full">
-          <aside
-            className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain lg:h-full"
-          >
+          <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card lg:overflow-y-auto lg:overscroll-contain lg:h-full">
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
               <div className="mb-4 px-1">
@@ -1147,12 +1145,10 @@ const BootcampRoomPage: React.FC = () => {
             onMobileClose={() => setSidebarOpen(false)}
           />
 
-          {/* ── WALKTHROUGH CONTENT — independent scroll ── */}
-          <main
-            className="flex-1 overflow-y-auto overscroll-contain lg:h-full"
-          >
+          {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
+          <main className="flex-1 lg:overflow-y-auto lg:overscroll-contain lg:h-full">
             {/* Content area */}
-            <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12">
+            <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12 pb-safe-bottom">
 
               {/* Room header */}
               <div className="mb-8">

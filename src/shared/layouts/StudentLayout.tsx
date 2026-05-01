@@ -8,9 +8,9 @@ const StudentLayout = () => {
   const isRoomPage = Boolean(roomMatch || roomMatchLegacy);
 
   return (
-    <div className={`bg-bg ${isRoomPage ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
+    <div className={`bg-bg ${isRoomPage ? 'h-svh overflow-hidden' : 'min-h-screen'}`}>
       <StudentTopbar />
-      {/* pt-20 md:pt-24 clears the fixed topbar. Room pages use full remaining height. */}
+      {/* pt-20 md:pt-24 clears the fixed topbar height */}
       <div className={`pt-20 md:pt-24 ${isRoomPage ? 'h-full overflow-hidden' : 'pb-20 md:pb-4'}`}>
         <Outlet />
       </div>
