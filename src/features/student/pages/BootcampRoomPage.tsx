@@ -1158,7 +1158,7 @@ const BootcampRoomPage: React.FC = () => {
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
           <main className="flex-1 min-h-0 lg:overflow-y-auto lg:overscroll-contain">
             {/* Content area */}
-            <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 md:px-10 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-4xl px-5 sm:px-8 md:px-12 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
               <div className="flex items-center gap-3 mb-6 lg:hidden">
