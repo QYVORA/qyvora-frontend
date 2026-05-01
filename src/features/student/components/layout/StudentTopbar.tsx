@@ -63,12 +63,12 @@ const StudentTopbar = () => {
   // ── Bootcamp room route detection ─────────────────────────────────────────
   const roomMatch = useMatch('/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
-  const activeRoomMatch = roomMatch || roomMatchLegacy;
+  const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch);
 
   const roomBootcampId = activeRoomMatch?.params?.bootcampId ?? '';
-  const roomPhaseId = activeRoomMatch?.params?.phaseId
-    ?? (activeRoomMatch?.params?.moduleId ? `phase${activeRoomMatch.params.moduleId}` : '');
+  const roomPhaseId = roomMatch?.params?.phaseId
+    ?? (roomMatchLegacy?.params?.moduleId ? `phase${roomMatchLegacy.params.moduleId}` : '');
   const roomRoomId = activeRoomMatch?.params?.roomId ?? '';
   const roomPhaseConfig = BOOTCAMP_CONFIG.phases.find((p) => p.id === roomPhaseId);
   const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
