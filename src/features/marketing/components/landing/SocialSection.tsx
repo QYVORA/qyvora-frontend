@@ -32,7 +32,7 @@ const PLATFORM_META: Record<string, {
   whatsapp: {
     accent: '#4ade80',
     border: 'rgba(37,211,102,0.35)',
-    img: '/assets/social/whatsapp-social.png',
+    img: '/assets/sections/backgrounds/corperate-team.png',
     label: 'WHATSAPP',
   },
 };
