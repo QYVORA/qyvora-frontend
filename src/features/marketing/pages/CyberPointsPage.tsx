@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, BookOpen, Trophy, ShoppingBag, Shield, Zap, Lock } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import CpLogo from '../../../shared/components/CpLogo';
 import ChainLogo from '../../../shared/components/ChainLogo';
 
-const CyberPointsPage: React.FC = () => (
+const CyberPointsPage: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
   <div className="min-h-screen bg-bg">
 
     {/* ── Hero ── */}
@@ -77,18 +80,29 @@ const CyberPointsPage: React.FC = () => (
           </motion.div>
         </div>
 
-        {/* Right: big CP logo */}
+        {/* Right: bouncing CP logo */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.3 }}
+          initial={{ opacity: 0, scale: 0.85, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="hidden lg:flex relative h-[420px] xl:h-[480px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-          <img
+          {/* Outer ring pulse */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { scale: [1, 1.07, 1], opacity: [0.12, 0.28, 0.12] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute w-[380px] h-[380px] rounded-full border border-accent/20 pointer-events-none"
+          />
+          <motion.img
             src="/assets/branding/logos/cyber-points-logo.png"
             alt="Cyber Points"
-            className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_60px_var(--color-accent-glow)]"
+            className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_80px_var(--color-accent-glow)]"
+            animate={shouldReduceMotion ? {} : { y: [0, -22, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           />
-          <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest">
+          <div className="absolute top-8 right-6 px-2 py-1 bg-bg/70 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             CP // ACTIVE
           </div>
         </motion.div>
@@ -225,6 +239,7 @@ const CyberPointsPage: React.FC = () => (
       </ScrollReveal>
     </div>
   </div>
-);
+  );
+};
 
 export default CyberPointsPage;
