@@ -2,7 +2,23 @@ export const resolveImg = (value?: string, fallback = ''): string => {
   const src = String(value || '').trim();
   if (!src) return fallback;
   if (/^(blob:|data:)/i.test(src)) return src;
-  if (/^https?:\/\//i.test(src)) return src;
+
+  const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
+  const isDev = apiBase.startsWith('/api') || apiBase === '/api';
+
+  // Absolute URL — in dev, rewrite production backend URLs to go through the local proxy
+  if (/^https?:\/\//i.test(src)) {
+    if (isDev) {
+      // Extract the path portion and let Vite proxy handle it
+      try {
+        const url = new URL(src);
+        const pathPart = url.pathname;
+        // Only rewrite backend upload paths
+        if (pathPart.startsWith('/uploads/')) return pathPart;
+      } catch { /* fall through */ }
+    }
+    return src;
+  }
 
   // Public-folder assets — served by the frontend, no API prefix needed
   if (
@@ -14,8 +30,6 @@ export const resolveImg = (value?: string, fallback = ''): string => {
 
   // Any other root-relative path that isn't an upload — treat as a local public asset
   if (src.startsWith('/') && !src.startsWith('/uploads/')) return src;
-
-  const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
   // Backend-uploaded assets (e.g. /uploads/...) — served directly from the backend
   // origin WITHOUT the /api prefix (Express registers these routes outside /api)

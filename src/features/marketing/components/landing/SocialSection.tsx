@@ -32,7 +32,7 @@ const PLATFORM_META: Record<string, {
   whatsapp: {
     accent: '#4ade80',
     border: 'rgba(37,211,102,0.35)',
-    img: '/assets/sections/backgrounds/corperate-team.png',
+    img: '/assets/sections/backgrounds/corporate-team.png',
     label: 'WHATSAPP',
   },
 };
@@ -51,7 +51,7 @@ const SocialSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
           {SITE_CONFIG.social.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
@@ -74,7 +74,7 @@ const SocialSection: React.FC = () => {
                 }}
                 whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative rounded-xl overflow-hidden flex flex-col min-h-[280px] md:min-h-[360px] cursor-pointer"
+                className="group relative rounded-xl overflow-hidden flex flex-col min-h-[240px] sm:min-h-[280px] md:min-h-[360px] cursor-pointer"
                 style={{ border: `1px solid ${meta.border}` }}
               >
                 {/* Background image — zoom on group hover via CSS */}

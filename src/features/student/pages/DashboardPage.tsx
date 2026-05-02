@@ -147,19 +147,19 @@ const Dashboard: React.FC = () => {
 
           {/* Stats pills */}
           {!loading && (
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
-                <CpLogo className="h-5 w-5 shrink-0" />
-                <span className="font-mono text-xl font-black text-accent">{cpBalance.toLocaleString()}</span>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                <CpLogo className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                <span className="font-mono text-lg sm:text-xl font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
               {streakDays > 0 && (
-                <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-4 py-2.5 inline-flex items-center gap-2">
-                  <Flame className="h-5 w-5 shrink-0 text-orange-400" />
-                  <span className="font-mono text-xl font-black text-orange-400">{streakDays}d</span>
+                <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                  <Flame className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-orange-400" />
+                  <span className="font-mono text-lg sm:text-xl font-black text-orange-400">{streakDays}d</span>
                 </div>
               )}
-              <div className="rounded-2xl border-2 border-border bg-bg-card px-4 py-2.5">
-                <span className={`font-mono text-xl font-black ${rankInfo.color}`}>{rankInfo.name}</span>
+              <div className="rounded-2xl border-2 border-border bg-bg-card px-3 sm:px-4 py-2 sm:py-2.5">
+                <span className={`font-mono text-lg sm:text-xl font-black ${rankInfo.color}`}>{rankInfo.name}</span>
               </div>
             </div>
           )}

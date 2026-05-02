@@ -38,10 +38,10 @@ const Footer: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 md:pt-16 pb-0 relative z-10">
 
       {/* Top row — brand + nav columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 md:mb-14">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 mb-10 md:mb-14">
 
         {/* Brand */}
-        <div className="col-span-1 sm:col-span-2 md:col-span-2 flex flex-col gap-4">
+        <div className="col-span-2 sm:col-span-2 md:col-span-2 flex flex-col gap-4">
           <p className="text-text-secondary text-xs md:text-sm leading-relaxed max-w-xs">
             {SITE_CONFIG.brand.description}
           </p>
@@ -81,13 +81,14 @@ const Footer: React.FC = () => {
     </div>
 
     {/* Logo banner — dark bg so the light logo is always visible */}
-    <div className="footer-logo-banner relative w-full overflow-hidden h-[130px] md:h-[180px]">
+    <div className="footer-logo-banner relative w-full overflow-hidden h-[100px] sm:h-[130px] md:h-[180px]">
       <img
         src={logoSrc}
         alt="HSociety"
         style={{
           position: 'absolute',
-          width: '140%',
+          width: '120%',
+          maxWidth: '900px',
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',

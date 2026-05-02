@@ -16,13 +16,12 @@ const ChainPage: React.FC = () => {
       <section className="relative min-h-[85svh] md:min-h-[80vh] w-full overflow-hidden scanlines has-bg-image">
         <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
         <img
-          src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
+          src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.07] z-0 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
         />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-15 z-0" />
-        {/* Ambient glow behind logo */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent/6 blur-[120px] pointer-events-none z-0" />
         <div className="absolute inset-0 bg-radial-vignette opacity-75 z-10" />
 
@@ -113,7 +112,6 @@ const ChainPage: React.FC = () => {
             className="hidden lg:flex relative h-[560px] xl:h-[620px] w-full items-center justify-center"
           >
             <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-            {/* Outer ring pulse */}
             <motion.div
               animate={shouldReduceMotion ? {} : { scale: [1, 1.06, 1], opacity: [0.15, 0.3, 0.15] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
@@ -139,15 +137,7 @@ const ChainPage: React.FC = () => {
       </section>
 
       {/* ── Body ── */}
-      <div className="relative max-w-7xl mx-auto px-4 md:px-8 py-14 space-y-6">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden -z-10">
-          <img
-            src="/assets/sections/backgrounds/corporate-security-bg.png"
-            alt=""
-            aria-hidden="true"
-            className="absolute top-0 right-0 w-[600px] max-w-[60vw] opacity-[0.04] object-contain"
-          />
-        </div>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 space-y-6">
 
         {/* How it works */}
         <ScrollReveal>
@@ -166,7 +156,7 @@ const ChainPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-bg border border-border hover:border-accent/30 transition-colors"
+                  className="card-hsociety flex items-start gap-3 p-4"
                 >
                   <div className="w-8 h-8 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
                     <Icon className="w-4 h-4 text-accent" />
@@ -194,7 +184,7 @@ const ChainPage: React.FC = () => {
                   { label: 'CP Reward',        color: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10' },
                   { label: 'Activity Log',     color: 'text-text-muted border-border bg-bg' },
                 ].map(({ label, color }) => (
-                  <div key={label} className={`rounded-xl border px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest ${color}`}>
+                  <div key={label} className={`rounded-lg border px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest ${color}`}>
                     {label}
                   </div>
                 ))}
@@ -208,9 +198,9 @@ const ChainPage: React.FC = () => {
               <h3 className="text-lg font-black text-text-primary mb-4">Verifiable skill</h3>
               <div className="space-y-3">
                 {[
-                  { icon: Shield,  title: 'Proof-of-Skill',     text: 'Cryptographic proof, not just a dashboard score.' },
-                  { icon: Eye,     title: 'Shareable history',  text: 'Show employers your chain record to prove your work.' },
-                  { icon: Trophy,  title: 'Rank integrity',     text: 'Leaderboard positions computed from chain-verified CP.' },
+                  { icon: Shield,  title: 'Proof-of-Skill',    text: 'Cryptographic proof, not just a dashboard score.' },
+                  { icon: Eye,     title: 'Shareable history', text: 'Show employers your chain record to prove your work.' },
+                  { icon: Trophy,  title: 'Rank integrity',    text: 'Leaderboard positions computed from chain-verified CP.' },
                 ].map(({ icon: Icon, title, text }, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="w-7 h-7 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
@@ -229,7 +219,7 @@ const ChainPage: React.FC = () => {
 
         {/* CP callout */}
         <ScrollReveal>
-          <div className="flex flex-col sm:flex-row items-center gap-4 rounded-2xl border border-accent/20 bg-accent/5 px-5 py-4">
+          <div className="card-hsociety flex flex-col sm:flex-row items-center gap-4 px-5 py-5">
             <CpLogo className="w-9 h-9 shrink-0" />
             <div className="flex-1 min-w-0 text-center sm:text-left">
               <p className="text-sm font-black text-text-primary">Cyber Points are the currency recorded on the chain</p>
@@ -243,27 +233,20 @@ const ChainPage: React.FC = () => {
 
         {/* CTA */}
         <ScrollReveal>
-          <div className="card-hsociety p-7 md:p-10 text-center flex flex-col items-center gap-4 relative overflow-hidden">
-            <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-            <div
-              aria-hidden
-              className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
-            />
+          <div className="card-hsociety p-7 md:p-10 text-center flex flex-col items-center gap-4">
             <motion.div
               animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative z-10"
             >
               <ChainLogo variant="3d" size={140} className="drop-shadow-[0_0_50px_rgba(136,173,124,0.4)]" />
             </motion.div>
-            <h3 className="text-xl md:text-2xl font-black text-text-primary relative z-10">
+            <h3 className="text-xl md:text-2xl font-black text-text-primary">
               Start Building Your Chain Record
             </h3>
-            <p className="text-sm text-text-secondary max-w-sm relative z-10">
+            <p className="text-sm text-text-secondary max-w-sm">
               Every skill you prove gets permanently recorded — a verifiable history that belongs to you.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 mt-1 relative z-10">
+            <div className="flex flex-col sm:flex-row gap-3 mt-1">
               <Link to="/register" className="btn-primary !px-7 !py-3 text-sm inline-flex items-center justify-center gap-2">
                 <Zap className="w-4 h-4" /> Create Account <ArrowRight className="w-4 h-4" />
               </Link>

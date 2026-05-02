@@ -13,6 +13,9 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
+import { resolveImg } from '../../../shared/utils/resolveImg';
+import { Tooltip } from '../../../shared/components/ui/Tooltip';
+import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
 
 const HACKER_PROTOCOL_ID = 'bc_1775270338500';
 
@@ -260,6 +263,7 @@ const AdminDashboardPage: React.FC = () => {
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
+  const [confirmDeleteUser, setConfirmDeleteUser] = useState<AdminUser | null>(null);
 
   // ── Derived ──────────────────────────────────────────────────────────────────
   const filteredUsers = useMemo(() => {
@@ -348,7 +352,10 @@ const AdminDashboardPage: React.FC = () => {
   };
 
   const handleDeleteUser = async (target: AdminUser) => {
-    if (!window.confirm(`Delete ${target.email}? This cannot be undone.`)) return;
+    setConfirmDeleteUser(target);
+  };
+
+  const handleDeleteUserConfirmed = async (target: AdminUser) => {
     try {
       await api.delete(`/admin/users/${encodeURIComponent(target.id)}`);
       addToast('User deleted', 'success');
@@ -455,6 +462,7 @@ const AdminDashboardPage: React.FC = () => {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
+    <>
     <div className="flex h-svh bg-bg text-text-primary overflow-hidden">
 
       {/* ── Desktop sidebar ─────────────────────────────────────────────────── */}
@@ -726,18 +734,22 @@ const AdminDashboardPage: React.FC = () => {
                               <td className="px-4 py-3 text-xs text-text-secondary">{isUserBlocked(item) ? <span className="text-red-400">Blocked</span> : 'Active'}</td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center justify-end gap-2">
+                                  <Tooltip content={isUserBlocked(item) ? 'Unblock user' : 'Block user'} side="left">
                                   <button
                                     onClick={() => void handleUserBlockToggle(item)}
                                     className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-xl border border-border hover:border-accent/30 hover:text-accent min-h-[32px] transition-colors"
                                   >
                                     {isUserBlocked(item) ? <><Unlock className="w-3 h-3" />Unblock</> : <><Ban className="w-3 h-3" />Block</>}
                                   </button>
+                                  </Tooltip>
+                                  <Tooltip content="Permanently delete user" side="left">
                                   <button
                                     onClick={() => void handleDeleteUser(item)}
                                     className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 min-h-[32px] transition-colors"
                                   >
                                     <Trash2 className="w-3 h-3" />Delete
                                   </button>
+                                  </Tooltip>
                                 </div>
                               </td>
                             </tr>
@@ -908,13 +920,31 @@ const AdminDashboardPage: React.FC = () => {
                   <div className="md:hidden space-y-3">
                     {products.map(item => (
                       <div key={item._id} className="bg-bg-card border border-border rounded-xl p-4 space-y-2">
-                        <div className="font-bold text-sm text-text-primary">{item.title}</div>
-                        <div className="text-xs text-text-muted flex items-center gap-2">
-                          <span className="uppercase">{item.type}</span>
-                          <span>·</span>
-                          {item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3 h-3" /></span>}
-                          <span>·</span>
-                          <span>{item.isActive ? 'Active' : 'Inactive'}</span>
+                        <div className="flex items-start gap-3">
+                          <div className="w-14 h-14 rounded-lg overflow-hidden border border-border shrink-0 bg-bg">
+                            <img
+                              src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const el = e.currentTarget;
+                                if (!el.dataset.fallbackApplied) {
+                                  el.dataset.fallbackApplied = '1';
+                                  el.src = '/assets/sections/backgrounds/cyber-points-visual.jpeg';
+                                }
+                              }}
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-bold text-sm text-text-primary">{item.title}</div>
+                            <div className="text-xs text-text-muted flex items-center gap-2 mt-0.5">
+                              <span className="uppercase">{item.type}</span>
+                              <span>·</span>
+                              {item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3 h-3" /></span>}
+                              <span>·</span>
+                              <span>{item.isActive ? 'Active' : 'Inactive'}</span>
+                            </div>
+                          </div>
                         </div>
                         <div className="grid grid-cols-2 gap-2 pt-1">
                           <button
@@ -933,7 +963,7 @@ const AdminDashboardPage: React.FC = () => {
                       <table className="w-full text-left min-w-[640px]">
                         <thead className="border-b border-border bg-bg">
                           <tr>
-                            {['Title','Price','Type','Status','Actions'].map(h => (
+                            {['Cover','Title','Price','Type','Status','Actions'].map(h => (
                               <th key={h} className={`px-4 py-3 text-[10px] uppercase tracking-widest text-text-muted ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
                             ))}
                           </tr>
@@ -941,6 +971,22 @@ const AdminDashboardPage: React.FC = () => {
                         <tbody className="divide-y divide-border">
                           {products.map(item => (
                             <tr key={item._id} className="hover:bg-accent-dim/20 transition-colors">
+                              <td className="px-4 py-3">
+                                <div className="w-12 h-12 rounded-lg overflow-hidden border border-border bg-bg shrink-0">
+                                  <img
+                                    src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                                    alt={item.title}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      const el = e.currentTarget;
+                                      if (!el.dataset.fallbackApplied) {
+                                        el.dataset.fallbackApplied = '1';
+                                        el.src = '/assets/sections/backgrounds/cyber-points-visual.jpeg';
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </td>
                               <td className="px-4 py-3 text-sm font-bold text-text-primary">{item.title}</td>
                               <td className="px-4 py-3 text-sm font-mono">{item.isFree ? <span className="text-emerald-400">FREE</span> : <span className="text-text-primary inline-flex items-center gap-1">{item.cpPrice} <CpLogo className="w-3.5 h-3.5" /></span>}</td>
                               <td className="px-4 py-3 text-xs uppercase text-text-secondary">{item.type}</td>
@@ -1161,6 +1207,19 @@ const AdminDashboardPage: React.FC = () => {
 
       </div>
     </div>
+
+    {/* Confirm delete user dialog */}
+    <ConfirmDialog
+      open={confirmDeleteUser !== null}
+      onOpenChange={(open) => { if (!open) setConfirmDeleteUser(null); }}
+      title="Delete User"
+      description={`Delete ${confirmDeleteUser?.email ?? 'this user'}? This cannot be undone.`}
+      confirmLabel="Delete"
+      cancelLabel="Cancel"
+      destructive
+      onConfirm={() => { if (confirmDeleteUser) void handleDeleteUserConfirmed(confirmDeleteUser); }}
+    />
+    </>
   );
 };
 

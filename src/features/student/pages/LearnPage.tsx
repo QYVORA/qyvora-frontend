@@ -98,9 +98,9 @@ const Learn: React.FC = () => {
             </p>
           </div>
           {!loading && overview && (
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
-                <span className="font-mono text-xl font-black text-accent md:text-2xl">{progressValue}</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                <span className="font-mono text-lg sm:text-xl font-black text-accent md:text-2xl">{progressValue}</span>
               </div>
               {bootcamps.length > 1 && (
                 <Link
