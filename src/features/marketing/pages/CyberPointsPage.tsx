@@ -61,7 +61,7 @@ const CyberPointsPage: React.FC = () => (
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}
             className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-7"
           >
-            <Link to="/bootcamps" className="btn-secondary text-sm !px-6 text-center inline-flex items-center justify-center gap-2">
+            <Link to="/register" className="btn-secondary text-sm !px-6 text-center inline-flex items-center justify-center gap-2">
               <BookOpen className="w-4 h-4" /> Start Training
             </Link>
             <Link to="/zero-day-market" className="btn-primary text-sm !px-6 text-center inline-flex items-center justify-center gap-2">
@@ -176,7 +176,7 @@ const CyberPointsPage: React.FC = () => (
             </p>
           </div>
           <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none relative z-10">
-            <Link to="/bootcamps" className="btn-secondary !py-3 text-sm inline-flex items-center justify-center gap-2">
+            <Link to="/register" className="btn-secondary !py-3 text-sm inline-flex items-center justify-center gap-2">
               <BookOpen className="w-4 h-4" /> Start Training
             </Link>
             <Link to="/zero-day-market" className="btn-primary !py-3 text-sm inline-flex items-center justify-center gap-2">
