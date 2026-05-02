@@ -137,12 +137,9 @@ const Marketplace: React.FC = () => {
           </div>
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             {balance !== null && (
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-5 py-3">
-                <span className="mb-1 block text-xs font-black uppercase tracking-widest text-text-muted">Balance</span>
-                <span className="inline-flex items-center gap-2 font-mono text-2xl font-black text-accent md:text-3xl">
-                  <CpLogo className="h-7 w-7" />
-                  {balance.toLocaleString()}
-                </span>
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
+                <CpLogo className="h-6 w-6 shrink-0" />
+                <span className="font-mono text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
               </div>
             )}
             <div className="relative">
@@ -163,7 +160,13 @@ const Marketplace: React.FC = () => {
           {loading ? (
             [0,1,2,3].map((i) => <SkeletonCard key={i} />)
           ) : filtered.length === 0 ? (
-            <div className="col-span-full py-20 text-center">
+            <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border">
+              <img
+                src="/assets/illustrations/cta-operator.png"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+              />
               <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
               <p className="text-text-muted text-sm">
                 {query ? 'No products match your search.' : 'No products available yet.'}

@@ -150,14 +150,24 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-12 scanlines">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8">
+    <div className="min-h-screen bg-bg pb-12">
+      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
 
         {/* HEADER */}
-        <ScrollReveal>
-          <div className="group relative mb-12 overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-12">
+        <ScrollReveal className="mb-10 md:mb-12">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+            Operator profile
+          </span>
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
             <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            {/* Terminal panel illustration — fades into the right edge */}
+            <img
+              src="/assets/illustrations/hero-terminal-panel.png"
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+            />
 
             <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
               {/* Avatar */}
@@ -230,10 +240,9 @@ const Profile: React.FC = () => {
             <ScrollReveal delay={0.1}>
               <div className="grid grid-cols-2 gap-4">
                 {profileStats.map((s, i) => (
-                  <div key={i} className="p-4 bg-bg border border-border rounded-xl">
-                    <s.icon className="w-4 h-4 text-accent mb-2" />
+                  <div key={i} className="p-4 bg-bg border border-border rounded-xl flex items-center gap-3">
+                    <s.icon className="w-4 h-4 text-accent shrink-0" />
                     <div className="text-xl font-black text-text-primary font-mono">{s.value}</div>
-                    <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{s.label}</div>
                   </div>
                 ))}
               </div>

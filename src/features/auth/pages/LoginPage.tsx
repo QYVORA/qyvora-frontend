@@ -53,6 +53,13 @@ const AuthHero: React.FC = () => (
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
     <HeroCanvas />
     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-bg/60 z-10" />
+    {/* Operator illustration — anchored bottom-right, fades into background */}
+    <img
+      src="/assets/illustrations/hero-operator.png"
+      alt=""
+      aria-hidden="true"
+      className="pointer-events-none absolute bottom-0 right-0 z-[5] h-[72%] w-auto object-contain object-bottom opacity-20 select-none"
+    />
     <div className="relative z-20 w-full max-w-[440px]">
       <Link to="/" className="inline-flex"><Logo size="lg" /></Link>
     </div>

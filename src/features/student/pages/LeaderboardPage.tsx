@@ -57,12 +57,12 @@ const Leaderboard: React.FC = () => {
   const pagedRest = rest.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <div className="min-h-screen bg-bg pb-16 scanlines">
-      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-14">
-        <ScrollReveal className="mb-12 text-center md:mb-14">
-          <span className="mb-4 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Hall of shadows</span>
-          <h1 className="mb-4 text-4xl font-black uppercase tracking-tight text-text-primary md:text-6xl">Leaderboard</h1>
-          <p className="mx-auto max-w-xl text-base text-text-muted md:text-lg">Elite operators ranked by CP — chase the podium.</p>
+    <div className="min-h-screen bg-bg pb-12">
+      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+        <ScrollReveal className="mb-10 md:mb-12">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Hall of shadows</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Leaderboard</h1>
+          <p className="mt-2 max-w-lg text-base text-text-muted">Elite operators ranked by CP — chase the podium.</p>
         </ScrollReveal>
 
         {loading && operators.length === 0 ? (
@@ -72,7 +72,13 @@ const Leaderboard: React.FC = () => {
             ))}
           </div>
         ) : operators.length === 0 ? (
-          <div className="py-20 text-center">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
+            <img
+              src="/assets/illustrations/phase-complete-badge.png"
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-3/4 w-auto object-contain opacity-[0.07] select-none"
+            />
             <Trophy className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
             <p className="text-text-muted text-sm">No operators on the board yet.</p>
           </div>
