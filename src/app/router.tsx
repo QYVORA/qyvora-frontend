@@ -90,6 +90,9 @@ export const AppRouter = () => {
           <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
+          {/* /bootcamps and /marketplace are public — logged-in users get their personalised view via StudentLayout below */}
+          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><BootcampPage /></Wrap>} />
+          <Route path="/marketplace" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         </Route>
 
@@ -105,12 +108,9 @@ export const AppRouter = () => {
         {/* Student routes — auth required */}
         <Route element={<StudentLayout />}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
-          {/* Legacy route — moduleId maps to phaseId by number: module 1 = phase1, etc. */}
           <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-          <Route path="/marketplace" element={<Wrap scope="Marketplace"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/wallet" element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/profile" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
