@@ -20,6 +20,12 @@ export default defineConfig(() => ({
         changeOrigin: true,
         secure: false,
       },
+      // Proxy /uploads to the backend (GridFS-served files, no /api prefix)
+      '/uploads': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 }));

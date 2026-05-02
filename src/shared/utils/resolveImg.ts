@@ -17,10 +17,13 @@ export const resolveImg = (value?: string, fallback = ''): string => {
 
   const apiBase = String(import.meta.env.VITE_API_BASE_URL || '').trim();
 
-  // Backend-uploaded assets (e.g. /uploads/...) — need the backend origin
+  // Backend-uploaded assets (e.g. /uploads/...) — served directly from the backend
+  // origin WITHOUT the /api prefix (Express registers these routes outside /api)
   if (src.startsWith('/uploads/')) {
+    // Absolute backend URL (e.g. http://localhost:3000/api) → strip /api suffix
     if (/^https?:\/\//i.test(apiBase)) return `${apiBase.replace(/\/api\/?$/, '')}${src}`;
-    if (apiBase.startsWith('/api')) return `/api${src}`;
+    // Relative /api proxy in dev → strip /api so Vite proxy forwards to backend root
+    if (apiBase.startsWith('/api')) return src;
     return src;
   }
 
