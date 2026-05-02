@@ -59,10 +59,10 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                 {BULLETS.map((item, i) => (
                   <motion.li
                     key={i}
-                    initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20, filter: 'blur(4px)' }}
+                    whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.4, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
                     className="flex items-center gap-3 text-text-primary font-medium text-sm"
                   >
                     <CheckCircle2 className="w-4 h-4 text-accent flex-none" />
@@ -132,11 +132,11 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
               displayedItems.map((prod, idx) => (
                 <motion.div
                   key={prod.id || idx}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, scale: 0.94, filter: 'blur(6px)' }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={shouldReduceMotion ? {} : { y: -3 }}
+                  transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
+                  whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
                 >
                   <CardMedia
                     image={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}

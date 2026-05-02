@@ -46,10 +46,10 @@ const ServicesSection: React.FC = () => {
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, scale: 0.94, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
             >
               <div
                 className="group flex flex-col overflow-hidden rounded-2xl border-2 border-border bg-bg-card transition-colors duration-200 hover:border-accent/40 h-full"

@@ -53,89 +53,98 @@ const SocialSection: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
           {SITE_CONFIG.social.map((social, idx) => {
-            const Icon = SOCIAL_ICON_BY_KEY[social.key];
+            const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
             if (!meta || !Icon) return null;
 
             return (
-              <motion.div
+              <motion.a
                 key={idx}
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40, scale: 0.94, filter: 'blur(6px)' }}
+                whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={shouldReduceMotion ? {} : { y: -4 }}
+                transition={{
+                  duration: 0.65,
+                  delay: shouldReduceMotion ? 0 : idx * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                  filter: { duration: 0.4 },
+                }}
+                whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group relative rounded-xl overflow-hidden flex flex-col min-h-[280px] md:min-h-[360px] cursor-pointer"
+                style={{ border: `1px solid ${meta.border}` }}
               >
+                {/* Background image — zoom on group hover via CSS */}
+                <img
+                  src={meta.img}
+                  alt=""
+                  aria-hidden
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                />
+
+                {/* Gradient overlay — deepens on hover */}
                 <div
-                  className="group relative rounded-xl overflow-hidden flex flex-col h-full min-h-[280px] md:min-h-[360px] cursor-pointer"
-                  style={{ border: `1px solid ${meta.border}` }}
-                >
-                  {/* Background image with subtle zoom on hover */}
-                  <motion.img
-                    src={meta.img}
-                    alt=""
-                    aria-hidden
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-                    whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                  />
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-400"
+                  style={{
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.12) 100%)',
+                  }}
+                />
 
-                  {/* Gradient overlay */}
-                  <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+                {/* Accent glow on hover */}
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `radial-gradient(ellipse at bottom left, ${meta.accent}18 0%, transparent 65%)`,
+                  }}
+                />
+
+                {/* Top-left platform pill */}
+                <div className="relative z-10 p-4 md:p-5">
+                  <span
+                    className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.25em] px-2.5 py-1 rounded-full backdrop-blur-sm"
                     style={{
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15) 100%)',
+                      color: meta.accent,
+                      background: 'rgba(0,0,0,0.45)',
+                      border: `1px solid ${meta.border}`,
                     }}
-                  />
+                  >
+                    <Icon className="w-3 h-3" style={{ color: meta.accent }} />
+                    {meta.label}
+                  </span>
+                </div>
 
-                  {/* Top-left platform pill */}
-                  <div className="relative z-10 p-4 md:p-5">
-                    <span
-                      className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.25em] px-2.5 py-1 rounded-full backdrop-blur-sm"
-                      style={{
-                        color: meta.accent,
-                        background: 'rgba(0,0,0,0.45)',
-                        border: `1px solid ${meta.border}`,
-                      }}
-                    >
-                      <Icon className="w-3 h-3" style={{ color: meta.accent }} />
-                      {meta.label}
-                    </span>
+                <div className="flex-1" />
+
+                {/* Bottom content */}
+                <div className="relative z-10 p-5 md:p-6 space-y-3">
+                  <div>
+                    <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-0.5">
+                      {social.label}
+                    </p>
+                    <h4 className="text-base md:text-lg font-black text-white font-mono leading-tight">
+                      {social.handle}
+                    </h4>
                   </div>
 
-                  <div className="flex-1" />
+                  <p className="text-xs text-white/65 leading-relaxed">{social.desc}</p>
 
-                  {/* Bottom content */}
-                  <div className="relative z-10 p-5 md:p-6 space-y-3">
-                    <div>
-                      <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-0.5">
-                        {social.label}
-                      </p>
-                      <h4 className="text-base md:text-lg font-black text-white font-mono leading-tight">
-                        {social.handle}
-                      </h4>
-                    </div>
-
-                    <p className="text-xs text-white/65 leading-relaxed">{social.desc}</p>
-
-                    <a
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-lg transition-all group/btn"
-                      style={{
-                        color: meta.accent,
-                        background: 'rgba(0,0,0,0.50)',
-                        border: `1px solid ${meta.border}`,
-                        backdropFilter: 'blur(8px)',
-                      }}
-                    >
-                      {social.action}
-                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                    </a>
+                  <div
+                    className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"
+                    style={{
+                      color: meta.accent,
+                      background: 'rgba(0,0,0,0.50)',
+                      border: `1px solid ${meta.border}`,
+                      backdropFilter: 'blur(8px)',
+                    }}
+                  >
+                    {social.action}
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-              </motion.div>
+              </motion.a>
             );
           })}
         </div>

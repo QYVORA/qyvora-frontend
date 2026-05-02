@@ -1,6 +1,6 @@
 import React from 'react';
-import { useReducedMotion } from 'motion/react';
-import ScrollReveal from '../../../../shared/components/ScrollReveal';
+import { motion, useInView, useReducedMotion } from 'motion/react';
+import { useRef } from 'react';
 
 interface ProcessSectionProps {
   stats: any;
@@ -17,6 +17,8 @@ const STEPS = [
 
 const ProcessSection: React.FC<ProcessSectionProps> = () => {
   const shouldReduceMotion = useReducedMotion();
+  const headingRef = useRef(null);
+  const headingInView = useInView(headingRef, { once: true, amount: 0.3 });
 
   return (
     <section className="py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
@@ -32,7 +34,13 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
 
         {/* Heading */}
-        <ScrollReveal className="text-center mb-12 md:mb-16">
+        <motion.div
+          ref={headingRef}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, filter: 'blur(6px)' }}
+          animate={headingInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-12 md:mb-16"
+        >
           <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">
             // THE PROCESS
           </span>
@@ -42,37 +50,12 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
           <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
             Five steps from zero to operator. Each one builds on the last.
           </p>
-        </ScrollReveal>
+        </motion.div>
 
         {/* ── Desktop: 5-column grid ── */}
         <div className="hidden md:grid md:grid-cols-5 gap-6">
           {STEPS.map((step, idx) => (
-            <ScrollReveal
-              key={idx}
-              delay={shouldReduceMotion ? 0 : idx * 0.09}
-              className="relative"
-            >
-              {/* Connector line — sits between the number badge and the next card */}
-              {idx < STEPS.length - 1 && (
-                <div
-                  aria-hidden
-                  className="absolute top-[22px] left-[calc(50%+20px)] right-0 h-px bg-border z-0"
-                />
-              )}
-
-              <div className="relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
-                style={{ boxShadow: 'var(--card-shimmer)' }}
-              >
-                {/* Step number */}
-                <div className="font-mono text-2xl font-black text-accent/40 group-hover:text-accent transition-colors duration-300 mb-4 leading-none">
-                  {step.num}
-                </div>
-                <h3 className="text-sm font-black text-text-primary mb-2 uppercase tracking-wide group-hover:text-accent transition-colors duration-200">
-                  {step.title}
-                </h3>
-                <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
-              </div>
-            </ScrollReveal>
+            <StepCard key={idx} step={step} idx={idx} shouldReduceMotion={!!shouldReduceMotion} />
           ))}
         </div>
 
@@ -100,16 +83,56 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
         {/* Mobile scroll dots */}
         <div className="flex md:hidden items-center justify-center gap-1.5 mt-4">
           {STEPS.map((_, i) => (
-            <div
-              key={i}
-              className="h-1 rounded-full bg-border"
-              style={{ width: i === 0 ? 20 : 8 }}
-            />
+            <div key={i} className="h-1 rounded-full bg-border" style={{ width: i === 0 ? 20 : 8 }} />
           ))}
         </div>
 
       </div>
     </section>
+  );
+};
+
+const StepCard: React.FC<{ step: typeof STEPS[0]; idx: number; shouldReduceMotion: boolean }> = ({ step, idx, shouldReduceMotion }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="relative"
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40, scale: 0.94, filter: 'blur(6px)' }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' } : {}}
+      transition={{
+        duration: 0.6,
+        delay: shouldReduceMotion ? 0 : idx * 0.1,
+        ease: [0.16, 1, 0.3, 1],
+        filter: { duration: 0.4 },
+      }}
+    >
+      {/* Connector line */}
+      {idx < STEPS.length - 1 && (
+        <motion.div
+          aria-hidden
+          className="absolute top-[22px] left-[calc(50%+20px)] right-0 h-px bg-border z-0 origin-left"
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : idx * 0.1 + 0.3, ease: 'easeOut' }}
+        />
+      )}
+
+      <div
+        className="relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
+        style={{ boxShadow: 'var(--card-shimmer)' }}
+      >
+        <div className="font-mono text-2xl font-black text-accent/40 group-hover:text-accent transition-colors duration-300 mb-4 leading-none">
+          {step.num}
+        </div>
+        <h3 className="text-sm font-black text-text-primary mb-2 uppercase tracking-wide group-hover:text-accent transition-colors duration-200">
+          {step.title}
+        </h3>
+        <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
+      </div>
+    </motion.div>
   );
 };
 

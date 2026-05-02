@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Link2, Hash } from 'lucide-react';
+import { motion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import ChainLogo from '../../../../shared/components/ChainLogo';
 import CpLogo from '../../../../shared/components/CpLogo';
@@ -42,14 +43,21 @@ const ChainSection: React.FC = () => (
           </ScrollReveal>
 
           <ScrollReveal className="flex flex-col gap-3 mb-7">
-            {CHAIN_FACTS.map(({ icon: Icon, label, desc }) => (
-              <div key={label} className="flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors">
+            {CHAIN_FACTS.map(({ icon: Icon, label, desc }, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, x: -20, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
+                className="flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
+              >
                 <Icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                 <div>
                   <div className="text-xs font-bold text-text-primary mb-0.5">{label}</div>
                   <div className="text-[11px] text-text-muted leading-relaxed">{desc}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </ScrollReveal>
 

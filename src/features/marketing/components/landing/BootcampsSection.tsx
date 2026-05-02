@@ -89,11 +89,11 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               return (
                 <motion.div
                   key={bc.id}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, scale: 0.94, filter: 'blur(6px)' }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={shouldReduceMotion ? {} : { y: -4 }}
+                  transition={{ duration: 0.65, delay: i * 0.12, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
+                  whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.01 }}
                 >
                   <BootcampCard
                     image={image}

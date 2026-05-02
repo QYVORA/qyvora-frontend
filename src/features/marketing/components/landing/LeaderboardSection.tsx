@@ -21,10 +21,10 @@ const LeaderboardRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: n
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -24, scale: 0.97, filter: 'blur(4px)' }}
+      whileInView={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
       className={`rounded-lg border p-3 md:p-4 lg:p-5 flex items-center gap-3 md:gap-4 transition-colors ${
         isFirst
           ? 'border-accent/40 bg-accent-dim'

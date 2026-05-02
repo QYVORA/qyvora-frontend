@@ -60,19 +60,19 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           {user ? (
             <>
               <motion.h2
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(8px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
                 className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight"
               >
                 Keep <span className="text-accent underline decoration-accent/30 underline-offset-8">Operating.</span>
               </motion.h2>
               <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.25 }}
+                transition={{ duration: 0.6, delay: 0.25, filter: { duration: 0.35 } }}
                 className="text-text-secondary text-sm md:text-lg mb-10 max-w-2xl mx-auto"
               >
                 Your training is active. Head to your dashboard to continue where you left off.
@@ -92,19 +92,19 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           ) : (
             <>
               <motion.h2
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(8px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
                 className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight"
               >
                 Ready to <span className="text-accent underline decoration-accent/30 underline-offset-8">Operate?</span>
               </motion.h2>
               <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.25 }}
+                transition={{ duration: 0.6, delay: 0.25, filter: { duration: 0.35 } }}
                 className="text-text-secondary text-sm md:text-lg mb-10 max-w-2xl mx-auto"
               >
                 Join operators training in offensive security. No experience required — just commitment.
