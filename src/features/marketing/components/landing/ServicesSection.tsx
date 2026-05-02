@@ -19,41 +19,45 @@ const ServicesSection: React.FC = () => {
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        <ScrollReveal className="mb-10 md:mb-14">
-          <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// OPERATIONS</span>
+
+        {/* Header */}
+        <ScrollReveal className="mb-10 md:mb-12">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+            Operations
+          </span>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-2">Security Services</h2>
-              <p className="text-text-muted text-sm max-w-xl">
+              <h2 className="text-3xl font-black text-text-primary md:text-4xl">Security Services</h2>
+              <p className="mt-2 text-sm text-text-muted max-w-xl">
                 Offensive-grade expertise for organisations that take security seriously.
               </p>
             </div>
             <Link
               to="/services"
-              className="text-xs font-bold text-accent hover:underline uppercase tracking-widest flex items-center gap-2 flex-none group"
+              className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-accent hover:underline flex-none"
             >
-              All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              All services <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7 xl:gap-8 mb-8">
+        {/* Service cards — 4-column grid, compact horizontal layout */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5 mb-8">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
             >
               <div
-                className="group relative rounded-2xl border border-border bg-bg-card overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-accent/30"
+                className="group flex flex-col overflow-hidden rounded-2xl border-2 border-border bg-bg-card transition-colors duration-200 hover:border-accent/40 h-full"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                {/* Illustration panel — transparent PNG on dark bg */}
-                <div className="relative h-64 md:h-72 lg:h-[26rem] xl:h-[30rem] overflow-hidden flex-none bg-bg flex items-center justify-center p-4 md:p-6">
-                  {/* Subtle dark bg with dot grid for depth */}
-                  <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
+                {/* Compact illustration strip */}
+                <div className="relative flex items-center justify-center overflow-hidden bg-bg h-36">
+                  <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
                   <div
                     aria-hidden
                     className="absolute inset-0 pointer-events-none"
@@ -62,78 +66,64 @@ const ServicesSection: React.FC = () => {
                   <img
                     src={serv.img}
                     alt=""
-                    className="relative z-10 h-auto max-h-[94%] w-auto max-w-[94%] object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-[0_0_32px_var(--color-accent-glow)]"
+                    className="relative z-10 h-24 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.05]"
                   />
-                  <div
-                    aria-hidden
-                    className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-                    style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }}
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
-                    style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }}
-                  />
-                  {/* Category */}
-                  <div className="absolute top-3 right-3 z-20">
-                    <span className="text-[9px] font-bold text-accent border border-accent/30 bg-bg/80 backdrop-blur-sm rounded px-2 py-0.5 uppercase tracking-wider font-mono">
-                      {serv.category}
+                  {/* Category badge */}
+                  <div className="absolute top-2.5 right-2.5 z-20">
+                    <span className="text-[8px] font-bold text-accent border border-accent/30 bg-bg/80 backdrop-blur-sm rounded px-1.5 py-0.5 uppercase tracking-wider font-mono">
+                      {serv.category.split('//').pop()?.trim() || serv.category}
                     </span>
                   </div>
                   {/* Index */}
-                  <div
-                    className="absolute top-3 left-3 z-20 font-mono text-3xl font-black leading-none select-none pointer-events-none"
-                    style={{ color: 'var(--color-accent-dim)' }}
-                  >
+                  <div className="absolute top-2.5 left-3 z-20 font-mono text-2xl font-black leading-none select-none pointer-events-none opacity-20">
                     0{idx + 1}
                   </div>
-                  {/* Icon */}
+                  {/* Bottom fade */}
                   <div
-                    className="absolute bottom-3 left-3 z-20 w-9 h-9 rounded-lg flex items-center justify-center"
-                    style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-border-strong)' }}
-                  >
-                    <serv.icon className="w-4 h-4 text-accent" />
-                  </div>
+                    aria-hidden
+                    className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
+                    style={{ background: 'linear-gradient(to top, var(--color-bg-card), transparent)' }}
+                  />
                 </div>
 
-                {/* Content */}
-                <div className="p-6 md:p-7 lg:p-8 flex flex-col flex-1">
-                  <h3 className="text-base md:text-lg font-black text-text-primary mb-2 group-hover:text-accent transition-colors font-mono uppercase tracking-tight">
-                    {serv.title}
-                  </h3>
-                  <p className="text-sm text-text-muted mb-5 font-mono">{serv.tagline}</p>
+                {/* Body */}
+                <div className="flex flex-1 flex-col p-5">
+                  {/* Icon + title */}
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent-dim">
+                      <serv.icon className="w-4 h-4 text-accent" />
+                    </div>
+                    <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors">
+                      {serv.title}
+                    </h3>
+                  </div>
 
-                  <ul className="flex flex-col gap-2.5 mb-6 flex-1">
+                  <p className="text-xs text-text-muted mb-4 leading-relaxed">{serv.tagline}</p>
+
+                  <ul className="flex flex-col gap-1.5 mb-5 flex-1">
                     {serv.bullet.slice(0, 2).map((b, i) => (
-                      <li key={i} className="text-sm text-text-secondary flex items-start gap-2.5">
-                        <span className="text-accent font-mono font-bold flex-none mt-0.5 text-[11px]">{'>'}</span>
+                      <li key={i} className="text-xs text-text-secondary flex items-start gap-2">
+                        <span className="text-accent font-mono font-bold flex-none mt-0.5 text-[10px]">›</span>
                         {b}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="flex gap-3 mt-auto">
+                  <div className="mt-auto flex gap-2">
                     <a
                       href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`}
-                      className="btn-primary !py-2.5 !px-4 text-xs flex items-center justify-center gap-1.5 flex-1"
+                      className="btn-primary !py-2 !px-3 text-[11px] flex items-center justify-center gap-1 flex-1"
                     >
-                      <Mail className="w-3.5 h-3.5" /> Talk to Us
+                      <Mail className="w-3 h-3" /> Contact
                     </a>
                     <Link
                       to="/services"
-                      className="btn-secondary !py-2.5 !px-4 text-xs flex items-center justify-center gap-1.5 flex-1"
+                      className="btn-secondary !py-2 !px-3 text-[11px] flex items-center justify-center gap-1 flex-1"
                     >
-                      Learn More <ArrowRight className="w-3.5 h-3.5" />
+                      More <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
                 </div>
-
-                {/* Hover glow */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
-                  style={{ boxShadow: '0 0 40px var(--color-accent-glow)' }}
-                />
               </div>
             </motion.div>
           ))}
@@ -142,7 +132,7 @@ const ServicesSection: React.FC = () => {
         {/* CTA strip */}
         <ScrollReveal>
           <div
-            className="relative rounded-xl border border-border overflow-hidden p-6 md:p-8 text-center"
+            className="relative rounded-2xl border border-border overflow-hidden p-6 md:p-8 text-center"
             style={{ background: 'var(--color-accent-dim)' }}
           >
             <div aria-hidden className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
@@ -152,7 +142,7 @@ const ServicesSection: React.FC = () => {
               style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
             />
             <div className="relative z-10">
-              <h3 className="text-lg md:text-xl font-bold text-text-primary mb-2">Not sure which service fits?</h3>
+              <h3 className="text-lg font-black text-text-primary mb-2 md:text-xl">Not sure which service fits?</h3>
               <p className="text-text-muted text-sm mb-5 max-w-lg mx-auto">
                 Our security desk can map our capabilities to your threat model.
               </p>
@@ -165,14 +155,15 @@ const ServicesSection: React.FC = () => {
                 </a>
                 <Link
                   to="/services"
-                  className="text-xs font-bold text-accent hover:underline uppercase tracking-widest flex items-center gap-1.5"
+                  className="text-xs font-black text-accent hover:underline uppercase tracking-widest inline-flex items-center gap-1.5"
                 >
-                  View All Services <ArrowRight className="w-3.5 h-3.5" />
+                  View all services <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>
           </div>
         </ScrollReveal>
+
       </div>
     </section>
   );

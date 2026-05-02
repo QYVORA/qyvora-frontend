@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 
 const CSRF_TOKEN_KEY = 'hsociety_csrf_token';
+const AUTH_SESSION_HINT_KEY = 'hsociety_auth_session_hint';
 
 const DEFAULT_API_BASE = '/api';
 const API_BASE_URL = String(import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE).trim();
@@ -11,9 +12,14 @@ const API_BASE_URL = String(import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BAS
 let accessToken: string = '';
 let csrfToken: string = localStorage.getItem(CSRF_TOKEN_KEY) || '';
 let refreshPromise: Promise<string | null> | null = null;
+let authSessionHint = localStorage.getItem(AUTH_SESSION_HINT_KEY) === '1';
 
 const persistAccessToken = (token: string) => {
   accessToken = token || '';
+  if (accessToken) {
+    authSessionHint = true;
+    localStorage.setItem(AUTH_SESSION_HINT_KEY, '1');
+  }
   // intentionally NOT persisted to localStorage — memory only
 };
 
@@ -25,9 +31,15 @@ const persistCsrfToken = (token: string) => {
 
 export const getAccessToken = () => accessToken;
 export const setAccessToken = (token: string) => persistAccessToken(token);
+export const setAuthSessionHint = (value: boolean) => {
+  authSessionHint = value;
+  if (value) localStorage.setItem(AUTH_SESSION_HINT_KEY, '1');
+  else localStorage.removeItem(AUTH_SESSION_HINT_KEY);
+};
 export const clearAuthStorage = () => {
   persistAccessToken('');
   persistCsrfToken('');
+  setAuthSessionHint(false);
 };
 
 const maybeUpdateAuthArtifacts = (payload: unknown, headers?: Record<string, unknown>) => {
@@ -106,6 +118,11 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     if (!original || original._retry || status !== 401) {
+      return Promise.reject(error);
+    }
+
+    // Skip refresh attempts for visitors with no known session.
+    if (!authSessionHint) {
       return Promise.reject(error);
     }
 

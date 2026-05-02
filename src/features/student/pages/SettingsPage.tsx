@@ -138,11 +138,12 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-10">
-      <div className="mx-auto max-w-5xl px-4 pt-8 md:px-10 md:pt-10">
+    <div className="min-h-screen bg-bg pb-12">
+      <div className="mx-auto max-w-5xl px-4 pt-8 md:px-8 md:pt-10">
         <ScrollReveal className="mb-10">
-          <span className="mb-2 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
-          <h1 className="text-4xl font-black text-text-primary md:text-5xl">Account settings</h1>
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
+          <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">

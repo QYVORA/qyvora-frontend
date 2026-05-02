@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Trophy, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
+import { CardMedia } from '../../../../shared/components/ui/Card';
 import { resolveImg } from './helpers';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
@@ -137,27 +138,25 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                   transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   whileHover={shouldReduceMotion ? {} : { y: -3 }}
                 >
-                  <div className="card-hsociety p-3 md:p-4 flex flex-col h-full">
-                    <div className="relative overflow-hidden rounded mb-3">
-                      <img
-                        src={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
-                        alt=""
-                        className="w-full h-24 md:h-32 object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                  <CardMedia
+                    image={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
+                    imageAspect="aspect-[4/3]"
+                    href="/zero-day-market"
+                  >
+                    <div className="p-4 flex flex-col flex-1">
+                      <h4 className="text-xs md:text-sm font-bold text-text-primary mb-2 line-clamp-1 group-hover:text-accent transition-colors">
+                        {prod.title}
+                      </h4>
+                      <div className="mt-auto flex flex-col gap-2">
+                        <span className="text-xs font-mono text-accent py-0.5 px-2 bg-accent-dim border border-accent/20 rounded w-fit inline-flex items-center gap-1">
+                          {prod.cpPrice ?? 0} <CpLogo className="w-3.5 h-3.5" />
+                        </span>
+                        <div className="w-full py-2 bg-accent text-bg font-bold text-[10px] uppercase tracking-tighter rounded text-center">
+                          View in Market
+                        </div>
+                      </div>
                     </div>
-                    <h4 className="text-xs md:text-sm font-bold text-text-primary mb-2 line-clamp-1">{prod.title}</h4>
-                    <div className="mt-auto flex flex-col gap-2">
-                      <span className="text-xs font-mono text-accent py-0.5 px-2 bg-accent-dim border border-accent/20 rounded w-fit inline-flex items-center gap-1">
-                        {prod.cpPrice ?? 0} <CpLogo className="w-3.5 h-3.5" />
-                      </span>
-                      <Link
-                        to="/zero-day-market"
-                        className="w-full py-2 bg-accent text-bg font-bold text-[10px] uppercase tracking-tighter rounded hover:brightness-110 text-center block transition-all"
-                      >
-                        View in Market
-                      </Link>
-                    </div>
-                  </div>
+                  </CardMedia>
                 </motion.div>
               ))
             )}

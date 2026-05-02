@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
+import { CardBase } from '../../../../shared/components/ui/Card';
 
 interface ProcessSectionProps {
   stats: any;
@@ -52,21 +53,15 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
                 )}
 
                 <div className="relative z-10 md:pr-6 group">
-                  {/* Step number circle */}
-                  <motion.div
-                    whileHover={shouldReduceMotion ? {} : { scale: 1.08 }}
-                    transition={{ duration: 0.2 }}
-                    className="w-14 h-14 rounded-2xl border-2 border-border bg-bg-card flex items-center justify-center mb-4 group-hover:border-accent/50 group-hover:bg-accent-dim transition-colors duration-300"
-                  >
-                    <span className="font-mono text-lg font-black text-accent/60 group-hover:text-accent transition-colors duration-300">
+                  <CardBase className="p-5 mb-0 cursor-default hover:border-accent/40">
+                    <div className="font-mono text-2xl font-black text-accent/50 group-hover:text-accent transition-colors duration-300 mb-3">
                       {step.num}
-                    </span>
-                  </motion.div>
-
-                  <h3 className="text-base md:text-lg font-black text-text-primary mb-2 uppercase tracking-tight group-hover:text-accent transition-colors duration-200">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs md:text-sm text-text-muted leading-relaxed">{step.desc}</p>
+                    </div>
+                    <h3 className="text-sm font-black text-text-primary mb-2 uppercase tracking-tight group-hover:text-accent transition-colors duration-200">
+                      {step.title}
+                    </h3>
+                    <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
+                  </CardBase>
                 </div>
               </ScrollReveal>
             ))}

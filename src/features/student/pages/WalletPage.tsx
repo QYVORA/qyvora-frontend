@@ -53,7 +53,8 @@ const Wallet: React.FC = () => {
 
   // Load chain history separately (degrades silently if chain is offline)
   useEffect(() => {
-    getChainHistory()
+    const timeout = new Promise<ChainBlock[]>((resolve) => setTimeout(() => resolve([]), 6000));
+    Promise.race([getChainHistory(), timeout])
       .then(setChainHistory)
       .catch(() => setChainHistory([]))
       .finally(() => setChainLoading(false));
@@ -75,13 +76,13 @@ const Wallet: React.FC = () => {
   const totalSpent = Math.abs(txRows.filter((t) => t.value < 0).reduce((a, t) => a + t.value, 0));
 
   return (
-    <div className="min-h-screen bg-bg pb-8">
+    <div className="min-h-screen bg-bg pb-12">
       <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
 
-        <ScrollReveal className="mb-8 md:mb-12">
-          <span className="mb-2 block text-xs font-black uppercase tracking-[0.3em] text-accent md:text-sm">Economy</span>
-          <h1 className="text-4xl font-black text-text-primary md:text-5xl">Operator wallet</h1>
-          <p className="mt-2 max-w-xl text-base text-text-muted md:text-lg">Your CP balance and ledger — same energy as the dashboard hub.</p>
+        <ScrollReveal className="mb-10 md:mb-12">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Economy</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Wallet</h1>
+          <p className="mt-2 max-w-lg text-base text-text-muted">Your CP balance and full transaction ledger.</p>
         </ScrollReveal>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
@@ -96,10 +97,9 @@ const Wallet: React.FC = () => {
               src={STUDENT_DECOR.walletMascot}
               className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[120px] w-auto -translate-y-1/2 object-contain opacity-95 md:max-h-[140px]"
             />
-            <div className="relative z-10 mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Available balance</div>
-            <div className="relative z-10 mb-6 inline-flex items-center gap-2 font-mono text-4xl font-black text-accent md:text-5xl">
+            <div className="relative z-10 mb-6 inline-flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
+              <CpLogo className="w-8 h-8 md:w-9 md:h-9 opacity-90 shrink-0" />
               {loading ? '—' : balance.toLocaleString()}
-              <CpLogo className="w-7 h-7 md:w-8 md:h-8 opacity-75" />
             </div>
             {/* Stats row */}
             <div className="relative z-10 grid grid-cols-2 gap-3">
@@ -107,19 +107,13 @@ const Wallet: React.FC = () => {
                 <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none shrink-0">
                   <ArrowDownLeft className="w-4 h-4 text-accent" />
                 </div>
-                <div className="min-w-0">
-                  <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Earned</div>
-                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1 flex-wrap">{totalEarned.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
-                </div>
+                <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1">{totalEarned.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
               </div>
               <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3">
                 <div className="w-8 h-8 rounded-lg bg-red-400/10 border border-red-400/20 flex items-center justify-center flex-none shrink-0">
                   <ArrowUpRight className="w-4 h-4 text-red-400" />
                 </div>
-                <div className="min-w-0">
-                  <div className="text-[9px] uppercase font-bold text-text-muted tracking-widest">Spent</div>
-                  <div className="text-sm font-mono font-bold text-text-primary inline-flex items-center gap-1 flex-wrap">{totalSpent.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
-                </div>
+                <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1">{totalSpent.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
               </div>
             </div>
           </div>
@@ -127,14 +121,11 @@ const Wallet: React.FC = () => {
 
         {/* Rank pill */}
         <ScrollReveal>
-          <div className="flex items-center gap-4 rounded-2xl border-2 border-border bg-bg-card p-4 md:p-5">
+          <div className="flex items-center gap-3 rounded-2xl border-2 border-border bg-bg-card p-4 md:p-5">
             <div className="w-10 h-10 rounded-lg bg-accent-dim border border-accent/30 flex items-center justify-center text-accent flex-none shrink-0">
               <Shield className="w-5 h-5" />
             </div>
-            <div>
-              <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest">Active Rank</div>
-              <div className="text-base font-bold text-text-primary font-mono">{user?.rank?.toUpperCase() || 'CANDIDATE'}</div>
-            </div>
+            <div className="text-base font-bold text-text-primary font-mono">{user?.rank?.toUpperCase() || 'CANDIDATE'}</div>
           </div>
         </ScrollReveal>
 
@@ -232,8 +223,14 @@ const Wallet: React.FC = () => {
                 ))}
               </div>
             ) : chainHistory.length === 0 ? (
-              <div className="py-10 text-center text-sm text-text-muted">
-                No chain records yet — complete rooms to generate verified blocks.
+              <div className="py-10 px-5 text-center space-y-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-accent-dim border border-accent/20 mx-auto">
+                  <Link2 className="w-5 h-5 text-accent" />
+                </div>
+                <p className="text-sm font-bold text-text-primary">No chain records yet</p>
+                <p className="text-xs text-text-muted max-w-xs mx-auto leading-relaxed">
+                  Complete bootcamp rooms to generate tamper-proof blocks on the HSOCIETY chain.
+                </p>
               </div>
             ) : (
               <div className="divide-y divide-border/50">

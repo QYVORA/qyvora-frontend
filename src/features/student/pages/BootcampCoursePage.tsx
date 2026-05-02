@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
   BookOpen, Loader2, ArrowRight, Play, ListChecks,
@@ -10,11 +9,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
-import { formatSyncLabel, getDataSaverEnabled, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
+import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
 
-// Per-phase room card images — one image per phase, shown on every room card in that phase
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/assets/bootcamp/rooms/hacker-mindset.png',
   phase2: '/assets/bootcamp/rooms/linux-foundations.png',
@@ -42,14 +38,13 @@ const BootcampCourse: React.FC = () => {
   const { addToast } = useToast();
   const { refreshMe } = useAuth();
 
-  const [course, setCourse] = useState<Course | null>(null);
-  const [overview, setOverview] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
-  const [enrolling, setEnrolling] = useState(false);
-  const [syncError, setSyncError] = useState('');
-  const [lastSync, setLastSync] = useState<string | null>(getLastSync('bootcamp-course'));
-  const [dataSaver] = useState(getDataSaverEnabled());
+  const [course, setCourse]           = useState<Course | null>(null);
+  const [overview, setOverview]       = useState<any>(null);
+  const [loading, setLoading]         = useState(true);
+  const [bootcampStatus, setStatus]   = useState('not_enrolled');
+  const [enrolling, setEnrolling]     = useState(false);
+  const [syncError, setSyncError]     = useState('');
+  const [lastSync, setLastSync]       = useState<string | null>(getLastSync('bootcamp-course'));
 
   const load = async () => {
     try {
@@ -60,27 +55,18 @@ const BootcampCourse: React.FC = () => {
       ]);
       const ov = ovRes.data || null;
       setOverview(ov);
-
-      // Determine enrollment for THIS specific bootcamp
-      // Check 1: overview.bootcampId matches (single-bootcamp model)
-      // Check 2: overview.modules contains an entry for this bootcamp
       const enrolledViaStatus =
         ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
         String(ov?.bootcampId || '') === String(bootcampId || '');
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
         (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
       );
-      const enrolled = enrolledViaStatus || enrolledViaModules;
-      setBootcampStatus(enrolled ? 'enrolled' : 'not_enrolled');
-
-      if (courseRes?.data) {
-        const nextCourse = courseRes.data as Course;
-        setCourse(nextCourse);
-      }
+      setStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
+      if (courseRes?.data) setCourse(courseRes.data as Course);
       setLastSync(setLastSyncNow('bootcamp-course'));
       setSyncError('');
     } catch {
-      setSyncError('Could not sync full course state. Displaying available data.');
+      setSyncError('Could not sync. Displaying available data.');
     } finally {
       setLoading(false);
     }
@@ -92,7 +78,7 @@ const BootcampCourse: React.FC = () => {
     setEnrolling(true);
     try {
       const res = await api.post('/student/bootcamp', { bootcampId: bootcampId || '' });
-      setBootcampStatus(res.data?.bootcampStatus || 'enrolled');
+      setStatus(res.data?.bootcampStatus || 'enrolled');
       await refreshMe();
       addToast('Enrolled in bootcamp.', 'success');
       await load();
@@ -104,21 +90,19 @@ const BootcampCourse: React.FC = () => {
   };
 
   const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
+  const progressNum   = parseInt(progressValue, 10) || 0;
   const moduleProgressMap = new Map<number, any>(
     (overview?.modules || []).map((m: any) => [Number(m.id), m])
   );
 
-  // ── Loading ──
+  // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="min-h-screen bg-bg pb-12">
-        <div className="mx-auto max-w-6xl px-4 pt-20 md:px-8 md:pt-24">
-          <div className="mb-6 h-6 w-40 animate-pulse rounded-lg bg-accent-dim/40" />
-          <div className="mb-8 animate-pulse overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
-            <div className="mb-6 h-4 w-36 rounded-lg bg-accent/20" />
-            <div className="mb-4 h-10 max-w-xl rounded-xl bg-accent-dim/30" />
-            <div className="mb-8 h-3.5 w-full max-w-xl rounded-full bg-accent-dim" />
-          </div>
+        <div className="mx-auto max-w-6xl px-4 pt-8 md:px-8 md:pt-10">
+          <div className="mb-8 h-5 w-40 animate-pulse rounded bg-accent-dim/30" />
+          <div className="mb-6 h-8 w-64 animate-pulse rounded bg-accent-dim/30" />
+          <div className="mb-10 h-2 w-full animate-pulse rounded-full bg-accent-dim/20" />
           {[0, 1, 2].map((i) => (
             <div key={i} className="mb-4 h-20 animate-pulse rounded-2xl border border-border bg-bg-card" />
           ))}
@@ -127,130 +111,103 @@ const BootcampCourse: React.FC = () => {
     );
   }
 
-  // ── Not enrolled ──
+  // ── Not enrolled ─────────────────────────────────────────────────────────
   if (bootcampStatus === 'not_enrolled') {
     return (
       <div className="min-h-screen bg-bg pb-12">
-        <div className="mx-auto max-w-2xl px-4 pt-20 md:px-10 md:pt-24">
+        <div className="mx-auto max-w-2xl px-4 pt-8 md:px-8 md:pt-10">
           <Link
             to="/bootcamps"
             className="mb-10 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted transition-colors hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" /> Back to bootcamps
           </Link>
-          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card px-8 py-12 text-center md:px-12 md:py-14">
-            <div className="pointer-events-none absolute inset-0" aria-hidden>
-              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
-            </div>
-            <OptionalDecorImage
-              src={STUDENT_DECOR.courseCurriculumMascot}
-              className="pointer-events-none absolute -bottom-4 right-4 z-[1] hidden max-h-[140px] w-auto opacity-90 md:block"
-            />
-            <div className="relative z-10">
-              <BookOpen className="mx-auto mb-6 h-14 w-14 text-accent opacity-80 md:h-16 md:w-16" />
-              <h1 className="mb-3 text-3xl font-black text-text-primary md:text-4xl">Enroll to unlock</h1>
-              <p className="mb-10 text-base text-text-muted md:text-lg">Join this bootcamp to open the full curriculum map.</p>
-              <button onClick={enroll} disabled={enrolling} className="btn-primary inline-flex items-center gap-3 px-10 py-4 text-base font-black uppercase disabled:opacity-50">
-                {enrolling ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" /> Enrolling…
-                  </>
-                ) : (
-                  'Enroll now'
-                )}
-              </button>
-            </div>
+          <div className="rounded-2xl border-2 border-border bg-bg-card px-8 py-12 text-center md:px-12 md:py-14">
+            <BookOpen className="mx-auto mb-6 h-12 w-12 text-accent opacity-80" />
+            <h1 className="mb-3 text-3xl font-black text-text-primary md:text-4xl">Enroll to unlock</h1>
+            <p className="mb-10 text-base text-text-muted">Join this bootcamp to open the full curriculum map.</p>
+            <button
+              onClick={enroll}
+              disabled={enrolling}
+              className="btn-primary inline-flex items-center gap-3 px-10 py-4 text-base font-black uppercase disabled:opacity-50"
+            >
+              {enrolling ? <><Loader2 className="h-5 w-5 animate-spin" /> Enrolling…</> : 'Enroll now'}
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
-  // ── Enrolled ──
+  // ── Enrolled ─────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-bg pb-16">
-      <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 md:px-8 md:pt-24">
+      <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 md:px-8 md:pt-10">
 
-        {/* Breadcrumb */}
-        <div className="mb-8 flex flex-wrap items-center gap-2 text-sm text-text-muted">
-          <Link
-            to="/bootcamps"
-            className="inline-flex items-center gap-1 font-black uppercase tracking-widest transition-colors hover:text-accent"
-          >
-            <ArrowLeft className="h-4 w-4" /> Bootcamps
-          </Link>
-          <ChevronRight className="h-4 w-4 opacity-40" />
-          <span className="truncate font-black uppercase tracking-wide text-text-primary">{course?.title || 'Course'}</span>
-        </div>
-
-        {/* Hero card */}
+        {/* ── HEADER — marketplace pattern ─────────────────────────── */}
         <ScrollReveal className="mb-10">
-          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-6 sm:p-8 md:p-10">
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl" aria-hidden>
-              <div className="absolute -right-16 -top-20 h-72 w-72 rounded-full bg-accent/14 blur-3xl" />
-              <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
-            </div>
-            <OptionalDecorImage
-              src={dataSaver ? undefined : STUDENT_DECOR.courseCurriculumMascot}
-              className="pointer-events-none absolute bottom-0 right-0 z-[1] hidden max-h-[200px] w-auto opacity-95 md:block md:max-h-[240px]"
-            />
-            <div className="relative z-10 max-w-2xl">
-              <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.35em] text-accent">// Curriculum map</span>
-              <h1 className="mb-5 text-2xl font-black text-text-primary sm:text-3xl md:text-4xl">{course?.title || 'Bootcamp'}</h1>
+          <div className="mb-6 flex flex-wrap items-center gap-2 text-xs text-text-muted">
+            <Link
+              to="/bootcamps"
+              className="inline-flex items-center gap-1 font-black uppercase tracking-widest transition-colors hover:text-accent"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Bootcamps
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 opacity-40" />
+            <span className="truncate font-black uppercase tracking-wide text-text-primary">
+              {course?.title || 'Course'}
+            </span>
+          </div>
 
-              {/* Progress */}
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Overall progress</span>
-                <span className="font-mono text-xl font-black text-accent">{progressValue}</span>
-              </div>
-              <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-accent-dim">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: progressValue }}
-                  transition={{ duration: 1, ease: 'easeOut' }}
-                  className="h-full rounded-full bg-accent"
-                  style={{ boxShadow: '0 0 16px var(--color-accent-glow)' }}
-                />
-              </div>
-
-              {/* CTAs */}
-              <div className="mt-5 flex flex-wrap items-center gap-2.5">
-                <Link
-                  to={resolveNextRoomPath(String(bootcampId || '')) || '#'}
-                  className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-black"
-                >
-                  <Play className="h-3.5 w-3.5 fill-current" /> Resume mission
-                </Link>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`My next HSOCIETY mission: ${resolveNextRoomPath(String(bootcampId || '')) || '/bootcamps'}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary inline-flex items-center gap-2 px-5 py-2.5 text-sm"
-                >
-                  Share on WhatsApp
-                </a>
-              </div>
-
-              <p className={`mt-3 text-[11px] ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+                Curriculum map
+              </span>
+              <h1 className="text-4xl font-black text-text-primary md:text-6xl">
+                {course?.title || 'Bootcamp'}
+              </h1>
+              <p className={`mt-2 text-sm ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
                 {syncError || formatSyncLabel(lastSync)}
               </p>
             </div>
+
+            {/* Progress pill + CTA */}
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
+                <span className="font-mono text-xl font-black text-accent">{progressValue}</span>
+              </div>
+              <Link
+                to={resolveNextRoomPath(String(bootcampId || '')) || '#'}
+                className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-black"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" /> Resume mission
+              </Link>
+            </div>
+          </div>
+
+          {/* Overall progress bar */}
+          <div className="mt-6 h-2 overflow-hidden rounded-full bg-accent-dim">
+            <div
+              className="h-full rounded-full bg-accent transition-all duration-700"
+              style={{ width: `${progressNum}%` }}
+            />
           </div>
         </ScrollReveal>
 
-        {/* ── Phase sections with room cards ── */}
+        {/* ── Phase sections ───────────────────────────────────────── */}
         <div className="space-y-10">
           {(course?.modules || []).map((mod, modIdx) => {
-            const prog = moduleProgressMap.get(Number(mod.moduleId));
-            const progress = Number(prog?.progress || 0);
+            const prog      = moduleProgressMap.get(Number(mod.moduleId));
+            const progress  = Number(prog?.progress || 0);
             const roomsDone = Number(prog?.roomsCompleted || 0);
             const roomsTotal = Number(prog?.roomsTotal || mod.rooms?.length || 0);
-            const isLocked = mod.locked;
+            const isLocked  = mod.locked;
             const isComplete = progress === 100;
 
-            // Map API module index → config phase
-            const configPhase = BOOTCAMP_CONFIG.phases.find((p) => p.title.toLowerCase() === String(mod.title || '').toLowerCase())
-              || BOOTCAMP_CONFIG.phases[modIdx];
+            const configPhase = BOOTCAMP_CONFIG.phases.find(
+              (p) => p.title.toLowerCase() === String(mod.title || '').toLowerCase()
+            ) || BOOTCAMP_CONFIG.phases[modIdx];
 
             return (
               <ScrollReveal key={mod.moduleId} delay={modIdx * 0.05}>
@@ -258,13 +215,15 @@ const BootcampCourse: React.FC = () => {
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
-                      isComplete
-                        ? 'border-accent/30 bg-accent text-bg'
-                        : isLocked
-                        ? 'border-border bg-bg text-text-muted'
-                        : 'border-accent/30 bg-accent-dim text-accent'
+                      isComplete  ? 'border-accent/30 bg-accent text-bg'
+                      : isLocked  ? 'border-border bg-bg text-text-muted'
+                                  : 'border-accent/30 bg-accent-dim text-accent'
                     }`}>
-                      {isComplete ? <CheckCircle2 className="h-4 w-4" /> : isLocked ? <Lock className="h-3.5 w-3.5" /> : String(modIdx + 1).padStart(2, '0')}
+                      {isComplete
+                        ? <CheckCircle2 className="h-4 w-4" />
+                        : isLocked
+                        ? <Lock className="h-3.5 w-3.5" />
+                        : String(modIdx + 1).padStart(2, '0')}
                     </div>
                     <div>
                       <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
@@ -289,16 +248,14 @@ const BootcampCourse: React.FC = () => {
                 {/* Phase progress bar */}
                 {progress > 0 && (
                   <div className="mb-4 h-1 overflow-hidden rounded-full bg-accent-dim">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${progress}%` }}
-                      transition={{ duration: 0.8, ease: 'easeOut' }}
-                      className="h-full rounded-full bg-accent"
+                    <div
+                      className="h-full rounded-full bg-accent transition-all duration-700"
+                      style={{ width: `${progress}%` }}
                     />
                   </div>
                 )}
 
-                {/* Room cards grid */}
+                {/* Room cards */}
                 {isLocked ? (
                   <div className="flex items-center gap-3 rounded-2xl border border-dashed border-border bg-bg-card/40 p-5">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-bg">
@@ -310,13 +267,15 @@ const BootcampCourse: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {(mod.rooms || []).map((room, roomIdx) => {
                       const isRoomLocked = room.locked;
-                      const roomDone = Boolean(room.completed);
+                      const roomDone     = Boolean(room.completed);
 
-                      const configRoom = configPhase?.rooms.find((r) => r.title.toLowerCase() === String(room.title || '').toLowerCase())
-                        || configPhase?.rooms[roomIdx];
+                      const configRoom = configPhase?.rooms.find(
+                        (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
+                      ) || configPhase?.rooms[roomIdx];
+
                       const roomPath = configPhase && configRoom
                         ? `/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
                         : null;
@@ -330,13 +289,14 @@ const BootcampCourse: React.FC = () => {
                           key={room.roomId}
                           to={!isRoomLocked && roomPath ? roomPath : '#'}
                           onClick={isRoomLocked ? (e) => e.preventDefault() : undefined}
-                          className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-all duration-200 ${
+                          className={`group flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-colors duration-200 ${
                             isRoomLocked
                               ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                               : roomDone
-                              ? 'border-accent/30 hover:border-accent/60 hover:shadow-[0_0_24px_var(--color-accent-glow)]'
-                              : 'border-border hover:border-accent/40 hover:shadow-[0_0_20px_var(--color-accent-glow)]'
+                              ? 'border-accent/30 hover:border-accent/55'
+                              : 'border-border hover:border-accent/40'
                           }`}
+                          style={{ boxShadow: 'var(--card-shimmer)' }}
                         >
                           {/* Room image */}
                           <div className="relative aspect-video overflow-hidden">
@@ -344,8 +304,8 @@ const BootcampCourse: React.FC = () => {
                               src={roomImg}
                               alt={room.title}
                               loading="lazy"
-                              className={`w-full h-full object-cover transition-all duration-500 ${
-                                isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.04]'
+                              className={`w-full h-full object-cover transition-transform duration-500 ${
+                                isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.03]'
                               }`}
                               onError={(e) => {
                                 const el = e.currentTarget;
@@ -355,7 +315,6 @@ const BootcampCourse: React.FC = () => {
                                 }
                               }}
                             />
-                            {/* Gradient */}
                             <div
                               aria-hidden
                               className="pointer-events-none absolute inset-0"
@@ -364,13 +323,15 @@ const BootcampCourse: React.FC = () => {
                             {/* Badges */}
                             <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                               <div className={`flex h-6 w-6 items-center justify-center rounded-lg border font-mono text-[10px] font-black ${
-                                roomDone
-                                  ? 'border-accent/40 bg-accent text-bg'
-                                  : isRoomLocked
-                                  ? 'border-border bg-bg/80 text-text-muted'
-                                  : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
+                                roomDone      ? 'border-accent/40 bg-accent text-bg'
+                                : isRoomLocked ? 'border-border bg-bg/80 text-text-muted'
+                                              : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
                               }`}>
-                                {roomDone ? <CheckCircle2 className="h-3 w-3" /> : isRoomLocked ? <Lock className="h-2.5 w-2.5" /> : String(roomIdx + 1).padStart(2, '0')}
+                                {roomDone
+                                  ? <CheckCircle2 className="h-3 w-3" />
+                                  : isRoomLocked
+                                  ? <Lock className="h-2.5 w-2.5" />
+                                  : String(roomIdx + 1).padStart(2, '0')}
                               </div>
                               {roomDone && (
                                 <span className="px-1.5 py-0.5 bg-accent text-bg rounded text-[8px] font-black uppercase tracking-widest">
@@ -378,7 +339,6 @@ const BootcampCourse: React.FC = () => {
                                 </span>
                               )}
                             </div>
-                            {/* Step count pill — bottom right of image */}
                             {configRoom && (
                               <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
                                 {configRoom.steps.length} steps
@@ -393,16 +353,13 @@ const BootcampCourse: React.FC = () => {
                             }`}>
                               {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
                             </h3>
-
                             {(configRoom?.overview || room.overview) && (
                               <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted">
                                 {configRoom?.overview || room.overview}
                               </p>
                             )}
-
-                            {/* Enter arrow */}
                             {!isRoomLocked && (
-                              <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all group-hover:opacity-100">
+                              <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-opacity group-hover:opacity-100">
                                 Enter room <ArrowRight className="h-3 w-3" />
                               </div>
                             )}

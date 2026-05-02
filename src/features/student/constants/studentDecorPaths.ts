@@ -15,4 +15,10 @@ export const STUDENT_DECOR = {
   courseCurriculumMascot: '/images/student/course-curriculum-mascot.png',
   /** Wallet balance card — right side */
   walletMascot: '/images/student/wallet-economy-mascot.png',
+  /** Bootcamp operator illustration — used in dashboard program section */
+  bootcampOperator: '/assets/illustrations/bootcamp-operator.png',
+  /** Hero terminal panel — used in learn/dashboard sections */
+  heroTerminalPanel: '/assets/illustrations/hero-terminal-panel.png',
+  /** Phase complete badge — used in progress/milestone sections */
+  phaseCompleteBadge: '/assets/illustrations/phase-complete-badge.png',
 } as const;

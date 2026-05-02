@@ -428,6 +428,10 @@ const AdminDashboardPage: React.FC = () => {
     { id: 'quizzes',      label: 'Quizzes',      icon: BookOpen     },
   ];
 
+  // Mobile bottom nav: first 4 primary tabs + "More" sheet for the rest
+  const MOBILE_PRIMARY_TABS = tabs.slice(0, 4);
+  const MOBILE_MORE_TABS = tabs.slice(4);
+
   const activeLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
 
   // ── Render ────────────────────────────────────────────────────────────────────
@@ -438,7 +442,10 @@ const AdminDashboardPage: React.FC = () => {
       <aside className="hidden md:flex w-56 lg:w-64 shrink-0 border-r border-border bg-bg-card flex-col h-full">
         <div className="p-4 border-b border-border">
           <Link to="/"><Logo size="sm" /></Link>
-          <div className="text-[9px] font-bold text-text-muted font-mono tracking-[0.2em] mt-1">ADMIN_CONSOLE</div>
+          <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
+            <Shield className="h-3 w-3 text-accent" />
+            <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN_CONSOLE</span>
+          </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
@@ -448,11 +455,12 @@ const AdminDashboardPage: React.FC = () => {
           >
             <LayoutDashboard className="w-4 h-4 shrink-0" /> Operator View
           </Link>
+          <div className="my-2 border-t border-border/60" />
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors text-left ${
+              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-colors text-left ${
                 activeTab === tab.id
                   ? 'bg-accent-dim text-accent border border-accent/30'
                   : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
@@ -465,12 +473,18 @@ const AdminDashboardPage: React.FC = () => {
         </nav>
 
         <div className="p-4 border-t border-border space-y-2">
-          <div className="text-[10px] text-text-muted truncate">
-            {user?.email || user?.username || 'admin'}
+          <div className="flex items-center gap-2 rounded-xl border border-border bg-bg px-3 py-2.5">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-dim text-xs font-black text-accent">
+              {(user?.email || user?.username || 'A').substring(0, 1).toUpperCase()}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-[10px] font-bold text-text-primary">{user?.username || 'Admin'}</div>
+              <div className="truncate text-[9px] text-text-muted">{user?.email || ''}</div>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-text-primary hover:border-accent/30 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
@@ -482,73 +496,74 @@ const AdminDashboardPage: React.FC = () => {
 
         {/* Mobile topbar */}
         <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 border-b border-border bg-bg-card shrink-0">
-          <button
-            onClick={() => setMobileNavOpen(true)}
-            className="w-11 h-11 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <span className="text-sm font-bold uppercase tracking-wide text-text-primary truncate">{activeLabel}</span>
+          <div className="flex items-center gap-2.5">
+            <Logo size="sm" />
+          </div>
+          <span className="text-sm font-black uppercase tracking-wide text-text-primary truncate">{activeLabel}</span>
           <button
             onClick={() => void loadAll()}
-            className="w-11 h-11 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
             aria-label="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
         </header>
 
-        {/* Mobile drawer */}
+        {/* Mobile "More" sheet */}
         {mobileNavOpen && (
-          <div className="md:hidden fixed inset-0 z-50 flex">
+          <div className="md:hidden fixed inset-0 z-50 flex items-end">
             {/* Backdrop */}
             <button
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setMobileNavOpen(false)}
               aria-label="Close menu"
             />
-            {/* Drawer */}
-            <div className="relative w-72 max-w-[85vw] bg-bg-card border-r border-border flex flex-col h-full"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <Logo size="sm" />
+            {/* Sheet */}
+            <div
+              className="relative w-full bg-bg-card border-t border-border rounded-t-3xl"
+              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 5rem)' }}
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+                <span className="text-sm font-black uppercase tracking-widest text-text-primary">More</span>
                 <button
                   onClick={() => setMobileNavOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
+                  className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
                   aria-label="Close"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
-              <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2.5 px-3 py-3 rounded-xl text-sm font-bold uppercase tracking-wide text-text-muted hover:text-text-primary hover:bg-accent-dim/50 transition-colors"
-                >
-                  <LayoutDashboard className="w-5 h-5 shrink-0" /> Operator View
-                </Link>
-                {tabs.map(tab => (
+              <nav className="grid grid-cols-3 gap-2 p-4">
+                {MOBILE_MORE_TABS.map(tab => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors text-left ${
+                    onClick={() => { setActiveTab(tab.id); setMobileNavOpen(false); }}
+                    className={`flex flex-col items-center gap-1.5 rounded-2xl border px-3 py-4 transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-accent-dim text-accent border border-accent/30'
-                        : 'text-text-secondary hover:bg-accent-dim/50'
+                        ? 'border-accent/30 bg-accent-dim text-accent'
+                        : 'border-border bg-bg text-text-muted hover:border-accent/20 hover:text-text-primary'
                     }`}
                   >
-                    <tab.icon className="w-5 h-5 shrink-0" />
-                    {tab.label}
+                    <tab.icon className="w-5 h-5" />
+                    <span className="text-[10px] font-bold uppercase tracking-wide">{tab.label}</span>
                   </button>
                 ))}
               </nav>
-              <div className="p-4 border-t border-border">
+              <div className="px-4 pb-2 border-t border-border pt-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-dim text-xs font-black text-accent">
+                    {(user?.email || user?.username || 'A').substring(0, 1).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="truncate text-xs font-bold text-text-primary">{user?.username || 'Admin'}</div>
+                    <div className="truncate text-[10px] text-text-muted">{user?.email || ''}</div>
+                  </div>
+                </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold uppercase text-text-muted border border-border rounded-xl hover:text-text-primary hover:border-accent/30 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors shrink-0"
                 >
-                  <LogOut className="w-5 h-5" /> Logout
+                  <LogOut className="w-3.5 h-3.5" /> Logout
                 </button>
               </div>
             </div>
@@ -556,8 +571,11 @@ const AdminDashboardPage: React.FC = () => {
         )}
 
         {/* Desktop page header */}
-        <div className="hidden shrink-0 items-center justify-between border-b border-border px-6 py-5 md:flex lg:px-8">
-          <h1 className="text-lg font-black uppercase tracking-tight text-text-primary lg:text-xl">{activeLabel}</h1>
+        <div className="hidden shrink-0 items-center justify-between border-b border-border px-6 py-4 md:flex lg:px-8">
+          <div className="flex items-center gap-3">
+            {(() => { const t = tabs.find(t => t.id === activeTab); return t ? <t.icon className="h-5 w-5 text-accent" /> : null; })()}
+            <h1 className="text-lg font-black uppercase tracking-tight text-text-primary lg:text-xl">{activeLabel}</h1>
+          </div>
           <button
             onClick={() => void loadAll()}
             className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
@@ -567,7 +585,7 @@ const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Scrollable content */}
-        <main className="flex-1 min-h-0 overflow-y-auto p-5 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10">
+        <main className="flex-1 min-h-0 overflow-y-auto p-5 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10 pb-24 md:pb-8">
           <div className="mx-auto w-full max-w-5xl">
           {loading ? <Skeleton /> : (
             <>
@@ -1041,6 +1059,50 @@ const AdminDashboardPage: React.FC = () => {
           )}
           </div>
         </main>
+
+        {/* ── Mobile bottom nav ───────────────────────────────────────────── */}
+        <nav
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg-card"
+          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          aria-label="Admin navigation"
+        >
+          <div className="flex items-stretch">
+            {MOBILE_PRIMARY_TABS.map(tab => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex flex-1 flex-col items-center justify-center gap-1 py-2.5 transition-colors ${
+                    isActive ? 'text-accent' : 'text-text-muted'
+                  }`}
+                  aria-label={tab.label}
+                >
+                  <tab.icon className="h-5 w-5" />
+                  <span className="text-[9px] font-bold uppercase tracking-wide">{tab.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-accent" />
+                  )}
+                </button>
+              );
+            })}
+            {/* More button */}
+            <button
+              onClick={() => setMobileNavOpen(true)}
+              className={`flex flex-1 flex-col items-center justify-center gap-1 py-2.5 transition-colors ${
+                MOBILE_MORE_TABS.some(t => t.id === activeTab) ? 'text-accent' : 'text-text-muted'
+              }`}
+              aria-label="More"
+            >
+              <Menu className="h-5 w-5" />
+              <span className="text-[9px] font-bold uppercase tracking-wide">More</span>
+              {MOBILE_MORE_TABS.some(t => t.id === activeTab) && (
+                <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-accent" />
+              )}
+            </button>
+          </div>
+        </nav>
+
       </div>
     </div>
   );
