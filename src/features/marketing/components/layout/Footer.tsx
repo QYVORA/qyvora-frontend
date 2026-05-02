@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Linkedin, Youtube, Mail } from 'lucide-react';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandXIcon from '../../../../shared/components/icons/BrandXIcon';
+import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
 import { useTheme } from '../../../../core/contexts/ThemeContext';
 import { DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
@@ -46,10 +47,11 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex items-center gap-3">
             {[
-              { icon: BrandXIcon, href: SITE_CONFIG.social.find((item) => item.key === 'x')?.href || '#', label: 'X' },
-              { icon: Linkedin, href: SITE_CONFIG.social.find((item) => item.key === 'linkedin')?.href || '#', label: 'LinkedIn' },
-              { icon: Youtube, href: SITE_CONFIG.social.find((item) => item.key === 'youtube')?.href || '#', label: 'YouTube' },
-              { icon: Mail, href: `mailto:${SITE_CONFIG.contact.opsEmail}`, label: 'Email' },
+              { icon: BrandXIcon,         href: SITE_CONFIG.social.find((item) => item.key === 'x')?.href         || '#', label: 'X'         },
+              { icon: Linkedin,           href: SITE_CONFIG.social.find((item) => item.key === 'linkedin')?.href  || '#', label: 'LinkedIn'  },
+              { icon: Youtube,            href: SITE_CONFIG.social.find((item) => item.key === 'youtube')?.href   || '#', label: 'YouTube'   },
+              { icon: BrandWhatsAppIcon,  href: SITE_CONFIG.social.find((item) => item.key === 'whatsapp')?.href  || '#', label: 'WhatsApp' },
+              { icon: Mail,               href: `mailto:${SITE_CONFIG.contact.opsEmail}`,                                label: 'Email'     },
             ].map(({ icon: Icon, href, label }, i) => (
               <a key={i} href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noreferrer" aria-label={label}
                 className="p-2 bg-bg-card border border-border rounded-md text-text-muted hover:text-accent hover:border-accent transition-all">

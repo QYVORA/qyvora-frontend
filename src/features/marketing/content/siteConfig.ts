@@ -66,6 +66,14 @@ export const SITE_CONFIG = {
       href: 'https://youtube.com/@hsocietyoffsec',
       action: 'Subscribe',
     },
+    {
+      key: 'whatsapp',
+      label: 'Join on WhatsApp',
+      handle: 'HSOCIETY Community',
+      desc: 'Live sessions, announcements, and operator comms.',
+      href: 'https://chat.whatsapp.com/hsociety',
+      action: 'Join',
+    },
   ],
   nav: {
     platform: [

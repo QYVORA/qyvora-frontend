@@ -29,6 +29,12 @@ const PLATFORM_META: Record<string, {
     img: '/assets/social/youtube-social.png',
     label: 'YOUTUBE',
   },
+  whatsapp: {
+    accent: '#4ade80',
+    border: 'rgba(37,211,102,0.35)',
+    img: '/assets/social/whatsapp-social.png',
+    label: 'WHATSAPP',
+  },
 };
 
 const SocialSection: React.FC = () => {
@@ -45,7 +51,7 @@ const SocialSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
           {SITE_CONFIG.social.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key];
             const meta = PLATFORM_META[social.key];
