@@ -60,12 +60,17 @@ export function buildStepImagePath(
   const phaseDir = `phase-${String(phaseNum).padStart(2, '0')}`;
   const roomDir = `room-${String(roomNum).padStart(2, '0')}`;
 
-  const normalized = filename.toLowerCase().replaceAll('_', '-');
+  const normalized = filename.trim().toLowerCase().replaceAll('_', '-');
   const withStepPrefix = /^step-\d{2}-/.test(normalized)
     ? normalized
     : normalized.replace(/^(\d+)-/, (_m, n) => `step-${String(Number(n)).padStart(2, '0')}-`);
 
-  return `/walkthrough/hpb/${phaseDir}/${roomDir}/${withStepPrefix}`;
+  const encoded = withStepPrefix
+    .split('/')
+    .map((part) => encodeURIComponent(part))
+    .join('/');
+
+  return `/walkthrough/hpb/${phaseDir}/${roomDir}/${encoded}`;
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────

@@ -247,13 +247,25 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
   return (
     <>
       <div className="group mt-4 w-full max-w-full overflow-hidden rounded-xl border border-border bg-bg relative">
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setStatus('loaded')}
+          onError={() => setStatus('error')}
+          className={`w-full max-w-full h-auto rounded-xl object-contain transition-opacity duration-200 ${
+            status === 'loaded' ? 'opacity-100 group-hover:opacity-90' : 'opacity-0'
+          }`}
+        />
+
         {status === 'loading' && (
-          <div className="flex items-center justify-center py-10">
+          <div className="absolute inset-0 flex items-center justify-center py-10 bg-bg/85">
             <Loader2 className="h-5 w-5 animate-spin text-accent opacity-50" />
           </div>
         )}
         {status === 'error' && (
-          <div className="flex flex-col items-center justify-center gap-2 py-8 text-text-muted">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 py-8 text-text-muted bg-bg/90">
             <ImageOff className="h-6 w-6 opacity-25" />
             <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
               Step {stepNum} image not available
@@ -265,18 +277,11 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
         <button
           type="button"
           onClick={() => status === 'loaded' && setLightboxOpen(true)}
-          className="block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
+          className="absolute inset-0 block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
           aria-label="Expand image"
           tabIndex={status === 'loaded' ? 0 : -1}
           style={{ display: status === 'loaded' ? 'block' : 'none' }}
         >
-          <img
-            src={src}
-            alt={alt}
-            onLoad={() => setStatus('loaded')}
-            onError={() => setStatus('error')}
-            className="w-full max-w-full h-auto rounded-xl object-contain transition-opacity duration-200 group-hover:opacity-90"
-          />
           {/* Zoom hint overlay */}
           <div className="absolute inset-0 flex items-center justify-center rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
             <div className="flex items-center gap-1.5 rounded-lg bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/10">
@@ -285,17 +290,6 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
             </div>
           </div>
         </button>
-
-        {/* Hidden img for loading/error detection when status isn't loaded yet */}
-        {status !== 'loaded' && (
-          <img
-            src={src}
-            alt=""
-            onLoad={() => setStatus('loaded')}
-            onError={() => setStatus('error')}
-            className="hidden"
-          />
-        )}
       </div>
 
       {lightboxOpen && (

@@ -17,6 +17,8 @@ export default function OptionalDecorImage({
       src={src}
       alt=""
       role="presentation"
+      loading="lazy"
+      decoding="async"
       className={className}
       onError={() => setOk(false)}
     />
