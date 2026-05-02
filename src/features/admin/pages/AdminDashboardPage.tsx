@@ -254,6 +254,7 @@ const AdminDashboardPage: React.FC = () => {
   });
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [productFile, setProductFile] = useState<File | null>(null);
+  const productFormRef = React.useRef<HTMLDivElement>(null);
 
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
@@ -372,6 +373,24 @@ const AdminDashboardPage: React.FC = () => {
   const resetProductForm = () => {
     setProductForm({ id: '', title: '', description: '', cpPrice: 0, type: 'book', sortOrder: 0, isActive: true, isFree: false });
     setCoverFile(null); setProductFile(null);
+  };
+
+  const editProduct = (item: CPProduct) => {
+    setProductForm({
+      id: item._id,
+      title: item.title || '',
+      description: item.description || '',
+      cpPrice: Number(item.cpPrice || 0),
+      type: item.type || 'book',
+      sortOrder: Number(item.sortOrder || 0),
+      isActive: item.isActive !== false,
+      isFree: item.isFree === true,
+    });
+    setCoverFile(null);
+    setProductFile(null);
+    setTimeout(() => {
+      productFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
 
   const saveProduct = async () => {
@@ -811,9 +830,21 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'zero_day' && (
                 <div className="space-y-4">
                   {/* Form */}
-                  <div className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
-                    <div className="text-xs font-bold uppercase text-text-muted tracking-widest">
-                      {productForm.id ? 'Edit Product' : 'New Product'}
+                  <div
+                    ref={productFormRef}
+                    className={`bg-bg-card rounded-xl p-4 space-y-3 border-2 transition-colors duration-200 ${
+                      productForm.id ? 'border-accent/50' : 'border-border'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className={`text-xs font-bold uppercase tracking-widest ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>
+                        {productForm.id ? `✎ Editing: ${productForm.title || 'Product'}` : 'New Product'}
+                      </div>
+                      {productForm.id && (
+                        <button onClick={resetProductForm} className="text-[10px] font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors">
+                          ✕ Cancel edit
+                        </button>
+                      )}
                     </div>
                     <label className="space-y-1.5">
                       <span className="text-[10px] uppercase text-text-muted tracking-widest">Title *</span>
@@ -887,7 +918,7 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-2 pt-1">
                           <button
-                            onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), isActive: item.isActive !== false, isFree: item.isFree === true })}
+                            onClick={() => editProduct(item)}
                             className={`${btn} border-border text-text-muted hover:border-accent/30 hover:text-accent`}
                           >Edit</button>
                           <button onClick={() => void deleteProduct(item._id)} className={`${btn} border-red-800/60 text-red-300`}>Delete</button>
@@ -917,7 +948,7 @@ const AdminDashboardPage: React.FC = () => {
                               <td className="px-4 py-3 text-right">
                                 <div className="inline-flex gap-2">
                                   <button
-                                    onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), isActive: item.isActive !== false, isFree: item.isFree === true })}
+                                    onClick={() => editProduct(item)}
                                     className="px-2.5 py-1.5 rounded-xl border border-border text-xs text-text-muted hover:border-accent/30 hover:text-accent min-h-[32px] transition-colors"
                                   >Edit</button>
                                   <button onClick={() => void deleteProduct(item._id)} className="px-2.5 py-1.5 rounded-xl border border-red-500/30 text-red-400 text-xs hover:bg-red-500/10 min-h-[32px] transition-colors">Delete</button>
