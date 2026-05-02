@@ -42,7 +42,7 @@ const ServicesSection: React.FC = () => {
         </ScrollReveal>
 
         {/* Service cards — 4-column grid, compact horizontal layout */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-8">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, X, Save, Loader2, ChevronRight, Activity, Target, Award, ExternalLink } from 'lucide-react';
+import { Shield, Trophy, Zap, Globe, Calendar, Mail, Edit3, Save, Loader2, ChevronRight, Activity, Target, Award, ExternalLink } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import CpLogo from '../../../shared/components/CpLogo';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
+import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 
 const numericStatValue = (value: string | number) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
@@ -15,15 +16,19 @@ const numericStatValue = (value: string | number) => {
 
 /* ── inline edit modal ── */
 interface EditModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   initial: { name: string; hackerHandle: string; bio: string; organization: string };
-  onClose: () => void;
   onSaved: (data: any) => void;
 }
 
-const EditModal: React.FC<EditModalProps> = ({ initial, onClose, onSaved }) => {
+const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSaved }) => {
   const { addToast } = useToast();
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
+
+  // Sync form when initial changes (e.g. after a save)
+  useEffect(() => { setForm(initial); }, [initial.name, initial.hackerHandle, initial.bio, initial.organization]);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -40,7 +45,7 @@ const EditModal: React.FC<EditModalProps> = ({ initial, onClose, onSaved }) => {
       });
       onSaved(res.data);
       addToast('Profile updated.', 'success');
-      onClose();
+      onOpenChange(false);
     } catch (err: any) {
       addToast(err?.response?.data?.error || 'Update failed.', 'error');
     } finally {
@@ -52,15 +57,9 @@ const EditModal: React.FC<EditModalProps> = ({ initial, onClose, onSaved }) => {
   const labelCls = 'text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5';
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="w-full max-w-md bg-bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h2 className="text-sm font-black text-text-primary uppercase tracking-widest">Edit Profile</h2>
-          <button onClick={onClose} className="text-text-muted hover:text-accent transition-colors">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <form onSubmit={handleSave} className="p-6 space-y-4">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent title="Edit Profile" maxWidth="max-w-md">
+        <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
             <label className={labelCls}>Full Name</label>
             <input value={form.name} onChange={set('name')} placeholder="Your name" className={inputCls} />
@@ -84,14 +83,14 @@ const EditModal: React.FC<EditModalProps> = ({ initial, onClose, onSaved }) => {
             />
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 btn-secondary !py-2.5 text-xs">Cancel</button>
+            <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">Cancel</button>
             <button type="submit" disabled={saving} className="flex-1 btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-60">
               {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving...</> : <><Save className="w-3 h-3" /> Save</>}
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -280,7 +279,7 @@ const Profile: React.FC = () => {
                   Achievements
                   <span className="text-[10px] text-accent">{profileData.unlockedModules.length} MODULES UNLOCKED</span>
                 </h3>
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
                   {[
                     { name: 'First Blood', icon: Trophy, color: 'text-yellow-500', unlocked: profileData.completedRooms.length > 0 },
                     { name: 'Bug Hunter', icon: Target, color: 'text-accent', unlocked: profileData.completedRooms.length >= 5 },
@@ -304,10 +303,11 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Edit modal */}
-      {editOpen && (
+      {isOwnProfile && (
         <EditModal
+          open={editOpen}
+          onOpenChange={setEditOpen}
           initial={editInitial}
-          onClose={() => setEditOpen(false)}
           onSaved={(data) => setProfileApi(data)}
         />
       )}

@@ -135,20 +135,20 @@ const Marketplace: React.FC = () => {
             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
             <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
           </div>
-          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap">
             {balance !== null && (
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
-                <CpLogo className="h-6 w-6 shrink-0" />
-                <span className="font-mono text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
+              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
+                <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
               </div>
             )}
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="w-full rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none md:w-64"
+                className="w-full sm:w-64 rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
             </div>
@@ -183,7 +183,7 @@ const Marketplace: React.FC = () => {
                   <div className="card-hsociety p-4 flex flex-col h-full group">
                     <div className="relative aspect-square overflow-hidden rounded mb-4">
                       <img
-                        src={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
+                        src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
                         alt={prod.title}
                         className="w-full h-full object-cover transition-all duration-500"
                       />

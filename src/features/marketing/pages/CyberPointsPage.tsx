@@ -16,10 +16,10 @@ const CyberPointsPage: React.FC = () => {
     <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines has-bg-image">
       <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
       <img
-        src="/assets/sections/backgrounds/ai-solutions-bg.png"
+        src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
       />
       <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
       <div className="absolute inset-0 bg-radial-vignette opacity-70 z-10" />
@@ -88,7 +88,6 @@ const CyberPointsPage: React.FC = () => {
           className="hidden lg:flex relative h-[420px] xl:h-[480px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-          {/* Outer ring pulse */}
           <motion.div
             animate={shouldReduceMotion ? {} : { scale: [1, 1.07, 1], opacity: [0.12, 0.28, 0.12] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
@@ -110,9 +109,9 @@ const CyberPointsPage: React.FC = () => {
     </section>
 
     {/* ── Body ── */}
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 space-y-6">
 
-      {/* Earn + Use — 3-col */}
+      {/* Earn + Why — 3-col */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* How to earn */}
@@ -124,11 +123,11 @@ const CyberPointsPage: React.FC = () => {
             <p className="text-xs text-text-muted mb-5 uppercase tracking-widest">// three core paths</p>
             <div className="space-y-3">
               {[
-                { icon: BookOpen, title: 'Complete Bootcamp Rooms',   desc: 'Progress through modules and finish room tasks to earn CP.' },
-                { icon: Shield,   title: 'Finish Module Challenges',  desc: 'Complete module objectives and CTF milestones for higher rewards.' },
-                { icon: Trophy,   title: 'Climb the Leaderboard',     desc: 'Consistent activity and completions grow your CP rank.' },
+                { icon: BookOpen, title: 'Complete Bootcamp Rooms',  desc: 'Progress through modules and finish room tasks to earn CP.' },
+                { icon: Shield,   title: 'Finish Module Challenges', desc: 'Complete module objectives and CTF milestones for higher rewards.' },
+                { icon: Trophy,   title: 'Climb the Leaderboard',    desc: 'Consistent activity and completions grow your CP rank.' },
               ].map(({ icon: Icon, title, desc }, i) => (
-                <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-bg border border-border hover:border-accent/20 transition-colors">
+                <div key={i} className="card-hsociety flex items-start gap-3 p-4">
                   <div className="w-8 h-8 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
                     <Icon className="w-4 h-4 text-accent" />
                   </div>
@@ -170,15 +169,8 @@ const CyberPointsPage: React.FC = () => {
 
       {/* How to use */}
       <ScrollReveal>
-        <div className="relative card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 overflow-hidden">
-          <img
-            src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/80 to-transparent pointer-events-none" />
-          <div className="flex-1 relative z-10">
+        <div className="card-hsociety p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div className="flex-1">
             <h3 className="text-xl md:text-2xl font-black text-text-primary mb-1 inline-flex items-center gap-2">
               How To Use <CpLogo className="w-5 h-5 md:w-6 md:h-6" />
             </h3>
@@ -189,7 +181,7 @@ const CyberPointsPage: React.FC = () => {
               directly into purchasing power.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none relative z-10">
+          <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none">
             <Link to="/bootcamps" className="btn-secondary !py-3 text-sm inline-flex items-center justify-center gap-2">
               <BookOpen className="w-4 h-4" /> Start Training
             </Link>
@@ -202,7 +194,7 @@ const CyberPointsPage: React.FC = () => {
 
       {/* Chain callout */}
       <ScrollReveal>
-        <div className="flex flex-col sm:flex-row items-center gap-4 rounded-2xl border border-accent/20 bg-accent/5 px-6 py-5">
+        <div className="card-hsociety flex flex-col sm:flex-row items-center gap-4 px-6 py-5">
           <ChainLogo size={40} />
           <div className="flex-1 min-w-0 text-center sm:text-left">
             <p className="text-sm font-black text-text-primary">Every CP event is recorded on the HSOCIETY Chain</p>

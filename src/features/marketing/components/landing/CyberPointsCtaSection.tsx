@@ -43,7 +43,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
               <motion.div
                 animate={shouldReduceMotion ? {} : { y: [0, -4, 0] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                className="absolute bottom-2 right-0 lg:right-4 px-3 py-2 bg-bg-card/90 border border-accent/20 rounded-lg backdrop-blur-sm shadow-lg"
+                className="absolute bottom-2 right-0 lg:right-4 px-2 sm:px-3 py-1.5 sm:py-2 bg-bg-card/90 border border-accent/20 rounded-lg backdrop-blur-sm shadow-lg max-w-[160px] sm:max-w-none"
               >
                 <div className="text-[9px] uppercase tracking-widest text-text-muted mb-0.5">Community Pool</div>
                 <div className="text-base font-bold text-accent font-mono inline-flex items-center gap-1.5">

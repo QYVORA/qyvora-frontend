@@ -91,7 +91,7 @@ const ChainSection: React.FC = () => (
               src="/assets/illustrations/hero-terminal-panel.png"
               alt=""
               aria-hidden="true"
-              className="w-full max-w-[320px] h-auto object-contain opacity-90 drop-shadow-[0_0_32px_var(--color-accent-glow)]"
+              className="w-full max-w-[280px] sm:max-w-[320px] h-auto object-contain opacity-90 drop-shadow-[0_0_32px_var(--color-accent-glow)]"
             />
           </div>
 

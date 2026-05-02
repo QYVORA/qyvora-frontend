@@ -6,7 +6,7 @@ import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 
-const CACHE_KEY = 'hsociety_marketplace_public_cache_v1';
+const CACHE_KEY = 'hsociety_marketplace_public_cache_v2';
 
 const SkeletonCard = () => (
   <div className="card-hsociety p-4 animate-pulse">
@@ -108,7 +108,7 @@ const PublicMarketplace: React.FC = () => {
                     {/* Cover image */}
                     <div className="relative aspect-square overflow-hidden rounded mb-4">
                       <img
-                        src={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
+                        src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
                         alt={prod.title}
                         className="w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
                       />

@@ -139,7 +139,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                   whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
                 >
                   <CardMedia
-                    image={resolveImg(prod.coverUrl, '/assets/sections/how-it-works/engagements-completed.webp')}
+                    image={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
                     imageAspect="aspect-[4/3]"
                     href="/zero-day-market"
                   >

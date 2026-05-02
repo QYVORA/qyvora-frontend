@@ -95,7 +95,7 @@ const Services: React.FC = () => (
                 style={{ boxShadow: 'var(--card-shimmer)' }}>
 
                 {/* Illustration panel — transparent PNG on dark bg */}
-                <div className="relative h-72 md:h-80 lg:h-[28rem] xl:h-[32rem] overflow-hidden flex-none bg-bg flex items-center justify-center p-4 md:p-6">
+                <div className="relative h-56 sm:h-64 md:h-72 lg:h-[28rem] xl:h-[32rem] overflow-hidden flex-none bg-bg flex items-center justify-center p-4 md:p-6">
                   <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
                   <div
                     aria-hidden

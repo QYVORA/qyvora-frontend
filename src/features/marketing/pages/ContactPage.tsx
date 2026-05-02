@@ -82,7 +82,7 @@ const Contact: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-start gap-5"
+                  className="flex items-start gap-3 sm:gap-5"
                 >
                   <div className="w-11 h-11 rounded-xl bg-accent-dim border border-accent/20 flex items-center justify-center text-accent shrink-0">
                     <Icon className="w-5 h-5" />

@@ -87,7 +87,7 @@ const Wallet: React.FC = () => {
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           {/* LEFT COLUMN — balance + stats */}
-          <div className="w-full lg:w-80 xl:w-96 flex-none space-y-4">
+          <div className="w-full lg:w-72 xl:w-80 2xl:w-96 flex-none space-y-4">
 
         {/* Balance card */}
         <ScrollReveal>
@@ -205,7 +205,7 @@ const Wallet: React.FC = () => {
             <div className="flex items-center gap-2 border-b border-border px-5 py-4">
               <Link2 className="h-5 w-5 text-accent shrink-0" />
               <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Chain Ledger</h3>
-              <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-text-muted">
+              <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-text-muted hidden sm:block">
                 HSOCIETY CHAIN — tamper-proof
               </span>
             </div>

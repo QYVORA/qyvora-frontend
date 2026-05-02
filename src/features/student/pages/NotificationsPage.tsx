@@ -90,7 +90,7 @@ const Notifications: React.FC = () => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
-              <h1 className="flex flex-wrap items-center gap-3 text-4xl font-black text-text-primary md:text-6xl">
+              <h1 className="flex flex-wrap items-center gap-2 sm:gap-3 text-3xl sm:text-4xl font-black text-text-primary md:text-6xl">
                 Notifications
                 {unreadCount > 0 && (
                   <span className="px-2.5 py-0.5 bg-accent text-bg text-sm font-black rounded-full">

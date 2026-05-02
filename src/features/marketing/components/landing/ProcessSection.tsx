@@ -61,11 +61,11 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
 
         {/* ── Mobile: horizontal scroll ── */}
         <div className="md:hidden overflow-x-auto no-scrollbar -mx-4 px-4">
-          <div className="flex gap-4 w-max pb-2">
+          <div className="flex gap-3 sm:gap-4 w-max pb-3">
             {STEPS.map((step, idx) => (
               <div
                 key={idx}
-                className="w-[72vw] max-w-[280px] shrink-0 rounded-xl border border-border bg-bg-card p-5"
+                className="w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
                 <div className="font-mono text-2xl font-black text-accent/40 mb-4 leading-none">

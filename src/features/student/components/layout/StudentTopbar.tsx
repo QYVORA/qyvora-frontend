@@ -215,11 +215,13 @@ const StudentTopbar = () => {
                     </span>
                   )}
                 </button>
+
+                {/* Desktop dropdown */}
                 <AnimatePresence>
                   {notifOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-                      className="absolute right-0 top-full mt-2 w-80 rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                      className="hidden sm:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
                     >
                       <div className="px-4 py-3 border-b border-border flex items-center justify-between">
                         <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
@@ -245,6 +247,67 @@ const StudentTopbar = () => {
                   )}
                 </AnimatePresence>
               </div>
+
+              {/* Mobile bottom sheet for room-mode notifications */}
+              <AnimatePresence>
+                {notifOpen && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="sm:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+                      onClick={() => setNotifOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+                      transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                      className="sm:hidden fixed bottom-0 left-0 right-0 z-[70] bg-bg-card border-t border-border rounded-t-2xl max-h-[75svh] flex flex-col"
+                      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                    >
+                      <div className="flex justify-center pt-3 pb-1 flex-none">
+                        <div className="w-10 h-1 rounded-full bg-border" />
+                      </div>
+                      <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
+                        <div>
+                          <div className="text-sm font-black uppercase tracking-widest text-text-primary">Notifications</div>
+                          <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {unreadCount > 0 && (
+                            <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">Mark all read</button>
+                          )}
+                          <button onClick={() => setNotifOpen(false)} className="p-1.5 text-text-muted hover:text-accent transition-colors">
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex-1 overflow-y-auto divide-y divide-border/50">
+                        {notifLoading ? (
+                          <div className="p-5 text-sm text-text-muted text-center">Loading...</div>
+                        ) : notificationsPreview.length === 0 ? (
+                          <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
+                        ) : notificationsPreview.map((item) => (
+                          <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
+                              {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
+                            </div>
+                            <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="px-5 py-4 border-t border-border flex-none">
+                        <Link
+                          to="/notifications"
+                          onClick={() => setNotifOpen(false)}
+                          className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
+                        >
+                          View all notifications
+                        </Link>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
 
               <Link to="/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
                 {user?.username?.substring(0, 2).toUpperCase() ?? 'OP'}
@@ -282,9 +345,9 @@ const StudentTopbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.15 }}
-                        className={`absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80] ${
-                          group.label === 'Operate' ? 'right-0' : 'left-0'
-                        }`}
+                        className={`absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80]
+                          ${group.label === 'Operate' ? 'right-0 left-auto' : 'left-0 right-auto'}
+                          max-w-[calc(100vw-2rem)]`}
                       >
                         {group.items.map((item) => {
                           const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
@@ -337,7 +400,7 @@ const StudentTopbar = () => {
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    className="hidden md:block absolute right-0 top-full mt-2 w-80 rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+                    className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
                   >
                     <div className="px-4 py-3 border-b border-border flex items-center justify-between">
                       <div>
