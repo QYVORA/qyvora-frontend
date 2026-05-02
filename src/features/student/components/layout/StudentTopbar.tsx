@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, Terminal, ShoppingBag, User, LogOut, Bell, Settings,
+  Zap, ShoppingBag, User, LogOut, Bell, Settings,
   X, BookOpen, Wallet, ChevronDown, LayoutDashboard, Trophy,
   ArrowLeft, ClipboardList, ChevronRight,
 } from 'lucide-react';
@@ -17,27 +17,25 @@ const NAV_GROUPS = [
   {
     label: 'Learn',
     items: [
-      { label: 'Dashboard',   icon: LayoutDashboard, path: '/dashboard',   desc: 'Your operator hub' },
-      { label: 'Learn',       icon: Terminal,        path: '/learn',        desc: 'Modules & lessons' },
-      { label: 'Bootcamp',    icon: BookOpen,        path: '/bootcamps',    desc: 'Phased training programs' },
+      { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', desc: 'Your operator hub'       },
+      { label: 'Bootcamp',  icon: BookOpen,        path: '/bootcamps', desc: 'Phased training programs' },
     ],
   },
   {
     label: 'Operate',
     items: [
-      { label: 'Marketplace', icon: ShoppingBag, path: '/marketplace', desc: 'Zero-day market' },
+      { label: 'Marketplace', icon: ShoppingBag, path: '/marketplace', desc: 'Zero-day market'    },
       { label: 'Wallet',      icon: Wallet,      path: '/wallet',      desc: 'CP balance & history' },
-      { label: 'Leaderboard', icon: Trophy,      path: '/leaderboard', desc: 'Hall of Shadows' },
+      { label: 'Leaderboard', icon: Trophy,      path: '/leaderboard', desc: 'Hall of Shadows'    },
     ],
   },
 ];
 
 // ── Mobile bottom primary tabs ───────────────────────────────────────────────
 const MOBILE_PRIMARY = [
-  { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'   },
-  { label: 'Learn',    icon: Terminal,        path: '/learn'        },
-  { label: 'Bootcamp', icon: BookOpen,        path: '/bootcamps'    },
-  { label: 'Market',   icon: ShoppingBag,     path: '/marketplace'  },
+  { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
+  { label: 'Bootcamp', icon: BookOpen,        path: '/bootcamps'  },
+  { label: 'Market',   icon: ShoppingBag,     path: '/marketplace' },
 ];
 
 const MOBILE_MORE = [

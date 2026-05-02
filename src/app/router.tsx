@@ -26,7 +26,6 @@ const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
 
 // Student pages
 const DashboardPage = lazy(() => import('../features/student/pages/DashboardPage'));
-const LearnPage = lazy(() => import('../features/student/pages/LearnPage'));
 const BootcampPage = lazy(() => import('../features/student/pages/BootcampPage'));
 const MarketplacePage = lazy(() => import('../features/student/pages/MarketplacePage'));
 const WalletPage = lazy(() => import('../features/student/pages/WalletPage'));
@@ -106,7 +105,6 @@ export const AppRouter = () => {
         {/* Student routes — auth required */}
         <Route element={<StudentLayout />}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
-          <Route path="/learn" element={<Wrap scope="Learn"><StudentOnly><LearnPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           {/* Legacy route — moduleId maps to phaseId by number: module 1 = phase1, etc. */}
