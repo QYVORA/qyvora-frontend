@@ -815,13 +815,38 @@ const AdminDashboardPage: React.FC = () => {
                     <div className="text-xs font-bold uppercase text-text-muted tracking-widest">
                       {productForm.id ? 'Edit Product' : 'New Product'}
                     </div>
-                    <input value={productForm.title} onChange={e => setProductForm(p => ({ ...p, title: e.target.value }))} placeholder="Title *" className={inp} />
-                    <textarea value={productForm.description} onChange={e => setProductForm(p => ({ ...p, description: e.target.value }))} placeholder="Description" rows={3} className={`${inp} resize-y`} />
+                    <label className="space-y-1.5">
+                      <span className="text-[10px] uppercase text-text-muted tracking-widest">Title *</span>
+                      <input value={productForm.title} onChange={e => setProductForm(p => ({ ...p, title: e.target.value }))} placeholder="e.g. Linux Hacking Handbook" className={inp} />
+                    </label>
+                    <label className="space-y-1.5">
+                      <span className="text-[10px] uppercase text-text-muted tracking-widest">Description</span>
+                      <textarea value={productForm.description} onChange={e => setProductForm(p => ({ ...p, description: e.target.value }))} placeholder="Short product description…" rows={3} className={`${inp} resize-y`} />
+                    </label>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="number" value={productForm.isFree ? 0 : productForm.cpPrice} onChange={e => setProductForm(p => ({ ...p, cpPrice: Number(e.target.value || 0) }))} placeholder="CP Price" disabled={productForm.isFree} className={`${inp} disabled:opacity-40`} />
-                      <input type="number" value={productForm.sortOrder} onChange={e => setProductForm(p => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="Sort order" className={inp} />
+                      <label className="space-y-1.5">
+                        <span className="text-[10px] uppercase text-text-muted tracking-widest">
+                          CP Price {productForm.isFree && <span className="text-emerald-400">(free)</span>}
+                        </span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={productForm.isFree ? 0 : productForm.cpPrice}
+                          onChange={e => setProductForm(p => ({ ...p, cpPrice: Number(e.target.value || 0) }))}
+                          placeholder="e.g. 500"
+                          disabled={productForm.isFree}
+                          className={`${inp} disabled:opacity-40`}
+                        />
+                      </label>
+                      <label className="space-y-1.5">
+                        <span className="text-[10px] uppercase text-text-muted tracking-widest">Sort order</span>
+                        <input type="number" min={0} value={productForm.sortOrder} onChange={e => setProductForm(p => ({ ...p, sortOrder: Number(e.target.value || 0) }))} placeholder="0" className={inp} />
+                      </label>
                     </div>
-                    <input value={productForm.type} onChange={e => setProductForm(p => ({ ...p, type: e.target.value }))} placeholder="Type (book / tool / etc)" className={inp} />
+                    <label className="space-y-1.5">
+                      <span className="text-[10px] uppercase text-text-muted tracking-widest">Type</span>
+                      <input value={productForm.type} onChange={e => setProductForm(p => ({ ...p, type: e.target.value }))} placeholder="book / tool / guide / etc" className={inp} />
+                    </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <label className="space-y-1.5">
                         <span className="text-[10px] uppercase text-text-muted tracking-widest">Cover image</span>
