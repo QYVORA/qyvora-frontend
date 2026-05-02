@@ -13,5 +13,13 @@ export default defineConfig(() => ({
   server: {
     port: 5173,
     hmr: true,
+    proxy: {
+      // Proxy all /api requests to the backend in dev so cookies work same-origin
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 }));

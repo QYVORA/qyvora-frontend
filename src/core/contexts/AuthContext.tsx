@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import api, { clearAuthStorage, setAccessToken } from '../services/api';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import api, { clearAuthStorage, setAccessToken, setAuthSessionHint } from '../services/api';
 import { extractCpBalance } from '../../shared/utils/cpBalance';
 
 interface User {
@@ -10,6 +10,8 @@ interface User {
   cp: number;
   isAdmin: boolean;
   role: string;
+  bootcampId: string;
+  bootcampStatus: string;
 }
 
 export class MustChangePasswordError extends Error {
@@ -36,6 +38,8 @@ interface BackendUser {
   role?: string;
   hackerHandle?: string;
   cpPoints?: number;
+  bootcampId?: string;
+  bootcampStatus?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,35 +55,35 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     cp,
     isAdmin: role === 'admin',
     role,
+    bootcampId: String(backendUser?.bootcampId || ''),
+    bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
   };
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const bootstrapRanRef = useRef(false);
 
   const refreshMe = async () => {
     const meRes = await api.get('/auth/me');
+    setAuthSessionHint(true);
     setUser(toFrontendUser(meRes.data || {}));
   };
 
   useEffect(() => {
-    let mounted = true;
+    if (bootstrapRanRef.current) return;
+    bootstrapRanRef.current = true;
     (async () => {
       try {
         await refreshMe();
       } catch {
-        if (mounted) {
-          setUser(null);
-          clearAuthStorage();
-        }
+        setUser(null);
+        clearAuthStorage();
       } finally {
-        if (mounted) setLoading(false);
+        setLoading(false);
       }
     })();
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   const login = async (credentials: { email?: string; password?: string }) => {
@@ -95,6 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     if (res.data?.token) setAccessToken(String(res.data.token));
+    setAuthSessionHint(true);
     if (res.data?.user) {
       setUser(toFrontendUser(res.data.user));
       return;
