@@ -84,7 +84,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 transition={{ duration: 0.5, delay: 0.35 }}
                 className="flex items-center justify-center"
               >
-                <Link to="/dashboard" className="btn-primary !px-6 md:!px-10 !py-3 md:!py-4 text-sm flex items-center gap-3">
+                <Link to="/dashboard" className="btn-primary !px-8 !py-3 text-sm flex items-center gap-3 flex-none">
                   <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
                 </Link>
               </motion.div>
@@ -114,12 +114,12 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.35 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-3"
+                className="flex flex-row items-center justify-center gap-3 flex-wrap"
               >
-                <Link to="/register" className="btn-primary !px-6 md:!px-10 !py-3 md:!py-4 text-sm inline-flex items-center gap-2">
+                <Link to="/register" className="btn-primary !px-8 !py-3 text-sm inline-flex items-center gap-2 flex-none">
                   Start Training <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary !px-6 md:!px-10 !py-3 md:!py-4 text-sm">
+                <Link to="/login" className="btn-secondary !px-8 !py-3 text-sm flex-none">
                   Log In
                 </Link>
               </motion.div>

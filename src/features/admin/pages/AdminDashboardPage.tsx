@@ -250,7 +250,7 @@ const AdminDashboardPage: React.FC = () => {
   const [products, setProducts] = useState<CPProduct[]>([]);
   const [productForm, setProductForm] = useState({
     id: '', title: '', description: '', cpPrice: 0, type: 'book',
-    sortOrder: 0, productUrl: '', isActive: true, isFree: false,
+    sortOrder: 0, isActive: true, isFree: false,
   });
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [productFile, setProductFile] = useState<File | null>(null);
@@ -370,7 +370,7 @@ const AdminDashboardPage: React.FC = () => {
   };
 
   const resetProductForm = () => {
-    setProductForm({ id: '', title: '', description: '', cpPrice: 0, type: 'book', sortOrder: 0, productUrl: '', isActive: true, isFree: false });
+    setProductForm({ id: '', title: '', description: '', cpPrice: 0, type: 'book', sortOrder: 0, isActive: true, isFree: false });
     setCoverFile(null); setProductFile(null);
   };
 
@@ -383,7 +383,7 @@ const AdminDashboardPage: React.FC = () => {
         title: productForm.title, description: productForm.description,
         cpPrice: productForm.isFree ? 0 : Number(productForm.cpPrice || 0),
         type: productForm.type, sortOrder: Number(productForm.sortOrder || 0),
-        productUrl: productForm.productUrl, isActive: productForm.isActive, isFree: productForm.isFree,
+        isActive: productForm.isActive, isFree: productForm.isFree,
       };
       if (coverUrl) payload.coverUrl = coverUrl;
       if (fileMeta) Object.assign(payload, fileMeta);
@@ -862,7 +862,7 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-2 pt-1">
                           <button
-                            onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), productUrl: item.productUrl || '', isActive: item.isActive !== false, isFree: item.isFree === true })}
+                            onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), isActive: item.isActive !== false, isFree: item.isFree === true })}
                             className={`${btn} border-border text-text-muted hover:border-accent/30 hover:text-accent`}
                           >Edit</button>
                           <button onClick={() => void deleteProduct(item._id)} className={`${btn} border-red-800/60 text-red-300`}>Delete</button>
@@ -892,7 +892,7 @@ const AdminDashboardPage: React.FC = () => {
                               <td className="px-4 py-3 text-right">
                                 <div className="inline-flex gap-2">
                                   <button
-                                    onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), productUrl: item.productUrl || '', isActive: item.isActive !== false, isFree: item.isFree === true })}
+                                    onClick={() => setProductForm({ id: item._id, title: item.title || '', description: item.description || '', cpPrice: Number(item.cpPrice || 0), type: item.type || 'book', sortOrder: Number(item.sortOrder || 0), isActive: item.isActive !== false, isFree: item.isFree === true })}
                                     className="px-2.5 py-1.5 rounded-xl border border-border text-xs text-text-muted hover:border-accent/30 hover:text-accent min-h-[32px] transition-colors"
                                   >Edit</button>
                                   <button onClick={() => void deleteProduct(item._id)} className="px-2.5 py-1.5 rounded-xl border border-red-500/30 text-red-400 text-xs hover:bg-red-500/10 min-h-[32px] transition-colors">Delete</button>
