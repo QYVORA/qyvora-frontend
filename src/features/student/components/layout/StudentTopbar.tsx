@@ -314,7 +314,7 @@ const StudentTopbar = () => {
             </nav>
           </div>
 
-          {/* Right: notifications + settings + profile */}
+          {/* Right: notifications + profile */}
           <div className="flex items-center gap-2 md:gap-3">
 
             {/* Notifications */}
@@ -453,15 +453,6 @@ const StudentTopbar = () => {
                 </>
               )}
             </AnimatePresence>
-
-            {/* Settings */}
-            <Link
-              to="/settings"
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-              aria-label="Settings"
-            >
-              <Settings className="w-6 h-6" />
-            </Link>
 
             {/* Profile avatar */}
             <Link
