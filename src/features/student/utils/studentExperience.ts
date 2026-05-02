@@ -85,7 +85,6 @@ export function getDailyMission(bootcampId?: string): { date: string; text: stri
     'Complete 1 room step and take notes.',
     'Review one previous room and summarize 3 lessons.',
     'Run one command from today\'s lesson in your terminal.',
-    'Teach one concept to a squad member on WhatsApp.',
     'Complete one room and mark one blocker you faced.',
   ];
 

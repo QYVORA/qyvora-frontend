@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, Lock, X, Users, ExternalLink } from 'lucide-react';
+import { BookOpen, Lock, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -7,7 +7,6 @@ import api from '../../../core/services/api';
 import EnrollmentModal from '../components/EnrollmentModal';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
 import { resolveImg } from '../../../shared/utils/resolveImg';
-import { getConfiguredCommunityLink } from '../constants/communityLinks';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
@@ -49,15 +48,9 @@ const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => (
           : 'To be announced'}
       </p>
       <p className="text-text-secondary text-xs text-center mb-6">
-        Join the community to get notified when this bootcamp opens.
+        Check back soon — this program will be available shortly.
       </p>
-      <div className="flex flex-col gap-3">
-        <a href={getConfiguredCommunityLink(String(bootcamp?.id || ''))} target="_blank" rel="noopener noreferrer"
-          className="btn-primary text-sm text-center flex items-center justify-center gap-2">
-          <Users className="w-4 h-4" /> Join the Community <ExternalLink className="w-3.5 h-3.5" />
-        </a>
-        <button onClick={onClose} className="btn-secondary text-sm text-center">Got it</button>
-      </div>
+      <button onClick={onClose} className="btn-secondary text-sm text-center w-full">Got it</button>
     </div>
   </div>
 );

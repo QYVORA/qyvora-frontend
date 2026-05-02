@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ArrowRight, Users, ExternalLink, CheckCircle2, ChevronLeft } from 'lucide-react';
+import { X, ArrowRight, CheckCircle2, ChevronLeft } from 'lucide-react';
 import api from '../../../core/services/api';
-import { getBootcampGroupLink, getConfiguredCommunityLink } from '../constants/communityLinks';
 
 interface Step {
   id: string;
@@ -64,14 +63,6 @@ const STEPS: Step[] = [
       '20+ hours — I\'m all in',
     ],
   },
-  {
-    id: 'phone',
-    question: 'What\'s your WhatsApp number?',
-    subtitle: 'So we can add you to the operator community group.',
-    type: 'text',
-    placeholder: '+233 XX XXX XXXX',
-    required: true,
-  },
 ];
 
 interface EnrollmentModalProps {
@@ -92,17 +83,15 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
-  const [groupJoined, setGroupJoined] = useState(false);
   const [error, setError] = useState('');
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
-  const progress = ((step) / STEPS.length) * 100;
+  const progress = (step / STEPS.length) * 100;
 
   const canAdvance = () => {
     if (!current.required && current.type === 'text') return true;
-    const val = answers[current.id] || '';
-    return val.trim().length > 0;
+    return (answers[current.id] || '').trim().length > 0;
   };
 
   const goNext = async () => {
@@ -111,7 +100,6 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
       return;
     }
     setError('');
-
     if (isLast) {
       await submit();
       return;
@@ -133,20 +121,18 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
       await api.post('/student/bootcamp', {
         bootcampId: bootcamp.id,
         application: {
-          motivation: answers.motivation || '',
-          level: answers.level || '',
-          goal: answers.goal || '',
-          commitment: answers.commitment || '',
-          phone: answers.phone || '',
+          motivation:   answers.motivation   || '',
+          level:        answers.level        || '',
+          goal:         answers.goal         || '',
+          commitment:   answers.commitment   || '',
           bootcampTitle: bootcamp.title,
-          submittedAt: new Date().toISOString(),
+          submittedAt:  new Date().toISOString(),
         },
       });
       setDone(true);
       onEnrolled();
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Enrollment failed. Please try again.';
-      setError(msg);
+      setError(err?.response?.data?.error || 'Enrollment failed. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -192,76 +178,27 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
             /* ── Success screen ── */
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              className="text-center py-2"
+              className="text-center py-4"
             >
-              {/* Top accent bar */}
-              <div aria-hidden className="absolute top-0 left-0 right-0 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }} />
-
+              <div
+                aria-hidden
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
+              />
               <div className="w-16 h-16 rounded-full bg-accent/15 border border-accent/30 flex items-center justify-center mx-auto mb-5">
                 <CheckCircle2 className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-black text-text-primary mb-2 uppercase">You're In.</h3>
-              <p className="text-text-muted text-sm mb-2">
+              <p className="text-text-muted text-sm mb-8">
                 Welcome to <span className="text-text-primary font-bold">{bootcamp.title}</span>.
+                Your training starts now.
               </p>
-
-              {(() => {
-                const groupLink = getBootcampGroupLink(bootcamp.id);
-                if (groupLink) {
-                  return (
-                    <>
-                      {/* Compulsory group join — required before proceeding */}
-                      <div className="rounded-xl border border-accent/30 bg-accent-dim p-4 mb-5 text-left">
-                        <p className="text-accent text-[10px] font-bold uppercase tracking-[0.2em] mb-1">// REQUIRED</p>
-                        <p className="text-text-primary text-sm font-bold mb-1">Join the Bootcamp WhatsApp Group</p>
-                        <p className="text-text-muted text-xs">
-                          This is the main communication channel for {bootcamp.title}. All updates, sessions, and announcements happen here. You must join to proceed.
-                        </p>
-                      </div>
-                      <a
-                        href={groupLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setGroupJoined(true)}
-                        className="btn-primary text-sm w-full flex items-center justify-center gap-2 mb-3"
-                      >
-                        <Users className="w-4 h-4" /> Join WhatsApp Group <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                      <button
-                        onClick={onClose}
-                        disabled={!groupJoined}
-                        className="btn-secondary text-sm w-full disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
-                      >
-                        {groupJoined ? 'Go to Bootcamp' : 'Join the group first ↑'}
-                      </button>
-                      {!groupJoined && (
-                        <p className="text-text-muted text-[10px] mt-2">
-                          Click the button above to join, then this will unlock.
-                        </p>
-                      )}
-                    </>
-                  );
-                }
-                return (
-                  <>
-                    <p className="text-text-secondary text-xs mb-8">
-                      Join the operator community on WhatsApp to get updates, connect with other operators, and stay ahead.
-                    </p>
-                    <a
-                      href={getConfiguredCommunityLink(bootcamp.id)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-primary text-sm w-full flex items-center justify-center gap-2 mb-3"
-                    >
-                      <Users className="w-4 h-4" /> Join the Community <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                    <button onClick={onClose} className="btn-secondary text-sm w-full">
-                      Go to Bootcamp
-                    </button>
-                  </>
-                );
-              })()}
+              <button
+                onClick={onClose}
+                className="btn-primary text-sm w-full flex items-center justify-center gap-2"
+              >
+                Go to Bootcamp <ArrowRight className="w-4 h-4" />
+              </button>
             </motion.div>
           ) : (
             /* ── Question steps ── */
