@@ -69,6 +69,15 @@ const StudentOnly = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
+// Redirects logged-in students to the authenticated version of a page,
+// otherwise renders the public fallback.
+const AuthSplit = ({ auth, pub }: { auth: ReactNode; pub: ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <PageLoader />;
+  if (user && !user.isAdmin) return <>{auth}</>;
+  return <>{pub}</>;
+};
+
 const AdminOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
@@ -93,9 +102,9 @@ export const AppRouter = () => {
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
           <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
-          {/* /bootcamps and /marketplace are public — logged-in users get their personalised view via StudentLayout below */}
+          {/* /bootcamps is public — logged-in users get their personalised view via StudentLayout below */}
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><BootcampPage /></Wrap>} />
-          <Route path="/marketplace" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
+          <Route path="/marketplace" element={<Wrap scope="Market"><AuthSplit auth={<MarketplacePage />} pub={<PublicMarketplacePage />} /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         </Route>
 

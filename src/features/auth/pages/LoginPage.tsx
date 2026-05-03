@@ -52,7 +52,6 @@ const AuthHero: React.FC = () => (
     <div className="absolute inset-0 bg-bg z-0" />
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
     <HeroCanvas />
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-bg/60 z-10" />
     {/* Operator illustration — anchored bottom-right, fades into background */}
     <img
       src="/assets/illustrations/hero-operator.png"
