@@ -11,6 +11,15 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
 
+// ── Read localStorage completed rooms (written by BootcampRoomPage) ──────────
+function readLocalCompletedRooms(bootcampId: string): Set<string> {
+  try {
+    const raw = localStorage.getItem(`hpb_completed_${bootcampId}`);
+    if (raw) return new Set(JSON.parse(raw));
+  } catch { /* ignore */ }
+  return new Set();
+}
+
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/assets/bootcamp/rooms/hacker-mindset.png',
   phase2: '/assets/bootcamp/rooms/linux-foundations.png',
@@ -45,6 +54,21 @@ const BootcampCourse: React.FC = () => {
   const [enrolling, setEnrolling]     = useState(false);
   const [syncError, setSyncError]     = useState('');
   const [lastSync, setLastSync]       = useState<string | null>(getLastSync('bootcamp-course'));
+  // Local completions — read from localStorage so overlay shows immediately
+  const [localCompleted, setLocalCompleted] = useState<Set<string>>(() =>
+    readLocalCompletedRooms(bootcampId || '')
+  );
+
+  // Re-read localStorage whenever the page becomes visible (student returns from a room)
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        setLocalCompleted(readLocalCompletedRooms(bootcampId || ''));
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [bootcampId]);
 
   const load = async () => {
     try {
@@ -270,7 +294,11 @@ const BootcampCourse: React.FC = () => {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {(mod.rooms || []).map((room, roomIdx) => {
                       const isRoomLocked = room.locked;
-                      const roomDone     = Boolean(room.completed);
+                      // Completed = API says so OR localStorage has it (written by room page)
+                      const localKey = configPhase && configRoom
+                        ? `${configPhase.id}:${configRoom.id}`
+                        : null;
+                      const roomDone = Boolean(room.completed) || Boolean(localKey && localCompleted.has(localKey));
 
                       const configRoom = configPhase?.rooms.find(
                         (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
