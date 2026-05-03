@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
-import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Zap, Link2 } from 'lucide-react';
+import { Menu, X, ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Zap, Link2, Flag } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import Logo from '../../../../shared/components/brand/Logo';
@@ -10,6 +10,7 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 
 const ICON_BY_KEY = {
   bootcamps: Terminal,
+  ctf: Flag,
   marketplace: ShoppingBag,
   leaderboard: Trophy,
   zero_day_market: Shield,

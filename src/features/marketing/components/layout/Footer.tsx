@@ -19,6 +19,7 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
+      { label: 'CTF Arena',       path: '/ctf'           },
       { label: 'Leaderboard',     path: '/leaderboard'   },
       { label: 'Cyber Points',    path: '/cyber-points'  },
       { label: 'HSOCIETY Chain',  path: '/chain'         },

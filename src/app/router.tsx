@@ -20,6 +20,7 @@ const ServicesPage = lazy(() => import('../features/marketing/pages/ServicesPage
 const CyberPointsPage = lazy(() => import('../features/marketing/pages/CyberPointsPage'));
 const ChainPage = lazy(() => import('../features/marketing/pages/ChainPage'));
 const PublicMarketplacePage = lazy(() => import('../features/marketing/pages/PublicMarketplacePage'));
+const PublicCtfPage = lazy(() => import('../features/marketing/pages/PublicCtfPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -91,6 +92,7 @@ export const AppRouter = () => {
           <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
+          <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
           {/* /bootcamps and /marketplace are public — logged-in users get their personalised view via StudentLayout below */}
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><BootcampPage /></Wrap>} />
           <Route path="/marketplace" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
