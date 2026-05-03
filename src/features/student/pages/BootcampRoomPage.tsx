@@ -331,11 +331,11 @@ const StepCard: React.FC<{
   return (
     <div
       onClick={onClick}
-      className={`relative cursor-pointer rounded-xl border-2 p-6 sm:p-8 transition-all duration-200 overflow-hidden ${
+      className={`relative cursor-pointer rounded-xl border p-6 sm:p-8 transition-colors duration-150 overflow-hidden ${
         isActive
-          ? 'border-accent/60 bg-bg-card shadow-[0_0_28px_var(--color-accent-glow)]'
+          ? 'border-accent/40 bg-bg-card'
           : isViewed
-          ? 'border-accent/20 bg-bg-card hover:border-accent/35'
+          ? 'border-accent/20 bg-bg-card hover:border-accent/30'
           : 'border-border bg-bg-card hover:border-border/70'
       }`}
     >
@@ -539,6 +539,36 @@ const Sidebar: React.FC<{
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// QUIZ GATE MODAL — shown when student tries to skip the quiz
+// ─────────────────────────────────────────────────────────────────────────────
+const QuizGateModal: React.FC<{ onClose: () => void; onTakeQuiz: () => void }> = ({ onClose, onTakeQuiz }) => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+    <motion.div
+      initial={{ scale: 0.92, opacity: 0, y: 16 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      exit={{ scale: 0.92, opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="relative z-10 w-full max-w-sm rounded-2xl border border-border bg-bg-card p-8 text-center shadow-2xl"
+    >
+      <div className="mb-4 text-4xl">🔒</div>
+      <h2 className="mb-2 text-lg font-black text-text-primary">Not so fast, operator.</h2>
+      <p className="mb-6 text-sm text-text-muted leading-relaxed">
+        You need to complete this room's quiz before moving on. No skipping — the mission requires it.
+      </p>
+      <div className="flex flex-col gap-3">
+        <button onClick={onTakeQuiz} className="btn-primary text-sm py-3">
+          Take the Quiz
+        </button>
+        <button onClick={onClose} className="btn-secondary text-sm py-3">
+          Stay Here
+        </button>
+      </div>
+    </motion.div>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
 // QUIZ MODAL
 // ─────────────────────────────────────────────────────────────────────────────
 const QuizModal: React.FC<{
@@ -552,7 +582,14 @@ const QuizModal: React.FC<{
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<RoomQuiz | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [result, setResult] = useState<{ score: number; passed: boolean; reward?: number } | null>(null);
+  // result now also carries the original questions for review
+  const [result, setResult] = useState<{
+    score: number;
+    passed: boolean;
+    reward?: number;
+    questions: QuizQuestion[];
+    correctIndexes: Record<string, number>;
+  } | null>(null);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -561,11 +598,11 @@ const QuizModal: React.FC<{
     api
       .post('/student/quiz', { moduleId, roomId, courseId })
       .then((res) => {
-        const q = res?.data as RoomQuiz;
+        const q = res?.data as RoomQuiz & { questions: Array<QuizQuestion & { correctIndex?: number }> };
         if (Array.isArray(q?.questions) && q.questions.length > 0) {
           setQuiz(q);
         } else {
-          setError('No questions available for this module yet.');
+          setError('No questions available for this room yet.');
         }
       })
       .catch((err: any) => {
@@ -574,7 +611,7 @@ const QuizModal: React.FC<{
         }
       })
       .finally(() => setLoading(false));
-  }, [moduleId, courseId]);
+  }, [moduleId, roomId, courseId]);
 
   const submit = async () => {
     if (!quiz) return;
@@ -585,15 +622,21 @@ const QuizModal: React.FC<{
     setSubmitting(true);
     try {
       const res = await api.post('/student/quiz', { moduleId, roomId, courseId, answers });
-      const score = Number(res?.data?.score || 0);
-      const passed = Boolean(res?.data?.passed);
-      const reward = Number(res?.data?.reward?.points || 0);
-      setResult({ score, passed, reward });
-      addToast(
-        passed ? `Quiz passed! ${score}% — +${reward} CP` : `Score: ${score}%`,
-        passed ? 'success' : 'info'
-      );
-      if (passed) onPassed();
+      const score   = Number(res?.data?.score || 0);
+      const passed  = Boolean(res?.data?.passed);
+      const reward  = Number(res?.data?.reward?.points || 0);
+      // Build correctIndexes map from the quiz questions (backend returns correctIndex)
+      const correctIndexes: Record<string, number> = {};
+      (quiz.questions as Array<QuizQuestion & { correctIndex?: number }>).forEach((q) => {
+        if (typeof q.correctIndex === 'number') correctIndexes[q.id] = q.correctIndex;
+      });
+      setResult({ score, passed, reward, questions: quiz.questions, correctIndexes });
+      if (passed) {
+        addToast(`Quiz passed! ${score}% — +${reward} CP`, 'success');
+        onPassed();
+      } else {
+        addToast(`Score: ${score}% — need 70% to pass`, 'info');
+      }
     } catch (err: any) {
       addToast(err?.response?.data?.error || 'Could not submit quiz.', 'error');
     } finally {
@@ -601,7 +644,6 @@ const QuizModal: React.FC<{
     }
   };
 
-  // Close on backdrop click or Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -610,20 +652,15 @@ const QuizModal: React.FC<{
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
       <div className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-bg-card shadow-2xl">
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-bg-card px-6 py-4">
           <div className="flex items-center gap-2">
             <ClipboardList className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">
-              Module Quiz
+              Room Quiz
             </h2>
           </div>
           <button
@@ -643,46 +680,89 @@ const QuizModal: React.FC<{
             </div>
           )}
 
-          {/* Error / unavailable */}
+          {/* Error */}
           {!loading && !quiz && !result && (
             <p className={`py-8 text-center text-sm ${error ? 'text-red-400' : 'text-text-muted'}`}>
-              {error || 'Quiz not available for this module yet.'}
+              {error || 'Quiz not available for this room yet.'}
             </p>
           )}
 
-          {/* Result */}
+          {/* ── Result + answer review ── */}
           {!loading && result && (
-            <div className="space-y-5 py-6 text-center">
-              <div className={`text-6xl font-black ${result.passed ? 'text-accent' : 'text-text-primary'}`}>
-                {result.score}%
+            <div className="space-y-6">
+              {/* Score header */}
+              <div className="text-center py-4">
+                <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-red-400'}`}>
+                  {result.score}%
+                </div>
+                <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
+                  {result.passed ? '✓ Passed' : '✗ Not quite — 70% needed'}
+                </div>
+                {result.passed && result.reward > 0 && (
+                  <div className="mt-1 text-xs text-text-muted">+{result.reward} CP earned</div>
+                )}
               </div>
-              <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-text-muted'}`}>
-                {result.passed ? '✓ Passed — you can proceed to the next room' : 'Not quite — score 70% or higher to continue'}
+
+              {/* Answer review */}
+              <div className="space-y-5">
+                {result.questions.map((q, idx) => {
+                  const chosen  = answers[q.id];
+                  const correct = result.correctIndexes[q.id];
+                  const isRight = chosen === correct;
+                  return (
+                    <div key={q.id} className={`rounded-xl border p-4 ${isRight ? 'border-accent/30 bg-accent/5' : 'border-red-500/30 bg-red-500/5'}`}>
+                      <div className="flex items-start gap-2 mb-3">
+                        <span className={`shrink-0 mt-0.5 text-sm font-black ${isRight ? 'text-accent' : 'text-red-400'}`}>
+                          {isRight ? '✓' : '✗'}
+                        </span>
+                        <p className="text-sm font-bold text-text-primary leading-snug">
+                          <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>
+                          {q.text}
+                        </p>
+                      </div>
+                      <div className="space-y-1.5 pl-5">
+                        {q.options.map((opt, optIdx) => {
+                          const isCorrectOpt = optIdx === correct;
+                          const isChosenOpt  = optIdx === chosen;
+                          let cls = 'border-border text-text-muted';
+                          if (isCorrectOpt) cls = 'border-accent/50 bg-accent/10 text-accent font-bold';
+                          else if (isChosenOpt && !isRight) cls = 'border-red-500/50 bg-red-500/10 text-red-400 line-through';
+                          return (
+                            <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
+                              <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
+                              <span>{opt}</span>
+                              {isCorrectOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Correct</span>}
+                              {isChosenOpt && !isRight && <span className="ml-auto text-[10px] font-black text-red-400 shrink-0">Your answer</span>}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              {result.passed && result.reward && result.reward > 0 && (
-                <div className="text-sm font-bold text-text-muted">+{result.reward} CP earned</div>
-              )}
-              <div className="flex justify-center gap-3 pt-2">
+
+              {/* Actions */}
+              <div className="flex flex-col gap-3 pt-2">
                 {!result.passed && (
                   <button
                     onClick={() => { setResult(null); setAnswers({}); }}
-                    className="btn-secondary text-sm"
+                    className="btn-primary text-sm py-3"
                   >
                     Try Again
                   </button>
                 )}
-                <button onClick={onClose} className="btn-primary text-sm">
+                <button onClick={onClose} className={`text-sm py-3 ${result.passed ? 'btn-primary' : 'btn-secondary'}`}>
                   {result.passed ? 'Continue to Next Room' : 'Close'}
                 </button>
               </div>
             </div>
           )}
 
-          {/* Questions */}
+          {/* ── Questions ── */}
           {!loading && quiz && !result && (
             <>
-              {/* Answer progress */}
-              <div className="mb-6 h-1.5 overflow-hidden rounded-full bg-accent-dim">
+              <div className="mb-6 h-1 overflow-hidden rounded-full bg-border">
                 <div
                   className="h-full rounded-full bg-accent transition-all duration-300"
                   style={{ width: `${(Object.keys(answers).length / quiz.questions.length) * 100}%` }}
@@ -693,7 +773,7 @@ const QuizModal: React.FC<{
                 {quiz.questions.map((q, idx) => (
                   <div key={q.id || idx} className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 rounded-lg border border-border bg-bg px-2 py-0.5 font-mono text-[10px] font-black text-text-muted">
+                      <span className="mt-0.5 shrink-0 rounded border border-border bg-bg px-2 py-0.5 font-mono text-[10px] font-black text-text-muted">
                         Q{idx + 1}
                       </span>
                       <p className="text-sm font-bold leading-snug text-text-primary">{q.text}</p>
@@ -729,11 +809,9 @@ const QuizModal: React.FC<{
                   disabled={submitting || Object.keys(answers).length < quiz.questions.length}
                   className="btn-primary inline-flex w-full items-center justify-center gap-2 py-3 text-sm disabled:opacity-50"
                 >
-                  {submitting ? (
-                    <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting…</>
-                  ) : (
-                    'Submit Quiz'
-                  )}
+                  {submitting
+                    ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting…</>
+                    : 'Submit Quiz'}
                 </button>
                 {Object.keys(answers).length < quiz.questions.length && (
                   <p className="text-center text-[10px] text-text-muted">
@@ -780,6 +858,7 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Quiz modal ─────────────────────────────────────────────────────────────
   const [quizOpen, setQuizOpen] = useState(false);
+  const [quizGateOpen, setQuizGateOpen] = useState(false);
   // Track whether the quiz for the current room has been passed this session
   const [quizPassed, setQuizPassed] = useState(false);
 
@@ -912,7 +991,7 @@ const BootcampRoomPage: React.FC = () => {
     } else {
       // All steps viewed — require quiz before marking complete
       if (!quizPassed && quizModuleId) {
-        setQuizOpen(true);
+        setQuizGateOpen(true);
       } else {
         if (phaseId && roomId) markRoomComplete(phaseId, roomId);
         setShowCompleteOverlay(true);
@@ -1011,6 +1090,16 @@ const BootcampRoomPage: React.FC = () => {
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <div className="bg-bg overflow-x-hidden">
+      {/* Quiz gate modal */}
+      <AnimatePresence>
+        {quizGateOpen && (
+          <QuizGateModal
+            onClose={() => setQuizGateOpen(false)}
+            onTakeQuiz={() => { setQuizGateOpen(false); setQuizOpen(true); }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal
@@ -1040,12 +1129,12 @@ const BootcampRoomPage: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: -10 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="relative z-10 w-full max-w-md rounded-3xl border-2 border-accent/40 bg-bg-card p-10 text-center shadow-[0_0_60px_var(--color-accent-glow)]"
+              className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card p-10 text-center shadow-2xl"
             >
               <motion.div
                 initial={{ scale: 0 }} animate={{ scale: 1 }}
                 transition={{ delay: 0.15, type: 'spring', stiffness: 400, damping: 20 }}
-                className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-accent/40 bg-accent-dim"
+                className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim"
               >
                 <CheckCircle2 className="h-10 w-10 text-accent" />
               </motion.div>
@@ -1207,10 +1296,7 @@ const BootcampRoomPage: React.FC = () => {
                 <div className="h-2.5 overflow-hidden rounded-full bg-accent-dim">
                   <div
                     className="h-full rounded-full bg-accent transition-all duration-500"
-                    style={{
-                      width: `${(viewedSteps.size / room.steps.length) * 100}%`,
-                      boxShadow: '0 0 10px var(--color-accent-glow)',
-                    }}
+                    style={{ width: `${(viewedSteps.size / room.steps.length) * 100}%` }}
                   />
                 </div>
                 <div className="mt-4 flex gap-2 flex-wrap">

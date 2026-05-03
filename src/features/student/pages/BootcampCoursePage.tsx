@@ -293,77 +293,91 @@ const BootcampCourse: React.FC = () => {
                             isRoomLocked
                               ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                               : roomDone
-                              ? 'border-accent/30 hover:border-accent/55'
+                              ? 'border-accent/40 hover:border-accent/60'
                               : 'border-border hover:border-accent/40'
                           }`}
                           style={{ boxShadow: 'var(--card-shimmer)' }}
                         >
-                          {/* Room image */}
-                          <div className="relative aspect-video overflow-hidden">
-                            <img
-                              src={roomImg}
-                              alt={room.title}
-                              loading="lazy"
-                              className={`w-full h-full object-cover transition-transform duration-500 ${
-                                isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.03]'
-                              }`}
-                              onError={(e) => {
-                                const el = e.currentTarget;
-                                if (!el.dataset.fallbackApplied) {
-                                  el.dataset.fallbackApplied = '1';
-                                  el.src = '/assets/bootcamp/hpb-cover.png';
-                                }
-                              }}
-                            />
-                            <div
-                              aria-hidden
-                              className="pointer-events-none absolute inset-0"
-                              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)' }}
-                            />
-                            {/* Badges */}
-                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                              <div className={`flex h-6 w-6 items-center justify-center rounded-lg border font-mono text-[10px] font-black ${
-                                roomDone      ? 'border-accent/40 bg-accent text-bg'
-                                : isRoomLocked ? 'border-border bg-bg/80 text-text-muted'
-                                              : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
-                              }`}>
-                                {roomDone
-                                  ? <CheckCircle2 className="h-3 w-3" />
-                                  : isRoomLocked
-                                  ? <Lock className="h-2.5 w-2.5" />
-                                  : String(roomIdx + 1).padStart(2, '0')}
+                          {roomDone ? (
+                            /* ── Completed room — clean checkmark card ── */
+                            <div className="flex flex-col items-center justify-center gap-3 py-10 px-4 text-center flex-1">
+                              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
+                                <CheckCircle2 className="h-6 w-6 text-bg" />
                               </div>
-                              {roomDone && (
-                                <span className="px-1.5 py-0.5 bg-accent text-bg rounded text-[8px] font-black uppercase tracking-widest">
-                                  Done
+                              <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-accent mb-1">Completed</p>
+                                <p className="text-sm font-bold text-text-primary leading-snug">
+                                  {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
+                                </p>
+                              </div>
+                              {!isRoomLocked && roomPath && (
+                                <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                                  Review →
                                 </span>
                               )}
                             </div>
-                            {configRoom && (
-                              <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
-                                {configRoom.steps.length} steps
+                          ) : (
+                            <>
+                              {/* Room image */}
+                              <div className="relative aspect-video overflow-hidden">
+                                <img
+                                  src={roomImg}
+                                  alt={room.title}
+                                  loading="lazy"
+                                  className={`w-full h-full object-cover transition-transform duration-500 ${
+                                    isRoomLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.03]'
+                                  }`}
+                                  onError={(e) => {
+                                    const el = e.currentTarget;
+                                    if (!el.dataset.fallbackApplied) {
+                                      el.dataset.fallbackApplied = '1';
+                                      el.src = '/assets/bootcamp/hpb-cover.png';
+                                    }
+                                  }}
+                                />
+                                <div
+                                  aria-hidden
+                                  className="pointer-events-none absolute inset-0"
+                                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)' }}
+                                />
+                                {/* Badges */}
+                                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                                  <div className={`flex h-6 w-6 items-center justify-center rounded-lg border font-mono text-[10px] font-black ${
+                                    isRoomLocked ? 'border-border bg-bg/80 text-text-muted'
+                                                : 'border-accent/25 bg-bg/80 backdrop-blur-sm text-accent'
+                                  }`}>
+                                    {isRoomLocked
+                                      ? <Lock className="h-2.5 w-2.5" />
+                                      : String(roomIdx + 1).padStart(2, '0')}
+                                  </div>
+                                </div>
+                                {configRoom && (
+                                  <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
+                                    {configRoom.steps.length} steps
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
 
-                          {/* Card body */}
-                          <div className="flex flex-1 flex-col p-4">
-                            <h3 className={`mb-1.5 text-sm font-black leading-snug transition-colors ${
-                              isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
-                            }`}>
-                              {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
-                            </h3>
-                            {(configRoom?.overview || room.overview) && (
-                              <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted">
-                                {configRoom?.overview || room.overview}
-                              </p>
-                            )}
-                            {!isRoomLocked && (
-                              <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-opacity group-hover:opacity-100">
-                                Enter room <ArrowRight className="h-3 w-3" />
+                              {/* Card body */}
+                              <div className="flex flex-1 flex-col p-4">
+                                <h3 className={`mb-1.5 text-sm font-black leading-snug transition-colors ${
+                                  isRoomLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
+                                }`}>
+                                  {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
+                                </h3>
+                                {(configRoom?.overview || room.overview) && (
+                                  <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted">
+                                    {configRoom?.overview || room.overview}
+                                  </p>
+                                )}
+                                {!isRoomLocked && (
+                                  <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                                    Enter room <ArrowRight className="h-3 w-3" />
+                                  </div>
+                                )}
                               </div>
-                            )}
-                          </div>
+                            </>
+                          )}
                         </Link>
                       );
                     })}

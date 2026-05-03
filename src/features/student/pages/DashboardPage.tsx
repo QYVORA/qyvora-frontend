@@ -115,7 +115,6 @@ const Dashboard: React.FC = () => {
   const continuePath    = nextRoomPath || (activeBootcamp ? `/bootcamps/${activeBootcamp.id}` : '/bootcamps');
   const isEnrolled      = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const progressValue   = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
-  const progressNum     = parseInt(progressValue, 10) || 0;
   const streakDays      = Number(overview?.xpSummary?.streakDays || 0);
   const cpBalance       = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
   const handle          = user?.username || 'OPERATOR';
@@ -201,19 +200,6 @@ const Dashboard: React.FC = () => {
                       ? 'Pick up where you left off'
                       : 'Choose a bootcamp to begin'}
                   </p>
-                  {isEnrolled && (
-                    <div className="mb-5 relative z-10">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="font-mono text-sm font-black text-accent">{progressValue}</span>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-accent-dim">
-                        <div
-                          className="h-full rounded-full bg-accent transition-all duration-700"
-                          style={{ width: `${progressNum}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
                   {nextRank && (
                     <div className="mb-5 relative z-10">
                       <div className="mb-2 flex items-center justify-between">
