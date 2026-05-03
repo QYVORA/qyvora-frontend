@@ -135,7 +135,13 @@ const Dashboard: React.FC = () => {
               Mission control
             </span>
             <h1 className="text-4xl font-black text-text-primary md:text-6xl">{handle}</h1>
-            <p className="mt-2 max-w-lg text-base text-text-muted">
+            {/* Rank badge — directly under username */}
+            {!loading && (
+              <div className="mt-2 mb-1 inline-flex items-center gap-2">
+                <span className={`font-mono text-sm font-black ${rankInfo.color}`}>{rankInfo.name}</span>
+              </div>
+            )}
+            <p className="mt-1 max-w-lg text-base text-text-muted">
               {loading
                 ? 'Loading your status…'
                 : isEnrolled
@@ -144,7 +150,7 @@ const Dashboard: React.FC = () => {
             </p>
           </div>
 
-          {/* Stats pills */}
+          {/* Stats pills — CP and streak only */}
           {!loading && (
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
@@ -157,9 +163,6 @@ const Dashboard: React.FC = () => {
                   <span className="font-mono text-lg sm:text-xl font-black text-orange-400">{streakDays}d</span>
                 </div>
               )}
-              <div className="rounded-2xl border-2 border-border bg-bg-card px-3 sm:px-4 py-2 sm:py-2.5">
-                <span className={`font-mono text-lg sm:text-xl font-black ${rankInfo.color}`}>{rankInfo.name}</span>
-              </div>
             </div>
           )}
         </ScrollReveal>

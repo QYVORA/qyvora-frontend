@@ -985,6 +985,11 @@ const BootcampRoomPage: React.FC = () => {
 
   const goNext = () => {
     if (!room) return;
+    // On desktop all steps are visible — mark all as viewed when completing
+    const allStepIdxs = room.steps.map((_, i) => i);
+    setViewedSteps(new Set(allStepIdxs));
+    setCurrentStepIdx(room.steps.length - 1);
+
     const nextIdx = currentStepIdx + 1;
     if (nextIdx < room.steps.length) {
       goToStep(nextIdx);
@@ -1315,8 +1320,35 @@ const BootcampRoomPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Active step card */}
-              <div className="mb-10">
+              {/*
+                ── STEP RENDERING ──
+                Desktop (lg+):
+                  ≤5 steps → show ALL steps stacked, no next/prev buttons needed
+                  >5 steps → show steps up to currentStepIdx+1 (reveal as student progresses)
+                             with Prev/Next navigation at the bottom
+                Mobile (<lg):
+                  Always show one step at a time with Prev/Next
+              */}
+
+              {/* Desktop: all steps visible */}
+              <div className="hidden lg:block mb-10 space-y-4">
+                {room.steps.map((step, idx) => (
+                  <StepCard
+                    key={idx}
+                    step={step}
+                    stepNum={idx + 1}
+                    total={room.steps.length}
+                    phaseId={phaseId || ''}
+                    roomId={roomId || ''}
+                    isActive={idx === currentStepIdx}
+                    isViewed={viewedSteps.has(idx)}
+                    onClick={() => goToStep(idx)}
+                  />
+                ))}
+              </div>
+
+              {/* Mobile: one step at a time */}
+              <div className="lg:hidden mb-10">
                 <StepCard
                   key={currentStepIdx}
                   step={room.steps[currentStepIdx]}
@@ -1330,31 +1362,38 @@ const BootcampRoomPage: React.FC = () => {
                 />
               </div>
 
-              {/* Step navigation */}
-              <div className="flex flex-wrap items-center gap-3 pb-16">
+              {/* Step navigation — mobile always, desktop only when >5 steps */}
+              <div className={`flex flex-wrap items-center gap-3 pb-16 ${room.steps.length <= 5 ? 'lg:justify-end' : ''}`}>
+                {/* Prev — mobile only (desktop shows all steps) */}
                 <button
                   onClick={goPrev}
                   disabled={currentStepIdx === 0}
-                  className="btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
+                  className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
                 >
                   <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                   <span>Prev</span>
                 </button>
 
-                <span className="order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
+                {/* Step counter — mobile only */}
+                <span className="lg:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
                   {currentStepIdx + 1} / {room.steps.length}
                 </span>
 
+                {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
                 <button
                   onClick={goNext}
-                  className="btn-primary inline-flex flex-1 items-center justify-center gap-2 sm:flex-none"
+                  className="btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none"
                 >
                   {isLastStep ? (
                     isRoomComplete
                       ? <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
-                      : <><span className="hidden sm:inline">{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><span className="sm:hidden">{quizPassed ? 'Complete' : 'Take quiz'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                      : <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                   ) : (
-                    <><span>Next</span><ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                    <>
+                      <span className="lg:hidden">Next</span>
+                      <span className="hidden lg:inline">Mark complete & continue</span>
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                    </>
                   )}
                 </button>
               </div>

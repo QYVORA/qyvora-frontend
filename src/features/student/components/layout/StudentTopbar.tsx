@@ -15,13 +15,6 @@ import { AnimatePresence, motion } from 'motion/react';
 // ── Nav dropdown groups ──────────────────────────────────────────────────────
 const NAV_GROUPS = [
   {
-    label: 'Learn',
-    items: [
-      { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', desc: 'Your operator hub'       },
-      { label: 'Bootcamp',  icon: BookOpen,        path: '/bootcamps', desc: 'Phased training programs' },
-    ],
-  },
-  {
     label: 'Operate',
     items: [
       { label: 'Marketplace', icon: ShoppingBag, path: '/marketplace', desc: 'Zero-day market'    },
@@ -322,8 +315,22 @@ const StudentTopbar = () => {
           <div className="flex items-center gap-8">
             <Link to="/dashboard"><Logo size="md" /></Link>
 
-            {/* Desktop dropdown nav */}
+            {/* Desktop nav — Bootcamp direct link + Operate dropdown */}
             <nav className="hidden lg:flex items-center gap-1">
+              {/* Direct Bootcamp link */}
+              <Link
+                to="/bootcamps"
+                className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+                  location.pathname.startsWith('/bootcamps')
+                    ? 'text-accent bg-accent-dim'
+                    : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+                }`}
+              >
+                <BookOpen className="w-4 h-4" />
+                Bootcamp
+              </Link>
+
+              {/* Operate dropdown */}
               {NAV_GROUPS.map((group) => (
                 <div
                   key={group.label}
