@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
-  CheckCircle2, BookOpen, ImageOff, Menu, X,
+  CheckCircle2, XCircle, BookOpen, ImageOff, Menu, X,
   ClipboardList, ZoomIn, ZoomOut, Maximize2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -246,7 +246,13 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
 
   return (
     <>
-      <div className="group mt-4 w-full max-w-full overflow-hidden rounded-xl border border-border bg-bg relative">
+      {/* Outer wrapper — always has a minimum height so loading/error states are visible */}
+      <div
+        className={`group mt-4 w-full overflow-hidden rounded-xl border border-border bg-bg-card relative
+          ${status === 'loaded' ? '' : 'min-h-[180px] sm:min-h-[220px]'}
+        `}
+      >
+        {/* The actual image — hidden until loaded, constrained responsively */}
         <img
           src={src}
           alt={alt}
@@ -254,42 +260,49 @@ const StepImage: React.FC<{ src: string; alt: string; stepNum: number }> = ({ sr
           decoding="async"
           onLoad={() => setStatus('loaded')}
           onError={() => setStatus('error')}
-          className={`w-full max-w-full h-auto rounded-xl object-contain transition-opacity duration-200 ${
-            status === 'loaded' ? 'opacity-100 group-hover:opacity-90' : 'opacity-0'
-          }`}
+          className={`
+            block w-full h-auto
+            max-h-[56vw] sm:max-h-[420px] lg:max-h-[520px]
+            object-contain rounded-xl
+            transition-opacity duration-300
+            ${status === 'loaded' ? 'opacity-100 group-hover:opacity-90' : 'opacity-0 absolute inset-0'}
+          `}
         />
 
+        {/* Loading spinner — shown while image is fetching */}
         {status === 'loading' && (
-          <div className="absolute inset-0 flex items-center justify-center py-10 bg-bg/85">
-            <Loader2 className="h-5 w-5 animate-spin text-accent opacity-50" />
+          <div className="absolute inset-0 flex items-center justify-center bg-bg-card rounded-xl">
+            <Loader2 className="h-6 w-6 animate-spin text-accent opacity-50" />
           </div>
         )}
+
+        {/* Error state */}
         {status === 'error' && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 py-8 text-text-muted bg-bg/90">
-            <ImageOff className="h-6 w-6 opacity-25" />
-            <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg-card rounded-xl">
+            <ImageOff className="h-6 w-6 text-text-muted opacity-25" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted opacity-40">
               Step {stepNum} image not available
             </span>
           </div>
         )}
 
-        {/* Clickable image */}
-        <button
-          type="button"
-          onClick={() => status === 'loaded' && setLightboxOpen(true)}
-          className="absolute inset-0 block w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
-          aria-label="Expand image"
-          tabIndex={status === 'loaded' ? 0 : -1}
-          style={{ display: status === 'loaded' ? 'block' : 'none' }}
-        >
-          {/* Zoom hint overlay */}
-          <div className="absolute inset-0 flex items-center justify-center rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="flex items-center gap-1.5 rounded-lg bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/10">
-              <Maximize2 className="h-3.5 w-3.5 text-white" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white">Expand</span>
+        {/* Expand button — only active when loaded */}
+        {status === 'loaded' && (
+          <button
+            type="button"
+            onClick={() => setLightboxOpen(true)}
+            className="absolute inset-0 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-xl"
+            aria-label={`Expand step ${stepNum} image`}
+          >
+            {/* Hover hint */}
+            <div className="absolute inset-0 flex items-center justify-center rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="flex items-center gap-1.5 rounded-lg bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/10">
+                <Maximize2 className="h-3.5 w-3.5 text-white" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white">Expand</span>
+              </div>
             </div>
-          </div>
-        </button>
+          </button>
+        )}
       </div>
 
       {lightboxOpen && (
@@ -551,7 +564,9 @@ const QuizGateModal: React.FC<{ onClose: () => void; onTakeQuiz: () => void }> =
       transition={{ duration: 0.2 }}
       className="relative z-10 w-full max-w-sm rounded-2xl border border-border bg-bg-card p-8 text-center shadow-2xl"
     >
-      <div className="mb-4 text-4xl">🔒</div>
+      <div className="mb-4 flex justify-center">
+        <Lock className="h-10 w-10 text-accent" />
+      </div>
       <h2 className="mb-2 text-lg font-black text-text-primary">Not so fast, operator.</h2>
       <p className="mb-6 text-sm text-text-muted leading-relaxed">
         You need to complete this room's quiz before moving on. No skipping — the mission requires it.
@@ -695,8 +710,11 @@ const QuizModal: React.FC<{
                 <div className={`text-6xl font-black mb-2 ${result.passed ? 'text-accent' : 'text-red-400'}`}>
                   {result.score}%
                 </div>
-                <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
-                  {result.passed ? '✓ Passed' : '✗ Not quite — 70% needed'}
+                <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
+                  {result.passed
+                    ? <><CheckCircle2 className="h-4 w-4" /> Passed</>
+                    : <><XCircle className="h-4 w-4" /> Not quite — 70% needed</>
+                  }
                 </div>
                 {result.passed && result.reward > 0 && (
                   <div className="mt-1 text-xs text-text-muted">+{result.reward} CP earned</div>
@@ -712,8 +730,11 @@ const QuizModal: React.FC<{
                   return (
                     <div key={q.id} className={`rounded-xl border p-4 ${isRight ? 'border-accent/30 bg-accent/5' : 'border-red-500/30 bg-red-500/5'}`}>
                       <div className="flex items-start gap-2 mb-3">
-                        <span className={`shrink-0 mt-0.5 text-sm font-black ${isRight ? 'text-accent' : 'text-red-400'}`}>
-                          {isRight ? '✓' : '✗'}
+                        <span className={`shrink-0 mt-0.5 ${isRight ? 'text-accent' : 'text-red-400'}`}>
+                          {isRight
+                            ? <CheckCircle2 className="h-4 w-4" />
+                            : <XCircle className="h-4 w-4" />
+                          }
                         </span>
                         <p className="text-sm font-bold text-text-primary leading-snug">
                           <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>

@@ -120,6 +120,11 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
   }
+
+  /* Safe-area bottom padding utility (used in walkthrough page) */
+  .pb-safe-bottom {
+    padding-bottom: max(4rem, env(safe-area-inset-bottom, 4rem));
+  }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-bg); border-radius: 999px; }
   ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; border: 2px solid var(--color-bg); }
