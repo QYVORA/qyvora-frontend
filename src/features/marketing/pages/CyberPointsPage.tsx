@@ -7,18 +7,6 @@ import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import ChainLogo from '../../../shared/components/ChainLogo';
 
-const EARN_WAYS = [
-  { icon: BookOpen, title: 'Complete Bootcamp Rooms',  desc: 'Finish room tasks in any module to earn CP.' },
-  { icon: Shield,   title: 'Capture CTF Flags',        desc: 'Submit correct flags for instant CP rewards.' },
-  { icon: Trophy,   title: 'Climb the Leaderboard',    desc: 'Consistent activity grows your rank and CP.' },
-];
-
-const WHY_ITEMS = [
-  { icon: Zap,    title: 'Proof-of-Skill',  text: 'A currency backed by real demonstrated ability.' },
-  { icon: Lock,   title: 'Gated Resources', text: 'Unlocks premium zero-day tools and operator assets.' },
-  { icon: Trophy, title: 'Rank & Status',   text: 'Drives leaderboard standing and community recognition.' },
-];
-
 const CyberPointsPage: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -57,9 +45,8 @@ const CyberPointsPage: React.FC = () => {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.35 }}
               className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-8"
             >
-              Cyber Points is HSOCIETY's skill-backed internal currency. Earn&nbsp;
-              <CpLogo className="w-4 h-4 mx-0.5" /> by completing bootcamp rooms and CTF challenges,
-              then spend it in the Zero-Day Market.
+              Cyber Points is HSOCIETY's skill-backed internal currency. Earn <CpLogo className="w-4 h-4 mx-0.5" /> by
+              completing bootcamp rooms and CTF challenges, then spend it in the Zero-Day Market.
             </motion.p>
 
             <motion.div
@@ -75,7 +62,6 @@ const CyberPointsPage: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right: bouncing CP logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85, filter: 'blur(8px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -83,11 +69,6 @@ const CyberPointsPage: React.FC = () => {
             className="hidden lg:flex relative h-[420px] xl:h-[480px] w-full items-center justify-center"
           >
             <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-            <motion.div
-              animate={shouldReduceMotion ? {} : { scale: [1, 1.07, 1], opacity: [0.12, 0.28, 0.12] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute w-[380px] h-[380px] rounded-full border border-accent/20 pointer-events-none"
-            />
             <motion.img
               src="/assets/branding/logos/cyber-points-logo.png"
               alt="Cyber Points"
@@ -99,119 +80,102 @@ const CyberPointsPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Body ── */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 space-y-5">
+      {/* ── Cards ── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        {/* Earn + Why */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-
-          {/* How to earn */}
-          <ScrollReveal className="lg:col-span-2">
-            <CardBase className="p-6 md:p-8 h-full">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// How To Earn</p>
-              <h2 className="text-xl font-black text-text-primary mb-5 inline-flex items-center gap-2">
-                Earning <CpLogo className="w-5 h-5" />
-              </h2>
-              <div className="space-y-3">
-                {EARN_WAYS.map(({ icon: Icon, title, desc }) => (
-                  <CardBase key={title} className="flex items-start gap-3 p-4">
-                    <div className="w-8 h-8 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
-                      <Icon className="w-4 h-4 text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-text-primary">{title}</p>
-                      <p className="text-xs text-text-muted mt-0.5">{desc}</p>
-                    </div>
-                  </CardBase>
-                ))}
+          <ScrollReveal>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-accent" />
               </div>
+              <p className="text-sm font-black text-text-primary">Complete Bootcamp Rooms</p>
+              <p className="text-xs text-text-muted leading-relaxed">Finish room tasks in any module to earn CP instantly.</p>
             </CardBase>
           </ScrollReveal>
 
-          {/* Why it matters */}
-          <ScrollReveal>
-            <CardBase className="p-6 md:p-8 h-full">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// Why It Matters</p>
-              <h3 className="text-xl font-black text-text-primary mb-5">Operator Economy</h3>
-              <div className="space-y-4">
-                {WHY_ITEMS.map(({ icon: Icon, title, text }) => (
-                  <div key={title} className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
-                      <Icon className="w-4 h-4 text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-text-primary">{title}</p>
-                      <p className="text-xs text-text-muted mt-0.5">{text}</p>
-                    </div>
-                  </div>
-                ))}
+          <ScrollReveal delay={0.05}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Shield className="w-4 h-4 text-accent" />
               </div>
+              <p className="text-sm font-black text-text-primary">Capture CTF Flags</p>
+              <p className="text-xs text-text-muted leading-relaxed">Submit correct flags for immediate CP rewards.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Trophy className="w-4 h-4 text-accent" />
+              </div>
+              <p className="text-sm font-black text-text-primary">Climb the Leaderboard</p>
+              <p className="text-xs text-text-muted leading-relaxed">Consistent activity and completions grow your rank.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.15}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Zap className="w-4 h-4 text-accent" />
+              </div>
+              <p className="text-sm font-black text-text-primary">Proof-of-Skill</p>
+              <p className="text-xs text-text-muted leading-relaxed">A currency backed by real demonstrated ability, not just time spent.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.2}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Lock className="w-4 h-4 text-accent" />
+              </div>
+              <p className="text-sm font-black text-text-primary">Gated Resources</p>
+              <p className="text-xs text-text-muted leading-relaxed">Unlocks premium zero-day tools and operator assets in the market.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.25}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <ChainLogo size={18} />
+              </div>
+              <p className="text-sm font-black text-text-primary">Chain-Verified</p>
+              <p className="text-xs text-text-muted leading-relaxed">Every CP event is recorded on the HSOCIETY Chain — tamper-proof.</p>
+            </CardBase>
+          </ScrollReveal>
+
+        </div>
+
+        {/* CTA row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          <ScrollReveal>
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+              <ShoppingBag className="w-8 h-8 text-accent shrink-0" />
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <p className="text-sm font-black text-text-primary mb-0.5">Zero-Day Market</p>
+                <p className="text-xs text-text-muted">Spend your CP on tools and operator assets.</p>
+              </div>
+              <Link to="/zero-day-market" className="btn-primary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-1.5">
+                Open Market <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+              <Trophy className="w-8 h-8 text-accent shrink-0" />
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <p className="text-sm font-black text-text-primary mb-0.5">Start Earning Today</p>
+                <p className="text-xs text-text-muted">Create a free account and begin training.</p>
+              </div>
+              <Link to="/register" className="btn-primary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-1.5">
+                Sign Up <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </CardBase>
           </ScrollReveal>
         </div>
-
-        {/* How to use */}
-        <ScrollReveal>
-          <CardBase className="p-6 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
-            <div className="flex-1">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// Zero-Day Market</p>
-              <h3 className="text-xl font-black text-text-primary mb-3 inline-flex items-center gap-2">
-                Spending <CpLogo className="w-5 h-5" />
-              </h3>
-              <p className="text-sm text-text-secondary max-w-xl">
-                Use earned <CpLogo className="w-4 h-4 mx-0.5" /> in the Zero-Day Market to purchase
-                access to tools, resources, and operator assets.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row md:flex-col xl:flex-row gap-3 flex-none">
-              <Link to="/bootcamps" className="btn-secondary !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <BookOpen className="w-4 h-4" /> Start Training
-              </Link>
-              <Link to="/zero-day-market" className="btn-primary !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <ShoppingBag className="w-4 h-4" /> Open Market <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </CardBase>
-        </ScrollReveal>
-
-        {/* Chain callout */}
-        <ScrollReveal>
-          <CardBase className="flex flex-col sm:flex-row items-center gap-4 px-6 py-5">
-            <ChainLogo size={40} />
-            <div className="flex-1 min-w-0 text-center sm:text-left">
-              <p className="text-sm font-black text-text-primary">Every CP event is recorded on the HSOCIETY Chain</p>
-              <p className="text-xs text-text-muted mt-0.5">A tamper-proof ledger that makes your history verifiable.</p>
-            </div>
-            <Link to="/chain" className="btn-secondary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-2">
-              Learn about the Chain <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </CardBase>
-        </ScrollReveal>
-
-        {/* CTA */}
-        <ScrollReveal>
-          <CardBase className="p-8 md:p-12 text-center flex flex-col items-center gap-5">
-            <div className="px-3 py-1 border border-border bg-accent-dim rounded-sm">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// GET STARTED</span>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-black text-text-primary">
-              Start Earning <CpLogo className="w-7 h-7 mx-1" /> Today
-            </h3>
-            <p className="text-sm text-text-secondary max-w-md">
-              Create a free account and start building your operator profile.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link to="/register" className="btn-primary !px-8 !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <Zap className="w-4 h-4" /> Create Account <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link to="/leaderboard" className="btn-secondary !px-8 !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <Trophy className="w-4 h-4" /> View Leaderboard
-              </Link>
-            </div>
-          </CardBase>
-        </ScrollReveal>
-
       </div>
+
     </div>
   );
 };

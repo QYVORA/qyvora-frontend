@@ -7,25 +7,6 @@ import { CardBase } from '../../../shared/components/ui/Card';
 import ChainLogo from '../../../shared/components/ChainLogo';
 import CpLogo from '../../../shared/components/CpLogo';
 
-const HOW_STEPS = [
-  { icon: GitBranch, title: 'Skill event triggered', desc: 'Complete a room, module, or earn CP.' },
-  { icon: Database,  title: 'Block created',         desc: 'Hashed and linked to the previous block.' },
-  { icon: Eye,       title: 'Record verifiable',     desc: 'Anyone can verify your history is real.' },
-];
-
-const ON_CHAIN = [
-  { label: 'Room Completed',   color: 'text-accent border-accent/30 bg-accent/10' },
-  { label: 'Module Completed', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10' },
-  { label: 'CP Reward',        color: 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10' },
-  { label: 'Activity Log',     color: 'text-text-muted border-border bg-bg' },
-];
-
-const WHY_ITEMS = [
-  { icon: Shield,  title: 'Proof-of-Skill',    text: 'Cryptographic proof, not just a dashboard score.' },
-  { icon: Eye,     title: 'Shareable history', text: 'Show employers your chain record to prove your work.' },
-  { icon: Trophy,  title: 'Rank integrity',    text: 'Leaderboard positions computed from chain-verified CP.' },
-];
-
 const ChainPage: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -97,19 +78,13 @@ const ChainPage: React.FC = () => {
               transition={{ duration: 0.9, delay: 0.3 }}
               className="lg:hidden mt-10 flex justify-center w-full"
             >
-              <div className="relative flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
-                <motion.div
-                  animate={shouldReduceMotion ? {} : { y: [0, -18, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <ChainLogo variant="3d" size={220} className="relative z-10 drop-shadow-[0_0_60px_rgba(136,173,124,0.45)]" />
-                </motion.div>
-              </div>
+              <motion.div animate={shouldReduceMotion ? {} : { y: [0, -18, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
+                <ChainLogo variant="3d" size={220} className="relative z-10 drop-shadow-[0_0_60px_rgba(136,173,124,0.45)]" />
+              </motion.div>
             </motion.div>
           </div>
 
-          {/* Right: 3D chain logo — desktop */}
+          {/* Desktop 3D logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.82, filter: 'blur(8px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -117,16 +92,7 @@ const ChainPage: React.FC = () => {
             className="hidden lg:flex relative h-[560px] xl:h-[620px] w-full items-center justify-center"
           >
             <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-            <motion.div
-              animate={shouldReduceMotion ? {} : { scale: [1, 1.06, 1], opacity: [0.15, 0.3, 0.15] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute w-[580px] h-[580px] rounded-full border border-accent/20 pointer-events-none"
-            />
-            <motion.div
-              animate={shouldReduceMotion ? {} : { y: [0, -24, 0] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative z-10"
-            >
+            <motion.div animate={shouldReduceMotion ? {} : { y: [0, -24, 0] }} transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }} className="relative z-10">
               <ChainLogo variant="3d" size={580} className="drop-shadow-[0_0_120px_rgba(136,173,124,0.4)]" />
             </motion.div>
             <div className="absolute top-8 right-6 px-2.5 py-1.5 bg-bg/80 border border-accent/20 rounded-lg text-[8px] font-mono text-accent uppercase tracking-widest backdrop-blur-sm flex items-center gap-1.5">
@@ -137,116 +103,102 @@ const ChainPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Body ── */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 space-y-5">
+      {/* ── Cards ── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        {/* How it works */}
-        <ScrollReveal>
-          <CardBase className="p-6 md:p-8">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// How It Works</p>
-            <h2 className="text-xl font-black text-text-primary mb-6">Three steps, permanent record</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {HOW_STEPS.map(({ icon: Icon, title, desc }, i) => (
-                <motion.div
-                  key={title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <CardBase className="flex items-start gap-3 p-4 h-full">
-                    <div className="w-8 h-8 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
-                      <Icon className="w-4 h-4 text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-text-primary">{title}</p>
-                      <p className="text-xs text-text-muted mt-0.5">{desc}</p>
-                    </div>
-                  </CardBase>
-                </motion.div>
-              ))}
-            </div>
-          </CardBase>
-        </ScrollReveal>
-
-        {/* What gets recorded + Why it matters */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <ScrollReveal>
-            <CardBase className="p-6 h-full">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// On-chain events</p>
-              <h3 className="text-lg font-black text-text-primary mb-4">What gets recorded</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {ON_CHAIN.map(({ label, color }) => (
-                  <div key={label} className={`rounded-lg border px-3 py-3 text-center text-[10px] font-black uppercase tracking-widest ${color}`}>
-                    {label}
-                  </div>
-                ))}
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <GitBranch className="w-4 h-4 text-accent" />
               </div>
+              <p className="text-sm font-black text-text-primary">Skill Event Triggered</p>
+              <p className="text-xs text-text-muted leading-relaxed">Complete a room, module, or earn CP — a new block is created.</p>
             </CardBase>
           </ScrollReveal>
 
-          <ScrollReveal>
-            <CardBase className="p-6 h-full">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">// Why it matters</p>
-              <h3 className="text-lg font-black text-text-primary mb-4">Verifiable skill</h3>
-              <div className="space-y-3">
-                {WHY_ITEMS.map(({ icon: Icon, title, text }) => (
-                  <div key={title} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded bg-accent-dim flex items-center justify-center flex-none mt-0.5">
-                      <Icon className="w-3.5 h-3.5 text-accent" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-text-primary">{title}</p>
-                      <p className="text-xs text-text-muted mt-0.5">{text}</p>
-                    </div>
-                  </div>
-                ))}
+          <ScrollReveal delay={0.05}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Database className="w-4 h-4 text-accent" />
               </div>
+              <p className="text-sm font-black text-text-primary">Block Created</p>
+              <p className="text-xs text-text-muted leading-relaxed">Hashed and linked to the previous block — immutable by design.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Eye className="w-4 h-4 text-accent" />
+              </div>
+              <p className="text-sm font-black text-text-primary">Record Verifiable</p>
+              <p className="text-xs text-text-muted leading-relaxed">Anyone can verify your history is real — cryptographic proof, not a dashboard score.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.15}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <span className="text-[10px] font-black text-accent font-mono">RC</span>
+              </div>
+              <p className="text-sm font-black text-text-primary">Room Completed</p>
+              <p className="text-xs text-text-muted leading-relaxed">Every room you finish is recorded as a permanent on-chain event.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.2}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <CpLogo className="w-4 h-4" />
+              </div>
+              <p className="text-sm font-black text-text-primary">CP Reward</p>
+              <p className="text-xs text-text-muted leading-relaxed">Every Cyber Points earn and spend event is a block on the chain.</p>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.25}>
+            <CardBase className="p-6 flex flex-col gap-3">
+              <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                <Shield className="w-4 h-4 text-accent" />
+              </div>
+              <p className="text-sm font-black text-text-primary">Shareable History</p>
+              <p className="text-xs text-text-muted leading-relaxed">Show employers your chain record to prove your skills are real.</p>
+            </CardBase>
+          </ScrollReveal>
+
+        </div>
+
+        {/* CTA row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          <ScrollReveal>
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+              <CpLogo className="w-8 h-8 shrink-0" />
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <p className="text-sm font-black text-text-primary mb-0.5">Cyber Points on the Chain</p>
+                <p className="text-xs text-text-muted">Every CP event is a block. Learn how CP works.</p>
+              </div>
+              <Link to="/cyber-points" className="btn-secondary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-1.5">
+                Learn CP <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </CardBase>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+              <Trophy className="w-8 h-8 text-accent shrink-0" />
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <p className="text-sm font-black text-text-primary mb-0.5">Start Building Your Record</p>
+                <p className="text-xs text-text-muted">Every skill you prove gets permanently recorded.</p>
+              </div>
+              <Link to="/register" className="btn-primary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-1.5">
+                Sign Up <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </CardBase>
           </ScrollReveal>
         </div>
-
-        {/* CP callout */}
-        <ScrollReveal>
-          <CardBase className="flex flex-col sm:flex-row items-center gap-4 px-6 py-5">
-            <CpLogo className="w-9 h-9 shrink-0" />
-            <div className="flex-1 min-w-0 text-center sm:text-left">
-              <p className="text-sm font-black text-text-primary">Cyber Points are the currency recorded on the chain</p>
-              <p className="text-xs text-text-muted mt-0.5">Every CP earn and spend event is a block.</p>
-            </div>
-            <Link to="/cyber-points" className="btn-secondary text-xs !px-5 !py-2.5 shrink-0 inline-flex items-center gap-2">
-              Learn about CP <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </CardBase>
-        </ScrollReveal>
-
-        {/* CTA */}
-        <ScrollReveal>
-          <CardBase className="p-7 md:p-10 text-center flex flex-col items-center gap-4">
-            <motion.div
-              animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <ChainLogo variant="3d" size={120} className="drop-shadow-[0_0_50px_rgba(136,173,124,0.4)]" />
-            </motion.div>
-            <h3 className="text-xl md:text-2xl font-black text-text-primary">
-              Start Building Your Chain Record
-            </h3>
-            <p className="text-sm text-text-secondary max-w-sm">
-              Every skill you prove gets permanently recorded — a verifiable history that belongs to you.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link to="/register" className="btn-primary !px-7 !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <Zap className="w-4 h-4" /> Create Account <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link to="/leaderboard" className="btn-secondary !px-7 !py-3 text-sm inline-flex items-center justify-center gap-2">
-                <Trophy className="w-4 h-4" /> View Leaderboard
-              </Link>
-            </div>
-          </CardBase>
-        </ScrollReveal>
-
       </div>
+
     </div>
   );
 };
