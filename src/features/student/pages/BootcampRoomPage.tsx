@@ -543,9 +543,11 @@ const Sidebar: React.FC<{
 // ─────────────────────────────────────────────────────────────────────────────
 const QuizModal: React.FC<{
   moduleId: string;
+  roomId: string;
   courseId: string;
   onClose: () => void;
-}> = ({ moduleId, courseId, onClose }) => {
+  onPassed: () => void;
+}> = ({ moduleId, roomId, courseId, onClose, onPassed }) => {
   const { addToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<RoomQuiz | null>(null);
@@ -557,7 +559,7 @@ const QuizModal: React.FC<{
   useEffect(() => {
     setLoading(true);
     api
-      .post('/student/quiz', { moduleId, courseId })
+      .post('/student/quiz', { moduleId, roomId, courseId })
       .then((res) => {
         const q = res?.data as RoomQuiz;
         if (Array.isArray(q?.questions) && q.questions.length > 0) {
@@ -582,7 +584,7 @@ const QuizModal: React.FC<{
     }
     setSubmitting(true);
     try {
-      const res = await api.post('/student/quiz', { moduleId, courseId, answers });
+      const res = await api.post('/student/quiz', { moduleId, roomId, courseId, answers });
       const score = Number(res?.data?.score || 0);
       const passed = Boolean(res?.data?.passed);
       const reward = Number(res?.data?.reward?.points || 0);
@@ -591,6 +593,7 @@ const QuizModal: React.FC<{
         passed ? `Quiz passed! ${score}% — +${reward} CP` : `Score: ${score}%`,
         passed ? 'success' : 'info'
       );
+      if (passed) onPassed();
     } catch (err: any) {
       addToast(err?.response?.data?.error || 'Could not submit quiz.', 'error');
     } finally {
@@ -654,7 +657,7 @@ const QuizModal: React.FC<{
                 {result.score}%
               </div>
               <div className={`text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-text-muted'}`}>
-                {result.passed ? '✓ Passed' : 'Keep going'}
+                {result.passed ? '✓ Passed — you can proceed to the next room' : 'Not quite — score 70% or higher to continue'}
               </div>
               {result.passed && result.reward && result.reward > 0 && (
                 <div className="text-sm font-bold text-text-muted">+{result.reward} CP earned</div>
@@ -669,7 +672,7 @@ const QuizModal: React.FC<{
                   </button>
                 )}
                 <button onClick={onClose} className="btn-primary text-sm">
-                  {result.passed ? 'Continue' : 'Close'}
+                  {result.passed ? 'Continue to Next Room' : 'Close'}
                 </button>
               </div>
             </div>
@@ -777,6 +780,8 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Quiz modal ─────────────────────────────────────────────────────────────
   const [quizOpen, setQuizOpen] = useState(false);
+  // Track whether the quiz for the current room has been passed this session
+  const [quizPassed, setQuizPassed] = useState(false);
 
   // ── Room complete overlay ──────────────────────────────────────────────────
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
@@ -848,6 +853,7 @@ const BootcampRoomPage: React.FC = () => {
   useEffect(() => {
     setCurrentStepIdx(0);
     setViewedSteps(new Set([0]));
+    setQuizPassed(false);
   }, [phaseId, roomId]);
 
   // ── Resolve phase and room from config ────────────────────────────────────
@@ -904,9 +910,13 @@ const BootcampRoomPage: React.FC = () => {
     if (nextIdx < room.steps.length) {
       goToStep(nextIdx);
     } else {
-      // All steps viewed — mark room complete and show overlay
-      if (phaseId && roomId) markRoomComplete(phaseId, roomId);
-      setShowCompleteOverlay(true);
+      // All steps viewed — require quiz before marking complete
+      if (!quizPassed && quizModuleId) {
+        setQuizOpen(true);
+      } else {
+        if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+        setShowCompleteOverlay(true);
+      }
     }
   };
 
@@ -993,6 +1003,8 @@ const BootcampRoomPage: React.FC = () => {
   );
   const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
   const quizCourseId = apiCourse?.id || bootcampId || '';
+  // roomId is 1-based index of the room within the phase
+  const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
 
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
@@ -1001,7 +1013,18 @@ const BootcampRoomPage: React.FC = () => {
     <div className="bg-bg overflow-x-hidden">
       {/* Quiz modal */}
       {quizOpen && quizModuleId && (
-        <QuizModal moduleId={quizModuleId} courseId={quizCourseId} onClose={() => setQuizOpen(false)} />
+        <QuizModal
+          moduleId={quizModuleId}
+          roomId={quizRoomId}
+          courseId={quizCourseId}
+          onClose={() => setQuizOpen(false)}
+          onPassed={() => {
+            setQuizPassed(true);
+            setQuizOpen(false);
+            if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+            setShowCompleteOverlay(true);
+          }}
+        />
       )}
 
       {/* Room complete overlay */}
@@ -1243,7 +1266,7 @@ const BootcampRoomPage: React.FC = () => {
                   {isLastStep ? (
                     isRoomComplete
                       ? <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
-                      : <><span className="hidden sm:inline">Complete room</span><span className="sm:hidden">Complete</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                      : <><span className="hidden sm:inline">{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><span className="sm:hidden">{quizPassed ? 'Complete' : 'Take quiz'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                   ) : (
                     <><span>Next</span><ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                   )}
