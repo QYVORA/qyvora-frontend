@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Flame, ChevronRight, RefreshCw, BookOpen,
+  Crown, Trophy, ChevronUp, ShoppingBag, Download, Loader2,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
@@ -19,6 +21,8 @@ import {
 } from '../utils/studentExperience';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
+import { resolveImg } from '../../../shared/utils/resolveImg';
+import { useToast } from '../../../core/contexts/ToastContext';
 
 // ── Rank config ───────────────────────────────────────────────────────────────
 const RANKS = [
@@ -53,12 +57,163 @@ function Skeleton({ className }: { className?: string }) {
   return <div className={`animate-pulse rounded bg-accent-dim/20 ${className ?? ''}`} />;
 }
 
+// ── Medal colours for top-3 ───────────────────────────────────────────────────
+const PODIUM_STYLES = [
+  { border: 'border-accent/60',    bg: 'bg-accent-dim',        text: 'text-accent',      label: 'text-accent'      }, // 1st
+  { border: 'border-zinc-400/40',  bg: 'bg-zinc-400/10',       text: 'text-zinc-300',    label: 'text-zinc-400'    }, // 2nd
+  { border: 'border-amber-600/40', bg: 'bg-amber-600/10',      text: 'text-amber-500',   label: 'text-amber-600'   }, // 3rd
+];
+
+// ── Mini leaderboard card ─────────────────────────────────────────────────────
+interface LeaderEntry { handle: string; name: string; rank: string; totalXp: number; }
+
+const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle }) => {
+  const [top3, setTop3]       = useState<LeaderEntry[]>([]);
+  const [myPos, setMyPos]     = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/public/leaderboard?limit=50')
+      .then((res) => {
+        if (!mounted) return;
+        const data: LeaderEntry[] = Array.isArray(res.data?.leaderboard) ? res.data.leaderboard : [];
+        setTop3(data.slice(0, 3));
+        const idx = data.findIndex(
+          (op) => (op.handle || op.name || '').toLowerCase() === currentHandle.toLowerCase()
+        );
+        setMyPos(idx >= 0 ? idx + 1 : null);
+      })
+      .catch(() => { /* silent — non-critical widget */ })
+      .finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, [currentHandle]);
+
+  return (
+    <ScrollReveal delay={0.1}>
+      <div className="card-hsociety p-5 relative overflow-hidden">
+        {/* Top accent bar */}
+        <div
+          aria-hidden
+          className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }}
+        />
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Trophy className="h-4 w-4 text-accent" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-primary">
+              Hall of Shadows
+            </span>
+          </div>
+          <Link
+            to="/dashboard/leaderboard"
+            className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+          >
+            Full board <ChevronRight className="h-3 w-3" />
+          </Link>
+        </div>
+
+        {/* Podium rows */}
+        {loading ? (
+          <div className="space-y-2.5">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center gap-3 animate-pulse">
+                <Skeleton className="h-8 w-8 rounded-lg flex-none" />
+                <Skeleton className="h-3 flex-1" />
+                <Skeleton className="h-3 w-14" />
+              </div>
+            ))}
+          </div>
+        ) : top3.length === 0 ? (
+          <p className="text-xs text-text-muted text-center py-4">No operators ranked yet.</p>
+        ) : (
+          <div className="space-y-2">
+            {top3.map((op, i) => {
+              const style   = PODIUM_STYLES[i];
+              const handle  = op.handle || op.name || 'Anonymous';
+              const isMe    = handle.toLowerCase() === currentHandle.toLowerCase();
+              const isFirst = i === 0;
+
+              return (
+                <motion.div
+                  key={handle}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Link
+                    to={`/u/${handle}`}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all hover:brightness-110 ${style.border} ${style.bg} ${isMe ? 'ring-1 ring-accent/40' : ''}`}
+                  >
+                    {/* Position */}
+                    <div className={`w-6 flex-none flex items-center justify-center font-mono font-black text-xs ${style.label}`}>
+                      {isFirst ? <Crown className="h-3.5 w-3.5" /> : `#${i + 1}`}
+                    </div>
+
+                    {/* Avatar */}
+                    <div className={`h-7 w-7 rounded-md flex-none flex items-center justify-center text-[10px] font-black border ${style.border} ${style.bg} ${style.text}`}>
+                      {handle[0]?.toUpperCase()}
+                    </div>
+
+                    {/* Name + rank */}
+                    <div className="min-w-0 flex-1">
+                      <div className={`font-mono text-xs font-bold truncate ${isMe ? 'text-accent' : 'text-text-primary'}`}>
+                        {handle}{isMe && <span className="ml-1 text-[9px] text-accent/70">(you)</span>}
+                      </div>
+                      <div className="text-[9px] uppercase tracking-widest text-text-muted truncate">
+                        {op.rank || 'Operator'}
+                      </div>
+                    </div>
+
+                    {/* XP */}
+                    <div className={`font-mono text-xs font-black flex-none ${style.text}`}>
+                      {Number(op.totalXp || 0).toLocaleString()}
+                      <span className="text-[8px] ml-0.5 opacity-60">CP</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Your position — shown only if outside top 3 */}
+        {!loading && myPos !== null && myPos > 3 && (
+          <div className="mt-3 pt-3 border-t border-border/50 flex items-center justify-between">
+            <span className="text-[10px] text-text-muted uppercase tracking-widest">Your position</span>
+            <div className="flex items-center gap-1.5">
+              <ChevronUp className="h-3 w-3 text-accent" />
+              <span className="font-mono text-xs font-black text-accent">#{myPos}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Not ranked yet */}
+        {!loading && myPos === null && (
+          <div className="mt-3 pt-3 border-t border-border/50">
+            <p className="text-[10px] text-text-muted text-center">
+              Earn CP to appear on the board.
+            </p>
+          </div>
+        )}
+      </div>
+    </ScrollReveal>
+  );
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [overview, setOverview]        = useState<any>(null);
   const [bootcamps, setBootcamps]      = useState<any[]>([]);
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
+  const [products, setProducts]        = useState<any[]>([]);
+  const [purchasing, setPurchasing]    = useState<string | null>(null);
+  const [downloading, setDownloading]  = useState<string | null>(null);
+  const [purchased, setPurchased]      = useState<Set<string>>(new Set());
   const [loading, setLoading]          = useState(true);
   const [syncError, setSyncError]      = useState('');
   const [lastSync, setLastSync]        = useState<string | null>(getLastSync('dashboard'));
@@ -67,11 +222,13 @@ const Dashboard: React.FC = () => {
     let mounted = true;
     (async () => {
       try {
-        const [ovRes, bcRes, balanceRes, tokenBalance] = await Promise.all([
+        const [ovRes, bcRes, balanceRes, tokenBalance, prodRes, txRes] = await Promise.all([
           api.get('/student/overview').catch(() => null),
           api.get('/public/bootcamps').catch(() => null),
           api.get('/cp/balance').catch(() => null),
           getTokenBalanceForUser(user?.uid || ''),
+          api.get('/public/cp-products').catch(() => null),
+          api.get('/cp/transactions?limit=100').catch(() => null),
         ]);
         if (!mounted) return;
         setOverview(ovRes?.data || null);
@@ -81,6 +238,13 @@ const Dashboard: React.FC = () => {
             ? tokenBalance
             : extractCpBalance(balanceRes?.data);
         if (cp !== null) setCpBalance(cp);
+        setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items.slice(0, 1) : []);
+        const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
+        setPurchased(new Set<string>(
+          txItems
+            .filter((tx: any) => tx.type === 'purchase' && tx.productId)
+            .map((tx: any) => String(tx.productId))
+        ));
         setSyncError('');
         setLastSync(setLastSyncNow('dashboard'));
       } catch {
@@ -112,208 +276,375 @@ const Dashboard: React.FC = () => {
       isLocked:    false,
     }));
 
-  const activeBootcamp  = bootcamps.find((bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined);
-  const nextRoomPath    = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) : null;
-  const continuePath    = nextRoomPath || (activeBootcamp ? `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps');
-  const isEnrolled      = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
-  const progressValue   = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
-  const streakDays      = Number(overview?.xpSummary?.streakDays || 0);
-  const cpBalance       = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
-  const handle          = user?.username || 'OPERATOR';
+  const activeBootcamp   = bootcamps.find((bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined);
+  const nextRoomPath     = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) : null;
+  const continuePath     = nextRoomPath || (activeBootcamp ? `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps');
+  const isEnrolled       = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
+  const streakDays       = Number(overview?.xpSummary?.streakDays || 0);
+  const cpBalance        = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
+  // Use the real username — empty string is fine, the UI handles it gracefully
+  const handle           = user?.username || '';
   const { rank: rankInfo, next: nextRank, progress: rankProgress } = getRankInfo(cpBalance);
-  const nextMission     = (overview?.learningPath || []).find(
+  const nextMission      = (overview?.learningPath || []).find(
     (m: any) => m.status === 'in-progress' || m.status === 'next'
   );
   const multipleEnrolled = enrolledBootcamps.length > 1;
 
+  // ── Marketplace helpers ───────────────────────────────────────────────────
+  const handlePurchase = async (product: any) => {
+    const id = String(product.id || '');
+    setPurchasing(id);
+    try {
+      await api.post('/cp/purchase', { productId: id });
+      addToast(`${product.title} purchased.`, 'success');
+      setPurchased((prev) => new Set([...prev, id]));
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Purchase failed.', 'error');
+    } finally {
+      setPurchasing(null);
+    }
+  };
+
+  const handleDownload = async (product: any) => {
+    const id = String(product.id || '');
+    setDownloading(id);
+    try {
+      const base = String(import.meta.env.VITE_API_BASE_URL || '/api');
+      const res = await fetch(`${base}/cp/products/${id}/download`, { credentials: 'include' });
+      if (!res.ok) { addToast('Download failed.', 'error'); return; }
+      const blob = await res.blob();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = product.fileName || `${product.title || 'product'}.pdf`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } catch {
+      addToast('Download failed.', 'error');
+    } finally {
+      setDownloading(null);
+    }
+  };
+
   return (
     <div className="bg-bg">
+      {/*
+        scroll-hover  → hides scrollbar at rest, shows a slim one on hover
+        scroll-smooth → smooth momentum scrolling
+      */}
       <div
-        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
-        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+        className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{
+          scrollBehavior: 'smooth',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+          maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+        }}
       >
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
-        {/* ── HEADER ─────────────────────────────────────────────────────── */}
-        <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-              Mission control
-            </span>
-            <h1 className="text-4xl font-black text-text-primary md:text-6xl">{handle}</h1>
-            {/* Rank badge — directly under username */}
-            {!loading && (
-              <div className="mt-2 mb-1 inline-flex items-center gap-2">
-                <span className={`font-mono text-sm font-black ${rankInfo.color}`}>{rankInfo.name}</span>
-              </div>
-            )}
-            <p className="mt-1 max-w-lg text-base text-text-muted">
-              {loading
-                ? 'Loading your status…'
-                : isEnrolled
-                ? 'Pick up where you left off.'
-                : 'Choose a bootcamp and start training.'}
-            </p>
-          </div>
-
-          {/* Stats pills — CP and streak only */}
-          {!loading && (
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
-                <CpLogo className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                <span className="font-mono text-lg sm:text-xl font-black text-accent">{cpBalance.toLocaleString()}</span>
-              </div>
-              {streakDays > 0 && (
-                <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
-                  <Flame className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-orange-400" />
-                  <span className="font-mono text-lg sm:text-xl font-black text-orange-400">{streakDays}d</span>
+          {/* ── HEADER ───────────────────────────────────────────────────── */}
+          <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+                Mission control
+              </span>
+              <h1 className="text-4xl font-black text-text-primary md:text-6xl">
+                {loading
+                  ? <span className="inline-block h-12 w-48 rounded bg-accent-dim/20 animate-pulse align-middle" />
+                  : handle}
+              </h1>
+              {!loading && (
+                <div className="mt-2 mb-1 inline-flex items-center gap-2">
+                  <span className={`font-mono text-sm font-black ${rankInfo.color}`}>{rankInfo.name}</span>
                 </div>
               )}
-            </div>
-          )}
-        </ScrollReveal>
-
-        {/* ── MAIN GRID ──────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8 lg:items-start">
-
-          {/* LEFT COLUMN — primary action + sync */}
-          <div className="space-y-6 lg:col-span-2">
-
-            {/* PRIMARY ACTION */}
-            <ScrollReveal>
-              {loading ? (
-                <div className="card-hsociety p-6 animate-pulse space-y-3">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-5 w-3/4" />
-                  <Skeleton className="h-2 w-full rounded-full" />
-                  <Skeleton className="h-11 w-full rounded-md" />
-                </div>
-              ) : (
-                <div className="card-hsociety p-6 relative overflow-hidden">
-                  <OptionalDecorImage
-                    src={STUDENT_DECOR.bootcampOperator}
-                    className="pointer-events-none absolute -right-4 -top-4 h-28 w-auto object-contain opacity-[0.12] select-none"
-                  />
-                  <p className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent relative z-10">
-                    {isEnrolled
-                      ? (overview?.progressMeta?.currentPhase?.title || 'Active bootcamp')
-                      : 'Get started'}
-                  </p>
-                  <p className="mb-5 text-xl font-black leading-snug text-text-primary relative z-10">
-                    {nextMission
-                      ? nextMission.title
-                      : isEnrolled
-                      ? 'Pick up where you left off'
-                      : 'Choose a bootcamp to begin'}
-                  </p>
-                  {nextRank && (
-                    <div className="mb-5 relative z-10">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                          {nextRank.min - cpBalance} CP → {nextRank.name}
-                        </span>
-                        <span className="font-mono text-xs font-black text-text-muted">{rankProgress}%</span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-accent-dim">
-                        <div
-                          className="h-full rounded-full bg-accent/50 transition-all duration-700"
-                          style={{ width: `${rankProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <Link
-                    to={continuePath}
-                    className="btn-primary flex w-full items-center justify-center gap-2 py-3 text-sm relative z-10"
-                  >
-                    {isEnrolled ? 'Continue mission' : 'Browse bootcamps'}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              )}
-            </ScrollReveal>
-
-            {/* SYNC STATUS */}
-            <div className="flex items-center justify-between gap-3 px-1">
-              <p className={`flex items-center gap-1.5 text-[11px] ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
-                <RefreshCw className="h-3 w-3 shrink-0" />
-                {syncError || formatSyncLabel(lastSync)}
+              <p className="mt-1 max-w-lg text-base text-text-muted">
+                {loading
+                  ? 'Loading your status…'
+                  : isEnrolled
+                  ? 'Pick up where you left off.'
+                  : 'Choose a bootcamp and start training.'}
               </p>
-              {syncError && (
-                <button
-                  onClick={() => window.location.reload()}
-                  className="text-[11px] font-bold text-accent hover:underline"
-                >
-                  Retry
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN — Programs */}
-          <div className="lg:col-span-3">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-text-primary">
-                <BookOpen className="h-4 w-4 text-accent" />
-                {multipleEnrolled ? 'Your programs' : 'Your program'}
-              </h2>
-              {enrolledBootcamps.length > 1 && (
-                <Link
-                  to="/dashboard/bootcamps"
-                  className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-accent hover:underline"
-                >
-                  View all <ChevronRight className="h-3.5 w-3.5" />
-                </Link>
-              )}
             </div>
 
-            {/* Loading skeletons */}
-            {loading && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
-                {[0].map((i) => (
-                  <div key={i} className="card-hsociety overflow-hidden animate-pulse">
-                    <div className="aspect-video bg-accent-dim/30" />
-                    <div className="space-y-3 p-5">
-                      <Skeleton className="h-4 w-3/4" />
-                      <Skeleton className="h-3 w-1/2" />
-                      <Skeleton className="mt-3 h-2 w-full rounded-full" />
-                      <Skeleton className="h-9 w-full rounded-md" />
-                    </div>
+            {/* Stats pills */}
+            {!loading && (
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                  <CpLogo className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                  <span className="font-mono text-lg sm:text-xl font-black text-accent">{cpBalance.toLocaleString()}</span>
+                </div>
+                {streakDays > 0 && (
+                  <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                    <Flame className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-orange-400" />
+                    <span className="font-mono text-lg sm:text-xl font-black text-orange-400">{streakDays}d</span>
                   </div>
-                ))}
+                )}
               </div>
             )}
+          </ScrollReveal>
 
-            {/* Empty state */}
-            {!loading && enrolledBootcamps.length === 0 && (
-              <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
-                <OptionalDecorImage
-                  src={STUDENT_DECOR.bootcampOperator}
-                  className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
-                />
-                <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                <p className="mb-5 text-base text-text-muted">No bootcamps enrolled yet.</p>
-                <Link
-                  to="/dashboard/bootcamps"
-                  className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm"
-                >
-                  Browse bootcamps <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            )}
+          {/* ── MAIN GRID ────────────────────────────────────────────────── */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8 lg:items-start">
 
-            {/* Bootcamp cards */}
-            {!loading && enrolledBootcamps.length > 0 && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
-                {enrolledBootcamps.map((item, idx) => (
-                  <StudentBootcampCard key={item.id} data={item} index={idx} />
-                ))}
+            {/* ── LEFT COLUMN ─────────────────────────────────────────── */}
+            <div className="space-y-6 lg:col-span-2">
+
+              {/* PRIMARY ACTION CARD */}
+              <ScrollReveal>
+                {loading ? (
+                  <div className="card-hsociety p-6 animate-pulse space-y-3">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-2 w-full rounded-full" />
+                    <Skeleton className="h-11 w-full rounded-md" />
+                  </div>
+                ) : (
+                  <div className="card-hsociety p-6 relative overflow-hidden">
+                    <OptionalDecorImage
+                      src={STUDENT_DECOR.bootcampOperator}
+                      className="pointer-events-none absolute -right-4 -top-4 h-28 w-auto object-contain opacity-[0.12] select-none"
+                    />
+                    <p className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent relative z-10">
+                      {isEnrolled
+                        ? (overview?.progressMeta?.currentPhase?.title || 'Active bootcamp')
+                        : 'Get started'}
+                    </p>
+                    <p className="mb-5 text-xl font-black leading-snug text-text-primary relative z-10">
+                      {nextMission
+                        ? nextMission.title
+                        : isEnrolled
+                        ? 'Pick up where you left off'
+                        : 'Choose a bootcamp to begin'}
+                    </p>
+                    {nextRank && (
+                      <div className="mb-5 relative z-10">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                            {nextRank.min - cpBalance} CP → {nextRank.name}
+                          </span>
+                          <span className="font-mono text-xs font-black text-text-muted">{rankProgress}%</span>
+                        </div>
+                        <div className="h-1.5 overflow-hidden rounded-full bg-accent-dim">
+                          <div
+                            className="h-full rounded-full bg-accent/50 transition-all duration-700"
+                            style={{ width: `${rankProgress}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    <Link
+                      to={continuePath}
+                      className="btn-primary flex w-full items-center justify-center gap-2 py-3 text-sm relative z-10"
+                    >
+                      {isEnrolled ? 'Continue mission' : 'Browse bootcamps'}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                )}
+              </ScrollReveal>
+
+              {/* MINI LEADERBOARD */}
+              <MiniLeaderboard currentHandle={handle} />
+
+              {/* SYNC STATUS */}
+              <div className="flex items-center justify-between gap-3 px-1">
+                <p className={`flex items-center gap-1.5 text-[11px] ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+                  <RefreshCw className="h-3 w-3 shrink-0" />
+                  {syncError || formatSyncLabel(lastSync)}
+                </p>
+                {syncError && (
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="text-[11px] font-bold text-accent hover:underline"
+                  >
+                    Retry
+                  </button>
+                )}
               </div>
-            )}
+            </div>
+
+            {/* ── RIGHT COLUMN — Programs + Market ────────────────────────── */}
+            <div className="lg:col-span-3 space-y-8">
+
+              {/* Section header row */}
+              <div className="flex items-center justify-between">
+                <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-text-primary">
+                  <BookOpen className="h-4 w-4 text-accent" />
+                  {multipleEnrolled ? 'Your programs' : 'Your program'}
+                </h2>
+                <div className="flex items-center gap-4">
+                  {enrolledBootcamps.length > 1 && (
+                    <Link
+                      to="/dashboard/bootcamps"
+                      className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-accent hover:underline"
+                    >
+                      All bootcamps <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                  {products.length > 0 && (
+                    <Link
+                      to="/dashboard/marketplace"
+                      className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent hover:underline"
+                    >
+                      <ShoppingBag className="h-3 w-3" /> Market <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {/* Loading skeletons */}
+              {loading && (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
+                  {[0, 1].map((i) => (
+                    <div key={i} className="card-hsociety overflow-hidden animate-pulse">
+                      <div className="aspect-video bg-accent-dim/30" />
+                      <div className="space-y-3 p-5">
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-3 w-1/2" />
+                        <Skeleton className="mt-3 h-2 w-full rounded-full" />
+                        <Skeleton className="h-9 w-full rounded-md" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Content grid — bootcamp(s) + 1 product side by side */}
+              {!loading && (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
+
+                  {/* Bootcamp cards — or empty state */}
+                  {enrolledBootcamps.length === 0 ? (
+                    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
+                      <OptionalDecorImage
+                        src={STUDENT_DECOR.bootcampOperator}
+                        className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
+                      />
+                      <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
+                      <p className="mb-5 text-base text-text-muted">No bootcamps enrolled yet.</p>
+                      <Link
+                        to="/dashboard/bootcamps"
+                        className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm"
+                      >
+                        Browse bootcamps <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  ) : (
+                    enrolledBootcamps.map((item, idx) => (
+                      <StudentBootcampCard key={item.id} data={item} index={idx} />
+                    ))
+                  )}
+
+                  {/* Single featured product — sits right next to the bootcamp card */}
+                  {products.length > 0 && (() => {
+                    const prod = products[0];
+                    const id = String(prod.id || '');
+                    const isBuying = purchasing === id;
+                    const isDownloading = downloading === id;
+                    const hasPurchased = purchased.has(id);
+                    return (
+                      <motion.div
+                        key={id}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex flex-col"
+                      >
+                        <div className="card-hsociety flex flex-col h-full overflow-hidden">
+                          {/* Cover — same aspect-video as bootcamp card */}
+                          <div className="relative aspect-video overflow-hidden">
+                            <img
+                              src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                              alt={prod.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            />
+                            {/* Gradient overlay */}
+                            <div
+                              aria-hidden
+                              className="pointer-events-none absolute inset-0"
+                              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)' }}
+                            />
+                            {/* Badges */}
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                              {hasPurchased && (
+                                <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest">
+                                  Owned
+                                </span>
+                              )}
+                              {prod.isFree && !hasPurchased && (
+                                <span className="px-2 py-0.5 bg-emerald-500/80 text-white rounded text-[9px] font-black uppercase tracking-widest">
+                                  FREE
+                                </span>
+                              )}
+                            </div>
+                            {prod.type && (
+                              <div className="absolute top-2.5 right-2.5">
+                                <span className="bg-bg/80 backdrop-blur-md border border-border rounded px-2 py-0.5 text-[9px] font-black uppercase text-accent tracking-widest">
+                                  {prod.type}
+                                </span>
+                              </div>
+                            )}
+                            {/* Market label bottom-left */}
+                            <div className="absolute bottom-2.5 left-2.5">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border/60 rounded text-[9px] font-black uppercase text-text-muted tracking-widest">
+                                <ShoppingBag className="h-2.5 w-2.5" /> Zero-day vault
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Body */}
+                          <div className="flex flex-1 flex-col p-5">
+                            <h3 className="mb-1.5 text-base font-black leading-snug text-text-primary md:text-lg line-clamp-2">
+                              {prod.title}
+                            </h3>
+                            {prod.description && (
+                              <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-text-muted">{prod.description}</p>
+                            )}
+                            <div className="mb-4 text-[11px] font-bold uppercase text-text-muted">
+                              {prod.isFree ? (
+                                <span className="text-emerald-400">Free</span>
+                              ) : (
+                                <span className="text-accent inline-flex items-center gap-1">
+                                  {Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3 h-3" />
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-auto">
+                              {(hasPurchased || prod.isFree) ? (
+                                <button
+                                  onClick={() => handleDownload(prod)}
+                                  disabled={isDownloading}
+                                  className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase disabled:opacity-60"
+                                >
+                                  {isDownloading
+                                    ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Downloading...</>
+                                    : <><Download className="h-3.5 w-3.5" /> Download</>}
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handlePurchase(prod)}
+                                  disabled={isBuying}
+                                  className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase disabled:opacity-60"
+                                >
+                                  {isBuying
+                                    ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Processing...</>
+                                    : 'Purchase Access'}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
+
+                </div>
+              )}
+
+            </div>
+
           </div>
-
         </div>
-      </div>
       </div>
     </div>
   );

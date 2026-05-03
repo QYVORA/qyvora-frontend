@@ -467,7 +467,7 @@ const AdminDashboardPage: React.FC = () => {
 
       {/* ── Desktop sidebar ─────────────────────────────────────────────────── */}
       <aside className="hidden md:flex w-56 lg:w-64 shrink-0 border-r border-border bg-bg-card flex-col h-full">
-        <div className="p-4 border-b border-border">
+        <div className="p-4">
           <Link to="/"><Logo size="sm" /></Link>
           <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
             <Shield className="h-3 w-3 text-accent" />
@@ -522,7 +522,7 @@ const AdminDashboardPage: React.FC = () => {
       <div className="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
 
         {/* Mobile topbar */}
-        <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 border-b border-border bg-bg-card shrink-0">
+        <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 bg-bg-card shrink-0">
           <div className="flex items-center gap-2.5">
             <Logo size="sm" />
           </div>

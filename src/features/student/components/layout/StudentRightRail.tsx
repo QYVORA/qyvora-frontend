@@ -13,7 +13,14 @@ const StudentRightRail = () => {
 
   return (
     <aside
-      className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-center gap-3"
+      className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
+      style={{
+        // Start below the topbar (96px) and end above the bottom of the viewport.
+        // top/bottom define the available band; translate centers the rail within it.
+        top: '6rem',   // matches md:h-24 topbar height
+        bottom: '1.5rem',
+        justifyContent: 'center',
+      }}
       aria-label="Quick navigation"
     >
       {RAIL_LINKS.map(({ icon: Icon, path, label }) => {

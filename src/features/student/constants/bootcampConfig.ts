@@ -94,19 +94,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will introduce the concept of offensive security. Listen carefully and note the difference between offensive and defensive security.',
+                'Read up on the concept of offensive security. In your notes, write down the key difference between offensive and defensive security in your own words.',
               image: '01-intro.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Understand the HSOCIETY operating model: education, execution, and community. Write down what each pillar means to you as a future operator.',
+                'Study the HSOCIETY operating model: education, execution, and community. Write down what each pillar means to you as a future operator.',
               image: '02-model.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Explore the landscape: red teams, penetration testers, bug bounty hunters, and security researchers. Which role interests you most and why?',
+                'Explore the landscape: red teams, penetration testers, bug bounty hunters, and security researchers. Which role interests you most and why? Write your answer in your notes.',
               image: '03-roles.png',
             },
           ],
@@ -120,19 +120,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will walk through the core traits of the hacker mindset: curiosity, persistence, and lateral thinking. Take notes on each.',
+                'Study the three core traits of the hacker mindset: curiosity, persistence, and lateral thinking. Write a definition for each in your own words.',
               image: '01-mindset.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Apply the mindset to a simple object in your environment. Ask: how was this built? How could it be misused? What assumptions does it make about the user?',
+                'Pick a simple object in your environment and apply the mindset to it. Ask yourself: how was this built? How could it be misused? What assumptions does it make about the user?',
               image: '02-apply.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Discuss with your group: what separates a hacker from someone who just runs tools? Write your answer in your notes.',
+                'Reflect on this question: what separates a hacker from someone who just runs tools? Write your answer in your notes and be specific.',
               image: '03-discuss.png',
             },
           ],
@@ -146,19 +146,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will cover the Computer Misuse Act and equivalent laws in your jurisdiction. Note the key offences and their consequences.',
+                'Research the Computer Misuse Act and equivalent laws in your jurisdiction. Note the key offences and their consequences — you are responsible for knowing these.',
               image: '01-law.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Learn what "scope" means in a penetration test. Why is written authorisation critical before touching any system?',
+                'Learn what "scope" means in a penetration test. Write down why written authorisation is critical before touching any system.',
               image: '02-scope.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Study responsible disclosure: what it is, how to report a vulnerability, and why it matters for the security community.',
+                'Research responsible disclosure: what it is, how to report a vulnerability, and why it matters for the security community. Document the steps of a proper disclosure process.',
               image: '03-disclosure.png',
             },
           ],
@@ -318,25 +318,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will walk through the 7 layers of the OSI model. Draw the model and write one sentence describing what happens at each layer.',
+                'Draw the 7 layers of the OSI model from memory. Write one sentence describing what happens at each layer. Refer back to your notes until you can do it without them.',
               image: '01-osi.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Understand the TCP three-way handshake: SYN → SYN-ACK → ACK. Draw the sequence and explain what each step establishes.',
+                'Study the TCP three-way handshake: SYN → SYN-ACK → ACK. Draw the sequence diagram and explain in writing what each step establishes.',
               image: '02-handshake.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Compare TCP and UDP. When would an attacker prefer UDP? What services run on UDP that are commonly targeted?',
+                'Compare TCP and UDP. Write down when an attacker would prefer UDP and list the services that run on UDP that are commonly targeted.',
               image: '03-tcp-udp.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Use Wireshark or tcpdump to capture live traffic. Identify TCP, UDP, DNS, and HTTP packets in the capture.',
+                'Use Wireshark or tcpdump to capture live traffic. Identify TCP, UDP, DNS, and HTTP packets in the capture and label each one.',
               image: '04-capture.png',
             },
           ],
@@ -350,25 +350,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Run: nslookup google.com and dig google.com. Compare the output. What DNS record types exist and what does each one store?',
+                'Run: nslookup google.com and dig google.com. Compare the output side by side. List the DNS record types and write one sentence describing what each one stores.',
               image: '01-dns.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Use curl to make an HTTP GET request: curl -v http://example.com. Read the request and response headers carefully.',
+                'Use curl to make an HTTP GET request: curl -v http://example.com. Read every request and response header carefully and note what each one reveals.',
               image: '02-http.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Understand HTTP methods: GET, POST, PUT, DELETE, OPTIONS. What does each method do and which ones are most relevant to attackers?',
+                'Study HTTP methods: GET, POST, PUT, DELETE, OPTIONS. Write down what each method does and which ones are most relevant to attackers and why.',
               image: '03-methods.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Explore SMTP, FTP, and SSH at a high level. What ports do they run on? What credentials or data do they expose if misconfigured?',
+                'Research SMTP, FTP, and SSH. Note the port each runs on, what credentials or data they expose when misconfigured, and how an attacker would target each.',
               image: '04-protocols.png',
             },
           ],
@@ -382,25 +382,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Run a basic nmap scan: nmap [target-ip]. Observe which ports are open and what services are detected.',
+                'Run a basic nmap scan: nmap [target-ip]. Note every open port and the services detected. This is your starting point for every engagement.',
               image: '01-nmap-basic.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Run a service version scan: nmap -sV [target-ip]. What versions are running? Why does version information matter to an attacker?',
+                'Run a service version scan: nmap -sV [target-ip]. Record the versions running on each port. Write down why version information is critical to an attacker.',
               image: '02-nmap-version.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Run an OS detection scan: nmap -O [target-ip]. What operating system is the target running? How confident is nmap in its guess?',
+                'Run an OS detection scan: nmap -O [target-ip]. Note the operating system detected and nmap\'s confidence level. How would knowing the OS change your attack approach?',
               image: '03-nmap-os.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Use nmap scripts: nmap --script=default [target-ip]. Review the additional information gathered. What vulnerabilities or misconfigurations are flagged?',
+                'Run nmap scripts: nmap --script=default [target-ip]. Review every piece of additional information gathered. Document any vulnerabilities or misconfigurations flagged.',
               image: '04-nmap-scripts.png',
             },
           ],
@@ -414,25 +414,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Open Wireshark and start a capture on your active network interface. Browse to a website and observe the traffic generated.',
+                'Open Wireshark and start a capture on your active network interface. Browse to a website and observe the traffic generated. Note the volume and variety of packets.',
               image: '01-wireshark.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Apply a display filter: http — this shows only HTTP traffic. Find a GET request and inspect the full packet details.',
+                'Apply a display filter: http — this shows only HTTP traffic. Find a GET request and inspect the full packet details. What does each field tell you?',
               image: '02-filter.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Use "Follow TCP Stream" on an HTTP request. Read the full request and response as plain text. What sensitive data is visible?',
+                'Right-click an HTTP request and select "Follow TCP Stream". Read the full request and response as plain text. Write down any sensitive data that is visible.',
               image: '03-stream.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Apply a filter for DNS traffic: dns. Find a DNS query and response. What domain was resolved and what IP was returned?',
+                'Apply a filter for DNS traffic: dns. Find a DNS query and its response. Record the domain that was resolved and the IP address returned.',
               image: '04-dns-capture.png',
             },
           ],
@@ -455,25 +455,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Open the target web application. Press F12 to open DevTools and navigate to the Network tab. Reload the page and observe all requests.',
+                'Open the target web application. Press F12 to open DevTools and navigate to the Network tab. Reload the page and study every request that appears.',
               image: '01-devtools.png',
             },
             {
               title: 'STEP 2',
               instruction:
-                'Click on the main HTML document request. Inspect the Request Headers and Response Headers. What information is revealed about the server?',
+                'Click on the main HTML document request. Inspect the Request Headers and Response Headers. Write down every piece of information revealed about the server.',
               image: '02-headers.png',
             },
             {
               title: 'STEP 3',
               instruction:
-                'Navigate to the Application tab in DevTools. Inspect Cookies and Local Storage. What data is being stored client-side?',
+                'Navigate to the Application tab in DevTools. Inspect Cookies and Local Storage. Document what data is being stored client-side and whether any of it looks sensitive.',
               image: '03-cookies.png',
             },
             {
               title: 'STEP 4',
               instruction:
-                'Log in to the application and observe the login request in the Network tab. What data is sent? What does the server return on success?',
+                'Log in to the application and watch the login request in the Network tab. Note exactly what data is sent and what the server returns on a successful login.',
               image: '04-login-request.png',
             },
           ],
@@ -487,19 +487,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will walk through the OWASP Top 10 list. For each item, write one sentence describing the vulnerability and one example of how it is exploited.',
+                'Go through the OWASP Top 10 list. For each item, write one sentence describing the vulnerability and one concrete example of how it is exploited.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Focus on the top 3: Broken Access Control, Cryptographic Failures, and Injection. For each, describe what a successful attack looks like.',
+                'Focus on the top 3: Broken Access Control, Cryptographic Failures, and Injection. For each one, describe in detail what a successful attack looks like.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Using the demo application, identify which OWASP Top 10 categories are present. Document your findings with evidence.',
+                'Open the demo application and identify which OWASP Top 10 categories are present. Document your findings with evidence — screenshots, request/response data, or notes.',
               image: null,
             },
           ],
@@ -513,31 +513,31 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Navigate to the login form on the demo application. Enter a single quote ( \' ) in the username field and observe the response. Does the application throw an error?',
+                'Navigate to the login form on the demo application. Enter a single quote ( \' ) in the username field and observe the response. Does the application throw an error? Note exactly what happens.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Try a basic SQLi payload in the username field: admin\'-- and any password. Observe whether you can bypass authentication.',
+                'Try a basic SQLi payload in the username field: admin\'-- with any password. Observe whether you can bypass authentication and record the result.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Your instructor will demonstrate a UNION-based injection to extract data from the database. Follow along and note the structure of the payload.',
+                'Study UNION-based injection: understand how it is used to extract data from the database. Write out the structure of a UNION payload and explain each part.',
               image: null,
             },
             {
               title: 'STEP 4',
               instruction:
-                'Use sqlmap on the target URL (with permission): sqlmap -u "[url]" --dbs. Observe what databases are discovered.',
+                'Run sqlmap on the target URL (with permission): sqlmap -u "[url]" --dbs. Record every database discovered and note what sqlmap tells you about the injection point.',
               image: null,
             },
             {
               title: 'STEP 5',
               instruction:
-                'Document your findings: what data was accessible, what the injection point was, and how it could be remediated.',
+                'Write up your findings: what data was accessible, where the injection point was, and how the vulnerability could be remediated.',
               image: null,
             },
           ],
@@ -551,25 +551,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Find an input field on the demo application that reflects user input. Enter: <script>alert(1)</script> and observe whether the script executes.',
+                'Find an input field on the demo application that reflects user input. Enter: <script>alert(1)</script> and observe whether the script executes in the browser.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Your instructor will demonstrate a stored XSS attack. Observe how the payload is stored and executed when another user views the page.',
+                'Research stored XSS: understand how a payload is stored server-side and executed when another user views the page. Write out the attack flow step by step.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Understand CSRF: how an attacker can trick a logged-in user into performing actions they didn\'t intend. Review the demo CSRF form.',
+                'Study CSRF: understand how an attacker tricks a logged-in user into performing unintended actions. Review the demo CSRF form and trace exactly how the attack works.',
               image: null,
             },
             {
               title: 'STEP 4',
               instruction:
-                'Document both vulnerabilities: the injection point, the payload used, the impact, and the recommended fix.',
+                'Write up both vulnerabilities: the injection point, the payload used, the impact on a real user, and the recommended fix for each.',
               image: null,
             },
           ],
@@ -583,25 +583,25 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Attempt a brute force attack on the demo login using Burp Suite Intruder or Hydra with a small wordlist. Observe the application\'s response to repeated failures.',
+                'Attempt a brute force attack on the demo login using Burp Suite Intruder or Hydra with a small wordlist. Record the application\'s response to repeated failures — does it lock out, throttle, or do nothing?',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Inspect the session token (cookie) after logging in. Is it predictable? Is it properly invalidated on logout?',
+                'Inspect the session token (cookie) after logging in. Is it predictable? Is it properly invalidated on logout? Document your observations.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Your instructor will demonstrate session fixation and session hijacking. Follow along and note how the attack is executed.',
+                'Research session fixation and session hijacking. Write out how each attack is executed, what conditions make it possible, and how to detect it.',
               image: null,
             },
             {
               title: 'STEP 4',
               instruction:
-                'Document your findings: what authentication weaknesses exist, how they were exploited, and what controls would prevent each attack.',
+                'Write up your findings: what authentication weaknesses exist, how each was exploited, and what controls would prevent each attack.',
               image: null,
             },
           ],
@@ -624,19 +624,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will present examples of real phishing emails. Identify the psychological triggers used: urgency, authority, fear, curiosity.',
+                'Find examples of real phishing emails online. For each one, identify the psychological triggers used: urgency, authority, fear, and curiosity. Write down how each trigger is applied.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Understand pretexting: creating a believable scenario to manipulate a target. Write a pretext scenario for a simulated engagement.',
+                'Study pretexting: the practice of creating a believable scenario to manipulate a target. Write a pretext scenario you could use in a simulated engagement — be specific about the role, the story, and the goal.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Analyse the anatomy of a phishing email: sender spoofing, lookalike domains, malicious links, and urgency language. Document each technique.',
+                'Break down the anatomy of a phishing email: sender spoofing, lookalike domains, malicious links, and urgency language. Document each technique with a real or constructed example.',
               image: null,
             },
           ],
@@ -650,19 +650,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Use Google dorking to find information about a target organisation. Try: site:[domain] filetype:pdf and site:[domain] inurl:admin',
+                'Use Google dorking to find information about a target organisation. Try: site:[domain] filetype:pdf and site:[domain] inurl:admin. Document every result you find.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Use theHarvester to gather email addresses and subdomains: theHarvester -d [domain] -b google. Document all findings.',
+                'Run theHarvester to gather email addresses and subdomains: theHarvester -d [domain] -b google. Record all findings in your notes.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Search LinkedIn, Twitter/X, and other social platforms for employees of the target organisation. What information is publicly available that could aid an attack?',
+                'Search LinkedIn, Twitter/X, and other social platforms for employees of the target organisation. List what information is publicly available and explain how each piece could aid an attack.',
               image: null,
             },
           ],
@@ -676,19 +676,19 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 1',
               instruction:
-                'Your instructor will cover tailgating and piggybacking. Discuss: what physical controls prevent unauthorised entry and how are they bypassed?',
+                'Research tailgating and piggybacking. Write down what physical controls prevent unauthorised entry and explain specifically how each one can be bypassed.',
               image: null,
             },
             {
               title: 'STEP 2',
               instruction:
-                'Understand RFID/NFC badge cloning at a conceptual level. What tools are used? What are the legal implications of testing this?',
+                'Study RFID/NFC badge cloning at a conceptual level. Note the tools used and the legal implications of testing this in a real engagement.',
               image: null,
             },
             {
               title: 'STEP 3',
               instruction:
-                'Discuss dumpster diving and shoulder surfing. What sensitive information can be obtained through physical observation? How do organisations defend against this?',
+                'Research dumpster diving and shoulder surfing. Write down what sensitive information can be obtained through physical observation and how organisations defend against each technique.',
               image: null,
             },
           ],

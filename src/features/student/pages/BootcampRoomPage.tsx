@@ -509,7 +509,7 @@ const Sidebar: React.FC<{
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card border-r border-border shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card shadow-2xl lg:hidden overflow-y-auto"
             >
               {/* Drawer header */}
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
@@ -1187,7 +1187,7 @@ const BootcampRoomPage: React.FC = () => {
         lg:overflow-hidden
       ">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-black overflow-y-auto overscroll-contain"
+        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-black overflow-y-auto overscroll-contain scroll-hover"
           style={{
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
@@ -1259,7 +1259,7 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain"
+          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain scroll-hover"
             style={{
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
               maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',

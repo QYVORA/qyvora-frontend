@@ -112,15 +112,40 @@ const BootcampCourse: React.FC = () => {
     }
   };
 
-  const progressValue = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
-  const progressNum   = parseInt(progressValue, 10) || 0;
+  // Build a map from moduleId (number) → overview module entry.
+  // The overview API returns modules with a numeric `moduleId` field that
+  // matches the course module's `moduleId`.
   const moduleProgressMap = new Map<number, any>(
-    (overview?.modules || []).map((m: any) => [Number(m.id ?? m.moduleId), m])
+    (overview?.modules || []).map((m: any) => [Number(m.moduleId ?? m.id), m])
   );
+
   const totalModules = course?.modules?.length || 0;
-  const doneModules  = Number(overview?.snapshot?.find((s: any) => s?.id === 'modules')?.value || 0);
-  const doneRooms    = Number(overview?.snapshot?.find((s: any) => s?.id === 'rooms')?.value || 0);
   const totalRooms   = (course?.modules || []).reduce((acc, m) => acc + (m.rooms?.length || 0), 0);
+
+  // Prefer snapshot values if present, otherwise derive from overview.modules
+  const snapshotProgress = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value;
+  const snapshotDoneModules = overview?.snapshot?.find((s: any) => s?.id === 'modules')?.value;
+  const snapshotDoneRooms   = overview?.snapshot?.find((s: any) => s?.id === 'rooms')?.value;
+
+  const ovModules: any[] = Array.isArray(overview?.modules) ? overview.modules : [];
+
+  // doneModules: count of modules where progress === 100
+  const doneModules = snapshotDoneModules != null
+    ? Number(snapshotDoneModules)
+    : ovModules.filter((m: any) => Number(m.progress || 0) === 100).length;
+
+  // doneRooms: sum of roomsCompleted across all modules
+  const doneRooms = snapshotDoneRooms != null
+    ? Number(snapshotDoneRooms)
+    : ovModules.reduce((acc: number, m: any) => acc + Number(m.roomsCompleted || 0), 0);
+
+  // Overall progress: prefer snapshot, otherwise derive from rooms ratio
+  const progressValue = snapshotProgress != null
+    ? String(snapshotProgress)
+    : totalRooms > 0
+      ? `${Math.round((doneRooms / totalRooms) * 100)}%`
+      : '0%';
+  const progressNum = parseInt(progressValue, 10) || 0;
 
   // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) {
@@ -188,7 +213,7 @@ const BootcampCourse: React.FC = () => {
                        lives inside it so it scrolls away with the content.
       */}
       <div className="
-        lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24
+        lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24
         lg:flex lg:flex-row lg:overflow-hidden
       ">
 
@@ -197,7 +222,7 @@ const BootcampCourse: React.FC = () => {
           className="
             w-full
             lg:w-72 xl:w-80 lg:flex-none lg:h-full
-            lg:overflow-y-auto lg:overscroll-contain
+            lg:overflow-y-auto lg:overscroll-contain scroll-hover
             lg:border-r lg:border-border lg:bg-bg
           "
           style={{
@@ -297,7 +322,7 @@ const BootcampCourse: React.FC = () => {
         <div
           className="
             w-full flex-1 min-w-0
-            lg:h-full lg:overflow-y-auto lg:overscroll-contain
+            lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover
           "
           style={{
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',

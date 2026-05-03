@@ -85,11 +85,11 @@ const Notifications: React.FC = () => {
   return (
     <div className="bg-bg">
       {/* Fixed two-column container below topbar */}
-      <div className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
+      <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
 
         {/* LEFT SIDEBAR */}
         <div
-          className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg"
+          className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg scroll-hover"
           style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
           <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
@@ -178,7 +178,7 @@ const Notifications: React.FC = () => {
 
         {/* RIGHT MAIN */}
         <div
-          className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain"
+          className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
           style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
           <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
