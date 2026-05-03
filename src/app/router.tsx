@@ -69,15 +69,6 @@ const StudentOnly = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-// Redirects logged-in students to the authenticated version of a page,
-// otherwise renders the public fallback.
-const AuthSplit = ({ auth, pub }: { auth: ReactNode; pub: ReactNode }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <PageLoader />;
-  if (user && !user.isAdmin) return <>{auth}</>;
-  return <>{pub}</>;
-};
-
 const AdminOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
@@ -99,12 +90,8 @@ export const AppRouter = () => {
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/cyber-points" element={<Wrap scope="Cyber Points"><CyberPointsPage /></Wrap>} />
           <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
-          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
           <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
-          {/* /bootcamps is public — logged-in users get their personalised view via StudentLayout below */}
-          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><BootcampPage /></Wrap>} />
-          <Route path="/marketplace" element={<Wrap scope="Market"><AuthSplit auth={<MarketplacePage />} pub={<PublicMarketplacePage />} /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         </Route>
 
@@ -117,13 +104,29 @@ export const AppRouter = () => {
         <Route path="/change-password" element={<Wrap scope="Change Password"><LoginPage /></Wrap>} />
         <Route path="/mr-robot" element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
-        {/* Student routes — auth required */}
+        {/* Student routes — auth required, StudentLayout (no footer, has topbar) */}
         <Route element={<StudentLayout />}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/ctf/:moduleId" element={<Wrap scope="CTF Challenge"><StudentOnly><CtfPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/marketplace" element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/leaderboard" element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/wallet" element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/profile" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/settings" element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
+
+          {/* Legacy student route redirects */}
+          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/ctf/:moduleId" element={<Wrap scope="CTF Challenge"><StudentOnly><CtfPage /></StudentOnly></Wrap>} />
+          <Route path="/marketplace" element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/wallet" element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/profile" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />

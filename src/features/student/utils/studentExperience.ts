@@ -60,14 +60,14 @@ export function resolveNextRoomPath(bootcampId: string): string | null {
     for (const room of phase.rooms) {
       const key = `${phase.id}:${room.id}`;
       if (!done.has(key)) {
-        return `/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${room.id}`;
+        return `/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${room.id}`;
       }
     }
   }
 
   const first = BOOTCAMP_CONFIG.phases[0]?.rooms[0];
   if (!first) return null;
-  return `/bootcamps/${bootcampId}/phases/${BOOTCAMP_CONFIG.phases[0].id}/rooms/${first.id}`;
+  return `/dashboard/bootcamps/${bootcampId}/phases/${BOOTCAMP_CONFIG.phases[0].id}/rooms/${first.id}`;
 }
 
 function getCompletedRoomSet(bootcampId: string): Set<string> {

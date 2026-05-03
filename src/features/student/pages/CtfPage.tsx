@@ -185,7 +185,7 @@ const CtfPage: React.FC = () => {
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-4 px-4">
         <Lock className="w-12 h-12 text-text-muted opacity-40" />
         <p className="text-text-muted text-base">No CTF challenge available for this module yet.</p>
-        <Link to="/bootcamps" className="btn-secondary text-sm !px-6">Back to Curriculum</Link>
+        <Link to="/dashboard/bootcamps" className="btn-secondary text-sm !px-6">Back to Curriculum</Link>
       </div>
     );
   }
@@ -202,7 +202,7 @@ const CtfPage: React.FC = () => {
             You solved all {scenario.totalChallenges} challenge{scenario.totalChallenges !== 1 ? 's' : ''} in this module.
           </p>
         </div>
-        <Link to={`/bootcamps`} className="btn-primary text-sm !px-8 inline-flex items-center gap-2">
+        <Link to={`/dashboard/bootcamps`} className="btn-primary text-sm !px-8 inline-flex items-center gap-2">
           <ChevronRight className="w-4 h-4" /> Continue Curriculum
         </Link>
       </div>
@@ -213,7 +213,7 @@ const CtfPage: React.FC = () => {
   const catMeta   = CATEGORY_META[challenge.category] ?? { label: challenge.category, tip: '', color: 'text-text-muted border-border bg-bg' };
 
   return (
-    <div className="min-h-screen bg-bg pb-16">
+    <div className="bg-bg">
       {/* Hidden clues in HTML — students find these in View Source */}
       {challenge.category === 'html_source' && (
         <>
@@ -226,11 +226,15 @@ const CtfPage: React.FC = () => {
         <meta name="ctf-clue" content={btoa(`module_${mid}_meta_clue`)} />
       )}
 
-      <div className="max-w-3xl mx-auto px-4 pt-8 md:px-8 md:pt-10">
+      <div
+        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+      >
+        <div className="max-w-3xl mx-auto px-4 pt-6 pb-16 md:px-8">
 
         {/* Back */}
         <Link
-          to={`/bootcamps`}
+          to={`/dashboard/bootcamps`}
           className="inline-flex items-center gap-2 text-xs font-bold text-text-muted hover:text-accent transition-colors mb-8 uppercase tracking-widest"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Curriculum
@@ -375,6 +379,7 @@ const CtfPage: React.FC = () => {
             </div>
           )}
         </ScrollReveal>
+        </div>
       </div>
     </div>
   );

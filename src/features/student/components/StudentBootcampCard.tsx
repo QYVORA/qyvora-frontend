@@ -136,7 +136,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             </button>
           ) : isEnrolled ? (
             <Link
-              to={`/bootcamps/${id}`}
+              to={`/dashboard/bootcamps/${id}`}
               className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase"
             >
               {isComplete ? (
@@ -155,7 +155,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
               </button>
             ) : (
               <Link
-                to={`/bootcamps/${id}`}
+                to={`/dashboard/bootcamps/${id}`}
                 className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase"
               >
                 Enroll now <ArrowRight className="h-3.5 w-3.5" />

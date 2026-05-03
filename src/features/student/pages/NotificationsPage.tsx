@@ -83,19 +83,16 @@ const Notifications: React.FC = () => {
     .slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      {/* Fixed two-column container below topbar */}
+      <div className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
 
-        <ScrollReveal className="mb-10 md:mb-12">
-          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
-          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
-          <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
-        </ScrollReveal>
-
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-
-          {/* ── LEFT COLUMN ── */}
-          <div className="w-full lg:w-72 xl:w-80 flex-none space-y-4">
+        {/* LEFT SIDEBAR */}
+        <div
+          className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg"
+          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+        >
+          <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
             {/* Unread badge */}
             <ScrollReveal>
@@ -176,13 +173,25 @@ const Notifications: React.FC = () => {
               </ScrollReveal>
             )}
 
-          </div>{/* end left */}
+          </div>
+        </div>{/* end left sidebar */}
 
-          {/* ── RIGHT COLUMN ── */}
-          <div className="w-full flex-1 min-w-0">
+        {/* RIGHT MAIN */}
+        <div
+          className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain"
+          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+        >
+          <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
+
+            {/* Page header */}
+            <ScrollReveal className="mb-10 md:mb-12">
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
+              <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
+              <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
+            </ScrollReveal>
             {loading ? (
               <div className="space-y-3">
-                {[0, 1, 2, 3].map((i) => (
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((i) => (
                   <div key={i} className="animate-pulse rounded-2xl border border-border bg-bg-card p-5">
                     <div className="h-3 bg-accent-dim/30 rounded w-1/4 mb-2" />
                     <div className="h-4 bg-accent-dim/30 rounded w-2/3 mb-2" />
@@ -253,10 +262,9 @@ const Notifications: React.FC = () => {
                 )}
               </div>
             )}
-          </div>{/* end right */}
-
-        </div>
-      </div>
+          </div>{/* end right main inner */}
+        </div>{/* end right main */}
+      </div>{/* end two-col */}
     </div>
   );
 };

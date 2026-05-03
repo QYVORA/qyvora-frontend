@@ -7,6 +7,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
+import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import {
   formatSyncLabel,
@@ -112,7 +114,7 @@ const Dashboard: React.FC = () => {
 
   const activeBootcamp  = bootcamps.find((bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined);
   const nextRoomPath    = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) : null;
-  const continuePath    = nextRoomPath || (activeBootcamp ? `/bootcamps/${activeBootcamp.id}` : '/bootcamps');
+  const continuePath    = nextRoomPath || (activeBootcamp ? `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps');
   const isEnrolled      = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
   const progressValue   = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value || '0%';
   const streakDays      = Number(overview?.xpSummary?.streakDays || 0);
@@ -125,8 +127,12 @@ const Dashboard: React.FC = () => {
   const multipleEnrolled = enrolledBootcamps.length > 1;
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      <div
+        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+      >
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
         {/* ── HEADER ─────────────────────────────────────────────────────── */}
         <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
@@ -184,12 +190,9 @@ const Dashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="card-hsociety p-6 relative overflow-hidden">
-                  {/* Subtle operator illustration — sits in the top-right corner, clipped by overflow-hidden */}
-                  <img
-                    src="/assets/illustrations/bootcamp-operator.png"
-                    alt=""
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -right-4 -top-4 h-28 w-auto object-contain opacity-[0.07] select-none"
+                  <OptionalDecorImage
+                    src={STUDENT_DECOR.bootcampOperator}
+                    className="pointer-events-none absolute -right-4 -top-4 h-28 w-auto object-contain opacity-[0.12] select-none"
                   />
                   <p className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent relative z-10">
                     {isEnrolled
@@ -256,7 +259,7 @@ const Dashboard: React.FC = () => {
               </h2>
               {enrolledBootcamps.length > 1 && (
                 <Link
-                  to="/bootcamps"
+                  to="/dashboard/bootcamps"
                   className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-accent hover:underline"
                 >
                   View all <ChevronRight className="h-3.5 w-3.5" />
@@ -267,7 +270,7 @@ const Dashboard: React.FC = () => {
             {/* Loading skeletons */}
             {loading && (
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
-                {[0, 1].map((i) => (
+                {[0].map((i) => (
                   <div key={i} className="card-hsociety overflow-hidden animate-pulse">
                     <div className="aspect-video bg-accent-dim/30" />
                     <div className="space-y-3 p-5">
@@ -284,16 +287,14 @@ const Dashboard: React.FC = () => {
             {/* Empty state */}
             {!loading && enrolledBootcamps.length === 0 && (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
-                <img
-                  src="/assets/illustrations/cta-operator.png"
-                  alt=""
-                  aria-hidden="true"
-                  className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+                <OptionalDecorImage
+                  src={STUDENT_DECOR.bootcampOperator}
+                  className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
                 />
                 <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
                 <p className="mb-5 text-base text-text-muted">No bootcamps enrolled yet.</p>
                 <Link
-                  to="/bootcamps"
+                  to="/dashboard/bootcamps"
                   className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm"
                 >
                   Browse bootcamps <ArrowRight className="h-4 w-4" />
@@ -312,6 +313,7 @@ const Dashboard: React.FC = () => {
           </div>
 
         </div>
+      </div>
       </div>
     </div>
   );

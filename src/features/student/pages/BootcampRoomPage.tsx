@@ -429,7 +429,7 @@ const Sidebar: React.FC<{
     <nav className="flex flex-col gap-1 p-3 pb-6">
       <div className="mb-3 px-1">
         <Link
-          to={`/bootcamps/${bootcampId}`}
+          to={`/dashboard/bootcamps/${bootcampId}`}
           className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           onClick={onMobileClose}
         >
@@ -917,7 +917,7 @@ const BootcampRoomPage: React.FC = () => {
   // ── Redirect if not enrolled ───────────────────────────────────────────────
   useEffect(() => {
     if (!apiLoading && bootcampStatus === 'not_enrolled') {
-      navigate('/bootcamps', { replace: true });
+      navigate('/dashboard/bootcamps', { replace: true });
     }
   }, [apiLoading, bootcampStatus, navigate]);
 
@@ -971,7 +971,7 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Navigation helpers ─────────────────────────────────────────────────────
   const handleNavigate = (pId: string, rId: string) => {
-    navigate(`/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
+    navigate(`/dashboard/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
   };
 
   const goToStep = (idx: number) => {
@@ -1038,7 +1038,7 @@ const BootcampRoomPage: React.FC = () => {
       <div className="min-h-screen bg-bg">
         <div className="mx-auto max-w-4xl px-4 pt-20 md:pt-24">
           <Link
-            to={`/bootcamps/${bootcampId}`}
+            to={`/dashboard/bootcamps/${bootcampId}`}
             className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
@@ -1062,7 +1062,7 @@ const BootcampRoomPage: React.FC = () => {
       <div className="min-h-screen bg-bg">
         <div className="mx-auto max-w-4xl px-4 pt-20 md:pt-24">
           <Link
-            to={`/bootcamps/${bootcampId}`}
+            to={`/dashboard/bootcamps/${bootcampId}`}
             className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
@@ -1161,7 +1161,7 @@ const BootcampRoomPage: React.FC = () => {
                     </button>
                   )}
                   <button
-                    onClick={() => { setShowCompleteOverlay(false); navigate(`/bootcamps/${bootcampId}`); }}
+                    onClick={() => { setShowCompleteOverlay(false); navigate(`/dashboard/bootcamps/${bootcampId}`); }}
                     className="btn-secondary py-4 text-base"
                   >
                     Back to Curriculum
@@ -1187,12 +1187,17 @@ const BootcampRoomPage: React.FC = () => {
         lg:overflow-hidden
       ">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-bg-card overflow-y-auto overscroll-contain">
+        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 border-r border-border bg-black overflow-y-auto overscroll-contain"
+          style={{
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+            maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+          }}
+        >
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
               <div className="mb-4 px-1">
                 <Link
-                  to={`/bootcamps/${bootcampId}`}
+                  to={`/dashboard/bootcamps/${bootcampId}`}
                   className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
                 >
                   <ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum
@@ -1254,7 +1259,12 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain">
+          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+              maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
+            }}
+          >
             {/* Content area */}
             <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 md:px-10 lg:px-12 py-8 md:py-12 pb-safe-bottom">
 

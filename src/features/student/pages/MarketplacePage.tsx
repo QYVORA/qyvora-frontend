@@ -125,8 +125,12 @@ const Marketplace: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      <div
+        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+      >
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
         {/* Header */}
         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
@@ -158,14 +162,14 @@ const Marketplace: React.FC = () => {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {loading ? (
-            [0,1,2,3].map((i) => <SkeletonCard key={i} />)
+            [0].map((i) => <SkeletonCard key={i} />)
           ) : filtered.length === 0 ? (
             <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border">
               <img
                 src="/assets/illustrations/cta-operator.png"
                 alt=""
                 aria-hidden="true"
-                className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+                className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
               />
               <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
               <p className="text-text-muted text-sm">
@@ -252,6 +256,7 @@ const Marketplace: React.FC = () => {
             })
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -108,19 +108,16 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      {/* Fixed two-column container below topbar */}
+      <div className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
 
-        <ScrollReveal className="mb-10 md:mb-12">
-          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
-          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
-          <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
-        </ScrollReveal>
-
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-
-          {/* ── LEFT COLUMN ── */}
-          <div className="w-full lg:w-72 xl:w-80 flex-none space-y-4">
+        {/* LEFT SIDEBAR */}
+        <div
+          className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg"
+          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+        >
+          <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
             {/* Security status */}
             <ScrollReveal>
@@ -169,10 +166,24 @@ const Settings: React.FC = () => {
               </div>
             </ScrollReveal>
 
-          </div>{/* end left */}
+          </div>
+        </div>{/* end left sidebar */}
 
-          {/* ── RIGHT COLUMN ── */}
-          <div className="w-full flex-1 min-w-0 space-y-6">
+        {/* RIGHT MAIN */}
+        <div
+          className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain"
+          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+        >
+          <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
+
+            {/* Page header */}
+            <ScrollReveal className="mb-10 md:mb-12">
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
+              <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
+              <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
+            </ScrollReveal>
+
+            <div className="space-y-6">
 
             {/* Change password */}
             <ScrollReveal>
@@ -316,9 +327,10 @@ const Settings: React.FC = () => {
               </div>
             </ScrollReveal>
 
-          </div>{/* end right */}
-        </div>
-      </div>
+          </div>{/* end space-y-6 */}
+          </div>{/* end right main inner */}
+        </div>{/* end right main */}
+      </div>{/* end two-col */}
     </div>
   );
 };

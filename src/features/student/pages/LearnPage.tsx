@@ -83,8 +83,12 @@ const Learn: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      <div
+        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+      >
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
         {/* Header */}
         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
@@ -104,7 +108,7 @@ const Learn: React.FC = () => {
               </div>
               {bootcamps.length > 1 && (
                 <Link
-                  to="/bootcamps"
+                  to="/dashboard/bootcamps"
                   className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-accent hover:underline"
                 >
                   View all <ArrowRight className="h-4 w-4" />
@@ -122,7 +126,7 @@ const Learn: React.FC = () => {
           </h2>
           {bootcamps.length > 1 && (
             <Link
-              to="/bootcamps"
+              to="/dashboard/bootcamps"
               className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-accent hover:underline"
             >
               View all <ChevronRight className="h-3.5 w-3.5" />
@@ -133,7 +137,7 @@ const Learn: React.FC = () => {
         {/* Grid */}
         {loading ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {[0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+            {[0].map((i) => <SkeletonCard key={i} />)}
           </div>
         ) : bootcamps.length === 0 ? (
           <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
@@ -141,11 +145,11 @@ const Learn: React.FC = () => {
               src="/assets/illustrations/cta-operator.png"
               alt=""
               aria-hidden="true"
-              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
             />
             <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
             <p className="mb-5 text-base text-text-muted">No bootcamps available yet.</p>
-            <Link to="/bootcamps" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm">
+            <Link to="/dashboard/bootcamps" className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm">
               Browse bootcamps <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -157,6 +161,7 @@ const Learn: React.FC = () => {
           </div>
         )}
 
+      </div>
       </div>
     </div>
   );

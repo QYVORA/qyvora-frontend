@@ -49,7 +49,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
   const cp = extractCpBalance(backendUser) ?? Number(backendUser?.cpPoints || 0);
   return {
     uid: String(backendUser?.id || ''),
-    username: String(backendUser?.hackerHandle || backendUser?.name || 'OPERATOR'),
+    username: String(backendUser?.hackerHandle || 'OPERATOR'),
     email: String(backendUser?.email || ''),
     rank: role === 'admin' ? 'Administrator' : cp >= 1500 ? 'Vanguard' : cp >= 900 ? 'Architect' : cp >= 450 ? 'Specialist' : cp >= 150 ? 'Contributor' : 'Candidate',
     cp,

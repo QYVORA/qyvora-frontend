@@ -4,15 +4,15 @@ import StudentRightRail from '../../features/student/components/layout/StudentRi
 
 const StudentLayout = () => {
   // Room pages — fixed-height shell so split panes scroll independently
-  const roomMatch       = useMatch('/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
-  const roomMatchLegacy = useMatch('/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
+  const roomMatch       = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
+  const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const isRoomPage      = Boolean(roomMatch || roomMatchLegacy);
 
   // Bootcamp course page (the curriculum/phase overview)
-  const bootcampCourseMatch = useMatch('/bootcamps/:bootcampId');
+  const bootcampCourseMatch = useMatch('/dashboard/bootcamps/:bootcampId');
 
   // Bootcamp list page
-  const bootcampListMatch = useMatch('/bootcamps');
+  const bootcampListMatch = useMatch('/dashboard/bootcamps');
 
   // Hide the rail on all bootcamp-related pages
   const isBootcampPage = Boolean(isRoomPage || bootcampCourseMatch || bootcampListMatch);

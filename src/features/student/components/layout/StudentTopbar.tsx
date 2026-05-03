@@ -17,9 +17,9 @@ const NAV_GROUPS = [
   {
     label: 'Operate',
     items: [
-      { label: 'Marketplace', icon: ShoppingBag, path: '/marketplace', desc: 'Zero-day market'    },
-      { label: 'Wallet',      icon: Wallet,      path: '/wallet',      desc: 'CP balance & history' },
-      { label: 'Leaderboard', icon: Trophy,      path: '/leaderboard', desc: 'Hall of Shadows'    },
+      { label: 'Marketplace', icon: ShoppingBag, path: '/dashboard/marketplace', desc: 'Zero-day market'    },
+      { label: 'Wallet',      icon: Wallet,      path: '/dashboard/wallet',      desc: 'CP balance & history' },
+      { label: 'Leaderboard', icon: Trophy,      path: '/dashboard/leaderboard', desc: 'Hall of Shadows'    },
     ],
   },
 ];
@@ -27,16 +27,16 @@ const NAV_GROUPS = [
 // ── Mobile bottom primary tabs ───────────────────────────────────────────────
 const MOBILE_PRIMARY = [
   { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
-  { label: 'Bootcamp', icon: BookOpen,        path: '/bootcamps'  },
-  { label: 'Market',   icon: ShoppingBag,     path: '/marketplace' },
+  { label: 'Bootcamp', icon: BookOpen,        path: '/dashboard/bootcamps'  },
+  { label: 'Market',   icon: ShoppingBag,     path: '/dashboard/marketplace' },
 ];
 
 const MOBILE_MORE = [
-  { label: 'Wallet',        icon: Wallet,    path: '/wallet'        },
-  { label: 'Profile',       icon: User,      path: '/profile'       },
-  { label: 'Notifications', icon: Bell,      path: '/notifications' },
-  { label: 'Settings',      icon: Settings,  path: '/settings'      },
-  { label: 'Leaderboard',   icon: Trophy,    path: '/leaderboard'   },
+  { label: 'Wallet',        icon: Wallet,    path: '/dashboard/wallet'        },
+  { label: 'Profile',       icon: User,      path: '/dashboard/profile'       },
+  { label: 'Notifications', icon: Bell,      path: '/dashboard/notifications' },
+  { label: 'Settings',      icon: Settings,  path: '/dashboard/settings'      },
+  { label: 'Leaderboard',   icon: Trophy,    path: '/dashboard/leaderboard'   },
 ];
 
 interface NotificationItem {
@@ -52,8 +52,8 @@ const StudentTopbar = () => {
   const location = useLocation();
 
   // ── Bootcamp room route detection ─────────────────────────────────────────
-  const roomMatch = useMatch('/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
-  const roomMatchLegacy = useMatch('/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
+  const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
+  const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch);
 
@@ -147,7 +147,7 @@ const StudentTopbar = () => {
 
             {/* Back to curriculum */}
             <button
-              onClick={() => navigate(`/bootcamps/${roomBootcampId}`)}
+              onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
               aria-label="Back to curriculum"
             >
@@ -156,7 +156,7 @@ const StudentTopbar = () => {
 
             {/* Breadcrumb — desktop */}
             <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
-              <Link to={`/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
+              <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
                 Curriculum
               </Link>
               {roomPhaseConfig && (
@@ -234,7 +234,7 @@ const StudentTopbar = () => {
                           ))}
                       </div>
                       <div className="px-4 py-3 border-t border-border">
-                        <Link to="/notifications" onClick={() => setNotifOpen(false)} className="block w-full text-center text-xs font-bold text-accent hover:underline">View all</Link>
+                        <Link to="/dashboard/notifications" onClick={() => setNotifOpen(false)} className="block w-full text-center text-xs font-bold text-accent hover:underline">View all</Link>
                       </div>
                     </motion.div>
                   )}
@@ -290,7 +290,7 @@ const StudentTopbar = () => {
                       </div>
                       <div className="px-5 py-4 border-t border-border flex-none">
                         <Link
-                          to="/notifications"
+                          to="/dashboard/notifications"
                           onClick={() => setNotifOpen(false)}
                           className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
                         >
@@ -302,7 +302,7 @@ const StudentTopbar = () => {
                 )}
               </AnimatePresence>
 
-              <Link to="/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
+              <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
                 {user?.username?.substring(0, 2).toUpperCase() ?? 'OP'}
               </Link>
             </div>
@@ -319,9 +319,9 @@ const StudentTopbar = () => {
             <nav className="hidden lg:flex items-center gap-1">
               {/* Direct Bootcamp link */}
               <Link
-                to="/bootcamps"
+                to="/dashboard/bootcamps"
                 className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                  location.pathname.startsWith('/bootcamps')
+                  location.pathname.startsWith('/dashboard/bootcamps')
                     ? 'text-accent bg-accent-dim'
                     : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                 }`}
@@ -441,7 +441,7 @@ const StudentTopbar = () => {
                       </div>
                     )}
                     <div className="px-4 py-3 border-t border-border">
-                      <Link to="/notifications" onClick={() => setNotifOpen(false)} className="block w-full text-center text-xs font-bold text-accent hover:underline">
+                      <Link to="/dashboard/notifications" onClick={() => setNotifOpen(false)} className="block w-full text-center text-xs font-bold text-accent hover:underline">
                         View all notifications
                       </Link>
                     </div>
@@ -510,7 +510,7 @@ const StudentTopbar = () => {
                     {/* Footer */}
                     <div className="px-5 py-4 border-t border-border flex-none">
                       <Link
-                        to="/notifications"
+                        to="/dashboard/notifications"
                         onClick={() => setNotifOpen(false)}
                         className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
                       >
@@ -524,7 +524,7 @@ const StudentTopbar = () => {
 
             {/* Profile avatar */}
             <Link
-              to="/profile"
+              to="/dashboard/profile"
               aria-label="Go to profile"
               className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors"
             >

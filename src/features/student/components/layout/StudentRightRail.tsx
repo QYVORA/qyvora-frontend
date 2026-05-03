@@ -2,10 +2,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { Wallet, ShoppingBag, Bell, Settings } from 'lucide-react';
 
 const RAIL_LINKS = [
-  { icon: Wallet,      path: '/wallet',        label: 'Wallet'    },
-  { icon: ShoppingBag, path: '/marketplace',   label: 'Store'     },
-  { icon: Bell,        path: '/notifications', label: 'Alerts'    },
-  { icon: Settings,    path: '/settings',      label: 'Settings'  },
+  { icon: Wallet,      path: '/dashboard/wallet',        label: 'Wallet'    },
+  { icon: ShoppingBag, path: '/dashboard/marketplace',   label: 'Store'     },
+  { icon: Bell,        path: '/dashboard/notifications', label: 'Alerts'    },
+  { icon: Settings,    path: '/dashboard/settings',      label: 'Settings'  },
 ];
 
 const StudentRightRail = () => {

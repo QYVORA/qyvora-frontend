@@ -149,8 +149,12 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg pb-12">
-      <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
+    <div className="bg-bg">
+      <div
+        className="lg:fixed lg:inset-x-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
+      >
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
         {/* HEADER */}
         <ScrollReveal className="mb-10 md:mb-12">
@@ -165,7 +169,7 @@ const Profile: React.FC = () => {
               src="/assets/illustrations/hero-terminal-panel.png"
               alt=""
               aria-hidden="true"
-              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.06] select-none"
+              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
             />
 
             <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
@@ -250,7 +254,7 @@ const Profile: React.FC = () => {
             {isOwnProfile && (
               <ScrollReveal delay={0.2}>
                 <div className="grid grid-cols-1 gap-3">
-                  <Link to="/wallet" className="p-5 bg-accent-dim border border-accent/20 rounded-xl hover:bg-accent-dim/50 transition-all group">
+                  <Link to="/dashboard/wallet" className="p-5 bg-accent-dim border border-accent/20 rounded-xl hover:bg-accent-dim/50 transition-all group">
                     <h4 className="text-xs font-bold text-accent mb-1 uppercase">Operator Wallet</h4>
                     <p className="text-[11px] text-text-muted mb-3">Manage <CpLogo className="w-3.5 h-3.5 mx-1" /> and transaction history.</p>
                     <div className="flex items-center gap-1 text-[10px] font-bold text-text-primary uppercase group-hover:translate-x-1 transition-transform">
@@ -301,8 +305,9 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
+      </div>
 
-      {/* Edit modal */}
+      {/* Edit modal — outside the scrollable div */}
       {isOwnProfile && (
         <EditModal
           open={editOpen}
