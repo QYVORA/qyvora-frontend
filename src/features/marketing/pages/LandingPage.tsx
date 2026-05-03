@@ -5,7 +5,6 @@ import { useLandingData } from '../hooks/useLandingData';
 import HeroSection from '../components/landing/HeroSection';
 import ProcessSection from '../components/landing/ProcessSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
-import CtfArenaSection from '../components/landing/CtfArenaSection';
 import EconomySection from '../components/landing/EconomySection';
 import CyberPointsCtaSection from '../components/landing/CyberPointsCtaSection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
@@ -58,7 +57,6 @@ const Landing: React.FC = () => {
       <ProcessSection stats={stats} totalCp={totalCp} />
       {/* Fix #24: pass loading so sections can show consistent skeletons */}
       <BootcampsSection bootcamps={bootcamps} loading={loading} />
-      <CtfArenaSection />
       <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
       <CyberPointsCtaSection totalCp={totalCp} />
       <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
