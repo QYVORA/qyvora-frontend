@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Terminal, Zap, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Logo from '../../../shared/components/brand/Logo';
-import CpLogo from '../../../shared/components/CpLogo';
-import HeroCanvas from '../../marketing/components/HeroCanvas';
+import HackerGlobe from '../../marketing/components/HackerGlobe';
 import api from '../../../core/services/api';
 
 type Mode = 'login' | 'register' | 'forgot' | 'reset-confirm' | 'verify-email' | 'change-password';
 
-const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-11 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm';
+const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base';
 
 const PasswordInput = ({
   name,
@@ -33,7 +32,7 @@ const PasswordInput = ({
         placeholder={placeholder}
         className={INPUT_BASE}
       />
-      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
       <button
         type="button"
         onClick={() => setShow((s) => !s)}
@@ -41,57 +40,29 @@ const PasswordInput = ({
         tabIndex={-1}
         aria-label={show ? 'Hide password' : 'Show password'}
       >
-        {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+        {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
       </button>
     </div>
   );
 };
 
 const AuthHero: React.FC = () => (
-  <div className="hidden lg:flex relative flex-col justify-between h-full bg-bg overflow-hidden p-12">
-    <div className="absolute inset-0 bg-bg z-0" />
+  <div className="hidden lg:flex relative flex-col justify-between h-full overflow-hidden p-12">
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
-    <HeroCanvas />
-    {/* Operator illustration — anchored bottom-right, fades into background */}
-    <img
-      src="/assets/illustrations/hero-operator.png"
-      alt=""
-      aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 right-0 z-[5] h-[72%] w-auto object-contain object-bottom opacity-20 select-none"
-    />
-    <div className="relative z-20 w-full max-w-[440px]">
-      <Link to="/" className="inline-flex"><Logo size="lg" /></Link>
-    </div>
-    <div className="relative z-20 w-full max-w-[440px] flex flex-col gap-8">
-      <div>
-        <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-4">
-          // AFRICA'S OFFENSIVE SECURITY PLATFORM
-        </div>
-        <h2 className="text-4xl font-black text-text-primary leading-tight mb-4">
-          Train Like a Hacker.<br />
-          <span className="text-accent">Become</span> a Hacker.
-        </h2>
-        <p className="text-text-muted text-sm max-w-sm leading-relaxed">
-          Join the sharpest security community on the continent.
-        </p>
+
+    {/* Globe */}
+    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
+      <div className="relative w-full h-full max-w-[520px] max-h-[520px] mx-auto">
+        <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+        <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
+        <motion.div
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-8 right-6 px-2 py-1 bg-bg-card/80 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest"
+        >
+          SAT-02 // ORBIT
+        </motion.div>
       </div>
-      <div className="flex flex-col gap-3">
-        {[
-          { icon: Shield, text: 'Hands-on penetration testing labs' },
-          { icon: Terminal, text: 'Real CVE exploitation challenges' },
-          { icon: Zap, text: <span>Earn <CpLogo className="w-4 h-4 mx-1" /> and unlock exclusive tools</span> },
-        ].map(({ icon: Icon, text }, idx) => (
-          <div key={idx} className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded bg-accent-dim border border-accent/20 flex items-center justify-center flex-none">
-              <Icon className="w-3.5 h-3.5 text-accent" />
-            </div>
-            <span className="text-xs text-text-secondary">{text}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div className="relative z-20 w-full max-w-[440px] font-mono text-[9px] text-accent/50 tracking-tighter">
-      [ SECURE_CHANNEL_ESTABLISHED ] // TLS 1.3 // AES-256-GCM 
     </div>
   </div>
 );
@@ -242,13 +213,23 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-bg grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
+    <div
+      className={`min-h-screen grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}
+      style={{
+        backgroundImage: 'url(/assets/sections/backgrounds/offsec-grid-background.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Dark overlay so content stays readable over the background */}
+      <div className="absolute inset-0 bg-bg/80 pointer-events-none" style={{ position: 'fixed' }} />
+
       {!isAdminLoginRoute && <AuthHero />}
 
       <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
-        <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
-        <div className="w-full max-w-md relative z-10">
+        <div className="w-full max-w-lg relative z-10">
           {/* Mobile/tablet logo: centered on small screens, aligned with form on desktop widths */}
           <div className="lg:hidden mb-6 flex justify-center md:justify-start">
             <Link to="/"><Logo size="md" /></Link>
@@ -262,10 +243,10 @@ const Login: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
                 <div className="mb-8">
-                  <h1 className={`text-2xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-text-primary' : 'text-text-primary'}`}>
+                  <h1 className={`text-3xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-text-primary' : 'text-text-primary'}`}>
                     {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
                   </h1>
-                  <p className={`text-sm ${isAdminLoginRoute ? 'text-text-muted' : 'text-text-muted'}`}>
+                  <p className={`text-base ${isAdminLoginRoute ? 'text-text-muted' : 'text-text-muted'}`}>
                     {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Enter credentials to establish secure session.'}
                   </p>
                 </div>
@@ -273,37 +254,37 @@ const Login: React.FC = () => {
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   {/* Email */}
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
                       <input type="email" name="email" required placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   {/* Password */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Password</label>
+                      <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
                       {!isAdminLoginRoute && (
-                        <button type="button" onClick={() => setMode('forgot')} className="text-[10px] font-bold text-accent hover:underline">Forgot?</button>
+                        <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
                       )}
                     </div>
                     <PasswordInput name="password" />
                   </div>
 
                   <button type="submit" disabled={isLoading}
-                    className={`w-full !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50 rounded-lg text-sm font-bold uppercase tracking-wider ${
+                    className={`w-full !py-4 flex items-center justify-center gap-3 disabled:opacity-50 rounded-lg text-base font-bold uppercase tracking-wider ${
                       isAdminLoginRoute
                         ? 'bg-bg-card border border-border text-text-primary hover:border-accent/40'
                         : 'btn-primary'
                     }`}>
-                    {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-4 h-4" />
+                    {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-5 h-5" />
                   </button>
                 </form>
 
                 {!isAdminLoginRoute && (
-                  <p className="mt-8 text-center text-sm text-text-muted">
+                  <p className="mt-8 text-center text-base text-text-muted">
                     No operator UID?{' '}
                     <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Request Access</button>
                   </p>
@@ -318,55 +299,55 @@ const Login: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
                 <div className="mb-8">
-                  <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight mb-1">Request Access</h1>
-                  <p className="text-text-muted text-sm">Create your operator identity.</p>
+                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Request Access</h1>
+                  <p className="text-text-muted text-base">Create your operator identity.</p>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
                     <div className="relative">
                       <input type="text" name="handle" required placeholder="hsociety_operator"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Full Name</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
                     <div className="relative">
                       <input type="text" name="full_name" required placeholder="Operator Name"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
                       <input type="email" name="email" required placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
                     <PasswordInput name="password" />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
                     <PasswordInput name="confirm_password" />
                   </div>
 
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
-                    {isLoading ? 'Initialising...' : 'Create Operator Account'} <LogIn className="w-4 h-4" />
+                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+                    {isLoading ? 'Initialising...' : 'Create Operator Account'} <LogIn className="w-5 h-5" />
                   </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-text-muted">
+                <p className="mt-8 text-center text-base text-text-muted">
                   Already have access?{' '}
                   <button onClick={() => setMode('login')} className="text-accent font-bold hover:underline">Log In</button>
                 </p>
@@ -379,32 +360,32 @@ const Login: React.FC = () => {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
-                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-3.5 h-3.5" /> Back to Login
+                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Back to Login
                 </button>
 
                 <div className="mb-8">
-                  <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Credentials</h1>
-                  <p className="text-text-muted text-sm">Enter your email to initiate a password reset.</p>
+                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Credentials</h1>
+                  <p className="text-text-muted text-base">Enter your email to initiate a password reset.</p>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
                     <div className="relative">
                       <input type="email" name="email" required placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
-                    {isLoading ? 'Processing...' : 'Request Reset'} <Send className="w-4 h-4" />
+                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+                    {isLoading ? 'Processing...' : 'Request Reset'} <Send className="w-5 h-5" />
                   </button>
                 </form>
 
-                <p className="mt-6 text-center text-xs text-text-muted">
+                <p className="mt-6 text-center text-sm text-text-muted">
                   Already have a reset token?{' '}
                   <button onClick={() => setMode('reset-confirm')} className="text-accent font-bold hover:underline">Enter token</button>
                 </p>
@@ -417,42 +398,42 @@ const Login: React.FC = () => {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
-                <button onClick={() => setMode('forgot')} className="flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-3.5 h-3.5" /> Back
+                <button onClick={() => setMode('forgot')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Back
                 </button>
                 <div className="mb-8">
-                  <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight mb-1">Set New Password</h1>
-                  <p className="text-text-muted text-sm">Enter your reset token and choose a new password.</p>
+                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Set New Password</h1>
+                  <p className="text-text-muted text-base">Enter your reset token and choose a new password.</p>
                 </div>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
                       <input type="email" name="email" required defaultValue={resetEmail} placeholder="operator@hsociety.africa"
                         onChange={(e) => setResetEmail(e.target.value)}
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
                     <div className="relative">
                       <input type="text" name="token" required defaultValue={urlToken} placeholder="Paste reset token here"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">New Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
                     <PasswordInput name="new_password" placeholder="Min 8 characters" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
                     <PasswordInput name="confirm_password" />
                   </div>
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
-                    {isLoading ? 'Resetting...' : 'Reset Password'} <CheckCircle2 className="w-4 h-4" />
+                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+                    {isLoading ? 'Resetting...' : 'Reset Password'} <CheckCircle2 className="w-5 h-5" />
                   </button>
                 </form>
               </motion.div>
@@ -464,31 +445,31 @@ const Login: React.FC = () => {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
               >
-                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-3.5 h-3.5" /> Back to Login
+                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Back to Login
                 </button>
                 <div className="mb-8">
-                  <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight mb-1">Verify Email</h1>
-                  <p className="text-text-muted text-sm">
+                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Verify Email</h1>
+                  <p className="text-text-muted text-base">
                     {verifyEmail ? `Enter the verification token sent to ${verifyEmail}.` : 'Enter your email verification token.'}
                   </p>
                 </div>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Verification Token</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Verification Token</label>
                     <div className="relative">
                       <input type="text" name="token" required defaultValue={urlToken} placeholder="Paste verification token"
-                        className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
-                    {isLoading ? 'Verifying...' : 'Verify Email'} <CheckCircle2 className="w-4 h-4" />
+                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+                    {isLoading ? 'Verifying...' : 'Verify Email'} <CheckCircle2 className="w-5 h-5" />
                   </button>
                 </form>
                 {verifyEmail && (
-                  <p className="mt-6 text-center text-xs text-text-muted">
+                  <p className="mt-6 text-center text-sm text-text-muted">
                     Didn't get a token?{' '}
                     <button
                       onClick={async () => {
@@ -519,32 +500,32 @@ const Login: React.FC = () => {
                     <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
                       <Shield className="w-5 h-5 text-yellow-500" />
                     </div>
-                    <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight">Password Change Required</h1>
+                    <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight">Password Change Required</h1>
                   </div>
-                  <p className="text-text-muted text-sm">Your account requires a password change before continuing.</p>
+                  <p className="text-text-muted text-base">Your account requires a password change before continuing.</p>
                 </div>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   {!urlToken && (
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Change Token</label>
+                      <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Change Token</label>
                       <div className="relative">
                         <input type="text" name="change_token" required placeholder="Paste token from login response"
-                          className="w-full bg-bg-card border border-border rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-sm" />
-                        <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                          className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+                        <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                       </div>
                     </div>
                   )}
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">New Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
                     <PasswordInput name="new_password" placeholder="Min 8 characters" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
                     <PasswordInput name="confirm_password" />
                   </div>
                   <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-50">
-                    {isLoading ? 'Updating...' : 'Set New Password'} <CheckCircle2 className="w-4 h-4" />
+                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+                    {isLoading ? 'Updating...' : 'Set New Password'} <CheckCircle2 className="w-5 h-5" />
                   </button>
                 </form>
               </motion.div>
