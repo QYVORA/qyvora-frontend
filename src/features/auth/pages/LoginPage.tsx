@@ -64,6 +64,16 @@ const AuthHero: React.FC = () => (
         </motion.div>
       </div>
     </div>
+
+    {/* Back to Home — top-left */}
+    <div className="relative z-20">
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back to Home
+      </Link>
+    </div>
   </div>
 );
 
@@ -230,6 +240,16 @@ const Login: React.FC = () => {
       <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
 
         <div className="w-full max-w-lg relative z-10">
+          {/* Back to home — mobile only (desktop shows it in the left panel) */}
+          <div className="mb-6 lg:hidden">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Home
+            </Link>
+          </div>
+
           {/* Mobile/tablet logo: centered on small screens, aligned with form on desktop widths */}
           <div className="lg:hidden mb-6 flex justify-center md:justify-start">
             <Link to="/"><Logo size="md" /></Link>
