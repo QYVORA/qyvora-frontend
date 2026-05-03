@@ -5,7 +5,6 @@ import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Eye, EyeOff, KeyRound
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import Logo from '../../../shared/components/brand/Logo';
 import HackerGlobe from '../../marketing/components/HackerGlobe';
 import api from '../../../core/services/api';
 
@@ -248,11 +247,6 @@ const Login: React.FC = () => {
             >
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
-          </div>
-
-          {/* Mobile/tablet logo: centered on small screens, aligned with form on desktop widths */}
-          <div className="lg:hidden mb-6 flex justify-center md:justify-start">
-            <Link to="/"><Logo size="md" /></Link>
           </div>
 
           <AnimatePresence mode="wait">
