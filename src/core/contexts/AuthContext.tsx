@@ -47,9 +47,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const toFrontendUser = (backendUser: BackendUser): User => {
   const role = String(backendUser?.role || 'student');
   const cp = extractCpBalance(backendUser) ?? Number(backendUser?.cpPoints || 0);
+  // Use hackerHandle as the display handle. Fall back to name only if the
+  // student hasn't set a handle yet — never show a blank or a dash.
+  const username = String(backendUser?.hackerHandle || backendUser?.name || '').trim();
   return {
     uid: String(backendUser?.id || ''),
-    username: String(backendUser?.hackerHandle || 'OPERATOR'),
+    username,
     email: String(backendUser?.email || ''),
     rank: role === 'admin' ? 'Administrator' : cp >= 1500 ? 'Vanguard' : cp >= 900 ? 'Architect' : cp >= 450 ? 'Specialist' : cp >= 150 ? 'Contributor' : 'Candidate',
     cp,

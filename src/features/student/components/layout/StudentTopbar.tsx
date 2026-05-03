@@ -140,7 +140,7 @@ const StudentTopbar = () => {
   return (
     <>
       {/* ── Desktop topbar ── */}
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg/95 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
         {isRoomPage ? (
           /* ══ BOOTCAMP ROOM MODE ══ */
           <div className="max-w-[1600px] mx-auto px-4 md:px-6 h-20 md:h-24 flex items-center gap-3">
@@ -303,7 +303,7 @@ const StudentTopbar = () => {
               </AnimatePresence>
 
               <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
-                {user?.username?.substring(0, 2).toUpperCase() ?? 'OP'}
+                {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
               </Link>
             </div>
           </div>
@@ -528,7 +528,7 @@ const StudentTopbar = () => {
               aria-label="Go to profile"
               className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors"
             >
-              {user?.username?.substring(0, 2).toUpperCase() || 'OP'}
+              {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
             </Link>
 
             {/* Logout — desktop */}
@@ -609,10 +609,10 @@ const StudentTopbar = () => {
               <div className="flex items-center justify-between px-5 py-4 border-b border-border/50">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl border border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm">
-                    {user?.username?.substring(0, 2).toUpperCase() || 'OP'}
+                    {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
                   </div>
                   <div>
-                    <div className="text-sm font-black text-text-primary uppercase tracking-widest">{user?.username || 'Operator'}</div>
+                    <div className="text-sm font-black text-text-primary uppercase tracking-widest">{user?.username || user?.email?.split('@')[0] || '—'}</div>
                     <div className="text-[10px] text-text-muted">{user?.rank || 'Candidate'}</div>
                   </div>
                 </div>

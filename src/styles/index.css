@@ -91,6 +91,14 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
+  /* Scrollable panels — hide scrollbar at rest, reveal on hover */
+  .scroll-hover { scrollbar-width: none; -ms-overflow-style: none; }
+  .scroll-hover::-webkit-scrollbar { display: none; }
+  .scroll-hover:hover { scrollbar-width: thin; scrollbar-color: var(--color-accent) transparent; }
+  .scroll-hover:hover::-webkit-scrollbar { display: block; width: 4px; height: 4px; }
+  .scroll-hover:hover::-webkit-scrollbar-track { background: transparent; }
+  .scroll-hover:hover::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; opacity: 0.6; }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-accent) var(--color-bg-card);

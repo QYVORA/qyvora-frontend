@@ -21,6 +21,7 @@ const CyberPointsPage = lazy(() => import('../features/marketing/pages/CyberPoin
 const ChainPage = lazy(() => import('../features/marketing/pages/ChainPage'));
 const PublicMarketplacePage = lazy(() => import('../features/marketing/pages/PublicMarketplacePage'));
 const PublicCtfPage = lazy(() => import('../features/marketing/pages/PublicCtfPage'));
+const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -93,6 +94,7 @@ export const AppRouter = () => {
           <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
           <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+          <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>
 
         {/* Auth routes (no layout) */}
