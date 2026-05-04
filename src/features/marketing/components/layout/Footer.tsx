@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail } from 'lucide-react';
 import { SITE_CONFIG } from '../../content/siteConfig';
-import BrandXIcon from '../../../../shared/components/icons/BrandXIcon';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
 import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedinIcon';
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
@@ -21,13 +19,15 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
-      { label: 'CTF Arena',       path: '/ctf'           },
-      { label: 'Leaderboard',     path: '/leaderboard'   },
-      { label: 'Cyber Points',    path: '/cyber-points'  },
-      { label: 'HSOCIETY Chain',  path: '/chain'         },
-      { label: 'Services',        path: '/services'      },
-      { label: 'Register',        path: '/register'      },
-      { label: 'Log In',          path: '/login'         },
+      { label: 'CTF Arena',       path: '/ctf'             },
+      { label: 'Leaderboard',     path: '/leaderboard'     },
+      { label: 'Marketplace',     path: '/zero-day-market' },
+      { label: 'Bootcamps',       path: '/bootcamps'       },
+      { label: 'Cyber Points',    path: '/cyber-points'    },
+      { label: 'HSOCIETY Chain',  path: '/chain'           },
+      { label: 'Services',        path: '/services'        },
+      { label: 'Register',        path: '/register'        },
+      { label: 'Log In',          path: '/login'           },
     ],
   },
 ];
@@ -50,11 +50,9 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex items-center gap-3">
             {[
-              { icon: BrandXIcon,         href: SITE_CONFIG.social.find((item) => item.key === 'x')?.href         || '#', label: 'X'         },
               { icon: BrandLinkedinIcon,  href: SITE_CONFIG.social.find((item) => item.key === 'linkedin')?.href  || '#', label: 'LinkedIn'  },
               { icon: BrandYoutubeIcon,   href: SITE_CONFIG.social.find((item) => item.key === 'youtube')?.href   || '#', label: 'YouTube'   },
               { icon: BrandWhatsAppIcon,  href: SITE_CONFIG.social.find((item) => item.key === 'whatsapp')?.href  || '#', label: 'WhatsApp' },
-              { icon: Mail,               href: `mailto:${SITE_CONFIG.contact.opsEmail}`,                                label: 'Email'     },
             ].map(({ icon: Icon, href, label }, i) => (
               <a key={i} href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noreferrer" aria-label={label}
                 className="p-2 bg-bg-card border border-border rounded-md text-text-muted hover:text-accent hover:border-accent transition-all">

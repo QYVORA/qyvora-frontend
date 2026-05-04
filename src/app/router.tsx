@@ -7,6 +7,8 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 // Layouts
 import PublicLayout from '../shared/layouts/PublicLayout';
+import LandingLayout from '../shared/layouts/LandingLayout';
+import SnapPublicLayout from '../shared/layouts/SnapPublicLayout';
 import StudentLayout from '../shared/layouts/StudentLayout';
 import AdminLayout from '../shared/layouts/AdminLayout';
 
@@ -21,6 +23,8 @@ const CyberPointsPage = lazy(() => import('../features/marketing/pages/CyberPoin
 const ChainPage = lazy(() => import('../features/marketing/pages/ChainPage'));
 const PublicMarketplacePage = lazy(() => import('../features/marketing/pages/PublicMarketplacePage'));
 const PublicCtfPage = lazy(() => import('../features/marketing/pages/PublicCtfPage'));
+const PublicLeaderboardPage = lazy(() => import('../features/marketing/pages/PublicLeaderboardPage'));
+const PublicBootcampsPage = lazy(() => import('../features/marketing/pages/PublicBootcampsPage'));
 const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
 
 // Auth pages
@@ -85,14 +89,24 @@ export const AppRouter = () => {
     <AnimatePresence mode="wait">
       <Routes location={location}>
         {/* Public routes — no auth required */}
-        <Route element={<PublicLayout />}>
+        <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
+        </Route>
+
+        {/* Snap public pages — viewport-locked scroll */}
+        <Route element={<SnapPublicLayout />}>
+          <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
+          <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><PublicLeaderboardPage /></Wrap>} />
+          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><PublicBootcampsPage /></Wrap>} />
+        </Route>
+
+        {/* Standard public pages — normal scroll with footer */}
+        <Route element={<PublicLayout />}>
           <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/cyber-points" element={<Wrap scope="Cyber Points"><CyberPointsPage /></Wrap>} />
           <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
-          <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
-          <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>

@@ -322,7 +322,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     /* ── Renderer ── */
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     el.appendChild(renderer.domElement);
 
@@ -650,8 +650,18 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     let rafId = 0;
     let last = 0;
     let tick = 0;
+    let visible = true;
+
+    // Pause rendering when the globe is off-screen
+    const visObserver = new IntersectionObserver(
+      ([entry]) => { visible = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    visObserver.observe(el);
+
     const animate = (now: number) => {
       rafId = requestAnimationFrame(animate);
+      if (!visible) return;
       const dt = now - last;
       if (dt < 16) return;
       last = now; tick += dt * 0.001;
@@ -706,6 +716,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
     return () => {
       cancelAnimationFrame(rafId);
+      visObserver.disconnect();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMM);
       window.removeEventListener('mouseup', onMU);
@@ -729,7 +740,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   }, [scale, theme]);
 
   return (
-    <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'grab' }}>
+    <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'grab', willChange: 'transform', contain: 'strict' }}>
       <div
         ref={tooltipRef}
         style={{

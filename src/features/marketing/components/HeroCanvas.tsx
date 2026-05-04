@@ -12,6 +12,7 @@ const HeroCanvas: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
+    let visible = true;
     let width  = (canvas.width  = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -31,6 +32,7 @@ const HeroCanvas: React.FC = () => {
     }));
 
     const draw = () => {
+      if (!visible) { animationFrameId = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, width, height);
       ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
 
@@ -74,12 +76,20 @@ const HeroCanvas: React.FC = () => {
       height = canvas.height = window.innerHeight;
     };
 
+    // Pause the loop when the canvas is scrolled out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => { visible = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
+
     window.addEventListener('resize', handleResize);
     draw();
 
     return () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
   }, [theme]);
 
@@ -89,6 +99,7 @@ const HeroCanvas: React.FC = () => {
       className={`absolute top-0 left-0 w-full h-full pointer-events-none z-0 ${
         theme === 'light' ? 'opacity-80' : 'opacity-70'
       }`}
+      style={{ contain: 'strict' }}
     />
   );
 };
