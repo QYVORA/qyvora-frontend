@@ -328,12 +328,16 @@
 ───────────────────────────────────────────────────────────────────────────── */
 
 /* ── Navbar clearance — landing page only (md+) ── */
+/* Sections use md:snap-start (Tailwind responsive prefix), so we target
+   both the legacy .snap-start and the Tailwind-generated .md\:snap-start */
 @media (min-width: 768px) {
-  .landing-snap .snap-start {
+  .landing-snap .snap-start,
+  .landing-snap .md\:snap-start {
     padding-top: 72px;
   }
   /* Hero handles its own top offset internally */
-  .landing-snap #hero.snap-start {
+  .landing-snap #hero.snap-start,
+  .landing-snap #hero.md\:snap-start {
     padding-top: 0;
   }
 }

@@ -217,7 +217,7 @@ const Landing: React.FC = () => {
       {/* ── 9. Footer ── */}
       <section
         id="footer"
-        className="md:snap-start md:h-full md:flex-shrink-0 overflow-hidden flex flex-col justify-end"
+        className="md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-end"
       >
         <Footer />
       </section>
