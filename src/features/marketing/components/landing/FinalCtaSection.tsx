@@ -12,7 +12,10 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative py-16 md:py-24 bg-bg scanlines flex items-center has-bg-image">
+    <section className="
+      relative py-16 bg-bg scanlines flex items-center has-bg-image
+      md:h-full md:overflow-hidden md:py-0
+    ">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -28,7 +31,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         src="/assets/illustrations/cta-operator.png"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block absolute right-0 bottom-0 h-[85%] w-auto object-contain pointer-events-none select-none opacity-80 z-[1]"
+        className="hidden lg:block absolute right-0 bottom-0 h-[90%] w-auto object-contain pointer-events-none select-none opacity-80 z-[1]"
       />
 
       {/* Ambient glow */}
@@ -45,14 +48,10 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           <motion.div
             animate={shouldReduceMotion ? {} : {
               opacity: [0.7, 1, 0.7],
-              boxShadow: [
-                '0 0 10px var(--color-accent-glow)',
-                '0 0 24px var(--color-accent-glow)',
-                '0 0 10px var(--color-accent-glow)',
-              ],
+              boxShadow: ['0 0 10px var(--color-accent-glow)', '0 0 24px var(--color-accent-glow)', '0 0 10px var(--color-accent-glow)'],
             }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="inline-block mb-6 px-4 py-1.5 border border-accent bg-accent-dim text-accent rounded-full text-xs font-bold uppercase tracking-[0.3em]"
+            className="inline-block mb-5 px-4 py-1.5 border border-accent bg-accent-dim text-accent rounded-full text-xs font-bold uppercase tracking-[0.3em]"
           >
             {user ? 'TRAINING IN PROGRESS' : 'ENROLLMENT OPEN'}
           </motion.div>
@@ -60,11 +59,11 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           {user ? (
             <>
               <motion.h2
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(8px)' }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24, filter: 'blur(8px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-                className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight"
               >
                 Keep <span className="text-accent underline decoration-accent/30 underline-offset-8">Operating.</span>
               </motion.h2>
@@ -72,16 +71,16 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 initial={{ opacity: 0, filter: 'blur(4px)' }}
                 whileInView={{ opacity: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.25, filter: { duration: 0.35 } }}
-                className="text-text-secondary text-sm md:text-lg mb-10 max-w-2xl mx-auto"
+                transition={{ duration: 0.6, delay: 0.2, filter: { duration: 0.35 } }}
+                className="text-text-secondary text-sm md:text-base mb-8 max-w-xl mx-auto"
               >
                 Your training is active. Head to your dashboard to continue where you left off.
               </motion.p>
               <motion.div
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.35 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex items-center justify-center"
               >
                 <Link to="/dashboard" className="btn-primary !px-8 !py-3 text-sm flex items-center gap-3 flex-none">
@@ -92,11 +91,11 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           ) : (
             <>
               <motion.h2
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(8px)' }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24, filter: 'blur(8px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-                className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight"
               >
                 Ready to <span className="text-accent underline decoration-accent/30 underline-offset-8">Operate?</span>
               </motion.h2>
@@ -104,16 +103,16 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 initial={{ opacity: 0, filter: 'blur(4px)' }}
                 whileInView={{ opacity: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.25, filter: { duration: 0.35 } }}
-                className="text-text-secondary text-sm md:text-lg mb-10 max-w-2xl mx-auto"
+                transition={{ duration: 0.6, delay: 0.2, filter: { duration: 0.35 } }}
+                className="text-text-secondary text-sm md:text-base mb-8 max-w-xl mx-auto"
               >
                 Join operators training in offensive security. No experience required — just commitment.
               </motion.p>
               <motion.div
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.35 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-row items-center justify-center gap-3 flex-wrap"
               >
                 <Link to="/register" className="btn-primary !px-8 !py-3 text-sm inline-flex items-center gap-2 flex-none">

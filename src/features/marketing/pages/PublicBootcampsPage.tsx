@@ -62,7 +62,8 @@ const Snap: React.FC<{ id: string; children: React.ReactNode; className?: string
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-        className="w-full"
+        className="w-full md:h-full md:overflow-y-auto md:overflow-x-hidden"
+        style={{ scrollbarWidth: 'none' }}
       >
         {children}
       </motion.div>
@@ -79,11 +80,11 @@ const ScrollHint: React.FC<{ targetId: string; containerId: string }> = ({ targe
     }}
     aria-label="Scroll down"
     initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 0.6 }}
-    className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1 text-text-muted hover:text-accent transition-colors"
+    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
   >
-    <span className="text-[9px] font-bold uppercase tracking-[0.25em]">Scroll</span>
-    <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
-      <ChevronDown className="w-4 h-4" />
+    <span className="text-[10px] font-bold uppercase tracking-[0.25em]">Scroll</span>
+    <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
+      <ChevronDown className="w-6 h-6" />
     </motion.div>
   </motion.button>
 );

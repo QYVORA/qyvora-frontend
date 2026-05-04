@@ -42,7 +42,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <section ref={heroRef} className="relative min-h-screen w-full has-bg-image">
+    <section ref={heroRef} className="relative min-h-screen w-full has-bg-image md:h-full md:min-h-0 md:overflow-hidden">
       {/* Background layers */}
       <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
         <div className="absolute inset-0 bg-bg light-theme-hide-bg-base" />
@@ -60,7 +60,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
       <motion.div
         style={{ y: shouldReduceMotion ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-36"
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-48
+          md:min-h-0 md:h-full"
       >
         {/* Left column */}
         <div className="flex flex-col items-start">
@@ -69,7 +70,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm"
+            className="mb-4 md:mb-3 px-3 py-1 border border-border bg-accent-dim rounded-sm"
           >
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
               AFRICA'S OFFENSIVE SECURITY PLATFORM
@@ -77,7 +78,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-5">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-4 md:mb-3">
             <span className="inline-block">
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
@@ -112,7 +113,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-7"
+            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-5 md:mb-4"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
@@ -122,7 +123,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-7 md:mb-8"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 md:mb-4"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm">
@@ -149,7 +150,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Mobile stats grid */}
-          <div className="grid grid-cols-2 gap-3 mt-7 lg:hidden w-full">
+          <div className="grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}
