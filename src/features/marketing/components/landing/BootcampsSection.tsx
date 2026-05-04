@@ -29,7 +29,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const displayed = bootcamps.slice(0, 3);
 
   return (
-    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative overflow-hidden has-bg-image">
+    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative has-bg-image">
       <img
         src="/assets/sections/backgrounds/employee-training-bg.png"
         alt=""
@@ -91,6 +91,8 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               return (
                 <motion.div
                   key={bc.id}
+                  // On mobile show only the first card to avoid overflow
+                  className={i > 0 ? 'hidden sm:block' : ''}
                   initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, scale: 0.94, filter: 'blur(6px)' }}
                   whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}

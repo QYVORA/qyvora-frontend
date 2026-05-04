@@ -18,7 +18,7 @@ const Snap: React.FC<{ id: string; children: React.ReactNode; className?: string
   return (
     <section
       id={id}
-      className={`snap-start h-full w-full flex-shrink-0 overflow-hidden flex flex-col justify-center ${className}`}
+      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-center ${className}`}
     >
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0, y: 40, filter: 'blur(6px)' }}
@@ -135,14 +135,14 @@ const PublicLeaderboardPage: React.FC = () => {
   return (
     <div
       id="lb-scroll"
-      className="h-full w-full overflow-y-scroll overflow-x-hidden snap-y snap-mandatory"
-      style={{ scrollSnapType: 'y mandatory' }}
+      className="w-full overflow-x-hidden md:h-full md:overflow-y-scroll md:snap-y md:snap-mandatory"
+      style={{ scrollSnapType: undefined }}
     >
 
       {/* ── 1. Hero ── */}
       <section
         id="lb-hero"
-        className="snap-start h-full w-full flex-shrink-0 relative flex items-center overflow-hidden scanlines bg-bg"
+        className="md:snap-start md:h-full md:flex-shrink-0 relative flex items-center md:overflow-hidden scanlines bg-bg min-h-[85vh] md:min-h-0"
       >
         <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-accent/5 rounded-full blur-[120px] pointer-events-none z-0" />

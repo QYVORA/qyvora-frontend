@@ -1,29 +1,37 @@
 /**
- * SnapPublicLayout — for public pages that use scroll-snap (viewport-by-viewport).
+ * SnapPublicLayout — public pages with viewport-locked snap scroll.
  *
- * The navbar is fixed at 72px. pt-[72px] on <main> pushes the snap container
- * below the navbar. The snap container fills the remaining viewport height
- * (100dvh - 72px) via h-full. Each snap section fills h-full of the container,
- * so content is always below the navbar — no overlap with the transparent navbar.
+ * Mobile (< md): normal scrolling page — snap is disabled, content stacks
+ * naturally. pt-[72px] clears the fixed navbar.
  *
- * No footer rendered here — each snap page embeds its own footer as the last section.
+ * Tablet/Desktop (md+): snap scroll. pt-[72px] on <main> pushes the snap
+ * container below the navbar. The container fills the remaining viewport
+ * height (100dvh - 72px). Each snap section fills h-full of the container.
  */
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../features/marketing/components/layout/Navbar';
+import Footer from '../../features/marketing/components/layout/Footer';
 
 const SnapPublicLayout = () => (
   <>
     <Navbar />
-    {/* pt-[72px] clears the fixed navbar. height: 100dvh fills the full viewport. */}
+    {/*
+      Mobile: normal scroll, pt-[72px] clears navbar, footer renders normally.
+      md+: snap scroll, height: 100dvh, footer is embedded in each page's last section.
+    */}
     <main
-      className="w-full pt-[72px]"
-      style={{ height: '100dvh' }}
+      className="w-full pt-[72px] md:pt-[72px]"
+      style={{ height: undefined }}
     >
-      {/* h-full = 100dvh - 72px — the snap container fills exactly this */}
-      <div className="h-full w-full">
+      {/* On md+, this div becomes the snap container host */}
+      <div className="w-full md:h-[calc(100dvh-72px)]">
         <Outlet />
       </div>
     </main>
+    {/* Footer only on mobile — desktop snap pages embed their own footer */}
+    <div className="md:hidden">
+      <Footer />
+    </div>
   </>
 );
 

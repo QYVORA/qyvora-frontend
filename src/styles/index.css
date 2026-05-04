@@ -317,78 +317,103 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    SNAP PAGES — navbar clearance + compact section padding
    ─────────────────────────────────────────────────────────────────────────────
-   The navbar is fixed at 72px (h-[72px]). Every snap section fills h-full of
-   the scroll container, which starts at the very top of the viewport.
-   Without a top offset, section content slides under the transparent navbar.
+   Mobile (< md): snap is disabled. Sections stack normally. The CSS below
+   only applies on md+ where snap is active.
 
-   Fix: every snap section (snap-start) gets pt-[72px] so its content begins
-   below the navbar. The bottom gets a matching safe-area buffer.
+   The navbar is fixed at 72px. On the landing page, .landing-snap .snap-start
+   adds pt-[72px] so content starts below the navbar. On public snap pages,
+   SnapPublicLayout's pt-[72px] on <main> handles the offset.
 
-   The [data-snap-child] attribute on the motion wrapper inside SnapSection
-   additionally compresses the section's own py-20/py-32 padding so the
-   content fits within the remaining viewport height (100vh - 72px).
+   [data-snap-child] compresses section padding so content fits the viewport.
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* ── 1. Navbar clearance on every snap section ──
-   Landing page: <main> has no padding, snap container starts at viewport top.
-   Each snap section needs pt-[72px] to push content below the fixed navbar.
-   Scoped to the landing snap container via its ref-based id pattern. */
-.landing-snap .snap-start {
-  padding-top: 72px;
+/* ── Navbar clearance — landing page only (md+) ── */
+@media (min-width: 768px) {
+  .landing-snap .snap-start {
+    padding-top: 72px;
+  }
+  /* Hero handles its own top offset internally */
+  .landing-snap #hero.snap-start {
+    padding-top: 0;
+  }
 }
 
-/* Hero section already handles its own top offset internally (pt-16 md:pt-20)
-   so we don't double-pad it. */
-.landing-snap #hero.snap-start {
-  padding-top: 0;
+/* ── Compact section padding inside snap wrappers (md+) ── */
+@media (min-width: 768px) {
+  [data-snap-child] > section {
+    padding-top: clamp(1rem, 2.5vh, 2rem) !important;
+    padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
+    min-height: unset !important;
+  }
+
+  [data-snap-child] .mb-10,
+  [data-snap-child] .mb-12,
+  [data-snap-child] .mb-14,
+  [data-snap-child] .mb-16 {
+    margin-bottom: clamp(0.5rem, 1.5vh, 1.25rem) !important;
+  }
+
+  [data-snap-child] .space-y-2\.5,
+  [data-snap-child] .space-y-3 {
+    row-gap: 0.375rem !important;
+  }
+
+  [data-snap-child] .min-h-\[240px\],
+  [data-snap-child] .min-h-\[280px\],
+  [data-snap-child] .sm\:min-h-\[280px\],
+  [data-snap-child] .md\:min-h-\[360px\] {
+    min-height: clamp(120px, 16vh, 200px) !important;
+  }
+
+  [data-snap-child] .h-36 {
+    height: clamp(3.5rem, 7vh, 5.5rem) !important;
+  }
+
+  [data-snap-child] .h-24 {
+    height: clamp(2rem, 4.5vh, 3.5rem) !important;
+  }
 }
 
-/* Public snap pages: <main> already has pt-[72px] in SnapPublicLayout,
-   so the snap container starts below the navbar. Hero sections on public
-   pages use flex items-center + py-16 on the inner content div — that's
-   enough clearance. Non-hero Snap sections get their clearance from the
-   layout's pt-[72px]. No extra padding needed here. */
-[data-snap-child] > section {
-  padding-top: clamp(1rem, 2.5vh, 2rem) !important;
-  padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
-  min-height: unset !important;
-}
+/* ── Mobile section spacing — normal scroll, generous breathing room ── */
+@media (max-width: 767px) {
+  /* Ensure sections have proper top padding to clear the fixed navbar */
+  section {
+    scroll-margin-top: 72px;
+  }
 
-/* Tighten heading margins inside snap sections */
-[data-snap-child] .mb-10,
-[data-snap-child] .mb-12,
-[data-snap-child] .mb-14,
-[data-snap-child] .mb-16 {
-  margin-bottom: clamp(0.5rem, 1.5vh, 1.25rem) !important;
-}
-[data-snap-child] .md\:mb-16,
-[data-snap-child] .md\:mb-14,
-[data-snap-child] .md\:mb-12 {
-  margin-bottom: clamp(0.5rem, 1.5vh, 1.25rem) !important;
-}
+  /* Tighten section padding on mobile for better content density */
+  .py-32 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+  .py-24 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+  .py-20 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+  .py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+  .py-14 { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
 
-/* Tighten row gaps inside snap sections */
-[data-snap-child] .space-y-2\.5,
-[data-snap-child] .space-y-3 {
-  row-gap: 0.375rem !important;
-}
+  /* Tighten heading bottom margins */
+  .mb-10 { margin-bottom: 1.25rem !important; }
+  .mb-12 { margin-bottom: 1.25rem !important; }
+  .mb-14 { margin-bottom: 1.5rem !important; }
+  .mb-16 { margin-bottom: 1.75rem !important; }
 
-/* Social cards — reduce min-height inside snap */
-[data-snap-child] .min-h-\[240px\],
-[data-snap-child] .min-h-\[280px\],
-[data-snap-child] .sm\:min-h-\[280px\],
-[data-snap-child] .md\:min-h-\[360px\] {
-  min-height: clamp(120px, 16vh, 200px) !important;
-}
+  /* Social cards — reasonable height on mobile */
+  .min-h-\[240px\] { min-height: 160px !important; }
+  .min-h-\[280px\] { min-height: 180px !important; }
 
-/* Service card illustration strip — reduce height inside snap */
-[data-snap-child] .h-36 {
-  height: clamp(3.5rem, 7vh, 5.5rem) !important;
-}
-[data-snap-child] .h-24 {
-  height: clamp(2rem, 4.5vh, 3.5rem) !important;
-}
+  /* Service card illustration strip */
+  .h-36 { height: 4.5rem !important; }
 
-/* ── 3. Public snap pages — hero sections ──
-   The SnapPublicLayout already offsets the container below the navbar via
-   pt-[72px] on <main>. No additional padding needed on hero sections. */
+  /* Snap section wrappers — allow natural height on mobile, no clipping */
+  /* overflow-hidden is now md:overflow-hidden in components, this is a safety net */
+  .md\:snap-start {
+    overflow: visible;
+  }
+
+  /* Reduce large heading sizes on mobile */
+  .text-6xl { font-size: 2.25rem !important; line-height: 1.1 !important; }
+  .text-5xl { font-size: 2rem !important; line-height: 1.1 !important; }
+
+  /* Grid gap reduction on mobile */
+  .gap-8 { gap: 1.25rem !important; }
+  .gap-10 { gap: 1.5rem !important; }
+  .gap-14 { gap: 1.75rem !important; }
+  .gap-16 { gap: 2rem !important; }
+}

@@ -63,12 +63,14 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`snap-start h-full w-full flex-shrink-0 overflow-hidden flex flex-col justify-center ${className}`}
+      // Mobile: normal block, no snap, no fixed height, no overflow clipping
+      // md+: snap-start, h-full fills the snap container, overflow-hidden clips
+      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-center ${className}`}
     >
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.2 }}
+        viewport={{ once: false, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
         className="w-full"
         data-snap-child=""
@@ -138,18 +140,20 @@ const Landing: React.FC = () => {
   }, []);
 
   return (
-    // The snap container fills the full viewport (h-screen since LandingLayout has no padding)
+    // The snap container:
+    // - Mobile (< md): normal scroll, no snap — content stacks naturally
+    // - Tablet/Desktop (md+): viewport-locked snap scroll
     <div
       ref={containerRef}
-      className="landing-snap h-screen w-full overflow-y-scroll overflow-x-hidden"
-      style={{ scrollSnapType: 'y mandatory' }}
+      className="landing-snap h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory"
+      style={{ scrollSnapType: undefined }}
     >
       <DotNav active={activeSection} total={SECTIONS.length} onDotClick={scrollToSection} />
 
       {/* ── 1. Hero — full viewport, no wrapper needed ── */}
       <section
         id="hero"
-        className="snap-start h-full w-full flex-shrink-0 overflow-hidden relative"
+        className="md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden relative"
       >
         <HeroSection
           heroRef={heroRef}
@@ -213,7 +217,7 @@ const Landing: React.FC = () => {
       {/* ── 9. Footer ── */}
       <section
         id="footer"
-        className="snap-start h-full w-full flex-shrink-0 overflow-hidden flex flex-col justify-end"
+        className="md:snap-start md:h-full md:flex-shrink-0 overflow-hidden flex flex-col justify-end"
       >
         <Footer />
       </section>

@@ -60,7 +60,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
       <motion.div
         style={{ y: shouldReduceMotion ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-16 md:pt-20 pb-10 md:pb-36"
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-36"
       >
         {/* Left column */}
         <div className="flex flex-col items-start">

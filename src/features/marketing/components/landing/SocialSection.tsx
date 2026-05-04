@@ -51,7 +51,7 @@ const SocialSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
           {SITE_CONFIG.social.filter((s) => s.key !== 'x').map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];

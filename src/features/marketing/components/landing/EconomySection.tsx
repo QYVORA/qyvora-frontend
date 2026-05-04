@@ -120,8 +120,8 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
             </ScrollReveal>
           </div>
 
-          {/* Right: market items */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+          {/* Right: market items — hidden on mobile, shown md+ */}
+          <div className="hidden md:grid lg:col-span-7 grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {loading || marketItems.length === 0 ? (
               [0, 1].map((i) => (
                 <div key={i} className="card-hsociety p-3 md:p-4 animate-pulse">

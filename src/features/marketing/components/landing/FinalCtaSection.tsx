@@ -12,7 +12,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative min-h-[60vh] py-20 md:py-32 overflow-hidden bg-bg scanlines flex items-center has-bg-image">
+    <section className="relative py-16 md:py-24 bg-bg scanlines flex items-center has-bg-image">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img

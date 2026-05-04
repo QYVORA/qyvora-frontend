@@ -14,7 +14,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden has-bg-image">
+    <section className="py-14 md:py-20 bg-bg border-t border-border relative has-bg-image">
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <img
         src="/assets/sections/backgrounds/ai-solutions-bg.png"

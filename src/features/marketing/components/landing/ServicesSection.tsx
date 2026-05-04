@@ -10,7 +10,7 @@ const ServicesSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-16 md:py-24 bg-bg relative overflow-hidden has-bg-image">
+    <section className="py-16 md:py-24 bg-bg relative has-bg-image">
       <img
         src="/assets/sections/backgrounds/corporate-security-bg.png"
         alt=""
@@ -43,8 +43,8 @@ const ServicesSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Service cards — 4-column grid, compact horizontal layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-8">
+        {/* Service cards — 2-column on mobile, 4-column on md+ */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mb-8">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
