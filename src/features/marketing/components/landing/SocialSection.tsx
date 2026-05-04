@@ -39,20 +39,27 @@ const PLATFORM_META: Record<string, {
 
 const SocialSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const socials = SITE_CONFIG.social.filter((s) => s.key !== 'x');
 
   return (
-    <section className="py-20 md:py-32 bg-bg border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <ScrollReveal className="text-center mb-10 md:mb-14">
-          <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// SIGNAL</span>
-          <h2 className="text-3xl md:text-4xl text-text-primary font-bold">Find Us Online</h2>
-          <p className="text-text-muted text-sm mt-3 max-w-md mx-auto">
+    <section className="
+      py-20 bg-bg border-t border-border
+      md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
+    ">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
+
+        <ScrollReveal className="text-center mb-6 md:mb-4">
+          <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1.5 block">// SIGNAL</span>
+          <h2 className="text-3xl md:text-2xl lg:text-3xl text-text-primary font-bold">Find Us Online</h2>
+          <p className="text-text-muted text-sm md:text-xs mt-1.5 max-w-md mx-auto">
             Follow the operation across platforms for updates, content, and community.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
-          {SITE_CONFIG.social.filter((s) => s.key !== 'x').map((social, idx) => {
+        {/* Mobile: 2-col grid */}
+        {/* Desktop: 3-col grid, cards fill available height */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {socials.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
             if (!meta || !Icon) return null;
@@ -63,21 +70,27 @@ const SocialSection: React.FC = () => {
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40, scale: 0.94, filter: 'blur(6px)' }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, scale: 0.94, filter: 'blur(6px)' }}
                 whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{
-                  duration: 0.65,
+                  duration: 0.6,
                   delay: shouldReduceMotion ? 0 : idx * 0.1,
                   ease: [0.16, 1, 0.3, 1],
                   filter: { duration: 0.4 },
                 }}
-                whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.02 }}
+                whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative rounded-xl overflow-hidden flex flex-col min-h-[240px] sm:min-h-[280px] md:min-h-[360px] cursor-pointer"
-                style={{ border: `1px solid ${meta.border}` }}
+                className="group relative rounded-xl overflow-hidden flex flex-col cursor-pointer
+                  min-h-[160px] sm:min-h-[200px]
+                  md:min-h-0 md:h-[calc((100dvh-72px-10rem)/1)]"
+                style={{
+                  border: `1px solid ${meta.border}`,
+                  /* On desktop, fill remaining height after header */
+                  height: undefined,
+                }}
               >
-                {/* Background image — zoom on group hover via CSS */}
+                {/* Background image */}
                 <img
                   src={meta.img}
                   alt=""
@@ -87,33 +100,25 @@ const SocialSection: React.FC = () => {
                   decoding="async"
                 />
 
-                {/* Gradient overlay — deepens on hover */}
+                {/* Gradient overlay */}
                 <div
-                  className="absolute inset-0 pointer-events-none transition-opacity duration-400"
-                  style={{
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.12) 100%)',
-                  }}
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.10) 100%)' }}
                 />
 
                 {/* Accent glow on hover */}
                 <div
                   className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `radial-gradient(ellipse at bottom left, ${meta.accent}18 0%, transparent 65%)`,
-                  }}
+                  style={{ background: `radial-gradient(ellipse at bottom left, ${meta.accent}18 0%, transparent 65%)` }}
                 />
 
-                {/* Top-left platform pill */}
-                <div className="relative z-10 p-4 md:p-5">
+                {/* Platform pill */}
+                <div className="relative z-10 p-3 md:p-3">
                   <span
-                    className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.25em] px-2.5 py-1 rounded-full backdrop-blur-sm"
-                    style={{
-                      color: meta.accent,
-                      background: 'rgba(0,0,0,0.45)',
-                      border: `1px solid ${meta.border}`,
-                    }}
+                    className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.25em] px-2 py-0.5 rounded-full backdrop-blur-sm"
+                    style={{ color: meta.accent, background: 'rgba(0,0,0,0.45)', border: `1px solid ${meta.border}` }}
                   >
-                    <Icon className="w-3 h-3" style={{ color: meta.accent }} />
+                    <Icon className="w-2.5 h-2.5" style={{ color: meta.accent }} />
                     {meta.label}
                   </span>
                 </div>
@@ -121,29 +126,18 @@ const SocialSection: React.FC = () => {
                 <div className="flex-1" />
 
                 {/* Bottom content */}
-                <div className="relative z-10 p-5 md:p-6 space-y-3">
+                <div className="relative z-10 p-3 md:p-4 space-y-1.5">
                   <div>
-                    <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-0.5">
-                      {social.label}
-                    </p>
-                    <h4 className="text-base md:text-lg font-black text-white font-mono leading-tight">
-                      {social.handle}
-                    </h4>
+                    <p className="text-[9px] font-bold text-white/50 uppercase tracking-[0.2em]">{social.label}</p>
+                    <h4 className="text-sm md:text-base font-black text-white font-mono leading-tight">{social.handle}</h4>
                   </div>
-
-                  <p className="text-xs text-white/65 leading-relaxed">{social.desc}</p>
-
+                  <p className="text-[10px] text-white/60 leading-relaxed line-clamp-2">{social.desc}</p>
                   <div
-                    className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"
-                    style={{
-                      color: meta.accent,
-                      background: 'rgba(0,0,0,0.50)',
-                      border: `1px solid ${meta.border}`,
-                      backdropFilter: 'blur(8px)',
-                    }}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
+                    style={{ color: meta.accent, background: 'rgba(0,0,0,0.50)', border: `1px solid ${meta.border}`, backdropFilter: 'blur(8px)' }}
                   >
                     {social.action}
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </motion.a>

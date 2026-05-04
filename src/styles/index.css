@@ -327,54 +327,30 @@
    [data-snap-child] compresses section padding so content fits the viewport.
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* ── Navbar clearance — landing page only (md+) ── */
-/* Sections use md:snap-start (Tailwind responsive prefix), so we target
-   both the legacy .snap-start and the Tailwind-generated .md\:snap-start */
+/* ── Navbar clearance — landing page only (md+) ──
+   Each SnapSection wrapper (md:snap-start) gets pt-[72px] so content
+   starts below the fixed navbar. Hero handles its own offset internally.
+── */
 @media (min-width: 768px) {
-  .landing-snap .snap-start,
   .landing-snap .md\:snap-start {
     padding-top: 72px;
   }
-  /* Hero handles its own top offset internally */
-  .landing-snap #hero.snap-start,
   .landing-snap #hero.md\:snap-start {
     padding-top: 0;
   }
 }
 
-/* ── Compact section padding inside snap wrappers (md+) ── */
+/* ── Snap motion wrapper — fills the snap cell height ── */
 @media (min-width: 768px) {
+  [data-snap-child] {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  /* The direct section child of the motion wrapper fills remaining height */
   [data-snap-child] > section {
-    padding-top: clamp(1rem, 2.5vh, 2rem) !important;
-    padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
-    min-height: unset !important;
-  }
-
-  [data-snap-child] .mb-10,
-  [data-snap-child] .mb-12,
-  [data-snap-child] .mb-14,
-  [data-snap-child] .mb-16 {
-    margin-bottom: clamp(0.5rem, 1.5vh, 1.25rem) !important;
-  }
-
-  [data-snap-child] .space-y-2\.5,
-  [data-snap-child] .space-y-3 {
-    row-gap: 0.375rem !important;
-  }
-
-  [data-snap-child] .min-h-\[240px\],
-  [data-snap-child] .min-h-\[280px\],
-  [data-snap-child] .sm\:min-h-\[280px\],
-  [data-snap-child] .md\:min-h-\[360px\] {
-    min-height: clamp(120px, 16vh, 200px) !important;
-  }
-
-  [data-snap-child] .h-36 {
-    height: clamp(3.5rem, 7vh, 5.5rem) !important;
-  }
-
-  [data-snap-child] .h-24 {
-    height: clamp(2rem, 4.5vh, 3.5rem) !important;
+    flex: 1;
+    min-height: 0;
   }
 }
 
@@ -406,18 +382,7 @@
   .h-36 { height: 4.5rem !important; }
 
   /* Snap section wrappers — allow natural height on mobile, no clipping */
-  /* overflow-hidden is now md:overflow-hidden in components, this is a safety net */
   .md\:snap-start {
     overflow: visible;
   }
-
-  /* Reduce large heading sizes on mobile */
-  .text-6xl { font-size: 2.25rem !important; line-height: 1.1 !important; }
-  .text-5xl { font-size: 2rem !important; line-height: 1.1 !important; }
-
-  /* Grid gap reduction on mobile */
-  .gap-8 { gap: 1.25rem !important; }
-  .gap-10 { gap: 1.5rem !important; }
-  .gap-14 { gap: 1.75rem !important; }
-  .gap-16 { gap: 2rem !important; }
 }

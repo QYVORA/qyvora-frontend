@@ -29,7 +29,10 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const displayed = bootcamps.slice(0, 3);
 
   return (
-    <section className="py-20 md:py-32 bg-bg-card border-y border-border relative has-bg-image">
+    <section className="
+      py-20 bg-bg-card border-y border-border relative has-bg-image
+      md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
+    ">
       <img
         src="/assets/sections/backgrounds/employee-training-bg.png"
         alt=""
@@ -39,19 +42,20 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
+
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-5 gap-4">
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// ARSENAL</span>
-            <h2 className="text-3xl md:text-4xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
+            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// ARSENAL</span>
+            <h2 className="text-3xl md:text-3xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
           </ScrollReveal>
           <ScrollReveal delay={0.15} className="flex items-center gap-6">
-            {/* Bootcamp operator illustration */}
             <img
               src="/assets/illustrations/bootcamp-operator.png"
               alt=""
               aria-hidden="true"
-              className="hidden md:block w-20 h-20 object-contain opacity-80 drop-shadow-[0_0_20px_var(--color-accent-glow)] flex-none"
+              className="hidden md:block w-14 h-14 object-contain opacity-80 drop-shadow-[0_0_20px_var(--color-accent-glow)] flex-none"
             />
             <Link
               to="/register"
@@ -64,21 +68,21 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
         {/* Skeleton */}
         {loading || bootcamps.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[0, 1, 2].map((i) => (
               <div key={i} className="card-hsociety overflow-hidden animate-pulse">
                 <div className="aspect-video bg-accent-dim/30" />
-                <div className="p-6 space-y-3">
+                <div className="p-5 space-y-3">
                   <div className="h-3 bg-accent-dim/30 rounded w-1/4" />
                   <div className="h-4 bg-accent-dim/30 rounded w-3/4" />
                   <div className="h-3 bg-accent-dim/20 rounded w-1/2" />
-                  <div className="h-10 bg-accent-dim/20 rounded w-full mt-4" />
+                  <div className="h-9 bg-accent-dim/20 rounded w-full mt-3" />
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className={`grid gap-6 md:gap-8 grid-cols-1 ${
+          <div className={`grid gap-5 grid-cols-1 ${
             displayed.length === 1 ? 'sm:grid-cols-1 max-w-md' :
             displayed.length === 2 ? 'sm:grid-cols-2 max-w-2xl' :
             'sm:grid-cols-2 lg:grid-cols-3'
@@ -91,13 +95,12 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               return (
                 <motion.div
                   key={bc.id}
-                  // On mobile show only the first card to avoid overflow
                   className={i > 0 ? 'hidden sm:block' : ''}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, scale: 0.94, filter: 'blur(6px)' }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, scale: 0.95, filter: 'blur(6px)' }}
                   whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.65, delay: i * 0.12, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
-                  whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.01 }}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
+                  whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
                 >
                   <BootcampCard
                     image={image}

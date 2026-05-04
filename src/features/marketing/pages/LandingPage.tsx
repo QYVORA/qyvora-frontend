@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useScroll, useTransform, motion, useReducedMotion } from 'motion/react';
-import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useLandingData } from '../hooks/useLandingData';
 import HeroSection from '../components/landing/HeroSection';
@@ -26,29 +25,8 @@ const SECTIONS = [
   { id: 'footer',      label: 'Footer'          },
 ];
 
-// ── Dot nav ───────────────────────────────────────────────────────────────────
-const DotNav: React.FC<{ active: number; total: number; onDotClick: (i: number) => void }> = ({
-  active, total, onDotClick,
-}) => (
-  <nav
-    aria-label="Page sections"
-    className="fixed right-4 md:right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-3"
-  >
-    {Array.from({ length: total }).map((_, i) => (
-      <button
-        key={i}
-        onClick={() => onDotClick(i)}
-        aria-label={SECTIONS[i]?.label ?? `Section ${i + 1}`}
-        title={SECTIONS[i]?.label ?? `Section ${i + 1}`}
-        className={`w-2 h-2 rounded-full border transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-          i === active
-            ? 'bg-accent border-accent scale-125'
-            : 'bg-transparent border-border hover:border-accent/60'
-        }`}
-      />
-    ))}
-  </nav>
-);
+// ── Dot nav — removed ────────────────────────────────────────────────────────
+// (previously a fixed right-side dot indicator; removed per design update)
 
 // ── Snap section ──────────────────────────────────────────────────────────────
 // Each section fills the full container height (h-full) and clips its content.
@@ -63,16 +41,18 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      // Mobile: normal block, no snap, no fixed height, no overflow clipping
-      // md+: snap-start, h-full fills the snap container, overflow-hidden clips
-      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-center ${className}`}
+      // Mobile: normal block, no snap, no fixed height
+      // md+: snap-start, h-full of the snap container (h-screen),
+      //      pt-[72px] from CSS clears the fixed navbar,
+      //      overflow-hidden clips anything that escapes
+      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
     >
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-        className="w-full"
+        className="w-full md:h-full"
         data-snap-child=""
       >
         {children}
@@ -91,7 +71,6 @@ const Landing: React.FC = () => {
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroY = useTransform(scrollY, [0, 300], [0, 60]);
   const [terminalText, setTerminalText] = useState('');
-  const [activeSection, setActiveSection] = useState(0);
   const fullText = '[ SYSTEM ONLINE ] // OFFENSIVE SECURITY | AFRICA // BOOTCAMPS + SERVICES + COMMUNITY';
 
   useEffect(() => {
@@ -111,28 +90,6 @@ const Landing: React.FC = () => {
 
   const totalCp = leaderboard.reduce((acc, e) => acc + Number(e.totalXp || 0), 0);
 
-  // Track active section via IntersectionObserver on the snap container
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const sectionEls = SECTIONS.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    if (!sectionEls.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = sectionEls.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setActiveSection(idx);
-          }
-        });
-      },
-      { root: container, threshold: 0.5 },
-    );
-    sectionEls.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   const scrollToSection = useCallback((index: number) => {
     const container = containerRef.current;
     const el = document.getElementById(SECTIONS[index]?.id ?? '');
@@ -148,12 +105,10 @@ const Landing: React.FC = () => {
       className="landing-snap h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory"
       style={{ scrollSnapType: undefined }}
     >
-      <DotNav active={activeSection} total={SECTIONS.length} onDotClick={scrollToSection} />
-
       {/* ── 1. Hero — full viewport, no wrapper needed ── */}
       <section
         id="hero"
-        className="md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden relative"
+        className="md:snap-start md:h-full md:flex-shrink-0 relative"
       >
         <HeroSection
           heroRef={heroRef}
@@ -164,19 +119,6 @@ const Landing: React.FC = () => {
           stats={stats}
           totalCp={totalCp}
         />
-        {/* Scroll hint */}
-        <motion.button
-          onClick={() => scrollToSection(1)}
-          aria-label="Scroll to next section"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.6 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-text-muted hover:text-accent transition-colors"
-        >
-          <span className="text-[9px] font-bold uppercase tracking-[0.25em]">Scroll</span>
-          <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
-            <ChevronDown className="w-4 h-4" />
-          </motion.div>
-        </motion.button>
       </section>
 
       {/* ── 2. Zero-Day Market ── */}
@@ -217,7 +159,7 @@ const Landing: React.FC = () => {
       {/* ── 9. Footer ── */}
       <section
         id="footer"
-        className="md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-end"
+        className="md:snap-start md:h-full md:flex-shrink-0"
       >
         <Footer />
       </section>
