@@ -2,11 +2,14 @@ import React from 'react';
 import { motion, useReducedMotion, type MotionValue } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight } from 'lucide-react';
-import HeroCanvas from '../HeroCanvas';
-import HackerGlobe from '../HackerGlobe';
+import { lazy, Suspense } from 'react';
 import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
+
+// Lazy-load heavy canvas/WebGL components — Three.js (~600KB) only loads when hero mounts
+const HeroCanvas  = lazy(() => import('../HeroCanvas'));
+const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
 interface HeroSectionProps {
   heroRef: React.RefObject<HTMLDivElement | null>;
@@ -48,11 +51,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-[0.18] pointer-events-none hero-bg-img"
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20" />
-        <HeroCanvas />
-        <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />
-      </div>
+        <Suspense fallback={null}><HeroCanvas /></Suspense>
+        <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />      </div>
 
       <motion.div
         style={{ y: shouldReduceMotion ? 0 : heroY, opacity: heroOpacity }}
@@ -171,7 +175,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           className="hidden lg:flex relative h-[500px] xl:h-[560px] max-w-[560px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
-          <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
+          <div className="w-full h-full"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>
           <motion.div
             animate={shouldReduceMotion ? {} : { opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}

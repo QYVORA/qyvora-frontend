@@ -15,6 +15,8 @@ const ServicesSection: React.FC = () => {
         src="/assets/sections/backgrounds/corporate-security-bg.png"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] md:opacity-[0.15] pointer-events-none"
+        loading="lazy"
+        decoding="async"
       />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 

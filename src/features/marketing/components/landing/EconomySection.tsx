@@ -32,6 +32,8 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
         src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.13] pointer-events-none"
+        loading="lazy"
+        decoding="async"
       />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
       <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />

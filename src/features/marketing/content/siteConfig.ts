@@ -79,7 +79,7 @@ export const SITE_CONFIG = {
     platform: [
       { key: 'bootcamps',      label: 'Bootcamps',       path: '/bootcamps',      desc: 'Intensive operator training'    },
       { key: 'ctf',            label: 'CTF Arena',        path: '/ctf',            desc: 'Browser-based hacking challenges' },
-      { key: 'marketplace',    label: 'Marketplace',     path: '/marketplace',    desc: 'The hacker economy'             },
+      { key: 'marketplace',    label: 'Marketplace',     path: '/zero-day-market', desc: 'The hacker economy'            },
       { key: 'leaderboard',    label: 'Leaderboard',     path: '/leaderboard',    desc: 'Hall of Shadows'                },
       { key: 'cyber_points',   label: 'Cyber Points',    path: '/cyber-points',   desc: 'Earn and spend CP'              },
       { key: 'hsociety_chain', label: 'HSOCIETY Chain',  path: '/chain',          desc: 'Tamper-proof skill ledger'      },

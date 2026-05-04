@@ -34,6 +34,8 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         src="/assets/sections/backgrounds/employee-training-bg.png"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
+        loading="lazy"
+        decoding="async"
       />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 

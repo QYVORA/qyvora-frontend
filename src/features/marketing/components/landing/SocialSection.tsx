@@ -51,8 +51,8 @@ const SocialSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
-          {SITE_CONFIG.social.map((social, idx) => {
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+          {SITE_CONFIG.social.filter((s) => s.key !== 'x').map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
             if (!meta || !Icon) return null;
@@ -83,6 +83,8 @@ const SocialSection: React.FC = () => {
                   alt=""
                   aria-hidden
                   className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Gradient overlay — deepens on hover */}

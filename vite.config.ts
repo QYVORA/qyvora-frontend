@@ -5,22 +5,64 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => ({
   plugins: [react(), tailwindcss()],
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
     },
   },
+
+  build: {
+    // Raise the warning threshold — three.js is intentionally large
+    chunkSizeWarningLimit: 800,
+
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting — keeps the initial bundle small
+        manualChunks(id) {
+          // Three.js in its own chunk — only loaded when HackerGlobe mounts
+          if (id.includes('node_modules/three')) return 'three';
+
+          // Animation library
+          if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) return 'motion';
+
+          // React core
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) return 'react';
+
+          // Router
+          if (id.includes('node_modules/react-router')) return 'router';
+
+          // Radix UI
+          if (id.includes('node_modules/@radix-ui')) return 'radix';
+
+          // Axios
+          if (id.includes('node_modules/axios')) return 'axios';
+
+          // Lucide icons — large icon set
+          if (id.includes('node_modules/lucide-react')) return 'lucide';
+        },
+      },
+    },
+
+    // Minify with esbuild (default, fastest)
+    minify: 'esbuild',
+
+    // Generate source maps only in CI/staging — skip in prod for smaller output
+    sourcemap: false,
+
+    // Target modern browsers — smaller output, no legacy polyfills
+    target: 'es2020',
+  },
+
   server: {
     port: 5173,
     hmr: true,
     proxy: {
-      // Proxy all /api requests to the backend in dev so cookies work same-origin
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
       },
-      // Proxy /uploads to the backend (GridFS-served files, no /api prefix)
       '/uploads': {
         target: 'http://localhost:3000',
         changeOrigin: true,

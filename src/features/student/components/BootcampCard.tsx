@@ -24,6 +24,8 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
         alt={title}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         referrerPolicy="no-referrer"
+        loading="lazy"
+        decoding="async"
         onError={(e) => {
           // If the image fails (broken backend URL, missing file, etc.)
           // fall back to the HPB cover which is always present in /public
