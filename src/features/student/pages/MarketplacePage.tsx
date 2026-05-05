@@ -30,6 +30,7 @@ const Marketplace: React.FC = () => {
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [purchased, setPurchased] = useState<Set<string>>(new Set());
+  const [shakePurchase, setShakePurchase] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const Marketplace: React.FC = () => {
       else if (parsedBalance !== null) setBalance(parsedBalance);
     } catch (err: any) {
       const msg = err?.response?.data?.error || 'Purchase failed. Check your points balance.';
+      setShakePurchase(id);
       addToast(msg, 'error');
     } finally {
       setPurchasing(null);
@@ -241,7 +243,8 @@ const Marketplace: React.FC = () => {
                       <button
                         onClick={() => handlePurchase(prod)}
                         disabled={isBuying}
-                        className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-60"
+                        className={`w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-60${shakePurchase === id ? ' animate-shake-x' : ''}`}
+                        onAnimationEnd={() => setShakePurchase(null)}
                       >
                         {isBuying ? (
                           <><Loader2 className="w-3 h-3 animate-spin" /> Processing...</>

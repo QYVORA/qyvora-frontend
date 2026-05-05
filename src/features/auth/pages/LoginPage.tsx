@@ -16,20 +16,27 @@ const PasswordInput = ({
   name,
   placeholder = '••••••••',
   required = true,
+  shake = false,
+  onAnimationEnd,
 }: {
   name: string;
   placeholder?: string;
   required?: boolean;
+  shake?: boolean;
+  onAnimationEnd?: () => void;
 }) => {
   const [show, setShow] = useState(false);
   return (
-    <div className="relative">
+    <div
+      className={`relative${shake ? ' animate-shake-x' : ''}`}
+      onAnimationEnd={onAnimationEnd}
+    >
       <input
         type={show ? 'text' : 'password'}
         name={name}
         required={required}
         placeholder={placeholder}
-        className={INPUT_BASE}
+        className={`${INPUT_BASE}${shake ? ' input-error' : ''}`}
       />
       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
       <button
@@ -97,6 +104,7 @@ const Login: React.FC = () => {
 
   const [mode, setMode] = useState<Mode>(initialMode);
   const [isLoading, setIsLoading] = useState(false);
+  const [shakePassword, setShakePassword] = useState(false);
   const [resetEmail, setResetEmail] = useState(urlEmail);
   const [verifyEmail, setVerifyEmail] = useState(urlEmail);
 
@@ -215,6 +223,10 @@ const Login: React.FC = () => {
         setMode('verify-email');
         return;
       }
+      // Shake the password field on credential failures (wrong password / 401)
+      if (err?.response?.status === 401 || mode === 'login') {
+        setShakePassword(true);
+      }
       addToast(msg, 'error');
     } finally {
       setIsLoading(false);
@@ -284,7 +296,11 @@ const Login: React.FC = () => {
                         <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
                       )}
                     </div>
-                    <PasswordInput name="password" />
+                    <PasswordInput
+                      name="password"
+                      shake={shakePassword}
+                      onAnimationEnd={() => setShakePassword(false)}
+                    />
                   </div>
 
                   <button type="submit" disabled={isLoading}
