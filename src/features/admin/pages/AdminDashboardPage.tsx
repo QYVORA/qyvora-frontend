@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, LogOut, Shield, Users, Database, Coins,
-  AlertTriangle, Mail, Ban, Unlock, Search, Menu, X,
+  Shield, Users, Database, Coins,
+  AlertTriangle, Mail, Ban, Unlock, Search,
   RefreshCw, Trash2, BookOpen, ChevronLeft, ChevronRight, CheckCircle2, Link2,
 } from 'lucide-react';
 import QuizManager from '../components/QuizManager';
@@ -10,7 +10,6 @@ import ChainExplorer from '../components/ChainExplorer';
 import CpAnalytics from '../components/CpAnalytics';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import Logo from '../../../shared/components/brand/Logo';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import { resolveImg } from '../../../shared/utils/resolveImg';
@@ -232,14 +231,16 @@ const StatCard = ({ label, value }: { label: string; value: number | string }) =
 
 // ── Main component ────────────────────────────────────────────────────────────
 const AdminDashboardPage: React.FC = () => {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [activeTab, setActiveTab] = useState<AdminTab>('users');
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  // Tab is driven by ?tab= URL param so topbar links work
+  const activeTab = (new URLSearchParams(location.search).get('tab') as AdminTab) || 'users';
+  const setActiveTab = (tab: AdminTab) => navigate(`/mr-robot/dashboard?tab=${tab}`, { replace: true });
+
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   const [overview, setOverview] = useState<Record<string, unknown> | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -322,18 +323,9 @@ const AdminDashboardPage: React.FC = () => {
   };
 
   useEffect(() => { void loadAll(); }, []);
-  useEffect(() => { setMobileNavOpen(false); }, [activeTab]);
   useEffect(() => { setUserPage(1); }, [userQuery, users.length, userPageSize]);
 
-  useEffect(() => {
-    if (!mobileNavOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, [mobileNavOpen]);
-
   // ── Actions ───────────────────────────────────────────────────────────────────
-  const handleLogout = async () => { await logout(); navigate('/mr-robot'); };
 
   const patchUser = async (id: string, payload: Record<string, unknown>, msg: string) => {
     try {
@@ -441,184 +433,39 @@ const AdminDashboardPage: React.FC = () => {
     catch (e: any) { addToast(e?.response?.data?.error || 'Failed to delete', 'error'); }
   };
 
-  // ── Tab config ────────────────────────────────────────────────────────────────
-  const tabs: Array<{ id: AdminTab; label: string; icon: React.ComponentType<{ className?: string }> }> = [
-    { id: 'users',        label: 'Users',        icon: Users        },
-    { id: 'bootcamps',    label: 'Bootcamps',    icon: Shield       },
-    { id: 'applications', label: 'Applications', icon: Users        },
-    { id: 'zero_day',     label: 'Market',       icon: Database     },
-    { id: 'cp',           label: 'Points',       icon: Coins        },
-    { id: 'chain',        label: 'Chain',        icon: Link2        },
-    { id: 'security',     label: 'Security',     icon: AlertTriangle},
-    { id: 'contacts',     label: 'Contacts',     icon: Mail         },
-    { id: 'quizzes',      label: 'Quizzes',      icon: BookOpen     },
-  ];
-
-  // Mobile bottom nav: first 4 primary tabs + "More" sheet for the rest
-  const MOBILE_PRIMARY_TABS = tabs.slice(0, 4);
-  const MOBILE_MORE_TABS = tabs.slice(4);
-
-  const activeLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
+  // ── Tab label lookup ─────────────────────────────────────────────────────────
+  const TAB_LABELS: Record<AdminTab, string> = {
+    users: 'Users', bootcamps: 'Bootcamps', applications: 'Applications',
+    zero_day: 'Market', cp: 'Points', chain: 'Chain',
+    security: 'Security', contacts: 'Contacts', quizzes: 'Quizzes',
+  };
+  const activeLabel = TAB_LABELS[activeTab] ?? '';
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
     <>
-    <div className="flex h-svh bg-bg text-text-primary overflow-hidden">
-
-      {/* ── Desktop sidebar ─────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex w-56 lg:w-64 shrink-0 border-r border-border bg-bg-card flex-col h-full">
-        <div className="p-4">
-          <Link to="/"><Logo size="sm" /></Link>
-          <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
-            <Shield className="h-3 w-3 text-accent" />
-            <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN_CONSOLE</span>
-          </div>
+    <div className="bg-bg text-text-primary">
+      {/* ── Page header ─────────────────────────────────────────────────────── */}
+      <div className="border-b border-border px-4 py-4 md:px-8 lg:px-10 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <h1 className="text-lg font-black uppercase tracking-tight text-text-primary lg:text-xl">{activeLabel}</h1>
         </div>
+        <button
+          onClick={() => void loadAll()}
+          className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+        >
+          <RefreshCw className="w-3.5 h-3.5" /> Refresh
+        </button>
+      </div>
 
-        <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide text-text-muted hover:text-text-primary hover:bg-accent-dim/50 transition-colors"
-          >
-            <LayoutDashboard className="w-4 h-4 shrink-0" /> Operator View
-          </Link>
-          <div className="my-2 border-t border-border/60" />
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-colors text-left ${
-                activeTab === tab.id
-                  ? 'bg-accent-dim text-accent border border-accent/30'
-                  : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-              }`}
-            >
-              <tab.icon className="w-4 h-4 shrink-0" />
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+      {/* ── Scrollable content ──────────────────────────────────────────────── */}
+      <main className="p-4 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10 pb-24 md:pb-8">
+        <div className="mx-auto w-full max-w-5xl">
+        {loading ? <Skeleton /> : (
+          <>
 
-        <div className="p-4 border-t border-border space-y-2">
-          <div className="flex items-center gap-2 rounded-xl border border-border bg-bg px-3 py-2.5">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-dim text-xs font-black text-accent">
-              {(user?.email || user?.username || 'A').substring(0, 1).toUpperCase()}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-[10px] font-bold text-text-primary">{user?.username || 'Admin'}</div>
-              <div className="truncate text-[9px] text-text-muted">{user?.email || ''}</div>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors"
-          >
-            <LogOut className="w-4 h-4" /> Logout
-          </button>
-        </div>
-      </aside>
-
-      {/* ── Main area ───────────────────────────────────────────────────────── */}
-      <div className="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
-
-        {/* Mobile topbar */}
-        <header className="md:hidden flex items-center justify-between gap-3 px-4 h-14 bg-bg-card shrink-0">
-          <div className="flex items-center gap-2.5">
-            <Logo size="sm" />
-          </div>
-          <span className="text-sm font-black uppercase tracking-wide text-text-primary truncate">{activeLabel}</span>
-          <button
-            onClick={() => void loadAll()}
-            className="w-10 h-10 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
-            aria-label="Refresh"
-          >
-            <RefreshCw className="w-4 h-4" />
-          </button>
-        </header>
-
-        {/* Mobile "More" sheet */}
-        {mobileNavOpen && (
-          <div className="md:hidden fixed inset-0 z-50 flex items-end">
-            {/* Backdrop */}
-            <button
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setMobileNavOpen(false)}
-              aria-label="Close menu"
-            />
-            {/* Sheet */}
-            <div
-              className="relative w-full bg-bg-card border-t border-border rounded-t-3xl"
-              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 5rem)' }}
-            >
-              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-                <span className="text-sm font-black uppercase tracking-widest text-text-primary">More</span>
-                <button
-                  onClick={() => setMobileNavOpen(false)}
-                  className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
-                  aria-label="Close"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <nav className="grid grid-cols-3 gap-2 p-4">
-                {MOBILE_MORE_TABS.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => { setActiveTab(tab.id); setMobileNavOpen(false); }}
-                    className={`flex flex-col items-center gap-1.5 rounded-2xl border px-3 py-4 transition-colors ${
-                      activeTab === tab.id
-                        ? 'border-accent/30 bg-accent-dim text-accent'
-                        : 'border-border bg-bg text-text-muted hover:border-accent/20 hover:text-text-primary'
-                    }`}
-                  >
-                    <tab.icon className="w-5 h-5" />
-                    <span className="text-[10px] font-bold uppercase tracking-wide">{tab.label}</span>
-                  </button>
-                ))}
-              </nav>
-              <div className="px-4 pb-2 border-t border-border pt-3 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-dim text-xs font-black text-accent">
-                    {(user?.email || user?.username || 'A').substring(0, 1).toUpperCase()}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="truncate text-xs font-bold text-text-primary">{user?.username || 'Admin'}</div>
-                    <div className="truncate text-[10px] text-text-muted">{user?.email || ''}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors shrink-0"
-                >
-                  <LogOut className="w-3.5 h-3.5" /> Logout
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Desktop page header */}
-        <div className="hidden shrink-0 items-center justify-between border-b border-border px-6 py-4 md:flex lg:px-8">
-          <div className="flex items-center gap-3">
-            {(() => { const t = tabs.find(t => t.id === activeTab); return t ? <t.icon className="h-5 w-5 text-accent" /> : null; })()}
-            <h1 className="text-lg font-black uppercase tracking-tight text-text-primary lg:text-xl">{activeLabel}</h1>
-          </div>
-          <button
-            onClick={() => void loadAll()}
-            className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-xl text-xs font-bold uppercase text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
-          >
-            <RefreshCw className="w-3.5 h-3.5" /> Refresh
-          </button>
-        </div>
-
-        {/* Scrollable content */}
-        <main className="flex-1 min-h-0 overflow-y-auto p-5 text-[15px] leading-relaxed md:p-8 md:text-base lg:p-10 pb-24 md:pb-8">
-          <div className="mx-auto w-full max-w-5xl">
-          {loading ? <Skeleton /> : (
-            <>
-
-              {/* ── USERS ─────────────────────────────────────────────────── */}
-              {activeTab === 'users' && (
+            {/* ── USERS ─────────────────────────────────────────────────── */}
+            {activeTab === 'users' && (
                 <div className="space-y-4">
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-3">
@@ -1161,51 +1008,6 @@ const AdminDashboardPage: React.FC = () => {
           )}
           </div>
         </main>
-
-        {/* ── Mobile bottom nav ───────────────────────────────────────────── */}
-        <nav
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg-card"
-          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-          aria-label="Admin navigation"
-        >
-          <div className="flex items-stretch">
-            {MOBILE_PRIMARY_TABS.map(tab => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex flex-1 flex-col items-center justify-center gap-1 py-2.5 transition-colors ${
-                    isActive ? 'text-accent' : 'text-text-muted'
-                  }`}
-                  aria-label={tab.label}
-                >
-                  <tab.icon className="h-5 w-5" />
-                  <span className="text-[9px] font-bold uppercase tracking-wide">{tab.label}</span>
-                  {isActive && (
-                    <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-accent" />
-                  )}
-                </button>
-              );
-            })}
-            {/* More button */}
-            <button
-              onClick={() => setMobileNavOpen(true)}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 py-2.5 transition-colors ${
-                MOBILE_MORE_TABS.some(t => t.id === activeTab) ? 'text-accent' : 'text-text-muted'
-              }`}
-              aria-label="More"
-            >
-              <Menu className="h-5 w-5" />
-              <span className="text-[9px] font-bold uppercase tracking-wide">More</span>
-              {MOBILE_MORE_TABS.some(t => t.id === activeTab) && (
-                <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-accent" />
-              )}
-            </button>
-          </div>
-        </nav>
-
-      </div>
     </div>
 
     {/* Confirm delete user dialog */}
