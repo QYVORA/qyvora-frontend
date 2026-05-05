@@ -86,6 +86,7 @@ const CtfPage: React.FC = () => {
   const [result, setResult]         = useState<{ correct: boolean; message: string; cpAwarded?: number } | null>(null);
   const [hintLoading, setHintLoading] = useState<number | null>(null);
   const [hints, setHints]           = useState<Hint[]>([]);
+  const [shakeFlag, setShakeFlag]   = useState(false);
   const flagInputRef                = useRef<HTMLInputElement>(null);
 
   const mid = Number(moduleId || 1);
@@ -141,6 +142,9 @@ const CtfPage: React.FC = () => {
         addToast(`Flag correct! +${data.cpAwarded} CP`, 'success');
         // Reload to show next challenge or completion state
         setTimeout(() => void loadScenario(), 1200);
+      } else {
+        // Wrong flag — shake the input
+        setShakeFlag(true);
       }
     } catch (err: any) {
       const msg = err?.response?.data?.error || 'Submission failed.';
@@ -303,13 +307,14 @@ const CtfPage: React.FC = () => {
                   placeholder="FLAG{your_answer_here}"
                   autoComplete="off"
                   spellCheck={false}
-                  className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-sm text-text-primary font-mono placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors"
+                  className={`w-full bg-bg border border-border rounded-lg py-3 px-4 text-sm text-text-primary font-mono placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors${shakeFlag ? ' input-error animate-shake-x' : ''}`}
+                  onAnimationEnd={() => setShakeFlag(false)}
                 />
               </div>
 
               {/* Result feedback */}
               {result && (
-                <div className={`flex items-start gap-3 p-3 rounded-lg border text-sm ${
+                <div className={`flex items-start gap-3 p-3 rounded-lg border text-sm animate-success-pop ${
                   result.correct
                     ? 'border-accent/30 bg-accent/10 text-accent'
                     : 'border-red-500/30 bg-red-500/10 text-red-400'

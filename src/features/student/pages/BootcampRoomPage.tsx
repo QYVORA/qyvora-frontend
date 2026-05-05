@@ -4,6 +4,7 @@ import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
   CheckCircle2, XCircle, BookOpen, ImageOff, Menu, X,
   ClipboardList, ZoomIn, ZoomOut, Maximize2,
+  Clock, List, Bookmark, Flag, Timer, Minimize2, Check, Copy,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
@@ -47,6 +48,250 @@ interface RoomQuiz {
   scope?: { type?: string; id?: string | number; moduleId?: string | number; courseId?: string };
   questions: QuizQuestion[];
 }
+
+interface StepNote {
+  phaseId: string;
+  roomId: string;
+  stepIdx: number;
+  note: string;
+  bookmarked: boolean;
+  timestamp: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILITY: Format time
+// ─────────────────────────────────────────────────────────────────────────────
+function formatTime(ms: number): string {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  if (hours > 0) return `${hours}h ${minutes % 60}m`;
+  if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
+  return `${seconds}s`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COPY CODE BUTTON
+// ─────────────────────────────────────────────────────────────────────────────
+const CopyButton: React.FC<{ text: string }> = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={copy}
+      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity
+                 px-2.5 py-1.5 rounded-lg border border-border bg-bg-card text-xs font-bold
+                 hover:border-accent/40 hover:text-accent flex items-center gap-1.5 z-10"
+      title="Copy to clipboard"
+    >
+      {copied ? (
+        <><Check className="h-3 w-3" />Copied</>
+      ) : (
+        <><Copy className="h-3 w-3" />Copy</>
+      )}
+    </button>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CODE BLOCK DETECTOR & RENDERER
+// ─────────────────────────────────────────────────────────────────────────────
+const InstructionWithCodeBlocks: React.FC<{ text: string }> = ({ text }) => {
+  // Detect code patterns: backticks, commands starting with $, or indented blocks
+  const codePattern = /`([^`]+)`/g;
+  const parts: Array<{ type: 'text' | 'code'; content: string }> = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codePattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+    }
+    parts.push({ type: 'code', content: match[1].trim() });
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push({ type: 'text', content: text.slice(lastIndex) });
+  }
+
+  if (parts.length === 0 || (parts.length === 1 && parts[0].type === 'text')) {
+    return <>{text}</>;
+  }
+
+  return (
+    <>
+      {parts.map((part, idx) => {
+        if (part.type === 'code') {
+          return (
+            <span key={idx} className="relative inline-block group/code mx-0.5">
+              <code className="inline-block bg-bg border border-border rounded px-2 py-0.5 font-mono text-sm text-accent">
+                {part.content}
+              </code>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigator.clipboard.writeText(part.content);
+                }}
+                className="absolute -top-1 -right-1 opacity-0 group-hover/code:opacity-100 transition-opacity
+                           p-1 rounded border border-border bg-bg-card hover:border-accent/40 hover:text-accent"
+                title="Copy code"
+              >
+                <Copy className="h-2.5 w-2.5" />
+              </button>
+            </span>
+          );
+        }
+        return <span key={idx}>{part.content}</span>;
+      })}
+    </>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// JUMP TO STEP MENU
+// ─────────────────────────────────────────────────────────────────────────────
+const JumpMenu: React.FC<{
+  room: { steps: BootcampStep[] };
+  currentStepIdx: number;
+  viewedSteps: Set<number>;
+  onJump: (idx: number) => void;
+  isOpen: boolean;
+  onClose: () => void;
+}> = ({ room, currentStepIdx, viewedSteps, onJump, isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: -10 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: -10 }}
+        transition={{ duration: 0.15 }}
+        className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card shadow-2xl overflow-hidden"
+      >
+        <div className="flex items-center justify-between border-b border-border px-6 py-4 bg-bg-card">
+          <div className="flex items-center gap-2">
+            <List className="h-4 w-4 text-accent" />
+            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Jump to Step</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-text-muted hover:text-text-primary transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="p-3 max-h-96 overflow-y-auto">
+          <div className="space-y-1">
+            {room.steps.map((step, idx) => (
+              <button
+                key={idx}
+                onClick={() => { onJump(idx); onClose(); }}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm transition-colors ${
+                  idx === currentStepIdx
+                    ? 'bg-accent-dim text-accent font-bold border border-accent/30'
+                    : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                }`}
+              >
+                <span className={`font-mono text-xs shrink-0 ${idx === currentStepIdx ? 'opacity-100' : 'opacity-50'}`}>
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <span className="truncate flex-1">{step.title}</span>
+                {viewedSteps.has(idx) && <CheckCircle2 className="h-3.5 w-3.5 ml-auto text-accent shrink-0" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REPORT ISSUE MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+const ReportIssueModal: React.FC<{
+  phaseId: string;
+  roomId: string;
+  stepIdx: number;
+  onClose: () => void;
+}> = ({ phaseId, roomId, stepIdx, onClose }) => {
+  const [issueText, setIssueText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const { addToast } = useToast();
+
+  const submit = async () => {
+    if (!issueText.trim()) {
+      addToast('Please describe the issue', 'error');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await api.post('/student/report-issue', {
+        type: 'bootcamp_room',
+        phaseId,
+        roomId,
+        stepIdx,
+        description: issueText,
+        url: window.location.href,
+      });
+      addToast('Issue reported — thank you!', 'success');
+      onClose();
+    } catch (err: any) {
+      addToast(err?.response?.data?.error || 'Could not submit report', 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <motion.div
+        initial={{ scale: 0.92, opacity: 0, y: 16 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <Flag className="h-4 w-4 text-accent" />
+          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Report Issue</h3>
+        </div>
+        <p className="text-sm text-text-muted mb-4">
+          Found a typo, broken image, or unclear instruction? Let us know and we'll fix it.
+        </p>
+        <textarea
+          value={issueText}
+          onChange={(e) => setIssueText(e.target.value)}
+          placeholder="Describe the issue..."
+          className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
+          autoFocus
+        />
+        <div className="flex gap-3 mt-4">
+          <button
+            onClick={submit}
+            disabled={submitting || !issueText.trim()}
+            className="btn-primary flex-1 py-2.5 text-sm disabled:opacity-50"
+          >
+            {submitting ? <><Loader2 className="h-3.5 w-3.5 animate-spin inline mr-2" />Submitting...</> : 'Submit Report'}
+          </button>
+          <button onClick={onClose} className="btn-secondary px-4 py-2.5 text-sm">
+            Cancel
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // IMAGE LIGHTBOX MODAL
@@ -339,12 +584,15 @@ const StepCard: React.FC<{
   roomId: string;
   isActive: boolean;
   isViewed: boolean;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
+  onReportIssue: () => void;
   onClick: () => void;
-}> = ({ step, stepNum, total, phaseId, roomId, isActive, isViewed, onClick }) => {
+}> = ({ step, stepNum, total, phaseId, roomId, isActive, isViewed, isBookmarked, onToggleBookmark, onReportIssue, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className={`relative cursor-pointer rounded-xl border p-6 sm:p-8 transition-colors duration-150 overflow-hidden ${
+      className={`relative cursor-pointer rounded-xl border p-6 sm:p-8 transition-colors duration-150 overflow-hidden group ${
         isActive
           ? 'border-accent/40 bg-bg-card'
           : isViewed
@@ -356,6 +604,19 @@ const StepCard: React.FC<{
       {isActive && (
         <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-accent" />
       )}
+
+      {/* Bookmark button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
+        className={`absolute top-6 right-6 p-2 rounded-lg border transition-colors z-10 ${
+          isBookmarked 
+            ? 'border-yellow-500/50 bg-yellow-500/10 text-yellow-500'
+            : 'border-border bg-bg text-text-muted hover:text-accent hover:border-accent/30 opacity-0 group-hover:opacity-100'
+        }`}
+        title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
+      >
+        <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
+      </button>
 
       {/* Step header */}
       <div className="mb-3 flex items-center gap-2.5">
@@ -391,13 +652,13 @@ const StepCard: React.FC<{
         )}
       </div>
 
-      {/* Instruction */}
+      {/* Instruction with code block detection */}
       <p
         className={`text-base md:text-lg leading-relaxed transition-colors ${
           isActive ? 'text-text-primary' : 'text-text-secondary'
         }`}
       >
-        {step.instruction}
+        <InstructionWithCodeBlocks text={step.instruction} />
       </p>
 
       {/* Image — always rendered so browser loads it */}
@@ -410,6 +671,15 @@ const StepCard: React.FC<{
       ) : (
         <StepPlaceholder stepNum={stepNum} />
       )}
+
+      {/* Report issue button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
+        className="mt-4 text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
+      >
+        <Flag className="h-3 w-3" />
+        Report issue with this step
+      </button>
     </div>
   );
 };
@@ -949,12 +1219,82 @@ const BootcampRoomPage: React.FC = () => {
     return () => window.removeEventListener('bootcamp:openQuiz', handler);
   }, []);
 
+  // ── NEW FEATURES: Session timer ────────────────────────────────────────────
+  const [sessionStart, setSessionStart] = useState<number>(Date.now());
+  const [timeSpent, setTimeSpent] = useState<number>(0);
+
+  // ── NEW FEATURES: Fullscreen mode ──────────────────────────────────────────
+  const [fullscreen, setFullscreen] = useState(false);
+
+  // ── NEW FEATURES: Jump menu ────────────────────────────────────────────────
+  const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
+
+  // ── NEW FEATURES: Report issue ─────────────────────────────────────────────
+  const [reportIssueOpen, setReportIssueOpen] = useState(false);
+  const [reportStepIdx, setReportStepIdx] = useState(0);
+
+  // ── NEW FEATURES: Bookmarks (localStorage) ─────────────────────────────────
+  const bookmarksKey = `hpb_bookmarks_${bootcampId || 'hpb'}`;
+  const [bookmarkedSteps, setBookmarkedSteps] = useState<Set<string>>(() => {
+    try {
+      const raw = localStorage.getItem(bookmarksKey);
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+
+  const toggleBookmark = (stepIdx: number) => {
+    const key = `${phaseId}:${roomId}:${stepIdx}`;
+    setBookmarkedSteps(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      try {
+        localStorage.setItem(bookmarksKey, JSON.stringify([...next]));
+      } catch (_e) { /* ignore */ }
+      return next;
+    });
+  };
+
+  const isStepBookmarked = (stepIdx: number) => {
+    return bookmarkedSteps.has(`${phaseId}:${roomId}:${stepIdx}`);
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  // ── NEW FEATURES: Session timer effect ─────────────────────────────────────
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSpent(Date.now() - sessionStart);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [sessionStart]);
+
   // ── Reset step index when room changes ────────────────────────────────────
   useEffect(() => {
     setCurrentStepIdx(0);
     setViewedSteps(new Set([0]));
     setQuizPassed(false);
+    // NEW: Reset session timer on room change
+    setSessionStart(Date.now());
+    setTimeSpent(0);
   }, [phaseId, roomId]);
+
+  // ── NEW FEATURES: Fullscreen change listener ───────────────────────────────
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   // ── Resolve phase and room from config ────────────────────────────────────
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
@@ -1002,31 +1342,6 @@ const BootcampRoomPage: React.FC = () => {
       next.add(idx);
       return next;
     });
-  };
-
-  const goNext = () => {
-    if (!room) return;
-    // On desktop all steps are visible — mark all as viewed when completing
-    const allStepIdxs = room.steps.map((_, i) => i);
-    setViewedSteps(new Set(allStepIdxs));
-    setCurrentStepIdx(room.steps.length - 1);
-
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < room.steps.length) {
-      goToStep(nextIdx);
-    } else {
-      // All steps viewed — require quiz before marking complete
-      if (!quizPassed && quizModuleId) {
-        setQuizGateOpen(true);
-      } else {
-        if (phaseId && roomId) markRoomComplete(phaseId, roomId);
-        setShowCompleteOverlay(true);
-      }
-    }
-  };
-
-  const goPrev = () => {
-    if (currentStepIdx > 0) goToStep(currentStepIdx - 1);
   };
 
   const isLastStep = room ? currentStepIdx === room.steps.length - 1 : false;
@@ -1141,6 +1456,32 @@ const BootcampRoomPage: React.FC = () => {
           }}
         />
       )}
+
+      {/* NEW: Jump menu */}
+      <AnimatePresence>
+        {jumpMenuOpen && room && (
+          <JumpMenu
+            room={room}
+            currentStepIdx={currentStepIdx}
+            viewedSteps={viewedSteps}
+            onJump={goToStep}
+            isOpen={jumpMenuOpen}
+            onClose={() => setJumpMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* NEW: Report issue modal */}
+      <AnimatePresence>
+        {reportIssueOpen && phaseId && roomId && (
+          <ReportIssueModal
+            phaseId={phaseId}
+            roomId={roomId}
+            stepIdx={reportStepIdx}
+            onClose={() => setReportIssueOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Room complete overlay */}
       <AnimatePresence>
@@ -1314,6 +1655,21 @@ const BootcampRoomPage: React.FC = () => {
                 <p className="border-l-4 border-accent/50 pl-4 text-base md:text-lg leading-relaxed text-text-secondary">
                   {room.overview}
                 </p>
+                {/* NEW: Estimated time and session timer */}
+                <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mt-4">
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="h-4 w-4" />
+                    <span>{room.estimatedMinutes} min</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <BookOpen className="h-4 w-4" />
+                    <span>{room.steps.length} steps</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Timer className="h-4 w-4" />
+                    <span>Session: {formatTime(timeSpent)}</span>
+                  </div>
+                </div>
                 {isRoomComplete && (
                   <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-dim px-4 py-1.5 text-xs font-black uppercase tracking-widest text-accent">
                     <CheckCircle2 className="h-4 w-4" /> Room Complete
@@ -1334,6 +1690,11 @@ const BootcampRoomPage: React.FC = () => {
                     className="h-full rounded-full bg-accent transition-all duration-500"
                     style={{ width: `${(viewedSteps.size / room.steps.length) * 100}%` }}
                   />
+                </div>
+                {/* NEW: Session timer in progress bar */}
+                <div className="flex items-center gap-2 text-xs text-text-muted mt-3">
+                  <Timer className="h-3.5 w-3.5" />
+                  <span>Time in room: {formatTime(timeSpent)}</span>
                 </div>
                 <div className="mt-4 flex gap-2 flex-wrap">
                   {room.steps.map((_, idx) => (
@@ -1373,6 +1734,9 @@ const BootcampRoomPage: React.FC = () => {
                     roomId={roomId || ''}
                     isActive={idx === currentStepIdx}
                     isViewed={viewedSteps.has(idx)}
+                    isBookmarked={isStepBookmarked(idx)}
+                    onToggleBookmark={() => toggleBookmark(idx)}
+                    onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
                     onClick={() => goToStep(idx)}
                   />
                 ))}
@@ -1389,15 +1753,37 @@ const BootcampRoomPage: React.FC = () => {
                   roomId={roomId || ''}
                   isActive
                   isViewed={viewedSteps.has(currentStepIdx)}
+                  isBookmarked={isStepBookmarked(currentStepIdx)}
+                  onToggleBookmark={() => toggleBookmark(currentStepIdx)}
+                  onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
                   onClick={() => goToStep(currentStepIdx)}
                 />
               </div>
 
               {/* Step navigation — mobile always, desktop only when >5 steps */}
               <div className={`flex flex-wrap items-center gap-3 pb-16 ${room.steps.length <= 5 ? 'lg:justify-end' : ''}`}>
+                {/* NEW: Jump to step button */}
+                <button
+                  onClick={() => setJumpMenuOpen(true)}
+                  className="btn-secondary inline-flex items-center gap-2"
+                >
+                  <List className="h-4 w-4" />
+                  <span className="hidden sm:inline">Jump</span>
+                </button>
+
+                {/* NEW: Fullscreen button */}
+                <button
+                  onClick={toggleFullscreen}
+                  className="btn-secondary inline-flex items-center gap-2"
+                  title="Toggle fullscreen (F)"
+                >
+                  {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                  <span className="hidden sm:inline">{fullscreen ? 'Exit' : 'Full'}</span>
+                </button>
+
                 {/* Prev — mobile only (desktop shows all steps) */}
                 <button
-                  onClick={goPrev}
+                  onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
                   disabled={currentStepIdx === 0}
                   className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
                 >
@@ -1412,7 +1798,20 @@ const BootcampRoomPage: React.FC = () => {
 
                 {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
                 <button
-                  onClick={goNext}
+                  onClick={() => {
+                    if (!isLastStep) {
+                      goToStep(currentStepIdx + 1);
+                    } else {
+                      const allStepIdxs = room.steps.map((_, i) => i);
+                      setViewedSteps(new Set(allStepIdxs));
+                      if (!quizPassed && quizModuleId) {
+                        setQuizGateOpen(true);
+                      } else {
+                        if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+                        setShowCompleteOverlay(true);
+                      }
+                    }
+                  }}
                   className="btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none"
                 >
                   {isLastStep ? (

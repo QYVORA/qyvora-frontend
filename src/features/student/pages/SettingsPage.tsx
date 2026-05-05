@@ -7,13 +7,16 @@ import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperi
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
 
-const PasswordField: React.FC<{ name: string; placeholder?: string; label: string }> = ({ name, placeholder = '••••••••', label }) => {
+const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd }) => {
   const [show, setShow] = useState(false);
   return (
     <div>
       <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5">{label}</label>
-      <div className="relative">
-        <input type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11`} />
+      <div
+        className={`relative${shake ? ' animate-shake-x' : ''}`}
+        onAnimationEnd={onAnimationEnd}
+      >
+        <input type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11${shake ? ' input-error' : ''}`} />
         <button type="button" onClick={() => setShow((s) => !s)}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -26,6 +29,7 @@ const PasswordField: React.FC<{ name: string; placeholder?: string; label: strin
 const Settings: React.FC = () => {
   const { addToast } = useToast();
   const [changingPwd, setChangingPwd] = useState(false);
+  const [shakeCurrentPwd, setShakeCurrentPwd] = useState(false);
   const [liveToken, setLiveToken] = useState('');
   const [tokenAvailable, setTokenAvailable] = useState(false);
   const [recoveryAcked, setRecoveryAcked] = useState(false);
@@ -66,6 +70,8 @@ const Settings: React.FC = () => {
       addToast('Password updated successfully.', 'success');
       form.reset();
     } catch (err: any) {
+      // Shake the current password field — most likely it's wrong
+      setShakeCurrentPwd(true);
       addToast(err?.response?.data?.error || 'Password change failed.', 'error');
     } finally {
       setChangingPwd(false);
@@ -193,7 +199,13 @@ const Settings: React.FC = () => {
                   <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Change Password</h2>
                 </div>
                 <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
-                  <PasswordField name="current_password" label="Current Password" placeholder="Your current password" />
+                  <PasswordField
+                    name="current_password"
+                    label="Current Password"
+                    placeholder="Your current password"
+                    shake={shakeCurrentPwd}
+                    onAnimationEnd={() => setShakeCurrentPwd(false)}
+                  />
                   <PasswordField name="new_password" label="New Password" placeholder="Min 8 characters" />
                   <PasswordField name="confirm_password" label="Confirm New Password" />
                   <button type="submit" disabled={changingPwd}

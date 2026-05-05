@@ -31,6 +31,7 @@ export interface BootcampRoom {
   id: string;       // e.g. "room1"
   title: string;    // MUST match backend room title exactly (case-insensitive)
   overview: string;
+  estimatedMinutes: number; // Estimated time to complete this room
   steps: BootcampStep[];
 }
 
@@ -90,6 +91,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Introduction to Offensive Security',
           overview:
             'What is offensive security, why it matters, and how HSOCIETY operates. This room sets the foundation for everything that follows.',
+          estimatedMinutes: 15,
           steps: [
             {
               title: 'STEP 1',
@@ -116,6 +118,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'The Hacker Mindset',
           overview:
             'How attackers think — curiosity, persistence, and creative problem solving. The mindset is the most important tool you will ever develop.',
+          estimatedMinutes: 12,
           steps: [
             {
               title: 'STEP 1',
@@ -142,6 +145,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Ethics & Legal Boundaries',
           overview:
             'Responsible disclosure, scope, and operating within the law. Understanding the legal and ethical framework is non-negotiable for every operator.',
+          estimatedMinutes: 18,
           steps: [
             {
               title: 'STEP 1',
@@ -177,6 +181,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Linux Basics & Navigation',
           overview:
             'File system, permissions, and essential commands. The terminal is your primary weapon — learn to move through it with confidence.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -209,6 +214,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Users, Groups & Permissions',
           overview:
             'Managing access control on Linux systems. Understanding who can do what is fundamental to both attacking and defending systems.',
+          estimatedMinutes: 22,
           steps: [
             {
               title: 'STEP 1',
@@ -241,6 +247,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Processes & Networking',
           overview:
             'Process management, ports, and basic network commands. Every running service is a potential attack surface.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -273,6 +280,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Scripting Fundamentals',
           overview:
             'Bash scripting for automation and recon tasks. Operators who can script move faster and work smarter.',
+          estimatedMinutes: 25,
           steps: [
             {
               title: 'STEP 1',
@@ -314,6 +322,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'TCP/IP & OSI Model',
           overview:
             'How data moves across networks — protocols and layers. Every attack and defence starts with understanding how packets travel.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -346,6 +355,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'DNS, HTTP & Common Protocols',
           overview:
             'The protocols attackers abuse most. Understanding how DNS and HTTP work is essential for web and network attacks.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -378,6 +388,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Network Scanning & Enumeration',
           overview:
             'Using nmap and other tools to map a target network. Enumeration is the foundation of every successful engagement.',
+          estimatedMinutes: 25,
           steps: [
             {
               title: 'STEP 1',
@@ -410,6 +421,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Packet Analysis',
           overview:
             'Reading traffic with Wireshark to understand what\'s happening on the wire. Packet analysis is a core skill for both attackers and defenders.',
+          estimatedMinutes: 22,
           steps: [
             {
               title: 'STEP 1',
@@ -451,6 +463,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'How the Web Works',
           overview:
             'HTTP, requests, responses, cookies, and sessions. Before you can attack a web application, you need to understand exactly how it communicates.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -483,6 +496,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'OWASP Top 10 Overview',
           overview:
             'The most critical web application security risks. The OWASP Top 10 is the industry standard reference for web vulnerabilities.',
+          estimatedMinutes: 15,
           steps: [
             {
               title: 'STEP 1',
@@ -509,6 +523,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'SQL Injection',
           overview:
             'Finding and exploiting SQL injection vulnerabilities. SQLi remains one of the most impactful vulnerabilities in web applications.',
+          estimatedMinutes: 30,
           steps: [
             {
               title: 'STEP 1',
@@ -547,6 +562,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'XSS & CSRF',
           overview:
             'Client-side attacks and how to exploit them. XSS and CSRF target users of an application, not just the server.',
+          estimatedMinutes: 25,
           steps: [
             {
               title: 'STEP 1',
@@ -579,6 +595,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Authentication Attacks',
           overview:
             'Broken auth, session hijacking, and credential attacks. Authentication is the front door — and it\'s often left unlocked.',
+          estimatedMinutes: 28,
           steps: [
             {
               title: 'STEP 1',
@@ -620,6 +637,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Phishing & Pretexting',
           overview:
             'Crafting convincing attacks that target people, not systems. The most sophisticated technical defences can be bypassed by a well-crafted email.',
+          estimatedMinutes: 18,
           steps: [
             {
               title: 'STEP 1',
@@ -646,6 +664,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'OSINT Fundamentals',
           overview:
             'Open source intelligence gathering on targets. OSINT is the first step in any engagement — know your target before you touch anything.',
+          estimatedMinutes: 20,
           steps: [
             {
               title: 'STEP 1',
@@ -672,6 +691,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           title: 'Physical Security',
           overview:
             'Tailgating, badge cloning, and physical intrusion concepts. Physical access often bypasses all digital controls.',
+          estimatedMinutes: 15,
           steps: [
             {
               title: 'STEP 1',

@@ -5,8 +5,7 @@
 # |  _  |___) | |_| | |___ | || |___  | |   | |
 # |_| |_|____/ \___/ \____|___|_____| |_|   |_|
 #
-#  HSOCIETY OFFSEC — API Server
-#  This is a private API endpoint. No public content here.
+#  HSOCIETY OFFSEC 
 # ============================================================
 
 User-agent: *
