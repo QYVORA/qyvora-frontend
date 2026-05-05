@@ -26,14 +26,14 @@ const ServicesSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
 
         {/* Header */}
-        <ScrollReveal className="mb-5 md:mb-4">
+        <ScrollReveal className="mb-6 md:mb-6">
           <span className="mb-1.5 block text-xs font-black uppercase tracking-[0.35em] text-accent">
             Operations
           </span>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <h2 className="text-3xl md:text-2xl lg:text-3xl font-black text-text-primary">Security Services</h2>
-              <p className="mt-1 text-sm md:text-xs text-text-muted max-w-xl">
+              <h2 className="text-3xl lg:text-4xl font-black text-text-primary">Security Services</h2>
+              <p className="mt-1 text-sm text-text-muted max-w-xl">
                 Offensive-grade expertise for organisations that take security seriously.
               </p>
             </div>
@@ -47,7 +47,7 @@ const ServicesSection: React.FC = () => {
         </ScrollReveal>
 
         {/* Service cards — 2-col mobile, 4-col desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 md:mb-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}
@@ -61,8 +61,8 @@ const ServicesSection: React.FC = () => {
                 className="group flex flex-col overflow-hidden rounded-xl border-2 border-border bg-bg-card transition-colors duration-200 hover:border-accent/40 h-full"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                {/* Illustration strip — shorter on desktop */}
-                <div className="relative flex items-center justify-center overflow-hidden bg-bg h-28 md:h-20 lg:h-24 flex-none">
+                {/* Illustration strip */}
+                <div className="relative flex items-center justify-center overflow-hidden bg-bg h-28 lg:h-36 flex-none">
                   <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
                   <div
                     aria-hidden
@@ -72,7 +72,7 @@ const ServicesSection: React.FC = () => {
                   <img
                     src={serv.img}
                     alt=""
-                    className="relative z-10 h-16 md:h-12 lg:h-16 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.05]"
+                    className="relative z-10 h-16 lg:h-20 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.05]"
                   />
                   <div className="absolute top-2 right-2 z-20">
                     <span className="text-[7px] font-bold text-accent border border-accent/30 bg-bg/80 backdrop-blur-sm rounded px-1.5 py-0.5 uppercase tracking-wider font-mono">
@@ -90,21 +90,21 @@ const ServicesSection: React.FC = () => {
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-1 flex-col p-3 md:p-2.5 lg:p-3">
+                <div className="flex flex-1 flex-col p-3 lg:p-4">
                   <div className="flex items-start gap-2 mb-2">
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent-dim">
                       <serv.icon className="w-3.5 h-3.5 text-accent" />
                     </div>
-                    <h3 className="text-xs font-black leading-snug text-text-primary group-hover:text-accent transition-colors">
+                    <h3 className="text-xs lg:text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors">
                       {serv.title}
                     </h3>
                   </div>
 
-                  <p className="text-[10px] text-text-muted mb-2 leading-relaxed line-clamp-2">{serv.tagline}</p>
+                  <p className="text-[10px] lg:text-xs text-text-muted mb-2 leading-relaxed line-clamp-2">{serv.tagline}</p>
 
                   <ul className="flex flex-col gap-1 mb-2 flex-1">
                     {serv.bullet.slice(0, 2).map((b, i) => (
-                      <li key={i} className="text-[10px] text-text-secondary flex items-start gap-1.5">
+                      <li key={i} className="text-[10px] lg:text-xs text-text-secondary flex items-start gap-1.5">
                         <span className="text-accent font-mono font-bold flex-none mt-0.5 text-[9px]">›</span>
                         <span className="line-clamp-1">{b}</span>
                       </li>

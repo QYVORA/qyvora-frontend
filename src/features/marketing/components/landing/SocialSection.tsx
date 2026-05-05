@@ -48,17 +48,17 @@ const SocialSection: React.FC = () => {
     ">
       <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
 
-        <ScrollReveal className="text-center mb-6 md:mb-4">
+        <ScrollReveal className="mb-6 md:mb-5">
           <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1.5 block">// SIGNAL</span>
-          <h2 className="text-3xl md:text-2xl lg:text-3xl text-text-primary font-bold">Find Us Online</h2>
-          <p className="text-text-muted text-sm md:text-xs mt-1.5 max-w-md mx-auto">
+          <h2 className="text-3xl lg:text-4xl text-text-primary font-bold">Find Us Online</h2>
+          <p className="text-text-muted text-sm mt-1.5 max-w-xl">
             Follow the operation across platforms for updates, content, and community.
           </p>
         </ScrollReveal>
 
         {/* Mobile: 2-col grid */}
         {/* Desktop: 3-col grid, cards fill available height */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
           {socials.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
@@ -83,7 +83,7 @@ const SocialSection: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 className="group relative rounded-xl overflow-hidden flex flex-col cursor-pointer
                   min-h-[160px] sm:min-h-[200px]
-                  md:min-h-0 md:h-[calc((100dvh-72px-10rem)/1)]"
+                  md:min-h-[280px] lg:min-h-[340px]"
                 style={{
                   border: `1px solid ${meta.border}`,
                   /* On desktop, fill remaining height after header */

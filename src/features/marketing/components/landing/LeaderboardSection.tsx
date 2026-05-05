@@ -159,14 +159,14 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
       <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 md:mb-5 gap-3">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 md:mb-6 gap-3">
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1 block">// THE BOARD</span>
-            <h2 className="text-3xl md:text-2xl lg:text-3xl text-text-primary font-bold">Top Operators</h2>
+            <h2 className="text-3xl lg:text-4xl text-text-primary font-bold">Top Operators</h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1} className="flex items-center gap-6">
             <div className="text-left md:text-right">
-              <div className="text-2xl md:text-xl lg:text-2xl font-bold text-accent font-mono inline-flex items-center gap-1.5">
+              <div className="text-2xl lg:text-3xl font-bold text-accent font-mono inline-flex items-center gap-1.5">
                 <StatCounter end={totalCp} />
                 <CpLogo className="w-5 h-5 md:w-6 md:h-6" />
               </div>

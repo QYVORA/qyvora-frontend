@@ -45,10 +45,10 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-5 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-6 gap-4">
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// ARSENAL</span>
-            <h2 className="text-3xl md:text-3xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
+            <h2 className="text-3xl lg:text-4xl text-text-primary font-bold">Bootcamps Built For Operators</h2>
           </ScrollReveal>
           <ScrollReveal delay={0.15} className="flex items-center gap-6">
             <img
