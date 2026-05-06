@@ -1,51 +1,219 @@
-import { Copy } from 'lucide-react';
+import { useState } from 'react';
+import { Check, Copy, Terminal } from 'lucide-react';
 
-const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
-  const codePattern = /`([^`]+)`/g;
-  const parts: Array<{ type: 'text' | 'code'; content: string }> = [];
-  let lastIndex = 0;
-  let match;
+// ── Syntax token types ────────────────────────────────────────────────────────
+type TokenType = 'keyword' | 'string' | 'comment' | 'number' | 'flag' | 'path' | 'plain';
 
-  while ((match = codePattern.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+interface Token { type: TokenType; value: string; }
+
+// ── Simple tokeniser for bash/shell commands ──────────────────────────────────
+function tokeniseBash(line: string): Token[] {
+  const tokens: Token[] = [];
+
+  // Comments
+  if (line.trimStart().startsWith('#')) {
+    tokens.push({ type: 'comment', value: line });
+    return tokens;
+  }
+
+  const KEYWORDS = /^(sudo|apt|apt-get|pip|pip3|python|python3|bash|sh|chmod|chown|mkdir|rm|cp|mv|ls|cat|grep|find|echo|export|source|cd|pwd|whoami|id|ps|kill|netstat|ss|ping|traceroute|curl|wget|nmap|sqlmap|hydra|nc|ncat|netcat|ssh|scp|git|docker|service|systemctl|useradd|usermod|passwd|su|env|set|unset|read|exit|return|if|then|else|fi|for|do|done|while|case|esac|function|local|declare|eval|exec|trap|wait|jobs|bg|fg|alias|unalias|history|man|help|which|type|file|stat|du|df|mount|umount|lsof|strace|ltrace|gdb|objdump|strings|xxd|hexdump|base64|openssl|gpg|tar|gzip|zip|unzip|awk|sed|sort|uniq|wc|head|tail|tee|xargs|cut|tr|diff|patch|make|gcc|g\+\+|javac|java|node|npm|yarn|php|ruby|perl|go|cargo|rustc)\b/;
+
+  // Tokenise word by word
+  const parts = line.split(/(\s+|"[^"]*"|'[^']*'|`[^`]*`|--?[\w-]+=?[\w./]*|-[\w]+|\/[\w./~-]+|\d+)/g);
+
+  for (const part of parts) {
+    if (!part) continue;
+    if (/^\s+$/.test(part)) {
+      tokens.push({ type: 'plain', value: part });
+    } else if (/^["'`]/.test(part)) {
+      tokens.push({ type: 'string', value: part });
+    } else if (/^--?[\w-]+=?/.test(part)) {
+      tokens.push({ type: 'flag', value: part });
+    } else if (/^\/[\w./~-]+/.test(part)) {
+      tokens.push({ type: 'path', value: part });
+    } else if (/^\d+$/.test(part)) {
+      tokens.push({ type: 'number', value: part });
+    } else if (KEYWORDS.test(part)) {
+      tokens.push({ type: 'keyword', value: part });
+    } else {
+      tokens.push({ type: 'plain', value: part });
     }
-    parts.push({ type: 'code', content: match[1].trim() });
+  }
+
+  return tokens;
+}
+
+// ── Token colour map ──────────────────────────────────────────────────────────
+const TOKEN_CLASS: Record<TokenType, string> = {
+  keyword: 'text-accent font-bold',
+  string:  'text-emerald-400',
+  comment: 'text-text-muted italic',
+  number:  'text-amber-400',
+  flag:    'text-blue-400',
+  path:    'text-purple-400',
+  plain:   'text-text-primary',
+};
+
+// ── Copy button ───────────────────────────────────────────────────────────────
+const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={copy}
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all ${
+        copied
+          ? 'border-accent/50 bg-accent-dim text-accent'
+          : 'border-border bg-bg text-text-muted hover:border-accent/40 hover:text-accent'
+      }`}
+      title="Copy to clipboard"
+    >
+      {copied ? <><Check className="h-3 w-3" />Copied</> : <><Copy className="h-3 w-3" />Copy</>}
+    </button>
+  );
+};
+
+// ── Fenced code block ─────────────────────────────────────────────────────────
+const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang }) => {
+  const lines = code.split('\n');
+  const isBash = !lang || lang === 'bash' || lang === 'sh' || lang === 'shell';
+
+  return (
+    <div className="my-4 rounded-xl border border-border overflow-hidden bg-[#0d0d0d]">
+      {/* Header bar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border/60 bg-bg-card/80">
+        <div className="flex items-center gap-2">
+          <Terminal className="h-3.5 w-3.5 text-accent opacity-70" />
+          <span className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
+            {lang || 'bash'}
+          </span>
+        </div>
+        <CopyBtn text={code} />
+      </div>
+
+      {/* Code area */}
+      <div className="overflow-x-auto">
+        <pre className="px-5 py-4 text-sm font-mono leading-relaxed">
+          {lines.map((line, lineIdx) => (
+            <div key={lineIdx} className="flex">
+              {/* Line number */}
+              <span className="select-none mr-5 text-[11px] text-text-muted/30 w-5 shrink-0 text-right">
+                {lineIdx + 1}
+              </span>
+              {/* Tokenised line */}
+              <span>
+                {isBash
+                  ? tokeniseBash(line).map((tok, tokIdx) => (
+                      <span key={tokIdx} className={TOKEN_CLASS[tok.type]}>
+                        {tok.value}
+                      </span>
+                    ))
+                  : <span className="text-text-primary">{line}</span>
+                }
+              </span>
+            </div>
+          ))}
+        </pre>
+      </div>
+    </div>
+  );
+};
+
+// ── Inline code span ──────────────────────────────────────────────────────────
+const InlineCode: React.FC<{ code: string }> = ({ code }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button
+      onClick={copy}
+      title="Click to copy"
+      className={`group/inline relative inline-flex items-center gap-1 mx-0.5 px-2 py-0.5 rounded-md border font-mono text-sm transition-all ${
+        copied
+          ? 'border-accent/50 bg-accent-dim text-accent'
+          : 'border-border bg-[#0d0d0d] text-accent hover:border-accent/40'
+      }`}
+    >
+      {code}
+      <span className={`transition-opacity ${copied ? 'opacity-100' : 'opacity-0 group-hover/inline:opacity-60'}`}>
+        {copied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
+      </span>
+    </button>
+  );
+};
+
+// ── Main renderer ─────────────────────────────────────────────────────────────
+// Supports:
+//   - Fenced blocks:  ```bash\n...\n```
+//   - Inline code:    `command`
+//   - Plain text:     everything else
+const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
+  // Split on fenced code blocks first
+  const fencedPattern = /```(\w*)\n([\s\S]*?)```/g;
+  const segments: Array<
+    | { kind: 'fenced'; lang: string; code: string }
+    | { kind: 'inline'; text: string }
+  > = [];
+
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = fencedPattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ kind: 'inline', text: text.slice(lastIndex, match.index) });
+    }
+    segments.push({ kind: 'fenced', lang: match[1] || 'bash', code: match[2].trimEnd() });
     lastIndex = match.index + match[0].length;
   }
 
   if (lastIndex < text.length) {
-    parts.push({ type: 'text', content: text.slice(lastIndex) });
+    segments.push({ kind: 'inline', text: text.slice(lastIndex) });
   }
 
-  if (parts.length === 0 || (parts.length === 1 && parts[0].type === 'text')) {
-    return <>{text}</>;
+  if (segments.length === 0) {
+    segments.push({ kind: 'inline', text });
   }
 
   return (
     <>
-      {parts.map((part, idx) => {
-        if (part.type === 'code') {
-          return (
-            <span key={idx} className="relative inline-block group/code mx-0.5">
-              <code className="inline-block bg-bg border border-border rounded px-2 py-0.5 font-mono text-sm text-accent">
-                {part.content}
-              </code>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigator.clipboard.writeText(part.content);
-                }}
-                className="absolute -top-1 -right-1 opacity-0 group-hover/code:opacity-100 transition-opacity
-                           p-1 rounded border border-border bg-bg-card hover:border-accent/40 hover:text-accent"
-                title="Copy code"
-              >
-                <Copy className="h-2.5 w-2.5" />
-              </button>
-            </span>
-          );
+      {segments.map((seg, segIdx) => {
+        if (seg.kind === 'fenced') {
+          return <FencedCodeBlock key={segIdx} code={seg.code} lang={seg.lang} />;
         }
-        return <span key={idx}>{part.content}</span>;
+
+        // Process inline code within the text segment
+        const inlinePattern = /`([^`]+)`/g;
+        const parts: Array<{ type: 'text' | 'code'; content: string }> = [];
+        let li = 0;
+        let im: RegExpExecArray | null;
+
+        while ((im = inlinePattern.exec(seg.text)) !== null) {
+          if (im.index > li) parts.push({ type: 'text', content: seg.text.slice(li, im.index) });
+          parts.push({ type: 'code', content: im[1].trim() });
+          li = im.index + im[0].length;
+        }
+        if (li < seg.text.length) parts.push({ type: 'text', content: seg.text.slice(li) });
+
+        if (parts.length === 0) return null;
+
+        return (
+          <span key={segIdx}>
+            {parts.map((part, partIdx) =>
+              part.type === 'code'
+                ? <InlineCode key={partIdx} code={part.content} />
+                : <span key={partIdx}>{part.content}</span>
+            )}
+          </span>
+        );
       })}
     </>
   );
