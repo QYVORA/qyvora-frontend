@@ -11,6 +11,7 @@
  */
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../features/marketing/components/layout/Navbar';
+import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
 
 const LandingLayout = () => (
   <>
@@ -18,6 +19,7 @@ const LandingLayout = () => (
     <main className="w-full">
       <Outlet />
     </main>
+    <PublicBottomNav />
   </>
 );
 

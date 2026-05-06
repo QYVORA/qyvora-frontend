@@ -17,7 +17,7 @@ const CyberPointsPage: React.FC = () => {
       <section className="relative min-h-[80svh] md:min-h-[75vh] w-full overflow-hidden scanlines has-bg-image">
         <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
         <img
-          src="/assets/sections/backgrounds/cyber-points-visual.jpeg"
+          src="/assets/sections/backgrounds/cyber-points-visual.webp"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-[0.18] z-0 pointer-events-none"
@@ -70,7 +70,7 @@ const CyberPointsPage: React.FC = () => {
           >
             <div className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
             <motion.img
-              src="/assets/branding/logos/cyber-points-logo.png"
+              src="/assets/branding/logos/cyber-points-logo.webp"
               alt="Cyber Points"
               className="w-[340px] xl:w-[400px] h-auto object-contain relative z-10 drop-shadow-[0_0_80px_var(--color-accent-glow)]"
               animate={shouldReduceMotion ? {} : { y: [0, -22, 0] }}

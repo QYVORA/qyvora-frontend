@@ -32,7 +32,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
           const el = e.currentTarget;
           if (!el.dataset.fallbackApplied) {
             el.dataset.fallbackApplied = '1';
-            el.src = '/assets/bootcamp/hpb-cover.png';
+            el.src = '/assets/bootcamp/hpb-cover.webp';
           }
         }}
       />

@@ -47,7 +47,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
         <div className="absolute inset-0 bg-bg light-theme-hide-bg-base" />
         <img
-          src="/assets/sections/hero/hero-background.png"
+          src="/assets/sections/hero/hero-background.webp"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-[0.18] pointer-events-none hero-bg-img"
@@ -176,7 +176,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           className="hidden lg:flex relative h-[500px] xl:h-[560px] max-w-[560px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
-          <div className="w-full h-full"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>
+          <div className="w-full h-full pointer-events-none"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>
           <motion.div
             animate={shouldReduceMotion ? {} : { opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -186,7 +186,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
           {/* Operator illustration — stands in front of the globe without blocking all of it */}
           <img
-            src="/assets/illustrations/hero-operator.png"
+            src="/assets/illustrations/hero-operator.webp"
             alt=""
             aria-hidden="true"
             className="absolute bottom-[-14%] left-1/2 -translate-x-1/2 z-20 w-[66%] max-w-[390px] xl:max-w-[460px] h-auto object-contain pointer-events-none select-none opacity-95 drop-shadow-[0_0_50px_var(--color-accent-glow)]"

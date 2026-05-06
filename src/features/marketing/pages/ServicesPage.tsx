@@ -12,7 +12,7 @@ const Services: React.FC = () => (
     <section className="relative min-h-[60svh] md:min-h-[55vh] w-full overflow-hidden scanlines has-bg-image">
       <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
       <img
-        src="/assets/sections/backgrounds/corporate-security-bg.png"
+        src="/assets/sections/backgrounds/corporate-security-bg.webp"
         alt=""
         aria-hidden="true"
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"

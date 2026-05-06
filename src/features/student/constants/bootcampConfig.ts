@@ -1653,7 +1653,7 @@ Outdated Components:
 curl -I http://target.com
 
 # Check JavaScript libraries in the page source
-curl http://target.com | grep -i "jquery\|bootstrap\|angular\|react"
+curl http://target.com | grep -i "jquery|bootstrap|angular|react"
 \`\`\`
 
 Open the demo application and work through this checklist. Document every finding with: the vulnerability category, the evidence, and the potential impact.`,

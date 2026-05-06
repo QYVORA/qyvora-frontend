@@ -6,9 +6,9 @@ import api from '../../../core/services/api';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
 
 const BOOTCAMP_COVER_MAP: Record<string, string> = {
-  bc_1775270338500: '/assets/bootcamp/hpb-cover.png',
+  bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
 };
-const BOOTCAMP_COVER_FALLBACK = '/assets/bootcamp/hpb-cover.png';
+const BOOTCAMP_COVER_FALLBACK = '/assets/bootcamp/hpb-cover.webp';
 
 function getBootcampCover(id: string, apiImage?: string): string {
   if (BOOTCAMP_COVER_MAP[id]) return BOOTCAMP_COVER_MAP[id];
@@ -142,7 +142,7 @@ const Learn: React.FC = () => {
         ) : bootcamps.length === 0 ? (
           <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
             <img
-              src="/assets/illustrations/cta-operator.png"
+              src="/assets/illustrations/cta-operator.webp"
               alt=""
               aria-hidden="true"
               className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"

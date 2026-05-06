@@ -32,7 +32,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
-        src="/assets/sections/backgrounds/proprietary-tooling-bg.png"
+        src="/assets/sections/backgrounds/proprietary-tooling-bg.webp"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.13] pointer-events-none"
         loading="lazy"
@@ -89,10 +89,10 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                 className="p-3 md:p-3 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group cursor-default"
               >
                 <div className="absolute top-0 right-0 p-3 opacity-15 group-hover:rotate-12 transition-transform duration-500 pointer-events-none">
-                  <img src="/assets/branding/logos/cyber-points-logo.png" alt="" className="w-12 h-12 object-contain" />
+                  <img src="/assets/branding/logos/cyber-points-logo.webp" alt="" className="w-12 h-12 object-contain" />
                 </div>
                 <img
-                  src="/assets/illustrations/phase-complete-badge.png"
+                  src="/assets/illustrations/phase-complete-badge.webp"
                   alt=""
                   aria-hidden="true"
                   className="absolute bottom-1 right-1 w-10 h-10 object-contain opacity-60 pointer-events-none select-none"
@@ -143,7 +143,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                   whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
                 >
                   <CardMedia
-                    image={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                    image={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                     imageAspect="aspect-[4/3]"
                     href="/zero-day-market"
                   >

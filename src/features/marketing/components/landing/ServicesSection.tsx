@@ -15,7 +15,7 @@ const ServicesSection: React.FC = () => {
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
-        src="/assets/sections/backgrounds/corporate-security-bg.png"
+        src="/assets/sections/backgrounds/corporate-security-bg.webp"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] md:opacity-[0.15] pointer-events-none"
         loading="lazy"
@@ -46,8 +46,8 @@ const ServicesSection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Service cards — 2-col mobile, 4-col desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        {/* Service cards — 1-col mobile, 2-col sm, 4-col desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-5">
           {MARKETING_SERVICES.map((serv, idx) => (
             <motion.div
               key={idx}

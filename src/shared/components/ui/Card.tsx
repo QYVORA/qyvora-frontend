@@ -125,7 +125,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
             const el = e.currentTarget;
             if (!el.dataset.fallbackApplied) {
               el.dataset.fallbackApplied = '1';
-              el.src = '/assets/sections/backgrounds/cyber-points-visual.jpeg';
+              el.src = '/assets/sections/backgrounds/cyber-points-visual.webp';
             }
           }}
         />

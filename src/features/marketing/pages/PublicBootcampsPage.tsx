@@ -9,14 +9,14 @@ import Footer from '../components/layout/Footer';
 const CACHE_KEY = 'hsociety_bootcamps_public_cache_v1';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
-  bc_1775270338500: '/assets/bootcamp/hpb-cover.png',
+  bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
 };
 const PHASE_IMGS = [
-  '/assets/bootcamp/rooms/hacker-mindset.png',
-  '/assets/bootcamp/rooms/linux-foundations.png',
-  '/assets/bootcamp/rooms/networking.png',
-  '/assets/bootcamp/rooms/web-and-backend-systems.png',
-  '/assets/bootcamp/rooms/social-engineering.png',
+  '/assets/bootcamp/rooms/hacker-mindset.webp',
+  '/assets/bootcamp/rooms/linux-foundations.webp',
+  '/assets/bootcamp/rooms/networking.webp',
+  '/assets/bootcamp/rooms/web-and-backend-systems.webp',
+  '/assets/bootcamp/rooms/social-engineering.webp',
 ];
 
 type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
@@ -220,7 +220,7 @@ const PublicBootcampsPage: React.FC = () => {
                         <img
                           src={image} alt={bc.title}
                           className={`w-full h-full object-cover transition-transform duration-700 ${isLocked ? 'grayscale brightness-50' : 'group-hover:scale-110'}`}
-                          onError={(e) => { const el = e.currentTarget; if (!el.dataset.fallbackApplied) { el.dataset.fallbackApplied = '1'; el.src = '/assets/bootcamp/hpb-cover.png'; } }}
+                          onError={(e) => { const el = e.currentTarget; if (!el.dataset.fallbackApplied) { el.dataset.fallbackApplied = '1'; el.src = '/assets/bootcamp/hpb-cover.webp'; } }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <div className="absolute top-3 left-3">

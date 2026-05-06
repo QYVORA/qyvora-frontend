@@ -28,9 +28,9 @@ import { useToast } from '../../../core/contexts/ToastContext';
 
 // ── Bootcamp assets ───────────────────────────────────────────────────────────
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
-  bc_1775270338500: '/assets/bootcamp/hpb-cover.png',
+  bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
 };
-const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.png';
+const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
   if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;
@@ -394,7 +394,7 @@ const Dashboard: React.FC = () => {
                           {/* Cover — same aspect-video as bootcamp card */}
                           <div className="relative aspect-video overflow-hidden">
                             <img
-                              src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                              src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                               alt={prod.title}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                             />

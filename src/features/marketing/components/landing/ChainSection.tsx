@@ -17,7 +17,7 @@ const ChainSection: React.FC = () => (
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
     {/* Chain visuals background */}
     <img
-      src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
+      src="/assets/branding/chain/hsociety-chain-logo-visuals.webp"
       alt=""
       aria-hidden="true"
       className="absolute right-0 top-1/2 -translate-y-1/2 h-full max-h-[600px] w-auto opacity-[0.06] object-contain pointer-events-none"
@@ -88,7 +88,7 @@ const ChainSection: React.FC = () => (
           {/* Terminal panel illustration */}
           <div className="relative flex justify-center mb-2">
             <img
-              src="/assets/illustrations/hero-terminal-panel.png"
+              src="/assets/illustrations/hero-terminal-panel.webp"
               alt=""
               aria-hidden="true"
               className="w-full max-w-[280px] sm:max-w-[320px] h-auto object-contain opacity-90 drop-shadow-[0_0_32px_var(--color-accent-glow)]"

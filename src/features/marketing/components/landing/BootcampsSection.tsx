@@ -22,7 +22,7 @@ const HPB_ID = 'bc_1775270338500';
 const HPB_TITLE = 'Hacker Protocol Bootcamp';
 const HPB_DESCRIPTION =
   'Hacker Protocol Bootcamp (HPB) teaches beginners to think like hackers — covering networking, Linux, web, and social engineering with hands-on labs and CTFs.';
-const HPB_IMAGE = '/assets/bootcamp/hpb-cover.png';
+const HPB_IMAGE = '/assets/bootcamp/hpb-cover.webp';
 
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading = false }) => {
   const shouldReduceMotion = useReducedMotion();
@@ -34,7 +34,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
-        src="/assets/sections/backgrounds/employee-training-bg.png"
+        src="/assets/sections/backgrounds/employee-training-bg.webp"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.14] md:opacity-[0.18] pointer-events-none"
         loading="lazy"
@@ -52,7 +52,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
           </ScrollReveal>
           <ScrollReveal delay={0.15} className="flex items-center gap-6">
             <img
-              src="/assets/illustrations/bootcamp-operator.png"
+              src="/assets/illustrations/bootcamp-operator.webp"
               alt=""
               aria-hidden="true"
               className="hidden md:block w-14 h-14 object-contain opacity-80 drop-shadow-[0_0_20px_var(--color-accent-glow)] flex-none"

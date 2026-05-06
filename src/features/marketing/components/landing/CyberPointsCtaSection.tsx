@@ -20,7 +20,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
     ">
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <img
-        src="/assets/sections/backgrounds/ai-solutions-bg.png"
+        src="/assets/sections/backgrounds/ai-solutions-bg.webp"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none"
@@ -35,7 +35,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
             <div className="relative flex items-center justify-center">
               <div data-light-overlay="true" className="absolute inset-0 rounded-full bg-accent/8 blur-3xl pointer-events-none scale-110" />
               <motion.img
-                src="/assets/branding/logos/cyber-points-logo.png"
+                src="/assets/branding/logos/cyber-points-logo.webp"
                 alt="Cyber Points"
                 className="w-44 h-44 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain relative z-10"
                 style={{ filter: 'drop-shadow(0 0 60px var(--color-accent-glow))' }}

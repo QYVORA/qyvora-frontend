@@ -17,7 +17,7 @@ const ChainPage: React.FC = () => {
       <section className="relative min-h-[85svh] md:min-h-[80vh] w-full overflow-hidden scanlines has-bg-image">
         <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
         <img
-          src="/assets/branding/chain/hsociety-chain-logo-visuals.png"
+          src="/assets/branding/chain/hsociety-chain-logo-visuals.webp"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none"

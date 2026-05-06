@@ -4,19 +4,19 @@
  */
 export const STUDENT_DECOR = {
   /** Dashboard hub card — bottom-right corner, operator identity visual */
-  hubPanelMascot: '/assets/illustrations/bootcamp-operator.png',
+  hubPanelMascot: '/assets/illustrations/bootcamp-operator.webp',
   /** Learn hub hero — right side, mid height */
-  learnHubMascot: '/assets/illustrations/hero-operator.png',
+  learnHubMascot: '/assets/illustrations/hero-operator.webp',
   /** /bootcamps listing hero — operator at workstation */
-  bootcampListMascot: '/assets/illustrations/bootcamp-operator.png',
+  bootcampListMascot: '/assets/illustrations/bootcamp-operator.webp',
   /** Course curriculum header + enroll gate */
-  courseCurriculumMascot: '/assets/illustrations/phase-complete-badge.png',
+  courseCurriculumMascot: '/assets/illustrations/phase-complete-badge.webp',
   /** Wallet balance card — right side */
-  walletMascot: '/assets/illustrations/hero-operator.png',
+  walletMascot: '/assets/illustrations/hero-operator.webp',
   /** Bootcamp operator illustration — used in dashboard program section */
-  bootcampOperator: '/assets/illustrations/bootcamp-operator.png',
+  bootcampOperator: '/assets/illustrations/bootcamp-operator.webp',
   /** Hero terminal panel — used in learn/dashboard sections */
-  heroTerminalPanel: '/assets/illustrations/hero-terminal-panel.png',
+  heroTerminalPanel: '/assets/illustrations/hero-terminal-panel.webp',
   /** Phase complete badge — used in progress/milestone sections */
-  phaseCompleteBadge: '/assets/illustrations/phase-complete-badge.png',
+  phaseCompleteBadge: '/assets/illustrations/phase-complete-badge.webp',
 } as const;

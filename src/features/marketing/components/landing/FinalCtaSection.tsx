@@ -19,7 +19,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/sections/backgrounds/employee-training-bg.png"
+          src="/assets/sections/backgrounds/employee-training-bg.webp"
           alt=""
           className="w-full h-full object-cover grayscale opacity-20"
         />
@@ -28,7 +28,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
 
       {/* Operator illustration — right side, desktop only */}
       <img
-        src="/assets/illustrations/cta-operator.png"
+        src="/assets/illustrations/cta-operator.webp"
         alt=""
         aria-hidden="true"
         className="hidden lg:block absolute right-0 bottom-0 h-[90%] w-auto object-contain pointer-events-none select-none opacity-80 z-[1]"

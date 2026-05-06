@@ -30,7 +30,7 @@ const Contact: React.FC = () => {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24 has-bg-image">
         <img
-          src="/assets/sections/backgrounds/employee-training-bg.png"
+          src="/assets/sections/backgrounds/employee-training-bg.webp"
           alt=""
           aria-hidden="true"
           className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"

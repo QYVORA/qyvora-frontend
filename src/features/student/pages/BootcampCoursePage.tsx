@@ -23,11 +23,11 @@ function readLocalCompletedRooms(bootcampId: string): Set<string> {
 }
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {
-  phase1: '/assets/bootcamp/rooms/hacker-mindset.png',
-  phase2: '/assets/bootcamp/rooms/linux-foundations.png',
-  phase3: '/assets/bootcamp/rooms/networking.png',
-  phase4: '/assets/bootcamp/rooms/web-and-backend-systems.png',
-  phase5: '/assets/bootcamp/rooms/social-engineering.png',
+  phase1: '/assets/bootcamp/rooms/hacker-mindset.webp',
+  phase2: '/assets/bootcamp/rooms/linux-foundations.webp',
+  phase3: '/assets/bootcamp/rooms/networking.webp',
+  phase4: '/assets/bootcamp/rooms/web-and-backend-systems.webp',
+  phase5: '/assets/bootcamp/rooms/social-engineering.webp',
 };
 
 interface LiveClass { title: string; instructor?: string; time?: string; link: string; }
@@ -454,8 +454,8 @@ const BootcampCourse: React.FC = () => {
                               ? `/dashboard/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
                               : null;
                             const roomImg = configPhase
-                              ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/assets/bootcamp/hpb-cover.png'
-                              : '/assets/bootcamp/hpb-cover.png';
+                              ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/assets/bootcamp/hpb-cover.webp'
+                              : '/assets/bootcamp/hpb-cover.webp';
 
                             return (
                               <Link
@@ -484,7 +484,7 @@ const BootcampCourse: React.FC = () => {
                                       const el = e.currentTarget;
                                       if (!el.dataset.fallbackApplied) {
                                         el.dataset.fallbackApplied = '1';
-                                        el.src = '/assets/bootcamp/hpb-cover.png';
+                                        el.src = '/assets/bootcamp/hpb-cover.webp';
                                       }
                                     }}
                                   />

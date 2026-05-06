@@ -166,7 +166,7 @@ const Profile: React.FC = () => {
             <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             {/* Terminal panel illustration — fades into the right edge */}
             <img
-              src="/assets/illustrations/hero-terminal-panel.png"
+              src="/assets/illustrations/hero-terminal-panel.webp"
               alt=""
               aria-hidden="true"
               className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"

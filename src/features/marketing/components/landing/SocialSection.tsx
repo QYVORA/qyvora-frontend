@@ -14,25 +14,25 @@ const PLATFORM_META: Record<string, {
   x: {
     accent: '#e2e8f0',
     border: 'rgba(226,232,240,0.25)',
-    img: '/assets/social/x-social.png',
+    img: '/assets/social/x-social.webp',
     label: 'X / TWITTER',
   },
   linkedin: {
     accent: '#60a5fa',
     border: 'rgba(96,165,250,0.35)',
-    img: '/assets/social/linkedin-social.png',
+    img: '/assets/social/linkedin-social.webp',
     label: 'LINKEDIN',
   },
   youtube: {
     accent: '#f87171',
     border: 'rgba(248,113,113,0.35)',
-    img: '/assets/social/youtube-social.png',
+    img: '/assets/social/youtube-social.webp',
     label: 'YOUTUBE',
   },
   whatsapp: {
     accent: '#4ade80',
     border: 'rgba(37,211,102,0.35)',
-    img: '/assets/sections/backgrounds/corporate-team.png',
+    img: '/assets/sections/backgrounds/corporate-team.webp',
     label: 'WHATSAPP',
   },
 };
@@ -43,22 +43,21 @@ const SocialSection: React.FC = () => {
 
   return (
     <section className="
-      py-20 bg-bg border-t border-border
+      py-16 bg-bg border-t border-border
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
 
-        <ScrollReveal className="mb-6 md:mb-5">
+        <ScrollReveal className="mb-5 md:mb-5">
           <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1.5 block">// SIGNAL</span>
-          <h2 className="text-3xl lg:text-4xl text-text-primary font-bold">Find Us Online</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl text-text-primary font-bold">Find Us Online</h2>
           <p className="text-text-muted text-sm mt-1.5 max-w-xl">
             Follow the operation across platforms for updates, content, and community.
           </p>
         </ScrollReveal>
 
-        {/* Mobile: 2-col grid */}
-        {/* Desktop: 3-col grid, cards fill available height */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+        {/* Mobile: single-col stack | sm: 2-col | Desktop: 3-col */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {socials.map((social, idx) => {
             const Icon = SOCIAL_ICON_BY_KEY[social.key as keyof typeof SOCIAL_ICON_BY_KEY];
             const meta = PLATFORM_META[social.key];
@@ -81,13 +80,10 @@ const SocialSection: React.FC = () => {
                 }}
                 whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative rounded-xl overflow-hidden flex flex-col cursor-pointer
-                  min-h-[160px] sm:min-h-[200px]
-                  md:min-h-[280px] lg:min-h-[340px]"
+                className="group relative rounded-xl overflow-hidden flex flex-col cursor-pointer"
                 style={{
                   border: `1px solid ${meta.border}`,
-                  /* On desktop, fill remaining height after header */
-                  height: undefined,
+                  minHeight: 'clamp(140px, 28vw, 340px)',
                 }}
               >
                 {/* Background image */}
@@ -113,7 +109,7 @@ const SocialSection: React.FC = () => {
                 />
 
                 {/* Platform pill */}
-                <div className="relative z-10 p-3 md:p-3">
+                <div className="relative z-10 p-3">
                   <span
                     className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.25em] px-2 py-0.5 rounded-full backdrop-blur-sm"
                     style={{ color: meta.accent, background: 'rgba(0,0,0,0.45)', border: `1px solid ${meta.border}` }}
@@ -129,7 +125,7 @@ const SocialSection: React.FC = () => {
                 <div className="relative z-10 p-3 md:p-4 space-y-1.5">
                   <div>
                     <p className="text-[9px] font-bold text-white/50 uppercase tracking-[0.2em]">{social.label}</p>
-                    <h4 className="text-sm md:text-base font-black text-white font-mono leading-tight">{social.handle}</h4>
+                    <h4 className="text-sm font-black text-white font-mono leading-tight">{social.handle}</h4>
                   </div>
                   <p className="text-[10px] text-white/60 leading-relaxed line-clamp-2">{social.desc}</p>
                   <div

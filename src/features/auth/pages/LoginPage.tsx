@@ -237,7 +237,7 @@ const Login: React.FC = () => {
     <div
       className={`min-h-screen grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}
       style={{
-        backgroundImage: 'url(/assets/sections/backgrounds/offsec-grid-background.png)',
+        backgroundImage: 'url(/assets/sections/backgrounds/offsec-grid-background.webp)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

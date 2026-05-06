@@ -7,7 +7,7 @@ interface CpLogoProps {
 
 const CpLogo: React.FC<CpLogoProps> = ({ className = 'w-4 h-4', alt = 'CP' }) => (
   <img
-    src="/assets/branding/logos/cyber-points-logo.png"
+    src="/assets/branding/logos/cyber-points-logo.webp"
     alt={alt}
     className={`${className} object-contain inline-block align-middle`}
   />

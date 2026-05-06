@@ -24,7 +24,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
     <section className="py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
       {/* Background */}
       <img
-        src="/assets/sections/backgrounds/corporate-security-bg.png"
+        src="/assets/sections/backgrounds/corporate-security-bg.webp"
         alt=""
         aria-hidden="true"
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] md:opacity-[0.1] pointer-events-none select-none"

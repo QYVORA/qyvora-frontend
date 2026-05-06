@@ -579,14 +579,14 @@ const AdminDashboardPage: React.FC = () => {
                         <div className="flex items-start gap-3">
                           <div className="w-14 h-14 rounded-lg overflow-hidden border border-border shrink-0 bg-bg">
                             <img
-                              src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                              src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                               alt={item.title}
                               className="w-full h-full object-cover"
                               onError={(e) => {
                                 const el = e.currentTarget;
                                 if (!el.dataset.fallbackApplied) {
                                   el.dataset.fallbackApplied = '1';
-                                  el.src = '/assets/sections/backgrounds/cyber-points-visual.jpeg';
+                                  el.src = '/assets/sections/backgrounds/cyber-points-visual.webp';
                                 }
                               }}
                             />
@@ -630,14 +630,14 @@ const AdminDashboardPage: React.FC = () => {
                               <td className="px-4 py-3">
                                 <div className="w-12 h-12 rounded-lg overflow-hidden border border-border bg-bg shrink-0">
                                   <img
-                                    src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                                    src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                                     alt={item.title}
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
                                       const el = e.currentTarget;
                                       if (!el.dataset.fallbackApplied) {
                                         el.dataset.fallbackApplied = '1';
-                                        el.src = '/assets/sections/backgrounds/cyber-points-visual.jpeg';
+                                        el.src = '/assets/sections/backgrounds/cyber-points-visual.webp';
                                       }
                                     }}
                                   />

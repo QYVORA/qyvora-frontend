@@ -213,7 +213,7 @@ const PublicMarketplace: React.FC = () => {
                     <div className="card-hsociety p-4 flex flex-col h-full group">
                       <div className="relative aspect-square overflow-hidden rounded mb-3">
                         <img
-                          src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                          src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                           alt={prod.title}
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                         />

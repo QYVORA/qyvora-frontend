@@ -11,15 +11,15 @@ import type { BootcampLevel } from '../components/BootcampCard';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
-  bc_1775270338500: '/assets/bootcamp/hpb-cover.png',
+  bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
 };
 // Fallback order for unknown bootcamps (index-based)
 const PHASE_IMGS = [
-  '/assets/bootcamp/rooms/hacker-mindset.png',
-  '/assets/bootcamp/rooms/linux-foundations.png',
-  '/assets/bootcamp/rooms/networking.png',
-  '/assets/bootcamp/rooms/web-and-backend-systems.png',
-  '/assets/bootcamp/rooms/social-engineering.png',
+  '/assets/bootcamp/rooms/hacker-mindset.webp',
+  '/assets/bootcamp/rooms/linux-foundations.webp',
+  '/assets/bootcamp/rooms/networking.webp',
+  '/assets/bootcamp/rooms/web-and-backend-systems.webp',
+  '/assets/bootcamp/rooms/social-engineering.webp',
 ];
 
 interface LockedModalProps {
@@ -183,7 +183,7 @@ const Bootcamp: React.FC = () => {
         ) : bootcamps.length === 0 ? (
           <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
             <img
-              src="/assets/illustrations/bootcamp-operator.png"
+              src="/assets/illustrations/bootcamp-operator.webp"
               alt=""
               aria-hidden="true"
               className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
@@ -232,7 +232,7 @@ const Bootcamp: React.FC = () => {
                           const el = e.currentTarget;
                           if (!el.dataset.fallbackApplied) {
                             el.dataset.fallbackApplied = '1';
-                            el.src = '/assets/bootcamp/hpb-cover.png';
+                            el.src = '/assets/bootcamp/hpb-cover.webp';
                           }
                         }}
                       />

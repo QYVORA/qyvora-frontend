@@ -315,9 +315,9 @@ const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle — hidden on mobile since PublicBottomNav handles navigation */}
         <button 
-          className="md:hidden text-text-primary p-2 min-h-11 min-w-11 flex items-center justify-center"
+          className="hidden text-text-primary p-2 min-h-11 min-w-11 flex items-center justify-center"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isOpen}

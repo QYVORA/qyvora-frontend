@@ -25,7 +25,7 @@ interface Props {
   onLocked?: (data: StudentBootcampCardData) => void;
 }
 
-const FALLBACK_IMG = '/assets/bootcamp/hpb-cover.png';
+const FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
 
 const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLocked }) => {
   const { id, title, description, level, duration, priceLabel, img, progress, isEnrolled, isLocked } = data;

@@ -11,16 +11,17 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../features/marketing/components/layout/Navbar';
 import Footer from '../../features/marketing/components/layout/Footer';
+import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
 
 const SnapPublicLayout = () => (
   <>
     <Navbar />
     {/*
-      Mobile: normal scroll, pt-[72px] clears navbar, footer renders normally.
+      Mobile: normal scroll, pt-[72px] clears navbar, pb clears bottom nav, footer renders normally.
       md+: snap scroll, height: 100dvh, footer is embedded in each page's last section.
     */}
     <main
-      className="w-full pt-[72px] md:pt-[72px]"
+      className="w-full pt-[72px] md:pt-[72px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
       style={{ height: undefined }}
     >
       {/* On md+, this div becomes the snap container host */}
@@ -32,6 +33,7 @@ const SnapPublicLayout = () => (
     <div className="md:hidden">
       <Footer />
     </div>
+    <PublicBottomNav />
   </>
 );
 

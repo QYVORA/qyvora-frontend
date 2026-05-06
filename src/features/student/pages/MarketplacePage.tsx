@@ -168,7 +168,7 @@ const Marketplace: React.FC = () => {
           ) : filtered.length === 0 ? (
             <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border">
               <img
-                src="/assets/illustrations/cta-operator.png"
+                src="/assets/illustrations/cta-operator.webp"
                 alt=""
                 aria-hidden="true"
                 className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
@@ -189,7 +189,7 @@ const Marketplace: React.FC = () => {
                   <div className="card-hsociety p-4 flex flex-col h-full group">
                     <div className="relative aspect-square overflow-hidden rounded mb-4">
                       <img
-                        src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.jpeg')}
+                        src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                         alt={prod.title}
                         className="w-full h-full object-cover transition-all duration-500"
                       />
