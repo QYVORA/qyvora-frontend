@@ -121,22 +121,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {SITE_CONFIG.brand.description}
           </motion.p>
 
-          {/* Trust + reassurance strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.45, delay: 1.15 }}
-            className="w-full max-w-lg mb-4 rounded-lg border border-border bg-bg-card/70 px-3 py-2.5"
-          >
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-muted">
-              <span>No prior experience required</span>
-              <span className="hidden sm:inline text-accent/60">•</span>
-              <span>Start with guided modules</span>
-              <span className="hidden sm:inline text-accent/60">•</span>
-              <span>Learn at your pace</span>
-            </div>
-          </motion.div>
-
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
