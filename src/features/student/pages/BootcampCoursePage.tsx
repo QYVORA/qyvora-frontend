@@ -14,14 +14,6 @@ import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } fro
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
-function readLocalCompletedRooms(bootcampId: string): Set<string> {
-  try {
-    const raw = localStorage.getItem(`hpb_completed_${bootcampId}`);
-    if (raw) return new Set(JSON.parse(raw));
-  } catch { /* ignore */ }
-  return new Set();
-}
-
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/assets/bootcamp/rooms/hacker-mindset.webp',
   phase2: '/assets/bootcamp/rooms/linux-foundations.webp',
@@ -55,14 +47,12 @@ const BootcampCourse: React.FC = () => {
   const [enrolling, setEnrolling]   = useState(false);
   const [syncError, setSyncError]   = useState('');
   const [lastSync, setLastSync]     = useState<string | null>(getLastSync('bootcamp-course'));
-  const [localCompleted, setLocalCompleted] = useState<Set<string>>(() =>
-    readLocalCompletedRooms(bootcampId || '')
-  );
 
   useEffect(() => {
     const onVisibility = () => {
       if (document.visibilityState === 'visible') {
-        setLocalCompleted(readLocalCompletedRooms(bootcampId || ''));
+        // Refresh overview data when returning to the page to show updated stats
+        load();
       }
     };
     document.addEventListener('visibilitychange', onVisibility);
@@ -72,18 +62,30 @@ const BootcampCourse: React.FC = () => {
   const load = async () => {
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
+      // Add cache-busting parameter to force fresh data
+      const cacheBust = `?_t=${Date.now()}`;
       const [ovRes, courseRes] = await Promise.all([
-        api.get('/student/overview'),
+        api.get(`/student/overview${cacheBust}`),
         api.get(`/student/course${query}`).catch(() => null),
       ]);
       const ov = ovRes.data || null;
       setOverview(ov);
+      
+      console.log('🔍 Overview Response:', ov);
+      console.log('🔍 Bootcamp ID:', bootcampId);
+      console.log('🔍 Overview bootcampId:', ov?.bootcampId);
+      console.log('🔍 Overview modules:', ov?.modules);
+      
       const enrolledViaStatus =
         ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
         String(ov?.bootcampId || '') === String(bootcampId || '');
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
         (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
       );
+      
+      console.log('🔍 Enrolled via status:', enrolledViaStatus);
+      console.log('🔍 Enrolled via modules:', enrolledViaModules);
+      
       setStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setCourse(courseRes.data as Course);
       setLastSync(setLastSyncNow('bootcamp-course'));
@@ -122,6 +124,16 @@ const BootcampCourse: React.FC = () => {
   const totalModules = course?.modules?.length || 0;
   const totalRooms   = (course?.modules || []).reduce((acc, m) => acc + (m.rooms?.length || 0), 0);
 
+  // Debug logging
+  console.log('📊 BootcampCoursePage Stats Debug:', {
+    overview: overview,
+    'overview.modules': overview?.modules,
+    'overview.snapshot': overview?.snapshot,
+    moduleProgressMap,
+    totalModules,
+    totalRooms,
+  });
+
   // Prefer snapshot values if present, otherwise derive from overview.modules
   const snapshotProgress = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value;
   const snapshotDoneModules = overview?.snapshot?.find((s: any) => s?.id === 'modules')?.value;
@@ -138,6 +150,15 @@ const BootcampCourse: React.FC = () => {
   const doneRooms = snapshotDoneRooms != null
     ? Number(snapshotDoneRooms)
     : ovModules.reduce((acc: number, m: any) => acc + Number(m.roomsCompleted || 0), 0);
+
+  console.log('📊 Calculated Stats:', {
+    snapshotProgress,
+    snapshotDoneModules,
+    snapshotDoneRooms,
+    doneModules,
+    doneRooms,
+    ovModules,
+  });
 
   // Overall progress: prefer snapshot, otherwise derive from rooms ratio
   const progressValue = snapshotProgress != null
@@ -363,7 +384,7 @@ const BootcampCourse: React.FC = () => {
                     <span className="font-mono text-xl font-black text-accent">{progressValue}</span>
                   </div>
                   <Link
-                    to={resolveNextRoomPath(String(bootcampId || '')) || '#'}
+                    to={resolveNextRoomPath(String(bootcampId || ''), course) || '#'}
                     className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-black"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" /> Resume mission
@@ -447,9 +468,8 @@ const BootcampCourse: React.FC = () => {
                             const configRoom = configPhase?.rooms.find(
                               (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
                             ) || configPhase?.rooms[roomIdx];
-                            const localKey = configPhase && configRoom
-                              ? `${configPhase.id}:${configRoom.id}` : null;
-                            const roomDone = Boolean(room.completed) || Boolean(localKey && localCompleted.has(localKey));
+                            // Get completion status from API data only (NOT localStorage)
+                            const roomDone = Boolean(room.completed);
                             const roomPath = configPhase && configRoom
                               ? `/dashboard/bootcamps/${bootcampId}/phases/${configPhase.id}/rooms/${configRoom.id}`
                               : null;

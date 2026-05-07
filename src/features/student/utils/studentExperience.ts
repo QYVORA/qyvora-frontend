@@ -52,10 +52,33 @@ export function getEnrolledIds(overview: any): Set<string> {
   return new Set([...getBootcampProgressMap(overview).keys()]);
 }
 
-export function resolveNextRoomPath(bootcampId: string): string | null {
+export function resolveNextRoomPath(bootcampId: string, apiCourse?: any): string | null {
   if (!bootcampId) return null;
-  const done = getCompletedRoomSet(bootcampId);
+  
+  // Build completed rooms set from API course data if provided
+  const done = new Set<string>();
+  if (apiCourse?.modules) {
+    apiCourse.modules.forEach((mod: any) => {
+      // Find matching phase by title
+      const matchPhase = BOOTCAMP_CONFIG.phases.find(
+        (p) => p.title.toLowerCase() === (mod.title || '').toLowerCase()
+      );
+      if (matchPhase) {
+        (mod.rooms || []).forEach((apiRoom: any) => {
+          if (apiRoom.completed) {
+            const matchRoom = matchPhase.rooms.find(
+              (r) => r.title.toLowerCase() === (apiRoom.title || '').toLowerCase()
+            );
+            if (matchRoom) {
+              done.add(`${matchPhase.id}:${matchRoom.id}`);
+            }
+          }
+        });
+      }
+    });
+  }
 
+  // Find first incomplete room
   for (const phase of BOOTCAMP_CONFIG.phases) {
     for (const room of phase.rooms) {
       const key = `${phase.id}:${room.id}`;
@@ -65,18 +88,10 @@ export function resolveNextRoomPath(bootcampId: string): string | null {
     }
   }
 
+  // All rooms completed or no API data provided, return first room
   const first = BOOTCAMP_CONFIG.phases[0]?.rooms[0];
   if (!first) return null;
   return `/dashboard/bootcamps/${bootcampId}/phases/${BOOTCAMP_CONFIG.phases[0].id}/rooms/${first.id}`;
-}
-
-function getCompletedRoomSet(bootcampId: string): Set<string> {
-  try {
-    const raw = localStorage.getItem(`hpb_completed_${bootcampId}`);
-    return raw ? new Set(JSON.parse(raw)) : new Set<string>();
-  } catch {
-    return new Set<string>();
-  }
 }
 
 export function getDailyMission(bootcampId?: string): { date: string; text: string; completed: boolean } {
