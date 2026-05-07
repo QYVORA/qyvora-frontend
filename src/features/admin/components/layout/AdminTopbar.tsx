@@ -10,6 +10,7 @@ import Logo from '../../../../shared/components/brand/Logo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
+import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
 
 // ── Nav groups ────────────────────────────────────────────────────────────────
 const NAV_GROUPS = [
@@ -298,20 +299,8 @@ const AdminTopbar = () => {
             </div>
 
             {/* Mobile notification bottom sheet */}
-            <AnimatePresence>
-              {notifOpen && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
-                    onClick={() => setNotifOpen(false)}
-                  />
-                  <motion.div
-                    initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-                    transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                    className="md:hidden fixed bottom-0 left-0 right-0 z-[70] bg-bg-card border-t border-border rounded-t-2xl max-h-[75svh] flex flex-col"
-                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                  >
+            <BottomSheet open={notifOpen} onOpenChange={setNotifOpen}>
+              <BottomSheetContent ariaLabel="Notifications" className="z-[70] md:hidden max-h-[75svh] flex flex-col">
                     <div className="flex justify-center pt-3 pb-1 flex-none">
                       <div className="w-10 h-1 rounded-full bg-border" />
                     </div>
@@ -324,9 +313,9 @@ const AdminTopbar = () => {
                         {unreadCount > 0 && (
                           <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">Mark all read</button>
                         )}
-                        <button onClick={() => setNotifOpen(false)} className="p-1.5 text-text-muted hover:text-accent transition-colors">
+                        <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
                           <X className="w-5 h-5" />
-                        </button>
+                        </BottomSheetClose>
                       </div>
                     </div>
                     <div className="flex-1 overflow-y-auto divide-y divide-border/50">
@@ -355,10 +344,8 @@ const AdminTopbar = () => {
                         Close
                       </button>
                     </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+              </BottomSheetContent>
+            </BottomSheet>
 
             {/* Profile avatar */}
             <div

@@ -19,6 +19,7 @@ import StepCard from '../components/bootcamp-room/StepCard';
 import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
 import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
+import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -45,15 +46,9 @@ interface StepNote {
 // QUIZ GATE MODAL — shown when student tries to skip the quiz
 // ─────────────────────────────────────────────────────────────────────────────
 const QuizGateModal: React.FC<{ onClose: () => void; onTakeQuiz: () => void }> = ({ onClose, onTakeQuiz }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-    <motion.div
-      initial={{ scale: 0.92, opacity: 0, y: 16 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.92, opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="relative z-10 w-full max-w-sm rounded-2xl border border-border bg-bg-card p-8 text-center shadow-2xl"
-    >
+  <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+    <DialogContent title="Quiz Required" maxWidth="max-w-sm">
+      <div className="text-center py-2">
       <div className="mb-4 flex justify-center">
         <Lock className="h-10 w-10 text-accent" />
       </div>
@@ -69,8 +64,9 @@ const QuizGateModal: React.FC<{ onClose: () => void; onTakeQuiz: () => void }> =
           Stay Here
         </button>
       </div>
-    </motion.div>
-  </div>
+      </div>
+    </DialogContent>
+  </Dialog>
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -156,12 +152,10 @@ const QuizModal: React.FC<{
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-
-      <div className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-bg-card shadow-2xl">
+    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent title="Room Quiz" maxWidth="max-w-2xl" className="max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-bg-card px-6 py-4">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-bg-card px-6 py-4 -mx-6 -mt-6 mb-6">
           <div className="flex items-center gap-2">
             <ClipboardList className="h-4 w-4 text-accent" />
             <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">
@@ -176,7 +170,7 @@ const QuizModal: React.FC<{
           </button>
         </div>
 
-        <div className="p-6">
+        <div>
           {/* Loading */}
           {loading && (
             <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">
@@ -333,8 +327,8 @@ const QuizModal: React.FC<{
             </>
           )}
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -884,7 +878,7 @@ const BootcampRoomPage: React.FC = () => {
             }}
           >
             {/* Content area */}
-            <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-3 sm:px-4 md:px-5 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
               <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">

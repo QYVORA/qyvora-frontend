@@ -1,6 +1,6 @@
-import { motion } from 'motion/react';
-import { CheckCircle2, List, X } from 'lucide-react';
+import { CheckCircle2, List } from 'lucide-react';
 import type { BootcampStep } from '../../constants/bootcampConfig';
+import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
 interface Props {
   steps: BootcampStep[];
@@ -15,28 +15,13 @@ const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJ
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0, y: -10 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: -10 }}
-        transition={{ duration: 0.15 }}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card shadow-2xl overflow-hidden"
-      >
-        <div className="flex items-center justify-between border-b border-border px-6 py-4 bg-bg-card">
-          <div className="flex items-center gap-2">
-            <List className="h-4 w-4 text-accent" />
-            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Jump to Step</h3>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-text-muted hover:text-text-primary transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent title="Jump to Step" maxWidth="max-w-md">
+        <div className="flex items-center gap-2 mb-3">
+          <List className="h-4 w-4 text-accent" />
+          <p className="text-xs font-black uppercase tracking-widest text-text-primary">Select a step</p>
         </div>
-        <div className="p-3 max-h-96 overflow-y-auto">
+        <div className="max-h-96 overflow-y-auto">
           <div className="space-y-1">
             {steps.map((step, idx) => (
               <button
@@ -57,8 +42,8 @@ const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJ
             ))}
           </div>
         </div>
-      </motion.div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

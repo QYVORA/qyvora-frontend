@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, useInView, useReducedMotion, type Variants } from 'motion/react';
+import { useAdaptiveUi } from '../../core/hooks/useAdaptiveUi';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -24,16 +25,18 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true, amount });
   const shouldReduceMotion = useReducedMotion();
+  const { constrainedDevice } = useAdaptiveUi();
+  const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
-  const offset = shouldReduceMotion ? 0 : 36;
+  const offset = minimizeEffects ? 0 : 36;
 
   const variants: Variants = {
     hidden: {
       opacity: 0,
       y: direction === 'up' ? offset : direction === 'down' ? -offset : 0,
       x: direction === 'left' ? offset : direction === 'right' ? -offset : 0,
-      scale: shouldReduceMotion ? 1 : scale,
-      filter: shouldReduceMotion ? 'none' : 'blur(4px)',
+      scale: minimizeEffects ? 1 : scale,
+      filter: minimizeEffects ? 'none' : 'blur(4px)',
     },
     visible: {
       opacity: 1,
@@ -42,10 +45,10 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       scale: 1,
       filter: 'blur(0px)',
       transition: {
-        duration: shouldReduceMotion ? 0.01 : 0.65,
+        duration: minimizeEffects ? 0.01 : 0.65,
         ease: [0.16, 1, 0.3, 1],
         delay,
-        filter: { duration: 0.4 },
+        filter: { duration: minimizeEffects ? 0.01 : 0.4 },
       },
     },
   };

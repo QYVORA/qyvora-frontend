@@ -6,6 +6,7 @@ import { lazy, Suspense } from 'react';
 import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
+import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 
 // Lazy-load heavy canvas/WebGL components — Three.js (~600KB) only loads when hero mounts
 const HeroCanvas  = lazy(() => import('../HeroCanvas'));
@@ -33,6 +34,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   totalCp,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { constrainedDevice } = useAdaptiveUi();
+  const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
   const heroStats = [
     { label: 'Students',          value: stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0, suffix: '+' },
@@ -55,11 +58,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           decoding="async"
         />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20" />
-        <Suspense fallback={null}><HeroCanvas /></Suspense>
+        {!minimizeEffects && <Suspense fallback={null}><HeroCanvas /></Suspense>}
         <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />      </div>
 
       <motion.div
-        style={{ y: shouldReduceMotion ? 0 : heroY, opacity: heroOpacity }}
+        style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
         className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-48
           md:min-h-0 md:h-full"
       >
@@ -69,7 +72,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-3 px-3 py-1 border border-border bg-accent-dim rounded-sm"
           >
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
@@ -83,9 +86,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={minimizeEffects ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  transition={minimizeEffects ? { duration: 0 } : { duration: 0.4, delay: 0.1 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   className="inline-block mr-2 md:mr-3"
                 >
                   {w}
@@ -97,9 +100,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {'Become a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={minimizeEffects ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.5 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  transition={minimizeEffects ? { duration: 0 } : { duration: 0.4, delay: 0.5 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   className="inline-block mr-2 md:mr-3"
                 >
                   {w}
@@ -112,7 +115,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-5 md:mb-4"
           >
             {SITE_CONFIG.brand.description}
@@ -122,7 +125,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
             className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 md:mb-4"
           >
             {user ? (
@@ -143,7 +146,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1.7 }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 1.7 }}
             className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden break-words"
           >
             {terminalText}<span className="animate-blink italic">_</span>
@@ -154,9 +157,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
+                initial={minimizeEffects ? false : { opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 1.8 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.45, delay: 1.8 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 className="rounded-lg border border-border bg-bg-card/80 backdrop-blur-sm px-3 py-3"
               >
                 <div className="text-xl font-bold text-accent font-mono leading-none">
@@ -176,7 +179,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           className="hidden lg:flex relative h-[500px] xl:h-[560px] max-w-[560px] w-full items-center justify-center justify-self-center"
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
-          <div className="w-full h-full pointer-events-none"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>
+          {!minimizeEffects && <div className="w-full h-full pointer-events-none"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>}
           <motion.div
             animate={shouldReduceMotion ? {} : { opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
