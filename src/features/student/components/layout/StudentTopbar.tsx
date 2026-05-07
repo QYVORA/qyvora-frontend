@@ -62,7 +62,7 @@ const MobileNotificationsSheet: React.FC<{
   markAllNotificationsRead,
 }) => (
   <BottomSheet open={open} onOpenChange={onOpenChange}>
-    <BottomSheetContent ariaLabel="Notifications" className="z-[70] md:hidden max-h-[75svh] flex flex-col">
+    <BottomSheetContent ariaLabel="Notifications" className="md:hidden max-h-[75svh] flex flex-col">
       <div className="flex justify-center pt-3 pb-1 flex-none">
         <div className="w-10 h-1 rounded-full bg-border" />
       </div>
@@ -534,7 +534,7 @@ const StudentTopbar = () => {
 
       {/* ── Mobile "More" bottom sheet ── */}
       <BottomSheet open={moreOpen} onOpenChange={setMoreOpen}>
-        <BottomSheetContent ariaLabel="Account and navigation options" className="z-[70]">
+        <BottomSheetContent ariaLabel="Account and navigation options">
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-border" />
               </div>

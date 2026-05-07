@@ -18,7 +18,7 @@ export const BottomSheetContent = React.forwardRef<
   <RadixDialog.Portal>
     <RadixDialog.Overlay
       className={cn(
-        'fixed inset-0 z-[110] md:hidden bg-black/60 backdrop-blur-sm',
+        'fixed inset-0 z-[60] md:hidden bg-black/70',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       )}
@@ -27,7 +27,7 @@ export const BottomSheetContent = React.forwardRef<
       ref={ref}
       aria-label={ariaLabel}
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-[120] md:hidden',
+        'fixed bottom-0 left-0 right-0 z-[70] md:hidden',
         'bg-bg-card border-t border-border rounded-t-2xl max-h-[82svh] overflow-y-auto',
         'outline-none',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
