@@ -23,8 +23,7 @@ const Snap: React.FC<{ id: string; children: React.ReactNode; className?: string
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-        className="w-full md:h-full md:overflow-y-auto md:overflow-x-hidden"
-        style={{ scrollbarWidth: 'none' }}
+        className="w-full md:h-full md:overflow-x-hidden"
       >
         {children}
       </motion.div>

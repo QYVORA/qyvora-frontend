@@ -23,6 +23,25 @@ const StudentLayout = () => {
 
   // Hide the rail on all bootcamp-related pages
   const isBootcampPage = Boolean(isRoomPage || bootcampCourseMatch || bootcampListMatch);
+  const marketplaceMatch = useMatch('/dashboard/marketplace');
+  const marketplaceLegacyMatch = useMatch('/marketplace');
+  const walletMatch = useMatch('/dashboard/wallet');
+  const walletLegacyMatch = useMatch('/wallet');
+  const notificationsMatch = useMatch('/dashboard/notifications');
+  const notificationsLegacyMatch = useMatch('/notifications');
+  const settingsMatch = useMatch('/dashboard/settings');
+  const settingsLegacyMatch = useMatch('/settings');
+  const hasPageOwnedSidebar = Boolean(
+    marketplaceMatch
+    || marketplaceLegacyMatch
+    || walletMatch
+    || walletLegacyMatch
+    || notificationsMatch
+    || notificationsLegacyMatch
+    || settingsMatch
+    || settingsLegacyMatch,
+  );
+  const hideRightRail = isBootcampPage || hasPageOwnedSidebar;
 
   return (
     <div className="bg-bg min-h-screen">
@@ -40,7 +59,7 @@ const StudentLayout = () => {
       </div>
 
       {/* Right rail — shown on all student pages except bootcamp pages */}
-      {!isBootcampPage && <StudentRightRail />}
+      {!hideRightRail && <StudentRightRail />}
     </div>
   );
 };
