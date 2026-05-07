@@ -490,7 +490,7 @@ const BootcampCourse: React.FC = () => {
                                     : 'border-border hover:border-accent/40'
                                 }`}
                               >
-                                <div className="relative aspect-video overflow-hidden">
+                                <div className="relative aspect-video overflow-hidden rounded-t-2xl">
                                   <img
                                     src={roomImg}
                                     alt={room.title}
@@ -514,7 +514,7 @@ const BootcampCourse: React.FC = () => {
                                     style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)' }}
                                   />
                                   {roomDone && (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px]">
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">
                                       <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shadow-lg">
                                         <CheckCircle2 className="h-6 w-6 text-bg" />
                                       </div>

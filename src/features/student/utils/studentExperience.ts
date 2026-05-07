@@ -1,7 +1,6 @@
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
 
 const DATA_SAVER_KEY = 'hs_data_saver_v1';
-const DAILY_MISSION_KEY = 'hs_daily_mission_v1';
 const LAST_SYNC_KEY = 'hs_last_sync_v1';
 
 export type OverviewModule = {
@@ -92,42 +91,6 @@ export function resolveNextRoomPath(bootcampId: string, apiCourse?: any): string
   const first = BOOTCAMP_CONFIG.phases[0]?.rooms[0];
   if (!first) return null;
   return `/dashboard/bootcamps/${bootcampId}/phases/${BOOTCAMP_CONFIG.phases[0].id}/rooms/${first.id}`;
-}
-
-export function getDailyMission(bootcampId?: string): { date: string; text: string; completed: boolean } {
-  const today = new Date().toISOString().slice(0, 10);
-  const missions = [
-    'Complete 1 room step and take notes.',
-    'Review one previous room and summarize 3 lessons.',
-    'Run one command from today\'s lesson in your terminal.',
-    'Complete one room and mark one blocker you faced.',
-  ];
-
-  try {
-    const raw = localStorage.getItem(DAILY_MISSION_KEY);
-    if (raw) {
-      const saved = JSON.parse(raw) as { date: string; text: string; completed: boolean };
-      if (saved.date === today) return saved;
-    }
-    const seed = Number(String(bootcampId || '0').replace(/\D/g, '')) || 1;
-    const pick = missions[(seed + Number(today.slice(-2))) % missions.length];
-    const created = { date: today, text: pick, completed: false };
-    localStorage.setItem(DAILY_MISSION_KEY, JSON.stringify(created));
-    return created;
-  } catch {
-    return { date: today, text: missions[0], completed: false };
-  }
-}
-
-export function completeDailyMission(): { date: string; text: string; completed: boolean } {
-  const current = getDailyMission();
-  const next = { ...current, completed: true };
-  try {
-    localStorage.setItem(DAILY_MISSION_KEY, JSON.stringify(next));
-  } catch {
-    // ignore storage failures
-  }
-  return next;
 }
 
 export function setLastSyncNow(scope: string): string {

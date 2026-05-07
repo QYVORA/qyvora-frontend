@@ -216,7 +216,7 @@ In your notes, answer this question honestly: right now, are you closer to a too
 **The key principle in every jurisdiction:** authorisation is the line between legal security testing and criminal hacking. The technical actions are identical — only the authorisation differs.
 
 In your notes, research the specific law that applies in your country. Write down the key offences and their maximum penalties. You are responsible for knowing this.`,
-              image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&q=80',
+              image: 'ethics-legal-framework.jpg',
             },
             {
               title: 'Scope and Authorisation',
@@ -233,7 +233,7 @@ A typical scope document includes:
 **Why this matters:** If you test a system that is out of scope — even accidentally — you may have committed a criminal offence. The authorisation document is your legal protection. Without it, you have none.
 
 Write down in your notes: what would you do if, during a penetration test, you discovered a critical vulnerability in a system that was out of scope? There is a correct answer — research it.`,
-              image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80',
+              image: 'ethics-scope-authorization.jpg',
             },
             {
               title: 'Responsible Disclosure',
@@ -254,7 +254,7 @@ Write down in your notes: what would you do if, during a penetration test, you d
 **Bug bounty programmes** formalise this process — companies publish the rules, the scope, and the rewards. Always read the programme rules before testing.
 
 Document the full responsible disclosure process in your notes. Include what you would do if the organisation ignored your report after 90 days.`,
-              image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80',
+              image: 'ethics-responsible-disclosure.jpg',
             },
           ],
         },
