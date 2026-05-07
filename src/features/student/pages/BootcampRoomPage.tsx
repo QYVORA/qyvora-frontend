@@ -17,6 +17,7 @@ import StepJumpMenu from '../components/bootcamp-room/StepJumpMenu';
 import ReportIssueModal from '../components/bootcamp-room/ReportIssueModal';
 import StepCard from '../components/bootcamp-room/StepCard';
 import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
+import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -374,26 +375,57 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Room complete overlay ──────────────────────────────────────────────────
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
+  const [completionCpEarned, setCompletionCpEarned] = useState(250);
 
-  // ── Completed rooms (localStorage) ────────────────────────────────────────
-  const storageKey = `hpb_completed_${bootcampId || 'hpb'}`;
-  const [completedRooms, setCompletedRooms] = useState<Set<string>>(() => {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      return raw ? new Set(JSON.parse(raw)) : new Set();
-    } catch {
-      return new Set();
-    }
-  });
-
-  const markRoomComplete = (phId: string, rmId: string) => {
-    const key = `${phId}:${rmId}`;
-    setCompletedRooms((prev) => {
-      const next = new Set(prev);
-      next.add(key);
-      try { localStorage.setItem(storageKey, JSON.stringify([...next])); } catch (_e) { /* localStorage unavailable */ }
-      return next;
+  // ── Completed rooms from API (NOT localStorage) ───────────────────────────────
+  // Build a set of completed room keys from the API course data
+  const completedRooms = new Set<string>();
+  if (apiCourse) {
+    apiCourse.modules.forEach((mod) => {
+      // Find matching phase by title
+      const matchPhase = BOOTCAMP_CONFIG.phases.find(
+        (p) => p.title.toLowerCase() === mod.title.toLowerCase()
+      );
+      if (matchPhase) {
+        mod.rooms.forEach((apiRoom) => {
+          if (apiRoom.completed) {
+            const matchRoom = matchPhase.rooms.find(
+              (r) => r.title.toLowerCase() === apiRoom.title.toLowerCase()
+            );
+            if (matchRoom) {
+              completedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
+            }
+          }
+        });
+      }
     });
+  }
+
+  const markRoomComplete = async (phId: string, rmId: string) => {
+    // Call backend API to save completion to database
+    try {
+      const phaseNum = parseInt(phId.replace('phase', ''), 10);
+      const roomNum = parseInt(rmId.replace('room', ''), 10);
+      const backendRoomId = phaseNum * 100 + roomNum;
+      
+      console.log(`🎯 Completing room: moduleId=${phaseNum}, roomId=${backendRoomId}`);
+      const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/complete`, {});
+      console.log('✅ Room completed in backend:', response.data);
+      
+      // Update completion CP earned for celebration
+      if (response.data?.reward?.points) {
+        setCompletionCpEarned(response.data.reward.points);
+      }
+      
+      // Refetch course data to get updated completion status
+      const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
+      const courseRes = await api.get(`/student/course${query}`);
+      if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
+      
+    } catch (err: any) {
+      console.error('❌ Failed to complete room in backend:', err?.response?.data || err);
+      addToast('Failed to mark room as complete', 'error');
+    }
   };
 
   // ── Load API data ──────────────────────────────────────────────────────────
@@ -423,6 +455,46 @@ const BootcampRoomPage: React.FC = () => {
     };
     load();
   }, [bootcampId]);
+
+  // ── Call session-open API when room loads ──────────────────────────────────
+  useEffect(() => {
+    console.log('🔍 Session-open check:', {
+      phaseId,
+      roomId,
+      bootcampId,
+      apiLoading,
+      bootcampStatus,
+      shouldCall: !(!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled')
+    });
+    
+    if (!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled') {
+      console.log('⏭️ Skipping session-open call');
+      return;
+    }
+    
+    // Map frontend IDs to backend IDs
+    // Frontend: phase1, phase2... → Backend: moduleId 1, 2...
+    // Frontend: room1, room2, room3... → Backend: roomId 101, 102, 103... (phase1), 201, 202... (phase2)
+    const phaseNum = parseInt(phaseId.replace('phase', ''), 10);
+    const roomNum = parseInt(roomId.replace('room', ''), 10);
+    
+    // Backend uses roomId format: moduleId * 100 + roomNum
+    // Phase 1: 101, 102, 103
+    // Phase 2: 201, 202, 203, 204
+    const backendRoomId = phaseNum * 100 + roomNum;
+    
+    const callSessionOpen = async () => {
+      try {
+        console.log(`🔄 Calling session-open: moduleId=${phaseNum}, roomId=${backendRoomId}`);
+        const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {});
+        console.log('✅ Room session opened - progress saved to backend', response.data);
+      } catch (err: any) {
+        console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err);
+      }
+    };
+    
+    callSessionOpen();
+  }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus]);
 
   // ── Redirect if not enrolled ───────────────────────────────────────────────
   useEffect(() => {
@@ -670,8 +742,9 @@ const BootcampRoomPage: React.FC = () => {
           onPassed={() => {
             setQuizPassed(true);
             setQuizOpen(false);
-            if (phaseId && roomId) markRoomComplete(phaseId, roomId);
-            setShowCompleteOverlay(true);
+            if (phaseId && roomId) markRoomComplete(phaseId, roomId).then(() => {
+              setShowCompleteOverlay(true);
+            });
           }}
         />
       )}
@@ -702,57 +775,21 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Room complete overlay */}
-      <AnimatePresence>
-        {showCompleteOverlay && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          >
-            <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: -10 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card p-10 text-center shadow-2xl"
-            >
-              <motion.div
-                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                transition={{ delay: 0.15, type: 'spring', stiffness: 400, damping: 20 }}
-                className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim"
-              >
-                <CheckCircle2 className="h-10 w-10 text-accent" />
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-                <p className="mb-2 text-[11px] font-black uppercase tracking-[0.3em] text-accent">Room Complete</p>
-                <h2 className="mb-3 text-2xl font-black text-text-primary">{room.title}</h2>
-                <p className="mb-8 text-base text-text-muted">
-                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)
-                    ? `Ready for the next room: ${nextRoom.title}`
-                    : "You've finished all available rooms in this phase."}
-                </p>
-                <div className="flex flex-col gap-3">
-                  {nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`) && (
-                    <button
-                      onClick={() => { setShowCompleteOverlay(false); handleNavigate(nextRoom.phaseId, nextRoom.roomId); }}
-                      className="btn-primary flex items-center justify-center gap-2 py-4 text-base font-black"
-                    >
-                      Next Room <ArrowRight className="h-5 w-5" />
-                    </button>
-                  )}
-                  <button
-                    onClick={() => { setShowCompleteOverlay(false); navigate(`/dashboard/bootcamps/${bootcampId}`); }}
-                    className="btn-secondary py-4 text-base"
-                  >
-                    Back to Curriculum
-                  </button>
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Room complete celebration */}
+      <RoomCompletionCelebration
+        show={showCompleteOverlay}
+        roomTitle={room.title}
+        cpEarned={completionCpEarned}
+        onClose={() => {
+          setShowCompleteOverlay(false);
+          // Navigate to next room or back to curriculum
+          if (nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)) {
+            handleNavigate(nextRoom.phaseId, nextRoom.roomId);
+          } else {
+            navigate(`/dashboard/bootcamps/${bootcampId}`);
+          }
+        }}
+      />
 
       {/* ── MAIN SPLIT LAYOUT ── */}
       {/*
@@ -1015,7 +1052,7 @@ const BootcampRoomPage: React.FC = () => {
 
                 {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     if (!isLastStep) {
                       goToStep(currentStepIdx + 1);
                     } else {
@@ -1024,7 +1061,7 @@ const BootcampRoomPage: React.FC = () => {
                       if (!quizPassed && quizModuleId) {
                         setQuizGateOpen(true);
                       } else {
-                        if (phaseId && roomId) markRoomComplete(phaseId, roomId);
+                        if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
                         setShowCompleteOverlay(true);
                       }
                     }

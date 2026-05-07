@@ -45,6 +45,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
   const started = Boolean(panel?.bootcampStarted);
   const unlockedModules: number[] = Array.isArray(panel?.unlockedModules) ? panel.unlockedModules : [];
   const enrolledStudents = Number(panel?.enrolledStudents || 0);
+  const activeStudents = Number(panel?.activeStudents || 0);
   const currentModule = panel?.currentModule || null;
   const nextModule = panel?.nextModule || null;
   const engagement = Number(panel?.engagement?.studentsInCurrentModule || 0);
@@ -52,10 +53,11 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
   return (
     <div className="w-full space-y-8">
       {/* Key metrics */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[
           { label: 'Enrolled students', value: enrolledStudents },
-          { label: 'Active in current phase', value: engagement },
+          { label: 'Active students', value: activeStudents },
+          { label: 'Engaged in current phase', value: engagement },
         ].map(({ label, value }) => (
           <div key={label} className="rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
             <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
