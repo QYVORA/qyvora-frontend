@@ -884,7 +884,7 @@ const BootcampRoomPage: React.FC = () => {
             }}
           >
             {/* Content area */}
-            <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 md:px-10 lg:px-12 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
               <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">
@@ -905,10 +905,10 @@ const BootcampRoomPage: React.FC = () => {
                 <span className="mb-2 block text-xs font-black uppercase tracking-[0.25em] text-accent">
                   {phase.codename} — {phase.title}
                 </span>
-                <h1 className="mb-4 text-3xl font-black leading-tight text-text-primary sm:text-4xl md:text-5xl break-words">
+                <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
                   {room.title}
                 </h1>
-                <p className="border-l-4 border-accent/50 pl-4 text-base md:text-lg leading-relaxed text-text-secondary">
+                <p className="border-l-4 border-accent/50 pl-4 text-sm sm:text-base leading-relaxed text-text-secondary">
                   {room.overview}
                 </p>
                 {/* NEW: Estimated time and session timer */}

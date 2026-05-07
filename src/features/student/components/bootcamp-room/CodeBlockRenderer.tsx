@@ -192,13 +192,26 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
 
         // Process inline code within the text segment
         const inlinePattern = /`([^`]+)`/g;
-        const parts: Array<{ type: 'text' | 'code'; content: string }> = [];
+        const boldPattern = /\*\*([^*]+)\*\*/g;
+        const parts: Array<{ type: 'text' | 'code' | 'bold'; content: string }> = [];
         let li = 0;
+        
+        // Combine both patterns
+        const combinedPattern = /(`[^`]+`|\*\*[^*]+\*\*)/g;
         let im: RegExpExecArray | null;
 
-        while ((im = inlinePattern.exec(seg.text)) !== null) {
+        while ((im = combinedPattern.exec(seg.text)) !== null) {
           if (im.index > li) parts.push({ type: 'text', content: seg.text.slice(li, im.index) });
-          parts.push({ type: 'code', content: im[1].trim() });
+          
+          const match = im[0];
+          if (match.startsWith('`')) {
+            // Inline code
+            parts.push({ type: 'code', content: match.slice(1, -1).trim() });
+          } else if (match.startsWith('**')) {
+            // Bold text
+            parts.push({ type: 'bold', content: match.slice(2, -2) });
+          }
+          
           li = im.index + im[0].length;
         }
         if (li < seg.text.length) parts.push({ type: 'text', content: seg.text.slice(li) });
@@ -210,6 +223,8 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
             {parts.map((part, partIdx) =>
               part.type === 'code'
                 ? <InlineCode key={partIdx} code={part.content} />
+                : part.type === 'bold'
+                ? <strong key={partIdx} className="font-bold text-text-primary">{part.content}</strong>
                 : <span key={partIdx}>{part.content}</span>
             )}
           </span>

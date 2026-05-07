@@ -25,7 +25,7 @@ const StepCard: React.FC<Props> = ({
 }) => (
   <div
     onClick={onClick}
-    className={`relative cursor-pointer rounded-xl border p-6 sm:p-8 transition-colors duration-150 overflow-hidden group ${
+    className={`relative cursor-pointer rounded-xl border p-5 sm:p-6 md:p-8 transition-colors duration-150 overflow-hidden group w-full ${
       isActive
         ? 'border-accent/40 bg-bg-card'
         : isViewed
@@ -82,7 +82,7 @@ const StepCard: React.FC<Props> = ({
       )}
     </div>
 
-    <p className={`text-base md:text-lg leading-relaxed transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'}`}>
+    <p className={`text-sm sm:text-base leading-relaxed sm:leading-relaxed transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'}`}>
       <CodeBlockRenderer text={step.instruction} />
     </p>
 
