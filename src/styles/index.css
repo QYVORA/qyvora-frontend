@@ -185,6 +185,32 @@
     }
   }
 
+  @media (max-width: 360px) {
+    h1,
+    .text-3xl {
+      line-height: 1.12 !important;
+      letter-spacing: -0.01em !important;
+    }
+
+    .text-\[11px\],
+    .text-xs {
+      font-size: 11px !important;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      justify-content: center;
+      min-height: 46px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .card-hsociety {
+      border-radius: 0.65rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

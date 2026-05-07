@@ -13,7 +13,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
 
   return (
     <section className="
-      relative py-16 bg-bg scanlines flex items-center has-bg-image
+      relative py-14 md:py-16 bg-bg scanlines flex items-center has-bg-image
       md:h-full md:overflow-hidden md:py-0
     ">
       {/* Background */}
@@ -116,7 +116,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 className="flex flex-row items-center justify-center gap-3 flex-wrap"
               >
                 <Link to="/register" className="btn-primary !px-8 !py-3 text-sm inline-flex items-center gap-2 flex-none">
-                  Start Training <ArrowRight className="w-4 h-4" />
+                  Start Free Module <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/login" className="btn-secondary !px-8 !py-3 text-sm flex-none">
                   Log In

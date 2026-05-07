@@ -28,7 +28,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
 
   return (
     <section className="
-      py-16 bg-bg relative isolate has-bg-image
+      py-14 md:py-16 bg-bg relative isolate has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
@@ -50,13 +50,13 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
               <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// THE ECONOMY</span>
               <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">Zero-Day Market</h2>
               <p className="text-text-secondary text-sm mb-4 leading-relaxed">
-                Earn Cyber Points by completing bootcamps and challenges. Use <CpLogo className="w-3.5 h-3.5 mx-1 inline-block" /> in the marketplace and track your progress on the leaderboard.
+                Earn Cyber Points by finishing lessons and challenges. Spend points in the market and track progress on the leaderboard.
               </p>
               <Link
-                to="/chain"
+                to="/zero-day-market"
                 className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent border border-accent/30 rounded-md px-3 py-1.5 mb-3 hover:bg-accent-dim transition-all"
               >
-                CP &amp; Chain <ArrowRight className="w-3 h-3" />
+                Open Market <ArrowRight className="w-3 h-3" />
               </Link>
 
               {/* Animated bullet list */}

@@ -81,7 +81,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-4 md:mb-3">
+          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.08] mb-4 md:mb-3">
             <span className="inline-block">
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
@@ -121,12 +121,28 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {SITE_CONFIG.brand.description}
           </motion.p>
 
+          {/* Trust + reassurance strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.45, delay: 1.15 }}
+            className="w-full max-w-lg mb-4 rounded-lg border border-border bg-bg-card/70 px-3 py-2.5"
+          >
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-text-muted">
+              <span>No prior experience required</span>
+              <span className="hidden sm:inline text-accent/60">•</span>
+              <span>Start with guided modules</span>
+              <span className="hidden sm:inline text-accent/60">•</span>
+              <span>Learn at your pace</span>
+            </div>
+          </motion.div>
+
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-5 md:mb-4"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-5 md:mb-4"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm">
@@ -135,7 +151,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ) : (
               <>
                 <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-sm !px-6">
-                  Start Training <ArrowRight className="w-4 h-4" />
+                  Start Free Module <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/login" className="btn-secondary text-sm !px-6 text-center">Log In</Link>
               </>
@@ -143,14 +159,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Terminal ticker */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 1.7 }}
-            className="font-mono text-[9px] md:text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden break-words"
-          >
-            {terminalText}<span className="animate-blink italic">_</span>
-          </motion.div>
+          {!constrainedDevice && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 1.7 }}
+              className="hidden sm:block font-mono text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden break-words"
+            >
+              {terminalText}<span className="animate-blink italic">_</span>
+            </motion.div>
+          )}
 
           {/* Mobile stats grid */}
           <div className="grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">

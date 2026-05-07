@@ -30,7 +30,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
   return (
     <section className="
-      py-20 bg-bg-card border-y border-border relative has-bg-image
+      py-14 md:py-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
@@ -58,10 +58,10 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               className="hidden md:block w-14 h-14 object-contain opacity-80 drop-shadow-[0_0_20px_var(--color-accent-glow)] flex-none"
             />
             <Link
-              to="/register"
+              to="/bootcamps"
               className="flex items-center gap-2 text-accent text-sm font-bold border-b border-accent/30 pb-1 hover:border-accent group w-fit transition-colors"
             >
-              View all <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              Explore bootcamps <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </ScrollReveal>
         </div>

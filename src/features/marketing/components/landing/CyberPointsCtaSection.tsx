@@ -60,7 +60,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
           <div className="order-1 lg:order-2 flex flex-col items-start">
             <ScrollReveal>
               <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// CYBER POINTS</span>
-              <h2 className="text-3xl md:text-2xl lg:text-4xl font-extrabold text-text-primary leading-[1.1] mb-3">
+              <h2 className="text-[1.65rem] md:text-2xl lg:text-4xl font-extrabold text-text-primary leading-[1.1] mb-3">
                 The Currency of<br />Skill &amp; Access
               </h2>
               <p className="text-text-secondary text-sm md:text-xs lg:text-sm mb-5 max-w-md leading-relaxed">
@@ -70,7 +70,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
               </p>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.1} className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mb-4">
+            <ScrollReveal delay={0.1} className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto mb-4">
               <Link to="/cyber-points" className="btn-primary text-sm !px-6 inline-flex items-center justify-center gap-2">
                 Learn About CP <ArrowRight className="w-4 h-4" />
               </Link>

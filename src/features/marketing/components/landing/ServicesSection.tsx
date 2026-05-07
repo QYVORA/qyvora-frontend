@@ -11,7 +11,7 @@ const ServicesSection: React.FC = () => {
 
   return (
     <section className="
-      py-16 bg-bg relative has-bg-image
+      py-14 md:py-16 bg-bg relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
@@ -32,7 +32,7 @@ const ServicesSection: React.FC = () => {
           </span>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-black text-text-primary">Security Services</h2>
+            <h2 className="text-[1.65rem] lg:text-4xl font-black text-text-primary">Security Services</h2>
               <p className="mt-1 text-sm text-text-muted max-w-xl">
                 Offensive-grade expertise for organisations that take security seriously.
               </p>
@@ -111,7 +111,7 @@ const ServicesSection: React.FC = () => {
                     ))}
                   </ul>
 
-                  <div className="mt-auto flex gap-1.5">
+                  <div className="mt-auto flex flex-col gap-1.5 min-[380px]:flex-row">
                     <a
                       href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`}
                       className="btn-primary !py-1.5 !px-2 text-[10px] flex items-center justify-center gap-1 flex-1"
@@ -148,7 +148,7 @@ const ServicesSection: React.FC = () => {
                 <h3 className="text-sm font-black text-text-primary">Not sure which service fits?</h3>
                 <p className="text-text-muted text-xs">Our security desk can map our capabilities to your threat model.</p>
               </div>
-              <div className="flex items-center gap-2 flex-none">
+              <div className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-none">
                 <a
                   href={`mailto:${SITE_CONFIG.contact.securityDeskEmail}`}
                   className="btn-primary text-xs !py-2 !px-4 inline-flex items-center gap-1.5"

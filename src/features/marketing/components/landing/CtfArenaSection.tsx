@@ -23,7 +23,7 @@ const CtfArenaSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-20 md:py-32 bg-bg border-y border-border relative overflow-hidden has-bg-image">
+    <section className="py-14 md:py-32 bg-bg border-y border-border relative overflow-hidden has-bg-image">
       {/* Background */}
       <img
         src="/assets/sections/backgrounds/ctf-bg.png"
@@ -39,10 +39,10 @@ const CtfArenaSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 gap-4">
           <ScrollReveal>
             <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// CTF ARENA</span>
-            <h2 className="text-3xl md:text-4xl text-text-primary font-bold leading-tight">
+            <h2 className="text-[1.65rem] md:text-4xl text-text-primary font-bold leading-tight">
               Hack With Your Browser.<br />
               <span className="text-accent">No VM. No Setup.</span>
             </h2>
@@ -72,7 +72,7 @@ const CtfArenaSection: React.FC = () => {
         </div>
 
         {/* Challenge type grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 md:gap-4 mb-8 md:mb-12">
           {CHALLENGE_TYPES.map((type, i) => (
             <motion.div
               key={type.label}
@@ -80,12 +80,12 @@ const CtfArenaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-              className="card-hsociety p-4 flex flex-col items-center text-center gap-2 group hover:border-accent/40 transition-all"
+              className="card-hsociety p-3 flex flex-col items-center text-center gap-1.5 group hover:border-accent/40 transition-all"
             >
               <div className={`p-2.5 rounded-lg bg-bg border border-border group-hover:border-accent/40 transition-colors ${type.color}`}>
                 <type.icon className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-text-primary leading-tight">{type.label}</span>
+              <span className="text-[10px] font-black uppercase tracking-wide text-text-primary leading-tight">{type.label}</span>
               <span className="text-[9px] text-text-muted leading-tight hidden sm:block">{type.desc}</span>
             </motion.div>
           ))}
@@ -113,11 +113,11 @@ const CtfArenaSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="relative z-10 flex flex-col sm:flex-row gap-3 shrink-0">
-              <Link to="/ctf" className="btn-secondary !px-6 !py-3 text-sm flex items-center gap-2">
+            <div className="relative z-10 flex w-full sm:w-auto flex-col sm:flex-row gap-2.5 shrink-0">
+              <Link to="/ctf" className="btn-secondary !px-6 !py-3 text-sm flex items-center justify-center gap-2">
                 <Trophy className="w-4 h-4" /> View Challenges
               </Link>
-              <Link to="/register" className="btn-primary !px-6 !py-3 text-sm flex items-center gap-2">
+              <Link to="/register" className="btn-primary !px-6 !py-3 text-sm flex items-center justify-center gap-2">
                 <Flag className="w-4 h-4" /> Start Hacking
               </Link>
             </div>

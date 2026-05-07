@@ -23,7 +23,7 @@ import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../s
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
   { label: 'Home',      icon: Home,     path: '/'           },
-  { label: 'Bootcamps', icon: Terminal, path: '/bootcamps'  },
+  { label: 'Learn', icon: Terminal, path: '/bootcamps'  },
   { label: 'CTF',       icon: Flag,     path: '/ctf'        },
 ];
 
@@ -105,7 +105,7 @@ const PublicBottomNav: React.FC = () => {
             strokeWidth={isActive('/zero-day-market') ? 2.5 : 1.8}
           />
           <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors ${isActive('/zero-day-market') ? 'text-accent' : 'text-text-muted'}`}>
-            Market
+            Store
           </span>
         </Link>
       </nav>
