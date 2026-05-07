@@ -25,7 +25,7 @@ const StepCard: React.FC<Props> = ({
 }) => (
   <div
     onClick={onClick}
-    className={`relative cursor-pointer rounded-xl border p-5 sm:p-6 md:p-8 transition-colors duration-150 overflow-hidden group w-full ${
+    className={`relative cursor-pointer rounded-xl border p-4 sm:p-5 md:p-6 transition-colors duration-150 overflow-hidden group w-full ${
       isActive
         ? 'border-accent/40 bg-bg-card'
         : isViewed
@@ -51,7 +51,7 @@ const StepCard: React.FC<Props> = ({
 
     <div className="mb-3 flex items-center gap-2.5">
       <div
-        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-base font-black transition-colors ${
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-sm font-black transition-colors ${
           isViewed && !isActive
             ? 'border-accent/40 bg-accent text-bg'
             : isActive
@@ -71,7 +71,7 @@ const StepCard: React.FC<Props> = ({
         </span>
       </div>
       {isActive && (
-        <span className="shrink-0 rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent">
+        <span className="shrink-0 rounded-full border border-accent/30 bg-accent-dim px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-accent">
           Active
         </span>
       )}

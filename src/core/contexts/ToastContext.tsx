@@ -29,7 +29,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <ToastContext.Provider value={{ addToast }}>
       {children}
       {/* Toast container — above mobile bottom nav, bottom-right on desktop */}
-      <div className="fixed bottom-[88px] md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[100] flex flex-col gap-2.5 pointer-events-none md:w-80">
+      <div
+        className="fixed bottom-[88px] md:bottom-8 left-4 right-4 md:left-auto md:right-8 z-[100] flex flex-col gap-2.5 pointer-events-none md:w-80"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
@@ -41,6 +45,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               className={`pointer-events-auto px-4 py-3.5 rounded-xl bg-bg-card border shadow-2xl flex items-start gap-3 w-full ${
                 toast.type === 'success' ? 'border-accent/40' : toast.type === 'error' ? 'border-red-500/40' : 'border-blue-500/40'
               }`}
+              role="status"
             >
               <div className={`flex-none mt-0.5 ${
                 toast.type === 'success' ? 'text-accent' : toast.type === 'error' ? 'text-red-400' : 'text-blue-400'

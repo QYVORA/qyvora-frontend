@@ -11,6 +11,7 @@ import ServicesSection from '../components/landing/ServicesSection';
 import SocialSection from '../components/landing/SocialSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
+import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -38,6 +39,8 @@ const SnapSection: React.FC<{
   className?: string;
 }> = ({ id, children, className = '' }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { constrainedDevice } = useAdaptiveUi();
+  const minimizeEffects = shouldReduceMotion || constrainedDevice;
   return (
     <section
       id={id}
@@ -48,10 +51,10 @@ const SnapSection: React.FC<{
       className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
     >
       <motion.div
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
+        initial={minimizeEffects ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.15 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
+        transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
         className="w-full md:h-full"
         data-snap-child=""
       >

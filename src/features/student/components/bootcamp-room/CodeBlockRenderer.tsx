@@ -86,7 +86,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
   return (
     <div className="my-4 rounded-xl border border-border overflow-hidden bg-[#0d0d0d]">
       {/* Header bar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border/60 bg-bg-card/80">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">
           <Terminal className="h-3.5 w-3.5 text-accent opacity-70" />
           <span className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
@@ -98,11 +98,11 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
 
       {/* Code area */}
       <div className="overflow-x-auto">
-        <pre className="px-5 py-4 text-sm font-mono leading-relaxed">
+        <pre className="px-3 py-3 text-sm font-mono leading-relaxed">
           {lines.map((line, lineIdx) => (
             <div key={lineIdx} className="flex">
               {/* Line number */}
-              <span className="select-none mr-5 text-[11px] text-text-muted/30 w-5 shrink-0 text-right">
+              <span className="select-none mr-3 text-[11px] text-text-muted/30 w-4 shrink-0 text-right">
                 {lineIdx + 1}
               </span>
               {/* Tokenised line */}

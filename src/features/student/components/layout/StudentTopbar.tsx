@@ -11,6 +11,7 @@ import Logo from '../../../../shared/components/brand/Logo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
+import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
 
 // ── Nav dropdown groups ──────────────────────────────────────────────────────
 const NAV_GROUPS = [
@@ -45,6 +46,75 @@ interface NotificationItem {
 
 const NOTIF_PREVIEW_LIMIT = 6;
 
+const MobileNotificationsSheet: React.FC<{
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  unreadCount: number;
+  notifLoading: boolean;
+  notificationsPreview: NotificationItem[];
+  markAllNotificationsRead: () => void;
+}> = ({
+  open,
+  onOpenChange,
+  unreadCount,
+  notifLoading,
+  notificationsPreview,
+  markAllNotificationsRead,
+}) => (
+  <BottomSheet open={open} onOpenChange={onOpenChange}>
+    <BottomSheetContent ariaLabel="Notifications" className="z-[70] md:hidden max-h-[75svh] flex flex-col">
+      <div className="flex justify-center pt-3 pb-1 flex-none">
+        <div className="w-10 h-1 rounded-full bg-border" />
+      </div>
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
+        <div>
+          <div className="text-sm font-black uppercase tracking-widest text-text-primary">Notifications</div>
+          <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
+        </div>
+        <div className="flex items-center gap-3">
+          {unreadCount > 0 && (
+            <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">
+              Mark all read
+            </button>
+          )}
+          <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
+            <X className="w-5 h-5" />
+          </BottomSheetClose>
+        </div>
+      </div>
+      <div className="flex-1 overflow-y-auto divide-y divide-border/50">
+        {notifLoading ? (
+          <div className="p-5 text-sm text-text-muted text-center">Loading...</div>
+        ) : notificationsPreview.length === 0 ? (
+          <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
+        ) : (
+          notificationsPreview.map((item) => (
+            <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
+                {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
+              </div>
+              <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
+              <div className="text-[10px] text-text-muted mt-1">
+                {item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      <div className="px-5 py-4 border-t border-border flex-none">
+        <Link
+          to="/dashboard/notifications"
+          onClick={() => onOpenChange(false)}
+          className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
+        >
+          View all notifications
+        </Link>
+      </div>
+    </BottomSheetContent>
+  </BottomSheet>
+);
+
 const StudentTopbar = () => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
@@ -75,7 +145,6 @@ const StudentTopbar = () => {
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const sheetRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
   const loadNotificationsSnapshot = async () => {
@@ -123,13 +192,6 @@ const StudentTopbar = () => {
     document.addEventListener('mousedown', onPointerDown);
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [notifOpen]);
-
-  useEffect(() => {
-    if (!moreOpen) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, [moreOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -241,66 +303,14 @@ const StudentTopbar = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Mobile bottom sheet for room-mode notifications */}
-              <AnimatePresence>
-                {notifOpen && (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      className="sm:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
-                      onClick={() => setNotifOpen(false)}
-                    />
-                    <motion.div
-                      initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-                      transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                      className="sm:hidden fixed bottom-0 left-0 right-0 z-[70] bg-bg-card border-t border-border rounded-t-2xl max-h-[75svh] flex flex-col"
-                      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                    >
-                      <div className="flex justify-center pt-3 pb-1 flex-none">
-                        <div className="w-10 h-1 rounded-full bg-border" />
-                      </div>
-                      <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
-                        <div>
-                          <div className="text-sm font-black uppercase tracking-widest text-text-primary">Notifications</div>
-                          <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          {unreadCount > 0 && (
-                            <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">Mark all read</button>
-                          )}
-                          <button onClick={() => setNotifOpen(false)} className="p-1.5 text-text-muted hover:text-accent transition-colors">
-                            <X className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex-1 overflow-y-auto divide-y divide-border/50">
-                        {notifLoading ? (
-                          <div className="p-5 text-sm text-text-muted text-center">Loading...</div>
-                        ) : notificationsPreview.length === 0 ? (
-                          <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
-                        ) : notificationsPreview.map((item) => (
-                          <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
-                              {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
-                            </div>
-                            <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="px-5 py-4 border-t border-border flex-none">
-                        <Link
-                          to="/dashboard/notifications"
-                          onClick={() => setNotifOpen(false)}
-                          className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
-                        >
-                          View all notifications
-                        </Link>
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
+              <MobileNotificationsSheet
+                open={notifOpen}
+                onOpenChange={setNotifOpen}
+                unreadCount={unreadCount}
+                notifLoading={notifLoading}
+                notificationsPreview={notificationsPreview}
+                markAllNotificationsRead={markAllNotificationsRead}
+              />
 
               <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
                 {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
@@ -450,77 +460,14 @@ const StudentTopbar = () => {
               </AnimatePresence>
             </div>
 
-            {/* Mobile notification bottom sheet — rendered outside the header via portal logic in AnimatePresence */}
-            <AnimatePresence>
-              {notifOpen && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
-                    onClick={() => setNotifOpen(false)}
-                  />
-                  <motion.div
-                    initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-                    transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                    className="md:hidden fixed bottom-0 left-0 right-0 z-[70] bg-bg-card border-t border-border rounded-t-2xl max-h-[75svh] flex flex-col"
-                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                  >
-                    {/* Handle */}
-                    <div className="flex justify-center pt-3 pb-1 flex-none">
-                      <div className="w-10 h-1 rounded-full bg-border" />
-                    </div>
-                    {/* Header */}
-                    <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
-                      <div>
-                        <div className="text-sm font-black uppercase tracking-widest text-text-primary">Notifications</div>
-                        <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {unreadCount > 0 && (
-                          <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent">
-                            Mark all read
-                          </button>
-                        )}
-                        <button onClick={() => setNotifOpen(false)} className="p-1.5 text-text-muted hover:text-accent transition-colors">
-                          <X className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                    {/* List */}
-                    <div className="flex-1 overflow-y-auto divide-y divide-border/50">
-                      {notifLoading ? (
-                        <div className="p-5 text-sm text-text-muted text-center">Loading...</div>
-                      ) : notificationsPreview.length === 0 ? (
-                        <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
-                      ) : (
-                        notificationsPreview.map((item) => (
-                          <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
-                              {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}
-                            </div>
-                            <p className="text-xs text-text-secondary line-clamp-2 mt-1">{item.message}</p>
-                            <div className="text-[10px] text-text-muted mt-1">
-                              {item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                    {/* Footer */}
-                    <div className="px-5 py-4 border-t border-border flex-none">
-                      <Link
-                        to="/dashboard/notifications"
-                        onClick={() => setNotifOpen(false)}
-                        className="block w-full text-center py-3 rounded-xl border border-accent/30 text-sm font-bold text-accent hover:bg-accent-dim transition-colors"
-                      >
-                        View all notifications
-                      </Link>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+            <MobileNotificationsSheet
+              open={notifOpen}
+              onOpenChange={setNotifOpen}
+              unreadCount={unreadCount}
+              notifLoading={notifLoading}
+              notificationsPreview={notificationsPreview}
+              markAllNotificationsRead={markAllNotificationsRead}
+            />
 
             {/* Profile avatar */}
             <Link
@@ -586,21 +533,8 @@ const StudentTopbar = () => {
       </nav>
 
       {/* ── Mobile "More" bottom sheet ── */}
-      <AnimatePresence>
-        {moreOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden"
-              onClick={() => setMoreOpen(false)}
-            />
-            <motion.div
-              ref={sheetRef}
-              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed bottom-0 left-0 right-0 z-[70] md:hidden bg-bg-card border-t border-border rounded-t-2xl max-h-[82svh] overflow-y-auto"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-            >
+      <BottomSheet open={moreOpen} onOpenChange={setMoreOpen}>
+        <BottomSheetContent ariaLabel="Account and navigation options" className="z-[70]">
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-border" />
               </div>
@@ -616,20 +550,21 @@ const StudentTopbar = () => {
                     <div className="text-[10px] text-text-muted">{user?.rank || 'Candidate'}</div>
                   </div>
                 </div>
-                <button onClick={() => setMoreOpen(false)} className="p-2 text-text-muted hover:text-accent transition-colors">
+                <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors">
                   <X className="w-5 h-5" />
-                </button>
+                </BottomSheetClose>
               </div>
 
               {/* Nav grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4">
                 {MOBILE_MORE.map((item) => {
                   const active = location.pathname === item.path;
-                  const isNotif = item.path === '/notifications';
+                  const isNotif = item.path === '/dashboard/notifications';
                   return (
                     <Link
                       key={item.path}
                       to={item.path}
+                      onClick={() => setMoreOpen(false)}
                       className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border transition-all active:scale-95 ${
                         active ? 'bg-accent-dim border-accent/30 text-accent' : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
                       }`}
@@ -655,10 +590,8 @@ const StudentTopbar = () => {
                   <LogOut className="w-4 h-4" /> Log Out
                 </button>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+        </BottomSheetContent>
+      </BottomSheet>
       </>
       )} {/* end !isRoomPage */}
     </>

@@ -13,12 +13,14 @@ type Mode = 'login' | 'register' | 'forgot' | 'reset-confirm' | 'verify-email' |
 const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base';
 
 const PasswordInput = ({
+  id,
   name,
   placeholder = '••••••••',
   required = true,
   shake = false,
   onAnimationEnd,
 }: {
+  id?: string;
   name: string;
   placeholder?: string;
   required?: boolean;
@@ -32,6 +34,7 @@ const PasswordInput = ({
       onAnimationEnd={onAnimationEnd}
     >
       <input
+        id={id}
         type={show ? 'text' : 'password'}
         name={name}
         required={required}
@@ -42,9 +45,9 @@ const PasswordInput = ({
       <button
         type="button"
         onClick={() => setShow((s) => !s)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors"
-        tabIndex={-1}
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         aria-label={show ? 'Hide password' : 'Show password'}
+        aria-pressed={show}
       >
         {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
       </button>
@@ -104,6 +107,7 @@ const Login: React.FC = () => {
 
   const [mode, setMode] = useState<Mode>(initialMode);
   const [isLoading, setIsLoading] = useState(false);
+  const [formMessage, setFormMessage] = useState('');
   const [shakePassword, setShakePassword] = useState(false);
   const [resetEmail, setResetEmail] = useState(urlEmail);
   const [verifyEmail, setVerifyEmail] = useState(urlEmail);
@@ -128,6 +132,7 @@ const Login: React.FC = () => {
         await api.post('/auth/password-reset/request', { email });
         setResetEmail(email);
         addToast('If that email exists, a reset token has been stored. Use it below.', 'success');
+        setFormMessage('If the account exists, we sent reset instructions. Continue with the token form.');
         setMode('reset-confirm');
 
       } else if (mode === 'reset-confirm') {
@@ -144,12 +149,14 @@ const Login: React.FC = () => {
           password: newPassword,
         });
         addToast('Password reset successful. Log in with your new credentials.', 'success');
+        setFormMessage('Password reset successful. You can now log in.');
         setMode('login');
 
       } else if (mode === 'verify-email') {
         const token = String(formData.get('token') || urlToken);
         await api.post('/auth/verify-email/confirm', { token });
         addToast('Email verified. You can now log in.', 'success');
+        setFormMessage('Email verified successfully.');
         setMode('login');
 
       } else if (mode === 'change-password') {
@@ -166,6 +173,7 @@ const Login: React.FC = () => {
           setAccessToken(res.data.token);
         }
         addToast('Password changed. Session established.', 'success');
+        setFormMessage('Password changed successfully.');
         const meRes = await api.get('/auth/me').catch(() => null);
         if (String(meRes?.data?.role || '').toLowerCase() === 'admin') {
           navigate('/mr-robot/dashboard');
@@ -189,6 +197,7 @@ const Login: React.FC = () => {
         });
         await login({ email, password });
         addToast('Session established. Welcome, Operator.', 'success');
+        setFormMessage('Account created successfully.');
         navigate('/dashboard');
 
       } else {
@@ -206,6 +215,7 @@ const Login: React.FC = () => {
           return;
         }
         addToast('Session established. Welcome back, Operator.', 'success');
+        setFormMessage('Login successful.');
         navigate('/dashboard');
       }
     } catch (err: any) {
@@ -217,6 +227,7 @@ const Login: React.FC = () => {
         return;
       }
       const msg = err?.response?.data?.error || 'Authentication failed. Check credentials.';
+      setFormMessage(msg);
       if (err?.response?.data?.verificationRequired) {
         setVerifyEmail(String((e.currentTarget as HTMLFormElement).querySelector<HTMLInputElement>('[name="email"]')?.value || ''));
         addToast('Email not verified. Enter your verification token below.', 'error');
@@ -273,16 +284,17 @@ const Login: React.FC = () => {
                     {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
                   </h1>
                   <p className={`text-base ${isAdminLoginRoute ? 'text-text-muted' : 'text-text-muted'}`}>
-                    {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Enter credentials to establish secure session.'}
+                    {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Sign in to continue your training.'}
                   </p>
                 </div>
 
-                <form className="space-y-5" onSubmit={handleSubmit}>
+                <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+                  <p className="sr-only" aria-live="polite">{formMessage}</p>
                   {/* Email */}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label htmlFor="login-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
-                      <input type="email" name="email" required placeholder="operator@hsociety.africa"
+                      <input id="login-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
@@ -291,12 +303,13 @@ const Login: React.FC = () => {
                   {/* Password */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
+                      <label htmlFor="login-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
                       {!isAdminLoginRoute && (
-                        <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
+                      <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
                       )}
                     </div>
                     <PasswordInput
+                      id="login-password"
                       name="password"
                       shake={shakePassword}
                       onAnimationEnd={() => setShakePassword(false)}
@@ -309,14 +322,14 @@ const Login: React.FC = () => {
                         ? 'bg-bg-card border border-border text-text-primary hover:border-accent/40'
                         : 'btn-primary'
                     }`}>
-                    {isLoading ? 'Authenticating...' : 'Establish Session'} <LogIn className="w-5 h-5" />
+                    {isLoading ? 'Signing you in...' : 'Sign In'} <LogIn className="w-5 h-5" />
                   </button>
                 </form>
 
                 {!isAdminLoginRoute && (
                   <p className="mt-8 text-center text-base text-text-muted">
-                    No operator UID?{' '}
-                    <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Request Access</button>
+                    New here?{' '}
+                    <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Create account</button>
                   </p>
                 )}
               </motion.div>
@@ -330,50 +343,50 @@ const Login: React.FC = () => {
               >
                 <div className="mb-8">
                   <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Request Access</h1>
-                  <p className="text-text-muted text-base">Create your operator identity.</p>
+                  <p className="text-text-muted text-base">Create your account to start learning.</p>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
+                    <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
                     <div className="relative">
-                      <input type="text" name="handle" required placeholder="hsociety_operator"
+                      <input id="register-handle" type="text" name="handle" required autoComplete="username" placeholder="hsociety_operator"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
+                    <label htmlFor="register-full-name" className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
                     <div className="relative">
-                      <input type="text" name="full_name" required placeholder="Operator Name"
+                      <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Operator Name"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label htmlFor="register-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
-                      <input type="email" name="email" required placeholder="operator@hsociety.africa"
+                      <input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
-                    <PasswordInput name="password" />
+                    <label htmlFor="register-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
+                    <PasswordInput id="register-password" name="password" />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput name="confirm_password" />
+                    <label htmlFor="register-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <PasswordInput id="register-confirm-password" name="confirm_password" />
                   </div>
 
                   <button type="submit" disabled={isLoading}
                     className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Initialising...' : 'Create Operator Account'} <LogIn className="w-5 h-5" />
+                    {isLoading ? 'Creating account...' : 'Create Account'} <LogIn className="w-5 h-5" />
                   </button>
                 </form>
 
@@ -395,15 +408,15 @@ const Login: React.FC = () => {
                 </button>
 
                 <div className="mb-8">
-                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Credentials</h1>
-                  <p className="text-text-muted text-base">Enter your email to initiate a password reset.</p>
+                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Password</h1>
+                  <p className="text-text-muted text-base">Enter your email and we will help you reset your password.</p>
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
+                    <label htmlFor="forgot-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
                     <div className="relative">
-                      <input type="email" name="email" required placeholder="operator@hsociety.africa"
+                      <input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
@@ -411,7 +424,7 @@ const Login: React.FC = () => {
 
                   <button type="submit" disabled={isLoading}
                     className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Processing...' : 'Request Reset'} <Send className="w-5 h-5" />
+                    {isLoading ? 'Submitting...' : 'Send Reset Instructions'} <Send className="w-5 h-5" />
                   </button>
                 </form>
 
@@ -437,29 +450,29 @@ const Login: React.FC = () => {
                 </div>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
+                    <label htmlFor="reset-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
                     <div className="relative">
-                      <input type="email" name="email" required defaultValue={resetEmail} placeholder="operator@hsociety.africa"
+                      <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={resetEmail} placeholder="operator@hsociety.africa"
                         onChange={(e) => setResetEmail(e.target.value)}
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
+                    <label htmlFor="reset-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
                     <div className="relative">
-                      <input type="text" name="token" required defaultValue={urlToken} placeholder="Paste reset token here"
+                      <input id="reset-token" type="text" name="token" required defaultValue={urlToken} placeholder="Paste reset token here"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
-                    <PasswordInput name="new_password" placeholder="Min 8 characters" />
+                    <label htmlFor="reset-new-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
+                    <PasswordInput id="reset-new-password" name="new_password" placeholder="Min 8 characters" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput name="confirm_password" />
+                    <label htmlFor="reset-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <PasswordInput id="reset-confirm-password" name="confirm_password" />
                   </div>
                   <button type="submit" disabled={isLoading}
                     className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
@@ -486,9 +499,9 @@ const Login: React.FC = () => {
                 </div>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Verification Token</label>
+                    <label htmlFor="verify-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Verification Token</label>
                     <div className="relative">
-                      <input type="text" name="token" required defaultValue={urlToken} placeholder="Paste verification token"
+                      <input id="verify-token" type="text" name="token" required defaultValue={urlToken} placeholder="Paste verification token"
                         className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                       <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
@@ -537,21 +550,21 @@ const Login: React.FC = () => {
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   {!urlToken && (
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Change Token</label>
+                      <label htmlFor="change-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Change Token</label>
                       <div className="relative">
-                        <input type="text" name="change_token" required placeholder="Paste token from login response"
+                        <input id="change-token" type="text" name="change_token" required placeholder="Paste token from login response"
                           className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
                         <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                       </div>
                     </div>
                   )}
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
-                    <PasswordInput name="new_password" placeholder="Min 8 characters" />
+                    <label htmlFor="change-new-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
+                    <PasswordInput id="change-new-password" name="new_password" placeholder="Min 8 characters" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput name="confirm_password" />
+                    <label htmlFor="change-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+                    <PasswordInput id="change-confirm-password" name="confirm_password" />
                   </div>
                   <button type="submit" disabled={isLoading}
                     className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">

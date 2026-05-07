@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
 import { Flag, Loader2 } from 'lucide-react';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
+import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
 interface Props {
   phaseId: string;
@@ -41,18 +41,11 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <motion.div
-        initial={{ scale: 0.92, opacity: 0, y: 16 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.92, opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-bg-card p-6 shadow-2xl"
-      >
+    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent title="Report Issue" maxWidth="max-w-md">
         <div className="flex items-center gap-2 mb-4">
           <Flag className="h-4 w-4 text-accent" />
-          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Report Issue</h3>
+          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Room Feedback</h3>
         </div>
         <p className="text-sm text-text-muted mb-4">
           Found a typo, broken image, or unclear instruction? Let us know and we'll fix it.
@@ -78,8 +71,8 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
             Cancel
           </button>
         </div>
-      </motion.div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
