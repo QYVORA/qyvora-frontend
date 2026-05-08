@@ -84,6 +84,15 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="bg-bg">
+      {/* Mobile-first header (right section header shown before sidebar content) */}
+      <div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
+        <ScrollReveal className="mb-8">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
+          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
+          <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
+        </ScrollReveal>
+      </div>
+
       {/* Fixed two-column container below topbar */}
       <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
 
@@ -184,7 +193,7 @@ const Notifications: React.FC = () => {
           <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
 
             {/* Page header */}
-            <ScrollReveal className="mb-10 md:mb-12">
+            <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
               <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Comms</span>
               <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
               <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>

@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
 import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedinIcon';
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
-import { useTheme } from '../../../../core/contexts/ThemeContext';
-import { DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
 const FOOTER_COLS = [
   {
@@ -33,57 +32,26 @@ const FOOTER_COLS = [
 ];
 
 const Footer: React.FC = () => {
-  const { theme } = useTheme();
-  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
+  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>(
+    FOOTER_COLS.reduce((acc, col) => ({ ...acc, [col.heading]: false }), {}),
+  );
+
+  const toggleSection = (heading: string) => {
+    setOpenSections((prev) => ({ ...prev, [heading]: !prev[heading] }));
+  };
 
   return (
     <footer className="
       relative bg-bg border-t border-border flex flex-col
+      pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0
       md:h-full md:overflow-hidden
     ">
-
-      {/* ── Logo banner — full-width, prominent ── */}
-      <div className="footer-logo-banner relative w-full overflow-hidden flex-none
-        h-[120px] sm:h-[150px] md:h-[38%]
-        border-b border-border/40
-      ">
-        {/* Subtle dot grid behind the logo */}
-        <div className="absolute inset-0 dot-grid opacity-[0.06] pointer-events-none" />
-        {/* Accent glow */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at center, var(--color-accent-dim) 0%, transparent 65%)' }}
-        />
-        {/* Logo — spans the full banner width */}
-        <img
-          src={logoSrc}
-          alt="HSociety"
-          className="absolute inset-0 w-full h-full object-contain px-6 md:px-12 lg:px-20"
-          style={{ objectPosition: 'center' }}
-        />
-        {/* Tagline overlay — bottom-left */}
-        <div className="absolute bottom-3 left-4 md:bottom-4 md:left-8">
-          <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-text-muted">
-            Africa's Offensive Security Platform
-          </p>
-        </div>
-        {/* Top accent line */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
-        />
-      </div>
-
-      {/* ── Nav columns + social ── */}
-      <div className="flex-1 min-h-0 flex flex-col justify-between">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 w-full pt-5 md:pt-4 pb-3">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+      <div className="flex-1 min-h-0 flex flex-col">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 w-full pt-5 md:pt-6 pb-3">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6">
 
             {/* Brand + social */}
-            <div className="col-span-2 sm:col-span-2 md:col-span-2 flex flex-col gap-3">
-              <p className="text-text-secondary text-xs leading-relaxed max-w-xs">
-                {SITE_CONFIG.brand.description}
-              </p>
+            <div className="md:col-span-2 flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 {[
                   { icon: BrandLinkedinIcon, href: SITE_CONFIG.social.find((i) => i.key === 'linkedin')?.href || '#', label: 'LinkedIn'  },
@@ -98,13 +66,20 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Nav columns */}
+            {/* Nav columns as dropdowns */}
             {FOOTER_COLS.map((col) => (
-              <div key={col.heading}>
-                <h4 className="text-accent font-bold uppercase tracking-widest text-[9px] mb-2.5">{col.heading}</h4>
-                <ul className="grid grid-cols-1 gap-y-1.5">
+              <div key={col.heading} className="rounded-lg bg-bg-card/30 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleSection(col.heading)}
+                  className="w-full px-3 py-2.5 flex items-center justify-between text-left hover:bg-bg-card/70 transition-colors"
+                >
+                  <h4 className="text-accent font-bold uppercase tracking-widest text-[9px]">{col.heading}</h4>
+                  <ChevronDown className={`w-3.5 h-3.5 text-accent transition-transform ${openSections[col.heading] ? 'rotate-180' : ''}`} />
+                </button>
+                <ul className={`${openSections[col.heading] ? 'block' : 'hidden'} px-3 pb-3 grid grid-cols-1 gap-y-1.5`}>
                   {col.links.map((link) => (
-                    <li key={link.label}>
+                    <li key={link.label} className="pt-1.5 first:pt-2">
                       <Link to={link.path} className="text-text-secondary hover:text-accent text-[10px] transition-colors">
                         {link.label}
                       </Link>
@@ -126,7 +101,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-
     </footer>
   );
 };
