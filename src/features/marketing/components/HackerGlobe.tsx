@@ -605,31 +605,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       sats.push({ dot, trailGeo, trailPts, head: 0, ...cfg });
     });
 
-    /* ── Drag / inertia ── */
-    let drag = false, prev = { x:0, y:0 }, vel = { x:0, y:0 };
-    const onMD = (e: MouseEvent)  => { drag=true; prev={x:e.clientX,y:e.clientY}; renderer.domElement.style.cursor = 'grabbing'; };
-    const onMM = (e: MouseEvent)  => { if(!drag) return; vel.y=(e.clientX-prev.x)*0.005; vel.x=(e.clientY-prev.y)*0.005; prev={x:e.clientX,y:e.clientY}; };
-    const onMU = ()                => { drag=false; renderer.domElement.style.cursor = 'grab'; };
-    const onTS = (e: TouchEvent)  => {
-      if (!e.touches.length) return;
-      drag=true;
-      prev={x:e.touches[0].clientX,y:e.touches[0].clientY};
-    };
-    const onTM = (e: TouchEvent)  => {
-      if(!drag || !e.touches.length) return;
-      vel.y=(e.touches[0].clientX-prev.x)*0.005;
-      vel.x=(e.touches[0].clientY-prev.y)*0.005;
-      prev={x:e.touches[0].clientX,y:e.touches[0].clientY};
-    };
-    const onTE = () => { drag=false; renderer.domElement.style.cursor = 'grab'; };
-    renderer.domElement.addEventListener('mousedown', onMD);
-    window.addEventListener('mousemove', onMM);
-    window.addEventListener('mouseup', onMU);
-    renderer.domElement.addEventListener('mouseleave', onMU);
-    renderer.domElement.addEventListener('touchstart', onTS, {passive:true});
-    window.addEventListener('touchmove', onTM, {passive:true});
-    window.addEventListener('touchend', onTE);
-    window.addEventListener('touchcancel', onTE);
+    /* ── Auto-rotation only (no user drag control) ── */
 
     /* ── Tooltip ── */
     const raycaster = new THREE.Raycaster();
@@ -679,14 +655,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       // delta-time scaled rotation — smooth at any frame rate, no skipping
       const rotStep = dt * 0.00336;
 
-      if (!drag) {
-        globe.rotation.y += rotStep + vel.y * 0.12;
-        globe.rotation.x  = Math.max(-Math.PI/3, Math.min(Math.PI/3, globe.rotation.x + vel.x*0.12));
-        vel.x *= 0.93; vel.y *= 0.93;
-      } else {
-        globe.rotation.y += vel.y;
-        globe.rotation.x  = Math.max(-Math.PI/3, Math.min(Math.PI/3, globe.rotation.x + vel.x));
-      }
+      globe.rotation.y += rotStep;
 
       pings.forEach(({ ring, isHome, phase }) => {
         const spd = isHome ? 1.3 : 1.9;
@@ -730,14 +699,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
-      window.removeEventListener('mousemove', onMM);
-      window.removeEventListener('mouseup', onMU);
-      window.removeEventListener('touchmove', onTM);
-      window.removeEventListener('touchend', onTE);
-      window.removeEventListener('touchcancel', onTE);
-      renderer.domElement.removeEventListener('mousedown', onMD);
-      renderer.domElement.removeEventListener('mouseleave', onMU);
-      renderer.domElement.removeEventListener('touchstart', onTS);
       renderer.domElement.removeEventListener('mousemove', onHover);
       scene.traverse((obj) => {
         const mesh = obj as THREE.Mesh;
@@ -752,7 +713,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   }, [scale, theme]);
 
   return (
-    <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'grab', willChange: 'transform', contain: 'strict' }}>
+    <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'default', willChange: 'transform', contain: 'strict' }}>
       {/* CSS atmospheric glow rings — centered square to keep perfect circle */}
       <div className="absolute left-1/2 top-1/2 w-[88%] max-w-full aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <div className="absolute inset-0" style={{

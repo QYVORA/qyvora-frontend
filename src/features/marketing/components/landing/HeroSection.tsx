@@ -155,12 +155,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           )}
 
           {/* Phone-only hemisphere globe (replaces stats cards) */}
-          <div className="md:hidden mt-3 w-full max-w-[360px] mx-auto relative overflow-hidden rounded-t-[999px] border border-border/70 bg-bg-card/40">
-            <div className="relative w-full aspect-[2.25/1]">
-              <div className="absolute inset-x-0 top-0 mx-auto w-full max-w-[360px] aspect-square">
+          <div className="md:hidden mt-3 w-full max-w-[420px] mx-auto relative overflow-hidden rounded-t-[999px] bg-bg-card/40">
+            <div className="relative w-full aspect-[2.35/1]">
+              <div className="absolute inset-x-0 top-0 mx-auto w-full max-w-[420px] aspect-square">
                 {!shouldReduceMotion && (
                   <Suspense fallback={null}>
-                    <HackerGlobe scale={0.92} />
+                    <HackerGlobe scale={1.04} />
                   </Suspense>
                 )}
               </div>
@@ -186,7 +186,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Phone-only stats strip — final element at bottom of hero stack */}
-          <div className="md:hidden mt-auto pt-3 w-full border border-border/60 bg-bg/55 backdrop-blur-sm rounded-xl overflow-hidden">
+          <div className="md:hidden mt-auto -mt-3 w-full border border-border/60 bg-bg/85 backdrop-blur-sm rounded-xl overflow-hidden relative z-20">
             <div className="flex items-stretch divide-x divide-border/60">
               {heroStats.map((s, i) => (
                 <div key={i} className="flex-1 px-2.5 py-2.5 text-center min-w-0">
