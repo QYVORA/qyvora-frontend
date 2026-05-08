@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, ArrowRight, Zap, Link2, Flag } from 'lucide-react';
+import { ChevronDown, Shield, ShoppingBag, Terminal, Mail, Trophy, LayoutDashboard, Lock, Zap, Link2, Flag, Maximize2, Minimize2 } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import Logo from '../../../../shared/components/brand/Logo';
@@ -42,11 +42,28 @@ const NAV_GROUPS = [
 const Navbar: React.FC = () => {
   const { user } = useAuth();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const scrollY = useScrollY();
   const location = useLocation();
   const isScrolled = scrollY > 80;
 
   useEffect(() => { setActiveDropdown(null); }, [location]);
+
+  useEffect(() => {
+    const syncFullscreen = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    syncFullscreen();
+    document.addEventListener('fullscreenchange', syncFullscreen);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreen);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen();
+    } catch {
+      // Ignore when fullscreen is blocked by browser policy.
+    }
+  };
   return (
     <nav 
       className={`fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
@@ -145,6 +162,18 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
+        {/* Right controls */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <button
+            type="button"
+            onClick={() => void toggleFullscreen()}
+            className="h-10 w-10 md:h-11 md:w-11 rounded-xl border border-border bg-bg-card/70 text-text-muted hover:text-accent hover:border-accent/40 transition-colors flex items-center justify-center"
+            aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+          >
+            {isFullscreen ? <Minimize2 className="w-4 h-4 md:w-5 md:h-5" /> : <Maximize2 className="w-4 h-4 md:w-5 md:h-5" />}
+          </button>
+
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center space-x-3">
           {user ? (
@@ -168,6 +197,7 @@ const Navbar: React.FC = () => {
               </Link>
             </>
           )}
+        </div>
         </div>
 
       </div>

@@ -67,7 +67,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           md:min-h-0 md:h-full"
       >
         {/* Left column */}
-        <div className="flex flex-col items-start w-full min-h-[calc(100vh-128px)] md:min-h-0 lg:pr-6">
+        <div className="flex flex-col items-start w-full lg:pr-6">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -185,21 +185,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ))}
           </div>
 
-          {/* Phone-only stats strip — final element at bottom of hero stack */}
-          <div className="md:hidden mt-auto -mt-3 w-full border border-border/60 bg-bg/85 backdrop-blur-sm rounded-xl overflow-hidden relative z-20">
-            <div className="flex items-stretch divide-x divide-border/60">
-              {heroStats.map((s, i) => (
-                <div key={i} className="flex-1 px-2.5 py-2.5 text-center min-w-0">
-                  <div className="text-sm font-bold text-accent font-mono leading-none truncate">
-                    <StatCounter end={s.value} suffix={s.suffix} />
-                  </div>
-                  <div className="text-[8px] uppercase tracking-widest text-text-muted mt-1 leading-tight truncate">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Globe — lg+ only */}
