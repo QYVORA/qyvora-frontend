@@ -153,9 +153,19 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 
   return (
     <section className="
-      py-20 bg-bg-card border-y border-border relative
+      py-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
+      <img
+        src="/assets/sections/backgrounds/offsec-grid-background.webp"
+        alt=""
+        aria-hidden="true"
+        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.13] pointer-events-none"
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
 
         {/* Header */}

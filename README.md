@@ -92,18 +92,27 @@ src/
         └── resolveImg.ts
 
 public/
+├── assets/
+│   ├── bootcamp/               # Bootcamp covers + phase/room visuals
+│   ├── branding/               # Logos + chain branding assets
+│   ├── illustrations/          # UI illustration assets
+│   ├── sections/               # Section backgrounds and service/curriculum images
+│   └── social/                 # Social card thumbnails
 ├── images/
-│   ├── bootcamp-room-images/   # Per-phase room card images
-│   ├── cp-images/              # Cyber Points logo + visual
-│   ├── HSOCIETY_LOGO.png       # Main dark logo
-│   ├── HSOCIETY_LOGO_LIGHT.png # Main light logo
-│   ├── HSOCIETY-H-LOGO.webp    # H mark only
-│   ├── HSOCIETY_CHAIN_LOGO.png # Chain logo 512×512
-│   └── HPB-image.png           # Hacker Protocol Bootcamp hero image
-├── HPB-Walkthrough-images/     # Step-by-step walkthrough images
+│   └── student/                # Student dashboard mascots
+├── walkthrough/
+│   └── hpb/                    # Step-by-step walkthrough images by phase/room
+├── system/
+│   ├── _headers
+│   ├── _redirects
+│   └── robots.txt
 ├── _headers                    # Netlify/Vercel response headers
 ├── _redirects                  # Netlify SPA redirect rule
 └── robots.txt
+
+docs/
+├── CTF_PLAN.md
+└── frontend-audits/            # Architecture notes and implementation audit docs
 ```
 
 ## Routes

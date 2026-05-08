@@ -199,13 +199,14 @@ const AdminTopbar = () => {
                         transition={{ duration: 0.15 }}
                         className="absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80] left-0 right-auto max-w-[calc(100vw-2rem)]"
                       >
+                        <div className="space-y-1.5">
                         {group.items.map((item) => {
                           const active = isTabActive(item.path);
                           return (
                             <Link
                               key={item.path}
                               to={item.path}
-                              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                              className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-transparent transition-colors ${
                                 active
                                   ? 'bg-accent-dim text-accent'
                                   : 'text-text-secondary hover:bg-accent-dim/60 hover:text-text-primary'
@@ -219,6 +220,7 @@ const AdminTopbar = () => {
                             </Link>
                           );
                         })}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>

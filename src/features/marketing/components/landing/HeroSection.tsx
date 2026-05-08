@@ -63,11 +63,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-48
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-40 lg:pb-56 xl:pb-52
           md:min-h-0 md:h-full"
       >
         {/* Left column */}
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start w-full min-h-[calc(100vh-128px)] md:min-h-0 lg:pr-6">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -126,7 +126,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-5 md:mb-4"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-5 md:mb-6 lg:mb-8"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm">
@@ -154,8 +154,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.div>
           )}
 
-          {/* Mobile stats grid */}
-          <div className="grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">
+          {/* Phone-only hemisphere globe (replaces stats cards) */}
+          <div className="md:hidden mt-3 w-full max-w-[360px] mx-auto relative overflow-hidden rounded-t-[999px] border border-border/70 bg-bg-card/40">
+            <div className="relative w-full aspect-[2.25/1]">
+              <div className="absolute inset-x-0 top-0 mx-auto w-full max-w-[360px] aspect-square">
+                {!shouldReduceMotion && (
+                  <Suspense fallback={null}>
+                    <HackerGlobe scale={0.92} />
+                  </Suspense>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Tablet stats grid */}
+          <div className="hidden md:grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}
@@ -170,6 +183,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="text-[9px] uppercase tracking-widest text-text-muted mt-1">{s.label}</div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Phone-only stats strip — final element at bottom of hero stack */}
+          <div className="md:hidden mt-auto pt-3 w-full border border-border/60 bg-bg/55 backdrop-blur-sm rounded-xl overflow-hidden">
+            <div className="flex items-stretch divide-x divide-border/60">
+              {heroStats.map((s, i) => (
+                <div key={i} className="flex-1 px-2.5 py-2.5 text-center min-w-0">
+                  <div className="text-sm font-bold text-accent font-mono leading-none truncate">
+                    <StatCounter end={s.value} suffix={s.suffix} />
+                  </div>
+                  <div className="text-[8px] uppercase tracking-widest text-text-muted mt-1 leading-tight truncate">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

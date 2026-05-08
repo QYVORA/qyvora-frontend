@@ -19,7 +19,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/sections/backgrounds/employee-training-bg.webp"
+          src="/assets/sections/backgrounds/cta-background.webp"
           alt=""
           className="w-full h-full object-cover grayscale opacity-20"
         />

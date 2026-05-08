@@ -366,13 +366,14 @@ const StudentTopbar = () => {
                           ${group.label === 'Operate' ? 'right-0 left-auto' : 'left-0 right-auto'}
                           max-w-[calc(100vw-2rem)]`}
                       >
+                        <div className="space-y-1.5">
                         {group.items.map((item) => {
                           const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
                           return (
                             <Link
                               key={item.path}
                               to={item.path}
-                              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                              className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-transparent transition-colors ${
                                 active ? 'bg-accent-dim text-accent' : 'text-text-secondary hover:bg-accent-dim/60 hover:text-text-primary'
                               }`}
                             >
@@ -384,6 +385,7 @@ const StudentTopbar = () => {
                             </Link>
                           );
                         })}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
