@@ -216,7 +216,7 @@ In your notes, answer this question honestly: right now, are you closer to a too
 **The key principle in every jurisdiction:** authorisation is the line between legal security testing and criminal hacking. The technical actions are identical — only the authorisation differs.
 
 In your notes, research the specific law that applies in your country. Write down the key offences and their maximum penalties. You are responsible for knowing this.`,
-              image: 'ethics-legal-framework.jpg',
+              image: '/assets/bootcamp/rooms/ethics-legal-framework.jpg',
             },
             {
               title: 'Scope and Authorisation',
@@ -233,7 +233,7 @@ A typical scope document includes:
 **Why this matters:** If you test a system that is out of scope — even accidentally — you may have committed a criminal offence. The authorisation document is your legal protection. Without it, you have none.
 
 Write down in your notes: what would you do if, during a penetration test, you discovered a critical vulnerability in a system that was out of scope? There is a correct answer — research it.`,
-              image: 'ethics-scope-authorization.jpg',
+              image: '/assets/bootcamp/rooms/ethics-scope-authorization.jpg',
             },
             {
               title: 'Responsible Disclosure',
@@ -254,7 +254,7 @@ Write down in your notes: what would you do if, during a penetration test, you d
 **Bug bounty programmes** formalise this process — companies publish the rules, the scope, and the rewards. Always read the programme rules before testing.
 
 Document the full responsible disclosure process in your notes. Include what you would do if the organisation ignored your report after 90 days.`,
-              image: 'ethics-responsible-disclosure.jpg',
+              image: '/assets/bootcamp/rooms/ethics-responsible-disclosure.jpg',
             },
           ],
         },
@@ -800,7 +800,7 @@ bash hello.sh
 **The \`$(command)\` syntax** is called command substitution. It runs the command inside and replaces the \`$(...)\` with the output. This is how you capture command output and use it in your scripts.
 
 Write this script, run it, and confirm the output is correct before moving on.`,
-              image: '01-script.png',
+              image: null,
             },
             {
               title: 'Variables and Arguments',
@@ -851,7 +851,7 @@ ping -c 3 "$1"
 \`\`\`
 
 Run it with: \`./ping_host.sh google.com\``,
-              image: '02-variables.png',
+              image: null,
             },
             {
               title: 'Loops and Iteration',
@@ -896,7 +896,7 @@ done
 \`\`\`
 
 Write a script that reads a list of IP addresses from a file called \`targets.txt\` (one per line) and pings each one, printing whether it is up or down.`,
-              image: '03-loop.png',
+              image: null,
             },
             {
               title: 'Conditionals and Port Checking',
@@ -947,7 +947,7 @@ done
 \`\`\`
 
 Save this as \`portscan.sh\`, make it executable, and run it against your local machine: \`./portscan.sh 127.0.0.1\`. Document every open port you find.`,
-              image: '04-conditional.png',
+              image: null,
             },
           ],
         },
@@ -983,7 +983,7 @@ Layer 1 — Physical: cables, radio waves. Attacks: physical tapping.
 Memory aid: "Please Do Not Throw Sausage Pizza Away" (Physical, Data Link, Network, Transport, Session, Presentation, Application).
 
 Draw the model from memory. For each layer, write one attack that targets it.`,
-              image: '01-osi.png',
+              image: '01-ls.png',
             },
             {
               title: 'The TCP Three-Way Handshake',
@@ -1002,7 +1002,7 @@ nmap -sT 192.168.1.1
 A SYN flood attack sends thousands of SYN packets without completing the handshake, exhausting the server's connection table — a denial-of-service attack.
 
 Capture a TCP handshake with Wireshark: start a capture, run \`curl http://example.com\`, filter for \`tcp\`, and find the three SYN/SYN-ACK/ACK packets. Identify each one.`,
-              image: '02-handshake.png',
+              image: '02-cd.png',
             },
             {
               title: 'TCP vs UDP',
@@ -1024,7 +1024,7 @@ snmpwalk -v2c -c public 192.168.1.1
 Key UDP ports: 53 (DNS), 67 (DHCP), 69 (TFTP — often unauthenticated), 161 (SNMP — often uses default community strings), 123 (NTP).
 
 In your notes, list five UDP services and explain what information or access each one could provide to an attacker.`,
-              image: '03-tcp-udp.png',
+              image: null,
             },
             {
               title: 'Packet Capture with tcpdump',
@@ -1049,7 +1049,7 @@ sudo tcpdump -i eth0 port 53
 \`\`\`
 
 Practical exercise: run \`sudo tcpdump -i eth0 -w http_capture.pcap port 80\`, then in another terminal run \`curl http://example.com\`, stop the capture, and open it in Wireshark. Find the HTTP GET request and the server response. What does the Server header reveal?`,
-              image: '04-capture.png',
+              image: null,
             },
           ],
         },
@@ -1089,7 +1089,7 @@ done
 \`\`\`
 
 A DNS zone transfer reveals every subdomain and IP in the zone — a complete map of the target's infrastructure. Try the zone transfer against zonetransfer.me (a deliberately vulnerable public example) and document every record returned.`,
-              image: '01-dns.png',
+              image: '01-cat.png',
             },
             {
               title: 'HTTP in Depth',
@@ -1128,7 +1128,7 @@ curl -I https://target.com
 - Missing \`Content-Security-Policy\` — XSS mitigation absent
 
 Run \`curl -I\` against a target and document every security-relevant header (or missing header).`,
-              image: '02-http.png',
+              image: null,
             },
             {
               title: 'HTTP Methods and Their Abuse',
@@ -1152,7 +1152,7 @@ curl -X OPTIONS http://target.com -v 2>&1 | grep -i allow
 Security implications: PUT/DELETE without authentication allows resource modification or deletion. TRACE enabled can be used in cross-site tracing (XST) attacks.
 
 Test a target with OPTIONS. Document every method it accepts. For any method beyond GET and POST, investigate whether it requires authentication.`,
-              image: '03-methods.png',
+              image: null,
             },
             {
               title: 'Other Protocols: SMTP, FTP, SSH',
@@ -1192,7 +1192,7 @@ QUIT
 \`\`\`
 
 For each protocol, note: the port, what it exposes when misconfigured, and what tool you would use to test it.`,
-              image: '04-protocols.png',
+              image: null,
             },
           ],
         },
@@ -1234,7 +1234,7 @@ nmap -F 192.168.1.1
 \`\`\`
 
 Run a basic scan against your target. Document every open port. Before moving on, write down what service you expect on each port based on the port number alone.`,
-              image: '01-nmap-basic.png',
+              image: null,
             },
             {
               title: 'Service and Version Detection',
@@ -1265,7 +1265,7 @@ searchsploit openssh 7.4
 \`\`\`
 
 Run a version scan against your target. For every service detected, search for known CVEs affecting that version. Document your findings.`,
-              image: '02-nmap-version.png',
+              image: null,
             },
             {
               title: 'nmap Scripting Engine (NSE)',
@@ -1299,7 +1299,7 @@ ls /usr/share/nmap/scripts/
 \`\`\`
 
 Run the default scripts against your target. Document every piece of additional information gathered. Pay particular attention to any scripts that flag potential vulnerabilities.`,
-              image: '03-nmap-os.png',
+              image: null,
             },
             {
               title: 'Building a Recon Workflow',
@@ -1324,7 +1324,7 @@ sudo nmap --script=vuln -p 22,80,443 192.168.1.1 -oA vuln_scan
 Phase 5 is always manual verification. Tools produce false positives. A finding you cannot reproduce manually is not a finding.
 
 Build this workflow into a script. Run it against your target and produce a structured report: host, port, service, version, and any vulnerabilities identified.`,
-              image: '04-nmap-scripts.png',
+              image: null,
             },
           ],
         },
@@ -1357,7 +1357,7 @@ tshark -r capture.pcap -Y "http"
 \`\`\`
 
 Start a capture, browse to \`http://example.com\` (HTTP, not HTTPS — you need unencrypted traffic), and stop. In the packet list, find the HTTP GET request. Click it and expand each layer in the packet details pane. Write down what each layer contains.`,
-              image: '01-wireshark.png',
+              image: null,
             },
             {
               title: 'Display Filters',
@@ -1392,7 +1392,7 @@ http and ip.src == 192.168.1.100
 \`\`\`
 
 Practical exercise: capture traffic while logging in to an HTTP application. Apply \`http.request.method == "POST"\`. Find the login request. In the packet details, expand "HTML Form URL Encoded". Read the credentials sent in plaintext. This is why HTTPS is mandatory.`,
-              image: '02-filter.png',
+              image: null,
             },
             {
               title: 'Following Streams',
@@ -1415,7 +1415,7 @@ tshark -r capture.pcap -Y "telnet" -T fields -e data.text
 \`\`\`
 
 Capture traffic while logging in to an HTTP application. Follow the TCP stream of the login request. Document exactly what was transmitted, including all headers and the request body.`,
-              image: '03-stream.png',
+              image: null,
             },
             {
               title: 'DNS Analysis',
@@ -1437,7 +1437,7 @@ tshark -r capture.pcap -Y "dns" -T fields -e dns.qry.name | \
 DNS tunnelling encodes data in DNS queries to bypass firewalls. Tools like \`iodine\` and \`dnscat2\` implement this technique.
 
 Start a capture, browse several websites, and stop. Apply the DNS filter. For every domain resolved, note the IP address returned. Are there any domains you do not recognise? Research them.`,
-              image: '04-dns-capture.png',
+              image: null,
             },
           ],
         },
@@ -1478,7 +1478,7 @@ In the Headers tab, look at the Response Headers. Write down every header and wh
 - \`X-Powered-By:\` — backend technology
 - \`Set-Cookie:\` — session management
 - \`Content-Security-Policy:\` — XSS protections (or lack thereof)`,
-              image: '01-devtools.png',
+              image: '01-site.png',
             },
             {
               title: 'Reading HTTP Headers',
@@ -1510,7 +1510,7 @@ curl -IL http://target.com
 - \`X-AspNet-Version: 4.0.30319\` — .NET version
 
 Run \`curl -I\` against your target. Document every header. For each one that reveals technology information, search for known vulnerabilities in that version.`,
-              image: '02-headers.png',
+              image: '02-inspect.png',
             },
             {
               title: 'Cookies and Sessions',
@@ -1540,7 +1540,7 @@ cat cookies.txt
 \`\`\`
 
 Log in to the target application. Inspect the session cookie. Answer these questions: Is HttpOnly set? Is Secure set? What is the SameSite value? Is the cookie value predictable or random? Log out — is the cookie invalidated on the server?`,
-              image: '03-cookies.png',
+              image: '03-elements.png',
             },
             {
               title: 'Intercepting Requests with Burp Suite',
@@ -1577,7 +1577,7 @@ burpsuite &
 8. In Repeater, modify the password and resend — observe the difference in response
 
 Log in to the target application through Burp. Capture the login request. Document every parameter sent and the full server response.`,
-              image: '04-login-request.png',
+              image: null,
             },
           ],
         },

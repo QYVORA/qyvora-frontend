@@ -26,7 +26,7 @@ const CtfArenaSection: React.FC = () => {
     <section className="py-14 md:py-32 bg-bg border-y border-border relative overflow-hidden has-bg-image">
       {/* Background */}
       <img
-        src="/assets/sections/backgrounds/ctf-bg.png"
+        src="/assets/sections/backgrounds/offsec-grid-background.webp"
         alt=""
         className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.14] pointer-events-none"
         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}

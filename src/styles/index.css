@@ -3,6 +3,10 @@
 
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 420ms;
   /* ── Dark theme (default) ── */
   --color-bg:             #050706;
   --color-bg-card:        #0c0f0c;
@@ -55,6 +59,9 @@
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.25s ease, color 0.25s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
   }
 
   :root {
@@ -146,6 +153,28 @@
   img {
     max-width: 100%;
     height: auto;
+  }
+
+  /* Global motion smoothness on common interactive UI surfaces */
+  .btn-primary,
+  .btn-secondary,
+  .card-hsociety,
+  [class*="rounded-"][class*="border"] {
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .card-hsociety {
+    transition-duration: var(--dur-base);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .hero-bg-img,
+  .section-bg-img {
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   button,

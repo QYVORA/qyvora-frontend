@@ -337,31 +337,31 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     /* ── Atmospheric glow — subtle limb effect ── */
     // Layer 1: tight inner halo (closest to surface)
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.022, 48, 48),
+      new THREE.SphereGeometry(1.016, 48, 48),
       new THREE.MeshBasicMaterial({
         color: isLight ? 0x6abf5e : 0x0f2a18,
         transparent: true,
-        opacity: isLight ? 0.13 : 0.10,
+        opacity: isLight ? 0.10 : 0.08,
         side: THREE.BackSide,
       }),
     ));
     // Layer 2: mid atmosphere
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.048, 48, 48),
+      new THREE.SphereGeometry(1.032, 48, 48),
       new THREE.MeshBasicMaterial({
         color: isLight ? 0x4a9e3f : 0x0d2214,
         transparent: true,
-        opacity: isLight ? 0.08 : 0.07,
+        opacity: isLight ? 0.06 : 0.05,
         side: THREE.BackSide,
       }),
     ));
     // Layer 3: outer diffuse haze
     scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.09, 32, 32),
+      new THREE.SphereGeometry(1.055, 32, 32),
       new THREE.MeshBasicMaterial({
         color: isLight ? 0x3a8a30 : 0x0a1a10,
         transparent: true,
-        opacity: isLight ? 0.04 : 0.03,
+        opacity: isLight ? 0.03 : 0.025,
         side: THREE.BackSide,
       }),
     ));
@@ -671,23 +671,13 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     let rafId = 0;
     let last = 0;
     let tick = 0;
-    let visible = true;
-
-    // Pause rendering when the globe is off-screen
-    const visObserver = new IntersectionObserver(
-      ([entry]) => { visible = entry.isIntersecting; },
-      { threshold: 0 },
-    );
-    visObserver.observe(el);
-
     const animate = (now: number) => {
       rafId = requestAnimationFrame(animate);
-      if (!visible) return;
       const dt = Math.min(now - last, 50); // cap at 50ms to avoid jump after tab switch
       last = now; tick += dt * 0.001;
 
       // delta-time scaled rotation — smooth at any frame rate, no skipping
-      const rotStep = dt * 0.00168;
+      const rotStep = dt * 0.00336;
 
       if (!drag) {
         globe.rotation.y += rotStep + vel.y * 0.12;
@@ -739,7 +729,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
     return () => {
       cancelAnimationFrame(rafId);
-      visObserver.disconnect();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMM);
       window.removeEventListener('mouseup', onMU);
@@ -764,18 +753,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
   return (
     <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'grab', willChange: 'transform', contain: 'strict' }}>
-      {/* CSS atmospheric glow rings — subtle limb blur */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        borderRadius: '50%',
-        background: 'radial-gradient(ellipse at 50% 50%, transparent 52%, rgba(136,173,124,0.05) 65%, rgba(136,173,124,0.02) 74%, transparent 82%)',
-        filter: 'blur(6px)',
-      }} />
-      <div className="absolute inset-0 pointer-events-none" style={{
-        borderRadius: '50%',
-        background: 'radial-gradient(ellipse at 50% 50%, transparent 56%, rgba(100,160,90,0.03) 70%, transparent 82%)',
-        filter: 'blur(12px)',
-        transform: 'scale(1.05)',
-      }} />
+      {/* CSS atmospheric glow rings — centered square to keep perfect circle */}
+      <div className="absolute left-1/2 top-1/2 w-[88%] max-w-full aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="absolute inset-0" style={{
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 50% 50%, transparent 56%, rgba(136,173,124,0.035) 68%, rgba(136,173,124,0.015) 76%, transparent 84%)',
+          filter: 'blur(5px)',
+        }} />
+        <div className="absolute inset-0" style={{
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 50% 50%, transparent 60%, rgba(100,160,90,0.02) 72%, transparent 83%)',
+          filter: 'blur(9px)',
+          transform: 'scale(1.02)',
+        }} />
+      </div>
       <div
         ref={tooltipRef}
         style={{
