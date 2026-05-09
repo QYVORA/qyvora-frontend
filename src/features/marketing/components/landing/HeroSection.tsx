@@ -8,7 +8,6 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 
-// Lazy-load heavy canvas/WebGL components — Three.js (~600KB) only loads when hero mounts
 const HeroCanvas  = lazy(() => import('../HeroCanvas'));
 const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
@@ -46,7 +45,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     <section ref={heroRef} className="relative min-h-screen w-full has-bg-image md:h-full md:min-h-0 md:overflow-hidden">
-      {/* Background layers */}
+
+      {/* ── Background layers ── */}
       <div className="absolute inset-0 overflow-hidden scanlines pointer-events-none z-0">
         <div className="absolute inset-0 bg-bg light-theme-hide-bg-base" />
         <img
@@ -59,8 +59,45 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20" />
         {!minimizeEffects && <Suspense fallback={null}><HeroCanvas /></Suspense>}
-        <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />      </div>
+        <div className="absolute inset-0 bg-radial-vignette opacity-60 hero-vignette" />
+      </div>
 
+      {/*
+        ── MOBILE GLOBE ─────────────────────────────────────────────────────
+        Absolutely pinned to the section's bottom edge (z-10, behind text z-30).
+        The globe square is 120vw wide and centred; its vertical centre is
+        placed AT the section bottom via `bottom: -50%` on the square — so
+        exactly the top half of the globe is visible, clipped flush by the
+        section boundary (overflow on the section clips it naturally on mobile
+        since the section is min-h-screen and the next section starts right after).
+
+        Adjust `bottom` value to taste:
+          -60%  → shows ~40% of globe (more crescent)
+          -50%  → shows exactly the top hemisphere
+          -40%  → shows ~60% of globe (more globe, less crescent)
+        ──────────────────────────────────────────────────────────────────── */}
+      {!shouldReduceMotion && (
+        <div
+          className="md:hidden absolute left-0 w-full pointer-events-none z-10 overflow-hidden"
+          style={{ height: '60vw', maxHeight: '260px', bottom: '64px' }}
+        >
+          <div
+            className="absolute left-1/2 -translate-x-1/2"
+            style={{
+              width: '120vw',
+              maxWidth: '580px',
+              aspectRatio: '1 / 1',
+              top: '30%',
+            }}
+          >
+            <Suspense fallback={null}>
+              <HackerGlobe scale={1.0} />
+            </Suspense>
+          </div>
+        </div>
+      )}
+
+      {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
         className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-40 lg:pb-56 xl:pb-52
@@ -68,6 +105,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       >
         {/* Left column */}
         <div className="flex flex-col items-start w-full lg:pr-6">
+
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -154,20 +192,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.div>
           )}
 
-          {/* Phone-only hemisphere globe (replaces stats cards) */}
-          <div className="md:hidden mt-3 w-full max-w-[420px] mx-auto relative overflow-hidden rounded-t-[999px] bg-bg-card/40">
-            <div className="relative w-full aspect-[2.35/1]">
-              <div className="absolute inset-x-0 top-0 mx-auto w-full max-w-[420px] aspect-square">
-                {!shouldReduceMotion && (
-                  <Suspense fallback={null}>
-                    <HackerGlobe scale={1.04} />
-                  </Suspense>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Tablet stats grid */}
+          {/* Tablet stats grid (md only, no globe) */}
           <div className="hidden md:grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">
             {heroStats.map((s, i) => (
               <motion.div
@@ -187,7 +212,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
         </div>
 
-        {/* Globe — lg+ only */}
+        {/* Globe — lg+ only — UNTOUCHED */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -203,7 +228,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             SAT-02 // ORBIT
           </motion.div>
-          {/* Operator illustration — stands in front of the globe without blocking all of it */}
           <img
             src="/assets/illustrations/hero-operator.webp"
             alt=""
@@ -213,7 +237,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </motion.div>
       </motion.div>
 
-      {/* Desktop stats bar */}
+      {/* Desktop stats bar — UNTOUCHED */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
