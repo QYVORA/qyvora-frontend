@@ -5,10 +5,7 @@ import {
   Home,
   Terminal,
   Flag,
-  ShoppingBag,
   Trophy,
-  Zap,
-  Link2,
   Wrench,
   Mail,
   LogIn,
@@ -29,11 +26,8 @@ const PRIMARY = [
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */
 const MORE_ITEMS = [
-  { label: 'Leaderboard',    icon: Trophy,   path: '/leaderboard'  },
-  { label: 'Cyber Points',   icon: Zap,      path: '/cyber-points' },
-  { label: 'HSOCIETY Chain', icon: Link2,    path: '/chain'        },
-  { label: 'Services',       icon: Wrench,   path: '/services'     },
-  { label: 'Contact',        icon: Mail,     path: '/contact'      },
+  { label: 'Leaderboard', icon: Trophy, path: '/leaderboard'  },
+  { label: 'Contact',     icon: Mail,   path: '/contact'      },
 ];
 
 const PublicBottomNav: React.FC = () => {
@@ -84,31 +78,17 @@ const PublicBottomNav: React.FC = () => {
           );
         })}
 
-        {/* More button */}
+{/* More button */}
         <button
           onClick={() => setMoreOpen(true)}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[60px] active:bg-accent-dim/30 transition-colors"
           aria-label="More navigation options"
           aria-expanded={moreOpen}
         >
-          <Zap className="w-5 h-5 text-text-muted" strokeWidth={1.8} />
+          <Wrench className="w-5 h-5 text-text-muted" strokeWidth={1.8} />
           <span className="text-[10px] font-bold uppercase tracking-wide text-text-muted">More</span>
         </button>
-
-        <Link
-          to="/zero-day-market"
-          className="relative flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[60px] active:bg-accent-dim/30 transition-colors"
-          aria-current={isActive('/zero-day-market') ? 'page' : undefined}
-        >
-          <ShoppingBag
-            className={`w-5 h-5 transition-colors ${isActive('/zero-day-market') ? 'text-accent' : 'text-text-muted'}`}
-            strokeWidth={isActive('/zero-day-market') ? 2.5 : 1.8}
-          />
-          <span className={`text-[10px] font-bold uppercase tracking-wide transition-colors ${isActive('/zero-day-market') ? 'text-accent' : 'text-text-muted'}`}>
-            Store
-          </span>
-        </Link>
-      </nav>
+       </nav>
 
       {/* ── More bottom sheet ───────────────────────────────────────────────── */}
       <BottomSheet open={moreOpen} onOpenChange={setMoreOpen}>

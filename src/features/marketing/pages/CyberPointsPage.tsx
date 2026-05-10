@@ -83,9 +83,8 @@ const CyberPointsPage: React.FC = () => {
       {/* ── Cards ── */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
           <ScrollReveal>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <BookOpen className="w-4 h-4 text-accent" />
               </div>
@@ -95,7 +94,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.05}>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <Shield className="w-4 h-4 text-accent" />
               </div>
@@ -105,7 +104,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <Trophy className="w-4 h-4 text-accent" />
               </div>
@@ -115,7 +114,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.15}>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <Zap className="w-4 h-4 text-accent" />
               </div>
@@ -125,7 +124,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <Lock className="w-4 h-4 text-accent" />
               </div>
@@ -135,7 +134,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.25}>
-            <CardBase className="p-6 flex flex-col gap-3">
+            <CardBase className="p-6 flex flex-col gap-3 h-full">
               <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
                 <ChainLogo size={18} />
               </div>
@@ -149,7 +148,7 @@ const CyberPointsPage: React.FC = () => {
         {/* CTA row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <ScrollReveal>
-            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4 h-full">
               <ShoppingBag className="w-8 h-8 text-accent shrink-0" />
               <div className="flex-1 min-w-0 text-center sm:text-left">
                 <p className="text-sm font-black text-text-primary mb-0.5">Zero-Day Market</p>
@@ -162,7 +161,7 @@ const CyberPointsPage: React.FC = () => {
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4">
+            <CardBase className="p-6 flex flex-col sm:flex-row items-center gap-4 h-full">
               <Trophy className="w-8 h-8 text-accent shrink-0" />
               <div className="flex-1 min-w-0 text-center sm:text-left">
                 <p className="text-sm font-black text-text-primary mb-0.5">Start Earning Today</p>

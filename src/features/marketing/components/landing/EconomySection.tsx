@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Trophy, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, Trophy, ArrowRight, CheckCircle2, BookOpen, Shield } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
-import { CardMedia } from '../../../../shared/components/ui/Card';
+import { CardMedia, CardBase } from '../../../../shared/components/ui/Card';
 import { resolveImg } from './helpers';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
@@ -22,9 +22,14 @@ const BULLETS = [
   'Spend points in the marketplace',
 ];
 
+const CP_FEATURES = [
+  { icon: BookOpen, title: 'Complete Bootcamp Rooms', desc: 'Finish room tasks in any module to earn CP instantly.' },
+  { icon: Shield,   title: 'Capture CTF Flags',      desc: 'Submit correct flags for immediate CP rewards.' },
+  { icon: Trophy,   title: 'Climb the Leaderboard',   desc: 'Consistent activity and completions grow your rank.' },
+];
+
 const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, loading = false }) => {
   const shouldReduceMotion = useReducedMotion();
-  const displayedItems = marketItems.slice(0, 2);
 
   return (
     <section className="
@@ -42,129 +47,116 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
       <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
 
-          {/* Left: description */}
-          <div className="lg:col-span-5">
+          {/* Left: description + CP features */}
+          <div>
             <ScrollReveal>
               <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// THE ECONOMY</span>
-              <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">Zero-Day Market</h2>
-              <p className="text-text-secondary text-sm mb-4 leading-relaxed">
-                Earn Cyber Points by finishing lessons and challenges. Spend points in the market and track progress on the leaderboard.
+              <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">
+                Cyber Points &amp; Zero-Day Market
+              </h2>
+              <p className="text-text-secondary text-sm mb-6 leading-relaxed">
+                Earn <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> by completing bootcamp rooms
+                and CTF challenges. Every transaction is recorded on the{' '}
+                <span className="text-accent font-bold">HSOCIETY Chain</span> — tamper-proof and verifiable.
               </p>
-              <Link
-                to="/zero-day-market"
-                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent border border-accent/30 rounded-md px-3 py-1.5 mb-3 hover:bg-accent-dim transition-all"
-              >
-                Open Market <ArrowRight className="w-3 h-3" />
-              </Link>
-
-              {/* Animated bullet list */}
-              <ul className="flex flex-col space-y-1.5 mb-3">
-                {BULLETS.map((item, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20, filter: 'blur(4px)' }}
-                    whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-                    className="flex items-center gap-2 text-text-primary font-medium text-sm"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-accent flex-none" />
-                    {item}
-                  </motion.li>
-                ))}
-              </ul>
 
               {/* Chain badge */}
-              <div className="flex items-center gap-2 mb-3 md:mb-2 px-3 py-1.5 rounded-xl border border-accent/20 bg-accent/5 w-fit">
+              <div className="flex items-center gap-2 mb-5 px-3 py-1.5 rounded-xl border border-accent/20 bg-accent/5 w-fit">
                 <ChainLogo size={14} />
-                <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Verified by HSOCIETY Chain</span>
+                <span className="text-[10px] font-bold text-accent uppercase tracking-widest">
+                  Verified by HSOCIETY Chain
+                </span>
               </div>
 
-              {/* CP widget */}
-              <motion.div
-                whileHover={shouldReduceMotion ? {} : { scale: 1.01 }}
-                transition={{ duration: 0.2 }}
-                className="p-3 md:p-3 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden group cursor-default"
+              {/* CP Features grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                {CP_FEATURES.map((feat, i) => (
+                  <ScrollReveal key={feat.title} delay={i * 0.05}>
+                    <CardBase className="p-4 flex flex-col items-center text-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center">
+                        <feat.icon className="w-4 h-4 text-accent" />
+                      </div>
+                      <p className="text-xs font-black text-text-primary">{feat.title}</p>
+                      <p className="text-[10px] text-text-muted leading-relaxed">{feat.desc}</p>
+                    </CardBase>
+                  </ScrollReveal>
+                ))}
+              </div>
+
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent border border-accent/30 rounded-md px-4 py-2 hover:bg-accent-dim transition-all"
               >
-                <div className="absolute top-0 right-0 p-3 opacity-15 group-hover:rotate-12 transition-transform duration-500 pointer-events-none">
-                  <img src="/assets/branding/logos/cyber-points-logo.webp" alt="" className="w-12 h-12 object-contain" />
-                </div>
-                <img
-                  src="/assets/illustrations/phase-complete-badge.webp"
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute bottom-1 right-1 w-10 h-10 object-contain opacity-60 pointer-events-none select-none"
-                />
-                <div className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-1">OPERATOR_WALLET</div>
-                <div className="text-xl md:text-lg font-bold text-accent font-mono mb-2 inline-flex items-center gap-1.5">
-                  {totalCp.toLocaleString()} <CpLogo className="w-5 h-5" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-accent-dim/60 flex items-center justify-center border border-accent/30 flex-none">
-                    <Trophy className="w-3.5 h-3.5 text-accent" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[9px] font-bold text-text-primary uppercase">Community Points Pool</div>
-                    <div className="w-full h-1 bg-border rounded-full mt-1 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${Math.min(100, totalCp > 0 ? 70 : 0)}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-                        className="h-full bg-accent rounded-full"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                Start Earning <ArrowRight className="w-3 h-3" />
+              </Link>
             </ScrollReveal>
           </div>
 
-          {/* Right: market items — hidden on mobile, shown md+ */}
-          <div className="hidden md:grid lg:col-span-7 grid-cols-2 gap-3">
-            {loading || marketItems.length === 0 ? (
-              [0, 1].map((i) => (
-                <div key={i} className="card-hsociety p-3 animate-pulse">
-                  <div className="w-full aspect-[4/3] rounded bg-accent-dim/30 mb-3" />
-                  <div className="h-3 bg-accent-dim/30 rounded w-3/4 mb-2" />
-                  <div className="h-5 bg-accent-dim/20 rounded w-1/3 mt-auto" />
+          {/* Right: Chain (left) + CP coin (right) side-by-side */}
+          <ScrollReveal className="flex flex-col items-center gap-6" direction="none" delay={0.1}>
+            {/* Combined visual wrapper */}
+            <div className="relative flex items-center justify-center w-full max-w-[500px] h-40 md:h-48">
+
+              {/* HSOCIETY Chain image — left side, positioned behind */}
+              <div className="absolute left-[-10%] md:left-0 z-0 w-[55%] h-full">
+                <motion.img
+                  src="/assets/branding/chain/hsociety-chain-3d.webp"
+                  alt="HSOCIETY Chain"
+                  className="w-full h-full object-contain drop-shadow-[0_0_40px_var(--color-accent-glow)]"
+                  animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              </div>
+
+              {/* Cyber Points coin — right side, in front */}
+              <div className="relative z-10 ml-auto mr-0 md:mr-[5%] w-32 h-32 md:w-40 md:h-40">
+                <div
+                  aria-hidden
+                  className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, var(--color-accent-dim) 0%, transparent 70%)' }}
+                />
+                <motion.img
+                  src="/assets/branding/logos/cyber-points-logo.webp"
+                  alt="Cyber Points"
+                  className="w-full h-full object-contain"
+                  style={{ filter: 'drop-shadow(0 0 48px var(--color-accent-glow))' }}
+                  animate={shouldReduceMotion ? {} : { y: [0, -10, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              </div>
+            </div>
+
+            {/* Pool widget */}
+            <motion.div
+              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-xs p-4 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden"
+            >
+              <div className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-1">Community Pool</div>
+              <div className="text-2xl font-bold text-accent font-mono mb-2 inline-flex items-center gap-1.5">
+                {totalCp.toLocaleString()} <CpLogo className="w-5 h-5" />
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-accent-dim/60 flex items-center justify-center border border-accent/30 flex-none">
+                  <Trophy className="w-4 h-4 text-accent" />
                 </div>
-              ))
-            ) : (
-              displayedItems.map((prod, idx) => (
-                <motion.div
-                  key={prod.id || idx}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, scale: 0.94, filter: 'blur(6px)' }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
-                  whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
-                >
-                  <CardMedia
-                    image={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
-                    imageAspect="aspect-[4/3]"
-                    href="/zero-day-market"
-                  >
-                    <div className="p-3 flex flex-col flex-1">
-                      <h4 className="text-xs font-bold text-text-primary mb-1.5 line-clamp-1 group-hover:text-accent transition-colors">
-                        {prod.title}
-                      </h4>
-                      <div className="mt-auto flex flex-col gap-1.5">
-                        <span className="text-xs font-mono text-accent py-0.5 px-2 bg-accent-dim border border-accent/20 rounded w-fit inline-flex items-center gap-1">
-                          {prod.cpPrice ?? 0} <CpLogo className="w-3 h-3" />
-                        </span>
-                        <div className="w-full py-1.5 bg-accent text-bg font-bold text-[10px] uppercase tracking-tighter rounded text-center">
-                          View in Market
-                        </div>
-                      </div>
-                    </div>
-                  </CardMedia>
-                </motion.div>
-              ))
-            )}
-          </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-bold text-text-primary uppercase">Total Earned</div>
+                  <div className="w-full h-1 bg-border rounded-full mt-1 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${Math.min(100, totalCp > 0 ? 70 : 0)}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
+                      className="h-full bg-accent rounded-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

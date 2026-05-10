@@ -5,9 +5,7 @@ import { useLandingData } from '../hooks/useLandingData';
 import HeroSection from '../components/landing/HeroSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
-import CyberPointsCtaSection from '../components/landing/CyberPointsCtaSection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
-import ServicesSection from '../components/landing/ServicesSection';
 import SocialSection from '../components/landing/SocialSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
@@ -18,9 +16,7 @@ const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
   { id: 'market',      label: 'Zero-Day Market' },
   { id: 'bootcamps',   label: 'Bootcamps'       },
-  { id: 'cp',          label: 'Cyber Points'    },
   { id: 'leaderboard', label: 'Leaderboard'     },
-  { id: 'services',    label: 'Services'        },
   { id: 'social',      label: 'Community'       },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
@@ -129,27 +125,17 @@ const Landing: React.FC = () => {
         <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
       </SnapSection>
 
-      {/* ── 3. Bootcamps ── */}
-      <SnapSection id="bootcamps" className="bg-bg-card">
-        <BootcampsSection bootcamps={bootcamps} loading={loading} />
-      </SnapSection>
+{/* ── 3. Bootcamps ── */}
+       <SnapSection id="bootcamps" className="bg-bg-card">
+         <BootcampsSection bootcamps={bootcamps} loading={loading} />
+       </SnapSection>
 
-      {/* ── 4. Cyber Points ── */}
-      <SnapSection id="cp" className="bg-bg">
-        <CyberPointsCtaSection totalCp={totalCp} />
-      </SnapSection>
+       {/* ── 4. Leaderboard ── */}
+        <SnapSection id="leaderboard" className="bg-bg-card">
+          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+        </SnapSection>
 
-      {/* ── 5. Leaderboard ── */}
-      <SnapSection id="leaderboard" className="bg-bg-card">
-        <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-      </SnapSection>
-
-      {/* ── 6. Services ── */}
-      <SnapSection id="services" className="bg-bg">
-        <ServicesSection />
-      </SnapSection>
-
-      {/* ── 7. Social ── */}
+        {/* ── 5. Social ── */}
       <SnapSection id="social" className="bg-bg">
         <SocialSection />
       </SnapSection>

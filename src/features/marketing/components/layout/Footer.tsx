@@ -18,15 +18,11 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
-      { label: 'CTF Arena',      path: '/ctf'             },
-      { label: 'Leaderboard',    path: '/leaderboard'     },
-      { label: 'Marketplace',    path: '/zero-day-market' },
-      { label: 'Bootcamps',      path: '/bootcamps'       },
-      { label: 'Cyber Points',   path: '/cyber-points'    },
-      { label: 'HSOCIETY Chain', path: '/chain'           },
-      { label: 'Services',       path: '/services'        },
-      { label: 'Register',       path: '/register'        },
-      { label: 'Log In',         path: '/login'           },
+      { label: 'CTF Arena',    path: '/ctf'         },
+      { label: 'Leaderboard', path: '/leaderboard' },
+      { label: 'Bootcamps',   path: '/bootcamps'   },
+      { label: 'Register',    path: '/register'    },
+      { label: 'Log In',      path: '/login'       },
     ],
   },
 ];

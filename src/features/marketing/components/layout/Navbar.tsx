@@ -27,10 +27,6 @@ const NAV_GROUPS = [
     })),
   },
   {
-    label: SITE_CONFIG.nav.services.label,
-    path: SITE_CONFIG.nav.services.path,
-  },
-  {
     label: 'Company',
     items: SITE_CONFIG.nav.company.map((item) => ({
       ...item,

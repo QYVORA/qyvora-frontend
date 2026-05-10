@@ -18,14 +18,10 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 // Marketing pages
 const LandingPage = lazy(() => import('../features/marketing/pages/LandingPage'));
 const ContactPage = lazy(() => import('../features/marketing/pages/ContactPage'));
-const ServicesPage = lazy(() => import('../features/marketing/pages/ServicesPage'));
-const CyberPointsPage = lazy(() => import('../features/marketing/pages/CyberPointsPage'));
-const ChainPage = lazy(() => import('../features/marketing/pages/ChainPage'));
-const PublicMarketplacePage = lazy(() => import('../features/marketing/pages/PublicMarketplacePage'));
+const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
 const PublicCtfPage = lazy(() => import('../features/marketing/pages/PublicCtfPage'));
 const PublicLeaderboardPage = lazy(() => import('../features/marketing/pages/PublicLeaderboardPage'));
 const PublicBootcampsPage = lazy(() => import('../features/marketing/pages/PublicBootcampsPage'));
-const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -95,7 +91,6 @@ export const AppRouter = () => {
 
         {/* Snap public pages — viewport-locked scroll */}
         <Route element={<SnapPublicLayout />}>
-          <Route path="/zero-day-market" element={<Wrap scope="Market"><PublicMarketplacePage /></Wrap>} />
           <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><PublicLeaderboardPage /></Wrap>} />
           <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><PublicBootcampsPage /></Wrap>} />
@@ -104,9 +99,6 @@ export const AppRouter = () => {
         {/* Standard public pages — normal scroll with footer */}
         <Route element={<PublicLayout />}>
           <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
-          <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
-          <Route path="/cyber-points" element={<Wrap scope="Cyber Points"><CyberPointsPage /></Wrap>} />
-          <Route path="/chain" element={<Wrap scope="HSOCIETY Chain"><ChainPage /></Wrap>} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>
