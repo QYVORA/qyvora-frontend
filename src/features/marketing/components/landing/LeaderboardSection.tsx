@@ -43,45 +43,48 @@ const Avatar: React.FC<{
   );
 };
 
+// ── Rank metadata ────────────────────────────────────────────────────────────
+const getRankMeta = (rank: number) => {
+  if (rank === 1) return {
+    accent: 'var(--color-accent)',
+    border: 'border-accent/40',
+    bg: 'bg-accent-dim',
+    color: 'text-accent',
+    avatarColor: '#B7FF99',
+    avatarBorder: 'border-accent/40',
+    label: '#1',
+    icon: <Crown className="w-3.5 h-3.5" />,
+  };
+  if (rank === 2) return {
+    accent: '#60a5fa',
+    border: 'border-blue-400/25',
+    bg: 'bg-blue-400/5',
+    color: 'text-blue-400',
+    avatarColor: '#60a5fa',
+    avatarBorder: 'border-blue-400/30',
+    label: '#2',
+    icon: <Medal className="w-3.5 h-3.5" style={{ color: '#60a5fa' }} />,
+  };
+  if (rank === 3) return {
+    accent: '#fbbf24',
+    border: 'border-amber-400/25',
+    bg: 'bg-amber-400/5',
+    color: 'text-amber-400',
+    avatarColor: '#fbbf24',
+    avatarBorder: 'border-amber-400/30',
+    label: '#3',
+    icon: <Medal className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />,
+  };
+  return null;
+};
+
 // ── Podium card — top 3 ──────────────────────────────────────────────────────
 const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: number }> = ({
   entry, rank, delay,
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const handle = entry.handle || entry.name || 'Anonymous';
-
-  const meta = {
-    1: {
-      accent: 'var(--color-accent)',
-      border: 'border-accent/40',
-      bg: 'bg-accent-dim',
-      color: 'text-accent',
-      avatarColor: '#B7FF99',
-      avatarBorder: 'border-accent/40',
-      label: '#1',
-      icon: <Crown className="w-3.5 h-3.5" />,
-    },
-    2: {
-      accent: '#60a5fa',
-      border: 'border-blue-400/25',
-      bg: 'bg-blue-400/5',
-      color: 'text-blue-400',
-      avatarColor: '#60a5fa',
-      avatarBorder: 'border-blue-400/30',
-      label: '#2',
-      icon: <Medal className="w-3.5 h-3.5" style={{ color: '#60a5fa' }} />,
-    },
-    3: {
-      accent: '#fbbf24',
-      border: 'border-amber-400/25',
-      bg: 'bg-amber-400/5',
-      color: 'text-amber-400',
-      avatarColor: '#fbbf24',
-      avatarBorder: 'border-amber-400/30',
-      label: '#3',
-      icon: <Medal className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />,
-    },
-  }[rank];
+  const meta = getRankMeta(rank)!;
 
   return (
     <motion.div
@@ -89,32 +92,32 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-      className={`flex flex-col items-center text-center rounded-xl border-2 ${meta.border} ${meta.bg} p-5 lg:p-6
-                  ${rank === 1 ? 'md:scale-[1.04] md:-translate-y-1' : ''}
+      className={`flex flex-col items-center text-center rounded-xl border-2 ${meta.border} ${meta.bg} p-4 lg:p-5
+                  ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
                   transition-transform duration-300 hover:brightness-110`}
       style={{ boxShadow: rank === 1 ? `0 0 32px rgba(183,255,153,0.12)` : 'var(--card-shimmer)' }}
     >
       {/* Rank badge */}
-      <div className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] mb-4 ${meta.color}`}>
+      <div className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] mb-3 ${meta.color}`}>
         {meta.icon}
         {meta.label}
       </div>
 
       {/* Avatar */}
-      <Avatar entry={entry} size="lg" colorHex={meta.avatarColor} borderClass={meta.avatarBorder} />
+      <Avatar entry={entry} size="md" colorHex={meta.avatarColor} borderClass={meta.avatarBorder} />
 
       {/* Handle */}
-      <div className={`mt-3 font-mono text-sm font-bold truncate w-full ${meta.color}`}>{handle}</div>
-      <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5 mb-3">
+      <div className={`mt-2.5 font-mono text-sm font-bold truncate w-full ${meta.color}`}>{handle}</div>
+      <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5 mb-2.5">
         {entry.rank || 'Operator'}
       </div>
 
       {/* Score */}
       <div
-        className={`font-mono font-black text-lg inline-flex items-center gap-1.5 ${meta.color}`}
+        className={`font-mono font-black text-base inline-flex items-center gap-1.5 ${meta.color}`}
       >
         {Number(entry.totalXp || 0).toLocaleString()}
-        <CpLogo className="w-4 h-4" />
+        <CpLogo className="w-3.5 h-3.5" />
       </div>
     </motion.div>
   );
@@ -156,7 +159,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const handle = entry.handle || entry.name || 'Anonymous';
-  const isFirst = rank === 1;
+  const meta = getRankMeta(rank);
 
   return (
     <motion.div
@@ -165,27 +168,27 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
       className={`rounded-xl border p-3.5 flex items-center gap-3.5 transition-colors ${
-        isFirst ? 'border-accent/35 bg-accent-dim' : 'border-border bg-bg-card'
+        meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
       }`}
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <div className={`font-mono font-black text-sm w-8 flex-none flex items-center gap-1 ${isFirst ? 'text-accent' : 'text-accent/50'}`}>
-        {isFirst && <Crown className="w-3.5 h-3.5 shrink-0" />}
+      <div className={`font-mono font-black text-sm w-8 flex-none flex items-center gap-1 ${meta ? meta.color : 'text-accent/50'}`}>
+        {meta ? meta.icon : null}
         #{rank}
       </div>
       <Avatar
         entry={entry}
         size="sm"
-        colorHex={isFirst ? '#B7FF99' : '#88AD7C'}
-        borderClass={isFirst ? 'border-accent/40' : 'border-border'}
+        colorHex={meta ? meta.avatarColor : '#88AD7C'}
+        borderClass={meta ? meta.avatarBorder : 'border-border'}
       />
       <div className="min-w-0 flex-1">
-        <div className={`font-mono text-sm font-medium truncate ${isFirst ? 'text-accent' : 'text-text-primary'}`}>
+        <div className={`font-mono text-sm font-medium truncate ${meta ? meta.color : 'text-text-primary'}`}>
           {handle}
         </div>
         <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{entry.rank || 'Operator'}</div>
       </div>
-      <div className={`font-mono font-bold text-sm flex-none inline-flex items-center gap-1 ${isFirst ? 'text-accent' : 'text-accent/70'}`}>
+      <div className={`font-mono font-bold text-sm flex-none inline-flex items-center gap-1 ${meta ? meta.color : 'text-accent/70'}`}>
         {Number(entry.totalXp || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" />
       </div>
     </motion.div>
@@ -194,9 +197,9 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 const PodiumSkeleton = () => (
-  <div className="rounded-xl border-2 border-border bg-bg-card p-5 animate-pulse flex flex-col items-center gap-3">
+  <div className="rounded-xl border-2 border-border bg-bg-card p-4 animate-pulse flex flex-col items-center gap-3">
     <div className="w-10 h-3 bg-accent-dim/30 rounded" />
-    <div className="w-14 h-14 rounded-full bg-accent-dim/30" />
+    <div className="w-11 h-11 rounded-full bg-accent-dim/30" />
     <div className="h-3 bg-accent-dim/30 rounded w-2/3" />
     <div className="h-2 bg-accent-dim/20 rounded w-1/3" />
     <div className="h-4 bg-accent-dim/25 rounded w-1/2" />

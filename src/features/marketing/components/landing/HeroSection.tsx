@@ -100,7 +100,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-[88px] md:pt-20 pb-10 md:pb-40 lg:pb-56 xl:pb-52
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start md:items-center pt-28 md:pt-20 pb-20 md:pb-40 lg:pb-56 xl:pb-52
           md:min-h-0 md:h-full"
       >
         {/* Left column */}
@@ -111,15 +111,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-4 md:mb-3 px-3 py-1 border border-border bg-accent-dim rounded-sm"
+            className="mb-5 md:mb-3 px-3 py-1 border border-border bg-accent-dim rounded-sm"
           >
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
               AFRICA'S OFFENSIVE SECURITY PLATFORM
             </span>
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.08] mb-4 md:mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-5 md:mb-3">
             <span className="inline-block">
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
@@ -154,7 +154,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-5 md:mb-4"
+            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-7 md:mb-4"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
@@ -164,18 +164,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-2.5 mb-5 md:mb-6 lg:mb-8"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8 md:mb-6 lg:mb-8"
           >
             {user ? (
-              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 text-sm">
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 text-sm">
                 <LayoutDashboard className="w-4 h-4" /> Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-sm !px-6">
+                <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-sm !px-8">
                   Start Free Module <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary text-sm !px-6 text-center">Log In</Link>
+                <Link to="/login" className="btn-secondary text-sm !px-8 text-center">Log In</Link>
               </>
             )}
           </motion.div>
@@ -186,26 +186,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 1.7 }}
-              className="hidden sm:block font-mono text-[10px] text-accent tracking-tighter w-full max-w-lg overflow-hidden break-words"
+              className="block font-mono text-[9px] sm:text-[10px] text-accent/70 tracking-tighter w-full max-w-lg overflow-hidden break-words mb-8 md:mb-0"
             >
               {terminalText}<span className="animate-blink italic">_</span>
             </motion.div>
           )}
 
-          {/* Tablet stats grid (md only, no globe) */}
-          <div className="hidden md:grid grid-cols-2 gap-3 mt-5 lg:hidden w-full">
+          {/* Mobile/Tablet stats grid (lg:hidden) */}
+          <div className="grid grid-cols-2 gap-3 mt-2 md:mt-5 lg:hidden w-full max-w-sm sm:max-w-md">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}
                 initial={minimizeEffects ? false : { opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.45, delay: 1.8 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-lg border border-border bg-bg-card/80 backdrop-blur-sm px-3 py-3"
+                className="rounded-lg border border-border bg-bg-card/80 backdrop-blur-sm px-3.5 py-3"
               >
                 <div className="text-xl font-bold text-accent font-mono leading-none">
                   <StatCounter end={s.value} suffix={s.suffix} />
                 </div>
-                <div className="text-[9px] uppercase tracking-widest text-text-muted mt-1">{s.label}</div>
+                <div className="text-[9px] uppercase tracking-widest text-text-muted mt-1.5">{s.label}</div>
               </motion.div>
             ))}
           </div>
