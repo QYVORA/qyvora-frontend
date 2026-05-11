@@ -715,7 +715,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   return (
     <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'default', willChange: 'transform', contain: 'strict' }}>
       {/* CSS atmospheric glow rings — centered square to keep perfect circle */}
-      <div className="absolute left-1/2 top-1/2 w-[88%] max-w-full aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+      <div className="absolute left-1/2 top-1/2 w-full max-w-full aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <div className="absolute inset-0" style={{
           borderRadius: '50%',
           background: 'radial-gradient(circle at 50% 50%, transparent 56%, rgba(136,173,124,0.035) 68%, rgba(136,173,124,0.015) 76%, transparent 84%)',
