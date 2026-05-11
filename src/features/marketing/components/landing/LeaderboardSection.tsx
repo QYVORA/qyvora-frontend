@@ -213,7 +213,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 
   return (
     <section className="
-      py-20 bg-bg-card border-y border-border relative has-bg-image
+      pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img

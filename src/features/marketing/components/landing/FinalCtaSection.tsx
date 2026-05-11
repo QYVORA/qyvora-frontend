@@ -138,8 +138,8 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
 
   return (
     <section className="
-      relative py-20 bg-bg scanlines flex items-center has-bg-image
-      md:h-full md:overflow-hidden md:py-0
+      relative pt-28 pb-20 md:py-0 bg-bg scanlines flex items-center has-bg-image
+      md:h-full md:overflow-hidden
     ">
       {/* Background image */}
       <img

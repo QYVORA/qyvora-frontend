@@ -35,30 +35,36 @@ const SOCIAL = [
 
 const Footer: React.FC = () => (
   <footer className="
-    relative bg-bg border-t border-border
+    relative bg-bg border-t border-border/50
     pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0
     md:h-full md:overflow-hidden md:flex md:flex-col md:justify-center
+    group/footer
   ">
-    <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
-
-    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full py-10 md:py-0">
+    {/* ── Background layers ── */}
+    <div className="absolute inset-0 dot-grid opacity-[0.05] pointer-events-none" />
+    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent shadow-[0_0_20px_var(--color-accent-glow)]" />
+    
+    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full py-12 md:py-0">
 
       {/* ── Main grid ── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-10 mb-10 md:mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-10 md:gap-12 mb-12 md:mb-16">
 
         {/* Brand column — spans 2 on desktop */}
-        <div className="col-span-2 flex flex-col gap-5">
-          {/* Image logo — same component as Navbar */}
-          <Link to="/" className="flex items-center w-fit">
-            <Logo size="lg" />
+        <div className="col-span-2 flex flex-col gap-6">
+          {/* Logo with subtle glow */}
+          <Link to="/" className="flex items-center w-fit group/logo">
+            <div className="relative">
+              <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+              <Logo size="lg" className="relative" />
+            </div>
           </Link>
 
-          <p className="text-sm text-text-muted leading-relaxed max-w-[240px]">
-            Africa's offensive security training and penetration testing platform. Built in Accra, Ghana.
+          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm">
+            Africa's leading offensive security ecosystem. We train the next generation of operators and secure the continent's most critical infrastructure.
           </p>
 
-          {/* Social icons */}
-          <div className="flex items-center gap-2">
+          {/* Social icons — LARGER and more interactive */}
+          <div className="flex items-center gap-3">
             {SOCIAL.map(({ icon: Icon, key, label }) => {
               const href = SITE_CONFIG.social.find((i) => i.key === key)?.href || '#';
               return (
@@ -68,36 +74,40 @@ const Footer: React.FC = () => (
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noreferrer"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-bg-card
-                             text-text-muted hover:text-accent hover:border-accent/40 transition-colors duration-200"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card/50
+                             text-text-muted hover:text-accent hover:border-accent/50 hover:bg-accent-dim
+                             transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_var(--color-accent-glow)]"
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-5 h-5" />
                 </a>
               );
             })}
           </div>
 
-          {/* Location tag */}
-          <div className="inline-flex items-center gap-1.5 w-fit">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.2em]">
-              Tamale, Ghana
+          {/* Status/Location ticker */}
+          <div className="inline-flex items-center gap-3 bg-accent-dim border border-accent/20 rounded-lg px-3 py-1.5 w-fit">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+            </span>
+            <span className="text-[11px] font-mono font-black text-accent uppercase tracking-[0.2em]">
+              Node: Tamale // 09.40' N // 00.85' W
             </span>
           </div>
         </div>
 
-        {/* Nav columns */}
+        {/* Nav columns — LARGER links */}
         {FOOTER_COLS.map((col) => (
-          <div key={col.heading} className="flex flex-col gap-4">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+          <div key={col.heading} className="flex flex-col gap-6">
+            <h4 className="text-[11px] font-black uppercase tracking-[0.35em] text-accent/80 border-l-2 border-accent/40 pl-3">
               {col.heading}
             </h4>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-4">
               {col.links.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.path}
-                    className="text-sm text-text-muted hover:text-text-primary transition-colors duration-150"
+                    className="text-sm md:text-base text-text-muted hover:text-accent hover:translate-x-1 inline-block transition-all duration-200"
                   >
                     {link.label}
                   </Link>
@@ -109,16 +119,16 @@ const Footer: React.FC = () => (
       </div>
 
       {/* ── Bottom bar ── */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t border-border/40">
-        <p className="text-[10px] font-mono text-text-muted tracking-widest uppercase">
-          © {new Date().getFullYear()} HSOCIETY OFFSEC. All rights reserved.
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-border/20">
+        <p className="text-[11px] font-mono text-text-muted tracking-[0.2em] uppercase">
+          [<span className="text-accent/60">©</span>] {new Date().getFullYear()} HSOCIETY OFFSEC // SHADOWS UNBOUND
         </p>
-        <div className="flex items-center gap-5 flex-wrap justify-center">
+        <div className="flex items-center gap-6 flex-wrap justify-center">
           {SITE_CONFIG.footer.links.map((item) => (
             <Link
               key={item.label}
               to={item.path}
-              className="text-[10px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-widest"
+              className="text-[10px] md:text-[11px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-[0.25em]"
             >
               {item.label}
             </Link>

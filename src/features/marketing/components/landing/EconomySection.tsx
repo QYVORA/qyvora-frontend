@@ -33,7 +33,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
 
   return (
     <section className="
-      py-14 md:py-16 bg-bg relative isolate has-bg-image
+      pt-28 pb-14 md:py-16 bg-bg relative isolate has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img

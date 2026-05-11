@@ -532,13 +532,13 @@
    [data-snap-child] compresses section padding so content fits the viewport.
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* ── Navbar clearance — landing page only (md+) ──
-   Each SnapSection wrapper (md:snap-start) gets pt-[72px] so content
-   starts below the fixed navbar. Hero handles its own offset internally.
+/* ── Navbar clearance — removed ──
+   Since we hide the navbar on scroll, we no longer reserve space for it.
+   Sections now fill the entire viewport for a full-bleed immersive experience.
 ── */
 @media (min-width: 768px) {
   .landing-snap .md\:snap-start {
-    padding-top: 72px;
+    padding-top: 0;
   }
   .landing-snap #hero.md\:snap-start {
     padding-top: 0;

@@ -11,7 +11,7 @@ import PublicBottomNav from '../../features/marketing/components/layout/PublicBo
 const PublicLayout = () => (
   <>
     <Navbar />
-    <main className="w-full pt-[72px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0">
+    <main className="w-full pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0">
       <Outlet />
     </main>
     <Footer />

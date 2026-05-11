@@ -40,7 +40,7 @@ const SocialSection: React.FC = () => {
 
   return (
     <section className="
-      py-20 bg-bg border-t border-border relative has-bg-image
+      pt-28 pb-20 bg-bg border-t border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <div className="absolute inset-0 dot-grid opacity-[0.06] pointer-events-none" />

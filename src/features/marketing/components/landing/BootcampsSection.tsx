@@ -190,7 +190,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
   return (
     <section className="
-      py-20 bg-bg-card border-y border-border relative has-bg-image
+      pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
       <img
@@ -207,9 +207,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
-            <span className="block text-[10px] font-black uppercase tracking-[0.35em] text-accent mb-2">
-              // Arsenal
-            </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
               Bootcamps Built<br className="hidden sm:block" /> For Operators
             </h2>

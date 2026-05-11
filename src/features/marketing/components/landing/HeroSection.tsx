@@ -100,7 +100,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start md:items-center pt-28 md:pt-20 pb-20 md:pb-40 lg:pb-56 xl:pb-52
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start md:items-center pt-24 md:pt-16 pb-20 md:pb-40 lg:pb-56 xl:pb-52
           md:min-h-0 md:h-full"
       >
         {/* Left column */}

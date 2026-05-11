@@ -39,9 +39,30 @@ const Navbar: React.FC = () => {
   const { user } = useAuth();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = React.useRef(0);
   const scrollY = useScrollY();
   const location = useLocation();
   const isScrolled = scrollY > 80;
+
+  // Handle scroll-to-hide logic
+  useEffect(() => {
+    // Always show at the top
+    if (scrollY < 10) {
+      setIsVisible(true);
+      lastScrollY.current = scrollY;
+      return;
+    }
+
+    const diff = scrollY - lastScrollY.current;
+    
+    // Threshold to prevent jitter (5px)
+    if (Math.abs(diff) > 5) {
+      const isScrollingDown = diff > 0;
+      setIsVisible(!isScrollingDown);
+      lastScrollY.current = scrollY;
+    }
+  }, [scrollY]);
 
   useEffect(() => { setActiveDropdown(null); }, [location]);
 
@@ -66,6 +87,8 @@ const Navbar: React.FC = () => {
         isScrolled
           ? 'bg-bg/90 backdrop-blur-md'
           : 'bg-transparent'
+      } ${
+        !isVisible ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
       }`}
       style={{ outline: 'none' }}
     >
