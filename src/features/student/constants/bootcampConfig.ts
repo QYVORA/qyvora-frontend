@@ -1576,7 +1576,7 @@ burpsuite &
 7. Right-click → Send to Repeater
 8. In Repeater, modify the password and resend — observe the difference in response
 
-Log in to the target application through Burp. Capture the login request. Document every parameter sent and the full server response.`,
+        Log in to the target application through Burp. Capture the login request. Document every parameter sent and the full server response.`,
               image: null,
             },
           ],

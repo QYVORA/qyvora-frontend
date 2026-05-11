@@ -137,7 +137,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
     <button
       onClick={copy}
       title="Click to copy"
-      className={`group/inline relative inline-flex items-center gap-1 mx-0.5 px-2 py-0.5 rounded-md border font-mono text-sm transition-all ${
+      className={`group/inline inline-flex items-center mx-0.5 px-1 py-0 rounded-[2px] border font-mono text-[11px] leading-none transition-all ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-[#0d0d0d] text-accent hover:border-accent/40'
@@ -145,7 +145,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
     >
       {code}
       <span className={`transition-opacity ${copied ? 'opacity-100' : 'opacity-0 group-hover/inline:opacity-60'}`}>
-        {copied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
+        {copied ? <Check className="h-2 w-2" /> : <Copy className="h-2 w-2" />}
       </span>
     </button>
   );
