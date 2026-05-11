@@ -63,48 +63,44 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/*
-        ── MOBILE GLOBE ─────────────────────────────────────────────────────
-        Absolutely pinned to the section's bottom edge (z-10, behind text z-30).
-        The globe square is 120vw wide and centred; its vertical centre is
-        placed AT the section bottom via `bottom: -50%` on the square — so
-        exactly the top half of the globe is visible, clipped flush by the
-        section boundary (overflow on the section clips it naturally on mobile
-        since the section is min-h-screen and the next section starts right after).
-
-        Adjust `bottom` value to taste:
-          -60%  → shows ~40% of globe (more crescent)
-          -50%  → shows exactly the top hemisphere
-          -40%  → shows ~60% of globe (more globe, less crescent)
+        ── MOBILE CENTERED BACKGROUND GLOBE ──────────────────────────────────
+        Visible ONLY on mobile/tablet. Positioned behind the text.
         ──────────────────────────────────────────────────────────────────── */}
       {!shouldReduceMotion && (
-        <div
-          className="md:hidden absolute left-0 w-full pointer-events-none z-10 overflow-hidden"
-          style={{ height: '60vw', maxHeight: '260px', bottom: '64px' }}
-        >
-          <div
-            className="absolute left-1/2 -translate-x-1/2"
-            style={{
-              width: '120vw',
-              maxWidth: '580px',
-              aspectRatio: '1 / 1',
-              top: '30%',
-            }}
+        <div className="lg:hidden absolute inset-0 flex items-start justify-center pointer-events-none z-10 pt-32 sm:pt-40">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-[480px] sm:max-w-[600px] aspect-square flex items-center justify-center"
           >
-            <Suspense fallback={null}>
-              <HackerGlobe scale={1.0} />
-            </Suspense>
-          </div>
+            <div className="absolute inset-0 rounded-full bg-accent/5 blur-[100px] pointer-events-none" />
+            {/* The Globe — Always show on mobile unless reduced motion is on */}
+            {!shouldReduceMotion && (
+              <div className="w-full h-full opacity-35">
+                <Suspense fallback={null}>
+                  <HackerGlobe scale={1.05} />
+                </Suspense>
+              </div>
+            )}
+            <img
+              src="/assets/illustrations/hero-operator.webp"
+              alt=""
+              aria-hidden="true"
+              className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[65%] sm:w-[55%] h-auto object-contain opacity-25 select-none drop-shadow-[0_0_50px_var(--color-accent-glow)]"
+            />
+          </motion.div>
         </div>
       )}
 
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 min-h-screen max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start md:items-center pt-24 md:pt-16 pb-20 md:pb-40 lg:pb-56 xl:pb-52
+        className="relative z-30 min-h-screen max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start lg:items-center text-center lg:text-left pt-24 md:pt-16 pb-20 md:pb-40 lg:pb-56 xl:pb-52
           md:min-h-0 md:h-full"
       >
         {/* Left column */}
-        <div className="flex flex-col items-start w-full lg:pr-6">
+        <div className="flex flex-col items-center lg:items-start w-full lg:pr-6">
 
           {/* Badge */}
           <motion.div
@@ -119,7 +115,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] mb-5 md:mb-3">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-extrabold text-text-primary leading-[1.1] lg:leading-[1.08] mb-5 md:mb-3">
             <span className="inline-block">
               {'Train Like a Hacker.'.split(' ').map((w, i) => (
                 <motion.span
@@ -154,7 +150,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm md:text-base lg:text-lg max-w-lg mb-7 md:mb-4"
+            className="text-text-secondary text-sm sm:text-base md:text-lg max-w-lg mb-7 md:mb-4"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
@@ -164,7 +160,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.55, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8 md:mb-6 lg:mb-8"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mb-8 md:mb-6 lg:mb-8"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 text-sm">
@@ -186,14 +182,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 1.7 }}
-              className="block font-mono text-[9px] sm:text-[10px] text-accent/70 tracking-tighter w-full max-w-lg overflow-hidden break-words mb-8 md:mb-0"
+              className="block font-mono text-[9px] sm:text-[10px] text-accent/50 tracking-tighter w-full max-w-lg overflow-hidden break-words mb-8 md:mb-0"
             >
               {terminalText}<span className="animate-blink italic">_</span>
             </motion.div>
           )}
 
-          {/* Mobile/Tablet stats grid (lg:hidden) */}
-          <div className="grid grid-cols-2 gap-3 mt-2 md:mt-5 lg:hidden w-full max-w-sm sm:max-w-md">
+          {/* Tablet stats grid (md only, no globe) */}
+          <div className="hidden md:grid lg:hidden grid-cols-2 gap-3 mt-5 w-full max-w-md">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}

@@ -73,13 +73,13 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
               {/* CP Features grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                 {CP_FEATURES.map((feat, i) => (
-                  <ScrollReveal key={feat.title} delay={i * 0.05}>
-                    <CardBase className="p-4 flex flex-col items-center text-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center">
-                        <feat.icon className="w-4 h-4 text-accent" />
+                  <ScrollReveal key={feat.title} delay={i * 0.05} className="h-full">
+                    <CardBase className="p-4 flex flex-col items-center text-center gap-2 h-full">
+                      <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
+                        <feat.icon className="w-5 h-5 text-accent" />
                       </div>
-                      <p className="text-xs font-black text-text-primary">{feat.title}</p>
-                      <p className="text-[10px] text-text-muted leading-relaxed">{feat.desc}</p>
+                      <p className="text-sm font-black text-text-primary">{feat.title}</p>
+                      <p className="text-xs text-text-muted leading-relaxed">{feat.desc}</p>
                     </CardBase>
                   </ScrollReveal>
                 ))}
