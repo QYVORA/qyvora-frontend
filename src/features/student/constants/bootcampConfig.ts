@@ -800,7 +800,7 @@ bash hello.sh
 **The \`$(command)\` syntax** is called command substitution. It runs the command inside and replaces the \`$(...)\` with the output. This is how you capture command output and use it in your scripts.
 
 Write this script, run it, and confirm the output is correct before moving on.`,
-              image: null,
+              image: 'step-01-ping-script.png',
             },
             {
               title: 'Variables and Arguments',
@@ -851,7 +851,7 @@ ping -c 3 "$1"
 \`\`\`
 
 Run it with: \`./ping_host.sh google.com\``,
-              image: null,
+              image: 'step-02-run-script.png',
             },
             {
               title: 'Loops and Iteration',
@@ -896,7 +896,7 @@ done
 \`\`\`
 
 Write a script that reads a list of IP addresses from a file called \`targets.txt\` (one per line) and pings each one, printing whether it is up or down.`,
-              image: null,
+              image: 'step-03-loop-ping.png',
             },
             {
               title: 'Conditionals and Port Checking',
@@ -947,7 +947,7 @@ done
 \`\`\`
 
 Save this as \`portscan.sh\`, make it executable, and run it against your local machine: \`./portscan.sh 127.0.0.1\`. Document every open port you find.`,
-              image: null,
+              image: 'step-04-port-scanner.png',
             },
           ],
         },

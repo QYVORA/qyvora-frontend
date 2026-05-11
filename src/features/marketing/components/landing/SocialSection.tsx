@@ -90,7 +90,7 @@ const SocialSection: React.FC = () => {
                            hover:border-opacity-60 transition-colors duration-300"
                 style={{
                   boxShadow: 'var(--card-shimmer)',
-                  // @ts-ignore
+                  // @ts-expect-error CSS custom property dynamic keys
                   '--platform-accent': meta.accent,
                   '--platform-dim': meta.dimAlpha,
                 }}
