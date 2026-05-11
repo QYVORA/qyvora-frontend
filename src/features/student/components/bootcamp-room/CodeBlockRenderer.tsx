@@ -137,15 +137,15 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
     <button
       onClick={copy}
       title="Click to copy"
-      className={`group/inline inline-flex items-center mx-0.5 px-1 py-0 rounded-[2px] border font-mono text-[11px] leading-none transition-all ${
+      className={`group/inline inline-flex items-center gap-1.5 mx-1 px-1.5 h-[1.1rem] rounded-[4px] border font-mono text-[10px] leading-none transition-all align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
           : 'border-border bg-[#0d0d0d] text-accent hover:border-accent/40'
       }`}
     >
-      {code}
-      <span className={`transition-opacity ${copied ? 'opacity-100' : 'opacity-0 group-hover/inline:opacity-60'}`}>
-        {copied ? <Check className="h-2 w-2" /> : <Copy className="h-2 w-2" />}
+      <span className="truncate max-w-[240px]">{code}</span>
+      <span className={`flex-shrink-0 transition-opacity ${copied ? 'opacity-100' : 'opacity-0 group-hover/inline:opacity-60'}`}>
+        {copied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
       </span>
     </button>
   );
