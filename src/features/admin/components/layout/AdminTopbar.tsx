@@ -352,7 +352,7 @@ const AdminTopbar = () => {
             {/* Profile avatar */}
             <div
               aria-label="Admin profile"
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-accent/30 bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none"
+              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-accent/30 bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors cursor-default"
             >
               {(user?.username || user?.email || 'A').substring(0, 2).toUpperCase()}
             </div>
@@ -360,7 +360,7 @@ const AdminTopbar = () => {
             {/* Logout — desktop */}
             <button
               onClick={handleLogout}
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10"
+              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10 active:scale-95"
               aria-label="Log out"
             >
               <LogOut className="w-6 h-6" />
