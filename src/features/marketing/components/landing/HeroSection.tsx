@@ -5,6 +5,7 @@ import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
+import Logo from '../../../../shared/components/brand/Logo';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 
@@ -83,12 +84,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </Suspense>
               </div>
             )}
-            <img
-              src="/assets/illustrations/hero-operator.webp"
-              alt=""
-              aria-hidden="true"
-              className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[65%] sm:w-[55%] h-auto object-contain opacity-25 select-none drop-shadow-[0_0_50px_var(--color-accent-glow)]"
-            />
+            {/* Footer's Logo illustration viewer (swapped in) */}
+            <Link to="/" className="absolute bottom-[5%] left-1/2 -translate-x-1/2 flex items-center w-fit group/logo">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+                <Logo size="lg" />
+              </div>
+            </Link>
           </motion.div>
         </div>
       )}
@@ -224,12 +226,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             SAT-02 // ORBIT
           </motion.div>
-          <img
-            src="/assets/illustrations/hero-operator.webp"
-            alt=""
-            aria-hidden="true"
-            className="absolute bottom-[-14%] left-1/2 -translate-x-1/2 z-20 w-[66%] max-w-[390px] xl:max-w-[460px] h-auto object-contain pointer-events-none select-none opacity-95 drop-shadow-[0_0_50px_var(--color-accent-glow)]"
-          />
+          {/* Footer's Logo illustration viewer (swapped in) */}
+          <Link to="/" className="absolute bottom-[-14%] left-1/2 -translate-x-1/2 z-20 flex items-center w-fit group/logo">
+            <div className="relative">
+              <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
+              <Logo size="lg" />
+            </div>
+          </Link>
         </motion.div>
       </motion.div>
 

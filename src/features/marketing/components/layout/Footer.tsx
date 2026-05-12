@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_CONFIG } from '../../content/siteConfig';
-import Logo from '../../../../shared/components/brand/Logo';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
 import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedinIcon';
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
@@ -36,26 +35,32 @@ const SOCIAL = [
 const Footer: React.FC = () => (
   <footer className="
     relative bg-bg border-t border-border/50
-    pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0
-    md:h-full md:overflow-hidden md:flex md:flex-col md:justify-center
+    pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-12
     group/footer
   ">
     {/* ── Background layers ── */}
     <div className="absolute inset-0 dot-grid opacity-[0.05] pointer-events-none" />
     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent shadow-[0_0_20px_var(--color-accent-glow)]" />
     
-    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full py-12 md:py-0">
+    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full py-12 md:py-16">
 
       {/* ── Main grid ── */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-10 md:gap-12 mb-12 md:mb-16">
 
         {/* Brand column — spans 2 on desktop */}
-        <div className="col-span-2 flex flex-col gap-6">
-          {/* Logo with subtle glow */}
-          <Link to="/" className="flex items-center w-fit group/logo">
+        <div className="col-span-2 flex flex-col gap-6 relative">
+          {/* Hero's operator illustration viewer (swapped in) — exactly as in Hero */}
+          <img
+            src="/assets/illustrations/hero-operator.webp"
+            alt=""
+            className="absolute bottom-0 right-0 w-[100px] sm:w-[120px] h-auto object-contain select-none opacity-10 pointer-events-none -z-10"
+          />
+
+          {/* Brand name heading + social icons etc remain in normal flow */}
+          <Link to="/" className="flex items-center w-fit group/logo relative z-10">
             <div className="relative">
               <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
-              <Logo size="lg" className="relative" />
+              <h2 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight">HSOCIETY</h2>
             </div>
           </Link>
 
