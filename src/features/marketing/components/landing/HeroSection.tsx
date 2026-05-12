@@ -5,7 +5,6 @@ import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
-import Logo from '../../../../shared/components/brand/Logo';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 
@@ -84,13 +83,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </Suspense>
               </div>
             )}
-            {/* Footer's Logo illustration viewer (swapped in) */}
-            <Link to="/" className="absolute bottom-[5%] left-1/2 -translate-x-1/2 flex items-center w-fit group/logo">
-              <div className="relative">
-                <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
-                <Logo size="lg" />
-              </div>
-            </Link>
+            {/* Centered Operator Illustration (Mobile) */}
+            <div className="absolute inset-0 flex items-center justify-center p-12">
+              <img
+                src="/assets/illustrations/cta-operator.webp"
+                alt=""
+                aria-hidden="true"
+                className="w-full h-full object-contain opacity-50 select-none"
+              />
+            </div>
           </motion.div>
         </div>
       )}
@@ -219,6 +220,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         >
           <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
           {!minimizeEffects && <div className="w-full h-full pointer-events-none"><Suspense fallback={null}><HackerGlobe scale={0.95} /></Suspense></div>}
+          
+          {/* Centered Operator Illustration (Desktop) */}
+          <div className="absolute inset-0 flex items-center justify-center p-16">
+            <img
+              src="/assets/illustrations/cta-operator.webp"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-contain opacity-60 select-none z-10"
+            />
+          </div>
+
           <motion.div
             animate={shouldReduceMotion ? {} : { opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -226,13 +238,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             SAT-02 // ORBIT
           </motion.div>
-          {/* Footer's Logo illustration viewer (swapped in) */}
-          <Link to="/" className="absolute bottom-[-14%] left-1/2 -translate-x-1/2 z-20 flex items-center w-fit group/logo">
-            <div className="relative">
-              <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
-              <Logo size="lg" />
-            </div>
-          </Link>
         </motion.div>
       </motion.div>
 

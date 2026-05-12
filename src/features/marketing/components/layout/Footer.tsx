@@ -49,19 +49,12 @@ const Footer: React.FC = () => (
 
         {/* Brand column — spans 2 on desktop */}
         <div className="col-span-2 flex flex-col gap-6 relative">
-          {/* Hero's operator illustration viewer (swapped in) — exactly as in Hero */}
-          <img
-            src="/assets/illustrations/hero-operator.webp"
-            alt=""
-            className="absolute bottom-0 right-0 w-[100px] sm:w-[120px] h-auto object-contain select-none opacity-10 pointer-events-none -z-10"
-          />
-
-          {/* Brand name heading + social icons etc remain in normal flow */}
           <Link to="/" className="flex items-center w-fit group/logo relative z-10">
-            <div className="relative">
-              <div className="absolute -inset-2 bg-accent/5 blur-xl rounded-full opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500" />
-              <h2 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight">HSOCIETY</h2>
-            </div>
+            <img 
+              src="/assets/branding/logos/hsociety-logo.webp" 
+              alt="HSociety" 
+              className="h-10 md:h-12 w-auto object-contain"
+            />
           </Link>
 
           <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm">
