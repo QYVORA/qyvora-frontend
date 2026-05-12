@@ -228,9 +228,9 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 <Link to="/register" className="btn-primary !px-7 !py-3 text-sm inline-flex items-center gap-2">
                   Start Free Module <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary !px-7 !py-3 text-sm">
-                  Log In
-                </Link>
+                 <Link to="/login" className="btn-secondary !px-7 !py-3 text-sm inline-flex items-center justify-center">
+                   Log In
+                 </Link>
               </>
             )}
           </motion.div>
