@@ -799,7 +799,7 @@ const BootcampRoomPage: React.FC = () => {
         lg:overflow-hidden
       ">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-black overflow-y-auto overscroll-contain scroll-hover"
+        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-bg-card border-r border-border overflow-y-auto overscroll-contain scroll-hover"
           style={{
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',

@@ -45,12 +45,12 @@ function tokeniseBash(line: string): Token[] {
 
 // ── Token colour map ──────────────────────────────────────────────────────────
 const TOKEN_CLASS: Record<TokenType, string> = {
-  keyword: 'text-accent font-bold',
-  string:  'text-emerald-400',
+  keyword: 'text-code-keyword font-bold',
+  string:  'text-code-string',
   comment: 'text-text-muted italic',
-  number:  'text-amber-400',
-  flag:    'text-blue-400',
-  path:    'text-purple-400',
+  number:  'text-code-number',
+  flag:    'text-code-flag',
+  path:    'text-code-path',
   plain:   'text-text-primary',
 };
 
@@ -84,7 +84,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
   const isBash = !lang || lang === 'bash' || lang === 'sh' || lang === 'shell';
 
   return (
-    <div className="my-4 rounded-xl border border-border overflow-hidden bg-[#0d0d0d]">
+    <div className="my-4 rounded-xl border border-border overflow-hidden bg-code-bg">
       {/* Header bar */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
       className={`group/inline inline-flex items-center gap-1.5 mx-1 px-1.5 h-[1.1rem] rounded-[4px] border font-mono text-[10px] leading-none transition-all align-middle whitespace-nowrap ${
         copied
           ? 'border-accent/50 bg-accent-dim text-accent'
-          : 'border-border bg-[#0d0d0d] text-accent hover:border-accent/40'
+          : 'border-border bg-code-bg text-accent hover:border-accent/40'
       }`}
     >
       <span className="truncate max-w-[240px]">{code}</span>

@@ -20,6 +20,15 @@
   --color-border:         rgba(171, 181, 192, 0.14);
   --color-border-strong:  rgba(183, 255, 153, 0.22);
   --dot-color:            rgba(183, 255, 153, 0.06);
+
+  /* ── Code highlighting ── */
+  --color-code-bg:              #0d0d0d;
+  --color-code-keyword:         #B7FF99;
+  --color-code-string:          #34d399; /* emerald-400 */
+  --color-code-number:          #fbbf24; /* amber-400 */
+  --color-code-flag:            #60a5fa; /* blue-400 */
+  --color-code-path:            #a78bfa; /* purple-400 */
+
   /* ── Dark theme card shimmer (top-edge light line on dark surface) ── */
   --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.05);
   /* ── Dark theme card shadow ── */
@@ -40,6 +49,15 @@
   --color-border:         rgba(12, 17, 16, 0.14);
   --color-border-strong:  rgba(47, 138, 31, 0.35);
   --dot-color:            rgba(47, 138, 31, 0.08);
+
+  /* ── Code highlighting (light) ── */
+  --color-code-bg:              #f0f2f4;
+  --color-code-keyword:         #2f8a1f;
+  --color-code-string:          #059669; /* emerald-600 */
+  --color-code-number:          #b45309; /* amber-700 */
+  --color-code-flag:            #2563eb; /* blue-600 */
+  --color-code-path:            #7e22ce; /* purple-700 */
+
   /* ── Light theme card shimmer (subtle dark inner edge on light surface) ── */
   --card-shimmer:         inset 0 1px 0 rgba(0, 0, 0, 0.06);
   /* ── Light theme card shadow (green-tinted, soft) ── */
