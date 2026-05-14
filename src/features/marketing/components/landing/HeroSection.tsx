@@ -7,6 +7,7 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
+import HeroBackground from '../HeroBackground';
 
 const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
@@ -43,17 +44,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section ref={heroRef} className="relative min-h-screen w-full md:h-full md:min-h-0 md:overflow-hidden bg-bg flex flex-col">
 
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-bg via-bg/95 to-bg" />
-        <div className="absolute inset-0 dot-grid opacity-[0.05]" />
-      </div>
+      {/* ── HeroBackground: Three.js cinematic scene (replaces old gradient + dot-grid) ── */}
+      <HeroBackground />
 
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-         className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-12 md:pt-10 pb-8
-           md:min-h-0"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-12 md:pt-10 pb-8 md:min-h-0"
       >
         {/* Left column */}
         <div className="flex flex-col items-center lg:items-start w-full lg:pr-12 justify-start md:pt-4 xl:pt-6">
@@ -94,21 +91,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary glass-effect flex items-center justify-center gap-2 !px-8 py-3.5 text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98]">
-                <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
+                <LayoutDashboard className="w-4 h-4" /> Dashboard
               </Link>
             ) : (
               <>
                 <Link to="/register" className="btn-primary glass-effect flex items-center justify-center gap-2 text-sm font-medium !px-10 py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                  Get Started <ArrowRight className="w-4 h-4" />
+                  Start Training <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/login" className="btn-secondary glass-effect text-sm font-medium !px-10 py-3.5 text-center transition-all hover:scale-[1.02] active:scale-[0.98]">
-                  Member Login
+                  Login
                 </Link>
               </>
             )}
           </motion.div>
 
-          {/* Stats for Mobile/Tablet ONLY */}
+          {/* Stats — Mobile/Tablet only */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-6 w-full max-w-2xl mt-12">
             {heroStats.map((s, i) => (
               <motion.div

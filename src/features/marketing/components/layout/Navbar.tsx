@@ -209,7 +209,7 @@ const Navbar: React.FC = () => {
           ) : (
             <>
               <Link to="/login" className="text-sm font-bold uppercase tracking-wider text-accent border border-accent rounded-md px-5 py-2 hover:bg-accent-dim transition-all">
-                Log In
+                Login
               </Link>
               <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">
                 Start Training

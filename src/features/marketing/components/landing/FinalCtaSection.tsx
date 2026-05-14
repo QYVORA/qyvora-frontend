@@ -96,11 +96,11 @@ const LiveGridCanvas: React.FC = () => {
 
 // Blinking terminal log lines
 const TERMINAL_LINES = [
-  '> Scanning attack surface...',
-  '> Bootcamp modules loaded [OK]',
-  '> Operator node authenticated',
-  '> Zero-Day Market — online',
-  '> HSOCIETY Chain — synced',
+  '> Scanning SERVER...',
+  '> Bootcamp PHASES [OK]',
+  '> Operator ACCOUNT CONNECTED',
+  '> Zero_Day Market [ONLINE]',
+  '> HSOCIETY_CHAIN [OK]',
 ];
 
 const TerminalTicker: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => {
@@ -169,8 +169,8 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
         <div className="max-w-xl">
 
-          {/* Status badge */}
-          <motion.div
+          {/* Status badge  is removed  becuause of layout issues  */}
+          {/* <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -181,7 +181,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             <span className="font-mono text-[9px] font-black uppercase tracking-[0.3em] text-accent">
               {user ? 'Training in Progress' : 'Enrollment Open'}
             </span>
-          </motion.div>
+          </motion.div> */}
 
           {/* Headline */}
           <motion.h2
