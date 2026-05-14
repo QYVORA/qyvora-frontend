@@ -18,31 +18,25 @@ const SAGE_HEX = '#88ad7c';
 ═══════════════════════════════════════════════ */
 const TARGETS = [
   { lat:   9.40, lng:  -0.85, label: 'TAMALE',        status: 'home',    region: 'africa' },
-  { lat:  -1.29, lng:  36.82, label: '',               status: 'secured', region: 'africa' },
-  { lat: -26.20, lng:  28.05, label: '',               status:'scanning', region: 'africa' },
-  { lat:  -4.32, lng:  15.32, label: '',               status:'scanning', region: 'africa' },
-  { lat:   6.37, lng:   2.39, label: '',               status: 'breach',  region: 'africa' },
-  { lat:  33.89, lng:   9.54, label: '',               status: 'secured', region: 'africa' },
-  { lat:  40.71, lng: -74.01, label: '',               status: 'breach',  region: 'world'  },
-  { lat:  51.51, lng:  -0.13, label: '',               status: 'secured', region: 'world'  },
-  { lat:  35.68, lng: 139.69, label: '',               status:'scanning', region: 'world'  },
-  { lat:   1.35, lng: 103.82, label: '',               status: 'secured', region: 'world'  },
-  { lat:  48.85, lng:   2.35, label: '',               status: 'breach',  region: 'world'  },
-  { lat:  37.77, lng:-122.42, label: '',               status: 'secured', region: 'world'  },
-  { lat:  31.23, lng: 121.47, label: '',               status:'scanning', region: 'world'  },
+  { lat:   6.52, lng:   3.37, label: '',               status: 'secured', region: 'africa' }, // Lagos
+  { lat:  30.04, lng:  31.23, label: '',               status: 'secured', region: 'africa' }, // Cairo
+  { lat: -26.20, lng:  28.05, label: '',               status: 'secured', region: 'africa' }, // Joburg
+  { lat:  40.71, lng: -74.01, label: '',               status: 'secured', region: 'world'  }, // NY
+  { lat:  51.51, lng:  -0.13, label: '',               status: 'secured', region: 'world'  }, // London
+  { lat:  35.68, lng: 139.69, label: '',               status: 'secured', region: 'world'  }, // Tokyo
 ];
 
 const STATUS_COLOR: Record<string, number> = {
   home:     SAGE,
-  breach:   0xe05252,
-  scanning: 0xc8941a,
-  secured:  0x3d6b5a,
+  breach:   0x88ad7c, // Muted sage for everything for consistency
+  scanning: 0x88ad7c,
+  secured:  0x88ad7c,
 };
 const STATUS_HEX: Record<string, string> = {
   home:     SAGE_HEX,
-  breach:   '#e05252',
-  scanning: '#c8941a',
-  secured:  '#3d6b5a',
+  breach:   SAGE_HEX,
+  scanning: SAGE_HEX,
+  secured:  SAGE_HEX,
 };
 
 /* ═══════════════════════════════════════════════
@@ -334,47 +328,15 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     globe.scale.setScalar(scale);
     scene.add(globe);
 
-    /* ── Atmospheric glow — subtle limb effect ── */
-    // Layer 1: tight inner halo (closest to surface)
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.016, 48, 48),
-      new THREE.MeshBasicMaterial({
-        color: isLight ? 0x6abf5e : 0x0f2a18,
-        transparent: true,
-        opacity: isLight ? 0.10 : 0.08,
-        side: THREE.BackSide,
-      }),
-    ));
-    // Layer 2: mid atmosphere
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.032, 48, 48),
-      new THREE.MeshBasicMaterial({
-        color: isLight ? 0x4a9e3f : 0x0d2214,
-        transparent: true,
-        opacity: isLight ? 0.06 : 0.05,
-        side: THREE.BackSide,
-      }),
-    ));
-    // Layer 3: outer diffuse haze
-    scene.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.055, 32, 32),
-      new THREE.MeshBasicMaterial({
-        color: isLight ? 0x3a8a30 : 0x0a1a10,
-        transparent: true,
-        opacity: isLight ? 0.03 : 0.025,
-        side: THREE.BackSide,
-      }),
-    ));
-
     /* ── Ocean — near-black in dark, soft grey-white in light ── */
     globe.add(new THREE.Mesh(
       new THREE.SphereGeometry(0.994, 64, 64),
-      new THREE.MeshBasicMaterial({ color: isLight ? 0xdce8da : 0x050908 }),
+      new THREE.MeshBasicMaterial({ color: isLight ? 0xf4f7f4 : 0x020403 }),
     ));
 
     /* ── Grid — barely perceptible ── */
-    const gridColor = isLight ? 0x7ab870 : 0x141e18;
-    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.55 : 1 });
+    const gridColor = isLight ? 0x88ad7c : 0x0a0f0d;
+    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.2 : 0.4 });
     for (let lat = -75; lat <= 75; lat += 20) {
       const phi = (90 - lat) * (Math.PI / 180);
       const r = Math.sin(phi), y = Math.cos(phi);
@@ -502,16 +464,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       dot.position.copy(pos);
       globe.add(dot);
 
-      // Home HQ: outer bloom sphere
-      if (isHome) {
-        const bloom = new THREE.Mesh(
-          new THREE.SphereGeometry(0.030, 8, 8),
-          new THREE.MeshBasicMaterial({ color: SAGE, transparent: true, opacity: 0.10 }),
-        );
-        bloom.position.copy(pos);
-        globe.add(bloom);
-      }
-
       // Pulse ring
       const ri = isHome ? 0.018 : 0.012;
       const ro = isHome ? 0.028 : 0.019;
@@ -535,61 +487,52 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     });
 
     /* ── Arcs ──
-       Arcs connected to Accra (idx 0) → accent sage
-       Other arcs → very dark, background only
+       Arcs connected to Tamale (idx 0) → accent sage
+       Fewer arcs for a cleaner look
     ── */
     type ArcObj = { curve: THREE.QuadraticBezierCurve3; geo: THREE.BufferGeometry; progress: number; speed: number };
     const arcs: ArcObj[] = [];
 
     const ARC_PAIRS: Array<[number, number]> = [
-      [0, 1],   // Accra → Nairobi
-      [0, 2],   // Accra → Johannesburg
-      [0, 4],   // Accra → Lagos
-      [0, 6],   // Accra → New York
-      [0, 7],   // Accra → London
-      [0, 9],   // Accra → Singapore
-      [6, 7],   // NY → London
-      [8, 9],   // Tokyo → Singapore
-      [10, 7],  // Paris → London
-      [11,12],  // SF → Shanghai
+      [0, 1],   // Tamale → Lagos
+      [0, 3],   // Tamale → Joburg
+      [0, 5],   // Tamale → London
     ];
 
     ARC_PAIRS.forEach(([a, b]) => {
       const ta = TARGETS[a], tb = TARGETS[b];
       const s   = latLngToVec3(ta.lat, ta.lng, 1.01);
       const e_  = latLngToVec3(tb.lat, tb.lng, 1.01);
-      const mid = s.clone().add(e_).normalize().multiplyScalar(1.24 + 0.14 * Math.random());
+      const mid = s.clone().add(e_).normalize().multiplyScalar(1.15 + 0.1 * Math.random());
       const curve = new THREE.QuadraticBezierCurve3(s, mid, e_);
       const geo   = new THREE.BufferGeometry();
       const isAcc = a === 0 || b === 0;
       globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
         color:       isAcc ? (isLight ? 0x1a6b0e : SAGE) : (isLight ? 0x8ab88a : 0x1e2e24),
         transparent: true,
-        opacity:     isAcc ? (isLight ? 0.45 : 0.28) : (isLight ? 0.30 : 0.55),
+        opacity:     isAcc ? (isLight ? 0.25 : 0.15) : (isLight ? 0.10 : 0.20),
       })));
-      arcs.push({ curve, geo, progress: Math.random(), speed: 0.0014 + Math.random() * 0.002 });
+      arcs.push({ curve, geo, progress: Math.random(), speed: 0.001 + Math.random() * 0.0015 });
     });
 
-    /* ── Satellites — 3 near-invisible orbital dots ── */
+    /* ── Satellites — 1 minimal orbital dot ── */
     type SatObj = {
       dot: THREE.Mesh; trailGeo: THREE.BufferGeometry;
       trailPts: THREE.Vector3[]; head: number;
       radius: number; inclination: number; phase: number; speed: number;
     };
     const sats: SatObj[] = [];
-    const TRAIL = 28;
+    const TRAIL = 20;
 
     [
-      { radius:1.30, inclination: Math.PI/3.5,  speed:0.0055, phase:0.0 },
-      { radius:1.41, inclination:-Math.PI/4.8,  speed:0.0040, phase:2.2 },
-      { radius:1.36, inclination: Math.PI/2.1,  speed:0.0036, phase:4.5 },
+      { radius:1.35, inclination: Math.PI/4,  speed:0.003, phase:0.0 },
     ].forEach(cfg => {
       const dot = new THREE.Mesh(
-        new THREE.SphereGeometry(0.003, 5, 5),
+        new THREE.SphereGeometry(0.002, 4, 4),
         new THREE.MeshBasicMaterial({
           color: isLight ? 0x1a6b0e : 0xffffff,
           transparent: true,
-          opacity: isLight ? 0.50 : 0.35,
+          opacity: isLight ? 0.30 : 0.20,
         }),
       );
       scene.add(dot);
@@ -599,7 +542,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         new THREE.LineBasicMaterial({
           color: isLight ? 0x8ab88a : 0x2e4038,
           transparent: true,
-          opacity: isLight ? 0.28 : 0.22,
+          opacity: isLight ? 0.15 : 0.10,
         }),
       ));
       sats.push({ dot, trailGeo, trailPts, head: 0, ...cfg });
@@ -714,20 +657,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
   return (
     <div ref={mountRef} className="w-full h-full relative" style={{ cursor: 'default', willChange: 'transform', contain: 'strict' }}>
-      {/* CSS atmospheric glow rings — centered square to keep perfect circle */}
-      <div className="absolute left-1/2 top-1/2 w-full max-w-full aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          borderRadius: '50%',
-          background: 'radial-gradient(circle at 50% 50%, transparent 56%, rgba(136,173,124,0.035) 68%, rgba(136,173,124,0.015) 76%, transparent 84%)',
-          filter: 'blur(5px)',
-        }} />
-        <div className="absolute inset-0" style={{
-          borderRadius: '50%',
-          background: 'radial-gradient(circle at 50% 50%, transparent 60%, rgba(100,160,90,0.02) 72%, transparent 83%)',
-          filter: 'blur(9px)',
-          transform: 'scale(1.02)',
-        }} />
-      </div>
       <div
         ref={tooltipRef}
         style={{
