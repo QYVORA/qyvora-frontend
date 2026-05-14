@@ -5,6 +5,9 @@ import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsApp
 import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedinIcon';
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
 
+/* ─────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────── */
 const FOOTER_COLS = [
   {
     heading: 'Company',
@@ -17,7 +20,7 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
-      { label: 'CTF Arena',    path: '/ctf'         },
+      { label: 'CTF Arena',   path: '/ctf'        },
       { label: 'Leaderboard', path: '/leaderboard' },
       { label: 'Bootcamps',   path: '/bootcamps'   },
       { label: 'Register',    path: '/register'    },
@@ -27,56 +30,79 @@ const FOOTER_COLS = [
 ];
 
 const SOCIAL = [
-  { icon: BrandLinkedinIcon, key: 'linkedin', label: 'LinkedIn'  },
-  { icon: BrandYoutubeIcon,  key: 'youtube',  label: 'YouTube'   },
-  { icon: BrandWhatsAppIcon, key: 'whatsapp', label: 'WhatsApp'  },
+  { icon: BrandLinkedinIcon, key: 'linkedin', label: 'LinkedIn' },
+  { icon: BrandYoutubeIcon,  key: 'youtube',  label: 'YouTube'  },
+  { icon: BrandWhatsAppIcon, key: 'whatsapp', label: 'WhatsApp' },
 ];
 
-/**
- * ASCII art banner — "HSOCIETY" in block characters, exactly as provided.
- * The art is ~95 characters wide. Font-size is set in vw units so it grows
- * proportionally with the viewport — fully visible, never clipped, never
- * centred as individual lines, but centred as a block in the footer.
- */
-const ASCII_ART = ` █████   █████  █████████     ███████      █████████  █████ ██████████ ███████████ █████ █████
-▒▒███   ▒▒███  ███▒▒▒▒▒███  ███▒▒▒▒▒███   ███▒▒▒▒▒███▒▒███ ▒▒███▒▒▒▒▒█▒█▒▒▒███▒▒▒█▒▒███ ▒▒███ 
- ▒███    ▒███ ▒███    ▒▒▒  ███     ▒▒███ ███     ▒▒▒  ▒███  ▒███  █ ▒ ▒   ▒███  ▒  ▒▒███ ███  
- ▒███████████ ▒▒█████████ ▒███      ▒███▒███          ▒███  ▒██████       ▒███      ▒▒█████   
- ▒███▒▒▒▒▒███  ▒▒▒▒▒▒▒▒███▒███      ▒███▒███          ▒███  ▒███▒▒█       ▒███       ▒▒███    
- ▒███    ▒███  ███    ▒███▒▒███     ███ ▒▒███     ███ ▒███  ▒███ ▒   █    ▒███        ▒███    
- █████   █████▒▒█████████  ▒▒▒███████▒   ▒▒█████████  █████ ██████████    █████       █████   
-▒▒▒▒▒   ▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒     ▒▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒       ▒▒▒▒▒   `;
+const ASCII_LINES = [
+  ' █████   █████  █████████     ███████      █████████  █████ ██████████ ███████████ █████ █████',
+  '▒▒███   ▒▒███  ███▒▒▒▒▒███  ███▒▒▒▒▒███   ███▒▒▒▒▒███▒▒███ ▒▒███▒▒▒▒▒█▒█▒▒▒███▒▒▒█▒▒███ ▒▒███ ',
+  ' ▒███    ▒███ ▒███    ▒▒▒  ███     ▒▒███ ███     ▒▒▒  ▒███  ▒███  █ ▒ ▒   ▒███  ▒  ▒▒███ ███  ',
+  ' ▒███████████ ▒▒█████████ ▒███      ▒███▒███          ▒███  ▒██████       ▒███      ▒▒█████   ',
+  ' ▒███▒▒▒▒▒███  ▒▒▒▒▒▒▒▒███▒███      ▒███▒███          ▒███  ▒███▒▒█       ▒███       ▒▒███    ',
+  ' ▒███    ▒███  ███    ▒███▒▒███     ███ ▒▒███     ███ ▒███  ▒███ ▒   █    ▒███        ▒███    ',
+  ' █████   █████▒▒█████████  ▒▒▒███████▒   ▒▒█████████  █████ ██████████    █████       █████   ',
+  '▒▒▒▒▒   ▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒     ▒▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒       ▒▒▒▒▒   ',
+];
 
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative bg-bg border-t border-border/50 group/footer overflow-hidden flex flex-col md:h-full">
+  <footer className="relative bg-bg border-t border-border/50 overflow-hidden">
 
-    {/* ── Background layers ── */}
-    <div className="absolute inset-0 dot-grid opacity-[0.05] pointer-events-none" />
-    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent shadow-[0_0_20px_var(--color-accent-glow)]" />
+    {/* ══════════════════════════════════════════
+        LAYER 0 — dot grid texture
+    ══════════════════════════════════════════ */}
+    <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
 
-    {/* ── Content Wrapper ── */}
-    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full flex-1 flex flex-col py-6 md:py-12 justify-between gap-6 md:gap-8">
+    {/* ══════════════════════════════════════════
+        LAYER 1 — radial accent glow from bottom-left
+    ══════════════════════════════════════════ */}
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        bottom: '-120px',
+        left: '-80px',
+        width: '600px',
+        height: '600px',
+        background: 'radial-gradient(circle, rgba(136,173,124,0.07) 0%, transparent 65%)',
+      }}
+      aria-hidden="true"
+    />
 
-      {/* ── 1. Main Grid ── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-12">
+    {/* ══════════════════════════════════════════
+        LAYER 2 — top hairline glow
+    ══════════════════════════════════════════ */}
+    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/40 to-transparent shadow-[0_0_30px_var(--color-accent-glow)]" />
 
-        {/* Brand column — spans 2 on desktop */}
-        <div className="col-span-2 flex flex-col gap-5 relative">
-          <Link to="/" className="flex items-center w-fit group/logo relative z-10">
+    {/* ══════════════════════════════════════════
+        CONTENT
+    ══════════════════════════════════════════ */}
+    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
+
+      {/* ── Top section: brand + nav ── */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 pt-10 md:pt-14 pb-10 md:pb-12">
+
+        {/* Brand column */}
+        <div className="col-span-2 flex flex-col gap-5">
+
+          <Link to="/" className="flex items-center w-fit group/logo">
             <img
               src="/assets/branding/logos/hsociety-logo.webp"
               alt="HSociety"
-              className="h-16 md:h-24 w-auto object-contain"
+              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover/logo:opacity-80"
             />
           </Link>
 
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm">
+          <p className="text-sm text-text-muted leading-relaxed max-w-[26rem] font-mono">
             Africa's leading offensive security ecosystem. We train the next generation of operators
             and secure the continent's most critical infrastructure.
           </p>
 
-          {/* Social icons */}
-          <div className="flex items-center gap-3">
+          {/* Social row */}
+          <div className="flex items-center gap-2 mt-1">
             {SOCIAL.map(({ icon: Icon, key, label }) => {
               const href = SITE_CONFIG.social.find((i) => i.key === key)?.href || '#';
               return (
@@ -86,41 +112,53 @@ const Footer: React.FC = () => (
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noreferrer"
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-bg-card/50
-                             text-text-muted hover:text-accent hover:border-accent/50 hover:bg-accent-dim
-                             transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_var(--color-accent-glow)]"
+                  className="
+                    group/soc relative flex h-9 w-9 items-center justify-center
+                    rounded-lg border border-border bg-bg-card/40
+                    text-text-muted overflow-hidden
+                    transition-all duration-300
+                    hover:border-accent/50 hover:text-accent hover:-translate-y-0.5
+                    hover:shadow-[0_6px_18px_var(--color-accent-glow)]
+                  "
                 >
-                  <Icon className="w-4.5 h-4.5" />
+                  {/* sweep shine on hover */}
+                  <span className="absolute inset-0 translate-x-[-100%] group-hover/soc:translate-x-[100%] transition-transform duration-500 bg-gradient-to-r from-transparent via-accent/10 to-transparent" />
+                  <Icon className="w-4 h-4 relative z-10" />
                 </a>
               );
             })}
           </div>
 
-          {/* Status / Location ticker */}
-          <div className="inline-flex items-center gap-3 bg-accent-dim border border-accent/20 rounded-lg px-3 py-1.5 w-fit">
-            <span className="relative flex h-2 w-2">
+          {/* Live node ticker */}
+          <div className="inline-flex items-center gap-2.5 bg-accent/5 border border-accent/20 rounded px-3 py-1.5 w-fit mt-1">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
             </span>
-            <span className="text-[10px] md:text-[11px] font-mono font-black text-accent uppercase tracking-[0.2em]">
-              Node: Tamale // 09.40' N // 00.85' W
+            <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.22em]">
+              Node: Tamale // 09.40′N // 00.85′W
             </span>
           </div>
         </div>
 
         {/* Nav columns */}
         {FOOTER_COLS.map((col) => (
-          <div key={col.heading} className="flex flex-col gap-5">
-            <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.35em] text-accent/80 border-l-2 border-accent/40 pl-3">
+          <div key={col.heading} className="flex flex-col gap-4">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-accent/70 border-l-2 border-accent/35 pl-3">
               {col.heading}
             </h4>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-2.5">
               {col.links.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.path}
-                    className="text-xs md:text-sm text-text-muted hover:text-accent hover:translate-x-1 inline-block transition-all duration-200"
+                    className="
+                      group/link inline-flex items-center gap-1.5
+                      text-xs text-text-muted font-mono
+                      hover:text-accent transition-all duration-200
+                    "
                   >
+                    <span className="w-0 overflow-hidden group-hover/link:w-3 transition-all duration-200 text-accent/60 text-[10px]">›</span>
                     {link.label}
                   </Link>
                 </li>
@@ -130,45 +168,52 @@ const Footer: React.FC = () => (
         ))}
       </div>
 
-      {/* ── 2. ASCII Banner ──
-          Background watermark behind all footer content.
-      */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-[-1]"
-        aria-hidden="true"
-        style={{ opacity: 0.12 }}
-      >
-        <pre
-          style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 'clamp(10px, 2vw, 28px)',
-            lineHeight: 1.1,
-            whiteSpace: 'pre',
-            margin: 0,
-            padding: 0,
-            color: 'var(--color-accent)',
-            display: 'block',
-            width: 'max-content',
-            letterSpacing: 0,
-            overflowX: 'visible',
-            textShadow: '0 0 20px var(--color-accent-glow)',
-          }}
-        >
-          {ASCII_ART}
-        </pre>
+      {/* ── ASCII watermark band ── */}
+      <div className="relative w-full" style={{ height: 'clamp(72px, 10vw, 140px)' }} aria-hidden="true">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <pre
+            style={{
+              fontFamily: '"JetBrains Mono", "Courier New", monospace',
+              fontSize: 'clamp(9px, 1.6vw, 22px)',
+              lineHeight: 1.05,
+              whiteSpace: 'pre',
+              margin: 0,
+              padding: 0,
+              color: 'var(--color-accent)',
+              letterSpacing: 0,
+              userSelect: 'none',
+            }}
+          >
+            {ASCII_LINES.join('\n')}
+          </pre>
+        </div>
       </div>
 
-      {/* ── 3. Bottom bar ── */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-border/20 mb-[60px] md:mb-0">
-        <p className="text-[10px] md:text-[11px] font-mono text-text-muted tracking-[0.2em] uppercase">
-          [<span className="text-accent/60">©</span>] {new Date().getFullYear()} HSOCIETY OFFSEC // SHADOWS UNBOUND
+      {/* ── Bottom bar ── */}
+      <div className="
+        relative flex flex-col sm:flex-row items-center justify-between
+        gap-4 mt-6 border-t border-border/20 pt-6 pb-8 mb-[60px]
+        md:mt-8 md:pt-7 md:pb-10 md:mb-0
+      ">
+        {/* Left: copyright */}
+        <p className="text-[10px] font-mono text-text-muted tracking-[0.22em] uppercase">
+          [<span className="text-accent/60">©</span>] {new Date().getFullYear()}{' '}
+          <span className="text-accent/80">HSOCIETY OFFSEC</span>
+          {' '}// SHADOWS UNBOUND
         </p>
-        <div className="flex items-center gap-6 flex-wrap justify-center">
+
+        {/* Centre: mission line — hidden on very small screens */}
+        <p className="hidden md:block text-[9px] font-mono text-text-muted/40 tracking-[0.3em] uppercase select-none">
+          ── TRAIN · BREACH · SECURE ──
+        </p>
+
+        {/* Right: legal links */}
+        <div className="flex items-center gap-5 flex-wrap justify-center">
           {SITE_CONFIG.footer.links.map((item) => (
             <Link
               key={item.label}
               to={item.path}
-              className="text-[9px] md:text-[10px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-[0.25em]"
+              className="text-[9px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-[0.28em]"
             >
               {item.label}
             </Link>
