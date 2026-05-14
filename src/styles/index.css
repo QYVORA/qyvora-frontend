@@ -119,6 +119,13 @@
     box-shadow: 0 8px 32px var(--color-accent-glow);
   }
 
+  .glass-effect {
+    @apply backdrop-blur-md bg-white/5 border border-white/10;
+  }
+  [data-theme="light"] .glass-effect {
+    @apply backdrop-blur-md bg-black/[0.03] border border-black/[0.08];
+  }
+
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 

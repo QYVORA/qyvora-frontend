@@ -69,23 +69,6 @@ const Landing: React.FC = () => {
   const { scrollY } = useScroll({ container: containerRef });
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroY = useTransform(scrollY, [0, 300], [0, 60]);
-  const [terminalText, setTerminalText] = useState('');
-  const fullText = '[ SYSTEM ONLINE ] // OFFENSIVE SECURITY | AFRICA // BOOTCAMPS + SERVICES + COMMUNITY';
-
-  useEffect(() => {
-    let i = 0;
-    let resetting = false;
-    const iv = setInterval(() => {
-      if (resetting) return;
-      i++;
-      setTerminalText(fullText.substring(0, i));
-      if (i >= fullText.length) {
-        resetting = true;
-        setTimeout(() => { i = 0; resetting = false; }, 2000);
-      }
-    }, 50);
-    return () => clearInterval(iv);
-  }, []);
 
   const totalCp = leaderboard.reduce((acc, e) => acc + Number(e.totalXp || 0), 0);
 
@@ -113,7 +96,6 @@ const Landing: React.FC = () => {
           heroRef={heroRef}
           heroY={heroY}
           heroOpacity={heroOpacity}
-          terminalText={terminalText}
           user={user}
           stats={stats}
           totalCp={totalCp}
@@ -131,20 +113,14 @@ const Landing: React.FC = () => {
        </SnapSection>
 
        {/* ── 4. Leaderboard ── */}
-        <SnapSection id="leaderboard" className="bg-bg-card">
-          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-        </SnapSection>
+       <SnapSection id="leaderboard" className="bg-bg-card">
+         <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+       </SnapSection>
 
-        {/* ── 5. Social ── */}
-      <SnapSection id="social" className="bg-bg">
-        <SocialSection />
-      </SnapSection>
-
-      {/* ── 8. Final CTA ── */}
-      <SnapSection id="cta" className="bg-bg">
-        <FinalCtaSection user={user} />
-      </SnapSection>
-
+       {/* ── 8. Final CTA ── */}
+       <SnapSection id="cta" className="bg-bg">
+       <FinalCtaSection user={user} />
+       </SnapSection>
       {/* ── 9. Footer ── */}
       <section
         id="footer"
