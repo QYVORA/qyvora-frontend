@@ -80,7 +80,7 @@ const CtfArenaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-              className="card-hsociety p-3 flex flex-col items-center text-center gap-1.5 group hover:border-accent/40 transition-all"
+              className="border-beam card-hsociety p-3 flex flex-col items-center text-center gap-1.5 group hover:border-accent/40 transition-all"
             >
               <div className={`p-2.5 rounded-lg bg-bg border border-border group-hover:border-accent/40 transition-colors ${type.color}`}>
                 <type.icon className="w-5 h-5" />
@@ -93,7 +93,7 @@ const CtfArenaSection: React.FC = () => {
 
         {/* CTA card */}
         <ScrollReveal>
-          <div className="relative rounded-xl border border-accent/20 bg-accent-dim/30 p-6 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="border-beam relative rounded-xl border border-accent/20 bg-accent-dim/30 p-6 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Decorative flag icon */}
             <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-5 pointer-events-none hidden md:block">
               <Flag className="w-48 h-48 text-accent" />

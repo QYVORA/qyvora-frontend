@@ -65,7 +65,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
             {STEPS.map((step, idx) => (
               <div
                 key={idx}
-                className="w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
+                className="border-beam w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
                 <div className="font-mono text-2xl font-black text-accent/40 mb-4 leading-none">
@@ -121,7 +121,7 @@ const StepCard: React.FC<{ step: typeof STEPS[0]; idx: number; shouldReduceMotio
       )}
 
       <div
-        className="relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
+        className="border-beam relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
         <div className="font-mono text-2xl font-black text-accent/40 group-hover:text-accent transition-colors duration-300 mb-4 leading-none">

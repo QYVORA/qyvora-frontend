@@ -50,7 +50,7 @@ const ChainSection: React.FC = () => (
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-                className="flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
+                className="border-beam flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
               >
                 <Icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                 <div>
@@ -102,7 +102,7 @@ const ChainSection: React.FC = () => (
           ].map((block, i) => (
             <div
               key={block.index}
-              className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
+              className="border-beam rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
               style={{ opacity: 1 - i * 0.1 }}
             >
               <div className="flex items-center gap-3 border-b border-border px-4 py-2.5 bg-accent/5">
