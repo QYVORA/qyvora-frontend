@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@property --beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @theme {
   --font-mono: 'JetBrains Mono', monospace;
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -117,6 +123,77 @@
 
   .glow-shadow {
     box-shadow: 0 8px 32px var(--color-accent-glow);
+  }
+
+  .border-beam {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .border-beam::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background:
+      conic-gradient(
+        from var(--beam-angle),
+        transparent 0deg,
+        transparent 245deg,
+        color-mix(in srgb, var(--color-accent) 25%, transparent) 276deg,
+        var(--color-accent) 292deg,
+        color-mix(in srgb, var(--color-accent) 25%, transparent) 308deg,
+        transparent 336deg,
+        transparent 360deg
+      );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: border-beam-spin 4.8s linear infinite;
+  }
+
+  .border-beam > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .nav-border-beam::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    background-size: 34% 100%;
+    background-repeat: no-repeat;
+    animation: nav-border-beam 3.8s var(--ease-smooth) infinite;
+    opacity: 0.7;
+  }
+
+  .ascii-text-beam {
+    color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    background:
+      linear-gradient(
+        115deg,
+        color-mix(in srgb, var(--color-accent) 32%, transparent) 0%,
+        var(--color-accent) 11%,
+        color-mix(in srgb, var(--color-accent) 42%, transparent) 22%,
+        color-mix(in srgb, var(--color-accent) 18%, transparent) 35%,
+        color-mix(in srgb, var(--color-accent) 18%, transparent) 100%
+      );
+    background-size: 240% 100%;
+    background-position: 120% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 18px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    animation: ascii-text-beam 5.8s var(--ease-smooth) infinite;
   }
 
   .glass-effect {
@@ -405,6 +482,31 @@
   /* Rank text colors — keep semantic meaning, ensure contrast on light bg */
   [data-theme="light"] .text-zinc-400 {
     color: rgba(80, 100, 80, 0.85) !important;
+  }
+}
+
+@keyframes border-beam-spin {
+  to { --beam-angle: 360deg; }
+}
+
+@keyframes nav-border-beam {
+  0% { background-position: -42% 0; opacity: 0; }
+  18% { opacity: 0.85; }
+  82% { opacity: 0.85; }
+  100% { background-position: 142% 0; opacity: 0; }
+}
+
+@keyframes ascii-text-beam {
+  0% { background-position: 130% 0; filter: brightness(0.85); }
+  42% { background-position: -35% 0; filter: brightness(1.1); }
+  100% { background-position: -35% 0; filter: brightness(0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-beam::before,
+  .nav-border-beam::after,
+  .ascii-text-beam {
+    animation: none;
   }
 }
 

@@ -169,17 +169,17 @@ const Footer: React.FC = () => (
       </div>
 
       {/* ── ASCII watermark band ── */}
-      <div className="relative w-full" style={{ height: 'clamp(72px, 10vw, 140px)' }} aria-hidden="true">
-        <div className="absolute inset-0 flex items-center justify-center">
+      <div className="relative w-full overflow-hidden" style={{ height: 'clamp(44px, 10vw, 140px)' }} aria-hidden="true">
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
           <pre
+            className="ascii-text-beam max-w-full overflow-hidden"
             style={{
               fontFamily: '"JetBrains Mono", "Courier New", monospace',
-              fontSize: 'clamp(9px, 1.6vw, 22px)',
+              fontSize: 'clamp(4px, 1.3vw, 22px)',
               lineHeight: 1.05,
               whiteSpace: 'pre',
               margin: 0,
               padding: 0,
-              color: 'var(--color-accent)',
               letterSpacing: 0,
               userSelect: 'none',
             }}
@@ -196,7 +196,7 @@ const Footer: React.FC = () => (
         md:mt-8 md:pt-7 md:pb-10 md:mb-0
       ">
         {/* Left: copyright */}
-        <p className="text-[10px] font-mono text-text-muted tracking-[0.22em] uppercase">
+        <p className="max-w-full text-center text-[10px] font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/60">©</span>] {new Date().getFullYear()}{' '}
           <span className="text-accent/80">HSOCIETY OFFSEC</span>
           {' '}// SHADOWS UNBOUND

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Trophy, ArrowRight, CheckCircle2, BookOpen, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
-import { CardMedia, CardBase } from '../../../../shared/components/ui/Card';
-import { resolveImg } from './helpers';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
 import ChainLogo from '../../../../shared/components/ChainLogo';
@@ -22,13 +20,7 @@ const BULLETS = [
   'Spend points in the marketplace',
 ];
 
-const CP_FEATURES = [
-  { icon: BookOpen, title: 'Complete Bootcamp Rooms', desc: 'Finish room tasks in any module to earn CP instantly.' },
-  { icon: Shield,   title: 'Capture CTF Flags',      desc: 'Submit correct flags for immediate CP rewards.' },
-  { icon: Trophy,   title: 'Climb the Leaderboard',   desc: 'Consistent activity and completions grow your rank.' },
-];
-
-const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, loading = false }) => {
+const EconomySection: React.FC<EconomySectionProps> = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -70,17 +62,13 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
                 </span>
               </div>
 
-              {/* CP Features grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                {CP_FEATURES.map((feat, i) => (
-                  <ScrollReveal key={feat.title} delay={i * 0.05} className="h-full">
-                    <CardBase className="p-4 flex flex-col items-center text-center gap-2 h-full">
-                      <div className="w-9 h-9 rounded-lg bg-accent-dim flex items-center justify-center">
-                        <feat.icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <p className="text-sm font-black text-text-primary">{feat.title}</p>
-                      <p className="text-xs text-text-muted leading-relaxed">{feat.desc}</p>
-                    </CardBase>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                {BULLETS.map((bullet, i) => (
+                  <ScrollReveal key={bullet} delay={i * 0.04}>
+                    <div className="flex items-center gap-2.5 text-sm text-text-secondary">
+                      <CheckCircle2 className="w-4 h-4 text-accent flex-none" />
+                      <span>{bullet}</span>
+                    </div>
                   </ScrollReveal>
                 ))}
               </div>
@@ -94,68 +82,37 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
             </ScrollReveal>
           </div>
 
-          {/* Right: Chain (left) + CP coin (right) side-by-side */}
-          <ScrollReveal className="flex flex-col items-center gap-6" direction="none" delay={0.1}>
-            {/* Combined visual wrapper */}
-            <div className="relative flex items-center justify-center w-full max-w-[500px] h-40 md:h-48">
+          {/* Right: CP coin with HSOCIETY Chain badge */}
+          <ScrollReveal className="flex items-center justify-center" direction="none" delay={0.1}>
+            <div className="relative flex items-center justify-center w-full max-w-[560px] h-72 sm:h-80 md:h-[24rem] lg:h-[28rem]">
+              <div className="absolute inset-0 m-auto w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
 
-              {/* HSOCIETY Chain image — left side, positioned behind */}
-              <div className="absolute left-[-10%] md:left-0 z-0 w-[55%] h-full">
-                <motion.img
-                  src="/assets/branding/chain/hsociety-chain-3d.webp"
-                  alt="HSOCIETY Chain"
-                  className="w-full h-full object-contain drop-shadow-[0_0_40px_var(--color-accent-glow)]"
-                  animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              </div>
-
-              {/* Cyber Points coin — right side, in front */}
-              <div className="relative z-10 ml-auto mr-0 md:mr-[5%] w-32 h-32 md:w-40 md:h-40">
+              <div className="relative z-10 w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
                 <div
                   aria-hidden
                   className="absolute inset-0 rounded-full pointer-events-none"
-                  style={{ background: 'radial-gradient(circle, var(--color-accent-dim) 0%, transparent 70%)' }}
+                  style={{ background: 'radial-gradient(circle, var(--color-accent-dim) 0%, transparent 68%)' }}
                 />
                 <motion.img
                   src="/assets/branding/logos/cyber-points-logo.webp"
                   alt="Cyber Points"
-                  className="w-full h-full object-contain"
+                  className="relative z-10 w-full h-full object-contain"
                   style={{ filter: 'drop-shadow(0 0 48px var(--color-accent-glow))' }}
                   animate={shouldReduceMotion ? {} : { y: [0, -10, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
                 />
+
+                <div className="absolute -right-2 bottom-4 sm:-right-5 sm:bottom-8 md:-right-8 md:bottom-10 z-20 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52">
+                  <motion.img
+                    src="/assets/branding/chain/hsociety-chain-3d.webp"
+                    alt="HSOCIETY Chain"
+                    className="relative z-10 w-full h-full object-contain drop-shadow-[0_0_32px_var(--color-accent-glow)]"
+                    animate={shouldReduceMotion ? {} : { y: [0, -5, 0], rotate: [0, 2, 0] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                </div>
               </div>
             </div>
-
-            {/* Pool widget */}
-            <motion.div
-              whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-              className="w-full max-w-xs p-4 bg-accent-dim border border-accent/20 rounded-lg relative overflow-hidden"
-            >
-              <div className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-1">Community Pool</div>
-              <div className="text-2xl font-bold text-accent font-mono mb-2 inline-flex items-center gap-1.5">
-                {totalCp.toLocaleString()} <CpLogo className="w-5 h-5" />
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-accent-dim/60 flex items-center justify-center border border-accent/30 flex-none">
-                  <Trophy className="w-4 h-4 text-accent" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-bold text-text-primary uppercase">Total Earned</div>
-                  <div className="w-full h-1 bg-border rounded-full mt-1 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${Math.min(100, totalCp > 0 ? 70 : 0)}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-                      className="h-full bg-accent rounded-full"
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </ScrollReveal>
         </div>
       </div>

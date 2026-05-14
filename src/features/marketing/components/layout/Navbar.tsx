@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
   };
   return (
     <nav 
-      className={`fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
+      className={`nav-border-beam fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
         isScrolled
           ? 'bg-bg/90 backdrop-blur-md'
           : 'bg-transparent'
