@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Shield, Trophy, Zap, Globe, ArrowLeft, ExternalLink } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 
@@ -75,6 +76,13 @@ const PublicProfile: React.FC = () => {
     <div className="min-h-screen bg-bg pb-16 scanlines">
       <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
 
+        {/* Header */}
+        <ScrollReveal className="mb-8">
+          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+            OPERATOR PROFILE
+          </span>
+        </ScrollReveal>
+
         {/* Back */}
         <Link
           to="/leaderboard"
@@ -85,7 +93,7 @@ const PublicProfile: React.FC = () => {
 
         {/* Profile card */}
         <ScrollReveal>
-          <div className="relative bg-bg-card border border-border rounded-2xl overflow-hidden mb-6">
+          <CardBase className="border rounded-2xl overflow-hidden mb-6">
             {/* Accent glow */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute inset-0 dot-grid opacity-[0.06] pointer-events-none" />
@@ -127,37 +135,37 @@ const PublicProfile: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
-          </div>
-        </ScrollReveal>
+              </div>
+            </CardBase>
+          </ScrollReveal>
 
         {/* Stats row */}
         <ScrollReveal delay={0.1}>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-            <div className="p-5 bg-bg-card border border-border rounded-xl">
+            <CardBase className="p-5 flex flex-col gap-2 border rounded-xl">
               <Zap className="w-4 h-4 text-accent mb-2" />
               <div className="text-2xl font-black text-accent font-mono inline-flex items-center gap-1.5">
                 {cp.toLocaleString()} <CpLogo className="w-5 h-5" />
               </div>
               <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-1">Cyber Points</div>
-            </div>
-            <div className="p-5 bg-bg-card border border-border rounded-xl">
+            </CardBase>
+            <CardBase className="p-5 flex flex-col gap-2 border rounded-xl">
               <Shield className="w-4 h-4 text-accent mb-2" />
               <div className="text-xl font-black text-text-primary font-mono">{profile.rank || 'Candidate'}</div>
               <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-1">Current Rank</div>
-            </div>
-            <div className="p-5 bg-bg-card border border-border rounded-xl col-span-2 sm:col-span-1">
+            </CardBase>
+            <CardBase className="p-5 flex flex-col gap-2 border rounded-xl col-span-2 sm:col-span-1">
               <Trophy className="w-4 h-4 text-accent mb-2" />
               <div className="text-xl font-black text-text-primary font-mono">{profile.streakDays || 0}d</div>
               <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-1">Active Streak</div>
-            </div>
+            </CardBase>
           </div>
         </ScrollReveal>
 
         {/* Rank progress */}
         {next && (
           <ScrollReveal delay={0.15}>
-            <div className="p-5 bg-bg-card border border-border rounded-xl mb-6">
+            <CardBase className="p-5 border rounded-xl mb-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-text-muted uppercase tracking-widest">Rank Progress</span>
                 <span className="text-xs font-mono text-accent">{progress}%</span>
@@ -174,7 +182,7 @@ const PublicProfile: React.FC = () => {
                 <span>{profile.rank}</span>
                 <span className="text-accent">→ {next.label}</span>
               </div>
-            </div>
+            </CardBase>
           </ScrollReveal>
         )}
 

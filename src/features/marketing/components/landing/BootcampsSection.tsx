@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Clock, Tag, ChevronRight } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock, Flag, Tag, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
@@ -18,10 +18,10 @@ const normalizeBootcampLevel = (level?: string): BootcampLevel =>
   BOOTCAMP_LEVELS.includes(level as BootcampLevel) ? (level as BootcampLevel) : 'Operator';
 
 const LEVEL_META: Record<BootcampLevel, { color: string; bg: string; border: string }> = {
-  Novice:     { color: 'text-blue-400',   bg: 'bg-blue-400/8',   border: 'border-blue-400/25'   },
-  Operator:   { color: 'text-accent',     bg: 'bg-accent-dim',   border: 'border-accent/25'     },
-  Specialist: { color: 'text-amber-400',  bg: 'bg-amber-400/8',  border: 'border-amber-400/25'  },
-  Elite:      { color: 'text-red-400',    bg: 'bg-red-400/8',    border: 'border-red-400/25'    },
+  Novice:     { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
+  Operator:   { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
+  Specialist: { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
+  Elite:      { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
 };
 
 const HPB_ID          = 'bc_1775270338500';
@@ -29,11 +29,10 @@ const HPB_TITLE       = 'Hacker Protocol Bootcamp';
 const HPB_DESCRIPTION = 'Hacker Protocol Bootcamp (HPB) teaches beginners to think like hackers — covering networking, Linux, web, and social engineering with hands-on labs and CTFs.';
 const HPB_IMAGE       = '/assets/bootcamp/hpb-cover.webp';
 
-// Teaser items shown alongside the featured card when only 1 bootcamp exists
-const COMING_SOON = [
-  { title: 'Web Application Pentesting',  level: 'Operator'   as BootcampLevel, eta: 'Q3 2025' },
-  { title: 'Advanced Exploit Dev',        level: 'Elite'       as BootcampLevel, eta: 'Q4 2025' },
-  { title: 'Red Team Operations',         level: 'Specialist'  as BootcampLevel, eta: 'Q4 2025' },
+const BOOTCAMP_SIGNALS = [
+  { icon: Terminal, title: 'Hands-on rooms', value: 'Live labs and operator drills' },
+  { icon: BookOpen, title: 'Five-phase path', value: 'Mindset, Linux, networks, web, social' },
+  { icon: Flag, title: 'CTF checkpoints', value: 'Practice flags mapped to the curriculum' },
 ];
 
 // ── Featured single-bootcamp card ────────────────────────────────────────────
@@ -55,28 +54,17 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-      className="group relative flex flex-col lg:flex-row rounded-xl border border-border bg-bg-card overflow-hidden
-                 hover:border-accent/30 transition-colors duration-300"
+      className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      {/* Top accent line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
-      />
-
       {/* ── Cover image ── */}
-      <div className="relative lg:w-[45%] flex-none overflow-hidden bg-bg" style={{ minHeight: '200px' }}>
+      <div className="relative flex-none overflow-hidden bg-bg lg:w-[45%]" style={{ minHeight: '220px' }}>
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at center, var(--color-accent-dim) 0%, transparent 70%)' }}
-        />
         {image ? (
           <img
             src={image}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-[1.03] transition-all duration-500"
+            className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-500 group-hover:scale-[1.03] group-hover:opacity-85"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -87,26 +75,26 @@ const FeaturedCard: React.FC<{
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(to bottom, transparent 50%, var(--color-bg-card) 100%), linear-gradient(to right, transparent 70%, var(--color-bg-card) 100%)',
+            background: 'linear-gradient(to bottom, transparent 45%, var(--color-bg-card) 100%), linear-gradient(to right, transparent 65%, var(--color-bg-card) 100%)',
           }}
         />
-        {/* Level badge — pinned top-left */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded border ${levelCss.color} ${levelCss.bg} ${levelCss.border} font-mono`}>
+        {/* Level badge — pinned top-right */}
+        <div className="absolute right-3 top-3 z-10">
+          <span className={`rounded-sm border px-2 py-1 font-mono text-[9px] font-black uppercase tracking-[0.2em] backdrop-blur-sm ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
             {level}
           </span>
         </div>
       </div>
 
       {/* ── Body ── */}
-      <div className="flex flex-col flex-1 p-6 lg:p-8 justify-center">
+      <div className="flex flex-1 flex-col justify-center p-6 lg:p-8">
         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3">Featured Bootcamp</p>
 
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary leading-tight mb-3 group-hover:text-accent transition-colors duration-200">
+        <h3 className="mb-3 text-xl font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent md:text-2xl lg:text-3xl">
           {title}
         </h3>
 
-        <p className="text-sm text-text-muted leading-relaxed mb-5 max-w-lg line-clamp-3">
+        <p className="mb-5 max-w-lg text-sm leading-relaxed text-text-secondary line-clamp-3">
           {desc}
         </p>
 
@@ -132,52 +120,35 @@ const FeaturedCard: React.FC<{
           >
             Enrol Now <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-          <Link
-            to="/bootcamps"
-            className="text-xs font-black text-accent/70 hover:text-accent transition-colors uppercase tracking-widest inline-flex items-center gap-1 group/link"
-          >
-            View all <ChevronRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-          </Link>
         </div>
       </div>
     </motion.div>
   );
 };
 
-// ── Coming-soon teaser card ───────────────────────────────────────────────────
+// ── Bootcamp signal card ──────────────────────────────────────────────────────
 const TeaserCard: React.FC<{
-  item: typeof COMING_SOON[0];
+  item: typeof BOOTCAMP_SIGNALS[0];
   idx: number;
   shouldReduceMotion: boolean;
 }> = ({ item, idx, shouldReduceMotion }) => {
-  const levelCss = LEVEL_META[item.level];
+  const Icon = item.icon;
   return (
     <motion.div
       initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: 'blur(4px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-      className="flex items-center gap-4 rounded-xl border border-border bg-bg px-4 py-3.5
-                 opacity-60 hover:opacity-80 transition-opacity duration-200"
+      className="flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      {/* Index */}
-      <span className="font-mono text-xs font-black text-accent/30 w-6 flex-none">
-        {String(idx + 2).padStart(2, '0')}
+      <span className="flex h-9 w-9 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
+        <Icon className="h-4 w-4" />
       </span>
-      {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="text-xs font-bold text-text-secondary truncate">{item.title}</div>
-        <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{item.eta}</div>
+        <div className="text-xs font-black uppercase tracking-[0.18em] text-text-primary">{item.title}</div>
+        <div className="mt-1 text-xs leading-relaxed text-text-muted">{item.value}</div>
       </div>
-      {/* Level pill */}
-      <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border font-mono flex-none ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
-        {item.level}
-      </span>
-      {/* Coming soon tag */}
-      <span className="text-[8px] font-black uppercase tracking-widest text-text-muted border border-border rounded px-1.5 py-0.5 flex-none">
-        Soon
-      </span>
     </motion.div>
   );
 };
@@ -207,9 +178,13 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
+            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-2 block">ARSENAL</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
               Bootcamps Built<br className="hidden sm:block" /> For Operators
             </h2>
+            <p className="text-text-secondary text-sm mt-2 max-w-lg leading-relaxed">
+              Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
+            </p>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
             <Link
@@ -247,14 +222,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
             </div>
 
-            {/* Teaser sidebar */}
+            {/* Right-side bootcamp summary */}
             <div className="flex flex-col justify-center gap-3">
               <ScrollReveal delay={0.05}>
                 <p className="text-[9px] font-black uppercase tracking-[0.25em] text-text-muted mb-1 px-1">
-                  Coming soon
+                  What you train
                 </p>
               </ScrollReveal>
-              {COMING_SOON.map((item, idx) => (
+              {BOOTCAMP_SIGNALS.map((item, idx) => (
                 <TeaserCard key={idx} item={item} idx={idx} shouldReduceMotion={!!shouldReduceMotion} />
               ))}
             </div>
@@ -280,8 +255,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-                  className="group relative flex flex-col rounded-xl border border-border bg-bg-card overflow-hidden
-                             hover:border-accent/30 transition-colors duration-300"
+                  className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
                   {/* Cover */}
@@ -298,7 +272,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                       className="absolute inset-0 pointer-events-none"
                       style={{ background: 'linear-gradient(to top, var(--color-bg-card) 0%, transparent 60%)' }}
                     />
-                    <span className={`absolute top-3 left-3 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border font-mono ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
+                    <span className={`absolute left-3 top-3 rounded-sm border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
                       {level}
                     </span>
                   </div>

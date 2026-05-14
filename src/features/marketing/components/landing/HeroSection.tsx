@@ -14,7 +14,6 @@ interface HeroSectionProps {
   heroRef: React.RefObject<HTMLDivElement | null>;
   heroY: MotionValue<number>;
   heroOpacity: MotionValue<number>;
-  terminalText: string;
   user: { isAdmin?: boolean } | null;
   stats: BackendStats | null;
   totalCp: number;
@@ -133,9 +132,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex items-center justify-center w-full max-w-[440px] xl:max-w-[560px] aspect-square mx-auto lg:mx-0 hidden lg:flex"
+          className="relative hidden aspect-square w-full max-w-[440px] items-center justify-center overflow-visible mx-auto lg:mx-0 lg:flex xl:max-w-[560px]"
         >
-          <div className="w-full h-full opacity-60">
+          <div className="relative z-10 w-full h-full">
             <Suspense fallback={null}>
               <HackerGlobe scale={0.88} />
             </Suspense>

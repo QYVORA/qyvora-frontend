@@ -72,11 +72,12 @@ const CyberPointsPage: React.FC = () => {
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="mb-8 px-4 py-1.5 border border-accent/20 bg-accent/5 backdrop-blur-sm rounded-full"
+              className="mb-8"
             >
-              <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-accent/80">CYBER POINTS</span>
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+                CYBER POINTS
+              </span>
             </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.05] mb-8 tracking-tight flex flex-wrap items-center justify-center lg:justify-start gap-4"
@@ -86,7 +87,7 @@ const CyberPointsPage: React.FC = () => {
 
             <motion.p
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-text-secondary text-base md:text-lg lg:text-xl max-w-xl mb-10 leading-relaxed opacity-80"
+              className="text-text-secondary text-base md:text-lg lg:text-xl max-w-lg mb-8 leading-relaxed opacity-80"
             >
               Cyber Points is HSOCIETY's skill-backed internal currency. Earn <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> by
               completing bootcamp rooms and CTF challenges, then spend it in the Zero-Day Market.

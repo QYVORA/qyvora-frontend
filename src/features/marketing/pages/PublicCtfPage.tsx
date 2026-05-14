@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { Flag, Terminal, Trophy, Zap, ArrowRight, Lock, Code2, Globe, Network, Shield, ChevronDown } from 'lucide-react';
+import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import Footer from '../components/layout/Footer';
 
@@ -57,13 +59,6 @@ const CHALLENGE_TYPES = [
   { icon: ArrowRight, color: 'text-red-400',     title: 'Redirect Chains',  desc: 'Follow redirect chains in the Network tab to the flag.' },
 ];
 
-const CARD_ENTRANCES = [
-  { x: -40, y: 30, rotate: -4 }, { x: 0,   y: 50, rotate:  0 },
-  { x:  40, y: 30, rotate:  4 }, { x: -30, y: 40, rotate: -3 },
-  { x:  30, y: 40, rotate:  3 }, { x: -40, y: 30, rotate: -4 },
-  { x:   0, y: 50, rotate:  0 }, { x:  40, y: 30, rotate:  4 },
-];
-
 const PublicCtfPage: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -86,50 +81,33 @@ const PublicCtfPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-20 w-full py-16">
           <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 32, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm w-fit">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// CTF ARENA</span>
-              </div>
-              <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-6">
-                Hack With Your Browser.{' '}
-                <span className="text-accent">No VM. No Setup.</span>
-              </h1>
-              <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
-                Browser-native Capture The Flag challenges. Use DevTools, network inspection,
-                and cookie exploitation — right in your browser. Earn{' '}
-                <CpLogo className="w-4 h-4 mx-0.5 inline-block" /> for every flag.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/register" className="btn-primary flex items-center gap-2">
-                  <Flag className="w-4 h-4" /> Start Hacking
-                </Link>
-                <Link to="/bootcamps" className="btn-secondary flex items-center gap-2">
-                  <Terminal className="w-4 h-4" /> View Bootcamps
-                </Link>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 32, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              CTF ARENA
+            </span>
+            <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-6">
+              Hack With Your Browser.{' '}
+              <span className="text-accent">No VM. No Setup.</span>
+            </h1>
+            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+              Browser-native Capture The Flag challenges. Use DevTools, network inspection,
+              and cookie exploitation — right in your browser. Earn{' '}
+              <CpLogo className="w-4 h-4 mx-0.5 inline-block" /> for every flag.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link to="/register" className="btn-primary flex items-center gap-2">
+                <Flag className="w-4 h-4" /> Start Hacking
+              </Link>
+              <Link to="/bootcamps" className="btn-secondary flex items-center gap-2">
+                <Terminal className="w-4 h-4" /> View Bootcamps
+              </Link>
+            </div>
             </motion.div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap gap-3 mt-10"
-          >
-            {[
-              { icon: Flag,   label: '8 Challenge Types' },
-              { icon: Zap,    label: 'CP Per Flag' },
-              { icon: Trophy, label: 'Leaderboard Rankings' },
-              { icon: Shield, label: 'No VM Required' },
-            ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-card border border-border text-xs font-bold text-text-secondary">
-                <Icon className="w-3.5 h-3.5 text-accent" /> {label}
-              </div>
-            ))}
-          </motion.div>
         </div>
 
         <ScrollHint targetId="ctf-types" containerId="ctf-scroll" />
@@ -138,40 +116,30 @@ const PublicCtfPage: React.FC = () => {
       {/* ── 2. Challenge types ── */}
       <Snap id="ctf-types" className="bg-bg-card border-y border-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.55 }}
-            className="mb-8 md:mb-10"
-          >
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// CHALLENGE TYPES</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-text-primary">8 Ways to Hunt a Flag</h2>
-            <p className="text-text-muted text-sm mt-1 max-w-lg">Every challenge type teaches a real browser-based recon skill.</p>
-          </motion.div>
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.55 }}
+              className="mb-8 md:mb-10"
+            >
+              <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-2 block">CHALLENGE TYPES</span>
+              <h2 className="text-2xl md:text-3xl font-bold text-text-primary">8 Ways to Hunt a Flag</h2>
+              <p className="text-text-muted text-sm mt-1 max-w-lg">Every challenge type teaches a real browser-based recon skill.</p>
+            </motion.div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {CHALLENGE_TYPES.map((ct, i) => {
-              const entrance = CARD_ENTRANCES[i];
-              return (
-                <motion.div
-                  key={ct.title}
-                  initial={shouldReduceMotion ? false : { opacity: 0, x: entrance.x, y: entrance.y, rotate: entrance.rotate, scale: 0.88, filter: 'blur(8px)' }}
-                  whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1, filter: 'blur(0px)' }}
-                  viewport={{ once: false, amount: 0.08 }}
-                  transition={{ duration: 0.65, delay: Math.min(i * 0.08, 0.5), ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
-                  whileHover={shouldReduceMotion ? {} : { y: -8, scale: 1.03, transition: { duration: 0.22 } }}
-                >
-                  <div className="card-hsociety p-5 flex flex-col gap-3 h-full group hover:border-accent/40 transition-all">
-                    <div className="w-9 h-9 rounded-xl bg-accent-dim flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <ct.icon className={`w-4 h-4 ${ct.color}`} />
-                    </div>
-                    <p className="text-sm font-black text-text-primary group-hover:text-accent transition-colors duration-300">{ct.title}</p>
-                    <p className="text-xs text-text-muted leading-relaxed">{ct.desc}</p>
+            {CHALLENGE_TYPES.map((ct, i) => (
+              <ScrollReveal key={ct.title} delay={i * 0.08}>
+                <CardBase className="p-5 flex flex-col gap-3 h-full hover:border-accent/40 transition-all">
+                  <div className="w-9 h-9 rounded-xl bg-accent-dim flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <ct.icon className={`w-4 h-4 ${ct.color}`} />
                   </div>
-                </motion.div>
-              );
-            })}
+                  <p className="text-sm font-black text-text-primary group-hover:text-accent transition-colors duration-300">{ct.title}</p>
+                  <p className="text-xs text-text-muted leading-relaxed">{ct.desc}</p>
+                </CardBase>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </Snap>

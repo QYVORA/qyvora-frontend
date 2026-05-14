@@ -3,6 +3,8 @@ import { BookOpen, Lock, ArrowRight, Terminal, Flag, ChevronDown } from 'lucide-
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import api from '../../../core/services/api';
+import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { CardMedia } from '../../../shared/components/ui/Card';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import Footer from '../components/layout/Footer';
 
@@ -22,30 +24,11 @@ const PHASE_IMGS = [
 type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
 const VALID_LEVELS: BootcampLevel[] = ['Novice', 'Operator', 'Specialist', 'Elite'];
 const LEVEL_COLORS: Record<BootcampLevel, string> = {
-  Novice:     'bg-bg/80 text-accent border-accent/30 backdrop-blur-sm',
-  Operator:   'bg-bg/80 text-accent border-accent/30 backdrop-blur-sm',
-  Specialist: 'bg-bg/80 text-accent border-accent/30 backdrop-blur-sm',
-  Elite:      'bg-accent text-bg border-accent',
+  Novice:     'bg-accent-dim text-accent border-border-strong backdrop-blur-sm',
+  Operator:   'bg-accent-dim text-accent border-border-strong backdrop-blur-sm',
+  Specialist: 'bg-accent-dim text-accent border-border-strong backdrop-blur-sm',
+  Elite:      'bg-accent-dim text-accent border-border-strong backdrop-blur-sm',
 };
-
-const CARD_VARIANTS = [
-  { hidden: { opacity: 0, y: 60, x: -30, rotate: -4, scale: 0.88, filter: 'blur(8px)' } },
-  { hidden: { opacity: 0, y: 80, x: 0,   rotate:  0, scale: 0.85, filter: 'blur(8px)' } },
-  { hidden: { opacity: 0, y: 60, x: 30,  rotate:  4, scale: 0.88, filter: 'blur(8px)' } },
-];
-const CARD_VISIBLE = { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1, filter: 'blur(0px)' };
-
-const SkeletonCard = () => (
-  <div className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card animate-pulse">
-    <div className="aspect-video bg-accent-dim/30" />
-    <div className="space-y-3 p-6">
-      <div className="h-3 w-1/4 rounded bg-accent-dim/30" />
-      <div className="h-5 w-3/4 rounded bg-accent-dim/30" />
-      <div className="h-3 w-1/2 rounded bg-accent-dim/20" />
-      <div className="mt-4 h-11 w-full rounded-xl bg-accent-dim/20" />
-    </div>
-  </div>
-);
 
 // Each snap section fills the full container height and scrolls its own content
 const Snap: React.FC<{ id: string; children: React.ReactNode; className?: string }> = ({
@@ -136,14 +119,14 @@ const PublicBootcampsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm w-fit">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// ARSENAL</span>
-            </div>
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              ARSENAL
+            </span>
             <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-4">
               Bootcamps Built{' '}
               <span className="text-accent">For Operators.</span>
             </h1>
-            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
+            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-lg">
               Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -154,106 +137,95 @@ const PublicBootcampsPage: React.FC = () => {
                 <Flag className="w-4 h-4" /> CTF Arena
               </Link>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap gap-3 mt-10"
-          >
-            {['Hands-on Labs', 'CTF Challenges', 'CP Rewards', 'Operator Ranking'].map((label) => (
-              <div key={label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-card border border-border text-xs font-bold text-text-secondary">
-                {label}
+          <ScrollHint targetId="bc-grid" containerId="bc-scroll" />
+        </section>
+
+        <Snap id="bc-grid" className="bg-bg-card border-y border-border">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+            {loading ? (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="card-hsociety p-4 animate-pulse overflow-hidden">
+                    <div className="aspect-video rounded bg-accent-dim/30 mb-4" />
+                    <div className="h-3 bg-accent-dim/30 rounded w-1/4 mb-2" />
+                    <div className="h-4 bg-accent-dim/30 rounded w-3/4 mb-3" />
+                    <div className="h-3 bg-accent-dim/20 rounded w-1/2 mb-4" />
+                    <div className="h-9 bg-accent-dim/20 rounded w-full" />
+                  </div>
+                ))}
               </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <ScrollHint targetId="bc-grid" containerId="bc-scroll" />
-      </section>
-
-      {/* ── 2. Bootcamp grid ── */}
-      <Snap id="bc-grid" className="bg-bg-card border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8 md:mb-12"
-          >
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// PROGRAMS</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-text-primary">Choose Your Track</h2>
-          </motion.div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
-              {[0, 1, 2].map((i) => <SkeletonCard key={i} />)}
-            </div>
-          ) : bootcamps.length === 0 ? (
-            <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
-              <BookOpen className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
-              <p className="text-text-muted md:text-lg">No bootcamps available yet. Check back soon.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {bootcamps.map((bc, i) => {
-                const isLocked = bc.isActive === false;
-                const level: BootcampLevel = VALID_LEVELS.includes(bc.level) ? bc.level : 'Operator';
-                const image = resolveImg(
-                  bc.image,
-                  BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length],
-                );
-                const variant = CARD_VARIANTS[i % CARD_VARIANTS.length];
-                return (
-                  <motion.div
-                    key={bc.id || i}
-                    initial={shouldReduceMotion ? false : variant.hidden}
-                    whileInView={CARD_VISIBLE}
-                    viewport={{ once: false, amount: 0.1 }}
-                    transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-                    whileHover={shouldReduceMotion || isLocked ? {} : { y: -8, scale: 1.02, transition: { duration: 0.22 } }}
-                    className={isLocked ? 'opacity-70' : ''}
-                  >
-                    <div className="card-hsociety group overflow-hidden flex flex-col hover:border-accent/40 transition-all h-full">
-                      <div className="relative aspect-video overflow-hidden">
-                        <img
-                          src={image} alt={bc.title}
-                          className={`w-full h-full object-cover transition-transform duration-700 ${isLocked ? 'grayscale brightness-50' : 'group-hover:scale-110'}`}
-                          onError={(e) => { const el = e.currentTarget; if (!el.dataset.fallbackApplied) { el.dataset.fallbackApplied = '1'; el.src = '/assets/bootcamp/hpb-cover.webp'; } }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="absolute top-3 left-3">
-                          <span className={`px-2 py-1 rounded-sm text-[10px] font-bold uppercase border tracking-widest ${LEVEL_COLORS[level]}`}>
-                            {isLocked ? 'Coming soon' : level}
-                          </span>
+            ) : bootcamps.length === 0 ? (
+              <div className="relative overflow-hidden rounded-lg border border-dashed border-border py-20 text-center">
+                <BookOpen className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
+                <p className="text-text-muted md:text-lg">No bootcamps available yet. Check back soon.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {bootcamps.map((bc, i) => {
+                  const isLocked = bc.isActive === false;
+                  const level: BootcampLevel = VALID_LEVELS.includes(bc.level) ? bc.level : 'Operator';
+                  const image = resolveImg(
+                    bc.image,
+                    BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length],
+                  );
+                  return (
+                    <ScrollReveal key={bc.id || i} delay={i * 0.08}>
+                      <CardMedia
+                        image={image}
+                        imageAlt={bc.title}
+                        imageAspect="aspect-video"
+                        imageBadges={
+                          <div className="absolute top-2 right-2">
+                            <span className={`px-2 py-1 rounded-sm text-[10px] font-bold uppercase border tracking-widest ${LEVEL_COLORS[level]}`}>
+                              {isLocked ? 'Coming soon' : level}
+                            </span>
+                          </div>
+                        }
+                        imageClassName="opacity-75 group-hover:opacity-90 transition-all duration-700"
+                        className="h-full border-border bg-bg-card hover:border-border-strong"
+                      >
+                        <div className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+                          <BookOpen className="h-3.5 w-3.5" />
+                          Operator training
                         </div>
-                      </div>
-                      <div className="p-5 flex flex-col flex-1">
-                        <h3 className="text-base font-bold text-text-primary mb-1.5 group-hover:text-accent transition-colors duration-300">{bc.title || 'Bootcamp'}</h3>
-                        {bc.description && <p className="text-xs text-text-muted line-clamp-2 mb-3">{bc.description}</p>}
-                        <div className="flex items-center justify-between text-xs text-text-muted mb-4 mt-auto">
-                          <span>{bc.duration || ''}</span>
-                          <span className="text-text-secondary font-mono">{bc.priceLabel || 'Free'}</span>
+                        <h3 className="mb-2 text-base font-black leading-snug text-text-primary transition-colors duration-300 group-hover:text-accent">
+                          {bc.title || 'Bootcamp'}
+                        </h3>
+                        {bc.description && (
+                          <p className="mb-4 line-clamp-3 text-xs leading-relaxed text-text-secondary">
+                            {bc.description}
+                          </p>
+                        )}
+                        <div className="mt-auto grid grid-cols-2 gap-2 border-t border-border pt-4 text-xs">
+                          <div>
+                            <span className="block text-[10px] font-bold uppercase tracking-widest text-text-muted">Duration</span>
+                            <span className="mt-1 block font-mono text-text-primary">{bc.duration || 'Self-paced'}</span>
+                          </div>
+                          <div>
+                            <span className="block text-[10px] font-bold uppercase tracking-widest text-text-muted">Access</span>
+                            <span className="mt-1 block font-mono text-text-primary">{bc.priceLabel || 'Free'}</span>
+                          </div>
                         </div>
                         {isLocked ? (
-                          <div className="w-full btn-secondary !py-2 text-xs flex items-center justify-center gap-2 opacity-80 cursor-default">
+                          <div className="mt-4 flex w-full cursor-default items-center justify-center gap-2 btn-secondary !py-2 text-xs opacity-80">
                             <Lock className="w-3.5 h-3.5" /> Coming soon
                           </div>
                         ) : (
-                          <Link to="/register" className="w-full btn-primary !py-2 text-xs flex items-center justify-center gap-2 group/btn">
+                          <Link to="/register" className="mt-4 flex w-full items-center justify-center gap-2 btn-primary !py-2 text-xs group/btn">
                             Enroll Now <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                           </Link>
                         )}
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </Snap>
+                      </CardMedia>
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </Snap>
 
       {/* ── 3. CTA + Footer ── */}
       <Snap id="bc-cta" className="bg-bg">
@@ -263,7 +235,7 @@ const PublicBootcampsPage: React.FC = () => {
             whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl border-2 border-accent/25 bg-accent-dim p-8 text-center md:p-12 relative overflow-hidden"
+            className="relative overflow-hidden rounded-lg border border-border-strong bg-accent-dim p-8 text-center md:p-12"
           >
             <motion.div
               className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"

@@ -107,11 +107,11 @@ const Navbar: React.FC = () => {
               onMouseEnter={() => group.items && setActiveDropdown(group.label)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              {group.path ? (
+              {'path' in group && group.path ? (
                 <Link 
-                  to={group.path}
+                  to={String(group.path)}
                   className={`px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors ${
-                    location.pathname.startsWith(group.path)
+                    location.pathname.startsWith(String(group.path))
                       ? 'text-accent'
                       : 'text-text-primary hover:text-accent'
                   }`}

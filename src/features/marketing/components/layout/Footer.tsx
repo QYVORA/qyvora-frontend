@@ -131,29 +131,27 @@ const Footer: React.FC = () => (
       </div>
 
       {/* ── 2. ASCII Banner ──
-          Visible on all screens, scales with width.
-          Positioned after the location tag.
+          Background watermark behind all footer content.
       */}
       <div
-        className="relative w-full overflow-hidden my-4"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-[-1]"
         aria-hidden="true"
-        style={{ userSelect: 'none', pointerEvents: 'none' }}
+        style={{ opacity: 0.12 }}
       >
         <pre
           style={{
             fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 'clamp(4px, 0.95vw, 16px)',
+            fontSize: 'clamp(10px, 2vw, 28px)',
             lineHeight: 1.1,
             whiteSpace: 'pre',
-            margin: '0 auto',
+            margin: 0,
             padding: 0,
             color: 'var(--color-accent)',
-            opacity: 0.8,
             display: 'block',
             width: 'max-content',
             letterSpacing: 0,
             overflowX: 'visible',
-            textShadow: '0 0 10px var(--color-accent-glow)',
+            textShadow: '0 0 20px var(--color-accent-glow)',
           }}
         >
           {ASCII_ART}
