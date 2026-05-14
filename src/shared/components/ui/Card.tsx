@@ -39,9 +39,9 @@ export const CardBase: React.FC<CardBaseProps> = ({
   muted,
 }) => {
   const base = [
-    'group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-colors duration-200',
-    active  ? 'border-accent/40'                          : 'border-border',
-    muted   ? 'opacity-60 cursor-default'                 : 'hover:border-accent/40',
+    'group relative flex flex-col overflow-hidden rounded-lg border bg-bg-card transition-all duration-300',
+    active  ? 'border-accent/40'                         : 'border-border',
+    muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/40',
     className,
   ].join(' ');
 
@@ -147,7 +147,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
         )}
       </div>
       {/* Body */}
-      <div className="flex flex-1 flex-col">{children}</div>
+      <div className="flex flex-1 flex-col p-4">{children}</div>
     </>
   );
 

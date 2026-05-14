@@ -128,13 +128,11 @@ const TermsPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm w-fit"
           >
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
-              // LEGAL
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              LEGAL
             </span>
           </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -149,7 +147,7 @@ const TermsPage: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-text-secondary text-sm md:text-base max-w-xl mb-6"
+            className="text-text-secondary text-sm md:text-base max-w-lg mb-6"
           >
             By accessing or using HSOCIETY services you agree to these terms. Read them carefully
             before participating in any training, community, or professional engagement.

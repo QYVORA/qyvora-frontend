@@ -74,11 +74,12 @@ const ChainPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-8 px-4 py-1.5 border border-accent/20 bg-accent/5 backdrop-blur-sm rounded-full"
+              className="mb-3"
             >
-              <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-accent/80">HSOCIETY CHAIN</span>
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+                HSOCIETY CHAIN
+              </span>
             </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,7 +93,7 @@ const ChainPage: React.FC = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-text-secondary text-base md:text-lg lg:text-xl max-w-xl mb-10 leading-relaxed opacity-80"
+              className="text-text-secondary text-base md:text-lg lg:text-xl max-w-lg mb-8 leading-relaxed opacity-80"
             >
               A private Proof-of-Authority ledger that permanently records every skill event —
               room completions, module finishes, and <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> rewards.

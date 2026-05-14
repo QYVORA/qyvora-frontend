@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Ban, Unlock, Search,
-  RefreshCw, Trash2, ChevronLeft, ChevronRight,
+  RefreshCw, Trash2, ChevronLeft, ChevronRight, Users, Mail,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';

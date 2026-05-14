@@ -41,7 +41,7 @@ const CtfArenaSection: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 gap-4">
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// CTF ARENA</span>
+            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-3 block">CTF ARENA</span>
             <h2 className="text-[1.65rem] md:text-4xl text-text-primary font-bold leading-tight">
               Hack With Your Browser.<br />
               <span className="text-accent">No VM. No Setup.</span>

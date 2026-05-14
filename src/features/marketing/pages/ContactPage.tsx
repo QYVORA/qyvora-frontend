@@ -38,21 +38,21 @@ const Contact: React.FC = () => {
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         <div className="absolute -left-32 top-0 h-72 w-72 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">
-              {SITE_CONFIG.contactPage.heroTag}
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary mb-5 leading-tight">
-              {SITE_CONFIG.contactPage.heroTitle}
-            </h1>
-            <p className="text-text-secondary text-base md:text-lg max-w-2xl mx-auto">
-              {SITE_CONFIG.contactPage.heroSubtitle}
-            </p>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+                {SITE_CONFIG.contactPage.heroTag}
+              </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary mb-5 leading-tight">
+                {SITE_CONFIG.contactPage.heroTitle}
+              </h1>
+              <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto">
+                {SITE_CONFIG.contactPage.heroSubtitle}
+              </p>
+            </motion.div>
         </div>
       </section>
 

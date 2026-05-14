@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingBag, Search, Lock, ArrowRight, ChevronDown } from 'lucide-react';
+import { ShoppingBag, ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import api from '../../../core/services/api';
+import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { CardMedia } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import Footer from '../components/layout/Footer';
@@ -58,20 +60,6 @@ const SkeletonCard = () => (
   </div>
 );
 
-const cardVariant = (i: number) => {
-  const patterns = [
-    { y: 50, x: -20, rotate: -3 },
-    { y: 60, x: 0,   rotate:  0 },
-    { y: 50, x: 20,  rotate:  3 },
-    { y: 40, x: -10, rotate: -2 },
-  ];
-  const p = patterns[i % patterns.length];
-  return {
-    hidden: { opacity: 0, y: p.y, x: p.x, rotate: p.rotate, scale: 0.88, filter: 'blur(8px)' },
-    visible: { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1, filter: 'blur(0px)' },
-  };
-};
-
 const PublicMarketplace: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const [products, setProducts] = useState<any[]>([]);
@@ -125,14 +113,14 @@ const PublicMarketplace: React.FC = () => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm w-fit">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// ZERO-DAY VAULT</span>
-            </div>
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              ZERO-DAY VAULT
+            </span>
             <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-4">
               The Hacker{' '}
               <span className="text-accent">Economy.</span>
             </h1>
-            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
+            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-lg">
               Operator tooling, guides, and resources — earn Cyber Points and unlock the vault.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -162,95 +150,82 @@ const PublicMarketplace: React.FC = () => {
       </section>
 
       {/* ── 2. Product grid ── */}
-      <Snap id="mkt-grid" className="bg-bg-card border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4"
-          >
-            <div>
-              <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1 block">// PRODUCTS</span>
-              <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Zero-Day Market</h2>
-              <p className="mt-1 text-sm text-text-muted">Earn CP and unlock the vault.</p>
-            </div>
-            <div className="relative w-full sm:w-56">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
-              <input
-                type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full rounded-xl border-2 border-border bg-bg py-2 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none"
-              />
-            </div>
-          </motion.div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {[0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)}
-            </div>
-          ) : filtered.length === 0 ? (
-            <div className="py-16 text-center">
-              <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
-              <p className="text-text-muted text-sm">{query ? 'No products match your search.' : 'No products available yet.'}</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filtered.map((prod, idx) => {
-                const id = String(prod.id || '');
-                const v = cardVariant(idx);
-                return (
-                  <motion.div
-                    key={id || idx}
-                    initial={shouldReduceMotion ? false : v.hidden}
-                    whileInView={v.visible}
-                    viewport={{ once: false, amount: 0.08 }}
-                    transition={{ duration: 0.65, delay: Math.min(idx * 0.07, 0.5), ease: [0.16, 1, 0.3, 1], filter: { duration: 0.4 } }}
-                    whileHover={shouldReduceMotion ? {} : { y: -8, scale: 1.03, transition: { duration: 0.22 } }}
-                  >
-                    <div className="card-hsociety p-4 flex flex-col h-full group">
-                      <div className="relative aspect-square overflow-hidden rounded mb-3">
-                        <img
-                          src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
-                          alt={prod.title}
-                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                        {prod.type && (
-                          <div className="absolute top-2 right-2">
-                            <span className="bg-bg/80 backdrop-blur-md border border-border rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase text-accent tracking-widest">{prod.type}</span>
-                          </div>
+        <Snap id="mkt-grid" className="bg-bg-card border-y border-border">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {[0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="col-span-full relative overflow-hidden py-20 text-center rounded-lg border border-dashed border-border">
+                <img
+                  src="/assets/illustrations/cta-operator.webp"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
+                />
+                <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
+                <p className="text-text-muted text-sm">
+                  {query ? 'No products match your search.' : 'No products available yet.'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {filtered.map((prod, idx) => {
+                  const id = String(prod.id || '');
+                  return (
+                    <ScrollReveal key={id || idx} delay={idx * 0.04}>
+                      <CardMedia
+                        image={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
+                        imageAlt={prod.title}
+                        imageAspect="aspect-square"
+                        imageBadges={
+                          <>
+                            {prod.type && (
+                              <div className="absolute top-2 right-2">
+                                <span className="bg-bg/80 backdrop-blur-md border border-border rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase text-accent tracking-widest">
+                                  {prod.type}
+                                </span>
+                              </div>
+                            )}
+                            {prod.isFree && (
+                              <div className="absolute top-2 left-2">
+                                <span className="rounded-sm border border-border-strong bg-accent-dim px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-accent">
+                                  FREE
+                                </span>
+                              </div>
+                            )}
+                          </>
+                        }
+                        className="h-full"
+                      >
+                        <h3 className="text-sm font-bold text-text-primary mb-1 line-clamp-2 flex-1 group-hover:text-accent transition-colors duration-300">{prod.title}</h3>
+                        {prod.description && (
+                          <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{prod.description}</p>
                         )}
-                        {prod.isFree && (
-                          <div className="absolute top-2 left-2">
-                            <span className="bg-emerald-500/80 text-white rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest">FREE</span>
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="text-sm font-bold text-text-primary mb-1 line-clamp-2 flex-1 group-hover:text-accent transition-colors duration-300">{prod.title}</h3>
-                      {prod.description && <p className="text-[11px] text-text-muted line-clamp-2 mb-2">{prod.description}</p>}
-                      <div className="mb-3">
-                        {prod.isFree ? (
-                          <span className="text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">FREE</span>
-                        ) : (
-                          <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">
-                            {Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" />
-                          </span>
-                        )}
-                      </div>
-                      <Link to="/login" className="w-full btn-secondary !py-2 text-xs flex items-center justify-center gap-2">
-                        <Lock className="w-3 h-3" />
-                        {prod.isFree ? 'Sign in to download' : 'Sign in to purchase'}
-                      </Link>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </Snap>
+                        <div className="mb-4">
+                          {prod.isFree ? (
+                            <span className="text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">FREE</span>
+                          ) : (
+                            <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">
+                              {Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" />
+                            </span>
+                          )}
+                        </div>
+                        <Link
+                          to="/login"
+                          className="flex w-full items-center justify-center gap-2 btn-primary !py-2.5 text-xs"
+                        >
+                          Sign in to unlock <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      </CardMedia>
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </Snap>
 
       {/* ── 3. CTA + Footer ── */}
       <Snap id="mkt-cta" className="bg-bg">

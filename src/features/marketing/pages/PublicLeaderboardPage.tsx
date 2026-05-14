@@ -58,7 +58,6 @@ const LeaderboardRow: React.FC<{ entry: any; rank: number; index: number; onClic
   const shouldReduceMotion = useReducedMotion();
   const handle = entry.handle || entry.name || 'Anonymous';
   const isFirst = rank === 1;
-  const isTop3 = rank <= 3;
 
   return (
     <motion.div
@@ -68,20 +67,20 @@ const LeaderboardRow: React.FC<{ entry: any; rank: number; index: number; onClic
       transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.5), ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
       whileHover={shouldReduceMotion ? {} : { x: 6, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className={`rounded-lg border p-3 md:p-4 flex items-center gap-3 md:gap-4 cursor-pointer transition-colors ${
-        isFirst ? 'border-accent/40 bg-accent-dim hover:border-accent/60'
-        : isTop3 ? 'border-accent/20 bg-accent/5 hover:border-accent/40'
-        : 'border-border bg-bg hover:border-accent/30'
+      className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors md:gap-4 md:p-4 ${
+        isFirst ? 'border-border-strong bg-accent-dim hover:border-border-strong'
+        : 'border-border bg-bg-card hover:border-border-strong'
       }`}
+      style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <div className={`text-xl md:text-2xl font-bold font-mono w-10 md:w-14 flex-none flex items-center gap-1 ${isFirst ? 'text-accent' : isTop3 ? 'text-accent/80' : 'text-accent/60'}`}>
+      <div className={`text-xl md:text-2xl font-bold font-mono w-10 md:w-14 flex-none flex items-center gap-1 ${isFirst ? 'text-accent' : 'text-accent/60'}`}>
         {isFirst && <Crown className="w-4 h-4 shrink-0" />}
         #{rank}
       </div>
       {entry.avatarUrl ? (
         <img src={resolveImg(entry.avatarUrl)} alt="" className={`w-9 h-9 md:w-10 md:h-10 rounded-full border flex-none object-cover ${isFirst ? 'border-accent/40' : 'border-border'}`} />
       ) : (
-        <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full border flex items-center justify-center flex-none text-bg text-xs font-bold ${isFirst ? 'bg-accent border-accent/40' : 'bg-accent/80 border-accent/30'}`}>
+        <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full border flex items-center justify-center flex-none text-bg text-xs font-bold ${isFirst ? 'bg-accent border-border-strong' : 'bg-accent border-border-strong'}`}>
           {handle[0]?.toUpperCase()}
         </div>
       )}
@@ -156,14 +155,14 @@ const PublicLeaderboardPage: React.FC = () => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-5 px-3 py-1 border border-border bg-accent-dim rounded-sm w-fit">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">// THE BOARD</span>
-            </div>
+            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              THE BOARD
+            </span>
             <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-4">
               Hall of Shadows.{' '}
               <span className="text-accent">Top Operators.</span>
             </h1>
-            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
+            <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-lg">
               Elite operators ranked by Cyber Points. Complete bootcamps, solve CTFs, and climb the board.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -203,31 +202,20 @@ const PublicLeaderboardPage: React.FC = () => {
       {/* ── 2. Leaderboard list ── */}
       <Snap id="lb-list" className="bg-bg-card border-y border-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-          >
-            <div>
-              <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-1 block">// RANKINGS</span>
-              <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Operator Board</h2>
+        {/* ── List controls ── */}
+        {!loading && operators.length > 0 && (
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="relative w-full sm:w-56">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+              <input
+                type="text" value={query} onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search operator..."
+                className="w-full rounded-lg border border-border bg-bg py-2.5 pl-10 pr-4 text-sm text-text-primary outline-none transition-colors focus:border-border-strong"
+              />
             </div>
-            {!loading && operators.length > 0 && (
-              <div className="flex flex-col sm:flex-row items-center gap-3">
-                <div className="relative w-full sm:w-56">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
-                  <input
-                    type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search operator..."
-                    className="w-full bg-bg border border-border rounded-lg py-2 pl-10 pr-4 text-sm text-text-primary focus:border-accent outline-none transition-colors"
-                  />
-                </div>
-                <span className="text-[10px] font-bold text-accent uppercase tracking-widest shrink-0">{filtered.length} operators</span>
-              </div>
-            )}
-          </motion.div>
+            <span className="text-[10px] font-bold text-accent uppercase tracking-widest shrink-0">{filtered.length} operators</span>
+          </div>
+        )}
 
           {loading && operators.length === 0 ? (
             <div className="space-y-2">
@@ -265,12 +253,12 @@ const PublicLeaderboardPage: React.FC = () => {
           {totalPages > 1 && (
             <div className="mt-6 flex items-center justify-between gap-3">
               <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-sm font-bold text-text-primary hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-bold text-text-primary transition-colors hover:border-border-strong hover:text-accent disabled:cursor-not-allowed disabled:opacity-40">
                 <ChevronLeft className="w-4 h-4" /> Prev
               </button>
               <span className="text-xs text-text-muted font-mono">Page <span className="text-text-primary font-bold">{page}</span> / {totalPages}</span>
               <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-sm font-bold text-text-primary hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-bold text-text-primary transition-colors hover:border-border-strong hover:text-accent disabled:cursor-not-allowed disabled:opacity-40">
                 Next <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -286,7 +274,7 @@ const PublicLeaderboardPage: React.FC = () => {
             whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl border-2 border-accent/25 bg-accent-dim p-8 text-center md:p-12 relative overflow-hidden"
+            className="relative overflow-hidden rounded-lg border border-border-strong bg-accent-dim p-8 text-center md:p-12"
           >
             <motion.div
               className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"

@@ -52,7 +52,7 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
           {/* Left: description + CP features */}
           <div>
             <ScrollReveal>
-              <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-2 block">// THE ECONOMY</span>
+              <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-2 block">THE ECONOMY</span>
               <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">
                 Cyber Points &amp; Zero-Day Market
               </h2>
@@ -87,9 +87,9 @@ const EconomySection: React.FC<EconomySectionProps> = ({ totalCp, marketItems, l
 
               <Link
                 to="/register"
-                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent border border-accent/30 rounded-md px-4 py-2 hover:bg-accent-dim transition-all"
+                className="btn-secondary text-xs inline-flex items-center gap-2"
               >
-                Start Earning <ArrowRight className="w-3 h-3" />
+                Start Earning <ArrowRight className="w-4 h-4" />
               </Link>
             </ScrollReveal>
           </div>

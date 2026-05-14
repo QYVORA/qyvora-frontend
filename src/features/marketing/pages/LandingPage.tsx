@@ -6,7 +6,6 @@ import HeroSection from '../components/landing/HeroSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
-import SocialSection from '../components/landing/SocialSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
@@ -17,7 +16,6 @@ const SECTIONS = [
   { id: 'market',      label: 'Zero-Day Market' },
   { id: 'bootcamps',   label: 'Bootcamps'       },
   { id: 'leaderboard', label: 'Leaderboard'     },
-  { id: 'social',      label: 'Community'       },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -112,15 +110,15 @@ const Landing: React.FC = () => {
          <BootcampsSection bootcamps={bootcamps} loading={loading} />
        </SnapSection>
 
-       {/* ── 4. Leaderboard ── */}
-       <SnapSection id="leaderboard" className="bg-bg-card">
-         <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-       </SnapSection>
+        {/* ── 4. Leaderboard ── */}
+        <SnapSection id="leaderboard" className="bg-bg-card">
+          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+        </SnapSection>
 
-       {/* ── 8. Final CTA ── */}
-       <SnapSection id="cta" className="bg-bg">
-       <FinalCtaSection user={user} />
-       </SnapSection>
+        {/* ── 5. Final CTA ── */}
+        <SnapSection id="cta" className="bg-bg">
+          <FinalCtaSection user={user} />
+        </SnapSection>
       {/* ── 9. Footer ── */}
       <section
         id="footer"

@@ -45,37 +45,27 @@ const Avatar: React.FC<{
 
 // ── Rank metadata ────────────────────────────────────────────────────────────
 const getRankMeta = (rank: number) => {
-  if (rank === 1) return {
-    accent: 'var(--color-accent)',
-    border: 'border-accent/40',
-    bg: 'bg-accent-dim',
-    color: 'text-accent',
-    avatarColor: '#B7FF99',
-    avatarBorder: 'border-accent/40',
-    label: '#1',
-    icon: <Crown className="w-3.5 h-3.5" />,
+  if (rank === 1) {
+    return {
+      border: 'border-accent/40',
+      bg: 'bg-accent-dim',
+      color: 'text-accent',
+      avatarColor: '#B7FF99',
+      avatarBorder: 'border-accent/40',
+      label: '#1',
+      icon: <Crown className="w-3.5 h-3.5" />,
+    };
+  }
+  // ranks 2-3: neutral styling
+  return {
+    border: 'border-border',
+    bg: 'bg-bg-card',
+    color: 'text-text-muted',
+    avatarColor: '#88AD7C',
+    avatarBorder: 'border-border',
+    label: `#${rank}`,
+    icon: <Medal className="w-3.5 h-3.5" />,
   };
-  if (rank === 2) return {
-    accent: '#60a5fa',
-    border: 'border-blue-400/25',
-    bg: 'bg-blue-400/5',
-    color: 'text-blue-400',
-    avatarColor: '#60a5fa',
-    avatarBorder: 'border-blue-400/30',
-    label: '#2',
-    icon: <Medal className="w-3.5 h-3.5" style={{ color: '#60a5fa' }} />,
-  };
-  if (rank === 3) return {
-    accent: '#fbbf24',
-    border: 'border-amber-400/25',
-    bg: 'bg-amber-400/5',
-    color: 'text-amber-400',
-    avatarColor: '#fbbf24',
-    avatarBorder: 'border-amber-400/30',
-    label: '#3',
-    icon: <Medal className="w-3.5 h-3.5" style={{ color: '#fbbf24' }} />,
-  };
-  return null;
 };
 
 // ── Podium card — top 3 ──────────────────────────────────────────────────────
@@ -87,16 +77,16 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
   const meta = getRankMeta(rank)!;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-      className={`flex flex-col items-center text-center rounded-xl border-2 ${meta.border} ${meta.bg} p-4 lg:p-5
-                  ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
-                  transition-transform duration-300 hover:brightness-110`}
-      style={{ boxShadow: rank === 1 ? `0 0 32px rgba(183,255,153,0.12)` : 'var(--card-shimmer)' }}
-    >
+      <motion.div
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(6px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
+        className={`flex flex-col items-center rounded-lg border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
+                    ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
+                    transition-all duration-300 hover:-translate-y-1 hover:border-border-strong`}
+        style={{ boxShadow: 'var(--card-shimmer)' }}
+      >
       {/* Rank badge */}
       <div className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] mb-3 ${meta.color}`}>
         {meta.icon}
@@ -136,8 +126,7 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
       whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.25 } }}
-      className="flex items-center gap-4 rounded-xl border border-border bg-bg-card px-4 py-3.5
-                 hover:border-accent/25 transition-colors duration-200"
+      className="flex items-center gap-4 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="font-mono text-sm font-black text-accent/40 w-6 flex-none">#{rank}</span>
@@ -167,7 +156,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`rounded-xl border p-3.5 flex items-center gap-3.5 transition-colors ${
+      className={`flex items-center gap-3.5 rounded-lg border p-3.5 transition-colors ${
         meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
       }`}
       style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -232,11 +221,12 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 md:mb-12 gap-4">
           <ScrollReveal>
             <span className="block text-[10px] font-black uppercase tracking-[0.35em] text-accent mb-2">
-              // The Board
+              THE BOARD
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
               Top Operators
             </h2>
+            <p className="text-text-secondary text-sm mt-2 max-w-lg">Elite operators ranked by CP — chase the podium.</p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.1} className="flex items-center gap-6">

@@ -30,7 +30,7 @@ const ChainSection: React.FC = () => (
         {/* Left — text */}
         <div>
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">// HSOCIETY CHAIN</span>
+            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-3 block">HSOCIETY CHAIN</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-primary leading-[1.1] mb-4">
               Your CP is<br />
               <span className="text-accent">chain-verified</span>
