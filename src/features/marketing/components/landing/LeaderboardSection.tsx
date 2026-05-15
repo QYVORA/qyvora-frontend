@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Crown, Medal } from 'lucide-react';
+import { Crown, Medal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
@@ -7,7 +7,8 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface LeaderboardSectionProps {
   leaderboard: LeaderboardEntry[];
@@ -15,7 +16,6 @@ interface LeaderboardSectionProps {
   loading?: boolean;
 }
 
-// ── Avatar helper ────────────────────────────────────────────────────────────
 const Avatar: React.FC<{
   entry: LeaderboardEntry;
   size?: 'sm' | 'md' | 'lg';
@@ -44,7 +44,6 @@ const Avatar: React.FC<{
   );
 };
 
-// ── Rank metadata ────────────────────────────────────────────────────────────
 const getRankMeta = (rank: number) => {
   if (rank === 1) {
     return {
@@ -57,7 +56,6 @@ const getRankMeta = (rank: number) => {
       icon: <Crown className="w-3.5 h-3.5" />,
     };
   }
-  // ranks 2-3: neutral styling
   return {
     border: 'border-border',
     bg: 'bg-bg-card',
@@ -69,7 +67,6 @@ const getRankMeta = (rank: number) => {
   };
 };
 
-// ── Podium card — top 3 ──────────────────────────────────────────────────────
 const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: number }> = ({
   entry, rank, delay,
 }) => {
@@ -88,22 +85,15 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
                     transition-all duration-300 hover:-translate-y-1 hover:border-border-strong`}
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
-      {/* Rank badge */}
       <div className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] mb-3 ${meta.color}`}>
         {meta.icon}
         {meta.label}
       </div>
-
-      {/* Avatar */}
       <Avatar entry={entry} size="md" colorHex={meta.avatarColor} borderClass={meta.avatarBorder} />
-
-      {/* Handle */}
       <div className={`mt-2.5 font-mono text-sm font-bold truncate w-full ${meta.color}`}>{handle}</div>
       <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5 mb-2.5">
         {entry.rank || 'Operator'}
       </div>
-
-      {/* Score */}
       <div
         className={`font-mono font-black text-base inline-flex items-center gap-1.5 ${meta.color}`}
       >
@@ -114,7 +104,6 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
   );
 };
 
-// ── Compact desktop row — ranks 4-5 ─────────────────────────────────────────
 const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number }> = ({
   entry, rank, delay,
 }) => {
@@ -143,7 +132,6 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
   );
 };
 
-// ── Mobile row ────────────────────────────────────────────────────────────────
 const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number }> = ({
   entry, rank, delay,
 }) => {
@@ -185,18 +173,16 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
   );
 };
 
-// ── Skeleton ──────────────────────────────────────────────────────────────────
 const PodiumSkeleton = () => (
   <div className="rounded-xl border-2 border-border bg-bg-card p-4 animate-pulse flex flex-col items-center gap-3">
     <div className="w-10 h-3 bg-accent-dim/30 rounded" />
     <div className="w-11 h-11 rounded-full bg-accent-dim/30" />
     <div className="h-3 bg-accent-dim/30 rounded w-2/3" />
-    <div className="h-2 bg-accent-dim/20 rounded w-1/3" />
+    <div className="h-2 bg-accent-dim/20 rounded w-1/4" />
     <div className="h-4 bg-accent-dim/25 rounded w-1/2" />
   </div>
 );
 
-// ── Main component ────────────────────────────────────────────────────────────
 const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, totalCp, loading = false }) => {
   const top3 = leaderboard.slice(0, 3) as LeaderboardEntry[];
   const rest  = leaderboard.slice(3, 5);
@@ -206,20 +192,21 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
       ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <BinaryStreamBackground />
+      <HeroBackground className="opacity-40" />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 w-full">
 
-        {/* ── Header ── */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 md:mb-12 gap-4">
           <ScrollReveal>
-              <span className="ascii-kicker block mb-2">
-              // THE BOARD
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
-              Top Operators
-            </h2>
+            <AsciiHeading 
+              text="Leaderboard" 
+              font="Star Wars" 
+              align="left" 
+              animated 
+              glow="intense" 
+              className="mb-6" 
+            />
             <p className="text-text-secondary text-sm mt-2 max-w-lg">Elite operators ranked by CP — chase the podium.</p>
           </ScrollReveal>
 
@@ -233,16 +220,9 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                 Community Points
               </div>
             </div>
-            <Link
-              to="/leaderboard"
-              className="text-[10px] font-black text-accent hover:underline underline-offset-2 uppercase tracking-[0.2em] inline-flex items-center gap-1.5 group"
-            >
-              Full Board <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
           </ScrollReveal>
         </div>
 
-        {/* ── MOBILE: stacked rows ── */}
         <div className="md:hidden space-y-2.5">
           {loading ? (
             [0,1,2,3,4].map(i => (
@@ -267,10 +247,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           )}
         </div>
 
-        {/* ── DESKTOP: podium + compact rows ── */}
         <div className="hidden md:flex gap-5 items-start">
-
-          {/* ── LEFT: podium columns (2-1-3 order, 1 is centre+elevated) ── */}
           <div className="flex-1 min-w-0">
             {loading ? (
               <div className="grid grid-cols-3 gap-4">
@@ -282,7 +259,6 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               </div>
             ) : (
               <div className="grid grid-cols-3 gap-4 items-end">
-                {/* Rank 2 */}
                 {top3[1] ? (
                   <PodiumCard entry={top3[1]} rank={2} delay={0.1} />
                 ) : (
@@ -290,7 +266,6 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                     <span className="text-[9px] text-text-muted uppercase tracking-widest">#2 — TBD</span>
                   </div>
                 )}
-                {/* Rank 1 — centre */}
                 {top3[0] ? (
                   <PodiumCard entry={top3[0]} rank={1} delay={0} />
                 ) : (
@@ -298,7 +273,6 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                     <span className="text-[9px] text-accent uppercase tracking-widest">#1 — TBD</span>
                   </div>
                 )}
-                {/* Rank 3 */}
                 {top3[2] ? (
                   <PodiumCard entry={top3[2]} rank={3} delay={0.2} />
                 ) : (
@@ -309,11 +283,8 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               </div>
             )}
           </div>
-
-          {/* ── RIGHT: ranks 4-5 vertical stack ── */}
           {rest.length > 0 && !loading && (
             <div className="flex flex-col gap-3 w-64 xl:w-72 flex-none">
-              {/* Label */}
               <div className="text-[9px] font-black uppercase tracking-[0.25em] text-text-muted px-1">
                 Rising Operators
               </div>
@@ -323,7 +294,6 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
             </div>
           )}
         </div>
-
       </div>
     </section>
   );

@@ -1,133 +1,50 @@
 import React from 'react';
-import { motion, useInView, useReducedMotion } from 'motion/react';
-import { useRef } from 'react';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
-
-interface ProcessSectionProps {
-  stats: any;
-  totalCp: number;
-}
+import { motion } from 'motion/react';
+import { Terminal, Shield, Zap, Target } from 'lucide-react';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const STEPS = [
-  { num: '01', title: 'JOIN',     desc: 'Create your operator account and pick a bootcamp track.' },
-  { num: '02', title: 'TRAIN',    desc: 'Complete phased bootcamp modules at your own pace.'       },
-  { num: '03', title: 'VALIDATE', desc: 'Prove your skills in live challenges and CTFs.'           },
-  { num: '04', title: 'EARN',     desc: 'Collect Cyber Points for every milestone you hit.'        },
-  { num: '05', title: 'UNLOCK',   desc: 'Spend your points in the Zero-Day Market.'                },
+  { icon: Terminal, title: 'Learn', desc: 'Master Linux, networking, and social engineering fundamentals.' },
+  { icon: Target,   title: 'Operate', desc: 'Execute mission-based rooms in browser labs.' },
+  { icon: Zap,      title: 'Earn', desc: 'Capture flags and earn CP on the HSOCIETY Chain.' },
+  { icon: Shield,   title: 'Prove', desc: 'Validate your skills with a permanent, tamper-proof record.' },
 ];
 
-const ProcessSection: React.FC<ProcessSectionProps> = () => {
-  const shouldReduceMotion = useReducedMotion();
-  const headingRef = useRef(null);
-  const headingInView = useInView(headingRef, { once: true, amount: 0.3 });
-
+const ProcessSection: React.FC = () => {
   return (
-    <section className="ascii-section py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
-      <BinaryStreamBackground />
+    <section className="ascii-section relative py-14 md:py-24 bg-bg overflow-hidden border-t border-border">
+      <HeroBackground className="opacity-40" />
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
-
-        {/* Heading */}
-        <motion.div
-          ref={headingRef}
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 32, filter: 'blur(6px)' }}
-          animate={headingInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-12 md:mb-16"
-        >
-          <span className="ascii-kicker mb-3 block">
-            // THE PROCESS
-          </span>
-          <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-3">
-            How The Loop Works
-          </h2>
-          <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
-            Five steps from zero to operator. Each one builds on the last.
+      
+      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <AsciiHeading text="The Process" font="Larry3d" animated glow="intense" className="mb-8" />
+          <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto opacity-80 leading-relaxed">
+            From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
           </p>
-        </motion.div>
-
-        {/* ── Desktop: 5-column grid ── */}
-        <div className="hidden md:grid md:grid-cols-5 gap-6">
-          {STEPS.map((step, idx) => (
-            <StepCard key={idx} step={step} idx={idx} shouldReduceMotion={!!shouldReduceMotion} />
-          ))}
         </div>
 
-        {/* ── Mobile: horizontal scroll ── */}
-        <div className="md:hidden overflow-x-auto no-scrollbar -mx-4 px-4">
-          <div className="flex gap-3 sm:gap-4 w-max pb-3">
-            {STEPS.map((step, idx) => (
-              <div
-                key={idx}
-                className="terminal-card border-beam w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
-                style={{ boxShadow: 'var(--card-shimmer)' }}
-              >
-                <div className="font-mono text-2xl font-black text-accent/40 mb-4 leading-none">
-                  {step.num}
-                </div>
-                <h3 className="text-sm font-black text-text-primary mb-2 uppercase tracking-wide">
-                  {step.title}
-                </h3>
-                <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {STEPS.map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="terminal-card border-beam p-8 rounded-xl border border-border bg-bg-card/80 backdrop-blur-md text-center group"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <step.icon size={24} />
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile scroll dots */}
-        <div className="flex md:hidden items-center justify-center gap-1.5 mt-4">
-          {STEPS.map((_, i) => (
-            <div key={i} className="h-1 rounded-full bg-border" style={{ width: i === 0 ? 20 : 8 }} />
+              <h3 className="text-lg font-bold text-text-primary uppercase tracking-tight mb-3">{step.title}</h3>
+              <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
+            </motion.div>
           ))}
         </div>
-
       </div>
     </section>
-  );
-};
-
-const StepCard: React.FC<{ step: typeof STEPS[0]; idx: number; shouldReduceMotion: boolean }> = ({ step, idx, shouldReduceMotion }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
-
-  return (
-    <motion.div
-      ref={ref}
-      className="relative"
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40, scale: 0.94, filter: 'blur(6px)' }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' } : {}}
-      transition={{
-        duration: 0.6,
-        delay: shouldReduceMotion ? 0 : idx * 0.1,
-        ease: [0.16, 1, 0.3, 1],
-        filter: { duration: 0.4 },
-      }}
-    >
-      {/* Connector line */}
-      {idx < STEPS.length - 1 && (
-        <motion.div
-          aria-hidden
-          className="absolute top-[22px] left-[calc(50%+20px)] right-0 h-px bg-border z-0 origin-left"
-          initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : idx * 0.1 + 0.3, ease: 'easeOut' }}
-        />
-      )}
-
-      <div
-        className="terminal-card border-beam relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
-        style={{ boxShadow: 'var(--card-shimmer)' }}
-      >
-        <div className="font-mono text-2xl font-black text-accent/40 group-hover:text-accent transition-colors duration-300 mb-4 leading-none">
-          {step.num}
-        </div>
-        <h3 className="text-sm font-black text-text-primary mb-2 uppercase tracking-wide group-hover:text-accent transition-colors duration-200">
-          {step.title}
-        </h3>
-        <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
-      </div>
-    </motion.div>
   );
 };
 

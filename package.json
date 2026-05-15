@@ -21,6 +21,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "axios": "^1.15.2",
     "clsx": "^2.1.1",
+    "figlet": "^1.11.0",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
     "react": "^19.0.0",
@@ -31,6 +32,7 @@
     "vite": "^6.2.0"
   },
   "devDependencies": {
+    "@types/figlet": "^1.7.0",
     "@types/node": "^22.14.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

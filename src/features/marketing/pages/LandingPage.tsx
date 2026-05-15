@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useScroll, useTransform, motion, useReducedMotion } from 'motion/react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useLandingData } from '../hooks/useLandingData';
@@ -9,7 +9,7 @@ import LeaderboardSection from '../components/landing/LeaderboardSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
-import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../components/HeroBackground';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -21,13 +21,7 @@ const SECTIONS = [
   { id: 'footer',      label: 'Footer'          },
 ];
 
-// ── Dot nav — removed ────────────────────────────────────────────────────────
-// (previously a fixed right-side dot indicator; removed per design update)
-
 // ── Snap section ──────────────────────────────────────────────────────────────
-// Each section fills the full container height (h-full) and clips its content.
-// Content animates in when the section snaps into view.
-// The inner scale wrapper reduces vertical padding so content fits the viewport.
 const SnapSection: React.FC<{
   id: string;
   children: React.ReactNode;
@@ -39,13 +33,9 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      // Mobile: normal block, no snap, no fixed height
-      // md+: snap-start, h-full of the snap container (h-screen),
-      //      pt-[72px] from CSS clears the fixed navbar,
-      //      overflow-hidden clips anything that escapes
       className={`ascii-section md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
     >
-      <BinaryStreamBackground />
+      <HeroBackground className="opacity-40" />
       <motion.div
         initial={minimizeEffects ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -60,7 +50,6 @@ const SnapSection: React.FC<{
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 const Landing: React.FC = () => {
   const { user } = useAuth();
   const { stats, bootcamps, leaderboard, marketItems, loading } = useLandingData();
@@ -72,6 +61,7 @@ const Landing: React.FC = () => {
 
   const totalCp = leaderboard.reduce((acc, e) => acc + Number(e.totalXp || 0), 0);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const scrollToSection = useCallback((index: number) => {
     const container = containerRef.current;
     const el = document.getElementById(SECTIONS[index]?.id ?? '');
@@ -79,15 +69,12 @@ const Landing: React.FC = () => {
   }, []);
 
   return (
-    // The snap container:
-    // - Mobile (< md): normal scroll, no snap — content stacks naturally
-    // - Tablet/Desktop (md+): viewport-locked snap scroll
     <div
       ref={containerRef}
       className="landing-snap h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory"
       style={{ scrollSnapType: undefined }}
     >
-      {/* ── 1. Hero — full viewport, no wrapper needed ── */}
+      {/* ── 1. Hero ── */}
       <section
         id="hero"
         className="md:snap-start md:h-full md:flex-shrink-0 relative"
@@ -102,25 +89,25 @@ const Landing: React.FC = () => {
         />
       </section>
 
-      {/* ── 2. Zero-Day Market ── */}
-      <SnapSection id="market" className="bg-bg">
-        <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
-      </SnapSection>
-
-{/* ── 3. Bootcamps ── */}
-       <SnapSection id="bootcamps" className="bg-bg-card">
-         <BootcampsSection bootcamps={bootcamps} loading={loading} />
+       {/* ── 2. Zero-Day Market ── */}
+       <SnapSection id="market" className="">
+         <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
        </SnapSection>
 
-        {/* ── 4. Leaderboard ── */}
-        <SnapSection id="leaderboard" className="bg-bg-card">
-          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+       {/* ── 3. Bootcamps ── */}
+        <SnapSection id="bootcamps" className="">
+          <BootcampsSection bootcamps={bootcamps} loading={loading} />
         </SnapSection>
 
-        {/* ── 5. Final CTA ── */}
-        <SnapSection id="cta" className="bg-bg">
-          <FinalCtaSection user={user} />
-        </SnapSection>
+         {/* ── 4. Leaderboard ── */}
+         <SnapSection id="leaderboard" className="">
+           <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+         </SnapSection>
+
+         {/* ── 5. Final CTA ── */}
+         <SnapSection id="cta" className="">
+           <FinalCtaSection user={user} />
+         </SnapSection>
       {/* ── 9. Footer ── */}
       <section
         id="footer"

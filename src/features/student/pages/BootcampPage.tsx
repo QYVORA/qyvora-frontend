@@ -8,6 +8,7 @@ import EnrollmentModal from '../components/EnrollmentModal';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 import type { BootcampLevel } from '../components/BootcampCard';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -153,18 +154,25 @@ const Bootcamp: React.FC = () => {
         style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
       >
         <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
-        <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Arsenal</span>
-            <h1 className="text-4xl font-black text-text-primary md:text-6xl">Bootcamps</h1>
-            <p className="mt-2 max-w-lg text-base text-text-muted">
-              Phased training tracks with mission-based checkpoints. Pick a program and execute.
-            </p>
-          </div>
-          <p className={`text-xs shrink-0 ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
-            {syncError || formatSyncLabel(lastSync)}
-          </p>
-        </ScrollReveal>
+<ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+           <div>
+             <AsciiHeading
+               text="Arsenal"
+               font="Digital"
+               compact
+               animated
+               glow="intense"
+               className="mb-2"
+             />
+             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Bootcamps</h1>
+             <p className="mt-2 max-w-lg text-base text-text-muted">
+               Phased training tracks with mission-based checkpoints. Pick a program and execute.
+             </p>
+           </div>
+           <p className={`text-xs shrink-0 ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+             {syncError || formatSyncLabel(lastSync)}
+           </p>
+         </ScrollReveal>
 
         {loading ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">

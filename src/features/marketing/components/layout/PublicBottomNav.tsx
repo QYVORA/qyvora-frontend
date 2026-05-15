@@ -3,9 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   Home,
-  Terminal,
-  Flag,
-  Trophy,
   Wrench,
   Mail,
   LogIn,
@@ -19,16 +16,12 @@ import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../s
 
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
-  { label: 'Home',      icon: Home,     path: '/'           },
-  { label: 'Learn', icon: Terminal, path: '/bootcamps'  },
-  { label: 'CTF',       icon: Flag,     path: '/ctf'        },
+  { label: 'Home',    icon: Home,   path: '/'           },
+  { label: 'Contact', icon: Mail,   path: '/contact'    },
 ];
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */
-const MORE_ITEMS = [
-  { label: 'Leaderboard', icon: Trophy, path: '/leaderboard'  },
-  { label: 'Contact',     icon: Mail,   path: '/contact'      },
-];
+const MORE_ITEMS: { label: string; icon: any; path: string }[] = [];
 
 const PublicBottomNav: React.FC = () => {
   const { user } = useAuth();
@@ -111,29 +104,31 @@ const PublicBottomNav: React.FC = () => {
                 </BottomSheetClose>
               </div>
 
-              {/* Nav grid */}
-              <div className="grid grid-cols-2 gap-3 p-4">
-                {MORE_ITEMS.map((item) => {
-                  const active = isActive(item.path);
-                  return (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={closeMore}
-                      className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border transition-all active:scale-95 ${
-                        active
-                          ? 'bg-accent-dim border-accent/30 text-accent'
-                          : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
-                      }`}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span className="text-[11px] font-bold uppercase tracking-wide text-center leading-tight">
-                        {item.label}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
+               {/* Nav grid - only show if there are items */}
+               {MORE_ITEMS.length > 0 && (
+                 <div className="grid grid-cols-2 gap-3 p-4">
+                   {MORE_ITEMS.map((item) => {
+                     const active = isActive(item.path);
+                     return (
+                       <Link
+                         key={item.path}
+                         to={item.path}
+                         onClick={closeMore}
+                         className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border transition-all active:scale-95 ${
+                           active
+                             ? 'bg-accent-dim border-accent/30 text-accent'
+                             : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                         }`}
+                       >
+                         <item.icon className="w-5 h-5" />
+                         <span className="text-[11px] font-black uppercase tracking-wide text-center leading-tight">
+                           {item.label}
+                         </span>
+                       </Link>
+                     );
+                   })}
+                 </div>
+               )}
 
               {/* Auth actions */}
               <div className="px-4 pb-4 space-y-3 border-t border-border/50 pt-4">

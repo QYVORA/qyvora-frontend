@@ -2,6 +2,7 @@ import React from 'react';
 import { CheckCircle2, Unlock } from 'lucide-react';
 import api from '../../../core/services/api';
 import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '../constants/bootcampModules';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 interface Props {
   addToast: (msg: string, type: string) => void;
@@ -101,11 +102,17 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
         {currentModule && (
           <div className="flex items-center gap-4 rounded-2xl border border-accent/25 bg-accent-dim/40 p-4 md:p-5">
             <div className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-accent" />
-            <div className="min-w-0">
-              <div className="mb-1 text-xs font-black uppercase tracking-widest text-accent">Current phase</div>
-              <div className="text-base font-black text-text-primary md:text-lg">{currentModule.title}</div>
-              <div className="mt-1 text-sm text-text-muted">{currentModule.roomCount} rooms in this phase</div>
-            </div>
+<div className="min-w-0">
+               <AsciiHeading
+                 text={currentModule.title}
+                 font="Standard"
+                 compact
+                 animated={false}
+                 glow="none"
+                 className="mb-1 text-base"
+               />
+               <div className="mt-1 text-sm text-text-muted">{currentModule.roomCount} rooms in this phase</div>
+             </div>
           </div>
         )}
 
@@ -116,10 +123,17 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
             disabled={saving || !started}
             className="group flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-border bg-bg p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-40 md:p-5"
           >
-            <div className="min-w-0 text-left">
-              <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Unlock next phase</div>
-              <div className="text-base font-black text-text-primary transition-colors group-hover:text-accent md:text-lg">{nextModule.title}</div>
-            </div>
+<div className="min-w-0 text-left">
+               <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Unlock next phase</div>
+               <AsciiHeading
+                 text={nextModule.title}
+                 font="Standard"
+                 compact
+                 animated={false}
+                 glow="none"
+                 className="mb-0 text-base"
+               />
+             </div>
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent-dim">
               <Unlock className="h-5 w-5 text-accent" />
             </div>

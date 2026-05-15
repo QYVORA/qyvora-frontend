@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight, Terminal } from 'lucide-react';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface FinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
 }
 
-// Animated particle/grid canvas — draws a live dot-grid with drifting lit nodes
 const LiveGridCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -22,7 +22,6 @@ const LiveGridCanvas: React.FC = () => {
     const CELL = 36;
     const accent = '#B7FF99';
 
-    // Lit nodes — each pulses independently
     const nodes: { cx: number; cy: number; phase: number; speed: number; size: number }[] = [];
 
     const resize = () => {
@@ -31,7 +30,6 @@ const LiveGridCanvas: React.FC = () => {
       nodes.length = 0;
       const cols = Math.ceil(canvas.width  / CELL) + 1;
       const rows = Math.ceil(canvas.height / CELL) + 1;
-      // Seed ~8% of intersections as live nodes
       for (let r = 0; r <= rows; r++) {
         for (let c = 0; c <= cols; c++) {
           if (Math.random() < 0.08) {
@@ -54,8 +52,6 @@ const LiveGridCanvas: React.FC = () => {
     let t = 0;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Dot grid
       ctx.fillStyle = 'rgba(183,255,153,0.07)';
       const cols = Math.ceil(canvas.width  / CELL) + 1;
       const rows = Math.ceil(canvas.height / CELL) + 1;
@@ -66,10 +62,8 @@ const LiveGridCanvas: React.FC = () => {
           ctx.fill();
         }
       }
-
-      // Pulsing live nodes
       for (const n of nodes) {
-        const pulse = (Math.sin(t * n.speed + n.phase) + 1) / 2; // 0-1
+        const pulse = (Math.sin(t * n.speed + n.phase) + 1) / 2;
         ctx.beginPath();
         ctx.arc(n.cx, n.cy, n.size * (0.6 + pulse * 0.8), 0, Math.PI * 2);
         ctx.fillStyle = accent;
@@ -77,11 +71,9 @@ const LiveGridCanvas: React.FC = () => {
         ctx.fill();
         ctx.globalAlpha = 1;
       }
-
       t += 0.018;
       raf = requestAnimationFrame(draw);
     };
-
     draw();
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
@@ -95,7 +87,6 @@ const LiveGridCanvas: React.FC = () => {
   );
 };
 
-// Blinking terminal log lines
 const TERMINAL_LINES = [
   '> Scanning SERVER...',
   '> Bootcamp PHASES [OK]',
@@ -133,7 +124,6 @@ const TerminalTicker: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduc
   );
 };
 
-// Main section
 const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -142,17 +132,13 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
       ascii-section relative pt-28 pb-20 md:py-0 bg-bg scanlines flex items-center has-bg-image
       md:h-full md:overflow-hidden
     ">
-      <BinaryStreamBackground />
-      {/* Overlay fades */}
+      <HeroBackground className="opacity-40" />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(135deg, var(--color-bg) 0%, transparent 50%, var(--color-bg) 100%)' }}
       />
-
-      {/* Live dot-grid canvas */}
       {!shouldReduceMotion && <LiveGridCanvas />}
 
-      {/* Operator illustration — right, desktop only */}
       <img
         src="/assets/illustrations/cta-operator.webp"
         alt=""
@@ -161,40 +147,17 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 
-      {/* ── Content ── */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
         <div className="max-w-xl">
+          <AsciiHeading 
+            text={user ? "Operating" : "Operate"} 
+            font="Larry3d" 
+            align="left" 
+            animated 
+            glow="intense" 
+            className="mb-8" 
+          />
 
-          {/* Status badge  is removed  becuause of layout issues  */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-accent/30 bg-accent-dim rounded-lg"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="font-mono text-[9px] font-black uppercase tracking-[0.3em] text-accent">
-              {user ? 'Training in Progress' : 'Enrollment Open'}
-            </span>
-          </motion.div> */}
-
-          {/* Headline */}
-          <motion.h2
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(8px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary leading-none tracking-tight mb-4"
-          >
-            {user ? (
-              <>Keep <span className="text-accent">Operating.</span></>
-            ) : (
-              <>Ready to <span className="text-accent">Operate?</span></>
-            )}
-          </motion.h2>
-
-          {/* Subtext */}
           <motion.p
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -207,7 +170,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
               : 'Join operators training in offensive security across Africa. No experience required — just commitment.'}
           </motion.p>
 
-          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -231,7 +193,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             )}
           </motion.div>
 
-          {/* Terminal widget */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -243,7 +204,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             <Terminal className="w-3.5 h-3.5 text-accent/50 mt-0.5 flex-none" aria-hidden />
             <TerminalTicker shouldReduceMotion={!!shouldReduceMotion} />
           </motion.div>
-
         </div>
       </div>
     </section>

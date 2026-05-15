@@ -14,17 +14,10 @@ const FOOTER_COLS = [
     links: SITE_CONFIG.nav.company.map((item) => ({ label: item.label, path: item.path })),
   },
   {
-    heading: 'Platform',
-    links: SITE_CONFIG.nav.platform.map((item) => ({ label: item.label, path: item.path })),
-  },
-  {
     heading: 'Quick Links',
     links: [
-      { label: 'CTF Arena',   path: '/ctf'        },
-      { label: 'Leaderboard', path: '/leaderboard' },
-      { label: 'Bootcamps',   path: '/bootcamps'   },
-      { label: 'Register',    path: '/register'    },
-      { label: 'Log In',      path: '/login'       },
+      { label: 'Register',  path: '/register'    },
+      { label: 'Log In',    path: '/login'       },
     ],
   },
 ];

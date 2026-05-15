@@ -28,6 +28,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Hint {
@@ -259,28 +260,33 @@ const CtfPage: React.FC = () => {
           </div>
         )}
 
-        <ScrollReveal>
-          {/* Challenge header */}
-          <div className="card-hsociety p-6 md:p-8 mb-6">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded border ${catMeta.color}`}>
-                {catMeta.label}
-              </span>
-              <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded border ${DIFFICULTY_COLOR[challenge.difficulty]}`}>
-                {challenge.difficulty}
-              </span>
-              <span className="ml-auto text-xs font-mono font-bold text-accent inline-flex items-center gap-1">
-                +{challenge.cpReward} <CpLogo className="w-3.5 h-3.5" />
-              </span>
-            </div>
+<ScrollReveal>
+           {/* Challenge header */}
+           <div className="card-hsociety p-6 md:p-8 mb-6">
+             <div className="flex flex-wrap items-center gap-2 mb-4">
+               <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded border ${catMeta.color}`}>
+                 {catMeta.label}
+               </span>
+               <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded border ${DIFFICULTY_COLOR[challenge.difficulty]}`}>
+                 {challenge.difficulty}
+               </span>
+               <span className="ml-auto text-xs font-mono font-bold text-accent inline-flex items-center gap-1">
+                 +{challenge.cpReward} <CpLogo className="w-3.5 h-3.5" />
+               </span>
+             </div>
 
-            <h1 className="text-2xl md:text-3xl font-black text-text-primary mb-3 font-mono">
-              {challenge.title}
-            </h1>
+             <AsciiHeading
+               text={challenge.title}
+               font="Digital"
+               compact
+               animated={false}
+               glow="none"
+               className="mb-3"
+             />
 
-            <p className="text-sm text-text-secondary leading-relaxed mb-5 whitespace-pre-wrap">
-              {challenge.description}
-            </p>
+             <p className="text-sm text-text-secondary leading-relaxed mb-5 whitespace-pre-wrap">
+               {challenge.description}
+             </p>
 
             {/* Category tip */}
             <div className="flex items-start gap-3 p-3 rounded-lg bg-accent-dim/30 border border-accent/20">

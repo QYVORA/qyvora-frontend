@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, CheckCircle2 } from 'lucide-react';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 interface Bootcamp { id: string; title: string; modules: any[]; }
 interface QuizQuestion { id: string; text: string; options: string[]; correctIndex: number; points: number; }

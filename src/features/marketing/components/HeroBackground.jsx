@@ -27,12 +27,13 @@ const STREAM_VERT = `
 `;
 
 const STREAM_FRAG = `
-  precision mediump float;
+   precision mediump float;
 
-  uniform float uTime;
-  uniform vec3  uAccent;
-  uniform vec2  uResolution;
-  varying vec2  vUv;
+   uniform float uTime;
+   uniform vec3  uAccent;
+   uniform vec2  uResolution;
+   uniform float uScale;
+   varying vec2  vUv;
 
   float hash(float n) {
     return fract(sin(n) * 43758.5453);
@@ -41,21 +42,22 @@ const STREAM_FRAG = `
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
 
-  float laneContrib(
-    vec2  uv,
-    float laneX,
-    float laneW,
-    float speed,
-    float seed,
-    float perspRatio
-  ) {
-    float halfW = laneW * 0.5;
-    float dx = uv.x - laneX;
-    if (abs(dx) > halfW) return 0.0;
-    float lx = (dx / laneW) + 0.5;
+   float laneContrib(
+     vec2  uv,
+     float laneX,
+     float laneW,
+     float speed,
+     float seed,
+     float perspRatio
+   ) {
+     float scaledLaneW = laneW * uScale;
+     float halfW = scaledLaneW * 0.5;
+     float dx = uv.x - laneX;
+     if (abs(dx) > halfW) return 0.0;
+     float lx = (dx / scaledLaneW) + 0.5;
 
-    float aspect = uResolution.x / max(uResolution.y, 1.0);
-    float charH  = laneW * aspect * 1.9;
+     float aspect = uResolution.x / max(uResolution.y, 1.0);
+     float charH  = scaledLaneW * aspect * 1.9;
 
     float scrollY = uTime * speed;
     float cellY   = floor((uv.y + scrollY) / charH);
@@ -166,6 +168,7 @@ function StreamFloor() {
           uTime:       { value: 0 },
           uAccent:     { value: new THREE.Color(183 / 255, 255 / 255, 153 / 255) },
           uResolution: { value: new THREE.Vector2(1, 1) },
+          uScale:      { value: 1.0 },
         },
         transparent: true,
         depthWrite:  false,
@@ -179,6 +182,9 @@ function StreamFloor() {
     if (!matRef.current) return;
     matRef.current.uniforms.uTime.value = clock.getElapsedTime();
     matRef.current.uniforms.uResolution.value.set(s.width, s.height);
+    // Scale down lane widths on mobile for better visibility
+    const scale = s.width < 768 ? 0.55 : 1.0;
+    matRef.current.uniforms.uScale.value = scale;
   });
 
   return (

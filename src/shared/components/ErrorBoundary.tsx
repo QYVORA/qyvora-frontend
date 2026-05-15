@@ -105,6 +105,7 @@ class ErrorBoundary extends Component<Props, State> {
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
+              type="button"
               onClick={this.reset}
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-accent text-bg rounded-xl text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all"
             >
@@ -112,6 +113,7 @@ class ErrorBoundary extends Component<Props, State> {
               Try Again
             </button>
             <button
+              type="button"
               onClick={() => { window.location.href = '/dashboard'; }}
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all"
             >
@@ -124,6 +126,7 @@ class ErrorBoundary extends Component<Props, State> {
           <p className="text-[10px] text-text-muted">
             Still broken?{' '}
             <button
+              type="button"
               onClick={() => window.location.reload()}
               className="text-accent hover:underline font-bold"
             >

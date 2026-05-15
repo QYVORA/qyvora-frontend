@@ -9,6 +9,7 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const CACHE_KEY = 'hsociety_marketplace_cache_v2';
 
@@ -134,32 +135,39 @@ const Marketplace: React.FC = () => {
       >
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
-        {/* Header */}
-        <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Zero-day vault</span>
-            <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
-            <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
-          </div>
-          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap">
-            {balance !== null && (
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
-                <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
-                <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
-              </div>
-            )}
-            <div className="relative w-full sm:w-auto">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full sm:w-64 rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
-            </div>
-          </div>
-        </ScrollReveal>
+{/* Header */}
+         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+           <div>
+             <AsciiHeading
+               text="Zero-Day Vault"
+               font="Digital"
+               compact
+               animated
+               glow="intense"
+               className="mb-2"
+             />
+             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
+             <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
+           </div>
+           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap">
+             {balance !== null && (
+               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                 <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
+                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
+               </div>
+             )}
+             <div className="relative w-full sm:w-auto">
+               <input
+                 type="text"
+                 value={query}
+                 onChange={(e) => setQuery(e.target.value)}
+                 placeholder="Search products..."
+                 className="w-full sm:w-64 rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none"
+               />
+               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+             </div>
+           </div>
+         </ScrollReveal>
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

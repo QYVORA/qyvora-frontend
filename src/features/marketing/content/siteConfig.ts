@@ -76,13 +76,9 @@ export const SITE_CONFIG = {
     },
   ],
    nav: {
-    platform: [
-      { key: 'bootcamps',  label: 'Bootcamps', path: '/bootcamps', desc: 'Intensive operator training' },
-      { key: 'ctf',        label: 'CTF Arena', path: '/ctf',       desc: 'Browser-based hacking challenges' },
-      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Hall of Shadows' },
-    ],
-    company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' }],
-  },
+     platform: [],
+     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' }],
+   },
   contactSubjects: [
     { value: 'b2b', label: 'B2B Security Consultation' },
     { value: 'bootcamp', label: 'Bootcamp Inquiries' },

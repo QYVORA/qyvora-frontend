@@ -6,7 +6,8 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { BootcampLevel } from '../../../student/components/BootcampCard';
 import { PHASE_IMGS, type Bootcamp } from './types';
 import { resolveImg } from './helpers';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface BootcampsSectionProps {
   bootcamps: Bootcamp[];
@@ -36,7 +37,6 @@ const BOOTCAMP_SIGNALS = [
   { icon: Flag, title: 'CTF checkpoints', value: 'Practice flags mapped to the curriculum' },
 ];
 
-// ── Featured single-bootcamp card ────────────────────────────────────────────
 const FeaturedCard: React.FC<{
   bc: Bootcamp;
   idx: number;
@@ -58,7 +58,6 @@ const FeaturedCard: React.FC<{
       className="terminal-card border-beam group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      {/* ── Cover image ── */}
       <div className="relative flex-none overflow-hidden bg-bg lg:w-[45%]" style={{ minHeight: '220px' }}>
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         {image ? (
@@ -72,34 +71,26 @@ const FeaturedCard: React.FC<{
             <span className="font-mono text-4xl font-black text-accent/20 select-none">HPB</span>
           </div>
         )}
-        {/* Gradient overlay — blends into card body on desktop */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'linear-gradient(to bottom, transparent 45%, var(--color-bg-card) 100%), linear-gradient(to right, transparent 65%, var(--color-bg-card) 100%)',
           }}
         />
-        {/* Level badge — pinned top-right */}
         <div className="absolute right-3 top-3 z-10">
           <span className={`rounded-sm border px-2 py-1 font-mono text-[9px] font-black uppercase tracking-[0.2em] backdrop-blur-sm ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
             {level}
           </span>
         </div>
       </div>
-
-      {/* ── Body ── */}
       <div className="flex flex-1 flex-col justify-center p-6 lg:p-8">
         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3">Featured Bootcamp</p>
-
         <h3 className="mb-3 text-xl font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent md:text-2xl lg:text-3xl">
           {title}
         </h3>
-
         <p className="mb-5 max-w-lg text-sm leading-relaxed text-text-secondary line-clamp-3">
           {desc}
         </p>
-
-        {/* Meta row */}
         <div className="flex items-center gap-4 mb-6 text-xs text-text-muted font-mono">
           {bc.duration && (
             <span className="inline-flex items-center gap-1.5">
@@ -112,8 +103,6 @@ const FeaturedCard: React.FC<{
             {bc.priceLabel || 'Free'}
           </span>
         </div>
-
-        {/* CTA */}
         <div className="flex items-center gap-3">
           <Link
             to="/register"
@@ -127,7 +116,6 @@ const FeaturedCard: React.FC<{
   );
 };
 
-// ── Bootcamp signal card ──────────────────────────────────────────────────────
 const TeaserCard: React.FC<{
   item: typeof BOOTCAMP_SIGNALS[0];
   idx: number;
@@ -154,7 +142,6 @@ const TeaserCard: React.FC<{
   );
 };
 
-// ── Main ─────────────────────────────────────────────────────────────────────
 const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading = false }) => {
   const shouldReduceMotion = useReducedMotion();
   const displayed = bootcamps.slice(0, 3);
@@ -165,34 +152,27 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <BinaryStreamBackground />
+      <HeroBackground className="opacity-40" />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 w-full">
 
-        {/* ── Header ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
-            <span className="ascii-kicker mb-2 block">// ARSENAL</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
-              Bootcamps Built<br className="hidden sm:block" /> For Operators
-            </h2>
+            <AsciiHeading 
+              text="Bootcamps" 
+              font="Digital" 
+              align="left" 
+              animated 
+              glow="intense" 
+              className="mb-6" 
+            />
             <p className="text-text-secondary text-sm mt-2 max-w-lg leading-relaxed">
               Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
             </p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <Link
-              to="/bootcamps"
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-accent hover:underline underline-offset-4 group"
-            >
-              Explore all
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </ScrollReveal>
+           </ScrollReveal>
         </div>
 
-        {/* ── Skeleton ── */}
         {loading ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 rounded-xl border border-border bg-bg-card animate-pulse overflow-hidden" style={{ minHeight: 220 }}>
@@ -208,16 +188,11 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
           <div className="rounded-xl border border-border bg-bg p-10 text-center text-text-muted text-sm">
             No bootcamps available yet.
           </div>
-
-        /* ── Single bootcamp: featured card + teaser sidebar ── */
         ) : isSingle ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 items-stretch">
-            {/* Featured card spans 2 columns */}
             <div className="lg:col-span-2">
               <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
             </div>
-
-            {/* Right-side bootcamp summary */}
             <div className="flex flex-col justify-center gap-3">
               <ScrollReveal delay={0.05}>
                 <p className="text-[9px] font-black uppercase tracking-[0.25em] text-text-muted mb-1 px-1">
@@ -229,8 +204,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               ))}
             </div>
           </div>
-
-        /* ── Multiple bootcamps: normal grid ── */
         ) : (
           <div className={`grid gap-5 grid-cols-1 ${
             displayed.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'
@@ -253,7 +226,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   className="terminal-card border-beam group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
-                  {/* Cover */}
                   <div className="relative overflow-hidden bg-bg" style={{ aspectRatio: '16/8' }}>
                     <div className="absolute inset-0 dot-grid opacity-10" />
                     {image && (
@@ -271,7 +243,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                       {level}
                     </span>
                   </div>
-                  {/* Body */}
                   <div className="flex flex-col flex-1 p-5 gap-3">
                     <h3 className="text-sm font-black text-text-primary leading-snug group-hover:text-accent transition-colors">
                       {title}
@@ -290,7 +261,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             })}
           </div>
         )}
-
       </div>
     </section>
   );

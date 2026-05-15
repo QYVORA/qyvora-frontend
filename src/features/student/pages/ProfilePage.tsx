@@ -7,6 +7,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const numericStatValue = (value: string | number) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
@@ -157,11 +158,15 @@ const Profile: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
         {/* HEADER */}
-        <ScrollReveal className="mb-10 md:mb-12">
-          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-            Operator profile
-          </span>
-          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
+<ScrollReveal className="mb-10 md:mb-12">
+           <AsciiHeading
+             text="Operator Profile"
+             font="Cybermedium"
+             animated
+             glow="intense"
+             className="mb-2"
+           />
+           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
             <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             {/* Terminal panel illustration — fades into the right edge */}

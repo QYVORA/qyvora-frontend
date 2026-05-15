@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Link2, Hash } from 'lucide-react';
-import { motion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import ChainLogo from '../../../../shared/components/ChainLogo';
 import CpLogo from '../../../../shared/components/CpLogo';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const CHAIN_FACTS = [
   { icon: Link2,   label: 'Immutable blocks',   desc: 'Every CP event is a SHA-256 hashed block, chained to the previous one.' },
@@ -15,9 +15,8 @@ const CHAIN_FACTS = [
 
 const ChainSection: React.FC = () => (
   <section className="ascii-section py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
-    <BinaryStreamBackground />
+    <HeroBackground className="opacity-40" />
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-    {/* Chain visuals background */}
     <img
       src="/assets/branding/chain/hsociety-chain-logo-visuals.webp"
       alt=""
@@ -28,115 +27,73 @@ const ChainSection: React.FC = () => (
 
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
-
-        {/* Left — text */}
         <div>
           <ScrollReveal>
-            <span className="ascii-kicker mb-3 block">// HSOCIETY CHAIN</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-primary leading-[1.1] mb-4">
-              Your CP is<br />
-              <span className="text-accent">chain-verified</span>
-            </h2>
-            <p className="text-text-secondary text-sm md:text-base mb-7 max-w-md leading-relaxed">
-              Every time you earn <CpLogo className="w-4 h-4 mx-0.5" />, the HSOCIETY Chain writes an
-              immutable block to a private ledger. Your rank, your progress, your history —
-              tamper-proof and independently verifiable.
+            <AsciiHeading text="HSOCIETY Chain" font="Larry3d" align="left" animated glow="intense" className="mb-8" />
+            
+            <p className="text-text-secondary text-base md:text-lg mb-8 leading-relaxed max-w-lg">
+              Every room completion and <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> reward is 
+              permanently etched into our private PoA blockchain. Your skills are verifiable, 
+              immutable, and cryptographically proven.
             </p>
-          </ScrollReveal>
 
-          <ScrollReveal className="flex flex-col gap-3 mb-7">
-            {CHAIN_FACTS.map(({ icon: Icon, label, desc }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, x: -20, filter: 'blur(4px)' }}
-                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-                className="terminal-card border-beam flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
-              >
-                <Icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-xs font-bold text-text-primary mb-0.5">{label}</div>
-                  <div className="text-[11px] text-text-muted leading-relaxed">{desc}</div>
+            <div className="space-y-6 mb-8 max-w-lg">
+              {CHAIN_FACTS.map((f, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-accent/5 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                    <f.icon size={18} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-text-primary uppercase tracking-tight mb-1">{f.label}</h3>
+                    <p className="text-xs text-text-muted leading-relaxed">{f.desc}</p>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </ScrollReveal>
+              ))}
+            </div>
 
-          <ScrollReveal className="flex flex-col sm:flex-row gap-3">
-            <Link to="/chain" className="btn-primary text-sm !px-7 inline-flex items-center justify-center gap-2">
+            <Link
+              to="/cyber-points"
+              className="btn-secondary text-xs inline-flex items-center gap-2"
+            >
               Explore the Chain <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link to="/cyber-points" className="btn-secondary text-sm !px-7 inline-flex items-center justify-center gap-2">
-              <CpLogo className="w-4 h-4" /> Learn About CP
             </Link>
           </ScrollReveal>
         </div>
 
-        {/* Right — 3D chain logo + 2 sample blocks */}
-        <ScrollReveal className="flex flex-col gap-4">
-          {/* 3D logo */}
-          <div className="flex items-center gap-4 mb-1">
-            <ChainLogo variant="3d" size={110} className="drop-shadow-[0_0_30px_rgba(136,173,124,0.35)]" />
-            <div className="flex flex-col gap-1">
-              <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest">Proof-of-Authority · SHA-256</span>
-              <span className="text-[9px] font-mono text-accent uppercase tracking-widest flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                Operational
-              </span>
-            </div>
-          </div>
-
-          {/* Terminal panel illustration */}
-          <div className="relative flex justify-center mb-2">
-            <img
-              src="/assets/illustrations/hero-terminal-panel.webp"
-              alt=""
-              aria-hidden="true"
-              className="w-full max-w-[280px] sm:max-w-[320px] h-auto object-contain opacity-90 drop-shadow-[0_0_32px_var(--color-accent-glow)]"
-            />
-          </div>
-
-          {/* 2 sample blocks */}
-          {[
-            { index: 41, type: 'ROOM_COMPLETED',  cp: 250, hash: 'b7ff99a3c2…', prev: '4e1a8f02d9…' },
-            { index: 42, type: 'CP_REWARD',        cp: 250, hash: '9c4d2e7b1a…', prev: 'b7ff99a3c2…' },
-          ].map((block, i) => (
-            <div
-              key={block.index}
-              className="terminal-card border-beam rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
-              style={{ opacity: 1 - i * 0.1 }}
-            >
-              <div className="flex items-center gap-3 border-b border-border px-4 py-2.5 bg-accent/5">
-                <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-accent/30 bg-accent-dim font-mono text-[9px] font-black text-accent">
-                  #{block.index}
+        <ScrollReveal className="relative hidden lg:block" direction="right">
+          <div className="absolute inset-0 bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="relative z-10 flex flex-col gap-4">
+            {[
+              { id: '0x8f2..', type: 'ROOM_COMPLETED', op: 'Ghost_01', hash: '4a92b..', prev: '9c2f1..' },
+              { id: '0x3a1..', type: 'CP_REWARD', op: 'Shadow_Op', hash: 'd1e8c..', prev: '4a92b..' },
+            ].map((block, i) => (
+              <div key={i} className="terminal-card border-beam p-5 rounded-lg border border-border bg-bg-card/80 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/50">
+                  <div className="flex items-center gap-2">
+                    <ChainLogo size={16} />
+                    <span className="font-mono text-[10px] font-bold text-accent uppercase tracking-widest">Block {block.id}</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest">{block.type}</span>
                 </div>
-                <span className={`rounded-lg border px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${
-                  block.type === 'ROOM_COMPLETED'
-                    ? 'border-accent/30 bg-accent/10 text-accent'
-                    : 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400'
-                }`}>
-                  {block.type.replace(/_/g, ' ')}
-                </span>
-                <span className="ml-auto font-mono text-xs font-black text-accent inline-flex items-center gap-1">
-                  +{block.cp} <CpLogo className="w-3 h-3" />
-                </span>
-              </div>
-              <div className="px-4 py-2.5 space-y-1 font-mono text-[10px]">
-                <div className="flex gap-2">
-                  <span className="text-text-muted w-14 shrink-0">hash</span>
-                  <span className="text-accent">{block.hash}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-text-muted w-14 shrink-0">prevHash</span>
-                  <span className="text-text-muted">{block.prev}</span>
+                <div className="space-y-3 font-mono text-[9px] uppercase tracking-[0.15em]">
+                  <div className="flex justify-between gap-4">
+                    <span className="text-text-muted">Operator:</span>
+                    <span className="text-text-primary">{block.op}</span>
+                  </div>
+                  <div className="flex justify-between gap-4">
+                    <span className="text-text-muted">Hash:</span>
+                    <span className="text-accent">{block.hash}</span>
+                  </div>
+                  <div className="flex justify-between gap-4">
+                    <span className="text-text-muted">Prev_Hash:</span>
+                    <span className="text-text-muted">{block.prev}</span>
+                  </div>
                 </div>
               </div>
+            ))}
+            <div className="text-center text-[10px] font-mono text-text-muted uppercase tracking-widest opacity-60">
+              ↑ sample blocks from HSOCIETY CHAIN
             </div>
-          ))}
-
-          <div className="text-center text-[10px] font-mono text-text-muted uppercase tracking-widest opacity-60">
-            ↑ sample blocks from HSOCIETY CHAIN
           </div>
         </ScrollReveal>
       </div>

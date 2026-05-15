@@ -18,22 +18,17 @@ const ICON_BY_KEY = {
   contact: Mail,
 } as const;
 
-const NAV_GROUPS = [
-  {
-    label: 'Platform',
-    items: SITE_CONFIG.nav.platform.map((item) => ({
-      ...item,
-      icon: ICON_BY_KEY[item.key],
-    })),
-  },
-  {
-    label: 'Company',
-    items: SITE_CONFIG.nav.company.map((item) => ({
-      ...item,
-      icon: ICON_BY_KEY[item.key],
-    })),
-  },
-];
+const platformItems = SITE_CONFIG.nav.platform.map((item: { key: string; label: string; path: string; desc: string }) => ({
+  ...item,
+  icon: ICON_BY_KEY[item.key],
+}));
+const companyItems = SITE_CONFIG.nav.company.map((item: { key: string; label: string; path: string; desc: string }) => ({
+  ...item,
+  icon: ICON_BY_KEY[item.key],
+}));
+const NAV_GROUPS: { label: string; items: typeof platformItems }[] = [];
+if (platformItems.length) NAV_GROUPS.push({ label: 'Platform', items: platformItems });
+if (companyItems.length) NAV_GROUPS.push({ label: 'Company', items: companyItems });
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();

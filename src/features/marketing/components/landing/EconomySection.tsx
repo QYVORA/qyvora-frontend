@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
-import ChainLogo from '../../../../shared/components/ChainLogo';
-import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../HeroBackground';
+import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface EconomySectionProps {
   totalCp: number;
@@ -16,8 +16,6 @@ interface EconomySectionProps {
 
 const BULLETS = [
   'Complete bootcamps to earn points',
-  'Finish challenges to earn more points',
-  'Build your rank on the leaderboard',
   'Spend points in the marketplace',
 ];
 
@@ -29,7 +27,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
       ascii-section pt-28 pb-24 md:py-16 bg-bg relative isolate has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <BinaryStreamBackground />
+      <HeroBackground className="opacity-40" />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
       <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />
 
@@ -39,25 +37,21 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           {/* Left: description + CP features */}
           <div>
             <ScrollReveal>
-              <span className="ascii-kicker mb-2 block">// THE ECONOMY</span>
-              <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">
-                Cyber Points &amp; Zero-Day Market
-              </h2>
+              <AsciiHeading 
+                text="Zero-Day Market" 
+                font="Cybermedium" 
+                align="left" 
+                animated 
+                glow="intense" 
+                className="mb-8" 
+              />
               <p className="text-text-secondary text-sm mb-6 leading-relaxed">
                 Earn <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> by completing bootcamp rooms
                 and CTF challenges. Every transaction is recorded on the{' '}
                 <span className="text-accent font-bold">HSOCIETY Chain</span> — tamper-proof and verifiable.
-              </p>
+               </p>
 
-              {/* Chain badge */}
-              <div className="terminal-card flex items-center gap-2 mb-5 px-3 py-1.5 w-fit">
-                <ChainLogo size={14} />
-                <span className="text-[10px] font-bold text-accent uppercase tracking-widest">
-                  Verified by HSOCIETY Chain
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
                 {BULLETS.map((bullet, i) => (
                   <ScrollReveal key={bullet} delay={i * 0.04}>
                     <div className="flex items-center gap-2.5 text-sm text-text-secondary">

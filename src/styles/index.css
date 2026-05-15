@@ -613,35 +613,13 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    background:
-      linear-gradient(180deg, rgba(183, 255, 153, 0.035), transparent 18%, rgba(183, 255, 153, 0.018) 100%),
-      radial-gradient(ellipse at 50% 0%, rgba(183, 255, 153, 0.095), transparent 44%),
-      #000;
+    background: transparent;
   }
   .ascii-section::before {
-    content: "";
-    position: absolute;
-    top: clamp(1rem, 4vw, 3rem);
-    left: 50%;
-    z-index: 0;
-    width: min(92vw, 78rem);
-    transform: translateX(-50%);
-    height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 32%, transparent), transparent);
-    pointer-events: none;
+    display: none;
   }
   .ascii-section::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(rgba(183, 255, 153, 0.025) 1px, transparent 1px),
-      radial-gradient(var(--dot-color) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.9));
-    background-size: 100% 34px, 24px 24px, 100% 100%;
-    opacity: 0.75;
+    display: none;
   }
   .ascii-section > * {
     position: relative;
@@ -683,11 +661,129 @@
     @apply text-accent text-[11px] font-black uppercase tracking-[0.35em];
   }
 
-  .ascii-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 45%, transparent), transparent);
-    box-shadow: 0 0 24px var(--color-accent-glow);
-  }
+.ascii-divider {
+     height: 1px;
+     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 45%, transparent), transparent);
+     box-shadow: 0 0 24px var(--color-accent-glow);
+   }
+
+   /* ── ASCII Art Heading System ─────────────────────────────────────────────── */
+   .ascii-heading {
+     display: block;
+     line-height: 1.15;
+     letter-spacing: 0.02em;
+     overflow-wrap: break-word;
+     word-break: break-word;
+     max-width: 100%;
+     white-space: pre;
+     tab-size: 4;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+   }
+
+   .ascii-heading-glow {
+     animation: ascii-glow-pulse 3.5s ease-in-out infinite;
+   }
+
+   @keyframes ascii-glow-pulse {
+     0%, 100% {
+       filter: brightness(1) drop-shadow(0 0 0 transparent);
+     }
+     50% {
+       filter: brightness(1.15) drop-shadow(0 0 8px var(--ascii-glow-color, rgba(183, 255, 153, 0.35)));
+     }
+   }
+
+   .ascii-heading-wrapper {
+     display: block;
+     max-width: 100%;
+     overflow-x: auto;
+     overflow-y: hidden;
+     -webkit-overflow-scrolling: touch;
+   }
+
+   .ascii-heading-wrapper::-webkit-scrollbar {
+     height: 0;
+   }
+
+   .ascii-heading--compact {
+     font-size: 10px;
+     line-height: 1.2;
+   }
+
+   @media (min-width: 768px) {
+     .ascii-heading--compact {
+       font-size: 12px;
+       line-height: 1.3;
+     }
+   }
+
+   .ascii-heading--large {
+     font-size: 16px;
+     line-height: 1.15;
+   }
+
+   @media (min-width: 768px) {
+     .ascii-heading--large {
+       font-size: 20px;
+       line-height: 1.2;
+     }
+   }
+
+   @media (min-width: 1024px) {
+     .ascii-heading--large {
+       font-size: 24px;
+       line-height: 1.25;
+     }
+   }
+
+   @media (max-width: 639px) {
+     .ascii-heading {
+       font-size: 8px !important;
+       line-height: 1.1 !important;
+     }
+
+     .ascii-heading-wrapper {
+       overflow-x: auto;
+       -webkit-overflow-scrolling: touch;
+     }
+   }
+
+   @media (prefers-reduced-motion: reduce) {
+     .ascii-heading-glow {
+       animation: none !important;
+     }
+   }
+
+   [data-theme='light'] .ascii-heading-glow {
+     animation: ascii-glow-pulse-light 3.5s ease-in-out infinite;
+   }
+
+   @keyframes ascii-glow-pulse-light {
+     0%, 100% {
+       filter: brightness(1) drop-shadow(0 0 0 transparent);
+     }
+     50% {
+       filter: brightness(1.08) drop-shadow(0 0 6px rgba(47, 138, 31, 0.2));
+     }
+   }
+
+   body[data-performance-mode='constrained'] .ascii-heading-glow {
+     animation: none !important;
+     filter: none !important;
+   }
+
+   .ascii-heading--nav {
+     font-size: 12px;
+     line-height: 1.2;
+     letter-spacing: 0.05em;
+   }
+
+   @media (min-width: 768px) {
+     .ascii-heading--nav {
+       font-size: 14px;
+     }
+   }
 
   .logo-wrap {
     display: flex;

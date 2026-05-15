@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const BOOTCAMP_COVER_MAP: Record<string, string> = {
   bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
@@ -90,40 +91,53 @@ const Learn: React.FC = () => {
       >
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
-        {/* Header */}
-        <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-              Academy
-            </span>
-            <h1 className="text-4xl font-black text-text-primary md:text-6xl">Learn</h1>
-            <p className="mt-2 max-w-lg text-base text-text-muted">
-              Phased bootcamp programs — pick a track and execute.
-            </p>
-          </div>
-          {!loading && overview && (
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
-                <span className="font-mono text-lg sm:text-xl font-black text-accent md:text-2xl">{progressValue}</span>
-              </div>
-              {bootcamps.length > 1 && (
-                <Link
-                  to="/dashboard/bootcamps"
-                  className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-accent hover:underline"
-                >
-                  View all <ArrowRight className="h-4 w-4" />
-                </Link>
-              )}
-            </div>
-          )}
-        </ScrollReveal>
+{/* Header */}
+         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+           <div>
+             <AsciiHeading
+               text="Academy"
+               font="Digital"
+               compact
+               animated
+               glow="intense"
+               className="mb-2"
+             />
+             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Learn</h1>
+             <p className="mt-2 max-w-lg text-base text-text-muted">
+               Phased bootcamp programs — pick a track and execute.
+             </p>
+           </div>
+           {!loading && overview && (
+             <div className="flex flex-wrap items-center gap-3">
+               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                 <span className="font-mono text-lg sm:text-xl font-black text-accent md:text-2xl">{progressValue}</span>
+               </div>
+               {bootcamps.length > 1 && (
+                 <Link
+                   to="/dashboard/bootcamps"
+                   className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-accent hover:underline"
+                 >
+                   View all <ArrowRight className="h-4 w-4" />
+                 </Link>
+               )}
+             </div>
+           )}
+         </ScrollReveal>
 
         {/* Section label */}
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.35em] text-text-primary">
-            <BookOpen className="h-4 w-4 text-accent" />
-            Bootcamp programs
-          </h2>
+<div className="mb-6 flex items-center justify-between">
+           <AsciiHeading
+             text="Bootcamp Programs"
+             font="Cybermedium"
+             compact
+             animated
+             glow="normal"
+             className="mb-0 flex items-center gap-2"
+           />
+           <span className="text-[10px] font-black uppercase tracking-[0.35em] text-text-muted ml-4">
+             <BookOpen className="h-4 w-4 text-accent inline mr-1" />
+             {bootcamps.length} available
+           </span>
           {bootcamps.length > 1 && (
             <Link
               to="/dashboard/bootcamps"

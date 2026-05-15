@@ -4,7 +4,8 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { Mail, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import api from '../../../core/services/api';
 import { SITE_CONFIG } from '../content/siteConfig';
-import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
+import HeroBackground from '../components/HeroBackground';
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -30,32 +31,27 @@ const Contact: React.FC = () => {
     <div className="min-h-screen bg-bg">
       {/* Hero */}
       <section className="ascii-section relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24 has-bg-image">
-        <BinaryStreamBackground />
+        <HeroBackground className="opacity-40" />
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         <div className="absolute -left-32 top-0 h-72 w-72 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <span className="ascii-kicker mb-3 block md:text-sm">
-                {SITE_CONFIG.contactPage.heroTag}
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary mb-5 leading-tight">
-                {SITE_CONFIG.contactPage.heroTitle}
-              </h1>
-              <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto">
-                {SITE_CONFIG.contactPage.heroSubtitle}
-              </p>
-            </motion.div>
+<div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">
+             <motion.div
+               initial={{ opacity: 0, y: 16 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+             >
+               <AsciiHeading text={SITE_CONFIG.contactPage.heroTitle} font="Larry3d" animated glow="intense" className="mb-6" />
+               <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto">
+                 {SITE_CONFIG.contactPage.heroSubtitle}
+               </p>
+             </motion.div>
         </div>
       </section>
 
       {/* Content */}
-      <div className="ascii-section max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-20">
-        <BinaryStreamBackground />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
+      <div className="ascii-section relative max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-20">
+        <HeroBackground className="opacity-40" />
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
           {/* Info Side */}
           <ScrollReveal delay={0.05} className="space-y-6">
             <div className="terminal-card card-hsociety p-7 md:p-8 space-y-8">
@@ -96,9 +92,14 @@ const Contact: React.FC = () => {
 
           {/* Form Side */}
           <ScrollReveal delay={0.1} className="terminal-card card-hsociety p-7 md:p-8">
-            <h2 className="text-xl font-bold text-text-primary mb-7 uppercase tracking-tighter">
-              {SITE_CONFIG.contactPage.formTitle}
-            </h2>
+            <AsciiHeading 
+              text={SITE_CONFIG.contactPage.formTitle} 
+              font="Standard" 
+              align="left" 
+              animated 
+              glow="normal" 
+              className="mb-8" 
+            />
 
             {status === 'sent' ? (
               <motion.div
