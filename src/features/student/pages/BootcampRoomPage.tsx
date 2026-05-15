@@ -20,7 +20,6 @@ import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
 import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -897,14 +896,9 @@ const BootcampRoomPage: React.FC = () => {
 
 {/* Room header */}
                <div className="mb-8">
-                 <AsciiHeading
-                   text={`${phase.codename} — ${phase.title}`}
-                   font="Cybermedium"
-                   compact
-                   animated
-                   glow="normal"
-                   className="mb-2"
-                 />
+                 <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                   {phase.codename} — {phase.title}
+                 </div>
                  <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
                    {room.title}
                  </h1>

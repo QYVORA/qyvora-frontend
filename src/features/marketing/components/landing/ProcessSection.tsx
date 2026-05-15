@@ -19,7 +19,7 @@ const ProcessSection: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="text-center mb-16">
-          <AsciiHeading text="The Process" font="Larry3d" animated glow="intense" className="mb-8" />
+          <AsciiHeading text="The Process" font="Larry 3D" animated glow="intense" className="mb-8" />
           <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto opacity-80 leading-relaxed">
             From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
           </p>

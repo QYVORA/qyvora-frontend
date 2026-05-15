@@ -5,7 +5,6 @@ import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
-import HeroBackground from '../HeroBackground';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface EconomySectionProps {
@@ -23,14 +22,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="
-      ascii-section pt-28 pb-24 md:py-16 bg-bg relative isolate has-bg-image
-      md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
-    ">
-      <HeroBackground className="opacity-40" />
-      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
-      <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />
-
+    <div className="w-full h-full flex items-center py-12 md:py-0">
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
 
@@ -38,8 +30,8 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           <div>
             <ScrollReveal>
               <AsciiHeading 
-                text="Zero-Day Market" 
-                font="Cybermedium" 
+                text="EARN" 
+                font="ANSI Shadow" 
                 align="left" 
                 animated 
                 glow="intense" 
@@ -105,7 +97,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           </ScrollReveal>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

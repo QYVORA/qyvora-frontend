@@ -1,91 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight, Terminal } from 'lucide-react';
-import HeroBackground from '../HeroBackground';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface FinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
 }
-
-const LiveGridCanvas: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let raf: number;
-    const CELL = 36;
-    const accent = '#B7FF99';
-
-    const nodes: { cx: number; cy: number; phase: number; speed: number; size: number }[] = [];
-
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      nodes.length = 0;
-      const cols = Math.ceil(canvas.width  / CELL) + 1;
-      const rows = Math.ceil(canvas.height / CELL) + 1;
-      for (let r = 0; r <= rows; r++) {
-        for (let c = 0; c <= cols; c++) {
-          if (Math.random() < 0.08) {
-            nodes.push({
-              cx: c * CELL,
-              cy: r * CELL,
-              phase: Math.random() * Math.PI * 2,
-              speed: 0.4 + Math.random() * 0.8,
-              size:  1.5 + Math.random() * 2,
-            });
-          }
-        }
-      }
-    };
-
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-
-    let t = 0;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(183,255,153,0.07)';
-      const cols = Math.ceil(canvas.width  / CELL) + 1;
-      const rows = Math.ceil(canvas.height / CELL) + 1;
-      for (let r = 0; r <= rows; r++) {
-        for (let c = 0; c <= cols; c++) {
-          ctx.beginPath();
-          ctx.arc(c * CELL, r * CELL, 1, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      for (const n of nodes) {
-        const pulse = (Math.sin(t * n.speed + n.phase) + 1) / 2;
-        ctx.beginPath();
-        ctx.arc(n.cx, n.cy, n.size * (0.6 + pulse * 0.8), 0, Math.PI * 2);
-        ctx.fillStyle = accent;
-        ctx.globalAlpha = 0.12 + pulse * 0.55;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-      t += 0.018;
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      aria-hidden="true"
-    />
-  );
-};
 
 const TERMINAL_LINES = [
   '> Scanning SERVER...',
@@ -128,16 +49,11 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="
-      ascii-section relative pt-28 pb-20 md:py-0 bg-bg scanlines flex items-center has-bg-image
-      md:h-full md:overflow-hidden
-    ">
-      <HeroBackground className="opacity-40" />
+    <div className="w-full h-full flex items-center py-12 md:py-0">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(135deg, var(--color-bg) 0%, transparent 50%, var(--color-bg) 100%)' }}
       />
-      {!shouldReduceMotion && <LiveGridCanvas />}
 
       <img
         src="/assets/illustrations/cta-operator.webp"
@@ -151,7 +67,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         <div className="max-w-xl">
           <AsciiHeading 
             text={user ? "Operating" : "Operate"} 
-            font="Larry3d" 
+            font="ANSI Shadow" 
             align="left" 
             animated 
             glow="intense" 
@@ -206,7 +122,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

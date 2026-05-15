@@ -3,20 +3,13 @@
  *
  * Cinematic flowing digital intelligence stream.
  * Binary data highways moving beneath the viewer.
- *
- * Stack: React Three Fiber + Drei
- * Install: npm install three @react-three/fiber @react-three/drei
  */
 
 import React, { Suspense, useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-// ─────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────
-
-const BG = "#000000";
+const BG = "transparent";
 
 const STREAM_VERT = `
   varying vec2 vUv;
@@ -89,8 +82,9 @@ const STREAM_FRAG = `
     float trailMask = exp(-aboveHead * 3.5);
 
     float depthFade = 1.0 - perspRatio * 0.60;
+    float mobileBoost = uScale < 0.5 ? 1.4 : 1.0;
 
-    return clamp((glyph * trailMask + headGlow) * depthFade, 0.0, 1.0);
+    return clamp((glyph * trailMask + headGlow) * depthFade * mobileBoost, 0.0, 1.0);
   }
 
   void main() {
@@ -152,12 +146,9 @@ const STREAM_FRAG = `
   }
 `;
 
-// ─────────────────────────────────────────────
-// PERSPECTIVE FLOOR
-// ─────────────────────────────────────────────
-
 function StreamFloor() {
   const matRef  = useRef();
+  const { size } = useThree();
 
   const material = useMemo(
     () =>
@@ -182,14 +173,13 @@ function StreamFloor() {
     if (!matRef.current) return;
     matRef.current.uniforms.uTime.value = clock.getElapsedTime();
     matRef.current.uniforms.uResolution.value.set(s.width, s.height);
-    // Scale down lane widths on mobile for better visibility
-    const scale = s.width < 768 ? 0.55 : 1.0;
+    const scale = s.width < 768 ? 0.35 : 1.0; 
     matRef.current.uniforms.uScale.value = scale;
   });
 
   return (
     <mesh position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[22, 34, 1, 1]} />
+      <planeGeometry args={[size.width < 768 ? 30 : 22, 34, 1, 1]} />
       <primitive object={material} ref={matRef} attach="material" />
     </mesh>
   );
@@ -200,9 +190,9 @@ function CameraRig() {
   const target = useMemo(() => new THREE.Vector3(0, -1.08, -10.8), []);
 
   useEffect(() => {
-    camera.fov = size.width < 768 ? 68 : 58;
+    camera.fov = size.width < 768 ? 75 : 58;
     camera.near = 0.1;
-    camera.far = 80;
+    camera.far = 100;
     camera.updateProjectionMatrix();
   }, [camera, size.width]);
 
@@ -220,14 +210,9 @@ function CameraRig() {
   return null;
 }
 
-// ─────────────────────────────────────────────
-// SCENE
-// ─────────────────────────────────────────────
-
 function Scene() {
   return (
     <>
-      <color attach="background" args={["#000000"]} />
       <fog attach="fog" args={["#000000", 7, 24]} />
       <CameraRig />
       <StreamFloor />
@@ -235,72 +220,19 @@ function Scene() {
   );
 }
 
-// ─────────────────────────────────────────────
-// MAIN EXPORT
-// ─────────────────────────────────────────────
-
 export default function HeroBackground({ className = "" }) {
   return (
     <div
       className={`absolute inset-0 overflow-hidden ${className}`}
-      style={{ background: BG }}
+      style={{ background: "transparent" }}
       aria-hidden="true"
     >
-      {/* Bottom darkness */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 3,
-          pointerEvents: "none",
-          background: `linear-gradient(
-            to top,
-            rgba(0,0,0,0.94) 0%,
-            rgba(0,0,0,0.58) 13%,
-            rgba(0,0,0,0.18) 30%,
-            transparent 56%
-          )`,
-        }}
-      />
-
-      {/* Top sky */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 2,
-          pointerEvents: "none",
-          background: `linear-gradient(
-            to bottom,
-            rgba(0,0,0,0.96) 0%,
-            rgba(0,0,0,0.68) 18%,
-            rgba(0,0,0,0.24) 40%,
-            transparent 60%
-          )`,
-        }}
-      />
-
-      {/* Horizon bloom */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 1,
-          pointerEvents: "none",
-          background: `radial-gradient(
-            ellipse 64% 14% at 50% 56%,
-            rgba(183,255,153,0.085) 0%,
-            transparent 100%
-          )`,
-        }}
-      />
-
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={window.devicePixelRatio > 1 ? [1, 2] : 1}
         camera={{ position: [0, 1.08, 5.9], fov: 58, near: 0.1, far: 80 }}
         gl={{
-          antialias:       false,
-          alpha:           false,
+          antialias:       true,
+          alpha:           true,
           powerPreference: "high-performance",
           toneMapping:     THREE.NoToneMapping,
         }}
@@ -310,6 +242,28 @@ export default function HeroBackground({ className = "" }) {
           <Scene />
         </Suspense>
       </Canvas>
+
+      {/* Overlays on top of Canvas */}
+      <div className="absolute inset-0 pointer-events-none z-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 15%, transparent 60%)`,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 15%, transparent 60%)`,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 60% 20% at 50% 50%, rgba(183,255,153,0.05) 0%, transparent 100%)`,
+          }}
+        />
+      </div>
     </div>
   );
 }

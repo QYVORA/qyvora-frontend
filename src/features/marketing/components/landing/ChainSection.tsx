@@ -29,7 +29,7 @@ const ChainSection: React.FC = () => (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
         <div>
           <ScrollReveal>
-            <AsciiHeading text="HSOCIETY Chain" font="Larry3d" align="left" animated glow="intense" className="mb-8" />
+            <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated glow="intense" className="mb-8" />
             
             <p className="text-text-secondary text-base md:text-lg mb-8 leading-relaxed max-w-lg">
               Every room completion and <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> reward is 

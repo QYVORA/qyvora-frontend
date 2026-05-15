@@ -14,8 +14,8 @@ import HeroBackground from '../components/HeroBackground';
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
-  { id: 'market',      label: 'Zero-Day Market' },
   { id: 'bootcamps',   label: 'Bootcamps'       },
+  { id: 'market',      label: 'Zero-Day Market' },
   { id: 'leaderboard', label: 'Leaderboard'     },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
@@ -33,15 +33,14 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`ascii-section md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
+      className={`relative md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden md:pt-[72px] bg-transparent ${className}`}
     >
-      <HeroBackground className="opacity-40" />
       <motion.div
-        initial={minimizeEffects ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
+        initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.15 }}
-        transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.45 } }}
-        className="w-full md:h-full"
+        viewport={{ once: false, amount: 0.1 }}
+        transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full md:h-full relative z-10"
         data-snap-child=""
       >
         {children}
@@ -69,35 +68,39 @@ const Landing: React.FC = () => {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="landing-snap h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory"
-      style={{ scrollSnapType: undefined }}
-    >
-      {/* ── 1. Hero ── */}
-      <section
-        id="hero"
-        className="md:snap-start md:h-full md:flex-shrink-0 relative"
+    <div className="relative h-screen w-full bg-bg overflow-hidden">
+      {/* ── Global Background ── */}
+      <HeroBackground className="opacity-70" />
+
+      <div
+        ref={containerRef}
+        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory no-scrollbar bg-transparent"
+        style={{ scrollSnapType: undefined }}
       >
-        <HeroSection
-          heroRef={heroRef}
-          heroY={heroY}
-          heroOpacity={heroOpacity}
-          user={user}
-          stats={stats}
-          totalCp={totalCp}
-        />
-      </section>
+        {/* ── 1. Hero ── */}
+        <section
+          id="hero"
+          className="md:snap-start md:h-full md:flex-shrink-0 relative bg-transparent"
+        >
+          <HeroSection
+            heroRef={heroRef}
+            heroY={heroY}
+            heroOpacity={heroOpacity}
+            user={user}
+            stats={stats}
+            totalCp={totalCp}
+          />
+        </section>
 
-       {/* ── 2. Zero-Day Market ── */}
-       <SnapSection id="market" className="">
-         <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
-       </SnapSection>
-
-       {/* ── 3. Bootcamps ── */}
+        {/* ── 2. Bootcamps ── */}
         <SnapSection id="bootcamps" className="">
           <BootcampsSection bootcamps={bootcamps} loading={loading} />
         </SnapSection>
+
+       {/* ── 3. Zero-Day Market ── */}
+       <SnapSection id="market" className="">
+         <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
+       </SnapSection>
 
          {/* ── 4. Leaderboard ── */}
          <SnapSection id="leaderboard" className="">
@@ -115,6 +118,7 @@ const Landing: React.FC = () => {
       >
         <Footer />
       </section>
+      </div>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import {
 } from 'lucide-react';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface ChainBlock {

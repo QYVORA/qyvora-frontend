@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import api, { clearAuthStorage, setAccessToken, setAuthSessionHint } from '../services/api';
+import api, { clearAuthStorage, setAccessToken, setAuthSessionHint, hasAuthSessionHint } from '../services/api';
 import { extractCpBalance } from '../../shared/utils/cpBalance';
 
 interface User {
@@ -77,6 +77,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (bootstrapRanRef.current) return;
     bootstrapRanRef.current = true;
+
+    // Only attempt to refresh if we have a hint that a session might exist.
+    // This avoids 401 console noise for guest visitors.
+    if (!hasAuthSessionHint()) {
+      setLoading(false);
+      return;
+    }
+
     (async () => {
       try {
         await refreshMe();

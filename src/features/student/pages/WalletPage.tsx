@@ -9,7 +9,6 @@ import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const PAGE_SIZE = 10;
 
@@ -81,15 +80,9 @@ const Wallet: React.FC = () => {
       {/* Mobile-first header (right section header shown before sidebar content) */}
 <div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
          <ScrollReveal className="mb-8">
-           <AsciiHeading
-             text="Economy"
-             font="Digital"
-             compact
-             animated
-             glow="normal"
-             className="mb-2"
-           />
-           <h1 className="text-4xl font-black text-text-primary md:text-6xl">Wallet</h1>
+           <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+             Economy
+           </div>           <h1 className="text-4xl font-black text-text-primary md:text-6xl">Wallet</h1>
            <p className="mt-2 max-w-lg text-base text-text-muted">Your CP balance and full transaction ledger.</p>
          </ScrollReveal>
        </div>
@@ -156,14 +149,9 @@ const Wallet: React.FC = () => {
 
             {/* Page header */}
 <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
-               <AsciiHeading
-                 text="Economy"
-                 font="Digital"
-                 compact
-                 animated
-                 glow="normal"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Economy
+               </div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Wallet</h1>
                <p className="mt-2 max-w-lg text-base text-text-muted">Your CP balance and full transaction ledger.</p>
              </ScrollReveal>

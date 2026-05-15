@@ -28,7 +28,6 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Hint {
@@ -275,14 +274,9 @@ const CtfPage: React.FC = () => {
                </span>
              </div>
 
-             <AsciiHeading
-               text={challenge.title}
-               font="Digital"
-               compact
-               animated={false}
-               glow="none"
-               className="mb-3"
-             />
+             <h1 className="text-4xl font-black text-text-primary md:text-5xl mb-3">
+               {challenge.title}
+             </h1>
 
              <p className="text-sm text-text-secondary leading-relaxed mb-5 whitespace-pre-wrap">
                {challenge.description}

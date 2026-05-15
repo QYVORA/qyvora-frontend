@@ -6,7 +6,6 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { BootcampLevel } from '../../../student/components/BootcampCard';
 import { PHASE_IMGS, type Bootcamp } from './types';
 import { resolveImg } from './helpers';
-import HeroBackground from '../HeroBackground';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface BootcampsSectionProps {
@@ -148,20 +147,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const isSingle  = displayed.length === 1;
 
   return (
-    <section className="
-      ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
-      md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
-    ">
-      <HeroBackground className="opacity-40" />
-      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
-
+    <div className="w-full h-full flex items-center py-12 md:py-0">
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 w-full">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
             <AsciiHeading 
               text="Bootcamps" 
-              font="Digital" 
+              font="ANSI Shadow" 
               align="left" 
               animated 
               glow="intense" 
@@ -262,7 +255,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

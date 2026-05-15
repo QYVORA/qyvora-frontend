@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { motion, useInView, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import figlet from 'figlet';
 import { cn } from '../../../shared/utils/cn';
 
@@ -7,7 +7,7 @@ import { cn } from '../../../shared/utils/cn';
 const FONT_OPTIONS = [
   'Standard', 'Ghost', '3-D', 'Acrobatic', 'Big Money-ne',
   'Cybermedium', 'Digital', 'Doh', 'Isometric1',
-  'JS Block Letters', 'Kban', 'Larry3d', 'Marquee',
+  'JS Block Letters', 'Kban', 'Larry 3D', 'Marquee',
   'Maxfour', 'Ogre', 'Poison', 'Red Phoenix', 'Rounded',
   'Shadow', 'Slant', 'Small', 'Soft', 'Speed',
   'Star Wars', 'Stellar', 'Term', 'Tiles', 'Twisted', 'Uppercase',
@@ -42,6 +42,11 @@ function normalizeFont(name: string | undefined): string {
 
 const FONT_BASE_URL = 'https://cdn.jsdelivr.net/npm/figlet@1.11.0/fonts/';
 
+// Global cache for font data to prevent redundant fetches
+const fontDataCache: Record<string, Promise<string>> = {};
+// Set of fonts already parsed by figlet
+const parsedFonts = new Set<string>();
+
 const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   text, font = 'ANSI Shadow', className = '', preClassName = '',
   align = 'center', compact = false, responsive = true,
@@ -50,32 +55,50 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
 }) => {
   const [asciiText, setAsciiText] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
   const normalizedFont = useMemo(() => normalizeFont(font), [font]);
 
   useEffect(() => {
     let isMounted = true;
-    setIsLoaded(false);
+    
+    // Set a timeout to ensure we don't wait forever
+    const timer = setTimeout(() => {
+      if (isMounted && !isLoaded) {
+        setIsLoaded(true);
+      }
+    }, 2000);
 
-    const fontUrl = `${FONT_BASE_URL}${normalizedFont}.flf`;
+    const loadAndRender = async () => {
+      try {
+        if (!fontDataCache[normalizedFont]) {
+          fontDataCache[normalizedFont] = fetch(`${FONT_BASE_URL}${encodeURIComponent(normalizedFont)}.flf`)
+            .then(res => {
+              if (!res.ok) throw new Error('Font download failed');
+              return res.text();
+            });
+        }
 
-    fetch(fontUrl)
-      .then(response => response.text())
-      .then(fontData => {
+        const fontData = await fontDataCache[normalizedFont];
         if (!isMounted) return;
-        
-        figlet.parseFont(normalizedFont, fontData);
-        
+
+        if (!parsedFonts.has(normalizedFont)) {
+          figlet.parseFont(normalizedFont, fontData);
+          parsedFonts.add(normalizedFont);
+        }
+
         figlet.text(text, {
           font: normalizedFont as any,
           horizontalLayout: 'default',
           verticalLayout: 'default',
-          width: 120,
+          width: 500,
           whitespaceBreak: false,
         }, (err, data) => {
           if (isMounted) {
+            clearTimeout(timer);
             if (err) {
               console.error('Figlet generation error:', err);
+              setError(true);
               setAsciiText(text);
             } else {
               setAsciiText(data || text);
@@ -83,37 +106,25 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
             setIsLoaded(true);
           }
         });
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Font loading error:', err);
         if (isMounted) {
+          clearTimeout(timer);
+          setError(true);
           setAsciiText(text);
           setIsLoaded(true);
         }
-      });
+      }
+    };
 
-    return () => { isMounted = false; };
+    void loadAndRender();
+
+    return () => { isMounted = false; clearTimeout(timer); };
   }, [text, normalizedFont]);
 
   const outerRef = React.useRef<HTMLDivElement>(null);
-  const isInView = useInView(outerRef, { once: true, amount: 0.15 });
   const shouldReduceMotion = useReducedMotion();
   const minimizeEffects = shouldReduceMotion;
-
-  if (disabled) {
-    return (
-      <h1
-        className={cn(
-          'font-mono font-black text-text-primary leading-tight tracking-tight',
-          compact ? 'text-2xl md:text-3xl' : 'text-4xl md:text-6xl',
-          className,
-        )}
-        style={{ textAlign: align as React.CSSProperties['textAlign'] }}
-      >
-        {text}
-      </h1>
-    );
-  }
 
   const glowConfig = useMemo(() => {
     const baseColor = color || 'var(--color-accent)';
@@ -128,34 +139,54 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   }, [glow, color]);
 
   const sizeStyle = useMemo(() => {
-    if (!responsive) return { fontSize: compact ? '14px' : '24px' };
+    if (!responsive) return { fontSize: compact ? '9px' : '15px' };
     return {
       fontSize: compact 
-        ? 'clamp(10px, 1.6vw, 22px)' 
-        : 'clamp(12px, 2.4vw, 38px)', 
+        ? 'clamp(5px, 0.7vw, 12px)' 
+        : 'clamp(6px, 0.95vw, 17px)', 
       lineHeight: 1.05,
     };
   }, [compact, responsive]);
 
-  const shouldAnimate = animated && !isStatic && isLoaded && !!asciiText && !minimizeEffects;
+  // Render high-quality normal text if disabled or if figlet failed
+  if (disabled || (isLoaded && error)) {
+    return (
+      <h1
+        ref={outerRef}
+        className={cn(
+          'font-mono font-black text-text-primary leading-tight tracking-tight transition-all duration-500',
+          compact ? 'text-2xl md:text-3xl' : 'text-4xl md:text-6xl',
+          className,
+        )}
+        style={{ 
+          textAlign: align as React.CSSProperties['textAlign'],
+          color: color || 'var(--color-accent)',
+          textShadow: glow === 'none' ? 'none' : `0 0 12px ${color || 'var(--color-accent)'}60`,
+        }}
+      >
+        {text}
+      </h1>
+    );
+  }
+
+  const shouldAnimate = animated && !isStatic && !minimizeEffects;
 
   const inner = (
     <pre
       className={cn(
-        'ascii-heading ascii-text-beam whitespace-pre select-none transition-opacity duration-500 overflow-visible no-scrollbar m-0 p-0',
-        !isLoaded ? 'opacity-0' : 'opacity-100',
+        'ascii-heading ascii-text-beam whitespace-pre select-none transition-all duration-500 overflow-visible no-scrollbar m-0 p-0',
         preClassName,
         glow !== 'none' && 'ascii-heading-glow',
         align === 'center' ? 'mx-auto w-fit' : '',
         align === 'left' ? 'text-left ml-0' : '',
         align === 'right' ? 'text-right ml-auto w-fit' : '',
-        className,
       )}
       style={{
         ...sizeStyle,
         fontFamily: '"JetBrains Mono", "Courier New", monospace',
-        color: color || undefined,
+        color: color || (glow !== 'none' ? 'var(--color-accent)' : 'var(--color-text-primary)'),
         textShadow: glowConfig.shadow === 'none' ? undefined : glowConfig.shadow,
+        opacity: isLoaded ? 1 : 0,
         ['--ascii-glow-color' as string]: color || 'var(--color-accent)',
         ['--ascii-glow-intensity' as string]: glowConfig.intensity,
       } as React.CSSProperties}
@@ -163,38 +194,27 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
       role="heading"
       aria-level={1}
     >
-      {asciiText}
+      {asciiText || text}
     </pre>
   );
 
-  if (shouldAnimate) {
-    return (
-      <motion.div
-        ref={outerRef}
-        className={cn('ascii-heading-wrapper overflow-hidden', className)}
-        initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-        animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 16, filter: 'blur(4px)' }}
-        transition={{
-          duration: Math.min(animationDuration / 1000, 1.2),
-          delay: animationDelay / 1000,
-          ease: [0.16, 1, 0.3, 1],
-          filter: { duration: Math.min(animationDuration / 1000 * 0.6, 0.5) },
-        }}
-        style={{ textAlign: align as React.CSSProperties['textAlign'] }}
-      >
-        {inner}
-      </motion.div>
-    );
-  }
-
   return (
-    <div
+    <motion.div
       ref={outerRef}
-      className={cn('ascii-heading-wrapper overflow-hidden', className)}
+      className={cn('ascii-heading-wrapper overflow-visible', className)}
+      initial={shouldAnimate ? { opacity: 0, y: 16, filter: 'blur(4px)' } : { opacity: 1, y: 0 }}
+      whileInView={shouldAnimate ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{
+        duration: Math.min(animationDuration / 1000, 1.2),
+        delay: animationDelay / 1000,
+        ease: [0.16, 1, 0.3, 1],
+        filter: { duration: Math.min(animationDuration / 1000 * 0.6, 0.5) },
+      }}
       style={{ textAlign: align as React.CSSProperties['textAlign'] }}
     >
       {inner}
-    </div>
+    </motion.div>
   );
 };
 

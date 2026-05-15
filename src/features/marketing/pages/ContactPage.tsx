@@ -40,7 +40,7 @@ const Contact: React.FC = () => {
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
              >
-               <AsciiHeading text={SITE_CONFIG.contactPage.heroTitle} font="Larry3d" animated glow="intense" className="mb-6" />
+               <AsciiHeading text={SITE_CONFIG.contactPage.heroTitle} font="Larry 3D" animated glow="intense" className="mb-6" />
                <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto">
                  {SITE_CONFIG.contactPage.heroSubtitle}
                </p>

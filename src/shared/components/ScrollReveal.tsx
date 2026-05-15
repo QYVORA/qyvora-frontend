@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useInView, useReducedMotion, type Variants } from 'motion/react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { useAdaptiveUi } from '../../core/hooks/useAdaptiveUi';
 
 interface ScrollRevealProps {
@@ -23,7 +23,6 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   scale = 0.97,
 }) => {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, amount });
   const shouldReduceMotion = useReducedMotion();
   const { constrainedDevice } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice;
@@ -57,7 +56,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     <motion.div
       ref={ref}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      whileInView="visible"
+      viewport={{ once: true, amount }}
       variants={variants}
       className={className}
     >

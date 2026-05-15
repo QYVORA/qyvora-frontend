@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface CpTx {
@@ -446,7 +445,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         <div>
           <h2 className="text-lg font-black uppercase tracking-tight text-text-primary flex items-center gap-2">
                  <TrendingUp className="h-4 w-4 text-accent" />
-                 <AsciiHeading text="CP Economy" font="Standard" compact animated={false} glow="none" className="mb-0" />
+                 CP Economy
                </h2>
           <p className="text-xs text-text-muted mt-0.5">Real-time Cyber Points flow — issued, burned, net</p>
         </div>

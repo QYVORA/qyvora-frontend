@@ -3,7 +3,6 @@ import { Bell, CheckCheck, Loader2, BellOff } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 interface Notification {
   id: string;
@@ -88,14 +87,9 @@ const Notifications: React.FC = () => {
       {/* Mobile-first header (right section header shown before sidebar content) */}
 <div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
          <ScrollReveal className="mb-8">
-           <AsciiHeading
-             text="Notifications"
-             font="Digital"
-             compact
-             animated
-             glow="normal"
-             className="mb-2"
-           />
+           <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+             Inbox
+           </div>
            <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
            <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
          </ScrollReveal>
@@ -202,14 +196,9 @@ const Notifications: React.FC = () => {
 
             {/* Page header */}
 <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
-               <AsciiHeading
-                 text="Notifications"
-                 font="Digital"
-                 compact
-                 animated
-                 glow="normal"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Notifications
+               </div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
                <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
              </ScrollReveal>

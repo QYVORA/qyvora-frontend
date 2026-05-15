@@ -13,7 +13,6 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/assets/bootcamp/rooms/hacker-mindset.webp',
@@ -246,14 +245,9 @@ const BootcampCourse: React.FC = () => {
 <span className="mb-2 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
                  Curriculum map
                </span>
-               <AsciiHeading
-                 text={course?.title || 'Bootcamp'}
-                 font="Digital"
-                 compact
-                 animated
-                 glow="intense"
-                 className="mb-2"
-               />
+               <h1 className="mb-2 text-4xl font-black text-text-primary md:text-6xl">
+                 {course?.title || 'Bootcamp'}
+               </h1>
               <p className={`mt-2 text-sm ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
                 {syncError || formatSyncLabel(lastSync)}
               </p>
@@ -488,14 +482,9 @@ const BootcampCourse: React.FC = () => {
                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
                              {configPhase?.codename || `Phase ${modIdx + 1}`}
                            </p>
-                           <AsciiHeading
-                             text={mod.title}
-                             font="Standard"
-                             compact
-                             animated={false}
-                             glow="none"
-                             className="mb-0 text-base"
-                           />
+                           <h3 className="mb-0 text-base font-black text-text-primary">
+                             {mod.title}
+                           </h3>
                          </div>
                       </div>
                       <div className="flex items-center gap-2.5">

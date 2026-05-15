@@ -7,7 +7,6 @@ import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import StatCounter from '../../../shared/components/ui/StatCounter';
 import { resolveImg } from '../../../shared/utils/resolveImg';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const CACHE_KEY = 'hsociety_leaderboard_cache_v2';
 const PAGE_SIZE = 20;
@@ -132,13 +131,9 @@ const Leaderboard: React.FC = () => {
 <ScrollReveal className="mb-10 md:mb-12">
            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
              <div>
-               <AsciiHeading
-                 text="Hall of Shadows"
-                 font="Cybermedium"
-                 animated
-                 glow="intense"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Hall of Shadows
+               </div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Top Operators</h1>
                <p className="mt-2 max-w-lg text-base text-text-muted">Elite operators ranked by CP — chase the podium.</p>
              </div>

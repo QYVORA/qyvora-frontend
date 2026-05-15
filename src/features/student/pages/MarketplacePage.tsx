@@ -9,7 +9,6 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const CACHE_KEY = 'hsociety_marketplace_cache_v2';
 
@@ -138,14 +137,9 @@ const Marketplace: React.FC = () => {
 {/* Header */}
          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
            <div>
-             <AsciiHeading
-               text="Zero-Day Vault"
-               font="Digital"
-               compact
-               animated
-               glow="intense"
-               className="mb-2"
-             />
+             <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+               Zero-Day Vault
+             </div>
              <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
              <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
            </div>

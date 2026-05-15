@@ -17,7 +17,6 @@ import api from '../../../core/services/api';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { Tooltip } from '../../../shared/components/ui/Tooltip';
 import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 import {
   type AdminTab, type AdminUser, type Bootcamp, type CPProduct,
   type ContactMessage, type SecurityEventItem,
@@ -274,14 +273,12 @@ const AdminDashboardPage: React.FC = () => {
           {/* ── HEADER ───────────────────────────────────────────────────── */}
 <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
              <div>
-               <AsciiHeading
-                 text={activeLabel}
-                 font="Standard"
-                 compact
-                 animated
-                 glow="intense"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Management Protocol
+               </div>
+               <h1 className="text-4xl font-black text-text-primary md:text-6xl">
+                 {activeLabel}
+               </h1>
                <p className="mt-1 max-w-lg text-base text-text-muted">
                  {loading ? 'Synchronizing encrypted data…' : `Managing system ${activeLabel.toLowerCase()}.`}
                </p>

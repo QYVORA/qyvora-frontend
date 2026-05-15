@@ -4,7 +4,6 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
 
@@ -194,14 +193,9 @@ const Settings: React.FC = () => {
 
 {/* Page header — desktop */}
              <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
-               <AsciiHeading
-                 text="Security Settings"
-                 font="Digital"
-                 compact
-                 animated
-                 glow="normal"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Security Settings
+               </div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
                <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
              </ScrollReveal>

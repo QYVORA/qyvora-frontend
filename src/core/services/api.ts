@@ -31,6 +31,7 @@ const persistCsrfToken = (token: string) => {
 
 export const getAccessToken = () => accessToken;
 export const setAccessToken = (token: string) => persistAccessToken(token);
+export const hasAuthSessionHint = () => localStorage.getItem(AUTH_SESSION_HINT_KEY) === '1';
 export const setAuthSessionHint = (value: boolean) => {
   authSessionHint = value;
   if (value) localStorage.setItem(AUTH_SESSION_HINT_KEY, '1');

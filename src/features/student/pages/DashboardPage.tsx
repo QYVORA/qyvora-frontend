@@ -25,7 +25,6 @@ import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { useToast } from '../../../core/contexts/ToastContext';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 // ── Bootcamp assets ───────────────────────────────────────────────────────────
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -185,14 +184,9 @@ const Dashboard: React.FC = () => {
           {/* ── HEADER ───────────────────────────────────────────────────── */}
 <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
              <div>
-               <AsciiHeading
-                 text="Mission Control"
-                 font="Digital"
-                 compact
-                 animated
-                 glow="normal"
-                 className="mb-2"
-               />
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+                 Mission Control
+               </div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">
                  {loading
                    ? <span className="inline-block h-12 w-48 rounded bg-accent-dim/20 animate-pulse align-middle" />

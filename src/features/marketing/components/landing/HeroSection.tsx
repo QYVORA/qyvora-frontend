@@ -7,7 +7,6 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
-import HeroBackground from '../HeroBackground';
 
 const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
@@ -42,15 +41,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <section ref={heroRef} className="relative min-h-screen w-full md:h-full md:min-h-0 md:overflow-hidden bg-bg flex flex-col">
-
-      {/* ── HeroBackground: Three.js cinematic scene (replaces old gradient + dot-grid) ── */}
-      <HeroBackground />
+    <div ref={heroRef} className="relative w-full h-full flex flex-col">
 
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-12 md:pt-10 pb-8 md:min-h-0"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-12 md:pt-10 pb-8 md:min-h-0 h-full"
       >
         {/* Left column */}
         <div className="flex flex-col items-center lg:items-start w-full lg:pr-12 justify-start md:pt-4 xl:pt-6">
@@ -138,7 +134,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </motion.div>
       </motion.div>
-    </section>
+    </div>
   );
 };
 

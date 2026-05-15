@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const BOOTCAMP_COVER_MAP: Record<string, string> = {
   bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
@@ -94,14 +93,9 @@ const Learn: React.FC = () => {
 {/* Header */}
          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
            <div>
-             <AsciiHeading
-               text="Academy"
-               font="Digital"
-               compact
-               animated
-               glow="intense"
-               className="mb-2"
-             />
+             <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
+               Academy
+             </div>
              <h1 className="text-4xl font-black text-text-primary md:text-6xl">Learn</h1>
              <p className="mt-2 max-w-lg text-base text-text-muted">
                Phased bootcamp programs — pick a track and execute.
@@ -126,14 +120,9 @@ const Learn: React.FC = () => {
 
         {/* Section label */}
 <div className="mb-6 flex items-center justify-between">
-           <AsciiHeading
-             text="Bootcamp Programs"
-             font="Cybermedium"
-             compact
-             animated
-             glow="normal"
-             className="mb-0 flex items-center gap-2"
-           />
+           <h2 className="mb-0 flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-text-primary">
+             Bootcamp Programs
+           </h2>
            <span className="text-[10px] font-black uppercase tracking-[0.35em] text-text-muted ml-4">
              <BookOpen className="h-4 w-4 text-accent inline mr-1" />
              {bootcamps.length} available

@@ -7,7 +7,6 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
-import HeroBackground from '../HeroBackground';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 interface LeaderboardSectionProps {
@@ -188,20 +187,14 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
   const rest  = leaderboard.slice(3, 5);
 
   return (
-    <section className="
-      ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
-      md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
-    ">
-      <HeroBackground className="opacity-40" />
-      <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
-
+    <div className="w-full h-full flex items-center py-12 md:py-0">
       <div className="max-w-7xl mx-auto px-6 md:px-10 w-full">
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 md:mb-12 gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
             <AsciiHeading 
               text="Leaderboard" 
-              font="Star Wars" 
+              font="ANSI Shadow" 
               align="left" 
               animated 
               glow="intense" 
@@ -295,7 +288,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
