@@ -20,7 +20,7 @@ const STREAM_VERT = `
 `;
 
 const STREAM_FRAG = `
-   precision mediump float;
+   precision highp float;
 
    uniform float uTime;
    uniform vec3  uAccent;
@@ -179,7 +179,7 @@ function StreamFloor() {
 
   return (
     <mesh position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[size.width < 768 ? 30 : 22, 34, 1, 1]} />
+      <planeGeometry args={[size.width < 768 ? 40 : 22, 40, 1, 1]} />
       <primitive object={material} ref={matRef} attach="material" />
     </mesh>
   );
@@ -190,7 +190,7 @@ function CameraRig() {
   const target = useMemo(() => new THREE.Vector3(0, -1.08, -10.8), []);
 
   useEffect(() => {
-    camera.fov = size.width < 768 ? 75 : 58;
+    camera.fov = size.width < 768 ? 85 : 58;
     camera.near = 0.1;
     camera.far = 100;
     camera.updateProjectionMatrix();
@@ -198,10 +198,11 @@ function CameraRig() {
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
+    const isMobile = size.width < 768;
     camera.position.set(
       Math.sin(t * 0.18) * 0.18,
-      1.08 + Math.sin(t * 0.12) * 0.035,
-      5.9
+      (isMobile ? 1.48 : 1.08) + Math.sin(t * 0.12) * 0.035,
+      isMobile ? 7.2 : 5.9
     );
     target.x = Math.sin(t * 0.16) * 0.35;
     camera.lookAt(target);
