@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
 import { useRef } from 'react';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface ProcessSectionProps {
   stats: any;
@@ -21,14 +22,8 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
   const headingInView = useInView(headingRef, { once: true, amount: 0.3 });
 
   return (
-    <section className="py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
-      {/* Background */}
-      <img
-        src="/assets/sections/backgrounds/corporate-security-bg.webp"
-        alt=""
-        aria-hidden="true"
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] md:opacity-[0.1] pointer-events-none select-none"
-      />
+    <section className="ascii-section py-20 md:py-32 bg-bg relative overflow-hidden has-bg-image">
+      <BinaryStreamBackground />
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
@@ -41,7 +36,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-12 md:mb-16"
         >
-          <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">
+          <span className="ascii-kicker mb-3 block">
             // THE PROCESS
           </span>
           <h2 className="text-3xl md:text-4xl text-text-primary font-bold mb-3">
@@ -65,7 +60,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = () => {
             {STEPS.map((step, idx) => (
               <div
                 key={idx}
-                className="border-beam w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
+                className="terminal-card border-beam w-[78vw] max-w-[300px] shrink-0 rounded-xl border border-border bg-bg-card p-4 sm:p-5"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
                 <div className="font-mono text-2xl font-black text-accent/40 mb-4 leading-none">
@@ -121,7 +116,7 @@ const StepCard: React.FC<{ step: typeof STEPS[0]; idx: number; shouldReduceMotio
       )}
 
       <div
-        className="border-beam relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
+        className="terminal-card border-beam relative z-10 flex flex-col h-full rounded-xl border border-border bg-bg-card p-5 group hover:border-accent/40 transition-colors duration-200"
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
         <div className="font-mono text-2xl font-black text-accent/40 group-hover:text-accent transition-colors duration-300 mb-4 leading-none">

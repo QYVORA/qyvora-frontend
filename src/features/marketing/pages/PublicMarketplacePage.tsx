@@ -8,6 +8,7 @@ import { CardMedia } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import Footer from '../components/layout/Footer';
+import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
 
 const CACHE_KEY = 'hsociety_marketplace_public_cache_v2';
 
@@ -18,8 +19,9 @@ const Snap: React.FC<{ id: string; children: React.ReactNode; className?: string
   return (
     <section
       id={id}
-      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-center ${className}`}
+      className={`ascii-section md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden flex flex-col justify-center ${className}`}
     >
+      <BinaryStreamBackground />
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0, y: 40, filter: 'blur(6px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -52,7 +54,7 @@ const ScrollHint: React.FC<{ targetId: string; containerId: string }> = ({ targe
 );
 
 const SkeletonCard = () => (
-  <div className="card-hsociety p-4 animate-pulse">
+  <div className="terminal-card card-hsociety p-4 animate-pulse">
     <div className="aspect-square rounded bg-accent-dim/30 mb-4" />
     <div className="h-4 bg-accent-dim/30 rounded w-3/4 mb-2" />
     <div className="h-3 bg-accent-dim/20 rounded w-1/2 mb-6" />
@@ -100,8 +102,9 @@ const PublicMarketplace: React.FC = () => {
       {/* ── 1. Hero ── */}
       <section
         id="mkt-hero"
-        className="md:snap-start md:h-full md:flex-shrink-0 relative flex items-center md:overflow-hidden scanlines bg-bg min-h-[85vh] md:min-h-0"
+        className="ascii-section md:snap-start md:h-full md:flex-shrink-0 relative flex items-center md:overflow-hidden scanlines bg-bg min-h-[85vh] md:min-h-0"
       >
+        <BinaryStreamBackground />
         <div className="absolute inset-0 bg-bg z-0 light-theme-hide-bg-base" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none z-0" />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
@@ -113,8 +116,8 @@ const PublicMarketplace: React.FC = () => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-              ZERO-DAY VAULT
+            <span className="ascii-kicker mb-3 block md:text-sm">
+              // ZERO-DAY VAULT
             </span>
             <h1 className="text-4xl md:text-6xl font-black text-text-primary leading-tight mb-4">
               The Hacker{' '}
@@ -139,7 +142,7 @@ const PublicMarketplace: React.FC = () => {
             className="flex flex-wrap gap-3 mt-10"
           >
             {['Operator Tools', 'Security Guides', 'CP Powered', 'Instant Access'].map((label) => (
-              <div key={label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-card border border-border text-xs font-bold text-text-secondary">
+              <div key={label} className="terminal-card flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-card border border-border text-xs font-bold text-text-secondary">
                 {label}
               </div>
             ))}
@@ -157,7 +160,7 @@ const PublicMarketplace: React.FC = () => {
                 {[0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)}
               </div>
             ) : filtered.length === 0 ? (
-              <div className="col-span-full relative overflow-hidden py-20 text-center rounded-lg border border-dashed border-border">
+              <div className="terminal-card col-span-full relative overflow-hidden py-20 text-center rounded-lg border border-dashed border-border">
                 <img
                   src="/assets/illustrations/cta-operator.webp"
                   alt=""
@@ -235,14 +238,14 @@ const PublicMarketplace: React.FC = () => {
             whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl border-2 border-accent/25 bg-accent-dim p-8 text-center md:p-12 relative overflow-hidden"
+            className="terminal-card rounded-lg border-2 border-accent/25 bg-accent-dim p-8 text-center md:p-12 relative overflow-hidden"
           >
             <motion.div
               className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             />
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent">Operator access</span>
+            <span className="ascii-kicker mb-3 block">// Operator access</span>
             <h2 className="mb-3 text-3xl font-black text-text-primary md:text-4xl">Earn CP. Unlock the vault.</h2>
             <p className="mx-auto mb-8 max-w-md text-base text-text-muted">
               Complete bootcamp rooms to earn Cyber Points, then spend them on tools and guides in the market.

@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import CpLogo from '../../../../shared/components/CpLogo';
 import ChainLogo from '../../../../shared/components/ChainLogo';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface CyberPointsCtaSectionProps {
   totalCp: number;
@@ -15,16 +16,11 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
 
   return (
     <section className="
-      py-20 bg-bg border-t border-border relative has-bg-image
+      ascii-section py-20 bg-bg border-t border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
+      <BinaryStreamBackground />
       <div className="absolute inset-0 dot-grid opacity-[0.08] pointer-events-none" />
-      <img
-        src="/assets/sections/backgrounds/ai-solutions-bg.webp"
-        alt=""
-        aria-hidden="true"
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none"
-      />
       {/* Ambient glow */}
       <div
         aria-hidden
@@ -38,7 +34,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
           {/* ── Left — text + CTA (always first on mobile) ── */}
           <div className="flex flex-col items-start order-1">
             <ScrollReveal>
-              <span className="block text-[10px] font-black uppercase tracking-[0.35em] text-accent mb-3">
+              <span className="ascii-kicker block mb-3">
                 // Cyber Points
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight mb-4">
@@ -67,7 +63,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/20 bg-accent-dim">
+              <div className="terminal-card inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/20 bg-accent-dim">
                 <ChainLogo size={14} />
                 <span className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">
                   Verified by HSOCIETY Chain
@@ -106,7 +102,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
               <motion.div
                 animate={shouldReduceMotion ? {} : { y: [0, -4, 0] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                className="absolute bottom-0 right-0 z-20 px-2.5 py-1.5 rounded-lg border border-accent/20 bg-bg-card/95 backdrop-blur-sm"
+                className="terminal-card absolute bottom-0 right-0 z-20 px-2.5 py-1.5 rounded-lg border border-accent/20 bg-bg-card/95 backdrop-blur-sm"
                 style={{ boxShadow: 'var(--card-shimmer), 0 4px 20px rgba(0,0,0,0.3)' }}
               >
                 <div className="text-[8px] uppercase tracking-widest text-text-muted mb-0.5">Community Pool</div>
@@ -118,7 +114,7 @@ const CyberPointsCtaSection: React.FC<CyberPointsCtaSectionProps> = ({ totalCp }
               {/* Orbit decoration — desktop only */}
               <motion.div
                 aria-hidden
-                className="hidden lg:block absolute top-4 left-0 z-20 px-2 py-1 rounded border border-accent/15 bg-bg-card/80 backdrop-blur-sm"
+                className="terminal-card hidden lg:block absolute top-4 left-0 z-20 px-2 py-1 rounded border border-accent/15 bg-bg-card/80 backdrop-blur-sm"
                 animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
               >

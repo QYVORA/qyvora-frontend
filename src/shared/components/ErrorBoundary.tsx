@@ -74,8 +74,8 @@ class ErrorBoundary extends Component<Props, State> {
     if (fallback) return fallback;
 
     return (
-      <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-md text-center space-y-6">
+      <div className="ascii-section min-h-[60vh] flex items-center justify-center px-4 py-16">
+        <div className="terminal-card w-full max-w-md text-center space-y-6 p-8">
 
           {/* Icon */}
           <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 mx-auto">
@@ -95,7 +95,7 @@ class ErrorBoundary extends Component<Props, State> {
 
           {/* Error message — dev only */}
           {import.meta.env.DEV && error && (
-            <div className="text-left p-4 bg-bg-card border border-red-500/20 rounded-xl overflow-auto max-h-40">
+            <div className="terminal-card text-left p-4 bg-bg-card border border-red-500/20 rounded-xl overflow-auto max-h-40">
               <p className="text-[11px] font-mono text-red-400 break-all whitespace-pre-wrap">
                 {error.message}
               </p>

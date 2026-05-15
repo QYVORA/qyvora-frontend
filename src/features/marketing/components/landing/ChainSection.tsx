@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import ChainLogo from '../../../../shared/components/ChainLogo';
 import CpLogo from '../../../../shared/components/CpLogo';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 const CHAIN_FACTS = [
   { icon: Link2,   label: 'Immutable blocks',   desc: 'Every CP event is a SHA-256 hashed block, chained to the previous one.' },
@@ -13,7 +14,8 @@ const CHAIN_FACTS = [
 ];
 
 const ChainSection: React.FC = () => (
-  <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
+  <section className="ascii-section py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
+    <BinaryStreamBackground />
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
     {/* Chain visuals background */}
     <img
@@ -30,7 +32,7 @@ const ChainSection: React.FC = () => (
         {/* Left — text */}
         <div>
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-3 block">HSOCIETY CHAIN</span>
+            <span className="ascii-kicker mb-3 block">// HSOCIETY CHAIN</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-text-primary leading-[1.1] mb-4">
               Your CP is<br />
               <span className="text-accent">chain-verified</span>
@@ -50,7 +52,7 @@ const ChainSection: React.FC = () => (
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-                className="border-beam flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
+                className="terminal-card border-beam flex items-start gap-3 rounded-xl border border-border bg-bg-card p-3.5 hover:border-accent/30 transition-colors"
               >
                 <Icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                 <div>
@@ -102,7 +104,7 @@ const ChainSection: React.FC = () => (
           ].map((block, i) => (
             <div
               key={block.index}
-              className="border-beam rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
+              className="terminal-card border-beam rounded-2xl border-2 border-border bg-bg-card overflow-hidden"
               style={{ opacity: 1 - i * 0.1 }}
             >
               <div className="flex items-center gap-3 border-b border-border px-4 py-2.5 bg-accent/5">

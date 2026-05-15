@@ -9,6 +9,7 @@ import LeaderboardSection from '../components/landing/LeaderboardSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
+import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -42,8 +43,9 @@ const SnapSection: React.FC<{
       // md+: snap-start, h-full of the snap container (h-screen),
       //      pt-[72px] from CSS clears the fixed navbar,
       //      overflow-hidden clips anything that escapes
-      className={`md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
+      className={`ascii-section md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden ${className}`}
     >
+      <BinaryStreamBackground />
       <motion.div
         initial={minimizeEffects ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight, Terminal } from 'lucide-react';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface FinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -138,15 +139,10 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
 
   return (
     <section className="
-      relative pt-28 pb-20 md:py-0 bg-bg scanlines flex items-center has-bg-image
+      ascii-section relative pt-28 pb-20 md:py-0 bg-bg scanlines flex items-center has-bg-image
       md:h-full md:overflow-hidden
     ">
-      {/* Background image */}
-      <img
-        src="/assets/sections/backgrounds/cta-background.webp"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.14] pointer-events-none"
-      />
+      <BinaryStreamBackground />
       {/* Overlay fades */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -241,7 +237,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="border-beam flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
+            className="terminal-card border-beam flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
             style={{ boxShadow: 'var(--card-shimmer)' }}
           >
             <Terminal className="w-3.5 h-3.5 text-accent/50 mt-0.5 flex-none" aria-hidden />

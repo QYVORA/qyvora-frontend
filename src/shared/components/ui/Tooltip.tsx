@@ -67,7 +67,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             sideOffset={sideOffset}
             className={cn(
               // Surface
-              'z-[300] px-2.5 py-1.5 rounded-lg',
+              'terminal-card z-[300] px-2.5 py-1.5 rounded-lg',
               'bg-bg-card border border-border',
               'shadow-lg shadow-black/30',
               // Typography

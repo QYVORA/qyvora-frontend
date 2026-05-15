@@ -6,6 +6,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
+import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
 
 const RANK_THRESHOLDS = [
   { label: 'Vanguard',    min: 1500 },
@@ -73,13 +74,14 @@ const PublicProfile: React.FC = () => {
   const initials = (profile.handle || profile.name || 'OP').substring(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-bg pb-16 scanlines">
+    <div className="ascii-section min-h-screen bg-bg pb-16 scanlines">
+      <BinaryStreamBackground />
       <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
 
         {/* Header */}
         <ScrollReveal className="mb-8">
           <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-            OPERATOR PROFILE
+            // OPERATOR PROFILE
           </span>
         </ScrollReveal>
 

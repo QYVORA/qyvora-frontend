@@ -7,6 +7,7 @@ import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface LeaderboardSectionProps {
   leaderboard: LeaderboardEntry[];
@@ -82,7 +83,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-        className={`border-beam flex flex-col items-center rounded-lg border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
+        className={`terminal-card border-beam flex flex-col items-center rounded-lg border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
                     ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
                     transition-all duration-300 hover:-translate-y-1 hover:border-border-strong`}
         style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -126,7 +127,7 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
       whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.25 } }}
-      className="border-beam flex items-center gap-4 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
+      className="terminal-card border-beam flex items-center gap-4 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="font-mono text-sm font-black text-accent/40 w-6 flex-none">#{rank}</span>
@@ -156,7 +157,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`border-beam flex items-center gap-3.5 rounded-lg border p-3.5 transition-colors ${
+      className={`terminal-card border-beam flex items-center gap-3.5 rounded-lg border p-3.5 transition-colors ${
         meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
       }`}
       style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -202,17 +203,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 
   return (
     <section className="
-      pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
+      ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <img
-        src="/assets/sections/backgrounds/offsec-grid-background.webp"
-        alt=""
-        aria-hidden="true"
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] pointer-events-none"
-        loading="lazy"
-        decoding="async"
-      />
+      <BinaryStreamBackground />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 w-full">
@@ -220,8 +214,8 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 md:mb-12 gap-4">
           <ScrollReveal>
-            <span className="block text-[10px] font-black uppercase tracking-[0.35em] text-accent mb-2">
-              THE BOARD
+              <span className="ascii-kicker block mb-2">
+              // THE BOARD
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
               Top Operators

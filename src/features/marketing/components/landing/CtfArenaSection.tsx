@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { Flag, Terminal, Trophy, Zap, ArrowRight, Lock, Code2, Globe, Network } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 const CHALLENGE_TYPES = [
   { icon: Code2,    label: 'HTML Source',      color: 'text-blue-400',   desc: 'Inspect page source for hidden flags'       },
@@ -23,14 +24,8 @@ const CtfArenaSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-14 md:py-32 bg-bg border-y border-border relative overflow-hidden has-bg-image">
-      {/* Background */}
-      <img
-        src="/assets/sections/backgrounds/offsec-grid-background.webp"
-        alt=""
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.14] pointer-events-none"
-        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-      />
+    <section className="ascii-section py-14 md:py-32 bg-bg border-y border-border relative overflow-hidden has-bg-image">
+      <BinaryStreamBackground />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       {/* Ambient glow */}
@@ -41,7 +36,7 @@ const CtfArenaSection: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 gap-4">
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-3 block">CTF ARENA</span>
+            <span className="ascii-kicker mb-3 block">// CTF ARENA</span>
             <h2 className="text-[1.65rem] md:text-4xl text-text-primary font-bold leading-tight">
               Hack With Your Browser.<br />
               <span className="text-accent">No VM. No Setup.</span>
@@ -80,7 +75,7 @@ const CtfArenaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-              className="border-beam card-hsociety p-3 flex flex-col items-center text-center gap-1.5 group hover:border-accent/40 transition-all"
+              className="terminal-card border-beam card-hsociety p-3 flex flex-col items-center text-center gap-1.5 group hover:border-accent/40 transition-all"
             >
               <div className={`p-2.5 rounded-lg bg-bg border border-border group-hover:border-accent/40 transition-colors ${type.color}`}>
                 <type.icon className="w-5 h-5" />
@@ -93,7 +88,7 @@ const CtfArenaSection: React.FC = () => {
 
         {/* CTA card */}
         <ScrollReveal>
-          <div className="border-beam relative rounded-xl border border-accent/20 bg-accent-dim/30 p-6 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="terminal-card border-beam relative rounded-xl border border-accent/20 bg-accent-dim/30 p-6 md:p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Decorative flag icon */}
             <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-5 pointer-events-none hidden md:block">
               <Flag className="w-48 h-48 text-accent" />

@@ -5,6 +5,7 @@ import { FileText, ArrowRight, Mail } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { SITE_CONFIG } from '../content/siteConfig';
 import api from '../../../core/services/api';
+import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -47,7 +48,7 @@ const TermsSectionCard: React.FC<{ section: TermsSection; index: number }> = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.08 }}
     transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-    className="relative rounded-xl border border-border bg-bg-card overflow-hidden p-6 md:p-8"
+    className="terminal-card relative rounded-xl border border-border bg-bg-card overflow-hidden p-6 md:p-8"
     style={{ boxShadow: 'var(--card-shimmer)' }}
   >
     {/* Section number */}
@@ -118,7 +119,8 @@ const TermsPage: React.FC = () => {
     <div className="min-h-screen bg-bg">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[50svh] md:min-h-[45vh] w-full overflow-hidden scanlines">
+      <section className="ascii-section relative min-h-[50svh] md:min-h-[45vh] w-full overflow-hidden scanlines">
+        <BinaryStreamBackground />
         <div className="absolute inset-0 bg-bg z-0" />
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
         <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />
@@ -129,8 +131,8 @@ const TermsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
-              LEGAL
+            <span className="ascii-kicker mb-3 block md:text-sm">
+              // LEGAL
             </span>
           </motion.div>
           <motion.h1
@@ -191,13 +193,14 @@ const TermsPage: React.FC = () => {
       </section>
 
       {/* ── CONTENT ──────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section className="ascii-section py-16 md:py-24 relative overflow-hidden">
+        <BinaryStreamBackground />
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 md:px-8 relative z-10">
 
           {/* Section header */}
           <ScrollReveal className="mb-12 md:mb-16">
-            <span className="text-accent text-[11px] font-bold uppercase tracking-[0.3em] mb-3 block">
+            <span className="ascii-kicker mb-3 block">
               // TERMS &amp; CONDITIONS
             </span>
             <div className="flex items-start gap-4">
@@ -222,7 +225,7 @@ const TermsPage: React.FC = () => {
           {loading && <TermsSkeleton />}
 
           {error && !loading && (
-            <div className="rounded-xl border border-border bg-bg-card p-8 text-center">
+            <div className="terminal-card rounded-xl border border-border bg-bg-card p-8 text-center">
               <p className="text-text-muted text-sm mb-4">{error}</p>
               <button
                 onClick={() => window.location.reload()}
@@ -234,7 +237,7 @@ const TermsPage: React.FC = () => {
           )}
 
           {!loading && !error && terms && terms.sections.length === 0 && (
-            <div className="rounded-xl border border-border bg-bg-card p-8 text-center">
+            <div className="terminal-card rounded-xl border border-border bg-bg-card p-8 text-center">
               <p className="text-text-muted text-sm">
                 Terms of Service are being updated. Check back soon.
               </p>
@@ -252,10 +255,11 @@ const TermsPage: React.FC = () => {
       </section>
 
       {/* ── CTA BANNER ───────────────────────────────────────────────────── */}
-      <section className="pb-16 md:pb-24 max-w-4xl mx-auto px-4 md:px-8">
+      <section className="ascii-section pb-16 md:pb-24 max-w-4xl mx-auto px-4 md:px-8">
+        <BinaryStreamBackground />
         <ScrollReveal>
           <div
-            className="relative rounded-xl border border-border overflow-hidden p-8 md:p-12 text-center"
+            className="terminal-card relative rounded-xl border border-border overflow-hidden p-8 md:p-12 text-center"
             style={{ background: 'var(--color-accent-dim)' }}
           >
             <div aria-hidden className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />

@@ -6,6 +6,7 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { BootcampLevel } from '../../../student/components/BootcampCard';
 import { PHASE_IMGS, type Bootcamp } from './types';
 import { resolveImg } from './helpers';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface BootcampsSectionProps {
   bootcamps: Bootcamp[];
@@ -54,7 +55,7 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-      className="border-beam group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
+      className="terminal-card border-beam group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {/* ── Cover image ── */}
@@ -139,7 +140,7 @@ const TeaserCard: React.FC<{
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-      className="border-beam flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 transition-colors duration-200 hover:border-border-strong"
+      className="terminal-card border-beam flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="flex h-9 w-9 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
@@ -161,16 +162,10 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
   return (
     <section className="
-      pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
+      ascii-section pt-28 pb-20 bg-bg-card border-y border-border relative has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <img
-        src="/assets/sections/backgrounds/employee-training-bg.webp"
-        alt=""
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none"
-        loading="lazy"
-        decoding="async"
-      />
+      <BinaryStreamBackground />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 w-full">
@@ -178,7 +173,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <ScrollReveal>
-            <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-2 block">ARSENAL</span>
+            <span className="ascii-kicker mb-2 block">// ARSENAL</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary leading-none tracking-tight">
               Bootcamps Built<br className="hidden sm:block" /> For Operators
             </h2>
@@ -255,7 +250,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-                  className="border-beam group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
+                  className="terminal-card border-beam group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
                   {/* Cover */}

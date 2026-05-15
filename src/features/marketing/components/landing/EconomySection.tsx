@@ -6,6 +6,7 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import type { MarketplaceItem } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
 import ChainLogo from '../../../../shared/components/ChainLogo';
+import BinaryStreamBackground from '../../../../shared/components/BinaryStreamBackground';
 
 interface EconomySectionProps {
   totalCp: number;
@@ -25,16 +26,10 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
 
   return (
     <section className="
-      pt-28 pb-24 md:py-16 bg-bg relative isolate has-bg-image
+      ascii-section pt-28 pb-24 md:py-16 bg-bg relative isolate has-bg-image
       md:h-full md:overflow-hidden md:py-0 md:flex md:items-center
     ">
-      <img
-        src="/assets/sections/backgrounds/proprietary-tooling-bg.webp"
-        alt=""
-        className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.10] md:opacity-[0.13] pointer-events-none"
-        loading="lazy"
-        decoding="async"
-      />
+      <BinaryStreamBackground />
       <div className="section-bg-overlay light-theme-hide-bg-overlay absolute inset-0 pointer-events-none" />
       <div className="absolute inset-0 scanlines light-theme-hide-bg-overlay opacity-[0.02] pointer-events-none" />
 
@@ -44,7 +39,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           {/* Left: description + CP features */}
           <div>
             <ScrollReveal>
-              <span className="text-accent text-[11px] font-black uppercase tracking-[0.35em] mb-2 block">THE ECONOMY</span>
+              <span className="ascii-kicker mb-2 block">// THE ECONOMY</span>
               <h2 className="text-3xl lg:text-4xl text-text-primary font-bold mb-4">
                 Cyber Points &amp; Zero-Day Market
               </h2>
@@ -55,7 +50,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
               </p>
 
               {/* Chain badge */}
-              <div className="flex items-center gap-2 mb-5 px-3 py-1.5 rounded-xl border border-accent/20 bg-accent/5 w-fit">
+              <div className="terminal-card flex items-center gap-2 mb-5 px-3 py-1.5 w-fit">
                 <ChainLogo size={14} />
                 <span className="text-[10px] font-bold text-accent uppercase tracking-widest">
                   Verified by HSOCIETY Chain

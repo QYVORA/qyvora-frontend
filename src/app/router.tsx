@@ -8,7 +8,6 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 // Layouts
 import PublicLayout from '../shared/layouts/PublicLayout';
 import LandingLayout from '../shared/layouts/LandingLayout';
-import SnapPublicLayout from '../shared/layouts/SnapPublicLayout';
 import StudentLayout from '../shared/layouts/StudentLayout';
 import AdminLayout from '../shared/layouts/AdminLayout';
 
@@ -19,9 +18,6 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 const LandingPage = lazy(() => import('../features/marketing/pages/LandingPage'));
 const ContactPage = lazy(() => import('../features/marketing/pages/ContactPage'));
 const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
-const PublicCtfPage = lazy(() => import('../features/marketing/pages/PublicCtfPage'));
-const PublicLeaderboardPage = lazy(() => import('../features/marketing/pages/PublicLeaderboardPage'));
-const PublicBootcampsPage = lazy(() => import('../features/marketing/pages/PublicBootcampsPage'));
 
 // Auth pages
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -87,13 +83,6 @@ export const AppRouter = () => {
         {/* Public routes — no auth required */}
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
-        </Route>
-
-        {/* Snap public pages — viewport-locked scroll */}
-        <Route element={<SnapPublicLayout />}>
-          <Route path="/ctf" element={<Wrap scope="CTF Arena"><PublicCtfPage /></Wrap>} />
-          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><PublicLeaderboardPage /></Wrap>} />
-          <Route path="/bootcamps" element={<Wrap scope="Bootcamps"><PublicBootcampsPage /></Wrap>} />
         </Route>
 
         {/* Standard public pages — normal scroll with footer */}

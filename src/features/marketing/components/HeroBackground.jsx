@@ -151,13 +151,11 @@ const STREAM_FRAG = `
 `;
 
 // ─────────────────────────────────────────────
-// FULLSCREEN QUAD
+// PERSPECTIVE FLOOR
 // ─────────────────────────────────────────────
 
-function FullscreenStreamQuad() {
-  const meshRef = useRef();
+function StreamFloor() {
   const matRef  = useRef();
-  const { size, camera } = useThree();
 
   const material = useMemo(
     () =>
@@ -172,23 +170,10 @@ function FullscreenStreamQuad() {
         transparent: true,
         depthWrite:  false,
         blending:    THREE.NormalBlending,
-        side:        THREE.FrontSide,
+        side:        THREE.DoubleSide,
       }),
     []
   );
-
-  /* Keep quad sized to fill the view frustum */
-  useEffect(() => {
-    const resize = () => {
-      if (!meshRef.current || !camera) return;
-      const dist = Math.abs(camera.position.z);
-      const vFov = (camera.fov * Math.PI) / 180;
-      const h    = 2 * Math.tan(vFov / 2) * dist;
-      const w    = h * (size.width / size.height);
-      meshRef.current.scale.set(w, h, 1);
-    };
-    resize();
-  }, [size, camera]);
 
   useFrame(({ clock, size: s }) => {
     if (!matRef.current) return;
@@ -197,11 +182,36 @@ function FullscreenStreamQuad() {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <planeGeometry args={[1, 1]} />
+    <mesh position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[22, 34, 1, 1]} />
       <primitive object={material} ref={matRef} attach="material" />
     </mesh>
   );
+}
+
+function CameraRig() {
+  const { camera, size } = useThree();
+  const target = useMemo(() => new THREE.Vector3(0, -1.08, -10.8), []);
+
+  useEffect(() => {
+    camera.fov = size.width < 768 ? 68 : 58;
+    camera.near = 0.1;
+    camera.far = 80;
+    camera.updateProjectionMatrix();
+  }, [camera, size.width]);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+    camera.position.set(
+      Math.sin(t * 0.18) * 0.18,
+      1.08 + Math.sin(t * 0.12) * 0.035,
+      5.9
+    );
+    target.x = Math.sin(t * 0.16) * 0.35;
+    camera.lookAt(target);
+  });
+
+  return null;
 }
 
 // ─────────────────────────────────────────────
@@ -212,7 +222,9 @@ function Scene() {
   return (
     <>
       <color attach="background" args={["#000000"]} />
-      <FullscreenStreamQuad />
+      <fog attach="fog" args={["#000000", 7, 24]} />
+      <CameraRig />
+      <StreamFloor />
     </>
   );
 }
@@ -237,10 +249,10 @@ export default function HeroBackground({ className = "" }) {
           pointerEvents: "none",
           background: `linear-gradient(
             to top,
-            rgba(0,0,0,0.97) 0%,
-            rgba(0,0,0,0.72) 14%,
-            rgba(0,0,0,0.28) 32%,
-            transparent 54%
+            rgba(0,0,0,0.94) 0%,
+            rgba(0,0,0,0.58) 13%,
+            rgba(0,0,0,0.18) 30%,
+            transparent 56%
           )`,
         }}
       />
@@ -254,9 +266,10 @@ export default function HeroBackground({ className = "" }) {
           pointerEvents: "none",
           background: `linear-gradient(
             to bottom,
-            rgba(0,0,0,0.92) 0%,
-            rgba(0,0,0,0.55) 22%,
-            transparent 46%
+            rgba(0,0,0,0.96) 0%,
+            rgba(0,0,0,0.68) 18%,
+            rgba(0,0,0,0.24) 40%,
+            transparent 60%
           )`,
         }}
       />
@@ -269,8 +282,8 @@ export default function HeroBackground({ className = "" }) {
           zIndex: 1,
           pointerEvents: "none",
           background: `radial-gradient(
-            ellipse 60% 12% at 50% 60%,
-            rgba(183,255,153,0.055) 0%,
+            ellipse 64% 14% at 50% 56%,
+            rgba(183,255,153,0.085) 0%,
             transparent 100%
           )`,
         }}
@@ -278,7 +291,7 @@ export default function HeroBackground({ className = "" }) {
 
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0, 5], fov: 60, near: 0.1, far: 100 }}
+        camera={{ position: [0, 1.08, 5.9], fov: 58, near: 0.1, far: 80 }}
         gl={{
           antialias:       false,
           alpha:           false,

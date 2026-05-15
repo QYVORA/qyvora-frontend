@@ -28,7 +28,7 @@ export const BottomSheetContent = React.forwardRef<
       aria-label={ariaLabel}
       className={cn(
         'fixed bottom-0 left-0 right-0 z-[130] md:hidden',
-        'bg-bg-card border-t border-border rounded-t-2xl max-h-[82svh] overflow-y-auto',
+        'terminal-card bg-bg-card border-t border-border rounded-t-2xl max-h-[82svh] overflow-y-auto',
         'outline-none',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',

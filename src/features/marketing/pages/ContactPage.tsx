@@ -4,6 +4,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { Mail, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import api from '../../../core/services/api';
 import { SITE_CONFIG } from '../content/siteConfig';
+import BinaryStreamBackground from '../../../shared/components/BinaryStreamBackground';
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -28,13 +29,8 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-bg">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24 has-bg-image">
-        <img
-          src="/assets/sections/backgrounds/corporate-team.webp"
-          alt=""
-          aria-hidden="true"
-          className="section-bg-img absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none"
-        />
+      <section className="ascii-section relative overflow-hidden border-b border-border bg-bg-card py-16 md:py-24 has-bg-image">
+        <BinaryStreamBackground />
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         <div className="absolute -left-32 top-0 h-72 w-72 rounded-full bg-accent/8 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center">
@@ -43,7 +39,7 @@ const Contact: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">
+              <span className="ascii-kicker mb-3 block md:text-sm">
                 {SITE_CONFIG.contactPage.heroTag}
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary mb-5 leading-tight">
@@ -57,11 +53,12 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-20">
+      <div className="ascii-section max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-20">
+        <BinaryStreamBackground />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
           {/* Info Side */}
           <ScrollReveal delay={0.05} className="space-y-6">
-            <div className="card-hsociety p-7 md:p-8 space-y-8">
+            <div className="terminal-card card-hsociety p-7 md:p-8 space-y-8">
               {[
                 {
                   icon: Mail,
@@ -98,7 +95,7 @@ const Contact: React.FC = () => {
           </ScrollReveal>
 
           {/* Form Side */}
-          <ScrollReveal delay={0.1} className="card-hsociety p-7 md:p-8">
+          <ScrollReveal delay={0.1} className="terminal-card card-hsociety p-7 md:p-8">
             <h2 className="text-xl font-bold text-text-primary mb-7 uppercase tracking-tighter">
               {SITE_CONFIG.contactPage.formTitle}
             </h2>
