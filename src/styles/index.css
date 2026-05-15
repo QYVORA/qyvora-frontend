@@ -193,7 +193,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 18px color-mix(in srgb, var(--color-accent) 18%, transparent);
-    animation: ascii-text-beam 5.8s var(--ease-smooth) infinite;
+    animation: ascii-text-beam 2.8s var(--ease-smooth) infinite;
   }
 
   .glass-effect {
@@ -338,7 +338,7 @@
     }
 
     .card-hsociety {
-      border-radius: 0.65rem;
+      border-radius: 0.125rem;
     }
   }
 
@@ -568,15 +568,15 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-md px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)];
+    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)];
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-accent text-accent font-bold uppercase tracking-[0.08em] rounded-md px-7 py-3 transition-all cursor-pointer hover:bg-accent-dim active:scale-95;
+    @apply bg-transparent border border-accent text-accent font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:bg-accent-dim active:scale-95;
   }
 
   .card-hsociety {
-    @apply bg-bg-card border border-border rounded-lg transition-all duration-300 cursor-default hover:-translate-y-1;
+    @apply bg-bg-card border border-border rounded-sm transition-all duration-300 cursor-default hover:-translate-y-1;
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -639,7 +639,7 @@
     isolation: isolate;
     overflow: hidden;
     border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
+    border-radius: 0.125rem;
     background:
       linear-gradient(180deg, rgba(183, 255, 153, 0.055), transparent 42%),
       color-mix(in srgb, var(--color-bg-card) 82%, transparent);
