@@ -23,18 +23,12 @@ const platformItems = SITE_CONFIG.nav.platform.map((item: { key: string; label: 
   ...item,
   icon: ICON_BY_KEY[item.key],
 }));
-const companyItems = SITE_CONFIG.nav.company.map((item: { key: string; label: string; path: string; desc: string }) => ({
-  ...item,
-  icon: ICON_BY_KEY[item.key],
-}));
 const NAV_GROUPS: { label: string; items: typeof platformItems }[] = [];
 if (platformItems.length) NAV_GROUPS.push({ label: 'Platform', items: platformItems });
-if (companyItems.length) NAV_GROUPS.push({ label: 'Company', items: companyItems });
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = React.useRef(0);
   const scrollY = useScrollY();
@@ -62,21 +56,6 @@ const Navbar: React.FC = () => {
 
   useEffect(() => { setActiveDropdown(null); }, [location]);
 
-  useEffect(() => {
-    const syncFullscreen = () => setIsFullscreen(Boolean(document.fullscreenElement));
-    syncFullscreen();
-    document.addEventListener('fullscreenchange', syncFullscreen);
-    return () => document.removeEventListener('fullscreenchange', syncFullscreen);
-  }, []);
-
-  const toggleFullscreen = async () => {
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await document.documentElement.requestFullscreen();
-    } catch {
-      // Ignore when fullscreen is blocked by browser policy.
-    }
-  };
   return (
     <nav 
       className={`nav-border-beam fixed top-0 left-0 w-full z-50 overflow-visible transition-all duration-300 h-[72px] flex items-center px-4 md:px-8 ${
@@ -133,17 +112,8 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute z-[80] top-[72px] w-[480px] bg-bg-card border border-border rounded-xl shadow-2xl p-5
-                      ${group.label === 'Company'
-                        ? 'right-0 left-auto'
-                        : 'left-1/2 -translate-x-1/2'
-                      }
-                      [max-width:min(480px,calc(100vw-2rem))]`}
-                    style={
-                      group.label !== 'Company'
-                        ? { left: 'max(1rem, calc(50% - 240px))', transform: 'none' }
-                        : undefined
-                    }
+                    className="absolute z-[80] top-[72px] w-[480px] bg-bg-card border border-border rounded-xl shadow-2xl p-5 left-1/2 -translate-x-1/2 [max-width:min(480px,calc(100vw-2rem))]"
+                    style={{ left: 'max(1rem, calc(50% - 240px))', transform: 'none' }}
                   >
                     <div className="grid grid-cols-2 gap-3">
                       {group.items.map((item) => (
@@ -179,16 +149,6 @@ const Navbar: React.FC = () => {
 
         {/* Right controls */}
         <div className="flex items-center gap-2 md:gap-3">
-          <button
-            type="button"
-            onClick={() => void toggleFullscreen()}
-            className="h-10 w-10 md:h-11 md:w-11 rounded-xl border border-border bg-bg-card/70 text-text-muted hover:text-accent hover:border-accent/40 transition-colors flex items-center justify-center"
-            aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-          >
-            {isFullscreen ? <Minimize2 className="w-4 h-4 md:w-5 md:h-5" /> : <Maximize2 className="w-4 h-4 md:w-5 md:h-5" />}
-          </button>
-
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center space-x-3">
           {user ? (
@@ -203,14 +163,9 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
           ) : (
-            <>
-              <Link to="/login" className="text-sm font-bold uppercase tracking-wider text-accent border border-accent rounded-md px-5 py-2 hover:bg-accent-dim transition-all">
-                Login
-              </Link>
-              <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">
-                Start Training
-              </Link>
-            </>
+            <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">
+              Start Training
+            </Link>
           )}
         </div>
         </div>
