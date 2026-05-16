@@ -677,6 +677,9 @@
      max-width: 100%;
      white-space: pre;
      tab-size: 4;
+     font-variant-ligatures: none;
+     font-kerning: none;
+     text-rendering: geometricPrecision;
      -webkit-font-smoothing: antialiased;
      -moz-osx-font-smoothing: grayscale;
    }
@@ -738,12 +741,20 @@
 
    @media (max-width: 639px) {
      .ascii-heading {
-       line-height: 1.1 !important;
+       line-height: 1.18 !important;
+       text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 16%, transparent) !important;
+       animation: ascii-text-beam 4.2s var(--ease-smooth) infinite;
+       background-size: 180% 100%;
      }
 
      .ascii-heading-wrapper {
        overflow: hidden;
        -webkit-overflow-scrolling: touch;
+     }
+
+     .ascii-heading-mobile.ascii-heading-glow {
+       animation: none !important;
+       filter: none !important;
      }
    }
 

@@ -56,6 +56,9 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   const [asciiText, setAsciiText] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.matchMedia('(max-width: 639px)').matches,
+  );
 
   const normalizedFont = useMemo(() => normalizeFont(font), [font]);
 
@@ -122,9 +125,18 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
     return () => { isMounted = false; clearTimeout(timer); };
   }, [text, normalizedFont]);
 
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 639px)');
+    const handleChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    setIsMobile(media.matches);
+    media.addEventListener('change', handleChange);
+    return () => media.removeEventListener('change', handleChange);
+  }, []);
+
   const outerRef = React.useRef<HTMLDivElement>(null);
   const preRef = React.useRef<HTMLPreElement>(null);
   const [fitScale, setFitScale] = useState(1);
+  const [mobileHeight, setMobileHeight] = useState<number | null>(null);
   const fitScaleRef = React.useRef(1);
   const shouldReduceMotion = useReducedMotion();
   const minimizeEffects = shouldReduceMotion;
@@ -143,8 +155,12 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         const available = outer.clientWidth;
         if (!available) return;
 
-        const unscaledWidth = pre.scrollWidth / Math.max(fitScaleRef.current, 0.01);
-        const nextScale = Math.min(1, Math.max(0.32, (available - 2) / Math.max(unscaledWidth, 1)));
+        const unscaledWidth = isMobile
+          ? pre.scrollWidth
+          : pre.scrollWidth / Math.max(fitScaleRef.current, 0.01);
+        const minScale = isMobile ? 0.08 : 0.32;
+        const nextScale = Math.min(1, Math.max(minScale, (available - 2) / Math.max(unscaledWidth, 1)));
+        setMobileHeight(isMobile ? Math.ceil(pre.scrollHeight * nextScale) : null);
         setFitScale(prev => {
           if (Math.abs(prev - nextScale) <= 0.01) return prev;
           fitScaleRef.current = nextScale;
@@ -167,7 +183,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
       resizeObserver.disconnect();
       window.removeEventListener('resize', measure);
     };
-  }, [asciiText, disabled, error, responsive, text]);
+  }, [asciiText, disabled, error, isMobile, responsive, text]);
 
   const glowConfig = useMemo(() => {
     const baseColor = color || 'var(--color-accent)';
@@ -182,13 +198,24 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   }, [glow, color]);
 
   const sizeStyle = useMemo(() => {
-    const baseSize = compact ? '12px' : '16px';
+    const baseSize = isMobile ? (compact ? '10px' : '13px') : (compact ? '12px' : '16px');
+    const lineHeight = isMobile ? 1.18 : 1.05;
     if (!responsive) return { fontSize: compact ? '9px' : '15px', lineHeight: 1.05 };
+    if (isMobile) {
+      return {
+        fontSize: baseSize,
+        lineHeight,
+        transform: `scale(${fitScale})`,
+        transformOrigin: align === 'right' ? 'top right' : align === 'center' ? 'top center' : 'top left',
+        width: 'max-content',
+        maxWidth: 'none',
+      };
+    }
     return {
       fontSize: `calc(${baseSize} * ${fitScale})`,
-      lineHeight: 1.05,
+      lineHeight,
     };
-  }, [compact, fitScale, responsive]);
+  }, [align, compact, fitScale, isMobile, responsive]);
 
   // Render high-quality normal text if disabled or if figlet failed
   if (disabled || (isLoaded && error)) {
@@ -220,6 +247,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         'ascii-heading ascii-text-beam whitespace-pre select-none transition-all duration-500 overflow-hidden no-scrollbar m-0 p-0 max-w-full',
         preClassName,
         glow !== 'none' && 'ascii-heading-glow',
+        isMobile && 'ascii-heading-mobile',
         align === 'center' ? 'mx-auto w-fit' : '',
         align === 'left' ? 'text-left ml-0' : '',
         align === 'right' ? 'text-right ml-auto w-fit' : '',
@@ -254,7 +282,10 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         ease: [0.16, 1, 0.3, 1],
         filter: { duration: Math.min(animationDuration / 1000 * 0.6, 0.5) },
       }}
-      style={{ textAlign: align as React.CSSProperties['textAlign'] }}
+      style={{
+        textAlign: align as React.CSSProperties['textAlign'],
+        height: isMobile && mobileHeight ? `${mobileHeight}px` : undefined,
+      }}
     >
       {inner}
     </motion.div>
