@@ -68,10 +68,6 @@ const Footer: React.FC = () => (
       aria-hidden="true"
     />
 
-    {/* ══════════════════════════════════════════
-        LAYER 2 — top hairline glow
-    ══════════════════════════════════════════ */}
-    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/40 to-transparent shadow-[0_0_30px_var(--color-accent-glow)]" />
 
     {/* ══════════════════════════════════════════
         CONTENT
@@ -87,14 +83,13 @@ const Footer: React.FC = () => (
           <Link to="/" className="flex items-center w-fit group/logo">
             <img
               src="/assets/branding/logos/hsociety-logo.webp"
-              alt="HSociety"
+              alt="HSOCIETY"
               className="h-14 sm:h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover/logo:opacity-80"
             />
           </Link>
 
           <p className="text-sm text-text-muted leading-relaxed max-w-[26rem] font-mono">
-            Africa's leading offensive security ecosystem. We train the next generation of operators
-            and secure the continent's most critical infrastructure.
+            An offensive security company focused on building a strong cybersecurity ecosystem in Africa.
           </p>
 
           {/* Social row */}
@@ -132,7 +127,7 @@ const Footer: React.FC = () => (
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
             </span>
             <span className="min-w-0 text-[10px] font-mono font-bold text-accent uppercase tracking-[0.12em] sm:tracking-[0.22em] break-words">
-              Node: Tamale // 09.40′N // 00.85′W
+              Ghana | Northern Region | Tamale 
             </span>
           </div>
         </div>
@@ -209,13 +204,9 @@ const Footer: React.FC = () => (
         <p className="max-w-full text-center text-[10px] font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/60">©</span>] {new Date().getFullYear()}{' '}
           <span className="text-accent/80">HSOCIETY OFFSEC</span>
-          {' '}// SHADOWS UNBOUND
         </p>
 
-        {/* Centre: mission line — hidden on very small screens */}
-        <p className="hidden md:block text-[9px] font-mono text-text-muted/40 tracking-[0.3em] uppercase select-none">
-          ── TRAIN · BREACH · SECURE ──
-        </p>
+    
 
         {/* Right: legal links */}
         <div className="flex items-center gap-5 flex-wrap justify-center">

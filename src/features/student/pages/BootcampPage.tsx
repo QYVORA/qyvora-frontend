@@ -149,10 +149,10 @@ const Bootcamp: React.FC = () => {
       </AnimatePresence>
 
       <div
-        className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain overflow-x-hidden scroll-hover"
+        className="lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain overflow-x-hidden scroll-hover"
         style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
       >
-        <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
            <div>
              <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
@@ -211,10 +211,10 @@ const Bootcamp: React.FC = () => {
                   animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                   transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   whileHover={isLocked ? {} : { y: -6, scale: 1.01 }}
-                  className={isLocked ? 'opacity-70' : ''}
+                  className={`w-full ${isLocked ? 'opacity-70' : ''}`}
                 >
                   <div
-                    className={`card-hsociety group overflow-hidden flex flex-col ${
+                    className={`card-hsociety group overflow-hidden flex flex-col w-full ${
                       isLocked ? 'cursor-default' : 'hover:border-accent/40 transition-all'
                     }`}
                     onClick={isLocked ? () => setLockedBootcamp(bc) : undefined}
