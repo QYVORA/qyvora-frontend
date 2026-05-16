@@ -33,7 +33,7 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:h-full md:flex-shrink-0 md:overflow-hidden md:pt-[72px] bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:overflow-hidden md:box-border md:pt-[72px] bg-transparent ${className}`}
     >
       <motion.div
         initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
@@ -68,19 +68,19 @@ const Landing: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative h-screen w-full bg-bg overflow-hidden">
+    <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory no-scrollbar bg-transparent"
+        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory no-scrollbar bg-transparent"
         style={{ scrollSnapType: undefined }}
       >
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="md:snap-start md:h-full md:flex-shrink-0 relative bg-transparent"
+          className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border md:pt-[72px] relative bg-transparent"
         >
           <HeroSection
             heroRef={heroRef}
@@ -114,7 +114,7 @@ const Landing: React.FC = () => {
       {/* ── 9. Footer ── */}
       <section
         id="footer"
-        className="md:snap-start md:h-full md:flex-shrink-0"
+        className="md:snap-start md:snap-always md:h-full md:flex md:flex-shrink-0"
       >
         <Footer />
       </section>

@@ -8,6 +8,8 @@ import { useTheme } from '../../../core/contexts/ThemeContext';
 ═══════════════════════════════════════════════ */
 const SAGE     = 0x88ad7c;
 const SAGE_HEX = '#88ad7c';
+const ACCENT_DARK_HEX = '#B7FF99';
+const ACCENT_LIGHT_HEX = '#2f8a1f';
 
 /* ═══════════════════════════════════════════════
    TARGETS
@@ -241,6 +243,15 @@ function isLand(lat: number, lng: number): boolean {
    Renders ASCII_LINES onto an offscreen canvas,
    returns a THREE.CanvasTexture that wraps the cylinder.
 ═══════════════════════════════════════════════ */
+function hexToRgba(hex: string, alpha: number): string {
+  const normalized = hex.replace('#', '');
+  const value = Number.parseInt(normalized, 16);
+  const r = (value >> 16) & 255;
+  const g = (value >> 8) & 255;
+  const b = value & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 function buildAsciiTexture(isLight: boolean): THREE.CanvasTexture {
   const CW = 4096;      // canvas width  (circumference resolution)
   const CH = 512;       // canvas height (band height resolution)
@@ -257,8 +268,8 @@ function buildAsciiTexture(isLight: boolean): THREE.CanvasTexture {
   ctx.font        = `bold ${fontSize}px "JetBrains Mono", "Courier New", monospace`;
   ctx.textBaseline = 'top';
 
-  // Sage green — brighter so it reads clearly
-  ctx.fillStyle = isLight ? 'rgba(26,107,14,0.55)' : 'rgba(136,173,124,0.65)';
+  const accent = isLight ? ACCENT_LIGHT_HEX : ACCENT_DARK_HEX;
+  ctx.fillStyle = hexToRgba(accent, isLight ? 0.68 : 0.86);
 
   const lineH    = CH / ASCII_LINES.length;
   const textW    = ctx.measureText(ASCII_LINES[0]).width;
@@ -646,7 +657,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     <div className="relative h-full w-full overflow-visible">
       <div
         ref={mountRef}
-        className="relative z-10 h-full w-full opacity-60"
+        className="relative z-10 h-full w-full opacity-100"
         style={{ cursor: 'default', willChange: 'transform', contain: 'layout size style' }}
       >
         <div

@@ -46,10 +46,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-12 md:pt-10 pb-8 md:min-h-0 h-full"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-24 md:pt-6 pb-24 md:pb-8 md:min-h-0 h-full"
       >
         {/* Left column */}
-        <div className="flex flex-col items-center lg:items-start w-full lg:pr-12 justify-start md:pt-4 xl:pt-6">
+        <div className="flex min-h-full flex-col items-center justify-center lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -83,7 +83,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 mb-8 md:mb-0"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 mb-6 md:mb-0"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary glass-effect flex items-center justify-center gap-2 !px-8 py-3.5 text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98]">
@@ -102,7 +102,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Stats — Mobile/Tablet only */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-6 w-full max-w-2xl mt-12">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-5 sm:gap-6 w-full max-w-2xl mt-8 sm:mt-10">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}

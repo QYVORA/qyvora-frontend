@@ -43,7 +43,7 @@ const ASCII_LINES = [
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative bg-bg border-t border-border/50 overflow-hidden">
+  <footer className="relative flex min-h-full w-full items-center bg-bg border-t border-border/50 overflow-hidden">
 
     {/* ══════════════════════════════════════════
         LAYER 0 — dot grid texture
@@ -73,19 +73,19 @@ const Footer: React.FC = () => (
     {/* ══════════════════════════════════════════
         CONTENT
     ══════════════════════════════════════════ */}
-    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 w-full">
 
       {/* ── Top section: brand + nav ── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 pt-10 md:pt-14 pb-10 md:pb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-8 sm:pt-10 md:pt-12 pb-8 md:pb-10">
 
         {/* Brand column */}
-        <div className="col-span-2 flex flex-col gap-5">
+        <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-5">
 
           <Link to="/" className="flex items-center w-fit group/logo">
             <img
               src="/assets/branding/logos/hsociety-logo.webp"
               alt="HSociety"
-              className="h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover/logo:opacity-80"
+              className="h-14 sm:h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover/logo:opacity-80"
             />
           </Link>
 
@@ -123,12 +123,12 @@ const Footer: React.FC = () => (
           </div>
 
           {/* Live node ticker */}
-          <div className="inline-flex items-center gap-2.5 bg-accent/5 border border-accent/20 rounded px-3 py-1.5 w-fit mt-1">
+          <div className="inline-flex max-w-full items-center gap-2.5 bg-accent/5 border border-accent/20 rounded px-3 py-1.5 w-fit mt-1">
             <span className="relative flex h-1.5 w-1.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
             </span>
-            <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.22em]">
+            <span className="min-w-0 text-[10px] font-mono font-bold text-accent uppercase tracking-[0.12em] sm:tracking-[0.22em] break-words">
               Node: Tamale // 09.40′N // 00.85′W
             </span>
           </div>
@@ -162,13 +162,13 @@ const Footer: React.FC = () => (
       </div>
 
       {/* ── ASCII watermark band ── */}
-      <div className="relative w-full overflow-hidden" style={{ height: 'clamp(44px, 10vw, 140px)' }} aria-hidden="true">
+      <div className="relative w-full overflow-hidden" style={{ height: 'clamp(40px, 9vw, 108px)' }} aria-hidden="true">
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
           <pre
             className="ascii-text-beam max-w-full overflow-hidden"
             style={{
               fontFamily: '"JetBrains Mono", "Courier New", monospace',
-              fontSize: 'clamp(4px, 1.3vw, 22px)',
+              fontSize: 'clamp(3px, 1.05vw, 16px)',
               lineHeight: 1.05,
               whiteSpace: 'pre',
               margin: 0,
@@ -185,7 +185,7 @@ const Footer: React.FC = () => (
       {/* ── Bottom bar ── */}
       <div className="
         relative flex flex-col sm:flex-row items-center justify-between
-        gap-4 mt-6 border-t border-border/20 pt-6 pb-8 mb-[60px]
+        gap-4 mt-5 border-t border-border/20 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom,0px))]
         md:mt-8 md:pt-7 md:pb-10 md:mb-0
       ">
         {/* Left: copyright */}

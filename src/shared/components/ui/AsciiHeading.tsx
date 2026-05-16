@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useMemo } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import figlet from 'figlet';
 import { cn } from '../../../shared/utils/cn';
@@ -123,8 +123,51 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   }, [text, normalizedFont]);
 
   const outerRef = React.useRef<HTMLDivElement>(null);
+  const preRef = React.useRef<HTMLPreElement>(null);
+  const [fitScale, setFitScale] = useState(1);
+  const fitScaleRef = React.useRef(1);
   const shouldReduceMotion = useReducedMotion();
   const minimizeEffects = shouldReduceMotion;
+
+  useLayoutEffect(() => {
+    if (!responsive || disabled || error) return undefined;
+
+    let frame = 0;
+    const measure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const outer = outerRef.current;
+        const pre = preRef.current;
+        if (!outer || !pre) return;
+
+        const available = outer.clientWidth;
+        if (!available) return;
+
+        const unscaledWidth = pre.scrollWidth / Math.max(fitScaleRef.current, 0.01);
+        const nextScale = Math.min(1, Math.max(0.32, (available - 2) / Math.max(unscaledWidth, 1)));
+        setFitScale(prev => {
+          if (Math.abs(prev - nextScale) <= 0.01) return prev;
+          fitScaleRef.current = nextScale;
+          return nextScale;
+        });
+      });
+    };
+
+    fitScaleRef.current = 1;
+    setFitScale(1);
+    measure();
+
+    const resizeObserver = new ResizeObserver(measure);
+    if (outerRef.current) resizeObserver.observe(outerRef.current);
+    if (preRef.current) resizeObserver.observe(preRef.current);
+    window.addEventListener('resize', measure);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, [asciiText, disabled, error, responsive, text]);
 
   const glowConfig = useMemo(() => {
     const baseColor = color || 'var(--color-accent)';
@@ -139,14 +182,13 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   }, [glow, color]);
 
   const sizeStyle = useMemo(() => {
-    if (!responsive) return { fontSize: compact ? '9px' : '15px' };
+    const baseSize = compact ? '12px' : '16px';
+    if (!responsive) return { fontSize: compact ? '9px' : '15px', lineHeight: 1.05 };
     return {
-      fontSize: compact 
-        ? 'clamp(5px, 0.7vw, 12px)' 
-        : 'clamp(6px, 0.95vw, 17px)', 
+      fontSize: `calc(${baseSize} * ${fitScale})`,
       lineHeight: 1.05,
     };
-  }, [compact, responsive]);
+  }, [compact, fitScale, responsive]);
 
   // Render high-quality normal text if disabled or if figlet failed
   if (disabled || (isLoaded && error)) {
@@ -173,8 +215,9 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
 
   const inner = (
     <pre
+      ref={preRef}
       className={cn(
-        'ascii-heading ascii-text-beam whitespace-pre select-none transition-all duration-500 overflow-visible no-scrollbar m-0 p-0',
+        'ascii-heading ascii-text-beam whitespace-pre select-none transition-all duration-500 overflow-hidden no-scrollbar m-0 p-0 max-w-full',
         preClassName,
         glow !== 'none' && 'ascii-heading-glow',
         align === 'center' ? 'mx-auto w-fit' : '',
@@ -201,7 +244,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   return (
     <motion.div
       ref={outerRef}
-      className={cn('ascii-heading-wrapper overflow-visible', className)}
+      className={cn('ascii-heading-wrapper overflow-hidden', className)}
       initial={shouldAnimate ? { opacity: 0, y: 16, filter: 'blur(4px)' } : { opacity: 1, y: 0 }}
       whileInView={shouldAnimate ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}

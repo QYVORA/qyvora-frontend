@@ -671,7 +671,7 @@
    .ascii-heading {
      display: block;
      line-height: 1.15;
-     letter-spacing: 0.02em;
+     letter-spacing: 0;
      overflow-wrap: break-word;
      word-break: break-word;
      max-width: 100%;
@@ -697,8 +697,7 @@
     .ascii-heading-wrapper {
       display: block;
       max-width: 100%;
-      overflow-x: visible;
-      overflow-y: visible;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -739,12 +738,11 @@
 
    @media (max-width: 639px) {
      .ascii-heading {
-       font-size: 7px !important;
        line-height: 1.1 !important;
      }
 
      .ascii-heading-wrapper {
-       overflow-x: auto;
+       overflow: hidden;
        -webkit-overflow-scrolling: touch;
      }
    }
@@ -854,23 +852,19 @@
    Mobile (< md): snap is disabled. Sections stack normally. The CSS below
    only applies on md+ where snap is active.
 
-   The navbar is fixed at 72px. On the landing page, .landing-snap .snap-start
-   adds pt-[72px] so content starts below the navbar. On public snap pages,
-   SnapPublicLayout's pt-[72px] on <main> handles the offset.
+   The navbar is fixed at 72px. Landing snap sections reserve that space inside
+   each snap cell so ASCII headings and top content never sit under the nav.
 
    [data-snap-child] compresses section padding so content fits the viewport.
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* ── Navbar clearance — removed ──
-   Since we hide the navbar on scroll, we no longer reserve space for it.
-   Sections now fill the entire viewport for a full-bleed immersive experience.
-── */
 @media (min-width: 768px) {
-  .landing-snap .md\:snap-start {
-    padding-top: 0;
+  .landing-snap {
+    scroll-padding-top: 72px;
   }
-  .landing-snap #hero.md\:snap-start {
-    padding-top: 0;
+
+  .landing-snap .md\:snap-start {
+    box-sizing: border-box;
   }
 }
 

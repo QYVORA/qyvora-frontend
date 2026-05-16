@@ -3,13 +3,19 @@
  *
  * Cinematic flowing digital intelligence stream.
  * Binary data highways moving beneath the viewer.
+ *
+ * Fixes:
+ *  - Digits are much smaller / finer
+ *  - Smoother lane blending and flow bands
+ *  - Fully responsive across mobile, tablet, desktop, ultrawide
  */
 
 import React, { Suspense, useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useAdaptiveUi } from "../../../core/hooks/useAdaptiveUi";
 
-const BG = "transparent";
+/* ─── Shaders ──────────────────────────────────────────────────────────────── */
 
 const STREAM_VERT = `
   varying vec2 vUv;
@@ -20,13 +26,13 @@ const STREAM_VERT = `
 `;
 
 const STREAM_FRAG = `
-   precision highp float;
+  precision highp float;
 
-   uniform float uTime;
-   uniform vec3  uAccent;
-   uniform vec2  uResolution;
-   uniform float uScale;
-   varying vec2  vUv;
+  uniform float uTime;
+  uniform vec3  uAccent;
+  uniform vec2  uResolution;
+  uniform float uPixelDensity;   /* physical px-per-logical-px  */
+  varying vec2  vUv;
 
   float hash(float n) {
     return fract(sin(n) * 43758.5453);
@@ -35,119 +41,153 @@ const STREAM_FRAG = `
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
 
-   float laneContrib(
-     vec2  uv,
-     float laneX,
-     float laneW,
-     float speed,
-     float seed,
-     float perspRatio
-   ) {
-     float scaledLaneW = laneW * uScale;
-     float halfW = scaledLaneW * 0.5;
-     float dx = uv.x - laneX;
-     if (abs(dx) > halfW) return 0.0;
-     float lx = (dx / scaledLaneW) + 0.5;
+  /*
+   * laneContrib
+   *
+   * laneX   – normalised centre of the lane (0-1 in UV space)
+   * laneW   – logical lane width  (0-1 in UV space, BEFORE perspective)
+   * speed   – scroll speed multiplier
+   * seed    – random seed for this lane
+   * perspR  – perspective compression ratio  (0 = near, 1 = horizon)
+   *
+   * Digit size is controlled by charPixels: the target height of one
+   * character cell expressed in *physical* pixels.  Smaller value → smaller
+   * digits.  We convert that to UV-space using uResolution so it stays
+   * consistent across DPR and window size changes.
+   */
+  float laneContrib(
+    vec2  uv,
+    float laneX,
+    float laneW,
+    float speed,
+    float seed,
+    float perspR
+  ) {
+    float halfW = laneW * 0.5;
+    float dx    = uv.x - laneX;
+    if (abs(dx) > halfW) return 0.0;
+    float lx = (dx / laneW) + 0.5;   /* 0-1 within the lane */
 
-     float aspect = uResolution.x / max(uResolution.y, 1.0);
-     float charH  = scaledLaneW * aspect * 1.9;
+    /* Target glyph height in physical pixels – tune this to taste.
+       Lower = finer / smaller digits.                                   */
+    float charPixels = 11.0 * uPixelDensity;
+    float charH      = charPixels / uResolution.y;
 
     float scrollY = uTime * speed;
     float cellY   = floor((uv.y + scrollY) / charH);
     float localY  = fract((uv.y + scrollY) / charH);
 
     float h     = hash(seed + hash2(vec2(seed * 0.1, cellY)));
-    float flip  = floor(uTime / (0.35 + hash2(vec2(laneX, seed)) * 0.55));
+    float flip  = floor(uTime / (0.30 + hash2(vec2(laneX, seed)) * 0.50));
     float digit = step(0.5, hash(h + flip * 9.3));
 
+    /* Glyph: "1" = vertical bar, "0" = hollow rectangle */
     float glyph = 0.0;
     if (digit > 0.5) {
-      float bar = step(0.28, lx) * step(lx, 0.72)
-                * step(0.05, localY) * step(localY, 0.90);
-      glyph = bar;
+      /* "1" – narrow vertical bar */
+      glyph = step(0.34, lx) * step(lx, 0.66)
+            * step(0.06, localY) * step(localY, 0.88);
     } else {
-      float outer = step(0.08, lx) * step(lx, 0.92)
-                  * step(0.05, localY) * step(localY, 0.92);
-      float inner = step(0.26, lx) * step(lx, 0.74)
-                  * step(0.20, localY) * step(localY, 0.78);
+      /* "0" – hollow rect with thin walls */
+      float outer = step(0.10, lx) * step(lx, 0.90)
+                  * step(0.06, localY) * step(localY, 0.90);
+      float inner = step(0.28, lx) * step(lx, 0.72)
+                  * step(0.22, localY) * step(localY, 0.76);
       glyph = clamp(outer - inner, 0.0, 1.0);
     }
 
+    /* Falling-head glow */
     float headPhase = fract(seed * 0.6173 + uTime * speed * 0.065);
     float headY     = headPhase;
     float headDist  = abs(uv.y - headY);
-    float headGlow  = exp(-headDist * 22.0) * 2.8;
+    float headGlow  = exp(-headDist * 28.0) * 3.2;
 
-    float aboveHead = clamp((uv.y - headY) / 0.55, 0.0, 1.0);
-    float trailMask = exp(-aboveHead * 3.5);
+    /* Trail that fades upward from the head */
+    float aboveHead = clamp((uv.y - headY) / 0.50, 0.0, 1.0);
+    float trailMask = exp(-aboveHead * 4.0);
 
-    float depthFade = 1.0 - perspRatio * 0.60;
-    float mobileBoost = uScale < 0.5 ? 1.4 : 1.0;
+    /* Depth fade */
+    float depthFade = 1.0 - perspR * 0.55;
 
-    return clamp((glyph * trailMask + headGlow) * depthFade * mobileBoost, 0.0, 1.0);
+    return clamp((glyph * trailMask + headGlow) * depthFade, 0.0, 1.0);
   }
 
   void main() {
     vec2 uv = vUv;
 
-    float skyMask = smoothstep(0.82, 0.42, uv.y);
+    /* Mask the sky area so streams fade out near the horizon */
+    float skyMask = smoothstep(0.85, 0.38, uv.y);
 
-    float vp = pow(clamp(uv.y, 0.0, 1.0), 0.55);
-    float cx = (uv.x - 0.5) * mix(1.0, 0.25, vp) + 0.5;
-    vec2 wuv = vec2(cx, uv.y);
+    /* Perspective warp – lanes converge toward a vanishing point */
+    float vp = pow(clamp(uv.y, 0.0, 1.0), 0.50);
+    float cx = (uv.x - 0.5) * mix(1.0, 0.22, vp) + 0.5;
+    vec2  wuv = vec2(cx, uv.y);
 
     float acc = 0.0;
 
-    /* near lanes */
-    acc += laneContrib(wuv, 0.10, 0.072, 0.60, 1.00, 0.05);
-    acc += laneContrib(wuv, 0.32, 0.068, 0.55, 4.30, 0.08);
-    acc += laneContrib(wuv, 0.55, 0.074, 0.65, 8.70, 0.06);
-    acc += laneContrib(wuv, 0.78, 0.070, 0.58, 13.1, 0.07);
+    /* ── Near lanes (wide, fast) ──────────────────────────────── */
+    acc += laneContrib(wuv, 0.07,  0.048, 0.62, 1.00,  0.04);
+    acc += laneContrib(wuv, 0.21,  0.044, 0.57, 4.30,  0.06);
+    acc += laneContrib(wuv, 0.36,  0.050, 0.66, 8.70,  0.05);
+    acc += laneContrib(wuv, 0.51,  0.046, 0.60, 13.1,  0.06);
+    acc += laneContrib(wuv, 0.66,  0.048, 0.63, 17.5,  0.05);
+    acc += laneContrib(wuv, 0.80,  0.044, 0.58, 22.0,  0.07);
+    acc += laneContrib(wuv, 0.93,  0.046, 0.61, 26.3,  0.04);
 
-    /* mid lanes */
-    acc += laneContrib(wuv, 0.20, 0.046, 0.40, 20.5, 0.38);
-    acc += laneContrib(wuv, 0.43, 0.042, 0.38, 25.9, 0.40);
-    acc += laneContrib(wuv, 0.66, 0.044, 0.43, 31.2, 0.37);
+    /* ── Mid lanes ────────────────────────────────────────────── */
+    acc += laneContrib(wuv, 0.14,  0.030, 0.42, 31.0,  0.36);
+    acc += laneContrib(wuv, 0.28,  0.028, 0.38, 36.5,  0.38);
+    acc += laneContrib(wuv, 0.42,  0.031, 0.44, 42.1,  0.37);
+    acc += laneContrib(wuv, 0.56,  0.029, 0.40, 47.8,  0.39);
+    acc += laneContrib(wuv, 0.70,  0.030, 0.43, 53.4,  0.36);
+    acc += laneContrib(wuv, 0.84,  0.028, 0.41, 59.0,  0.38);
 
-    /* far lanes */
-    acc += laneContrib(wuv, 0.30, 0.026, 0.22, 40.0, 0.78);
-    acc += laneContrib(wuv, 0.52, 0.024, 0.20, 46.5, 0.80);
-    acc += laneContrib(wuv, 0.72, 0.028, 0.25, 52.1, 0.76);
+    /* ── Far lanes (narrow, slow) ─────────────────────────────── */
+    acc += laneContrib(wuv, 0.20,  0.017, 0.22, 64.0,  0.77);
+    acc += laneContrib(wuv, 0.35,  0.016, 0.20, 70.5,  0.80);
+    acc += laneContrib(wuv, 0.50,  0.018, 0.24, 76.1,  0.76);
+    acc += laneContrib(wuv, 0.65,  0.016, 0.21, 81.8,  0.79);
+    acc += laneContrib(wuv, 0.80,  0.017, 0.23, 87.3,  0.77);
 
-    /* flow bands */
+    /* ── Subtle horizontal flow bands ────────────────────────── */
     float bands = 0.0;
-    for (int b = 0; b < 5; b++) {
+    for (int b = 0; b < 7; b++) {
       float f    = float(b);
-      float bspd = 0.028 + f * 0.008;
+      float bspd = 0.020 + f * 0.006;
       float bseed= f * 0.4173;
       float bY   = fract(bseed + uTime * bspd);
-      float bW   = 0.035 + hash(f * 3.7) * 0.025;
+      float bW   = 0.030 + hash(f * 3.7) * 0.020;
       float d    = abs(uv.y - bY) / bW;
-      float fade = smoothstep(1.0, 0.0, uv.y * 1.1);
-      float xfade= smoothstep(0.0, 0.15, uv.x) * smoothstep(1.0, 0.85, uv.x);
-      bands += exp(-d * d * 1.8) * fade * xfade * 0.18;
+      float fade = smoothstep(0.0, 0.20, uv.y) * smoothstep(1.0, 0.78, uv.y);
+      float xfade= smoothstep(0.0, 0.12, uv.x) * smoothstep(1.0, 0.88, uv.x);
+      bands += exp(-d * d * 2.0) * fade * xfade * 0.14;
     }
 
     float totalLight = clamp(acc, 0.0, 1.0);
-    float bloom      = totalLight * totalLight * 0.45;
+    float bloom      = totalLight * totalLight * 0.40;
 
-    vec3 dimGreen = vec3(0.01, 0.07, 0.01);
+    vec3 dimGreen = vec3(0.005, 0.05, 0.005);
     vec3 col      = mix(dimGreen, uAccent, totalLight);
     col          += uAccent * bloom;
-    col          += uAccent * bands * 0.9;
+    col          += uAccent * bands * 0.85;
 
-    float hazeY = smoothstep(0.45, 0.78, uv.y);
-    col        += vec3(0.0, 0.06, 0.01) * hazeY * 0.4;
+    /* Subtle horizon haze */
+    float hazeY = smoothstep(0.40, 0.80, uv.y);
+    col        += vec3(0.0, 0.05, 0.01) * hazeY * 0.35;
 
-    float vx    = smoothstep(0.0, 0.12, uv.x) * smoothstep(1.0, 0.88, uv.x);
-    float alpha = (totalLight * 0.95 + bands * 0.6) * skyMask * vx;
+    /* Vignette on left/right edges */
+    float vx    = smoothstep(0.0, 0.10, uv.x) * smoothstep(1.0, 0.90, uv.x);
+    float alpha = (totalLight * 0.93 + bands * 0.55) * skyMask * vx;
 
-    gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.94));
+    gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.93));
   }
 `;
 
-function StreamFloor() {
-  const matRef  = useRef();
+/* ─── Three.js components ──────────────────────────────────────────────────── */
+
+function StreamFloor({ speedScale = 0.58 }) {
+  const matRef   = useRef();
+  const meshRef  = useRef();
   const { size } = useThree();
 
   const material = useMemo(
@@ -156,10 +196,10 @@ function StreamFloor() {
         vertexShader:   STREAM_VERT,
         fragmentShader: STREAM_FRAG,
         uniforms: {
-          uTime:       { value: 0 },
-          uAccent:     { value: new THREE.Color(183 / 255, 255 / 255, 153 / 255) },
-          uResolution: { value: new THREE.Vector2(1, 1) },
-          uScale:      { value: 1.0 },
+          uTime:        { value: 0 },
+          uAccent:      { value: new THREE.Color(183 / 255, 255 / 255, 153 / 255) },
+          uResolution:  { value: new THREE.Vector2(1, 1) },
+          uPixelDensity:{ value: 1.0 },
         },
         transparent: true,
         depthWrite:  false,
@@ -171,57 +211,72 @@ function StreamFloor() {
 
   useFrame(({ clock, size: s }) => {
     if (!matRef.current) return;
-    matRef.current.uniforms.uTime.value = clock.getElapsedTime();
-    matRef.current.uniforms.uResolution.value.set(s.width, s.height);
-    const scale = s.width < 768 ? 0.35 : 1.0; 
-    matRef.current.uniforms.uScale.value = scale;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    matRef.current.uniforms.uTime.value        = clock.getElapsedTime() * speedScale;
+    matRef.current.uniforms.uResolution.value.set(s.width * dpr, s.height * dpr);
+    matRef.current.uniforms.uPixelDensity.value = dpr;
   });
 
+  /* Plane wide enough to fill the widest viewport (incl. ultrawide) */
+  const planeW = size.width < 768 ? 40 : 32;
+
   return (
-    <mesh position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[size.width < 768 ? 40 : 22, 40, 1, 1]} />
+    <mesh ref={meshRef} position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
+      {/* More segments = smoother perspective warp */}
+      <planeGeometry args={[planeW, 40, 2, 2]} />
       <primitive object={material} ref={matRef} attach="material" />
     </mesh>
   );
 }
 
-function CameraRig() {
+function CameraRig({ speedScale = 0.58 }) {
   const { camera, size } = useThree();
   const target = useMemo(() => new THREE.Vector3(0, -1.08, -10.8), []);
 
   useEffect(() => {
-    camera.fov = size.width < 768 ? 85 : 58;
+    const w = size.width;
+    /* FOV: narrow on wide screens, wider on small/portrait screens */
+    camera.fov  = w < 480 ? 90 : w < 768 ? 80 : w < 1280 ? 65 : 58;
     camera.near = 0.1;
-    camera.far = 100;
+    camera.far  = 120;
     camera.updateProjectionMatrix();
   }, [camera, size.width]);
 
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    const isMobile = size.width < 768;
+  useFrame(({ clock, size: s }) => {
+    const t       = clock.getElapsedTime() * speedScale;
+    const w       = s.width;
+    const isMob   = w < 768;
+    const isSmall = w < 480;
+
     camera.position.set(
       Math.sin(t * 0.18) * 0.18,
-      (isMobile ? 1.48 : 1.08) + Math.sin(t * 0.12) * 0.035,
-      isMobile ? 7.2 : 5.9
+      (isSmall ? 1.60 : isMob ? 1.48 : 1.08) + Math.sin(t * 0.12) * 0.030,
+      isSmall ? 7.8 : isMob ? 7.2 : 5.9
     );
-    target.x = Math.sin(t * 0.16) * 0.35;
+    target.x = Math.sin(t * 0.16) * 0.30;
     camera.lookAt(target);
   });
 
   return null;
 }
 
-function Scene() {
+function Scene({ speedScale }) {
   return (
     <>
-      <fog attach="fog" args={["#000000", 7, 24]} />
-      <CameraRig />
-      <StreamFloor />
+      <fog attach="fog" args={["#000000", 8, 26]} />
+      <CameraRig speedScale={speedScale} />
+      <StreamFloor speedScale={speedScale} />
     </>
   );
 }
 
+/* ─── Public component ─────────────────────────────────────────────────────── */
+
 export default function HeroBackground({ className = "" }) {
+  const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const speedScale = constrainedDevice ? 0.34 : 0.52;
+  const dpr = isMobile ? [1, 1.25] : [1, 1.75];
+
   return (
     <div
       className={`absolute inset-0 overflow-hidden ${className}`}
@@ -229,39 +284,52 @@ export default function HeroBackground({ className = "" }) {
       aria-hidden="true"
     >
       <Canvas
-        dpr={window.devicePixelRatio > 1 ? [1, 2] : 1}
-        camera={{ position: [0, 1.08, 5.9], fov: 58, near: 0.1, far: 80 }}
+        dpr={dpr}
+        camera={{ position: [0, 1.08, 5.9], fov: 58, near: 0.1, far: 120 }}
         gl={{
-          antialias:       true,
+          antialias:       !isMobile,
           alpha:           true,
           powerPreference: "high-performance",
           toneMapping:     THREE.NoToneMapping,
         }}
         performance={{ min: 0.5 }}
+        style={{ width: "100%", height: "100%" }}
       >
         <Suspense fallback={null}>
-          <Scene />
+          <Scene speedScale={speedScale} />
         </Suspense>
       </Canvas>
 
-      {/* Overlays on top of Canvas */}
+      {/* Gradient overlays */}
       <div className="absolute inset-0 pointer-events-none z-10">
+        {/* Bottom fade */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 15%, transparent 60%)`,
+            background: `linear-gradient(to top,
+              rgba(0,0,0,0.90) 0%,
+              rgba(0,0,0,0.45) 18%,
+              transparent 58%)`,
           }}
         />
+        {/* Top fade */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 15%, transparent 60%)`,
+            background: `linear-gradient(to bottom,
+              rgba(0,0,0,0.88) 0%,
+              rgba(0,0,0,0.38) 16%,
+              transparent 55%)`,
           }}
         />
+        {/* Centre accent bloom */}
         <div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 60% 20% at 50% 50%, rgba(183,255,153,0.05) 0%, transparent 100%)`,
+            background: `radial-gradient(
+              ellipse 55% 18% at 50% 52%,
+              rgba(183,255,153,0.055) 0%,
+              transparent 100%)`,
           }}
         />
       </div>
