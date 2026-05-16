@@ -198,9 +198,9 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   }, [glow, color]);
 
   const sizeStyle = useMemo(() => {
-    const baseSize = isMobile ? (compact ? '10px' : '13px') : (compact ? '12px' : '16px');
-    const lineHeight = isMobile ? 1.18 : 1.05;
-    if (!responsive) return { fontSize: compact ? '9px' : '15px', lineHeight: 1.05 };
+    const baseSize = isMobile ? (compact ? '8px' : '10px') : (compact ? '12px' : '16px');
+    const lineHeight = 1.0;
+    if (!responsive) return { fontSize: compact ? '9px' : '15px', lineHeight: 1.0 };
     if (isMobile) {
       return {
         fontSize: baseSize,

@@ -196,6 +196,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               text="Leaderboard" 
               font="ANSI Shadow" 
               align="left" 
+              compact
               animated 
               glow="intense" 
               className="mb-6" 
