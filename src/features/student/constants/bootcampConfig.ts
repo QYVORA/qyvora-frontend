@@ -44,8 +44,12 @@ export function buildStepImagePath(
   roomId: string,
   filename: string
 ): string {
-  // Full URLs (CDN images) are passed through unchanged
-  if (filename.startsWith('http://') || filename.startsWith('https://')) {
+  // Full URLs (CDN images) or absolute paths are passed through unchanged
+  if (
+    filename.startsWith('http://') ||
+    filename.startsWith('https://') ||
+    filename.startsWith('/')
+  ) {
     return filename;
   }
 
@@ -56,7 +60,7 @@ export function buildStepImagePath(
   const phaseDir = `phase-${String(phaseNum).padStart(2, '0')}`;
   const roomDir = `room-${String(roomNum).padStart(2, '0')}`;
 
-  const normalized = filename.trim().toLowerCase().replaceAll('_', '-');
+  const normalized = filename.trim().toLowerCase().replace(/_/g, '-');
   const withStepPrefix = normalized.startsWith('step-')
     ? normalized
     : normalized.replace(/^(\d+)/, (m) => `step-${m.padStart(2, '0')}`);
@@ -1762,7 +1766,7 @@ curl -s -I http://<target_ip> | grep -E "Strict-Transport|Content-Security|X-Fra
 \`\`\`
 
 *Hacker's Strategy:* The \`X-Powered-By\` and \`Server\` headers are your best friends. They tell you exactly what software to research for known exploits.`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'Common Protocols: FTP, SSH & SMTP',
@@ -1818,7 +1822,7 @@ sudo tcpdump -i any port 21 or port 22 or port 25
 \`\`\`
 
 *Training Task:* Use \`nc\` to connect to port 22 on your local machine. Can you identify the SSH version? Research the most famous vulnerability for that version.`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'Protocol Analysis & Workflow',
@@ -1872,7 +1876,7 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
 \`\`\`
 
 *Final Insight:* Networking isn't about memorizing ports; it's about understanding the "conversation" between machines. If you can hear the conversation, you can join it. If you can join it, you can control it.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },
@@ -1959,7 +1963,7 @@ nmap -sS 10.10.10.10 -oS -
 \`\`\`
 
 *Operative Drill:* Perform an \`-sS\` scan and an \`-sT\` scan while running \`tcpdump\`. Which one completes the handshake? Which one sends a \`RST\`?`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'Interrogating Services & Versions',
@@ -2024,7 +2028,7 @@ telnet 10.10.10.10 25
 \`\`\`
 
 *Hacker's Strategy:* If Nmap reports a port as 'Filtered,' it means a firewall is dropping the packets. Try changing your source port to 53 or 88 — firewalls often trust traffic from DNS or Kerberos ports.`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'The Nmap Scripting Engine (NSE)',
@@ -2092,7 +2096,7 @@ nmap -p 80 --script http-title,http-headers,http-methods,http-enum 10.10.10.10
 \`\`\`
 
 *Operative Drill:* Browse \`/usr/share/nmap/scripts/\`. Find a script you've never used, read its code, and explain to yourself how it detects a vulnerability. This is how you move from tool-user to tool-master.`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'Building a Professional Recon Workflow',
@@ -2152,7 +2156,7 @@ script -a engagement_log.txt
 \`\`\`
 
 *Final Challenge:* Create a bash script that takes a single IP address, finds all open ports, and then automatically runs the \`vuln\` script category against only those ports. Output the result to a file named \`VULN_REPORT.txt\`. Congratulations, Operative.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },
@@ -2221,7 +2225,7 @@ tshark -r capture.pcap -Y "ip.ttl > 128"
 \`\`\`
 
 *Hacker's Insight:* In the "Packet Details" pane of Wireshark, the OSI layers are stacked from bottom to top. Always look at the **EtherType** field to see which Layer 3 protocol (like IPv4 or IPv6) is being carried.`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'Advanced Display Filters',
@@ -2277,7 +2281,7 @@ tshark -r capture.pcap -Y "tcp.analysis.retransmission"
 \`\`\`
 
 *Training Task:* Create a Tshark filter that shows only traffic between your machine and \`10.10.10.10\`, excluding any SSH or HTTP traffic. What protocols are left?`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'Following & Reconstructing Streams',
@@ -2331,7 +2335,7 @@ tshark -r capture.pcap -z conv,tcp -q | sort -k 10 -rn | head -n 5
 \`\`\`
 
 *Operative Drill:* Capture your own login to a non-HTTPS test site (e.g., \`http://<vulnerable_test_site>\`). Use Tshark to reconstruct the stream. Can you find your username and password in the raw data?`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'DNS Analysis & Exfiltration Detection',
@@ -2384,7 +2388,7 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
 \`\`\`
 
 *Final Training Insight:* A hacker's greatest asset is the protocol everyone trusts. DNS, ICMP, and NTP are often overlooked, but in the hands of an HSociety operative, they are powerful tools for stealthy communication. Congratulations on completing Phase 3.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },
@@ -2660,7 +2664,7 @@ curl -s http://<target_ip>0/nonexistent_path_12345 | grep -i "server"
 \`\`\`
 
 *Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an HSociety operative provide more value than a tool?`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'OWASP Categories 6-10: The Hidden Seams',
