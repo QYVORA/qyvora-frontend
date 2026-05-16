@@ -334,31 +334,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       new THREE.MeshBasicMaterial({ color: isLight ? 0xf4f7f4 : 0x020403 }),
     ));
 
-    /* ── Grid ── */
-    const gridColor = isLight ? 0x88ad7c : 0x0a0f0d;
-    const gridMat = new THREE.LineBasicMaterial({ color: gridColor, transparent: true, opacity: isLight ? 0.2 : 0.4 });
-    for (let lat = -75; lat <= 75; lat += 20) {
-      const phi = (90 - lat) * (Math.PI / 180);
-      const r = Math.sin(phi), y = Math.cos(phi);
-      const pts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 96; i++) {
-        const t = (i / 96) * Math.PI * 2;
-        pts.push(new THREE.Vector3(r * Math.cos(t), y, r * Math.sin(t)));
-      }
-      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
-    }
-    for (let lng = 0; lng < 360; lng += 20) {
-      const theta = (lng * Math.PI) / 180;
-      const pts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 96; i++) {
-        const phi = (i / 96) * Math.PI;
-        pts.push(new THREE.Vector3(
-          Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta),
-        ));
-      }
-      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
-    }
-
     /* ── Land poles ── */
     const STEP = 1.8;
     const worldSamples: THREE.Vector3[]  = [];
@@ -556,8 +531,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     /* ── Tooltip ── */
     const raycaster = new THREE.Raycaster();
     const m2 = new THREE.Vector2();
+    let rect = renderer.domElement.getBoundingClientRect();
+
     const onHover = (e: MouseEvent) => {
-      const rect = renderer.domElement.getBoundingClientRect();
       m2.x =  ((e.clientX-rect.left)/rect.width)*2-1;
       m2.y = -((e.clientY-rect.top)/rect.height)*2+1;
       raycaster.setFromCamera(m2, camera);
@@ -632,7 +608,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const onResize = () => {
       w = el.clientWidth; h = el.clientHeight;
       if (h <= 0) return;
-      camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      rect = renderer.domElement.getBoundingClientRect();
     };
     window.addEventListener('resize', onResize);
 
@@ -678,4 +657,4 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   );
 };
 
-export default HackerGlobe;
+export default React.memo(HackerGlobe);
