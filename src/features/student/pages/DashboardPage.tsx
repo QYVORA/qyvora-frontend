@@ -184,9 +184,10 @@ const Dashboard: React.FC = () => {
           {/* ── HEADER ───────────────────────────────────────────────────── */}
 <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
              <div>
-               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                 Mission Control
-               </div>
+              {/**==========================
+               * Removed  headr tags not neccesaryu on page
+               * =============================
+               */}
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">
                  {loading
                    ? <span className="inline-block h-12 w-48 rounded bg-accent-dim/20 animate-pulse align-middle" />

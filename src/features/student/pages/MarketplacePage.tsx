@@ -140,7 +140,7 @@ const Marketplace: React.FC = () => {
              <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
                Zero-Day Vault
              </div>
-             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Market</h1>
+             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Zero-Day Market</h1>
              <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
            </div>
            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap">

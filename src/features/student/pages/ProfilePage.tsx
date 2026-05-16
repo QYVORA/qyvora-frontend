@@ -158,9 +158,7 @@ const Profile: React.FC = () => {
 
         {/* HEADER */}
 <ScrollReveal className="mb-10 md:mb-12">
-           <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-             Operator Profile
-           </div>
+         
            <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-10">
             <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
