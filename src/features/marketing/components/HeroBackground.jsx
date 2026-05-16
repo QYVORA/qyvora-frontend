@@ -126,28 +126,23 @@ const STREAM_FRAG = `
     float acc = 0.0;
 
     /* ── Near lanes (wide, fast) ──────────────────────────────── */
-    acc += laneContrib(wuv, 0.07,  0.048, 0.62, 1.00,  0.04);
-    acc += laneContrib(wuv, 0.21,  0.044, 0.57, 4.30,  0.06);
-    acc += laneContrib(wuv, 0.36,  0.050, 0.66, 8.70,  0.05);
-    acc += laneContrib(wuv, 0.51,  0.046, 0.60, 13.1,  0.06);
-    acc += laneContrib(wuv, 0.66,  0.048, 0.63, 17.5,  0.05);
-    acc += laneContrib(wuv, 0.80,  0.044, 0.58, 22.0,  0.07);
-    acc += laneContrib(wuv, 0.93,  0.046, 0.61, 26.3,  0.04);
+    acc += laneContrib(wuv, 0.10,  0.050, 0.62, 1.00,  0.04);
+    acc += laneContrib(wuv, 0.25,  0.045, 0.57, 4.30,  0.06);
+    acc += laneContrib(wuv, 0.40,  0.052, 0.66, 8.70,  0.05);
+    acc += laneContrib(wuv, 0.55,  0.048, 0.60, 13.1,  0.06);
+    acc += laneContrib(wuv, 0.70,  0.050, 0.63, 17.5,  0.05);
+    acc += laneContrib(wuv, 0.85,  0.046, 0.58, 22.0,  0.07);
 
     /* ── Mid lanes ────────────────────────────────────────────── */
-    acc += laneContrib(wuv, 0.14,  0.030, 0.42, 31.0,  0.36);
-    acc += laneContrib(wuv, 0.28,  0.028, 0.38, 36.5,  0.38);
-    acc += laneContrib(wuv, 0.42,  0.031, 0.44, 42.1,  0.37);
-    acc += laneContrib(wuv, 0.56,  0.029, 0.40, 47.8,  0.39);
-    acc += laneContrib(wuv, 0.70,  0.030, 0.43, 53.4,  0.36);
-    acc += laneContrib(wuv, 0.84,  0.028, 0.41, 59.0,  0.38);
+    acc += laneContrib(wuv, 0.18,  0.032, 0.42, 31.0,  0.36);
+    acc += laneContrib(wuv, 0.38,  0.030, 0.38, 36.5,  0.38);
+    acc += laneContrib(wuv, 0.58,  0.033, 0.44, 42.1,  0.37);
+    acc += laneContrib(wuv, 0.78,  0.031, 0.40, 47.8,  0.39);
 
     /* ── Far lanes (narrow, slow) ─────────────────────────────── */
-    acc += laneContrib(wuv, 0.20,  0.017, 0.22, 64.0,  0.77);
-    acc += laneContrib(wuv, 0.35,  0.016, 0.20, 70.5,  0.80);
-    acc += laneContrib(wuv, 0.50,  0.018, 0.24, 76.1,  0.76);
-    acc += laneContrib(wuv, 0.65,  0.016, 0.21, 81.8,  0.79);
-    acc += laneContrib(wuv, 0.80,  0.017, 0.23, 87.3,  0.77);
+    acc += laneContrib(wuv, 0.30,  0.018, 0.22, 64.0,  0.77);
+    acc += laneContrib(wuv, 0.50,  0.017, 0.20, 70.5,  0.80);
+    acc += laneContrib(wuv, 0.70,  0.019, 0.24, 76.1,  0.76);
 
     /* ── Subtle horizontal flow bands ────────────────────────── */
     float bands = 0.0;
@@ -209,12 +204,16 @@ function StreamFloor({ speedScale = 0.58 }) {
     []
   );
 
-  useFrame(({ clock, size: s }) => {
+  useEffect(() => {
     if (!matRef.current) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    matRef.current.uniforms.uTime.value        = clock.getElapsedTime() * speedScale;
-    matRef.current.uniforms.uResolution.value.set(s.width * dpr, s.height * dpr);
+    matRef.current.uniforms.uResolution.value.set(size.width * dpr, size.height * dpr);
     matRef.current.uniforms.uPixelDensity.value = dpr;
+  }, [size]);
+
+  useFrame(({ clock }) => {
+    if (!matRef.current) return;
+    matRef.current.uniforms.uTime.value = clock.getElapsedTime() * speedScale;
   });
 
   /* Plane wide enough to fill the widest viewport (incl. ultrawide) */
@@ -242,9 +241,9 @@ function CameraRig({ speedScale = 0.58 }) {
     camera.updateProjectionMatrix();
   }, [camera, size.width]);
 
-  useFrame(({ clock, size: s }) => {
+  useFrame(({ clock }) => {
     const t       = clock.getElapsedTime() * speedScale;
-    const w       = s.width;
+    const w       = size.width;
     const isMob   = w < 768;
     const isSmall = w < 480;
 
@@ -272,10 +271,10 @@ function Scene({ speedScale }) {
 
 /* ─── Public component ─────────────────────────────────────────────────────── */
 
-export default function HeroBackground({ className = "" }) {
+function HeroBackground({ className = "" }) {
   const { isMobile, constrainedDevice } = useAdaptiveUi();
   const speedScale = constrainedDevice ? 0.34 : 0.52;
-  const dpr = isMobile ? [1, 1.25] : [1, 1.75];
+  const dpr = useMemo(() => (isMobile ? [1, 1.25] : [1, 1.75]), [isMobile]);
 
   return (
     <div
@@ -336,3 +335,5 @@ export default function HeroBackground({ className = "" }) {
     </div>
   );
 }
+
+export default React.memo(HeroBackground);
