@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../../features/marketing/components/layout/Navbar';
 import Footer from '../../features/marketing/components/layout/Footer';
 import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
+import ContactModalHost from '../../features/marketing/components/ContactModal';
 
 const PublicLayout = () => (
   <>
@@ -16,6 +17,7 @@ const PublicLayout = () => (
     </main>
     <Footer />
     <PublicBottomNav />
+    <ContactModalHost />
   </>
 );
 

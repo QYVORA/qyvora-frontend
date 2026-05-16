@@ -33,7 +33,7 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:overflow-hidden md:box-border md:pt-[72px] bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:overflow-hidden md:box-border bg-transparent ${className}`}
     >
       <motion.div
         initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
@@ -74,13 +74,13 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden md:snap-y md:snap-mandatory no-scrollbar bg-transparent"
+        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent no-scrollbar md:mt-[72px] md:h-[calc(100svh-72px)] md:snap-y md:snap-mandatory"
         style={{ scrollSnapType: undefined }}
       >
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border md:pt-[72px] relative bg-transparent"
+          className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent"
         >
           <HeroSection
             heroRef={heroRef}

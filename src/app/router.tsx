@@ -16,7 +16,6 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 
 // Marketing pages
 const LandingPage = lazy(() => import('../features/marketing/pages/LandingPage'));
-const ContactPage = lazy(() => import('../features/marketing/pages/ContactPage'));
 const TermsPage = lazy(() => import('../features/marketing/pages/TermsPage'));
 
 // Auth pages
@@ -87,7 +86,7 @@ export const AppRouter = () => {
 
         {/* Standard public pages — normal scroll with footer */}
         <Route element={<PublicLayout />}>
-          <Route path="/contact" element={<Wrap scope="Contact"><ContactPage /></Wrap>} />
+          <Route path="/contact" element={<Navigate to="/" replace />} />
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>
