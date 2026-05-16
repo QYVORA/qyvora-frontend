@@ -6,6 +6,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import HackerGlobe from '../../marketing/components/HackerGlobe';
+import HeroBackground from '../../marketing/components/HeroBackground';
 import api from '../../../core/services/api';
 
 type Mode = 'login' | 'register' | 'forgot' | 'reset-confirm' | 'verify-email' | 'change-password';
@@ -245,17 +246,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}
-      style={{
-        backgroundImage: 'url(/assets/sections/backgrounds/offsec-grid-background.webp)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      {/* Dark overlay so content stays readable over the background */}
-      <div className="absolute inset-0 bg-bg/80 pointer-events-none" style={{ position: 'fixed' }} />
+    <div className={`min-h-screen relative grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
+      <HeroBackground className="opacity-50" />
 
       {!isAdminLoginRoute && <AuthHero />}
 

@@ -520,7 +520,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       const e_  = latLngToVec3(tb.lat, tb.lng, 1.01);
       const mid = s.clone().add(e_).normalize().multiplyScalar(1.15 + 0.1 * Math.random());
       const curve = new THREE.QuadraticBezierCurve3(s, mid, e_);
-      const geo   = new THREE.BufferGeometry();
+      const geo   = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
       const isAcc = a === 0 || b === 0;
       globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
         color:       isAcc ? (isLight ? 0x1a6b0e : SAGE) : (isLight ? 0x8ab88a : 0x1e2e24),
@@ -607,7 +607,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
       arcs.forEach(arc => {
         arc.progress = (arc.progress + arc.speed) % 1;
-        arc.geo.setFromPoints(arc.curve.getPoints(Math.max(2, Math.floor(arc.progress * 80))));
+        arc.geo.setDrawRange(0, Math.max(2, Math.floor(arc.progress * 80)));
       });
 
       sats.forEach(sat => {
