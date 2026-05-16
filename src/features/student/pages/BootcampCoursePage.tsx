@@ -225,7 +225,7 @@ const BootcampCourse: React.FC = () => {
   return (
     <div className="bg-bg">
       {/* Mobile-first header (right section header shown before sidebar content) */}
-      <div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
+      <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
         <div className="mb-8">
           <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-text-muted">
             <Link
@@ -283,7 +283,7 @@ const BootcampCourse: React.FC = () => {
                        lives inside it so it scrolls away with the content.
       */}
       <div className="
-        lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24
+        lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24
         lg:flex lg:flex-row lg:overflow-hidden
       ">
 
@@ -300,7 +300,7 @@ const BootcampCourse: React.FC = () => {
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
           }}
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-6 lg:p-5 space-y-4">
+          <div className="px-2 sm:px-6 md:px-8 pb-6 lg:p-5 space-y-4">
 
             {/* Progress card */}
             <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
@@ -399,7 +399,7 @@ const BootcampCourse: React.FC = () => {
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
           }}
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
+          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
 
             {/* ── Page header — lives here so it scrolls with the rooms ── */}
             <div className="hidden lg:block">
@@ -462,10 +462,10 @@ const BootcampCourse: React.FC = () => {
 
               return (
                 <ScrollReveal key={mod.moduleId} delay={modIdx * 0.04}>
-                  <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+                  <div className="w-full overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
 
                     {/* Phase header */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
                       <div className="flex items-center gap-3">
                         <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
                           isComplete ? 'border-accent/30 bg-accent text-bg'
@@ -501,7 +501,7 @@ const BootcampCourse: React.FC = () => {
                     </div>
 
                     {/* Room cards */}
-                    <div className="p-5">
+                    <div className="p-4 sm:p-5">
                       {isLocked ? (
                         <div className="flex items-center gap-3 rounded-2xl border border-dashed border-border bg-bg/40 p-5">
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-bg">
@@ -533,7 +533,7 @@ const BootcampCourse: React.FC = () => {
                                 key={room.roomId}
                                 to={!isRoomLocked && roomPath ? roomPath : '#'}
                                 onClick={isRoomLocked ? (e) => e.preventDefault() : undefined}
-                                className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg transition-colors duration-200 ${
+                                className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border-2 bg-bg transition-colors duration-200 ${
                                   isRoomLocked
                                     ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                                     : roomDone
