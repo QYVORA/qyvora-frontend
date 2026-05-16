@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
+import { ContactTrigger } from '../ContactModal';
 
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
@@ -43,14 +44,9 @@ const PublicBottomNav: React.FC = () => {
       >
         {PRIMARY.map((item) => {
           const active = isActive(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="relative flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[60px] active:bg-accent-dim/30 transition-colors"
-              aria-current={active ? 'page' : undefined}
-            >
-              {active && (
+          const content = (
+            <>
+              {active && item.path !== '/contact' && (
                 <motion.div
                   layoutId="public-nav-indicator"
                   className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-accent rounded-full"
@@ -67,6 +63,28 @@ const PublicBottomNav: React.FC = () => {
               >
                 {item.label}
               </span>
+            </>
+          );
+
+          if (item.path === '/contact') {
+            return (
+              <ContactTrigger
+                key={item.path}
+                className="relative flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[60px] active:bg-accent-dim/30 transition-colors"
+              >
+                {content}
+              </ContactTrigger>
+            );
+          }
+
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="relative flex-1 flex flex-col items-center justify-center gap-1 py-3 min-h-[60px] active:bg-accent-dim/30 transition-colors"
+              aria-current={active ? 'page' : undefined}
+            >
+              {content}
             </Link>
           );
         })}

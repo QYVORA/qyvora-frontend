@@ -4,6 +4,8 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
 import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedinIcon';
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
+import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
+import { ContactTrigger } from '../ContactModal';
 
 /* ─────────────────────────────────────────────
    DATA
@@ -24,6 +26,7 @@ const FOOTER_COLS = [
 
 const SOCIAL = [
   { icon: BrandLinkedinIcon, key: 'linkedin', label: 'LinkedIn' },
+  { icon: BrandGithubIcon,   key: 'github',   label: 'GitHub'   },
   { icon: BrandYoutubeIcon,  key: 'youtube',  label: 'YouTube'  },
   { icon: BrandWhatsAppIcon, key: 'whatsapp', label: 'WhatsApp' },
 ];
@@ -143,17 +146,31 @@ const Footer: React.FC = () => (
             <ul className="flex flex-col gap-2.5">
               {col.links.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    to={link.path}
-                    className="
+                  {link.path === '/contact' ? (
+                    <ContactTrigger
+                      type="link"
+                      className="
+                        group/link inline-flex items-center gap-1.5
+                        text-xs text-text-muted font-mono
+                        hover:text-accent transition-all duration-200
+                      "
+                    >
+                      <span className="w-0 overflow-hidden group-hover/link:w-3 transition-all duration-200 text-accent/60 text-[10px]">›</span>
+                      {link.label}
+                    </ContactTrigger>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      className="
                       group/link inline-flex items-center gap-1.5
                       text-xs text-text-muted font-mono
                       hover:text-accent transition-all duration-200
                     "
-                  >
-                    <span className="w-0 overflow-hidden group-hover/link:w-3 transition-all duration-200 text-accent/60 text-[10px]">›</span>
-                    {link.label}
-                  </Link>
+                    >
+                      <span className="w-0 overflow-hidden group-hover/link:w-3 transition-all duration-200 text-accent/60 text-[10px]">›</span>
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

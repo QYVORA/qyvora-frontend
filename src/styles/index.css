@@ -852,17 +852,13 @@
    Mobile (< md): snap is disabled. Sections stack normally. The CSS below
    only applies on md+ where snap is active.
 
-   The navbar is fixed at 72px. Landing snap sections reserve that space inside
-   each snap cell so ASCII headings and top content never sit under the nav.
+   The navbar is fixed at 72px. On desktop, the landing snap container starts
+   below the navbar and each snap cell fills the remaining viewport.
 
    [data-snap-child] compresses section padding so content fits the viewport.
 ───────────────────────────────────────────────────────────────────────────── */
 
 @media (min-width: 768px) {
-  .landing-snap {
-    scroll-padding-top: 72px;
-  }
-
   .landing-snap .md\:snap-start {
     box-sizing: border-box;
   }

@@ -59,6 +59,14 @@ export const SITE_CONFIG = {
       action: 'Connect',
     },
     {
+      key: 'github',
+      label: 'View on GitHub',
+      handle: 'HSOCIETY-OFFSEC',
+      desc: 'Open source tools, platform code, and public engineering updates.',
+      href: 'https://github.com/HSOCIETY-OFFSEC',
+      action: 'View',
+    },
+    {
       key: 'youtube',
       label: 'Watch on YouTube',
       handle: 'HSOCIETY OFFSEC',
@@ -77,7 +85,7 @@ export const SITE_CONFIG = {
   ],
    nav: {
      platform: [],
-     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' }],
+     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }],
    },
   contactSubjects: [
     { value: 'b2b', label: 'B2B Security Consultation' },

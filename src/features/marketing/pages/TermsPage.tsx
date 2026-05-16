@@ -7,6 +7,7 @@ import { SITE_CONFIG } from '../content/siteConfig';
 import api from '../../../core/services/api';
 import HeroBackground from '../components/HeroBackground';
 import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
+import { ContactTrigger } from '../components/ContactModal';
 
 interface TermsSection {
   title: string;
@@ -169,7 +170,7 @@ const TermsPage: React.FC = () => {
                  <p className="text-text-muted text-sm max-w-xl">
                    These terms govern your use of all HSOCIETY platforms, training programs, and
                    professional services. Questions? Reach out via our{' '}
-                   <Link to="/contact" className="text-accent hover:underline">contact page</Link>.
+                   <ContactTrigger type="link" className="text-accent hover:underline">contact modal</ContactTrigger>.
                  </p>
                </div>
              </div>
@@ -240,7 +241,7 @@ const TermsPage: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border/40 pt-12">
           <div className="flex items-center gap-6">
             <Link to="/" className="text-text-muted hover:text-accent text-[10px] font-bold uppercase tracking-widest transition-colors">Home</Link>
-            <Link to="/contact" className="text-text-muted hover:text-accent text-[10px] font-bold uppercase tracking-widest transition-colors">Contact</Link>
+            <ContactTrigger type="link" className="text-text-muted hover:text-accent text-[10px] font-bold uppercase tracking-widest transition-colors">Contact</ContactTrigger>
           </div>
           <div className="flex items-center gap-3">
              <div className="w-8 h-8 rounded border border-border flex items-center justify-center grayscale opacity-40">

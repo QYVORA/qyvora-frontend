@@ -6,6 +6,7 @@ import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import Logo from '../../../../shared/components/brand/Logo';
 import { SITE_CONFIG } from '../../content/siteConfig';
+import { ContactTrigger } from '../ContactModal';
 
 const ICON_BY_KEY = {
   bootcamps: Terminal,
@@ -146,9 +147,9 @@ const Navbar: React.FC = () => {
                   >
                     <div className="grid grid-cols-2 gap-3">
                       {group.items.map((item) => (
-                        <Link
+                        <ContactTrigger
                           key={item.label}
-                          to={item.path}
+                          type="link"
                           className={`flex items-start gap-4 p-3 rounded-md transition-colors group/item ${
                             location.pathname === item.path || location.pathname.startsWith(item.path + '/')
                               ? 'bg-accent-dim text-accent'
@@ -166,7 +167,7 @@ const Navbar: React.FC = () => {
                               {item.desc}
                             </div>
                           </div>
-                        </Link>
+                        </ContactTrigger>
                       ))}
                     </div>
                   </motion.div>

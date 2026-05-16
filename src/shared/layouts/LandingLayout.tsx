@@ -12,6 +12,7 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../features/marketing/components/layout/Navbar';
 import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
+import ContactModalHost from '../../features/marketing/components/ContactModal';
 
 const LandingLayout = () => (
   <>
@@ -20,6 +21,7 @@ const LandingLayout = () => (
       <Outlet />
     </main>
     <PublicBottomNav />
+    <ContactModalHost />
   </>
 );
 
