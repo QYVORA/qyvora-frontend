@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
@@ -18,8 +18,8 @@ const FOOTER_COLS = [
   {
     heading: 'Quick Links',
     links: [
-      { label: 'Register',  path: '/register'    },
-      { label: 'Log In',    path: '/login'       },
+      { label: 'Register', path: '/register' },
+      { label: 'Log In',   path: '/login'    },
     ],
   },
 ];
@@ -42,20 +42,118 @@ const ASCII_LINES = [
   '▒▒▒▒▒   ▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒     ▒▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒       ▒▒▒▒▒   ',
 ];
 
+const ASCII_TEXT = ASCII_LINES.join('\n');
+
+/* ─────────────────────────────────────────────
+   ASCII WATERMARK
+   Uses the same scale-then-measure pattern as
+   AsciiHeading so the art never distorts on
+   any screen size — it simply scales down.
+───────────────────────────────────────────── */
+
+/**
+ * The base font-size at which we measure the <pre> naturally.
+ * Keep this large so the block characters render crisply before scaling.
+ * transform: scale() then shrinks it to fit — no clamp() hacks needed.
+ */
+const BASE_FONT_PX = 14;
+
+const AsciiWatermark: React.FC = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const preRef     = useRef<HTMLPreElement>(null);
+
+  const [scale, setScale]           = useState(1);
+  const [wrapperHeight, setWrapperHeight] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    let rafId = 0;
+
+    const measure = () => {
+      window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => {
+        const wrapper = wrapperRef.current;
+        const pre     = preRef.current;
+        if (!wrapper || !pre) return;
+
+        const availableWidth = wrapper.getBoundingClientRect().width;
+        if (availableWidth <= 0) return;
+
+        // ── Reset to scale(1) so we read the true natural dimensions ─────────
+        const savedTransform = pre.style.transform;
+        const savedOrigin    = pre.style.transformOrigin;
+        pre.style.transform       = 'scale(1)';
+        pre.style.transformOrigin = '0 0';
+
+        const naturalWidth  = pre.scrollWidth;
+        const naturalHeight = pre.scrollHeight;
+
+        pre.style.transform       = savedTransform;
+        pre.style.transformOrigin = savedOrigin;
+
+        if (naturalWidth <= 0) return;
+
+        // Scale to fill the full container width (no min-scale — we always
+        // want this to span edge-to-edge like a watermark band).
+        const nextScale = Math.min(1, availableWidth / naturalWidth);
+
+        setScale(prev => (Math.abs(prev - nextScale) > 0.003 ? nextScale : prev));
+        // Lock wrapper height to the scaled pre height so nothing below shifts.
+        setWrapperHeight(Math.ceil(naturalHeight * nextScale));
+      });
+    };
+
+    measure();
+
+    const ro = new ResizeObserver(measure);
+    if (wrapperRef.current) ro.observe(wrapperRef.current);
+    window.addEventListener('resize', measure);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={wrapperRef}
+      className="relative w-full overflow-hidden"
+      style={{ height: wrapperHeight !== null ? `${wrapperHeight}px` : undefined }}
+      aria-hidden="true"
+    >
+      <pre
+        ref={preRef}
+        className="ascii-text-beam m-0 p-0 whitespace-pre select-none"
+        style={{
+          fontFamily: '"JetBrains Mono", "Courier New", monospace',
+          fontSize: `${BASE_FONT_PX}px`,
+          lineHeight: 1.05,
+          letterSpacing: 0,
+          // Scale from top-left, then shift right by half the shrinkage so the
+          // block lands visually centred inside the wrapper.
+          transform: `scale(${scale})`,
+          transformOrigin: '0 0',
+          display: 'inline-block',
+          marginLeft: `calc(50% - ${scale * 50}%)`,
+        }}
+      >
+        {ASCII_TEXT}
+      </pre>
+    </div>
+  );
+};
+
 /* ─────────────────────────────────────────────
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
   <footer className="relative flex min-h-full w-full items-center bg-bg border-t border-border/50 overflow-hidden">
 
-    {/* ══════════════════════════════════════════
-        LAYER 0 — dot grid texture
-    ══════════════════════════════════════════ */}
+    {/* LAYER 0 — dot grid texture */}
     <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
 
-    {/* ══════════════════════════════════════════
-        LAYER 1 — radial accent glow from bottom-left
-    ══════════════════════════════════════════ */}
+    {/* LAYER 1 — radial accent glow */}
     <div
       className="absolute pointer-events-none"
       style={{
@@ -68,13 +166,10 @@ const Footer: React.FC = () => (
       aria-hidden="true"
     />
 
-
-    {/* ══════════════════════════════════════════
-        CONTENT
-    ══════════════════════════════════════════ */}
+    {/* CONTENT */}
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 w-full">
 
-      {/* ── Top section: brand + nav ── */}
+      {/* ── Top: brand + nav ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-8 sm:pt-10 md:pt-12 pb-8 md:pb-10">
 
         {/* Brand column */}
@@ -112,7 +207,6 @@ const Footer: React.FC = () => (
                     hover:shadow-[0_6px_18px_var(--color-accent-glow)]
                   "
                 >
-                  {/* sweep shine on hover */}
                   <span className="absolute inset-0 translate-x-[-100%] group-hover/soc:translate-x-[100%] transition-transform duration-500 bg-gradient-to-r from-transparent via-accent/10 to-transparent" />
                   <Icon className="w-4 h-4 relative z-10" />
                 </a>
@@ -127,7 +221,7 @@ const Footer: React.FC = () => (
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
             </span>
             <span className="min-w-0 text-[10px] font-mono font-bold text-accent uppercase tracking-[0.12em] sm:tracking-[0.22em] break-words">
-              Ghana | Northern Region | Tamale 
+              Ghana | Northern Region | Tamale
             </span>
           </div>
         </div>
@@ -157,10 +251,10 @@ const Footer: React.FC = () => (
                     <Link
                       to={link.path}
                       className="
-                      group/link inline-flex items-center gap-1.5
-                      text-xs text-text-muted font-mono
-                      hover:text-accent transition-all duration-200
-                    "
+                        group/link inline-flex items-center gap-1.5
+                        text-xs text-text-muted font-mono
+                        hover:text-accent transition-all duration-200
+                      "
                     >
                       <span className="w-0 overflow-hidden group-hover/link:w-3 transition-all duration-200 text-accent/60 text-[10px]">›</span>
                       {link.label}
@@ -174,41 +268,20 @@ const Footer: React.FC = () => (
       </div>
 
       {/* ── ASCII watermark band ── */}
-      <div className="relative w-full overflow-hidden" style={{ height: 'clamp(40px, 9vw, 108px)' }} aria-hidden="true">
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-          <pre
-            className="ascii-text-beam max-w-full overflow-hidden"
-            style={{
-              fontFamily: '"JetBrains Mono", "Courier New", monospace',
-              fontSize: 'clamp(3px, 1.05vw, 16px)',
-              lineHeight: 1.05,
-              whiteSpace: 'pre',
-              margin: 0,
-              padding: 0,
-              letterSpacing: 0,
-              userSelect: 'none',
-            }}
-          >
-            {ASCII_LINES.join('\n')}
-          </pre>
-        </div>
-      </div>
+      <AsciiWatermark />
 
       {/* ── Bottom bar ── */}
       <div className="
         relative flex flex-col sm:flex-row items-center justify-between
-        gap-4 mt-5 border-t border-border/20 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom,0px))]
+        gap-4 mt-5 border-t border-border/20 pt-5
+        pb-[calc(5rem+env(safe-area-inset-bottom,0px))]
         md:mt-8 md:pt-7 md:pb-10 md:mb-0
       ">
-        {/* Left: copyright */}
         <p className="max-w-full text-center text-[10px] font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/60">©</span>] {new Date().getFullYear()}{' '}
           <span className="text-accent/80">HSOCIETY OFFSEC</span>
         </p>
 
-    
-
-        {/* Right: legal links */}
         <div className="flex items-center gap-5 flex-wrap justify-center">
           {SITE_CONFIG.footer.links.map((item) => (
             <Link

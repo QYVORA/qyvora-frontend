@@ -1,9 +1,39 @@
-import React, { useEffect, useLayoutEffect, useState, useMemo } from 'react';
+/**
+ * AsciiHeading.tsx
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Renders figlet ASCII art headings that scale to fit any container width.
+ *
+ * Key design decisions
+ * ────────────────────
+ * 1. Scale-then-measure pattern: temporarily force scale(1) before reading
+ *    scrollWidth so measurements are always the natural unscaled size.
+ * 2. Explicit container height: compensates for CSS transform not affecting
+ *    layout flow. Only applied when fitScale < 1.
+ * 3. Alignment via marginLeft math — always scale from origin 0 0.
+ * 4. Mobile font fallback: wide/tall fonts swap to ANSI Shadow on ≤ 639 px.
+ * 5. Error fallback is a styled <h1>, never a raw unstyled <pre>.
+ * 6. Font data cached at module scope — fetched once per font per page load.
+ */
+
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import figlet from 'figlet';
+// Import the callable AND the type namespace separately so both work.
+import figletModule from 'figlet';
+import type { FigletOptions, FontName as FigletFontName } from 'figlet';
 import { cn } from '../../../shared/utils/cn';
 
-// ── Available figlet fonts ──────────────────────────────────────────────────
+// Vite/ESM interop: figlet ships as CommonJS. In some bundler configs the
+// callable lands on `.default`; in others it IS the default. Normalise once.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const figlet = ((figletModule as any).default ?? figletModule) as typeof figletModule;
+
+// ── Font catalogue ────────────────────────────────────────────────────────────
 const FONT_OPTIONS = [
   'Standard', 'Ghost', '3-D', 'Acrobatic', 'Big Money-ne',
   'Cybermedium', 'Digital', 'Doh', 'Isometric1',
@@ -16,6 +46,16 @@ const FONT_OPTIONS = [
 
 type FontName = typeof FONT_OPTIONS[number];
 
+/**
+ * Fonts too wide/tall to be legible when crushed on mobile.
+ * Automatically swapped to ANSI Shadow on screens ≤ 639 px.
+ */
+const WIDE_FONTS = new Set<string>([
+  'Larry 3D', 'Isometric1', 'Doh', 'Big Money-ne', 'Colossal',
+  '3-D', 'Acrobatic', 'JS Block Letters', 'Slant Relief',
+]);
+
+// ── Props ─────────────────────────────────────────────────────────────────────
 interface AsciiHeadingProps {
   text: string;
   font?: FontName;
@@ -30,207 +70,246 @@ interface AsciiHeadingProps {
   animationDelay?: number;
   color?: string;
   disabled?: boolean;
+  /** Skips the motion entry animation entirely */
   static?: boolean;
+}
+
+// ── Font loading helpers (module-scoped) ──────────────────────────────────────
+const FONT_BASE_URL = 'https://cdn.jsdelivr.net/npm/figlet@1.11.0/fonts/';
+const fontFetchCache: Record<string, Promise<string>> = {};
+const parsedFonts = new Set<string>();
+
+function loadFont(fontName: string): Promise<string> {
+  if (!fontFetchCache[fontName]) {
+    fontFetchCache[fontName] = fetch(
+      `${FONT_BASE_URL}${encodeURIComponent(fontName)}.flf`,
+    ).then(res => {
+      if (!res.ok) throw new Error(`figlet font fetch failed: ${fontName}`);
+      return res.text();
+    });
+  }
+  return fontFetchCache[fontName];
+}
+
+async function renderFiglet(text: string, fontName: string): Promise<string> {
+  const data = await loadFont(fontName);
+  if (!parsedFonts.has(fontName)) {
+    figlet.parseFont(fontName, data);
+    parsedFonts.add(fontName);
+  }
+
+  const opts: FigletOptions = {
+    font: fontName as FigletFontName,
+    horizontalLayout: 'default',
+    verticalLayout: 'default',
+    width: 500,
+    whitespaceBreak: false,
+  };
+
+  return new Promise<string>((resolve, reject) => {
+    figlet.text(text, opts, (err, result) => {
+      if (err || !result) reject(err ?? new Error('figlet returned empty'));
+      else resolve(result);
+    });
+  });
 }
 
 function normalizeFont(name: string | undefined): string {
   if (!name) return 'ANSI Shadow';
-  const found = FONT_OPTIONS.find(f => f.toLowerCase() === name.toLowerCase());
-  if (found) return found;
-  return 'ANSI Shadow';
+  const hit = FONT_OPTIONS.find(f => f.toLowerCase() === name.toLowerCase());
+  return hit ?? 'ANSI Shadow';
 }
 
-const FONT_BASE_URL = 'https://cdn.jsdelivr.net/npm/figlet@1.11.0/fonts/';
-
-// Global cache for font data to prevent redundant fetches
-const fontDataCache: Record<string, Promise<string>> = {};
-// Set of fonts already parsed by figlet
-const parsedFonts = new Set<string>();
-
+// ── Component ─────────────────────────────────────────────────────────────────
 const AsciiHeading: React.FC<AsciiHeadingProps> = ({
-  text, font = 'ANSI Shadow', className = '', preClassName = '',
-  align = 'center', compact = false, responsive = true,
-  glow = 'normal', animated = true, animationDuration = 800,
-  animationDelay = 0, color, disabled = false, static: isStatic = false,
+  text,
+  font = 'ANSI Shadow',
+  className = '',
+  preClassName = '',
+  align = 'center',
+  compact = false,
+  responsive = true,
+  glow = 'normal',
+  animated = true,
+  animationDuration = 800,
+  animationDelay = 0,
+  color,
+  disabled = false,
+  static: isStatic = false,
 }) => {
   const [asciiText, setAsciiText] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [isLoaded, setIsLoaded]   = useState(false);
+  const [error, setError]         = useState(false);
+
   const [isMobile, setIsMobile] = useState(() =>
-    typeof window === 'undefined' ? false : window.matchMedia('(max-width: 639px)').matches,
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 639px)').matches
+      : false,
   );
 
+  const [fitScale, setFitScale]               = useState(1);
+  const [containerHeight, setContainerHeight] = useState<number | null>(null);
+
+  const outerRef = useRef<HTMLDivElement>(null);
+  const preRef   = useRef<HTMLPreElement>(null);
+
+  const shouldReduceMotion = useReducedMotion();
+
+  // ── Effective font (mobile fallback) ─────────────────────────────────────────
   const normalizedFont = useMemo(() => normalizeFont(font), [font]);
 
+  const effectiveFont = useMemo(
+    () => (isMobile && WIDE_FONTS.has(normalizedFont) ? 'ANSI Shadow' : normalizedFont),
+    [isMobile, normalizedFont],
+  );
+
+  // ── Font loading ──────────────────────────────────────────────────────────────
   useEffect(() => {
-    let isMounted = true;
-    
-    // Set a timeout to ensure we don't wait forever
-    const timer = setTimeout(() => {
-      if (isMounted && !isLoaded) {
+    if (disabled) return;
+
+    let cancelled = false;
+
+    const timeoutId = setTimeout(() => {
+      if (!cancelled) {
+        setError(true);
+        setAsciiText(text);
         setIsLoaded(true);
       }
-    }, 2000);
+    }, 4000);
 
-    const loadAndRender = async () => {
-      try {
-        if (!fontDataCache[normalizedFont]) {
-          fontDataCache[normalizedFont] = fetch(`${FONT_BASE_URL}${encodeURIComponent(normalizedFont)}.flf`)
-            .then(res => {
-              if (!res.ok) throw new Error('Font download failed');
-              return res.text();
-            });
-        }
+    renderFiglet(text, effectiveFont)
+      .then(result => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        setError(false);
+        setAsciiText(result);
+        setIsLoaded(true);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        clearTimeout(timeoutId);
+        setError(true);
+        setAsciiText(text);
+        setIsLoaded(true);
+      });
 
-        const fontData = await fontDataCache[normalizedFont];
-        if (!isMounted) return;
-
-        if (!parsedFonts.has(normalizedFont)) {
-          figlet.parseFont(normalizedFont, fontData);
-          parsedFonts.add(normalizedFont);
-        }
-
-        figlet.text(text, {
-          font: normalizedFont as any,
-          horizontalLayout: 'default',
-          verticalLayout: 'default',
-          width: 500,
-          whitespaceBreak: false,
-        }, (err, data) => {
-          if (isMounted) {
-            clearTimeout(timer);
-            if (err) {
-              console.error('Figlet generation error:', err);
-              setError(true);
-              setAsciiText(text);
-            } else {
-              setAsciiText(data || text);
-            }
-            setIsLoaded(true);
-          }
-        });
-      } catch (err) {
-        console.error('Font loading error:', err);
-        if (isMounted) {
-          clearTimeout(timer);
-          setError(true);
-          setAsciiText(text);
-          setIsLoaded(true);
-        }
-      }
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, effectiveFont, disabled]);
 
-    void loadAndRender();
-
-    return () => { isMounted = false; clearTimeout(timer); };
-  }, [text, normalizedFont]);
-
+  // ── Breakpoint watcher ────────────────────────────────────────────────────────
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 639px)');
-    const handleChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
-    setIsMobile(media.matches);
-    media.addEventListener('change', handleChange);
-    return () => media.removeEventListener('change', handleChange);
+    const mq = window.matchMedia('(max-width: 639px)');
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
-  const outerRef = React.useRef<HTMLDivElement>(null);
-  const preRef = React.useRef<HTMLPreElement>(null);
-  const [fitScale, setFitScale] = useState(1);
-  const [mobileHeight, setMobileHeight] = useState<number | null>(null);
-  const fitScaleRef = React.useRef(1);
-  const shouldReduceMotion = useReducedMotion();
-  const minimizeEffects = shouldReduceMotion;
-
+  // ── Scale measurement ─────────────────────────────────────────────────────────
   useLayoutEffect(() => {
-    if (!responsive || disabled || error) return undefined;
+    if (!responsive || disabled || error || !asciiText) return;
 
-    let frame = 0;
+    let rafId = 0;
+
     const measure = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
+      window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => {
         const outer = outerRef.current;
-        const pre = preRef.current;
+        const pre   = preRef.current;
         if (!outer || !pre) return;
 
-        const available = outer.clientWidth;
-        if (!available) return;
+        const availableWidth = outer.getBoundingClientRect().width;
+        if (availableWidth <= 0) return;
 
-        const unscaledWidth = isMobile
-          ? pre.scrollWidth
-          : pre.scrollWidth / Math.max(fitScaleRef.current, 0.01);
-        const minScale = isMobile ? 0.08 : 0.32;
-        const nextScale = Math.min(1, Math.max(minScale, (available - 2) / Math.max(unscaledWidth, 1)));
-        setMobileHeight(isMobile ? Math.ceil(pre.scrollHeight * nextScale) : null);
-        setFitScale(prev => {
-          if (Math.abs(prev - nextScale) <= 0.01) return prev;
-          fitScaleRef.current = nextScale;
-          return nextScale;
-        });
+        // Reset to natural scale before measuring to avoid compounding drift
+        const savedTransform = pre.style.transform;
+        const savedOrigin    = pre.style.transformOrigin;
+        pre.style.transform       = 'scale(1)';
+        pre.style.transformOrigin = '0 0';
+
+        const naturalWidth  = pre.scrollWidth;
+        const naturalHeight = pre.scrollHeight;
+
+        pre.style.transform       = savedTransform;
+        pre.style.transformOrigin = savedOrigin;
+
+        if (naturalWidth <= 0) return;
+
+        const MIN_SCALE = 0.08;
+        const nextScale = Math.min(
+          1,
+          Math.max(MIN_SCALE, (availableWidth - 4) / naturalWidth),
+        );
+
+        setFitScale(prev => (Math.abs(prev - nextScale) > 0.004 ? nextScale : prev));
+
+        if (nextScale < 1) {
+          setContainerHeight(Math.ceil(naturalHeight * nextScale));
+        } else {
+          setContainerHeight(null);
+        }
       });
     };
 
-    fitScaleRef.current = 1;
-    setFitScale(1);
     measure();
 
-    const resizeObserver = new ResizeObserver(measure);
-    if (outerRef.current) resizeObserver.observe(outerRef.current);
-    if (preRef.current) resizeObserver.observe(preRef.current);
+    const ro = new ResizeObserver(measure);
+    if (outerRef.current) ro.observe(outerRef.current);
     window.addEventListener('resize', measure);
 
     return () => {
-      window.cancelAnimationFrame(frame);
-      resizeObserver.disconnect();
+      window.cancelAnimationFrame(rafId);
+      ro.disconnect();
       window.removeEventListener('resize', measure);
     };
-  }, [asciiText, disabled, error, isMobile, responsive, text]);
+  }, [asciiText, responsive, disabled, error, isMobile]);
 
+  // ── Glow config ───────────────────────────────────────────────────────────────
   const glowConfig = useMemo(() => {
-    const baseColor = color || 'var(--color-accent)';
-    const configs: Record<string, { shadow: string; intensity: number }> = {
-      none:    { shadow: 'none', intensity: 0 },
-      subtle:  { shadow: `0 0 8px ${baseColor}40, 0 0 20px ${baseColor}20`, intensity: 0.3 },
-      normal:  { shadow: `0 0 12px ${baseColor}60, 0 0 40px ${baseColor}30, 0 0 80px ${baseColor}15`, intensity: 0.6 },
-      intense: { shadow: `0 0 16px ${baseColor}80, 0 0 60px ${baseColor}40, 0 0 120px ${baseColor}20, 0 0 200px ${baseColor}08`, intensity: 0.9 },
-      extreme: { shadow: `0 0 20px ${baseColor}90, 0 0 80px ${baseColor}50, 0 0 160px ${baseColor}30, 0 0 300px ${baseColor}10`, intensity: 1 },
+    const c = color || 'var(--color-accent)';
+    const map: Record<string, { shadow: string; intensity: number }> = {
+      none:    { shadow: 'none',                                                                    intensity: 0   },
+      subtle:  { shadow: `0 0 8px ${c}40, 0 0 20px ${c}20`,                                        intensity: 0.3 },
+      normal:  { shadow: `0 0 12px ${c}60, 0 0 40px ${c}30, 0 0 80px ${c}15`,                     intensity: 0.6 },
+      intense: { shadow: `0 0 16px ${c}80, 0 0 60px ${c}40, 0 0 120px ${c}20`,                    intensity: 0.9 },
+      extreme: { shadow: `0 0 20px ${c}90, 0 0 80px ${c}50, 0 0 160px ${c}30, 0 0 300px ${c}10`, intensity: 1   },
     };
-    return configs[glow] || configs.normal;
+    return map[glow] ?? map.normal;
   }, [glow, color]);
 
-  const sizeStyle = useMemo(() => {
-    const baseSize = isMobile ? (compact ? '8px' : '10px') : (compact ? '12px' : '16px');
-    const lineHeight = 1.0;
-    if (!responsive) return { fontSize: compact ? '9px' : '15px', lineHeight: 1.0 };
-    if (isMobile) {
-      return {
-        fontSize: baseSize,
-        lineHeight,
-        transform: `scale(${fitScale})`,
-        transformOrigin: align === 'right' ? 'top right' : align === 'center' ? 'top center' : 'top left',
-        width: 'max-content',
-        maxWidth: 'none',
-      };
-    }
-    return {
-      fontSize: `calc(${baseSize} * ${fitScale})`,
-      lineHeight,
-    };
-  }, [align, compact, fitScale, isMobile, responsive]);
+  const baseFontSize = compact ? '12px' : '16px';
 
-  // Render high-quality normal text if disabled or if figlet failed
+  // Alignment: always scale from top-left (0 0), shift right with marginLeft.
+  //   left   → 0
+  //   center → 50% − (fitScale × 50%)
+  //   right  → 100% − (fitScale × 100%)
+  const marginLeft =
+    align === 'center'
+      ? `calc(50% - ${fitScale * 50}%)`
+      : align === 'right'
+      ? `calc(100% - ${fitScale * 100}%)`
+      : '0';
+
+  // ── Error / disabled fallback ─────────────────────────────────────────────────
   if (disabled || (isLoaded && error)) {
     return (
       <h1
-        ref={outerRef}
         className={cn(
-          'font-mono font-black text-text-primary leading-tight tracking-tight transition-all duration-500',
+          'font-mono font-black text-text-primary leading-tight tracking-tight',
           compact ? 'text-2xl md:text-3xl' : 'text-4xl md:text-6xl',
           className,
         )}
-        style={{ 
+        style={{
           textAlign: align as React.CSSProperties['textAlign'],
           color: color || 'var(--color-accent)',
-          textShadow: glow === 'none' ? 'none' : `0 0 12px ${color || 'var(--color-accent)'}60`,
+          textShadow:
+            glow === 'none'
+              ? 'none'
+              : `0 0 12px ${color || 'var(--color-accent)'}60`,
         }}
       >
         {text}
@@ -238,56 +317,53 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
     );
   }
 
-  const shouldAnimate = animated && !isStatic && !minimizeEffects;
-
-  const inner = (
-    <pre
-      ref={preRef}
-      className={cn(
-        'ascii-heading ascii-text-beam whitespace-pre select-none transition-all duration-500 overflow-hidden no-scrollbar m-0 p-0 max-w-full',
-        preClassName,
-        glow !== 'none' && 'ascii-heading-glow',
-        isMobile && 'ascii-heading-mobile',
-        align === 'center' ? 'mx-auto w-fit' : '',
-        align === 'left' ? 'text-left ml-0' : '',
-        align === 'right' ? 'text-right ml-auto w-fit' : '',
-      )}
-      style={{
-        ...sizeStyle,
-        fontFamily: '"JetBrains Mono", "Courier New", monospace',
-        color: color || (glow !== 'none' ? 'var(--color-accent)' : 'var(--color-text-primary)'),
-        textShadow: glowConfig.shadow === 'none' ? undefined : glowConfig.shadow,
-        opacity: isLoaded ? 1 : 0,
-        ['--ascii-glow-color' as string]: color || 'var(--color-accent)',
-        ['--ascii-glow-intensity' as string]: glowConfig.intensity,
-      } as React.CSSProperties}
-      aria-label={text}
-      role="heading"
-      aria-level={1}
-    >
-      {asciiText || text}
-    </pre>
-  );
+  const shouldAnimate = animated && !isStatic && !shouldReduceMotion;
 
   return (
     <motion.div
       ref={outerRef}
-      className={cn('ascii-heading-wrapper overflow-hidden', className)}
-      initial={shouldAnimate ? { opacity: 0, y: 16, filter: 'blur(4px)' } : { opacity: 1, y: 0 }}
-      whileInView={shouldAnimate ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 1, y: 0 }}
+      className={cn('ascii-heading-wrapper overflow-hidden w-full', className)}
+      style={{
+        height: containerHeight !== null ? `${containerHeight}px` : undefined,
+      }}
+      initial={shouldAnimate ? { opacity: 0, y: 16, filter: 'blur(4px)' } : { opacity: 1 }}
+      whileInView={shouldAnimate ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 1 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{
         duration: Math.min(animationDuration / 1000, 1.2),
         delay: animationDelay / 1000,
         ease: [0.16, 1, 0.3, 1],
-        filter: { duration: Math.min(animationDuration / 1000 * 0.6, 0.5) },
-      }}
-      style={{
-        textAlign: align as React.CSSProperties['textAlign'],
-        height: isMobile && mobileHeight ? `${mobileHeight}px` : undefined,
+        filter: { duration: Math.min((animationDuration / 1000) * 0.6, 0.7) },
       }}
     >
-      {inner}
+      <pre
+        ref={preRef}
+        className={cn(
+          'ascii-heading ascii-text-beam whitespace-pre select-none m-0 p-0 overflow-visible',
+          preClassName,
+          glow !== 'none' && 'ascii-heading-glow',
+        )}
+        style={{
+          fontFamily: '"JetBrains Mono", "Courier New", monospace',
+          fontSize: baseFontSize,
+          lineHeight: 1.0,
+          color: color || (glow !== 'none' ? 'var(--color-accent)' : 'var(--color-text-primary)'),
+          textShadow: glowConfig.shadow === 'none' ? undefined : glowConfig.shadow,
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+          transform: `scale(${fitScale})`,
+          transformOrigin: '0 0',
+          display: 'inline-block',
+          marginLeft,
+          ['--ascii-glow-color' as string]: color || 'var(--color-accent)',
+          ['--ascii-glow-intensity' as string]: glowConfig.intensity,
+        } as React.CSSProperties}
+        aria-label={text}
+        role="heading"
+        aria-level={1}
+      >
+        {asciiText ?? ''}
+      </pre>
     </motion.div>
   );
 };
