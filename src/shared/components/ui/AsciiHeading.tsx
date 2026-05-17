@@ -276,6 +276,32 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
       ? visualWidth !== null ? `calc(100% - ${visualWidth}px)` : '0'
       : '0';
 
+  // ── Mobile "Cyber-Prompt" Heading ───────────────────────────────────────────
+  if (isMobile && !disabled) {
+    return (
+      <div className={cn('py-2 border-l-2 border-accent/20 pl-4 mb-4', className)}>
+        <h1
+          className={cn(
+            'font-mono font-black uppercase tracking-tighter text-2xl sm:text-3xl leading-none',
+            'ascii-text-beam ascii-text-beam-fast',
+          )}
+          style={{ color: color || 'var(--color-text-primary)' }}
+        >
+          <span className="text-accent/60 mr-2 opacity-70 select-none">{">"}</span>
+          {text}
+        </h1>
+        {!compact && (
+          <div className="text-[9px] font-mono text-text-muted mt-2 opacity-50 flex items-center gap-2 tracking-widest uppercase select-none">
+            <span className="inline-block w-1 h-1 rounded-full bg-accent/80 animate-pulse" />
+            <span>System.Ready</span>
+            <span className="opacity-30">//</span>
+            <span>ID: {text.replace(/\s+/g, '_').toUpperCase()}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   // ── Error / disabled fallback ─────────────────────────────────────────────────
   if (disabled || (isLoaded && error)) {
     return (
