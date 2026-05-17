@@ -6,6 +6,7 @@ import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedin
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
 import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
 import { ContactTrigger } from '../ContactModal';
+import { useTheme, DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
 /* ─────────────────────────────────────────────
    DATA
@@ -121,7 +122,7 @@ const AsciiWatermark: React.FC = () => {
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full overflow-hidden"
+      className="relative w-full overflow-hidden hidden md:block"
       style={{ height: wrapperHeight !== null ? `${wrapperHeight}px` : undefined }}
       aria-hidden="true"
     >
@@ -143,6 +144,32 @@ const AsciiWatermark: React.FC = () => {
       >
         {ASCII_TEXT}
       </pre>
+    </div>
+  );
+};
+
+/**
+ * Mobile-only logo banner.
+ * Replaces the ASCII art on small screens using the provided logo dimensions.
+ * PNG: 1536×1024 | Visible: 232,424 to 1314,552 (Aspect ~8.45)
+ */
+const LogoWatermark: React.FC = () => {
+  const { theme } = useTheme();
+  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
+
+  return (
+    <div className="relative w-full overflow-hidden py-8 block md:hidden" aria-hidden="true">
+      <div className="aspect-[1082/128] w-full max-w-[500px] mx-auto px-6">
+        <img
+          src={logoSrc}
+          alt="HSOCIETY Logo"
+          className="w-full h-full object-cover select-none pointer-events-none transition-opacity duration-500"
+          style={{
+            objectPosition: '50.32% 47.65%',
+            filter: theme === 'dark' ? 'drop-shadow(0 0 15px var(--color-accent-glow))' : 'none',
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -249,8 +276,9 @@ const Footer: React.FC = () => (
         ))}
       </div>
 
-      {/* ── ASCII watermark band ── */}
+      {/* ── ASCII watermark band / Mobile Logo Banner ── */}
       <AsciiWatermark />
+      <LogoWatermark />
 
       {/* ── Bottom bar ── */}
       <div className="
