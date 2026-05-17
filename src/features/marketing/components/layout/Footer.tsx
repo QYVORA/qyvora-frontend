@@ -6,7 +6,8 @@ import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedin
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
 import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
 import { ContactTrigger } from '../ContactModal';
-import { useTheme, DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
+import { useTheme } from '../../../../core/contexts/ThemeContext';
+import { DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
 /* ─────────────────────────────────────────────
    DATA
