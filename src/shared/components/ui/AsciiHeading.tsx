@@ -22,7 +22,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 // Import the callable AND the type namespace separately so both work.
 import figletModule from 'figlet';
 import type { FigletOptions, FontName as FigletFontName } from 'figlet';
@@ -148,12 +147,11 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
   );
 
   const [fitScale, setFitScale]               = useState(1);
+  const [visualWidth, setVisualWidth]         = useState<number | null>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
 
   const outerRef = useRef<HTMLDivElement>(null);
   const preRef   = useRef<HTMLPreElement>(null);
-
-  const shouldReduceMotion = useReducedMotion();
 
   // ── Effective font (mobile fallback) ─────────────────────────────────────────
   const normalizedFont = useMemo(() => normalizeFont(font), [font]);
@@ -197,7 +195,6 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
       cancelled = true;
       clearTimeout(timeoutId);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, effectiveFont, disabled]);
 
   // ── Breakpoint watcher ────────────────────────────────────────────────────────
@@ -242,10 +239,12 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         const MIN_SCALE = 0.08;
         const nextScale = Math.min(
           1,
-          Math.max(MIN_SCALE, (availableWidth - 4) / naturalWidth),
+          Math.max(MIN_SCALE, (availableWidth - 48) / naturalWidth),
         );
+        const nextVisualWidth = naturalWidth * nextScale;
 
         setFitScale(prev => (Math.abs(prev - nextScale) > 0.004 ? nextScale : prev));
+        setVisualWidth(nextVisualWidth);
 
         if (nextScale < 1) {
           setContainerHeight(Math.ceil(naturalHeight * nextScale));
@@ -268,30 +267,13 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
     };
   }, [asciiText, responsive, disabled, error, isMobile]);
 
-  // ── Glow config ───────────────────────────────────────────────────────────────
-  const glowConfig = useMemo(() => {
-    const c = color || 'var(--color-accent)';
-    const map: Record<string, { shadow: string; intensity: number }> = {
-      none:    { shadow: 'none',                                                                    intensity: 0   },
-      subtle:  { shadow: `0 0 8px ${c}40, 0 0 20px ${c}20`,                                        intensity: 0.3 },
-      normal:  { shadow: `0 0 12px ${c}60, 0 0 40px ${c}30, 0 0 80px ${c}15`,                     intensity: 0.6 },
-      intense: { shadow: `0 0 16px ${c}80, 0 0 60px ${c}40, 0 0 120px ${c}20`,                    intensity: 0.9 },
-      extreme: { shadow: `0 0 20px ${c}90, 0 0 80px ${c}50, 0 0 160px ${c}30, 0 0 300px ${c}10`, intensity: 1   },
-    };
-    return map[glow] ?? map.normal;
-  }, [glow, color]);
+  const baseFontSize = compact ? (isMobile ? '8px' : '12px') : (isMobile ? '12px' : '16px');
 
-  const baseFontSize = compact ? '12px' : '16px';
-
-  // Alignment: always scale from top-left (0 0), shift right with marginLeft.
-  //   left   → 0
-  //   center → 50% − (fitScale × 50%)
-  //   right  → 100% − (fitScale × 100%)
   const marginLeft =
     align === 'center'
-      ? `calc(50% - ${fitScale * 50}%)`
+      ? visualWidth !== null ? `calc(50% - ${visualWidth / 2}px)` : '0'
       : align === 'right'
-      ? `calc(100% - ${fitScale * 100}%)`
+      ? visualWidth !== null ? `calc(100% - ${visualWidth}px)` : '0'
       : '0';
 
   // ── Error / disabled fallback ─────────────────────────────────────────────────
@@ -306,10 +288,6 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         style={{
           textAlign: align as React.CSSProperties['textAlign'],
           color: color || 'var(--color-accent)',
-          textShadow:
-            glow === 'none'
-              ? 'none'
-              : `0 0 12px ${color || 'var(--color-accent)'}60`,
         }}
       >
         {text}
@@ -317,46 +295,31 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
     );
   }
 
-  const shouldAnimate = animated && !isStatic && !shouldReduceMotion;
-
   return (
-    <motion.div
+    <div
       ref={outerRef}
-      className={cn('ascii-heading-wrapper overflow-hidden w-full', className)}
+      className={cn('ascii-heading-wrapper w-full', className)}
       style={{
         height: containerHeight !== null ? `${containerHeight}px` : undefined,
-      }}
-      initial={shouldAnimate ? { opacity: 0, y: 16, filter: 'blur(4px)' } : { opacity: 1 }}
-      whileInView={shouldAnimate ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 1 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{
-        duration: Math.min(animationDuration / 1000, 1.2),
-        delay: animationDelay / 1000,
-        ease: [0.16, 1, 0.3, 1],
-        filter: { duration: Math.min((animationDuration / 1000) * 0.6, 0.7) },
       }}
     >
       <pre
         ref={preRef}
         className={cn(
-          'ascii-heading ascii-text-beam whitespace-pre select-none m-0 p-0 overflow-visible',
+          'ascii-heading ascii-text-beam ascii-text-beam-fast whitespace-pre select-none m-0 p-0 overflow-visible',
           preClassName,
-          glow !== 'none' && 'ascii-heading-glow',
         )}
         style={{
           fontFamily: '"JetBrains Mono", "Courier New", monospace',
           fontSize: baseFontSize,
           lineHeight: 1.0,
-          color: color || (glow !== 'none' ? 'var(--color-accent)' : 'var(--color-text-primary)'),
-          textShadow: glowConfig.shadow === 'none' ? undefined : glowConfig.shadow,
+          color: color || 'var(--color-text-primary)',
           opacity: isLoaded ? 1 : 0,
           transition: 'opacity 0.4s ease',
           transform: `scale(${fitScale})`,
           transformOrigin: '0 0',
           display: 'inline-block',
           marginLeft,
-          ['--ascii-glow-color' as string]: color || 'var(--color-accent)',
-          ['--ascii-glow-intensity' as string]: glowConfig.intensity,
         } as React.CSSProperties}
         aria-label={text}
         role="heading"
@@ -364,7 +327,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
       >
         {asciiText ?? ''}
       </pre>
-    </motion.div>
+    </div>
   );
 };
 

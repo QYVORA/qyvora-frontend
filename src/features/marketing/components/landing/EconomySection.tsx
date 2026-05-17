@@ -28,15 +28,14 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
 
           {/* Left: description + CP features */}
           <div>
+            <AsciiHeading 
+              text="EARN" 
+              font="ANSI Shadow" 
+              align="left" 
+              animated 
+              className="mb-8" 
+            />
             <ScrollReveal>
-              <AsciiHeading 
-                text="EARN" 
-                font="ANSI Shadow" 
-                align="left" 
-                animated 
-                glow="intense" 
-                className="mb-8" 
-              />
               <p className="text-text-secondary text-sm mb-6 leading-relaxed">
                 Earn <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> by completing bootcamp rooms
                 and CTF challenges. Every transaction is recorded on the{' '}

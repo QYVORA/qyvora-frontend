@@ -63,6 +63,7 @@ const AsciiWatermark: React.FC = () => {
   const preRef     = useRef<HTMLPreElement>(null);
 
   const [scale, setScale]           = useState(1);
+  const [visualWidth, setVisualWidth] = useState<number | null>(null);
   const [wrapperHeight, setWrapperHeight] = useState<number | null>(null);
 
   useLayoutEffect(() => {
@@ -95,8 +96,10 @@ const AsciiWatermark: React.FC = () => {
         // Scale to fill the full container width (no min-scale — we always
         // want this to span edge-to-edge like a watermark band).
         const nextScale = Math.min(1, availableWidth / naturalWidth);
+        const nextVisualWidth = naturalWidth * nextScale;
 
         setScale(prev => (Math.abs(prev - nextScale) > 0.003 ? nextScale : prev));
+        setVisualWidth(nextVisualWidth);
         // Lock wrapper height to the scaled pre height so nothing below shifts.
         setWrapperHeight(Math.ceil(naturalHeight * nextScale));
       });
@@ -135,7 +138,7 @@ const AsciiWatermark: React.FC = () => {
           transform: `scale(${scale})`,
           transformOrigin: '0 0',
           display: 'inline-block',
-          marginLeft: `calc(50% - ${scale * 50}%)`,
+          marginLeft: visualWidth !== null ? `calc(50% - ${visualWidth / 2}px)` : '0',
         }}
       >
         {ASCII_TEXT}
@@ -153,19 +156,6 @@ const Footer: React.FC = () => (
     {/* LAYER 0 — dot grid texture */}
     <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
 
-    {/* LAYER 1 — radial accent glow */}
-    <div
-      className="absolute pointer-events-none"
-      style={{
-        bottom: '-120px',
-        left: '-80px',
-        width: '600px',
-        height: '600px',
-        background: 'radial-gradient(circle, rgba(136,173,124,0.07) 0%, transparent 65%)',
-      }}
-      aria-hidden="true"
-    />
-
     {/* CONTENT */}
     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 w-full">
 
@@ -175,20 +165,12 @@ const Footer: React.FC = () => (
         {/* Brand column */}
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-5">
 
-          <Link to="/" className="flex items-center w-fit group/logo">
-            <img
-              src="/assets/branding/logos/hsociety-logo.webp"
-              alt="HSOCIETY"
-              className="h-14 sm:h-16 md:h-20 w-auto object-contain transition-opacity duration-300 group-hover/logo:opacity-80"
-            />
-          </Link>
-
-          <p className="text-sm text-text-muted leading-relaxed max-w-[26rem] font-mono">
+          <p className="text-base text-text-muted leading-relaxed max-w-[28rem] font-mono">
             An offensive security company focused on building a strong cybersecurity ecosystem in Africa.
           </p>
 
           {/* Social row */}
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-3 mt-1">
             {SOCIAL.map(({ icon: Icon, key, label }) => {
               const href = SITE_CONFIG.social.find((i) => i.key === key)?.href || '#';
               return (
@@ -199,7 +181,7 @@ const Footer: React.FC = () => (
                   rel="noreferrer"
                   aria-label={label}
                   className="
-                    group/soc relative flex h-9 w-9 items-center justify-center
+                    group/soc relative flex h-11 w-11 items-center justify-center
                     rounded-lg border border-border bg-bg-card/40
                     text-text-muted overflow-hidden
                     transition-all duration-300
@@ -208,7 +190,7 @@ const Footer: React.FC = () => (
                   "
                 >
                   <span className="absolute inset-0 translate-x-[-100%] group-hover/soc:translate-x-[100%] transition-transform duration-500 bg-gradient-to-r from-transparent via-accent/10 to-transparent" />
-                  <Icon className="w-4 h-4 relative z-10" />
+                  <Icon className="w-5 h-5 relative z-10" />
                 </a>
               );
             })}
@@ -228,19 +210,19 @@ const Footer: React.FC = () => (
 
         {/* Nav columns */}
         {FOOTER_COLS.map((col) => (
-          <div key={col.heading} className="flex flex-col gap-4">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-accent/70 border-l-2 border-accent/35 pl-3">
+          <div key={col.heading} className="flex flex-col gap-5">
+            <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-accent/70 border-l-2 border-accent/35 pl-3">
               {col.heading}
             </h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {col.links.map((link) => (
                 <li key={link.label}>
                   {link.path === '/contact' ? (
                     <ContactTrigger
                       type="link"
                       className="
-                        group/link inline-flex items-center gap-1.5
-                        text-xs text-text-muted font-mono
+                        group/link inline-flex items-center gap-2
+                        text-sm text-text-muted font-mono
                         hover:text-accent transition-all duration-200
                       "
                     >
@@ -251,8 +233,8 @@ const Footer: React.FC = () => (
                     <Link
                       to={link.path}
                       className="
-                        group/link inline-flex items-center gap-1.5
-                        text-xs text-text-muted font-mono
+                        group/link inline-flex items-center gap-2
+                        text-sm text-text-muted font-mono
                         hover:text-accent transition-all duration-200
                       "
                     >

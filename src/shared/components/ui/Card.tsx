@@ -39,7 +39,7 @@ export const CardBase: React.FC<CardBaseProps> = ({
   muted,
 }) => {
   const base = [
-    'terminal-card border-beam group relative flex flex-col overflow-hidden rounded-lg border bg-bg-card transition-all duration-300',
+    'terminal-card group relative flex flex-col overflow-hidden rounded-lg border bg-bg-card transition-all duration-300',
     active  ? 'border-accent/40'                         : 'border-border',
     muted   ? 'opacity-60 cursor-default'                : 'hover:border-accent/40',
     className,

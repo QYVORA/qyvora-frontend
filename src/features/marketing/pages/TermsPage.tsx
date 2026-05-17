@@ -118,7 +118,7 @@ const TermsPage: React.FC = () => {
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.5 }}
            >
-             <AsciiHeading text="Terms of Service" font="Standard" animated glow="normal" className="mb-6" />
+             <AsciiHeading text="Terms of Service" font="Standard" animated className="mb-6" />
            </motion.div>
 
           <motion.p

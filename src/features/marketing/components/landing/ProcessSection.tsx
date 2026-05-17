@@ -19,7 +19,7 @@ const ProcessSection: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <div className="text-center mb-16">
-          <AsciiHeading text="The Process" font="Larry 3D" animated glow="intense" className="mb-8" />
+          <AsciiHeading text="The Process" font="Larry 3D" animated className="mb-8" />
           <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto opacity-80 leading-relaxed">
             From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
           </p>
@@ -33,7 +33,7 @@ const ProcessSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="terminal-card border-beam p-8 rounded-xl border border-border bg-bg-card/80 backdrop-blur-md text-center group"
+              className="terminal-card p-8 rounded-xl border border-border bg-bg-card/80 backdrop-blur-md text-center group"
             >
               <div className="w-14 h-14 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <step.icon size={24} />

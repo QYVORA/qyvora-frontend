@@ -70,7 +70,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             font="ANSI Shadow" 
             align="left" 
             animated 
-            glow="intense" 
             className="mb-8" 
           />
 
@@ -114,7 +113,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="terminal-card border-beam flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
+            className="terminal-card flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
             style={{ boxShadow: 'var(--card-shimmer)' }}
           >
             <Terminal className="w-3.5 h-3.5 text-accent/50 mt-0.5 flex-none" aria-hidden />

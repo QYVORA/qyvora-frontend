@@ -50,20 +50,20 @@ const FeaturedCard: React.FC<{
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-      className="terminal-card border-beam group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="terminal-card group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <div className="relative flex-none overflow-hidden bg-bg lg:w-[45%]" style={{ minHeight: '220px' }}>
+      <div className="relative flex-none overflow-hidden bg-bg lg:w-[45%] h-[240px] lg:h-auto" style={{ minHeight: '220px' }}>
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         {image ? (
           <img
             src={image}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-500 group-hover:scale-[1.03] group-hover:opacity-85"
+            className="absolute inset-0 h-full w-full object-cover opacity-70 transition-all duration-700 group-hover:scale-[1.05] group-hover:opacity-90"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -71,13 +71,13 @@ const FeaturedCard: React.FC<{
           </div>
         )}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none z-10"
           style={{
-            background: 'linear-gradient(to bottom, transparent 45%, var(--color-bg-card) 100%), linear-gradient(to right, transparent 65%, var(--color-bg-card) 100%)',
+            background: 'linear-gradient(to bottom, transparent 30%, var(--color-bg-card) 98%), linear-gradient(to right, transparent 60%, var(--color-bg-card) 98%)',
           }}
         />
-        <div className="absolute right-3 top-3 z-10">
-          <span className={`rounded-sm border px-2 py-1 font-mono text-[9px] font-black uppercase tracking-[0.2em] backdrop-blur-sm ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
+        <div className="absolute right-3 top-3 z-20">
+          <span className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] backdrop-blur-md ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
             {level}
           </span>
         </div>
@@ -123,11 +123,11 @@ const TeaserCard: React.FC<{
   const Icon = item.icon;
   return (
     <motion.div
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: 'blur(4px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
-      className="terminal-card border-beam flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 transition-colors duration-200 hover:border-border-strong"
+      transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      className="terminal-card flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="flex h-9 w-9 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
@@ -151,19 +151,18 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 w-full">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
-          <ScrollReveal>
+          <div className="w-full">
             <AsciiHeading 
               text="Bootcamps" 
               font="ANSI Shadow" 
               align="left" 
               animated 
-              glow="intense" 
               className="mb-6" 
             />
             <p className="text-text-secondary text-sm mt-2 max-w-lg leading-relaxed">
               Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
             </p>
-           </ScrollReveal>
+          </div>
         </div>
 
         {loading ? (
@@ -216,7 +215,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-                  className="terminal-card border-beam group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
+                  className="terminal-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
                   <div className="relative overflow-hidden bg-bg" style={{ aspectRatio: '16/8' }}>
@@ -229,8 +228,8 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                       />
                     )}
                     <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{ background: 'linear-gradient(to top, var(--color-bg-card) 0%, transparent 60%)' }}
+                      className="absolute inset-0 pointer-events-none z-10"
+                      style={{ background: 'linear-gradient(to top, var(--color-bg-card) 2%, transparent 70%)' }}
                     />
                     <span className={`absolute left-3 top-3 rounded-sm border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
                       {level}

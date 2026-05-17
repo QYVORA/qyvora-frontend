@@ -28,9 +28,8 @@ const ChainSection: React.FC = () => (
     <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
         <div>
+          <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated className="mb-8" />
           <ScrollReveal>
-            <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated glow="intense" className="mb-8" />
-            
             <p className="text-text-secondary text-base md:text-lg mb-8 leading-relaxed max-w-lg">
               Every room completion and <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> reward is 
               permanently etched into our private PoA blockchain. Your skills are verifiable, 
@@ -67,7 +66,7 @@ const ChainSection: React.FC = () => (
               { id: '0x8f2..', type: 'ROOM_COMPLETED', op: 'Ghost_01', hash: '4a92b..', prev: '9c2f1..' },
               { id: '0x3a1..', type: 'CP_REWARD', op: 'Shadow_Op', hash: 'd1e8c..', prev: '4a92b..' },
             ].map((block, i) => (
-              <div key={i} className="terminal-card border-beam p-5 rounded-lg border border-border bg-bg-card/80 backdrop-blur-md">
+              <div key={i} className="terminal-card p-5 rounded-lg border border-border bg-bg-card/80 backdrop-blur-md">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/50">
                   <div className="flex items-center gap-2">
                     <ChainLogo size={16} />
