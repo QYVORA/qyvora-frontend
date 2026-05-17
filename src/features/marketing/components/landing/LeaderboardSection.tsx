@@ -144,29 +144,29 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`terminal-card flex items-center gap-3.5 rounded-lg border p-3.5 transition-colors ${
+      className={`terminal-card flex items-center gap-4 rounded-lg border p-4 transition-colors ${
         meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
       }`}
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <div className={`font-mono font-black text-sm w-8 flex-none flex items-center gap-1 ${meta ? meta.color : 'text-accent/50'}`}>
-        {meta ? meta.icon : null}
+      <div className={`font-mono font-black text-base w-10 flex-none flex items-center gap-1.5 ${meta ? meta.color : 'text-accent/50'}`}>
+        {meta ? React.cloneElement(meta.icon as React.ReactElement, { className: 'w-4 h-4' }) : null}
         #{rank}
       </div>
       <Avatar
         entry={entry}
-        size="sm"
+        size="md"
         colorHex={meta ? meta.avatarColor : '#88AD7C'}
         borderClass={meta ? meta.avatarBorder : 'border-border'}
       />
       <div className="min-w-0 flex-1">
-        <div className={`font-mono text-sm font-medium truncate ${meta ? meta.color : 'text-text-primary'}`}>
+        <div className={`font-mono text-base font-medium truncate ${meta ? meta.color : 'text-text-primary'}`}>
           {handle}
         </div>
-        <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{entry.rank || 'Operator'}</div>
+        <div className="text-[11px] uppercase tracking-widest text-text-muted mt-1">{entry.rank || 'Operator'}</div>
       </div>
-      <div className={`font-mono font-bold text-sm flex-none inline-flex items-center gap-1 ${meta ? meta.color : 'text-accent/70'}`}>
-        {Number(entry.totalXp || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" />
+      <div className={`font-mono font-bold text-base flex-none inline-flex items-center gap-2 ${meta ? meta.color : 'text-accent/70'}`}>
+        {Number(entry.totalXp || 0).toLocaleString()} <CpLogo className="w-4 h-4" />
       </div>
     </motion.div>
   );

@@ -89,9 +89,9 @@
   }
 
   :root {
-    --mobile-text-base: 16px;
-    --mobile-text-meta: 12px;
-    --tap-target-min: 44px;
+    --mobile-text-base: 17px;
+    --mobile-text-meta: 13px;
+    --tap-target-min: 48px;
   }
 
   .dot-grid {
@@ -309,22 +309,32 @@
   @media (max-width: 767px) {
     body {
       font-size: var(--mobile-text-base);
-      line-height: 1.5;
+      line-height: 1.6;
     }
+
+    h1 { font-size: 2.25rem !important; }
+    h2 { font-size: 1.85rem !important; }
+    h3 { font-size: 1.5rem !important; }
 
     .text-\[9px\],
     .text-\[10px\] {
       font-size: var(--mobile-text-meta) !important;
-      line-height: 1.35 !important;
-      letter-spacing: 0.02em !important;
+      line-height: 1.4 !important;
+      letter-spacing: 0.03em !important;
+    }
+
+    .card-hsociety {
+      width: 100% !important;
+      max-width: 100% !important;
     }
   }
 
   @media (max-width: 360px) {
     h1,
     .text-3xl {
-      line-height: 1.12 !important;
+      line-height: 1.2 !important;
       letter-spacing: -0.01em !important;
+      font-size: 2rem !important;
     }
 
     .text-\[11px\],

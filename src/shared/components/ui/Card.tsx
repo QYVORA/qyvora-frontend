@@ -186,20 +186,20 @@ export const CardStat: React.FC<CardStatProps> = ({
   accent,
 }) => {
   const inner = (
-    <div className={`flex items-center gap-3 p-4 ${className}`}>
+    <div className={`flex items-center gap-4 p-5 md:p-4 ${className}`}>
       {icon && (
-        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
+        <div className={`flex h-12 w-12 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl border ${
           accent ? 'border-accent/30 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'
         }`}>
-          {icon}
+          {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 md:w-5 md:h-5' }) : icon}
         </div>
       )}
       <div className="min-w-0">
-        <div className={`font-mono text-xl font-black leading-none ${accent ? 'text-accent' : 'text-text-primary'}`}>
+        <div className={`font-mono text-2xl md:text-xl font-black leading-none ${accent ? 'text-accent' : 'text-text-primary'}`}>
           {value}
         </div>
         {label && (
-          <div className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-text-muted truncate">
+          <div className="mt-1 text-[11px] md:text-[10px] font-bold uppercase tracking-widest text-text-muted truncate">
             {label}
           </div>
         )}

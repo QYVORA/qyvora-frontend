@@ -77,7 +77,7 @@ const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashbo
 const PageLoader = () => (
   <div className="h-screen w-full bg-bg flex items-center justify-center">
     {/* Spinning ring using Tailwind's animate-spin and accent colour */}
-    <div className="w-10 h-10 rounded-full border-4 border-border border-t-accent animate-spin" />
+    <div className="w-14 h-14 rounded-full border-[5px] border-border border-t-accent animate-spin" />
   </div>
 );
 

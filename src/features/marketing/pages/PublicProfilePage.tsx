@@ -52,7 +52,7 @@ const PublicProfile: React.FC = () => {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-          className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full"
+          className="w-14 h-14 border-[5px] border-border border-t-accent rounded-full"
         />
       </div>
     );
@@ -99,40 +99,40 @@ const PublicProfile: React.FC = () => {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <CardBase className="md:col-span-1 p-6 flex flex-col items-center text-center gap-4 glass-effect">
+          <CardBase className="md:col-span-1 p-8 md:p-6 flex flex-col items-center text-center gap-5 glass-effect">
             {profile.avatarUrl ? (
-              <img src={profile.avatarUrl} alt="" className="w-24 h-24 rounded-full border-2 border-border-strong object-cover" />
+              <img src={profile.avatarUrl} alt="" className="w-32 h-32 md:w-24 md:h-24 rounded-full border-2 border-border-strong object-cover" />
             ) : (
-              <div className="w-24 h-24 rounded-full border-2 border-border-strong bg-accent-dim flex items-center justify-center text-3xl font-black text-accent">
+              <div className="w-32 h-32 md:w-24 md:h-24 rounded-full border-2 border-border-strong bg-accent-dim flex items-center justify-center text-4xl md:text-3xl font-black text-accent">
                 {initials}
               </div>
             )}
             <div>
-              <h2 className="text-lg font-black text-text-primary uppercase tracking-tight">{profile.handle || profile.name}</h2>
-              <p className="text-[10px] font-mono text-accent uppercase tracking-widest mt-1">{profile.rank || 'Operator'}</p>
+              <h2 className="text-xl md:text-lg font-black text-text-primary uppercase tracking-tight">{profile.handle || profile.name}</h2>
+              <p className="text-[11px] md:text-[10px] font-mono text-accent uppercase tracking-widest mt-1.5 md:mt-1">{profile.rank || 'Operator'}</p>
             </div>
-            {profile.bio && <p className="text-xs text-text-muted leading-relaxed italic">"{profile.bio}"</p>}
-            <div className="w-full pt-4 border-t border-border flex justify-center gap-4">
-              {profile.website && <a href={profile.website} target="_blank" rel="noreferrer" className="text-text-muted hover:text-accent"><Globe className="w-4 h-4" /></a>}
-              {profile.twitter && <a href={`https://x.com/${profile.twitter.replace('@', '')}`} target="_blank" rel="noreferrer" className="text-text-muted hover:text-accent"><ExternalLink className="w-4 h-4" /></a>}
+            {profile.bio && <p className="text-sm md:text-xs text-text-muted leading-relaxed italic">"{profile.bio}"</p>}
+            <div className="w-full pt-5 border-t border-border flex justify-center gap-6 md:gap-4">
+              {profile.website && <a href={profile.website} target="_blank" rel="noreferrer" className="text-text-muted hover:text-accent"><Globe className="w-5 h-5 md:w-4 md:h-4" /></a>}
+              {profile.twitter && <a href={`https://x.com/${profile.twitter.replace('@', '')}`} target="_blank" rel="noreferrer" className="text-text-muted hover:text-accent"><ExternalLink className="w-5 h-5 md:w-4 md:h-4" /></a>}
             </div>
           </CardBase>
 
           <div className="md:col-span-2 space-y-6">
-            <CardBase className="p-6 glass-effect">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2 text-accent">
-                  <CpLogo className="w-5 h-5" />
-                  <span className="font-mono font-black text-2xl">{cp.toLocaleString()}</span>
+            <CardBase className="p-8 md:p-6 glass-effect">
+              <div className="flex items-center justify-between mb-8 md:mb-6">
+                <div className="flex items-center gap-3 text-accent">
+                  <CpLogo className="w-6 h-6 md:w-5 md:h-5" />
+                  <span className="font-mono font-black text-3xl md:text-2xl">{cp.toLocaleString()}</span>
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">CP Balance</div>
+                <div className="text-[11px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">CP Balance</div>
               </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <div className="space-y-3">
+                <div className="flex justify-between text-[11px] md:text-[10px] font-black uppercase tracking-widest text-text-muted">
                   <span>Rank Progress</span>
                   <span>{progress}%</span>
                 </div>
-                <div className="h-1.5 w-full bg-border rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-border rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
@@ -140,20 +140,20 @@ const PublicProfile: React.FC = () => {
                     className="h-full bg-accent shadow-[0_0_12px_var(--color-accent-glow)]"
                   />
                 </div>
-                {next && <p className="text-[9px] text-text-muted text-right">Next rank: <span className="text-accent">{next.label}</span> at {next.min} CP</p>}
+                {next && <p className="text-[10px] md:text-[9px] text-text-muted text-right">Next rank: <span className="text-accent">{next.label}</span> at {next.min} CP</p>}
               </div>
             </CardBase>
 
-            <div className="grid grid-cols-2 gap-4">
-              <CardBase className="p-5 flex flex-col gap-2 glass-effect">
-                <Trophy className="w-4 h-4 text-accent" />
-                <span className="text-xl font-black text-text-primary">{profile.completedRoomsCount || 0}</span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Rooms Cleared</span>
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+              <CardBase className="p-6 md:p-5 flex flex-col gap-3 glass-effect">
+                <Trophy className="w-5 h-5 md:w-4 md:h-4 text-accent" />
+                <span className="text-2xl md:text-xl font-black text-text-primary">{profile.completedRoomsCount || 0}</span>
+                <span className="text-[10px] md:text-[9px] font-black uppercase tracking-widest text-text-muted">Rooms Cleared</span>
               </CardBase>
-              <CardBase className="p-5 flex flex-col gap-2 glass-effect">
-                <Zap className="w-4 h-4 text-accent" />
-                <span className="text-xl font-black text-text-primary">{profile.activeStreak || 0}</span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Day Streak</span>
+              <CardBase className="p-6 md:p-5 flex flex-col gap-3 glass-effect">
+                <Zap className="w-5 h-5 md:w-4 md:h-4 text-accent" />
+                <span className="text-2xl md:text-xl font-black text-text-primary">{profile.activeStreak || 0}</span>
+                <span className="text-[10px] md:text-[9px] font-black uppercase tracking-widest text-text-muted">Day Streak</span>
               </CardBase>
             </div>
           </div>
