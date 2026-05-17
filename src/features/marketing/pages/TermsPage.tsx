@@ -112,7 +112,7 @@ const TermsPage: React.FC = () => {
         <div className="absolute inset-0 dot-grid hero-dot-grid opacity-20 z-0" />
         <div className="absolute inset-0 bg-radial-vignette opacity-60 z-10 hero-vignette" />
 
-        <div className="relative z-20 min-h-[50svh] md:min-h-[45vh] max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center pt-10 pb-12 md:pt-14 md:pb-16">
+        <div className="relative z-20 min-h-[50svh] md:min-h-[45vh] max-w-7xl mx-auto px-2 md:px-8 flex flex-col justify-center pt-10 pb-12 md:pt-14 md:pb-16">
           <motion.div
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ const TermsPage: React.FC = () => {
       <section className="ascii-section py-16 md:py-24 relative overflow-hidden">
         <HeroBackground className="opacity-40" />
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 md:px-8 relative z-10">
+        <div className="max-w-4xl mx-auto px-2 md:px-8 relative z-10">
 
            <ScrollReveal className="mb-12 md:mb-16">
              <div className="flex items-start gap-4">

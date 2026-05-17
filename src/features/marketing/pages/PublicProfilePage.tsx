@@ -79,7 +79,7 @@ const PublicProfile: React.FC = () => {
   return (
     <div className="ascii-section min-h-screen bg-bg pb-16 scanlines relative">
       <HeroBackground className="opacity-40" />
-      <div className="relative z-10 max-w-3xl mx-auto px-4 md:px-8 py-10">
+      <div className="relative z-10 max-w-3xl mx-auto px-2 md:px-8 py-10">
 
          <ScrollReveal className="mb-10">
            <AsciiHeading

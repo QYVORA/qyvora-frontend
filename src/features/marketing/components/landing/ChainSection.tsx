@@ -25,7 +25,7 @@ const ChainSection: React.FC = () => (
     />
     <div className="pointer-events-none absolute -left-32 top-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-accent/5 blur-[100px]" />
 
-    <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+    <div className="max-w-7xl mx-auto px-2 md:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
         <div>
           <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated className="mb-8" />

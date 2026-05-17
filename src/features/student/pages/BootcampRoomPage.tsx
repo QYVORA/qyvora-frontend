@@ -878,7 +878,7 @@ const BootcampRoomPage: React.FC = () => {
             }}
           >
             {/* Content area */}
-            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-3 sm:px-4 md:px-5 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-2 sm:px-4 md:px-5 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
               <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">

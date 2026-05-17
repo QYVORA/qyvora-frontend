@@ -46,7 +46,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-24 md:pt-6 pb-24 md:pb-8 md:min-h-0 h-full"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-2 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-24 md:pt-6 pb-24 md:pb-8 md:min-h-0 h-full"
       >
         {/* Left column */}
         <div className="flex min-h-full flex-col items-center justify-center lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">

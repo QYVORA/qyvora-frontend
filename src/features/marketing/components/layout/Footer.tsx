@@ -185,7 +185,7 @@ const Footer: React.FC = () => (
     <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
 
     {/* CONTENT */}
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 w-full">
+    <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full">
 
       {/* ── Top: brand + nav ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-8 sm:pt-10 md:pt-12 pb-8 md:pb-10">

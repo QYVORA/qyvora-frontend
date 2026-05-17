@@ -132,7 +132,7 @@ const Marketplace: React.FC = () => {
         className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover"
         style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
       >
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
+      <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
 {/* Header */}
          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">

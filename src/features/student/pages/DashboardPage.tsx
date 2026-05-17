@@ -179,7 +179,7 @@ const Dashboard: React.FC = () => {
           maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
         }}
       >
-        <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
           {/* ── HEADER ───────────────────────────────────────────────────── */}
 <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">

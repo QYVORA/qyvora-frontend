@@ -188,7 +188,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 
   return (
     <div className="w-full h-full flex items-center py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 w-full">
+      <div className="max-w-7xl mx-auto px-2 md:px-10 w-full">
 
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div>

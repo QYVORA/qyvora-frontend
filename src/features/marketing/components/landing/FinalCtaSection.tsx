@@ -63,7 +63,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-2 md:px-10 w-full">
         <div className="max-w-xl">
           <AsciiHeading 
             text={user ? "Operating" : "Operate"} 

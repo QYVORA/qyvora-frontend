@@ -23,7 +23,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
 
   return (
     <div className="w-full h-full flex items-center py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-2 md:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
 
           {/* Left: description + CP features */}

@@ -147,7 +147,7 @@ const AdminTopbar = () => {
     <>
       {/* ── Desktop topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 md:h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-2 md:px-10 h-20 md:h-24 flex items-center justify-between">
 
           {/* Left: Logo + admin badge + nav */}
           <div className="flex items-center gap-6 lg:gap-8">

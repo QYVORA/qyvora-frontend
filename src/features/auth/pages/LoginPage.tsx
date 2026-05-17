@@ -251,7 +251,7 @@ const Login: React.FC = () => {
 
       {!isAdminLoginRoute && <AuthHero />}
 
-      <div className="flex flex-col items-center justify-center p-5 md:p-12 relative">
+      <div className="flex flex-col items-center justify-center px-2 py-8 md:p-12 relative">
 
         <div className="w-full max-w-lg relative z-10">
           {/* Back to home — mobile only (desktop shows it in the left panel) */}

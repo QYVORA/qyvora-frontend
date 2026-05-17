@@ -300,7 +300,7 @@ const BootcampCourse: React.FC = () => {
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
           }}
         >
-          <div className="px-2 sm:px-6 md:px-8 pb-6 lg:p-5 space-y-4">
+          <div className="px-2 pb-6 lg:p-5 space-y-4">
 
             {/* Progress card */}
             <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
@@ -399,7 +399,7 @@ const BootcampCourse: React.FC = () => {
             maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
           }}
         >
-          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
+          <div className="px-2 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
 
             {/* ── Page header — lives here so it scrolls with the rooms ── */}
             <div className="hidden lg:block">
