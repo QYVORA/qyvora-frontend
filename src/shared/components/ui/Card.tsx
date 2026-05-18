@@ -191,7 +191,7 @@ export const CardStat: React.FC<CardStatProps> = ({
         <div className={`flex h-12 w-12 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl border ${
           accent ? 'border-accent/30 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'
         }`}>
-          {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 md:w-5 md:h-5' }) : icon}
+          {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6 md:w-5 md:h-5' }) : icon}
         </div>
       )}
       <div className="min-w-0">
