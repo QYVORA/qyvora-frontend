@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Zap, Trophy, Star } from 'lucide-react';
 import CpLogo from './CpLogo';
-import { useScrollLock } from '../core/hooks/useScrollLock';
+import { useScrollLock } from '../../core/hooks/useScrollLock';
 
 interface Props {
   show: boolean;
