@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lock } from 'lucide-react';
-import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
+import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
 interface QuizGateModalProps {
   onClose: () => void;
