@@ -17,6 +17,8 @@ import StepJumpMenu from '../components/bootcamp-room/StepJumpMenu';
 import ReportIssueModal from '../components/bootcamp-room/ReportIssueModal';
 import StepCard from '../components/bootcamp-room/StepCard';
 import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
+import QuizModal from '../components/bootcamp-room/QuizModal';
+import QuizGateModal from '../components/bootcamp-room/QuizGateModal';
 import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
