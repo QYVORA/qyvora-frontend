@@ -9,7 +9,7 @@
  * ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────
  *
  *  ┌──────────────────────────────────────────────┐  ← Fixed topbar (AdminTopbar)
- *  │              Admin Top Navigation             │    always visible, scrolls with nothing
+ *  │              Admin Top Navigation            │    always visible, scrolls with nothing
  *  ├──────────────────────────────────────────────┤
  *  │                                  ┌──────────┐│
  *  │         Page Content             │  Right   ││

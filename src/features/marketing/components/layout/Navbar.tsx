@@ -20,23 +20,19 @@ import Logo from '../../../../shared/components/brand/Logo';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import { ContactTrigger } from '../ContactModal';
 
-// ─────────────────────────────────────────────
-// Icon map — ties each nav item key to its icon
-// ─────────────────────────────────────────────
+// ─── Icon map ────────────────────────────────────────────────────────────────
+
 const ICON_BY_KEY = {
-  bootcamps: Terminal,
-  ctf: Flag,
-  marketplace: ShoppingBag,
-  leaderboard: Trophy,
+  bootcamps:       Terminal,
+  ctf:             Flag,
+  marketplace:     ShoppingBag,
+  leaderboard:     Trophy,
   zero_day_market: Shield,
-  cyber_points: Zap,
-  hsociety_chain: Link2,
-  contact: Mail,
+  cyber_points:    Zap,
+  hsociety_chain:  Link2,
+  contact:         Mail,
 } as const;
 
-// Build the platform nav items by merging site config with icons.
-// item.key is typed as `string` by the config shape, but ICON_BY_KEY only
-// accepts its own literal keys, so we cast to `keyof typeof ICON_BY_KEY`.
 const platformItems = SITE_CONFIG.nav.platform.map(
   (item: { key: string; label: string; path: string; desc: string }) => ({
     ...item,
@@ -44,105 +40,73 @@ const platformItems = SITE_CONFIG.nav.platform.map(
   })
 );
 
-// NAV_GROUPS drives the desktop nav — currently only the Platform group
 const NAV_GROUPS: { label: string; items: typeof platformItems }[] = [];
 if (platformItems.length) NAV_GROUPS.push({ label: 'Platform', items: platformItems });
 
-// ─────────────────────────────────────────────
-// Navbar component
-// ─────────────────────────────────────────────
+// ─── Navbar ──────────────────────────────────────────────────────────────────
+
 const Navbar: React.FC = () => {
   const { user } = useAuth();
-
-  // Tracks which dropdown group is open (by label), or null if none
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isVisible, setIsVisible]           = useState(true);
+  const lastScrollY                          = React.useRef(0);
+  const scrollY                              = useScrollY();
+  const location                             = useLocation();
 
-  // Controls hide-on-scroll-down / show-on-scroll-up behaviour
-  const [isVisible, setIsVisible] = useState(true);
-
-  // Ref to compare against previous scroll position without triggering re-renders
-  const lastScrollY = React.useRef(0);
-
-  const scrollY = useScrollY();
-  const location = useLocation();
-
-  // ── Hide / show logic ──────────────────────
-  // The navbar hides when the user scrolls down and reappears when they scroll up.
-  // A 5 px dead-zone prevents jitter from tiny scroll fluctuations.
+  // Hide on scroll-down, reveal on scroll-up
   useEffect(() => {
-    // Always show the bar when the page is near the very top
     if (scrollY < 10) {
       setIsVisible(true);
       lastScrollY.current = scrollY;
       return;
     }
-
     const diff = scrollY - lastScrollY.current;
-
-    // Only act when the scroll delta is meaningful enough (> 5 px)
     if (Math.abs(diff) > 5) {
-      const isScrollingDown = diff > 0;
-      setIsVisible(!isScrollingDown); // hide on down, show on up
+      setIsVisible(diff <= 0);
       lastScrollY.current = scrollY;
     }
   }, [scrollY]);
 
-  // Close any open dropdown whenever the route changes
-  useEffect(() => {
-    setActiveDropdown(null);
-  }, [location]);
+  // Close dropdown on route change
+  useEffect(() => { setActiveDropdown(null); }, [location]);
 
-  // ─────────────────────────────────────────────
-  // Render
-  // ─────────────────────────────────────────────
   return (
     <nav
-      className={`
-        fixed top-0 left-0 w-full z-50 overflow-visible
-        border-b border-border/50
-        transition-all duration-300
-        h-[72px] flex items-center px-4 md:px-8
+      className={[
+        'fixed top-0 left-0 w-full z-50 overflow-visible',
+        'h-[72px] flex items-center px-4 md:px-8',
+        'transition-all duration-300',
 
-        /*
-         * TRANSPARENT BACKGROUND
-         * ─────────────────────────────────────────
-         * Previously, the navbar switched between:
-         *   • bg-transparent  (when scrollY <= 80)
-         *   • bg-bg/90 + backdrop-blur-md  (when scrollY > 80)
-         *
-         * Now the background is always transparent at every scroll
-         * position.  The border and text still appear; only the
-         * coloured/blurred background fill is removed.
-         *
-         * To restore the frosted-glass look, bring back:
-         *   isScrolled ? 'bg-bg/90 backdrop-blur-md' : 'bg-transparent'
-         * ─────────────────────────────────────────
-         */
-        bg-transparent
+        // ── Fully transparent background — no fill, no blur, no border ──────
+        // The original had:
+        //   border-b border-border/50   ← removed: invisible-border rule
+        //   bg-transparent              ← kept and made unconditional
+        //
+        // `border-transparent` renders the border-box at zero opacity so
+        // layout is not affected, but no colour bleeds through on any screen.
+        'bg-transparent border-b border-transparent',
 
-        /* Slide up when scrolling down; slide back in when scrolling up */
-        ${!isVisible ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
-      `}
+        // Slide-hide behaviour — unchanged
+        !isVisible ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
+      ].join(' ')}
       style={{ outline: 'none' }}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
 
-        {/* ── Logo ─────────────────────────────── */}
+        {/* ── Logo ─────────────────────────────────────────────────────────── */}
         <Link to="/" className="flex items-center">
           <Logo size="lg" />
         </Link>
 
-        {/* ── Desktop Navigation ───────────────── */}
+        {/* ── Desktop Navigation ───────────────────────────────────────────── */}
         <div className="hidden md:flex items-center space-x-1">
           {NAV_GROUPS.map((group) => (
             <div
               key={group.label}
               className="relative group h-[72px] flex items-center overflow-visible"
-              // Open dropdown on hover, close when the cursor leaves
               onMouseEnter={() => group.items && setActiveDropdown(group.label)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              {/* Render a <Link> if the group has a direct path, otherwise a <button> */}
               {'path' in group && group.path ? (
                 <Link
                   to={String(group.path)}
@@ -163,7 +127,6 @@ const Navbar: React.FC = () => {
                   }`}
                 >
                   {group.label}
-                  {/* Chevron rotates 180° when the dropdown is open */}
                   <ChevronDown
                     className={`w-4 h-4 transition-transform duration-200 ${
                       activeDropdown === group.label ? 'rotate-180' : ''
@@ -172,7 +135,7 @@ const Navbar: React.FC = () => {
                 </button>
               )}
 
-              {/* ── Desktop Dropdown ─────────────── */}
+              {/* ── Dropdown panel ───────────────────────────────────────── */}
               <AnimatePresence>
                 {activeDropdown === group.label && group.items && (
                   <motion.div
@@ -185,10 +148,8 @@ const Navbar: React.FC = () => {
                       w-[480px] [max-width:min(480px,calc(100vw-2rem))]
                       bg-bg-card border border-border rounded-xl shadow-2xl p-5
                     "
-                    // Keep the panel within viewport on smaller screens
                     style={{ left: 'max(1rem, calc(50% - 240px))', transform: 'none' }}
                   >
-                    {/* Two-column grid of platform links */}
                     <div className="grid grid-cols-2 gap-3">
                       {group.items.map((item) => (
                         <ContactTrigger
@@ -199,17 +160,14 @@ const Navbar: React.FC = () => {
                             ${
                               location.pathname === item.path ||
                               location.pathname.startsWith(item.path + '/')
-                                ? 'bg-accent-dim text-accent'   // active route highlight
-                                : 'hover:bg-accent-dim'         // hover highlight
+                                ? 'bg-accent-dim text-accent'
+                                : 'hover:bg-accent-dim'
                             }
                           `}
                         >
-                          {/* Icon badge */}
                           <div className="p-2 rounded bg-bg border border-border group-hover/item:border-accent group-hover/item:text-accent transition-colors flex-none">
                             <item.icon className="w-4 h-4" />
                           </div>
-
-                          {/* Label + description */}
                           <div>
                             <div className="text-sm font-bold uppercase tracking-wider text-text-primary mb-0.5">
                               {item.label}
@@ -228,38 +186,54 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* ── Right Controls ───────────────────── */}
+        {/* ── Right controls ───────────────────────────────────────────────── */}
         <div className="flex items-center gap-2 md:gap-3">
-
-          {/* Desktop auth buttons — shown only on md+ screens */}
           <div className="hidden md:flex items-center space-x-3">
             {user ? (
-              /* Authenticated: show Dashboard link (and Admin Console if admin) */
               <div className="flex items-center gap-3">
                 {user.isAdmin && (
+                  // Admin Console button
+                  // Was: px-4 py-2 text-sm — now px-4 py-2.5 text-sm font-bold
+                  // The extra vertical padding (py-2 → py-2.5) keeps it optically
+                  // even with the primary CTA beside it, and min-h-[40px] ensures
+                  // a comfortable touch target on all screen sizes.
                   <Link
                     to="/mr-robot/dashboard"
-                    className="text-sm font-bold uppercase tracking-wider text-accent border border-accent/30 rounded-md px-4 py-2 hover:bg-accent-dim transition-all flex items-center gap-2"
+                    className="
+                      inline-flex items-center gap-2
+                      text-sm font-bold uppercase tracking-wider
+                      text-accent border border-accent/30 rounded-md
+                      px-4 py-2.5 min-h-[40px]
+                      hover:bg-accent-dim transition-all
+                    "
                   >
                     <Lock className="w-3.5 h-3.5" /> Admin Console
                   </Link>
                 )}
+
+                {/* Dashboard button — same height treatment as Admin Console */}
                 <Link
                   to="/dashboard"
-                  className="btn-primary !px-5 !py-2 text-sm flex items-center gap-2"
+                  className="btn-primary inline-flex items-center gap-2 !px-5 !py-2.5 text-sm min-h-[40px]"
                 >
                   <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
                 </Link>
               </div>
             ) : (
-              /* Unauthenticated: show CTA to register */
-              <Link to="/register" className="btn-primary !px-5 !py-2 text-sm">
+              // "Start Training" CTA
+              // Was: !px-5 !py-2 text-sm — now adds min-h-[40px] and py-2.5
+              // so the button has consistent height across breakpoints and
+              // meets the recommended 40 px minimum touch target.
+              <Link
+                to="/register"
+                className="btn-primary !px-5 !py-2.5 text-sm min-h-[40px]"
+              >
                 Start Training
               </Link>
             )}
           </div>
-
         </div>
+
       </div>
     </nav>
   );
