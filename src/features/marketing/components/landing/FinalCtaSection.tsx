@@ -49,7 +49,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-0">
+    <div className="w-full h-full flex items-center py-12 md:py-16">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(135deg, var(--color-bg) 0%, transparent 50%, var(--color-bg) 100%)' }}
@@ -63,7 +63,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-2 md:px-10 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10 w-full overflow-hidden">
         <div className="max-w-xl">
           <AsciiHeading 
             text={user ? "Operating" : "Operate"} 

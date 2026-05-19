@@ -150,7 +150,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <div className={`font-mono font-black text-base w-10 flex-none flex items-center gap-1.5 ${meta ? meta.color : 'text-accent/50'}`}>
-        {meta ? React.cloneElement(meta.icon as React.ReactElement, { className: 'w-4 h-4' }) : null}
+        {meta ? React.cloneElement(meta.icon as React.ReactElement, { className: 'w-4 h-4' } as any) : null}
         #{rank}
       </div>
       <Avatar
@@ -187,8 +187,8 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
   const rest  = leaderboard.slice(3, 5);
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-2 md:px-10 w-full">
+    <div className="w-full h-full flex items-center py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full overflow-hidden">
 
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div>

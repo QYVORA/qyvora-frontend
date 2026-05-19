@@ -10,6 +10,7 @@
  */
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { isCategoryAllowed } from '../../shared/utils/storageConsent';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -79,7 +80,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    */
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('hsociety_theme', theme);
+    if (isCategoryAllowed('functional')) {
+      localStorage.setItem('hsociety_theme', theme);
+    }
   }, [theme]); // Only re-runs when `theme` changes.
 
   /**
