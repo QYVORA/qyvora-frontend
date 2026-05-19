@@ -89,6 +89,7 @@ import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '../../features/student/components/layout/StudentTopbar';
 // The student-specific right rail sidebar (desktop only).
 import StudentRightRail from '../../features/student/components/layout/StudentRightRail';
+import CookieConsent from '../components/CookieConsent';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
 //
@@ -244,6 +245,9 @@ const StudentLayout = () => {
         or `position: sticky` internally).
       */}
       {!hideRightRail && <StudentRightRail />}
+
+      {/* Cookie Consent banner */}
+      <CookieConsent />
     </div>
   );
 };

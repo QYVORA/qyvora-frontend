@@ -163,6 +163,8 @@ export const readLandingSnapshot = (): LandingSnapshot | null => {
   }
 };
 
+import { isCategoryAllowed } from '../../../shared/utils/storageConsent';
+
 /**
  * Writes a fresh landing snapshot to localStorage.
  *
@@ -171,6 +173,7 @@ export const readLandingSnapshot = (): LandingSnapshot | null => {
  * caught silently — a failed cache write should never break the page.
  */
 export const writeLandingSnapshot = (snapshot: LandingSnapshot): void => {
+  if (!isCategoryAllowed('analytics')) return;
   try {
     const payload: StoredLandingSnapshot = {
       ...snapshot,

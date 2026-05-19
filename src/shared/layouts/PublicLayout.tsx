@@ -74,11 +74,12 @@ import Footer from '../../features/marketing/components/layout/Footer';
 import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
 // "Contact Us" modal host — sits outside <main> to escape scroll/overflow contexts.
 import ContactModalHost from '../../features/marketing/components/ContactModal';
+import CookieConsent from '../components/CookieConsent';
 
 /**
  * PublicLayout Component
  *
- * Provides the persistent chrome (Navbar, Footer, mobile nav, contact modal)
+ * Provides the persistent chrome (Navbar, Footer, mobile nav, contact modal, cookie consent)
  * around any standard public-facing page. The actual page content is injected
  * via React Router's <Outlet />.
  *
@@ -154,6 +155,9 @@ const PublicLayout = () => (
       parent overflow or stacking context.
     */}
     <ContactModalHost />
+
+    {/* Cookie Consent banner */}
+    <CookieConsent />
   </>
 );
 
