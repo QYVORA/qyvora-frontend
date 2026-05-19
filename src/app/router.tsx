@@ -183,13 +183,9 @@ export const AppRouter = () => {
 
         {/* ── Public marketing routes (no auth required) ─────────────────── */}
 
-        {/*
-          LandingLayout wraps the homepage. It is a separate layout from
-          PublicLayout to allow the landing page to have a distinct hero
-          treatment (e.g. full-bleed sections, no standard header).
-        */}
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
+          <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>
 
         {/*
@@ -202,8 +198,6 @@ export const AppRouter = () => {
 
           {/* Public hacker profile page — accessible without logging in */}
           <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
-
-          <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes (no layout shell — full-page auth forms) ───────── */}
