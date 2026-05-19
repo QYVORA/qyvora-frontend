@@ -103,23 +103,29 @@ const Wallet: React.FC = () => {
                   src={STUDENT_DECOR.walletMascot}
                   className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[120px] w-auto -translate-y-1/2 object-contain opacity-95 md:max-h-[140px]"
                 />
-                <div className="relative z-10 mb-6 inline-flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
+                <div className="relative z-10 mb-6 flex flex-wrap items-center gap-3 font-mono text-3xl font-black text-accent md:text-4xl lg:text-5xl break-all">
                   <CpLogo className="w-8 h-8 md:w-9 md:h-9 opacity-90 shrink-0" />
-                  {loading ? '—' : balance.toLocaleString()}
+                  <span className="truncate">{loading ? '—' : balance.toLocaleString()}</span>
                 </div>
                 {/* Stats row */}
-                <div className="relative z-10 grid grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3">
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none shrink-0">
                       <ArrowDownLeft className="w-4 h-4 text-accent" />
                     </div>
-                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1">{totalEarned.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
+                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
+                      <span className="truncate">{totalEarned.toLocaleString()}</span>
+                      <CpLogo className="w-3.5 h-3.5 shrink-0" />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3">
+                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
                     <div className="w-8 h-8 rounded-lg bg-red-400/10 border border-red-400/20 flex items-center justify-center flex-none shrink-0">
                       <ArrowUpRight className="w-4 h-4 text-red-400" />
                     </div>
-                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1">{totalSpent.toLocaleString()} <CpLogo className="w-3.5 h-3.5 shrink-0" /></div>
+                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
+                      <span className="truncate">{totalSpent.toLocaleString()}</span>
+                      <CpLogo className="w-3.5 h-3.5 shrink-0" />
+                    </div>
                   </div>
                 </div>
               </div>

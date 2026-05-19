@@ -143,11 +143,11 @@ const Marketplace: React.FC = () => {
              <h1 className="text-4xl font-black text-text-primary md:text-6xl">Zero-Day Market</h1>
              <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
            </div>
-           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap">
+           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap max-w-full">
              {balance !== null && (
-               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
                  <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
-                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl">{balance.toLocaleString()}</span>
+                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl truncate">{balance.toLocaleString()}</span>
                </div>
              )}
              <div className="relative w-full sm:w-auto">

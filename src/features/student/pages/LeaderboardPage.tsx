@@ -138,12 +138,12 @@ const Leaderboard: React.FC = () => {
                <p className="mt-2 max-w-lg text-base text-text-muted">Elite operators ranked by CP — chase the podium.</p>
              </div>
             {!loading && operators.length > 0 && (
-              <div className="text-left md:text-right shrink-0">
-                <div className="text-3xl md:text-4xl font-bold text-accent font-mono inline-flex items-center gap-2">
+              <div className="text-left md:text-right shrink-0 max-w-full">
+                <div className="text-3xl md:text-4xl font-bold text-accent font-mono inline-flex items-center gap-2 max-w-full">
                   <StatCounter end={totalCp} />
-                  <CpLogo className="w-7 h-7 md:w-8 md:h-8" />
+                  <CpLogo className="w-7 h-7 md:w-8 md:h-8 shrink-0" />
                 </div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted">Total Community Points Earned</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted truncate">Total Community Points Earned</div>
               </div>
             )}
           </div>

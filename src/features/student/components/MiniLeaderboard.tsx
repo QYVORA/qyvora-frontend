@@ -104,7 +104,7 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
                         {op.rank || 'Operator'}
                       </div>
                     </div>
-                    <div className={`font-mono text-xs font-black flex-none ${style.text}`}>
+                    <div className={`font-mono text-xs font-black flex-none truncate max-w-[80px] text-right ${style.text}`}>
                       {Number(op.totalXp || 0).toLocaleString()}
                       <span className="text-[8px] ml-0.5 opacity-60">CP</span>
                     </div>

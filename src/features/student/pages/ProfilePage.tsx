@@ -239,11 +239,11 @@ const Profile: React.FC = () => {
           {/* LEFT — stats */}
           <div className="space-y-6">
             <ScrollReveal delay={0.1}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profileStats.map((s, i) => (
-                  <div key={i} className="p-4 bg-bg border border-border rounded-xl flex items-center gap-3">
+                  <div key={i} className="p-4 bg-bg border border-border rounded-xl flex items-center gap-3 min-w-0">
                     <s.icon className="w-4 h-4 text-accent shrink-0" />
-                    <div className="text-xl font-black text-text-primary font-mono">{s.value}</div>
+                    <div className="text-xl font-black text-text-primary font-mono truncate">{s.value}</div>
                   </div>
                 ))}
               </div>

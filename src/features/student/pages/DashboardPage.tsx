@@ -210,14 +210,14 @@ const Dashboard: React.FC = () => {
             {/* Stats pills */}
             {!loading && (
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
                   <CpLogo className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                  <span className="font-mono text-lg sm:text-xl font-black text-accent">{cpBalance.toLocaleString()}</span>
+                  <span className="font-mono text-lg sm:text-xl font-black text-accent truncate">{cpBalance.toLocaleString()}</span>
                 </div>
                 {streakDays > 0 && (
-                  <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                  <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
                     <Flame className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-orange-400" />
-                    <span className="font-mono text-lg sm:text-xl font-black text-orange-400">{streakDays}d</span>
+                    <span className="font-mono text-lg sm:text-xl font-black text-orange-400 truncate">{streakDays}d</span>
                   </div>
                 )}
               </div>
