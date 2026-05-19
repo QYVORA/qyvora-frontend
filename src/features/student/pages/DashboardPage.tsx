@@ -73,13 +73,18 @@ const Dashboard: React.FC = () => {
         if (!mounted) return;
         setOverview(ovRes?.data || null);
         setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
-        const cp =
-          (typeof tokenBalance === 'number' && tokenBalance > 0)
-            ? tokenBalance
-            : extractCpBalance(balanceRes?.data);
-        if (cp !== null) setCpBalance(cp);
-        setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items.slice(0, 1) : []);
+        
         const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
+        const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || 0), 0);
+        
+        const dbBalance = extractCpBalance(balanceRes?.data) ?? 0;
+        const onChainBalance = (typeof tokenBalance === 'number') ? tokenBalance : 0;
+        
+        // Take the maximum to avoid showing partial balances
+        const cp = Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0);
+        
+        setCpBalance(cp);
+        setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items.slice(0, 1) : []);
         setPurchased(new Set<string>(
           txItems
             .filter((tx: any) => tx.type === 'purchase' && tx.productId)

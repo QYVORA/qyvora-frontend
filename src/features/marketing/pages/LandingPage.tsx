@@ -10,6 +10,7 @@ import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../components/HeroBackground';
+import { extractCpBalance } from '../../../shared/utils/cpBalance';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -58,7 +59,8 @@ const Landing: React.FC = () => {
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroY = useTransform(scrollY, [0, 300], [0, 60]);
 
-  const totalCp = leaderboard.reduce((acc, e) => acc + Number(e.totalXp || 0), 0);
+  const leaderboardSum = leaderboard.reduce((acc, e) => acc + (extractCpBalance(e) ?? Number(e.totalXp || 0)), 0);
+  const totalCp = Math.max(leaderboardSum, stats?.stats?.totalCpEarned ?? 0);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const scrollToSection = useCallback((index: number) => {

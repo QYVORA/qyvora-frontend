@@ -8,6 +8,7 @@ import { resolveImg } from './helpers';
 import type { LeaderboardEntry } from './types';
 import CpLogo from '../../../../shared/components/CpLogo';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
+import { extractCpBalance } from '../../../../shared/utils/cpBalance';
 
 interface LeaderboardSectionProps {
   leaderboard: LeaderboardEntry[];
@@ -96,7 +97,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
       <div
         className={`font-mono font-black text-base inline-flex items-center gap-1.5 ${meta.color}`}
       >
-        {Number(entry.totalXp || 0).toLocaleString()}
+        {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()}
         <CpLogo className="w-3.5 h-3.5" />
       </div>
     </motion.div>
@@ -125,7 +126,7 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
         <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{entry.rank || 'Operator'}</div>
       </div>
       <div className="font-mono text-xs font-bold text-accent/80 flex-none inline-flex items-center gap-1.5">
-        {Number(entry.totalXp || 0).toLocaleString()} <CpLogo className="w-3 h-3" />
+        {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-3 h-3" />
       </div>
     </motion.div>
   );
@@ -166,7 +167,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
         <div className="text-[11px] uppercase tracking-widest text-text-muted mt-1">{entry.rank || 'Operator'}</div>
       </div>
       <div className={`font-mono font-bold text-base flex-none inline-flex items-center gap-2 ${meta ? meta.color : 'text-accent/70'}`}>
-        {Number(entry.totalXp || 0).toLocaleString()} <CpLogo className="w-4 h-4" />
+        {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-4 h-4" />
       </div>
     </motion.div>
   );

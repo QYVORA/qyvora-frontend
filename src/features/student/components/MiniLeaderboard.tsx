@@ -4,6 +4,7 @@ import { Crown, Trophy, ChevronRight, ChevronUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
+import { extractCpBalance } from '../../../shared/utils/cpBalance';
 
 const PODIUM_STYLES = [
   { border: 'border-accent/60',    bg: 'bg-accent-dim',   text: 'text-accent',    label: 'text-accent'    },
@@ -105,7 +106,7 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
                       </div>
                     </div>
                     <div className={`font-mono text-xs font-black flex-none truncate max-w-[80px] text-right ${style.text}`}>
-                      {Number(op.totalXp || 0).toLocaleString()}
+                      {(extractCpBalance(op) ?? Number(op.totalXp || 0)).toLocaleString()}
                       <span className="text-[8px] ml-0.5 opacity-60">CP</span>
                     </div>
                   </Link>

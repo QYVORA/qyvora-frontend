@@ -6,6 +6,7 @@ export interface BackendStats {
     zeroDayProductsCount?: number;
     vulnerabilitiesIdentified?: number;
     pentestersActive?: number;
+    totalCpEarned?: number;
   };
 }
 

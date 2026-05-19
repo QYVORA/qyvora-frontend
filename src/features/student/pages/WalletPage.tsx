@@ -26,21 +26,28 @@ const Wallet: React.FC = () => {
     (async () => {
       try {
         const [balanceRes, txRes, tokenBalance] = await Promise.all([
-          api.get('/cp/balance'),
-          api.get('/cp/transactions?limit=100'),
+          api.get('/cp/balance').catch(() => null),
+          api.get('/cp/transactions?limit=100').catch(() => null),
           getTokenBalanceForUser(user?.uid || ''),
         ]);
         if (!mounted) return;
-        const parsedBalance = extractCpBalance(balanceRes?.data);
-        // Prefer the backend balance (which has DB fallback built in).
-        // Only use the direct chain token balance if it's a positive number,
-        // since the chain returns 0 for users whose CP was never minted on-chain.
-        const resolvedBalance =
-          (typeof tokenBalance === 'number' && tokenBalance > 0)
-            ? tokenBalance
-            : (parsedBalance ?? 0);
+
+        const dbBalance = extractCpBalance(balanceRes?.data) ?? 0;
+        const onChainBalance = typeof tokenBalance === 'number' ? tokenBalance : 0;
+        
+        const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
+        const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || tx.value || 0), 0);
+        
+        // Final balance resolution:
+        // We take the maximum of:
+        // 1. The backend balance (DB)
+        // 2. The direct chain balance
+        // 3. The sum of the last 100 transactions
+        // 4. The user's CP from their authentication session
+        const resolvedBalance = Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0);
+        
         setBalance(resolvedBalance);
-        setTransactions(Array.isArray(txRes.data?.items) ? txRes.data.items : []);
+        setTransactions(txItems);
         setVisibleCount(PAGE_SIZE);
       } catch {
         if (!mounted) return;
@@ -103,28 +110,34 @@ const Wallet: React.FC = () => {
                   src={STUDENT_DECOR.walletMascot}
                   className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[120px] w-auto -translate-y-1/2 object-contain opacity-95 md:max-h-[140px]"
                 />
-                <div className="relative z-10 mb-6 flex flex-wrap items-center gap-3 font-mono text-3xl font-black text-accent md:text-4xl lg:text-5xl break-all">
-                  <CpLogo className="w-8 h-8 md:w-9 md:h-9 opacity-90 shrink-0" />
+                <div className="relative z-10 mb-6 flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
+                  <CpLogo className="w-8 h-8 md:w-10 md:h-10 opacity-90 shrink-0" />
                   <span className="truncate">{loading ? '—' : balance.toLocaleString()}</span>
                 </div>
                 {/* Stats row */}
                 <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none shrink-0">
-                      <ArrowDownLeft className="w-4 h-4 text-accent" />
-                    </div>
-                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
-                      <span className="truncate">{totalEarned.toLocaleString()}</span>
-                      <CpLogo className="w-3.5 h-3.5 shrink-0" />
+                  <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
+                    <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest">Total Earned</div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-none shrink-0">
+                        <ArrowDownLeft className="w-3.5 h-3.5 text-accent" />
+                      </div>
+                      <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
+                        <span className="truncate">{totalEarned.toLocaleString()}</span>
+                        <CpLogo className="w-3 h-3 shrink-0 opacity-70" />
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-red-400/10 border border-red-400/20 flex items-center justify-center flex-none shrink-0">
-                      <ArrowUpRight className="w-4 h-4 text-red-400" />
-                    </div>
-                    <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
-                      <span className="truncate">{totalSpent.toLocaleString()}</span>
-                      <CpLogo className="w-3.5 h-3.5 shrink-0" />
+                  <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-bg/60 p-3 min-w-0">
+                    <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest">Total Spent</div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-red-400/10 border border-red-400/20 flex items-center justify-center flex-none shrink-0">
+                        <ArrowUpRight className="w-3.5 h-3.5 text-red-400" />
+                      </div>
+                      <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
+                        <span className="truncate">{totalSpent.toLocaleString()}</span>
+                        <CpLogo className="w-3 h-3 shrink-0 opacity-70" />
+                      </div>
                     </div>
                   </div>
                 </div>

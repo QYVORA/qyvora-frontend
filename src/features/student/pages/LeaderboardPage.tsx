@@ -7,6 +7,7 @@ import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
 import StatCounter from '../../../shared/components/ui/StatCounter';
 import { resolveImg } from '../../../shared/utils/resolveImg';
+import { extractCpBalance } from '../../../shared/utils/cpBalance';
 
 const CACHE_KEY = 'hsociety_leaderboard_cache_v2';
 const PAGE_SIZE = 20;
@@ -71,7 +72,7 @@ const LeaderboardRow: React.FC<{ entry: any; rank: number; delay: number; onClic
       {/* Score */}
       <div className="text-right flex-none">
         <div className={`font-mono font-bold text-sm md:text-base lg:text-lg ${isFirst ? 'text-accent' : 'text-accent/80'}`}>
-          {Number(entry.totalXp || 0).toLocaleString()}
+          {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()}
         </div>
         <div className="text-[10px] uppercase tracking-widest text-text-muted inline-flex items-center justify-end">
           <CpLogo className="w-3.5 h-3.5" />
@@ -115,7 +116,7 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => { setPage(1); }, [query]);
 
-  const totalCp    = operators.reduce((sum, op) => sum + Number(op.totalXp || 0), 0);
+  const totalCp    = operators.reduce((sum, op) => sum + (extractCpBalance(op) ?? Number(op.totalXp || 0)), 0);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged      = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
