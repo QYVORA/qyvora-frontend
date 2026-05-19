@@ -1,91 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Lock, LogIn, User, ArrowLeft, Send, Shield, Eye, EyeOff, KeyRound, CheckCircle2 } from 'lucide-react';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import { MustChangePasswordError } from '../../../core/contexts/AuthContext';
+import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import HackerGlobe from '../../marketing/components/HackerGlobe';
 import HeroBackground from '../../marketing/components/HeroBackground';
 import api from '../../../core/services/api';
 
+import AuthHero from '../components/AuthHero';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
+import ForgotPasswordForm from '../components/ForgotPasswordForm';
+import ResetPasswordConfirmForm from '../components/ResetPasswordConfirmForm';
+import VerifyEmailForm from '../components/VerifyEmailForm';
+import ChangePasswordForm from '../components/ChangePasswordForm';
+
 type Mode = 'login' | 'register' | 'forgot' | 'reset-confirm' | 'verify-email' | 'change-password';
-
-const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base';
-
-const PasswordInput = ({
-  id,
-  name,
-  placeholder = '••••••••',
-  required = true,
-  shake = false,
-  onAnimationEnd,
-}: {
-  id?: string;
-  name: string;
-  placeholder?: string;
-  required?: boolean;
-  shake?: boolean;
-  onAnimationEnd?: () => void;
-}) => {
-  const [show, setShow] = useState(false);
-  return (
-    <div
-      className={`relative${shake ? ' animate-shake-x' : ''}`}
-      onAnimationEnd={onAnimationEnd}
-    >
-      <input
-        id={id}
-        type={show ? 'text' : 'password'}
-        name={name}
-        required={required}
-        placeholder={placeholder}
-        className={`${INPUT_BASE}${shake ? ' input-error' : ''}`}
-      />
-      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-      <button
-        type="button"
-        onClick={() => setShow((s) => !s)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-        aria-label={show ? 'Hide password' : 'Show password'}
-        aria-pressed={show}
-      >
-        {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-      </button>
-    </div>
-  );
-};
-
-const AuthHero: React.FC = () => (
-  <div className="hidden lg:flex relative flex-col justify-between h-full overflow-hidden p-12">
-    <div className="absolute inset-0 dot-grid opacity-20 z-0" />
-
-    {/* Globe */}
-    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
-      <div className="relative w-full h-full max-w-[520px] max-h-[520px] mx-auto">
-        <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
-        <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
-        <motion.div
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-8 right-6 px-2 py-1 bg-bg-card/80 border border-accent/20 rounded text-[8px] font-mono text-accent uppercase tracking-widest"
-        >
-          SAT-02 // ORBIT
-        </motion.div>
-      </div>
-    </div>
-
-    {/* Back to Home — top-left */}
-    <div className="relative z-20">
-      <Link
-        to="/"
-        className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" /> Back to Home
-      </Link>
-    </div>
-  </div>
-);
 
 const Login: React.FC = () => {
   const { login, logout, user: sessionUser, loading: sessionLoading } = useAuth();
@@ -120,11 +49,11 @@ const Login: React.FC = () => {
     }
   }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const form = e.currentTarget as HTMLFormElement;
+      const form = e.currentTarget;
       const formData = new FormData(form);
       const email = String(formData.get('email') || '');
       const password = String(formData.get('password') || '');
@@ -220,8 +149,6 @@ const Login: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
-      // Backend requires a password upgrade — redirect to the change-password
-      // flow with the token pre-loaded. This is NOT a credential failure.
       if (err instanceof MustChangePasswordError) {
         navigate(`/change-password?token=${encodeURIComponent(err.passwordChangeToken)}`, { replace: true });
         addToast('Your password needs to be updated before continuing.', 'error');
@@ -235,7 +162,6 @@ const Login: React.FC = () => {
         setMode('verify-email');
         return;
       }
-      // Shake the password field on credential failures (wrong password / 401)
       if (err?.response?.status === 401 || mode === 'login') {
         setShakePassword(true);
       }
@@ -245,327 +171,92 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleResendVerification = async () => {
+    try {
+      await api.post('/auth/verify-email/request', { email: verifyEmail });
+      addToast('Verification token re-sent if account exists.', 'success');
+    } catch {
+      addToast('Could not resend. Try again later.', 'error');
+    }
+  };
+
   return (
     <div className={`min-h-screen relative grid grid-cols-1 ${isAdminLoginRoute ? '' : 'lg:grid-cols-2'}`}>
       <HeroBackground className="opacity-50" />
 
       {!isAdminLoginRoute && <AuthHero />}
 
-      <div className="flex flex-col items-center justify-center px-2 py-8 md:p-12 relative">
-
+      <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative">
         <div className="w-full max-w-lg relative z-10">
-          {/* Back to home — mobile only (desktop shows it in the left panel) */}
-          <div className="mb-6 lg:hidden">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back to Home
-            </Link>
-          </div>
+          <p className="sr-only" aria-live="polite">{formMessage}</p>
 
           <AnimatePresence mode="wait">
-            {/* ── LOGIN ── */}
-            {mode === 'login' && (
-              <motion.div key="login"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <div className="mb-8">
-                  <h1 className={`text-3xl font-black uppercase tracking-tight mb-1 ${isAdminLoginRoute ? 'text-text-primary' : 'text-text-primary'}`}>
-                    {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
-                  </h1>
-                  <p className={`text-base ${isAdminLoginRoute ? 'text-text-muted' : 'text-text-muted'}`}>
-                    {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Sign in to continue your training.'}
-                  </p>
-                </div>
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+            >
+              {mode === 'login' && (
+                <LoginForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  isAdminLoginRoute={isAdminLoginRoute}
+                  shakePassword={shakePassword}
+                  onAnimationEnd={() => setShakePassword(false)}
+                  onForgotPassword={() => setMode('forgot')}
+                  onRegister={() => setMode('register')}
+                />
+              )}
 
-                <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-                  <p className="sr-only" aria-live="polite">{formMessage}</p>
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <label htmlFor="login-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
-                    <div className="relative">
-                      <input id="login-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
+              {mode === 'register' && (
+                <RegisterForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  onLogin={() => setMode('login')}
+                />
+              )}
 
-                  {/* Password */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <label htmlFor="login-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
-                      {!isAdminLoginRoute && (
-                      <button type="button" onClick={() => setMode('forgot')} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
-                      )}
-                    </div>
-                    <PasswordInput
-                      id="login-password"
-                      name="password"
-                      shake={shakePassword}
-                      onAnimationEnd={() => setShakePassword(false)}
-                    />
-                  </div>
+              {mode === 'forgot' && (
+                <ForgotPasswordForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  onBackToLogin={() => setMode('login')}
+                  onEnterToken={() => setMode('reset-confirm')}
+                />
+              )}
 
-                  <button type="submit" disabled={isLoading}
-                    className={`w-full !py-4 flex items-center justify-center gap-3 disabled:opacity-50 rounded-lg text-base font-bold uppercase tracking-wider ${
-                      isAdminLoginRoute
-                        ? 'bg-bg-card border border-border text-text-primary hover:border-accent/40'
-                        : 'btn-primary'
-                    }`}>
-                    {isLoading ? 'Signing you in...' : 'Sign In'} <LogIn className="w-5 h-5" />
-                  </button>
-                </form>
+              {mode === 'reset-confirm' && (
+                <ResetPasswordConfirmForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  email={resetEmail}
+                  onEmailChange={setResetEmail}
+                  token={urlToken}
+                  onBack={() => setMode('forgot')}
+                />
+              )}
 
-                {!isAdminLoginRoute && (
-                  <p className="mt-8 text-center text-base text-text-muted">
-                    New here?{' '}
-                    <button onClick={() => setMode('register')} className="text-accent font-bold hover:underline">Create account</button>
-                  </p>
-                )}
-              </motion.div>
-            )}
+              {mode === 'verify-email' && (
+                <VerifyEmailForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  email={verifyEmail}
+                  token={urlToken}
+                  onBackToLogin={() => setMode('login')}
+                  onResendToken={handleResendVerification}
+                />
+              )}
 
-            {/* ── REGISTER ── */}
-            {mode === 'register' && (
-              <motion.div key="register"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <div className="mb-8">
-                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Request Access</h1>
-                  <p className="text-text-muted text-base">Create your account to start learning.</p>
-                </div>
-
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
-                    <div className="relative">
-                      <input id="register-handle" type="text" name="handle" required autoComplete="username" placeholder="hsociety_operator"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="register-full-name" className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
-                    <div className="relative">
-                      <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Operator Name"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="register-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
-                    <div className="relative">
-                      <input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="register-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
-                    <PasswordInput id="register-password" name="password" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="register-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput id="register-confirm-password" name="confirm_password" />
-                  </div>
-
-                  <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Creating account...' : 'Create Account'} <LogIn className="w-5 h-5" />
-                  </button>
-                </form>
-
-                <p className="mt-8 text-center text-base text-text-muted">
-                  Already have access?{' '}
-                  <button onClick={() => setMode('login')} className="text-accent font-bold hover:underline">Log In</button>
-                </p>
-              </motion.div>
-            )}
-
-            {/* ── FORGOT ── */}
-            {mode === 'forgot' && (
-              <motion.div key="forgot"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-4 h-4" /> Back to Login
-                </button>
-
-                <div className="mb-8">
-                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Password</h1>
-                  <p className="text-text-muted text-base">Enter your email and we will help you reset your password.</p>
-                </div>
-
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label htmlFor="forgot-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
-                    <div className="relative">
-                      <input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@hsociety.africa"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Submitting...' : 'Send Reset Instructions'} <Send className="w-5 h-5" />
-                  </button>
-                </form>
-
-                <p className="mt-6 text-center text-sm text-text-muted">
-                  Already have a reset token?{' '}
-                  <button onClick={() => setMode('reset-confirm')} className="text-accent font-bold hover:underline">Enter token</button>
-                </p>
-              </motion.div>
-            )}
-
-            {/* ── RESET CONFIRM ── */}
-            {mode === 'reset-confirm' && (
-              <motion.div key="reset-confirm"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <button onClick={() => setMode('forgot')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-4 h-4" /> Back
-                </button>
-                <div className="mb-8">
-                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Set New Password</h1>
-                  <p className="text-text-muted text-base">Enter your reset token and choose a new password.</p>
-                </div>
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label htmlFor="reset-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
-                    <div className="relative">
-                      <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={resetEmail} placeholder="operator@hsociety.africa"
-                        onChange={(e) => setResetEmail(e.target.value)}
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="reset-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
-                    <div className="relative">
-                      <input id="reset-token" type="text" name="token" required defaultValue={urlToken} placeholder="Paste reset token here"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="reset-new-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
-                    <PasswordInput id="reset-new-password" name="new_password" placeholder="Min 8 characters" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="reset-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput id="reset-confirm-password" name="confirm_password" />
-                  </div>
-                  <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Resetting...' : 'Reset Password'} <CheckCircle2 className="w-5 h-5" />
-                  </button>
-                </form>
-              </motion.div>
-            )}
-
-            {/* ── VERIFY EMAIL ── */}
-            {mode === 'verify-email' && (
-              <motion.div key="verify-email"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <button onClick={() => setMode('login')} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-                  <ArrowLeft className="w-4 h-4" /> Back to Login
-                </button>
-                <div className="mb-8">
-                  <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Verify Email</h1>
-                  <p className="text-text-muted text-base">
-                    {verifyEmail ? `Enter the verification token sent to ${verifyEmail}.` : 'Enter your email verification token.'}
-                  </p>
-                </div>
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label htmlFor="verify-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Verification Token</label>
-                    <div className="relative">
-                      <input id="verify-token" type="text" name="token" required defaultValue={urlToken} placeholder="Paste verification token"
-                        className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                    </div>
-                  </div>
-                  <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Verifying...' : 'Verify Email'} <CheckCircle2 className="w-5 h-5" />
-                  </button>
-                </form>
-                {verifyEmail && (
-                  <p className="mt-6 text-center text-sm text-text-muted">
-                    Didn't get a token?{' '}
-                    <button
-                      onClick={async () => {
-                        try {
-                          await api.post('/auth/verify-email/request', { email: verifyEmail });
-                          addToast('Verification token re-sent if account exists.', 'success');
-                        } catch {
-                          addToast('Could not resend. Try again later.', 'error');
-                        }
-                      }}
-                      className="text-accent font-bold hover:underline"
-                    >
-                      Resend token
-                    </button>
-                  </p>
-                )}
-              </motion.div>
-            )}
-
-            {/* ── CHANGE PASSWORD (mustChangePassword flow) ── */}
-            {mode === 'change-password' && (
-              <motion.div key="change-password"
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}
-              >
-                <div className="mb-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-yellow-500" />
-                    </div>
-                    <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight">Password Change Required</h1>
-                  </div>
-                  <p className="text-text-muted text-base">Your account requires a password change before continuing.</p>
-                </div>
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  {!urlToken && (
-                    <div className="space-y-2">
-                      <label htmlFor="change-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Change Token</label>
-                      <div className="relative">
-                        <input id="change-token" type="text" name="change_token" required placeholder="Paste token from login response"
-                          className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-                        <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="space-y-2">
-                    <label htmlFor="change-new-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
-                    <PasswordInput id="change-new-password" name="new_password" placeholder="Min 8 characters" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="change-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-                    <PasswordInput id="change-confirm-password" name="confirm_password" />
-                  </div>
-                  <button type="submit" disabled={isLoading}
-                    className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
-                    {isLoading ? 'Updating...' : 'Set New Password'} <CheckCircle2 className="w-5 h-5" />
-                  </button>
-                </form>
-              </motion.div>
-            )}
-
+              {mode === 'change-password' && (
+                <ChangePasswordForm
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading}
+                  token={urlToken}
+                />
+              )}
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>

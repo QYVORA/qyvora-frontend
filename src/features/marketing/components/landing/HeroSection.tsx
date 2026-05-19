@@ -64,7 +64,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-text-primary leading-[1.08] mb-4 md:mb-5 tracking-tight">
-            <span className="block">Train Like a Hacker.</span>
+            <span className="block">Train Like a Hacker .</span>
             <span className="block text-accent mt-1">Become a Hacker.</span>
           </h1>
 
