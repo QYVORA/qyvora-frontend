@@ -8,6 +8,7 @@ import EnrollmentModal from '../components/EnrollmentModal';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 import type { BootcampLevel } from '../components/BootcampCard';
+import { useScrollLock } from '../../../core/hooks/useScrollLock';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -27,7 +28,9 @@ interface LockedModalProps {
   onClose: () => void;
 }
 
-const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => (
+const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => {
+  useScrollLock();
+  return (
   <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
     <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
     <div className="relative bg-bg-card border border-border rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl">
@@ -54,6 +57,7 @@ const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => (
     </div>
   </div>
 );
+};
 
 const Bootcamp: React.FC = () => {
   const [bootcamps, setBootcamps] = useState<any[]>([]);

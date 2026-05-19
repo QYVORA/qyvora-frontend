@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, CheckCircle2, Lock, X } from 'lucide-react';
 import type { BootcampPhase } from '../../constants/bootcampConfig';
+import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 interface Props {
   phases: BootcampPhase[];
@@ -20,6 +21,7 @@ const RoomSidebar: React.FC<Props> = ({
   completedRooms, lockedRooms, bootcampId,
   onNavigate, mobileOpen, onMobileClose,
 }) => {
+  useScrollLock(mobileOpen);
   const content = (
     <nav className="flex flex-col gap-1 p-3 pb-6">
       <div className="mb-3 px-1">

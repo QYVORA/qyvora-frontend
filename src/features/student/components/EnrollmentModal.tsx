@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ArrowRight, CheckCircle2, ChevronLeft } from 'lucide-react';
 import api from '../../../core/services/api';
+import { useScrollLock } from '../../../core/hooks/useScrollLock';
 
 interface Step {
   id: string;
@@ -78,6 +79,7 @@ const slideVariants = {
 };
 
 const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, onEnrolled }) => {
+  useScrollLock();
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string>>({});

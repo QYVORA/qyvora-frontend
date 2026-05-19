@@ -79,7 +79,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-        className={`terminal-card flex flex-col items-center rounded-lg border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
+        className={`terminal-card flex flex-col items-center rounded-2xl border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
                     ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
                     transition-all duration-300 hover:-translate-y-1 hover:border-border-strong`}
         style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -115,7 +115,7 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
       whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.25 } }}
-      className="terminal-card flex items-center gap-4 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
+      className="terminal-card flex items-center gap-4 rounded-2xl border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="font-mono text-sm font-black text-accent/40 w-6 flex-none">#{rank}</span>
@@ -144,7 +144,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`terminal-card flex items-center gap-4 rounded-lg border p-4 transition-colors ${
+      className={`terminal-card flex items-center gap-4 rounded-2xl border p-4 transition-colors ${
         meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
       }`}
       style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -188,9 +188,9 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
 
   return (
     <div className="w-full h-full flex items-center py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
 
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4 px-2 md:px-0">
           <div>
             <AsciiHeading 
               text="Leaderboard" 
@@ -218,7 +218,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           </ScrollReveal>
         </div>
 
-        <div className="md:hidden space-y-2.5">
+        <div className="md:hidden space-y-2.5 px-2">
           {loading ? (
             [0,1,2,3,4].map(i => (
               <div key={i} className="rounded-xl border border-border bg-bg-card p-3.5 flex items-center gap-3 animate-pulse">

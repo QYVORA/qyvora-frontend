@@ -52,24 +52,27 @@ const CookieConsent: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 left-6 right-6 md:left-auto md:right-10 md:bottom-10 z-[300] md:max-w-xl w-auto"
+          className="fixed bottom-0 left-0 right-0 md:bottom-10 md:right-10 md:left-auto z-[300] md:max-w-xl w-full md:w-auto"
         >
-          <div className="bg-bg-card border border-border rounded-2xl shadow-2xl p-6 md:p-10 overflow-hidden">
-            <div className="flex items-start gap-6 mb-8">
-              <div className="p-3 rounded-xl bg-accent-dim/20 text-accent flex-none">
-                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" />
+          <div className="bg-bg-card border-t md:border border-border rounded-t-3xl md:rounded-2xl shadow-2xl p-6 md:p-10 overflow-hidden">
+            <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 mb-8">
+              <div className="p-3 rounded-xl bg-accent-dim/20 text-accent flex-none hidden md:block">
+                <ShieldCheck className="w-8 h-8" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm md:text-base font-bold text-text-primary uppercase tracking-widest mb-2">
-                  Privacy & Cookies
-                </h3>
+                <div className="flex items-center gap-3 mb-2">
+                  <ShieldCheck className="w-5 h-5 text-accent md:hidden" />
+                  <h3 className="text-sm md:text-base font-bold text-text-primary uppercase tracking-widest">
+                    Privacy & Cookies
+                  </h3>
+                </div>
                 <p className="text-xs md:text-sm text-text-secondary leading-relaxed">
                   We use cookies to secure your session, remember your theme, and optimize performance. We never use 3rd-party tracking or external pixels.
                 </p>
               </div>
               <button 
                 onClick={() => setIsVisible(false)}
-                className="text-text-muted hover:text-text-primary transition-colors p-2 -mr-2 -mt-2"
+                className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors p-2"
               >
                 <X className="w-5 h-5" />
               </button>

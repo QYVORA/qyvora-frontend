@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
+import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 // ── Nav groups ────────────────────────────────────────────────────────────────
 const NAV_GROUPS = [
@@ -77,6 +78,8 @@ const AdminTopbar = () => {
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
+  useScrollLock(moreOpen);
+
   const notifRef = useRef<HTMLDivElement>(null);
 
   const loadNotificationsSnapshot = async () => {
@@ -124,13 +127,6 @@ const AdminTopbar = () => {
     document.addEventListener('mousedown', onPointerDown);
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [notifOpen]);
-
-  useEffect(() => {
-    if (!moreOpen) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, [moreOpen]);
 
   const handleLogout = async () => {
     await logout();

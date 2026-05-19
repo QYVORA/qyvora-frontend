@@ -26,7 +26,7 @@ const ChainSection: React.FC = () => (
     <div className="pointer-events-none absolute -left-32 top-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-accent/5 blur-[100px]" />
 
     <div className="max-w-7xl mx-auto px-2 md:px-8 relative z-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center px-2 md:px-0">
         <div>
           <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated className="mb-8" />
           <ScrollReveal>
@@ -39,7 +39,7 @@ const ChainSection: React.FC = () => (
             <div className="space-y-6 mb-8 max-w-lg">
               {CHAIN_FACTS.map((f, i) => (
                 <div key={i} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-accent/5 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent shrink-0">
                     <f.icon size={18} />
                   </div>
                   <div>
@@ -66,7 +66,7 @@ const ChainSection: React.FC = () => (
               { id: '0x8f2..', type: 'ROOM_COMPLETED', op: 'Ghost_01', hash: '4a92b..', prev: '9c2f1..' },
               { id: '0x3a1..', type: 'CP_REWARD', op: 'Shadow_Op', hash: 'd1e8c..', prev: '4a92b..' },
             ].map((block, i) => (
-              <div key={i} className="terminal-card p-5 rounded-lg border border-border bg-bg-card/80 backdrop-blur-md">
+              <div key={i} className="terminal-card p-5 rounded-2xl border border-border bg-bg-card/80 backdrop-blur-md">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/50">
                   <div className="flex items-center gap-2">
                     <ChainLogo size={16} />

@@ -120,10 +120,10 @@ const ContactModalHost: React.FC = () => {
           </div>
         ) : (
           <form className="space-y-5" onSubmit={handleSubmit}>
-            <div className="rounded-lg border border-border bg-bg/70 p-4">
-              <div className="flex items-start gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent-dim text-accent">
-                  <Mail className="h-4 w-4" />
+            <div className="rounded-2xl border border-border bg-bg/70 p-5 md:p-6">
+              <div className="flex items-start gap-4">
+                <span className="flex h-12 w-12 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent-dim text-accent">
+                  <Mail className="h-5 w-5 md:h-4 md:w-4" />
                 </span>
                 <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-text-primary">
@@ -131,7 +131,7 @@ const ContactModalHost: React.FC = () => {
                   </p>
                   <a
                     href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
-                    className="mt-1 block break-all font-mono text-sm font-bold text-accent hover:underline"
+                    className="mt-1 block break-all font-mono text-base md:text-sm font-bold text-accent hover:underline"
                   >
                     {SITE_CONFIG.contact.opsEmail}
                   </a>
@@ -151,7 +151,7 @@ const ContactModalHost: React.FC = () => {
                     type={type}
                     required
                     placeholder={placeholder}
-                    className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                   />
                 </div>
               ))}
@@ -163,7 +163,7 @@ const ContactModalHost: React.FC = () => {
               </label>
               <select
                 name="subject"
-                className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm appearance-none cursor-pointer transition-colors"
+                className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm appearance-none cursor-pointer transition-colors"
               >
                 <option value="">{SITE_CONFIG.contactPage.selectSubjectPlaceholder}</option>
                 {SITE_CONFIG.contactSubjects.map((subject) => (
@@ -181,7 +181,7 @@ const ContactModalHost: React.FC = () => {
                 rows={5}
                 required
                 placeholder={SITE_CONFIG.contactPage.placeholders.message}
-                className="w-full bg-bg border border-border rounded-lg py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
+                className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
               />
             </div>
 

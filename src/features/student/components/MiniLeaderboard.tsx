@@ -88,7 +88,7 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
                 >
                   <Link
                     to={`/u/${handle}`}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all hover:brightness-110 ${style.border} ${style.bg} ${isMe ? 'ring-1 ring-accent/40' : ''}`}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border transition-all hover:brightness-110 ${style.border} ${style.bg} ${isMe ? 'ring-1 ring-accent/40' : ''}`}
                   >
                     <div className={`w-6 flex-none flex items-center justify-center font-mono font-black text-xs ${style.label}`}>
                       {i === 0 ? <Crown className="h-3.5 w-3.5" /> : `#${i + 1}`}

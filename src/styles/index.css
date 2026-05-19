@@ -590,7 +590,7 @@
   }
 
   .card-hsociety {
-    @apply bg-bg-card border border-border rounded-sm transition-all duration-300 cursor-default hover:-translate-y-1;
+    @apply bg-bg-card border border-border rounded-2xl transition-all duration-300 cursor-default hover:-translate-y-1;
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -653,7 +653,7 @@
     isolation: isolate;
     overflow: hidden;
     border: 1px solid var(--color-border);
-    border-radius: 0.125rem;
+    border-radius: 1rem;
     background:
       linear-gradient(180deg, rgba(183, 255, 153, 0.055), transparent 42%),
       color-mix(in srgb, var(--color-bg-card) 82%, transparent);

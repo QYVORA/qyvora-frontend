@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
 import { X, ZoomIn, ZoomOut } from 'lucide-react';
+import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 interface Props {
   src: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
+  useScrollLock();
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -21,12 +23,6 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
-
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, []);
 
   const clampScale = (v: number) => Math.min(5, Math.max(1, v));
 

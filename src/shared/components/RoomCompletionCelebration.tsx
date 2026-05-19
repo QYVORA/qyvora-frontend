@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Zap, Trophy, Star } from 'lucide-react';
 import CpLogo from './CpLogo';
+import { useScrollLock } from '../core/hooks/useScrollLock';
 
 interface Props {
   show: boolean;
@@ -51,6 +52,7 @@ const generateParticles = (count: number): Particle[] => {
 };
 
 const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned, onClose }) => {
+  useScrollLock(show);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [playSound, setPlaySound] = useState(false);
 

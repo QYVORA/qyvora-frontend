@@ -63,8 +63,8 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10 w-full overflow-hidden">
-        <div className="max-w-xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-2 md:px-10 w-full overflow-hidden">
+        <div className="max-w-xl px-2 md:px-0">
           <AsciiHeading 
             text={user ? "Operating" : "Operate"} 
             font="ANSI Shadow" 
@@ -113,7 +113,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="terminal-card flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
+            className="terminal-card flex items-start gap-3 px-4 py-3 rounded-2xl border border-border bg-bg-card/60 backdrop-blur-sm w-fit"
             style={{ boxShadow: 'var(--card-shimmer)' }}
           >
             <Terminal className="w-3.5 h-3.5 text-accent/50 mt-0.5 flex-none" aria-hidden />

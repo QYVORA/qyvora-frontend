@@ -64,7 +64,7 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
+      className="terminal-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <div
@@ -156,7 +156,7 @@ const TeaserCard: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card flex items-start gap-3 rounded-lg border border-border bg-bg-card px-4 py-4 min-h-[56px] transition-colors duration-200 hover:border-border-strong"
+      className="terminal-card flex items-start gap-3 rounded-2xl border border-border bg-bg-card px-4 py-4 min-h-[56px] transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
@@ -184,9 +184,9 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
   return (
     <div className="w-full h-full flex items-center py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
         
-        <div className="flex flex-col mb-8 md:mb-10">
+        <div className="flex flex-col mb-8 md:mb-10 px-2 md:px-0">
           <div className="w-full">
             <AsciiHeading text="Bootcamps" font="ANSI Shadow" align="left" animated className="mb-4" />
             <p className="text-text-secondary text-sm mt-2 max-w-lg leading-relaxed">
@@ -248,7 +248,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-                  className="terminal-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:scale-[0.9] lg:-translate-y-10 origin-left"
+                  className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:scale-[0.9] lg:-translate-y-10 origin-left"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
                   <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '52.5%' }}>
