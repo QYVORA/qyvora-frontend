@@ -47,15 +47,7 @@ const PublicProfile: React.FC = () => {
   }, [handle]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-          className="w-14 h-14 border-[5px] border-border border-t-accent rounded-full"
-        />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (notFound || !profile) {

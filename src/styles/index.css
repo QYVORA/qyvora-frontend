@@ -39,6 +39,10 @@
   --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.05);
   /* ── Dark theme card shadow ── */
   --card-shadow:          0 12px 40px rgba(0, 0, 0, 0.30);
+
+  /* ── Custom page loader animations ── */
+  --animate-spin-slow:    spin 10s linear infinite;
+  --animate-spin-reverse: spin 3s linear infinite reverse;
 }
 
 /* ── Light theme overrides ── */

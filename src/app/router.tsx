@@ -69,17 +69,7 @@ const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashbo
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 
-/**
- * Shown while a lazy page chunk is being downloaded, or while auth state is
- * being resolved. A centred spinner on the app background colour avoids
- * a jarring white flash during loading.
- */
-const PageLoader = () => (
-  <div className="h-screen w-full bg-bg flex items-center justify-center">
-    {/* Spinning ring using Tailwind's animate-spin and accent colour */}
-    <div className="w-14 h-14 rounded-full border-[5px] border-border border-t-accent animate-spin" />
-  </div>
-);
+// PageLoader is imported from '../shared/components/PageLoader'
 
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 
