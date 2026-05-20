@@ -8,6 +8,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import HeroBackground from '../components/HeroBackground';
 import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const RANK_THRESHOLDS = [
   { label: 'Vanguard',    min: 1500 },

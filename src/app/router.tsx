@@ -69,7 +69,7 @@ const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashbo
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 
-// PageLoader is imported from '../shared/components/PageLoader'
+import PageLoader from '../shared/components/PageLoader';
 
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 
