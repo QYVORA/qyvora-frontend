@@ -773,6 +773,7 @@ const BootcampRoomPage: React.FC = () => {
                     isViewed={viewedSteps.has(idx)}
                     isBookmarked={isStepBookmarked(idx)}
                     phaseColor={phase.color}
+                    isAssignment={isAssignmentRoom}
                     onToggleBookmark={() => toggleBookmark(idx)}
                     onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
                     onClick={() => goToStep(idx)}
@@ -792,6 +793,7 @@ const BootcampRoomPage: React.FC = () => {
                   isViewed={viewedSteps.has(currentStepIdx)}
                   isBookmarked={isStepBookmarked(currentStepIdx)}
                   phaseColor={phase.color}
+                  isAssignment={isAssignmentRoom}
                   onToggleBookmark={() => toggleBookmark(currentStepIdx)}
                   onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
                   onClick={() => goToStep(currentStepIdx)}

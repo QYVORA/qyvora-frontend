@@ -13,6 +13,7 @@ interface Props {
   isActive: boolean;
   isViewed: boolean;
   isBookmarked: boolean;
+  isAssignment?: boolean;
   phaseColor?: string;
   onToggleBookmark: () => void;
   onReportIssue: () => void;
@@ -22,6 +23,7 @@ interface Props {
 const StepCard: React.FC<Props> = ({
   step, stepNum, phaseId, roomId,
   isActive, isViewed, isBookmarked,
+  isAssignment,
   phaseColor,
   onToggleBookmark, onReportIssue, onClick,
 }) => (
@@ -92,14 +94,16 @@ const StepCard: React.FC<Props> = ({
       <CodeBlockRenderer text={step.instruction} />
     </p>
 
-    {step.image ? (
-      <StepImage
-        src={buildStepImagePath(phaseId, roomId, step.image)}
-        alt={`${step.title}: ${step.instruction}`}
-        stepNum={stepNum}
-      />
-    ) : (
-      <StepPlaceholder stepNum={stepNum} />
+    {!isAssignment && (
+      step.image ? (
+        <StepImage
+          src={buildStepImagePath(phaseId, roomId, step.image)}
+          alt={`${step.title}: ${step.instruction}`}
+          stepNum={stepNum}
+        />
+      ) : (
+        <StepPlaceholder stepNum={stepNum} />
+      )
     )}
 
     <button
