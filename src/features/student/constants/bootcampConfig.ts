@@ -22,6 +22,12 @@ export interface BootcampRoom {
   title: string;    // MUST match backend room title exactly (case-insensitive)
   overview: string;
   estimatedMinutes: number; // Estimated time to complete this room
+  isAssignment?: boolean;
+  assignmentDetails?: {
+    title: string;
+    description: string;
+    details: string;
+  };
   steps: BootcampStep[];
 }
 
@@ -29,6 +35,7 @@ export interface BootcampPhase {
   id: string;       // e.g. "phase1"
   title: string;    // MUST match backend module title exactly (case-insensitive)
   codename: string;
+  color?: string;   // hex color for this phase
   rooms: BootcampRoom[];
 }
 
@@ -37,6 +44,15 @@ export interface BootcampConfig {
   title: string;
   phases: BootcampPhase[];
 }
+
+// ── Phase Colors ──────────────────────────────────────────────────────────────
+export const PHASE_COLORS: Record<string, string> = {
+  phase1: '#3b82f6', // blue-500 (Mindset)
+  phase2: '#10b981', // emerald-500 (Linux)
+  phase3: '#f59e0b', // amber-500 (Networking)
+  phase4: '#8b5cf6', // violet-500 (Web)
+  phase5: '#ec4899', // pink-500 (Social)
+};
 
 // ── Image path builder ────────────────────────────────────────────────────────
 export function buildStepImagePath(
@@ -79,11 +95,12 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
   title: 'Hacker Protocol Bootcamp',
   phases: [
 
-    // ── PHASE 1: HACKER MINDSET (moduleId: 1, 3 rooms) ──────────────────────
+    // ── PHASE 1: HACKER MINDSET (moduleId: 1, 4 rooms) ──────────────────────
     {
       id: 'phase1',
       title: 'Hacker Mindset',
       codename: 'PHASE 1',
+      color: PHASE_COLORS.phase1,
       rooms: [
         {
           id: 'room1',
@@ -262,14 +279,52 @@ Document the full responsible disclosure process in your notes. Include what you
             },
           ],
         },
+        {
+          id: 'room4',
+          title: 'Phase Assignment: Hacker Mindset',
+          overview: 'The final practical assignment for the Hacker Mindset module.',
+          estimatedMinutes: 60,
+          isAssignment: true,
+          assignmentDetails: {
+            title: 'Hacker Mindset & Ethics Reflective Essay',
+            description: 'Write a 500-word reflective essay on the importance of ethics in offensive security and how your mindset has shifted after this module. Host your work in a GitHub repository.',
+            details: 'Your repository should include a README.md file with your essay. We are looking for depth of thought, understanding of legal boundaries, and creative problem-solving examples.',
+          },
+          steps: [
+            {
+              title: 'Assignment Brief',
+              instruction: `Welcome to your first Phase Assignment. This is where you demonstrate that you have internalized the concepts of this module.
+
+**The Task:**
+Write a 500-word reflective essay addressing:
+1. Why ethics are paramount in offensive security.
+2. How your perception of "hacking" has changed since starting this module.
+3. A real-world example of how a "hacker mindset" (curiosity, persistence) could solve a non-technical problem.
+
+**Submission Requirements:**
+- Create a new public GitHub repository.
+- Include a \`README.md\` file containing your essay.
+- Submit the link to your repository in the final step of this room.`,
+              image: null,
+            },
+            {
+              title: 'Ready to Submit?',
+              instruction: `Once your GitHub repository is ready and contains your essay, proceed to the final step to submit your link.
+
+Remember: This assignment will be reviewed by an instructor. Ensure your repository is public and your writing is professional.`,
+              image: null,
+            }
+          ]
+        }
       ],
     },
 
-    // ── PHASE 2: LINUX FOUNDATIONS (moduleId: 2, 4 rooms) ───────────────────
+    // ── PHASE 2: LINUX FOUNDATIONS (moduleId: 2, 5 rooms) ───────────────────
     {
       id: 'phase2',
       title: 'Linux Foundations',
       codename: 'PHASE 2',
+      color: PHASE_COLORS.phase2,
       rooms: [
         {
           id: 'room1',
@@ -1425,14 +1480,52 @@ fi
             },
           ],
         },
+        {
+          id: 'room5',
+          title: 'Phase Assignment: Linux Foundations',
+          overview: 'The final practical assignment for the Linux Foundations module.',
+          estimatedMinutes: 90,
+          isAssignment: true,
+          assignmentDetails: {
+            title: 'Bash Automation Script',
+            description: 'Create a Bash script that automates a common reconnaissance task, such as checking for active services or listing file permissions in a directory. Host it in a GitHub repository.',
+            details: 'Your repository should contain the script and a README.md explaining how to run it and what it does. Focus on clean code, comments, and proper error handling.',
+          },
+          steps: [
+            {
+              title: 'Assignment Brief',
+              instruction: `Time to automate your skills. In offensive security, speed and repeatability are key.
+
+**The Task:**
+Develop a Bash script (\`recon.sh\`) that:
+1. Accepts a target (IP or domain) as a command-line argument.
+2. Checks if the target is online (using \`ping\`).
+3. If online, performs a basic port scan on 5 common ports (e.g., 22, 80, 443, 8080, 3306) using \`nc\`.
+4. Writes the results to a file named \`target_recon.txt\`.
+
+**Submission Requirements:**
+- Create a new public GitHub repository.
+- Upload your \`recon.sh\` script.
+- Include a \`README.md\` explaining the script's purpose and how to use it.
+- Submit the link to your repository in the final step.`,
+              image: null,
+            },
+            {
+              title: 'Ready to Submit?',
+              instruction: `Ensure your script is functional, well-commented, and your README is clear. Proceed to the next step to submit your GitHub link.`,
+              image: null,
+            }
+          ]
+        }
       ],
     },
 
-    // ── PHASE 3: NETWORKING (moduleId: 3, 4 rooms) ──────────────────────────
+    // ── PHASE 3: NETWORKING (moduleId: 3, 5 rooms) ──────────────────────────
     {
       id: 'phase3',
       title: 'Networking',
       codename: 'PHASE 3',
+      color: PHASE_COLORS.phase3,
       rooms: [
         {
           id: 'room1',
@@ -2392,14 +2485,50 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
             },
           ],
         },
+        {
+          id: 'room5',
+          title: 'Phase Assignment: Networking',
+          overview: 'The final practical assignment for the Networking module.',
+          estimatedMinutes: 120,
+          isAssignment: true,
+          assignmentDetails: {
+            title: 'Network Analysis Report',
+            description: 'Perform a scan on a test environment (like a VM) and document your findings in a markdown file. Host the report and any supporting scripts in a GitHub repository.',
+            details: 'Include nmap scan results, an explanation of the identified services, and a brief threat model for the target. Show your ability to interpret packet data if possible.',
+          },
+          steps: [
+            {
+              title: 'Assignment Brief',
+              instruction: `Time to map the battlefield. Your task is to perform a thorough network analysis and document it professionally.
+
+**The Task:**
+1. Use \`nmap\` to scan a target (use a test VM or \`scanme.nmap.org\`).
+2. Identify at least 3 open ports and the services running on them.
+3. Document the scan results in a file named \`network_report.md\`.
+4. Include a brief threat model: for each service, identify one potential vulnerability category.
+
+**Submission Requirements:**
+- Create a new public GitHub repository.
+- Upload your \`network_report.md\`.
+- Submit the link to your repository in the final step.`,
+              image: null,
+            },
+            {
+              title: 'Ready to Submit?',
+              instruction: `Ensure your report is well-formatted (use Markdown) and your analysis is accurate. Proceed to the next step to submit your GitHub link.`,
+              image: null,
+            }
+          ]
+        }
       ],
     },
 
-    // ── PHASE 4: WEB & BACKEND SYSTEMS (moduleId: 4, 5 rooms) ───────────────
+    // ── PHASE 4: WEB & BACKEND SYSTEMS (moduleId: 4, 6 rooms) ───────────────
     {
       id: 'phase4',
       title: 'Web & Backend Systems',
       codename: 'PHASE 4',
+      color: PHASE_COLORS.phase4,
       rooms: [
         {
           id: 'room1',
@@ -3443,14 +3572,56 @@ Write findings for every authentication weakness you discovered. Be specific —
             },
           ],
         },
+        {
+          id: 'room6',
+          title: 'Phase Assignment: Web & Backend',
+          overview: 'The final practical assignment for the Web & Backend Systems module.',
+          estimatedMinutes: 150,
+          isAssignment: true,
+          assignmentDetails: {
+            title: 'Vulnerability Research & Exploit Lab',
+            description: 'Document the process of finding and exploiting a web vulnerability in a controlled environment. Host your write-up and any exploit scripts in a GitHub repository.',
+            details: 'Focus on one category from the OWASP Top 10. Your README should explain the vulnerability, the impact, and the remediation steps.',
+          },
+          steps: [
+            {
+              title: 'Assignment Brief',
+              instruction: `It's time to showcase your web exploitation skills. Your goal is to document a full attack lifecycle against a web application.
+
+**The Task:**
+1. Choose one vulnerability from the OWASP Top 10 (e.g., SQLi, XSS, Broken Access Control).
+2. Set up a vulnerable environment (like a CTF lab or a local VM like BWAPP/DVWA).
+3. Find and exploit the vulnerability.
+4. Document your process in a file named \`web_exploit_report.md\`.
+5. Your report must include:
+   - Vulnerability Description
+   - Impact (what can an attacker do?)
+   - Step-by-step reproduction (with commands used)
+   - Remediation advice (how should the developer fix it?)
+
+**Submission Requirements:**
+- Create a new public GitHub repository.
+- Upload your \`web_exploit_report.md\`.
+- Include any scripts you wrote or used for the exploitation.
+- Submit the link to your repository in the final step.`,
+              image: null,
+            },
+            {
+              title: 'Ready to Submit?',
+              instruction: `Double-check your report for clarity and technical accuracy. Once ready, proceed to the next step to submit your GitHub link.`,
+              image: null,
+            }
+          ]
+        }
       ],
     },
 
-    // ── PHASE 5: SOCIAL ENGINEERING (moduleId: 5, 3 rooms) ──────────────────
+    // ── PHASE 5: SOCIAL ENGINEERING (moduleId: 5, 4 rooms) ──────────────────
     {
       id: 'phase5',
       title: 'Social Engineering',
       codename: 'PHASE 5',
+      color: PHASE_COLORS.phase5,
       rooms: [
         {
           id: 'room1',
@@ -4060,6 +4231,43 @@ Use silent signals or coded messages with your team if they are monitoring your 
             },
           ],
         },
+        {
+          id: 'room4',
+          title: 'Phase Assignment: Social Engineering',
+          overview: 'The final practical assignment for the Social Engineering module.',
+          estimatedMinutes: 60,
+          isAssignment: true,
+          assignmentDetails: {
+            title: 'Social Engineering Campaign Design',
+            description: 'Design a mock phishing campaign (do not execute) including the email template, the pretext, and the target profile. Host the design documents in a GitHub repository.',
+            details: 'Explain the psychological triggers used and how you would measure the success of the campaign. Ensure all documentation remains ethical and theoretical.',
+          },
+          steps: [
+            {
+              title: 'Assignment Brief',
+              instruction: `The human element is the most unpredictable part of security. Your task is to design a believable, ethical, and theoretical social engineering campaign.
+
+**The Task:**
+Design a mock phishing campaign including:
+1. **Target Profile:** A brief description of the target group (e.g., "HR department of a mid-sized tech company").
+2. **The Pretext:** The 'story' you are using (e.g., "Updating internal health insurance benefits").
+3. **The Email Template:** Write the actual email content, including the psychological triggers used (Urgency, Authority, etc.).
+4. **Success Metrics:** How would you measure if the campaign worked (without actually sending it)?
+5. **Mitigation:** What should the company do to train their employees against this specific attack?
+
+**Submission Requirements:**
+- Create a new public GitHub repository.
+- Upload your design document as \`campaign_design.md\`.
+- Submit the link to your repository in the final step.`,
+              image: null,
+            },
+            {
+              title: 'Ready to Submit?',
+              instruction: `Ensure your design is professional and adheres to ethical guidelines. Proceed to the next step to submit your GitHub link.`,
+              image: null,
+            }
+          ]
+        }
       ],
     },
 

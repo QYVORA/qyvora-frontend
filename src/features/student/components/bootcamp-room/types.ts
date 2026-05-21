@@ -6,11 +6,20 @@ export interface ApiRoom {
   completed?: boolean;
 }
 
+export interface ApiAssignment {
+  title: string;
+  description: string;
+  details: string;
+}
+
 export interface ApiModule {
   moduleId: number;
   title: string;
   description: string;
   locked: boolean;
+  ctfCompleted?: boolean;
+  assignmentCompleted?: boolean;
+  assignment?: ApiAssignment;
   rooms: ApiRoom[];
 }
 

@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut, Bell, Shield, Users, Database, Coins,
   AlertTriangle, Mail, BookOpen, X, ChevronDown, Link2,
-  LayoutDashboard,
+  LayoutDashboard, FileText,
 } from 'lucide-react';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
@@ -20,6 +20,7 @@ const NAV_GROUPS = [
     items: [
       { label: 'Users',        icon: Users,         path: '/mr-robot/dashboard?tab=users',        desc: 'Manage operators'       },
       { label: 'Bootcamps',    icon: Shield,        path: '/mr-robot/dashboard?tab=bootcamps',    desc: 'Phase control'          },
+      { label: 'Assignments',  icon: FileText,      path: '/mr-robot/dashboard?tab=assignments',  desc: 'Review submissions'     },
       { label: 'Applications', icon: Users,         path: '/mr-robot/dashboard?tab=applications', desc: 'Bootcamp applications'  },
     ],
   },
@@ -50,6 +51,7 @@ const MOBILE_PRIMARY = [
 ];
 
 const MOBILE_MORE = [
+  { label: 'Assignments',  icon: FileText,      path: '/mr-robot/dashboard?tab=assignments'  },
   { label: 'Applications', icon: Users,         path: '/mr-robot/dashboard?tab=applications' },
   { label: 'Chain',        icon: Link2,         path: '/mr-robot/dashboard?tab=chain'        },
   { label: 'Quizzes',      icon: BookOpen,      path: '/mr-robot/dashboard?tab=quizzes'      },

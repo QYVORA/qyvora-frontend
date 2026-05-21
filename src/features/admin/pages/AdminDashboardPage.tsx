@@ -10,6 +10,7 @@ import QuizManager from '../components/QuizManager';
 import ChainExplorer from '../components/ChainExplorer';
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
+import AssignmentManager from '../components/AssignmentManager';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -249,6 +250,7 @@ const AdminDashboardPage: React.FC = () => {
     users: 'Users', bootcamps: 'Bootcamps', applications: 'Applications',
     zero_day: 'Market', cp: 'Points', chain: 'Chain',
     security: 'Security', contacts: 'Contacts', quizzes: 'Quizzes',
+    assignments: 'Assignments',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
 
@@ -973,6 +975,13 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'chain' && (
                 <div className="card-hsociety p-6 md:p-8">
                   <ChainExplorer />
+                </div>
+              )}
+
+              {/* ── ASSIGNMENTS ───────────────────────────────────────────── */}
+              {activeTab === 'assignments' && (
+                <div className="card-hsociety p-6 md:p-8">
+                  <AssignmentManager />
                 </div>
               )}
             </div>

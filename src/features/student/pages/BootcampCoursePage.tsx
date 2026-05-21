@@ -3,8 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
   BookOpen, Loader2, ArrowRight, Play, ListChecks,
-  BarChart3, Layers, Trophy,
+  BarChart3, Layers, Trophy, Github, FileText,
 } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
 import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -31,7 +32,9 @@ interface Room {
 interface Module {
   moduleId: number; title: string; description: string; codename: string;
   roleTitle: string; badge: string; ctf: string; locked: boolean;
-  rooms: Room[]; progress?: number; roomsCompleted?: number; roomsTotal?: number; ctfCompleted?: boolean;
+  rooms: Room[]; progress?: number; roomsCompleted?: number; roomsTotal?: number; 
+  ctfCompleted?: boolean; assignmentCompleted?: boolean;
+  assignment?: { title: string; description: string; details: string };
 }
 interface Course { id: string; title: string; modules: Module[]; }
 
@@ -439,25 +442,21 @@ const BootcampCourse: React.FC = () => {
                     {/* Phase header */}
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
                       <div className="flex items-center gap-3">
-                        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 font-mono text-sm font-black ${
-                          isComplete ? 'border-accent/30 bg-accent text-bg'
-                          : isLocked  ? 'border-border bg-bg text-text-muted'
-                                      : 'border-accent/30 bg-accent-dim text-accent'
-                        }`}>
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 border-accent/30 bg-accent-dim text-accent font-mono text-sm font-black">
                           {isComplete
                             ? <CheckCircle2 className="h-4 w-4" />
                             : isLocked
                             ? <Lock className="h-3.5 w-3.5" />
                             : String(modIdx + 1).padStart(2, '0')}
                         </div>
-<div>
-                           <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
-                             {configPhase?.codename || `Phase ${modIdx + 1}`}
-                           </p>
-                           <h3 className="mb-0 text-base font-black text-text-primary">
-                             {mod.title}
-                           </h3>
-                         </div>
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+                            {configPhase?.codename || `Phase ${modIdx + 1}`}
+                          </p>
+                          <h3 className="mb-0 text-base font-black text-text-primary">
+                            {mod.title}
+                          </h3>
+                        </div>
                       </div>
                       <div className="flex items-center gap-2.5">
                         <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-text-muted">
@@ -471,7 +470,6 @@ const BootcampCourse: React.FC = () => {
                         )}
                       </div>
                     </div>
-
                     {/* Room cards */}
                     <div className="p-4 sm:p-5">
                       {isLocked ? (
@@ -509,9 +507,10 @@ const BootcampCourse: React.FC = () => {
                                   isRoomLocked
                                     ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
                                     : roomDone
-                                    ? 'border-accent/40 hover:border-accent/60'
-                                    : 'border-border hover:border-accent/40'
+                                    ? 'hover:border-accent/60'
+                                    : 'hover:border-accent/40'
                                 }`}
+                                style={{ borderColor: configPhase?.color ? `${configPhase.color}40` : 'var(--color-border)' }}
                               >
                                 <div className="relative aspect-video overflow-hidden rounded-t-2xl">
                                   <img
@@ -558,6 +557,14 @@ const BootcampCourse: React.FC = () => {
                                       </div>
                                     </div>
                                   )}
+                                  {configRoom?.isAssignment && !roomDone && (
+                                    <div 
+                                      className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest text-bg shadow-sm"
+                                      style={{ backgroundColor: configPhase?.color || 'var(--color-accent)' }}
+                                    >
+                                      <Github className="h-2.5 w-2.5" /> Assignment
+                                    </div>
+                                  )}
                                   {configRoom && !roomDone && (
                                     <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
                                       {configRoom.steps.length} steps
@@ -592,6 +599,8 @@ const BootcampCourse: React.FC = () => {
                           })}
                         </div>
                       )}
+
+                      {/* End Room cards */}
                     </div>
                   </div>
                 </ScrollReveal>

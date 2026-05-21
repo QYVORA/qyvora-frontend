@@ -4,6 +4,7 @@ import {
   ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
   CheckCircle2, XCircle, BookOpen, Menu, X,
   ClipboardList, Clock, Bookmark, Timer, Minimize2, List, Maximize2,
+  Github, FileText, Send,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import api from '../../../core/services/api';
@@ -19,6 +20,7 @@ import StepCard from '../components/bootcamp-room/StepCard';
 import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
 import QuizModal from '../components/bootcamp-room/QuizModal';
 import QuizGateModal from '../components/bootcamp-room/QuizGateModal';
+import AssignmentSubmissionModal from '../components/bootcamp-room/AssignmentSubmissionModal';
 import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
@@ -83,6 +85,8 @@ const BootcampRoomPage: React.FC = () => {
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
 
+  const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
+
   // ── Completed rooms from API (NOT localStorage) ───────────────────────────────
   // Build a set of completed room keys from the API course data
   const completedRooms = new Set<string>();
@@ -107,6 +111,30 @@ const BootcampRoomPage: React.FC = () => {
     });
   }
 
+  const loadCourseData = useCallback(async () => {
+    try {
+      const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
+      const [ovRes, courseRes] = await Promise.all([
+        api.get('/student/overview'),
+        api.get(`/student/course${query}`).catch(() => null),
+      ]);
+      const ov = ovRes.data;
+      const enrolledViaStatus =
+        ov?.bootcampStatus &&
+        ov.bootcampStatus !== 'not_enrolled' &&
+        String(ov?.bootcampId || '') === String(bootcampId || '');
+      const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
+        (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
+      );
+      setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
+      if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
+    } catch {
+      // silent
+    } finally {
+      setApiLoading(false);
+    }
+  }, [bootcampId]);
+
   const markRoomComplete = async (phId: string, rmId: string) => {
     // Call backend API to save completion to database
     try {
@@ -121,9 +149,7 @@ const BootcampRoomPage: React.FC = () => {
       }
       
       // Refetch course data to get updated completion status
-      const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-      const courseRes = await api.get(`/student/course${query}`);
-      if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
+      await loadCourseData();
       
     } catch (err: any) {
       console.error('❌ Failed to complete room in backend:', err?.response?.data || err);
@@ -133,31 +159,8 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Load API data ──────────────────────────────────────────────────────────
   useEffect(() => {
-    const load = async () => {
-      try {
-        const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-        const [ovRes, courseRes] = await Promise.all([
-          api.get('/student/overview'),
-          api.get(`/student/course${query}`).catch(() => null),
-        ]);
-        const ov = ovRes.data;
-        const enrolledViaStatus =
-          ov?.bootcampStatus &&
-          ov.bootcampStatus !== 'not_enrolled' &&
-          String(ov?.bootcampId || '') === String(bootcampId || '');
-        const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
-          (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
-        );
-        setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
-        if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
-      } catch {
-        // silent
-      } finally {
-        setApiLoading(false);
-      }
-    };
-    load();
-  }, [bootcampId]);
+    loadCourseData();
+  }, [loadCourseData]);
 
   // ── Call session-open API when room loads ──────────────────────────────────
   useEffect(() => {
@@ -267,6 +270,7 @@ const BootcampRoomPage: React.FC = () => {
     // NEW: Reset session timer on room change
     setSessionStart(Date.now());
     setTimeSpent(0);
+    setAssignmentModalOpen(false);
   }, [phaseId, roomId]);
 
   // ── NEW FEATURES: Fullscreen change listener ───────────────────────────────
@@ -336,6 +340,13 @@ const BootcampRoomPage: React.FC = () => {
   const currentRoomIdx = allRooms.findIndex((r) => r.phaseId === phaseId && r.roomId === roomId);
   const prevRoom = currentRoomIdx > 0 ? allRooms[currentRoomIdx - 1] : null;
   const nextRoom = currentRoomIdx < allRooms.length - 1 ? allRooms[currentRoomIdx + 1] : null;
+
+  const currentModule = apiCourse?.modules.find(m => m.title.toLowerCase() === phase?.title.toLowerCase());
+  const isAssignmentRoom = room?.isAssignment;
+  const assignmentDetails = room?.assignmentDetails;
+  
+  const assignmentCompleted = currentModule?.assignmentCompleted;
+  const ctfCompleted = currentModule?.ctfCompleted;
 
   // ── Loading ────────────────────────────────────────────────────────────────
   if (apiLoading) {
@@ -407,6 +418,31 @@ const BootcampRoomPage: React.FC = () => {
   const quizCourseId = apiCourse?.id || bootcampId || '';
   // roomId is 1-based index of the room within the phase
   const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
+
+  const handleComplete = async () => {
+    const allStepIdxs = room?.steps.map((_, i) => i) || [];
+    setViewedSteps(new Set(allStepIdxs));
+    
+    if (!quizPassed && quizModuleId) {
+      setQuizGateOpen(true);
+      return;
+    }
+
+    // If room is already complete or quiz is passed
+    if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
+
+    // If it's an assignment room, prompt for submission
+    if (isAssignmentRoom && assignmentDetails && !assignmentCompleted) {
+      if (!ctfCompleted) {
+        addToast('Complete the Phase CTF on the course page before the assignment.', 'info');
+        setShowCompleteOverlay(true);
+      } else {
+        setAssignmentModalOpen(true);
+      }
+    } else {
+      setShowCompleteOverlay(true);
+    }
+  };
 
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
@@ -481,6 +517,61 @@ const BootcampRoomPage: React.FC = () => {
           }
         }}
       />
+
+      {/* Desktop Floating Toolbar */}
+      <aside
+        className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
+        style={{
+          top: '6rem',
+          bottom: '1.5rem',
+          justifyContent: 'center',
+        }}
+        aria-label="Room actions"
+      >
+        <button
+          onClick={() => setJumpMenuOpen(true)}
+          title="Jump to step"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+        >
+          <List className="h-5 w-5" />
+        </button>
+
+        <button
+          onClick={toggleFullscreen}
+          title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+        >
+          {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+        </button>
+
+        <div className="h-px w-6 bg-border/50 my-1" />
+
+        <button
+          onClick={async () => {
+            if (!isLastStep) {
+              goToStep(currentStepIdx + 1);
+            } else {
+              await handleComplete();
+            }
+          }}
+          title={isLastStep ? "Complete room" : "Next step"}
+          className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
+            isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
+              ? 'border-accent bg-accent text-bg shadow-lg shadow-accent/20'
+              : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
+          }`}
+        >
+          {isLastStep ? (
+            isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
+              <Github className="h-5 w-5" />
+            ) : (
+              <CheckCircle2 className="h-5 w-5" />
+            )
+          ) : (
+            <ArrowRight className="h-5 w-5" />
+          )}
+        </button>
+      </aside>
 
       {/* ── MAIN SPLIT LAYOUT ── */}
       {/*
@@ -575,7 +666,7 @@ const BootcampRoomPage: React.FC = () => {
             }}
           >
             {/* Content area */}
-            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-2 sm:px-4 md:px-5 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
 
               {/* Mobile: curriculum open button — only visible below lg */}
               <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">
@@ -681,6 +772,7 @@ const BootcampRoomPage: React.FC = () => {
                     isActive={idx === currentStepIdx}
                     isViewed={viewedSteps.has(idx)}
                     isBookmarked={isStepBookmarked(idx)}
+                    phaseColor={phase.color}
                     onToggleBookmark={() => toggleBookmark(idx)}
                     onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
                     onClick={() => goToStep(idx)}
@@ -699,6 +791,7 @@ const BootcampRoomPage: React.FC = () => {
                   isActive
                   isViewed={viewedSteps.has(currentStepIdx)}
                   isBookmarked={isStepBookmarked(currentStepIdx)}
+                  phaseColor={phase.color}
                   onToggleBookmark={() => toggleBookmark(currentStepIdx)}
                   onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
                   onClick={() => goToStep(currentStepIdx)}
@@ -741,28 +834,33 @@ const BootcampRoomPage: React.FC = () => {
                   {currentStepIdx + 1} / {room.steps.length}
                 </span>
 
-                {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
+                  {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
                 <button
                   onClick={async () => {
                     if (!isLastStep) {
                       goToStep(currentStepIdx + 1);
                     } else {
-                      const allStepIdxs = room.steps.map((_, i) => i);
-                      setViewedSteps(new Set(allStepIdxs));
-                      if (!quizPassed && quizModuleId) {
-                        setQuizGateOpen(true);
-                      } else {
-                        if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
-                        setShowCompleteOverlay(true);
-                      }
+                      await handleComplete();
                     }
                   }}
-                  className="btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none"
+                  className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
+                    isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
+                      ? 'bg-accent text-bg shadow-lg shadow-accent/20'
+                      : ''
+                  }`}
                 >
                   {isLastStep ? (
-                    isRoomComplete
-                      ? <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
-                      : <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                    isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
+                      <>
+                        <Github className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Submit Assignment</span>
+                        <Send className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                      </>
+                    ) : isRoomComplete ? (
+                      <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                    ) : (
+                      <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                    )
                   ) : (
                     <>
                       <span className="lg:hidden">Next</span>
@@ -773,9 +871,63 @@ const BootcampRoomPage: React.FC = () => {
                 </button>
               </div>
 
+              {/* Phase Assignment Visual Hint for assignment room */}
+              {isLastStep && isAssignmentRoom && assignmentDetails && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 mb-16 rounded-2xl border-2 border-accent/20 bg-accent-dim/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent mb-1">
+                      <FileText className="h-4 w-4" />
+                      Final Submission
+                    </div>
+                    <h4 className="text-xl font-black text-text-primary">{assignmentDetails.title}</h4>
+                    <p className="text-sm text-text-muted mt-1 leading-relaxed">{assignmentDetails.description}</p>
+                  </div>
+                  <div className="shrink-0 flex flex-col items-center gap-3">
+                    {assignmentCompleted ? (
+                      <div className="flex flex-col items-center gap-2">
+                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-bg shadow-lg shadow-accent/20">
+                           <CheckCircle2 className="h-6 w-6" />
+                         </div>
+                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Submitted</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-[10px] font-bold text-accent uppercase tracking-widest px-3 py-1 bg-accent/10 border border-accent/20 rounded-lg">
+                          Required for Badge
+                        </div>
+                        {!ctfCompleted && (
+                          <div className="text-[10px] font-bold text-red-400 uppercase tracking-widest">
+                            Finish CTF First
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
             </div>
           </main>
         </div>
+
+      <AnimatePresence>
+        {assignmentModalOpen && assignmentDetails && (
+          <AssignmentSubmissionModal
+            moduleId={currentModule?.moduleId || 0}
+            bootcampId={bootcampId || ''}
+            assignment={assignmentDetails}
+            onClose={() => setAssignmentModalOpen(false)}
+            onSuccess={() => {
+              loadCourseData();
+              setAssignmentModalOpen(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

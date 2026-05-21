@@ -1,6 +1,6 @@
 export type AdminTab =
   | 'users' | 'bootcamps' | 'zero_day' | 'cp'
-  | 'security' | 'contacts' | 'applications' | 'quizzes' | 'chain';
+  | 'security' | 'contacts' | 'applications' | 'quizzes' | 'chain' | 'assignments';
 
 export type AdminUser = {
   id: string;

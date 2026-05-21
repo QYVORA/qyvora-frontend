@@ -31,7 +31,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, img, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-bg-card transition-colors duration-200 ${
+  const cardClasses = `group relative flex flex-col h-full overflow-hidden rounded-2xl border-2 bg-bg-card transition-colors duration-200 ${
     isLocked
       ? 'border-border opacity-70 cursor-default'
       : isEnrolled
@@ -168,7 +168,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   );
 
   return (
-    <ScrollReveal delay={index * 0.07}>
+    <ScrollReveal delay={index * 0.07} className="h-full">
       {isLocked && onLocked ? (
         <div
           className={cardClasses}

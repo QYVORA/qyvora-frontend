@@ -13,6 +13,7 @@ interface Props {
   isActive: boolean;
   isViewed: boolean;
   isBookmarked: boolean;
+  phaseColor?: string;
   onToggleBookmark: () => void;
   onReportIssue: () => void;
   onClick: () => void;
@@ -21,20 +22,25 @@ interface Props {
 const StepCard: React.FC<Props> = ({
   step, stepNum, phaseId, roomId,
   isActive, isViewed, isBookmarked,
+  phaseColor,
   onToggleBookmark, onReportIssue, onClick,
 }) => (
   <div
     onClick={onClick}
     className={`relative cursor-pointer rounded-xl border p-4 sm:p-5 md:p-6 transition-colors duration-150 overflow-hidden group w-full ${
       isActive
-        ? 'border-accent/40 bg-bg-card'
+        ? 'bg-bg-card'
         : isViewed
         ? 'border-accent/20 bg-bg-card hover:border-accent/30'
         : 'border-border bg-bg-card hover:border-border/70'
     }`}
+    style={isActive && phaseColor ? { borderColor: `${phaseColor}40` } : {}}
   >
     {isActive && (
-      <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-accent" />
+      <div 
+        className="absolute left-0 top-6 bottom-6 w-1 rounded-full" 
+        style={{ backgroundColor: phaseColor || 'var(--color-accent)' }}
+      />
     )}
 
     <button

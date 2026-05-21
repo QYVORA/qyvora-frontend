@@ -361,7 +361,7 @@ const Dashboard: React.FC = () => {
 
                   {/* Bootcamp cards — or empty state */}
                   {enrolledBootcamps.length === 0 ? (
-                    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
+                    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center h-full">
                       <OptionalDecorImage
                         src={STUDENT_DECOR.bootcampOperator}
                         className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
@@ -394,7 +394,7 @@ const Dashboard: React.FC = () => {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-col"
+                        className="flex flex-col h-full"
                       >
                         <div className="card-hsociety flex flex-col h-full overflow-hidden">
                           {/* Cover — same aspect-video as bootcamp card */}
