@@ -46,10 +46,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-2 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-24 md:pt-6 pb-24 md:pb-8 md:min-h-0 h-full"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-20 md:pt-6 pb-12 md:pb-8 md:min-h-0 h-full"
       >
         {/* Left column */}
-        <div className="flex min-h-full flex-col items-center justify-center lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">
+        <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">
           {/* Badge */}
           {/* <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -73,7 +73,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm sm:text-base md:text-lg max-w-lg mb-6 md:mb-8 leading-relaxed opacity-80"
+            className="text-text-secondary text-sm sm:text-base md:text-lg max-w-lg mb-5 md:mb-8 leading-relaxed opacity-80"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
@@ -83,7 +83,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 mb-6 md:mb-0"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 md:gap-4 mb-5 md:mb-0"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary glass-effect flex items-center justify-center gap-2 !px-8 py-3.5 text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98]">
@@ -102,7 +102,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
 
           {/* Stats — Mobile/Tablet only */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-5 sm:gap-6 w-full max-w-2xl mt-8 sm:mt-10">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-4 sm:gap-6 w-full max-w-2xl mt-6 sm:mt-10">
             {heroStats.map((s, i) => (
               <motion.div
                 key={i}

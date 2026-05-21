@@ -71,20 +71,12 @@ const BootcampCourse: React.FC = () => {
       const ov = ovRes.data || null;
       setOverview(ov);
       
-      console.log('🔍 Overview Response:', ov);
-      console.log('🔍 Bootcamp ID:', bootcampId);
-      console.log('🔍 Overview bootcampId:', ov?.bootcampId);
-      console.log('🔍 Overview modules:', ov?.modules);
-      
       const enrolledViaStatus =
         ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
         String(ov?.bootcampId || '') === String(bootcampId || '');
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
         (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
       );
-      
-      console.log('🔍 Enrolled via status:', enrolledViaStatus);
-      console.log('🔍 Enrolled via modules:', enrolledViaModules);
       
       setStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setCourse(courseRes.data as Course);
@@ -123,17 +115,6 @@ const BootcampCourse: React.FC = () => {
 
   const totalModules = course?.modules?.length || 0;
   const totalRooms   = (course?.modules || []).reduce((acc, m) => acc + (m.rooms?.length || 0), 0);
-
-  // Debug logging
-  console.log('📊 BootcampCoursePage Stats Debug:', {
-    overview: overview,
-    'overview.modules': overview?.modules,
-    'overview.snapshot': overview?.snapshot,
-    moduleProgressMap,
-    totalModules,
-    totalRooms,
-  });
-
   // Prefer snapshot values if present, otherwise derive from overview.modules
   const snapshotProgress = overview?.snapshot?.find((s: any) => s?.id === 'progress')?.value;
   const snapshotDoneModules = overview?.snapshot?.find((s: any) => s?.id === 'modules')?.value;
@@ -150,15 +131,6 @@ const BootcampCourse: React.FC = () => {
   const doneRooms = snapshotDoneRooms != null
     ? Number(snapshotDoneRooms)
     : ovModules.reduce((acc: number, m: any) => acc + Number(m.roomsCompleted || 0), 0);
-
-  console.log('📊 Calculated Stats:', {
-    snapshotProgress,
-    snapshotDoneModules,
-    snapshotDoneRooms,
-    doneModules,
-    doneRooms,
-    ovModules,
-  });
 
   // Overall progress: prefer snapshot, otherwise derive from rooms ratio
   const progressValue = snapshotProgress != null

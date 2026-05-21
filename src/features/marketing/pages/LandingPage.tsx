@@ -82,7 +82,7 @@ const Landing: React.FC = () => {
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent"
+          className="h-[calc(100dvh-60px)] md:h-full md:snap-start md:snap-always md:flex-shrink-0 md:box-border relative bg-transparent"
         >
           <HeroSection
             heroRef={heroRef}

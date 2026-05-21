@@ -113,10 +113,7 @@ const BootcampRoomPage: React.FC = () => {
       const phaseNum = parseInt(phId.replace('phase', ''), 10);
       const roomNum = parseInt(rmId.replace('room', ''), 10);
       const backendRoomId = phaseNum * 100 + roomNum;
-      
-      console.log(`🎯 Completing room: moduleId=${phaseNum}, roomId=${backendRoomId}`);
       const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/complete`, {});
-      console.log('✅ Room completed in backend:', response.data);
       
       // Update completion CP earned for celebration
       if (response.data?.reward?.points) {
@@ -164,17 +161,7 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Call session-open API when room loads ──────────────────────────────────
   useEffect(() => {
-    console.log('🔍 Session-open check:', {
-      phaseId,
-      roomId,
-      bootcampId,
-      apiLoading,
-      bootcampStatus,
-      shouldCall: !(!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled')
-    });
-    
     if (!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled') {
-      console.log('⏭️ Skipping session-open call');
       return;
     }
     
@@ -191,9 +178,7 @@ const BootcampRoomPage: React.FC = () => {
     
     const callSessionOpen = async () => {
       try {
-        console.log(`🔄 Calling session-open: moduleId=${phaseNum}, roomId=${backendRoomId}`);
-        const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {});
-        console.log('✅ Room session opened - progress saved to backend', response.data);
+        await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {});
       } catch (err: any) {
         console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err);
       }
