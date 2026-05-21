@@ -15,6 +15,7 @@ interface Props {
   isBookmarked: boolean;
   isAssignment?: boolean;
   phaseColor?: string;
+  footer?: React.ReactNode;
   onToggleBookmark: () => void;
   onReportIssue: () => void;
   onClick: () => void;
@@ -25,6 +26,7 @@ const StepCard: React.FC<Props> = ({
   isActive, isViewed, isBookmarked,
   isAssignment,
   phaseColor,
+  footer,
   onToggleBookmark, onReportIssue, onClick,
 }) => (
   <div
@@ -104,6 +106,12 @@ const StepCard: React.FC<Props> = ({
       ) : (
         <StepPlaceholder stepNum={stepNum} />
       )
+    )}
+
+    {footer && (
+      <div className="mt-6" onClick={(e) => e.stopPropagation()}>
+        {footer}
+      </div>
     )}
 
     <button

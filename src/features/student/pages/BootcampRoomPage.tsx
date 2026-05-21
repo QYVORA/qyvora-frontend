@@ -762,23 +762,39 @@ const BootcampRoomPage: React.FC = () => {
 
               {/* Desktop: all steps visible */}
               <div className="hidden lg:block mb-10 space-y-4">
-                {room.steps.map((step, idx) => (
-                  <StepCard
-                    key={idx}
-                    step={step}
-                    stepNum={idx + 1}
-                    phaseId={phaseId || ''}
-                    roomId={roomId || ''}
-                    isActive={idx === currentStepIdx}
-                    isViewed={viewedSteps.has(idx)}
-                    isBookmarked={isStepBookmarked(idx)}
-                    phaseColor={phase.color}
-                    isAssignment={isAssignmentRoom}
-                    onToggleBookmark={() => toggleBookmark(idx)}
-                    onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
-                    onClick={() => goToStep(idx)}
-                  />
-                ))}
+                {room.steps.map((step, idx) => {
+                  const isStepLast = idx === room.steps.length - 1;
+                  const showSubmitInStep = isAssignmentRoom && isStepLast && !assignmentCompleted && ctfCompleted;
+
+                  return (
+                    <StepCard
+                      key={idx}
+                      step={step}
+                      stepNum={idx + 1}
+                      phaseId={phaseId || ''}
+                      roomId={roomId || ''}
+                      isActive={idx === currentStepIdx}
+                      isViewed={viewedSteps.has(idx)}
+                      isBookmarked={isStepBookmarked(idx)}
+                      phaseColor={phase.color}
+                      isAssignment={isAssignmentRoom}
+                      footer={showSubmitInStep ? (
+                        <button
+                          onClick={handleComplete}
+                          className="btn-primary group flex items-center gap-3 px-6 py-3.5 text-sm font-black uppercase transition-all hover:scale-[1.02] active:scale-[0.98]"
+                          style={phase.color ? { backgroundColor: phase.color } : {}}
+                        >
+                          <Github className="h-4 w-4 transition-transform group-hover:scale-110" />
+                          Submit Assignment
+                          <Send className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                        </button>
+                      ) : null}
+                      onToggleBookmark={() => toggleBookmark(idx)}
+                      onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
+                      onClick={() => goToStep(idx)}
+                    />
+                  );
+                })}
               </div>
 
               {/* Mobile: one step at a time */}
@@ -794,6 +810,17 @@ const BootcampRoomPage: React.FC = () => {
                   isBookmarked={isStepBookmarked(currentStepIdx)}
                   phaseColor={phase.color}
                   isAssignment={isAssignmentRoom}
+                  footer={isAssignmentRoom && (currentStepIdx === room.steps.length - 1) && !assignmentCompleted && ctfCompleted ? (
+                    <button
+                      onClick={handleComplete}
+                      className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
+                      style={phase.color ? { backgroundColor: phase.color } : {}}
+                    >
+                      <Github className="h-5 w-5 transition-transform group-hover:scale-110" />
+                      Submit Assignment
+                      <Send className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                    </button>
+                  ) : null}
                   onToggleBookmark={() => toggleBookmark(currentStepIdx)}
                   onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
                   onClick={() => goToStep(currentStepIdx)}

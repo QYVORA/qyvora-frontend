@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth, MustChangePasswordError } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import HeroBackground from '../../marketing/components/HeroBackground';
@@ -187,6 +188,18 @@ const Login: React.FC = () => {
       {!isAdminLoginRoute && <AuthHero />}
 
       <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative">
+        {/* Mobile-only back button */}
+        {!isAdminLoginRoute && (
+          <div className="absolute top-6 left-6 z-20 lg:hidden flex items-center justify-center w-10 h-10 bg-black/50 rounded-full backdrop-blur-sm">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1 text-sm font-bold text-white hover:text-accent uppercase tracking-widest transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Home
+            </Link>
+          </div>
+        )}
+
         <div className="w-full max-w-lg relative z-10">
           <p className="sr-only" aria-live="polite">{formMessage}</p>
 
