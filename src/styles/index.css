@@ -45,33 +45,32 @@
   --animate-spin-reverse: spin 3s linear infinite reverse;
 }
 
-/* ── Light theme overrides ── */
 [data-theme="light"] {
-  --color-bg:             #f4f6f8;
+  --color-bg:             #eff2ef; /* Soft, warm sage-gray (easier on eyes, organic brand match) */
   --color-bg-card:        #ffffff;
-  --color-bg-elevated:    #fbfcfd;
-  --color-accent:         #4B743E;
-  --color-accent-dim:     rgba(75, 116, 62, 0.06);
-  --color-accent-glow:    rgba(75, 116, 62, 0.12);
-  --color-text-primary:   #0C110C;
-  --color-text-secondary: rgba(12, 17, 12, 0.72);
-  --color-text-muted:     rgba(12, 17, 12, 0.45);
-  --color-border:         rgba(12, 17, 12, 0.12);
-  --color-border-strong:  rgba(75, 116, 62, 0.30);
-  --dot-color:            rgba(75, 116, 62, 0.06);
+  --color-bg-elevated:    #f7faf7; /* Tinted white-sage for elevation */
+  --color-accent:         #375e2b; /* Deep organic brand green for light theme readability */
+  --color-accent-dim:     rgba(55, 94, 43, 0.06);
+  --color-accent-glow:    rgba(55, 94, 43, 0.12);
+  --color-text-primary:   #0a100a; /* Deep forest charcoal instead of harsh pure black */
+  --color-text-secondary: rgba(10, 16, 10, 0.72);
+  --color-text-muted:     rgba(10, 16, 10, 0.46);
+  --color-border:         rgba(55, 94, 43, 0.11); /* Soft green-tinted border */
+  --color-border-strong:  rgba(55, 94, 43, 0.28);
+  --dot-color:            rgba(55, 94, 43, 0.05);
 
   /* ── Code highlighting (light) ── */
-  --color-code-bg:              #f0f2f4;
-  --color-code-keyword:         #4B743E;
-  --color-code-string:          #059669; /* emerald-600 */
-  --color-code-number:          #b45309; /* amber-700 */
-  --color-code-flag:            #2563eb; /* blue-600 */
-  --color-code-path:            #7e22ce; /* purple-700 */
+  --color-code-bg:              #e8ece8;
+  --color-code-keyword:         #375e2b;
+  --color-code-string:          #047857; /* emerald-700 */
+  --color-code-number:          #92400e; /* amber-800 */
+  --color-code-flag:            #1d4ed8; /* blue-700 */
+  --color-code-path:            #6b21a8; /* purple-700 */
 
-  /* ── Light theme card shimmer (subtle dark inner edge on light surface) ── */
-  --card-shimmer:         inset 0 1px 0 rgba(0, 0, 0, 0.06);
-  /* ── Light theme card shadow (green-tinted, soft) ── */
-  --card-shadow:          0 8px 28px rgba(12, 17, 16, 0.08), 0 2px 8px rgba(12, 17, 16, 0.05);
+  /* ── Light theme card shimmer (subtle white inner edge on light surface) ── */
+  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(55, 94, 43, 0.03);
+  /* ── Light theme card shadow (soft, green-tinted depth) ── */
+  --card-shadow:          0 12px 30px -10px rgba(55, 94, 43, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
 }
 
 @layer base {
@@ -435,24 +434,33 @@
     display: block !important;
   }
 
-  /* Light theme: remove blur/filter overlays on image-background sections */
+  /* Light theme: keep blur/filter overlays on image-background sections but style them softly */
   [data-theme="light"] .section-bg-img + .section-bg-overlay,
   [data-theme="light"] .section-bg-img ~ .hero-vignette,
   [data-theme="light"] .section-bg-img ~ .bg-radial-vignette {
     display: block !important;
-    backdrop-filter: none !important;
-    filter: none !important;
-    background: unset !important;
+    backdrop-filter: blur(12px) !important;
+    background: rgba(239, 242, 239, 0.45) !important;
   }
 
   [data-theme="light"] main section .blur-3xl,
-  [data-theme="light"] main section .blur-\[100px\],
-  [data-theme="light"] main section .backdrop-blur-sm,
+  [data-theme="light"] main section .blur-\[100px\] {
+    filter: blur(100px) !important;
+    opacity: 0.38 !important;
+    background: var(--color-accent) !important;
+    mix-blend-mode: multiply; /* blends softly with the light background */
+  }
+
+  [data-theme="light"] main section .backdrop-blur-sm {
+    backdrop-filter: blur(6px) !important;
+    background: rgba(255, 255, 255, 0.40) !important;
+    border-color: rgba(55, 94, 43, 0.08) !important;
+  }
+
   [data-theme="light"] main section .backdrop-blur-md {
-    backdrop-filter: none !important;
-    filter: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
+    backdrop-filter: blur(16px) !important;
+    background: rgba(255, 255, 255, 0.60) !important;
+    border-color: rgba(55, 94, 43, 0.12) !important;
   }
 
   [data-theme="light"] .light-theme-hide-bg-overlay,
@@ -825,19 +833,24 @@
   }
 
   /* ── Light theme card overrides ── */
-  [data-theme="light"] .card-hsociety {
+  [data-theme="light"] .card-hsociety,
+  [data-theme="light"] .terminal-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9faf9 100%) !important;
     box-shadow: var(--card-shimmer), var(--card-shadow);
     border-color: var(--color-border);
   }
-  [data-theme="light"] .card-hsociety:hover {
-    box-shadow: var(--card-shimmer), 0 8px 28px rgba(45, 138, 26, 0.14), 0 2px 6px rgba(10, 26, 10, 0.08);
+  [data-theme="light"] .card-hsociety:hover,
+  [data-theme="light"] .terminal-card:hover {
+    box-shadow: var(--card-shimmer), 0 16px 36px -8px rgba(55, 94, 43, 0.15), 0 4px 12px rgba(55, 94, 43, 0.05);
     border-color: var(--color-border-strong);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   /* ── Light theme — elevated surfaces (dropdowns, modals, drawers) ── */
   [data-theme="light"] .bg-bg-card {
     background-color: var(--color-bg-card);
+    border-color: var(--color-border);
+    box-shadow: 0 20px 48px -10px rgba(10, 16, 10, 0.12), 0 2px 10px rgba(0, 0, 0, 0.02);
   }
 
   /* ── Light theme — section alternation ── */
@@ -847,13 +860,13 @@
 
   /* ── Light theme — ambient glow blobs need more intensity ── */
   [data-theme="light"] .bg-accent\/5 {
-    background-color: rgba(47, 138, 31, 0.10) !important;
+    background-color: rgba(55, 94, 43, 0.10) !important;
   }
   [data-theme="light"] .bg-accent\/8 {
-    background-color: rgba(47, 138, 31, 0.14) !important;
+    background-color: rgba(55, 94, 43, 0.14) !important;
   }
   [data-theme="light"] .bg-accent\/15 {
-    background-color: rgba(47, 138, 31, 0.20) !important;
+    background-color: rgba(55, 94, 43, 0.20) !important;
   }
 
   @media (max-width: 767px) {

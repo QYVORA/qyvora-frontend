@@ -54,12 +54,63 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Guard against SSR / non-browser environments where `window` is undefined.
     if (typeof window === 'undefined') return 'dark';
 
-    const saved = localStorage.getItem('hsociety_theme');
+    // Read both the standard hsociety key and any legacy duplicate 'theme' key
+    const savedHsoc = localStorage.getItem('hsociety_theme');
+    const savedLegacy = localStorage.getItem('theme');
+    const saved = savedHsoc || savedLegacy;
 
     // Strict allowlist check — only accept exactly 'light' or 'dark'.
-    // Any other value (null, empty string, tampered value) falls back to 'dark'.
-    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+    if (saved === 'light' || saved === 'dark') {
+      // Clean up duplicate legacy key to keep localStorage tidy
+      if (savedLegacy && savedLegacy !== savedHsoc) {
+        try {
+          localStorage.removeItem('theme');
+          localStorage.setItem('hsociety_theme', saved);
+        } catch (e) {
+          // Ignore storage consent restrictions during bootstrap
+        }
+      }
+      return saved;
+    }
+
+    // Default to browser preference if no manual setting is stored
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return 'light';
+    }
+
+    return 'dark';
   });
+
+  /**
+   * Listen for browser/system theme changes dynamically.
+   * If the user hasn't set a manual preference in localStorage, we adapt on the fly.
+   */
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+
+    // If the user already has a saved theme, do not override it automatically
+    const saved = localStorage.getItem('hsociety_theme');
+    if (saved === 'light' || saved === 'dark') return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? 'light' : 'dark');
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleThemeChange);
+    } else {
+      mediaQuery.addListener(handleThemeChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handleThemeChange);
+      } else {
+        mediaQuery.removeListener(handleThemeChange);
+      }
+    };
+  }, []);
 
   /**
    * Flips the theme between dark and light.
@@ -82,6 +133,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.documentElement.setAttribute('data-theme', theme);
     if (isCategoryAllowed('functional')) {
       localStorage.setItem('hsociety_theme', theme);
+      // Clean up legacy key here too if it gets set by accident
+      localStorage.removeItem('theme');
     }
   }, [theme]); // Only re-runs when `theme` changes.
 
