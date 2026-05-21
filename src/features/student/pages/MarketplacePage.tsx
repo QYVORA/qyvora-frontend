@@ -7,8 +7,6 @@ import CpLogo from '../../../shared/components/CpLogo';
 
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 
 const CACHE_KEY = 'hsociety_marketplace_cache_v2';
 
@@ -23,7 +21,6 @@ const SkeletonCard = () => (
 
 const Marketplace: React.FC = () => {
   const { addToast } = useToast();
-  const { user } = useAuth();
   const [products, setProducts] = useState<any[]>([]);
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,17 +45,14 @@ const Marketplace: React.FC = () => {
       api.get('/public/cp-products'),
       api.get('/cp/balance').catch(() => null),
       api.get('/cp/transactions?limit=100').catch(() => null),
-      getTokenBalanceForUser(user?.uid || ''),
-    ]).then(([prodRes, balRes, txRes, tokenBal]) => {
+    ]).then(([prodRes, balRes, txRes]) => {
       if (!mounted) return;
       const items = Array.isArray(prodRes.data?.items) ? prodRes.data.items : [];
       setProducts(items);
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch { /* ignore */ }
       const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
-      const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || 0), 0);
       const dbBalance = extractCpBalance(balRes?.data) ?? 0;
-      const onChainBalance = (typeof tokenBal === 'number') ? tokenBal : 0;
-      setBalance(Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0));
+      setBalance(dbBalance);
       const purchasedIds = new Set<string>(
         txItems
           .filter((tx: any) => tx.type === 'purchase' && tx.productId)
@@ -71,7 +65,7 @@ const Marketplace: React.FC = () => {
       if (mounted) setLoading(false);
     });
     return () => { mounted = false; };
-  }, [user?.uid]);
+  }, []);
 
   const handlePurchase = async (product: any) => {
     const id = String(product.id || '');
@@ -80,16 +74,13 @@ const Marketplace: React.FC = () => {
       await api.post('/cp/purchase', { productId: id });
       addToast(`${product.title} purchased successfully.`, 'success');
       setPurchased((prev) => new Set([...prev, id]));
-      const [balRes, tokenBal, txRes] = await Promise.all([
+      const [balRes, txRes] = await Promise.all([
         api.get('/cp/balance').catch(() => null),
-        getTokenBalanceForUser(user?.uid || ''),
         api.get('/cp/transactions?limit=100').catch(() => null),
       ]);
       const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
-      const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || 0), 0);
       const dbBalance = extractCpBalance(balRes?.data) ?? 0;
-      const onChainBalance = (typeof tokenBal === 'number') ? tokenBal : 0;
-      setBalance(Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0));
+      setBalance(dbBalance);
     } catch (err: any) {
       const msg = err?.response?.data?.error || 'Purchase failed. Check your points balance.';
       setShakePurchase(id);

@@ -249,13 +249,15 @@ const StudentTopbar = () => {
 
             {/* Right: quiz + notif + profile */}
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={openQuiz}
-                className="flex items-center gap-2 h-11 px-4 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:border-accent/70 hover:bg-accent-dim/70 transition-colors text-sm font-black uppercase tracking-wide"
-              >
-                <ClipboardList className="h-4 w-4" />
-                <span className="hidden sm:inline">Quiz</span>
-              </button>
+              {!roomConfig?.isAssignment && (
+                <button
+                  onClick={openQuiz}
+                  className="flex items-center gap-2 h-11 px-4 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:border-accent/70 hover:bg-accent-dim/70 transition-colors text-sm font-black uppercase tracking-wide"
+                >
+                  <ClipboardList className="h-4 w-4" />
+                  <span className="hidden sm:inline">Quiz</span>
+                </button>
+              )}
 
               <div ref={notifRef} className="relative">
                 <button

@@ -47,17 +47,19 @@ const StepCard: React.FC<Props> = ({
       />
     )}
 
-    <button
-      onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
-      className={`absolute top-6 right-6 p-2 rounded-lg border transition-colors z-10 ${
-        isBookmarked
-          ? 'border-yellow-500/50 bg-yellow-500/10 text-yellow-500'
-          : 'border-border bg-bg text-text-muted hover:text-accent hover:border-accent/30 opacity-0 group-hover:opacity-100'
-      }`}
-      title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
-    >
-      <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
-    </button>
+    {!isAssignment && (
+      <button
+        onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
+        className={`absolute top-6 right-6 p-2 rounded-lg border transition-colors z-10 ${
+          isBookmarked
+            ? 'border-yellow-500/50 bg-yellow-500/10 text-yellow-500'
+            : 'border-border bg-bg text-text-muted hover:text-accent hover:border-accent/30 opacity-0 group-hover:opacity-100'
+        }`}
+        title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
+      >
+        <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
+      </button>
+    )}
 
     <div className="mb-3 flex items-center gap-2.5">
       <div
@@ -114,13 +116,15 @@ const StepCard: React.FC<Props> = ({
       </div>
     )}
 
-    <button
-      onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
-      className="mt-4 text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
-    >
-      <Flag className="h-3 w-3" />
-      Report issue with this step
-    </button>
+    {!isAssignment && (
+      <button
+        onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
+        className="mt-4 text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
+      >
+        <Flag className="h-3 w-3" />
+        Report issue with this step
+      </button>
+    )}
   </div>
 );
 

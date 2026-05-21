@@ -33,7 +33,6 @@ export interface QuizQuestion {
   id: string;
   text: string;
   options: string[];
-  correctIndex?: number;
 }
 
 export interface RoomQuiz {

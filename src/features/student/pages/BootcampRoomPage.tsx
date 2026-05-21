@@ -423,7 +423,8 @@ const BootcampRoomPage: React.FC = () => {
     const allStepIdxs = room?.steps.map((_, i) => i) || [];
     setViewedSteps(new Set(allStepIdxs));
     
-    if (!quizPassed && quizModuleId) {
+    // Skip quiz gate for assignment rooms
+    if (!isAssignmentRoom && !quizPassed && quizModuleId) {
       setQuizGateOpen(true);
       return;
     }
@@ -519,59 +520,61 @@ const BootcampRoomPage: React.FC = () => {
       />
 
       {/* Desktop Floating Toolbar */}
-      <aside
-        className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
-        style={{
-          top: '6rem',
-          bottom: '1.5rem',
-          justifyContent: 'center',
-        }}
-        aria-label="Room actions"
-      >
-        <button
-          onClick={() => setJumpMenuOpen(true)}
-          title="Jump to step"
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
-        >
-          <List className="h-5 w-5" />
-        </button>
-
-        <button
-          onClick={toggleFullscreen}
-          title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
-        >
-          {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-        </button>
-
-        <div className="h-px w-6 bg-border/50 my-1" />
-
-        <button
-          onClick={async () => {
-            if (!isLastStep) {
-              goToStep(currentStepIdx + 1);
-            } else {
-              await handleComplete();
-            }
+      {!isAssignmentRoom && (
+        <aside
+          className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
+          style={{
+            top: '6rem',
+            bottom: '1.5rem',
+            justifyContent: 'center',
           }}
-          title={isLastStep ? "Complete room" : "Next step"}
-          className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
-            isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
-              ? 'border-accent bg-accent text-bg shadow-lg shadow-accent/20'
-              : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
-          }`}
+          aria-label="Room actions"
         >
-          {isLastStep ? (
-            isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
-              <Github className="h-5 w-5" />
+          <button
+            onClick={() => setJumpMenuOpen(true)}
+            title="Jump to step"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+          >
+            <List className="h-5 w-5" />
+          </button>
+
+          <button
+            onClick={toggleFullscreen}
+            title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+          >
+            {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+          </button>
+
+          <div className="h-px w-6 bg-border/50 my-1" />
+
+          <button
+            onClick={async () => {
+              if (!isLastStep) {
+                goToStep(currentStepIdx + 1);
+              } else {
+                await handleComplete();
+              }
+            }}
+            title={isLastStep ? "Complete room" : "Next step"}
+            className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
+              isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
+                ? 'border-accent bg-accent text-bg shadow-lg shadow-accent/20'
+                : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
+            }`}
+          >
+            {isLastStep ? (
+              isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
+                <Github className="h-5 w-5" />
+              ) : (
+                <CheckCircle2 className="h-5 w-5" />
+              )
             ) : (
-              <CheckCircle2 className="h-5 w-5" />
-            )
-          ) : (
-            <ArrowRight className="h-5 w-5" />
-          )}
-        </button>
-      </aside>
+              <ArrowRight className="h-5 w-5" />
+            )}
+          </button>
+        </aside>
+      )}
 
       {/* ── MAIN SPLIT LAYOUT ── */}
       {/*
@@ -765,6 +768,8 @@ const BootcampRoomPage: React.FC = () => {
                 {room.steps.map((step, idx) => {
                   const isStepLast = idx === room.steps.length - 1;
                   const showSubmitInStep = isAssignmentRoom && isStepLast && !assignmentCompleted && ctfCompleted;
+                  const showNextInStep = isAssignmentRoom && !isStepLast;
+                  const showContinueInStep = isAssignmentRoom && isStepLast && (isRoomComplete || (assignmentCompleted && ctfCompleted));
 
                   return (
                     <StepCard
@@ -788,6 +793,22 @@ const BootcampRoomPage: React.FC = () => {
                           Submit Assignment
                           <Send className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
                         </button>
+                      ) : showNextInStep ? (
+                        <button
+                          onClick={() => goToStep(idx + 1)}
+                          className="btn-secondary group flex items-center gap-3 px-6 py-3 text-xs font-black uppercase transition-all"
+                        >
+                          Next Step
+                          <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                        </button>
+                      ) : showContinueInStep ? (
+                        <button
+                          onClick={handleComplete}
+                          className="btn-secondary group flex items-center gap-3 px-6 py-3 text-xs font-black uppercase transition-all"
+                        >
+                          {nextRoom ? 'Continue to Next Room' : 'Finish Module'}
+                          <CheckCircle2 className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
+                        </button>
                       ) : null}
                       onToggleBookmark={() => toggleBookmark(idx)}
                       onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
@@ -810,7 +831,52 @@ const BootcampRoomPage: React.FC = () => {
                   isBookmarked={isStepBookmarked(currentStepIdx)}
                   phaseColor={phase.color}
                   isAssignment={isAssignmentRoom}
-                  footer={isAssignmentRoom && (currentStepIdx === room.steps.length - 1) && !assignmentCompleted && ctfCompleted ? (
+                  footer={isAssignmentRoom ? (
+                    <div className="flex flex-col gap-3">
+                      {currentStepIdx === room.steps.length - 1 && !assignmentCompleted && ctfCompleted && (
+                        <button
+                          onClick={handleComplete}
+                          className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
+                          style={phase.color ? { backgroundColor: phase.color } : {}}
+                        >
+                          <Github className="h-5 w-5 transition-transform group-hover:scale-110" />
+                          Submit Assignment
+                          <Send className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                        </button>
+                      )}
+
+                      {currentStepIdx === room.steps.length - 1 && (isRoomComplete || (assignmentCompleted && ctfCompleted)) && (
+                        <button
+                          onClick={handleComplete}
+                          className="btn-secondary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
+                        >
+                          {nextRoom ? 'Continue to Next Room' : 'Finish Module'}
+                          <CheckCircle2 className="h-5 w-5 shrink-0 transition-transform group-hover:scale-110" />
+                        </button>
+                      )}
+                      
+                      <div className="flex gap-2">
+                        {currentStepIdx > 0 && (
+                          <button
+                            onClick={() => goToStep(currentStepIdx - 1)}
+                            className="btn-secondary flex-1 flex items-center justify-center gap-2 py-3 text-xs font-black uppercase"
+                          >
+                            <ArrowLeft className="h-4 w-4" />
+                            Prev
+                          </button>
+                        )}
+                        {currentStepIdx < room.steps.length - 1 && (
+                          <button
+                            onClick={() => goToStep(currentStepIdx + 1)}
+                            className="btn-secondary flex-1 flex items-center justify-center gap-2 py-3 text-xs font-black uppercase"
+                          >
+                            Next
+                            <ArrowRight className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : isAssignmentRoom && (currentStepIdx === room.steps.length - 1) && !assignmentCompleted && ctfCompleted ? (
                     <button
                       onClick={handleComplete}
                       className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
@@ -828,77 +894,79 @@ const BootcampRoomPage: React.FC = () => {
               </div>
 
               {/* Step navigation — mobile always, desktop only when >5 steps */}
-              <div className={`flex flex-wrap items-center gap-3 pb-16 ${room.steps.length <= 5 ? 'lg:justify-end' : ''}`}>
-                {/* NEW: Jump to step button */}
-                <button
-                  onClick={() => setJumpMenuOpen(true)}
-                  className="btn-secondary inline-flex items-center gap-2"
-                >
-                  <List className="h-4 w-4" />
-                  <span className="hidden sm:inline">Jump</span>
-                </button>
+              {!isAssignmentRoom && (
+                <div className={`flex flex-wrap items-center gap-3 pb-16 ${room.steps.length <= 5 ? 'lg:justify-end' : ''}`}>
+                  {/* NEW: Jump to step button */}
+                  <button
+                    onClick={() => setJumpMenuOpen(true)}
+                    className="btn-secondary inline-flex items-center gap-2"
+                  >
+                    <List className="h-4 w-4" />
+                    <span className="hidden sm:inline">Jump</span>
+                  </button>
 
-                {/* NEW: Fullscreen button */}
-                <button
-                  onClick={toggleFullscreen}
-                  className="btn-secondary inline-flex items-center gap-2"
-                  title="Toggle fullscreen (F)"
-                >
-                  {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  <span className="hidden sm:inline">{fullscreen ? 'Exit' : 'Full'}</span>
-                </button>
+                  {/* NEW: Fullscreen button */}
+                  <button
+                    onClick={toggleFullscreen}
+                    className="btn-secondary inline-flex items-center gap-2"
+                    title="Toggle fullscreen (F)"
+                  >
+                    {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                    <span className="hidden sm:inline">{fullscreen ? 'Exit' : 'Full'}</span>
+                  </button>
 
-                {/* Prev — mobile only (desktop shows all steps) */}
-                <button
-                  onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
-                  disabled={currentStepIdx === 0}
-                  className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
-                >
-                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                  <span>Prev</span>
-                </button>
+                  {/* Prev — mobile only (desktop shows all steps) */}
+                  <button
+                    onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
+                    disabled={currentStepIdx === 0}
+                    className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
+                  >
+                    <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                    <span>Prev</span>
+                  </button>
 
-                {/* Step counter — mobile only */}
-                <span className="lg:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
-                  {currentStepIdx + 1} / {room.steps.length}
-                </span>
+                  {/* Step counter — mobile only */}
+                  <span className="lg:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
+                    {currentStepIdx + 1} / {room.steps.length}
+                  </span>
 
-                  {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
-                <button
-                  onClick={async () => {
-                    if (!isLastStep) {
-                      goToStep(currentStepIdx + 1);
-                    } else {
-                      await handleComplete();
-                    }
-                  }}
-                  className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
-                    isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
-                      ? 'bg-accent text-bg shadow-lg shadow-accent/20'
-                      : ''
-                  }`}
-                >
-                  {isLastStep ? (
-                    isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
-                      <>
-                        <Github className="h-4 w-4 sm:h-5 sm:w-5" />
-                        <span>Submit Assignment</span>
-                        <Send className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 transition-transform group-hover:translate-x-1" />
-                      </>
-                    ) : isRoomComplete ? (
-                      <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                    {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
+                  <button
+                    onClick={async () => {
+                      if (!isLastStep) {
+                        goToStep(currentStepIdx + 1);
+                      } else {
+                        await handleComplete();
+                      }
+                    }}
+                    className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
+                      isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
+                        ? 'bg-accent text-bg shadow-lg shadow-accent/20'
+                        : ''
+                    }`}
+                  >
+                    {isLastStep ? (
+                      isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
+                        <>
+                          <Github className="h-4 w-4 sm:h-5 sm:w-5" />
+                          <span>Submit Assignment</span>
+                          <Send className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                        </>
+                      ) : isRoomComplete ? (
+                        <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                      ) : (
+                        <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                      )
                     ) : (
-                      <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
-                    )
-                  ) : (
-                    <>
-                      <span className="lg:hidden">Next</span>
-                      <span className="hidden lg:inline">Mark complete & continue</span>
-                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                    </>
-                  )}
-                </button>
-              </div>
+                      <>
+                        <span className="lg:hidden">Next</span>
+                        <span className="hidden lg:inline">Mark complete & continue</span>
+                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
 
               {/* Phase Assignment Visual Hint for assignment room */}
               {isLastStep && isAssignmentRoom && assignmentDetails && (

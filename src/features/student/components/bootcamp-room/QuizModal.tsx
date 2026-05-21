@@ -23,7 +23,6 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     passed: boolean;
     reward?: number;
     questions: QuizQuestion[];
-    correctIndexes: Record<string, number>;
   } | null>(null);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -33,7 +32,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     api
       .post('/student/quiz', { moduleId, roomId, courseId })
       .then((res) => {
-        const q = res?.data as RoomQuiz & { questions: Array<QuizQuestion & { correctIndex?: number }> };
+        const q = res?.data as RoomQuiz;
         if (Array.isArray(q?.questions) && q.questions.length > 0) {
           setQuiz(q);
         } else {
@@ -60,11 +59,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
       const score   = Number(res?.data?.score || 0);
       const passed  = Boolean(res?.data?.passed);
       const reward  = Number(res?.data?.reward?.points || 0);
-      const correctIndexes: Record<string, number> = {};
-      (quiz.questions as Array<QuizQuestion & { correctIndex?: number }>).forEach((q) => {
-        if (typeof q.correctIndex === 'number') correctIndexes[q.id] = q.correctIndex;
-      });
-      setResult({ score, passed, reward, questions: quiz.questions, correctIndexes });
+      setResult({ score, passed, reward, questions: quiz.questions });
       if (passed) {
         addToast(`Quiz passed! ${score}% — +${reward} CP`, 'success');
         onPassed();
@@ -136,16 +131,11 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
               <div className="space-y-5">
                 {result.questions.map((q, idx) => {
                   const chosen  = answers[q.id];
-                  const correct = result.correctIndexes[q.id];
-                  const isRight = chosen === correct;
                   return (
-                    <div key={q.id} className={`rounded-xl border p-4 ${isRight ? 'border-accent/30 bg-accent/5' : 'border-red-500/30 bg-red-500/5'}`}>
+                    <div key={q.id} className="rounded-xl border border-border bg-bg-card p-4">
                       <div className="flex items-start gap-2 mb-3">
-                        <span className={`shrink-0 mt-0.5 ${isRight ? 'text-accent' : 'text-red-400'}`}>
-                          {isRight
-                            ? <CheckCircle2 className="h-4 w-4" />
-                            : <XCircle className="h-4 w-4" />
-                          }
+                        <span className="shrink-0 mt-0.5 text-text-muted">
+                          <ClipboardList className="h-4 w-4" />
                         </span>
                         <p className="text-sm font-bold text-text-primary leading-snug">
                           <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>
@@ -154,17 +144,15 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                       </div>
                       <div className="space-y-1.5 pl-5">
                         {q.options.map((opt, optIdx) => {
-                          const isCorrectOpt = optIdx === correct;
                           const isChosenOpt  = optIdx === chosen;
-                          let cls = 'border-border text-text-muted';
-                          if (isCorrectOpt) cls = 'border-accent/50 bg-accent/10 text-accent font-bold';
-                          else if (isChosenOpt && !isRight) cls = 'border-red-500/50 bg-red-500/10 text-red-400 line-through';
+                          const cls = isChosenOpt
+                            ? 'border-accent/50 bg-accent/10 text-accent font-bold'
+                            : 'border-border text-text-muted';
                           return (
                             <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                               <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                               <span>{opt}</span>
-                              {isCorrectOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Correct</span>}
-                              {isChosenOpt && !isRight && <span className="ml-auto text-[10px] font-black text-red-400 shrink-0">Your answer</span>}
+                              {isChosenOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Your answer</span>}
                             </div>
                           );
                         })}
