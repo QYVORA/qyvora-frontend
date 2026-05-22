@@ -6,7 +6,7 @@ import { openServiceRequestModal } from '../ServiceRequestModal';
 
 const SERVICES_DATA = [
   {
-    id: 'basic-package',
+    id: 'Basic WebApp Pentest',
     title: 'Basic Package',
     price: 'GH₵ 4,000+',
     subtitle: 'Essential Web Audit',
@@ -20,7 +20,7 @@ const SERVICES_DATA = [
     accent: false,
   },
   {
-    id: 'standard-package',
+    id: 'Standard WebApp Pentest',
     title: 'Standard Package',
     price: 'GH₵ 8,000+',
     subtitle: 'Full Pentest Suite',
@@ -44,7 +44,9 @@ const ServicesSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-8 lg:gap-12 items-center">
 
           {/* ── Left: Heading Column ── */}
-          <div className="lg:pr-6">
+          <div className="lg:pr-6 flex flex-col">
+
+            {/* Eyebrow */}
             <div className="flex items-center gap-3 mb-4 lg:mb-3">
               <div className="h-[1px] w-8 bg-accent/40" />
               <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
@@ -52,6 +54,7 @@ const ServicesSection: React.FC = () => {
               </span>
             </div>
 
+            {/* Heading */}
             <AsciiHeading
               text="SERVICES"
               font="ANSI Shadow"
@@ -61,19 +64,30 @@ const ServicesSection: React.FC = () => {
               className="mb-5 lg:mb-4"
             />
 
-            {/* Description — visible on all sizes, smaller on desktop */}
-            <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-0 max-w-sm opacity-80">
+            {/* Description */}
+            <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-4 max-w-sm opacity-80">
               High-fidelity security audits for modern infrastructure.
               Identify critical vectors before they are exploited.
             </p>
 
             {/* Trust badge — desktop only */}
-            <div className="hidden lg:flex items-start gap-3 mt-4 opacity-35 hover:opacity-80 transition-opacity duration-500">
+            <div className="hidden lg:flex items-start gap-3 mb-5 opacity-35 hover:opacity-80 transition-opacity duration-500">
               <ShieldCheck className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
               <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest leading-loose">
                 Trusted for comprehensive offensive security assessments and technical reporting.
               </p>
             </div>
+
+            {/* ── Illustration — desktop only, no bg, no overlays ── */}
+            <div className="hidden lg:block mt-auto">
+              <img
+                src="/assets/illustrations/bootcamp-operator.webp"
+                alt="Operator illustration"
+                className="w-full max-h-48 object-contain object-bottom opacity-75 select-none pointer-events-none"
+                draggable={false}
+              />
+            </div>
+
           </div>
 
           {/* ── Right: Cards ── */}
@@ -85,29 +99,24 @@ const ServicesSection: React.FC = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="terminal-card group relative overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-500 hover:border-accent/50
-                  flex flex-col
-                  lg:flex-row"
+                className="terminal-card group relative overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-500 hover:border-accent/50 flex flex-col lg:flex-row"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                {/* ── Image ──
-                    Mobile:  full-width banner on top, tall enough to look good
-                    Desktop: side column, auto height driven by card content     */}
-                <div className="
-                  relative overflow-hidden bg-bg flex-shrink-0
-                  w-full h-52
-                  lg:w-[32%] lg:h-auto
-                ">
+                {/* ── Card Image ──
+                    Mobile  → full-width banner on top (h-52)
+                    Desktop → side column, height driven by card content        */}
+                <div className="relative overflow-hidden bg-bg flex-shrink-0 w-full h-52 lg:w-[32%] lg:h-auto">
                   <img
                     src={service.image}
                     alt={service.title}
                     className="w-full h-full object-cover opacity-50 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-70"
                   />
-                  {/* Mobile: gradient fades bottom into card body */}
+                  {/* Mobile: fade bottom edge into card body */}
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/30 to-transparent opacity-90 lg:hidden" />
-                  {/* Desktop: gradient fades right into card body */}
+                  {/* Desktop: fade right edge into card body */}
                   <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-transparent to-transparent opacity-90 hidden lg:block" />
 
+                  {/* Price badge */}
                   <div className="absolute top-3 left-3 bg-bg/80 backdrop-blur-md border border-border/50 px-3 py-1.5 rounded-lg">
                     <span className="text-xs font-black text-text-primary uppercase tracking-wider">
                       {service.price}
@@ -117,7 +126,8 @@ const ServicesSection: React.FC = () => {
 
                 {/* ── Card Body ── */}
                 <div className="flex flex-col flex-1 justify-center gap-4 p-5 lg:p-5">
-                  {/* Title */}
+
+                  {/* Title block */}
                   <div className="pb-3 border-b border-border/30">
                     <h3 className="text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight group-hover:text-white transition-colors leading-none mb-1.5">
                       {service.title}
@@ -127,7 +137,7 @@ const ServicesSection: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Features */}
+                  {/* Features grid */}
                   <div className="grid grid-cols-2 gap-x-4 gap-y-3 lg:gap-y-2">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2.5">
@@ -143,10 +153,10 @@ const ServicesSection: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* CTA */}
+                  {/* CTA row */}
                   <div className="flex items-center gap-4 pt-1">
                     <button
-                      onClick={() => openServiceRequestModal(service.title)}
+                      onClick={() => openServiceRequestModal(service.id)}
                       className={`px-7 py-3.5 lg:px-6 lg:py-3 rounded-xl font-black uppercase tracking-[0.2em] text-xs transition-all duration-300 flex items-center gap-2.5 group/btn ${
                         service.accent
                           ? 'bg-accent text-bg hover:shadow-[0_0_24px_rgba(var(--color-accent-rgb),0.35)] hover:brightness-110 active:scale-95'
@@ -167,6 +177,7 @@ const ServicesSection: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Accent glow — standard package only */}
                 {service.accent && (
                   <div className="absolute -top-12 -right-12 w-24 h-24 bg-accent/10 blur-3xl pointer-events-none" />
                 )}
