@@ -27,25 +27,14 @@ interface PartnerLogoProps {
 
 const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
   <div
-    style={{
-      flexShrink: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginLeft: '80px',
-      marginRight: '80px',
-    }}
+    className="flex-none flex items-center justify-center mx-10 md:mx-20 lg:mx-24"
   >
     {src ? (
       <img
         src={src}
         alt={`Partner logo ${index + 1}`}
+        className="h-16 md:h-24 lg:h-36 w-auto object-contain block"
         style={{
-          height: '120px',
-          width: 'auto',
-          objectFit: 'contain',
-          display: 'block',
-          opacity: 1,
           filter: 'none',
           mixBlendMode: 'normal',
         }}
@@ -112,8 +101,8 @@ const PartnersSection: React.FC = () => {
             className="mb-1.5"
           />
           <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
-            Trusted by organisations at the frontier of offensive security and
-            cyber operations.
+            Securing the next generation of high-growth startups and tech
+            innovators at the frontier of offensive security.
           </p>
         </motion.div>
       </div>
