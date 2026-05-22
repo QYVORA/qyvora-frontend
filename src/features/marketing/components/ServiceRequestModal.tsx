@@ -90,7 +90,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   name="name"
                   type="text"
                   required
-                  placeholder="John Doe"
+                  placeholder="Alhassan Boateng "
                   className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                 />
               </div>
@@ -104,7 +104,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   name="email"
                   type="email"
                   required
-                  placeholder="operator@company.com"
+                  placeholder="email@company.com"
                   className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                 />
               </div>
