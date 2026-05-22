@@ -55,17 +55,10 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      // FIX: replaced lg:h-full with lg:h-[320px] so the card has a fixed
-      // height on desktop. The image fills this height (via lg:h-full below)
-      // instead of the image dictating how tall the card becomes.
       className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-[320px]"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {/* Image */}
-      {/* FIX: replaced lg:h-auto with lg:h-full so the image div stretches
-          to fill the card's fixed height rather than expanding to the image's
-          natural height and pushing the card open. object-cover on the <img>
-          handles cropping/fitting within this constrained box. */}
       <div className="relative flex-none overflow-hidden bg-bg w-full h-44 sm:h-52 lg:h-full lg:w-[45%]">
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         {image ? (
@@ -138,14 +131,15 @@ const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduce
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true, amount: 0.1 }}
     transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-    className="flex flex-col items-center justify-center h-full min-h-0 py-2"
+    // Added pl-4 to push the rocket away from the card's right edge
+    className="flex flex-col items-center justify-center h-full min-h-0 py-2 pl-4"
   >
     {/* Eyebrow label */}
     <p className="text-[9px] font-black uppercase tracking-[0.28em] text-text-muted mb-3 text-center">
       Launch your career
     </p>
 
-    {/* Rocket — no background, no wrapper card, just the PNG floating */}
+    {/* Rocket */}
     <div className="relative flex items-center justify-center w-full flex-1 min-h-0">
       {/* Subtle sage-green glow behind the rocket */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -155,16 +149,11 @@ const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduce
       <motion.img
         src="/assets/illustrations/rocket-visual.png"
         alt="Launch your career"
-        className="relative z-10 w-full max-w-[180px] lg:max-w-[220px] h-auto object-contain select-none pointer-events-none drop-shadow-[0_0_18px_rgba(136,173,124,0.25)]"
+        // Reduced max-w so the rocket sits smaller and doesn't crowd the card
+        className="relative z-10 w-full max-w-[150px] lg:max-w-[180px] h-auto object-contain select-none pointer-events-none drop-shadow-[0_0_18px_rgba(136,173,124,0.25)]"
         draggable={false}
-        animate={shouldReduceMotion ? {} : {
-          y: [0, -10, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        animate={shouldReduceMotion ? {} : { y: [0, -10, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
     </div>
 
@@ -220,8 +209,9 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
         /* ── Single bootcamp: featured + rocket sidebar ── */
         ) : isSingle ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-stretch">
-            <div className="lg:col-span-2 min-h-0">
+          // Increased gap to lg:gap-8 to give more breathing room between card and rocket
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_200px] gap-4 lg:gap-8 items-stretch">
+            <div className="min-h-0">
               <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
             </div>
             {/* Rocket sidebar — hidden on mobile */}
@@ -253,7 +243,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
-                  {/* Image thumbnail — aspect-ratio box so it never distorts the card */}
+                  {/* Image thumbnail */}
                   <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '52%' }}>
                     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
                     {image && (

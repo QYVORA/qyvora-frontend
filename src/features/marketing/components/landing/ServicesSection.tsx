@@ -102,9 +102,7 @@ const ServicesSection: React.FC = () => {
                 className="terminal-card group relative overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-500 hover:border-accent/50 flex flex-col lg:flex-row"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                {/* ── Card Image ──
-                    Mobile  → full-width banner on top (h-52)
-                    Desktop → side column, height driven by card content        */}
+                {/* ── Card Image ── */}
                 <div className="relative overflow-hidden bg-bg flex-shrink-0 w-full h-52 lg:w-[32%] lg:h-auto">
                   <img
                     src={service.image}
@@ -116,9 +114,9 @@ const ServicesSection: React.FC = () => {
                   {/* Desktop: fade right edge into card body */}
                   <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-transparent to-transparent opacity-90 hidden lg:block" />
 
-                  {/* Price badge */}
-                  <div className="absolute top-3 left-3 bg-bg/80 backdrop-blur-md border border-border/50 px-3 py-1.5 rounded-lg">
-                    <span className="text-xs font-black text-text-primary uppercase tracking-wider">
+                  {/* Price badge — enlarged */}
+                  <div className="absolute top-3 left-3 bg-bg/80 backdrop-blur-md border border-border/50 px-4 py-2 rounded-lg">
+                    <span className="text-base font-black text-text-primary uppercase tracking-wider">
                       {service.price}
                     </span>
                   </div>
@@ -132,9 +130,10 @@ const ServicesSection: React.FC = () => {
                     <h3 className="text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight group-hover:text-white transition-colors leading-none mb-1.5">
                       {service.title}
                     </h3>
-                    <span className="text-xs font-bold text-accent uppercase tracking-[0.2em]">
+                    {/* Fixed: was <span> which caused "Cannot find name 'span'" in some TSX configs */}
+                    <p className="text-sm font-bold text-accent uppercase tracking-[0.2em]">
                       {service.subtitle}
-                    </span>
+                    </p>
                   </div>
 
                   {/* Features grid */}

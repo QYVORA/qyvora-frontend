@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { ShieldCheck, Globe, Users, Zap } from 'lucide-react';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const PARTNER_FILENAMES: string[] = [
@@ -19,6 +20,17 @@ const PLACEHOLDER_LABELS = [
 
 const REPEAT = 6;
 
+// ── Stat items shown in the top bar ──────────────────────────────────────────
+
+const STATS = [
+  { icon: ShieldCheck, value: '100%',   label: 'Ethical Ops'      },
+  { icon: Globe,       value: 'Africa', label: 'HQ: Accra, Ghana' },
+  { icon: Users,       value: '3+',     label: 'Active Partners'  },
+  { icon: Zap,         value: '24/7',   label: 'Threat Coverage'  },
+];
+
+// ── Partner logo / placeholder ────────────────────────────────────────────────
+
 interface PartnerLogoProps {
   src?: string;
   label?: string;
@@ -26,18 +38,13 @@ interface PartnerLogoProps {
 }
 
 const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
-  <div
-    className="flex-none flex items-center justify-center mx-10 md:mx-20 lg:mx-24"
-  >
+  <div className="flex-none flex items-center justify-center mx-10 md:mx-20 lg:mx-24">
     {src ? (
       <img
         src={src}
         alt={`Partner logo ${index + 1}`}
         className="h-16 md:h-24 lg:h-36 w-auto object-contain block"
-        style={{
-          filter: 'none',
-          mixBlendMode: 'normal',
-        }}
+        style={{ filter: 'none', mixBlendMode: 'normal' }}
         draggable={false}
         loading="lazy"
       />
@@ -58,6 +65,8 @@ const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
     )}
   </div>
 );
+
+// ── Main section ──────────────────────────────────────────────────────────────
 
 const PartnersSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -81,33 +90,80 @@ const PartnersSection: React.FC = () => {
   const baseDuration = Math.max(30, items.length * 8);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center py-8 lg:py-0">
-
-      {/* Heading — stays inside the centered container */}
+    <div className="w-full h-full flex flex-col justify-center py-8 lg:py-0 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
+
+        {/* ── Top row: heading left + stat bar right ── */}
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col mb-8 lg:mb-10"
+          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 lg:mb-10"
         >
-          <AsciiHeading
-            text="Partners"
-            font="ANSI Shadow"
-            align="left"
-            animated
-            compact
-            className="mb-1.5"
-          />
-          <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
-            Securing the next generation of high-growth startups and tech
-            innovators at the frontier of offensive security.
-          </p>
+          {/* Heading block */}
+          <div className="flex flex-col">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-[1px] w-8 bg-accent/40" />
+              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                Trusted Network
+              </span>
+            </div>
+            <AsciiHeading
+              text="Partners"
+              font="ANSI Shadow"
+              align="left"
+              animated
+              compact
+              className="mb-1.5"
+            />
+            <p className="text-text-secondary text-sm max-w-md leading-relaxed opacity-80">
+              Securing the next generation of high-growth startups and tech
+              innovators at the frontier of offensive security.
+            </p>
+          </div>
+
+          {/* Stat cards — desktop: inline row, mobile: 2x2 grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 lg:shrink-0">
+            {STATS.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.45, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className="terminal-card flex flex-col items-center justify-center gap-1 px-4 py-3 rounded-xl border border-border bg-bg-card min-w-[90px] lg:min-w-[100px] text-center"
+              >
+                <stat.icon className="w-4 h-4 text-accent/70 mb-0.5" />
+                <span className="text-base font-black text-text-primary leading-none">
+                  {stat.value}
+                </span>
+                <span className="text-[9px] font-bold text-text-muted uppercase tracking-[0.18em] leading-tight whitespace-nowrap">
+                  {stat.label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Divider with label ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex items-center gap-4 mb-8 lg:mb-9"
+        >
+          <div className="h-[1px] flex-1 bg-border/40" />
+          <span className="text-[9px] font-black text-text-muted uppercase tracking-[0.3em] opacity-50">
+            Active Partners
+          </span>
+          <div className="h-[1px] flex-1 bg-border/40" />
         </motion.div>
       </div>
 
-      {/* Carousel — full viewport width, no container clipping it */}
+      {/* ── Carousel — full viewport width ── */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -123,6 +179,16 @@ const PartnersSection: React.FC = () => {
           overflow: 'hidden',
         }}
       >
+        {/* Edge fade masks */}
+        <div
+          className="absolute left-0 top-0 h-full w-16 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to right, var(--color-bg, #000), transparent)' }}
+        />
+        <div
+          className="absolute right-0 top-0 h-full w-16 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to left, var(--color-bg, #000), transparent)' }}
+        />
+
         <div
           className={shouldReduceMotion ? undefined : 'partners-marquee'}
           style={
@@ -147,23 +213,22 @@ const PartnersSection: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Divider — back inside the centered container */}
-      {/* <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
+      {/* ── Bottom tag line ── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 lg:mt-10 flex items-center gap-3"
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="mt-7 lg:mt-8 flex items-center justify-center gap-2"
         >
-          <div className="ascii-divider flex-1" />
-          <span className="ascii-kicker opacity-30 whitespace-nowrap">
-            Trusted by the industry
+          <ShieldCheck className="w-3.5 h-3.5 text-accent/40" />
+          <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.25em] opacity-40">
+            All engagements are ethically scoped &amp; NDA-covered
           </span>
-          <div className="ascii-divider flex-1" />
+          <ShieldCheck className="w-3.5 h-3.5 text-accent/40" />
         </motion.div>
-      </div> */}
-
+      </div>
     </div>
   );
 };
