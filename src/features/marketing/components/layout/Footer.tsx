@@ -150,16 +150,14 @@ const AsciiWatermark: React.FC = () => {
 };
 
 /**
- * Mobile-only logo banner.
- * Replaces the ASCII art on small screens using the provided logo dimensions.
- * PNG: 1536×1024 | Visible: 232,424 to 1314,552 (Aspect ~8.45)
+ * Mobile-only logo banner — hidden on all screen sizes.
  */
 const LogoWatermark: React.FC = () => {
   const { theme } = useTheme();
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
 
   return (
-    <div className="relative w-full overflow-hidden py-8 block md:hidden" aria-hidden="true">
+    <div className="relative w-full overflow-hidden py-8 hidden" aria-hidden="true">
       <div className="aspect-[1082/128] w-full max-w-[500px] mx-auto px-6">
         <img
           src={logoSrc}
