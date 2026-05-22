@@ -86,9 +86,10 @@ export function useAdaptiveUi() {
     // undefined and the comparison would produce NaN without the guard.
     const lowMemory = typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 4;
 
-    // The master "should we simplify rendering?" flag. Any single signal
-    // being true is enough to trigger the constrained rendering path.
-    const constrainedDevice = isMobile || saveData || lowMemory || Boolean(reduceMotionPreference);
+    // The master "should we simplify rendering?" flag. We no longer include
+    // isMobile here by default, as modern mobile devices are highly capable.
+    // Constrained mode is now only triggered by explicit "low end" signals.
+    const constrainedDevice = saveData || lowMemory || Boolean(reduceMotionPreference);
 
     return {
       isMobile,
