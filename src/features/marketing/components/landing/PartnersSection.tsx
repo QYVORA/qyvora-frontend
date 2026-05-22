@@ -155,11 +155,11 @@ const PartnersSection: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex items-center gap-4 mb-8 lg:mb-9"
         >
-          <div className="h-[1px] flex-1 bg-border/40" />
+          {/* <div className="h-[1px] flex-1 bg-border/40" />
           <span className="text-[9px] font-black text-text-muted uppercase tracking-[0.3em] opacity-50">
             Active Partners
           </span>
-          <div className="h-[1px] flex-1 bg-border/40" />
+          <div className="h-[1px] flex-1 bg-border/40" /> */}
         </motion.div>
       </div>
 
@@ -180,14 +180,14 @@ const PartnersSection: React.FC = () => {
         }}
       >
         {/* Edge fade masks */}
-        <div
+        {/* <div
           className="absolute left-0 top-0 h-full w-16 z-10 pointer-events-none"
           style={{ background: 'linear-gradient(to right, var(--color-bg, #000), transparent)' }}
         />
         <div
           className="absolute right-0 top-0 h-full w-16 z-10 pointer-events-none"
           style={{ background: 'linear-gradient(to left, var(--color-bg, #000), transparent)' }}
-        />
+        /> */}
 
         <div
           className={shouldReduceMotion ? undefined : 'partners-marquee'}
