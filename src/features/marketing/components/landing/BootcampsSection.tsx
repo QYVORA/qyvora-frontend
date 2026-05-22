@@ -176,6 +176,13 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
 
         {/* ── Heading ── */}
+        <div className="flex items-center gap-3 mb-3">
+              <div className="h-[1px] w-8 bg-accent/40" />
+              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+              Offensive Security Training
+              </span>
+            </div>
+
         <div className="flex flex-col mb-4 lg:mb-3">
           <AsciiHeading
             text="Bootcamps"

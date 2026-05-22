@@ -190,6 +190,12 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
   return (
     <div className="w-full h-full flex items-center py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
+        <div className="flex items-center gap-3 mb-3">
+              <div className="h-[1px] w-8 bg-accent/40" />
+              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                Rank Up be the First
+              </span>
+            </div>
 
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-10 gap-4 px-2 md:px-0">
           <div>
