@@ -993,3 +993,42 @@
     overflow: visible;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PARTNERS MARQUEE
+   Endless right-scrolling carousel. translateX moves left by (100% / copies)
+   which equals exactly one copy of the strip → seamless loop.
+   GPU-accelerated via will-change + translateZ(0).
+───────────────────────────────────────────────────────────────────────────── */
+
+@keyframes partners-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% / var(--marquee-copies, 3))); }
+}
+
+.partners-marquee {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;             /* lets the strip be as wide as it needs */
+  will-change: transform;
+  transform: translateZ(0);       /* promote to its own GPU layer */
+  animation: partners-scroll var(--marquee-duration, 30s) linear infinite;
+}
+
+/* Pause on hover — lets users read a logo */
+.partners-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Reduced-motion: animation disabled in the component via shouldReduceMotion,
+   but this is a belt-and-suspenders OS-level override */
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee {
+    animation: none;
+  }
+}
+
+/* Constrained-device: skip the animation to save battery */
+body[data-performance-mode='constrained'] .partners-marquee {
+  animation: none;
+}

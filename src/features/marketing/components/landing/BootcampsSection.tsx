@@ -55,11 +55,18 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-full"
+      // FIX: replaced lg:h-full with lg:h-[320px] so the card has a fixed
+      // height on desktop. The image fills this height (via lg:h-full below)
+      // instead of the image dictating how tall the card becomes.
+      className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-[320px]"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {/* Image */}
-      <div className="relative flex-none overflow-hidden bg-bg w-full h-44 sm:h-52 lg:h-auto lg:w-[45%]">
+      {/* FIX: replaced lg:h-auto with lg:h-full so the image div stretches
+          to fill the card's fixed height rather than expanding to the image's
+          natural height and pushing the card open. object-cover on the <img>
+          handles cropping/fitting within this constrained box. */}
+      <div className="relative flex-none overflow-hidden bg-bg w-full h-44 sm:h-52 lg:h-full lg:w-[45%]">
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
         {image ? (
           <img
@@ -217,7 +224,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             <div className="lg:col-span-2 min-h-0">
               <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
             </div>
-            {/* Rocket sidebar — hidden on mobile (free scroll doesn't need it) */}
+            {/* Rocket sidebar — hidden on mobile */}
             <div className="hidden lg:flex min-h-0">
               <RocketSidebar shouldReduceMotion={!!shouldReduceMotion} />
             </div>
@@ -246,6 +253,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
+                  {/* Image thumbnail — aspect-ratio box so it never distorts the card */}
                   <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '52%' }}>
                     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
                     {image && (

@@ -8,6 +8,7 @@ import EconomySection from '../components/landing/EconomySection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
+import PartnersSection from '../components/landing/PartnersSection'; // ← NEW
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../components/HeroBackground';
@@ -22,6 +23,7 @@ const SECTIONS = [
   { id: 'services',    label: 'Services'        },
   { id: 'market',      label: 'Zero-Day Market' },
   { id: 'leaderboard', label: 'Leaderboard'     },
+  { id: 'partners',    label: 'Partners'        }, // ← NEW
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -77,7 +79,7 @@ const Landing: React.FC = () => {
     <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
-      
+
       {/* ── Modals ── */}
       <ServiceRequestModal />
       <PromotionalSystem />
@@ -103,36 +105,42 @@ const Landing: React.FC = () => {
         </section>
 
         {/* ── 2. Bootcamps ── */}
-        <SnapSection id="bootcamps" className="">
+        <SnapSection id="bootcamps">
           <BootcampsSection bootcamps={bootcamps} loading={loading} />
         </SnapSection>
 
-        {/* ── 2.1 Services ── */}
-        <SnapSection id="services" className="">
+        {/* ── 3. Services ── */}
+        <SnapSection id="services">
           <ServicesSection />
         </SnapSection>
 
-       {/* ── 3. Zero-Day Market ── */}
-       <SnapSection id="market" className="">
-         <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
-       </SnapSection>
+        {/* ── 4. Zero-Day Market ── */}
+        <SnapSection id="market">
+          <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
+        </SnapSection>
 
-         {/* ── 4. Leaderboard ── */}
-         <SnapSection id="leaderboard" className="">
-           <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-         </SnapSection>
+        {/* ── 5. Leaderboard ── */}
+        <SnapSection id="leaderboard">
+          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
+        </SnapSection>
 
-         {/* ── 5. Final CTA ── */}
-         <SnapSection id="cta" className="">
-           <FinalCtaSection user={user} />
-         </SnapSection>
-      {/* ── 9. Footer ── */}
-      <section
-        id="footer"
-        className="md:snap-start md:snap-always md:h-full md:flex md:flex-shrink-0"
-      >
-        <Footer />
-      </section>
+        {/* ── 6. Partners ── NEW */}
+        <SnapSection id="partners">
+          <PartnersSection />
+        </SnapSection>
+
+        {/* ── 7. Final CTA ── */}
+        <SnapSection id="cta">
+          <FinalCtaSection user={user} />
+        </SnapSection>
+
+        {/* ── 8. Footer ── */}
+        <section
+          id="footer"
+          className="md:snap-start md:snap-always md:h-full md:flex md:flex-shrink-0"
+        >
+          <Footer />
+        </section>
       </div>
     </div>
   );
