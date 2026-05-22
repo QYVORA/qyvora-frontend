@@ -8,6 +8,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 import StatCounter from '../../../shared/components/ui/StatCounter';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const CACHE_KEY = 'hsociety_leaderboard_cache_v2';
 const PAGE_SIZE = 20;
@@ -119,6 +120,8 @@ const Leaderboard: React.FC = () => {
   const totalCp    = operators.reduce((sum, op) => sum + (extractCpBalance(op) ?? Number(op.totalXp || 0)), 0);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged      = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">

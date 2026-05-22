@@ -60,6 +60,7 @@ const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicP
 const LeaderboardPage   = lazy(() => import('../features/student/pages/LeaderboardPage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
+const AchievementsPage  = lazy(() => import('../features/student/pages/AchievementsPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
 
@@ -240,6 +241,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/achievements"  element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
 
           {/*
             ── Legacy routes (short paths without /dashboard prefix) ─────────
@@ -259,6 +261,7 @@ export const AppRouter = () => {
           <Route path="/profile"          element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications"    element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/settings"         element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
+          <Route path="/achievements"     element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
         </Route>
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}

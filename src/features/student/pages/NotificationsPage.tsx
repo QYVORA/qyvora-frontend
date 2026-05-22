@@ -3,6 +3,7 @@ import { Bell, CheckCheck, Loader2, BellOff } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
+import PageLoader from '../../../shared/components/PageLoader';
 
 interface Notification {
   id: string;
@@ -81,6 +82,8 @@ const Notifications: React.FC = () => {
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">

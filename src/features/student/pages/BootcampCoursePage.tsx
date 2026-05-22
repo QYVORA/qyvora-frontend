@@ -14,6 +14,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {
   phase1: '/assets/bootcamp/rooms/hacker-mindset.webp',
@@ -144,29 +145,7 @@ const BootcampCourse: React.FC = () => {
   const progressNum = parseInt(progressValue, 10) || 0;
 
   // ── Loading ──────────────────────────────────────────────────────────────
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-bg pb-12">
-        <div className="mx-auto max-w-7xl px-4 pt-8 md:px-8 md:pt-10">
-          <div className="mb-8 h-5 w-40 animate-pulse rounded bg-accent-dim/30" />
-          <div className="mb-6 h-10 w-64 animate-pulse rounded bg-accent-dim/30" />
-          <div className="mb-8 h-2 w-full animate-pulse rounded-full bg-accent-dim/20" />
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            <div className="w-full lg:w-72 xl:w-80 flex-none space-y-4">
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="h-28 animate-pulse rounded-3xl border border-border bg-bg-card" />
-              ))}
-            </div>
-            <div className="flex-1 space-y-4">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-20 animate-pulse rounded-2xl border border-border bg-bg-card" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <PageLoader />;
 
   // ── Not enrolled ─────────────────────────────────────────────────────────
   if (bootcampStatus === 'not_enrolled') {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const BOOTCAMP_COVER_MAP: Record<string, string> = {
   bc_1775270338500: '/assets/bootcamp/hpb-cover.webp',
@@ -82,6 +83,8 @@ const Learn: React.FC = () => {
     };
   });
 
+  if (loading) return <PageLoader />;
+
   return (
     <div className="bg-bg">
       <div
@@ -101,21 +104,21 @@ const Learn: React.FC = () => {
                Phased bootcamp programs — pick a track and execute.
              </p>
            </div>
-           {!loading && overview && (
-             <div className="flex flex-wrap items-center gap-3">
-               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
-                 <span className="font-mono text-lg sm:text-xl font-black text-accent md:text-2xl">{progressValue}</span>
-               </div>
-               {bootcamps.length > 1 && (
-                 <Link
-                   to="/dashboard/bootcamps"
-                   className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-accent hover:underline"
-                 >
-                   View all <ArrowRight className="h-4 w-4" />
-                 </Link>
-               )}
-             </div>
-           )}
+            {overview && (
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2">
+                  <span className="font-mono text-lg sm:text-xl font-black text-accent md:text-2xl">{progressValue}</span>
+                </div>
+                {bootcamps.length > 1 && (
+                  <Link
+                    to="/dashboard/bootcamps"
+                    className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-accent hover:underline"
+                  >
+                    View all <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
+              </div>
+            )}
          </ScrollReveal>
 
         {/* Section label */}
@@ -138,11 +141,7 @@ const Learn: React.FC = () => {
         </div>
 
         {/* Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {[0].map((i) => <SkeletonCard key={i} />)}
-          </div>
-        ) : bootcamps.length === 0 ? (
+        {bootcamps.length === 0 ? (
           <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
             <img
               src="/assets/illustrations/cta-operator.webp"

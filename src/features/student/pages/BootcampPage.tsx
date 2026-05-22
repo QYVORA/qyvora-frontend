@@ -9,6 +9,7 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 import type { BootcampLevel } from '../components/BootcampCard';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
+import PageLoader from '../../../shared/components/PageLoader';
 
 // Bootcamp ID → cover image mapping (matches backend HACKER_PROTOCOL_BOOTCAMP_ID)
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -136,6 +137,8 @@ const Bootcamp: React.FC = () => {
     }
     setEnrollTarget(null);
   };
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg overflow-x-hidden">

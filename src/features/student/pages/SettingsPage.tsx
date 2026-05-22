@@ -4,6 +4,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
 
@@ -112,6 +113,8 @@ const Settings: React.FC = () => {
       addToast(err?.response?.data?.error || 'Failed to generate token.', 'error');
     } finally { setRegenerating(false); }
   };
+
+  if (loadingRecovery) return <PageLoader />;
 
   return (
     <div className="bg-bg">

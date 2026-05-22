@@ -18,9 +18,10 @@ const NAV_GROUPS = [
   {
     label: 'Operate',
     items: [
-      { label: 'Marketplace', icon: ShoppingBag, path: '/dashboard/marketplace', desc: 'Zero-day market'    },
-      { label: 'Wallet',      icon: Wallet,      path: '/dashboard/wallet',      desc: 'CP balance & history' },
-      { label: 'Leaderboard', icon: Trophy,      path: '/dashboard/leaderboard', desc: 'Hall of Shadows'    },
+      { label: 'Marketplace',  icon: ShoppingBag, path: '/dashboard/marketplace',  desc: 'Zero-day market'    },
+      { label: 'Wallet',       icon: Wallet,      path: '/dashboard/wallet',       desc: 'CP balance & history' },
+      { label: 'Leaderboard',  icon: Trophy,      path: '/dashboard/leaderboard',  desc: 'Hall of Shadows'    },
+      { label: 'Achievements', icon: Trophy,      path: '/dashboard/achievements', desc: 'Operational milestones' },
     ],
   },
 ];
@@ -34,6 +35,7 @@ const MOBILE_PRIMARY = [
 
 const MOBILE_MORE = [
   { label: 'Wallet',        icon: Wallet,    path: '/dashboard/wallet'        },
+  { label: 'Achievements',  icon: Trophy,    path: '/dashboard/achievements'  },
   { label: 'Profile',       icon: User,      path: '/dashboard/profile'       },
   { label: 'Notifications', icon: Bell,      path: '/dashboard/notifications' },
   { label: 'Settings',      icon: Settings,  path: '/dashboard/settings'      },

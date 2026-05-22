@@ -7,17 +7,11 @@ import CpLogo from '../../../shared/components/CpLogo';
 
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const CACHE_KEY = 'hsociety_marketplace_cache_v2';
 
-const SkeletonCard = () => (
-  <div className="card-hsociety p-4 animate-pulse">
-    <div className="aspect-square rounded bg-accent-dim/30 mb-4" />
-    <div className="h-4 bg-accent-dim/30 rounded w-3/4 mb-2" />
-    <div className="h-3 bg-accent-dim/20 rounded w-1/2 mb-6" />
-    <div className="h-9 bg-accent-dim/20 rounded w-full" />
-  </div>
-);
+
 
 const Marketplace: React.FC = () => {
   const { addToast } = useToast();
@@ -121,6 +115,8 @@ const Marketplace: React.FC = () => {
     !query || p.title?.toLowerCase().includes(query.toLowerCase()) || p.type?.toLowerCase().includes(query.toLowerCase())
   );
 
+  if (loading) return <PageLoader />;
+
   return (
     <div className="bg-bg">
       <div
@@ -160,9 +156,7 @@ const Marketplace: React.FC = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {loading ? (
-            [0].map((i) => <SkeletonCard key={i} />)
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border">
               <img
                 src="/assets/illustrations/cta-operator.webp"

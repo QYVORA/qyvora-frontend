@@ -24,6 +24,7 @@ import AssignmentSubmissionModal from '../components/bootcamp-room/AssignmentSub
 import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
+import PageLoader from '../../../shared/components/PageLoader';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -349,17 +350,7 @@ const BootcampRoomPage: React.FC = () => {
   const assignmentCompleted = currentModule?.assignmentCompleted;
 
   // ── Loading ──────────────────────────────────────────────────────────────
-  if (apiLoading) {
-    return (
-      <div className="min-h-screen bg-bg">
-        <div className="mx-auto max-w-7xl px-4 pt-20 md:pt-24 space-y-4">
-          <div className="h-4 w-40 animate-pulse rounded-lg bg-bg-card border border-border" />
-          <div className="h-10 w-3/4 animate-pulse rounded-lg bg-bg-card border border-border" />
-          <div className="h-4 w-full animate-pulse rounded-lg bg-bg-card border border-border" />
-        </div>
-      </div>
-    );
-  }
+  if (apiLoading) return <PageLoader />;
 
   // ── Room not found in config ───────────────────────────────────────────────
   if (!phase || !room) {

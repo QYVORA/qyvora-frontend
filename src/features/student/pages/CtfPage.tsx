@@ -28,6 +28,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
+import PageLoader from '../../../shared/components/PageLoader';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Hint {
@@ -176,13 +177,7 @@ const CtfPage: React.FC = () => {
   };
 
   // ── Render ────────────────────────────────────────────────────────────────
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-accent animate-spin" />
-      </div>
-    );
-  }
+  if (loading) return <PageLoader />;
 
   if (!scenario?.challenge && !scenario?.allSolved) {
     return (

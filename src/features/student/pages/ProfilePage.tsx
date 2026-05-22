@@ -6,6 +6,9 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
+import { AchievementShowcase } from '../components/achievements/AchievementShowcase';
+import { Achievement } from '../components/achievements/AchievementCard';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const numericStatValue = (value: string | number) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
@@ -19,6 +22,7 @@ const Profile: React.FC = () => {
   const { user: authUser } = useAuth();
   const [profileApi, setProfileApi] = useState<any>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const isOwnProfile = !paramUsername || paramUsername === authUser?.username;
   const displayHandle = paramUsername || authUser?.username || 'operator';
@@ -34,6 +38,8 @@ const Profile: React.FC = () => {
         setProfileApi(res.data || null);
       } catch {
         if (!mounted) return;
+      } finally {
+        if (mounted) setLoading(false);
       }
     })();
     return () => { mounted = false; };
@@ -66,6 +72,8 @@ const Profile: React.FC = () => {
     bio: profileData.bio,
     organization: profileData.organization,
   };
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">
@@ -193,30 +201,45 @@ const Profile: React.FC = () => {
           {/* RIGHT — activity */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Achievements placeholder */}
+            {/* Achievements Showcase */}
             <ScrollReveal delay={0.2}>
-              <div className="card-hsociety p-6">
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-5 pb-4 border-b border-border/50 flex justify-between items-center">
-                  Achievements
-                  <span className="text-[10px] text-accent">{profileData.unlockedModules.length} MODULES UNLOCKED</span>
-                </h3>
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
-                  {[
-                    { name: 'First Blood', icon: Trophy, color: 'text-yellow-500', unlocked: profileData.completedRooms.length > 0 },
-                    { name: 'Bug Hunter', icon: Target, color: 'text-accent', unlocked: profileData.completedRooms.length >= 5 },
-                    { name: 'Marathon', icon: Activity, color: 'text-blue-500', unlocked: profileData.streakDays >= 7 },
-                    { name: 'Operator', icon: Shield, color: 'text-purple-400', unlocked: profileData.unlockedModules.length > 0 },
-                    { name: 'Wealthy', icon: Zap, color: 'text-green-400', unlocked: profileData.cp >= 500 },
-                    { name: 'Vanguard', icon: Award, color: 'text-red-400', unlocked: profileData.cp >= 1500 },
-                  ].map((ach, i) => (
-                    <div key={i} className={`flex flex-col items-center text-center gap-2 ${!ach.unlocked ? 'opacity-25 grayscale' : ''}`}>
-                      <div className="w-12 h-12 rounded-full bg-bg border border-border flex items-center justify-center">
-                        <ach.icon className={`w-6 h-6 ${ach.color}`} />
-                      </div>
-                      <span className="text-[9px] font-bold text-text-muted uppercase font-mono">{ach.name}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="card-hsociety p-8">
+                <AchievementShowcase 
+                  achievements={[
+                    { 
+                      id: 'cp_2000', 
+                      title: 'Seed Fund', 
+                      description: 'Begin your journey with 2000 Community Points.', 
+                      image: '/assets/achievements/badges/common/cp_2000.png', 
+                      rarity: 'common', 
+                      isLocked: profileData.cp < 2000 
+                    },
+                    { 
+                      id: 'first_room', 
+                      title: 'First Step', 
+                      description: 'Complete your first bootcamp room.', 
+                      image: '/assets/achievements/badges/common/first_room.png', 
+                      rarity: 'common', 
+                      isLocked: profileData.completedRooms.length === 0 
+                    },
+                    { 
+                      id: 'linux_specialist', 
+                      title: 'Linux Specialist', 
+                      description: 'Complete all rooms in the Linux Foundations module.', 
+                      image: '/assets/achievements/badges/uncommon/linux_specialist.png', 
+                      rarity: 'uncommon', 
+                      isLocked: !profileData.unlockedModules.includes('2') 
+                    },
+                    { 
+                      id: 'protocol_ascendant', 
+                      title: 'Protocol Ascendant', 
+                      description: 'Reach the highest rank in the Hacker Protocol bootcamp.', 
+                      image: '/assets/achievements/badges/legendary/protocol_ascendant.png', 
+                      rarity: 'legendary', 
+                      isLocked: profileData.rank !== 'Elite' 
+                    },
+                  ]} 
+                />
               </div>
             </ScrollReveal>
           </div>

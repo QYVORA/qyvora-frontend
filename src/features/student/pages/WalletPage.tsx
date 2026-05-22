@@ -9,6 +9,7 @@ import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
+import PageLoader from '../../../shared/components/PageLoader';
 
 const PAGE_SIZE = 10;
 
@@ -81,6 +82,8 @@ const Wallet: React.FC = () => {
   const hasMore = visibleCount < txRows.length;
   const totalEarned = txRows.filter((t) => t.value > 0).reduce((a, t) => a + t.value, 0);
   const totalSpent = Math.abs(txRows.filter((t) => t.value < 0).reduce((a, t) => a + t.value, 0));
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">

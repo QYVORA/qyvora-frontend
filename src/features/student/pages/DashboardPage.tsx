@@ -25,6 +25,7 @@ import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { useToast } from '../../../core/contexts/ToastContext';
+import PageLoader from '../../../shared/components/PageLoader';
 
 // ── Bootcamp assets ───────────────────────────────────────────────────────────
 const BOOTCAMP_COVER_IMGS: Record<string, string> = {
@@ -169,6 +170,8 @@ const Dashboard: React.FC = () => {
       setDownloading(null);
     }
   };
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">
