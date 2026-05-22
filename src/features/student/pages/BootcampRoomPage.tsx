@@ -86,6 +86,7 @@ const BootcampRoomPage: React.FC = () => {
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
 
   const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
+  const [completing, setCompleting] = useState(false);
 
   // ── Completed rooms from API (NOT localStorage) ───────────────────────────────
   // Build a set of completed room keys from the API course data
@@ -344,11 +345,10 @@ const BootcampRoomPage: React.FC = () => {
   const currentModule = apiCourse?.modules.find(m => m.title.toLowerCase() === phase?.title.toLowerCase());
   const isAssignmentRoom = room?.isAssignment;
   const assignmentDetails = room?.assignmentDetails;
-  
-  const assignmentCompleted = currentModule?.assignmentCompleted;
-  const ctfCompleted = currentModule?.ctfCompleted;
 
-  // ── Loading ────────────────────────────────────────────────────────────────
+  const assignmentCompleted = currentModule?.assignmentCompleted;
+
+  // ── Loading ──────────────────────────────────────────────────────────────
   if (apiLoading) {
     return (
       <div className="min-h-screen bg-bg">
@@ -420,28 +420,37 @@ const BootcampRoomPage: React.FC = () => {
   const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
 
   const handleComplete = async () => {
-    const allStepIdxs = room?.steps.map((_, i) => i) || [];
-    setViewedSteps(new Set(allStepIdxs));
-    
-    // Skip quiz gate for assignment rooms
-    if (!isAssignmentRoom && !quizPassed && quizModuleId) {
-      setQuizGateOpen(true);
-      return;
-    }
+    if (completing) return;
+    setCompleting(true);
 
-    // If room is already complete or quiz is passed
-    if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
-
-    // If it's an assignment room, prompt for submission
-    if (isAssignmentRoom && assignmentDetails && !assignmentCompleted) {
-      if (!ctfCompleted) {
-        addToast('Complete the Phase CTF on the course page before the assignment.', 'info');
-        setShowCompleteOverlay(true);
-      } else {
-        setAssignmentModalOpen(true);
+    try {
+      const allStepIdxs = room?.steps.map((_, i) => i) || [];
+      setViewedSteps(new Set(allStepIdxs));
+      
+      // ── Assignment Room Flow ──
+      if (isAssignmentRoom) {
+        if (assignmentDetails && !assignmentCompleted) {
+          setAssignmentModalOpen(true);
+        } else {
+          // Already completed or no details, just show celebration/overlay
+          setShowCompleteOverlay(true);
+        }
+        return;
       }
-    } else {
+
+      // ── Normal Room Flow ──
+      // Skip quiz gate if passed or no quiz
+      if (!quizPassed && quizModuleId) {
+        setQuizGateOpen(true);
+        return;
+      }
+
+      // If room is already complete or quiz is passed
+      if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
       setShowCompleteOverlay(true);
+
+    } finally {
+      setCompleting(false);
     }
   };
 
@@ -556,16 +565,29 @@ const BootcampRoomPage: React.FC = () => {
                 await handleComplete();
               }
             }}
-            title={isLastStep ? "Complete room" : "Next step"}
+            disabled={completing}
+            title={
+              isLastStep
+                ? isRoomComplete
+                  ? nextRoom
+                    ? 'Continue to Next Room'
+                    : 'Finish Module'
+                  : quizModuleId
+                  ? 'Take Quiz & Complete'
+                  : 'Complete Room'
+                : 'Next Step'
+            }
             className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
-              isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
-                ? 'border-accent bg-accent text-bg shadow-lg shadow-accent/20'
+              isLastStep
+                ? 'border-accent bg-accent-dim text-accent hover:bg-accent-dim/80 hover:border-accent/60'
                 : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
-            }`}
+            } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {isLastStep ? (
-              isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
-                <Github className="h-5 w-5" />
+            {completing ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : isLastStep ? (
+              isRoomComplete ? (
+                <ArrowRight className="h-5 w-5" />
               ) : (
                 <CheckCircle2 className="h-5 w-5" />
               )
@@ -765,127 +787,123 @@ const BootcampRoomPage: React.FC = () => {
 
               {/* Desktop: all steps visible */}
               <div className="hidden lg:block mb-10 space-y-4">
-                {room.steps.map((step, idx) => {
-                  const isStepLast = idx === room.steps.length - 1;
-                  const showSubmitInStep = isAssignmentRoom && isStepLast && !assignmentCompleted && ctfCompleted;
-                  const showNextInStep = isAssignmentRoom && !isStepLast;
-                  const showContinueInStep = isAssignmentRoom && isStepLast && (isRoomComplete || (assignmentCompleted && ctfCompleted));
-
-                  return (
-                    <StepCard
-                      key={idx}
-                      step={step}
-                      stepNum={idx + 1}
-                      phaseId={phaseId || ''}
-                      roomId={roomId || ''}
-                      isActive={idx === currentStepIdx}
-                      isViewed={viewedSteps.has(idx)}
-                      isBookmarked={isStepBookmarked(idx)}
-                      phaseColor={phase.color}
-                      isAssignment={isAssignmentRoom}
-                      footer={showSubmitInStep ? (
+                {isAssignmentRoom ? (
+                  <StepCard
+                    step={room.steps[0]}
+                    stepNum={1}
+                    phaseId={phaseId || ''}
+                    roomId={roomId || ''}
+                    isActive={true}
+                    isViewed={viewedSteps.has(0)}
+                    isBookmarked={false}
+                    phaseColor={phase.color}
+                    isAssignment={true}
+                    footer={
+                      !assignmentCompleted ? (
                         <button
                           onClick={handleComplete}
-                          className="btn-primary group flex items-center gap-3 px-6 py-3.5 text-sm font-black uppercase transition-all hover:scale-[1.02] active:scale-[0.98]"
+                          disabled={completing}
+                          className="btn-primary group flex items-center gap-3 px-6 py-3.5 text-sm font-black uppercase transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                           style={phase.color ? { backgroundColor: phase.color } : {}}
                         >
-                          <Github className="h-4 w-4 transition-transform group-hover:scale-110" />
-                          Submit Assignment
-                          <Send className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                          {completing ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Github className="h-4 w-4 transition-transform group-hover:scale-110" />
+                          )}
+                          {completing ? 'Submitting...' : 'Submit Assignment'}
+                          {!completing && <Send className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />}
                         </button>
-                      ) : showNextInStep ? (
-                        <button
-                          onClick={() => goToStep(idx + 1)}
-                          className="btn-secondary group flex items-center gap-3 px-6 py-3 text-xs font-black uppercase transition-all"
-                        >
-                          Next Step
-                          <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                        </button>
-                      ) : showContinueInStep ? (
+                      ) : (
                         <button
                           onClick={handleComplete}
-                          className="btn-secondary group flex items-center gap-3 px-6 py-3 text-xs font-black uppercase transition-all"
+                          disabled={completing}
+                          className="btn-secondary group flex items-center gap-3 px-6 py-3.5 text-sm font-black uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          {nextRoom ? 'Continue to Next Room' : 'Finish Module'}
-                          <CheckCircle2 className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
+                          {completing ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <CheckCircle2 className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
+                          )}
+                          {completing ? 'Processing...' : (nextRoom ? 'Continue to Next Room' : 'Finish Module')}
                         </button>
-                      ) : null}
-                      onToggleBookmark={() => toggleBookmark(idx)}
-                      onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
-                      onClick={() => goToStep(idx)}
-                    />
-                  );
-                })}
+                      )
+                    }
+                    onToggleBookmark={() => {}}
+                    onReportIssue={() => { setReportStepIdx(0); setReportIssueOpen(true); }}
+                    onClick={() => {}}
+                  />
+                ) : (
+                  room.steps.map((step, idx) => {
+                    return (
+                      <StepCard
+                        key={idx}
+                        step={step}
+                        stepNum={idx + 1}
+                        phaseId={phaseId || ''}
+                        roomId={roomId || ''}
+                        isActive={idx === currentStepIdx}
+                        isViewed={viewedSteps.has(idx)}
+                        isBookmarked={isStepBookmarked(idx)}
+                        phaseColor={phase.color}
+                        isAssignment={false}
+                        footer={null}
+                        onToggleBookmark={() => toggleBookmark(idx)}
+                        onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
+                        onClick={() => goToStep(idx)}
+                      />
+                    );
+                  })
+                )}
               </div>
 
               {/* Mobile: one step at a time */}
               <div className="lg:hidden mb-10">
                 <StepCard
-                  key={currentStepIdx}
-                  step={room.steps[currentStepIdx]}
-                  stepNum={currentStepIdx + 1}
+                  key={isAssignmentRoom ? 'assignment' : currentStepIdx}
+                  step={isAssignmentRoom ? room.steps[0] : room.steps[currentStepIdx]}
+                  stepNum={isAssignmentRoom ? 1 : currentStepIdx + 1}
                   phaseId={phaseId || ''}
                   roomId={roomId || ''}
                   isActive
-                  isViewed={viewedSteps.has(currentStepIdx)}
-                  isBookmarked={isStepBookmarked(currentStepIdx)}
+                  isViewed={viewedSteps.has(isAssignmentRoom ? 0 : currentStepIdx)}
+                  isBookmarked={isAssignmentRoom ? false : isStepBookmarked(currentStepIdx)}
                   phaseColor={phase.color}
                   isAssignment={isAssignmentRoom}
                   footer={isAssignmentRoom ? (
                     <div className="flex flex-col gap-3">
-                      {currentStepIdx === room.steps.length - 1 && !assignmentCompleted && ctfCompleted && (
+                      {!assignmentCompleted && (
                         <button
                           onClick={handleComplete}
-                          className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
+                          disabled={completing}
+                          className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                           style={phase.color ? { backgroundColor: phase.color } : {}}
                         >
-                          <Github className="h-5 w-5 transition-transform group-hover:scale-110" />
-                          Submit Assignment
-                          <Send className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                          {completing ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                          ) : (
+                            <Github className="h-5 w-5 transition-transform group-hover:scale-110" />
+                          )}
+                          {completing ? 'Submitting...' : 'Submit Assignment'}
+                          {!completing && <Send className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />}
                         </button>
                       )}
 
-                      {currentStepIdx === room.steps.length - 1 && (isRoomComplete || (assignmentCompleted && ctfCompleted)) && (
+                      {(isRoomComplete || assignmentCompleted) && (
                         <button
                           onClick={handleComplete}
-                          className="btn-secondary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
+                          disabled={completing}
+                          className="btn-secondary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          {nextRoom ? 'Continue to Next Room' : 'Finish Module'}
-                          <CheckCircle2 className="h-5 w-5 shrink-0 transition-transform group-hover:scale-110" />
+                          {completing ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                          ) : (
+                            <CheckCircle2 className="h-5 w-5 shrink-0 transition-transform group-hover:scale-110" />
+                          )}
+                          {completing ? 'Processing...' : (nextRoom ? 'Continue to Next Room' : 'Finish Module')}
                         </button>
                       )}
-                      
-                      <div className="flex gap-2">
-                        {currentStepIdx > 0 && (
-                          <button
-                            onClick={() => goToStep(currentStepIdx - 1)}
-                            className="btn-secondary flex-1 flex items-center justify-center gap-2 py-3 text-xs font-black uppercase"
-                          >
-                            <ArrowLeft className="h-4 w-4" />
-                            Prev
-                          </button>
-                        )}
-                        {currentStepIdx < room.steps.length - 1 && (
-                          <button
-                            onClick={() => goToStep(currentStepIdx + 1)}
-                            className="btn-secondary flex-1 flex items-center justify-center gap-2 py-3 text-xs font-black uppercase"
-                          >
-                            Next
-                            <ArrowRight className="h-4 w-4" />
-                          </button>
-                        )}
-                      </div>
                     </div>
-                  ) : isAssignmentRoom && (currentStepIdx === room.steps.length - 1) && !assignmentCompleted && ctfCompleted ? (
-                    <button
-                      onClick={handleComplete}
-                      className="btn-primary group flex w-full items-center justify-center gap-3 py-4 text-sm font-black uppercase"
-                      style={phase.color ? { backgroundColor: phase.color } : {}}
-                    >
-                      <Github className="h-5 w-5 transition-transform group-hover:scale-110" />
-                      Submit Assignment
-                      <Send className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
-                    </button>
                   ) : null}
                   onToggleBookmark={() => toggleBookmark(currentStepIdx)}
                   onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
@@ -939,28 +957,32 @@ const BootcampRoomPage: React.FC = () => {
                         await handleComplete();
                       }
                     }}
+                    disabled={completing}
                     className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
-                      isLastStep && isAssignmentRoom && !assignmentCompleted && ctfCompleted
-                        ? 'bg-accent text-bg shadow-lg shadow-accent/20'
-                        : ''
+                      completing ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
-                    {isLastStep ? (
-                      isAssignmentRoom && !assignmentCompleted && ctfCompleted ? (
+                    {completing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : isLastStep ? (
+                      isRoomComplete ? (
                         <>
-                          <Github className="h-4 w-4 sm:h-5 sm:w-5" />
-                          <span>Submit Assignment</span>
-                          <Send className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                          <span>{nextRoom ? 'Continue to Next Room' : 'Finish Module'}</span>
+                          <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                         </>
-                      ) : isRoomComplete ? (
-                        <><span>Done</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
                       ) : (
-                        <><span>{quizPassed ? 'Complete room' : 'Take quiz & complete'}</span><CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" /></>
+                        <>
+                          <span>{quizPassed ? 'Complete Room' : quizModuleId ? 'Take Quiz & Complete' : 'Complete Room'}</span>
+                          <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
+                        </>
                       )
                     ) : (
                       <>
                         <span className="lg:hidden">Next</span>
-                        <span className="hidden lg:inline">Mark complete & continue</span>
+                        <span className="hidden lg:inline">Next Step</span>
                         <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                       </>
                     )}
@@ -996,11 +1018,6 @@ const BootcampRoomPage: React.FC = () => {
                         <div className="text-[10px] font-bold text-accent uppercase tracking-widest px-3 py-1 bg-accent/10 border border-accent/20 rounded-lg">
                           Required for Badge
                         </div>
-                        {!ctfCompleted && (
-                          <div className="text-[10px] font-bold text-red-400 uppercase tracking-widest">
-                            Finish CTF First
-                          </div>
-                        )}
                       </>
                     )}
                   </div>
@@ -1018,9 +1035,15 @@ const BootcampRoomPage: React.FC = () => {
             bootcampId={bootcampId || ''}
             assignment={assignmentDetails}
             onClose={() => setAssignmentModalOpen(false)}
-            onSuccess={() => {
-              loadCourseData();
+            onSuccess={async () => {
+              // Mark the room as complete in the database upon successful assignment submission
+              if (phaseId && roomId) {
+                await markRoomComplete(phaseId, roomId);
+              } else {
+                await loadCourseData();
+              }
               setAssignmentModalOpen(false);
+              setShowCompleteOverlay(true);
             }}
           />
         )}

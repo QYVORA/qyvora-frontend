@@ -286,32 +286,44 @@ Document the full responsible disclosure process in your notes. Include what you
           estimatedMinutes: 60,
           isAssignment: true,
           assignmentDetails: {
-            title: 'Hacker Mindset & Ethics Reflective Essay',
-            description: 'Write a 500-word reflective essay on the importance of ethics in offensive security and how your mindset has shifted after this module. Host your work in a GitHub repository.',
-            details: 'Your repository should include a README.md file with your essay. We are looking for depth of thought, understanding of legal boundaries, and creative problem-solving examples.',
+            title: 'Ethics & Mindset Practical',
+            description: 'Demonstrate your understanding of the hacker mindset and legal boundaries through a practical scenario analysis.',
+            details: 'Create a GitHub repository containing your analysis and a well-structured project folder.',
           },
           steps: [
             {
-              title: 'Assignment Brief',
-              instruction: `Welcome to your first Phase Assignment. This is where you demonstrate that you have internalized the concepts of this module.
+              title: 'Phase 1 Assignment: Mindset & Ethics',
+              instruction: `### What was taught in this Phase:
+- **Offensive Security Fundamentals:** Understanding the proactive approach to security.
+- **The Hacker Mindset:** Developing curiosity, persistence, and lateral thinking.
+- **Ethics & Legal Boundaries:** Navigating the laws (CMA, CFAA) and the importance of authorization and scope.
+- **Responsible Disclosure:** The professional way to report vulnerabilities.
 
-**The Task:**
-Write a 500-word reflective essay addressing:
-1. Why ethics are paramount in offensive security.
-2. How your perception of "hacking" has changed since starting this module.
-3. A real-world example of how a "hacker mindset" (curiosity, persistence) could solve a non-technical problem.
+### Your Task:
+You are tasked with analyzing a hypothetical security engagement. You must create a professional project structure and document your approach.
 
-**Submission Requirements:**
-- Create a new public GitHub repository.
-- Include a \`README.md\` file containing your essay.
-- Submit the link to your repository in the final step of this room.`,
-              image: null,
-            },
-            {
-              title: 'Ready to Submit?',
-              instruction: `Once your GitHub repository is ready and contains your essay, proceed to the final step to submit your link.
+**Practical Requirements:**
+1. **Directory Structure:** Create a folder named \`hsociety-phase1-assignment\`.
+2. **Analysis File:** Create a file named \`mindset_analysis.md\`.
+3. **Scenario:** Imagine you find an open database while testing a client's web app. The database is *out of scope*. 
+   - Write your **assumptions** about why it might be open.
+   - List the **exact commands** you would use to verify its existence (without accessing data).
+   - Write a **step-by-step action plan** on how you would handle this ethically.
 
-Remember: This assignment will be reviewed by an instructor. Ensure your repository is public and your writing is professional.`,
+**Expected Directory Structure:**
+\`\`\`text
+hsociety-phase1-assignment/
+├── mindset_analysis.md    # Your scenario analysis and action plan
+└── README.md             # Project overview and your reflections
+\`\`\`
+
+### Walkthrough & Stages:
+1. **Stage 1: Setup** - Create a new public GitHub repository.
+2. **Stage 2: Documentation** - Draft your \`README.md\` explaining what you've learned in Phase 1.
+3. **Stage 3: Analysis** - Complete the scenario analysis in \`mindset_analysis.md\`.
+4. **Stage 4: Submission** - Ensure your repo is public and contains both files.
+
+Submit your GitHub repository link using the button below.`,
               image: null,
             }
           ]
@@ -1487,32 +1499,59 @@ fi
           estimatedMinutes: 90,
           isAssignment: true,
           assignmentDetails: {
-            title: 'Bash Automation Script',
-            description: 'Create a Bash script that automates a common reconnaissance task, such as checking for active services or listing file permissions in a directory. Host it in a GitHub repository.',
-            details: 'Your repository should contain the script and a README.md explaining how to run it and what it does. Focus on clean code, comments, and proper error handling.',
+            title: 'Bash Automation Practical',
+            description: 'Apply your Linux skills to build a practical automation tool for reconnaissance.',
+            details: 'Develop a functional Bash script and host it in a GitHub repository with proper documentation.',
           },
           steps: [
             {
-              title: 'Assignment Brief',
-              instruction: `Time to automate your skills. In offensive security, speed and repeatability are key.
+              title: 'Phase 2 Assignment: Linux Automation',
+              instruction: `### What was taught in this Phase:
+- **Linux Navigation:** Efficiently moving through the filesystem.
+- **Permissions & Identity:** Understanding \`chmod\`, \`chown\`, SUID/SGID, and the \`shadow\` file.
+- **Process Management:** Monitoring and controlling background tasks with \`ps\`, \`top\`, and \`kill\`.
+- **Networking Basics:** Mapping ports with \`ss\` and \`netstat\`.
+- **Bash Scripting:** Variables, loops, conditionals, and the power of the pipeline.
 
-**The Task:**
-Develop a Bash script (\`recon.sh\`) that:
-1. Accepts a target (IP or domain) as a command-line argument.
-2. Checks if the target is online (using \`ping\`).
-3. If online, performs a basic port scan on 5 common ports (e.g., 22, 80, 443, 8080, 3306) using \`nc\`.
-4. Writes the results to a file named \`target_recon.txt\`.
+### Your Task:
+Build a Bash script named \`hs-recon.sh\` that automates basic target discovery.
 
-**Submission Requirements:**
-- Create a new public GitHub repository.
-- Upload your \`recon.sh\` script.
-- Include a \`README.md\` explaining the script's purpose and how to use it.
-- Submit the link to your repository in the final step.`,
-              image: null,
-            },
-            {
-              title: 'Ready to Submit?',
-              instruction: `Ensure your script is functional, well-commented, and your README is clear. Proceed to the next step to submit your GitHub link.`,
+**Practical Requirements:**
+1. **Script Functionality:**
+   - Must take an IP address or range as an argument.
+   - Must check if the target is alive using \`ping\`.
+   - If alive, it must check for **3 specific ports**: 22 (SSH), 80 (HTTP), and 443 (HTTPS).
+   - Must output the results to a structured log file.
+2. **Directory Structure:** Create a clean project folder for your tool.
+
+**Expected Directory Structure:**
+\`\`\`text
+hs-recon-tool/
+├── hs-recon.sh           # Your functional Bash script
+├── targets.txt           # (Optional) A list of IPs you tested during development
+└── README.md             # Usage instructions and examples of command line output
+\`\`\`
+
+**Example CLI Output in README:**
+\`\`\`text
+$ ./hs-recon.sh 10.10.10.10
+[*] Checking 10.10.10.10...
+[+] Target is ALIVE.
+[*] Scanning common ports...
+[!] Port 22 is OPEN.
+[!] Port 80 is OPEN.
+[-] Port 443 is CLOSED.
+[*] Results saved to 10.10.10.10_report.txt
+\`\`\`
+
+### Walkthrough & Stages:
+1. **Stage 1: Script Logic** - Write the core \`if/then\` logic to handle the ping check.
+2. **Stage 2: Port Scanning** - Integrate \`nc\` or \`/dev/tcp\` checks for the required ports.
+3. **Stage 3: Testing** - Run your script against \`localhost\` and capture the output.
+4. **Stage 4: Documentation** - Update your \`README.md\` with the exact command line output you generated.
+5. **Stage 5: Submission** - Push your code to GitHub and submit the link.
+
+Submit your GitHub repository link using the button below.`,
               image: null,
             }
           ]
@@ -2492,30 +2531,52 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
           estimatedMinutes: 120,
           isAssignment: true,
           assignmentDetails: {
-            title: 'Network Analysis Report',
-            description: 'Perform a scan on a test environment (like a VM) and document your findings in a markdown file. Host the report and any supporting scripts in a GitHub repository.',
-            details: 'Include nmap scan results, an explanation of the identified services, and a brief threat model for the target. Show your ability to interpret packet data if possible.',
+            title: 'Network Analysis Practical',
+            description: 'Execute a professional network reconnaissance and documentation phase.',
+            details: 'Produce a comprehensive network report including scan results, service analysis, and a basic threat model.',
           },
           steps: [
             {
-              title: 'Assignment Brief',
-              instruction: `Time to map the battlefield. Your task is to perform a thorough network analysis and document it professionally.
+              title: 'Phase 3 Assignment: Network Reconnaissance',
+              instruction: `### What was taught in this Phase:
+- **TCP/IP & OSI Model:** Navigating the 7 layers and understanding the handshake.
+- **Protocol Deep Dive:** HTTP, DNS, FTP, SSH, and SMTP analysis.
+- **Nmap Mastery:** Stealth scans, NSE scripts, and firewall evasion.
+- **Packet Analysis:** Using \`tcpdump\` and \`tshark\` to read raw traffic.
 
-**The Task:**
-1. Use \`nmap\` to scan a target (use a test VM or \`scanme.nmap.org\`).
-2. Identify at least 3 open ports and the services running on them.
-3. Document the scan results in a file named \`network_report.md\`.
-4. Include a brief threat model: for each service, identify one potential vulnerability category.
+### Your Task:
+Conduct a network audit of a target environment and document the results.
 
-**Submission Requirements:**
-- Create a new public GitHub repository.
-- Upload your \`network_report.md\`.
-- Submit the link to your repository in the final step.`,
-              image: null,
-            },
-            {
-              title: 'Ready to Submit?',
-              instruction: `Ensure your report is well-formatted (use Markdown) and your analysis is accurate. Proceed to the next step to submit your GitHub link.`,
+**Practical Requirements:**
+1. **Scanning:** Use \`nmap\` to scan \`scanme.nmap.org\` or a local VM.
+2. **Analysis:** Identify 3 services and for each, provide:
+   - The exact service name and version.
+   - One potential vulnerability category associated with that version.
+3. **Directory Structure:** Organize your recon data.
+
+**Expected Directory Structure:**
+\`\`\`text
+hsociety-networking-recon/
+├── data/
+│   └── scan_results.nmap    # The raw output from your nmap scan
+├── network_report.md        # Your analysis, threat model, and findings
+└── README.md               # Summary of the engagement and tools used
+\`\`\`
+
+**Example Threat Model Entry:**
+\`\`\`text
+- Service: OpenSSH 7.2p2 (Port 22)
+- Threat: Potential User Enumeration
+- Mitigation: Update to latest OpenSSH version and disable root login.
+\`\`\`
+
+### Walkthrough & Stages:
+1. **Stage 1: Discovery** - Perform a SYN scan (\`-sS\`) to find open ports.
+2. **Stage 2: Enumeration** - Use \`-sV\` and \`-sC\` to identify versions and run default scripts.
+3. **Stage 3: Documentation** - Translate your raw scan data into the \`network_report.md\`.
+4. **Stage 4: Submission** - Upload your files to GitHub and submit the link.
+
+Submit your GitHub repository link using the button below.`,
               image: null,
             }
           ]
@@ -3579,36 +3640,50 @@ Write findings for every authentication weakness you discovered. Be specific —
           estimatedMinutes: 150,
           isAssignment: true,
           assignmentDetails: {
-            title: 'Vulnerability Research & Exploit Lab',
-            description: 'Document the process of finding and exploiting a web vulnerability in a controlled environment. Host your write-up and any exploit scripts in a GitHub repository.',
-            details: 'Focus on one category from the OWASP Top 10. Your README should explain the vulnerability, the impact, and the remediation steps.',
+            title: 'Web Exploit Lab Practical',
+            description: 'Demonstrate your ability to find and document a critical web vulnerability.',
+            details: 'Perform a vulnerability analysis on a web target and produce a professional exploit report.',
           },
           steps: [
             {
-              title: 'Assignment Brief',
-              instruction: `It's time to showcase your web exploitation skills. Your goal is to document a full attack lifecycle against a web application.
+              title: 'Phase 4 Assignment: Web Exploitation',
+              instruction: `### What was taught in this Phase:
+- **How the Web Works:** HTTP methods, headers, and browser DevTools.
+- **OWASP Top 10:** Mastering the critical categories of web risk.
+- **SQL Injection:** Exploiting databases to bypass authentication and dump data.
+- **XSS & CSRF:** Weaponizing the client-side session.
+- **Burp Suite Mastery:** Using Proxy, Repeater, and Intruder.
 
-**The Task:**
-1. Choose one vulnerability from the OWASP Top 10 (e.g., SQLi, XSS, Broken Access Control).
-2. Set up a vulnerable environment (like a CTF lab or a local VM like BWAPP/DVWA).
-3. Find and exploit the vulnerability.
-4. Document your process in a file named \`web_exploit_report.md\`.
-5. Your report must include:
-   - Vulnerability Description
-   - Impact (what can an attacker do?)
-   - Step-by-step reproduction (with commands used)
-   - Remediation advice (how should the developer fix it?)
+### Your Task:
+Select a web vulnerability from the OWASP Top 10 and document a full exploit lifecycle.
 
-**Submission Requirements:**
-- Create a new public GitHub repository.
-- Upload your \`web_exploit_report.md\`.
-- Include any scripts you wrote or used for the exploitation.
-- Submit the link to your repository in the final step.`,
-              image: null,
-            },
-            {
-              title: 'Ready to Submit?',
-              instruction: `Double-check your report for clarity and technical accuracy. Once ready, proceed to the next step to submit your GitHub link.`,
+**Practical Requirements:**
+1. **Target Selection:** Use a local lab (DVWA, BWAPP) or a public CTF environment.
+2. **Exploitation:** Find one critical flaw (SQLi, XSS, or IDOR).
+3. **Documentation:** Produce a report with the exact HTTP requests and responses.
+
+**Expected Directory Structure:**
+\`\`\`text
+hsociety-web-exploit/
+├── exploit_scripts/      # (Optional) Any scripts you used to automate the attack
+├── web_exploit_report.md  # Your full technical write-up
+└── README.md             # Overview of the target and the vulnerability type
+\`\`\`
+
+**Required Report Sections:**
+- **Summary:** High-level overview of the finding.
+- **Reproduction Steps:** Exact steps and commands/requests.
+- **Impact:** What can an attacker achieve?
+- **Remediation:** How to fix the code (with code examples).
+
+### Walkthrough & Stages:
+1. **Stage 1: Recon** - Map the target's endpoints and parameters using Burp or \`curl\`.
+2. **Stage 2: Discovery** - Fuzz for vulnerabilities and confirm the flaw.
+3. **Stage 3: Exploitation** - Demonstrate the impact (e.g., dump a user hash or steal a cookie).
+4. **Stage 4: Documentation** - Capture evidence and write your technical report.
+5. **Stage 5: Submission** - Commit your work to GitHub and submit the link.
+
+Submit your GitHub repository link using the button below.`,
               image: null,
             }
           ]
@@ -4238,32 +4313,54 @@ Use silent signals or coded messages with your team if they are monitoring your 
           estimatedMinutes: 60,
           isAssignment: true,
           assignmentDetails: {
-            title: 'Social Engineering Campaign Design',
-            description: 'Design a mock phishing campaign (do not execute) including the email template, the pretext, and the target profile. Host the design documents in a GitHub repository.',
-            details: 'Explain the psychological triggers used and how you would measure the success of the campaign. Ensure all documentation remains ethical and theoretical.',
+            title: 'OSINT & Social Engineering Practical',
+            description: 'Execute a comprehensive OSINT investigation and design a sophisticated pretext.',
+            details: 'Perform a deep-dive investigation into a target and produce a professional reconnaissance report.',
           },
           steps: [
             {
-              title: 'Assignment Brief',
-              instruction: `The human element is the most unpredictable part of security. Your task is to design a believable, ethical, and theoretical social engineering campaign.
+              title: 'Phase 5 Assignment: Human Reconnaissance',
+              instruction: `### What was taught in this Phase:
+- **Phishing & Pretexting:** Mastering psychological triggers and technical spoofing.
+- **OSINT Fundamentals:** Google Dorking, automated harvesting with Shodan and theHarvester.
+- **Physical Security:** Understanding RFID, badge cloning, and the human flow.
+- **OPSEC:** Staying invisible while conducting reconnaissance.
 
-**The Task:**
-Design a mock phishing campaign including:
-1. **Target Profile:** A brief description of the target group (e.g., "HR department of a mid-sized tech company").
-2. **The Pretext:** The 'story' you are using (e.g., "Updating internal health insurance benefits").
-3. **The Email Template:** Write the actual email content, including the psychological triggers used (Urgency, Authority, etc.).
-4. **Success Metrics:** How would you measure if the campaign worked (without actually sending it)?
-5. **Mitigation:** What should the company do to train their employees against this specific attack?
+### Your Task:
+Conduct an OSINT investigation on a target (e.g., a public company or a bug bounty target) and design a theoretical social engineering campaign.
 
-**Submission Requirements:**
-- Create a new public GitHub repository.
-- Upload your design document as \`campaign_design.md\`.
-- Submit the link to your repository in the final step.`,
-              image: null,
-            },
-            {
-              title: 'Ready to Submit?',
-              instruction: `Ensure your design is professional and adheres to ethical guidelines. Proceed to the next step to submit your GitHub link.`,
+**Practical Requirements:**
+1. **OSINT Report:** Gather publicly available data:
+   - Identify 3 employees and their likely naming convention.
+   - List 2 subdomains and the server technologies they use.
+   - Find one interesting "leak" or "hint" (e.g., a job post mentioning internal tech).
+2. **Pretext Design:** Create a believable scenario for a phishing engagement.
+3. **Directory Structure:** Organize your findings.
+
+**Expected Directory Structure:**
+\`\`\`text
+hsociety-human-recon/
+├── osint_data/
+│   └── raw_search_results.txt  # Your notes and dorking results
+├── recon_report.md            # Your findings and pretext design
+└── README.md                 # Project summary and ethical considerations
+\`\`\`
+
+**Example Pretext Component:**
+\`\`\`text
+- Role: IT Service Desk (James)
+- Trigger: Urgency (Mandatory Security Patch)
+- Goal: Get user to click a 'Verification' link to capture a session cookie.
+\`\`\`
+
+### Walkthrough & Stages:
+1. **Stage 1: Dorking** - Use advanced Google operators to find employee names and technical data.
+2. **Stage 2: Harvesting** - Use automated tools to map subdomains and email addresses.
+3. **Stage 3: Pretexting** - Combine your findings into a cohesive "story" for an engagement.
+4. **Stage 4: Documentation** - Format your report cleanly in Markdown.
+5. **Stage 5: Submission** - Push your repository to GitHub and submit the link.
+
+Submit your GitHub repository link using the button below.`,
               image: null,
             }
           ]
