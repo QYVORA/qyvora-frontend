@@ -10,7 +10,7 @@ const SERVICES_DATA = [
     title: 'Basic Package',
     price: 'GH₵ 4,000+',
     subtitle: 'Essential Web Audit',
-    image: '/assets/sections/backgrounds/cyber-points-visual.webp',
+    image: '/assets/sections/services/basic-package.png',
     features: [
       'OWASP Top 10 Coverage',
       'Authentication Testing',
@@ -24,7 +24,7 @@ const SERVICES_DATA = [
     title: 'Standard Package',
     price: 'GH₵ 8,000+',
     subtitle: 'Full Pentest Suite',
-    image: '/assets/sections/backgrounds/cyber-points-visual.webp',
+    image: '/assets/sections/services/standard-package.png',
     features: [
       'Authenticated Pentesting',
       'Business Logic Analysis',
