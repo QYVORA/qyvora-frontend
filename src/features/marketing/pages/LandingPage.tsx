@@ -6,16 +6,20 @@ import HeroSection from '../components/landing/HeroSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
+import ServicesSection from '../components/landing/ServicesSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../components/HeroBackground';
+import ServiceRequestModal from '../components/ServiceRequestModal';
+import PromotionalSystem from '../components/PromotionalSystem';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
   { id: 'bootcamps',   label: 'Bootcamps'       },
+  { id: 'services',    label: 'Services'        },
   { id: 'market',      label: 'Zero-Day Market' },
   { id: 'leaderboard', label: 'Leaderboard'     },
   { id: 'cta',         label: 'Get Started'     },
@@ -34,7 +38,7 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:overflow-hidden md:box-border bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border bg-transparent ${className}`}
     >
       <motion.div
         initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
@@ -73,6 +77,10 @@ const Landing: React.FC = () => {
     <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
+      
+      {/* ── Modals ── */}
+      <ServiceRequestModal />
+      <PromotionalSystem />
 
       <div
         ref={containerRef}
@@ -97,6 +105,11 @@ const Landing: React.FC = () => {
         {/* ── 2. Bootcamps ── */}
         <SnapSection id="bootcamps" className="">
           <BootcampsSection bootcamps={bootcamps} loading={loading} />
+        </SnapSection>
+
+        {/* ── 2.1 Services ── */}
+        <SnapSection id="services" className="">
+          <ServicesSection />
         </SnapSection>
 
        {/* ── 3. Zero-Day Market ── */}
