@@ -31,9 +31,9 @@ interface Room {
 }
 interface Module {
   moduleId: number; title: string; description: string; codename: string;
-  roleTitle: string; badge: string; ctf: string; locked: boolean;
+  roleTitle: string; badge: string; locked: boolean;
   rooms: Room[]; progress?: number; roomsCompleted?: number; roomsTotal?: number; 
-  ctfCompleted?: boolean; assignmentCompleted?: boolean;
+  assignmentCompleted?: boolean;
   assignment?: { title: string; description: string; details: string };
 }
 interface Course { id: string; title: string; modules: Module[]; }

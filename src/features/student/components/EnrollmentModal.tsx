@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ArrowRight, CheckCircle2, ChevronLeft } from 'lucide-react';
+import { X, ArrowRight, CheckCircle2, ChevronLeft, Loader2 } from 'lucide-react';
 import api from '../../../core/services/api';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
 
@@ -291,10 +291,13 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
               <button
                 onClick={() => void goNext()}
                 disabled={submitting}
-                className="mt-5 w-full btn-primary text-sm flex items-center justify-center gap-2 disabled:opacity-60"
+                className="mt-5 w-full btn-primary text-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? (
-                  <span className="inline-block w-4 h-4 border-2 border-bg border-t-transparent rounded-full animate-spin" />
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Enrolling...
+                  </>
                 ) : isLast ? (
                   <>Enroll Now <CheckCircle2 className="w-4 h-4" /></>
                 ) : (

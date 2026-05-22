@@ -128,53 +128,67 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 )}
               </div>
 
-              <div className="space-y-5">
-                {result.questions.map((q, idx) => {
-                  const chosen  = answers[q.id];
-                  return (
-                    <div key={q.id} className="rounded-xl border border-border bg-bg-card p-4">
-                      <div className="flex items-start gap-2 mb-3">
-                        <span className="shrink-0 mt-0.5 text-text-muted">
-                          <ClipboardList className="h-4 w-4" />
-                        </span>
-                        <p className="text-sm font-bold text-text-primary leading-snug">
-                          <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>
-                          {q.text}
-                        </p>
-                      </div>
-                      <div className="space-y-1.5 pl-5">
-                        {q.options.map((opt, optIdx) => {
-                          const isChosenOpt  = optIdx === chosen;
-                          const cls = isChosenOpt
-                            ? 'border-accent/50 bg-accent/10 text-accent font-bold'
-                            : 'border-border text-text-muted';
-                          return (
-                            <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
-                              <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
-                              <span>{opt}</span>
-                              {isChosenOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Your answer</span>}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-col gap-3 pt-2">
-                {!result.passed && (
+              {result.passed ? (
+                <div className="rounded-2xl border-2 border-accent/20 bg-accent-dim/30 p-6 text-center">
+                  <p className="text-sm text-text-primary font-bold mb-4">
+                    Excellent work! You've mastered the concepts in this room.
+                  </p>
                   <button
-                    onClick={() => { setResult(null); setAnswers({}); }}
-                    className="btn-primary text-sm py-3"
+                    onClick={onPassed}
+                    className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
-                    Try Again
+                    Go to Assignment
                   </button>
-                )}
-                <button onClick={onClose} className={`text-sm py-3 ${result.passed ? 'btn-primary' : 'btn-secondary'}`}>
-                  {result.passed ? 'Continue to Next Room' : 'Close'}
-                </button>
-              </div>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-5">
+                    {result.questions.map((q, idx) => {
+                      const chosen  = answers[q.id];
+                      return (
+                        <div key={q.id} className="rounded-xl border border-border bg-bg-card p-4">
+                          <div className="flex items-start gap-2 mb-3">
+                            <span className="shrink-0 mt-0.5 text-text-muted">
+                              <ClipboardList className="h-4 w-4" />
+                            </span>
+                            <p className="text-sm font-bold text-text-primary leading-snug">
+                              <span className="text-text-muted font-mono text-[10px] mr-1">Q{idx + 1}.</span>
+                              {q.text}
+                            </p>
+                          </div>
+                          <div className="space-y-1.5 pl-5">
+                            {q.options.map((opt, optIdx) => {
+                              const isChosenOpt  = optIdx === chosen;
+                              const cls = isChosenOpt
+                                ? 'border-accent/50 bg-accent/10 text-accent font-bold'
+                                : 'border-border text-text-muted';
+                              return (
+                                <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
+                                  <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
+                                  <span>{opt}</span>
+                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Your answer</span>}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex flex-col gap-3 pt-2">
+                    <button
+                      onClick={() => { setResult(null); setAnswers({}); }}
+                      className="btn-primary text-sm py-3"
+                    >
+                      Try Again
+                    </button>
+                    <button onClick={onClose} className="btn-secondary text-sm py-3">
+                      Close
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -225,11 +239,16 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 <button
                   onClick={submit}
                   disabled={submitting || Object.keys(answers).length < quiz.questions.length}
-                  className="btn-primary inline-flex w-full items-center justify-center gap-2 py-3 text-sm disabled:opacity-50"
+                  className="btn-primary inline-flex w-full items-center justify-center gap-2 py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {submitting
-                    ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting…</>
-                    : 'Submit Quiz'}
+                  {submitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Scoring...
+                    </>
+                  ) : (
+                    'Submit Quiz'
+                  )}
                 </button>
                 {Object.keys(answers).length < quiz.questions.length && (
                   <p className="text-center text-[10px] text-text-muted">

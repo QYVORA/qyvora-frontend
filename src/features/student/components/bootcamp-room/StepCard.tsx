@@ -73,13 +73,15 @@ const StepCard: React.FC<Props> = ({
       >
         {isViewed && !isActive ? (
           <CheckCircle2 className="h-5 w-5" />
+        ) : isAssignment ? (
+          <Flag className="h-5 w-5" />
         ) : (
           String(stepNum).padStart(2, '0')
         )}
       </div>
       <div className="flex-1 min-w-0 overflow-hidden">
         <span className="block truncate text-xs font-black uppercase tracking-[0.2em] text-text-muted">
-          {step.title}
+          {isAssignment ? 'Assignment' : step.title}
         </span>
       </div>
       {isActive && (
@@ -94,9 +96,9 @@ const StepCard: React.FC<Props> = ({
       )}
     </div>
 
-    <p className={`text-sm sm:text-base leading-relaxed sm:leading-relaxed transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'}`}>
+    <div className={`text-sm sm:text-base leading-relaxed sm:leading-relaxed transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'}`}>
       <CodeBlockRenderer text={step.instruction} />
-    </p>
+    </div>
 
     {!isAssignment && (
       step.image ? (
