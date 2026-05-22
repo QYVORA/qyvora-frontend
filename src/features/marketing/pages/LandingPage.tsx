@@ -104,12 +104,17 @@ const Landing: React.FC = () => {
           />
         </section>
 
-        {/* ── 2. Bootcamps ── */}
+        {/* ── 2. Partners ── NEW */}
+        <SnapSection id="partners">
+          <PartnersSection />
+        </SnapSection>
+
+        {/* ── 3. Bootcamps ── */}
         <SnapSection id="bootcamps">
           <BootcampsSection bootcamps={bootcamps} loading={loading} />
         </SnapSection>
 
-        {/* ── 3. Services ── */}
+        {/* ── 4. Services ── */}
         <SnapSection id="services">
           <ServicesSection />
         </SnapSection>
@@ -122,19 +127,14 @@ const Landing: React.FC = () => {
         {/* ── 5. Leaderboard ── */}
         <SnapSection id="leaderboard">
           <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-        </SnapSection>
+        </SnapSection>        
 
-        {/* ── 6. Partners ── NEW */}
-        <SnapSection id="partners">
-          <PartnersSection />
-        </SnapSection>
-
-        {/* ── 7. Final CTA ── */}
+        {/* ── 6. Final CTA ── */}
         <SnapSection id="cta">
           <FinalCtaSection user={user} />
         </SnapSection>
 
-        {/* ── 8. Footer ── */}
+        {/* ── 7. Footer ── */}
         <section
           id="footer"
           className="md:snap-start md:snap-always md:h-full md:flex md:flex-shrink-0"
