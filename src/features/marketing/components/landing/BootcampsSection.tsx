@@ -39,9 +39,9 @@ const HPB_IMAGE       = '/assets/bootcamp/hpb-cover.webp';
 // ─── Sidebar signal items ─────────────────────────────────────────────────────
 
 const BOOTCAMP_SIGNALS = [
-  { icon: Terminal, title: 'Hands-on rooms', value: 'Live labs and operator drills' },
-  { icon: BookOpen, title: 'Five-phase path', value: 'Mindset, Linux, networks, web, social' },
-  { icon: Flag,     title: 'CTF checkpoints', value: 'Practice flags mapped to the curriculum' },
+  { icon: Terminal, title: 'Hands-on rooms',   value: 'Live labs and operator drills'              },
+  { icon: BookOpen, title: 'Five-phase path',   value: 'Mindset, Linux, networks, web, social'     },
+  { icon: Flag,     title: 'CTF checkpoints',   value: 'Practice flags mapped to the curriculum'   },
 ];
 
 // ─── FeaturedCard ─────────────────────────────────────────────────────────────
@@ -62,15 +62,13 @@ const FeaturedCard: React.FC<{
     <motion.div
       initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row"
+      className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-full"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <div
-        className="relative flex-none overflow-hidden bg-bg h-52 sm:h-64 lg:h-auto lg:w-[45%]"
-        style={{ minHeight: '220px' }}
-      >
+      {/* Image — tall banner on mobile, side column on desktop */}
+      <div className="relative flex-none overflow-hidden bg-bg w-full h-52 sm:h-60 lg:h-auto lg:w-[45%]">
         <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
         {image ? (
@@ -85,14 +83,15 @@ const FeaturedCard: React.FC<{
           </div>
         )}
 
+        {/* Mobile: fade bottom into card body */}
         <div
-          className="absolute inset-0 pointer-events-none z-10"
-          style={{
-            background: [
-              'linear-gradient(to bottom, transparent 10%, var(--color-bg-card) 98%)',
-              'linear-gradient(to right, transparent 60%, var(--color-bg-card) 98%)',
-            ].join(', '),
-          }}
+          className="absolute inset-0 pointer-events-none z-10 lg:hidden"
+          style={{ background: 'linear-gradient(to bottom, transparent 30%, var(--color-bg-card) 100%)' }}
+        />
+        {/* Desktop: fade right into card body */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10 hidden lg:block"
+          style={{ background: 'linear-gradient(to right, transparent 60%, var(--color-bg-card) 100%)' }}
         />
 
         <div className="absolute right-3 top-3 z-20">
@@ -102,20 +101,21 @@ const FeaturedCard: React.FC<{
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-center p-5 sm:p-6 lg:p-8">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3">
+      {/* Body */}
+      <div className="flex flex-1 flex-col justify-center p-5 sm:p-6 lg:p-7">
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2">
           Featured Bootcamp
         </p>
 
-        <h3 className="mb-3 text-xl font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent md:text-2xl lg:text-3xl">
+        <h3 className="mb-2 text-xl font-black leading-tight text-text-primary transition-colors duration-200 group-hover:text-accent sm:text-2xl lg:text-2xl">
           {title}
         </h3>
 
-        <p className="mb-5 max-w-lg text-sm leading-relaxed text-text-secondary sm:line-clamp-3">
+        <p className="mb-4 max-w-lg text-sm leading-relaxed text-text-secondary line-clamp-2 lg:line-clamp-3">
           {desc}
         </p>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6 text-xs text-text-muted font-mono">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-5 text-xs text-text-muted font-mono">
           {bc.duration && (
             <span className="inline-flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-accent/60" aria-hidden="true" />
@@ -152,22 +152,22 @@ const TeaserCard: React.FC<{
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 16 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, delay: 0.1 + idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card flex items-start gap-3 rounded-2xl border border-border bg-bg-card px-4 py-4 min-h-[56px] transition-colors duration-200 hover:border-border-strong"
+      transition={{ duration: 0.4, delay: 0.08 + idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      className="terminal-card flex items-start gap-3 rounded-xl border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
-      <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
+      <span className="flex h-9 w-9 flex-none items-center justify-center rounded-md border border-border bg-bg text-accent">
         <Icon className="h-4 w-4" aria-hidden="true" />
       </span>
 
       <div className="flex-1 min-w-0">
-        <div className="text-xs font-black uppercase tracking-[0.18em] text-text-primary">
+        <div className="text-xs font-black uppercase tracking-[0.18em] text-text-primary leading-tight">
           {item.title}
         </div>
-        <div className="mt-1 text-xs leading-relaxed text-text-muted">
+        <div className="mt-0.5 text-xs leading-relaxed text-text-muted">
           {item.value}
         </div>
       </div>
@@ -183,38 +183,45 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const isSingle  = displayed.length === 1;
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
-        
-        <div className="flex flex-col mb-8 md:mb-10 px-2 md:px-0">
-          <div className="w-full">
-            <AsciiHeading text="Bootcamps" font="ANSI Shadow" align="left" animated className="mb-4" />
-            <p className="text-text-secondary text-sm mt-2 max-w-lg leading-relaxed">
-              Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
-            </p>
-          </div>
+    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-0">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+
+        {/* ── Heading ── */}
+        <div className="flex flex-col mb-5 lg:mb-4 px-0">
+          <AsciiHeading
+            text="Bootcamps"
+            font="ANSI Shadow"
+            align="left"
+            animated
+            compact
+            className="mb-2"
+          />
+          <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
+            Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
+          </p>
         </div>
 
+        {/* ── Loading skeleton ── */}
         {loading ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded-xl border border-border bg-bg-card animate-pulse overflow-hidden" style={{ minHeight: 220 }}>
-              <div className="h-40 lg:h-full bg-accent-dim/20" />
-            </div>
+            <div className="lg:col-span-2 rounded-xl border border-border bg-bg-card animate-pulse overflow-hidden h-48 lg:h-56" />
             <div className="flex flex-col gap-3">
-              {[0,1,2].map(i => (
+              {[0, 1, 2].map(i => (
                 <div key={i} className="rounded-xl border border-border bg-bg h-14 animate-pulse" />
               ))}
             </div>
           </div>
 
+        /* ── Empty ── */
         ) : bootcamps.length === 0 ? (
           <div className="rounded-xl border border-border bg-bg p-10 text-center text-text-muted text-sm">
             No bootcamps available yet.
           </div>
 
+        /* ── Single bootcamp: featured + signals sidebar ── */
         ) : isSingle ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 items-center lg:scale-[0.9] lg:-translate-y-8 origin-left">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-stretch">
+            <div className="lg:col-span-2 min-h-0">
               <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
             </div>
             <div className="flex flex-col justify-center gap-3">
@@ -229,8 +236,9 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             </div>
           </div>
 
+        /* ── Multiple bootcamps: card grid ── */
         ) : (
-          <div className={`grid gap-x-5 gap-y-0 grid-cols-1 ${
+          <div className={`grid gap-4 grid-cols-1 ${
             displayed.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'
           }`}>
             {displayed.map((bc, i) => {
@@ -244,14 +252,15 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
               return (
                 <motion.div
                   key={bc.id}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24, filter: 'blur(6px)' }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: 'blur(4px)' }}
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
-                  className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:scale-[0.9] lg:-translate-y-10 origin-left"
+                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                   style={{ boxShadow: 'var(--card-shimmer)' }}
                 >
-                  <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '52.5%' }}>
+                  {/* Image — aspect-ratio driven, no fixed height hack */}
+                  <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '52%' }}>
                     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
 
                     {image && (
@@ -272,6 +281,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                     </span>
                   </div>
 
+                  {/* Body */}
                   <div className="flex flex-col flex-1 p-4 sm:p-5 gap-3">
                     <h3 className="text-sm font-black text-text-primary leading-snug group-hover:text-accent transition-colors">
                       {title}

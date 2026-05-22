@@ -269,6 +269,9 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
 
   const baseFontSize = compact ? (isMobile ? '8px' : '12px') : (isMobile ? '12px' : '16px');
 
+  // Desktop color override: No longer forcing white, allowing theme/accent colors
+  const desktopColorOverride = undefined;
+
   const marginLeft =
     align === 'center'
       ? visualWidth !== null ? `calc(50% - ${visualWidth / 2}px)` : '0'
@@ -285,7 +288,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
             'font-mono font-black uppercase tracking-tighter text-2xl sm:text-3xl leading-none',
             'ascii-text-beam ascii-text-beam-fast',
           )}
-          style={{ color: color || 'var(--color-text-primary)' }}
+          style={{ color: color || '#FFFFFF' }}
         >
           <span className="text-accent/60 mr-2 opacity-70 select-none">{">"}</span>
           {text}
@@ -313,7 +316,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         )}
         style={{
           textAlign: align as React.CSSProperties['textAlign'],
-          color: color || 'var(--color-accent)',
+          color: color || '#FFFFFF',
         }}
       >
         {text}
@@ -339,7 +342,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
           fontFamily: '"JetBrains Mono", "Courier New", monospace',
           fontSize: baseFontSize,
           lineHeight: 1.0,
-          color: color || 'var(--color-text-primary)',
+          color: desktopColorOverride || color || 'var(--color-text-primary)',
           opacity: isLoaded ? 1 : 0,
           transition: 'opacity 0.4s ease',
           transform: `scale(${fitScale})`,

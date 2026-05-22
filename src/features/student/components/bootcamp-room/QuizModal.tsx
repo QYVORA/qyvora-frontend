@@ -82,21 +82,6 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent title="Room Quiz" maxWidth="max-w-2xl" className="max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-bg-card px-6 py-4 -mx-6 -mt-6 mb-6">
-          <div className="flex items-center gap-2">
-            <ClipboardList className="h-4 w-4 text-accent" />
-            <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">
-              Room Quiz
-            </h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-text-muted hover:text-text-primary transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
         <div>
           {loading && (
             <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">

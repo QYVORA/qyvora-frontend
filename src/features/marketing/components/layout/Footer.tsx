@@ -129,7 +129,7 @@ const AsciiWatermark: React.FC = () => {
     >
       <pre
         ref={preRef}
-        className="ascii-text-beam m-0 p-0 whitespace-pre select-none"
+        className="ascii-text-beam-accent m-0 p-0 whitespace-pre select-none"
         style={{
           fontFamily: '"JetBrains Mono", "Courier New", monospace',
           fontSize: `${BASE_FONT_PX}px`,

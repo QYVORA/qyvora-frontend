@@ -91,6 +91,29 @@
     text-rendering: geometricPrecision;
   }
 
+  /* ── Force all headings to white in dark mode ── */
+  h1, h2, h3, h4, h5, h6, pre[role="heading"] {
+    color: #FFFFFF !important;
+  }
+
+  h1 *, h2 *, h3 *, h4 *, h5 *, h6 *, pre[role="heading"] * {
+    color: inherit !important;
+  }
+
+  .text-accent {
+    color: var(--color-accent) !important;
+  }
+
+  /* ── Revert to dark theme primary color for light theme headings ── */
+  [data-theme="light"] h1, 
+  [data-theme="light"] h2, 
+  [data-theme="light"] h3, 
+  [data-theme="light"] h4, 
+  [data-theme="light"] h5, 
+  [data-theme="light"] h6 {
+    color: var(--color-text-primary) !important;
+  }
+
   :root {
     --mobile-text-base: 17px;
     --mobile-text-meta: 13px;
@@ -180,15 +203,35 @@
   }
 
   .ascii-text-beam {
-    color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    color: rgba(255, 255, 255, 0.5);
     background:
       linear-gradient(
         115deg,
-        color-mix(in srgb, var(--color-accent) 32%, transparent) 0%,
-        var(--color-accent) 11%,
-        color-mix(in srgb, var(--color-accent) 42%, transparent) 22%,
-        color-mix(in srgb, var(--color-accent) 18%, transparent) 35%,
-        color-mix(in srgb, var(--color-accent) 18%, transparent) 100%
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 1) 15%,
+        rgba(255, 255, 255, 0.5) 30%,
+        rgba(255, 255, 255, 0.2) 45%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+    background-size: 240% 100%;
+    background-position: 120% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ascii-text-beam 2.8s var(--ease-smooth) infinite;
+    will-change: background-position;
+  }
+
+  .ascii-text-beam-accent {
+    color: color-mix(in srgb, var(--color-accent), transparent 50%);
+    background:
+      linear-gradient(
+        115deg,
+        color-mix(in srgb, var(--color-accent), transparent 70%) 0%,
+        var(--color-accent) 15%,
+        color-mix(in srgb, var(--color-accent), transparent 50%) 30%,
+        color-mix(in srgb, var(--color-accent), transparent 80%) 45%,
+        color-mix(in srgb, var(--color-accent), transparent 80%) 100%
       );
     background-size: 240% 100%;
     background-position: 120% 0;
