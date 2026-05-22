@@ -159,7 +159,7 @@ const PartnersSection: React.FC = () => {
       </motion.div>
 
       {/* Divider — back inside the centered container */}
-      <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
+      {/* <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -173,7 +173,7 @@ const PartnersSection: React.FC = () => {
           </span>
           <div className="ascii-divider flex-1" />
         </motion.div>
-      </div>
+      </div> */}
 
     </div>
   );
