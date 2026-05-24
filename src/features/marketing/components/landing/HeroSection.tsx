@@ -50,17 +50,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       >
         {/* Left column */}
         <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">
-          {/* Badge */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-3 md:mb-4 px-3 py-1 border border-accent/20 bg-accent/5 backdrop-blur-sm rounded-full"
-          >
-            <span className="text-[9px] sm:text-10px font-semibold uppercase tracking-[0.25em] text-accent/80">
+          
+          {/* Eyebrow */}
+          {/* <div className="flex items-center gap-3 mb-4 lg:mb-3">
+            <div className="h-[1px] w-8 bg-accent/40" />
+            <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
               Africa's Offensive Security Platform
             </span>
-          </motion.div> */}
+          </div> */}
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-text-primary leading-[1.08] mb-4 md:mb-5 tracking-tight">
