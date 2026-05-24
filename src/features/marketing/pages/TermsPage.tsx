@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
-import { FileText, Mail, ArrowRight } from 'lucide-react';
+import { Mail, ArrowRight } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { SITE_CONFIG } from '../content/siteConfig';
 import HeroBackground from '../components/HeroBackground';
@@ -9,30 +9,7 @@ import { ContactTrigger } from '../components/ContactModal';
 import { termsData, TermsSection } from '../content/termsData';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import Footer from '../components/layout/Footer';
-
-const SectionHeading: React.FC<{ text: string; subtitle?: string; className?: string; isHero?: boolean }> = ({ 
-  text, subtitle, className = '', isHero = false 
-}) => (
-  <div className={`py-2 border-l-2 border-accent/20 pl-4 ${isHero ? 'mb-8' : 'mb-6 md:mb-8'} ${className}`}>
-    {isHero ? (
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-[1.08] tracking-tight">
-        <span className="block">{text.split(' ')[0]} .</span>
-        <span className="block text-accent mt-1">{text.split(' ').slice(1).join(' ')} .</span>
-      </h1>
-    ) : (
-      <h2 className="font-mono font-black uppercase tracking-tighter text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-none text-text-primary">
-        <span className="text-accent/60 mr-2 opacity-70 select-none">{">"}</span>
-        {text}
-      </h2>
-    )}
-    {subtitle && (
-      <div className="text-[9px] md:text-xs font-mono text-text-muted mt-2 opacity-50 flex items-center gap-2 tracking-widest uppercase select-none">
-        <span className="inline-block w-1 h-1 rounded-full bg-accent/80 animate-pulse" />
-        <span>{subtitle}</span>
-      </div>
-    )}
-  </div>
-);
+import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 
 const SnapSection: React.FC<{
   id: string;
@@ -69,7 +46,7 @@ const TermsSectionCard: React.FC<{ section: TermsSection; index: number }> = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.08 }}
     transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-    className="terminal-card relative rounded-2xl border border-border bg-bg-card/50 backdrop-blur-sm overflow-hidden p-6 md:p-8"
+    className="terminal-card relative rounded-2xl border border-border bg-bg-card overflow-hidden p-6 md:p-8"
     style={{ boxShadow: 'var(--card-shimmer)' }}
   >
     <div
@@ -128,7 +105,14 @@ const TermsPage: React.FC = () => {
           >
             <div className="max-w-3xl">
               <ScrollReveal>
-                <SectionHeading text="Terms of Service Protocols" isHero />
+                {/* Eyebrow */}
+                <div className="flex items-center gap-3 mb-4 lg:mb-3">
+                  <div className="h-[1px] w-8 bg-accent/40" />
+                  <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                    Legal Documentation
+                  </span>
+                </div>
+                <AsciiHeading text="TERMS" font="ANSI Shadow" align="left" animated className="mb-8" />
               </ScrollReveal>
 
               <motion.p
@@ -172,11 +156,11 @@ const TermsPage: React.FC = () => {
                 {/* Left side: Heading */}
                 <div className="lg:w-1/3 shrink-0">
                    <ScrollReveal>
-                     <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-accent/5 border border-accent/20 mb-6">
-                        <FileText className="w-3 h-3 text-accent" />
-                        <span className="text-[10px] font-bold text-accent uppercase tracking-widest">Legal Framework</span>
+                     <div className="flex items-center gap-3 mb-4 lg:mb-3">
+                        <div className="h-[1px] w-8 bg-accent/40" />
+                        <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Framework</span>
                      </div>
-                     <SectionHeading text="Protocols" subtitle="System.Ready // ID: TERMS_V1" />
+                     <AsciiHeading text="Protocols" font="ANSI Shadow" align="left" compact animated className="mb-6" />
                      <p className="text-text-secondary text-sm leading-relaxed max-w-sm mt-4">
                        These terms govern your use of all HSOCIETY platforms, training programs, and
                        professional services. Questions? Reach out via our{' '}
@@ -204,8 +188,7 @@ const TermsPage: React.FC = () => {
             <div className="max-w-5xl mx-auto px-4 md:px-10 w-full">
               <ScrollReveal>
                 <div
-                  className="terminal-card relative rounded-3xl border border-border overflow-hidden p-8 md:p-16 text-center"
-                  style={{ background: 'var(--color-accent-dim)' }}
+                  className="terminal-card relative rounded-3xl border border-border bg-bg-card overflow-hidden p-8 md:p-16 text-center"
                 >
                   <div aria-hidden className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
                   <div
@@ -214,7 +197,13 @@ const TermsPage: React.FC = () => {
                   />
                   
                   <div className="relative z-10 max-w-2xl mx-auto">
-                     <SectionHeading text="Questions?" subtitle="Legal & Compliance Support" className="justify-center border-l-0 pl-0 items-center text-center" />
+                     <div className="flex flex-col items-center justify-center mb-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="h-[1px] w-8 bg-accent/40" />
+                          <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Support</span>
+                        </div>
+                        <AsciiHeading text="Questions?" font="ANSI Shadow" compact animated />
+                     </div>
                      <p className="text-text-muted text-sm md:text-base mb-10 leading-relaxed max-w-md mx-auto">
                        Our operations desk is available for legal and compliance inquiries. Reach out
                        directly and we'll respond within {SITE_CONFIG.contact.responseTime}.

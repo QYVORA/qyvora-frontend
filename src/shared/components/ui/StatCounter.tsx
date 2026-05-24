@@ -15,7 +15,7 @@ const StatCounter: React.FC<StatCounterProps> = ({ end, suffix = '', className =
 
   return (
     <span ref={ref} className={className}>
-      {count}{suffix}
+      {count.toLocaleString()}{suffix}
     </span>
   );
 };
