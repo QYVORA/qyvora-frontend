@@ -45,8 +45,7 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
       <div className="card-hsociety p-5 relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-          style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }}
+          className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30 pointer-events-none"
         />
 
         <div className="flex items-center justify-between mb-4">

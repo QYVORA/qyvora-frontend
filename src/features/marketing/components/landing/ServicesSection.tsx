@@ -7,9 +7,9 @@ import { openServiceRequestModal } from '../ServiceRequestModal';
 const SERVICES_DATA = [
   {
     id: 'Basic WebApp Pentest',
-    title: 'Basic Package',
+    title: 'Basic Web-App Penetrtion Testing',
     price: 'GH₵ 4,000+',
-    subtitle: 'Essential Web Audit',
+    subtitle: 'Essential Web Pentest',
     image: '/assets/sections/services/basic-package.png',
     features: [
       'OWASP Top 10 Coverage',
@@ -21,7 +21,7 @@ const SERVICES_DATA = [
   },
   {
     id: 'Standard WebApp Pentest',
-    title: 'Standard Package',
+    title: 'Standard Web-App Penetration Test',
     price: 'GH₵ 8,000+',
     subtitle: 'Full Pentest Suite',
     image: '/assets/sections/services/standard-package.png',
@@ -66,15 +66,14 @@ const ServicesSection: React.FC = () => {
 
             {/* Description */}
             <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-4 max-w-sm opacity-80">
-              High-fidelity security audits for modern infrastructure.
-              Identify critical vectors before they are exploited.
+              Low Cost Security Audits and Pentest for Modern Companies and Startups in Africa.
             </p>
 
             {/* Trust badge — desktop only */}
             <div className="hidden lg:flex items-start gap-3 mb-5 opacity-35 hover:opacity-80 transition-opacity duration-500">
               <ShieldCheck className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
               <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest leading-loose">
-                Trusted for comprehensive offensive security assessments and technical reporting.
+                Trusted for comprehensive Penetration testing and Well Detailed Reports
               </p>
             </div>
 
@@ -109,10 +108,10 @@ const ServicesSection: React.FC = () => {
                     alt={service.title}
                     className="w-full h-full object-cover opacity-50 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-70"
                   />
-                  {/* Mobile: fade bottom edge into card body */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/30 to-transparent opacity-90 lg:hidden" />
-                  {/* Desktop: fade right edge into card body */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-transparent to-transparent opacity-90 hidden lg:block" />
+                  {/* Mobile: subtle overlay instead of gradient fade */}
+                  <div className="absolute inset-0 bg-bg-card/30 opacity-60 lg:hidden" />
+                  {/* Desktop: subtle overlay instead of gradient fade */}
+                  <div className="absolute inset-0 bg-bg-card/30 opacity-60 hidden lg:block" />
 
                   {/* Price badge — enlarged */}
                   <div className="absolute top-3 left-3 bg-bg/80 backdrop-blur-md border border-border/50 px-4 py-2 rounded-lg">

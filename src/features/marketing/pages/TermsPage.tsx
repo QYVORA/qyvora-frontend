@@ -81,8 +81,7 @@ const TermsSectionCard: React.FC<{ section: TermsSection; index: number }> = ({
     </div>
     <div
       aria-hidden="true"
-      className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-      style={{ background: 'linear-gradient(90deg, var(--color-accent), transparent)' }}
+      className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30 pointer-events-none"
     />
     <h3 className="text-base md:text-lg font-black text-text-primary mb-3 font-mono uppercase tracking-tight pr-12">
       {section.title}
@@ -211,8 +210,7 @@ const TermsPage: React.FC = () => {
                   <div aria-hidden className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
                   <div
                     aria-hidden
-                    className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-                    style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
+                    className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30 pointer-events-none"
                   />
                   
                   <div className="relative z-10 max-w-2xl mx-auto">

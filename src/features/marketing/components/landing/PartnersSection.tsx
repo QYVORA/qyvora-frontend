@@ -119,8 +119,7 @@ const PartnersSection: React.FC = () => {
               className="mb-1.5"
             />
             <p className="text-text-secondary text-sm max-w-md leading-relaxed opacity-80">
-              Securing the next generation of high-growth startups and tech
-              innovators at the frontier of offensive security.
+              Securing startups and tech innovators throughout the  African Continent
             </p>
           </div>
 

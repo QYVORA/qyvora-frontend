@@ -184,8 +184,7 @@ const EnrollmentModal: React.FC<EnrollmentModalProps> = ({ bootcamp, onClose, on
             >
               <div
                 aria-hidden
-                className="absolute top-0 left-0 right-0 h-[2px]"
-                style={{ background: 'linear-gradient(90deg, transparent, var(--color-accent), transparent)' }}
+                className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30"
               />
               <div className="w-16 h-16 rounded-full bg-accent/15 border border-accent/30 flex items-center justify-center mx-auto mb-5">
                 <CheckCircle2 className="w-8 h-8 text-accent" />

@@ -72,15 +72,13 @@ const FeaturedCard: React.FC<{
             <span className="font-mono text-4xl font-black text-accent/20 select-none">HPB</span>
           </div>
         )}
-        {/* Mobile: fade bottom */}
+        {/* Mobile: subtle overlay instead of gradient fade */}
         <div
-          className="absolute inset-0 pointer-events-none z-10 lg:hidden"
-          style={{ background: 'linear-gradient(to bottom, transparent 30%, var(--color-bg-card) 100%)' }}
+          className="absolute inset-0 pointer-events-none z-10 lg:hidden bg-bg-card/20"
         />
-        {/* Desktop: fade right */}
+        {/* Desktop: subtle overlay instead of gradient fade */}
         <div
-          className="absolute inset-0 pointer-events-none z-10 hidden lg:block"
-          style={{ background: 'linear-gradient(to right, transparent 60%, var(--color-bg-card) 100%)' }}
+          className="absolute inset-0 pointer-events-none z-10 hidden lg:block bg-bg-card/20"
         />
         <div className="absolute right-3 top-3 z-20">
           <span className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.25em] backdrop-blur-md ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
@@ -174,15 +172,15 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   return (
     <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-0">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3 mb-3">
+          <div className="h-[1px] w-8 bg-accent/40" />
+          <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+            Offensive Security Training
+          </span>
+        </div>
 
         {/* ── Heading ── */}
-        <div className="flex items-center gap-3 mb-3">
-              <div className="h-[1px] w-8 bg-accent/40" />
-              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-              Offensive Security Training
-              </span>
-            </div>
-
         <div className="flex flex-col mb-4 lg:mb-3">
           <AsciiHeading
             text="Bootcamps"
@@ -261,8 +259,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                       />
                     )}
                     <div
-                      className="absolute inset-0 pointer-events-none z-10"
-                      style={{ background: 'linear-gradient(to top, var(--color-bg-card) 5%, transparent 70%)' }}
+                      className="absolute inset-0 pointer-events-none z-10 bg-bg-card/20"
                     />
                     <span className={`absolute left-3 top-3 z-20 rounded-sm border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
                       {level}

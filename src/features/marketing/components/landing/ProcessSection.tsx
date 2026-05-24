@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Terminal, Shield, Zap, Target } from 'lucide-react';
-import HeroBackground from '../HeroBackground';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const STEPS = [
@@ -12,39 +11,63 @@ const STEPS = [
 ];
 
 const ProcessSection: React.FC = () => {
-  return (
-    <section className="ascii-section relative py-14 md:py-24 bg-bg overflow-hidden border-t border-border">
-      <HeroBackground className="opacity-40" />
-      <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-2 md:px-8 relative z-10">
-        <div className="text-center mb-16 px-2 md:px-0">
-          <AsciiHeading text="The Process" font="Larry 3D" animated className="mb-8" />
-          <p className="text-text-secondary text-base md:text-lg max-w-lg mx-auto opacity-80 leading-relaxed">
-            From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
-          </p>
-        </div>
+  const shouldReduceMotion = useReducedMotion();
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 px-2 md:px-0">
-          {STEPS.map((step, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="terminal-card p-8 rounded-2xl border border-border bg-bg-card/80 backdrop-blur-md text-center group"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <step.icon size={24} />
-              </div>
-              <h3 className="text-lg font-bold text-text-primary uppercase tracking-tight mb-3">{step.title}</h3>
-              <p className="text-xs text-text-muted leading-relaxed">{step.desc}</p>
-            </motion.div>
-          ))}
+  return (
+    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-6 bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-8 lg:gap-12 items-center">
+          
+          {/* ── Left: Heading Column ── */}
+          <div className="lg:pr-6 flex flex-col">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-4 lg:mb-3">
+              <div className="h-[1px] w-8 bg-accent/40" />
+              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                The Journey
+              </span>
+            </div>
+
+            {/* Heading */}
+            <AsciiHeading
+              text="Process"
+              font="ANSI Shadow"
+              align="left"
+              animated
+              compact
+              className="mb-5 lg:mb-4"
+            />
+
+            {/* Description */}
+            <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-4 max-w-sm opacity-80">
+              From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
+            </p>
+          </div>
+
+          {/* ── Right: Cards Grid (2x2 on Desktop) ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+            {STEPS.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="terminal-card p-6 rounded-2xl border border-border bg-bg-card flex flex-col gap-4 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                  <step.icon size={20} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-text-primary uppercase tracking-tight mb-2">{step.title}</h3>
+                  <p className="text-[11px] text-text-muted leading-relaxed font-mono">{step.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

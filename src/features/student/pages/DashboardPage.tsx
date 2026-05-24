@@ -407,11 +407,10 @@ const Dashboard: React.FC = () => {
                               alt={prod.title}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                             />
-                            {/* Gradient overlay */}
+                            {/* Subtle overlay instead of gradient */}
                             <div
                               aria-hidden
-                              className="pointer-events-none absolute inset-0"
-                              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)' }}
+                              className="pointer-events-none absolute inset-0 bg-black/10"
                             />
                             {/* Badges */}
                             <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">

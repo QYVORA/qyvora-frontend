@@ -59,11 +59,10 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           }}
         />
 
-        {/* Gradient overlay */}
+        {/* Subtle overlay instead of gradient */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)' }}
+          className="pointer-events-none absolute inset-0 bg-black/10"
         />
 
         {/* Top-left badges */}

@@ -649,10 +649,7 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    background:
-      linear-gradient(180deg, rgba(183, 255, 153, 0.045), transparent 34%),
-      radial-gradient(ellipse at 50% -20%, rgba(183, 255, 153, 0.075), transparent 58%),
-      var(--color-bg-card);
+    background: var(--color-bg-card);
     box-shadow: var(--card-shimmer);
   }
   .card-hsociety::after,
@@ -662,11 +659,9 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image:
-      linear-gradient(rgba(183, 255, 153, 0.028) 1px, transparent 1px),
-      radial-gradient(var(--dot-color) 1px, transparent 1px);
-    background-size: 100% 32px, 24px 24px;
-    opacity: 0.45;
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.2;
     mask-image: linear-gradient(to bottom, black, transparent 72%);
   }
   .card-hsociety > *,
@@ -709,9 +704,7 @@
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: 1rem;
-    background:
-      linear-gradient(180deg, rgba(183, 255, 153, 0.055), transparent 42%),
-      color-mix(in srgb, var(--color-bg-card) 82%, transparent);
+    background: var(--color-bg-card);
     box-shadow: var(--card-shimmer);
   }
   .terminal-card:not(.border-beam)::before {
@@ -722,7 +715,7 @@
     right: 0;
     z-index: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 70%, transparent), transparent);
+    background: var(--color-border);
     pointer-events: none;
   }
 

@@ -2,13 +2,15 @@ import React, { useRef, useCallback } from 'react';
 import { useScroll, useTransform, motion, useReducedMotion } from 'motion/react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useLandingData } from '../hooks/useLandingData';
+
 import HeroSection from '../components/landing/HeroSection';
 import BootcampsSection from '../components/landing/BootcampsSection';
 import EconomySection from '../components/landing/EconomySection';
 import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
-import PartnersSection from '../components/landing/PartnersSection'; // ← NEW
+import ProcessSection  from '../components/landing/ProcessSection';  //Add process section
+import PartnersSection from '../components/landing/PartnersSection'; 
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../components/HeroBackground';
@@ -19,11 +21,12 @@ import { extractCpBalance } from '../../../shared/utils/cpBalance';
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
+  { id: 'process',     label: 'Process'         },  // Add Proccess section to landing page
   { id: 'bootcamps',   label: 'Bootcamps'       },
   { id: 'services',    label: 'Services'        },
   { id: 'market',      label: 'Zero-Day Market' },
   { id: 'leaderboard', label: 'Leaderboard'     },
-  { id: 'partners',    label: 'Partners'        }, // ← NEW
+  { id: 'partners',    label: 'Partners'        }, 
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -80,6 +83,8 @@ const Landing: React.FC = () => {
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
 
+      
+
       {/* ── Modals ── */}
       <ServiceRequestModal />
       <PromotionalSystem />
@@ -103,6 +108,22 @@ const Landing: React.FC = () => {
             totalCp={totalCp}
           />
         </section>
+
+        {/*Impliment the process section but  redesing to match the design of all other section 
+        on the landing  page make sure that the UI is  clean and has no background soo the Process 
+        section can inherit the  HeroBackground of the main landing page . also make sure the  
+        navber bottom line  that is kept on the   Process section is removed its not needed anymore 
+        make sure the the contents of the process section respect the navber pacebut dont leave any lines or borders to divide the 
+        main contents from the navber space. also the cards on the process section are hugging the bottom of th  viewpot instead
+         being centered on the page . on Desktop screens implement the ASCII heafing  on the process section. and dide the process section like al toehr section are devided 
+         pusht the  header to the left anf the  cards to the  right and group theme in a  4x4  Grif  Only on Desktop  Screens . 
+         on mobile desing the Process  section soo it respect mobile  UI .  make sure you write clean and responsive code  . 
+        */}
+
+        {/* * Process Section */}
+        <SnapSection id="process">
+          <ProcessSection />
+        </SnapSection>
 
         {/* ── 2. Partners ── NEW */}
         <SnapSection id="partners">

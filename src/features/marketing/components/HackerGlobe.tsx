@@ -415,7 +415,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
        purely the curved surface face.
     ════════════════════════════════════════════ */
     const asciiBandRadius = 1.25;  // slightly outside the pole tips
-    const asciiBandHeight = 1.10;  // band vertical extent — covers most of the globe height
+    const asciiBandHeight = 0.80;  // band vertical extent — covers most of the globe height
     const asciiBandY      = 0.00;  // centred on equator
 
     const asciiTex = buildAsciiTexture(isLight);

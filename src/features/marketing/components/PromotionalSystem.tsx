@@ -9,7 +9,7 @@ const PROMOTIONS = [
   {
     id: 'bootcamp-promo',
     type: 'bootcamp',
-    title: 'Hacker Protocol',
+    title: 'Hacker Protocol Bootcamp',
     subtitle: 'Next-Gen Offensive Security',
     description: 'Master advanced penetration testing techniques with our flagship bootcamp.',
     cta: 'Explore Bootcamp',
