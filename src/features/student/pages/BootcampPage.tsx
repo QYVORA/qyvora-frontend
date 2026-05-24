@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
-import EnrollmentModal from '../components/EnrollmentModal';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
 import type { BootcampLevel } from '../components/BootcampCard';
@@ -65,27 +64,8 @@ const Bootcamp: React.FC = () => {
   const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [lockedBootcamp, setLockedBootcamp] = useState<any>(null);
-  const [enrollTarget, setEnrollTarget] = useState<any>(null);
   const [syncError, setSyncError] = useState('');
   const [lastSync, setLastSync] = useState<string | null>(getLastSync('bootcamps'));
-
-  const load = async () => {
-    try {
-      const [bcRes, ovRes] = await Promise.all([
-        api.get('/public/bootcamps'),
-        api.get('/student/overview').catch(() => null),
-      ]);
-      setBootcamps(Array.isArray(bcRes.data?.items) ? bcRes.data.items : []);
-      if (ovRes?.data) setOverview(ovRes.data);
-      setLastSync(setLastSyncNow('bootcamps'));
-      setSyncError('');
-    } catch {
-      setBootcamps([]);
-      setSyncError('Could not refresh bootcamps. Showing the last available state.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     let mounted = true;
@@ -127,17 +107,6 @@ const Bootcamp: React.FC = () => {
     ])
   );
 
-  const handleEnrolled = async () => {
-    // Re-fetch overview so the card state updates immediately without needing a page refresh
-    try {
-      const ovRes = await api.get('/student/overview');
-      if (ovRes?.data) setOverview(ovRes.data);
-    } catch {
-      // silently ignore — the card will update on next load
-    }
-    setEnrollTarget(null);
-  };
-
   if (loading) return <PageLoader />;
 
   return (
@@ -145,13 +114,6 @@ const Bootcamp: React.FC = () => {
       <AnimatePresence>
         {lockedBootcamp && (
           <LockedModal bootcamp={lockedBootcamp} onClose={() => setLockedBootcamp(null)} />
-        )}
-        {enrollTarget && (
-          <EnrollmentModal
-            bootcamp={enrollTarget}
-            onClose={() => setEnrollTarget(null)}
-            onEnrolled={() => { void handleEnrolled(); }}
-          />
         )}
       </AnimatePresence>
 
@@ -294,22 +256,17 @@ const Bootcamp: React.FC = () => {
                         <button className="w-full btn-secondary !py-2.5 text-xs flex items-center justify-center gap-2 opacity-80">
                           <Lock className="w-3.5 h-3.5" /> Coming soon
                         </button>
-                      ) : isEnrolled ? (
+                      ) : (
                         <Link
                           to={`/dashboard/bootcamps/${bc.id}`}
                           className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
                         >
                           {isComplete
                             ? <><CheckCircle2 className="w-3.5 h-3.5" /> Review curriculum</>
-                            : <><Play className="w-3.5 h-3.5 fill-current" /> Continue training</>}
+                            : isEnrolled 
+                            ? <><Play className="w-3.5 h-3.5 fill-current" /> Continue training</>
+                            : <>Start Training <ChevronRight className="w-4 h-4" /></>}
                         </Link>
-                      ) : (
-                        <button
-                          onClick={() => setEnrollTarget({ id: String(bc.id || i), title: bc.title })}
-                          className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
-                        >
-                          Enroll Now <ChevronRight className="w-4 h-4" />
-                        </button>
                       )}
                     </div>
                   </div>

@@ -74,7 +74,6 @@ const AdminDashboardPage: React.FC = () => {
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
-  const [applications, setApplications] = useState<any[]>([]);
   const [confirmDeleteUser, setConfirmDeleteUser] = useState<AdminUser | null>(null);
 
   // ── Derived ──────────────────────────────────────────────────────────────────
@@ -100,7 +99,7 @@ const AdminDashboardPage: React.FC = () => {
   const loadAll = async () => {
     setLoading(true);
     try {
-      const [ovRes, usersRes, contentRes, productsRes, summaryRes, eventsRes, contactsRes, appsRes] =
+      const [ovRes, usersRes, contentRes, productsRes, summaryRes, eventsRes, contactsRes] =
         await Promise.all([
           api.get('/admin/overview').catch(() => null),
           api.get('/admin/users').catch(() => null),
@@ -109,7 +108,6 @@ const AdminDashboardPage: React.FC = () => {
           api.get('/admin/security/summary').catch(() => null),
           api.get('/admin/security/events?limit=50').catch(() => null),
           api.get('/admin/contact-messages?limit=50').catch(() => null),
-          api.get('/admin/bootcamp-applications').catch(() => null),
         ]);
 
       setOverview((ovRes?.data as Record<string, unknown>) || null);
@@ -127,7 +125,6 @@ const AdminDashboardPage: React.FC = () => {
       setSecuritySummary((summaryRes?.data as Record<string, unknown>) || null);
       setSecurityEvents(Array.isArray(eventsRes?.data?.items) ? eventsRes.data.items : []);
       setContactMessages(Array.isArray(contactsRes?.data?.items) ? contactsRes.data.items : []);
-      setApplications(Array.isArray(appsRes?.data?.items) ? appsRes.data.items : []);
     } finally {
       setLoading(false);
     }
@@ -246,7 +243,7 @@ const AdminDashboardPage: React.FC = () => {
 
   // ── Tab label lookup ─────────────────────────────────────────────────────────
   const TAB_LABELS: Record<AdminTab, string> = {
-    users: 'Users', bootcamps: 'Bootcamps', applications: 'Applications',
+    users: 'Users', bootcamps: 'Bootcamps',
     zero_day: 'Market', cp: 'Points', chain: 'Chain',
     security: 'Security', contacts: 'Contacts', 
     assignments: 'Assignments', quizzes: 'Quizzes',
@@ -472,92 +469,6 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'bootcamps' && (
                 <div className="card-hsociety p-6 md:p-8">
                   <BootcampAccessPanel addToast={addToast} />
-                </div>
-              )}
-
-              {/* ── APPLICATIONS ──────────────────────────────────────────── */}
-              {activeTab === 'applications' && (
-                <div className="space-y-6">
-                  <div className="text-xs font-black uppercase tracking-[0.2em] text-text-muted flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    {applications.length} pending applications
-                  </div>
-
-                  {/* Mobile */}
-                  <div className="md:hidden space-y-4">
-                    {applications.length === 0 ? (
-                      <div className="text-center py-20 bg-bg-card border-2 border-dashed border-border rounded-2xl">
-                        <Users className="w-12 h-12 text-text-muted/30 mx-auto mb-4" />
-                        <p className="text-sm text-text-muted font-bold uppercase tracking-widest">No applications found</p>
-                      </div>
-                    ) : applications.map(app => (
-                      <div key={app.userId} className="bg-bg-card border-2 border-border rounded-2xl p-5 space-y-3">
-                        <div className="font-black text-lg text-text-primary">{app.hackerHandle || app.name || app.email}</div>
-                        <div className="text-xs text-text-muted font-mono">{app.email}</div>
-                        <div className="grid grid-cols-1 gap-2 text-xs mt-3 pt-3 border-t border-border/50">
-                          {[
-                            ['Bootcamp', app.application.bootcampTitle || app.bootcampId],
-                            ['Level', app.application.level],
-                            ['Commitment', app.application.commitment],
-                            ['Phone', app.application.phone],
-                          ].map(([k, v]) => v ? (
-                            <div key={k} className="flex justify-between items-center"><span className="text-text-muted font-bold uppercase tracking-widest text-[10px]">{k}</span><span className="text-text-primary font-black uppercase">{v}</span></div>
-                          ) : null)}
-                        </div>
-                        {app.application.motivation && (
-                          <div className="text-xs bg-bg p-3 rounded-xl border border-border mt-2">
-                            <span className="text-accent font-black uppercase tracking-widest text-[9px] block mb-1">Motivation</span>
-                            <p className="text-text-secondary leading-relaxed">{app.application.motivation}</p>
-                          </div>
-                        )}
-                        {app.application.submittedAt && (
-                          <div className="text-[10px] text-text-muted font-mono pt-2 text-right">{new Date(app.application.submittedAt).toLocaleString()}</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Desktop */}
-                  <div className="hidden md:block bg-bg-card border-2 border-border rounded-2xl overflow-hidden shadow-xl">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left min-w-[900px]">
-                        <thead className="border-b-2 border-border bg-bg/50 backdrop-blur-sm">
-                          <tr>
-                            {['Operator','Bootcamp','Why Joining','Level','Commitment','Phone','Date'].map(h => (
-                              <th key={h} className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">{h}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border/50">
-                          {applications.length === 0 ? (
-                            <tr><td colSpan={7} className="px-6 py-20 text-center">
-                              <Users className="w-12 h-12 text-text-muted/30 mx-auto mb-4" />
-                              <p className="text-sm text-text-muted font-bold uppercase tracking-widest">No applications found</p>
-                            </td></tr>
-                          ) : applications.map(app => (
-                            <tr key={app.userId} className="text-xs hover:bg-accent-dim/10 transition-colors group">
-                              <td className="px-6 py-5">
-                                <div className="font-black text-sm text-text-primary group-hover:text-accent transition-colors">{app.hackerHandle || app.name || '—'}</div>
-                                <div className="text-[11px] text-text-muted font-mono">{app.email}</div>
-                              </td>
-                              <td className="px-6 py-5">
-                                <span className="px-2 py-1 rounded bg-accent-dim/30 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/10">
-                                  {app.application.bootcampTitle || app.bootcampId || '—'}
-                                </span>
-                              </td>
-                              <td className="px-6 py-5 text-text-secondary max-w-[240px]">
-                                <div className="line-clamp-2 leading-relaxed">{app.application.motivation || '—'}</div>
-                              </td>
-                              <td className="px-6 py-5 font-black uppercase tracking-widest text-[10px] text-text-primary">{app.application.level || '—'}</td>
-                              <td className="px-6 py-5 font-black uppercase tracking-widest text-[10px] text-text-primary">{app.application.commitment || '—'}</td>
-                              <td className="px-6 py-5 font-mono text-text-muted">{app.application.phone || '—'}</td>
-                              <td className="px-6 py-5 text-text-muted font-mono whitespace-nowrap">{app.application.submittedAt ? new Date(app.application.submittedAt).toLocaleDateString() : '—'}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
                 </div>
               )}
 
