@@ -3,8 +3,8 @@ import React from 'react';
 /**
  * HSOCIETY CHAIN — Logo Component
  *
- * variant="3d"   → 3D render (HSOCIETY-CHAIN-3D.png)  — use in hero sections & large displays
- * variant="flat" → flat transparent PNG (HSOCIETY_CHAIN_LOGO.png) — use inline & small sizes
+ * variant="3d"   → 3D render (HSOCIETY-CHAIN-3D.webp)  — use in hero sections & large displays
+ * variant="flat" → flat transparent PNG (HSOCIETY_CHAIN_LOGO.webp) — use inline & small sizes
  *
  * Usage:
  *   <ChainLogo />                          — default flat, 40×40

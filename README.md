@@ -46,6 +46,19 @@ VITE_API_BASE_URL=https://hsociety-backend.onrender.com/api
 | `npm run lint` | ESLint check |
 | `npm run preview` | Preview production build locally |
 
+## Image Optimization
+
+The project automatically optimizes images to **WebP** for faster loading speeds.
+
+- **Automatic Conversion**: Any `.png`, `.jpg`, or `.jpeg` file added to the `public/` folder is automatically converted to `.webp` during development or build.
+- **Invisible Integration**: The development server and build process automatically serve/use the `.webp` versions even if you reference the original extension in your code.
+- **Tools used**: `sharp` (for high-performance conversion) and a custom Vite plugin (`vite-plugin-webp-conversion.ts`).
+
+To add a new image:
+1. Drop your `.png` or `.jpg` into `public/`.
+2. Reference it as `.webp` in your code (e.g., `<img src="/assets/my-image.webp" />`).
+3. The plugin handles the rest.
+
 ## Project Structure
 
 ```

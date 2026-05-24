@@ -8,18 +8,18 @@ import { motion } from 'motion/react';
 // Mock Data - In a real app, this would come from an API
 const MOCK_ACHIEVEMENTS: Record<string, Achievement[]> = {
   "CP Milestones": [
-    { id: 'cp_2000', title: 'Seed Fund', description: 'Begin your journey with 2000 Community Points.', image: '/assets/achievements/badges/common/cp_2000.png', rarity: 'common', isLocked: false, earnedAt: '2024-01-01' },
-    { id: 'cp_5000', title: 'Accumulator', description: 'Reach a balance of 5000 Community Points.', image: '/assets/achievements/badges/rare/cp_5000.png', rarity: 'rare', isLocked: true, progress: 3450, total: 5000 },
-    { id: 'cp_10000', title: 'Capitalist', description: 'Reach a balance of 10000 Community Points.', image: '/assets/achievements/badges/epic/cp_10000.png', rarity: 'epic', isLocked: true, progress: 3450, total: 10000 },
+    { id: 'cp_2000', title: 'Seed Fund', description: 'Begin your journey with 2000 Community Points.', image: '/assets/achievements/badges/common/cp_2000.webp', rarity: 'common', isLocked: false, earnedAt: '2024-01-01' },
+    { id: 'cp_5000', title: 'Accumulator', description: 'Reach a balance of 5000 Community Points.', image: '/assets/achievements/badges/rare/cp_5000.webp', rarity: 'rare', isLocked: true, progress: 3450, total: 5000 },
+    { id: 'cp_10000', title: 'Capitalist', description: 'Reach a balance of 10000 Community Points.', image: '/assets/achievements/badges/epic/cp_10000.webp', rarity: 'epic', isLocked: true, progress: 3450, total: 10000 },
   ],
   "Content Mastery": [
-    { id: 'first_room', title: 'First Step', description: 'Complete your first bootcamp room.', image: '/assets/achievements/badges/common/first_room.png', rarity: 'common', isLocked: false, earnedAt: '2024-01-05' },
-    { id: 'linux_specialist', title: 'Linux Specialist', description: 'Complete all rooms in the Linux Foundations module.', image: '/assets/achievements/badges/uncommon/linux_specialist.png', rarity: 'uncommon', isLocked: false, earnedAt: '2024-02-12' },
-    { id: 'networking_ninja', title: 'Networking Ninja', description: 'Complete all rooms in the Networking module.', image: '/assets/achievements/badges/uncommon/networking_ninja.png', rarity: 'uncommon', isLocked: true, progress: 2, total: 4 },
+    { id: 'first_room', title: 'First Step', description: 'Complete your first bootcamp room.', image: '/assets/achievements/badges/common/first_room.webp', rarity: 'common', isLocked: false, earnedAt: '2024-01-05' },
+    { id: 'linux_specialist', title: 'Linux Specialist', description: 'Complete all rooms in the Linux Foundations module.', image: '/assets/achievements/badges/uncommon/linux_specialist.webp', rarity: 'uncommon', isLocked: false, earnedAt: '2024-02-12' },
+    { id: 'networking_ninja', title: 'Networking Ninja', description: 'Complete all rooms in the Networking module.', image: '/assets/achievements/badges/uncommon/networking_ninja.webp', rarity: 'uncommon', isLocked: true, progress: 2, total: 4 },
   ],
   "Elite Status": [
-    { id: 'protocol_ascendant', title: 'Protocol Ascendant', description: 'Reach the highest rank in the Hacker Protocol bootcamp.', image: '/assets/achievements/badges/legendary/protocol_ascendant.png', rarity: 'legendary', isLocked: true },
-    { id: 'zero_day', title: 'Zero Day Pioneer', description: 'Discover and report a critical platform vulnerability.', image: '/assets/achievements/badges/mythic/zero_day.png', rarity: 'mythic', isLocked: true },
+    { id: 'protocol_ascendant', title: 'Protocol Ascendant', description: 'Reach the highest rank in the Hacker Protocol bootcamp.', image: '/assets/achievements/badges/legendary/protocol_ascendant.webp', rarity: 'legendary', isLocked: true },
+    { id: 'zero_day', title: 'Zero Day Pioneer', description: 'Discover and report a critical platform vulnerability.', image: '/assets/achievements/badges/mythic/zero_day.webp', rarity: 'mythic', isLocked: true },
   ]
 };
 

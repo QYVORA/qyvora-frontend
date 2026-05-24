@@ -4,9 +4,9 @@ import { ShieldCheck, Globe, Users, Zap } from 'lucide-react';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const PARTNER_FILENAMES: string[] = [
-  'RedSpectreAI.png',
-  'Sorbit.png',
-  'WsuitsIndustries.png',
+  'RedSpectreAI.webp',
+  'Sorbit.webp',
+  'WsuitsIndustries.webp',
 ];
 
 const PARTNER_IMAGES: string[] = PARTNER_FILENAMES.map(

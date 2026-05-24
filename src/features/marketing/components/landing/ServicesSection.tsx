@@ -10,7 +10,7 @@ const SERVICES_DATA = [
     title: 'Basic Web-App Penetrtion Testing',
     price: 'GH₵ 4,000+',
     subtitle: 'Essential Web Pentest',
-    image: '/assets/sections/services/basic-package.png',
+    image: '/assets/sections/services/basic-package.webp',
     features: [
       'OWASP Top 10 Coverage',
       'Authentication Testing',
@@ -24,7 +24,7 @@ const SERVICES_DATA = [
     title: 'Standard Web-App Penetration Test',
     price: 'GH₵ 8,000+',
     subtitle: 'Full Pentest Suite',
-    image: '/assets/sections/services/standard-package.png',
+    image: '/assets/sections/services/standard-package.webp',
     features: [
       'Authenticated Pentesting',
       'Business Logic Analysis',

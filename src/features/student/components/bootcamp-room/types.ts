@@ -36,7 +36,7 @@ export interface QuizQuestion {
 }
 
 export interface RoomQuiz {
-  scope?: { type?: string; id?: string | number; moduleId?: string | number; courseId?: string };
+  scope?: { type?: string; id?: string | number; moduleId?: string | number; courseId?: string; roomId?: string };
   questions: QuizQuestion[];
 }
 

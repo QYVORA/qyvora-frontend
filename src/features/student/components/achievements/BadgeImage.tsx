@@ -10,8 +10,8 @@ interface BadgeImageProps {
   rarity?: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic';
 }
 
-const LOCKED_BADGE_PATH = '/assets/achievements/locked/locked-badge.png';
-const PLACEHOLDER_PATH = '/assets/achievements/locked/placeholder.png';
+const LOCKED_BADGE_PATH = '/assets/achievements/locked/locked-badge.webp';
+const PLACEHOLDER_PATH = '/assets/achievements/locked/placeholder.webp';
 
 export const BadgeImage: React.FC<BadgeImageProps> = ({
   src,
