@@ -210,7 +210,7 @@ const Profile: React.FC = () => {
                       id: 'cp_2000', 
                       title: 'Seed Fund', 
                       description: 'Begin your journey with 2000 Community Points.', 
-                      image: '/assets/achievements/badges/common/cp_2000.png', 
+                      image: '/assets/achievements/badges/common/cp_2000.webp', 
                       rarity: 'common', 
                       isLocked: profileData.cp < 2000 
                     },
@@ -218,7 +218,7 @@ const Profile: React.FC = () => {
                       id: 'first_room', 
                       title: 'First Step', 
                       description: 'Complete your first bootcamp room.', 
-                      image: '/assets/achievements/badges/common/first_room.png', 
+                      image: '/assets/achievements/badges/common/first_room.webp', 
                       rarity: 'common', 
                       isLocked: profileData.completedRooms.length === 0 
                     },
@@ -226,7 +226,7 @@ const Profile: React.FC = () => {
                       id: 'linux_specialist', 
                       title: 'Linux Specialist', 
                       description: 'Complete all rooms in the Linux Foundations module.', 
-                      image: '/assets/achievements/badges/uncommon/linux_specialist.png', 
+                      image: '/assets/achievements/badges/uncommon/linux_specialist.webp', 
                       rarity: 'uncommon', 
                       isLocked: !profileData.unlockedModules.includes('2') 
                     },
@@ -234,7 +234,7 @@ const Profile: React.FC = () => {
                       id: 'protocol_ascendant', 
                       title: 'Protocol Ascendant', 
                       description: 'Reach the highest rank in the Hacker Protocol bootcamp.', 
-                      image: '/assets/achievements/badges/legendary/protocol_ascendant.png', 
+                      image: '/assets/achievements/badges/legendary/protocol_ascendant.webp', 
                       rarity: 'legendary', 
                       isLocked: profileData.rank !== 'Elite' 
                     },

@@ -145,7 +145,7 @@ const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduce
       </div>
 
       <motion.img
-        src="/assets/illustrations/rocket-visual.png"
+        src="/assets/illustrations/rocket-visual.webp"
         alt="Launch your career"
         // Reduced max-w so the rocket sits smaller and doesn't crowd the card
         className="relative z-10 w-full max-w-[150px] lg:max-w-[180px] h-auto object-contain select-none pointer-events-none drop-shadow-[0_0_18px_rgba(136,173,124,0.25)]"

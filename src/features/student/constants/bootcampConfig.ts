@@ -123,7 +123,7 @@ The field sits on the opposite side of defensive security (blue teaming), which 
 - **Vulnerability research** — discovering new, previously unknown vulnerabilities in software or hardware
 
 In your notes, write down the key difference between offensive and defensive security in your own words. Then write one sentence explaining why organisations pay people to attack their own systems.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'The HSOCIETY Operating Model',
@@ -137,7 +137,7 @@ In your notes, write down the key difference between offensive and defensive sec
 **Community** — Offensive security is a team sport. The HSOCIETY community is where you share findings, ask questions, collaborate on challenges, and build your reputation as an operator.
 
 Write down what each pillar means to you personally. Be specific — not "I want to learn hacking" but "I want to be able to conduct a web application penetration test independently within six months."`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Career Paths in Offensive Security',
@@ -155,7 +155,7 @@ Write down what each pillar means to you personally. Be specific — not "I want
 **CTF Player** — Competes in Capture The Flag competitions. A great way to build skills and reputation. Many professionals started here.
 
 In your notes, rank these paths from most to least interesting to you and explain why. This is not a permanent decision — it is a starting point for your learning focus.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
           ],
         },
@@ -178,7 +178,7 @@ In your notes, rank these paths from most to least interesting to you and explai
 **3. Lateral thinking** — The ability to approach a problem from an unexpected angle. Security controls are designed to stop expected attacks. Lateral thinking is how you find the path the defender did not anticipate.
 
 For each trait, write a concrete example of how it would apply in a real engagement. Do not use generic examples — think of a specific scenario.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Applying the Mindset',
@@ -196,7 +196,7 @@ Pick any object near you — a door lock, a coffee machine, a website you use da
 This exercise is not trivial. The ability to ask these questions about any system — a web application, a network protocol, a physical lock — is the foundation of every vulnerability discovery.
 
 Write your answers for the object you chose. Be specific and detailed.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Tools vs. Understanding',
@@ -212,7 +212,7 @@ An operator understands the underlying vulnerability — the memory corruption, 
 Every tool you use in this programme, you will understand from first principles before you use it. You will know what it does, why it works, and how to replicate its core function manually.
 
 In your notes, answer this question honestly: right now, are you closer to a tool runner or an operator? What specific knowledge gaps would you need to close to move further toward operator?`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
           ],
         },
@@ -237,7 +237,7 @@ In your notes, answer this question honestly: right now, are you closer to a too
 **The key principle in every jurisdiction:** authorisation is the line between legal security testing and criminal hacking. The technical actions are identical — only the authorisation differs.
 
 In your notes, research the specific law that applies in your country. Write down the key offences and their maximum penalties. You are responsible for knowing this.`,
-              image: '/assets/bootcamp/rooms/ethics-legal-framework.jpg',
+              image: '/assets/bootcamp/rooms/ethics-legal-framework.webp',
             },
             {
               title: 'Scope and Authorisation',
@@ -254,7 +254,7 @@ A typical scope document includes:
 **Why this matters:** If you test a system that is out of scope — even accidentally — you may have committed a criminal offence. The authorisation document is your legal protection. Without it, you have none.
 
 Write down in your notes: what would you do if, during a penetration test, you discovered a critical vulnerability in a system that was out of scope? There is a correct answer — research it.`,
-              image: '/assets/bootcamp/rooms/ethics-scope-authorization.jpg',
+              image: '/assets/bootcamp/rooms/ethics-scope-authorization.webp',
             },
             {
               title: 'Responsible Disclosure',
@@ -275,7 +275,7 @@ Write down in your notes: what would you do if, during a penetration test, you d
 **Bug bounty programmes** formalise this process — companies publish the rules, the scope, and the rewards. Always read the programme rules before testing.
 
 Document the full responsible disclosure process in your notes. Include what you would do if the organisation ignored your report after 90 days.`,
-              image: '/assets/bootcamp/rooms/ethics-responsible-disclosure.jpg',
+              image: '/assets/bootcamp/rooms/ethics-responsible-disclosure.webp',
             },
           ],
         },
@@ -423,7 +423,7 @@ apropos network
 \`\`\`
 
 *Training Task:* Use \`export\` to set a variable named \`CODENAME\` to your hacker handle. Then use \`echo\` to print it. Congratulations, you've just taken your first step in the HSociety training program.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Navigation & Advanced File Searching',
@@ -496,7 +496,7 @@ rm -rf ./tmp_recon_data
 \`\`\`
 
 *Hacker Challenge:* Navigate to \`/tmp\`, create a folder named \`hs_workspace\`, jump inside, and then use \`cd -\` to return to your previous location. How many commands did it take?`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Permissions & Privilege Context',
@@ -559,7 +559,7 @@ su trainee_02 -c "ls /home/trainee_02"
 \`\`\`
 
 *Pro Tip:* If you find an SUID file owned by root, check it against **GTFOBins**. If it's on the list, you are seconds away from full system control.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Reading, Filtering & Data Extraction',
@@ -628,7 +628,7 @@ cat /var/log/access.log | cut -d " " -f 1 | sort | uniq -c | sort -nr | head -n 
 \`\`\`
 
 *Experiment:* Try running \`history | awk '{print $2}' | sort | uniq -c | sort -nr | head -n 5\`. This will show you your top 5 most used commands. What does it reveal about your training habits?`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -712,7 +712,7 @@ sudo chage -l $(whoami)
 \`\`\`
 
 *Identity Check:* Run \`id\`. If you see \`uid=0\`, you have achieved total control. If not, your HSociety training continues. How many groups are you currently a member of?`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'The Vault: Passwd & Shadow Files',
@@ -778,7 +778,7 @@ awk -F: '$6 ~ /\\/home/ && $7 ~ /nologin/ {print $1}' /etc/passwd
 \`\`\`
 
 *HSociety Insight:* In the \`shadow\` file, the string between the first and second \`$\` is the salt. A hacker uses this salt along with the hash to perform 'Brute Force' or 'Dictionary' attacks offline.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Advanced Permissions Manipulation',
@@ -842,7 +842,7 @@ sudo usermod -aG sudo trainee_01
 \`\`\`
 
 *Challenge:* Create a file, set its permissions to \`000\`, and then try to delete it as a normal user. Does Linux let you delete a file you can't even read?`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Sudo: The Path to Absolute Control',
@@ -900,7 +900,7 @@ sudo tail -n 50 /var/log/auth.log | grep sudo
 \`\`\`
 
 *Training Insight:* If you see \`(ALL) NOPASSWD: ALL\` in your \`sudo -l\` output, you have already won. You can run any command as root without a password. Train like a hacker, think like an owner.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -978,7 +978,7 @@ sudo lsof -i :80
 \`\`\`
 
 *Hacker's Insight:* If you see a process running as root from the \`/tmp\` or \`/dev/shm\` directory, it's a major red flag. HSociety Hackers use these directories to hide their temporary tools.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Mapping the Exposure (Network Ports)',
@@ -1041,7 +1041,7 @@ netstat -pant
 \`\`\`
 
 *Training Task:* Run \`ss -tulnp\`. Can you find any service listening on \`0.0.0.0\`? That means it's open to the entire network. If it's on \`127.0.0.1\`, it's only open to people already on the machine.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Remote Interaction & Data Transfer',
@@ -1105,7 +1105,7 @@ iperf3 -c 10.10.10.10
 \`\`\`
 
 *Experiment:* Use \`curl\` to visit \`http://10.10.10.5\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the HSociety program.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Mastering Persistence & Background Tasks',
@@ -1182,7 +1182,7 @@ systemctl status sshd
 \`\`\`
 
 *Hacker Tip:* Use \`Ctrl+Z\` to temporarily pause a running program, then type \`bg\` to keep it running in the background. You've just learned to multitask like a true HSociety Hacker.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -1271,7 +1271,7 @@ log_action "Scanning target: 10.10.10.10"
 \`\`\`
 
 *Self-Check:* Create a script that prints "Training to be an HSociety Hacker" and saves it to a file named \`goal.txt\`. Use the commands you've learned to make it executable and run it.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Variables & Intelligent Tooling',
@@ -1345,7 +1345,7 @@ echo "New Path: $\{STAGED_PATH/tmp/dev/shm}"
 \`\`\`
 
 *Training Task:* Write a script that takes a username as an argument and checks if they exist in \`/etc/passwd\`. If they do, print "Target found in HSociety database."`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Loops: The Multiplier of Effort',
@@ -1415,7 +1415,7 @@ done
 \`\`\`
 
 *Challenge:* Create a loop that prints the numbers 10 down to 1, followed by "LIFTOFF - You are now an HSociety Hacker!"`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Conditionals & The Logic of Discovery',
@@ -1488,7 +1488,7 @@ fi
 \`\`\`
 
 *Final Training Project:* Combine everything you've learned into a single script. It should take an IP as an argument, check if it's alive, scan 3 common ports, and save the results to a file named \`recon_report.txt\`. You are now ready to graduate from Linux Foundations.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -1623,7 +1623,7 @@ ip link show eth0 | grep mtu
 \`\`\`
 
 *Operative Memory Aid:* **"Please Do Not Throw Sausage Pizza Away"** (Physical to Application). Train your mind to identify which layer a tool is operating on before you run it.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'The TCP Three-Way Handshake',
@@ -1669,7 +1669,7 @@ sudo tcpdump -ni any -vvv port 80
 \`\`\`
 
 *Hacker's Note:* The \`RST\` (Reset) flag is the "Hang up" signal. If you receive a \`RST\` immediately after a \`SYN\`, the port is closed. If you receive a \`SYN-ACK\`, the door is open.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'TCP vs UDP: Reliability vs Speed',
@@ -1715,7 +1715,7 @@ sudo tcpdump -i any udp port 53
 \`\`\`
 
 *Operative Insight:* Attackers target UDP because it is often overlooked by firewalls and rarely requires complex authentication. If a server is 'quiet' on TCP, check the UDP side.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Packet Analysis with tcpdump',
@@ -1768,7 +1768,7 @@ sudo tcpdump -n
 \`\`\`
 
 *Challenge:* Start \`tcpdump\` in one terminal window. In another, run an \`nmap\` scan against \`localhost\`. Can you identify the exact moment the scan hits your machine? What flags do you see?`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -1839,7 +1839,7 @@ dig <target_domain> +noall +answer
 \`\`\`
 
 *Operative Insight:* A misconfigured DNS server is like leaving your internal network map on a park bench. Always check for AXFR vulnerabilities first.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'HTTP: The Backbone of the Web',
@@ -1898,7 +1898,7 @@ curl -s -I http://<target_ip> | grep -E "Strict-Transport|Content-Security|X-Fra
 \`\`\`
 
 *Hacker's Strategy:* The \`X-Powered-By\` and \`Server\` headers are your best friends. They tell you exactly what software to research for known exploits.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Common Protocols: FTP, SSH & SMTP',
@@ -1954,7 +1954,7 @@ sudo tcpdump -i any port 21 or port 22 or port 25
 \`\`\`
 
 *Training Task:* Use \`nc\` to connect to port 22 on your local machine. Can you identify the SSH version? Research the most famous vulnerability for that version.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Protocol Analysis & Workflow',
@@ -2008,7 +2008,7 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
 \`\`\`
 
 *Final Insight:* Networking isn't about memorizing ports; it's about understanding the "conversation" between machines. If you can hear the conversation, you can join it. If you can join it, you can control it.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -2095,7 +2095,7 @@ nmap -sS 10.10.10.10 -oS -
 \`\`\`
 
 *Operative Drill:* Perform an \`-sS\` scan and an \`-sT\` scan while running \`tcpdump\`. Which one completes the handshake? Which one sends a \`RST\`?`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Interrogating Services & Versions',
@@ -2160,7 +2160,7 @@ telnet 10.10.10.10 25
 \`\`\`
 
 *Hacker's Strategy:* If Nmap reports a port as 'Filtered,' it means a firewall is dropping the packets. Try changing your source port to 53 or 88 — firewalls often trust traffic from DNS or Kerberos ports.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'The Nmap Scripting Engine (NSE)',
@@ -2228,7 +2228,7 @@ nmap -p 80 --script http-title,http-headers,http-methods,http-enum 10.10.10.10
 \`\`\`
 
 *Operative Drill:* Browse \`/usr/share/nmap/scripts/\`. Find a script you've never used, read its code, and explain to yourself how it detects a vulnerability. This is how you move from tool-user to tool-master.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Building a Professional Recon Workflow',
@@ -2288,7 +2288,7 @@ script -a engagement_log.txt
 \`\`\`
 
 *Final Challenge:* Create a bash script that takes a single IP address, finds all open ports, and then automatically runs the \`vuln\` script category against only those ports. Output the result to a file named \`VULN_REPORT.txt\`. Congratulations, Operative.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -2357,7 +2357,7 @@ tshark -r capture.pcap -Y "ip.ttl > 128"
 \`\`\`
 
 *Hacker's Insight:* In the "Packet Details" pane of Wireshark, the OSI layers are stacked from bottom to top. Always look at the **EtherType** field to see which Layer 3 protocol (like IPv4 or IPv6) is being carried.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Advanced Display Filters',
@@ -2413,7 +2413,7 @@ tshark -r capture.pcap -Y "tcp.analysis.retransmission"
 \`\`\`
 
 *Training Task:* Create a Tshark filter that shows only traffic between your machine and \`10.10.10.10\`, excluding any SSH or HTTP traffic. What protocols are left?`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Following & Reconstructing Streams',
@@ -2467,7 +2467,7 @@ tshark -r capture.pcap -z conv,tcp -q | sort -k 10 -rn | head -n 5
 \`\`\`
 
 *Operative Drill:* Capture your own login to a non-HTTPS test site (e.g., \`http://<vulnerable_test_site>\`). Use Tshark to reconstruct the stream. Can you find your username and password in the raw data?`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'DNS Analysis & Exfiltration Detection',
@@ -2520,7 +2520,7 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
 \`\`\`
 
 *Final Training Insight:* A hacker's greatest asset is the protocol everyone trusts. DNS, ICMP, and NTP are often overlooked, but in the hands of an HSociety operative, they are powerful tools for stealthy communication. Congratulations on completing Phase 3.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -2638,7 +2638,7 @@ fetch('/api/status').then(res => res.json()).then(console.log);
 \`\`\`
 
 *Training Task:* Identify the \`Server\` header for \`10.10.10.100\`. Does it reveal a specific version? Research if that version has any 'Zero-Day' or known exploits.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Mastering HTTP Headers & Fingerprinting',
@@ -2691,7 +2691,7 @@ curl -s -I http://<target_ip>1 | grep "Set-Cookie"
 \`\`\`
 
 *Hacker's Strategy:* If you see \`X-Powered-By: PHP/5.5\`, you've just found a legacy system. Older versions of languages are riddled with documented vulnerabilities that are trivial for an HSociety operative to exploit.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Cookies, Sessions & State Manipulation',
@@ -2744,7 +2744,7 @@ curl -b "session=OLD_TOKEN" http://<target_ip>1/profile -I
 \`\`\`
 
 *Operative Insight:* If you find a cookie that isn't \`HttpOnly\`, any script running on the page can steal it. This is the 'Golden Ticket' for session hijacking.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Intercepting Traffic with Burp Suite',
@@ -2854,7 +2854,7 @@ curl -s http://<target_ip>0/nonexistent_path_12345 | grep -i "server"
 \`\`\`
 
 *Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an HSociety operative provide more value than a tool?`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'OWASP Categories 6-10: The Hidden Seams',
@@ -3722,7 +3722,7 @@ Submit your GitHub repository link using the button below.`,
 **Analyzing Technical Metadata:**
 \`\`\`bash
 # Extract metadata from a target's public image to find GPS coordinates (Liking/Authority)
-exiftool target_photo.jpg | grep -i "GPS"
+exiftool target_photo.webp | grep -i "GPS"
 
 # Build a custom wordlist from the target's website to craft a believable pretext
 cewl -d 2 -m 5 http://<target_ip> -w custom_pretext.txt
@@ -4085,7 +4085,7 @@ curl -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" http://<target_i
 **3. Cleaning Local Metadata:**
 \`\`\`bash
 # Remove all metadata from your own screenshots before uploading
-exiftool -all= engagement_screenshot.png
+exiftool -all= engagement_screenshot.webp
 \`\`\`
 
 **4. Secure Communication:**

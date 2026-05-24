@@ -249,7 +249,7 @@ const AdminDashboardPage: React.FC = () => {
     users: 'Users', bootcamps: 'Bootcamps', applications: 'Applications',
     zero_day: 'Market', cp: 'Points', chain: 'Chain',
     security: 'Security', contacts: 'Contacts', 
-    assignments: 'Assignments',
+    assignments: 'Assignments', quizzes: 'Quizzes',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
 

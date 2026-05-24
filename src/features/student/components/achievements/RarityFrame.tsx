@@ -49,7 +49,7 @@ export const RarityFrame: React.FC<RarityFrameProps> = ({
       {/* Actual Frame Image Overlay (Placeholder for future assets) */}
       {!isLocked && (
         <img 
-          src={`/assets/achievements/frames/${rarity}-frame.png`} 
+          src={`/assets/achievements/frames/${rarity}-frame.webp`} 
           alt="" 
           className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
           onError={(e) => (e.currentTarget.style.display = 'none')}
