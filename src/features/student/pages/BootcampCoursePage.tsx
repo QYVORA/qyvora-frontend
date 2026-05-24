@@ -47,8 +47,6 @@ const BootcampCourse: React.FC = () => {
   const [course, setCourse]     = useState<Course | null>(null);
   const [overview, setOverview] = useState<any>(null);
   const [loading, setLoading]   = useState(true);
-  const [bootcampStatus, setStatus] = useState('not_enrolled');
-  const [enrolling, setEnrolling]   = useState(false);
   const [syncError, setSyncError]   = useState('');
   const [lastSync, setLastSync]     = useState<string | null>(getLastSync('bootcamp-course'));
 
@@ -75,14 +73,6 @@ const BootcampCourse: React.FC = () => {
       const ov = ovRes.data || null;
       setOverview(ov);
       
-      const enrolledViaStatus =
-        ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' &&
-        String(ov?.bootcampId || '') === String(bootcampId || '');
-      const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some(
-        (m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || '')
-      );
-      
-      setStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setCourse(courseRes.data as Course);
       setLastSync(setLastSyncNow('bootcamp-course'));
       setSyncError('');
@@ -94,21 +84,6 @@ const BootcampCourse: React.FC = () => {
   };
 
   useEffect(() => { load(); }, [bootcampId]);
-
-  const enroll = async () => {
-    setEnrolling(true);
-    try {
-      const res = await api.post('/student/bootcamp', { bootcampId: bootcampId || '' });
-      setStatus(res.data?.bootcampStatus || 'enrolled');
-      await refreshMe();
-      addToast('Enrolled in bootcamp.', 'success');
-      await load();
-    } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Enrollment failed.', 'error');
-    } finally {
-      setEnrolling(false);
-    }
-  };
 
   // Build a map from moduleId (number) → overview module entry.
   // The overview API returns modules with a numeric `moduleId` field that
@@ -146,34 +121,6 @@ const BootcampCourse: React.FC = () => {
 
   // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) return <PageLoader />;
-
-  // ── Not enrolled ─────────────────────────────────────────────────────────
-  if (bootcampStatus === 'not_enrolled') {
-    return (
-      <div className="min-h-screen bg-bg pb-12">
-        <div className="mx-auto max-w-2xl px-4 pt-8 md:px-8 md:pt-10">
-          <Link
-            to="/dashboard/bootcamps"
-            className="mb-10 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted transition-colors hover:text-accent"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to bootcamps
-          </Link>
-          <div className="rounded-2xl border-2 border-border bg-bg-card px-8 py-12 text-center md:px-12 md:py-14">
-            <BookOpen className="mx-auto mb-6 h-12 w-12 text-accent opacity-80" />
-            <h1 className="mb-3 text-3xl font-black text-text-primary md:text-4xl">Enroll to unlock</h1>
-            <p className="mb-10 text-base text-text-muted">Join this bootcamp to open the full curriculum map.</p>
-            <button
-              onClick={enroll}
-              disabled={enrolling}
-              className="btn-primary inline-flex items-center gap-3 px-10 py-4 text-base font-black uppercase disabled:opacity-50"
-            >
-              {enrolling ? <><Loader2 className="h-5 w-5 animate-spin" /> Enrolling…</> : 'Enroll now'}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // ── Enrolled ─────────────────────────────────────────────────────────────
   return (
