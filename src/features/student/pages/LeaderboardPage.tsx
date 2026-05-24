@@ -207,7 +207,7 @@ const Leaderboard: React.FC = () => {
                   entry={op}
                   rank={globalRank}
                   delay={Math.min(i * 0.04, 0.4)}
-                  onClick={() => navigate(`/u/${handle}`)}
+                  onClick={() => navigate(`/dashboard/profile/${handle}`)}
                 />
               );
             })}

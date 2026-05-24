@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import { resolveImg } from '../../../shared/utils/resolveImg';
 
 const PODIUM_STYLES = [
   { border: 'border-accent/60',    bg: 'bg-accent-dim',   text: 'text-accent',    label: 'text-accent'    },
@@ -12,7 +13,7 @@ const PODIUM_STYLES = [
   { border: 'border-amber-600/40', bg: 'bg-amber-600/10', text: 'text-amber-500', label: 'text-amber-600' },
 ];
 
-interface LeaderEntry { handle: string; name: string; rank: string; totalXp: number; }
+interface LeaderEntry { handle: string; name: string; rank: string; totalXp: number; avatarUrl?: string; }
 
 function Skeleton({ className }: { className?: string }) {
   return <div className={`animate-pulse rounded bg-accent-dim/20 ${className ?? ''}`} />;
@@ -87,15 +88,23 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
                   transition={{ duration: 0.35, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Link
-                    to={`/u/${handle}`}
+                    to={`/dashboard/profile/${handle}`}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border transition-all hover:brightness-110 ${style.border} ${style.bg} ${isMe ? 'ring-1 ring-accent/40' : ''}`}
                   >
                     <div className={`w-6 flex-none flex items-center justify-center font-mono font-black text-xs ${style.label}`}>
                       {i === 0 ? <Crown className="h-3.5 w-3.5" /> : `#${i + 1}`}
                     </div>
-                    <div className={`h-7 w-7 rounded-md flex-none flex items-center justify-center text-[10px] font-black border ${style.border} ${style.bg} ${style.text}`}>
-                      {handle[0]?.toUpperCase()}
-                    </div>
+                    {op.avatarUrl ? (
+                      <img 
+                        src={resolveImg(op.avatarUrl)} 
+                        alt="" 
+                        className={`h-8 w-8 rounded-md flex-none object-cover border ${style.border}`} 
+                      />
+                    ) : (
+                      <div className={`h-8 w-8 rounded-md flex-none flex items-center justify-center text-[10px] font-black border ${style.border} ${style.bg} ${style.text}`}>
+                        {handle[0]?.toUpperCase()}
+                      </div>
+                    )}
                     <div className="min-w-0 flex-1">
                       <div className={`font-mono text-xs font-bold truncate ${isMe ? 'text-accent' : 'text-text-primary'}`}>
                         {handle}{isMe && <span className="ml-1 text-[9px] text-accent/70">(you)</span>}

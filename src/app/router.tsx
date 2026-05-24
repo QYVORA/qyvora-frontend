@@ -178,6 +178,7 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
         </Route>
 
         {/*
@@ -241,6 +242,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/leaderboard"   element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/achievements"  element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
@@ -258,7 +260,6 @@ export const AppRouter = () => {
           <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/marketplace"      element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
-          <Route path="/leaderboard"      element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/wallet"           element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           <Route path="/profile"          element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications"    element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
@@ -276,6 +277,12 @@ export const AppRouter = () => {
         </Route>
 
         {/* ── 404 fallback ───────────────────────────────────────────────── */}
+        {/*
+          Final fallback: try to treat the path as a public profile handle.
+          If the handle doesn't exist, PublicProfilePage will show its own 404.
+        */}
+        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+
         {/*
           The wildcard "*" catches every URL that didn't match any route above.
           No scope is passed because NotFoundPage is always intentional —

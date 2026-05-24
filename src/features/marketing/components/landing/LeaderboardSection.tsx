@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, Medal } from 'lucide-react';
+import { Crown, Medal, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
@@ -75,6 +75,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
   const meta = getRankMeta(rank)!;
 
   return (
+    <Link to={`/u/${handle}`}>
       <motion.div
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(6px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -82,7 +83,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
         transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.35 } }}
         className={`terminal-card flex flex-col items-center rounded-2xl border ${meta.border} ${meta.bg} p-4 text-center lg:p-5
                     ${rank === 1 ? 'md:scale-[1.02] md:-translate-y-1' : ''}
-                    transition-all duration-300 hover:-translate-y-1 hover:border-border-strong`}
+                    transition-all duration-300 hover:-translate-y-1 hover:border-border-strong cursor-pointer`}
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
       <div className={`inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] mb-3 ${meta.color}`}>
@@ -101,6 +102,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
         <CpLogo className="w-3.5 h-3.5" />
       </div>
     </motion.div>
+    </Link>
   );
 };
 
@@ -111,24 +113,26 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
   const handle = entry.handle || entry.name || 'Anonymous';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -16, filter: 'blur(4px)' }}
-      whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.25 } }}
-      className="terminal-card flex items-center gap-4 rounded-2xl border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong"
-      style={{ boxShadow: 'var(--card-shimmer)' }}
-    >
-      <span className="font-mono text-sm font-black text-accent/40 w-6 flex-none">#{rank}</span>
-      <Avatar entry={entry} size="sm" />
-      <div className="min-w-0 flex-1">
-        <div className="font-mono text-xs font-medium text-text-primary truncate">{handle}</div>
-        <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{entry.rank || 'Operator'}</div>
-      </div>
-      <div className="font-mono text-xs font-bold text-accent/80 flex-none inline-flex items-center gap-1.5">
-        {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-3 h-3" />
-      </div>
-    </motion.div>
+    <Link to={`/u/${handle}`}>
+      <motion.div
+        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -16, filter: 'blur(4px)' }}
+        whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.25 } }}
+        className="terminal-card flex items-center gap-4 rounded-2xl border border-border bg-bg-card px-4 py-3.5 transition-colors duration-200 hover:border-border-strong cursor-pointer"
+        style={{ boxShadow: 'var(--card-shimmer)' }}
+      >
+        <span className="font-mono text-sm font-black text-accent/40 w-6 flex-none">#{rank}</span>
+        <Avatar entry={entry} size="sm" />
+        <div className="min-w-0 flex-1">
+          <div className="font-mono text-xs font-medium text-text-primary truncate">{handle}</div>
+          <div className="text-[9px] uppercase tracking-widest text-text-muted mt-0.5">{entry.rank || 'Operator'}</div>
+        </div>
+        <div className="font-mono text-xs font-bold text-accent/80 flex-none inline-flex items-center gap-1.5">
+          {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-3 h-3" />
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
@@ -140,36 +144,38 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
   const meta = getRankMeta(rank);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`terminal-card flex items-center gap-4 rounded-2xl border p-4 transition-colors ${
-        meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
-      }`}
-      style={{ boxShadow: 'var(--card-shimmer)' }}
-    >
-      <div className={`font-mono font-black text-base w-10 flex-none flex items-center gap-1.5 ${meta ? meta.color : 'text-accent/50'}`}>
-        {meta ? React.cloneElement(meta.icon as React.ReactElement, { className: 'w-4 h-4' } as any) : null}
-        #{rank}
-      </div>
-      <Avatar
-        entry={entry}
-        size="md"
-        colorHex={meta ? meta.avatarColor : '#88AD7C'}
-        borderClass={meta ? meta.avatarBorder : 'border-border'}
-      />
-      <div className="min-w-0 flex-1">
-        <div className={`font-mono text-base font-medium truncate ${meta ? meta.color : 'text-text-primary'}`}>
-          {handle}
+    <Link to={`/u/${handle}`}>
+      <motion.div
+        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
+        className={`terminal-card flex items-center gap-4 rounded-2xl border p-4 transition-colors cursor-pointer ${
+          meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
+        }`}
+        style={{ boxShadow: 'var(--card-shimmer)' }}
+      >
+        <div className={`font-mono font-black text-base w-10 flex-none flex items-center gap-1.5 ${meta ? meta.color : 'text-accent/50'}`}>
+          {meta ? React.cloneElement(meta.icon as React.ReactElement, { className: 'w-4 h-4' } as any) : null}
+          #{rank}
         </div>
-        <div className="text-[11px] uppercase tracking-widest text-text-muted mt-1">{entry.rank || 'Operator'}</div>
-      </div>
-      <div className={`font-mono font-bold text-base flex-none inline-flex items-center gap-2 ${meta ? meta.color : 'text-accent/70'}`}>
-        {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-4 h-4" />
-      </div>
-    </motion.div>
+        <Avatar
+          entry={entry}
+          size="md"
+          colorHex={meta ? meta.avatarColor : '#88AD7C'}
+          borderClass={meta ? meta.avatarBorder : 'border-border'}
+        />
+        <div className="min-w-0 flex-1">
+          <div className={`font-mono text-base font-medium truncate ${meta ? meta.color : 'text-text-primary'}`}>
+            {handle}
+          </div>
+          <div className="text-[11px] uppercase tracking-widest text-text-muted mt-1">{entry.rank || 'Operator'}</div>
+        </div>
+        <div className={`font-mono font-bold text-base flex-none inline-flex items-center gap-2 ${meta ? meta.color : 'text-accent/70'}`}>
+          {(extractCpBalance(entry) ?? Number(entry.totalXp || 0)).toLocaleString()} <CpLogo className="w-4 h-4" />
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
@@ -214,7 +220,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
             </ScrollReveal>
           </div>
 
-          <ScrollReveal delay={0.1} className="flex items-center gap-6">
+          <ScrollReveal delay={0.1} className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="text-left md:text-right">
               <div className="text-2xl lg:text-3xl font-black text-accent font-mono inline-flex items-center gap-2">
                 <StatCounter end={totalCp} />
@@ -224,6 +230,12 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
                 Community Points
               </div>
             </div>
+            <Link 
+              to="/leaderboard"
+              className="btn-primary px-6 py-2.5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+            >
+              Full Board <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
           </ScrollReveal>
         </div>
 
