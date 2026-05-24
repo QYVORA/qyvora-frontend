@@ -184,6 +184,14 @@ const Navbar: React.FC = () => {
               </AnimatePresence>
             </div>
           ))}
+
+          {/* ── Static Contact Link ── */}
+          <ContactTrigger
+            type="link"
+            className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-primary hover:text-accent transition-colors"
+          >
+            Contact
+          </ContactTrigger>
         </div>
 
         {/* ── Right controls ───────────────────────────────────────────────── */}

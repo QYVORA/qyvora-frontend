@@ -46,9 +46,11 @@ const LandingPage       = lazy(() => import('../features/marketing/pages/Landing
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 
 // Auth pages
-// Note: all auth flows (login, register, forgot-password, etc.) share LoginPage.
-// The page internally reads the current path to decide which form to render.
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
+const RegisterPage      = lazy(() => import('../features/auth/pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPasswordPage'));
+const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
+const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
@@ -202,11 +204,11 @@ export const AppRouter = () => {
           enforces admin auth), but it reduces automated scanning noise.
         */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
-        <Route path="/register"        element={<Wrap scope="Register"><LoginPage /></Wrap>} />
-        <Route path="/forgot-password" element={<Wrap scope="Forgot Password"><LoginPage /></Wrap>} />
-        <Route path="/reset-password"  element={<Wrap scope="Reset Password"><LoginPage /></Wrap>} />
-        <Route path="/verify-email"    element={<Wrap scope="Verify Email"><LoginPage /></Wrap>} />
-        <Route path="/change-password" element={<Wrap scope="Change Password"><LoginPage /></Wrap>} />
+        <Route path="/register"        element={<Wrap scope="Register"><RegisterPage /></Wrap>} />
+        <Route path="/forgot-password" element={<Wrap scope="Forgot Password"><ForgotPasswordPage /></Wrap>} />
+        <Route path="/reset-password"  element={<Wrap scope="Reset Password"><ForgotPasswordPage /></Wrap>} />
+        <Route path="/verify-email"    element={<Wrap scope="Verify Email"><VerifyEmailPage /></Wrap>} />
+        <Route path="/change-password" element={<Wrap scope="Change Password"><ChangePasswordPage /></Wrap>} />
         <Route path="/mr-robot"        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
         {/* ── Student routes (auth required, StudentLayout) ──────────────── */}

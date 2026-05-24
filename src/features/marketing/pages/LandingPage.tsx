@@ -91,7 +91,7 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent no-scrollbar md:mt-[72px] md:h-[calc(100svh-72px)] md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent md:mt-[72px] md:h-[calc(100svh-72px)] md:snap-y md:snap-mandatory"
         style={{ scrollSnapType: undefined }}
       >
         {/* ── 1. Hero ── */}
