@@ -30,7 +30,6 @@ const NAV_GROUPS = [
       { label: 'Market',   icon: Database,      path: '/mr-robot/dashboard?tab=zero_day', desc: 'Zero-day vault'         },
       { label: 'Points',   icon: Coins,         path: '/mr-robot/dashboard?tab=cp',       desc: 'CP analytics'           },
       { label: 'Chain',    icon: Link2,         path: '/mr-robot/dashboard?tab=chain',    desc: 'Chain explorer'         },
-      { label: 'Quizzes',  icon: BookOpen,      path: '/mr-robot/dashboard?tab=quizzes',  desc: 'Quiz manager'           },
     ],
   },
   {
@@ -54,7 +53,6 @@ const MOBILE_MORE = [
   { label: 'Assignments',  icon: FileText,      path: '/mr-robot/dashboard?tab=assignments'  },
   { label: 'Applications', icon: Users,         path: '/mr-robot/dashboard?tab=applications' },
   { label: 'Chain',        icon: Link2,         path: '/mr-robot/dashboard?tab=chain'        },
-  { label: 'Quizzes',      icon: BookOpen,      path: '/mr-robot/dashboard?tab=quizzes'      },
   { label: 'Security',     icon: AlertTriangle, path: '/mr-robot/dashboard?tab=security'     },
   { label: 'Contacts',     icon: Mail,          path: '/mr-robot/dashboard?tab=contacts'     },
 ];

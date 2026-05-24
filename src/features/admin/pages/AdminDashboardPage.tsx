@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import QuizManager from '../components/QuizManager';
 import ChainExplorer from '../components/ChainExplorer';
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
@@ -249,7 +248,7 @@ const AdminDashboardPage: React.FC = () => {
   const TAB_LABELS: Record<AdminTab, string> = {
     users: 'Users', bootcamps: 'Bootcamps', applications: 'Applications',
     zero_day: 'Market', cp: 'Points', chain: 'Chain',
-    security: 'Security', contacts: 'Contacts', quizzes: 'Quizzes',
+    security: 'Security', contacts: 'Contacts', 
     assignments: 'Assignments',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
@@ -961,13 +960,6 @@ const AdminDashboardPage: React.FC = () => {
                       </table>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* ── QUIZZES ───────────────────────────────────────────────── */}
-              {activeTab === 'quizzes' && (
-                <div className="card-hsociety p-6 md:p-8">
-                  <QuizManager bootcamps={bootcamps} addToast={addToast} api={api} />
                 </div>
               )}
 

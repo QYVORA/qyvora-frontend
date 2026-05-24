@@ -52,12 +52,6 @@ type AccessConfig = {
   };
 };
 
-type QuizQuestion = {
-  id: string;
-  text: string;
-  options: string[];
-  correctIndex: number;
-};
 
 type ApiClient = {
   get: (url: string) => Promise<{ data: any }>;
@@ -618,319 +612,6 @@ function PhaseAccessTab({
   );
 }
 
-// ─── Quizzes Tab ──────────────────────────────────────────────────────────────
-
-// ── blank question factory — 4 fixed options, no correct selected ────────────
-function blankQuestion(index: number): QuizQuestion {
-  return {
-    id: `q${index + 1}_${Date.now()}`,
-    text: "",
-    options: ["", "", "", ""],
-    correctIndex: 0,
-  };
-}
-
-function QuizzesTab({
-  bootcamps,
-  api,
-  addToast,
-}: {
-  bootcamps: Bootcamp[];
-  api: ApiClient;
-  addToast: (msg: string, type: string) => void;
-}) {
-  const MIN_Q = 3;
-  const MAX_Q = 4;
-
-  const [selectedBootcampId, setSelectedBootcampId] = useState(bootcamps[0]?.id ?? "");
-  const [selectedModuleId, setSelectedModuleId] = useState<number | "">("");
-  const [selectedRoomId, setSelectedRoomId] = useState<number | "">("");
-  const [questions, setQuestions] = useState<QuizQuestion[]>([blankQuestion(0), blankQuestion(1), blankQuestion(2)]);
-  const [existing, setExisting] = useState<any>(null);
-  const [loadingExisting, setLoadingExisting] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-
-  const selectedBootcamp = bootcamps.find((b) => b.id === selectedBootcampId);
-  const selectedModule = selectedBootcamp?.modules.find((m) => m.moduleId === selectedModuleId);
-  const selectedRoom = selectedModule?.rooms.find((r) => r.roomId === selectedRoomId);
-
-  // Load existing quiz whenever room changes
-  useEffect(() => {
-    if (!selectedBootcampId || !selectedModuleId || !selectedRoomId) {
-      setExisting(null);
-      return;
-    }
-    setLoadingExisting(true);
-    api.get(
-      `/admin/quiz?bootcampId=${encodeURIComponent(selectedBootcampId)}&moduleId=${encodeURIComponent(String(selectedModuleId))}&roomId=${encodeURIComponent(String(selectedRoomId))}`
-    )
-      .then((res) => {
-        if (res.data?.exists && res.data.quiz) {
-          setExisting(res.data.quiz);
-        } else {
-          setExisting(null);
-        }
-      })
-      .catch(() => setExisting(null))
-      .finally(() => setLoadingExisting(false));
-  }, [selectedBootcampId, selectedModuleId, selectedRoomId]);
-
-  function updateQuestion(id: string, patch: Partial<QuizQuestion>) {
-    setQuestions((prev) => prev.map((q) => (q.id === id ? { ...q, ...patch } : q)));
-  }
-
-  function updateOption(qId: string, oi: number, value: string) {
-    setQuestions((prev) =>
-      prev.map((q) => {
-        if (q.id !== qId) return q;
-        const options = [...q.options];
-        options[oi] = value;
-        return { ...q, options };
-      })
-    );
-  }
-
-  function addQuestion() {
-    if (questions.length >= MAX_Q) return;
-    setQuestions((prev) => [...prev, blankQuestion(prev.length)]);
-  }
-
-  function removeQuestion(id: string) {
-    if (questions.length <= MIN_Q) return;
-    setQuestions((prev) => prev.filter((q) => q.id !== id));
-  }
-
-  async function saveQuiz() {
-    if (!selectedBootcampId || !selectedModuleId || !selectedRoomId) {
-      addToast("Select a bootcamp, module, and room first.", "error");
-      return;
-    }
-    for (let i = 0; i < questions.length; i++) {
-      const q = questions[i];
-      if (!q.text.trim()) { addToast(`Question ${i + 1} is empty.`, "error"); return; }
-      if (q.options.some((o) => !o.trim())) { addToast(`All options in question ${i + 1} must be filled.`, "error"); return; }
-    }
-    setSaving(true);
-    try {
-      await api.post("/admin/quiz", {
-        bootcampId: selectedBootcampId,
-        moduleId: Number(selectedModuleId),
-        roomId: Number(selectedRoomId),
-        totalPoints: questions.length * 10,
-        questions: questions.map((q, i) => ({
-          id: `q${i + 1}`,
-          text: q.text.trim(),
-          options: q.options.map((o) => o.trim()),
-          correctIndex: q.correctIndex,
-          points: 10,
-        })),
-      });
-      addToast("Quiz saved.", "success");
-      // Reload existing
-      const res = await api.get(
-        `/admin/quiz?bootcampId=${encodeURIComponent(selectedBootcampId)}&moduleId=${encodeURIComponent(String(selectedModuleId))}&roomId=${encodeURIComponent(String(selectedRoomId))}`
-      );
-      setExisting(res.data?.exists ? res.data.quiz : null);
-    } catch (e: any) {
-      addToast(e?.response?.data?.error || "Failed to save quiz.", "error");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function deleteQuiz() {
-    if (!window.confirm("Delete this quiz? Students will no longer be able to take it.")) return;
-    setDeleting(true);
-    try {
-      await api.delete(
-        `/admin/quiz?bootcampId=${encodeURIComponent(selectedBootcampId)}&moduleId=${encodeURIComponent(String(selectedModuleId))}&roomId=${encodeURIComponent(String(selectedRoomId))}`
-      );
-      addToast("Quiz deleted.", "success");
-      setExisting(null);
-      setQuestions([blankQuestion(0), blankQuestion(1), blankQuestion(2)]);
-    } catch (e: any) {
-      addToast(e?.response?.data?.error || "Failed to delete quiz.", "error");
-    } finally {
-      setDeleting(false);
-    }
-  }
-
-  const inp = "w-full bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors";
-  const LETTERS = ["A", "B", "C", "D"];
-
-  return (
-    <div className="space-y-5 max-w-2xl">
-
-      {/* ── Room selector ── */}
-      <div className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Select Room</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {/* Bootcamp */}
-          <div className="space-y-1">
-            <label className="text-[10px] uppercase text-text-muted tracking-widest">Bootcamp</label>
-            <select
-              value={selectedBootcampId}
-              onChange={(e) => { setSelectedBootcampId(e.target.value); setSelectedModuleId(""); setSelectedRoomId(""); }}
-              className={inp}
-            >
-              {bootcamps.map((b) => (
-                <option key={b.id} value={b.id}>{b.title || b.id}</option>
-              ))}
-            </select>
-          </div>
-          {/* Module */}
-          <div className="space-y-1">
-            <label className="text-[10px] uppercase text-text-muted tracking-widest">Module</label>
-            <select
-              value={selectedModuleId}
-              onChange={(e) => { setSelectedModuleId(e.target.value === "" ? "" : Number(e.target.value)); setSelectedRoomId(""); }}
-              className={inp}
-              disabled={!selectedBootcamp?.modules.length}
-            >
-              <option value="">— Select —</option>
-              {(selectedBootcamp?.modules || []).map((m) => (
-                <option key={m.moduleId} value={m.moduleId}>M{m.moduleId}: {m.title || "(untitled)"}</option>
-              ))}
-            </select>
-          </div>
-          {/* Room */}
-          <div className="space-y-1">
-            <label className="text-[10px] uppercase text-text-muted tracking-widest">Room</label>
-            <select
-              value={selectedRoomId}
-              onChange={(e) => setSelectedRoomId(e.target.value === "" ? "" : Number(e.target.value))}
-              className={inp}
-              disabled={!selectedModule?.rooms.length}
-            >
-              <option value="">— Select —</option>
-              {(selectedModule?.rooms || []).map((r) => (
-                <option key={r.roomId} value={r.roomId}>R{r.roomId}: {r.title || "(untitled)"}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Existing quiz status */}
-        {selectedRoomId && (
-          <div className="pt-1">
-            {loadingExisting ? (
-              <p className="text-xs text-text-muted">Checking for existing quiz…</p>
-            ) : existing ? (
-              <div className="flex items-center justify-between gap-3 p-3 bg-accent-dim border border-accent/20 rounded-xl">
-                <div>
-                  <span className="text-xs font-bold text-accent uppercase tracking-widest">Quiz exists</span>
-                  <span className="text-xs text-text-muted ml-2">
-                    {existing.questions?.length ?? 0} questions · {existing.totalPoints ?? 0} pts total
-                  </span>
-                </div>
-                <button
-                  onClick={() => void deleteQuiz()}
-                  disabled={deleting}
-                  className="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1.5 rounded-xl hover:bg-red-500/10 transition-colors disabled:opacity-40"
-                >
-                  {deleting ? "Deleting…" : "Delete"}
-                </button>
-              </div>
-            ) : (
-              <p className="text-xs text-text-muted">No quiz for this room yet.</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* ── Question builder ── */}
-      {selectedRoomId && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-              Questions ({questions.length} / {MAX_Q})
-              <span className="ml-2 font-normal normal-case">min {MIN_Q}, max {MAX_Q}</span>
-            </p>
-            {questions.length < MAX_Q && (
-              <button
-                type="button"
-                onClick={addQuestion}
-                className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:text-accent/70 transition-colors"
-              >
-                <Plus size={13} /> Add Question
-              </button>
-            )}
-          </div>
-
-          {questions.map((q, qi) => (
-            <div key={q.id} className="bg-bg-card border border-border rounded-xl p-4 space-y-3">
-              {/* Question header */}
-              <div className="flex items-start gap-3">
-                <span className="text-[10px] font-black text-accent uppercase tracking-widest mt-3 w-6 shrink-0">Q{qi + 1}</span>
-                <input
-                  type="text"
-                  value={q.text}
-                  onChange={(e) => updateQuestion(q.id, { text: e.target.value })}
-                  placeholder={`Question ${qi + 1}…`}
-                  className="flex-1 bg-bg border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-colors"
-                />
-                {questions.length > MIN_Q && (
-                  <button
-                    type="button"
-                    onClick={() => removeQuestion(q.id)}
-                    className="text-text-muted hover:text-red-400 transition-colors mt-2 shrink-0"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                )}
-              </div>
-
-              {/* 4 fixed options */}
-              <div className="space-y-2 pl-9">
-                {q.options.map((opt, oi) => (
-                  <div key={oi} className="flex items-center gap-2.5">
-                    {/* Correct answer radio */}
-                    <input
-                      type="radio"
-                      name={`correct-${q.id}`}
-                      checked={q.correctIndex === oi}
-                      onChange={() => updateQuestion(q.id, { correctIndex: oi })}
-                      className="accent-accent shrink-0 w-4 h-4"
-                      title="Mark as correct"
-                    />
-                    {/* Letter badge */}
-                    <span className={`text-[10px] font-black w-5 shrink-0 ${q.correctIndex === oi ? 'text-accent' : 'text-text-muted'}`}>
-                      {LETTERS[oi]}.
-                    </span>
-                    <input
-                      type="text"
-                      value={opt}
-                      onChange={(e) => updateOption(q.id, oi, e.target.value)}
-                      placeholder={`Option ${LETTERS[oi]}`}
-                      className={`flex-1 bg-bg border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none transition-colors ${
-                        q.correctIndex === oi ? 'border-accent/50 focus:border-accent' : 'border-border focus:border-accent'
-                      }`}
-                    />
-                  </div>
-                ))}
-                <p className="text-[10px] text-text-muted pt-1">Select the radio button next to the correct answer.</p>
-              </div>
-            </div>
-          ))}
-
-          {/* Save */}
-          <button
-            type="button"
-            disabled={saving || !selectedRoomId}
-            onClick={() => void saveQuiz()}
-            className="btn-primary text-sm disabled:opacity-50 inline-flex items-center gap-2"
-          >
-            <Save size={14} />
-            {saving ? "Saving…" : existing ? "Update Quiz" : "Save Quiz"}
-          </button>
-          <p className="text-[10px] text-text-muted">Each question is worth 10 pts · Total: {questions.length * 10} pts</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ─── Room Completion Tab ──────────────────────────────────────────────────────
 
 type EnrolledStudent = {
@@ -1311,7 +992,7 @@ function JsonImportTab({
   );
 }
 
-type Tab = "content" | "access" | "quizzes" | "completion" | "import";
+type Tab = "content" | "access" |  "completion" | "import";
 
 export default function BootcampManager({
   bootcamps,
@@ -1330,7 +1011,6 @@ export default function BootcampManager({
   const tabs: { id: Tab; label: string }[] = [
     { id: "content", label: "Content" },
     { id: "access", label: "Phase Access" },
-    { id: "quizzes", label: "Quizzes" },
     { id: "completion", label: "Room Completion" },
     { id: "import", label: "JSON Import" },
   ];
@@ -1374,7 +1054,6 @@ export default function BootcampManager({
             addToast={addToast}
           />
         )}
-        {tab === "quizzes" && <QuizzesTab bootcamps={bootcamps} api={api} addToast={addToast} />}
         {tab === "completion" && (
           <RoomCompletionTab
             bootcamp={selectedBootcamp}

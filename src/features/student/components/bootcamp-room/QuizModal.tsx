@@ -3,6 +3,7 @@ import { Loader2, ClipboardList, X, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
+import { ROOM_QUIZ_BANK, FALLBACK_QUESTIONS } from '../../data/quizzes';
 import type { RoomQuiz, QuizQuestion } from './types';
 
 interface QuizModalProps {
@@ -29,22 +30,24 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
 
   useEffect(() => {
     setLoading(true);
-    api
-      .post('/student/quiz', { moduleId, roomId, courseId })
-      .then((res) => {
-        const q = res?.data as RoomQuiz;
-        if (Array.isArray(q?.questions) && q.questions.length > 0) {
-          setQuiz(q);
-        } else {
-          setError('No questions available for this room yet.');
-        }
-      })
-      .catch((err: any) => {
-        if (err?.response?.status !== 403) {
-          setError(String(err?.response?.data?.error || '') || 'Could not load quiz.');
-        }
-      })
-      .finally(() => setLoading(false));
+    try {
+      const key = `${moduleId}:${roomId}`;
+      const questions = (ROOM_QUIZ_BANK as any)[key] || FALLBACK_QUESTIONS;
+      
+      // We still want to check if the module is unlocked via the backend
+      // But we don't need to fetch questions anymore.
+      setQuiz({
+        scope: { type: 'room', id: key, courseId, moduleId, roomId },
+        questions: questions.map((q: any) => {
+          const { correctIndex, ...rest } = q;
+          return rest;
+        })
+      });
+    } catch (err: any) {
+      setError('Could not load quiz.');
+    } finally {
+      setLoading(false);
+    }
   }, [moduleId, roomId, courseId]);
 
   const submit = async () => {
