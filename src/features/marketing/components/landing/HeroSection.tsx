@@ -46,10 +46,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-20 md:pt-4 pb-12 md:pb-8 md:min-h-0 h-full"
+        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-20 md:pt-24 lg:pt-16 pb-12 md:pb-32 lg:pb-48 md:min-h-0 h-full"
       >
         {/* Left column */}
-        <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:-translate-y-8 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:-translate-y-10 xl:pt-6">
+        <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:pt-6">
           
           {/* Eyebrow */}
           {/* <div className="flex items-center gap-3 mb-4 lg:mb-3">
@@ -62,7 +62,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-text-primary leading-[1.08] mb-4 md:mb-5 tracking-tight">
             <span className="block">Train Like a Hacker .</span>
-            <span className="block mt-1 text-accent">Become a Hacker.</span>
+            <span className="block mt-1 text-accent lg:text-2xl xl:text-3xl">Become a Hacker.</span>
           </h1>
 
           {/* Subtext */}

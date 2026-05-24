@@ -76,7 +76,8 @@ export const DialogContent = React.forwardRef<
         // Position
         'fixed left-1/2 top-1/2 z-[201] -translate-x-1/2 -translate-y-1/2',
         // Size
-        'w-[calc(100vw-2rem)] sm:w-full',
+        'w-[calc(100vw-1rem)] sm:w-full',
+        'max-h-[calc(100svh-2rem)] flex flex-col',
         maxWidth,
         // Surface — matches card-hsociety
         'terminal-card bg-bg-card border border-border rounded-2xl shadow-2xl overflow-hidden',
@@ -91,9 +92,9 @@ export const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <RadixDialog.Title className="text-sm font-black text-text-primary uppercase tracking-widest">
+      {/* Header — Fixed at top */}
+      <div className="flex-none flex items-center justify-between px-5 py-4 border-b border-border bg-bg-card/50 backdrop-blur-md z-10">
+        <RadixDialog.Title className="text-xs sm:text-sm font-black text-text-primary uppercase tracking-widest">
           {title}
         </RadixDialog.Title>
         {!hideClose && (
@@ -106,15 +107,18 @@ export const DialogContent = React.forwardRef<
         )}
       </div>
 
-      {/* Optional description */}
-      {description && (
-        <p id="dialog-description" className="px-6 pt-4 text-sm text-text-muted">
-          {description}
-        </p>
-      )}
+      {/* Scrollable Area */}
+      <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain scroll-hover">
+        {/* Optional description */}
+        {description && (
+          <p id="dialog-description" className="px-5 sm:px-8 pt-5 text-sm text-text-muted">
+            {description}
+          </p>
+        )}
 
-      {/* Body */}
-      <div className="p-6">{children}</div>
+        {/* Body */}
+        <div className="p-5 sm:p-8">{children}</div>
+      </div>
     </RadixDialog.Content>
   </RadixDialog.Portal>
 ));

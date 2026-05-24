@@ -53,6 +53,12 @@ export const useScrollY = () => {
         setScrollY(window.scrollY);
       } else if (target instanceof HTMLElement) {
         // Element-level scroll (e.g. a scrollable container inside the page)
+        
+        // SECURITY/UI FIX: Ignore scroll events from within modals/dialogs.
+        // This prevents global UI components (like the Navbar) from reacting
+        // to internal modal scrolling.
+        if (target.closest('[role="dialog"]')) return;
+
         setScrollY(target.scrollTop);
       }
     };

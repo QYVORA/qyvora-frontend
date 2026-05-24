@@ -36,13 +36,13 @@ const STATUS_HEX: Record<string, string> = {
    Each line is one row of glyphs drawn via canvas→texture
 ═══════════════════════════════════════════════ */
 const ASCII_LINES = [
-  ' █████   █████  █████████     ███████      █████████  █████ ██████████ ███████████ █████ █████',
-  '  ███     ███  ███     ███  ███     ███   ███     ███  ███   ███     █ █   ███   █  ███   ███',
-  '  ███     ███  ███         ███       ███ ███           ███   ███  █        ███       ███ ███  ',
-  '  ███████████   █████████  ███       ███ ███           ███   ██████        ███        █████   ',
-  '  ███     ███          ███ ███       ███ ███           ███   ███  █        ███         ███    ',
-  '  ███     ███  ███     ███  ███     ███   ███     ███  ███   ███     █     ███         ███    ',
-  ' █████   █████  █████████     ███████      █████████  █████ ██████████    █████       █████   ',
+  ' █████   █████  █████████     ███████      █████████  █████ ██████████ ███████████ █████ █████      ',
+  '  ███     ███  ███     ███  ███     ███   ███     ███  ███   ███     █ █   ███   █  ███   ███      ',
+  '  ███     ███  ███         ███       ███ ███           ███   ███  █        ███       ███ ███       ',
+  '  ███████████   █████████  ███       ███ ███           ███   ██████        ███        █████        ',
+  '  ███     ███          ███ ███       ███ ███           ███   ███  █        ███         ███         ',
+  '  ███     ███  ███     ███  ███     ███   ███     ███  ███   ███     █     ███         ███         ',
+  ' █████   █████  █████████     ███████      █████████  █████ ██████████    █████       █████        ',
 ];
 
 /* ═══════════════════════════════════════════════
@@ -252,40 +252,39 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 function buildAsciiTexture(isLight: boolean): THREE.CanvasTexture {
-  const CW = 4096;      // canvas width  (circumference resolution)
   const CH = 512;       // canvas height (band height resolution)
 
   const canvas = document.createElement('canvas');
-  canvas.width  = CW;
-  canvas.height = CH;
   const ctx = canvas.getContext('2d')!;
 
-  // Fully transparent background
-  ctx.clearRect(0, 0, CW, CH);
-
   const fontSize = 38;
+  ctx.font = `bold ${fontSize}px "JetBrains Mono", "Courier New", monospace`;
+  
+  // Measure text width once to size the canvas perfectly for one repetition
+  const textW = Math.ceil(ctx.measureText(ASCII_LINES[0]).width);
+  canvas.width  = textW;
+  canvas.height = CH;
+
+  // Fully transparent background
+  ctx.clearRect(0, 0, textW, CH);
+
+  // Re-set font after canvas resize
   ctx.font        = `bold ${fontSize}px "JetBrains Mono", "Courier New", monospace`;
   ctx.textBaseline = 'top';
 
   const accent = '#FFFFFF';
   ctx.fillStyle = hexToRgba(accent, isLight ? 0.75 : 0.9);
 
-  const lineH    = CH / ASCII_LINES.length;
-  const textW    = ctx.measureText(ASCII_LINES[0]).width;
-  // Repeat the text horizontally to tile around full circumference
-  const repeats  = Math.ceil(CW / textW) + 1;
+  const lineH = CH / ASCII_LINES.length;
 
   ASCII_LINES.forEach((line, i) => {
-    for (let r = 0; r < repeats; r++) {
-      ctx.fillText(line, r * textW, i * lineH);
-    }
+    ctx.fillText(line, 0, i * lineH);
   });
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.wrapS  = THREE.RepeatWrapping;
   tex.wrapT  = THREE.ClampToEdgeWrapping;
-  // A single wrap around the cylinder
-  tex.repeat.set(1, 1);
+  // repeat.x will be set in the component loop where geometry info is known
   return tex;
 }
 
@@ -408,17 +407,24 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
        ASCII BAND — 3D cylinder wrapped around the
        globe, attached to the globe Group so it
        rotates with it exactly.
-
-       CylinderGeometry(rTop, rBottom, height, segs)
-       We use a tall-ish thin band above the equator.
-       The cylinder is open-ended (openEnded=true),
-       purely the curved surface face.
     ════════════════════════════════════════════ */
     const asciiBandRadius = 1.25;  // slightly outside the pole tips
     const asciiBandHeight = 0.80;  // band vertical extent — covers most of the globe height
     const asciiBandY      = 0.00;  // centred on equator
 
     const asciiTex = buildAsciiTexture(isLight);
+    
+    // To ensure a seamless loop, we calculate how many integer repetitions
+    // are needed to cover the circumference while preserving the text aspect ratio.
+    const textCanvas = asciiTex.image as HTMLCanvasElement;
+    const textW      = textCanvas.width;
+    const textH      = textCanvas.height;
+    const circumference = 2 * Math.PI * asciiBandRadius;
+    
+    // Ideal repetitions = (Circumference / 3DHeight) / (CanvasWidth / CanvasHeight)
+    const idealRepeatX = (circumference / asciiBandHeight) * (textH / textW);
+    const repeatX      = Math.round(idealRepeatX) || 1;
+    asciiTex.repeat.set(repeatX, 1);
 
     const bandGeo = new THREE.CylinderGeometry(
       asciiBandRadius,  // top radius
@@ -439,8 +445,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
     const bandMesh = new THREE.Mesh(bandGeo, bandMat);
     bandMesh.position.y = asciiBandY;
-    // No extra rotation needed — it inherits globe.rotation.y automatically
-    globe.add(bandMesh);   // ← attached to globe group = rotates with it
+    globe.add(bandMesh);
 
     /* ── Target pins ── */
     type PingObj = { ring: THREE.Mesh; phase: number; isHome: boolean };
