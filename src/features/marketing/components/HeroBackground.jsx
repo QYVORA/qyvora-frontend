@@ -185,7 +185,7 @@ function StreamFloor({ speedScale = 0.58 }) {
         blending:    THREE.NormalBlending,
         side:        THREE.DoubleSide,
       }),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [] // eslint-disable-line
   );
 
   // Read real canvas size from the DOM element on first mount
