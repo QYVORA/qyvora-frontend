@@ -55,7 +55,7 @@ const FeaturedCard: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-[350px] w-full mx-auto"
+      className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-[320px] w-full mx-auto"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {/* Image */}
@@ -170,7 +170,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const isSingle  = displayed.length === 1;
 
   return (
-    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-0">
+    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
         {/* Loading skeleton */}
         {loading ? (
@@ -191,8 +191,8 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
         /* Single bootcamp: Header + card vertically aligned on left, rocket on right */
         ) : isSingle ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_280px] gap-8 lg:gap-20 items-center">
-            <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_280px] gap-8 lg:gap-16 items-center">
+            <div className="flex flex-col gap-5">
               {/* Eyebrow */}
               <div className="flex items-center gap-3">
                 <div className="h-[1px] w-8 bg-accent/40" />
@@ -209,7 +209,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   align="left"
                   animated
                   compact
-                  className="mb-1.5"
+                  className="mb-1"
                 />
                 <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
                   Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
@@ -232,7 +232,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         ) : (
           <>
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-2">
               <div className="h-[1px] w-8 bg-accent/40" />
               <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
                 Offensive Security Training
@@ -240,14 +240,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
             </div>
 
             {/* Heading */}
-            <div className="flex flex-col mb-4 lg:mb-3">
+            <div className="flex flex-col mb-3 lg:mb-2">
               <AsciiHeading
                 text="Bootcamps"
                 font="ANSI Shadow"
                 align="left"
                 animated
                 compact
-                className="mb-1.5"
+                className="mb-1"
               />
               <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
                 Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
@@ -276,7 +276,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                     style={{ boxShadow: 'var(--card-shimmer)' }}
                   >
                     {/* Image thumbnail */}
-                    <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '48%' }}>
+                    <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '44%' }}>
                       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
                       {image && (
                         <img

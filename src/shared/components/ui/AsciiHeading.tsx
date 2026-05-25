@@ -288,7 +288,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
             'font-mono font-black uppercase tracking-tighter text-2xl sm:text-3xl leading-none',
             'ascii-text-beam ascii-text-beam-fast',
           )}
-          style={{ color: color || '#FFFFFF' }}
+          style={{ color: color || 'inherit' }}
         >
           <span className="text-accent/60 mr-2 opacity-70 select-none">{">"}</span>
           {text}
@@ -316,7 +316,7 @@ const AsciiHeading: React.FC<AsciiHeadingProps> = ({
         )}
         style={{
           textAlign: align as React.CSSProperties['textAlign'],
-          color: color || '#FFFFFF',
+          color: color || 'inherit',
         }}
       >
         {text}

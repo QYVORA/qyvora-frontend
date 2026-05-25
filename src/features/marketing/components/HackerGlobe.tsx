@@ -272,7 +272,7 @@ function buildAsciiTexture(isLight: boolean): THREE.CanvasTexture {
   ctx.font        = `bold ${fontSize}px "JetBrains Mono", "Courier New", monospace`;
   ctx.textBaseline = 'top';
 
-  const accent = '#FFFFFF';
+  const accent = isLight ? '#000000' : '#FFFFFF';
   ctx.fillStyle = hexToRgba(accent, isLight ? 0.75 : 0.9);
 
   const lineH = CH / ASCII_LINES.length;

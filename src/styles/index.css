@@ -27,6 +27,11 @@
   --color-border-strong:  rgba(136, 173, 124, 0.18);
   --dot-color:            rgba(136, 173, 124, 0.05);
 
+  /* ── ASCII Beam (Dark) ── */
+  --ascii-beam-low:       rgba(255, 255, 255, 0.2);
+  --ascii-beam-mid:       rgba(255, 255, 255, 0.5);
+  --ascii-beam-high:      rgba(255, 255, 255, 1);
+
   /* ── Code highlighting ── */
   --color-code-bg:              #0d0d0d;
   --color-code-keyword:         #88AD7C;
@@ -46,8 +51,8 @@
 }
 
 [data-theme="light"] {
-  --color-bg:             #eff2ef; /* Soft, warm sage-gray (easier on eyes, organic brand match) */
-  --color-bg-card:        #ffffff;
+  --color-bg:             #ffffff; /* Pure white background */
+  --color-bg-card:        #eff2ef; /* Ash/sage color for cards (from previous bg) */
   --color-bg-elevated:    #f7faf7; /* Tinted white-sage for elevation */
   --color-accent:         #375e2b; /* Deep organic brand green for light theme readability */
   --color-accent-dim:     rgba(55, 94, 43, 0.06);
@@ -58,6 +63,11 @@
   --color-border:         rgba(55, 94, 43, 0.11); /* Soft green-tinted border */
   --color-border-strong:  rgba(55, 94, 43, 0.28);
   --dot-color:            rgba(55, 94, 43, 0.05);
+
+  /* ── ASCII Beam (Light) ── */
+  --ascii-beam-low:       #0a100a;
+  --ascii-beam-mid:       #1a201a;
+  --ascii-beam-high:      #5a605a;
 
   /* ── Code highlighting (light) ── */
   --color-code-bg:              #e8ece8;
@@ -93,11 +103,11 @@
 
   /* ── Force all headings to white in dark mode ── */
   h1, h2, h3, h4, h5, h6, pre[role="heading"] {
-    color: #FFFFFF !important;
+    color: #FFFFFF;
   }
 
   h1 *, h2 *, h3 *, h4 *, h5 *, h6 *, pre[role="heading"] * {
-    color: inherit !important;
+    color: inherit;
   }
 
   .text-accent {
@@ -110,8 +120,9 @@
   [data-theme="light"] h3, 
   [data-theme="light"] h4, 
   [data-theme="light"] h5, 
-  [data-theme="light"] h6 {
-    color: var(--color-text-primary) !important;
+  [data-theme="light"] h6,
+  [data-theme="light"] pre[role="heading"] {
+    color: var(--color-text-primary);
   }
 
   :root {
@@ -203,15 +214,15 @@
   }
 
   .ascii-text-beam {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--ascii-beam-mid);
     background:
       linear-gradient(
         115deg,
-        rgba(255, 255, 255, 0.3) 0%,
-        rgba(255, 255, 255, 1) 15%,
-        rgba(255, 255, 255, 0.5) 30%,
-        rgba(255, 255, 255, 0.2) 45%,
-        rgba(255, 255, 255, 0.2) 100%
+        var(--ascii-beam-low) 0%,
+        var(--ascii-beam-high) 15%,
+        var(--ascii-beam-mid) 30%,
+        var(--ascii-beam-low) 45%,
+        var(--ascii-beam-low) 100%
       );
     background-size: 240% 100%;
     background-position: 120% 0;
