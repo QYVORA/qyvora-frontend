@@ -37,7 +37,8 @@ interface PartnerLogoProps {
   index: number;
 }
 
-const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
+const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => {
+  return (
   <div className="flex-none flex items-center justify-center mx-10 md:mx-20 lg:mx-24">
     {src ? (
       <img
@@ -50,13 +51,13 @@ const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
       />
     ) : (
       <span
+        className="text-text-muted/30"
         style={{
           fontFamily: 'monospace',
           fontSize: '10px',
           fontWeight: 900,
           textTransform: 'uppercase',
           letterSpacing: '0.3em',
-          color: 'rgba(238,240,238,0.3)',
           userSelect: 'none',
         }}
       >
@@ -64,7 +65,8 @@ const PartnerLogo: React.FC<PartnerLogoProps> = ({ src, label, index }) => (
       </span>
     )}
   </div>
-);
+  );
+};
 
 // ── Main section ──────────────────────────────────────────────────────────────
 

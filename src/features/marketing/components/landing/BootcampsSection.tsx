@@ -60,12 +60,12 @@ const FeaturedCard: React.FC<{
     >
       {/* Image */}
       <div className="relative flex-none overflow-hidden bg-bg w-full h-40 sm:h-48 lg:h-full lg:w-[42%]">
-        <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
+        <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none hidden dark:block" />
         {image ? (
           <img
             src={image}
             alt={`${title} cover`}
-            className="absolute inset-0 h-full w-full object-cover opacity-80 transition-all duration-700 group-hover:scale-[1.05] group-hover:opacity-90"
+            className="absolute inset-0 h-full w-full object-cover dark:opacity-80 transition-all duration-700 dark:group-hover:scale-[1.05] dark:group-hover:opacity-100"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -74,11 +74,11 @@ const FeaturedCard: React.FC<{
         )}
         {/* Mobile: subtle overlay instead of gradient fade */}
         <div
-          className="absolute inset-0 pointer-events-none z-10 lg:hidden bg-bg-card/20"
+          className="absolute inset-0 pointer-events-none z-10 hidden dark:block lg:hidden dark:bg-bg-card/20"
         />
         {/* Desktop: subtle overlay instead of gradient fade */}
         <div
-          className="absolute inset-0 pointer-events-none z-10 hidden lg:block bg-bg-card/20"
+          className="absolute inset-0 pointer-events-none z-10 hidden dark:lg:block dark:bg-bg-card/20"
         />
         <div className="absolute right-3 top-3 z-20">
           <span className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.25em] backdrop-blur-md ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
@@ -277,16 +277,16 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   >
                     {/* Image thumbnail */}
                     <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '44%' }}>
-                      <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
+                      <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none hidden dark:block" />
                       {image && (
                         <img
                           src={image}
                           alt={`${title} cover`}
-                          className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-[1.03] group-hover:opacity-85 transition-all duration-500"
+                          className="absolute inset-0 w-full h-full object-cover dark:opacity-70 dark:group-hover:scale-[1.03] dark:group-hover:opacity-100 transition-all duration-500"
                         />
                       )}
                       <div
-                        className="absolute inset-0 pointer-events-none z-10 bg-bg-card/20"
+                        className="absolute inset-0 pointer-events-none z-10 hidden dark:block dark:bg-bg-card/20"
                       />
                       <span className={`absolute left-3 top-3 z-20 rounded-sm border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
                         {level}

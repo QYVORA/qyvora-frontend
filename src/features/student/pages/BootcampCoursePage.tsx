@@ -458,7 +458,7 @@ const BootcampCourse: React.FC = () => {
                                   />
                                   <div
                                     aria-hidden
-                                    className="pointer-events-none absolute inset-0 bg-black/10"
+                                    className="pointer-events-none absolute inset-0 hidden dark:block dark:bg-black/10"
                                   />
                                   {roomDone && (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">

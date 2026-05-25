@@ -106,12 +106,12 @@ const ServicesSection: React.FC = () => {
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover opacity-50 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-70"
+                    className="w-full h-full object-cover dark:opacity-50 transition-transform duration-1000 dark:group-hover:scale-110 dark:group-hover:opacity-100"
                   />
                   {/* Mobile: subtle overlay instead of gradient fade */}
-                  <div className="absolute inset-0 bg-bg-card/30 opacity-60 lg:hidden" />
+                  <div className="absolute inset-0 pointer-events-none z-10 hidden dark:block dark:bg-bg-card/30 lg:hidden" />
                   {/* Desktop: subtle overlay instead of gradient fade */}
-                  <div className="absolute inset-0 bg-bg-card/30 opacity-60 hidden lg:block" />
+                  <div className="absolute inset-0 pointer-events-none z-10 hidden dark:lg:block dark:bg-bg-card/30" />
 
                   {/* Price badge — enlarged */}
                   <div className="absolute top-3 left-3 bg-bg/80 backdrop-blur-md border border-border/50 px-4 py-2 rounded-lg">
@@ -126,7 +126,7 @@ const ServicesSection: React.FC = () => {
 
                   {/* Title block */}
                   <div className="pb-3 border-b border-border/30">
-                    <h3 className="text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight group-hover:text-white transition-colors leading-none mb-1.5">
+                    <h3 className="text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight group-hover:text-accent dark:group-hover:text-white transition-colors leading-none mb-1.5">
                       {service.title}
                     </h3>
                     {/* Fixed: was <span> which caused "Cannot find name 'span'" in some TSX configs */}

@@ -20,6 +20,7 @@ import React, { Suspense, useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useAdaptiveUi } from "../../../core/hooks/useAdaptiveUi";
+import { useTheme } from "../../../core/contexts/ThemeContext";
 
 
 // ─── Vertex Shader ─────────────────────────────────────────────────────────────
@@ -39,6 +40,7 @@ const STREAM_FRAG = `
   uniform float uTime;
   uniform vec3  uAccent;       // #88AD7C sage green — trail colour
   uniform vec3  uWhite;        // near-white — stream head colour
+  uniform vec3  uBase;         // Base color for trails (black in dark, light-ash in light)
   uniform vec2  uResolution;
   uniform float uPixelDensity;
 
@@ -141,12 +143,8 @@ const STREAM_FRAG = `
 
     float totalLight = clamp(acc, 0.0, 1.0);
 
-    // Three-stop colour ramp: near-black → sage green accent → white
-    //   dim trailing digits  → near-black
-    //   mid trail            → #88AD7C sage green
-    //   stream head peak     → white (from uWhite uniform)
-    vec3 black  = vec3(0.0, 0.008, 0.0);
-    vec3 midCol = mix(black,  uAccent, clamp(totalLight * 1.42, 0.0, 1.0));
+    // Three-stop colour ramp
+    vec3 midCol = mix(uBase,  uAccent, clamp(totalLight * 1.42, 0.0, 1.0));
     vec3 col    = mix(midCol, uWhite,  clamp((totalLight - 0.68) * 3.2, 0.0, 1.0));
 
     // Left/right edge vignette
@@ -160,7 +158,7 @@ const STREAM_FRAG = `
 
 
 // ─── StreamFloor ───────────────────────────────────────────────────────────────
-function StreamFloor({ speedScale = 0.58 }) {
+function StreamFloor({ speedScale = 0.58, isLight }) {
   const matRef  = useRef();
   const meshRef = useRef();
   const { size, gl } = useThree();
@@ -173,9 +171,11 @@ function StreamFloor({ speedScale = 0.58 }) {
         uniforms: {
           uTime:         { value: 0 },
           // #88AD7C — matches --color-accent in your dark theme CSS
-          uAccent:       { value: new THREE.Color(0x88 / 255, 0xAD / 255, 0x7C / 255) },
+          uAccent:       { value: isLight ? new THREE.Color(0x37 / 255, 0x5E / 255, 0x2B / 255) : new THREE.Color(0x88 / 255, 0xAD / 255, 0x7C / 255) },
           // Soft warm white for the stream head glow
-          uWhite:        { value: new THREE.Color(0.92, 0.96, 0.90) },
+          uWhite:        { value: isLight ? new THREE.Color(0.2, 0.3, 0.2) : new THREE.Color(0.92, 0.96, 0.90) },
+          // Base trail color
+          uBase:         { value: isLight ? new THREE.Color(0.95, 0.95, 0.95) : new THREE.Color(0, 0.008, 0) },
           // Initialise to a safe fallback — useEffects below correct it immediately
           uResolution:   { value: new THREE.Vector2(1920, 1080) },
           uPixelDensity: { value: Math.min(window.devicePixelRatio || 1, 2) },
@@ -185,7 +185,7 @@ function StreamFloor({ speedScale = 0.58 }) {
         blending:    THREE.NormalBlending,
         side:        THREE.DoubleSide,
       }),
-    [] // eslint-disable-line
+    [isLight] // eslint-disable-line
   );
 
   // Read real canvas size from the DOM element on first mount
@@ -262,12 +262,12 @@ function CameraRig({ speedScale = 0.58 }) {
 
 
 // ─── Scene ─────────────────────────────────────────────────────────────────────
-function Scene({ speedScale }) {
+function Scene({ speedScale, isLight }) {
   return (
     <>
-      <fog attach="fog" args={["#000000", 8, 26]} />
+      <fog attach="fog" args={[isLight ? "#ffffff" : "#000000", 8, 26]} />
       <CameraRig speedScale={speedScale} />
-      <StreamFloor speedScale={speedScale} />
+      <StreamFloor speedScale={speedScale} isLight={isLight} />
     </>
   );
 }
@@ -276,8 +276,12 @@ function Scene({ speedScale }) {
 // ─── HeroBackground ────────────────────────────────────────────────────────────
 function HeroBackground({ className = "" }) {
   const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const speedScale = constrainedDevice ? 0.34 : 0.52;
   const dpr = useMemo(() => (isMobile ? [1, 1.25] : [1, 1.75]), [isMobile]);
+
+  const bgHex = isLight ? "255,255,255" : "0,0,0";
 
   return (
     <div
@@ -298,7 +302,7 @@ function HeroBackground({ className = "" }) {
         style={{ width: "100%", height: "100%" }}
       >
         <Suspense fallback={null}>
-          <Scene speedScale={speedScale} />
+          <Scene speedScale={speedScale} isLight={isLight} />
         </Suspense>
       </Canvas>
 
@@ -309,8 +313,8 @@ function HeroBackground({ className = "" }) {
           className="absolute inset-0"
           style={{
             background: `linear-gradient(to top,
-              rgba(0,0,0,0.90) 0%,
-              rgba(0,0,0,0.45) 18%,
+              rgba(${bgHex},0.90) 0%,
+              rgba(${bgHex},0.45) 18%,
               transparent 58%)`,
           }}
         />
@@ -318,8 +322,8 @@ function HeroBackground({ className = "" }) {
           className="absolute inset-0"
           style={{
             background: `linear-gradient(to bottom,
-              rgba(0,0,0,0.88) 0%,
-              rgba(0,0,0,0.38) 16%,
+              rgba(${bgHex},0.88) 0%,
+              rgba(${bgHex},0.38) 16%,
               transparent 55%)`,
           }}
         />

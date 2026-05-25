@@ -132,7 +132,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
         {imageGradient && (
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-black/20"
+            className="pointer-events-none absolute inset-0 hidden dark:block dark:bg-black/20"
           />
         )}
         {imageBadges}

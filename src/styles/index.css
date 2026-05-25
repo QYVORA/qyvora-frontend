@@ -459,7 +459,7 @@
 
   /* Section background images — visible in light mode */
   [data-theme="light"] .section-bg-img {
-    opacity: 0.42 !important;
+    opacity: 1 !important;
   }
 
   /* Section overlay — transparent in light mode */
@@ -467,54 +467,51 @@
     background: rgba(5, 7, 6, 0.20);
   }
   [data-theme="light"] .section-bg-overlay {
-    background: rgba(244, 246, 248, 0.30) !important;
-    display: block !important;
+    background: transparent !important;
+    display: none !important;
   }
 
   /* Hero background image */
   [data-theme="light"] .hero-bg-img {
-    opacity: 0.36 !important;
+    opacity: 1 !important;
   }
 
   /* Hero vignette — removed in light mode */
   [data-theme="light"] .hero-vignette {
-    opacity: 0.32 !important;
-    display: block !important;
+    opacity: 0 !important;
+    display: none !important;
   }
 
   /* Radial vignette — removed in light mode */
   [data-theme="light"] .bg-radial-vignette {
-    opacity: 0.24 !important;
-    display: block !important;
+    opacity: 0 !important;
+    display: none !important;
   }
 
-  /* Light theme: keep blur/filter overlays on image-background sections but style them softly */
+  /* Light theme: remove blur/filter overlays on image-background sections */
   [data-theme="light"] .section-bg-img + .section-bg-overlay,
   [data-theme="light"] .section-bg-img ~ .hero-vignette,
   [data-theme="light"] .section-bg-img ~ .bg-radial-vignette {
-    display: block !important;
-    backdrop-filter: blur(12px) !important;
-    background: rgba(239, 242, 239, 0.45) !important;
+    display: none !important;
+    backdrop-filter: none !important;
+    background: transparent !important;
   }
 
   [data-theme="light"] main section .blur-3xl,
-  [data-theme="light"] main section .blur-\[100px\] {
-    filter: blur(100px) !important;
-    opacity: 0.38 !important;
-    background: var(--color-accent) !important;
-    mix-blend-mode: multiply; /* blends softly with the light background */
+  [data-theme="light"] main section .blur-\[100px\],
+  [data-theme="light"] .blur-3xl,
+  [data-theme="light"] .blur-\[100px\],
+  [data-theme="light"] .blur-\[120px\] {
+    display: none !important;
   }
 
-  [data-theme="light"] main section .backdrop-blur-sm {
-    backdrop-filter: blur(6px) !important;
-    background: rgba(255, 255, 255, 0.40) !important;
-    border-color: rgba(55, 94, 43, 0.08) !important;
-  }
-
-  [data-theme="light"] main section .backdrop-blur-md {
-    backdrop-filter: blur(16px) !important;
-    background: rgba(255, 255, 255, 0.60) !important;
-    border-color: rgba(55, 94, 43, 0.12) !important;
+  [data-theme="light"] main section .backdrop-blur-sm,
+  [data-theme="light"] main section .backdrop-blur-md,
+  [data-theme="light"] .backdrop-blur-sm,
+  [data-theme="light"] .backdrop-blur-md {
+    backdrop-filter: none !important;
+    background: transparent !important;
+    border-color: var(--color-border) !important;
   }
 
   [data-theme="light"] .light-theme-hide-bg-overlay,
@@ -882,15 +879,16 @@
   /* ── Light theme card overrides ── */
   [data-theme="light"] .card-hsociety,
   [data-theme="light"] .terminal-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f9faf9 100%) !important;
+    background: var(--color-bg-card) !important;
     box-shadow: var(--card-shimmer), var(--card-shadow);
     border-color: var(--color-border);
+    transform: none !important;
   }
   [data-theme="light"] .card-hsociety:hover,
   [data-theme="light"] .terminal-card:hover {
-    box-shadow: var(--card-shimmer), 0 16px 36px -8px rgba(55, 94, 43, 0.15), 0 4px 12px rgba(55, 94, 43, 0.05);
+    box-shadow: var(--card-shimmer), 0 10px 25px -5px rgba(55, 94, 43, 0.1);
     border-color: var(--color-border-strong);
-    transform: translateY(-3px);
+    transform: none !important;
   }
 
   /* ── Light theme — elevated surfaces (dropdowns, modals, drawers) ── */
