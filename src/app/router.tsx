@@ -72,6 +72,7 @@ const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashbo
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 
 import PageLoader from '../shared/components/PageLoader';
+import CommunityPopup from '../shared/components/CommunityPopup';
 
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 
@@ -291,6 +292,7 @@ export const AppRouter = () => {
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
 
       </Routes>
+      <CommunityPopup />
     </AnimatePresence>
   );
 };

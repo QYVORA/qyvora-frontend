@@ -26,6 +26,11 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
 
   const whatsappUrl = SITE_CONFIG.social.find((s) => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5';
 
+  const handleJoinCommunity = () => {
+    localStorage.setItem('hsociety_community_joined', '1');
+    window.open(whatsappUrl, '_blank', 'noreferrer');
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
@@ -59,10 +64,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
           </p>
 
           <div className="w-full space-y-4 px-1">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              onClick={handleJoinCommunity}
               className="
                 group relative flex w-full items-center justify-center gap-3 overflow-hidden
                 rounded-2xl bg-[#25D366] py-5 text-sm font-black uppercase tracking-[0.15em]
@@ -75,7 +78,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
               
               <BrandWhatsAppIcon className="h-6 w-6" />
               <span>Join the community to learn more</span>
-            </a>
+            </button>
             
             <button
               onClick={handleClose}
