@@ -47,6 +47,7 @@ interface User {
   role: string;        // Raw role string from backend ('admin', 'student', etc.)
   bootcampId: string;
   bootcampStatus: string;
+  onboardingCompletedAt: string | null;
 }
 
 /**
@@ -90,6 +91,7 @@ interface BackendUser {
   cpPoints?: number;
   bootcampId?: string;
   bootcampStatus?: string;
+  onboardingCompletedAt?: string;
 }
 
 // ─── Context creation ─────────────────────────────────────────────────────────
@@ -149,6 +151,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     role,
     bootcampId: String(backendUser?.bootcampId || ''),
     bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
+    onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
   };
 };
 

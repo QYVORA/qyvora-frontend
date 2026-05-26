@@ -85,10 +85,13 @@
  */
 
 import { Outlet, useMatch } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../../core/contexts/AuthContext';
 // The student-specific fixed topbar (includes mobile bottom nav internally).
 import StudentTopbar from '../../features/student/components/layout/StudentTopbar';
 // The student-specific right rail sidebar (desktop only).
 import StudentRightRail from '../../features/student/components/layout/StudentRightRail';
+import WelcomeModal from '../../features/student/components/WelcomeModal';
 import CookieConsent from '../components/CookieConsent';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
@@ -120,6 +123,14 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
  * `const StudentLayout = () => { ... return (...) }` form with a function body.
  */
 const StudentLayout = () => {
+  const { user, loading } = useAuth();
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loading && user && !user.onboardingCompletedAt && !user.isAdmin) {
+      setWelcomeOpen(true);
+    }
+  }, [loading, user]);
 
   // ── Route Detection ─────────────────────────────────────────────────────────
   //
@@ -248,6 +259,9 @@ const StudentLayout = () => {
 
       {/* Cookie Consent banner */}
       <CookieConsent />
+
+      {/* Welcome Modal for new operators */}
+      <WelcomeModal open={welcomeOpen} onOpenChange={setWelcomeOpen} />
     </div>
   );
 };
