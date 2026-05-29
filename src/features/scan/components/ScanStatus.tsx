@@ -1,5 +1,6 @@
 import React from 'react';
-import { Activity, Shield, Terminal, Zap } from 'lucide-react';
+import { Activity, Terminal, Zap } from 'lucide-react';
+import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 
 interface ScanStatusProps {
   scanId: string;
@@ -70,7 +71,7 @@ const ScanStatus: React.FC<ScanStatusProps> = ({ scanId, status, progress, targe
 
         {status === 'running' && (
           <div className="mt-8 flex items-start gap-4 p-4 bg-cyan-500/5 border border-cyan-500/10 rounded-xl">
-            <Shield className="w-4 h-4 text-cyan-500 mt-0.5 shrink-0" />
+            <AnansiLogo size={20} minimal className="mt-0.5 shrink-0" />
             <div>
               <span className="text-[10px] font-black text-cyan-500 uppercase tracking-widest block mb-1">Active Intelligence Gathering</span>
               <p className="text-[11px] text-cyan-500/70 leading-relaxed font-mono italic">

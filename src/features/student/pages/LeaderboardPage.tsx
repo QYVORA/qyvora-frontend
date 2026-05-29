@@ -27,7 +27,7 @@ const LeaderboardRow: React.FC<{ entry: any; rank: number; delay: number; onClic
       animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
       transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
       onClick={onClick}
-      className={`rounded-lg border p-3 md:p-4 lg:p-5 flex items-center gap-3 md:gap-4 cursor-pointer transition-colors ${
+      className={`rounded-lg border px-3 py-5 md:px-4 md:py-6 lg:px-5 lg:py-6 flex items-center gap-3 md:gap-4 cursor-pointer transition-colors ${
         isFirst
           ? 'border-accent/40 bg-accent-dim hover:border-accent/60'
           : 'border-border bg-bg hover:border-accent/30'
@@ -174,7 +174,7 @@ const Leaderboard: React.FC = () => {
 
         {/* ── List ── */}
         {loading && operators.length === 0 ? (
-          <div className="space-y-2.5 md:space-y-3">
+          <div className="space-y-4">
             {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
               <div key={i} className="rounded-lg border border-border bg-bg p-3 md:p-4 flex items-center gap-3 animate-pulse">
                 <div className="w-10 md:w-14 h-8 bg-accent-dim/30 rounded flex-none" />
@@ -197,7 +197,7 @@ const Leaderboard: React.FC = () => {
             No operators match your search.
           </div>
         ) : (
-          <div className="space-y-2.5 md:space-y-3">
+          <div className="flex flex-col gap-5">
             {paged.map((op, i) => {
               const globalRank = (page - 1) * PAGE_SIZE + i + 1;
               const handle = op.handle || op.name || 'Anonymous';

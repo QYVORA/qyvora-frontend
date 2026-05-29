@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Search, Loader2, Terminal, Shield } from 'lucide-react';
+import { Search, Loader2, Terminal } from 'lucide-react';
+import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 
 interface ScanFormProps {
   onStartScan: (target: string) => void;
@@ -18,8 +19,8 @@ const ScanForm: React.FC<ScanFormProps> = ({ onStartScan, isLoading }) => {
 
   return (
     <div className="terminal-card p-6 md:p-8 lg:p-10 relative overflow-hidden">
-      <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-        <Shield size={120} className="text-cyan-500" />
+      <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
+        <AnansiLogo size={160} minimal />
       </div>
 
       <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-8">

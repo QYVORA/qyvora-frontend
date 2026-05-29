@@ -59,12 +59,12 @@ const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-screen lg:h-screen lg:overflow-hidden relative grid grid-cols-1 lg:grid-cols-2">
       <HeroBackground className="opacity-50" />
       <AuthHero />
-      <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative">
-        <div className="absolute top-6 left-6 z-20 lg:hidden flex items-center justify-center w-10 h-10 bg-black/50 rounded-full backdrop-blur-sm">
-          <Link to="/" className="inline-flex items-center gap-1 text-sm font-bold text-white hover:text-accent uppercase tracking-widest transition-colors">
+      <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative lg:backdrop-blur-xl lg:h-full lg:overflow-y-auto">
+        <div className="absolute top-6 left-6 z-20 lg:hidden">
+          <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 bg-text-primary text-bg rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:brightness-110 active:scale-95">
             <ArrowLeft className="w-4 h-4" /> Home
           </Link>
         </div>

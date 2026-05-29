@@ -50,11 +50,11 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
         <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
             <label className={labelCls}>Full Name</label>
-            <input value={form.name} onChange={set('name')} placeholder="Your name" className={inputCls} />
+            <input value={form.name} onChange={set('name')} placeholder="Kwame Mensah" className={inputCls} />
           </div>
           <div>
             <label className={labelCls}>Operator Handle</label>
-            <input value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="handle" className={inputCls} />
+            <input value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame_operator" className={inputCls} />
           </div>
           <div>
             <label className={labelCls}>Organization</label>

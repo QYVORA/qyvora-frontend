@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../../../core/contexts/ToastContext';
 import HeroBackground from '../../marketing/components/HeroBackground';
 import api from '../../../core/services/api';
+import AuthHero from '../components/AuthHero';
 import ChangePasswordForm from '../components/ChangePasswordForm';
 
 const ChangePasswordPage: React.FC = () => {
@@ -52,16 +54,24 @@ const ChangePasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 md:p-12">
+    <div className="min-h-screen lg:h-screen lg:overflow-hidden relative grid grid-cols-1 lg:grid-cols-2">
       <HeroBackground className="opacity-50" />
-      <div className="w-full max-w-lg relative z-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
-          <ChangePasswordForm
-            onSubmit={handleSubmit}
-            isLoading={isLoading}
-            token={urlToken}
-          />
-        </motion.div>
+      <AuthHero />
+      <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative lg:backdrop-blur-xl lg:h-full lg:overflow-y-auto">
+        <div className="absolute top-6 left-6 z-20 lg:hidden">
+          <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 bg-text-primary text-bg rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:brightness-110 active:scale-95">
+            <ArrowLeft className="w-4 h-4" /> Home
+          </Link>
+        </div>
+        <div className="w-full max-w-lg relative z-10">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+            <ChangePasswordForm
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+              token={urlToken}
+            />
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -36,8 +36,8 @@ export const SITE_CONFIG = {
       message: 'Message',
     },
     placeholders: {
-      name: 'Operator Zero',
-      email: 'secure@email.com',
+      name: 'Alhassan Boateng',
+      email: 'operations@yourcompany.africa',
       message: 'Encrypted transmission here...',
     },
   },

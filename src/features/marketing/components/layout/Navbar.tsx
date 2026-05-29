@@ -17,6 +17,7 @@ import {
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import Logo from '../../../../shared/components/brand/Logo';
+import AnansiLogo from '../../../../shared/components/brand/AnansiLogo';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import { ContactTrigger } from '../ContactModal';
 
@@ -200,7 +201,7 @@ const Navbar: React.FC = () => {
                 : 'text-text-primary hover:text-accent'
             }`}
           >
-            <Terminal className="w-4 h-4" /> Anansi
+            <AnansiLogo size={18} minimal /> Anansi
           </Link>
         </div>
 

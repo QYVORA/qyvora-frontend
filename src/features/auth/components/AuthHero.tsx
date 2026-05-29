@@ -20,7 +20,7 @@ const AuthHero: React.FC = () => (
     <div className="relative z-20">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-sm font-bold text-text-muted hover:text-accent uppercase tracking-widest transition-colors"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-text-primary text-bg rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:brightness-110 active:scale-95"
       >
         <ArrowLeft className="w-4 h-4" /> Home
       </Link>

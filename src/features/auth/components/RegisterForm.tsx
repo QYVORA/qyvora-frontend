@@ -20,18 +20,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
         <div className="space-y-2">
           <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
           <div className="relative">
-            <input id="register-handle" type="text" name="handle" required autoComplete="username" placeholder="hsociety_operator"
+            <input id="register-handle" type="text" name="handle" required autoComplete="username" placeholder="kwame_operator"
               className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
             <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
-        </div>
+          </div>
 
-        <div className="space-y-2">
+          {/* Full Name */}
+          <div className="space-y-2">
           <label htmlFor="register-full-name" className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
           <div className="relative">
-            <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Operator Name"
+            <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Kwame Mensah"
               className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
 

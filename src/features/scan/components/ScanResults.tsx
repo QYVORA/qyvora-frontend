@@ -1,12 +1,8 @@
 import React from 'react';
-import { Shield, Server, AlertTriangle, CheckCircle, Target, Activity, FileText } from 'lucide-react';
+import { Server, AlertTriangle, CheckCircle, Target, FileText } from 'lucide-react';
+import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 import type { ScanFullResultsResponse } from '../services/scanApi';
 import { cn } from '../../../shared/utils/cn';
-
-interface ScanResultsProps {
-  results: ScanFullResultsResponse['data'];
-}
-
 const ScanResults: React.FC<ScanResultsProps> = ({ results }) => {
   const getSeverityStyle = (severity: string) => {
     switch (severity.toLowerCase()) {
@@ -54,7 +50,7 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results }) => {
 
         <div className="terminal-card p-8 lg:p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
-            <Activity size={160} className="text-cyan-500" />
+            <AnansiLogo size={160} minimal />
           </div>
 
           <div className="relative z-10 h-full flex flex-col">

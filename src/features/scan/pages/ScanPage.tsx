@@ -7,6 +7,7 @@ import { Terminal, ShieldAlert, CheckCircle2, AlertCircle, Info } from 'lucide-r
 import HeroBackground from '../../marketing/components/HeroBackground';
 import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 
 const ScanPage: React.FC = () => {
   const [target, setTarget] = useState('');
@@ -99,6 +100,8 @@ const ScanPage: React.FC = () => {
             {/* ── Left Column: Heading & Info ── */}
             <div className="flex flex-col">
               <ScrollReveal>
+                <AnansiLogo className="mb-8" size={64} />
+                
                 {/* Eyebrow */}
                 <div className="flex items-center gap-3 mb-4 lg:mb-3">
                   <div className="h-[1px] w-8 bg-accent/40" />

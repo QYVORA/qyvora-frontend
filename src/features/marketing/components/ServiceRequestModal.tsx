@@ -89,7 +89,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   name="name"
                   type="text"
                   required
-                  placeholder="Alhassan Boateng "
+                  placeholder="Alhassan Boateng"
                   className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                 />
               </div>
@@ -103,7 +103,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   name="email"
                   type="email"
                   required
-                  placeholder="email@company.com"
+                  placeholder="operations@yourcompany.africa"
                   className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                 />
               </div>
@@ -116,7 +116,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 <input
                   name="businessName"
                   type="text"
-                  placeholder="HSOCIETY Labs"
+                  placeholder="HSOCIETY Africa"
                   className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                 />
               </div>

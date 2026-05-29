@@ -144,13 +144,13 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
   const meta = getRankMeta(rank);
 
   return (
-    <Link to={`/u/${handle}`}>
+    <Link to={`/u/${handle}`} className="block">
       <motion.div
         initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
-        className={`terminal-card flex items-center gap-4 rounded-2xl border p-4 transition-colors cursor-pointer ${
+        className={`terminal-card flex items-center gap-4 rounded-2xl border px-4 py-5 transition-colors cursor-pointer ${
           meta ? `${meta.border} ${meta.bg}` : 'border-border bg-bg-card'
         }`}
         style={{ boxShadow: 'var(--card-shimmer)' }}
@@ -239,10 +239,10 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           </ScrollReveal>
         </div>
 
-        <div className="md:hidden space-y-2.5 px-2">
+        <div className="md:hidden flex flex-col gap-6 px-2">
           {loading ? (
             [0,1,2,3,4].map(i => (
-              <div key={i} className="rounded-xl border border-border bg-bg-card p-3.5 flex items-center gap-3 animate-pulse">
+              <div key={i} className="rounded-xl border border-border bg-bg-card p-4 flex items-center gap-3 animate-pulse">
                 <div className="w-8 h-5 bg-accent-dim/30 rounded" />
                 <div className="w-8 h-8 rounded-full bg-accent-dim/30" />
                 <div className="flex-1 space-y-1.5">
@@ -253,7 +253,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               </div>
             ))
           ) : leaderboard.length === 0 ? (
-            <div className="p-6 text-center text-text-muted text-sm border border-border rounded-xl bg-bg">
+            <div className="p-8 text-center text-text-muted text-sm border border-border rounded-xl bg-bg">
               No operators on the board yet.
             </div>
           ) : (
@@ -300,7 +300,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
             )}
           </div>
           {rest.length > 0 && !loading && (
-            <div className="flex flex-col gap-3 w-64 xl:w-72 flex-none">
+            <div className="flex flex-col gap-4 w-64 xl:w-72 flex-none">
               <div className="text-[9px] font-black uppercase tracking-[0.25em] text-text-muted px-1">
                 Rising Operators
               </div>
