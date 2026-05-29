@@ -81,7 +81,7 @@ const ServicesSection: React.FC = () => {
                 <img
                   src="/assets/illustrations/bootcamp-operator.webp"
                   alt="Operator illustration"
-                  className="w-full max-h-48 object-contain object-bottom opacity-75 select-none pointer-events-none"
+                  className="w-full max-h-98 object-contain object-bottom  select-none pointer-events-none"
                   draggable={false}
                 />
               </div>
