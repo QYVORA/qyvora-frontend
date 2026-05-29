@@ -134,20 +134,23 @@ const ScanPage: React.FC<ScanPageProps> = ({ dashboardMode = false }) => {
       <div className={`relative z-10 flex items-center pb-32 md:pb-16 ${dashboardMode ? 'min-h-[calc(100vh-6rem)] pt-8' : 'min-h-screen pt-24'}`}>
         <div className="w-full max-w-7xl mx-auto px-4 md:px-10">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
 
-            <div className="flex flex-col items-start justify-center">
+            <div className="flex flex-col items-start justify-center lg:pt-4">
               <ScrollReveal direction="left">
-                <h1 className="text-5xl md:text-7xl font-black text-text-primary tracking-tight mb-2 leading-none text-left w-full">
-                  ANANSI<span className="text-cyan-500">.</span>
-                </h1>
+                <div className="flex items-center gap-5 mb-4 lg:mb-2">
+                  <AnansiHero className="w-16 h-16 lg:hidden" />
+                  <h1 className="text-5xl md:text-7xl font-black text-text-primary tracking-tight leading-none text-left">
+                    ANANSI<span className="text-cyan-500">.</span>
+                  </h1>
+                </div>
 
                 <p className="text-text-secondary text-[10px] font-mono opacity-60 mb-8 leading-relaxed text-left w-full uppercase tracking-widest">
                   Autonomous asset discovery & intelligence.
                 </p>
 
-                <div className="mb-8 w-full flex justify-start">
-                  <AnansiHero className="w-32 h-32 md:w-40 md:h-40 lg:w-64 lg:h-64" />
+                <div className="hidden lg:flex mb-12 w-full justify-start">
+                  <AnansiHero className="lg:w-96 lg:h-96 xl:w-[450px] xl:h-[450px]" />
                 </div>
 
                 <div className="flex items-center gap-3 mb-8 px-4 py-2.5 rounded-xl border border-cyan-500/20 bg-cyan-500/5 w-fit">
@@ -159,7 +162,7 @@ const ScanPage: React.FC<ScanPageProps> = ({ dashboardMode = false }) => {
               </ScrollReveal>
             </div>
 
-            <div className="flex flex-col items-start lg:items-end gap-0">
+            <div className="flex flex-col items-start lg:items-end gap-0 w-full lg:pt-4">
               <ScrollReveal direction="right" delay={0.1} className="w-full">
                 <div className="w-full lg:min-w-[440px]">
                   {showLimitOverlay ? (
