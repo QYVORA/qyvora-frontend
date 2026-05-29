@@ -69,6 +69,9 @@ const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampR
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
 
+// Scan pages
+const ScanPage          = lazy(() => import('../features/scan/pages/ScanPage'));
+
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 
 import PageLoader from '../shared/components/PageLoader';
@@ -171,8 +174,9 @@ export const AppRouter = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location}>
+    <>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
 
         {/* ── Public marketing routes (no auth required) ─────────────────── */}
 
@@ -180,18 +184,9 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
-        </Route>
-
-        {/*
-          PublicLayout wraps standard public pages that need the normal
-          header/footer shell (scroll, nav, footer included).
-        */}
-        <Route element={<PublicLayout />}>
-          {/* /contact is deprecated — redirect to homepage rather than 404 */}
-          <Route path="/contact" element={<Navigate to="/" replace />} />
-
-          {/* Public hacker profile page — accessible without logging in */}
-          <Route path="/u/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+          
+          {/* Anansi Scan Dashboard — Integrated into snap-scroll landing shell */}
+          <Route path="/scan" element={<Wrap scope="Anansi Scan"><ScanPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes (no layout shell — full-page auth forms) ───────── */}
@@ -292,7 +287,8 @@ export const AppRouter = () => {
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
 
       </Routes>
-      <CommunityPopup />
     </AnimatePresence>
+    <CommunityPopup />
+  </>
   );
 };

@@ -21,13 +21,6 @@ const BOOTCAMP_LEVELS: BootcampLevel[] = ['Novice', 'Operator', 'Specialist', 'E
 const normalizeBootcampLevel = (level?: string): BootcampLevel =>
   BOOTCAMP_LEVELS.includes(level as BootcampLevel) ? (level as BootcampLevel) : 'Operator';
 
-const LEVEL_META: Record<BootcampLevel, { color: string; bg: string; border: string }> = {
-  Novice:     { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
-  Operator:   { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
-  Specialist: { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
-  Elite:      { color: 'text-accent', bg: 'bg-accent-dim', border: 'border-border-strong' },
-};
-
 // ─── HPB constants ────────────────────────────────────────────────────────────
 
 const HPB_ID          = 'bc_1775270338500';
@@ -47,7 +40,6 @@ const FeaturedCard: React.FC<{
   const desc     = isHPB ? HPB_DESCRIPTION : (bc.description || '');
   const image    = resolveImg(isHPB ? HPB_IMAGE : bc.image, PHASE_IMGS[idx % PHASE_IMGS.length]);
   const level    = normalizeBootcampLevel(bc.level);
-  const levelCss = LEVEL_META[level];
 
   return (
     <motion.div
@@ -60,28 +52,19 @@ const FeaturedCard: React.FC<{
     >
       {/* Image */}
       <div className="relative flex-none overflow-hidden bg-bg w-full h-40 sm:h-48 lg:h-full lg:w-[42%]">
-        <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none hidden dark:block" />
         {image ? (
           <img
             src={image}
             alt={`${title} cover`}
-            className="absolute inset-0 h-full w-full object-cover dark:opacity-80 transition-all duration-700 dark:group-hover:scale-[1.05] dark:group-hover:opacity-100"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 dark:group-hover:scale-[1.05]"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="font-mono text-4xl font-black text-accent/20 select-none">HPB</span>
           </div>
         )}
-        {/* Mobile: subtle overlay instead of gradient fade */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10 hidden dark:block lg:hidden dark:bg-bg-card/20"
-        />
-        {/* Desktop: subtle overlay instead of gradient fade */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10 hidden dark:lg:block dark:bg-bg-card/20"
-        />
         <div className="absolute right-3 top-3 z-20">
-          <span className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.25em] backdrop-blur-md ${levelCss.color} ${levelCss.bg} ${levelCss.border}`}>
+          <span className="rounded-sm border border-white/60 px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.25em] text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.95)]">
             {level}
           </span>
         </div>
@@ -263,7 +246,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                 const desc   = isHPB ? HPB_DESCRIPTION : (bc.description || '');
                 const image  = resolveImg(isHPB ? HPB_IMAGE : bc.image, PHASE_IMGS[i % PHASE_IMGS.length]);
                 const level  = normalizeBootcampLevel(bc.level);
-                const lvlCss = LEVEL_META[level];
 
                 return (
                   <motion.div
@@ -277,18 +259,14 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   >
                     {/* Image thumbnail */}
                     <div className="relative w-full overflow-hidden bg-bg" style={{ paddingBottom: '44%' }}>
-                      <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none hidden dark:block" />
                       {image && (
                         <img
                           src={image}
                           alt={`${title} cover`}
-                          className="absolute inset-0 w-full h-full object-cover dark:opacity-70 dark:group-hover:scale-[1.03] dark:group-hover:opacity-100 transition-all duration-500"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 dark:group-hover:scale-[1.03]"
                         />
                       )}
-                      <div
-                        className="absolute inset-0 pointer-events-none z-10 hidden dark:block dark:bg-bg-card/20"
-                      />
-                      <span className={`absolute left-3 top-3 z-20 rounded-sm border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest ${lvlCss.color} ${lvlCss.bg} ${lvlCss.border}`}>
+                      <span className="absolute left-3 top-3 z-20 rounded-sm border border-white/60 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-widest text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.95)]">
                         {level}
                       </span>
                     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Ban, Unlock, Search,
-  RefreshCw, Trash2, ChevronLeft, ChevronRight, Users, Mail,
+  RefreshCw, Trash2, ChevronLeft, ChevronRight, Users, Mail, Shield, Copy,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -361,8 +361,23 @@ const AdminDashboardPage: React.FC = () => {
                             <span className="font-mono text-sm text-text-secondary inline-flex items-center gap-1.5 font-bold">
                               <CpLogo className="w-4 h-4" /> {Number(item.cpPoints || 0).toLocaleString()}
                             </span>
-                            {isUserBlocked(item) && <span className="text-red-400 font-black text-[10px] uppercase tracking-widest bg-red-400/10 px-2 py-0.5 rounded border border-red-400/20">BLOCKED</span>}
+                            {isUserBlocked(item) && <span className="text-red-400 font-black text-[10px] uppercase tracking-widest bg-red-400/10 px-2.5 py-0.5 rounded border border-red-400/20">BLOCKED</span>}
                           </div>
+                          {item.recoveryToken && (
+                            <div className="flex items-center gap-2 mt-3 p-2 bg-bg rounded-lg border border-border">
+                              <Shield className="w-3 h-3 text-accent" />
+                              <span className="font-mono text-[10px] text-accent/70 truncate flex-1">{item.recoveryToken}</span>
+                              <button 
+                                onClick={() => {
+                                  navigator.clipboard.writeText(item.recoveryToken || '');
+                                  addToast('Token copied', 'success');
+                                }}
+                                className="p-1 hover:text-white"
+                              >
+                                <Copy className="w-3 h-3" />
+                              </button>
+                            </div>
+                          )}
                         </div>
                         <div className="grid grid-cols-2 gap-3 pt-2">
                           <button
@@ -394,7 +409,7 @@ const AdminDashboardPage: React.FC = () => {
                       <table className="w-full text-left min-w-[860px]">
                         <thead className="border-b-2 border-border bg-bg/50 backdrop-blur-sm">
                           <tr>
-                            {['User','Role','Points','Bootcamp Access','Status','Actions'].map(h => (
+                            {['User','Role','Points','Bootcamp Access','Recovery','Status','Actions'].map(h => (
                               <th key={h} className={`px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted ${h === 'Actions' ? 'text-right' : ''}`}>{h}</th>
                             ))}
                           </tr>
@@ -424,6 +439,31 @@ const AdminDashboardPage: React.FC = () => {
                                 >
                                   {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
                                 </button>
+                              </td>
+                              <td className="px-6 py-5">
+                                {item.recoveryToken ? (
+                                  <div className="flex items-center gap-2 group/token">
+                                    <div className="max-w-[120px] truncate font-mono text-[10px] text-accent/70 bg-bg px-2 py-1 rounded border border-border">
+                                      {item.recoveryToken}
+                                    </div>
+                                    <button 
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(item.recoveryToken || '');
+                                        addToast('Token copied', 'success');
+                                      }}
+                                      className="p-1.5 rounded-lg hover:bg-bg border border-transparent hover:border-border text-text-muted hover:text-accent transition-all"
+                                    >
+                                      <Copy className="w-3.5 h-3.5" />
+                                    </button>
+                                    {item.recoveryTokenAcknowledgedAt && (
+                                      <Tooltip content="User has acknowledged token">
+                                        <Shield className="w-3.5 h-3.5 text-emerald-500" />
+                                      </Tooltip>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <span className="text-[10px] font-black uppercase text-text-muted/50 tracking-widest">N/A (Admin)</span>
+                                )}
                               </td>
                               <td className="px-6 py-5">
                                 {isUserBlocked(item) ? (

@@ -109,18 +109,7 @@ const Landing: React.FC = () => {
           />
         </section>
 
-        {/*Impliment the process section but  redesing to match the design of all other section 
-        on the landing  page make sure that the UI is  clean and has no background soo the Process 
-        section can inherit the  HeroBackground of the main landing page . also make sure the  
-        navber bottom line  that is kept on the   Process section is removed its not needed anymore 
-        make sure the the contents of the process section respect the navber pacebut dont leave any lines or borders to divide the 
-        main contents from the navber space. also the cards on the process section are hugging the bottom of th  viewpot instead
-         being centered on the page . on Desktop screens implement the ASCII heafing  on the process section. and dide the process section like al toehr section are devided 
-         pusht the  header to the left anf the  cards to the  right and group theme in a  4x4  Grif  Only on Desktop  Screens . 
-         on mobile desing the Process  section soo it respect mobile  UI .  make sure you write clean and responsive code  . 
-        */}
-
-        {/* * Process Section */}
+        {/* 1 * Process Section */}
         <SnapSection id="process">
           <ProcessSection />
         </SnapSection>

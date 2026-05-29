@@ -5,6 +5,7 @@ import {
   Home,
   Wrench,
   Mail,
+  Radar,
   LogIn,
   UserPlus,
   LayoutDashboard,
@@ -18,6 +19,7 @@ import { ContactTrigger } from '../ContactModal';
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
   { label: 'Home',    icon: Home,   path: '/'           },
+  { label: 'Scan',    icon: Radar,  path: '/scan'       },
   { label: 'Contact', icon: Mail,   path: '/contact'    },
 ];
 

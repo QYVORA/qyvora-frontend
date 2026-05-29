@@ -192,6 +192,16 @@ const Navbar: React.FC = () => {
           >
             <Mail className="w-4 h-4" /> Contact
           </ContactTrigger>
+          <Link
+            to="/scan"
+            className={`px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors flex items-center gap-2 ${
+              location.pathname.startsWith('/scan')
+                ? 'text-accent'
+                : 'text-text-primary hover:text-accent'
+            }`}
+          >
+            <Terminal className="w-4 h-4" /> Anansi
+          </Link>
         </div>
 
         {/* ── Right controls ───────────────────────────────────────────────── */}
