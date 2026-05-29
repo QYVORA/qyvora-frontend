@@ -237,6 +237,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/leaderboard"   element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/scan"          element={<Wrap scope="Authenticated Scan"><StudentOnly><ScanPage dashboardMode /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
@@ -257,6 +258,7 @@ export const AppRouter = () => {
           <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/marketplace"      element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/wallet"           element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
+          <Route path="/scan-authenticated" element={<Wrap scope="Authenticated Scan"><StudentOnly><ScanPage dashboardMode /></StudentOnly></Wrap>} />
           <Route path="/profile"          element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/notifications"    element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/settings"         element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />

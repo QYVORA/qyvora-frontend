@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = '/api';
+import api from '../../../core/services/api';
 
 export interface ScanResponse {
   success: boolean;
@@ -10,9 +8,13 @@ export interface ScanResponse {
     status: 'queued' | 'running' | 'completed' | 'failed';
     progress: number;
     riskScore?: number;
+    guestScanLimit?: number;
+    guestScansRemaining?: number;
     message?: string;
     error?: string | null;
   };
+  code?: string;
+  error?: string;
 }
 
 export interface ScanResult {
@@ -52,17 +54,17 @@ export interface ScanFullResultsResponse {
 
 const scanApi = {
   startScan: async (target: string): Promise<ScanResponse> => {
-    const response = await axios.post(`${API_BASE_URL}/scan`, { target });
+    const response = await api.post('/scan', { target });
     return response.data;
   },
 
   getScanStatus: async (scanId: string): Promise<ScanResponse> => {
-    const response = await axios.get(`${API_BASE_URL}/scan/${scanId}`);
+    const response = await api.get(`/scan/${scanId}`);
     return response.data;
   },
 
   getScanResults: async (scanId: string): Promise<ScanFullResultsResponse> => {
-    const response = await axios.get(`${API_BASE_URL}/scan/${scanId}/results`);
+    const response = await api.get(`/scan/${scanId}/results`);
     return response.data;
   },
 };

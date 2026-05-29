@@ -6,6 +6,7 @@ import type { BootcampLevel } from '../../../student/components/BootcampCard';
 import { PHASE_IMGS, type Bootcamp } from './types';
 import { resolveImg } from './helpers';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
+import ScrollReveal from '../../../../shared/components/ScrollReveal';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -33,8 +34,7 @@ const HPB_IMAGE       = '/assets/bootcamp/hpb-cover.webp';
 const FeaturedCard: React.FC<{
   bc: Bootcamp;
   idx: number;
-  shouldReduceMotion: boolean;
-}> = ({ bc, idx, shouldReduceMotion }) => {
+}> = ({ bc, idx }) => {
   const isHPB    = bc.id === HPB_ID;
   const title    = isHPB ? HPB_TITLE       : bc.title;
   const desc     = isHPB ? HPB_DESCRIPTION : (bc.description || '');
@@ -42,11 +42,7 @@ const FeaturedCard: React.FC<{
   const level    = normalizeBootcampLevel(bc.level);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong lg:flex-row lg:h-[320px] w-full mx-auto"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
@@ -100,21 +96,14 @@ const FeaturedCard: React.FC<{
           Enrol Now <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
         </Link>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
 // ─── RocketSidebar ────────────────────────────────────────────────────────────
 
 const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => (
-  <motion.div
-    initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-    // Increased padding and adjusted alignment
-    className="flex flex-col items-center justify-center h-full min-h-0 py-2 pl-0 lg:pl-10"
-  >
+  <div className="flex flex-col items-center justify-center h-full min-h-0 py-2 pl-0 lg:pl-10">
     {/* Eyebrow label */}
     <p className="text-[9px] font-black uppercase tracking-[0.28em] text-text-muted mb-4 text-center">
       Launch your career
@@ -130,7 +119,6 @@ const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduce
       <motion.img
         src="/assets/illustrations/rocket-visual.webp"
         alt="Launch your career"
-        // Increased max-w for a more significant illustration presence
         className="relative z-10 w-full max-w-[200px] lg:max-w-[240px] xl:max-w-[280px] h-auto object-contain select-none pointer-events-none drop-shadow-[0_0_24px_rgba(136,173,124,0.3)]"
         draggable={false}
         animate={shouldReduceMotion ? {} : { y: [0, -15, 0] }}
@@ -142,7 +130,7 @@ const RocketSidebar: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduce
     <p className="text-[10px] font-mono text-text-muted text-center opacity-50 mt-3 leading-relaxed max-w-[160px]">
       From zero to operator.<br />One bootcamp at a time.
     </p>
-  </motion.div>
+  </div>
 );
 
 // ─── BootcampsSection ─────────────────────────────────────────────────────────
@@ -175,7 +163,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         /* Single bootcamp: Header + card vertically aligned on left, rocket on right */
         ) : isSingle ? (
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_280px] gap-8 lg:gap-16 items-center">
-            <div className="flex flex-col gap-5">
+            <ScrollReveal direction="left" className="flex flex-col gap-5">
               {/* Eyebrow */}
               <div className="flex items-center gap-3">
                 <div className="h-[1px] w-8 bg-accent/40" />
@@ -201,45 +189,52 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
               {/* Card - Taller and narrower on desktop */}
               <div className="min-h-0 w-full lg:max-w-2xl">
-                <FeaturedCard bc={displayed[0]} idx={0} shouldReduceMotion={!!shouldReduceMotion} />
+                <FeaturedCard bc={displayed[0]} idx={0} />
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Rocket sidebar — hidden on mobile */}
-            <div className="hidden lg:flex min-h-0">
+            <ScrollReveal direction="right" className="hidden lg:flex min-h-0">
               <RocketSidebar shouldReduceMotion={!!shouldReduceMotion} />
-            </div>
+            </ScrollReveal>
           </div>
 
         /* Multiple bootcamps: card grid */
         ) : (
           <>
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-[1px] w-8 bg-accent/40" />
-              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-                Offensive Security Training
-              </span>
-            </div>
+            <ScrollReveal direction="up" amount={0.2} className="mb-6 lg:mb-8">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-[1px] w-8 bg-accent/40" />
+                <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                  Offensive Security Training
+                </span>
+              </div>
 
-            {/* Heading */}
-            <div className="flex flex-col mb-3 lg:mb-2">
-              <AsciiHeading
-                text="Bootcamps"
-                font="ANSI Shadow"
-                align="left"
-                animated
-                compact
-                className="mb-1"
-              />
-              <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
-                Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
-              </p>
-            </div>
+              {/* Heading */}
+              <div className="flex flex-col">
+                <AsciiHeading
+                  text="Bootcamps"
+                  font="ANSI Shadow"
+                  align="left"
+                  animated
+                  compact
+                  className="mb-1"
+                />
+                <p className="text-text-secondary text-sm max-w-lg leading-relaxed opacity-80">
+                  Phased training tracks with mission-based checkpoints. Pick a program, enroll, and execute.
+                </p>
+              </div>
+            </ScrollReveal>
 
-            <div className={`grid gap-4 grid-cols-1 ${
-              displayed.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'
-            }`}>
+            <ScrollReveal 
+              direction="up" 
+              amount={0.1} 
+              staggerChildren={0.1}
+              className={`grid gap-4 grid-cols-1 ${
+                displayed.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'
+              }`}
+            >
               {displayed.map((bc, i) => {
                 const isHPB  = bc.id === HPB_ID;
                 const title  = isHPB ? HPB_TITLE       : bc.title;
@@ -250,10 +245,10 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                 return (
                   <motion.div
                     key={bc.id}
-                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: 'blur(4px)' }}
-                    whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    variants={{
+                      hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(10px)' },
+                      visible: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
+                    }}
                     className="terminal-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors duration-300 hover:border-border-strong"
                     style={{ boxShadow: 'var(--card-shimmer)' }}
                   >
@@ -301,7 +296,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
                   </motion.div>
                 );
               })}
-            </div>
+            </ScrollReveal>
           </>
         )}
       </div>

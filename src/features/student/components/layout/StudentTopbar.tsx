@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
   Zap, ShoppingBag, User, LogOut, Bell, Settings,
   X, BookOpen, Wallet, ChevronDown, LayoutDashboard, Trophy,
-  ArrowLeft, ClipboardList, ChevronRight,
+  ArrowLeft, ClipboardList, ChevronRight, Radar,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 import { useAuth } from '../../../../core/contexts/AuthContext';
@@ -20,6 +20,7 @@ const NAV_GROUPS = [
     items: [
       { label: 'Marketplace',  icon: ShoppingBag, path: '/dashboard/marketplace',  desc: 'Zero-day market'    },
       { label: 'Wallet',       icon: Wallet,      path: '/dashboard/wallet',       desc: 'CP balance & history' },
+      { label: 'Anansi Scan',  icon: Radar,       path: '/dashboard/scan',         desc: 'Authenticated recon' },
       { label: 'Leaderboard',  icon: Trophy,      path: '/dashboard/leaderboard',  desc: 'Hall of Shadows'    },
       { label: 'Achievements', icon: Trophy,      path: '/dashboard/achievements', desc: 'Operational milestones' },
     ],
@@ -30,10 +31,11 @@ const NAV_GROUPS = [
 const MOBILE_PRIMARY = [
   { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
   { label: 'Bootcamp', icon: BookOpen,        path: '/dashboard/bootcamps'  },
-  { label: 'Market',   icon: ShoppingBag,     path: '/dashboard/marketplace' },
+  { label: 'Scan',     icon: Radar,           path: '/dashboard/scan' },
 ];
 
 const MOBILE_MORE = [
+  { label: 'Market',        icon: ShoppingBag, path: '/dashboard/marketplace'   },
   { label: 'Wallet',        icon: Wallet,    path: '/dashboard/wallet'        },
   { label: 'Achievements',  icon: Trophy,    path: '/dashboard/achievements'  },
   { label: 'Profile',       icon: User,      path: '/dashboard/profile'       },

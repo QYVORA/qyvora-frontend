@@ -440,7 +440,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       transparent: true,
       opacity:     1.0,
       side:        THREE.DoubleSide,   // visible from both inside and outside
-      depthWrite:  false,
+      depthWrite:  true,
+      alphaTest:   0.5,                // strictly opaque or discarded (no blending)
     });
 
     const bandMesh = new THREE.Mesh(bandGeo, bandMat);

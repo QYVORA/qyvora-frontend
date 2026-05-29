@@ -28,22 +28,23 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
 
           {/* Left: description + CP features */}
           <div>
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-4 lg:mb-3">
-              <div className="h-[1px] w-8 bg-accent/40" />
-              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-                Zero-Day Economy
-              </span>
-            </div>
+            <ScrollReveal direction="left">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3 mb-4 lg:mb-3">
+                <div className="h-[1px] w-8 bg-accent/40" />
+                <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                  Zero-Day Economy
+                </span>
+              </div>
 
-            <AsciiHeading 
-              text="EARN" 
-              font="ANSI Shadow" 
-              align="left" 
-              animated 
-              className="mb-8" 
-            />
-            <ScrollReveal>
+              <AsciiHeading 
+                text="EARN" 
+                font="ANSI Shadow" 
+                align="left" 
+                animated 
+                className="mb-8" 
+              />
+              
               <p className="text-text-secondary text-sm mb-6 leading-relaxed">
                 Earn <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> by completing bootcamp rooms
                 and CTF challenges. Every transaction is recorded on the{' '}
@@ -52,12 +53,10 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
                 {BULLETS.map((bullet, i) => (
-                  <ScrollReveal key={bullet} delay={i * 0.04}>
-                    <div className="flex items-center gap-2.5 text-sm text-text-secondary">
-                      <CheckCircle2 className="w-4 h-4 text-accent flex-none" />
-                      <span>{bullet}</span>
-                    </div>
-                  </ScrollReveal>
+                  <div key={bullet} className="flex items-center gap-2.5 text-sm text-text-secondary">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-none" />
+                    <span>{bullet}</span>
+                  </div>
                 ))}
               </div>
 
@@ -71,7 +70,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           </div>
 
           {/* Right: CP coin with HSOCIETY Chain badge */}
-          <ScrollReveal className="flex items-center justify-center" direction="none" delay={0.1}>
+          <ScrollReveal className="flex items-center justify-center" direction="right" delay={0.1}>
             <div className="relative flex items-center justify-center w-full max-w-[560px] h-72 sm:h-80 md:h-[24rem] lg:h-[28rem]">
               <div className="absolute inset-0 m-auto w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
 
