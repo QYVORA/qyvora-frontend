@@ -3,6 +3,11 @@ import { Server, AlertTriangle, CheckCircle, Target, FileText } from 'lucide-rea
 import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 import type { ScanFullResultsResponse } from '../services/scanApi';
 import { cn } from '../../../shared/utils/cn';
+
+interface ScanResultsProps {
+  results: ScanFullResultsResponse['data'];
+}
+
 const ScanResults: React.FC<ScanResultsProps> = ({ results }) => {
   const getSeverityStyle = (severity: string) => {
     switch (severity.toLowerCase()) {
@@ -184,4 +189,3 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results }) => {
 };
 
 export default ScanResults;
-

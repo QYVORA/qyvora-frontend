@@ -46,11 +46,19 @@ const SnapSection: React.FC<{
       className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border bg-transparent md:pt-20 ${className}`}
     >
       <motion.div
-        initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
-        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.1 }}
-        transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        initial={minimizeEffects ? false : { opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)', rotateX: 5 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={minimizeEffects ? { duration: 0.2 } : { 
+          type: 'spring',
+          damping: 30,
+          stiffness: 80,
+          mass: 1,
+          duration: 1,
+          ease: [0.22, 1, 0.36, 1]
+        }}
         className="w-full md:h-full relative z-10"
+        style={{ perspective: '1200px' }}
         data-snap-child=""
       >
         {children}

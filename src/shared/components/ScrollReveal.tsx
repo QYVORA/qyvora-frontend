@@ -10,24 +10,33 @@ interface ScrollRevealProps {
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   /** How much of the element must be visible before triggering. Default: 0.1 */
   amount?: number;
-  /** Scale from value. Default: 0.97 */
+  /** Scale from value. Default: 0.95 */
   scale?: number;
+  /** If true, children will be staggered. Requires children to be motion elements or use variants. */
+  staggerChildren?: number;
 }
 
+/**
+ * ScrollReveal
+ * ─────────────────────────────────────────────────────────────────────────────
+ * A sophisticated reveal-on-scroll component that makes elements "build" into 
+ * place with cinematic easing and optional staggering.
+ */
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   className = '',
   delay = 0,
   direction = 'up',
   amount = 0.1,
-  scale = 0.97,
+  scale = 0.95,
+  staggerChildren = 0,
 }) => {
   const ref = React.useRef(null);
   const shouldReduceMotion = useReducedMotion();
   const { constrainedDevice } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
-  const offset = minimizeEffects ? 0 : 36;
+  const offset = minimizeEffects ? 0 : 50;
 
   const variants: Variants = {
     hidden: {
@@ -35,19 +44,26 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       y: direction === 'up' ? offset : direction === 'down' ? -offset : 0,
       x: direction === 'left' ? offset : direction === 'right' ? -offset : 0,
       scale: minimizeEffects ? 1 : scale,
-      filter: minimizeEffects ? 'none' : 'blur(4px)',
+      rotateX: direction === 'up' ? 10 : direction === 'down' ? -10 : 0,
+      filter: minimizeEffects ? 'none' : 'blur(10px)',
     },
     visible: {
       opacity: 1,
       y: 0,
       x: 0,
       scale: 1,
+      rotateX: 0,
       filter: 'blur(0px)',
       transition: {
-        duration: minimizeEffects ? 0.01 : 0.65,
-        ease: [0.16, 1, 0.3, 1],
+        type: 'spring',
+        damping: 30,
+        stiffness: 100,
+        mass: 1,
+        duration: minimizeEffects ? 0.01 : 0.8,
+        ease: [0.22, 1, 0.36, 1], // Custom cinematic easing
         delay,
-        filter: { duration: minimizeEffects ? 0.01 : 0.4 },
+        staggerChildren: staggerChildren || undefined,
+        filter: { duration: minimizeEffects ? 0.01 : 0.5 },
       },
     },
   };
@@ -60,6 +76,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       viewport={{ once: true, amount }}
       variants={variants}
       className={className}
+      style={{ perspective: '1200px' }} // Adds depth for rotateX
     >
       {children}
     </motion.div>

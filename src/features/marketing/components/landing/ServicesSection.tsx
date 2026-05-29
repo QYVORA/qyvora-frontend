@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { ShieldCheck, Lock, CheckCircle2, ArrowRight } from 'lucide-react';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 import { openServiceRequestModal } from '../ServiceRequestModal';
+import ScrollReveal from '../../../../shared/components/ScrollReveal';
 
 const SERVICES_DATA = [
   {
@@ -36,8 +37,6 @@ const SERVICES_DATA = [
 ];
 
 const ServicesSection: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-6">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
@@ -45,59 +44,63 @@ const ServicesSection: React.FC = () => {
 
           {/* ── Left: Heading Column ── */}
           <div className="lg:pr-6 flex flex-col">
+            <ScrollReveal direction="left" delay={0.1}>
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3 mb-4 lg:mb-3">
+                <div className="h-[1px] w-8 bg-accent/40" />
+                <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
+                  Professional Services
+                </span>
+              </div>
 
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-4 lg:mb-3">
-              <div className="h-[1px] w-8 bg-accent/40" />
-              <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-                Professional Services
-              </span>
-            </div>
-
-            {/* Heading */}
-            <AsciiHeading
-              text="SERVICES"
-              font="ANSI Shadow"
-              align="left"
-              animated
-              compact
-              className="mb-5 lg:mb-4"
-            />
-
-            {/* Description */}
-            <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-4 max-w-sm opacity-80">
-              Low Cost Security Audits and Pentest for Modern Companies and Startups in Africa.
-            </p>
-
-            {/* Trust badge — desktop only */}
-            <div className="hidden lg:flex items-start gap-3 mb-5 opacity-35 hover:opacity-80 transition-opacity duration-500">
-              <ShieldCheck className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-              <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest leading-loose">
-                Trusted for comprehensive Penetration testing and Well Detailed Reports
-              </p>
-            </div>
-
-            {/* ── Illustration — desktop only, no bg, no overlays ── */}
-            <div className="hidden lg:block mt-auto">
-              <img
-                src="/assets/illustrations/bootcamp-operator.webp"
-                alt="Operator illustration"
-                className="w-full max-h-48 object-contain object-bottom opacity-75 select-none pointer-events-none"
-                draggable={false}
+              {/* Heading */}
+              <AsciiHeading
+                text="SERVICES"
+                font="ANSI Shadow"
+                align="left"
+                animated
+                compact
+                className="mb-5 lg:mb-4"
               />
-            </div>
 
+              {/* Description */}
+              <p className="text-text-secondary text-base lg:text-sm leading-relaxed font-mono mb-6 lg:mb-4 max-w-sm opacity-80">
+                Low Cost Security Audits and Pentest for Modern Companies and Startups in Africa.
+              </p>
+
+              {/* Trust badge — desktop only */}
+              <div className="hidden lg:flex items-start gap-3 mb-5 opacity-35 hover:opacity-80 transition-opacity duration-500">
+                <ShieldCheck className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+                <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest leading-loose">
+                  Trusted for comprehensive Penetration testing and Well Detailed Reports
+                </p>
+              </div>
+
+              {/* ── Illustration — desktop only, no bg, no overlays ── */}
+              <div className="hidden lg:block mt-auto">
+                <img
+                  src="/assets/illustrations/bootcamp-operator.webp"
+                  alt="Operator illustration"
+                  className="w-full max-h-48 object-contain object-bottom opacity-75 select-none pointer-events-none"
+                  draggable={false}
+                />
+              </div>
+            </ScrollReveal>
           </div>
 
           {/* ── Right: Cards ── */}
-          <div className="flex flex-col gap-5 lg:gap-4">
-            {SERVICES_DATA.map((service, i) => (
+          <ScrollReveal 
+            direction="right" 
+            staggerChildren={0.15} 
+            className="flex flex-col gap-5 lg:gap-4"
+          >
+            {SERVICES_DATA.map((service) => (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                variants={{
+                  hidden: { opacity: 0, x: 50, filter: 'blur(10px)' },
+                  visible: { opacity: 1, x: 0, filter: 'blur(0px)' }
+                }}
                 className="terminal-card group relative overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-500 hover:border-accent/50 flex flex-col lg:flex-row"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
@@ -125,7 +128,6 @@ const ServicesSection: React.FC = () => {
                     <h3 className="text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors leading-none mb-1.5">
                       {service.title}
                     </h3>
-                    {/* Fixed: was <span> which caused "Cannot find name 'span'" in some TSX configs */}
                     <p className="text-sm font-bold text-accent uppercase tracking-[0.2em]">
                       {service.subtitle}
                     </p>
@@ -177,7 +179,7 @@ const ServicesSection: React.FC = () => {
                 )}
               </motion.div>
             ))}
-          </div>
+          </ScrollReveal>
 
         </div>
       </div>
