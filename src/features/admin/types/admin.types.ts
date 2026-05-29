@@ -11,6 +11,9 @@ export type AdminUser = {
   cpPoints: number;
   bootcampAccessRevoked: boolean;
   blockedUntil?: string | null;
+  recoveryToken?: string;
+  recoveryTokenCreatedAt?: string | null;
+  recoveryTokenAcknowledgedAt?: string | null;
 };
 
 export type Bootcamp = {

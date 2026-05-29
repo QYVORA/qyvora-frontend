@@ -22,6 +22,7 @@ const FOOTER_COLS = [
     links: [
       { label: 'Register', path: '/register' },
       { label: 'Log In',   path: '/login'    },
+      { label: 'Anansi',   path: '/scan'     },
     ],
   },
 ];

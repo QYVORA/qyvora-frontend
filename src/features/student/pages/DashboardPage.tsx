@@ -23,6 +23,7 @@ import {
 } from '../utils/studentExperience';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
+import RecoveryTokenCard from '../components/RecoveryTokenCard';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { useToast } from '../../../core/contexts/ToastContext';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -76,13 +77,9 @@ const Dashboard: React.FC = () => {
         setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
         
         const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
-        const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || 0), 0);
         
-        const dbBalance = extractCpBalance(balanceRes?.data) ?? 0;
-        const onChainBalance = (typeof tokenBalance === 'number') ? tokenBalance : 0;
-        
-        // Take the maximum to avoid showing partial balances
-        const cp = Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0);
+        // Trust the user object's CP balance, which is now resolved on the backend
+        const cp = user?.cp ?? 0;
         
         setCpBalance(cp);
         setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items.slice(0, 1) : []);
@@ -394,6 +391,9 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               )}
+
+              {/* Recovery Token Card */}
+              {!loading && <RecoveryTokenCard />}
             </div>
 
           </div>

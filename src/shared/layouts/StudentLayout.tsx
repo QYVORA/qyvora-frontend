@@ -92,6 +92,7 @@ import StudentTopbar from '../../features/student/components/layout/StudentTopba
 // The student-specific right rail sidebar (desktop only).
 import StudentRightRail from '../../features/student/components/layout/StudentRightRail';
 import WelcomeModal from '../../features/student/components/WelcomeModal';
+import RecoveryTokenModal from '../../features/student/components/RecoveryTokenModal';
 import CookieConsent from '../components/CookieConsent';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
@@ -125,12 +126,15 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
 const StudentLayout = () => {
   const { user, loading } = useAuth();
   const [welcomeOpen, setWelcomeOpen] = useState(false);
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && user && !user.onboardingCompletedAt && !user.isAdmin) {
       setWelcomeOpen(true);
+    } else if (!loading && user && !user.recoveryTokenAcknowledgedAt && !user.isAdmin && !welcomeOpen) {
+      setRecoveryOpen(true);
     }
-  }, [loading, user]);
+  }, [loading, user, welcomeOpen]);
 
   // ── Route Detection ─────────────────────────────────────────────────────────
   //
@@ -262,6 +266,9 @@ const StudentLayout = () => {
 
       {/* Welcome Modal for new operators */}
       <WelcomeModal open={welcomeOpen} onOpenChange={setWelcomeOpen} />
+
+      {/* Recovery Token Modal */}
+      <RecoveryTokenModal open={recoveryOpen} onOpenChange={setRecoveryOpen} />
     </div>
   );
 };

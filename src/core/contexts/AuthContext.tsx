@@ -48,6 +48,7 @@ interface User {
   bootcampId: string;
   bootcampStatus: string;
   onboardingCompletedAt: string | null;
+  recoveryTokenAcknowledgedAt: string | null;
 }
 
 /**
@@ -92,6 +93,7 @@ interface BackendUser {
   bootcampId?: string;
   bootcampStatus?: string;
   onboardingCompletedAt?: string;
+  recoveryTokenAcknowledgedAt?: string;
 }
 
 // ─── Context creation ─────────────────────────────────────────────────────────
@@ -152,6 +154,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     bootcampId: String(backendUser?.bootcampId || ''),
     bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
     onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
+    recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
   };
 };
 
