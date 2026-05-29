@@ -186,43 +186,77 @@ const Dashboard: React.FC = () => {
       >
         <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
-          {/* ── TOP SECTION: USER INFO & STATS CARD ─────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-10 items-start">
+          {/* ── TOP SECTION: MISSION CARD & STATS CARD ─────────────────────── */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-10 items-stretch">
             <div className="lg:col-span-2">
-              <ScrollReveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-                <div>
-                  <h1 className="text-4xl font-black text-text-primary md:text-6xl">
-                    {loading
-                      ? <span className="inline-block h-12 w-48 rounded bg-accent-dim/20 animate-pulse align-middle" />
-                      : handle}
-                  </h1>
-                  {!loading && (
-                    <div className="mt-2 mb-1 inline-flex items-center gap-2">
-                      <span className={`font-mono text-sm font-black ${rankInfo.color}`}>{rankInfo.name}</span>
-                    </div>
-                  )}
-                  <p className="mt-1 max-w-lg text-base text-text-muted">
-                    {loading
-                      ? 'Loading your status…'
-                      : isEnrolled
-                      ? 'Pick up where you left off.'
-                      : 'Choose a bootcamp and start training.'}
-                  </p>
-                </div>
-
-                {/* Stats pills */}
-                {!loading && (
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
-                      <CpLogo className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                      <span className="font-mono text-lg sm:text-xl font-black text-accent truncate">{cpBalance.toLocaleString()}</span>
-                    </div>
-                    {streakDays > 0 && (
-                      <div className="rounded-2xl border-2 border-orange-400/25 bg-orange-400/10 px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
-                        <Flame className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-orange-400" />
-                        <span className="font-mono text-lg sm:text-xl font-black text-orange-400 truncate">{streakDays}d</span>
+              <ScrollReveal className="h-full">
+                {loading ? (
+                  <div className="card-hsociety p-8 animate-pulse space-y-4 h-full">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-3 w-full rounded-full" />
+                    <Skeleton className="h-12 w-48 rounded-xl" />
+                  </div>
+                ) : (
+                  <div className="card-hsociety p-8 relative overflow-hidden h-full flex flex-col justify-center border-accent/30 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.15)]">
+                    <OptionalDecorImage
+                      src={STUDENT_DECOR.bootcampOperator}
+                      className="pointer-events-none absolute -right-8 -top-8 h-48 w-auto object-contain opacity-[0.08] select-none"
+                    />
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="h-[1px] w-8 bg-accent/40" />
+                        <span className="text-xs font-black uppercase tracking-[0.3em] text-accent">
+                          {isEnrolled
+                            ? (overview?.progressMeta?.currentPhase?.title || 'Active Deployment')
+                            : 'New Mission'}
+                        </span>
                       </div>
-                    )}
+                      
+                      <h2 className="mb-6 text-3xl md:text-5xl font-black leading-tight text-text-primary max-w-2xl">
+                        {nextMission
+                          ? nextMission.title
+                          : isEnrolled
+                          ? 'Pick up where you left off'
+                          : 'Begin your journey into the offensive underground'}
+                      </h2>
+
+                      {nextRank && (
+                        <div className="mb-8 max-w-md">
+                          <div className="mb-3 flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
+                              Target Rank: <span className="text-accent">{nextRank.name}</span> ({nextRank.min - cpBalance} CP Remaining)
+                            </span>
+                            <span className="font-mono text-xs font-black text-accent">{rankProgress}%</span>
+                          </div>
+                          <div className="h-2 overflow-hidden rounded-full bg-accent-dim/30 border border-accent/10">
+                            <div
+                              className="h-full rounded-full bg-accent shadow-[0_0_10px_rgba(var(--color-accent-rgb),0.5)] transition-all duration-1000"
+                              style={{ width: `${rankProgress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap items-center gap-4">
+                        <Link
+                          to={continuePath}
+                          className="btn-primary flex items-center justify-center gap-3 px-8 py-4 text-sm font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+                        >
+                          {isEnrolled ? 'Continue Mission' : 'Browse Operations'}
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                        
+                        {!loading && (
+                          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-bg/40 border border-border/50 backdrop-blur-sm">
+                            <CpLogo className="h-6 w-6" />
+                            <span className="font-mono text-2xl font-black text-text-primary tracking-tight">
+                              {cpBalance.toLocaleString()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
               </ScrollReveal>
@@ -233,65 +267,15 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* ── MAIN CONTENT: MISSION + BOOTCAMPS + MARKET ─────────────────── */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8 items-start">
-
-            {/* 1. PRIMARY ACTION CARD */}
-            <ScrollReveal>
-              {loading ? (
-                <div className="card-hsociety p-6 animate-pulse space-y-3">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-5 w-3/4" />
-                  <Skeleton className="h-2 w-full rounded-full" />
-                  <Skeleton className="h-11 w-full rounded-md" />
-                </div>
-              ) : (
-                <div className="card-hsociety p-6 relative overflow-hidden h-full flex flex-col">
-                  <OptionalDecorImage
-                    src={STUDENT_DECOR.bootcampOperator}
-                    className="pointer-events-none absolute -right-4 -top-4 h-28 w-auto object-contain opacity-[0.12] select-none"
-                  />
-                  <p className="mb-1 text-xs font-black uppercase tracking-[0.3em] text-accent relative z-10">
-                    {isEnrolled
-                      ? (overview?.progressMeta?.currentPhase?.title || 'Active bootcamp')
-                      : 'Get started'}
-                  </p>
-                  <p className="mb-5 text-xl font-black leading-snug text-text-primary relative z-10">
-                    {nextMission
-                      ? nextMission.title
-                      : isEnrolled
-                      ? 'Pick up where you left off'
-                      : 'Choose a bootcamp to begin'}
-                  </p>
-                  {nextRank && (
-                    <div className="mb-5 relative z-10">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                          {nextRank.min - cpBalance} CP → {nextRank.name}
-                        </span>
-                        <span className="font-mono text-xs font-black text-text-muted">{rankProgress}%</span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-accent-dim">
-                        <div
-                          className="h-full rounded-full bg-accent/50 transition-all duration-700"
-                          style={{ width: `${rankProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <Link
-                    to={continuePath}
-                    className="btn-primary mt-auto flex w-full items-center justify-center gap-2 py-3 text-sm relative z-10"
-                  >
-                    {isEnrolled ? 'Continue mission' : 'Browse bootcamps'}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              )}
-            </ScrollReveal>
-
-            {/* 2. BOOTCAMP CARD(S) */}
-            <div className="flex flex-col gap-6">
+          {/* ── MAIN CONTENT: BOOTCAMPS + MARKET ─────────────────── */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8 items-start">
+            
+            {/* 1. BOOTCAMP CARD(S) */}
+            <div className="flex flex-col gap-6 h-full">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Active Deployments</h3>
+                <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
+              </div>
               {loading ? (
                 <div className="card-hsociety overflow-hidden animate-pulse">
                   <div className="aspect-video bg-accent-dim/30" />
@@ -303,29 +287,35 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               ) : enrolledBootcamps.length === 0 ? (
-                <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center h-full min-h-[300px] flex flex-col items-center justify-center">
+                <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center h-full min-h-[300px] flex flex-col items-center justify-center bg-bg-card/20">
                   <OptionalDecorImage
                     src={STUDENT_DECOR.bootcampOperator}
                     className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
                   />
                   <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                  <p className="mb-5 text-base text-text-muted">No bootcamps enrolled yet.</p>
+                  <p className="mb-5 text-base text-text-muted">No active bootcamps.</p>
                   <Link
                     to="/dashboard/bootcamps"
                     className="btn-primary inline-flex items-center gap-2 px-6 py-2.5 text-sm"
                   >
-                    Browse bootcamps <ArrowRight className="h-4 w-4" />
+                    Start Training <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               ) : (
                 enrolledBootcamps.slice(0, 1).map((item, idx) => (
-                  <StudentBootcampCard key={item.id} data={item} index={idx} />
+                  <div key={item.id} className="h-full">
+                    <StudentBootcampCard data={item} index={idx} />
+                  </div>
                 ))
               )}
             </div>
 
-            {/* 3. ZERO-DAY MARKET CARD */}
-            <div className="flex flex-col gap-6">
+            {/* 2. ZERO-DAY MARKET CARD */}
+            <div className="flex flex-col gap-6 h-full">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Intelligence Vault</h3>
+                <Link to="/dashboard/marketplace" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">Marketplace</Link>
+              </div>
               {!loading && products.length > 0 && (() => {
                 const prod = products[0];
                 const id = String(prod.id || '');
@@ -340,40 +330,41 @@ const Dashboard: React.FC = () => {
                     transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                     className="flex flex-col h-full"
                   >
-                    <div className="card-hsociety flex flex-col h-full overflow-hidden">
+                    <div className="card-hsociety flex flex-col h-full overflow-hidden border-border/60 hover:border-accent/30 transition-all duration-300">
                       <div className="relative aspect-video overflow-hidden">
                         <img
                           src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
                           alt={prod.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                         />
                         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                          {hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest">Owned</span>}
+                          {hasPurchased && <span className="px-2 py-1 bg-accent text-bg rounded text-[10px] font-black uppercase tracking-widest">Owned</span>}
                         </div>
                         <div className="absolute bottom-2.5 left-2.5">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-bg/80 backdrop-blur-sm border border-border/60 rounded text-[9px] font-black uppercase text-text-muted tracking-widest">
-                            <ShoppingBag className="h-2.5 w-2.5" /> Zero-day vault
+                          <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/90 backdrop-blur-md border border-border/60 rounded-lg text-[10px] font-black uppercase text-text-primary tracking-widest">
+                            <ShoppingBag className="h-3 w-3 text-accent" /> Premium Asset
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-1 flex-col p-5">
-                        <h3 className="mb-1.5 text-base font-black leading-snug text-text-primary line-clamp-2">{prod.title}</h3>
+                      <div className="flex flex-1 flex-col p-6">
+                        <h3 className="mb-3 text-lg font-black leading-snug text-text-primary line-clamp-2">{prod.title}</h3>
+                        <p className="text-xs text-text-muted mb-6 line-clamp-2 leading-relaxed">{prod.description || 'Access high-value intelligence reports and research papers.'}</p>
                         <div className="mt-auto">
                           {(hasPurchased || prod.isFree) ? (
                             <button
                               onClick={() => handleDownload(prod)}
                               disabled={isDownloading}
-                              className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase disabled:opacity-60"
+                              className="btn-primary flex w-full items-center justify-center gap-3 py-3.5 text-xs font-black uppercase tracking-widest disabled:opacity-60"
                             >
-                              {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Download
+                              {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download Intelligence
                             </button>
                           ) : (
                             <button
                               onClick={() => handlePurchase(prod)}
                               disabled={isBuying}
-                              className="btn-primary flex w-full items-center justify-center gap-2 py-2.5 text-sm font-black uppercase disabled:opacity-60"
+                              className="btn-primary flex w-full items-center justify-center gap-3 py-3.5 text-xs font-black uppercase tracking-widest disabled:opacity-60"
                             >
-                              {isBuying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Purchase Access'}
+                              {isBuying ? <Loader2 className="h-4 w-4 animate-spin" /> : <><CpLogo className="h-4 w-4" /> Unlock Access</>}
                             </button>
                           )}
                         </div>
@@ -391,11 +382,12 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               )}
-
-              {/* Recovery Token Card */}
-              {!loading && <RecoveryTokenCard />}
             </div>
+          </div>
 
+          {/* Recovery Token Card */}
+          <div className="mt-8">
+            {!loading && <RecoveryTokenCard />}
           </div>
 
           {/* SYNC STATUS */}

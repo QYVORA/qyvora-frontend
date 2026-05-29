@@ -74,9 +74,9 @@ const LoginPage: React.FC = () => {
       {!isAdminLoginRoute && <AuthHero />}
       <div className={`flex flex-col items-center justify-center px-4 py-8 md:p-12 relative ${isAdminLoginRoute ? '' : 'lg:backdrop-blur-xl lg:h-full lg:overflow-y-auto'}`}>
         {!isAdminLoginRoute && (
-          <div className="absolute top-6 left-6 z-20 lg:hidden">
-            <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 bg-text-primary text-bg rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:brightness-110 active:scale-95">
-              <ArrowLeft className="w-4 h-4" /> Home
+          <div className="absolute top-6 left-6 z-20">
+            <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
+              <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
           </div>
         )}

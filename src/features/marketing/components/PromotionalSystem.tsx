@@ -79,7 +79,7 @@ const PromotionalSystem: React.FC = () => {
           initial={{ opacity: 0, scale: 0.9, y: 20, x: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20, x: -20 }}
-          className="fixed bottom-24 md:bottom-8 left-6 right-6 md:right-auto md:w-80 z-[140]"
+          className="fixed bottom-24 md:bottom-8 left-6 right-6 md:right-auto md:w-96 z-[140]"
         >
           <CardBase className="border-accent/30 shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.15)] bg-bg-card/90 backdrop-blur-md">
             <button

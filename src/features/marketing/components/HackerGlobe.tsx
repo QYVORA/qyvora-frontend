@@ -273,7 +273,7 @@ function buildAsciiTexture(isLight: boolean): THREE.CanvasTexture {
   ctx.textBaseline = 'top';
 
   const accent = isLight ? '#000000' : '#FFFFFF';
-  ctx.fillStyle = hexToRgba(accent, isLight ? 0.75 : 0.9);
+  ctx.fillStyle = accent; // Fully opaque letters
 
   const lineH = CH / ASCII_LINES.length;
 

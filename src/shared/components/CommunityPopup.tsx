@@ -46,7 +46,7 @@ const CommunityPopup: React.FC = () => {
           animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 50, x: 20 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] md:w-[380px]"
+          className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] md:w-96"
         >
           <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-bg-card/90 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(var(--color-accent-rgb),0.1)]">
             

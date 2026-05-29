@@ -52,7 +52,7 @@ const CookieConsent: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-0 left-0 right-0 md:bottom-10 md:right-10 md:left-auto z-[150] md:max-w-xl w-full md:w-auto"
+          className="fixed bottom-0 left-0 right-0 md:bottom-10 md:right-10 md:left-auto z-[150] md:w-96 w-full"
         >
           <div className="bg-bg-card border-t md:border border-border rounded-t-3xl md:rounded-2xl shadow-2xl p-6 md:p-10 overflow-hidden">
             <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 mb-8">
