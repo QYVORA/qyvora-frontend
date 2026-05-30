@@ -133,7 +133,6 @@ const Settings: React.FC = () => {
         {/* LEFT SIDEBAR */}
         <div
           className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg scroll-hover"
-          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
           <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
@@ -190,7 +189,6 @@ const Settings: React.FC = () => {
         {/* RIGHT MAIN */}
         <div
           className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
-          style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
           <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
 
