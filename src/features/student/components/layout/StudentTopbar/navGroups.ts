@@ -1,0 +1,14 @@
+import { ShoppingBag, Wallet, Radar, Trophy } from 'lucide-react';
+
+export const NAV_GROUPS = [
+  {
+    label: 'Operate',
+    items: [
+      { label: 'Marketplace',  icon: ShoppingBag, path: '/dashboard/marketplace',  desc: 'Zero-day market'    },
+      { label: 'Wallet',       icon: Wallet,      path: '/dashboard/wallet',       desc: 'CP balance & history' },
+      { label: 'Anansi Scan',  icon: Radar,       path: '/dashboard/scan',         desc: 'Authenticated recon' },
+      { label: 'Leaderboard',  icon: Trophy,      path: '/dashboard/leaderboard',  desc: 'Hall of Shadows'    },
+      { label: 'Achievements', icon: Trophy,      path: '/dashboard/achievements', desc: 'Operational milestones' },
+    ],
+  },
+];
