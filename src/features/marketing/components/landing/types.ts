@@ -36,9 +36,9 @@ export interface MarketplaceItem {
 }
 
 export const PHASE_IMGS = [
-  '/assets/sections/curriculum/phase-01.webp',
-  '/assets/sections/curriculum/phase-02.webp',
-  '/assets/sections/curriculum/phase-03.webp',
-  '/assets/sections/curriculum/phase-04.webp',
-  '/assets/sections/curriculum/phase-05.webp',
+  '/assets/bootcamp/rooms/hacker-mindset.webp',
+  '/assets/bootcamp/rooms/linux-foundations.webp',
+  '/assets/bootcamp/rooms/networking.webp',
+  '/assets/bootcamp/rooms/web-and-backend-systems.webp',
+  '/assets/bootcamp/rooms/social-engineering.webp',
 ];
