@@ -131,10 +131,6 @@ const BootcampCourse: React.FC = () => {
             lg:overflow-y-auto lg:overscroll-contain scroll-hover
             lg:border-r lg:border-border lg:bg-bg
           "
-          style={{
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-            maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-          }}
         >
           <SidebarProgress
             progressValue={progressValue}
@@ -154,10 +150,6 @@ const BootcampCourse: React.FC = () => {
             w-full flex-1 min-w-0
             lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover
           "
-          style={{
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-            maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-          }}
         >
           <div className="px-2 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
             {/* Desktop header */}

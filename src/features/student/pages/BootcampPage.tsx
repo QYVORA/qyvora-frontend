@@ -119,7 +119,6 @@ const Bootcamp: React.FC = () => {
 
       <div
         className="lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain overflow-x-hidden scroll-hover"
-        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
       >
         <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">

@@ -524,12 +524,7 @@ const BootcampRoomPage: React.FC = () => {
         lg:overflow-hidden
       ">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-bg-card border-r border-border overflow-y-auto overscroll-contain scroll-hover"
-          style={{
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-            maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-          }}
-        >
+        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-bg-card border-r border-border overflow-y-auto overscroll-contain scroll-hover">
             <nav className="flex flex-col gap-1 p-4 pb-8">
               {/* Back link */}
               <div className="mb-4 px-1">
@@ -596,12 +591,7 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain scroll-hover"
-            style={{
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-              maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-            }}
-          >
+          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain scroll-hover">
             {/* Content area */}
             <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
 
