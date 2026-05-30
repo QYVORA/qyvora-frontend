@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Zap } from 'lucide-react';
-import CpLogo from './CpLogo';
-import { useScrollLock } from '../../core/hooks/useScrollLock';
+import CpLogo from '../../../../shared/components/CpLogo';
+import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 interface Props {
   show: boolean;

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, ArrowRight, ChevronRight, Lock, Loader2,
-  CheckCircle2, XCircle, BookOpen, Menu, X,
-  ClipboardList, Clock, Bookmark, Timer, Minimize2, List, Maximize2,
+  ArrowLeft, ArrowRight, Lock, Loader2,
+  CheckCircle2, BookOpen, Menu,
+  ClipboardList, Clock, Timer, Minimize2, List, Maximize2,
   Github, FileText, Send,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -21,7 +21,12 @@ import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
 import QuizModal from '../components/bootcamp-room/QuizModal';
 import QuizGateModal from '../components/bootcamp-room/QuizGateModal';
 import AssignmentSubmissionModal from '../components/bootcamp-room/AssignmentSubmissionModal';
-import RoomCompletionCelebration from '../../../shared/components/RoomCompletionCelebration';
+import RoomCompletionCelebration from '../components/bootcamp-room/RoomCompletionCelebration';
+import RoomHeader from '../components/bootcamp-room/RoomHeader';
+import RoomProgress from '../components/bootcamp-room/RoomProgress';
+import RoomNavigation from '../components/bootcamp-room/RoomNavigation';
+import DesktopToolbar from '../components/bootcamp-room/DesktopToolbar';
+import { useRoomSession } from '../hooks/useRoomSession';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -206,12 +211,8 @@ const BootcampRoomPage: React.FC = () => {
     return () => window.removeEventListener('bootcamp:openQuiz', handler);
   }, []);
 
-  // ── NEW FEATURES: Session timer ────────────────────────────────────────────
-  const [sessionStart, setSessionStart] = useState<number>(Date.now());
-  const [timeSpent, setTimeSpent] = useState<number>(0);
-
-  // ── NEW FEATURES: Fullscreen mode ──────────────────────────────────────────
-  const [fullscreen, setFullscreen] = useState(false);
+  // ── NEW FEATURES: Session timer & Fullscreen (Extracted Hook) ─────────────
+  const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
 
   // ── NEW FEATURES: Jump menu ────────────────────────────────────────────────
   const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
@@ -248,41 +249,14 @@ const BootcampRoomPage: React.FC = () => {
     return bookmarkedSteps.has(`${phaseId}:${roomId}:${stepIdx}`);
   };
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      document.exitFullscreen().catch(() => {});
-    }
-  };
-
-  // ── NEW FEATURES: Session timer effect ─────────────────────────────────────
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeSpent(Date.now() - sessionStart);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [sessionStart]);
-
   // ── Reset step index when room changes ────────────────────────────────────
   useEffect(() => {
     setCurrentStepIdx(0);
     setViewedSteps(new Set([0]));
     setQuizPassed(false);
-    // NEW: Reset session timer on room change
-    setSessionStart(Date.now());
-    setTimeSpent(0);
+    resetSession();
     setAssignmentModalOpen(false);
   }, [phaseId, roomId]);
-
-  // ── NEW FEATURES: Fullscreen change listener ───────────────────────────────
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setFullscreen(Boolean(document.fullscreenElement));
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
 
   // ── Resolve phase and room from config ────────────────────────────────────
   const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
@@ -521,72 +495,19 @@ const BootcampRoomPage: React.FC = () => {
 
       {/* Desktop Floating Toolbar */}
       {!isAssignmentRoom && (
-        <aside
-          className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
-          style={{
-            top: '6rem',
-            bottom: '1.5rem',
-            justifyContent: 'center',
-          }}
-          aria-label="Room actions"
-        >
-          <button
-            onClick={() => setJumpMenuOpen(true)}
-            title="Jump to step"
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
-          >
-            <List className="h-5 w-5" />
-          </button>
-
-          <button
-            onClick={toggleFullscreen}
-            title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
-          >
-            {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-          </button>
-
-          <div className="h-px w-6 bg-border/50 my-1" />
-
-          <button
-            onClick={async () => {
-              if (!isLastStep) {
-                goToStep(currentStepIdx + 1);
-              } else {
-                await handleComplete();
-              }
-            }}
-            disabled={completing}
-            title={
-              isLastStep
-                ? isRoomComplete
-                  ? nextRoom
-                    ? 'Continue to Next Room'
-                    : 'Finish Module'
-                  : quizModuleId
-                  ? 'Take Quiz & Complete'
-                  : 'Complete Room'
-                : 'Next Step'
-            }
-            className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
-              isLastStep
-                ? 'border-accent bg-accent-dim text-accent hover:bg-accent-dim/80 hover:border-accent/60'
-                : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
-            } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            {completing ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : isLastStep ? (
-              isRoomComplete ? (
-                <ArrowRight className="h-5 w-5" />
-              ) : (
-                <CheckCircle2 className="h-5 w-5" />
-              )
-            ) : (
-              <ArrowRight className="h-5 w-5" />
-            )}
-          </button>
-        </aside>
+        <DesktopToolbar
+          setJumpMenuOpen={setJumpMenuOpen}
+          toggleFullscreen={toggleFullscreen}
+          fullscreen={fullscreen}
+          isLastStep={isLastStep}
+          isRoomComplete={isRoomComplete}
+          nextRoom={nextRoom}
+          quizModuleId={quizModuleId}
+          completing={completing}
+          currentStepIdx={currentStepIdx}
+          goToStep={goToStep}
+          handleComplete={handleComplete}
+        />
       )}
 
       {/* ── MAIN SPLIT LAYOUT ── */}
@@ -698,73 +619,26 @@ const BootcampRoomPage: React.FC = () => {
                 </span>
               </div>
 
-{/* Room header */}
-               <div className="mb-8">
-                 <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                   {phase.codename} — {phase.title}
-                 </div>
-                 <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
-                   {room.title}
-                 </h1>
-                <p className="border-l-4 border-accent/50 pl-4 text-sm sm:text-base leading-relaxed text-text-secondary">
-                  {room.overview}
-                </p>
-                {/* NEW: Estimated time and session timer */}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mt-4">
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4" />
-                    <span>{room.estimatedMinutes} min</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{room.steps.length} steps</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Timer className="h-4 w-4" />
-                    <span>Session: {formatTime(timeSpent)}</span>
-                  </div>
-                </div>
-                {isRoomComplete && (
-                  <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-dim px-4 py-1.5 text-xs font-black uppercase tracking-widest text-accent">
-                    <CheckCircle2 className="h-4 w-4" /> Room Complete
-                  </div>
-                )}
-              </div>
+              {/* Room header */}
+              <RoomHeader
+                phase={phase}
+                room={room}
+                timeSpent={timeSpent}
+                formatTime={formatTime}
+                isRoomComplete={isRoomComplete}
+              />
 
               {/* Step progress bar */}
-              <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>
-                  <span className="font-mono text-base font-black text-accent">
-                    {viewedSteps.size} / {room.steps.length} steps
-                  </span>
-                </div>
-                <div className="h-2.5 overflow-hidden rounded-full bg-accent-dim">
-                  <div
-                    className="h-full rounded-full bg-accent transition-all duration-500"
-                    style={{ width: `${(viewedSteps.size / room.steps.length) * 100}%` }}
-                  />
-                </div>
-                {/* NEW: Session timer in progress bar */}
-                <div className="flex items-center gap-2 text-xs text-text-muted mt-3">
-                  <Timer className="h-3.5 w-3.5" />
-                  <span>Time in room: {formatTime(timeSpent)}</span>
-                </div>
-                <div className="mt-4 flex gap-2 flex-wrap">
-                  {room.steps.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => goToStep(idx)}
-                      className={`h-3 flex-1 min-w-[24px] max-w-[52px] rounded-full transition-all ${
-                        idx === currentStepIdx ? 'bg-accent scale-y-[1.3]'
-                          : viewedSteps.has(idx) ? 'bg-accent/45'
-                          : 'bg-accent-dim'
-                      }`}
-                      title={`Step ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
+              <RoomProgress
+                viewedStepsCount={viewedSteps.size}
+                totalStepsCount={room.steps.length}
+                timeSpent={timeSpent}
+                formatTime={formatTime}
+                currentStepIdx={currentStepIdx}
+                goToStep={goToStep}
+                steps={room.steps}
+                viewedSteps={viewedSteps}
+              />
 
               {/*
                 ── STEP RENDERING ──
@@ -904,81 +778,21 @@ const BootcampRoomPage: React.FC = () => {
 
               {/* Step navigation — mobile always, desktop only when >5 steps */}
               {!isAssignmentRoom && (
-                <div className={`flex flex-wrap items-center gap-3 pb-16 ${room.steps.length <= 5 ? 'lg:justify-end' : ''}`}>
-                  {/* NEW: Jump to step button */}
-                  <button
-                    onClick={() => setJumpMenuOpen(true)}
-                    className="btn-secondary inline-flex items-center gap-2"
-                  >
-                    <List className="h-4 w-4" />
-                    <span className="hidden sm:inline">Jump</span>
-                  </button>
-
-                  {/* NEW: Fullscreen button */}
-                  <button
-                    onClick={toggleFullscreen}
-                    className="btn-secondary inline-flex items-center gap-2"
-                    title="Toggle fullscreen (F)"
-                  >
-                    {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                    <span className="hidden sm:inline">{fullscreen ? 'Exit' : 'Full'}</span>
-                  </button>
-
-                  {/* Prev — mobile only (desktop shows all steps) */}
-                  <button
-                    onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
-                    disabled={currentStepIdx === 0}
-                    className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
-                  >
-                    <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                    <span>Prev</span>
-                  </button>
-
-                  {/* Step counter — mobile only */}
-                  <span className="lg:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
-                    {currentStepIdx + 1} / {room.steps.length}
-                  </span>
-
-                    {/* Next / Complete — mobile: always shown; desktop: always shown (marks complete) */}
-                  <button
-                    onClick={async () => {
-                      if (!isLastStep) {
-                        goToStep(currentStepIdx + 1);
-                      } else {
-                        await handleComplete();
-                      }
-                    }}
-                    disabled={completing}
-                    className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
-                      completing ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {completing ? (
-                      <>
-                        <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                        <span>Processing...</span>
-                      </>
-                    ) : isLastStep ? (
-                      isRoomComplete ? (
-                        <>
-                          <span>{nextRoom ? 'Continue to Next Room' : 'Finish Module'}</span>
-                          <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                        </>
-                      ) : (
-                        <>
-                          <span>{quizPassed ? 'Complete Room' : quizModuleId ? 'Take Quiz & Complete' : 'Complete Room'}</span>
-                          <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                        </>
-                      )
-                    ) : (
-                      <>
-                        <span className="lg:hidden">Next</span>
-                        <span className="hidden lg:inline">Next Step</span>
-                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                      </>
-                    )}
-                  </button>
-                </div>
+                <RoomNavigation
+                  currentStepIdx={currentStepIdx}
+                  totalSteps={room.steps.length}
+                  isLastStep={isLastStep}
+                  isRoomComplete={isRoomComplete}
+                  nextRoom={nextRoom}
+                  quizPassed={quizPassed}
+                  quizModuleId={quizModuleId}
+                  completing={completing}
+                  fullscreen={fullscreen}
+                  goToStep={goToStep}
+                  handleComplete={handleComplete}
+                  toggleFullscreen={toggleFullscreen}
+                  setJumpMenuOpen={setJumpMenuOpen}
+                />
               )}
 
               {/* Phase Assignment Visual Hint for assignment room */}

@@ -1,0 +1,17 @@
+import { LayoutDashboard, BookOpen, Radar, ShoppingBag, Wallet, Trophy, User, Bell, Settings } from 'lucide-react';
+
+export const MOBILE_PRIMARY = [
+  { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
+  { label: 'Bootcamp', icon: BookOpen,        path: '/dashboard/bootcamps'  },
+  { label: 'Scan',     icon: Radar,           path: '/dashboard/scan' },
+];
+
+export const MOBILE_MORE = [
+  { label: 'Market',        icon: ShoppingBag, path: '/dashboard/marketplace'   },
+  { label: 'Wallet',        icon: Wallet,    path: '/dashboard/wallet'        },
+  { label: 'Achievements',  icon: Trophy,    path: '/dashboard/achievements'  },
+  { label: 'Profile',       icon: User,      path: '/dashboard/profile'       },
+  { label: 'Notifications', icon: Bell,      path: '/dashboard/notifications' },
+  { label: 'Settings',      icon: Settings,  path: '/dashboard/settings'      },
+  { label: 'Leaderboard',   icon: Trophy,    path: '/dashboard/leaderboard'   },
+];
