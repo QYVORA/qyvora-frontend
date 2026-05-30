@@ -333,7 +333,7 @@ const Dashboard: React.FC = () => {
                     <div className="card-hsociety flex flex-col h-full overflow-hidden border-border/60 hover:border-accent/30 transition-all duration-300">
                       <div className="relative aspect-video overflow-hidden">
                         <img
-                          src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
+                          src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}
                           alt={prod.title}
                           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                         />

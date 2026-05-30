@@ -4,10 +4,30 @@ import { Terminal, Shield, Zap, Target } from 'lucide-react';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
 
 const STEPS = [
-  { icon: Terminal, title: 'Learn', desc: 'Master Linux, networking, and social engineering fundamentals.' },
-  { icon: Target,   title: 'Operate', desc: 'Execute mission-based rooms in browser labs.' },
-  { icon: Zap,      title: 'Earn', desc: 'Capture flags and earn CP on the HSOCIETY Chain.' },
-  { icon: Shield,   title: 'Prove', desc: 'Validate your skills with a permanent, tamper-proof record.' },
+  { 
+    icon: Terminal, 
+    title: 'Learn', 
+    desc: 'Master Linux, networking, and social engineering fundamentals.',
+    bg: '/assets/sections/backgrounds/process-learn.webp'
+  },
+  { 
+    icon: Target,   
+    title: 'Operate', 
+    desc: 'Execute mission-based rooms in browser labs.',
+    bg: '/assets/sections/backgrounds/process-operate.webp'
+  },
+  { 
+    icon: Zap,      
+    title: 'Earn', 
+    desc: 'Capture flags and earn CP on the HSOCIETY Chain.',
+    bg: '/assets/sections/backgrounds/process-earn.webp'
+  },
+  { 
+    icon: Shield,   
+    title: 'Prove', 
+    desc: 'Validate your skills with a permanent, tamper-proof record.',
+    bg: '/assets/sections/backgrounds/process-prove.webp'
+  },
 ];
 
 const ProcessSection: React.FC = () => {
@@ -53,12 +73,23 @@ const ProcessSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="terminal-card p-6 rounded-2xl border border-border bg-bg-card flex flex-col gap-4 group"
+                className="relative overflow-hidden p-6 rounded-2xl border border-border bg-bg-card flex flex-col gap-4 group"
               >
-                <div className="w-12 h-12 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                {/* Background Image */}
+                <div 
+                  className="absolute inset-0 z-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
+                  style={{ 
+                    backgroundImage: `url(${step.bg})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'grayscale(100%) brightness(50%)'
+                  }}
+                />
+
+                <div className="relative z-10 w-12 h-12 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
                   <step.icon size={20} />
                 </div>
-                <div>
+                <div className="relative z-10">
                   <h3 className="text-base font-bold text-text-primary uppercase tracking-tight mb-2">{step.title}</h3>
                   <p className="text-[11px] text-text-muted leading-relaxed font-mono">{step.desc}</p>
                 </div>

@@ -617,14 +617,14 @@ const AdminDashboardPage: React.FC = () => {
                         <div className="flex items-start gap-4">
                           <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-border shrink-0 bg-bg shadow-inner">
                             <img
-                              src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
+                              src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}
                               alt={item.title}
                               className="w-full h-full object-cover"
                               onError={(e) => {
                                 const el = e.currentTarget;
                                 if (!el.dataset.fallbackApplied) {
                                   el.dataset.fallbackApplied = '1';
-                                  el.src = '/assets/sections/backgrounds/cyber-points-visual.webp';
+                                  el.src = '/assets/sections/backgrounds/process-earn.webp';
                                 }
                               }}
                             />
@@ -670,14 +670,14 @@ const AdminDashboardPage: React.FC = () => {
                               <td className="px-6 py-5">
                                 <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-border bg-bg shrink-0 shadow-lg group-hover:border-accent/40 transition-all">
                                   <img
-                                    src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/cyber-points-visual.webp')}
+                                    src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}
                                     alt={item.title}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     onError={(e) => {
                                       const el = e.currentTarget;
                                       if (!el.dataset.fallbackApplied) {
                                         el.dataset.fallbackApplied = '1';
-                                        el.src = '/assets/sections/backgrounds/cyber-points-visual.webp';
+                                        el.src = '/assets/sections/backgrounds/process-earn.webp';
                                       }
                                     }}
                                   />
