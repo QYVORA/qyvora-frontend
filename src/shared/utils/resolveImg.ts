@@ -22,9 +22,7 @@ export const resolveImg = (value?: string, fallback = ''): string => {
 
   // Public-folder assets — served by the frontend, no API prefix needed
   if (
-    src.startsWith('/images/')
-    || src.startsWith('/assets/')
-    || src.startsWith('/walkthrough/')
+    src.startsWith('/assets/')
     || src.startsWith('/public/')
   ) return src;
 

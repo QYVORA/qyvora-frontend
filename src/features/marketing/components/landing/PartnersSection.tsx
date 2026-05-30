@@ -11,7 +11,7 @@ const PARTNER_FILENAMES: string[] = [
 ];
 
 const PARTNER_IMAGES: string[] = PARTNER_FILENAMES.map(
-  (name) => `/images/patners/${name}`
+  (name) => `/assets/partners/${name}`
 );
 
 const PLACEHOLDER_LABELS = [

@@ -76,8 +76,9 @@ interface StoredLandingSnapshot extends LandingSnapshot {
  * current page's origin as the base.
  *
  * This is necessary because the Cache Storage API requires absolute URLs —
- * passing a relative path like "/images/bootcamp.webp" to caches.match()
+ * passing a relative path like "/assets/bootcamp.webp" to caches.match()
  * would fail to find the cached entry.
+
  *
  * Falls back to the original string if URL construction throws (e.g. the
  * input is already absolute or is an empty string).

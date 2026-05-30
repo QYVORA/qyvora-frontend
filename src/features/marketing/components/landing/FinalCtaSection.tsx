@@ -59,7 +59,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         src="/assets/illustrations/cta-operator.webp"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block absolute right-0 bottom-0 h-[88%] w-auto object-contain pointer-events-none select-none z-[1]"
+        className="hidden lg:block absolute right-0 bottom-0 h-[120%] w-auto object-contain pointer-events-none select-none z-[1]"
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 
@@ -69,7 +69,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           <div className="flex items-center gap-3 mb-3">
               <div className="h-[1px] w-8 bg-accent/40" />
               <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-                Join the Movement // Become a Hacker
+                Don't Just see  Look.  
               </span>
             </div>
 

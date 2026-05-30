@@ -50,14 +50,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       >
         {/* Left column */}
         <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:pt-6">
-          
-          {/* Eyebrow */}
-          {/* <div className="flex items-center gap-3 mb-4 lg:mb-3">
-            <div className="h-[1px] w-8 bg-accent/40" />
-            <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-              Africa's Offensive Security Platform
-            </span>
-          </div> */}
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-text-primary leading-[1.08] mb-4 md:mb-5 tracking-tight">

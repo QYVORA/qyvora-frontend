@@ -86,7 +86,7 @@ export function buildStepImagePath(
     .map((part) => encodeURIComponent(part))
     .join('/');
 
-  return `/walkthrough/hpb/${phaseDir}/${roomDir}/${encoded}`;
+  return `/assets/walkthrough/hpb/${phaseDir}/${roomDir}/${encoded}`;
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────

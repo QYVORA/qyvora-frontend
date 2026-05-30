@@ -7,7 +7,7 @@ interface AnansiLogoProps {
   minimal?: boolean;
 }
 
-const LOGO_SRC = '/ANANSI-LOGO.png';
+const LOGO_SRC = '/assets/branding/logos/anansi-logo.webp';
 
 const AnansiLogo: React.FC<AnansiLogoProps> = ({
   size = 64,
