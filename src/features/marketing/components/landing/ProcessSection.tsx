@@ -59,7 +59,7 @@ const ProcessSection: React.FC = () => {
             />
 
             {/* Description */}
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.875rem', lineHeight: '1.7', fontFamily: 'inherit', marginBottom: '1rem', maxWidth: '24rem' }}>
+            <p className="text-text-secondary" style={{ fontSize: '0.875rem', lineHeight: '1.7', fontFamily: 'inherit', marginBottom: '1rem', maxWidth: '24rem' }}>
               From novice to operator in four steps. Phased training designed for maximum practical skill acquisition.
             </p>
           </div>
