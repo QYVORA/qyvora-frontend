@@ -57,6 +57,7 @@ export default defineConfig(() => ({
 
   server: {
     port: 5173,
+    host: process.env.VITE_DEV_HOST || '127.0.0.1',
     hmr: true,
     proxy: {
       '/api': {

@@ -4,18 +4,6 @@
  * Declares the complete route map for the application and renders the correct
  * page component for the current URL. This is the single source of truth for
  * all client-side routes.
- *
- * Key responsibilities:
- *   - Code-split every page via React.lazy() so users only download the JS
- *     they actually visit, keeping the initial bundle small.
- *   - Guard authenticated routes with role-aware redirect components
- *     (StudentOnly, AdminOnly) so the server never needs to enforce
- *     client-side routing rules — this is defence-in-depth only; the API
- *     enforces real access control independently.
- *   - Wrap every route in an ErrorBoundary + Suspense so a broken or
- *     slow-loading page never crashes the entire app.
- *   - Animate page transitions via AnimatePresence so navigations feel
- *     smooth rather than abrupt.
  */
 
 import { Suspense, lazy } from 'react';
@@ -26,22 +14,15 @@ import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 // ─── Layouts ──────────────────────────────────────────────────────────────────
-// Layouts are imported eagerly (not lazy) because they are shared shells used
-// by many routes. Lazy-loading them would cause a layout flash on first render.
 import PublicLayout from '../shared/layouts/PublicLayout';
 import LandingLayout from '../shared/layouts/LandingLayout';
 import StudentLayout from '../shared/layouts/StudentLayout';
 import AdminLayout from '../shared/layouts/AdminLayout';
 
-// Shared pages (eager — always needed, very small)
+// Shared pages
 import NotFoundPage from '../shared/pages/NotFoundPage';
 
 // ─── Lazy page imports ────────────────────────────────────────────────────────
-// Each page is split into its own JS chunk. React only downloads and executes
-// the chunk when the user actually navigates to that route.
-// The Suspense fallback (<PageLoader />) is shown while the chunk is loading.
-
-// Marketing pages
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 
@@ -69,62 +50,28 @@ const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampR
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
 
-// Scan pages
-const ScanPage          = lazy(() => import('../features/scan/pages/ScanPage'));
+// ANANSI feature
+const AnansiPage        = lazy(() => import('../features/anansi/pages/AnansiPage'));
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
-
 import PageLoader from '../shared/components/PageLoader';
 import CommunityPopup from '../shared/components/CommunityPopup';
 
 // ─── Route wrapper ────────────────────────────────────────────────────────────
-
-/**
- * Wrap — combines ErrorBoundary + Suspense + page transition animation into
- * a single reusable wrapper applied to every route element.
- *
- * @param children - The lazy page component to render.
- * @param scope    - A human-readable label passed to ErrorBoundary for error
- *                   reporting (e.g. "Dashboard", "Login"). Helps identify
- *                   which page crashed in production error logs.
- *
- * Animation:
- *   Pages fade in (opacity 0 → 1) and fade out (opacity 1 → 0) over 0.25 s.
- *   This is intentionally shorter than the global MotionConfig default because
- *   page transitions should feel snappy, not sluggish.
- */
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
     <motion.div
-      initial={{ opacity: 0 }}   // Start invisible on enter
-      animate={{ opacity: 1 }}   // Fade in to fully visible
-      exit={{ opacity: 0 }}      // Fade out when navigating away
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      {/* Suspense shows PageLoader until the lazy chunk has finished loading */}
       <Suspense fallback={<PageLoader />}>{children}</Suspense>
     </motion.div>
   </ErrorBoundary>
 );
 
 // ─── Route guards ─────────────────────────────────────────────────────────────
-
-/**
- * StudentOnly — protects routes that require a logged-in, non-admin user.
- *
- * Redirect logic:
- *   - Still loading auth state → show PageLoader (avoids a premature redirect
- *     before we know if the user is actually logged in).
- *   - No user (unauthenticated) → redirect to /login.
- *   - User is an admin → redirect to the admin dashboard.
- *     Admins should not access student pages; this prevents confusion and
- *     accidental data mutations on the wrong interface.
- *   - Authenticated student → render children normally.
- *
- * IMPORTANT: This is a UX guard, not a security boundary. The backend API
- * enforces real authorisation on every request. Never rely on client-side
- * guards alone to protect sensitive data or actions.
- */
 const StudentOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
@@ -133,20 +80,6 @@ const StudentOnly = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
-/**
- * AdminOnly — protects routes that require an authenticated admin user.
- *
- * Redirect logic:
- *   - Still loading → show PageLoader.
- *   - No user (unauthenticated) → redirect to the admin login page (/mr-robot),
- *     not the student login, to keep the admin entry point separate.
- *   - User is not an admin → redirect to the student dashboard.
- *     Students who somehow reach an admin URL are silently redirected away.
- *   - Authenticated admin → render children normally.
- *
- * Same caveat as StudentOnly: this is a UX guard only. The backend enforces
- * admin-only access control independently on every protected endpoint.
- */
 const AdminOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
@@ -156,21 +89,7 @@ const AdminOnly = ({ children }: { children: ReactNode }) => {
 };
 
 // ─── Router ───────────────────────────────────────────────────────────────────
-
-/**
- * AppRouter — renders the route tree and handles page-level transitions.
- *
- * AnimatePresence (mode="wait"):
- *   Waits for the current page's exit animation to fully complete before
- *   mounting the next page. Without "wait", the enter and exit animations
- *   would overlap, causing both pages to be visible simultaneously.
- *
- *   `location` is passed as the key so AnimatePresence can detect when the
- *   URL changes and trigger the exit animation for the outgoing page.
- */
 export const AppRouter = () => {
-  // useLocation() gives us the current URL object. Passing it to both
-  // AnimatePresence and <Routes> keeps them in sync during transitions.
   const location = useLocation();
 
   return (
@@ -178,28 +97,20 @@ export const AppRouter = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 
-        {/* ── Public marketing routes (no auth required) ─────────────────── */}
-
+        {/* ── Public marketing routes ─────────────────── */}
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           
-          {/* Anansi Scan Dashboard — Integrated into snap-scroll landing shell */}
-          <Route path="/scan" element={<Wrap scope="Anansi Scan"><ScanPage /></Wrap>} />
+          {/* ANANSI Unified Route — Public Access */}
+          <Route path="/anansi" element={<Wrap scope="ANANSI Intelligence"><AnansiPage /></Wrap>} />
+          
+          {/* Redirect old scan path */}
+          <Route path="/scan" element={<Navigate to="/anansi" replace />} />
         </Route>
 
-        {/* ── Auth routes (no layout shell — full-page auth forms) ───────── */}
-        {/*
-          All auth flows reuse LoginPage. The component reads the current
-          pathname to determine which form to render (login, register,
-          reset-password, etc.). This keeps auth UI logic centralised.
-
-          /mr-robot is the admin login entry point. It uses the same LoginPage
-          component but renders an admin-specific form variant. The obscure
-          path is intentional — it is not security through obscurity (the API
-          enforces admin auth), but it reduces automated scanning noise.
-        */}
+        {/* ── Auth routes ───────── */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
         <Route path="/register"        element={<Wrap scope="Register"><RegisterPage /></Wrap>} />
         <Route path="/forgot-password" element={<Wrap scope="Forgot Password"><ForgotPasswordPage /></Wrap>} />
@@ -208,89 +119,57 @@ export const AppRouter = () => {
         <Route path="/change-password" element={<Wrap scope="Change Password"><ChangePasswordPage /></Wrap>} />
         <Route path="/mr-robot"        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
-        {/* ── Student routes (auth required, StudentLayout) ──────────────── */}
-        {/*
-          StudentLayout provides the authenticated shell: top navigation bar,
-          mobile bottom nav, and the content area. No public footer.
-          Every child route is wrapped in StudentOnly to enforce authentication.
-        */}
+        {/* ── Student routes ──────────────── */}
         <Route element={<StudentLayout />}>
-
-          {/* ── Primary /dashboard/* routes ──────────────────────────────── */}
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
-
-          {/* Bootcamp list */}
           <Route path="/dashboard/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
-
-          {/* Individual bootcamp overview — :bootcampId is the bootcamp's unique identifier */}
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
-
-          {/*
-            Bootcamp room routes — two URL shapes are supported because the
-            backend uses both module-based and phase-based room structures.
-            Both resolve to the same BootcampRoomPage component.
-          */}
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-
 
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/leaderboard"   element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/scan"          element={<Wrap scope="Authenticated Scan"><StudentOnly><ScanPage dashboardMode /></StudentOnly></Wrap>} />
+          
+          {/* ANANSI Unified Route — Authenticated Access */}
+          <Route path="/dashboard/anansi" element={<Wrap scope="ANANSI Intelligence"><StudentOnly><AnansiPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/scan"   element={<Navigate to="/dashboard/anansi" replace />} />
+          
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/achievements"  element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
 
-          {/*
-            ── Legacy routes (short paths without /dashboard prefix) ─────────
-            These existed before the /dashboard/* restructure. They are kept
-            to avoid breaking any bookmarks or external links that users may
-            have saved. They render the same pages as the canonical routes above.
-            If you want to redirect them instead, replace the page component
-            with <Navigate to="/dashboard/..." replace />.
-          */}
-          <Route path="/bootcamps"        element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-          <Route path="/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
-          <Route path="/marketplace"      element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
-          <Route path="/wallet"           element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
-          <Route path="/scan-authenticated" element={<Wrap scope="Authenticated Scan"><StudentOnly><ScanPage dashboardMode /></StudentOnly></Wrap>} />
-          <Route path="/profile"          element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
-          <Route path="/notifications"    element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
-          <Route path="/settings"         element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
-          <Route path="/achievements"     element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
+          {/* Legacy redirects */}
+          <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps" replace />} />
+          <Route path="/marketplace"      element={<Navigate to="/dashboard/marketplace" replace />} />
+          <Route path="/wallet"           element={<Navigate to="/dashboard/wallet" replace />} />
+          <Route path="/scan-authenticated" element={<Navigate to="/dashboard/anansi" replace />} />
+          <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
+          <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
+          <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
+          <Route path="/achievements"     element={<Navigate to="/dashboard/achievements" replace />} />
         </Route>
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}
-        {/*
-          AdminLayout provides the admin shell (sidebar, admin nav).
-          Every child is wrapped in AdminOnly to enforce admin-role access.
-        */}
         <Route element={<AdminLayout />}>
           <Route path="/mr-robot/dashboard" element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
         {/* ── 404 fallback ───────────────────────────────────────────────── */}
-        {/*
-          Final fallback: try to treat the path as a public profile handle.
-          If the handle doesn't exist, PublicProfilePage will show its own 404.
-        */}
         <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
-
-        {/*
-          The wildcard "*" catches every URL that didn't match any route above.
-          No scope is passed because NotFoundPage is always intentional —
-          it doesn't represent a crashed component that needs error tracking.
-        */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
 
       </Routes>
     </AnimatePresence>
-    <CommunityPopup />
+    <MotionCommunityPopup />
   </>
   );
 };
+
+const MotionCommunityPopup = () => (
+  <Suspense fallback={null}>
+    <CommunityPopup />
+  </Suspense>
+);

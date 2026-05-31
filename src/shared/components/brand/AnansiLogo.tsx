@@ -9,29 +9,28 @@ interface AnansiLogoProps {
 
 const LOGO_SRC = '/assets/branding/logos/anansi-logo.webp';
 
+/**
+ * AnansiLogo
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Clean, high-fidelity brand icon.
+ * Removed all decorative glows, borders, and background fills per system update.
+ * Prioritizes raw visual identity and clear lines.
+ */
 const AnansiLogo: React.FC<AnansiLogoProps> = ({
   size = 64,
   className = '',
   showLabel = false,
-  minimal = false,
 }) => (
   <div className={`flex items-center gap-4 ${className}`}>
     <div 
-      className={`relative flex items-center justify-center group ${minimal ? '' : 'rounded-2xl overflow-visible'}`}
+      className="relative flex items-center justify-center group"
       style={{ width: size, height: size }}
     >
-      {!minimal && (
-        <>
-          {/* Dynamic Background Glow */}
-          <div className="absolute inset-[-20%] bg-cyan-500/20 blur-2xl rounded-full group-hover:bg-cyan-500/30 transition-colors duration-500" />
-          <div className="absolute inset-0 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl backdrop-blur-sm" />
-        </>
-      )}
-      
       <img
         src={LOGO_SRC}
         alt="ANANSI"
-        className={`relative z-10 object-contain ${minimal ? 'w-full h-full' : 'w-[80%] h-[80%]'} transition-transform duration-500 group-hover:scale-110`}
+        className="relative z-10 w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+        draggable={false}
       />
     </div>
     

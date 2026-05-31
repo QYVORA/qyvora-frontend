@@ -11,7 +11,7 @@
  * ─── VISUAL STRUCTURE (STANDARD STUDENT PAGE) ────────────────────────────────
  *
  *  ┌──────────────────────────────────────────────────┐  ← Fixed StudentTopbar (always visible)
- *  │                 Student Topbar                    │    h-20 mobile / h-24 desktop
+ *  │                 Student Topbar                   │    h-20 mobile / h-24 desktop
  *  ├──────────────────────────────────────────────┬───┤
  *  │                                              │   │
  *  │     Page Content  (<Outlet />)               │ R │  ← StudentRightRail (desktop sidebar)
@@ -20,18 +20,18 @@
  *  │                                              │ l │
  *  └──────────────────────────────────────────────┴───┘
  *  ┌──────────────────────────────────────────────────┐  ← Fixed at bottom (mobile only, inside Topbar)
- *  │              Mobile Bottom Nav                    │
+ *  │              Mobile Bottom Nav                   │
  *  └──────────────────────────────────────────────────┘
  *
  * ─── VISUAL STRUCTURE (ROOM PAGE — SPECIAL CASE) ─────────────────────────────
  *
  *  ┌──────────────────────────────────────────────────┐  ← Fixed StudentTopbar
  *  ├──────────────────────────────────────────────────┤
- *  │  ┌─────────────────────┬────────────────────┐   │
- *  │  │  Left Pane          │  Right Pane         │   │  ← Split-pane layout managed INSIDE
- *  │  │  (e.g. video/code)  │  (e.g. chat/tasks)  │   │    the Room page component itself.
- *  │  │  (scrolls own area) │  (scrolls own area) │   │    No bottom padding added by layout.
- *  │  └─────────────────────┴────────────────────┘   │
+ *  │  ┌─────────────────────┬────────────────────┐    │
+ *  │  │  Left Pane          │  Right Pane        │    │  ← Split-pane layout managed INSIDE
+ *  │  │  (e.g. video/code)  │ (e.g. chat/tasks)  │    │    the Room page component itself.
+ *  │  │  (scrolls own area) │ (scrolls own area) │    │    No bottom padding added by layout.
+ *  │  └─────────────────────┴────────────────────┘    │
  *  └──────────────────────────────────────────────────┘
  *    NO right rail on room pages. NO bottom padding.
  *

@@ -17,12 +17,26 @@ export interface ScanResponse {
   error?: string;
 }
 
+export interface TlsData {
+  protocol: string;
+  cipher: string;
+  expiryDate: string;
+  daysUntilExpiry: number;
+  issuerOrg: string;
+  subjectCN: string;
+  sans: string[];
+  expired: boolean;
+  expiringSoon: boolean;
+  selfSigned: boolean;
+}
+
 export interface ScanResult {
   type: string;
   value: string;
   isAlive: boolean;
   resolvedIp?: string;
   metadata?: any;
+  tlsData?: TlsData | null;
 }
 
 export interface VulnerabilityResult {
@@ -40,12 +54,14 @@ export interface ScanFullResultsResponse {
     scanId: string;
     target: string;
     riskScore: number;
+    createdAt: string;
     completedAt: string;
     summary: {
       totalAssets: number;
       liveAssets: number;
       totalVulnerabilities: number;
       severityCounts: Record<string, number>;
+      techStack?: string[];
     };
     assets: ScanResult[];
     vulnerabilities: VulnerabilityResult[];
@@ -54,8 +70,15 @@ export interface ScanFullResultsResponse {
 
 const scanApi = {
   startScan: async (target: string): Promise<ScanResponse> => {
-    const response = await api.post('/scan', { target });
-    return response.data;
+    try {
+      const response = await api.post('/scan', { target });
+      return response.data;
+    } catch (err: any) {
+      if (err.response?.status === 409) {
+        return err.response.data;
+      }
+      throw err;
+    }
   },
 
   getScanStatus: async (scanId: string): Promise<ScanResponse> => {

@@ -48,6 +48,21 @@
   /* ── Custom page loader animations ── */
   --animate-spin-slow:    spin 10s linear infinite;
   --animate-spin-reverse: spin 3s linear infinite reverse;
+
+  /* ── ANANSI Intelligence Animations ── */
+  --animate-scan-line: scan-line 3s linear infinite;
+  --animate-shine:     shine 2s linear infinite;
+
+  @keyframes scan-line {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(1000%); opacity: 0; }
+  }
+
+  @keyframes shine {
+    from { transform: translateX(-100%) skewX(-20deg); }
+    to { transform: translateX(200%) skewX(-20deg); }
+  }
 }
 
 [data-theme="light"] {

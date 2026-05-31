@@ -7,7 +7,7 @@ const NotFoundPage = () => (
     <div className="text-accent font-mono text-sm mb-2 uppercase tracking-widest">// 404 — NODE NOT FOUND</div>
     <h1 className="text-4xl md:text-6xl font-black text-text-primary mb-4">Lost in the Network ?</h1>
     <p className="text-text-muted text-sm mb-8 max-w-sm">
-      The route you're looking for doesn't exist or has been moved.
+      How did you End Up here ?  I am suspecting you ! ^_^
     </p>
     <Link to="/" className="btn-primary">Return to Base</Link>
   </div>
