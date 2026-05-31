@@ -185,24 +185,6 @@ const Navbar: React.FC = () => {
               </AnimatePresence>
             </div>
           ))}
-
-          {/* ── Static Contact Link ── */}
-          <ContactTrigger
-            type="link"
-            className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-primary hover:text-accent transition-colors flex items-center gap-2"
-          >
-            <Mail className="w-4 h-4" /> Contact
-          </ContactTrigger>
-          <Link
-            to="/scan"
-            className={`px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors flex items-center gap-2 ${
-              location.pathname.startsWith('/scan')
-                ? 'text-accent'
-                : 'text-text-primary hover:text-accent'
-            }`}
-          >
-            <AnansiLogo size={18} minimal /> Anansi
-          </Link>
         </div>
 
         {/* ── Right controls ───────────────────────────────────────────────── */}

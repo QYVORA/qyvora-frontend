@@ -98,7 +98,7 @@ const ContactModalHost: React.FC = () => {
       <DialogContent
         title={SITE_CONFIG.contactPage.formTitle}
         description={SITE_CONFIG.contactPage.heroSubtitle}
-        maxWidth="max-w-2xl"
+        maxWidth="max-w-4xl"
         className="max-h-[calc(100svh-2rem)] overflow-y-auto"
       >
         {status === 'sent' ? (
@@ -119,88 +119,104 @@ const ContactModalHost: React.FC = () => {
             </button>
           </div>
         ) : (
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div className="rounded-2xl border border-border bg-bg/70 p-5 md:p-6">
-              <div className="flex items-start gap-4">
-                <span className="flex h-12 w-12 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent-dim text-accent">
-                  <Mail className="h-5 w-5 md:h-4 md:w-4" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-text-primary">
-                    {SITE_CONFIG.contactPage.emailHeading}
-                  </p>
-                  <a
-                    href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
-                    className="mt-1 block break-all font-mono text-base md:text-sm font-bold text-accent hover:underline"
-                  >
-                    {SITE_CONFIG.contact.opsEmail}
-                  </a>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+            {/* Left Column: Direct Contact Info (2/5 width on desktop) */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="h-full rounded-2xl border border-border bg-bg/40 p-6 flex flex-col justify-center">
+                <div className="space-y-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent-dim text-accent mb-4">
+                    <Mail className="h-6 w-6" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted mb-2">
+                      {SITE_CONFIG.contactPage.emailHeading}
+                    </p>
+                    <a
+                      href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
+                      className="block break-all font-mono text-lg font-bold text-accent hover:underline decoration-accent/30 underline-offset-4"
+                    >
+                      {SITE_CONFIG.contact.opsEmail}
+                    </a>
+                  </div>
+                  <div className="pt-4 border-t border-border mt-4">
+                    <p className="text-xs text-text-muted leading-relaxed italic opacity-80">
+                      "For immediate response regarding active deployments or critical security findings, use our encrypted ops channel."
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {[
-                { name: 'name', label: SITE_CONFIG.contactPage.labels.name, type: 'text', placeholder: SITE_CONFIG.contactPage.placeholders.name },
-                { name: 'email', label: SITE_CONFIG.contactPage.labels.email, type: 'email', placeholder: SITE_CONFIG.contactPage.placeholders.email },
-              ].map(({ name, label, type, placeholder }) => (
-                <div key={name} className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{label}</label>
-                  <input
-                    name={name}
-                    type={type}
-                    required
-                    placeholder={placeholder}
-                    className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                {SITE_CONFIG.contactPage.labels.subject}
-              </label>
-              <select
-                name="subject"
-                className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm appearance-none cursor-pointer transition-colors"
-              >
-                <option value="">{SITE_CONFIG.contactPage.selectSubjectPlaceholder}</option>
-                {SITE_CONFIG.contactSubjects.map((subject) => (
-                  <option key={subject.value} value={subject.value}>{subject.label}</option>
+            {/* Right Column: Form (3/5 width on desktop) */}
+            <form className="lg:col-span-3 space-y-5" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {[
+                  { name: 'name', label: SITE_CONFIG.contactPage.labels.name, type: 'text', placeholder: SITE_CONFIG.contactPage.placeholders.name },
+                  { name: 'email', label: SITE_CONFIG.contactPage.labels.email, type: 'email', placeholder: SITE_CONFIG.contactPage.placeholders.email },
+                ].map(({ name, label, type, placeholder }) => (
+                  <div key={name} className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{label}</label>
+                    <input
+                      name={name}
+                      type={type}
+                      required
+                      placeholder={placeholder}
+                      className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
+                    />
+                  </div>
                 ))}
-              </select>
-            </div>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                {SITE_CONFIG.contactPage.labels.message}
-              </label>
-              <textarea
-                name="message"
-                rows={5}
-                required
-                placeholder={SITE_CONFIG.contactPage.placeholders.message}
-                className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  {SITE_CONFIG.contactPage.labels.subject}
+                </label>
+                <div className="relative">
+                  <select
+                    name="subject"
+                    className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm appearance-none cursor-pointer transition-colors"
+                  >
+                    <option value="">{SITE_CONFIG.contactPage.selectSubjectPlaceholder}</option>
+                    {SITE_CONFIG.contactSubjects.map((subject) => (
+                      <option key={subject.value} value={subject.value}>{subject.label}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-text-muted">
+                    <Send className="h-3 w-3 rotate-90" />
+                  </div>
+                </div>
+              </div>
 
-            {status === 'error' && (
-              <p className="text-xs text-red-400 font-mono">
-                {SITE_CONFIG.contactPage.errorPrefix} {SITE_CONFIG.contact.opsEmail}
-              </p>
-            )}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  {SITE_CONFIG.contactPage.labels.message}
+                </label>
+                <textarea
+                  name="message"
+                  rows={5}
+                  required
+                  placeholder={SITE_CONFIG.contactPage.placeholders.message}
+                  className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={status === 'sending'}
-              className="w-full btn-primary !py-3.5 flex items-center justify-center gap-3 disabled:opacity-60"
-            >
-              {status === 'sending'
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> {SITE_CONFIG.contactPage.sendingLabel}</>
-                : <><Send className="w-4 h-4" /> {SITE_CONFIG.contactPage.submitLabel}</>}
-            </button>
-          </form>
+              {status === 'error' && (
+                <p className="text-xs text-red-400 font-mono">
+                  {SITE_CONFIG.contactPage.errorPrefix} {SITE_CONFIG.contact.opsEmail}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-60"
+              >
+                {status === 'sending'
+                  ? <><Loader2 className="w-4 h-4 animate-spin" /> {SITE_CONFIG.contactPage.sendingLabel}</>
+                  : <><Send className="w-4 h-4" /> {SITE_CONFIG.contactPage.submitLabel}</>}
+              </button>
+            </form>
+          </div>
         )}
       </DialogContent>
     </Dialog>

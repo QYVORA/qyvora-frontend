@@ -21,6 +21,163 @@ interface HeroSectionProps {
 
 const STAT_ORDER = ['Students', 'Bootcamps Live', 'Zero-Day Products', 'CP Pool'];
 
+// ── S-curve divider ───────────────────────────────────────────────────────────
+const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => (
+  <div className="absolute inset-0 z-10 pointer-events-none hidden lg:block" aria-hidden>
+
+    {/* ── Panel fill + accent tint — single SVG ── */}
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
+      <defs>
+        {/* S-curve clip */}
+        <clipPath id="hero-right-clip" clipPathUnits="objectBoundingBox">
+          <path d="M 0.62 0  C 0.52 0.18, 0.62 0.38, 0.52 0.58  C 0.47 0.78, 0.57 0.90, 0.38 1.0  L 1 1  L 1 0 Z" />
+        </clipPath>
+
+        {/* Radial accent gradient — centred in the right panel */}
+        <radialGradient id="panel-accent" cx="78%" cy="38%" r="55%">
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0"    />
+        </radialGradient>
+
+        {/* Linear gradient along S — fades in from top, out at bottom */}
+        <linearGradient id="s-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0"    />
+          <stop offset="20%"  stopColor="var(--color-accent)" stopOpacity="0.85" />
+          <stop offset="80%"  stopColor="var(--color-accent)" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0"    />
+        </linearGradient>
+
+        {/* Soft glow filter for the S line */}
+        <filter id="s-glow" x="-60%" y="-5%" width="220%" height="110%">
+          <feGaussianBlur stdDeviation="0.9" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+
+      {/* Dark fill — masks the canvas/globe bleed into left side */}
+      <rect x="0" y="0" width="100" height="100"
+        fill="var(--color-hero-right-bg)" opacity="0.93"
+        clipPath="url(#hero-right-clip)" />
+
+      {/* Accent radial tint */}
+      <rect x="0" y="0" width="100" height="100"
+        fill="url(#panel-accent)"
+        clipPath="url(#hero-right-clip)" />
+    </svg>
+
+    {/* ── Scattered dots — hand-placed, clipped ── */}
+    <svg
+      viewBox="0 0 800 800"
+      preserveAspectRatio="xMidYMid slice"
+      className="absolute inset-0 w-full h-full"
+    >
+      <defs>
+        <clipPath id="hero-right-clip-abs" clipPathUnits="objectBoundingBox">
+          <path d="M 0.62 0  C 0.52 0.18, 0.62 0.38, 0.52 0.58  C 0.47 0.78, 0.57 0.90, 0.38 1.0  L 1 1  L 1 0 Z" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#hero-right-clip-abs)" opacity="1">
+        {/* Sized and spaced to feel deliberately placed, not tiled */}
+        <circle cx="540" cy="80"  r="4"   fill="var(--color-hero-dots)" opacity="0.25" />
+        <circle cx="680" cy="140" r="3"   fill="var(--color-hero-dots)" opacity="0.18" />
+        <circle cx="760" cy="60"  r="5"   fill="var(--color-hero-dots)" opacity="0.20" />
+        <circle cx="600" cy="220" r="3.5" fill="var(--color-hero-dots)" opacity="0.22" />
+        <circle cx="720" cy="280" r="4.5" fill="var(--color-hero-dots)" opacity="0.16" />
+        <circle cx="510" cy="350" r="3"   fill="var(--color-hero-dots)" opacity="0.20" />
+        <circle cx="650" cy="390" r="5"   fill="var(--color-hero-dots)" opacity="0.15" />
+        <circle cx="780" cy="360" r="3.5" fill="var(--color-hero-dots)" opacity="0.20" />
+        <circle cx="560" cy="480" r="4"   fill="var(--color-hero-dots)" opacity="0.18" />
+        <circle cx="700" cy="520" r="3"   fill="var(--color-hero-dots)" opacity="0.22" />
+        <circle cx="490" cy="600" r="5"   fill="var(--color-hero-dots)" opacity="0.14" />
+        <circle cx="630" cy="650" r="3.5" fill="var(--color-hero-dots)" opacity="0.20" />
+        <circle cx="760" cy="610" r="4"   fill="var(--color-hero-dots)" opacity="0.16" />
+        <circle cx="540" cy="730" r="3"   fill="var(--color-hero-dots)" opacity="0.18" />
+        <circle cx="690" cy="760" r="4.5" fill="var(--color-hero-dots)" opacity="0.14" />
+      </g>
+    </svg>
+
+    {/* ── The S-line — hairline + glow layer + travelling dash ── */}
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className="absolute inset-0 w-full h-full"
+    >
+      {/* Glow halo — wide, very soft */}
+      <path
+        d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+        fill="none"
+        stroke="var(--color-accent)"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        opacity="0.10"
+        style={{ vectorEffect: 'non-scaling-stroke' }}
+        filter="url(#s-glow)"
+      />
+
+      {/* Crisp hairline — the actual visible edge */}
+      <path
+        d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+        fill="none"
+        stroke="url(#s-grad)"
+        strokeWidth="0.22"
+        strokeLinecap="round"
+        style={{ vectorEffect: 'non-scaling-stroke' }}
+      />
+
+      {/* Travelling highlight — rides down the line */}
+      {!shouldReduceMotion && (
+        <path
+          d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+          fill="none"
+          stroke="var(--color-accent)"
+          strokeWidth="0.3"
+          strokeLinecap="round"
+          opacity="0.75"
+          strokeDasharray="6 94"
+          style={{ vectorEffect: 'non-scaling-stroke' }}
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            from="100"
+            to="-100"
+            dur="3.5s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </path>
+      )}
+    </svg>
+
+    {/* ── Floating status tags ── */}
+    {!shouldReduceMotion && (
+      <>
+        <motion.div
+          animate={{ opacity: [0.45, 0.85, 0.45] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-7 right-8 px-2.5 py-1 rounded-md border border-accent/15 bg-bg-card/65 backdrop-blur-sm"
+          style={{ boxShadow: 'var(--card-shimmer)' }}
+        >
+          <span className="font-mono text-[8px] font-bold text-accent/55 uppercase tracking-[0.25em]">
+            SAT-02 // ORBIT
+          </span>
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: [0.35, 0.70, 0.35], y: [0, -3, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
+          className="absolute top-[36%] right-[35%] px-2 py-0.5 rounded border border-border/60 bg-bg-card/50 backdrop-blur-sm"
+          style={{ boxShadow: 'var(--card-shimmer)' }}
+        >
+          <span className="font-mono text-[7px] font-bold text-text-muted uppercase tracking-widest">
+            GH // ACCRA NODE
+          </span>
+        </motion.div>
+      </>
+    )}
+  </div>
+);
+
+// ── Main component ────────────────────────────────────────────────────────────
 const HeroSection: React.FC<HeroSectionProps> = ({
   heroRef,
   heroY,
@@ -41,87 +198,145 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <div ref={heroRef} className="relative w-full h-full flex flex-col">
+    <div ref={heroRef} className="relative w-full h-full flex flex-col overflow-hidden">
+
+      {/* S-curve divider — desktop only */}
+      <SDivider shouldReduceMotion={!!shouldReduceMotion} />
 
       {/* ── Main content grid ── */}
       <motion.div
         style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-        className="relative z-30 flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center text-center lg:text-left pt-20 md:pt-24 lg:pt-16 pb-12 md:pb-32 lg:pb-48 md:min-h-0 h-full"
+        className="
+          relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-10
+          grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
+          text-center lg:text-left
+          pt-20 md:pt-24 lg:pt-16 pb-12 md:pb-32 lg:pb-48
+          md:min-h-0 h-full
+        "
       >
-        {/* Left column */}
-        <div className="flex flex-col items-center justify-center w-full h-full lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-12 md:pt-4 xl:pt-6">
 
-          {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-text-primary leading-[1.08] mb-4 md:mb-5 tracking-tight">
-            <span className="block">Train Like a Hacker .</span>
-            <span className="block mt-1 text-accent lg:text-2xl xl:text-3xl">Become a Hacker.</span>
+        {/* ── Left column ── */}
+        <div className="flex flex-col items-center justify-center w-full h-full
+                        lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-10 md:pt-4">
+
+          {/* Status badge */}
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 border border-accent/25 bg-accent-dim rounded-lg"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
+            <span className="font-mono text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+              Africa's Offensive Security Platform
+            </span>
+          </motion.div>
+
+          {/* ── Headline ── */}
+          <h1 className="font-black text-text-primary leading-[1.06] tracking-tight mb-5 w-full">
+
+            <motion.span
+              initial={minimizeEffects ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
+              className="block text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
+            >
+              Train Like a Hacker.
+            </motion.span>
+
+            {/* Accent rule — slides in */}
+            <motion.span
+              initial={minimizeEffects ? false : { scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={minimizeEffects ? { duration: 0 } : { duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="block h-[2px] w-12 my-3 origin-left mx-auto lg:mx-0"
+              style={{ background: 'var(--color-accent)' }}
+              aria-hidden
+            />
+
+            <motion.span
+              initial={minimizeEffects ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
+              className="block text-accent text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
+            >
+              Become a Hacker.
+            </motion.span>
           </h1>
 
           {/* Subtext */}
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm sm:text-base md:text-lg max-w-lg mb-5 md:mb-8 leading-relaxed opacity-80"
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-text-secondary text-sm sm:text-base max-w-lg mb-7 leading-relaxed"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
 
           {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 md:gap-4 mb-5 md:mb-0"
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center
+                       justify-center lg:justify-start gap-3 mb-8"
           >
             {user ? (
-              <Link to="/dashboard" className="btn-primary glass-effect flex items-center justify-center gap-2 !px-8 py-3.5 text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 !py-3 text-sm">
                 <LayoutDashboard className="w-4 h-4" /> Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn-primary glass-effect flex items-center justify-center gap-2 text-sm font-medium !px-10 py-3.5 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-sm !px-8 !py-3">
                   Start Training <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary glass-effect text-sm font-medium !px-10 py-3.5 text-center transition-all hover:scale-[1.02] active:scale-[0.98]">
-                  Login
+                <Link to="/login" className="btn-secondary text-sm !px-8 !py-3 text-center">
+                  Log In
                 </Link>
               </>
             )}
           </motion.div>
 
-          {/* Stats — Mobile/Tablet only */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-4 sm:gap-6 w-full max-w-2xl mt-6 sm:mt-10">
+          {/* Stats — mobile/tablet */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 1.0 }}
+            className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-4 sm:gap-6 w-full max-w-2xl pt-5 border-t border-border"
+          >
             {heroStats.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={minimizeEffects ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.4 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col items-center lg:items-start"
-              >
-                <div className="text-xl font-bold text-accent font-mono leading-none mb-1">
+              <div key={i} className="flex flex-col items-center lg:items-start">
+                <div className="font-mono text-xl font-black text-accent leading-none mb-1">
                   <StatCounter end={s.value} suffix={s.suffix} />
                 </div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-medium">{s.label}</div>
-              </motion.div>
+                <div className="text-[9px] uppercase tracking-[0.2em] text-text-muted font-mono">{s.label}</div>
+              </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        {/* Right column: Globe */}
+        {/* ── Right column: Globe ── */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.93 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative hidden aspect-square w-full max-w-[440px] items-center justify-center overflow-visible mx-auto lg:mx-0 lg:flex xl:max-w-[560px]"
+          className="relative hidden aspect-square w-full max-w-[480px] items-center justify-center
+                     overflow-visible mx-auto lg:mx-0 lg:flex xl:max-w-[580px] lg:-mr-12 xl:-mr-20"
         >
+          {/* Ambient glow */}
+          <div
+            className="absolute inset-[-10%] z-0 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, var(--color-hero-glow) 0%, transparent 68%)' }}
+          />
+
           <div className="relative z-10 w-full h-full">
             <Suspense fallback={null}>
-              <HackerGlobe scale={0.88} />
+              <HackerGlobe scale={0.92} />
             </Suspense>
           </div>
         </motion.div>
+
       </motion.div>
     </div>
   );
