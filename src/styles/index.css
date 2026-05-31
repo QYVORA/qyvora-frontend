@@ -26,6 +26,9 @@
   --color-border:         rgba(171, 181, 192, 0.12);
   --color-border-strong:  rgba(136, 173, 124, 0.18);
   --dot-color:            rgba(136, 173, 124, 0.05);
+  --color-hero-right-bg:  #000000;
+  --color-hero-glow:      rgba(183, 255, 153, 0.06);
+  --color-hero-dots:      #88AD7C;
 
   /* ── ASCII Beam (Dark) ── */
   --ascii-beam-low:       rgba(255, 255, 255, 0.2);
@@ -78,6 +81,9 @@
   --color-border:         rgba(55, 94, 43, 0.11); /* Soft green-tinted border */
   --color-border-strong:  rgba(55, 94, 43, 0.28);
   --dot-color:            rgba(55, 94, 43, 0.05);
+  --color-hero-right-bg:  #eff2ef;
+  --color-hero-glow:      rgba(55, 94, 43, 0.08);
+  --color-hero-dots:      #375e2b;
 
   /* ── ASCII Beam (Light) ── */
   --ascii-beam-low:       #0a100a;

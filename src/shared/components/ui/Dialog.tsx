@@ -78,7 +78,20 @@ export const DialogContent = React.forwardRef<
         // Size
         'w-[calc(100vw-1rem)] sm:w-full',
         'max-h-[calc(100svh-2rem)] flex flex-col',
-        maxWidth,
+        
+        // Dynamic Max Widths
+        maxWidth === 'max-w-sm' && 'max-w-sm',
+        maxWidth === 'max-w-md' && 'max-w-md',
+        maxWidth === 'max-w-lg' && 'max-w-lg',
+        maxWidth === 'max-w-xl' && 'max-w-xl',
+        maxWidth === 'max-w-2xl' && 'max-w-2xl',
+        maxWidth === 'max-w-3xl' && 'max-w-3xl',
+        maxWidth === 'max-w-4xl' && 'max-w-4xl',
+        maxWidth === 'max-w-5xl' && 'max-w-5xl',
+        maxWidth === 'max-w-6xl' && 'max-w-6xl',
+        maxWidth === 'max-w-7xl' && 'max-w-7xl',
+        !maxWidth.startsWith('max-w-') && maxWidth,
+
         // Surface — matches card-hsociety
         'terminal-card bg-bg-card border border-border rounded-2xl shadow-2xl overflow-hidden',
         // Radix data-state animations

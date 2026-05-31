@@ -212,9 +212,11 @@ function StreamFloor({ speedScale = 0.58, isLight }) {
     matRef.current.uniforms.uPixelDensity.value = dpr;
   }, [size]);
 
-  useFrame(({ clock }) => {
+  const timeRef = useRef(0);
+  useFrame((state, delta) => {
     if (!matRef.current) return;
-    matRef.current.uniforms.uTime.value = clock.getElapsedTime() * speedScale;
+    timeRef.current += delta;
+    matRef.current.uniforms.uTime.value = timeRef.current * speedScale;
   });
 
   const planeW = size.width < 768 ? 40 : 32;
@@ -241,8 +243,10 @@ function CameraRig({ speedScale = 0.58 }) {
     camera.updateProjectionMatrix();
   }, [camera, size.width]);
 
-  useFrame(({ clock }) => {
-    const t       = clock.getElapsedTime() * speedScale;
+  const timeRef = useRef(0);
+  useFrame((state, delta) => {
+    timeRef.current += delta;
+    const t       = timeRef.current * speedScale;
     const w       = size.width;
     const isMob   = w < 768;
     const isSmall = w < 480;
