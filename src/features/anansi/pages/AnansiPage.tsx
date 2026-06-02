@@ -136,7 +136,7 @@ const AnansiPage: React.FC = () => {
       isDashboard ? "bg-bg" : "bg-black"
     )}>
       <div className={cn(
-        "relative z-10 mx-auto max-w-7xl px-4 pt-8 pb-12 md:px-10 lg:px-16 flex-1",
+        "relative z-10 w-full px-4 pt-8 pb-12 md:px-8 lg:px-12 flex-1",
         isDashboard && "lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain pt-8"
       )}>
         
@@ -262,32 +262,43 @@ const AnansiPage: React.FC = () => {
             </>
           )}
 
-          {/* Results Reveal UX */}
+          {/* Results Reveal UX - Simple Modal Notification */}
           {status === 'completed' && results && !showResults && (
-            <ScrollReveal direction="up">
-              <div className="flex flex-col items-center justify-center py-32 space-y-16">
-                <AnansiLogo size={160} />
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+              <div className={cn(
+                "relative max-w-lg w-full mx-4 border rounded-2xl p-8 space-y-6 bg-bg-elevated/95 backdrop-blur-xl",
+                isDashboard ? "border-accent/30" : "border-cyan-500/30"
+              )}>
+                <div className="flex items-center justify-center">
+                  <CheckCircle2 className={cn("w-16 h-16", isDashboard ? "text-accent" : "text-cyan-500")} />
+                </div>
                 
-                <div className="text-center space-y-6">
-                  <h2 className="text-4xl font-black text-text-primary uppercase tracking-[0.4em] leading-none">Reconnaissance Complete</h2>
-                  <p className="text-base text-text-muted font-mono uppercase tracking-[0.2em] max-w-2xl mx-auto">The intelligence payload is ready for decryption.</p>
+                <div className="text-center space-y-3">
+                  <h2 className={cn(
+                    "text-2xl font-black uppercase tracking-[0.3em]",
+                    isDashboard ? "text-accent" : "text-cyan-500"
+                  )}>
+                    Reconnaissance Complete
+                  </h2>
+                  <p className="text-sm text-text-muted font-mono uppercase tracking-wider">
+                    Intelligence payload ready
+                  </p>
                 </div>
 
                 <button 
                   onClick={() => setShowResults(true)}
                   className={cn(
-                    "group relative flex items-center gap-8 px-16 py-8 rounded-full font-black uppercase tracking-[0.4em] text-sm transition-all duration-500 border-2",
+                    "w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-black uppercase tracking-[0.2em] text-xs transition-all duration-300",
                     isDashboard 
-                      ? "bg-accent text-bg border-accent hover:brightness-110" 
-                      : "bg-cyan-600 text-bg border-cyan-600 hover:bg-cyan-500"
+                      ? "bg-accent text-bg hover:brightness-110" 
+                      : "bg-cyan-600 text-bg hover:bg-cyan-500"
                   )}
                 >
-                  <AnansiLogo size={24} />
-                  Decrypt Intelligence Payload
-                  <ArrowRight size={24} className="transition-transform duration-500 group-hover:translate-x-3" />
+                  View Results
+                  <ArrowRight size={16} />
                 </button>
               </div>
-            </ScrollReveal>
+            </div>
           )}
 
           {/* Results Output */}

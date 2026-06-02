@@ -159,39 +159,39 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
       </div>
 
       {/* ── PHASE 01 — NETWORK MAPPING ── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-0 space-y-10">
+      <section className="w-full px-4 md:px-6 space-y-10">
         <div className="flex items-center gap-6">
           <div className={cn("px-4 py-1.5 text-bg text-[11px] font-black uppercase tracking-[0.3em] rounded-sm", isDashboard ? "bg-accent" : "bg-cyan-500")}>Phase 01</div>
           <h2 className="text-base font-black uppercase tracking-[0.4em]">Exposed Network Map</h2>
         </div>
 
-        <div className="border border-white/5 rounded-3xl bg-bg-elevated/20 overflow-hidden shadow-2xl">
+        <div className="border border-white/5 rounded-2xl bg-bg-elevated/20 overflow-hidden shadow-2xl">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[900px]">
+            <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-white/5 bg-white/[0.03]">
-                  <th className="p-6 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Host Address</th>
-                  <th className="p-6 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Classification</th>
-                  <th className="p-6 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">IP Routing</th>
-                  <th className="p-6 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Transport</th>
-                  <th className="p-6 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Integrity</th>
+                  <th className="p-4 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Host Address</th>
+                  <th className="p-4 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Classification</th>
+                  <th className="p-4 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">IP Routing</th>
+                  <th className="p-4 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Transport</th>
+                  <th className="p-4 text-[10px] font-black text-text-muted uppercase tracking-[0.4em]">Integrity</th>
                 </tr>
               </thead>
               <tbody>
                 {results.assets.map((asset, i) => (
                   <tr key={i} className={cn(
-                    "border-b border-white/[0.04] transition-colors",
+                    "border-b border-white/[0.02] transition-colors hover:bg-white/[0.02]",
                     asset.isAlive ? "opacity-100" : "opacity-30"
                   )}>
-                    <td className="p-6 text-sm font-bold flex items-center gap-4">
+                    <td className="p-4 text-sm font-bold flex items-center gap-3">
                       {asset.isAlive ? <Activity size={12} className={isDashboard ? 'text-accent' : 'text-cyan-500'} /> : <div className="w-3 h-3" />}
                       {asset.value}
                     </td>
-                    <td className="p-6">
+                    <td className="p-4">
                       <span className="text-[9px] px-2 py-1 rounded border border-white/10 text-text-muted uppercase tracking-widest font-black">{asset.type}</span>
                     </td>
-                    <td className="p-6 text-xs text-text-secondary font-mono tracking-widest">{asset.resolvedIp || '—'}</td>
-                    <td className="p-6">
+                    <td className="p-4 text-xs text-text-secondary font-mono tracking-widest">{asset.resolvedIp || '—'}</td>
+                    <td className="p-4">
                       {asset.tlsData ? (
                         <div className="flex items-center gap-3">
                           <Lock size={12} className={isDashboard ? 'text-accent' : 'text-cyan-500'} />
@@ -199,7 +199,7 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
                         </div>
                       ) : <span className="text-[10px] text-text-muted/20 uppercase tracking-widest font-black">Insecure</span>}
                     </td>
-                    <td className="p-6">
+                    <td className="p-4">
                       <span className={cn(
                         "text-[10px] font-black uppercase tracking-[0.2em]",
                         asset.isAlive ? "text-green-500" : "text-text-muted"
@@ -216,33 +216,33 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
       </section>
 
       {/* ── PHASE 02 — SURFACE ANALYSIS ── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-0 space-y-12">
+      <section className="w-full px-4 md:px-6 space-y-12">
         <div className="flex items-center gap-6">
           <div className={cn("px-4 py-1.5 text-bg text-[11px] font-black uppercase tracking-[0.3em] rounded-sm", isDashboard ? "bg-accent" : "bg-cyan-500")}>Phase 02</div>
           <h2 className="text-base font-black uppercase tracking-[0.4em]">Surface Intelligence</h2>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
           {results.assets.filter(a => a.type === 'url' && a.isAlive).map((asset, i) => {
             const meta = asset.metadata || {};
             const tls = asset.tlsData;
             return (
-              <div key={i} className="border border-white/10 rounded-3xl bg-bg-elevated/20 overflow-hidden flex flex-col group transition-all duration-500 hover:border-white/20">
-                <div className="p-6 bg-white/[0.03] border-b border-white/5 flex items-center justify-between">
-                  <div className="flex items-center gap-5 truncate pr-8">
-                    <Globe size={20} className={isDashboard ? "text-accent" : "text-cyan-500"} />
-                    <span className={cn("text-base font-black truncate tracking-widest uppercase", isDashboard ? "text-accent" : "text-cyan-500")}>{asset.value}</span>
+              <div key={i} className="border border-white/10 rounded-2xl bg-bg-elevated/20 overflow-hidden flex flex-col group transition-all duration-300 hover:border-white/20">
+                <div className="p-4 bg-white/[0.03] border-b border-white/5 flex items-center justify-between">
+                  <div className="flex items-center gap-4 truncate pr-8">
+                    <Globe size={18} className={isDashboard ? "text-accent" : "text-cyan-500"} />
+                    <span className={cn("text-sm font-black truncate tracking-widest uppercase", isDashboard ? "text-accent" : "text-cyan-500")}>{asset.value}</span>
                   </div>
-                  <div className="px-4 py-1.5 rounded-lg border border-white/10 bg-black/40 text-sm font-black font-mono">
+                  <div className="px-3 py-1 rounded-lg border border-white/10 bg-black/40 text-xs font-black font-mono">
                     HTTP {meta.statusCode || '??'}
                   </div>
                 </div>
                 
-                <div className="p-10 grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                   {/* Infrastructure */}
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em]">Infrastructure</span>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div className="flex flex-col gap-1">
                         <span className="text-[9px] text-text-muted uppercase tracking-widest">Server</span>
                         <span className="text-xs font-bold uppercase tracking-tight">{meta.server || 'Unknown'}</span>
@@ -257,10 +257,10 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
                   </div>
 
                   {/* Cryptography */}
-                  <div className="space-y-6 border-x border-white/[0.06] px-10 -mx-10 md:px-12 md:-mx-0">
+                  <div className="space-y-4 border-l border-white/[0.06] pl-8">
                     <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em]">Cryptography</span>
                     {tls ? (
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         <div className="flex flex-col gap-1">
                           <span className="text-[9px] text-text-muted uppercase tracking-widest">Issuer</span>
                           <span className="text-xs font-bold truncate uppercase tracking-tight">{tls.issuerOrg}</span>
@@ -271,20 +271,20 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center h-24 border border-dashed border-white/5 rounded-2xl">
+                      <div className="flex items-center justify-center h-16 border border-dashed border-white/5 rounded-lg">
                         <span className="text-[9px] text-text-muted uppercase tracking-widest font-black opacity-30">No Data</span>
                       </div>
                     )}
                   </div>
 
                   {/* Security Policy */}
-                  <div className="space-y-6">
+                  <div className="space-y-4 border-l border-white/[0.06] pl-8">
                     <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em]">Security Policy</span>
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="grid grid-cols-1 gap-1.5">
                       {standardHeaders.map(h => {
                         const present = meta.securityHeadersPresent?.includes(h);
                         return (
-                          <div key={h} className="flex items-center justify-between gap-4 p-2.5 rounded-xl bg-black/40 border border-white/[0.03]">
+                          <div key={h} className="flex items-center justify-between gap-3 p-2 rounded-lg bg-black/40 border border-white/[0.03]">
                             <span className={cn(
                               "text-[8px] uppercase tracking-widest font-black truncate",
                               present ? "text-text-primary" : "text-text-muted opacity-20"
@@ -301,7 +301,7 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
                 </div>
                 
                 {/* Interaction Footer */}
-                <div className="p-4 bg-black/60 border-t border-white/5 flex items-center justify-center gap-10">
+                <div className="p-3 bg-black/60 border-t border-white/5 flex items-center justify-center gap-8">
                    <button className="flex items-center gap-2 text-[9px] font-black text-text-muted uppercase tracking-[0.4em] hover:text-text-primary transition-colors">
                      <ExternalLink size={12} /> Visit
                    </button>
@@ -316,7 +316,7 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
       </section>
 
       {/* ── PHASE 03 — VULNERABILITY AUDIT ── */}
-      <section className="max-w-7xl mx-auto px-4 md:px-0 space-y-12">
+      <section className="w-full px-4 md:px-6 space-y-12">
         <div className="flex items-center gap-6">
           <div className={cn("px-4 py-1.5 text-bg text-[11px] font-black uppercase tracking-[0.3em] rounded-sm", isDashboard ? "bg-accent" : "bg-cyan-500")}>Phase 03</div>
           <h2 className="text-base font-black uppercase tracking-[0.4em]">Intelligence Audit</h2>

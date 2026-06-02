@@ -26,8 +26,8 @@
   --color-border:         rgba(171, 181, 192, 0.12);
   --color-border-strong:  rgba(136, 173, 124, 0.18);
   --dot-color:            rgba(136, 173, 124, 0.05);
-  --color-hero-right-bg:  #000000;
-  --color-hero-glow:      rgba(183, 255, 153, 0.06);
+  --color-hero-right-bg:  #000e08;
+  --color-hero-glow:      rgba(136, 173, 124, 0.15);
   --color-hero-dots:      #88AD7C;
 
   /* ── ASCII Beam (Dark) ── */
@@ -81,9 +81,9 @@
   --color-border:         rgba(55, 94, 43, 0.11); /* Soft green-tinted border */
   --color-border-strong:  rgba(55, 94, 43, 0.28);
   --dot-color:            rgba(55, 94, 43, 0.05);
-  --color-hero-right-bg:  #eff2ef;
-  --color-hero-glow:      rgba(55, 94, 43, 0.08);
-  --color-hero-dots:      #375e2b;
+  --color-hero-right-bg:  #e8f2e6;
+  --color-hero-glow:      rgba(55, 94, 43, 0.18);
+  --color-hero-dots:      #2f8a1f;
 
   /* ── ASCII Beam (Light) ── */
   --ascii-beam-low:       #0a100a;
@@ -971,6 +971,44 @@
 @media (min-width: 768px) {
   .landing-snap .md\:snap-start {
     box-sizing: border-box;
+  }
+  
+  /* Hide scrollbar on desktop, show on hover/interaction */
+  .landing-snap {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+  }
+  
+  .landing-snap::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .landing-snap::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .landing-snap::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    transition: background 0.3s ease;
+  }
+  
+  /* Show scrollbar on hover or while scrolling */
+  .landing-snap:hover,
+  .landing-snap:active {
+    scrollbar-color: var(--color-accent) transparent;
+  }
+  
+  .landing-snap:hover::-webkit-scrollbar-thumb,
+  .landing-snap:active::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border: 2px solid var(--color-bg);
+  }
+  
+  .landing-snap:hover::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.15);
   }
 }
 

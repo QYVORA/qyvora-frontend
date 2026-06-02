@@ -75,7 +75,7 @@ const PodiumCard: React.FC<{ entry: LeaderboardEntry; rank: 1 | 2 | 3; delay: nu
   const meta = getRankMeta(rank)!;
 
   return (
-    <Link to={`/u/${handle}`}>
+    <Link to={`/@${handle}`}>
       <motion.div
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28, filter: 'blur(6px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -113,7 +113,7 @@ const CompactRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: numbe
   const handle = entry.handle || entry.name || 'Anonymous';
 
   return (
-    <Link to={`/u/${handle}`}>
+    <Link to={`/@${handle}`}>
       <motion.div
         initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -16, filter: 'blur(4px)' }}
         whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
@@ -144,7 +144,7 @@ const MobileRow: React.FC<{ entry: LeaderboardEntry; rank: number; delay: number
   const meta = getRankMeta(rank);
 
   return (
-    <Link to={`/u/${handle}`} className="block">
+    <Link to={`/@${handle}`} className="block">
       <motion.div
         initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
         whileInView={{ opacity: 1, x: 0 }}

@@ -161,7 +161,7 @@ const Profile: React.FC = () => {
                 {isOwnProfile ? (
                   <>
                     <Link
-                      to={`/u/${profileData.username}`}
+                      to={`/@${profileData.username}`}
                       className="flex items-center gap-2 px-5 py-3 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95 shadow-sm"
                     >
                       <ExternalLink className="w-3.5 h-3.5" /> Public View
@@ -175,7 +175,7 @@ const Profile: React.FC = () => {
                   </>
                 ) : (
                   <Link
-                    to={`/u/${profileData.username}`}
+                    to={`/@${profileData.username}`}
                     className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-accent/20"
                   >
                     <ExternalLink className="w-4 h-4" /> View Public Page

@@ -156,10 +156,9 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
   ctx.clearRect(0, 0, W, H);
 
   const dotR     = (step / 180) * H * 0.38; // dot radius scales with step density
-  const africaFill  = isLight ? '#2f8a1f'  : '#88ad7c';   // sage green
-  const worldFill   = isLight ? '#7aab70'  : '#2e4a2a';   // muted world land
-  const africaAlpha = 1.0;
-  const worldAlpha  = isLight ? 0.70 : 0.80;
+  // All lands now use the accent color (sage green) with consistent styling
+  const landFill  = isLight ? '#2f8a1f'  : '#88ad7c';   // sage green for all lands
+  const landAlpha = 1.0;
 
   for (let lat = 89; lat >= -89; lat -= step) {
     for (let lng = -179; lng <= 179; lng += step) {
@@ -168,9 +167,9 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
       const x = ((lng + 180) / 360) * W;
       const y = ((90 - lat) / 180) * H;
 
-      const africa = isAfrica(lat, lng);
-      ctx.globalAlpha = africa ? africaAlpha : worldAlpha;
-      ctx.fillStyle   = africa ? africaFill  : worldFill;
+      // All lands now use the same color and opacity
+      ctx.globalAlpha = landAlpha;
+      ctx.fillStyle   = landFill;
 
       ctx.beginPath();
       ctx.arc(x, y, dotR, 0, Math.PI * 2);
@@ -220,20 +219,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     scene.add(globe);
 
     /* ── Ocean sphere ── */
+    const oceanColor = isLight ? 0xffffff : 0x000000;
     globe.add(new THREE.Mesh(
       new THREE.SphereGeometry(0.998, 64, 64),
-      new THREE.MeshBasicMaterial({ color: isLight ? 0xdde8dd : 0x040706 }),
+      new THREE.MeshBasicMaterial({ color: oceanColor }),
     ));
-
-    /* ── Subtle atmosphere rim — slight glow around edge ── */
-    const atmosGeo = new THREE.SphereGeometry(1.06, 64, 64);
-    const atmosMat = new THREE.MeshBasicMaterial({
-      color: isLight ? 0x5aab50 : 0x1a4a20,
-      transparent: true,
-      opacity: isLight ? 0.04 : 0.07,
-      side: THREE.BackSide,
-    });
-    globe.add(new THREE.Mesh(atmosGeo, atmosMat));
 
     /* ── Dot-map texture on sphere ── */
     const step = constrainedDevice ? 2.5 : 1.6;

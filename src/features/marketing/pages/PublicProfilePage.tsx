@@ -39,8 +39,13 @@ const PublicProfile: React.FC = () => {
 
   useEffect(() => {
     if (!handle) { setNotFound(true); setLoading(false); return; }
+    
     let mounted = true;
-    api.get(`/public/users/${encodeURIComponent(handle)}`)
+    
+    // Remove @ prefix if present in the URL parameter
+    const cleanHandle = handle.startsWith('@') ? handle.slice(1) : handle;
+    
+    api.get(`/public/users/${encodeURIComponent(cleanHandle)}`)
       .then((res) => { if (mounted) setProfile(res.data || null); })
       .catch(() => { if (mounted) setNotFound(true); })
       .finally(() => { if (mounted) setLoading(false); });
@@ -50,12 +55,15 @@ const PublicProfile: React.FC = () => {
   if (loading) return <PageLoader />;
 
   if (notFound || !profile) {
+    // Clean handle for display (remove @ if present)
+    const displayHandle = handle?.startsWith('@') ? handle : `@${handle}`;
+    
     return (
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 px-4">
         <Shield className="w-16 h-16 text-accent opacity-20" />
         <div className="text-center">
           <h1 className="text-3xl font-black text-text-primary uppercase tracking-tighter mb-2">Operator Not Found</h1>
-          <p className="text-text-muted text-sm max-w-xs mx-auto">The handle <span className="text-accent font-mono">@{handle}</span> does not exist in the Hall of Shadows.</p>
+          <p className="text-text-muted text-sm max-w-xs mx-auto">The handle <span className="text-accent font-mono">{displayHandle}</span> does not exist in the Hall of Shadows.</p>
         </div>
         <Link to="/" className="btn-primary px-8 py-3 text-sm">Return Home</Link>
       </div>
