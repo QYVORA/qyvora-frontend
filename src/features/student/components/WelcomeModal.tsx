@@ -20,7 +20,9 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
       await refreshMe();
       onOpenChange(false);
     } catch {
-      onOpenChange(false);
+      // If the API fails, we don't close it to avoid the "reappearing" bug
+      // But we can add a toast or alert here if needed. 
+      // For now, keeping it open is the safer bet for state consistency.
     }
   };
 
@@ -37,6 +39,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
         title="[ SYSTEM ACCESS GRANTED ]" 
         maxWidth="max-w-3xl"
         hideClose
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
         className="border-accent/30 shadow-[0_0_50px_rgba(var(--color-accent-rgb),0.15)]"
       >
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12 py-4">

@@ -62,6 +62,8 @@ const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenCha
         title="[ SECURITY PROTOCOL: RECOVERY ]" 
         maxWidth="max-w-2xl"
         hideClose
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
         className="border-accent/30 shadow-[0_0_50px_rgba(var(--color-accent-rgb),0.15)]"
       >
         <div className="flex flex-col items-center -mt-2">

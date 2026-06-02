@@ -50,7 +50,14 @@ const PromotionalSystem: React.FC = () => {
     // Only show to non-logged in users
     if (user) return;
 
-    // Wait 10 seconds before showing a random promo
+    // Check if dismissed in this session (or for 24h)
+    const dismissed = localStorage.getItem('hsociety_promo_dismissed');
+    if (dismissed) {
+      // If it's old (more than 24h), we could clear it, but for now simple persist
+      return;
+    }
+
+    // Wait 15 seconds before showing a random promo
     const timer = setTimeout(() => {
       const randomPromo = PROMOTIONS[Math.floor(Math.random() * PROMOTIONS.length)];
       setActivePromo(randomPromo);
@@ -62,6 +69,11 @@ const PromotionalSystem: React.FC = () => {
 
   if (user || !isVisible || !activePromo) return null;
 
+  const handleDismiss = () => {
+    localStorage.setItem('hsociety_promo_dismissed', '1');
+    setIsVisible(false);
+  };
+
   const handleCta = () => {
     if (activePromo.action) {
       activePromo.action();
@@ -69,7 +81,7 @@ const PromotionalSystem: React.FC = () => {
       const el = document.querySelector(activePromo.href);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsVisible(false);
+    handleDismiss(); // Also dismiss if they clicked the CTA
   };
 
   return (
@@ -83,7 +95,7 @@ const PromotionalSystem: React.FC = () => {
         >
           <CardBase className="border-accent/30 shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.15)] bg-bg-card/90 backdrop-blur-md">
             <button
-              onClick={() => setIsVisible(false)}
+              onClick={handleDismiss}
               className="absolute top-3 right-3 p-1 rounded-md text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors z-10"
             >
               <X className="w-3.5 h-3.5" />

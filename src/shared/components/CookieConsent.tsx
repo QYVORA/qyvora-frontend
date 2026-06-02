@@ -23,7 +23,8 @@ const CookieConsent: React.FC = () => {
   useEffect(() => {
     // Show after a short delay if no choice exists
     const existing = getCookiePreferences();
-    if (!existing) {
+    const dismissed = localStorage.getItem('hsociety_cookie_dismissed');
+    if (!existing && !dismissed) {
       const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
     }
@@ -31,6 +32,13 @@ const CookieConsent: React.FC = () => {
 
   const handleAcceptAll = () => {
     setCookiePreferences({ strictly_necessary: true, functional: true, analytics: true });
+    setIsVisible(false);
+  };
+
+  const handleDismiss = () => {
+    // If they just close it, we still want to remember they saw it.
+    // We'll set a "dismissed" flag in localStorage.
+    localStorage.setItem('hsociety_cookie_dismissed', '1');
     setIsVisible(false);
   };
 
@@ -71,7 +79,7 @@ const CookieConsent: React.FC = () => {
                 </p>
               </div>
               <button 
-                onClick={() => setIsVisible(false)}
+                onClick={handleDismiss}
                 className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors p-2"
               >
                 <X className="w-5 h-5" />
