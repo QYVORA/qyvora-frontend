@@ -88,7 +88,7 @@ const PartnersSection: React.FC = () => {
   const baseDuration = Math.max(30, items.length * 8);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center py-8 lg:py-0 overflow-hidden">
+    <div className="w-full min-h-full flex flex-col justify-center py-12 lg:py-0">
       <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
         <ScrollReveal direction="up" amount={0.15}>
           {/*
@@ -97,7 +97,7 @@ const PartnersSection: React.FC = () => {
             cards sit on the right as a 2×2 grid.
             On mobile: stacked column — heading then cards below.
           */}
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 lg:mb-10">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-12 lg:gap-10 mb-8 lg:mb-10">
             {/* ── Heading block ── */}
             <div className="flex flex-col">
               <div className="flex items-center gap-3 mb-3">

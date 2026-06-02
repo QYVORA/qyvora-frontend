@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Terminal, Shield, Zap, Target } from 'lucide-react';
 import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
+import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 
 const STEPS = [
   {
@@ -32,11 +33,13 @@ const STEPS = [
 
 const ProcessSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
+  const disableAnimations = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-6 bg-transparent">
+    <div className="w-full min-h-full flex items-center py-20 lg:py-6 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-16 lg:gap-12 items-center">
 
           {/* ── Left: Heading Column ── */}
           <div className="lg:pr-6 flex flex-col">
@@ -53,7 +56,7 @@ const ProcessSection: React.FC = () => {
               text="Process"
               font="ANSI Shadow"
               align="left"
-              animated
+              animated={!disableAnimations}
               compact
               className="mb-5 lg:mb-4"
             />
@@ -65,14 +68,14 @@ const ProcessSection: React.FC = () => {
           </div>
 
           {/* ── Right: Cards Grid (2×2 on Desktop) ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-6">
             {STEPS.map((step, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+                initial={disableAnimations ? false : { opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={disableAnimations ? { duration: 0 } : { duration: 0.5, delay: i * 0.1 }}
                 className="relative overflow-hidden rounded-2xl flex flex-col gap-4 group"
                 style={{ border: '1px solid rgba(255,255,255,0.12)', padding: '1.5rem' }}
               >

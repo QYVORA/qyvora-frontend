@@ -41,18 +41,18 @@ const SnapSection: React.FC<{
   className?: string;
 }> = ({ id, children, className = '' }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice } = useAdaptiveUi();
-  const minimizeEffects = shouldReduceMotion || constrainedDevice;
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
+  const disableAnimations = shouldReduceMotion || constrainedDevice || isMobile;
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border bg-transparent md:pt-20 ${className}`}
+      className={`relative md:snap-start md:snap-always min-h-[100svh] w-full flex-shrink-0 box-border bg-transparent ${className}`}
     >
       <motion.div
-        initial={minimizeEffects ? false : { opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)', rotateX: 5 }}
+        initial={disableAnimations ? false : { opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)', rotateX: 5 }}
         whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0 }}
         viewport={{ once: false, amount: 0.15 }}
-        transition={minimizeEffects ? { duration: 0.2 } : { 
+        transition={disableAnimations ? { duration: 0.001 } : { 
           type: 'spring',
           damping: 30,
           stiffness: 80,
@@ -60,7 +60,7 @@ const SnapSection: React.FC<{
           duration: 1,
           ease: [0.22, 1, 0.36, 1]
         }}
-        className="w-full md:h-full relative z-10"
+        className="w-full min-h-full relative z-10 flex items-center py-20 md:py-0"
         style={{ perspective: '1200px' }}
         data-snap-child=""
       >
@@ -213,7 +213,7 @@ const Landing: React.FC = () => {
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="h-[calc(100dvh-60px)] md:h-full md:snap-start md:snap-always md:flex-shrink-0 md:box-border relative bg-transparent"
+          className="min-h-[100svh] md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent"
         >
           <HeroSection
             heroRef={heroRef}
@@ -265,10 +265,9 @@ const Landing: React.FC = () => {
           <FinalCtaSection user={user} />
         </SnapSection>
 
-        {/* ── 7. Footer ── */}
         <section
           id="footer"
-          className="md:snap-start md:snap-always md:h-full md:flex md:flex-shrink-0"
+          className="md:snap-start md:snap-always min-h-[100svh] flex flex-shrink-0"
         >
           <Footer />
         </section>

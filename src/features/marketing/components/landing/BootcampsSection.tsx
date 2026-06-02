@@ -141,7 +141,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const isSingle  = displayed.length === 1;
 
   return (
-    <div className="w-full h-full flex items-center overflow-hidden py-8 lg:py-16">
+    <div className="w-full min-h-full flex items-center py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
         {/* Loading skeleton */}
         {loading ? (
@@ -162,8 +162,8 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
 
         /* Single bootcamp: Header + card vertically aligned on left, rocket on right */
         ) : isSingle ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_280px] gap-8 lg:gap-16 items-center">
-            <ScrollReveal direction="left" className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_280px] gap-12 lg:gap-16 items-center">
+            <ScrollReveal direction="left" className="flex flex-col gap-8 lg:gap-5">
               {/* Eyebrow */}
               <div className="flex items-center gap-3">
                 <div className="h-[1px] w-8 bg-accent/40" />
@@ -202,7 +202,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
         /* Multiple bootcamps: card grid */
         ) : (
           <>
-            <ScrollReveal direction="up" amount={0.2} className="mb-6 lg:mb-8">
+            <ScrollReveal direction="up" amount={0.2} className="mb-12 lg:mb-8">
               {/* Eyebrow */}
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-[1px] w-8 bg-accent/40" />

@@ -33,19 +33,19 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 }) => {
   const ref = React.useRef(null);
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice } = useAdaptiveUi();
-  const minimizeEffects = shouldReduceMotion || constrainedDevice;
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
+  const disableAnimations = shouldReduceMotion || constrainedDevice || isMobile;
 
-  const offset = minimizeEffects ? 0 : 50;
+  const offset = disableAnimations ? 0 : 50;
 
   const variants: Variants = {
     hidden: {
-      opacity: 0,
+      opacity: disableAnimations ? 1 : 0,
       y: direction === 'up' ? offset : direction === 'down' ? -offset : 0,
       x: direction === 'left' ? offset : direction === 'right' ? -offset : 0,
-      scale: minimizeEffects ? 1 : scale,
+      scale: disableAnimations ? 1 : scale,
       rotateX: direction === 'up' ? 10 : direction === 'down' ? -10 : 0,
-      filter: minimizeEffects ? 'none' : 'blur(10px)',
+      filter: disableAnimations ? 'none' : 'blur(10px)',
     },
     visible: {
       opacity: 1,
@@ -59,11 +59,11 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         damping: 30,
         stiffness: 100,
         mass: 1,
-        duration: minimizeEffects ? 0.01 : 0.8,
+        duration: disableAnimations ? 0.001 : 0.8,
         ease: [0.22, 1, 0.36, 1], // Custom cinematic easing
-        delay,
+        delay: disableAnimations ? 0 : delay,
         staggerChildren: staggerChildren || undefined,
-        filter: { duration: minimizeEffects ? 0.01 : 0.5 },
+        filter: { duration: disableAnimations ? 0.001 : 0.5 },
       },
     },
   };

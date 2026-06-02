@@ -30,7 +30,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
       <defs>
         {/* S-curve clip */}
         <clipPath id="hero-right-clip" clipPathUnits="objectBoundingBox">
-          <path d="M 0.62 0  C 0.52 0.18, 0.62 0.38, 0.52 0.58  C 0.47 0.78, 0.57 0.90, 0.38 1.0  L 1 1  L 1 0 Z" />
+          <path d="M 0.62 0  C 0.58 0.15, 0.55 0.25, 0.52 0.38  C 0.49 0.51, 0.52 0.62, 0.48 0.75  C 0.44 0.88, 0.42 0.95, 0.38 1.0  L 1 1  L 1 0 Z" />
         </clipPath>
 
         {/* Radial accent gradient — centred in the right panel */}
@@ -73,7 +73,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
     >
       <defs>
         <clipPath id="hero-right-clip-abs" clipPathUnits="objectBoundingBox">
-          <path d="M 0.62 0  C 0.52 0.18, 0.62 0.38, 0.52 0.58  C 0.47 0.78, 0.57 0.90, 0.38 1.0  L 1 1  L 1 0 Z" />
+          <path d="M 0.62 0  C 0.58 0.15, 0.55 0.25, 0.52 0.38  C 0.49 0.51, 0.52 0.62, 0.48 0.75  C 0.44 0.88, 0.42 0.95, 0.38 1.0  L 1 1  L 1 0 Z" />
         </clipPath>
       </defs>
       <g clipPath="url(#hero-right-clip-abs)" opacity="1">
@@ -104,7 +104,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
     >
       {/* Glow halo — wide, very soft */}
       <path
-        d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+        d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
         fill="none"
         stroke="var(--color-accent)"
         strokeWidth="1.4"
@@ -116,7 +116,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
 
       {/* Crisp hairline — the actual visible edge */}
       <path
-        d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+        d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
         fill="none"
         stroke="url(#s-grad)"
         strokeWidth="0.22"
@@ -127,7 +127,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
       {/* Travelling highlight — rides down the line */}
       {!shouldReduceMotion && (
         <path
-          d="M62 0 C 52 18, 62 38, 52 58 C 47 78, 57 90, 38 100"
+          d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
           fill="none"
           stroke="var(--color-accent)"
           strokeWidth="0.3"
@@ -187,8 +187,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   totalCp,
 }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice } = useAdaptiveUi();
-  const minimizeEffects = shouldReduceMotion || constrainedDevice;
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
+  const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   const heroStats = [
     { label: 'Students',          value: stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0, suffix: '+' },
@@ -198,7 +198,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <div ref={heroRef} className="relative w-full h-full flex flex-col overflow-hidden">
+    <div ref={heroRef} className="relative w-full min-h-full flex flex-col overflow-hidden">
 
       {/* S-curve divider — desktop only */}
       <SDivider shouldReduceMotion={!!shouldReduceMotion} />
@@ -209,15 +209,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         className="
           relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-10
           grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
-          text-center lg:text-left
+          text-left
           pt-20 md:pt-24 lg:pt-16 pb-12 md:pb-32 lg:pb-48
-          md:min-h-0 h-full
+          md:min-h-0 min-h-full
         "
       >
 
         {/* ── Left column ── */}
-        <div className="flex flex-col items-center justify-center w-full h-full
-                        lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-10 md:pt-4">
+        <div className="flex flex-col items-start justify-center w-full h-full gap-6
+                        lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-10 md:pt-4 lg:gap-0">
 
           {/* Status badge */}
           <motion.div
@@ -249,7 +249,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={minimizeEffects ? false : { scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={minimizeEffects ? { duration: 0 } : { duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="block h-[2px] w-12 my-3 origin-left mx-auto lg:mx-0"
+              className="block h-[2px] w-12 my-3 origin-left mx-0"
               style={{ background: 'var(--color-accent)' }}
               aria-hidden
             />
@@ -280,7 +280,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
             className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center
-                       justify-center lg:justify-start gap-3 mb-8"
+                       justify-start gap-3 mb-8"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 !py-3 text-sm">
@@ -306,7 +306,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-4 sm:gap-6 w-full max-w-2xl pt-5 border-t border-border"
           >
             {heroStats.map((s, i) => (
-              <div key={i} className="flex flex-col items-center lg:items-start">
+              <div key={i} className="flex flex-col items-start">
                 <div className="font-mono text-xl font-black text-accent leading-none mb-1">
                   <StatCounter end={s.value} suffix={s.suffix} />
                 </div>

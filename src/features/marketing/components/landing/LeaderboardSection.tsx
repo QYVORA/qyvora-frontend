@@ -194,7 +194,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
   const rest  = leaderboard.slice(3, 5);
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-16">
+    <div className="w-full min-h-full flex items-center py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
         
         {/* Eyebrow */}
@@ -239,7 +239,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
           </ScrollReveal>
         </div>
 
-        <div className="md:hidden flex flex-col gap-6 px-2">
+        <div className="md:hidden flex flex-col gap-10 px-2">
           {loading ? (
             [0,1,2,3,4].map(i => (
               <div key={i} className="rounded-xl border border-border bg-bg-card p-4 flex items-center gap-3 animate-pulse">
@@ -257,7 +257,7 @@ const LeaderboardSection: React.FC<LeaderboardSectionProps> = ({ leaderboard, to
               No operators on the board yet.
             </div>
           ) : (
-            leaderboard.slice(0, 5).map((u, idx) => (
+            leaderboard.slice(0, 3).map((u, idx) => (
               <MobileRow key={u.handle || idx} entry={u} rank={idx + 1} delay={idx * 0.06} />
             ))
           )}

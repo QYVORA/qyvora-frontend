@@ -49,7 +49,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-16">
+    <div className="w-full min-h-full flex items-center py-12 md:py-16">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(135deg, var(--color-bg) 0%, transparent 50%, var(--color-bg) 100%)' }}
@@ -98,7 +98,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-row items-center gap-3 flex-wrap mb-10"
+            className="flex flex-row items-center gap-6 flex-wrap mb-10"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary !px-7 !py-3 text-sm inline-flex items-center gap-2">

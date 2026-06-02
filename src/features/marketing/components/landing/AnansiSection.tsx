@@ -16,9 +16,9 @@ const AnansiSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="w-full h-full flex items-center py-12 md:py-16">
+    <div className="w-full min-h-full flex items-center py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center px-2 md:px-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-10 items-center px-2 md:px-0">
 
           {/* Left: description + features */}
           <div>
@@ -63,8 +63,8 @@ const AnansiSection: React.FC = () => {
 
           {/* Right: ANANSI Logo */}
           <ScrollReveal className="flex items-center justify-center" direction="right" delay={0.1}>
-            <div className="relative flex items-center justify-center w-full max-w-[900px] h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem]">
-              <div className="relative z-10 w-80 h-80 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] lg:w-[32rem] lg:h-[32rem]">
+            <div className="relative flex items-center justify-center w-full max-w-[900px] h-72 sm:h-[28rem] md:h-[32rem] lg:h-[36rem]">
+              <div className="relative z-10 w-64 h-64 sm:w-80 sm:h-80 md:w-[28rem] md:h-[28rem] lg:w-[32rem] lg:h-[32rem]">
                 <motion.img
                   src="/assets/branding/logos/anansi-logo.webp"
                   alt="ANANSI"
