@@ -972,44 +972,6 @@
   .landing-snap .md\:snap-start {
     box-sizing: border-box;
   }
-  
-  /* Hide scrollbar on desktop, show on hover/interaction */
-  .landing-snap {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-    transition: scrollbar-color 0.3s ease;
-  }
-  
-  .landing-snap::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  .landing-snap::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .landing-snap::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 999px;
-    border: 2px solid transparent;
-    transition: background 0.3s ease;
-  }
-  
-  /* Show scrollbar on hover or while scrolling */
-  .landing-snap:hover,
-  .landing-snap:active {
-    scrollbar-color: var(--color-accent) transparent;
-  }
-  
-  .landing-snap:hover::-webkit-scrollbar-thumb,
-  .landing-snap:active::-webkit-scrollbar-thumb {
-    background: var(--color-accent);
-    border: 2px solid var(--color-bg);
-  }
-  
-  .landing-snap:hover::-webkit-scrollbar-thumb:hover {
-    filter: brightness(1.15);
-  }
 }
 
 /* ── Snap motion wrapper — fills the snap cell height ── */
