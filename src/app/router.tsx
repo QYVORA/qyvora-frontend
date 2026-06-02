@@ -102,13 +102,13 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
-          
-          {/* ANANSI Unified Route — Public Access */}
-          <Route path="/anansi" element={<Wrap scope="ANANSI Intelligence"><AnansiPage /></Wrap>} />
-          
-          {/* Redirect old scan path */}
-          <Route path="/scan" element={<Navigate to="/anansi" replace />} />
         </Route>
+
+        {/* ANANSI Unified Route — Public Access (No Layout/Navbar) */}
+        <Route path="/anansi" element={<Wrap scope="ANANSI Intelligence"><AnansiPage /></Wrap>} />
+        
+        {/* Redirect old scan path */}
+        <Route path="/scan" element={<Navigate to="/anansi" replace />} />
 
         {/* ── Auth routes ───────── */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
@@ -131,10 +131,6 @@ export const AppRouter = () => {
           <Route path="/dashboard/leaderboard"   element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           
-          {/* ANANSI Unified Route — Authenticated Access */}
-          <Route path="/dashboard/anansi" element={<Wrap scope="ANANSI Intelligence"><StudentOnly><AnansiPage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/scan"   element={<Navigate to="/dashboard/anansi" replace />} />
-          
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
@@ -151,6 +147,11 @@ export const AppRouter = () => {
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
           <Route path="/achievements"     element={<Navigate to="/dashboard/achievements" replace />} />
         </Route>
+
+        {/* ANANSI Authenticated Route — No Layout/Navbar */}
+        <Route path="/dashboard/anansi" element={<Wrap scope="ANANSI Intelligence"><StudentOnly><AnansiPage /></StudentOnly></Wrap>} />
+        <Route path="/dashboard/scan"   element={<Navigate to="/dashboard/anansi" replace />} />
+        <Route path="/scan-authenticated" element={<Navigate to="/dashboard/anansi" replace />} />
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>

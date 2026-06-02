@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Zap, Cpu, Database } from 'lucide-react';
+import { Activity, Zap, Cpu, Database, X } from 'lucide-react';
 import AnansiLogo from '../../../shared/components/brand/AnansiLogo';
 import { cn } from '../../../shared/utils/cn';
 
@@ -9,6 +9,7 @@ interface ScanStatusProps {
   progress: number;
   target: string;
   layout?: 'standalone' | 'dashboard';
+  onCancel?: () => void;
 }
 
 const MESSAGES = {
@@ -37,7 +38,7 @@ const MESSAGES = {
   ]
 };
 
-const ScanStatus: React.FC<ScanStatusProps> = ({ scanId, status, progress, target, layout = 'standalone' }) => {
+const ScanStatus: React.FC<ScanStatusProps> = ({ scanId, status, progress, target, layout = 'standalone', onCancel }) => {
   const [messageIndex, setMessageIndex] = useState(0);
 
   const getPhaseLabel = () => {
@@ -77,71 +78,62 @@ const ScanStatus: React.FC<ScanStatusProps> = ({ scanId, status, progress, targe
 
   return (
     <div className={cn(
-      "border border-white/10 rounded-3xl bg-bg-elevated/40 p-8 md:p-12",
+      "border border-white/10 rounded-3xl bg-bg-elevated/40 p-6 md:p-12 lg:p-16 md:min-h-[400px]",
       isDashboard ? "border-accent/20" : "border-white/10"
     )}>
-      <div className="space-y-12">
-        {/* Header Area */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
+      <div className="space-y-8 md:space-y-10">
+        {/* Header Area with Cancel Button */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex items-center gap-5 md:gap-6">
             <div className={cn(
-              "p-4 rounded-2xl bg-black/40 border border-white/5",
+              "p-3 md:p-4 rounded-2xl bg-black/40 border border-white/5",
               status === 'running' && "animate-pulse"
             )}>
               <Activity className={cn(
-                "w-6 h-6",
+                "w-5 h-5 md:w-6 md:h-6",
                 status === 'running' ? isDashboard ? 'text-accent' : 'text-cyan-500' : 'text-text-muted'
               )} />
             </div>
             <div>
-              <h2 className="text-base font-black text-text-primary uppercase tracking-[0.2em] mb-1">Engine Operational</h2>
-              <p className="text-xs text-text-muted font-mono uppercase tracking-widest flex items-center gap-2">
-                <Database size={12} /> {target}
+              <h2 className="text-sm md:text-base font-black text-text-primary uppercase tracking-[0.2em] mb-1">Scanning</h2>
+              <p className="text-xs md:text-sm text-text-muted font-mono uppercase tracking-widest flex items-center gap-2">
+                <Database size={10} className="md:w-3 md:h-3" /> {target}
               </p>
             </div>
           </div>
-          <div className={cn(
-            "px-4 py-1 rounded border text-[10px] font-black uppercase tracking-[0.3em]",
-            getStatusColor()
-          )}>
-            {status}
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-2">
-            <span className="text-[9px] text-text-muted uppercase tracking-widest block font-black">Operation ID</span>
-            <span className="text-[10px] font-mono text-text-primary truncate block">{scanId}</span>
-          </div>
-          <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-2">
-            <span className="text-[9px] text-text-muted uppercase tracking-widest block font-black">Nodes</span>
-            <div className="flex items-center gap-2 text-text-primary font-mono text-[10px] uppercase">
-              <Zap size={10} className="text-yellow-500" /> Distributed
+          <div className="flex items-center gap-4">
+            <div className={cn(
+              "px-3 py-1 md:px-4 md:py-2 rounded border text-[10px] md:text-xs font-black uppercase tracking-[0.3em]",
+              getStatusColor()
+            )}>
+              {status}
             </div>
-          </div>
-          <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-2">
-            <span className="text-[9px] text-text-muted uppercase tracking-widest block font-black">Priority</span>
-            <div className="flex items-center gap-2 text-text-primary font-mono text-[10px] uppercase">
-              <Cpu size={10} className="text-green-500" /> Tier 01
-            </div>
+            {onCancel && (status === 'running' || status === 'queued') && (
+              <button
+                onClick={onCancel}
+                className="p-2 md:p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-colors"
+                aria-label="Cancel scan"
+              >
+                <X size={16} className="md:w-5 md:h-5" />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Progress System */}
-        <div className="space-y-6">
+        <div className="space-y-5 md:space-y-6">
           <div className="flex justify-between items-end">
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em]">{getPhaseLabel()}</span>
-              <span className="text-xs font-mono text-text-primary uppercase tracking-widest">{displayMessage}...</span>
+            <div className="flex flex-col gap-1 md:gap-2">
+              <span className="text-[10px] md:text-xs font-black text-text-muted uppercase tracking-[0.3em]">{getPhaseLabel()}</span>
+              <span className="text-xs md:text-sm font-mono text-text-primary uppercase tracking-widest">{displayMessage}...</span>
             </div>
             <span className={cn(
-              "text-3xl font-black tracking-tighter",
+              "text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter",
               isDashboard ? "text-accent" : "text-cyan-500"
             )}>{progress}%</span>
           </div>
           
-          <div className="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
+          <div className="h-2 md:h-3 bg-white/5 rounded-full overflow-hidden border border-white/5">
             <div 
               className={cn(
                 "h-full transition-all duration-1000 ease-in-out",
@@ -149,20 +141,6 @@ const ScanStatus: React.FC<ScanStatusProps> = ({ scanId, status, progress, targe
               )}
               style={{ width: `${progress}%` }}
             />
-          </div>
-        </div>
-
-        {/* Brand Context */}
-        <div className="flex items-start gap-6 p-6 border border-white/5 rounded-2xl bg-black/20">
-          <AnansiLogo size={40} />
-          <div className="space-y-2">
-            <span className={cn(
-              "text-[10px] font-black uppercase tracking-widest block",
-              isDashboard ? "text-accent" : "text-cyan-500"
-            )}>Intelligence Briefing</span>
-            <p className="text-[11px] text-text-secondary leading-relaxed font-mono uppercase tracking-tight italic opacity-70">
-              The engine is executing a deep-layer reconnaissance sequence. results are being verified and cryptographically signed before display.
-            </p>
           </div>
         </div>
       </div>

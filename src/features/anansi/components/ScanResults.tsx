@@ -56,11 +56,25 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
     'permissions-policy'
   ];
 
+  // Download results as JSON
+  const handleDownload = () => {
+    const dataStr = JSON.stringify(results, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `anansi-scan-${results.target}-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className={cn("space-y-24 pb-32 font-mono text-text-primary", isDashboard ? "" : "")}>
-      {/* ── SUMMARY BAR (FIXED) ── */}
+    <div className={cn("space-y-16 pb-32 font-mono text-text-primary", isDashboard ? "" : "")}>
+      {/* ── SUMMARY BAR ── */}
       <div className={cn(
-        "sticky top-0 z-[110] backdrop-blur-xl border-b py-6 transition-all duration-300",
+        "backdrop-blur-xl border rounded-2xl p-6 transition-all duration-300",
         isDashboard 
           ? "bg-bg-card/95 border-accent/20" 
           : "bg-black/90 border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.4)]"
@@ -124,9 +138,22 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
                     : "bg-cyan-600/10 border-cyan-500/20 text-cyan-500 hover:bg-cyan-500/20"
                 )}
               >
-                Reset
+                New Scan
               </button>
             )}
+            
+            <button 
+              onClick={handleDownload}
+              className={cn(
+                "ml-4 px-6 py-2.5 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] transition-all border flex items-center gap-2",
+                isDashboard 
+                  ? "bg-accent/10 border-accent/20 text-accent hover:bg-accent/20" 
+                  : "bg-cyan-600/10 border-cyan-500/20 text-cyan-500 hover:bg-cyan-500/20"
+              )}
+            >
+              <Download size={14} />
+              Download
+            </button>
           </div>
         </div>
       </div>
@@ -389,15 +416,15 @@ const ScanResults: React.FC<ScanResultsProps> = ({ results, layout = 'standalone
         </div>
 
         {/* Global Export / Finalize */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-10 pt-20">
-           <button className={cn(
-             "flex items-center gap-6 px-14 py-6 rounded-3xl font-black uppercase tracking-[0.5em] text-xs transition-all duration-300",
-             isDashboard ? "bg-accent text-bg hover:brightness-110" : "bg-cyan-600 text-bg hover:bg-cyan-500"
-           )}>
-             <Download size={20} /> Compile Intelligence Dossier
-           </button>
-           <button className="flex items-center gap-6 px-14 py-6 rounded-3xl border border-white/10 font-black uppercase tracking-[0.5em] text-xs text-text-primary hover:bg-white/5 transition-all">
-             <Share2 size={20} /> Encrypted Link
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-16">
+           <button 
+             onClick={handleDownload}
+             className={cn(
+               "flex items-center gap-4 px-12 py-5 rounded-3xl font-black uppercase tracking-[0.4em] text-xs transition-all duration-300",
+               isDashboard ? "bg-accent text-bg hover:brightness-110" : "bg-cyan-600 text-bg hover:bg-cyan-500"
+             )}
+           >
+             <Download size={18} /> Download Full Report
            </button>
         </div>
       </section>
