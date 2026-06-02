@@ -35,7 +35,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
 
         {/* Radial accent gradient — centred in the right panel */}
         <radialGradient id="panel-accent" cx="78%" cy="38%" r="55%">
-          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.08" />
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.14" />
           <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0"    />
         </radialGradient>
 
@@ -56,7 +56,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
 
       {/* Dark fill — masks the canvas/globe bleed into left side */}
       <rect x="0" y="0" width="100" height="100"
-        fill="var(--color-hero-right-bg)" opacity="0.93"
+        fill="var(--color-hero-right-bg)" opacity="0.96"
         clipPath="url(#hero-right-clip)" />
 
       {/* Accent radial tint */}
@@ -78,21 +78,21 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
       </defs>
       <g clipPath="url(#hero-right-clip-abs)" opacity="1">
         {/* Sized and spaced to feel deliberately placed, not tiled */}
-        <circle cx="540" cy="80"  r="4"   fill="var(--color-hero-dots)" opacity="0.25" />
-        <circle cx="680" cy="140" r="3"   fill="var(--color-hero-dots)" opacity="0.18" />
-        <circle cx="760" cy="60"  r="5"   fill="var(--color-hero-dots)" opacity="0.20" />
-        <circle cx="600" cy="220" r="3.5" fill="var(--color-hero-dots)" opacity="0.22" />
-        <circle cx="720" cy="280" r="4.5" fill="var(--color-hero-dots)" opacity="0.16" />
-        <circle cx="510" cy="350" r="3"   fill="var(--color-hero-dots)" opacity="0.20" />
-        <circle cx="650" cy="390" r="5"   fill="var(--color-hero-dots)" opacity="0.15" />
-        <circle cx="780" cy="360" r="3.5" fill="var(--color-hero-dots)" opacity="0.20" />
-        <circle cx="560" cy="480" r="4"   fill="var(--color-hero-dots)" opacity="0.18" />
-        <circle cx="700" cy="520" r="3"   fill="var(--color-hero-dots)" opacity="0.22" />
-        <circle cx="490" cy="600" r="5"   fill="var(--color-hero-dots)" opacity="0.14" />
-        <circle cx="630" cy="650" r="3.5" fill="var(--color-hero-dots)" opacity="0.20" />
-        <circle cx="760" cy="610" r="4"   fill="var(--color-hero-dots)" opacity="0.16" />
-        <circle cx="540" cy="730" r="3"   fill="var(--color-hero-dots)" opacity="0.18" />
-        <circle cx="690" cy="760" r="4.5" fill="var(--color-hero-dots)" opacity="0.14" />
+        <circle cx="540" cy="80"  r="4"   fill="var(--color-hero-dots)" opacity="0.40" />
+        <circle cx="680" cy="140" r="3"   fill="var(--color-hero-dots)" opacity="0.35" />
+        <circle cx="760" cy="60"  r="5"   fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="600" cy="220" r="3.5" fill="var(--color-hero-dots)" opacity="0.42" />
+        <circle cx="720" cy="280" r="4.5" fill="var(--color-hero-dots)" opacity="0.32" />
+        <circle cx="510" cy="350" r="3"   fill="var(--color-hero-dots)" opacity="0.40" />
+        <circle cx="650" cy="390" r="5"   fill="var(--color-hero-dots)" opacity="0.30" />
+        <circle cx="780" cy="360" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="560" cy="480" r="4"   fill="var(--color-hero-dots)" opacity="0.36" />
+        <circle cx="700" cy="520" r="3"   fill="var(--color-hero-dots)" opacity="0.42" />
+        <circle cx="490" cy="600" r="5"   fill="var(--color-hero-dots)" opacity="0.28" />
+        <circle cx="630" cy="650" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="760" cy="610" r="4"   fill="var(--color-hero-dots)" opacity="0.32" />
+        <circle cx="540" cy="730" r="3"   fill="var(--color-hero-dots)" opacity="0.36" />
+        <circle cx="690" cy="760" r="4.5" fill="var(--color-hero-dots)" opacity="0.28" />
       </g>
     </svg>
 

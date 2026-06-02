@@ -159,7 +159,10 @@ export const AppRouter = () => {
         </Route>
 
         {/* ── 404 fallback ───────────────────────────────────────────────── */}
-        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        {/* Handle profile routes that start with @ */}
+        <Route path="/@:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        
+        {/* Catch-all 404 for any other invalid routes */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
 
       </Routes>

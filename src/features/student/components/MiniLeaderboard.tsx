@@ -88,7 +88,7 @@ const MiniLeaderboard: React.FC<{ currentHandle: string }> = ({ currentHandle })
                   transition={{ duration: 0.35, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Link
-                    to={`/dashboard/profile/${handle}`}
+                    to={`/@${handle}`}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border transition-all hover:brightness-110 ${style.border} ${style.bg} ${isMe ? 'ring-1 ring-accent/40' : ''}`}
                   >
                     <div className={`w-6 flex-none flex items-center justify-center font-mono font-black text-xs ${style.label}`}>
