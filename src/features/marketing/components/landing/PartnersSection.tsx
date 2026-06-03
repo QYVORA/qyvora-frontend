@@ -88,7 +88,7 @@ const PartnersSection: React.FC = () => {
   const baseDuration = Math.max(30, items.length * 8);
 
   return (
-    <div className="w-full min-h-full flex flex-col justify-center py-12 lg:py-0">
+    <>
       <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
         <ScrollReveal direction="up" amount={0.15}>
           {/*
@@ -195,7 +195,7 @@ const PartnersSection: React.FC = () => {
           </div>
         </div >
       </ScrollReveal>
-    </div>
+    </>
   );
 };
 

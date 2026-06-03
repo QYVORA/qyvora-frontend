@@ -37,8 +37,7 @@ const ProcessSection: React.FC = () => {
   const disableAnimations = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div className="w-full min-h-full flex items-center py-20 lg:py-6 bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-16 lg:gap-12 items-center">
 
           {/* ── Left: Heading Column ── */}
@@ -130,7 +129,6 @@ const ProcessSection: React.FC = () => {
 
         </div>
       </div>
-    </div>
   );
 };
 

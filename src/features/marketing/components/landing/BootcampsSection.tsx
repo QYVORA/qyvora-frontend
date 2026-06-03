@@ -141,8 +141,7 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
   const isSingle  = displayed.length === 1;
 
   return (
-    <div className="w-full min-h-full flex items-center py-12 lg:py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
         {/* Loading skeleton */}
         {loading ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -300,7 +299,6 @@ const BootcampsSection: React.FC<BootcampsSectionProps> = ({ bootcamps, loading 
           </>
         )}
       </div>
-    </div>
   );
 };
 

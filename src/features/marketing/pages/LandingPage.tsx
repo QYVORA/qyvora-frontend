@@ -60,7 +60,7 @@ const SnapSection: React.FC<{
           duration: 1,
           ease: [0.22, 1, 0.36, 1]
         }}
-        className="w-full min-h-full relative z-10 flex items-center py-20 md:py-0"
+        className="w-full min-h-[100svh] relative z-10 flex flex-col justify-center pt-28 pb-12 md:pt-44 md:pb-20"
         style={{ perspective: '1200px' }}
         data-snap-child=""
       >
@@ -208,7 +208,6 @@ const Landing: React.FC = () => {
       <div
         ref={containerRef}
         className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
-        style={{ scrollSnapType: undefined }}
       >
         {/* ── 1. Hero ── */}
         <section
@@ -267,7 +266,7 @@ const Landing: React.FC = () => {
 
         <section
           id="footer"
-          className="md:snap-start md:snap-always min-h-[100svh] flex flex-shrink-0"
+          className="md:snap-start md:snap-always min-h-[100svh] flex flex-col justify-center"
         >
           <Footer />
         </section>

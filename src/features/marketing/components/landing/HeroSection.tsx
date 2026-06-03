@@ -210,7 +210,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-10
           grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
           text-left
-          pt-20 md:pt-24 lg:pt-16 pb-12 md:pb-32 lg:pb-48
+          pt-32 md:pt-44 lg:pt-44 pb-12 md:pb-32 lg:pb-48
           md:min-h-0 min-h-full
         "
       >

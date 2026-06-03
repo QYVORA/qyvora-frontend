@@ -38,9 +38,8 @@ const SERVICES_DATA = [
 
 const ServicesSection: React.FC = () => {
   return (
-    <div className="w-full min-h-full flex items-center py-12 lg:py-6">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-8 lg:gap-12 items-center">
+    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1.5fr] gap-8 lg:gap-12 items-center">
 
           {/* ── Left: Heading Column ── */}
           <div className="lg:pr-6 flex flex-col">
@@ -183,7 +182,6 @@ const ServicesSection: React.FC = () => {
 
         </div>
       </div>
-    </div>
   );
 };
 

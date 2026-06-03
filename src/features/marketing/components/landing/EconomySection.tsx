@@ -22,8 +22,7 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="w-full min-h-full flex items-center py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
+    <div className="max-w-7xl mx-auto px-2 md:px-10 relative z-10 w-full overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-10 items-center px-2 md:px-0">
 
           {/* Left: description + CP features */}
@@ -103,7 +102,6 @@ const EconomySection: React.FC<EconomySectionProps> = () => {
           </ScrollReveal>
         </div>
       </div>
-    </div>
   );
 };
 

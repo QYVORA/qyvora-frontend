@@ -49,7 +49,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="w-full min-h-full flex items-center py-12 md:py-16">
+    <>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(135deg, var(--color-bg) 0%, transparent 50%, var(--color-bg) 100%)' }}
@@ -129,7 +129,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           </motion.div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

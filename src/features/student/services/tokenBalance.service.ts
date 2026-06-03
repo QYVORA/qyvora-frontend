@@ -42,11 +42,10 @@ const DEFAULT_CHAIN_BASE = '';
  *      immediately rather than making a request to a relative URL or crashing.
  *
  * Timeout:
- *   A 5-second AbortController timeout is applied. The chain node is an
- *   external service that may be slow or unreachable. Without a timeout,
- *   a hung request could block the dashboard from rendering indefinitely.
- *   The timer is cleared on success to avoid a no-op abort firing after the
- *   request has already completed normally.
+ *   A 60-second AbortController timeout is applied. The chain node is an
+ *   external service that may be slow or unreachable (especially during Render
+ *   cold starts). Without a timeout, a hung request could block the dashboard
+ *   from rendering indefinitely. The timer is cleared on success.
  *
  * encodeURIComponent(id):
  *   The user ID is URL-encoded before being interpolated into the path.
@@ -75,19 +74,17 @@ export async function getTokenBalanceForUser(userId: string): Promise<number | n
   if (!base) return null;
 
   try {
-    // Set up a 5-second hard timeout via AbortController.
-    // AbortController is the standard Web API for cancelling fetch requests —
-    // it works in all modern browsers and does not require any polyfill.
+    // Set up a 60-second hard timeout via AbortController.
+    // AbortController is the standard Web API for cancelling fetch requests.
+    // 60s is used to accommodate potential Render cold starts.
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
+    const timer = setTimeout(() => controller.abort(), 60000);
 
     const res = await fetch(`${base}/token/balance/${encodeURIComponent(id)}`, {
       signal: controller.signal, // Connects the timeout to this specific request
     });
 
-    // Cancel the timeout — the request completed before the 5 s window.
-    // Without this, the timer would fire after the function returns and
-    // attempt to abort an already-completed request (harmless but untidy).
+    // Cancel the timeout — the request completed before the 60s window.
     clearTimeout(timer);
 
     // Treat any non-2xx HTTP status as a soft failure — return null rather

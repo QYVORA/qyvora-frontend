@@ -178,7 +178,7 @@ const LogoWatermark: React.FC = () => {
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative flex min-h-full w-full items-center bg-bg border-t border-border/50 overflow-hidden">
+  <footer className="relative flex w-full bg-bg border-t border-border/50 overflow-hidden">
 
     {/* LAYER 0 — dot grid texture */}
     <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
@@ -187,7 +187,7 @@ const Footer: React.FC = () => (
     <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full">
 
       {/* ── Top: brand + nav ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-8 sm:pt-10 md:pt-12 pb-8 md:pb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-24 sm:pt-28 md:pt-32 pb-8 md:pb-10">
 
         {/* Brand column */}
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-5">
