@@ -60,29 +60,27 @@ const CookieConsent: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-0 left-0 right-0 md:bottom-10 md:right-10 md:left-auto z-[150] md:w-96 w-full"
+          className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:left-6 sm:right-auto z-[150] sm:max-w-md w-full"
         >
-          <div className="bg-bg-card border-t md:border border-border rounded-t-3xl md:rounded-2xl shadow-2xl p-6 md:p-10 overflow-hidden">
-            <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 mb-8">
-              <div className="p-3 rounded-xl bg-accent-dim/20 text-accent flex-none hidden md:block">
-                <ShieldCheck className="w-8 h-8" />
+          <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="p-2.5 rounded-lg bg-accent/10 text-accent flex-none">
+                <ShieldCheck className="w-5 h-5" />
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <ShieldCheck className="w-5 h-5 text-accent md:hidden" />
-                  <h3 className="text-sm md:text-base font-bold text-text-primary uppercase tracking-widest">
-                    Privacy & Cookies
-                  </h3>
-                </div>
-                <p className="text-xs md:text-sm text-text-secondary leading-relaxed">
-                  We use cookies to secure your session, remember your theme, and optimize performance. We never use 3rd-party tracking or external pixels.
+                <h3 className="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider mb-1.5">
+                  Privacy & Cookies
+                </h3>
+                <p className="text-[11px] sm:text-xs text-text-secondary leading-relaxed">
+                  We use cookies to secure your session and optimize performance. No 3rd-party tracking.
                 </p>
               </div>
               <button 
                 onClick={handleDismiss}
-                className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors p-2"
+                className="text-text-muted hover:text-text-primary transition-colors p-1"
+                aria-label="Dismiss"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -90,45 +88,45 @@ const CookieConsent: React.FC = () => {
               <motion.div 
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
-                className="space-y-4 mb-8 pt-4 border-t border-border/50"
+                className="space-y-3 mb-6 pt-4 border-t border-border/30"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-xs font-bold text-text-primary uppercase tracking-wider">Strictly Necessary</div>
-                    <div className="text-[10px] md:text-xs text-text-muted">Authentication & Security (Always Required)</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wide">Strictly Necessary</div>
+                    <div className="text-[9px] sm:text-[10px] text-text-muted">Authentication & Security (Always Required)</div>
                   </div>
-                  <div className="w-10 h-5 bg-accent/40 rounded-full relative opacity-50 cursor-not-allowed">
-                    <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
+                  <div className="w-9 h-5 bg-accent/40 rounded-full relative opacity-50 cursor-not-allowed">
+                    <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full" />
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between cursor-pointer group" onClick={() => toggleCategory('functional')}>
                   <div>
-                    <div className="text-xs font-bold text-text-primary uppercase tracking-wider group-hover:text-accent transition-colors">Functional</div>
-                    <div className="text-[10px] md:text-xs text-text-muted">Remembers your theme and UI preferences</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">Functional</div>
+                    <div className="text-[9px] sm:text-[10px] text-text-muted">Remembers your theme and UI preferences</div>
                   </div>
-                  <div className={`w-10 h-5 rounded-full relative transition-colors ${prefs.functional ? 'bg-accent' : 'bg-border'}`}>
-                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${prefs.functional ? 'right-1' : 'left-1'}`} />
+                  <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.functional ? 'bg-accent' : 'bg-border'}`}>
+                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${prefs.functional ? 'right-0.5' : 'left-0.5'}`} />
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between cursor-pointer group" onClick={() => toggleCategory('analytics')}>
                   <div>
-                    <div className="text-xs font-bold text-text-primary uppercase tracking-wider group-hover:text-accent transition-colors">Analytics</div>
-                    <div className="text-[10px] md:text-xs text-text-muted">Anonymized performance and landing page caching</div>
+                    <div className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">Analytics</div>
+                    <div className="text-[9px] sm:text-[10px] text-text-muted">Anonymized performance and caching</div>
                   </div>
-                  <div className={`w-10 h-5 rounded-full relative transition-colors ${prefs.analytics ? 'bg-accent' : 'bg-border'}`}>
-                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${prefs.analytics ? 'right-1' : 'left-1'}`} />
+                  <div className={`w-9 h-5 rounded-full relative transition-colors ${prefs.analytics ? 'bg-accent' : 'bg-border'}`}>
+                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${prefs.analytics ? 'right-0.5' : 'left-0.5'}`} />
                   </div>
                 </div>
               </motion.div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-2.5">
               {showDetails ? (
                 <button 
                   onClick={handleSavePreferences}
-                  className="flex-1 btn-primary !py-3 text-xs font-bold uppercase tracking-widest"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
                 >
                   Save My Choices
                 </button>
@@ -136,15 +134,15 @@ const CookieConsent: React.FC = () => {
                 <>
                   <button 
                     onClick={handleAcceptAll}
-                    className="flex-1 btn-primary !py-3 text-xs font-bold uppercase tracking-widest"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
                   >
                     Accept All
                   </button>
                   <button 
                     onClick={() => setShowDetails(true)}
-                    className="flex-1 btn-secondary !py-3 text-xs font-bold uppercase tracking-widest inline-flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-bg border border-border text-text-primary font-bold uppercase tracking-wider text-[10px] transition-all hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
                   >
-                    <Info className="w-4 h-4" /> Customize
+                    <Info className="w-3.5 h-3.5" /> Customize
                   </button>
                 </>
               )}

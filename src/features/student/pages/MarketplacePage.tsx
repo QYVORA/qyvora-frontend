@@ -7,6 +7,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import { formatNumber } from '../../../shared/utils/formatNumber';
 import PageLoader from '../../../shared/components/PageLoader';
 
 const CACHE_KEY = 'hsociety_marketplace_cache_v2';
@@ -138,7 +139,7 @@ const Marketplace: React.FC = () => {
              {balance !== null && (
                <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
                  <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
-                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl truncate">{balance.toLocaleString()}</span>
+                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl truncate">{formatNumber(balance)}</span>
                </div>
              )}
              <div className="relative w-full sm:w-auto">
@@ -214,7 +215,7 @@ const Marketplace: React.FC = () => {
                       {prod.isFree ? (
                         <span className="text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">FREE</span>
                       ) : (
-                        <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{Number(prod.cpPrice || 0).toLocaleString()} <CpLogo className="w-3.5 h-3.5" /></span>
+                        <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{formatNumber(Number(prod.cpPrice || 0))} <CpLogo className="w-3.5 h-3.5" /></span>
                       )}
                     </div>
 

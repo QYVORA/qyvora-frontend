@@ -12,8 +12,6 @@ const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
 interface HeroSectionProps {
   heroRef: React.RefObject<HTMLDivElement | null>;
-  heroY: MotionValue<number>;
-  heroOpacity: MotionValue<number>;
   user: { isAdmin?: boolean } | null;
   stats: BackendStats | null;
   totalCp: number;
@@ -21,51 +19,57 @@ interface HeroSectionProps {
 
 const STAT_ORDER = ['Students', 'Bootcamps Live', 'Zero-Day Products', 'CP Pool'];
 
-// ── S-curve divider ───────────────────────────────────────────────────────────
-const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => (
+// ── U-shaped divider (horizontal U with base facing hero text) ──────────────
+const UDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => (
   <div className="absolute inset-0 z-10 pointer-events-none hidden lg:block" aria-hidden>
 
-    {/* ── Panel fill + accent tint — single SVG ── */}
+    {/* ── U-shaped panel with green background ── */}
     <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
       <defs>
-        {/* S-curve clip */}
+        {/* Horizontal U-shaped path - base faces left (hero text), opens to the right */}
         <clipPath id="hero-right-clip" clipPathUnits="objectBoundingBox">
-          <path d="M 0.62 0  C 0.58 0.15, 0.55 0.25, 0.52 0.38  C 0.49 0.51, 0.52 0.62, 0.48 0.75  C 0.44 0.88, 0.42 0.95, 0.38 1.0  L 1 1  L 1 0 Z" />
+          {/* U shape: left side at x=0.55, curves around, right side ends before edge */}
+          <path d="M 0.55 0.20  L 0.55 0.80  C 0.55 0.88, 0.60 0.92, 0.68 0.92  L 0.88 0.92  C 0.96 0.92, 1 0.88, 1 0.80  L 1 0.20  C 1 0.12, 0.96 0.08, 0.88 0.08  L 0.68 0.08  C 0.60 0.08, 0.55 0.12, 0.55 0.20 Z" />
         </clipPath>
 
-        {/* Radial accent gradient — centred in the right panel */}
-        <radialGradient id="panel-accent" cx="78%" cy="38%" r="55%">
-          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.14" />
+        {/* Radial accent gradient — centered on the globe area */}
+        <radialGradient id="panel-accent" cx="75%" cy="50%" r="30%">
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.15" />
           <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0"    />
         </radialGradient>
 
-        {/* Linear gradient along S — fades in from top, out at bottom */}
-        <linearGradient id="s-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0"    />
-          <stop offset="20%"  stopColor="var(--color-accent)" stopOpacity="0.85" />
-          <stop offset="80%"  stopColor="var(--color-accent)" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0"    />
+        {/* Gradients for the U lines */}
+        <linearGradient id="u-grad-left" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0" />
+          <stop offset="20%"  stopColor="var(--color-accent)" stopOpacity="0.75" />
+          <stop offset="80%"  stopColor="var(--color-accent)" stopOpacity="0.75" />
+          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
         </linearGradient>
 
-        {/* Soft glow filter for the S line */}
-        <filter id="s-glow" x="-60%" y="-5%" width="220%" height="110%">
+        <linearGradient id="u-grad-curve" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stopColor="var(--color-accent)" stopOpacity="0.75" />
+          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0.75" />
+        </linearGradient>
+
+        {/* Soft glow filter for the U line */}
+        <filter id="u-glow" x="-60%" y="-5%" width="220%" height="110%">
           <feGaussianBlur stdDeviation="0.9" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
       </defs>
 
-      {/* Dark fill — masks the canvas/globe bleed into left side */}
+      {/* Green accent fill ONLY in the U-shaped area */}
       <rect x="0" y="0" width="100" height="100"
-        fill="var(--color-hero-right-bg)" opacity="0.96"
+        fill="var(--color-accent)" opacity="0.06"
         clipPath="url(#hero-right-clip)" />
 
-      {/* Accent radial tint */}
+      {/* Radial accent gradient overlay */}
       <rect x="0" y="0" width="100" height="100"
         fill="url(#panel-accent)"
         clipPath="url(#hero-right-clip)" />
     </svg>
 
-    {/* ── Scattered dots — hand-placed, clipped ── */}
+    {/* ── Scattered dots — hand-placed, clipped to U area ── */}
     <svg
       viewBox="0 0 800 800"
       preserveAspectRatio="xMidYMid slice"
@@ -73,78 +77,117 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
     >
       <defs>
         <clipPath id="hero-right-clip-abs" clipPathUnits="objectBoundingBox">
-          <path d="M 0.62 0  C 0.58 0.15, 0.55 0.25, 0.52 0.38  C 0.49 0.51, 0.52 0.62, 0.48 0.75  C 0.44 0.88, 0.42 0.95, 0.38 1.0  L 1 1  L 1 0 Z" />
+          <path d="M 0.55 0.20  L 0.55 0.80  C 0.55 0.88, 0.60 0.92, 0.68 0.92  L 0.88 0.92  C 0.96 0.92, 1 0.88, 1 0.80  L 1 0.20  C 1 0.12, 0.96 0.08, 0.88 0.08  L 0.68 0.08  C 0.60 0.08, 0.55 0.12, 0.55 0.20 Z" />
         </clipPath>
       </defs>
       <g clipPath="url(#hero-right-clip-abs)" opacity="1">
-        {/* Sized and spaced to feel deliberately placed, not tiled */}
-        <circle cx="540" cy="80"  r="4"   fill="var(--color-hero-dots)" opacity="0.40" />
-        <circle cx="680" cy="140" r="3"   fill="var(--color-hero-dots)" opacity="0.35" />
-        <circle cx="760" cy="60"  r="5"   fill="var(--color-hero-dots)" opacity="0.38" />
-        <circle cx="600" cy="220" r="3.5" fill="var(--color-hero-dots)" opacity="0.42" />
-        <circle cx="720" cy="280" r="4.5" fill="var(--color-hero-dots)" opacity="0.32" />
-        <circle cx="510" cy="350" r="3"   fill="var(--color-hero-dots)" opacity="0.40" />
-        <circle cx="650" cy="390" r="5"   fill="var(--color-hero-dots)" opacity="0.30" />
-        <circle cx="780" cy="360" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
-        <circle cx="560" cy="480" r="4"   fill="var(--color-hero-dots)" opacity="0.36" />
-        <circle cx="700" cy="520" r="3"   fill="var(--color-hero-dots)" opacity="0.42" />
-        <circle cx="490" cy="600" r="5"   fill="var(--color-hero-dots)" opacity="0.28" />
-        <circle cx="630" cy="650" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
-        <circle cx="760" cy="610" r="4"   fill="var(--color-hero-dots)" opacity="0.32" />
-        <circle cx="540" cy="730" r="3"   fill="var(--color-hero-dots)" opacity="0.36" />
-        <circle cx="690" cy="760" r="4.5" fill="var(--color-hero-dots)" opacity="0.28" />
+        {/* Positioned within the U-shaped area */}
+        <circle cx="520" cy="180" r="3"   fill="var(--color-hero-dots)" opacity="0.35" />
+        <circle cx="620" cy="220" r="4"   fill="var(--color-hero-dots)" opacity="0.40" />
+        <circle cx="700" cy="160" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="560" cy="320" r="4.5" fill="var(--color-hero-dots)" opacity="0.32" />
+        <circle cx="680" cy="380" r="3"   fill="var(--color-hero-dots)" opacity="0.40" />
+        <circle cx="740" cy="300" r="5"   fill="var(--color-hero-dots)" opacity="0.30" />
+        <circle cx="580" cy="480" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="660" cy="520" r="4"   fill="var(--color-hero-dots)" opacity="0.36" />
+        <circle cx="720" cy="440" r="3"   fill="var(--color-hero-dots)" opacity="0.42" />
+        <circle cx="540" cy="600" r="5"   fill="var(--color-hero-dots)" opacity="0.28" />
+        <circle cx="640" cy="640" r="3.5" fill="var(--color-hero-dots)" opacity="0.38" />
+        <circle cx="700" cy="580" r="4"   fill="var(--color-hero-dots)" opacity="0.32" />
       </g>
     </svg>
 
-    {/* ── The S-line — hairline + glow layer + travelling dash ── */}
+    {/* ── The U-line — hairline + glow layer + travelling dash ── */}
     <svg
       viewBox="0 0 100 100"
       preserveAspectRatio="none"
       className="absolute inset-0 w-full h-full"
     >
       {/* Glow halo — wide, very soft */}
+      {/* Left vertical line (base of U) */}
+      <line
+        x1="55" y1="20" x2="55" y2="80"
+        stroke="var(--color-accent)"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        opacity="0.10"
+        style={{ vectorEffect: 'non-scaling-stroke' }}
+        filter="url(#u-glow)"
+      />
+      {/* Top horizontal curve */}
       <path
-        d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
+        d="M 55 20  L 68 20  C 76 20, 80 24, 80 32  L 80 68  C 80 76, 76 80, 68 80  L 55 80"
         fill="none"
         stroke="var(--color-accent)"
         strokeWidth="1.4"
         strokeLinecap="round"
         opacity="0.10"
         style={{ vectorEffect: 'non-scaling-stroke' }}
-        filter="url(#s-glow)"
+        filter="url(#u-glow)"
       />
 
       {/* Crisp hairline — the actual visible edge */}
+      {/* Left vertical line */}
+      <line
+        x1="55" y1="20" x2="55" y2="80"
+        stroke="url(#u-grad-left)"
+        strokeWidth="0.20"
+        strokeLinecap="round"
+        style={{ vectorEffect: 'non-scaling-stroke' }}
+      />
+      {/* U curve */}
       <path
-        d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
+        d="M 55 20  L 68 20  C 76 20, 80 24, 80 32  L 80 68  C 80 76, 76 80, 68 80  L 55 80"
         fill="none"
-        stroke="url(#s-grad)"
-        strokeWidth="0.22"
+        stroke="url(#u-grad-curve)"
+        strokeWidth="0.20"
         strokeLinecap="round"
         style={{ vectorEffect: 'non-scaling-stroke' }}
       />
 
-      {/* Travelling highlight — rides down the line */}
+      {/* Travelling highlight — rides along the U */}
       {!shouldReduceMotion && (
-        <path
-          d="M 62 0  C 58 15, 55 25, 52 38  C 49 51, 52 62, 48 75  C 44 88, 42 95, 38 100"
-          fill="none"
-          stroke="var(--color-accent)"
-          strokeWidth="0.3"
-          strokeLinecap="round"
-          opacity="0.75"
-          strokeDasharray="6 94"
-          style={{ vectorEffect: 'non-scaling-stroke' }}
-        >
-          <animate
-            attributeName="stroke-dashoffset"
-            from="100"
-            to="-100"
-            dur="3.5s"
-            repeatCount="indefinite"
-            calcMode="linear"
-          />
-        </path>
+        <>
+          {/* Left line dash */}
+          <line
+            x1="55" y1="20" x2="55" y2="80"
+            stroke="var(--color-accent)"
+            strokeWidth="0.28"
+            strokeLinecap="round"
+            opacity="0.7"
+            strokeDasharray="5 20"
+            style={{ vectorEffect: 'non-scaling-stroke' }}
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="0"
+              to="25"
+              dur="2.2s"
+              repeatCount="indefinite"
+              calcMode="linear"
+            />
+          </line>
+          {/* Curve dash */}
+          <path
+            d="M 55 20  L 68 20  C 76 20, 80 24, 80 32  L 80 68  C 80 76, 76 80, 68 80  L 55 80"
+            fill="none"
+            stroke="var(--color-accent)"
+            strokeWidth="0.28"
+            strokeLinecap="round"
+            opacity="0.7"
+            strokeDasharray="8 45"
+            style={{ vectorEffect: 'non-scaling-stroke' }}
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="53"
+              to="0"
+              dur="3.8s"
+              repeatCount="indefinite"
+              calcMode="linear"
+            />
+          </path>
+        </>
       )}
     </svg>
 
@@ -154,7 +197,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
         <motion.div
           animate={{ opacity: [0.45, 0.85, 0.45] }}
           transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-7 right-8 px-2.5 py-1 rounded-md border border-accent/15 bg-bg-card/65 backdrop-blur-sm"
+          className="absolute top-[18%] right-[10%] px-2.5 py-1 rounded-md border border-accent/15 bg-bg-card/65 backdrop-blur-sm"
           style={{ boxShadow: 'var(--card-shimmer)' }}
         >
           <span className="font-mono text-[8px] font-bold text-accent/55 uppercase tracking-[0.25em]">
@@ -165,7 +208,7 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
         <motion.div
           animate={{ opacity: [0.35, 0.70, 0.35], y: [0, -3, 0] }}
           transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
-          className="absolute top-[36%] right-[35%] px-2 py-0.5 rounded border border-border/60 bg-bg-card/50 backdrop-blur-sm"
+          className="absolute top-[52%] right-[22%] px-2 py-0.5 rounded border border-border/60 bg-bg-card/50 backdrop-blur-sm"
           style={{ boxShadow: 'var(--card-shimmer)' }}
         >
           <span className="font-mono text-[7px] font-bold text-text-muted uppercase tracking-widest">
@@ -180,8 +223,6 @@ const SDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotio
 // ── Main component ────────────────────────────────────────────────────────────
 const HeroSection: React.FC<HeroSectionProps> = ({
   heroRef,
-  heroY,
-  heroOpacity,
   user,
   stats,
   totalCp,
@@ -198,26 +239,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-full flex flex-col overflow-hidden">
-
-      {/* S-curve divider — desktop only */}
-      <SDivider shouldReduceMotion={!!shouldReduceMotion} />
+    <div ref={heroRef} className="relative w-full h-full flex flex-col overflow-hidden">
 
       {/* ── Main content grid ── */}
-      <motion.div
-        style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
+      <div
         className="
-          relative z-30 flex-1 w-full max-w-7xl mx-auto px-6 md:px-10
+          relative z-30 w-full max-w-7xl mx-auto px-6 md:px-10
           grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
           text-left
-          pt-32 md:pt-44 lg:pt-44 pb-12 md:pb-32 lg:pb-48
-          md:min-h-0 min-h-full
+          pt-32 md:pt-32 lg:pt-28 pb-16 md:pb-20
+          min-h-screen
         "
       >
 
         {/* ── Left column ── */}
-        <div className="flex flex-col items-start justify-center w-full h-full gap-6
-                        lg:h-auto lg:min-h-0 lg:items-start lg:justify-start lg:pr-10 md:pt-4 lg:gap-0">
+        <div className="flex flex-col items-start justify-center w-full
+                        lg:h-auto lg:items-start lg:justify-center lg:pr-10 lg:gap-0">
 
           {/* Status badge */}
           <motion.div
@@ -236,9 +273,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="font-black text-text-primary leading-[1.06] tracking-tight mb-5 w-full">
 
             <motion.span
-              initial={minimizeEffects ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
+              initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               className="block text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
             >
               Train Like a Hacker.
@@ -255,9 +292,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             />
 
             <motion.span
-              initial={minimizeEffects ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1], filter: { duration: 0.3 } }}
+              initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="block text-accent text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
             >
               Become a Hacker.
@@ -322,7 +359,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="relative hidden aspect-square w-full max-w-[480px] items-center justify-center
-                     overflow-visible mx-auto lg:mx-0 lg:flex xl:max-w-[580px] lg:-mr-12 xl:-mr-20"
+                     overflow-visible mx-auto lg:flex xl:max-w-[540px]"
         >
           {/* Ambient glow */}
           <div
@@ -337,7 +374,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </motion.div>
 
-      </motion.div>
+      </div>
     </div>
   );
 };

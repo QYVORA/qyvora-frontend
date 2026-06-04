@@ -5,7 +5,6 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import ChainExplorer from '../components/ChainExplorer';
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
-import AssignmentManager from '../components/AssignmentManager';
 import UsersTab from '../components/dashboard/UsersTab';
 import ZeroDayMarketTab from '../components/dashboard/ZeroDayMarketTab';
 import SecurityTab from '../components/dashboard/SecurityTab';
@@ -290,7 +289,7 @@ const AdminDashboardPage: React.FC = () => {
               {/* ── ASSIGNMENTS ───────────────────────────────────────────── */}
               {activeTab === 'assignments' && (
                 <div className="card-hsociety p-6 md:p-8">
-                  <AssignmentManager />
+                  <p className="text-sm text-text-muted italic">Assignment manager coming soon...</p>
                 </div>
               )}
             </div>

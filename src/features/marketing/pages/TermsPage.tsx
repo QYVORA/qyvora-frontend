@@ -9,7 +9,7 @@ import { ContactTrigger } from '../components/ContactModal';
 import { termsData, TermsSection } from '../content/termsData';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import Footer from '../components/layout/Footer';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
+import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 
 const SnapSection: React.FC<{
   id: string;
@@ -25,8 +25,8 @@ const SnapSection: React.FC<{
       className={`relative md:snap-start md:snap-always md:min-h-full md:flex-shrink-0 md:box-border bg-transparent ${className}`}
     >
       <motion.div
-        initial={minimizeEffects ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
-        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        initial={minimizeEffects ? false : { opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.1 }}
         transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full h-full relative z-10"
@@ -112,7 +112,7 @@ const TermsPage: React.FC = () => {
                     Legal Documentation
                   </span>
                 </div>
-                <AsciiHeading text="TERMS" font="ANSI Shadow" align="left" animated className="mb-8" />
+                <SimpleHeading text="TERMS" align="left" className="mb-8" />
               </ScrollReveal>
 
               <motion.p
@@ -160,7 +160,7 @@ const TermsPage: React.FC = () => {
                         <div className="h-[1px] w-8 bg-accent/40" />
                         <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Framework</span>
                      </div>
-                     <AsciiHeading text="Protocols" font="ANSI Shadow" align="left" compact animated className="mb-6" />
+                     <SimpleHeading text="Protocols" align="left" compact className="mb-6" />
                      <p className="text-text-secondary text-sm leading-relaxed max-w-sm mt-4">
                        These terms govern your use of all HSOCIETY platforms, training programs, and
                        professional services. Questions? Reach out via our{' '}
@@ -202,7 +202,7 @@ const TermsPage: React.FC = () => {
                           <div className="h-[1px] w-8 bg-accent/40" />
                           <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">Legal Support</span>
                         </div>
-                        <AsciiHeading text="Questions?" font="ANSI Shadow" compact animated />
+                        <SimpleHeading text="Questions?" compact />
                      </div>
                      <p className="text-text-muted text-sm md:text-base mb-10 leading-relaxed max-w-md mx-auto">
                        Our operations desk is available for legal and compliance inquiries. Reach out

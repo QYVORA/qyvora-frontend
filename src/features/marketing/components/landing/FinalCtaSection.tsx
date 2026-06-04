@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight, Terminal } from 'lucide-react';
-import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
+import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 
 interface FinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -73,11 +73,9 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
               </span>
             </div>
 
-          <AsciiHeading 
+          <SimpleHeading 
             text={user ? "Operating" : "Operate"} 
-            font="ANSI Shadow" 
             align="left" 
-            animated 
             className="mb-8" 
           />
 

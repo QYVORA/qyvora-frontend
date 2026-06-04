@@ -30,11 +30,6 @@
   --color-hero-glow:      rgba(136, 173, 124, 0.15);
   --color-hero-dots:      #88AD7C;
 
-  /* ── ASCII Beam (Dark) ── */
-  --ascii-beam-low:       rgba(255, 255, 255, 0.2);
-  --ascii-beam-mid:       rgba(255, 255, 255, 0.5);
-  --ascii-beam-high:      rgba(255, 255, 255, 1);
-
   /* ── Code highlighting ── */
   --color-code-bg:              #0d0d0d;
   --color-code-keyword:         #88AD7C;
@@ -51,21 +46,6 @@
   /* ── Custom page loader animations ── */
   --animate-spin-slow:    spin 10s linear infinite;
   --animate-spin-reverse: spin 3s linear infinite reverse;
-
-  /* ── ANANSI Intelligence Animations ── */
-  --animate-scan-line: scan-line 3s linear infinite;
-  --animate-shine:     shine 2s linear infinite;
-
-  @keyframes scan-line {
-    0% { transform: translateY(-100%); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateY(1000%); opacity: 0; }
-  }
-
-  @keyframes shine {
-    from { transform: translateX(-100%) skewX(-20deg); }
-    to { transform: translateX(200%) skewX(-20deg); }
-  }
 }
 
 [data-theme="light"] {
@@ -84,11 +64,6 @@
   --color-hero-right-bg:  #dff0dc;
   --color-hero-glow:      rgba(55, 94, 43, 0.18);
   --color-hero-dots:      #2f8a1f;
-
-  /* ── ASCII Beam (Light) ── */
-  --ascii-beam-low:       #0a100a;
-  --ascii-beam-mid:       #1a201a;
-  --ascii-beam-high:      #5a605a;
 
   /* ── Code highlighting (light) ── */
   --color-code-bg:              #e8ece8;
@@ -110,16 +85,22 @@
     text-size-adjust: 100%;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    height: 100%;
   }
 
   body {
     @apply bg-bg text-text-primary font-mono selection:bg-accent selection:text-bg;
     overflow-x: hidden;
+    height: 100%;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.25s ease, color 0.25s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: geometricPrecision;
+  }
+
+  #root {
+    height: 100%;
   }
 
   /* ── Force all headings to white in dark mode ── */
@@ -232,50 +213,6 @@
     background-repeat: no-repeat;
     animation: nav-border-beam 3.8s var(--ease-smooth) infinite;
     opacity: 0.7;
-  }
-
-  .ascii-text-beam {
-    color: var(--ascii-beam-mid);
-    background:
-      linear-gradient(
-        115deg,
-        var(--ascii-beam-low) 0%,
-        var(--ascii-beam-high) 15%,
-        var(--ascii-beam-mid) 30%,
-        var(--ascii-beam-low) 45%,
-        var(--ascii-beam-low) 100%
-      );
-    background-size: 240% 100%;
-    background-position: 120% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: ascii-text-beam 2.8s var(--ease-smooth) infinite;
-    will-change: background-position;
-  }
-
-  .ascii-text-beam-accent {
-    color: color-mix(in srgb, var(--color-accent), transparent 50%);
-    background:
-      linear-gradient(
-        115deg,
-        color-mix(in srgb, var(--color-accent), transparent 70%) 0%,
-        var(--color-accent) 15%,
-        color-mix(in srgb, var(--color-accent), transparent 50%) 30%,
-        color-mix(in srgb, var(--color-accent), transparent 80%) 45%,
-        color-mix(in srgb, var(--color-accent), transparent 80%) 100%
-      );
-    background-size: 240% 100%;
-    background-position: 120% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: ascii-text-beam 2.8s var(--ease-smooth) infinite;
-    will-change: background-position;
-  }
-
-  .ascii-text-beam-fast {
-    animation-duration: 1.4s;
   }
 
   .glass-effect {
@@ -597,16 +534,9 @@
   100% { background-position: 142% 0; opacity: 0; }
 }
 
-@keyframes ascii-text-beam {
-  0% { background-position: 130% 0; }
-  42% { background-position: -35% 0; }
-  100% { background-position: -35% 0; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .border-beam::before,
-  .nav-border-beam::after,
-  .ascii-text-beam {
+  .nav-border-beam::after {
     animation: none;
   }
 }
@@ -705,23 +635,6 @@
     box-shadow: var(--card-shimmer), 0 8px 32px var(--color-accent-glow);
   }
 
-  .ascii-section {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: transparent;
-  }
-  .ascii-section::before {
-    display: none;
-  }
-  .ascii-section::after {
-    display: none;
-  }
-  .ascii-section > * {
-    position: relative;
-    z-index: 1;
-  }
-
   .binary-stream-bg {
     position: absolute !important;
     z-index: 0 !important;
@@ -739,6 +652,7 @@
     background: var(--color-bg-card);
     box-shadow: var(--card-shimmer);
   }
+
   .terminal-card:not(.border-beam)::before {
     content: "";
     position: absolute;
@@ -750,141 +664,6 @@
     background: var(--color-border);
     pointer-events: none;
   }
-
-  .ascii-kicker {
-    @apply text-accent text-[11px] font-black uppercase tracking-[0.35em];
-  }
-
-.ascii-divider {
-     height: 1px;
-     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 45%, transparent), transparent);
-     box-shadow: 0 0 24px var(--color-accent-glow);
-   }
-
-   /* ── ASCII Art Heading System ─────────────────────────────────────────────── */
-   .ascii-heading {
-     display: block;
-     line-height: 1.15;
-     letter-spacing: 0;
-     white-space: pre !important;
-     word-wrap: normal !important;
-     overflow-wrap: normal !important;
-     word-break: normal !important;
-     tab-size: 4;
-     font-variant-ligatures: none;
-     font-kerning: none;
-     text-rendering: geometricPrecision;
-     -webkit-font-smoothing: antialiased;
-     -moz-osx-font-smoothing: grayscale;
-   }
-
-   .ascii-heading-glow {
-     animation: ascii-glow-pulse 3.5s ease-in-out infinite;
-   }
-
-   @keyframes ascii-glow-pulse {
-     0%, 100% {
-       filter: brightness(1) drop-shadow(0 0 0 transparent);
-     }
-     50% {
-       filter: brightness(1.15) drop-shadow(0 0 8px var(--ascii-glow-color, rgba(183, 255, 153, 0.35)));
-     }
-   }
-
-    .ascii-heading-wrapper {
-      display: block;
-      max-width: 100%;
-      overflow: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-
-   .ascii-heading-wrapper::-webkit-scrollbar {
-     height: 0;
-   }
-
-   .ascii-heading--compact {
-     font-size: 10px;
-     line-height: 1.2;
-   }
-
-   @media (min-width: 768px) {
-     .ascii-heading--compact {
-       font-size: 12px;
-       line-height: 1.3;
-     }
-   }
-
-   .ascii-heading--large {
-     font-size: 16px;
-     line-height: 1.15;
-   }
-
-   @media (min-width: 768px) {
-     .ascii-heading--large {
-       font-size: 20px;
-       line-height: 1.2;
-     }
-   }
-
-   @media (min-width: 1024px) {
-     .ascii-heading--large {
-       font-size: 24px;
-       line-height: 1.25;
-     }
-   }
-
-   @media (max-width: 639px) {
-     .ascii-heading {
-       line-height: 1.18 !important;
-       background-size: 300% 100%;
-     }
-
-     .ascii-heading-wrapper {
-       overflow: hidden;
-       -webkit-overflow-scrolling: touch;
-     }
-
-     .ascii-heading-mobile.ascii-heading-glow {
-       animation: none !important;
-       filter: none !important;
-     }
-   }
-
-   @media (prefers-reduced-motion: reduce) {
-     .ascii-heading-glow {
-       animation: none !important;
-     }
-   }
-
-   [data-theme='light'] .ascii-heading-glow {
-     animation: ascii-glow-pulse-light 3.5s ease-in-out infinite;
-   }
-
-   @keyframes ascii-glow-pulse-light {
-     0%, 100% {
-       filter: brightness(1) drop-shadow(0 0 0 transparent);
-     }
-     50% {
-       filter: brightness(1.08) drop-shadow(0 0 6px rgba(47, 138, 31, 0.2));
-     }
-   }
-
-   body[data-performance-mode='constrained'] .ascii-heading-glow {
-     animation: none !important;
-     filter: none !important;
-   }
-
-   .ascii-heading--nav {
-     font-size: 12px;
-     line-height: 1.2;
-     letter-spacing: 0.05em;
-   }
-
-   @media (min-width: 768px) {
-     .ascii-heading--nav {
-       font-size: 14px;
-     }
-   }
 
   .logo-wrap {
     display: flex;
@@ -959,40 +738,67 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    SNAP PAGES — navbar clearance + compact section padding
    ─────────────────────────────────────────────────────────────────────────────
-   Mobile (< md): snap is disabled. Sections stack normally. The CSS below
-   only applies on md+ where snap is active.
+   Mobile (< md): snap is disabled. Sections stack normally.
+   Desktop (≥ md): snap is active. Each section fills 100vh of viewport.
 
-   The navbar is fixed at 72px. On desktop, the landing snap container starts
-   below the navbar and each snap cell fills the remaining viewport.
-
-   [data-snap-child] compresses section padding so content fits the viewport.
+   The navbar is fixed at 72px height. Sections handle their own content
+   padding internally to avoid overlap.
 ───────────────────────────────────────────────────────────────────────────── */
 
+/* Landing snap container base styles */
+.landing-snap {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (min-width: 768px) {
+  .landing-snap {
+    /* Improve snap precision and reduce drift */
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+  }
+  
   .landing-snap .md\:snap-start {
     box-sizing: border-box;
+    scroll-margin-top: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  /* Desktop: each snap section fills exactly one viewport height */
+  .landing-snap .md\:min-h-screen {
+    min-height: 100vh;
+    height: 100vh;
   }
 }
 
 /* ── Snap motion wrapper — fills the snap cell height ── */
 @media (min-width: 768px) {
   [data-snap-child] {
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-  /* The direct section child of the motion wrapper fills remaining height */
-  [data-snap-child] > section {
-    flex: 1;
-    min-height: 0;
+    justify-content: center;
   }
 }
 
-/* ── Mobile section spacing — normal scroll, generous breathing room ── */
+/* ── Mobile section spacing — normal scroll ── */
 @media (max-width: 767px) {
-  /* Ensure sections have proper top padding to clear the fixed navbar */
+  /* Remove forced height constraints on mobile - let content determine height */
   section {
-    scroll-margin-top: 72px;
+    min-height: auto !important;
+    height: auto !important;
+  }
+  
+  /* Add scroll margin for hash navigation to clear fixed navbar */
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+
+  /* Reduce excessive vertical padding on mobile */
+  [data-snap-child] {
+    padding-top: 6rem !important;
+    padding-bottom: 3rem !important;
   }
 
   /* Tighten section padding on mobile for better content density */

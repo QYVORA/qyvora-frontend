@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Sparkles, Shield, Rocket, GraduationCap } from 'lucide-react';
-import { CardBase } from '../../../shared/components/ui/Card';
+import { X, Shield, GraduationCap } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { openServiceRequestModal } from './ServiceRequestModal';
 
@@ -9,34 +8,25 @@ const PROMOTIONS = [
   {
     id: 'bootcamp-promo',
     type: 'bootcamp',
-    title: 'Hacker Protocol Bootcamp',
-    subtitle: 'Next-Gen Offensive Security',
-    description: 'Master advanced penetration testing techniques with our flagship bootcamp.',
+    title: 'Hacker Protocol',
+    subtitle: 'Next-Gen Offensive Security Training',
+    description: 'Master advanced penetration testing with hands-on bootcamps.',
     cta: 'Explore Bootcamp',
     href: '#bootcamps',
     icon: GraduationCap,
+    image: '/assets/sections/bootcamps/hacker-protocol.webp', // Bootcamp image
     color: 'accent',
   },
   {
     id: 'services-promo',
     type: 'service',
-    title: 'Security Assessment',
-    subtitle: 'Professional Web Pentesting',
-    description: 'Protect your infrastructure with our high-end application security audits.',
-    cta: 'Get Started',
-    action: () => openServiceRequestModal('Standard Package'),
+    title: 'Web Pentesting',
+    subtitle: 'Professional Security Audits',
+    description: 'Protect your apps with our comprehensive penetration testing services.',
+    cta: 'Request Assessment',
+    action: () => openServiceRequestModal('Standard WebApp Pentest'),
     icon: Shield,
-    color: 'accent',
-  },
-  {
-    id: 'market-promo',
-    type: 'market',
-    title: 'Zero-Day Market',
-    subtitle: 'Exclusive CP Offerings',
-    description: 'Redeem your Cyber Points for high-value exploits and research papers.',
-    cta: 'Visit Market',
-    href: '#market',
-    icon: Rocket,
+    image: '/assets/sections/services/standard-package.webp', // Services image
     color: 'accent',
   },
 ];
@@ -53,7 +43,6 @@ const PromotionalSystem: React.FC = () => {
     // Check if dismissed in this session (or for 24h)
     const dismissed = localStorage.getItem('hsociety_promo_dismissed');
     if (dismissed) {
-      // If it's old (more than 24h), we could clear it, but for now simple persist
       return;
     }
 
@@ -81,60 +70,65 @@ const PromotionalSystem: React.FC = () => {
       const el = document.querySelector(activePromo.href);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
-    handleDismiss(); // Also dismiss if they clicked the CTA
+    handleDismiss();
   };
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20, x: -20 }}
-          animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20, x: -20 }}
-          className="fixed bottom-24 md:bottom-8 left-6 right-6 md:right-auto md:w-96 z-[140]"
+          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 20 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-80 md:bottom-8 z-[140]"
         >
-          <CardBase className="border-accent/30 shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.15)] bg-bg-card/90 backdrop-blur-md">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+            
+            {/* Close button */}
             <button
               onClick={handleDismiss}
-              className="absolute top-3 right-3 p-1 rounded-md text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors z-10"
+              className="absolute top-2 right-2 p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg/80 transition-colors z-20"
+              aria-label="Dismiss"
             >
               <X className="w-3.5 h-3.5" />
             </button>
 
-            <div className="p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent-dim text-accent">
-                  <activePromo.icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black text-accent uppercase tracking-widest flex items-center gap-1">
-                      <Sparkles className="w-2.5 h-2.5" /> Featured
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-black text-text-primary uppercase tracking-tight">
-                    {activePromo.title}
-                  </h4>
-                </div>
+            {/* Image */}
+            <div className="relative h-32 overflow-hidden bg-bg">
+              <img
+                src={activePromo.image}
+                alt={activePromo.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-card/90 to-transparent" />
+              
+              {/* Icon badge */}
+              <div className="absolute bottom-3 left-3 flex h-8 w-8 items-center justify-center rounded-lg border border-accent/30 bg-bg-card/80 backdrop-blur-sm text-accent">
+                <activePromo.icon className="w-4 h-4" />
               </div>
+            </div>
 
-              <div className="mb-5">
-                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1.5">
-                  {activePromo.subtitle}
-                </p>
-                <p className="text-xs text-text-secondary leading-relaxed">
-                  {activePromo.description}
-                </p>
-              </div>
+            {/* Content */}
+            <div className="p-4">
+              <h4 className="text-sm font-black text-text-primary uppercase tracking-tight mb-1">
+                {activePromo.title}
+              </h4>
+              <p className="text-[10px] font-bold text-accent uppercase tracking-wider mb-2">
+                {activePromo.subtitle}
+              </p>
+              <p className="text-xs text-text-secondary leading-relaxed mb-4">
+                {activePromo.description}
+              </p>
 
               <button
                 onClick={handleCta}
-                className="w-full btn-primary !py-2.5 !text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(var(--color-accent-rgb),0.2)]"
+                className="w-full px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 hover:shadow-[0_4px_16px_rgba(var(--color-accent-rgb),0.3)] active:scale-95"
               >
                 {activePromo.cta}
               </button>
             </div>
-          </CardBase>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

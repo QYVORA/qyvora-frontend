@@ -1,35 +1,22 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { useScroll, useTransform, motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useLandingData } from '../hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import HeroSection from '../components/landing/HeroSection';
-import BootcampsSection from '../components/landing/BootcampsSection';
-import EconomySection from '../components/landing/EconomySection';
-import LeaderboardSection from '../components/landing/LeaderboardSection';
 import ServicesSection from '../components/landing/ServicesSection';
-import AnansiSection from '../components/landing/AnansiSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
-import ProcessSection  from '../components/landing/ProcessSection';  //Add process section
-import PartnersSection from '../components/landing/PartnersSection'; 
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../components/HeroBackground';
 import ServiceRequestModal from '../components/ServiceRequestModal';
 import PromotionalSystem from '../components/PromotionalSystem';
-import { extractCpBalance } from '../../../shared/utils/cpBalance';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
-  { id: 'process',     label: 'Process'         },  // Add Proccess section to landing page
-  { id: 'bootcamps',   label: 'Bootcamps'       },
   { id: 'services',    label: 'Services'        },
-  { id: 'anansi',      label: 'ANANSI'          },
-  { id: 'market',      label: 'Zero-Day Market' },
-  { id: 'leaderboard', label: 'Leaderboard'     },
-  { id: 'partners',    label: 'Partners'        }, 
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -40,52 +27,33 @@ const SnapSection: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ id, children, className = '' }) => {
-  const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice, isMobile } = useAdaptiveUi();
-  const disableAnimations = shouldReduceMotion || constrainedDevice || isMobile;
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always min-h-[100svh] w-full flex-shrink-0 box-border bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
     >
-      <motion.div
-        initial={disableAnimations ? false : { opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)', rotateX: 5 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', rotateX: 0 }}
-        viewport={{ once: false, amount: 0.15 }}
-        transition={disableAnimations ? { duration: 0.001 } : { 
-          type: 'spring',
-          damping: 30,
-          stiffness: 80,
-          mass: 1,
-          duration: 1,
-          ease: [0.22, 1, 0.36, 1]
-        }}
-        className="w-full min-h-[100svh] relative z-10 flex flex-col justify-center pt-28 pb-12 md:pt-44 md:pb-20"
-        style={{ perspective: '1200px' }}
+      <div
+        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-20 md:py-24"
         data-snap-child=""
       >
         {children}
-      </motion.div>
+      </div>
     </section>
   );
 };
 
 const Landing: React.FC = () => {
   const { user } = useAuth();
-  const { stats, bootcamps, leaderboard, marketItems, loading } = useLandingData();
+  const { stats } = useLandingData();
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({ container: containerRef });
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 300], [0, 60]);
   const location = useLocation();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('hero');
   const isScrollingProgrammatically = useRef(false);
   const lastScrollTime = useRef(0);
 
-  const leaderboardSum = leaderboard.reduce((acc, e) => acc + (extractCpBalance(e) ?? Number(e.totalXp || 0)), 0);
-  const totalCp = Math.max(leaderboardSum, stats?.stats?.totalCpEarned ?? 0);
+  const totalCp = stats?.stats?.totalCpEarned ?? 0;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const scrollToSection = useCallback((index: number) => {
@@ -197,7 +165,7 @@ const Landing: React.FC = () => {
   };
 
   return (
-    <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
+    <div className="relative h-screen w-full bg-bg overflow-hidden">
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
 
@@ -207,66 +175,34 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="min-h-[100svh] md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent"
+          className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent"
         >
           <HeroSection
             heroRef={heroRef}
-            heroY={heroY}
-            heroOpacity={heroOpacity}
             user={user}
             stats={stats}
             totalCp={totalCp}
           />
         </section>
 
-        {/* 1 * Process Section */}
-        <SnapSection id="process">
-          <ProcessSection />
-        </SnapSection>
-
-        {/* ── 2. Partners ── NEW */}
-        <SnapSection id="partners">
-          <PartnersSection />
-        </SnapSection>
-
-        {/* ── 3. Bootcamps ── */}
-        <SnapSection id="bootcamps">
-          <BootcampsSection bootcamps={bootcamps} loading={loading} />
-        </SnapSection>
-
-        {/* ── 4. Services ── */}
+        {/* ── 2. Services ── */}
         <SnapSection id="services">
           <ServicesSection />
         </SnapSection>
 
-        {/* ── 5. ANANSI Intelligence ── */}
-        <SnapSection id="anansi">
-          <AnansiSection />
-        </SnapSection>
-
-        {/* ── 6. Zero-Day Market ── */}
-        <SnapSection id="market">
-          <EconomySection totalCp={totalCp} marketItems={marketItems} loading={loading} />
-        </SnapSection>
-
-        {/* ── 7. Leaderboard ── */}
-        <SnapSection id="leaderboard">
-          <LeaderboardSection leaderboard={leaderboard} totalCp={totalCp} loading={loading} />
-        </SnapSection>        
-
-        {/* ── 8. Final CTA ── */}
+        {/* ── 3. Final CTA ── */}
         <SnapSection id="cta">
           <FinalCtaSection user={user} />
         </SnapSection>
 
         <section
           id="footer"
-          className="md:snap-start md:snap-always min-h-[100svh] flex flex-col justify-center"
+          className="md:snap-start md:snap-always md:min-h-screen flex flex-col justify-center"
         >
           <Footer />
         </section>

@@ -3,7 +3,6 @@ import { Wallet, ShoppingBag, Bell, Settings, Radar } from 'lucide-react';
 
 const RAIL_LINKS = [
   { icon: Wallet,      path: '/dashboard/wallet',        label: 'Wallet'    },
-  { icon: Radar,       path: '/dashboard/scan',          label: 'Scan'      },
   { icon: ShoppingBag, path: '/dashboard/marketplace',   label: 'Store'     },
   { icon: Bell,        path: '/dashboard/notifications', label: 'Alerts'    },
   { icon: Settings,    path: '/dashboard/settings',      label: 'Settings'  },
