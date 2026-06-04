@@ -59,7 +59,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         src="/assets/illustrations/cta-operator.webp"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block absolute right-0 bottom-0 h-[120%] w-auto object-contain pointer-events-none select-none z-[1]"
+        className="hidden lg:block absolute right-0 bottom-0 h-full w-auto object-contain pointer-events-none select-none z-[1]"
         style={{ opacity: 0.7, maskImage: 'linear-gradient(to right, transparent 0%, black 20%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%)' }}
       />
 

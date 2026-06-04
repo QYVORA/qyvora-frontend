@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import Logo from '../../../../shared/components/brand/Logo';
@@ -33,10 +34,7 @@ const Navbar: React.FC = () => {
       className={[
         'fixed top-0 left-0 w-full z-50 overflow-visible',
         'h-[80px] flex items-center px-4 md:px-8',
-        'transition-all duration-500',
-        isScrolled 
-          ? 'bg-bg/80 backdrop-blur-xl border-b border-border/50 shadow-2xl shadow-black/20' 
-          : 'bg-transparent border-b border-transparent',
+        'transition-all duration-500 bg-transparent border-none',
         !isVisible ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
       ].join(' ')}
       style={{ outline: 'none' }}
@@ -72,17 +70,16 @@ const Navbar: React.FC = () => {
             {user ? (
               <Link
                 to="/dashboard"
-                className="px-8 py-3 bg-accent text-bg font-black uppercase tracking-[0.25em] text-[11px] rounded-sm transition-all hover:brightness-110 active:scale-95 shadow-[0_0_24px_var(--color-accent-glow)] border border-accent/20"
+                className="btn-primary flex items-center justify-center gap-2 text-xs !px-7 !py-2.5"
               >
-                Dashboard
+                <LayoutDashboard className="w-4 h-4" /> Dashboard
               </Link>
             ) : (
               <Link
                 to="/register"
-                className="group relative px-10 py-3.5 bg-accent text-bg font-black uppercase tracking-[0.25em] text-[11px] overflow-hidden rounded-sm transition-all hover:brightness-110 active:scale-95 shadow-[0_0_28px_var(--color-accent-glow)] border border-accent/30"
+                className="btn-primary flex items-center justify-center gap-2 text-xs !px-7 !py-2.5"
               >
-                <span className="relative z-10">Get Started</span>
-                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                Start Training <ArrowRight className="w-4 h-4" />
               </Link>
             )}
           </div>

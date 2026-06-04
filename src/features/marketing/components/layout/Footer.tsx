@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import BrandWhatsAppIcon from '../../../../shared/components/icons/BrandWhatsAppIcon';
@@ -6,8 +6,6 @@ import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedin
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
 import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
 import { ContactTrigger } from '../ContactModal';
-import { useTheme } from '../../../../core/contexts/ThemeContext';
-import { DARK_LOGO_SRC, LIGHT_LOGO_SRC } from '../../../../shared/components/brand/Logo';
 
 /* ─────────────────────────────────────────────
    DATA
@@ -33,38 +31,31 @@ const SOCIAL = [
   { icon: BrandWhatsAppIcon, key: 'whatsapp', label: 'WhatsApp' },
 ];
 
-/**
- * Mobile-only logo banner.
- */
-const LogoWatermark: React.FC = () => {
-  const { theme } = useTheme();
-  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
-
-  return (
-    <div className="relative w-full overflow-hidden py-8" aria-hidden="true">
-      <div className="aspect-[1082/128] w-full max-w-[500px] mx-auto px-6">
-        <img
-          src={logoSrc}
-          alt="HSOCIETY Logo"
-          className="w-full h-full object-cover select-none pointer-events-none transition-opacity duration-500"
-          style={{
-            objectPosition: '50.32% 47.65%',
-            filter: theme === 'dark' ? 'drop-shadow(0 0 15px var(--color-accent-glow))' : 'none',
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
 /* ─────────────────────────────────────────────
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
   <footer className="relative flex w-full bg-bg border-t border-border/50 overflow-hidden">
 
-    {/* LAYER 0 — dot grid texture */}
+    {/* LAYER 0 — Background elements */}
     <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
+    
+    {/* Geometric Circles (Technical/Abstract Geometry) */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20" aria-hidden="true">
+      {/* Large technical circle with dash */}
+      <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] rounded-full border border-accent/20 border-dashed animate-[spin_60s_linear_infinite]" />
+      
+      {/* Nested concentric circles */}
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full border border-accent/10" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 translate-x-4 w-48 h-48 rounded-full border border-accent/5" />
+      
+      {/* Small accent circles */}
+      <div className="absolute top-24 right-[10%] w-16 h-16 rounded-full border-2 border-accent/20" />
+      <div className="absolute bottom-32 right-[20%] w-32 h-32 rounded-full border border-accent/15 border-dashed" />
+      
+      {/* Floating dot circle */}
+      <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-accent/10" />
+    </div>
 
     {/* CONTENT */}
     <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full">
@@ -158,9 +149,6 @@ const Footer: React.FC = () => (
           </div>
         ))}
       </div>
-
-      {/* ── Logo Banner ── */}
-      <LogoWatermark />
 
       {/* ── Bottom bar ── */}
       <div className="
