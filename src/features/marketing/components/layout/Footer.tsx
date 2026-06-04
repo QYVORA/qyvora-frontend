@@ -22,7 +22,6 @@ const FOOTER_COLS = [
     links: [
       { label: 'Register', path: '/register' },
       { label: 'Log In',   path: '/login'    },
-      { label: 'Anansi',   path: '/scan'     },
     ],
   },
 ];
@@ -34,131 +33,15 @@ const SOCIAL = [
   { icon: BrandWhatsAppIcon, key: 'whatsapp', label: 'WhatsApp' },
 ];
 
-const ASCII_LINES = [
-  ' █████   █████  █████████     ███████      █████████  █████ ██████████ ███████████ █████ █████',
-  '▒▒███   ▒▒███  ███▒▒▒▒▒███  ███▒▒▒▒▒███   ███▒▒▒▒▒███▒▒███ ▒▒███▒▒▒▒▒█▒█▒▒▒███▒▒▒█▒▒███ ▒▒███ ',
-  ' ▒███    ▒███ ▒███    ▒▒▒  ███     ▒▒███ ███     ▒▒▒  ▒███  ▒███  █ ▒ ▒   ▒███  ▒  ▒▒███ ███  ',
-  ' ▒███████████ ▒▒█████████ ▒███      ▒███▒███          ▒███  ▒██████       ▒███      ▒▒█████   ',
-  ' ▒███▒▒▒▒▒███  ▒▒▒▒▒▒▒▒███▒███      ▒███▒███          ▒███  ▒███▒▒█       ▒███       ▒▒███    ',
-  ' ▒███    ▒███  ███    ▒███▒▒███     ███ ▒▒███     ███ ▒███  ▒███ ▒   █    ▒███        ▒███    ',
-  ' █████   █████▒▒█████████  ▒▒▒███████▒   ▒▒█████████  █████ ██████████    █████       █████   ',
-  '▒▒▒▒▒   ▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒     ▒▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒ ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒       ▒▒▒▒▒   ',
-];
-
-const ASCII_TEXT = ASCII_LINES.join('\n');
-
-/* ─────────────────────────────────────────────
-   ASCII WATERMARK
-   Uses the same scale-then-measure pattern as
-   AsciiHeading so the art never distorts on
-   any screen size — it simply scales down.
-───────────────────────────────────────────── */
-
 /**
- * The base font-size at which we measure the <pre> naturally.
- * Keep this large so the block characters render crisply before scaling.
- * transform: scale() then shrinks it to fit — no clamp() hacks needed.
- */
-const BASE_FONT_PX = 14;
-
-const AsciiWatermark: React.FC = () => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const preRef     = useRef<HTMLPreElement>(null);
-
-  const [scale, setScale]           = useState(1);
-  const [visualWidth, setVisualWidth] = useState<number | null>(null);
-  const [wrapperHeight, setWrapperHeight] = useState<number | null>(null);
-
-  useLayoutEffect(() => {
-    let rafId = 0;
-
-    const measure = () => {
-      window.cancelAnimationFrame(rafId);
-      rafId = window.requestAnimationFrame(() => {
-        const wrapper = wrapperRef.current;
-        const pre     = preRef.current;
-        if (!wrapper || !pre) return;
-
-        const availableWidth = wrapper.getBoundingClientRect().width;
-        if (availableWidth <= 0) return;
-
-        // ── Reset to scale(1) so we read the true natural dimensions ─────────
-        const savedTransform = pre.style.transform;
-        const savedOrigin    = pre.style.transformOrigin;
-        pre.style.transform       = 'scale(1)';
-        pre.style.transformOrigin = '0 0';
-
-        const naturalWidth  = pre.scrollWidth;
-        const naturalHeight = pre.scrollHeight;
-
-        pre.style.transform       = savedTransform;
-        pre.style.transformOrigin = savedOrigin;
-
-        if (naturalWidth <= 0) return;
-
-        // Scale to fill the full container width (no min-scale — we always
-        // want this to span edge-to-edge like a watermark band).
-        const nextScale = Math.min(1, availableWidth / naturalWidth);
-        const nextVisualWidth = naturalWidth * nextScale;
-
-        setScale(prev => (Math.abs(prev - nextScale) > 0.003 ? nextScale : prev));
-        setVisualWidth(nextVisualWidth);
-        // Lock wrapper height to the scaled pre height so nothing below shifts.
-        setWrapperHeight(Math.ceil(naturalHeight * nextScale));
-      });
-    };
-
-    measure();
-
-    const ro = new ResizeObserver(measure);
-    if (wrapperRef.current) ro.observe(wrapperRef.current);
-    window.addEventListener('resize', measure);
-
-    return () => {
-      window.cancelAnimationFrame(rafId);
-      ro.disconnect();
-      window.removeEventListener('resize', measure);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={wrapperRef}
-      className="relative w-full overflow-hidden hidden md:block"
-      style={{ height: wrapperHeight !== null ? `${wrapperHeight}px` : undefined }}
-      aria-hidden="true"
-    >
-      <pre
-        ref={preRef}
-        className="ascii-text-beam-accent m-0 p-0 whitespace-pre select-none"
-        style={{
-          fontFamily: '"JetBrains Mono", "Courier New", monospace',
-          fontSize: `${BASE_FONT_PX}px`,
-          lineHeight: 1.05,
-          letterSpacing: 0,
-          // Scale from top-left, then shift right by half the shrinkage so the
-          // block lands visually centred inside the wrapper.
-          transform: `scale(${scale})`,
-          transformOrigin: '0 0',
-          display: 'inline-block',
-          marginLeft: visualWidth !== null ? `calc(50% - ${visualWidth / 2}px)` : '0',
-        }}
-      >
-        {ASCII_TEXT}
-      </pre>
-    </div>
-  );
-};
-
-/**
- * Mobile-only logo banner — hidden on all screen sizes.
+ * Mobile-only logo banner.
  */
 const LogoWatermark: React.FC = () => {
   const { theme } = useTheme();
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
 
   return (
-    <div className="relative w-full overflow-hidden py-8 hidden" aria-hidden="true">
+    <div className="relative w-full overflow-hidden py-8" aria-hidden="true">
       <div className="aspect-[1082/128] w-full max-w-[500px] mx-auto px-6">
         <img
           src={logoSrc}
@@ -276,8 +159,7 @@ const Footer: React.FC = () => (
         ))}
       </div>
 
-      {/* ── ASCII watermark band / Mobile Logo Banner ── */}
-      <AsciiWatermark />
+      {/* ── Logo Banner ── */}
       <LogoWatermark />
 
       {/* ── Bottom bar ── */}

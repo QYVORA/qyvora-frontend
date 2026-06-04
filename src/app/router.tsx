@@ -40,18 +40,13 @@ const MarketplacePage   = lazy(() => import('../features/student/pages/Marketpla
 const WalletPage        = lazy(() => import('../features/student/pages/WalletPage'));
 const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePage'));
 const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicProfilePage'));
-const LeaderboardPage   = lazy(() => import('../features/student/pages/LeaderboardPage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
-const AchievementsPage  = lazy(() => import('../features/student/pages/AchievementsPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
 
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
-
-// ANANSI feature
-const AnansiPage        = lazy(() => import('../features/anansi/pages/AnansiPage'));
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 import PageLoader from '../shared/components/PageLoader';
@@ -101,14 +96,7 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
-          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
         </Route>
-
-        {/* ANANSI Unified Route — Public Access (No Layout/Navbar) */}
-        <Route path="/anansi" element={<Wrap scope="ANANSI Intelligence"><AnansiPage /></Wrap>} />
-        
-        {/* Redirect old scan path */}
-        <Route path="/scan" element={<Navigate to="/anansi" replace />} />
 
         {/* ── Auth routes ───────── */}
         <Route path="/login"           element={<Wrap scope="Login"><LoginPage /></Wrap>} />
@@ -128,30 +116,21 @@ export const AppRouter = () => {
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
 
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/leaderboard"   element={<Wrap scope="Leaderboard"><StudentOnly><LeaderboardPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/achievements"  element={<Wrap scope="Achievements"><StudentOnly><AchievementsPage /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps" replace />} />
           <Route path="/marketplace"      element={<Navigate to="/dashboard/marketplace" replace />} />
           <Route path="/wallet"           element={<Navigate to="/dashboard/wallet" replace />} />
-          <Route path="/scan-authenticated" element={<Navigate to="/dashboard/anansi" replace />} />
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
-          <Route path="/achievements"     element={<Navigate to="/dashboard/achievements" replace />} />
         </Route>
-
-        {/* ANANSI Authenticated Route — No Layout/Navbar */}
-        <Route path="/dashboard/anansi" element={<Wrap scope="ANANSI Intelligence"><StudentOnly><AnansiPage /></StudentOnly></Wrap>} />
-        <Route path="/dashboard/scan"   element={<Navigate to="/dashboard/anansi" replace />} />
-        <Route path="/scan-authenticated" element={<Navigate to="/dashboard/anansi" replace />} />
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>

@@ -2789,7 +2789,7 @@ Send two different responses to Comparer to spot subtle differences in timing or
 Use the Site Map to build a visual tree of every folder and file discovered on \`<target_ip>\`.
 
 *Training Task:* Capture a request to \`/api/profile\`. In Burp Repeater, change the \`GET\` method to \`POST\`. Does the server respond differently? Sometimes 'Hidden' APIs are only accessible via specific methods.`,
-              image: null,
+              image: 'step-04.webp',
             },
           ],
         },

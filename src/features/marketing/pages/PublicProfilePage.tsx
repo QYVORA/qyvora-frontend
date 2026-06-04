@@ -7,8 +7,9 @@ import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import HeroBackground from '../components/HeroBackground';
-import AsciiHeading from '../../../shared/components/ui/AsciiHeading';
+import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import PageLoader from '../../../shared/components/PageLoader';
+import { formatNumber } from '../../../shared/utils/formatNumber';
 
 const RANK_THRESHOLDS = [
   { label: 'Vanguard',    min: 1500 },
@@ -158,7 +159,7 @@ const PublicProfile: React.FC = () => {
                   <CpLogo className="w-6 h-6 text-accent" />
                 </div>
                 <div className="text-5xl font-black text-text-primary font-mono tracking-tighter">
-                  {cp.toLocaleString()}
+                  {formatNumber(cp)}
                 </div>
                 <div className="space-y-4 pt-4 border-t border-border/50">
                   <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">

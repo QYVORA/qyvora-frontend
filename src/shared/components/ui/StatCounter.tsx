@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useInView } from 'motion/react';
 import { useCountUp } from '../../../core/hooks/useCountUp';
+import { formatNumber } from '../../utils/formatNumber';
 
 interface StatCounterProps {
   end: number;
@@ -15,7 +16,7 @@ const StatCounter: React.FC<StatCounterProps> = ({ end, suffix = '', className =
 
   return (
     <span ref={ref} className={className}>
-      {count.toLocaleString()}{suffix}
+      {formatNumber(count)}{suffix}
     </span>
   );
 };

@@ -3,11 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { Shield, Trophy, Zap, Globe, Mail, Edit3, ChevronRight, Activity, Target, Award, ExternalLink, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import { formatNumber } from '../../../shared/utils/formatNumber';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
-import { AchievementShowcase } from '../components/achievements/AchievementShowcase';
-import { Achievement } from '../components/achievements/AchievementCard';
 import PageLoader from '../../../shared/components/PageLoader';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
@@ -63,7 +62,7 @@ const Profile: React.FC = () => {
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
 
   const profileStats = [
-    { label: 'CP Balance', value: profileData.cp.toLocaleString(), icon: Zap, color: 'text-accent' },
+    { label: 'CP Balance', value: formatNumber(profileData.cp), icon: Zap, color: 'text-accent' },
     { label: 'Rooms Done', value: profileData.completedRooms.length, icon: Target, color: 'text-text-primary' },
     { label: 'Day Streak', value: `${profileData.streakDays}d`, icon: Trophy, color: 'text-orange-400' },
   ];
@@ -240,42 +239,8 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className="relative z-10">
-                  <AchievementShowcase 
-                    achievements={[
-                      { 
-                        id: 'cp_2000', 
-                        title: 'Seed Fund', 
-                        description: 'Begin your journey with 2000 Community Points.', 
-                        image: '/assets/achievements/badges/common/cp_2000.webp', 
-                        rarity: 'common', 
-                        isLocked: profileData.cp < 2000 
-                      },
-                      { 
-                        id: 'first_room', 
-                        title: 'First Step', 
-                        description: 'Complete your first bootcamp room.', 
-                        image: '/assets/achievements/badges/common/first_room.webp', 
-                        rarity: 'common', 
-                        isLocked: profileData.completedRooms.length === 0 
-                      },
-                      { 
-                        id: 'linux_specialist', 
-                        title: 'Linux Specialist', 
-                        description: 'Complete all rooms in the Linux Foundations module.', 
-                        image: '/assets/achievements/badges/uncommon/linux_specialist.webp', 
-                        rarity: 'uncommon', 
-                        isLocked: !profileData.unlockedModules.includes('2') 
-                      },
-                      { 
-                        id: 'protocol_ascendant', 
-                        title: 'Protocol Ascendant', 
-                        description: 'Reach the highest rank in the Hacker Protocol bootcamp.', 
-                        image: '/assets/achievements/badges/legendary/protocol_ascendant.webp', 
-                        rarity: 'legendary', 
-                        isLocked: profileData.rank !== 'Elite' 
-                      },
-                    ]} 
-                  />
+                  {/* Achievement showcase temporarily disabled - component missing */}
+                  <p className="text-sm text-text-muted italic">Achievement showcase coming soon...</p>
                 </div>
               </div>
             </ScrollReveal>

@@ -5,7 +5,7 @@ import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import ChainLogo from '../../../../shared/components/ChainLogo';
 import CpLogo from '../../../../shared/components/CpLogo';
 import HeroBackground from '../HeroBackground';
-import AsciiHeading from '../../../../shared/components/ui/AsciiHeading';
+import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 
 const CHAIN_FACTS = [
   { icon: Link2,   label: 'Immutable blocks',   desc: 'Every CP event is a SHA-256 hashed block, chained to the previous one.' },
@@ -14,7 +14,7 @@ const CHAIN_FACTS = [
 ];
 
 const ChainSection: React.FC = () => (
-  <section className="ascii-section py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
+  <section className="py-14 md:py-20 bg-bg border-t border-border relative overflow-hidden">
     <HeroBackground className="opacity-40" />
     <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
     <img
@@ -28,7 +28,7 @@ const ChainSection: React.FC = () => (
     <div className="max-w-7xl mx-auto px-2 md:px-8 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 items-center px-2 md:px-0">
         <div>
-          <AsciiHeading text="HSOCIETY Chain" font="Larry 3D" align="left" animated className="mb-8" />
+          <SimpleHeading text="HSOCIETY Chain" align="left" className="mb-8" accentWords={1} />
           <ScrollReveal>
             <p className="text-text-secondary text-base md:text-lg mb-8 leading-relaxed max-w-lg">
               Every room completion and <CpLogo className="w-4 h-4 mx-0.5 inline-block align-middle" /> reward is 

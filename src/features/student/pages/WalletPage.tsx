@@ -8,6 +8,7 @@ import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import { formatNumber } from '../../../shared/utils/formatNumber';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import PageLoader from '../../../shared/components/PageLoader';
 
@@ -115,7 +116,7 @@ const Wallet: React.FC = () => {
                 />
                 <div className="relative z-10 mb-6 flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
                   <CpLogo className="w-8 h-8 md:w-10 md:h-10 opacity-90 shrink-0" />
-                  <span className="truncate">{loading ? '—' : balance.toLocaleString()}</span>
+                  <span className="truncate">{loading ? '—' : formatNumber(balance)}</span>
                 </div>
                 {/* Stats row */}
                 <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -74,7 +74,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (fallback) return fallback;
 
     return (
-      <div className="ascii-section min-h-[60vh] flex items-center justify-center px-4 py-16">
+      <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
         <div className="terminal-card w-full max-w-md text-center space-y-6 p-8">
 
           {/* Icon */}

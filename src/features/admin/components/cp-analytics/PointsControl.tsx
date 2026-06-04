@@ -1,6 +1,8 @@
 import React from 'react';
 import { Coins, ChevronDown } from 'lucide-react';
 
+import { formatNumber } from '../../../../shared/utils/formatNumber';
+
 interface PointsControlProps {
   users: Array<{ id: string; hackerHandle?: string; name?: string; email?: string }>;
   cpUserId: string;
