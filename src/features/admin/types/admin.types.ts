@@ -16,19 +16,6 @@ export type AdminUser = {
   recoveryTokenAcknowledgedAt?: string | null;
 };
 
-export type Bootcamp = {
-  id: string;
-  title: string;
-  description: string;
-  level: string;
-  duration: string;
-  priceLabel: string;
-  image: string;
-  isActive: boolean;
-  sortOrder: number;
-  modules: any[];
-};
-
 export type CPProduct = {
   _id: string;
   title: string;
