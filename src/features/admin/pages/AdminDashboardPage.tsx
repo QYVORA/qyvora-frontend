@@ -14,7 +14,7 @@ import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
 import {
-  type AdminTab, type AdminUser, type Bootcamp, type CPProduct,
+  type AdminTab, type AdminUser, type CPProduct,
   type ContactMessage, type SecurityEventItem,
   isUserBlocked,
 } from '../types/admin.types';
@@ -44,9 +44,6 @@ const AdminDashboardPage: React.FC = () => {
   const [overview, setOverview] = useState<Record<string, unknown> | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
 
-  const [contentVersion, setContentVersion] = useState(1);
-  const [bootcamps, setBootcamps] = useState<Bootcamp[]>([]);
-  const [selectedBootcampId, setSelectedBootcampId] = useState<string>('');
   const [products, setProducts] = useState<CPProduct[]>([]);
 
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
@@ -58,11 +55,10 @@ const AdminDashboardPage: React.FC = () => {
   const loadAll = async () => {
     setLoading(true);
     try {
-      const [ovRes, usersRes, contentRes, productsRes, summaryRes, eventsRes, contactsRes] =
+      const [ovRes, usersRes, productsRes, summaryRes, eventsRes, contactsRes] =
         await Promise.all([
           api.get('/admin/overview').catch(() => null),
           api.get('/admin/users').catch(() => null),
-          api.get('/admin/content').catch(() => null),
           api.get('/admin/cp-products').catch(() => null),
           api.get('/admin/security/summary').catch(() => null),
           api.get('/admin/security/events?limit=50').catch(() => null),
@@ -73,12 +69,6 @@ const AdminDashboardPage: React.FC = () => {
 
       const userItems = Array.isArray(usersRes?.data) ? (usersRes.data as AdminUser[]) : [];
       setUsers(userItems);
-
-      const cd = (contentRes?.data as any) || {};
-      setContentVersion(Number(cd.version || 1));
-      const cbs: Bootcamp[] = Array.isArray(cd.learn?.bootcamps) ? cd.learn.bootcamps : [];
-      setBootcamps(cbs);
-      if (cbs[0]?.id) setSelectedBootcampId(prev => prev || String(cbs[0].id));
 
       setProducts(Array.isArray(productsRes?.data?.items) ? productsRes.data.items : []);
       setSecuritySummary((summaryRes?.data as Record<string, unknown>) || null);
