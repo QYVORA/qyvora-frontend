@@ -29,12 +29,6 @@ export interface Module {
   progress?: number;
   roomsCompleted?: number;
   roomsTotal?: number;
-  assignmentCompleted?: boolean;
-  assignment?: {
-    title: string;
-    description: string;
-    details: string;
-  };
 }
 
 export interface Course {

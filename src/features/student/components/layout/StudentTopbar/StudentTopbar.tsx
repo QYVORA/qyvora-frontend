@@ -207,10 +207,10 @@ const StudentTopbar = () => {
           <div className="flex items-center gap-8">
             <Link to="/dashboard"><Logo size="md" /></Link>
 
-            {/* Desktop nav — Bootcamp direct link + Operate dropdown */}
+            {/* Desktop nav — HPB direct link + Operate dropdown */}
             <nav className="hidden lg:flex items-center gap-1">
               <Link
-                to="/dashboard/bootcamps"
+                to="/dashboard/bootcamps/bc_1775270338500"
                 className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
                   location.pathname.startsWith('/dashboard/bootcamps')
                     ? 'text-accent bg-accent-dim'
@@ -218,7 +218,7 @@ const StudentTopbar = () => {
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
-                Bootcamp
+                HPB
               </Link>
 
               {NAV_GROUPS.map((group) => (

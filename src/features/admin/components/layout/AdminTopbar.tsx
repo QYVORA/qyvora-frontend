@@ -20,7 +20,6 @@ const NAV_GROUPS = [
     items: [
       { label: 'Users',        icon: Users,         path: '/mr-robot/dashboard?tab=users',        desc: 'Manage operators'       },
       { label: 'Bootcamps',    icon: Shield,        path: '/mr-robot/dashboard?tab=bootcamps',    desc: 'Phase control'          },
-      { label: 'Assignments',  icon: FileText,      path: '/mr-robot/dashboard?tab=assignments',  desc: 'Review submissions'     },
     ],
   },
   {
@@ -49,7 +48,6 @@ const MOBILE_PRIMARY = [
 ];
 
 const MOBILE_MORE = [
-  { label: 'Assignments',  icon: FileText,      path: '/mr-robot/dashboard?tab=assignments'  },
   { label: 'Chain',        icon: Link2,         path: '/mr-robot/dashboard?tab=chain'        },
   { label: 'Security',     icon: AlertTriangle, path: '/mr-robot/dashboard?tab=security'     },
   { label: 'Contacts',     icon: Mail,          path: '/mr-robot/dashboard?tab=contacts'     },

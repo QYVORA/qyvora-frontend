@@ -181,8 +181,8 @@ const Dashboard: React.FC = () => {
         <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
           {/* ── TOP SECTION: MISSION CARD & STATS CARD ─────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-            <div className="w-full max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
+            <div className="w-full">
               <ScrollReveal className="h-full">
                 {loading ? (
                   <div className="card-hsociety p-8 animate-pulse space-y-4 h-full">

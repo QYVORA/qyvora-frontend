@@ -90,16 +90,10 @@ export const SITE_CONFIG = {
      ],
      company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }],
    },
-  contactSubjects: [
-    { value: 'b2b', label: 'B2B Security Consultation' },
-    { value: 'bootcamp', label: 'Bootcamp Inquiries' },
-    { value: 'media', label: 'Media & Partnerships' },
-    { value: 'other', label: 'Other Operational Needs' },
-  ],
+   
   footer: {
     links: [
       { label: 'Terms of Service', path: '/terms' },
-      { label: 'Contact', path: '/contact' },
     ],
   },
 } as const;

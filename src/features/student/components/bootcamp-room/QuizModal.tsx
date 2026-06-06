@@ -125,7 +125,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     onClick={onPassed}
                     className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
-                    Go to Assignment
+                    Continue
                   </button>
                 </div>
               ) : (

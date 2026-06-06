@@ -72,11 +72,6 @@ const RoomSidebar: React.FC<Props> = ({
                     {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
                   </span>
                   <span className="truncate text-xs flex-1">{room.title}</span>
-                  {room.isAssignment && (
-                    <div className="shrink-0 flex h-5 w-5 items-center justify-center rounded-lg bg-accent/10 border border-accent/20">
-                      <Github className="h-3 w-3 text-accent" />
-                    </div>
-                  )}
                 </button>
               );
             })}

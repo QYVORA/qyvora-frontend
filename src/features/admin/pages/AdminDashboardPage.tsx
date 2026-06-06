@@ -177,7 +177,7 @@ const AdminDashboardPage: React.FC = () => {
     users: 'Users', bootcamps: 'Bootcamps',
     zero_day: 'Market', cp: 'Points', chain: 'Chain',
     security: 'Security', contacts: 'Contacts', 
-    assignments: 'Assignments', quizzes: 'Quizzes',
+    quizzes: 'Quizzes',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
 
@@ -283,13 +283,6 @@ const AdminDashboardPage: React.FC = () => {
               {activeTab === 'chain' && (
                 <div className="card-hsociety p-6 md:p-8">
                   <ChainExplorer />
-                </div>
-              )}
-
-              {/* ── ASSIGNMENTS ───────────────────────────────────────────── */}
-              {activeTab === 'assignments' && (
-                <div className="card-hsociety p-6 md:p-8">
-                  <p className="text-sm text-text-muted italic">Assignment manager coming soon...</p>
                 </div>
               )}
             </div>

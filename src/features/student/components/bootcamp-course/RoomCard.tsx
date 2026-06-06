@@ -82,14 +82,6 @@ const RoomCard: React.FC<RoomCardProps> = ({
             </div>
           </div>
         )}
-        {configRoom?.isAssignment && !roomDone && (
-          <div
-            className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-widest text-bg shadow-sm"
-            style={{ backgroundColor: configPhase?.color || 'var(--color-accent)' }}
-          >
-            <Github className="h-2.5 w-2.5" /> Assignment
-          </div>
-        )}
         {configRoom && !roomDone && (
           <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
             {configRoom.steps.length} steps

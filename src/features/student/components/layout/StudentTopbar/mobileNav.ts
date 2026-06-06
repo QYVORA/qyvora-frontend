@@ -2,7 +2,7 @@ import { LayoutDashboard, BookOpen, Radar, ShoppingBag, Wallet, Trophy, User, Be
 
 export const MOBILE_PRIMARY = [
   { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
-  { label: 'Bootcamp', icon: BookOpen,        path: '/dashboard/bootcamps'  },
+  { label: 'HPB', icon: BookOpen,        path: '/dashboard/bootcamps/bc_1775270338500'  },
   { label: 'Market',   icon: ShoppingBag,     path: '/dashboard/marketplace' },
 ];
 

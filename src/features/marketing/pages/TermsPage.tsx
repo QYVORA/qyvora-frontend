@@ -37,48 +37,6 @@ const SnapSection: React.FC<{
   );
 };
 
-const TermsSectionCard: React.FC<{ section: TermsSection; index: number }> = ({
-  section,
-  index,
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.08 }}
-    transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-    className="terminal-card relative rounded-2xl border border-border bg-bg-card overflow-hidden p-6 md:p-8"
-    style={{ boxShadow: 'var(--card-shimmer)' }}
-  >
-    <div
-      className="absolute top-4 right-5 font-mono text-4xl font-black leading-none select-none pointer-events-none"
-      style={{ color: 'var(--color-accent-dim)' }}
-      aria-hidden="true"
-    >
-      {String(index + 1).padStart(2, '0')}
-    </div>
-    <div
-      aria-hidden="true"
-      className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30 pointer-events-none"
-    />
-    <h3 className="text-base md:text-lg font-black text-text-primary mb-3 font-mono uppercase tracking-tight pr-12">
-      {section.title}
-    </h3>
-    {section.body ? (
-      <p className="text-sm text-text-secondary leading-relaxed mb-4">{section.body}</p>
-    ) : null}
-    {section.bullets.length > 0 && (
-      <ul className="flex flex-col gap-2">
-        {section.bullets.map((bullet, i) => (
-          <li key={i} className="text-sm text-text-secondary flex items-start gap-3">
-            <span className="text-accent font-mono font-bold flex-none mt-0.5 text-xs">{'>'}</span>
-            {bullet}
-          </li>
-        ))}
-      </ul>
-    )}
-  </motion.div>
-);
-
 const TermsPage: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({ container: containerRef });
@@ -101,9 +59,10 @@ const TermsPage: React.FC = () => {
         <section className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent overflow-hidden">
           <motion.div 
             style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-            className="relative z-20 h-full max-w-7xl mx-auto px-4 md:px-10 flex flex-col justify-center pt-32 pb-12"
+            className="relative z-20 h-full max-w-7xl mx-auto px-4 md:px-10 flex flex-col lg:flex-row items-center justify-between gap-12 pt-32 pb-12"
           >
-            <div className="max-w-3xl">
+            {/* Left: Content */}
+            <div className="max-w-3xl lg:max-w-xl flex-shrink-0">
               <ScrollReveal>
                 {/* Eyebrow */}
                 <div className="flex items-center gap-3 mb-4 lg:mb-3">
@@ -145,16 +104,70 @@ const TermsPage: React.FC = () => {
                 )}
               </motion.div>
             </div>
+
+            {/* Right: Illustration (Desktop Only) */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="hidden lg:flex items-center justify-center flex-1 max-w-lg"
+            >
+              <div className="relative w-full aspect-square max-w-md">
+                {/* Decorative background elements */}
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 rounded-3xl" />
+                <div className="absolute inset-4 border border-accent/20 rounded-3xl" />
+                
+                {/* Main illustration */}
+                <div className="relative w-full h-full flex items-center justify-center p-8">
+                  <img
+                    src="/assets/illustrations/terms.svg"
+                    alt="Terms and conditions illustration"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to a simple icon-based illustration if image doesn't exist
+                      e.currentTarget.style.display = 'none';
+                      const parent = e.currentTarget.parentElement;
+                      if (parent && !parent.querySelector('.fallback-icon')) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'fallback-icon w-full h-full flex items-center justify-center text-accent/30';
+                        fallback.innerHTML = `
+                          <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                          </svg>
+                        `;
+                        parent.appendChild(fallback);
+                      }
+                    }}
+                  />
+                </div>
+
+                {/* Floating accent dots */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute top-8 right-8 w-3 h-3 rounded-full bg-accent/40"
+                />
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  className="absolute bottom-12 left-12 w-2 h-2 rounded-full bg-accent/30"
+                />
+              </div>
+            </motion.div>
           </motion.div>
         </section>
 
         {/* ── CONTENT SECTION ── */}
         <SnapSection id="terms-content">
           <div className="min-h-full flex flex-col items-center justify-start md:justify-center py-20 md:py-24">
-            <div className="max-w-7xl mx-auto px-4 md:px-10 w-full">
-              <div className="flex flex-col lg:flex-row gap-12 items-start">
-                {/* Left side: Heading */}
-                <div className="lg:w-1/3 shrink-0">
+            <div className="max-w-7xl mx-auto px-4 md:px-10 w-full h-full md:h-auto">
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start h-full md:h-auto">
+                {/* Left side: Static Heading */}
+                <div className="lg:w-1/3 shrink-0 lg:sticky lg:top-8">
                    <ScrollReveal>
                      <div className="flex items-center gap-3 mb-4 lg:mb-3">
                         <div className="h-[1px] w-8 bg-accent/40" />
@@ -169,13 +182,50 @@ const TermsPage: React.FC = () => {
                    </ScrollReveal>
                 </div>
 
-                {/* Right side: Terms Grid */}
-                <div className="flex-1 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-                    {termsData.sections.map((section, idx) => (
-                      <TermsSectionCard key={idx} section={section} index={idx} />
-                    ))}
-                  </div>
+                {/* Right side: Single Scrollable Card */}
+                <div className="flex-1 w-full lg:max-h-[calc(100vh-12rem)]">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="terminal-card relative rounded-2xl border border-border bg-bg-card overflow-hidden"
+                    style={{ boxShadow: 'var(--card-shimmer)' }}
+                  >
+                    <div
+                      aria-hidden="true"
+                      className="absolute top-0 left-0 right-0 h-[1px] bg-accent/30 pointer-events-none z-10"
+                    />
+                    <div className="overflow-y-auto max-h-[60vh] lg:max-h-[calc(100vh-12rem)] p-6 md:p-8 space-y-8">
+                      {termsData.sections.map((section, idx) => (
+                        <div key={idx} className="relative pb-8 last:pb-0 border-b border-border/30 last:border-b-0">
+                          <div
+                            className="absolute top-0 right-0 font-mono text-3xl md:text-4xl font-black leading-none select-none pointer-events-none"
+                            style={{ color: 'var(--color-accent-dim)' }}
+                            aria-hidden="true"
+                          >
+                            {String(idx + 1).padStart(2, '0')}
+                          </div>
+                          <h3 className="text-base md:text-lg font-black text-text-primary mb-3 font-mono uppercase tracking-tight pr-12">
+                            {section.title}
+                          </h3>
+                          {section.body ? (
+                            <p className="text-sm text-text-secondary leading-relaxed mb-4">{section.body}</p>
+                          ) : null}
+                          {section.bullets.length > 0 && (
+                            <ul className="flex flex-col gap-2">
+                              {section.bullets.map((bullet, i) => (
+                                <li key={i} className="text-sm text-text-secondary flex items-start gap-3">
+                                  <span className="text-accent font-mono font-bold flex-none mt-0.5 text-xs">{'>'}</span>
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>

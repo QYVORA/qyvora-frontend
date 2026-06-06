@@ -110,7 +110,7 @@ export const AppRouter = () => {
         {/* ── Student routes ──────────────── */}
         <Route element={<StudentLayout />}>
           <Route path="/dashboard" element={<Wrap scope="Dashboard"><StudentOnly><DashboardPage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/bootcamps" element={<Wrap scope="Bootcamps"><StudentOnly><BootcampPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/bootcamps" element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
@@ -124,7 +124,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
-          <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps" replace />} />
+          <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/marketplace"      element={<Navigate to="/dashboard/marketplace" replace />} />
           <Route path="/wallet"           element={<Navigate to="/dashboard/wallet" replace />} />
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
