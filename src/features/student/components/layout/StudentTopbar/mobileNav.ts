@@ -13,5 +13,4 @@ export const MOBILE_MORE = [
   { label: 'Profile',       icon: User,      path: '/dashboard/profile'       },
   { label: 'Notifications', icon: Bell,      path: '/dashboard/notifications' },
   { label: 'Settings',      icon: Settings,  path: '/dashboard/settings'      },
-  { label: 'Leaderboard',   icon: Trophy,    path: '/dashboard/leaderboard'   },
 ];

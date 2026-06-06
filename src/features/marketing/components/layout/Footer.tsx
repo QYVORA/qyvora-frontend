@@ -6,6 +6,7 @@ import BrandLinkedinIcon from '../../../../shared/components/icons/BrandLinkedin
 import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIcon';
 import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
 import { ContactTrigger } from '../ContactModal';
+import AdinkraBackground from '../../../../shared/components/backgrounds/AdinkraBackground';
 
 /* ─────────────────────────────────────────────
    DATA
@@ -35,30 +36,13 @@ const SOCIAL = [
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative flex w-full bg-bg border-t border-border/50 overflow-hidden">
+  <footer className="relative w-full min-h-screen bg-bg border-t border-border/50 overflow-hidden flex items-center">
 
-    {/* LAYER 0 — Background elements */}
-    <div className="absolute inset-0 dot-grid opacity-[0.04] pointer-events-none" />
-    
-    {/* Geometric Circles (Technical/Abstract Geometry) */}
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20" aria-hidden="true">
-      {/* Large technical circle with dash */}
-      <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] rounded-full border border-accent/20 border-dashed animate-[spin_60s_linear_infinite]" />
-      
-      {/* Nested concentric circles */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full border border-accent/10" />
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 translate-x-4 w-48 h-48 rounded-full border border-accent/5" />
-      
-      {/* Small accent circles */}
-      <div className="absolute top-24 right-[10%] w-16 h-16 rounded-full border-2 border-accent/20" />
-      <div className="absolute bottom-32 right-[20%] w-32 h-32 rounded-full border border-accent/15 border-dashed" />
-      
-      {/* Floating dot circle */}
-      <div className="absolute top-1/3 right-1/4 w-8 h-8 rounded-full bg-accent/10" />
-    </div>
+    {/* Adinkra Background Layer */}
+    <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />
 
     {/* CONTENT */}
-    <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full">
+    <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full py-8">
 
       {/* ── Top: brand + nav ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-24 sm:pt-28 md:pt-32 pb-8 md:pb-10">
@@ -154,8 +138,8 @@ const Footer: React.FC = () => (
       <div className="
         relative flex flex-col sm:flex-row items-center justify-between
         gap-4 mt-5 border-t border-border/20 pt-5
-        pb-[calc(5rem+env(safe-area-inset-bottom,0px))]
-        md:mt-8 md:pt-7 md:pb-10 md:mb-0
+        pb-5 sm:pb-6
+        md:mt-8 md:pt-7 md:pb-6
       ">
         <p className="max-w-full text-center text-[10px] font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/60">©</span>] {new Date().getFullYear()}{' '}

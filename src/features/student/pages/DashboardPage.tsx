@@ -9,10 +9,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import api from '../../../core/services/api';
 import CpLogo from '../../../shared/components/CpLogo';
-import MiniLeaderboard from '../components/MiniLeaderboard';
 import { getRankInfo } from '../utils/rankUtils';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import {
   formatSyncLabel,
@@ -23,7 +20,6 @@ import {
 } from '../utils/studentExperience';
 import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
-import RecoveryTokenCard from '../components/RecoveryTokenCard';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { useToast } from '../../../core/contexts/ToastContext';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -185,8 +181,8 @@ const Dashboard: React.FC = () => {
         <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
           {/* ── TOP SECTION: MISSION CARD & STATS CARD ─────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-10 items-stretch">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
+            <div className="w-full max-w-5xl mx-auto">
               <ScrollReveal className="h-full">
                 {loading ? (
                   <div className="card-hsociety p-8 animate-pulse space-y-4 h-full">
@@ -197,10 +193,6 @@ const Dashboard: React.FC = () => {
                   </div>
                 ) : (
                   <div className="card-hsociety p-8 relative overflow-hidden h-full flex flex-col justify-center border-accent/30 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.15)]">
-                    <OptionalDecorImage
-                      src={STUDENT_DECOR.bootcampOperator}
-                      className="pointer-events-none absolute -right-8 -top-8 h-48 w-auto object-contain opacity-[0.08] select-none"
-                    />
                     <div className="relative z-10">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="h-[1px] w-8 bg-accent/40" />
@@ -259,10 +251,6 @@ const Dashboard: React.FC = () => {
                 )}
               </ScrollReveal>
             </div>
-
-            <div className="lg:col-span-1">
-              {!loading && <MiniLeaderboard currentHandle={handle} />}
-            </div>
           </div>
 
           {/* ── MAIN CONTENT: BOOTCAMPS + MARKET ─────────────────── */}
@@ -286,10 +274,6 @@ const Dashboard: React.FC = () => {
                 </div>
               ) : enrolledBootcamps.length === 0 ? (
                 <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center h-full min-h-[300px] flex flex-col items-center justify-center bg-bg-card/20">
-                  <OptionalDecorImage
-                    src={STUDENT_DECOR.bootcampOperator}
-                    className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
-                  />
                   <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
                   <p className="mb-5 text-base text-text-muted">No active bootcamps.</p>
                   <Link
@@ -381,11 +365,6 @@ const Dashboard: React.FC = () => {
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Recovery Token Card */}
-          <div className="mt-8">
-            {!loading && <RecoveryTokenCard />}
           </div>
 
           {/* SYNC STATUS */}

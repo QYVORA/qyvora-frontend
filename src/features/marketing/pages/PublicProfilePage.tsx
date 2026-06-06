@@ -230,10 +230,7 @@ const PublicProfile: React.FC = () => {
                 </div>
 
                 <div className="mt-12 p-8 border-2 border-dashed border-border rounded-2xl text-center">
-                  <p className="text-sm text-text-muted font-medium mb-4">View more about this operator in the Hall of Shadows.</p>
-                  <Link to="/leaderboard" className="text-xs font-black uppercase tracking-widest text-accent hover:underline">
-                    View Leaderboard <ChevronRight className="w-3.5 h-3.5 inline" />
-                  </Link>
+                  <p className="text-sm text-text-muted font-medium">This operator's activity is cryptographically verified on the HSOCIETY Chain.</p>
                 </div>
               </div>
             </ScrollReveal>

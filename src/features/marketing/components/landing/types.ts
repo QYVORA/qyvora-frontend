@@ -20,14 +20,6 @@ export interface Bootcamp {
   image?: string;
 }
 
-export interface LeaderboardEntry {
-  handle?: string;
-  name?: string;
-  totalXp?: number;
-  rank?: string;
-  avatarUrl?: string;
-}
-
 export interface MarketplaceItem {
   id?: string;
   title: string;

@@ -25,7 +25,6 @@ import api from '../../../core/services/api';
 import type {
   BackendStats,
   Bootcamp,
-  LeaderboardEntry,
   MarketplaceItem,
 } from '../components/landing/types';
 import {
@@ -43,7 +42,6 @@ export const useLandingData = () => {
   // stats are cached) can still populate part of the UI immediately.
   const [stats, setStats]             = useState<BackendStats | null>(null);
   const [bootcamps, setBootcamps]     = useState<Bootcamp[]>([]);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [marketItems, setMarketItems] = useState<MarketplaceItem[]>([]);
 
   // `loading` starts true and is set to false only after the fresh API
@@ -81,7 +79,6 @@ export const useLandingData = () => {
       if (!mounted) return;
       setStats(snapshot.stats);
       setBootcamps(snapshot.bootcamps);
-      setLeaderboard(snapshot.leaderboard);
       setMarketItems(snapshot.marketItems);
     };
 
@@ -115,9 +112,8 @@ export const useLandingData = () => {
     Promise.all([
       api.get('/public/landing-stats').catch(() => null),
       api.get('/public/bootcamps').catch(() => null),
-      api.get('/public/leaderboard').catch(() => null),
       api.get('/public/cp-products').catch(() => null),
-    ]).then(([statsRes, bootcampsRes, leaderboardRes, marketRes]) => {
+    ]).then(([statsRes, bootcampsRes, marketRes]) => {
       if (!mounted) return;
 
       // Build the authoritative snapshot. For each field, the fresh API
@@ -127,7 +123,6 @@ export const useLandingData = () => {
       const nextSnapshot: LandingSnapshot = {
         stats:       statsRes?.data                          ?? cached?.stats        ?? null,
         bootcamps:   bootcampsRes?.data?.items               ?? cached?.bootcamps    ?? [],
-        leaderboard: leaderboardRes?.data?.leaderboard       ?? cached?.leaderboard  ?? [],
         marketItems: marketRes?.data?.items                  ?? cached?.marketItems  ?? [],
       };
 
@@ -154,5 +149,5 @@ export const useLandingData = () => {
     };
   }, []); // Empty dependency array — run once on mount only.
 
-  return { stats, bootcamps, leaderboard, marketItems, loading };
+  return { stats, bootcamps, marketItems, loading };
 };

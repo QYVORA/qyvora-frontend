@@ -202,7 +202,7 @@ const Landing: React.FC = () => {
 
         <section
           id="footer"
-          className="md:snap-start md:snap-always md:min-h-screen flex flex-col justify-center"
+          className="md:snap-start md:snap-always w-full bg-bg"
         >
           <Footer />
         </section>

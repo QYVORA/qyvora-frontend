@@ -3,7 +3,6 @@ import { motion, useReducedMotion, type MotionValue } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import { lazy, Suspense } from 'react';
-import StatCounter from '../../../../shared/components/ui/StatCounter';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
@@ -16,8 +15,6 @@ interface HeroSectionProps {
   stats: BackendStats | null;
   totalCp: number;
 }
-
-const STAT_ORDER = ['Students', 'Bootcamps Live', 'Zero-Day Products', 'CP Pool'];
 
 // ── U-shaped divider (horizontal U with base facing hero text) ──────────────
 const UDivider: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => (
@@ -231,13 +228,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
-  const heroStats = [
-    { label: 'Students',          value: stats?.stats?.studentsCount ?? stats?.stats?.learnersTrained ?? 0, suffix: '+' },
-    { label: 'Bootcamps Live',    value: stats?.stats?.bootcampsCount ?? 0,                                  suffix: ''  },
-    { label: 'Zero-Day Products', value: stats?.stats?.zeroDayProductsCount ?? 0,                            suffix: '+' },
-    { label: 'CP Pool',           value: totalCp,                                                            suffix: ''  },
-  ].sort((a, b) => STAT_ORDER.indexOf(a.label) - STAT_ORDER.indexOf(b.label));
-
   return (
     <div ref={heroRef} className="relative w-full h-full flex flex-col overflow-hidden">
 
@@ -333,23 +323,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </Link>
               </>
             )}
-          </motion.div>
-
-          {/* Stats — mobile/tablet */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 1.0 }}
-            className="grid grid-cols-2 sm:grid-cols-4 lg:hidden gap-4 sm:gap-6 w-full max-w-2xl pt-5 border-t border-border"
-          >
-            {heroStats.map((s, i) => (
-              <div key={i} className="flex flex-col items-start">
-                <div className="font-mono text-xl font-black text-accent leading-none mb-1">
-                  <StatCounter end={s.value} suffix={s.suffix} />
-                </div>
-                <div className="text-[9px] uppercase tracking-[0.2em] text-text-muted font-mono">{s.label}</div>
-              </div>
-            ))}
           </motion.div>
         </div>
 

@@ -25,7 +25,6 @@
 import type {
   BackendStats,
   Bootcamp,
-  LeaderboardEntry,
   MarketplaceItem,
 } from '../components/landing/types';
 import { resolveImg } from '../components/landing/helpers';
@@ -55,7 +54,6 @@ const LANDING_IMAGE_CACHE = 'hsociety-landing-images-v1';
 export interface LandingSnapshot {
   stats: BackendStats | null;
   bootcamps: Bootcamp[];
-  leaderboard: LeaderboardEntry[];
   marketItems: MarketplaceItem[];
 }
 
@@ -116,7 +114,6 @@ const collectDynamicImageUrls = (snapshot: LandingSnapshot): string[] => {
   const urls = [
     ...snapshot.bootcamps.map((item) => resolveImg(item.image)),
     ...snapshot.marketItems.map((item) => resolveImg(item.coverUrl)),
-    ...snapshot.leaderboard.map((item) => resolveImg(item.avatarUrl)),
   ]
     .map((value) => value.trim())
     .filter(Boolean)                          // Remove empty strings
@@ -154,7 +151,6 @@ export const readLandingSnapshot = (): LandingSnapshot | null => {
     return {
       stats: (parsed.stats as BackendStats | null) ?? null,
       bootcamps:    Array.isArray(parsed.bootcamps)    ? (parsed.bootcamps    as Bootcamp[])         : [],
-      leaderboard:  Array.isArray(parsed.leaderboard)  ? (parsed.leaderboard  as LeaderboardEntry[]) : [],
       marketItems:  Array.isArray(parsed.marketItems)  ? (parsed.marketItems  as MarketplaceItem[])  : [],
     };
   } catch {
@@ -293,8 +289,8 @@ export const hydrateLandingImagesFromCache = async (
 ): Promise<{ snapshot: LandingSnapshot; objectUrls: string[] }> => {
   const objectUrls: string[] = [];
 
-  // Process all three image collections concurrently
-  const [bootcamps, marketItems, leaderboard] = await Promise.all([
+  // Process all image collections concurrently
+  const [bootcamps, marketItems] = await Promise.all([
     Promise.all(
       snapshot.bootcamps.map(async (item) => {
         const image = await resolveImageFromCache(resolveImg(item.image));
@@ -309,17 +305,10 @@ export const hydrateLandingImagesFromCache = async (
         return { ...item, coverUrl };
       })
     ),
-    Promise.all(
-      snapshot.leaderboard.map(async (item) => {
-        const avatarUrl = await resolveImageFromCache(resolveImg(item.avatarUrl));
-        if (avatarUrl?.startsWith('blob:')) objectUrls.push(avatarUrl);
-        return { ...item, avatarUrl };
-      })
-    ),
   ]);
 
   return {
-    snapshot: { ...snapshot, bootcamps, marketItems, leaderboard },
+    snapshot: { ...snapshot, bootcamps, marketItems },
     objectUrls,
   };
 };

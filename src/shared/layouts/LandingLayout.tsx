@@ -65,8 +65,6 @@
 import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at the top of the viewport.
 import Navbar from '../../features/marketing/components/layout/Navbar';
-// Mobile-only bottom navigation bar — fixed at the bottom of the viewport.
-import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
 // A modal component for the "Contact Us" form — rendered at layout level so it
 // can be triggered from anywhere within the landing page (any snap section).
 import ContactModalHost from '../../features/marketing/components/ContactModal';
@@ -115,14 +113,6 @@ const LandingLayout = () => (
     <main className="w-full">
       <Outlet />
     </main>
-
-    {/*
-      ── Mobile Bottom Navigation ───────────────────────────────────────────────
-      A simplified nav bar shown ONLY on mobile (hidden on md+ via classes inside
-      the component). It's `position: fixed` at the bottom of the screen.
-      Provides quick-access navigation links for mobile users.
-    */}
-    <PublicBottomNav />
 
     {/*
       ── Contact Modal Host ─────────────────────────────────────────────────────

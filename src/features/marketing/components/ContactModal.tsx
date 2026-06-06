@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Mail, Send } from 'lucide-react';
+import { CheckCircle, Loader2, Mail, Send, User, Briefcase, MessageSquare, AlertCircle } from 'lucide-react';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
@@ -61,9 +61,12 @@ export const ContactTrigger: React.FC<ContactTriggerProps> = ({
   );
 };
 
+type ContactType = 'student' | 'business';
+
 const ContactModalHost: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [contactType, setContactType] = useState<ContactType>('student');
 
   useEffect(() => {
     const handleOpen = () => setOpen(true);
@@ -72,7 +75,10 @@ const ContactModalHost: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!open) setStatus('idle');
+    if (!open) {
+      setStatus('idle');
+      setContactType('student');
+    }
   }, [open]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -82,10 +88,9 @@ const ContactModalHost: React.FC = () => {
     try {
       const formData = new FormData(event.currentTarget);
       await api.post('/public/contact', {
-        name: formData.get('name'),
         email: formData.get('email'),
-        subject: formData.get('subject'),
         message: formData.get('message'),
+        contactType,
       });
       setStatus('sent');
     } catch {
@@ -96,127 +101,192 @@ const ContactModalHost: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        title={SITE_CONFIG.contactPage.formTitle}
-        description={SITE_CONFIG.contactPage.heroSubtitle}
-        maxWidth="max-w-4xl"
+        title="Get in Touch"
+        description="We're here to help. Choose your contact type below."
+        maxWidth="max-w-2xl"
         className="max-h-[calc(100svh-2rem)] overflow-y-auto"
       >
         {status === 'sent' ? (
-          <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-accent-dim border border-accent/30 flex items-center justify-center">
-              <CheckCircle className="w-7 h-7 text-accent" />
+          <div className="flex flex-col items-center justify-center py-12 gap-5 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 text-accent" />
             </div>
-            <h3 className="text-lg font-bold text-text-primary">{SITE_CONFIG.contactPage.sentTitle}</h3>
-            <p className="text-sm text-text-muted">
-              We'll respond to your operator email {SITE_CONFIG.contact.responseTime}.
+            <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">Message Sent!</h3>
+            <p className="text-sm text-text-muted max-w-md leading-relaxed">
+              Thank you for reaching out. We'll get back to you within 24-48 hours.
             </p>
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="btn-secondary text-xs !py-2 !px-5 mt-2"
+              className="bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-8 py-3 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] text-sm mt-2"
             >
-              {SITE_CONFIG.contactPage.sentButtonLabel}
+              Send Another Message
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-            {/* Left Column: Direct Contact Info (2/5 width on desktop) */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="h-full rounded-2xl border border-border bg-bg/40 p-6 flex flex-col justify-center">
-                <div className="space-y-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent-dim text-accent mb-4">
-                    <Mail className="h-6 w-6" />
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted mb-2">
-                      {SITE_CONFIG.contactPage.emailHeading}
-                    </p>
-                    <a
-                      href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
-                      className="block break-all font-mono text-lg font-bold text-accent hover:underline decoration-accent/30 underline-offset-4"
-                    >
-                      {SITE_CONFIG.contact.opsEmail}
-                    </a>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            
+            {/* Contact Type Toggle */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] block">
+                I am a...
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setContactType('student')}
+                  className={cn(
+                    'relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-300',
+                    contactType === 'student'
+                      ? 'border-accent bg-accent/5 shadow-[0_0_20px_var(--color-accent-glow)]'
+                      : 'border-border bg-bg-card hover:border-accent/40'
+                  )}
+                >
+                  <div className={cn(
+                    'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
+                    contactType === 'student' ? 'bg-accent/20 text-accent' : 'bg-bg text-text-muted'
+                  )}>
+                    <User className="w-6 h-6" />
                   </div>
-                  <div className="pt-4 border-t border-border mt-4">
-                    <p className="text-xs text-text-muted leading-relaxed italic opacity-80">
-                      "For immediate response regarding active deployments or critical security findings, use our encrypted ops channel."
+                  <div className="text-center">
+                    <p className={cn(
+                      'text-sm font-black uppercase tracking-wide transition-colors',
+                      contactType === 'student' ? 'text-accent' : 'text-text-primary'
+                    )}>
+                      Student
+                    </p>
+                    <p className="text-[10px] text-text-muted mt-1">
+                      Training support
                     </p>
                   </div>
-                </div>
+                  {contactType === 'student' && (
+                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setContactType('business')}
+                  className={cn(
+                    'relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-300',
+                    contactType === 'business'
+                      ? 'border-accent bg-accent/5 shadow-[0_0_20px_var(--color-accent-glow)]'
+                      : 'border-border bg-bg-card hover:border-accent/40'
+                  )}
+                >
+                  <div className={cn(
+                    'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
+                    contactType === 'business' ? 'bg-accent/20 text-accent' : 'bg-bg text-text-muted'
+                  )}>
+                    <Briefcase className="w-6 h-6" />
+                  </div>
+                  <div className="text-center">
+                    <p className={cn(
+                      'text-sm font-black uppercase tracking-wide transition-colors',
+                      contactType === 'business' ? 'text-accent' : 'text-text-primary'
+                    )}>
+                      Business
+                    </p>
+                    <p className="text-[10px] text-text-muted mt-1">
+                      Security services
+                    </p>
+                  </div>
+                  {contactType === 'business' && (
+                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Right Column: Form (3/5 width on desktop) */}
-            <form className="lg:col-span-3 space-y-5" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {[
-                  { name: 'name', label: SITE_CONFIG.contactPage.labels.name, type: 'text', placeholder: SITE_CONFIG.contactPage.placeholders.name },
-                  { name: 'email', label: SITE_CONFIG.contactPage.labels.email, type: 'email', placeholder: SITE_CONFIG.contactPage.placeholders.email },
-                ].map(({ name, label, type, placeholder }) => (
-                  <div key={name} className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{label}</label>
-                    <input
-                      name={name}
-                      type={type}
-                      required
-                      placeholder={placeholder}
-                      className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                  {SITE_CONFIG.contactPage.labels.subject}
-                </label>
-                <div className="relative">
-                  <select
-                    name="subject"
-                    className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm appearance-none cursor-pointer transition-colors"
-                  >
-                    <option value="">{SITE_CONFIG.contactPage.selectSubjectPlaceholder}</option>
-                    {SITE_CONFIG.contactSubjects.map((subject) => (
-                      <option key={subject.value} value={subject.value}>{subject.label}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-text-muted">
-                    <Send className="h-3 w-3 rotate-90" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                  {SITE_CONFIG.contactPage.labels.message}
-                </label>
-                <textarea
-                  name="message"
-                  rows={5}
-                  required
-                  placeholder={SITE_CONFIG.contactPage.placeholders.message}
-                  className="w-full bg-bg border border-border rounded-xl py-3.5 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
-                />
-              </div>
-
-              {status === 'error' && (
-                <p className="text-xs text-red-400 font-mono">
-                  {SITE_CONFIG.contactPage.errorPrefix} {SITE_CONFIG.contact.opsEmail}
+            {/* Info Banner */}
+            <div className="flex items-start gap-3 p-4 rounded-2xl bg-accent/5 border border-accent/20">
+              <MessageSquare className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="text-xs font-bold text-text-primary">
+                  {contactType === 'student' ? 'Student Support' : 'Business Inquiry'}
                 </p>
-              )}
+                <p className="text-[11px] text-text-muted leading-relaxed">
+                  {contactType === 'student' 
+                    ? 'Get help with bootcamps, challenges, account issues, or general questions about the platform.'
+                    : 'Inquire about penetration testing, security audits, vulnerability assessments, or custom security solutions.'}
+                </p>
+              </div>
+            </div>
 
-              <button
-                type="submit"
-                disabled={status === 'sending'}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-60"
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+                <Mail className="w-3 h-3" />
+                Your Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="your.email@example.com"
+                className="w-full bg-bg border-2 border-border rounded-2xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-accent/40 outline-none font-mono text-sm transition-all"
+              />
+            </div>
+
+            {/* Message Field */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+                <MessageSquare className="w-3 h-3" />
+                Message
+              </label>
+              <textarea
+                name="message"
+                rows={6}
+                required
+                placeholder={contactType === 'student' 
+                  ? "Describe your question or issue. Include any relevant details like bootcamp name, challenge ID, or error messages..."
+                  : "Tell us about your security needs. Include information about your organization, services you're interested in, and any specific requirements..."}
+                className="w-full bg-bg border-2 border-border rounded-2xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-accent/40 outline-none font-mono text-sm resize-none transition-all"
+              />
+            </div>
+
+            {/* Error Message */}
+            {status === 'error' && (
+              <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border-2 border-red-500/30">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                <p className="text-xs text-red-400 font-mono">
+                  Failed to send message. Please try again or email us directly at {SITE_CONFIG.contact.opsEmail}
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className="w-full bg-accent text-bg font-bold uppercase tracking-[0.1em] rounded-2xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] hover:shadow-[0_0_24px_var(--color-accent-glow)] flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+            >
+              {status === 'sending' ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Sending Message...
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5" />
+                  Send Message
+                </>
+              )}
+            </button>
+
+            {/* Direct Email Link */}
+            <div className="pt-4 border-t border-border/50 flex items-center justify-center gap-2">
+              <p className="text-[10px] text-text-muted">
+                Prefer email?
+              </p>
+              <a
+                href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
+                className="text-[10px] font-bold text-accent hover:underline decoration-accent/30 underline-offset-2 transition-all"
               >
-                {status === 'sending'
-                  ? <><Loader2 className="w-4 h-4 animate-spin" /> {SITE_CONFIG.contactPage.sendingLabel}</>
-                  : <><Send className="w-4 h-4" /> {SITE_CONFIG.contactPage.submitLabel}</>}
-              </button>
-            </form>
-          </div>
+                {SITE_CONFIG.contact.opsEmail}
+              </a>
+            </div>
+          </form>
         )}
       </DialogContent>
     </Dialog>

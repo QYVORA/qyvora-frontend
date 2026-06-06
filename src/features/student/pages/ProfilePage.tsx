@@ -84,17 +84,6 @@ const Profile: React.FC = () => {
       >
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
-        {!isOwnProfile && (
-          <ScrollReveal className="mb-6">
-            <Link 
-              to="/dashboard/leaderboard"
-              className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Leaderboard
-            </Link>
-          </ScrollReveal>
-        )}
-
         {/* HEADER */}
         <ScrollReveal className="mb-8 md:mb-10">
            <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-12 shadow-2xl">
