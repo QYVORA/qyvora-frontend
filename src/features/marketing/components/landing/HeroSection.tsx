@@ -31,39 +31,40 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <div
         className="
-          relative z-30 w-full max-w-7xl mx-auto px-4 md:px-10
-          grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
+          relative z-30 w-full max-w-7xl mx-auto px-6 sm:px-8 md:px-10
+          grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center
           text-left
-          pt-32 md:pt-32 lg:pt-28 pb-16 md:pb-20
+          pt-24 sm:pt-28 md:pt-32 lg:pt-28 
+          pb-12 sm:pb-16 md:pb-20
           min-h-screen
         "
       >
 
         {/* ── Left column ── */}
-        <div className="flex flex-col items-start justify-center w-full
-                        lg:h-auto lg:items-start lg:justify-center lg:pr-10 lg:gap-0">
+        <div className="flex flex-col items-start justify-center w-full space-y-6 sm:space-y-7
+                        lg:h-auto lg:items-start lg:justify-center lg:pr-10">
 
           {/* Status badge */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 border border-accent/25 bg-accent-dim rounded-lg"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 border border-accent/25 bg-accent-dim rounded-lg"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="font-mono text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+            <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] text-accent">
               Africa's Offensive Security Platform
             </span>
           </motion.div>
 
           {/* ── Headline ── */}
-          <h1 className="font-black text-text-primary leading-[1.06] tracking-tight mb-5 w-full">
+          <h1 className="font-black text-text-primary leading-[1.1] sm:leading-[1.08] tracking-tight w-full">
 
             <motion.span
               initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
+              className="block text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3rem] xl:text-[3.5rem]"
             >
               Train Like a Hacker.
             </motion.span>
@@ -72,7 +73,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-accent text-[2.1rem] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3rem] xl:text-[3.5rem]"
+              className="block text-accent text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3rem] xl:text-[3.5rem]"
             >
               Become a Hacker.
             </motion.span>
@@ -83,7 +84,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-sm sm:text-base max-w-lg mb-7 leading-relaxed"
+            className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-lg"
           >
             {SITE_CONFIG.brand.description}
           </motion.p>
@@ -93,18 +94,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-row items-center justify-start gap-3 mb-8"
+            className="flex w-full sm:w-auto flex-row items-center justify-start gap-3 sm:gap-4"
           >
             {user ? (
-              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 sm:!px-8 !py-2.5 sm:!py-3 text-xs sm:text-sm">
-                <LayoutDashboard className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Dashboard
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 sm:!px-9 !py-3.5 sm:!py-4 text-sm sm:text-base min-h-[52px]">
+                <LayoutDashboard className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn-primary flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm !px-4 sm:!px-8 !py-2.5 sm:!py-3 whitespace-nowrap">
-                  Start Training <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-[11px] sm:text-sm !px-6 sm:!px-9 !py-3.5 sm:!py-4 whitespace-nowrap min-h-[52px]">
+                  Start Training <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary text-[10px] sm:text-sm !px-5 sm:!px-8 !py-2.5 sm:!py-3 text-center whitespace-nowrap">
+                <Link to="/login" className="btn-secondary text-[11px] sm:text-sm !px-6 sm:!px-9 !py-3.5 sm:!py-4 text-center whitespace-nowrap min-h-[52px]">
                   Log In
                 </Link>
               </>

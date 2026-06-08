@@ -49,17 +49,17 @@ function HeroBackground({ className = "" }) {
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
     
-    // Grid settings
-    const step = isMobile ? 8 : (constrainedDevice ? 6 : 5);
-    const dotR = isMobile ? 1.0 : 1.2;
+    // Grid settings - more subtle and refined
+    const step = isMobile ? 10 : (constrainedDevice ? 8 : 6);
+    const dotR = isMobile ? 0.9 : 1.1;
     const accentColor = '#66B870';
     
     let rafId;
     let time = 0;
 
     const draw = () => {
-      time += 0.005;
-      const scrollSpeed = 65; // High speed (Degrees of longitude per second)
+      time += 0.004; // Slightly slower for cleaner look
+      const scrollSpeed = 50; // Reduced speed for more stable appearance
       const scrollOffset = time * scrollSpeed;
       
       ctx.clearRect(0, 0, w, h);
@@ -84,8 +84,8 @@ function HeroBackground({ className = "" }) {
             const dist = Math.sqrt(nx * nx + ny * ny);
             const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
             
-            // High contrast visibility
-            ctx.globalAlpha = isLight ? (0.15 + wave * 0.25) : (0.12 + wave * 0.35);
+            // More subtle opacity for cleaner look
+            ctx.globalAlpha = isLight ? (0.08 + wave * 0.12) : (0.09 + wave * 0.18);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();
@@ -119,22 +119,30 @@ function HeroBackground({ className = "" }) {
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full"
-        style={{ filter: 'blur(0.5px)' }}
+        style={{ 
+          filter: 'blur(0.4px)',
+          width: '100%',
+          height: '100%',
+          minWidth: '100vw',
+          minHeight: '100vh'
+        }}
       />
       
-      {/* Ambient Radial Gradient Overlay */}
+      {/* Ambient Radial Gradient Overlay - More subtle */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(circle at 50% 50%, transparent 35%, ${bgBase} 100%)`,
-          opacity: isLight ? 0.45 : 0.65
+          background: `radial-gradient(ellipse at 50% 40%, transparent 25%, ${bgBase} 90%)`,
+          opacity: isLight ? 0.6 : 0.75
         }}
       />
 
-      {/* Edge Fades */}
+      {/* Edge Fades - Smoother transitions */}
       <div className="absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent opacity-100" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg to-transparent opacity-100" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg via-bg/80 to-transparent opacity-100" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-bg via-bg/80 to-transparent opacity-100" />
+        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg to-transparent opacity-60" />
+        <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-bg to-transparent opacity-60" />
       </div>
     </div>
   );
