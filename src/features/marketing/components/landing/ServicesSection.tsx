@@ -37,12 +37,12 @@ const SERVICES_DATA = [
 
 const ServicesSection: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 w-full">
+    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
       <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16">
         
         {/* Left: Cards Grid (Full width on mobile, compact on desktop) */}
         <div className="w-full lg:flex-1 order-2 lg:order-1 flex justify-start">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full lg:max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full lg:max-w-4xl">
             {SERVICES_DATA.map((service, index) => (
               <motion.div
                 key={service.id}
@@ -54,7 +54,7 @@ const ServicesSection: React.FC = () => {
                   service.accent 
                     ? 'border-accent/30 hover:border-accent/50' 
                     : 'border-border hover:border-accent/30'
-                } w-full lg:max-w-[360px]`}
+                } w-full lg:max-w-[380px]`}
                 style={{ 
                   boxShadow: 'var(--card-shimmer)'
                 }}
@@ -67,9 +67,9 @@ const ServicesSection: React.FC = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   
-                  {/* Price badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1.5 bg-bg/90 backdrop-blur-sm border border-border/80 rounded-lg text-xs font-black text-accent uppercase tracking-wider">
+                  {/* Price badge - Increased size */}
+                  <div className="absolute top-4 left-4">
+                    <span className="px-4 py-2 bg-bg/90 backdrop-blur-md border border-border/80 rounded-xl text-sm font-black text-accent uppercase tracking-widest shadow-xl">
                       {service.price}
                     </span>
                   </div>
@@ -141,11 +141,9 @@ const ServicesSection: React.FC = () => {
         {/* Right: Heading (Now on the right on desktop, right-aligned. Left-aligned on mobile.) */}
         <div className="w-full lg:w-[340px] xl:w-[400px] order-1 lg:order-2 flex flex-col items-start lg:items-end text-left lg:text-right">
           <div className="flex items-center gap-3 mb-4 justify-start lg:justify-end">
-            <div className="h-[1px] w-8 bg-accent/40" />
             <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
               Professional Services
             </span>
-            <div className="h-[1px] w-8 bg-accent/40 hidden lg:block" />
           </div>
 
           <SimpleHeading

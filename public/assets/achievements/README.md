@@ -1,6 +1,6 @@
-# HSOCIETY Achievement Asset Architecture
+# QYVORA Achievement Asset Architecture
 
-This directory contains all image-based assets for the HSOCIETY achievement and badge system.
+This directory contains all image-based assets for the QYVORA achievement and badge system.
 
 ## Directory Structure
 

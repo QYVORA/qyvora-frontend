@@ -29,7 +29,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
   const whatsappUrl = SITE_CONFIG.social.find((s) => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5';
 
   const handleJoinCommunity = () => {
-    localStorage.setItem('hsociety_community_joined', '1');
+    localStorage.setItem('qyvora_community_joined', '1');
     window.open(whatsappUrl, '_blank', 'noreferrer');
   };
 

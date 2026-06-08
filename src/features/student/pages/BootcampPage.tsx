@@ -182,7 +182,7 @@ const Bootcamp: React.FC = () => {
                   className={`w-full ${isLocked ? 'opacity-70' : ''}`}
                 >
                   <div
-                    className={`card-hsociety group overflow-hidden flex flex-col w-full ${
+                    className={`card-qyvora group overflow-hidden flex flex-col w-full ${
                       isLocked ? 'cursor-default' : 'hover:border-accent/40 transition-all'
                     }`}
                     onClick={isLocked ? () => setLockedBootcamp(bc) : undefined}

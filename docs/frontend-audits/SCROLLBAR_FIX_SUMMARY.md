@@ -173,7 +173,7 @@ The `scroll-hover` class is used throughout the student dashboard:
 
 ## Files Modified
 
-1. `hsociety-frontend/src/styles/index.css`
+1. `qyvora-frontend/src/styles/index.css`
    - Updated `.scroll-hover` class
    - Added smooth transitions
    - Changed from `display: none` to `transparent` approach

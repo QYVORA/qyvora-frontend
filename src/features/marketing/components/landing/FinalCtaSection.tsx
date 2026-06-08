@@ -13,7 +13,7 @@ const TERMINAL_LINES = [
   '> Bootcamp PHASES [OK]',
   '> Operator ACCOUNT CONNECTED',
   '> Zero_Day Market [ONLINE]',
-  '> HSOCIETY_CHAIN [OK]',
+  '> QYVORA_CHAIN [OK]',
 ];
 
 const TerminalTicker: React.FC<{ shouldReduceMotion: boolean }> = ({ shouldReduceMotion }) => {
@@ -67,7 +67,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         <div className="max-w-xl px-2 md:px-0">
 
           <div className="flex items-center gap-3 mb-3">
-              <div className="h-[1px] w-8 bg-accent/40" />
               <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
                 Don't Just see  Look.  
               </span>

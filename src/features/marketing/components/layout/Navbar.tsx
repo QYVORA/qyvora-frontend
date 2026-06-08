@@ -112,7 +112,7 @@ const Navbar: React.FC = () => {
                   to="/register"
                   className="bg-accent text-bg font-bold uppercase tracking-[0.12em] rounded-sm px-9 py-3.5 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] flex items-center justify-center gap-2.5 text-sm"
                 >
-                  START <ArrowRight className="w-4 h-4" />
+                  START 
                 </Link>
               )}
             </div>

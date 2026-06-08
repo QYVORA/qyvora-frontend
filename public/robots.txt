@@ -1,12 +1,13 @@
 # ============================================================
-#  _   _ ____   ___   ____ ___ _____ _______   __
-# | | | / ___| / _ \ / ___|_ _| ____|_   _\ \ / /
-# | |_| \___ \| | | | |    | ||  _|   | |  \ V /
-# |  _  |___) | |_| | |___ | || |___  | |   | |
-# |_| |_|____/ \___/ \____|___|_____| |_|   |_|
+#   .d88b.  db    db db    db  .d88b.  d8888b.  .d8b.  
+#  .8P  Y8. `8b  d8' 88    88 .8P  Y8. 88  `8D d8' `8b 
+#  88    88  `8bd8'  Y8    8P 88    88 88oobY' 88ooo88 
+#  88    88    88    `8b  d8' 88    88 88`8b   88~~~88 
+#  `8P  d8'    88     `8bd8'  `8b  d8' 88 `88. 88   88 
+#   `Y88'Y8    YP       YP     `Y88P'  88   YD YP   YP                                          
 #
-#  HSOCIETY OFFSEC — Africa's Offensive Security Platform
-#  https://hsociety.com
+#  QYVORA — Africa's Offensive Security Platform
+#  https://qyvora.com
 # ============================================================
 
 User-agent: *
@@ -40,4 +41,4 @@ Allow: /leaderboard
 Allow: /zero-day-market
 Allow: /u/
 
-Sitemap: https://hsociety.com/sitemap.xml
+Sitemap: https://qyvora.com/sitemap.xml

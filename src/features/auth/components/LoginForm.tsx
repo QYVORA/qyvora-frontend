@@ -44,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
               required
               autoComplete="email"
               inputMode="email"
-              placeholder="operator@hsociety.africa"
+              placeholder="operator@qyvora.africa"
               className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base"
             />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />

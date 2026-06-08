@@ -18,7 +18,7 @@ function getBootcampCover(id: string, apiImage?: string): string {
 }
 
 const SkeletonCard = () => (
-  <div className="card-hsociety overflow-hidden animate-pulse">
+  <div className="card-qyvora overflow-hidden animate-pulse">
     <div className="aspect-video bg-accent-dim/30" />
     <div className="space-y-3 p-5">
       <div className="h-3 w-1/4 rounded bg-accent-dim/30" />

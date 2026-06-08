@@ -6,7 +6,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
-import HeroBackground from '../components/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import PageLoader from '../../../shared/components/PageLoader';
 import { formatNumber } from '../../../shared/utils/formatNumber';
@@ -90,7 +90,6 @@ const PublicProfile: React.FC = () => {
           >
             <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" /> Back to Base
           </Link>
-          <div className="h-[1px] flex-1 mx-6 bg-border/40 hidden md:block" />
           <span className="text-[10px] font-black text-accent uppercase tracking-[0.4em] hidden md:block">
             Public Protocol Profile
           </span>
@@ -153,7 +152,7 @@ const PublicProfile: React.FC = () => {
           {/* STATS COLUMN */}
           <div className="lg:col-span-1 space-y-6">
             <ScrollReveal delay={0.1}>
-              <div className="card-hsociety p-8 flex flex-col gap-6">
+              <div className="card-qyvora p-8 flex flex-col gap-6">
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">Protocol Balance</div>
                   <CpLogo className="w-6 h-6 text-accent" />
@@ -161,7 +160,7 @@ const PublicProfile: React.FC = () => {
                 <div className="text-5xl font-black text-text-primary font-mono tracking-tighter">
                   {formatNumber(cp)}
                 </div>
-                <div className="space-y-4 pt-4 border-t border-border/50">
+                <div className="space-y-4 pt-4">
                   <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">
                     <span>Rank Progress</span>
                     <span>{progress}%</span>
@@ -184,12 +183,12 @@ const PublicProfile: React.FC = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={0.2} className="grid grid-cols-2 gap-4">
-              <div className="card-hsociety p-6 flex flex-col gap-3">
+              <div className="card-qyvora p-6 flex flex-col gap-3">
                 <Trophy className="w-5 h-5 text-accent" />
                 <span className="text-2xl font-black text-text-primary font-mono">{profile.completedRoomsCount || 0}</span>
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Rooms Cleared</span>
               </div>
-              <div className="card-hsociety p-6 flex flex-col gap-3">
+              <div className="card-qyvora p-6 flex flex-col gap-3">
                 <Zap className="w-5 h-5 text-accent" />
                 <span className="text-2xl font-black text-text-primary font-mono">{profile.streakDays || 0}</span>
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Current Streak</span>
@@ -200,7 +199,7 @@ const PublicProfile: React.FC = () => {
           {/* ACTIVITY COLUMN */}
           <div className="lg:col-span-2 space-y-8">
             <ScrollReveal delay={0.3}>
-              <div className="card-hsociety p-8 min-h-[400px]">
+              <div className="card-qyvora p-8 min-h-[400px]">
                 <div className="flex items-center gap-3 mb-8">
                   <Trophy className="w-5 h-5 text-accent" />
                   <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-primary">Achievement Showcase</h3>
@@ -230,7 +229,7 @@ const PublicProfile: React.FC = () => {
                 </div>
 
                 <div className="mt-12 p-8 border-2 border-dashed border-border rounded-2xl text-center">
-                  <p className="text-sm text-text-muted font-medium">This operator's activity is cryptographically verified on the HSOCIETY Chain.</p>
+                  <p className="text-sm text-text-muted font-medium">This operator's activity is cryptographically verified on the QYVORA Chain.</p>
                 </div>
               </div>
             </ScrollReveal>

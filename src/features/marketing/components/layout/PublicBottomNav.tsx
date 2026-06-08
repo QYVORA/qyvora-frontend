@@ -39,7 +39,7 @@ const PublicBottomNav: React.FC = () => {
     <>
       {/* ── Bottom bar ─────────────────────────────────────────────────────── */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-[100] md:hidden bg-bg-card/95 backdrop-blur-md border-t border-border flex items-stretch"
+        className="fixed bottom-0 left-0 right-0 z-[100] md:hidden bg-bg-card/95 backdrop-blur-md flex items-stretch"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         aria-label="Mobile navigation"
       >
@@ -47,12 +47,6 @@ const PublicBottomNav: React.FC = () => {
           const active = isActive(item.path);
           const content = (
             <>
-              {active && item.path !== '/contact' && (
-                <motion.div
-                  layoutId="public-nav-indicator"
-                  className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-accent rounded-full"
-                />
-              )}
               <item.icon
                 className={`w-5 h-5 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}
                 strokeWidth={active ? 2.5 : 1.8}
@@ -111,7 +105,7 @@ const PublicBottomNav: React.FC = () => {
               </div>
 
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-3 border-b border-border/50">
+              <div className="flex items-center justify-between px-5 py-3">
                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">
                   More
                 </span>
@@ -150,7 +144,7 @@ const PublicBottomNav: React.FC = () => {
                )}
 
               {/* Auth actions */}
-              <div className="px-4 pb-4 space-y-3 border-t border-border/50 pt-4">
+              <div className="px-4 pb-4 space-y-3 pt-4">
                 {user ? (
                   <>
                     {user.isAdmin && (

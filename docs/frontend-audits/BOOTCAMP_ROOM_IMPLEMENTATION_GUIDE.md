@@ -284,11 +284,11 @@ Body: {
 
 ## Files Modified
 
-1. `hsociety-frontend/src/features/student/constants/bootcampConfig.ts`
+1. `qyvora-frontend/src/features/student/constants/bootcampConfig.ts`
    - Added `estimatedMinutes` to interface
    - Added times to all 19 rooms
 
-2. `hsociety-frontend/src/features/student/pages/BootcampRoomPage.tsx`
+2. `qyvora-frontend/src/features/student/pages/BootcampRoomPage.tsx`
    - Added new imports
    - Added utility components
    - Updated StepCard component

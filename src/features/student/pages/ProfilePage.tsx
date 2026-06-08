@@ -181,7 +181,7 @@ const Profile: React.FC = () => {
             <ScrollReveal delay={0.1}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profileStats.map((s, i) => (
-                  <div key={i} className="card-hsociety p-6 flex flex-col gap-3">
+                  <div key={i} className="card-qyvora p-6 flex flex-col gap-3">
                     <s.icon className={`w-5 h-5 ${s.color} shrink-0`} />
                     <div className="text-3xl font-black text-text-primary font-mono tracking-tighter">{s.value}</div>
                     <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{s.label}</div>
@@ -220,7 +220,7 @@ const Profile: React.FC = () => {
 
             {/* Achievements Showcase */}
             <ScrollReveal delay={0.2}>
-              <div className="card-hsociety p-8 md:p-10 relative overflow-hidden">
+              <div className="card-qyvora p-8 md:p-10 relative overflow-hidden">
                 <div className="absolute inset-0 dot-grid opacity-[0.05] pointer-events-none" />
                 <div className="flex items-center gap-3 mb-8 relative z-10">
                   <Trophy className="w-5 h-5 text-accent" />

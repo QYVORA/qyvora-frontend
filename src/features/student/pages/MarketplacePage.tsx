@@ -10,7 +10,7 @@ import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import PageLoader from '../../../shared/components/PageLoader';
 
-const CACHE_KEY = 'hsociety_marketplace_cache_v2';
+const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 
 
 
@@ -178,7 +178,7 @@ const Marketplace: React.FC = () => {
               const hasPurchased = purchased.has(id);
               return (
                 <ScrollReveal key={id || idx} delay={idx * 0.04}>
-                  <div className="card-hsociety p-4 flex flex-col h-full group">
+                  <div className="card-qyvora p-4 flex flex-col h-full group">
                     <div className="relative aspect-square overflow-hidden rounded mb-4">
                       <img
                         src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}

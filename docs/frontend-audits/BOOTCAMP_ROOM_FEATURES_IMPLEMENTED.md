@@ -199,8 +199,8 @@ Body: {
 ## 📊 Summary Statistics
 
 ### Files Modified
-1. `hsociety-frontend/src/features/student/constants/bootcampConfig.ts`
-2. `hsociety-frontend/src/features/student/pages/BootcampRoomPage.tsx`
+1. `qyvora-frontend/src/features/student/constants/bootcampConfig.ts`
+2. `qyvora-frontend/src/features/student/pages/BootcampRoomPage.tsx`
 
 ### New Components Added
 1. `CopyButton` - Copy code to clipboard
@@ -279,7 +279,7 @@ Body: {
 ### Backend Implementation
 Create the report issue endpoint:
 ```typescript
-// hsociety-backend/modules/student/routes/student.routes.js
+// qyvora-backend/modules/student/routes/student.routes.js
 router.post('/report-issue', requireAuth, async (req, res) => {
   const { type, phaseId, roomId, stepIdx, description, url } = req.body;
   

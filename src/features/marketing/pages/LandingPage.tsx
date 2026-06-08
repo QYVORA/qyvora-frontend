@@ -9,7 +9,7 @@ import ServicesSection from '../components/landing/ServicesSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
-import HeroBackground from '../components/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import ServiceRequestModal from '../components/ServiceRequestModal';
 import PromotionalSystem from '../components/PromotionalSystem';
 

@@ -36,7 +36,7 @@ const SOCIAL = [
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative w-full min-h-screen bg-bg border-t border-border/50 overflow-hidden flex items-center">
+  <footer className="relative w-full min-h-screen bg-bg overflow-hidden flex items-center">
 
     {/* Adinkra Background Layer */}
     <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />
@@ -137,13 +137,13 @@ const Footer: React.FC = () => (
       {/* ── Bottom bar ── */}
       <div className="
         relative flex flex-col sm:flex-row items-center justify-between
-        gap-4 mt-5 border-t border-border/30 pt-6
+        gap-4 mt-5 pt-6
         pb-5 sm:pb-6
         md:mt-8 md:pt-7 md:pb-6
       ">
         <p className="max-w-full text-center text-xs font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/80">©</span>] {new Date().getFullYear()}{' '}
-          <span className="text-accent">HSOCIETY OFFSEC</span>
+          <span className="text-accent">QYVORA OFFSEC</span>
         </p>
 
         <div className="flex items-center gap-6 flex-wrap justify-center">

@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
 import { SITE_CONFIG } from '../content/siteConfig';
 
-const CONTACT_MODAL_EVENT = 'hsociety:open-contact-modal';
+const CONTACT_MODAL_EVENT = 'qyvora:open-contact-modal';
 
 export function openContactModal() {
   window.dispatchEvent(new Event(CONTACT_MODAL_EVENT));
@@ -275,7 +275,7 @@ const ContactModalHost: React.FC = () => {
             </button>
 
             {/* Direct Email Link */}
-            <div className="pt-4 border-t border-border/50 flex items-center justify-center gap-2">
+            <div className="pt-4 flex items-center justify-center gap-2">
               <p className="text-[10px] text-text-muted">
                 Prefer email?
               </p>

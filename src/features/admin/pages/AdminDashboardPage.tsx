@@ -231,7 +231,7 @@ const AdminDashboardPage: React.FC = () => {
 
               {/* ── BOOTCAMPS ─────────────────────────────────────────────── */}
               {activeTab === 'bootcamps' && (
-                <div className="card-hsociety p-6 md:p-8">
+                <div className="card-qyvora p-6 md:p-8">
                   <BootcampAccessPanel addToast={addToast} />
                 </div>
               )}
@@ -247,7 +247,7 @@ const AdminDashboardPage: React.FC = () => {
 
               {/* ── POINTS / CP ANALYTICS ────────────────────────────────── */}
               {activeTab === 'cp' && (
-                <div className="card-hsociety p-6 md:p-8">
+                <div className="card-qyvora p-6 md:p-8">
                   <CpAnalytics users={users} addToast={addToast} />
                 </div>
               )}
@@ -271,7 +271,7 @@ const AdminDashboardPage: React.FC = () => {
 
               {/* ── CHAIN EXPLORER ────────────────────────────────────────── */}
               {activeTab === 'chain' && (
-                <div className="card-hsociety p-6 md:p-8">
+                <div className="card-qyvora p-6 md:p-8">
                   <ChainExplorer />
                 </div>
               )}

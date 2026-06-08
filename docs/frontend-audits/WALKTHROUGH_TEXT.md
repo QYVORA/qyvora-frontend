@@ -19,7 +19,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
           id: 'room1',
           title: 'Introduction to Offensive Security',
           overview:
-            'What is offensive security, why it matters, and how HSOCIETY operates. This room sets the foundation for everything that follows.',
+            'What is offensive security, why it matters, and how QYVORA operates. This room sets the foundation for everything that follows.',
           steps: [
             {
               title: 'STEP 1',
@@ -30,7 +30,7 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'STEP 2',
               instruction:
-                'Understand the HSOCIETY operating model: education, execution, and community. Write down what each pillar means to you as a future operator.',
+                'Understand the QYVORA operating model: education, execution, and community. Write down what each pillar means to you as a future operator.',
               image: '02-model.png',
             },
             {

@@ -54,8 +54,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Guard against SSR / non-browser environments where `window` is undefined.
     if (typeof window === 'undefined') return 'dark';
 
-    // Read both the standard hsociety key and any legacy duplicate 'theme' key
-    const savedHsoc = localStorage.getItem('hsociety_theme');
+    // Read both the standard qyvora key and any legacy duplicate 'theme' key
+    const savedHsoc = localStorage.getItem('qyvora_theme');
     const savedLegacy = localStorage.getItem('theme');
     const saved = savedHsoc || savedLegacy;
 
@@ -65,7 +65,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (savedLegacy && savedLegacy !== savedHsoc) {
         try {
           localStorage.removeItem('theme');
-          localStorage.setItem('hsociety_theme', saved);
+          localStorage.setItem('qyvora_theme', saved);
         } catch (e) {
           // Ignore storage consent restrictions during bootstrap
         }
@@ -89,7 +89,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (typeof window === 'undefined' || !window.matchMedia) return;
 
     // If the user already has a saved theme, do not override it automatically
-    const saved = localStorage.getItem('hsociety_theme');
+    const saved = localStorage.getItem('qyvora_theme');
     if (saved === 'light' || saved === 'dark') return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
@@ -132,7 +132,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     if (isCategoryAllowed('functional')) {
-      localStorage.setItem('hsociety_theme', theme);
+      localStorage.setItem('qyvora_theme', theme);
       // Clean up legacy key here too if it gets set by accident
       localStorage.removeItem('theme');
     }

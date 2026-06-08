@@ -67,7 +67,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ candles, range }) => {
       <div className="flex flex-wrap items-center gap-4 px-1 pb-3 border-b border-border/50 mb-3">
         <div className="flex items-center gap-2">
           <span className="text-base font-black font-mono text-text-primary">CP/NET</span>
-          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">HSOCIETY CHAIN · {range}</span>
+          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">QYVORA CHAIN · {range}</span>
         </div>
         {hoveredCandle ? (
           <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono">

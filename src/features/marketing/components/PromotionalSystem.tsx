@@ -14,7 +14,7 @@ const PROMOTIONS = [
     cta: 'Explore Bootcamp',
     href: '#bootcamps',
     icon: GraduationCap,
-    image: '/assets/sections/bootcamps/hacker-protocol.webp', // Bootcamp image
+    image: '/assets/bootcamp/hpb-cover.webp', // Updated correct bootcamp image
     color: 'accent',
   },
   {
@@ -41,7 +41,7 @@ const PromotionalSystem: React.FC = () => {
     if (user) return;
 
     // Check if dismissed in this session (or for 24h)
-    const dismissed = localStorage.getItem('hsociety_promo_dismissed');
+    const dismissed = localStorage.getItem('qyvora_promo_dismissed');
     if (dismissed) {
       return;
     }
@@ -59,7 +59,7 @@ const PromotionalSystem: React.FC = () => {
   if (user || !isVisible || !activePromo) return null;
 
   const handleDismiss = () => {
-    localStorage.setItem('hsociety_promo_dismissed', '1');
+    localStorage.setItem('qyvora_promo_dismissed', '1');
     setIsVisible(false);
   };
 
@@ -77,53 +77,54 @@ const PromotionalSystem: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.92, y: 20 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-80 md:bottom-8 z-[140]"
+          exit={{ opacity: 0, scale: 0.95, y: 30 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto md:bottom-10 z-[140] lg:w-[500px]"
         >
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row">
             
             {/* Close button */}
             <button
               onClick={handleDismiss}
-              className="absolute top-2 right-2 p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg/80 transition-colors z-20"
+              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all z-20"
               aria-label="Dismiss"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
 
-            {/* Image */}
-            <div className="relative h-32 overflow-hidden bg-bg">
+            {/* Image Section - Vertical on Mobile, Horizontal on Desktop */}
+            <div className="relative h-48 sm:h-auto sm:w-48 shrink-0 overflow-hidden bg-bg">
               <img
                 src={activePromo.image}
                 alt={activePromo.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg-card/90 to-transparent" />
+              {/* Image overlay - Hidden in light theme, subtle in dark theme */}
+              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/60 via-transparent to-transparent opacity-0 dark:opacity-60" />
               
               {/* Icon badge */}
-              <div className="absolute bottom-3 left-3 flex h-8 w-8 items-center justify-center rounded-lg border border-accent/30 bg-bg-card/80 backdrop-blur-sm text-accent">
-                <activePromo.icon className="w-4 h-4" />
+              <div className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-xl border border-accent/30 bg-bg-card/80 backdrop-blur-md text-accent shadow-lg">
+                <activePromo.icon className="w-5 h-5" />
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-4">
-              <h4 className="text-sm font-black text-text-primary uppercase tracking-tight mb-1">
+            {/* Content Section */}
+            <div className="p-6 sm:p-7 flex flex-col justify-center flex-1">
+              <h4 className="text-base font-black text-text-primary uppercase tracking-tight mb-1">
                 {activePromo.title}
               </h4>
-              <p className="text-[10px] font-bold text-accent uppercase tracking-wider mb-2">
+              <p className="text-[11px] font-bold text-accent uppercase tracking-wider mb-3">
                 {activePromo.subtitle}
               </p>
-              <p className="text-xs text-text-secondary leading-relaxed mb-4">
+              <p className="text-xs text-text-secondary leading-relaxed mb-6 font-mono opacity-80">
                 {activePromo.description}
               </p>
 
               <button
                 onClick={handleCta}
-                className="w-full px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 hover:shadow-[0_4px_16px_rgba(var(--color-accent-rgb),0.3)] active:scale-95"
+                className="w-full sm:w-fit px-7 py-3.5 rounded-2xl bg-accent text-bg font-bold uppercase tracking-widest text-[11px] transition-all hover:brightness-110 hover:shadow-[0_8px_20px_rgba(var(--color-accent-rgb),0.3)] active:scale-95"
               >
                 {activePromo.cta}
               </button>
