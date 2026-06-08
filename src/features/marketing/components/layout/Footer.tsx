@@ -49,14 +49,14 @@ const Footer: React.FC = () => (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-24 sm:pt-28 md:pt-32 pb-8 md:pb-10">
 
         {/* Brand column */}
-        <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-6">
-          <div className="flex flex-col gap-1 -ml-3 sm:-ml-4">
+        <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-6">
+          <div className="flex flex-col items-start gap-1">
             <Link to="/">
               <Logo size="2xl" className="opacity-90 hover:opacity-100 transition-opacity" />
             </Link>
           </div>
 
-          <p className="text-lg text-text-muted leading-relaxed max-w-[28rem] font-mono">
+          <p className="text-lg text-text-muted leading-relaxed max-w-[28rem] font-mono text-left">
             An offensive security company focused on building a strong cybersecurity ecosystem in Africa.
           </p>
 
