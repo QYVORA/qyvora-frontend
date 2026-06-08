@@ -170,12 +170,12 @@ function StreamFloor({ speedScale = 0.58, isLight }) {
         fragmentShader: STREAM_FRAG,
         uniforms: {
           uTime:         { value: 0 },
-          // #58A366 — matches --color-accent in your dark theme CSS
-          uAccent:       { value: isLight ? new THREE.Color(0x37 / 255, 0x5E / 255, 0x2B / 255) : new THREE.Color(0x88 / 255, 0xAD / 255, 0x7C / 255) },
-          // Soft warm white for the stream head glow
-          uWhite:        { value: isLight ? new THREE.Color(0.2, 0.3, 0.2) : new THREE.Color(0.92, 0.96, 0.90) },
-          // Base trail color
-          uBase:         { value: isLight ? new THREE.Color(0.95, 0.95, 0.95) : new THREE.Color(0, 0.008, 0) },
+          // QYVORA Brand Accent: #58A366
+          uAccent:       { value: new THREE.Color(0x58 / 255, 0xA3 / 255, 0x66 / 255) },
+          // Stream head color: Text Primary (White in dark, Dark in light)
+          uWhite:        { value: isLight ? new THREE.Color(0x0A / 255, 0x10 / 255, 0x0A / 255) : new THREE.Color(0xEE / 255, 0xF0 / 255, 0xEE / 255) },
+          // Base trail color: Background (Black in dark, White in light)
+          uBase:         { value: isLight ? new THREE.Color(1, 1, 1) : new THREE.Color(0, 0, 0) },
           // Initialise to a safe fallback — useEffects below correct it immediately
           uResolution:   { value: new THREE.Vector2(1920, 1080) },
           uPixelDensity: { value: Math.min(window.devicePixelRatio || 1, 2) },
