@@ -88,6 +88,7 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     height: 100%;
+    color-scheme: dark light;
   }
 
   body {
@@ -99,6 +100,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: geometricPrecision;
+    /* Prevent mobile browsers from adjusting colors */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
   }
 
   #root {
