@@ -32,12 +32,12 @@ const IMG_TOP_PCT = -(TOP_M / VISIBLE_H) * 100;    // ~-371.55%
 const IMG_LEFT_PCT = -(LEFT_M / VISIBLE_W) * 100;  // ~-43.28%
 
 const sizes: Record<LogoSize, string> = {
-  sm: 'max-w-[175px]',
-  md: 'max-w-[234px]',
-  lg: 'max-w-[292px]',
-  xl: 'max-w-[351px]',
-  '2xl': 'max-w-[468px]',
-  '3xl': 'max-w-[585px]',
+  sm: 'w-[175px]',
+  md: 'w-[234px]',
+  lg: 'w-[292px]',
+  xl: 'w-[351px]',
+  '2xl': 'w-[468px]',
+  '3xl': 'w-[585px]',
 };
 
 // Short Logo (Mark) normalization
@@ -57,12 +57,12 @@ const MARK_IMG_TOP_PCT = -(MARK_TOP_M / MARK_VISIBLE_H) * 100;    // ~-59.86%
 const MARK_IMG_LEFT_PCT = -(MARK_LEFT_M / MARK_VISIBLE_W) * 100;  // ~-32.08%
 
 const markSizes: Record<LogoSize, string> = {
-  sm: 'max-w-[42px]',
-  md: 'max-w-[56px]',
-  lg: 'max-w-[70px]',
-  xl: 'max-w-[84px]',
-  '2xl': 'max-w-[112px]',
-  '3xl': 'max-w-[140px]',
+  sm: 'w-[42px]',
+  md: 'w-[56px]',
+  lg: 'w-[70px]',
+  xl: 'w-[84px]',
+  '2xl': 'w-[112px]',
+  '3xl': 'w-[140px]',
 };
 
 const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full' }) => {
@@ -70,9 +70,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
   
   if (variant === 'mark') {
     const markSrc = theme === 'light' ? LIGHT_MARK_SRC : DARK_MARK_SRC;
-    const maxWidth = markSizes[size];
+    const widthClass = markSizes[size];
     return (
-      <div className={`logo-wrap w-full ${maxWidth} ${className}`}>
+      <div className={`logo-wrap flex-none ${widthClass} max-w-full ${className}`}>
         <div className="w-full aspect-[770/441] overflow-hidden relative">
           <img
             src={markSrc}
@@ -89,10 +89,10 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
     );
   }
 
-  const maxWidth = sizes[size];
+  const widthClass = sizes[size];
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
-    <div className={`logo-wrap w-full ${maxWidth} ${className}`}>
+    <div className={`logo-wrap flex-none ${widthClass} max-w-full ${className}`}>
       <div className="w-full aspect-[848/116] overflow-hidden relative">
         <img
           src={logoSrc}
@@ -113,7 +113,7 @@ export const QyvoraLogo: React.FC<{ className?: string }> = ({ className = '' })
   const { theme } = useTheme();
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
-    <div className={`logo-wrap w-full max-w-[292px] ${className}`}>
+    <div className={`logo-wrap flex-none w-[292px] max-w-full ${className}`}>
       <div className="w-full aspect-[848/116] overflow-hidden relative">
         <img 
           src={logoSrc} 
