@@ -79,7 +79,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       counts.set(t, (counts.get(t) ?? 0) + Math.abs(Number(tx.points || 0)));
     }
     const colors: Record<string, string> = {
-      credit: '#58A366', signup: '#58A366', grant: '#58A366',
+      credit: '#66B870', signup: '#66B870', grant: '#66B870',
       purchase: '#f87171', deduct: '#f87171',
       set: '#60a5fa',
     };
