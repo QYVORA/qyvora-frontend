@@ -76,9 +76,9 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
                 onClick={handleJoinCommunity}
                 className="
                   group relative flex w-full items-center justify-center gap-3 overflow-hidden
-                  rounded-2xl bg-[#25D366] py-5 text-sm font-black uppercase tracking-[0.15em]
-                  text-white shadow-xl shadow-[#25D366]/20 transition-all
-                  hover:scale-[1.02] hover:shadow-[#25D366]/40 active:scale-[0.98]
+                  rounded-2xl bg-[#66B870] py-5 text-sm font-black uppercase tracking-[0.15em]
+                  text-white shadow-xl shadow-[#66B870]/20 transition-all
+                  hover:scale-[1.02] hover:shadow-[#66B870]/40 active:scale-[0.98]
                 "
               >
                 {/* Shine effect */}
