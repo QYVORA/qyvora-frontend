@@ -52,7 +52,8 @@ const Footer: React.FC = () => (
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-6">
           <div className="flex flex-col items-start gap-1">
             <Link to="/">
-              <Logo size="2xl" className="opacity-90 hover:opacity-100 transition-opacity" />
+              <Logo size="lg" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
+              <Logo size="2xl" className="hidden sm:block opacity-90 hover:opacity-100 transition-opacity" />
             </Link>
           </div>
 
