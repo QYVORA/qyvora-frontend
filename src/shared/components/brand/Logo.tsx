@@ -73,7 +73,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
     const { h, w } = markSizes[size];
     return (
       <div className={`logo-wrap ${className}`}>
-        <div className={`${h} ${w} overflow-hidden relative flex-none`}>
+        <div className={`${h} ${w} max-w-full h-auto aspect-[770/441] overflow-hidden relative flex-none`}>
           <img
             src={markSrc}
             alt="Q"
@@ -93,7 +93,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap ${className}`}>
-      <div className={`${containerH} ${containerW} overflow-hidden relative flex-none`}>
+      <div className={`${containerH} ${containerW} max-w-full h-auto aspect-[848/116] overflow-hidden relative flex-none`}>
         <img
           src={logoSrc}
           alt="QYVORA"
@@ -114,7 +114,7 @@ export const QyvoraLogo: React.FC<{ className?: string }> = ({ className = '' })
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap ${className}`}>
-      <div className="h-10 w-[292px] overflow-hidden relative flex-none">
+      <div className="h-10 w-[292px] max-w-full h-auto aspect-[848/116] overflow-hidden relative flex-none">
         <img 
           src={logoSrc} 
           alt="QYVORA" 
