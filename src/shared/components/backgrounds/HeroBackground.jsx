@@ -59,7 +59,7 @@ function HeroBackground({ className = "" }) {
 
     const draw = () => {
       time += 0.005;
-      const scrollSpeed = 40; // Increased speed (Degrees of longitude per second)
+      const scrollSpeed = 65; // High speed (Degrees of longitude per second)
       const scrollOffset = time * scrollSpeed;
       
       ctx.clearRect(0, 0, w, h);
@@ -84,8 +84,8 @@ function HeroBackground({ className = "" }) {
             const dist = Math.sqrt(nx * nx + ny * ny);
             const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
             
-            // Increased opacity for better visibility
-            ctx.globalAlpha = isLight ? (0.10 + wave * 0.15) : (0.08 + wave * 0.22);
+            // High contrast visibility
+            ctx.globalAlpha = isLight ? (0.15 + wave * 0.25) : (0.12 + wave * 0.35);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();

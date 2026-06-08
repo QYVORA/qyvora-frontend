@@ -22,13 +22,22 @@ const TARGETS = [
   { lat:  33.57, lng:  -7.58, label: 'CASABLANCA',     status: 'secured', region: 'africa' },
   { lat:  -4.32, lng:  15.31, label: 'KINSHASA',       status: 'secured', region: 'africa' },
   { lat:  14.69, lng: -17.44, label: 'DAKAR',          status: 'secured', region: 'africa' },
+  { lat:   0.34, lng:  32.58, label: 'KAMPALA',        status: 'secured', region: 'africa' },
+  { lat:  12.13, lng:  15.05, label: 'N\'DJAMENA',     status: 'secured', region: 'africa' },
   { lat:  40.71, lng: -74.01, label: 'NEW YORK',       status: 'secured', region: 'world'  },
+  { lat:  34.05, lng: -118.24, label: 'LOS ANGELES',   status: 'secured', region: 'world'  },
   { lat:  48.85, lng:   2.35, label: 'PARIS',          status: 'secured', region: 'world'  },
+  { lat:  51.51, lng:  -0.13, label: 'LONDON',         status: 'secured', region: 'world'  },
+  { lat:  52.52, lng:  13.40, label: 'BERLIN',         status: 'secured', region: 'world'  },
   { lat:  25.20, lng:  55.27, label: 'DUBAI',          status: 'secured', region: 'world'  },
   { lat:   1.35, lng: 103.82, label: 'SINGAPORE',      status: 'secured', region: 'world'  },
   { lat:  35.68, lng: 139.69, label: 'TOKYO',          status: 'secured', region: 'world'  },
+  { lat:  31.23, lng: 121.47, label: 'SHANGHAI',       status: 'secured', region: 'world'  },
   { lat: -33.86, lng: 151.20, label: 'SYDNEY',         status: 'secured', region: 'world'  },
   { lat: -23.55, lng: -46.63, label: 'SAO PAULO',      status: 'secured', region: 'world'  },
+  { lat:  19.43, lng: -99.13, label: 'MEXICO CITY',    status: 'secured', region: 'world'  },
+  { lat:  55.75, lng:  37.62, label: 'MOSCOW',         status: 'secured', region: 'world'  },
+  { lat:  28.61, lng:  77.20, label: 'NEW DELHI',      status: 'secured', region: 'world'  },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -280,7 +289,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     TARGETS.forEach(({ lat, lng, status, region }) => {
       const pos    = latLngToVec3(lat, lng, 1.005);
       const isHome = status === 'home';
-      const col    = isHome ? SAGE : (region === 'africa' ? SAGE : 0x4a7a5a);
+      const col    = SAGE; // Unified brand green for all locations
 
       // Core dot — flat circle on surface
       const dotR = isHome ? 0.010 : (region === 'africa' ? 0.007 : 0.006);
@@ -349,7 +358,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     });
 
     /* ── Multi-satellite system ── */
-    const SATS_COUNT = 3;
+    const SATS_COUNT = 6;
     const sats = Array.from({ length: SATS_COUNT }).map((_, i) => {
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.006, 6, 6),
