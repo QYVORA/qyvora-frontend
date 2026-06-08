@@ -1,336 +1,139 @@
-/**
- * HeroBackground.jsx
- * Clean binary rain — pure rivers of 0s and 1s, no sweeping bands or bloom overlays.
- *
- * Fixes vs previous version:
- *   1. uResolution initialised from a real fallback (1920x1080) not (1,1)
- *      — prevents charH collapsing to a huge value on first frame, which
- *      caused the glyph grid to render as solid opaque bars.
- *   2. A second useEffect reads gl.domElement on mount to set the real size
- *      immediately before the first draw call.
- *   3. Colour ramp: near-black → #58A366 (matches --color-accent) → soft white.
- *      Dim trailing digits are near-black; stream head peaks approach white.
- *   4. headGlow is multiplied by glyph — only brightens digit pixels, not
- *      the full lane width (which was causing solid-bar artefacts).
- *   5. trailMask exponent raised 4.0 → 6.0 for faster falloff so trailing
- *      digits are clearly dimmer than the stream head.
- */
+import React, { useRef, useMemo, useEffect } from 'react';
+import * as THREE from 'three';
+import { useTheme } from '../../../core/contexts/ThemeContext';
+import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
-import React, { Suspense, useRef, useMemo, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-import { useAdaptiveUi } from "../../../core/hooks/useAdaptiveUi";
-import { useTheme } from "../../../core/contexts/ThemeContext";
+/* ═══════════════════════════════════════════════
+   LAND POLYGONS (Optimized for Background)
+═══════════════════════════════════════════════ */
+const AFRICA = [35.8,-5.9,35.5,-2.0,35.2,0.0,36.8,2.4,37.1,4.8,36.9,5.5,37.1,8.7,37.4,9.8,37.2,10.4,37.3,11.1,37.5,11.5,30.3,32.2,31.5,32.3,30.0,32.6,27.5,34.1,23.0,37.3,18.0,41.5,12.6,43.5,11.6,43.2,11.5,51.3,2.0,41.5,-1.7,41.5,-4.1,39.6,-10.5,40.4,-14.8,40.5,-24.0,35.5,-26.5,34.9,-29.9,31.0,-31.5,29.6,-33.9,27.0,-34.8,20.0,-34.4,18.5,-33.0,17.9,-28.9,16.5,-22.2,14.5,-17.2,12.0,-12.0,12.0,-6.0,12.2,-4.9,8.8,-2.1,9.3,-0.7,8.7,1.4,9.5,2.3,9.9,4.3,6.0,5.0,3.3,6.3,2.4,6.2,1.6,6.3,1.2,6.2,0.4,6.0,0.4,5.1,0.0,4.7,-1.6,4.9,-2.5,5.0,-3.1,4.5,-6.4,5.3,-7.5,6.9,-8.5,6.9,-11.3,8.5,-13.2,9.5,-13.7,10.7,-14.9,11.3,-15.8,11.5,-16.7,12.7,-16.7,14.8,-17.5,14.4,-17.0,13.6,-16.9,13.8,-16.7,14.2,-16.6,16.0,-16.5,20.8,-17.0,27.7,-13.2,30.9,-9.8,35.5,-6.2,35.8,-5.9];
+const N_AMERICA = [71.3,-156,70.5,-145,60.0,-141,48.5,-124,37.8,-122,32.5,-117,23.0,-110,18.4,-99,15.9,-90,15.7,-85,10.0,-83,8.4,-77,10.0,-62,18.5,-66,25.0,-77,25.8,-80,29.0,-81,30.4,-87,29.0,-89,26.0,-97,22.0,-98,20.5,-97,19.0,-91,18.5,-88,16.0,-86,10.0,-83,8.4,-77,35.2,-75,38.9,-77,41.0,-73,44.0,-67,47.0,-53,52.0,-55,50.0,-66,46.0,-72,43.7,-79,42.0,-83,46.7,-92,48.0,-90,48.0,-100,55.0,-109,58.0,-93,60.0,-94,63.0,-86,65.0,-87,68.0,-90,71.0,-79,73.0,-66,67.0,-62,60.0,-64,62.0,-78,65.0,-101,68.0,-114,70.0,-130,71.3,-156];
+const S_AMERICA = [12.4,-71.6,11.0,-73.4,8.5,-76.9,4.9,-77.4,1.3,-78.5,-1.1,-80.2,-4.9,-81.3,-8.0,-78.6,-14.0,-76.2,-18.3,-70.5,-22.8,-70.8,-28.0,-71.4,-33.8,-71.6,-37.0,-73.5,-40.0,-73.2,-41.9,-74.5,-44.0,-65.4,-50.0,-68.5,-52.5,-69.6,-55.0,-64.0,-52.0,-58.5,-48.0,-55.0,-43.5,-48.5,-38.0,-48.0,-34.0,-52.5,-28.0,-50.0,-22.0,-43.2,-16.0,-39.0,-8.0,-35.2,-5.0,-35.1,-3.0,-38.5,0.0,-50.0,3.0,-51.0,6.5,-58.0,8.0,-60.5,11.0,-63.0,11.5,-72.0,12.4,-71.6];
+const EUROPE = [36.0,-5.6,38.7,-9.5,42.0,-9.0,43.5,-8.0,43.8,-4.0,43.5,1.5,42.5,3.5,41.3,2.0,37.9,0.7,36.0,-5.6,43.5,1.5,47.5,2.5,49.0,1.8,51.0,2.5,51.5,4.0,53.3,6.5,54.0,9.0,55.0,10.0,56.0,12.5,57.5,10.0,58.0,11.5,60.0,11.0,60.0,18.5,65.0,22.0,68.0,14.4,71.0,28.0,70.0,20.0,68.0,14.4,65.0,14.0,63.0,8.0,58.0,5.0,56.0,8.0,54.5,12.0,53.5,14.5,51.0,15.0,50.0,18.0,48.5,18.5,47.5,22.0,45.5,21.0,44.0,22.0,42.0,22.5,41.0,23.0,40.5,24.0,37.9,23.6,36.9,22.5,36.5,28.0,41.0,29.0,41.5,28.0,43.0,28.5,45.0,30.0,46.5,30.5,47.0,32.5,46.0,33.5,44.5,34.0,43.0,33.0,42.0,36.0,41.5,37.0,40.0,36.0,36.0,36.0,36.0,26.0,36.0,30.0,38.0,36.0,37.0,42.0,36.0,36.0,36.0,26.0,43.5,1.5];
+const ASIA = [72.0,26,72.0,60,72.0,100,72.0,140,70.0,142,64.0,141,60.0,140,56.0,133,52.0,133,48.0,140,44.0,136,44.0,132,38.0,128,36.0,128,34.0,126,34.0,130,36.0,132,32.0,132,30.0,122,26.0,120,22.0,114,20.0,110,18.0,110,10.0,108,4.0,108,4.0,104,2.0,104,0.0,104,-4.0,104,-6.0,106,-6.0,108,10.0,100,16.0,100,20.0,100,22.0,106,20.0,108,16.0,102,12.0,99,10.0,100,8.0,77,10.0,80,14.0,80,18.0,84,22.0,88,24.0,92,22.0,92,16.0,80,8.0,77,24.0,62,28.0,64,32.0,74,24.0,68,24.0,62,36.0,26,36.0,30,38.0,36,37.0,42,36.0,43,36.0,36,36.0,26,30.0,32,28.0,34,22.0,37,12.0,43,12.0,45,14.0,48,18.0,56,22.0,60,26.0,56,22.0,58,20.0,58,16.0,52,12.0,44,12.0,43,36.0,43,40.0,44,44.0,50,48.0,56,52.0,60,56.0,60,60.0,60,64.0,64,68.0,70,72.0,60,72.0,26];
+const AUSTRALIA = [-10.7,142,-14.0,130,-14.0,126,-16.0,122,-22.0,114,-24.0,113,-29.0,115,-32.0,115,-34.5,118,-37.5,140,-38.5,142,-38.5,145,-37.5,148,-34.0,151,-30.0,153,-24.0,152,-19.0,147,-14.5,145,-10.7,142];
 
+const LAND_POLYS = [AFRICA, N_AMERICA, S_AMERICA, EUROPE, ASIA, AUSTRALIA];
 
-// ─── Vertex Shader ─────────────────────────────────────────────────────────────
-const STREAM_VERT = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+function pip(lat, lng, poly) {
+  const n = poly.length >> 1;
+  let inside = false;
+  for (let i = 0, j = n - 1; i < n; j = i++) {
+    const yi = poly[i*2], xi = poly[i*2+1];
+    const yj = poly[j*2], xj = poly[j*2+1];
+    if ((yi > lat) !== (yj > lat) && lng < ((xj-xi)*(lat-yi))/(yj-yi)+xi)
+      inside = !inside;
   }
-`;
-
-
-// ─── Fragment Shader ───────────────────────────────────────────────────────────
-const STREAM_FRAG = `
-  precision highp float;
-
-  uniform float uTime;
-  uniform vec3  uAccent;       // #58A366 sage green — trail colour
-  uniform vec3  uWhite;        // near-white — stream head colour
-  uniform vec3  uBase;         // Base color for trails (black in dark, light-ash in light)
-  uniform vec2  uResolution;
-  uniform float uPixelDensity;
-
-  varying vec2 vUv;
-
-  float hash(float n) {
-    return fract(sin(n) * 43758.5453);
-  }
-  float hash2(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-  }
-
-  float laneContrib(
-    vec2  uv,
-    float laneX,
-    float laneW,
-    float speed,
-    float seed,
-    float perspR
-  ) {
-    float dx = uv.x - laneX;
-    if (abs(dx) > laneW * 0.5) return 0.0;
-
-    float lx = (dx / laneW) + 0.5;
-
-    // Cell height in UV space — depends on real resolution being set correctly
-    float charPixels = 11.0 * uPixelDensity;
-    float charH      = charPixels / uResolution.y;
-
-    float scrollY = uTime * speed;
-    float cellY   = floor((uv.y + scrollY) / charH);
-    float localY  = fract((uv.y + scrollY) / charH);
-
-    float h     = hash(seed + hash2(vec2(seed * 0.1, cellY)));
-    float flip  = floor(uTime / (0.30 + hash2(vec2(laneX, seed)) * 0.50));
-    float digit = step(0.5, hash(h + flip * 9.3));
-
-    // Pixel-art glyph
-    float glyph = 0.0;
-    if (digit > 0.5) {
-      // "1"
-      glyph = step(0.34, lx) * step(lx, 0.66)
-            * step(0.06, localY) * step(localY, 0.88);
-    } else {
-      // "0" hollow rectangle
-      float outer = step(0.10, lx) * step(lx, 0.90)
-                  * step(0.06, localY) * step(localY, 0.90);
-      float inner = step(0.28, lx) * step(lx, 0.72)
-                  * step(0.22, localY) * step(localY, 0.76);
-      glyph = clamp(outer - inner, 0.0, 1.0);
-    }
-
-    // Stream head position
-    float headPhase = fract(seed * 0.6173 + uTime * speed * 0.065);
-    float headY     = headPhase;
-    float headDist  = abs(uv.y - headY);
-
-    // FIX: headGlow multiplied by glyph so it only brightens actual digit
-    // pixels — not the full lane width (which caused solid-bar artefacts)
-    float headGlow = exp(-headDist * 28.0) * 2.8 * glyph;
-
-    // Trail fades out above the head — exponent 6.0 for a sharper dropoff
-    float aboveHead = clamp((uv.y - headY) / 0.50, 0.0, 1.0);
-    float trailMask = exp(-aboveHead * 6.0);
-
-    float depthFade = 1.0 - perspR * 0.55;
-
-    return clamp((glyph * trailMask + headGlow) * depthFade, 0.0, 1.0);
-  }
-
-  void main() {
-    vec2 uv = vUv;
-
-    float skyMask = smoothstep(0.85, 0.38, uv.y);
-
-    float vp  = pow(clamp(uv.y, 0.0, 1.0), 0.50);
-    float cx  = (uv.x - 0.5) * mix(1.0, 0.22, vp) + 0.5;
-    vec2  wuv = vec2(cx, uv.y);
-
-    float acc = 0.0;
-
-    // Near lanes
-    acc += laneContrib(wuv, 0.10, 0.050, 0.62,  1.00, 0.04);
-    acc += laneContrib(wuv, 0.25, 0.045, 0.57,  4.30, 0.06);
-    acc += laneContrib(wuv, 0.40, 0.052, 0.66,  8.70, 0.05);
-    acc += laneContrib(wuv, 0.55, 0.048, 0.60, 13.1,  0.06);
-    acc += laneContrib(wuv, 0.70, 0.050, 0.63, 17.5,  0.05);
-    acc += laneContrib(wuv, 0.85, 0.046, 0.58, 22.0,  0.07);
-
-    // Mid lanes
-    acc += laneContrib(wuv, 0.18, 0.032, 0.42, 31.0, 0.36);
-    acc += laneContrib(wuv, 0.38, 0.030, 0.38, 36.5, 0.38);
-    acc += laneContrib(wuv, 0.58, 0.033, 0.44, 42.1, 0.37);
-    acc += laneContrib(wuv, 0.78, 0.031, 0.40, 47.8, 0.39);
-
-    // Far lanes
-    acc += laneContrib(wuv, 0.30, 0.018, 0.22, 64.0, 0.77);
-    acc += laneContrib(wuv, 0.50, 0.017, 0.20, 70.5, 0.80);
-    acc += laneContrib(wuv, 0.70, 0.019, 0.24, 76.1, 0.76);
-
-    float totalLight = clamp(acc, 0.0, 1.0);
-
-    // Three-stop colour ramp
-    vec3 midCol = mix(uBase,  uAccent, clamp(totalLight * 1.42, 0.0, 1.0));
-    vec3 col    = mix(midCol, uWhite,  clamp((totalLight - 0.68) * 3.2, 0.0, 1.0));
-
-    // Left/right edge vignette
-    float vx = smoothstep(0.0, 0.10, uv.x) * smoothstep(1.0, 0.90, uv.x);
-
-    float alpha = totalLight * 0.93 * skyMask * vx;
-
-    gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.93));
-  }
-`;
-
-
-// ─── StreamFloor ───────────────────────────────────────────────────────────────
-function StreamFloor({ speedScale = 0.58, isLight }) {
-  const matRef  = useRef();
-  const meshRef = useRef();
-  const { size, gl } = useThree();
-
-  const material = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader:   STREAM_VERT,
-        fragmentShader: STREAM_FRAG,
-        uniforms: {
-          uTime:         { value: 0 },
-          // QYVORA Brand Accent: #58A366
-          uAccent:       { value: new THREE.Color(0x58 / 255, 0xA3 / 255, 0x66 / 255) },
-          // Stream head color: Text Primary (White in dark, Dark in light)
-          uWhite:        { value: isLight ? new THREE.Color(0x0A / 255, 0x10 / 255, 0x0A / 255) : new THREE.Color(0xEE / 255, 0xF0 / 255, 0xEE / 255) },
-          // Base trail color: Background (Black in dark, White in light)
-          uBase:         { value: isLight ? new THREE.Color(1, 1, 1) : new THREE.Color(0, 0, 0) },
-          // Initialise to a safe fallback — useEffects below correct it immediately
-          uResolution:   { value: new THREE.Vector2(1920, 1080) },
-          uPixelDensity: { value: Math.min(window.devicePixelRatio || 1, 2) },
-        },
-        transparent: true,
-        depthWrite:  false,
-        blending:    THREE.NormalBlending,
-        side:        THREE.DoubleSide,
-      }),
-    [isLight] // eslint-disable-line
-  );
-
-  // Read real canvas size from the DOM element on first mount
-  // (runs before the size-change effect so first frame is correct)
-  useEffect(() => {
-    if (!matRef.current) return;
-    const el  = gl.domElement;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    matRef.current.uniforms.uResolution.value.set(
-      el.clientWidth  * dpr,
-      el.clientHeight * dpr
-    );
-    matRef.current.uniforms.uPixelDensity.value = dpr;
-  }, [gl]);
-
-  // Keep resolution in sync on resize
-  useEffect(() => {
-    if (!matRef.current) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    matRef.current.uniforms.uResolution.value.set(
-      size.width  * dpr,
-      size.height * dpr
-    );
-    matRef.current.uniforms.uPixelDensity.value = dpr;
-  }, [size]);
-
-  const timeRef = useRef(0);
-  useFrame((state, delta) => {
-    if (!matRef.current) return;
-    timeRef.current += delta;
-    matRef.current.uniforms.uTime.value = timeRef.current * speedScale;
-  });
-
-  const planeW = size.width < 768 ? 40 : 32;
-
-  return (
-    <mesh ref={meshRef} position={[0, -1.18, -7.2]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[planeW, 40, 2, 2]} />
-      <primitive object={material} ref={matRef} attach="material" />
-    </mesh>
-  );
+  return inside;
 }
 
-
-// ─── CameraRig ─────────────────────────────────────────────────────────────────
-function CameraRig({ speedScale = 0.58 }) {
-  const { camera, size } = useThree();
-  const target = useMemo(() => new THREE.Vector3(0, -1.08, -10.8), []);
-
-  useEffect(() => {
-    const w = size.width;
-    camera.fov  = w < 480 ? 90 : w < 768 ? 80 : w < 1280 ? 65 : 58;
-    camera.near = 0.1;
-    camera.far  = 120;
-    camera.updateProjectionMatrix();
-  }, [camera, size.width]);
-
-  const timeRef = useRef(0);
-  useFrame((state, delta) => {
-    timeRef.current += delta;
-    const t       = timeRef.current * speedScale;
-    const w       = size.width;
-    const isMob   = w < 768;
-    const isSmall = w < 480;
-
-    camera.position.set(
-      Math.sin(t * 0.18) * 0.18,
-      (isSmall ? 1.60 : isMob ? 1.48 : 1.08) + Math.sin(t * 0.12) * 0.030,
-      isSmall ? 7.8 : isMob ? 7.2 : 5.9
-    );
-
-    target.x = Math.sin(t * 0.16) * 0.30;
-    camera.lookAt(target);
-  });
-
-  return null;
+function isLand(lat, lng) {
+  return LAND_POLYS.some(p => pip(lat, lng, p));
 }
 
-
-// ─── Scene ─────────────────────────────────────────────────────────────────────
-function Scene({ speedScale, isLight }) {
-  return (
-    <>
-      <fog attach="fog" args={[isLight ? "#ffffff" : "#000000", 8, 26]} />
-      <CameraRig speedScale={speedScale} />
-      <StreamFloor speedScale={speedScale} isLight={isLight} />
-    </>
-  );
-}
-
-
-// ─── HeroBackground ────────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════
+   HERO BACKGROUND COMPONENT
+═══════════════════════════════════════════════ */
 function HeroBackground({ className = "" }) {
-  const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const canvasRef = useRef(null);
   const { theme } = useTheme();
-  const isLight = theme === "light";
-  const speedScale = constrainedDevice ? 0.34 : 0.52;
-  const dpr = useMemo(() => (isMobile ? [1, 1.25] : [1, 1.75]), [isMobile]);
+  const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const isLight = theme === 'light';
 
-  const bgHex = isLight ? "255,255,255" : "0,0,0";
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    
+    // Grid settings
+    const step = isMobile ? 8 : (constrainedDevice ? 6 : 5);
+    const dotR = isMobile ? 1.0 : 1.2;
+    const accentColor = '#66B870';
+    
+    let rafId;
+    let time = 0;
+
+    const draw = () => {
+      time += 0.005;
+      ctx.clearRect(0, 0, w, h);
+      
+      const cols = Math.ceil(w / step);
+      const rows = Math.ceil(h / step);
+      
+      // Map screen coordinates to Lat/Lng roughly
+      // We want to center Africa/Europe area
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = i * step;
+          const y = j * step;
+          
+          // Normalized coords -1 to 1
+          const nx = (x / w) * 2 - 1;
+          const ny = (y / h) * 2 - 1;
+          
+          // Convert to pseudo lat/lng
+          const lng = nx * 180;
+          const lat = -ny * 90;
+
+          if (isLand(lat, lng)) {
+            // Animated wave effect for dots
+            const dist = Math.sqrt(nx * nx + ny * ny);
+            const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
+            
+            ctx.globalAlpha = isLight ? (0.05 + wave * 0.08) : (0.03 + wave * 0.12);
+            ctx.fillStyle = accentColor;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, dotR, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+      
+      rafId = requestAnimationFrame(draw);
+    };
+
+    const handleResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+    draw();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(rafId);
+    };
+  }, [theme, isMobile, constrainedDevice, isLight]);
+
+  const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
 
   return (
-    <div
-      className={`absolute inset-0 overflow-hidden ${className}`}
-      style={{ background: "transparent" }}
-      aria-hidden="true"
-    >
-      <Canvas
-        dpr={dpr}
-        camera={{ position: [0, 1.08, 5.9], fov: 58, near: 0.1, far: 120 }}
-        gl={{
-          antialias:       !isMobile,
-          alpha:           true,
-          powerPreference: "high-performance",
-          toneMapping:     THREE.NoToneMapping,
+    <div className={`absolute inset-0 z-0 pointer-events-none overflow-hidden ${className}`}>
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full"
+        style={{ filter: 'blur(0.5px)' }}
+      />
+      
+      {/* Ambient Radial Gradient Overlay */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, transparent 20%, ${bgBase} 95%)`,
+          opacity: isLight ? 0.7 : 0.85
         }}
-        performance={{ min: 0.5 }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <Suspense fallback={null}>
-          <Scene speedScale={speedScale} isLight={isLight} />
-        </Suspense>
-      </Canvas>
+      />
 
-      {/* Edge fades only — blends near/far edges of the floor plane into the
-          surrounding page. No radial bloom, no haze, no decorative effects. */}
-      <div className="absolute inset-0 pointer-events-none z-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to top,
-              rgba(${bgHex},0.90) 0%,
-              rgba(${bgHex},0.45) 18%,
-              transparent 58%)`,
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom,
-              rgba(${bgHex},0.88) 0%,
-              rgba(${bgHex},0.38) 16%,
-              transparent 55%)`,
-          }}
-        />
+      {/* Edge Fades */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent opacity-100" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg to-transparent opacity-100" />
       </div>
     </div>
   );
