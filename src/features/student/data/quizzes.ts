@@ -3,7 +3,7 @@ export const ROOM_QUIZ_BANK = {
   '1:1': [
     { id: 'q1', text: 'What is the main difference between offensive and defensive security?', options: ['Offensive attacks systems; defensive protects them', 'Offensive uses firewalls; defensive uses exploits', 'They are the same thing', 'Offensive is illegal; defensive is legal'], correctIndex: 0 },
     { id: 'q2', text: 'Which of the following best describes a penetration tester?', options: ['Someone who breaks into systems without permission', 'An authorised professional who simulates attacks to find weaknesses', 'A developer who writes security software', 'A network administrator'], correctIndex: 1 },
-    { id: 'q3', text: 'What does the HSOCIETY operating model focus on?', options: ['Only selling security tools', 'Education, execution, and community', 'Government contracts only', 'Defensive security only'], correctIndex: 1 },
+    { id: 'q3', text: 'What does the QYVORA operating model focus on?', options: ['Only selling security tools', 'Education, execution, and community', 'Government contracts only', 'Defensive security only'], correctIndex: 1 },
   ],
   '1:2': [
     { id: 'q1', text: 'Which trait is most central to the hacker mindset?', options: ['Speed', 'Curiosity and creative problem solving', 'Memorising tool syntax', 'Following instructions exactly'], correctIndex: 1 },

@@ -18,7 +18,7 @@ export const termsData: TermsData = {
   sections: [
     {
       title: "Agreement to Terms",
-      body: "By accessing or using HSOCIETY services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not access or use our services.",
+      body: "By accessing or using QYVORA services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not access or use our services.",
       bullets: [
         "These terms apply to all visitors, users, and others who access the service.",
         "Your access to and use of the service is conditioned on your acceptance of and compliance with these terms."
@@ -26,7 +26,7 @@ export const termsData: TermsData = {
     },
     {
       title: "Training and Professional Engagement",
-      body: "HSOCIETY provides cybersecurity training and offensive security services. Participation in these programs requires strict adherence to ethical guidelines and legal frameworks.",
+      body: "QYVORA provides cybersecurity training and offensive security services. Participation in these programs requires strict adherence to ethical guidelines and legal frameworks.",
       bullets: [
         "Users must not use skills learned for illegal purposes.",
         "Unauthorized testing of third-party systems is strictly prohibited.",
@@ -35,11 +35,11 @@ export const termsData: TermsData = {
     },
     {
       title: "Intellectual Property",
-      body: "The service and its original content, features, and functionality are and will remain the exclusive property of HSOCIETY OFFSEC.",
+      body: "The service and its original content, features, and functionality are and will remain the exclusive property of QYVORA OFFSEC.",
       bullets: [
         "Training materials are for personal use only.",
         "Distribution or reproduction of content without consent is prohibited.",
-        "Proprietary tooling remains the property of HSOCIETY."
+        "Proprietary tooling remains the property of QYVORA."
       ]
     },
     {

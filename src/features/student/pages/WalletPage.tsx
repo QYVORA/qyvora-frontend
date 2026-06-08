@@ -247,7 +247,7 @@ const Wallet: React.FC = () => {
                   <Link2 className="h-5 w-5 text-accent shrink-0" />
                   <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Chain Ledger</h3>
                   <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-text-muted hidden sm:block">
-                    HSOCIETY CHAIN — tamper-proof
+                    QYVORA CHAIN — tamper-proof
                   </span>
                 </div>
 
@@ -270,7 +270,7 @@ const Wallet: React.FC = () => {
                     </div>
                     <p className="text-sm font-bold text-text-primary">No chain records yet</p>
                     <p className="text-xs text-text-muted max-w-xs mx-auto leading-relaxed">
-                      Complete bootcamp rooms to generate tamper-proof blocks on the HSOCIETY chain.
+                      Complete bootcamp rooms to generate tamper-proof blocks on the QYVORA chain.
                     </p>
                   </div>
                 ) : (

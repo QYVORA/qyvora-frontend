@@ -2,7 +2,7 @@
  * Dialog — accessible modal built on Radix UI Dialog primitive.
  *
  * Handles focus trapping, Escape key, scroll lock, and ARIA automatically.
- * Styled to match the hsociety design system (bg-bg-card, border-border, accent).
+ * Styled to match the qyvora design system (bg-bg-card, border-border, accent).
  *
  * Usage:
  *   <Dialog open={open} onOpenChange={setOpen}>
@@ -92,7 +92,7 @@ export const DialogContent = React.forwardRef<
         maxWidth === 'max-w-7xl' && 'max-w-7xl',
         !maxWidth.startsWith('max-w-') && maxWidth,
 
-        // Surface — matches card-hsociety
+        // Surface — matches card-qyvora
         'terminal-card bg-bg-card border border-border rounded-2xl shadow-2xl overflow-hidden',
         // Radix data-state animations
         'data-[state=open]:animate-in data-[state=closed]:animate-out',

@@ -279,14 +279,14 @@
   /* Global motion smoothness on common interactive UI surfaces */
   .btn-primary,
   .btn-secondary,
-  .card-hsociety,
+  .card-qyvora,
   [class*="rounded-"][class*="border"] {
     transition-timing-function: var(--ease-smooth);
   }
 
   .btn-primary,
   .btn-secondary,
-  .card-hsociety {
+  .card-qyvora {
     transition-duration: var(--dur-base);
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -338,7 +338,7 @@
       letter-spacing: 0.03em !important;
     }
 
-    .card-hsociety {
+    .card-qyvora {
       width: 100% !important;
       max-width: 100% !important;
     }
@@ -366,7 +366,7 @@
       padding-right: 1rem;
     }
 
-    .card-hsociety {
+    .card-qyvora {
       border-radius: 0.125rem;
     }
   }
@@ -390,7 +390,7 @@
     backdrop-filter: none !important;
   }
 
-  body[data-performance-mode='constrained'] .card-hsociety:hover {
+  body[data-performance-mode='constrained'] .card-qyvora:hover {
     transform: none !important;
     box-shadow: var(--card-shimmer) !important;
   }
@@ -449,10 +449,20 @@
   /* Light theme: remove blur/filter overlays on image-background sections */
   [data-theme="light"] .section-bg-img + .section-bg-overlay,
   [data-theme="light"] .section-bg-img ~ .hero-vignette,
-  [data-theme="light"] .section-bg-img ~ .bg-radial-vignette {
+  [data-theme="light"] .section-bg-img ~ .bg-radial-vignette,
+  [data-theme="light"] .section-bg-overlay {
     display: none !important;
     backdrop-filter: none !important;
     background: transparent !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+
+  [data-theme="light"] img {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 
   [data-theme="light"] main section .blur-3xl,
@@ -606,7 +616,7 @@
     @apply bg-transparent border border-accent text-accent font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:bg-accent-dim active:scale-95;
   }
 
-  .card-hsociety {
+  .card-qyvora {
     @apply bg-bg-card border border-border rounded-2xl transition-all duration-300 cursor-default hover:-translate-y-1;
     position: relative;
     isolation: isolate;
@@ -614,7 +624,7 @@
     background: var(--color-bg-card);
     box-shadow: var(--card-shimmer);
   }
-  .card-hsociety::after,
+  .card-qyvora::after,
   .terminal-card::after {
     content: "";
     position: absolute;
@@ -626,12 +636,12 @@
     opacity: 0.2;
     mask-image: linear-gradient(to bottom, black, transparent 72%);
   }
-  .card-hsociety > *,
+  .card-qyvora > *,
   .terminal-card > * {
     position: relative;
     z-index: 1;
   }
-  .card-hsociety:hover {
+  .card-qyvora:hover {
     box-shadow: var(--card-shimmer), 0 8px 32px var(--color-accent-glow);
   }
 
@@ -680,14 +690,14 @@
   }
 
   /* ── Light theme card overrides ── */
-  [data-theme="light"] .card-hsociety,
+  [data-theme="light"] .card-qyvora,
   [data-theme="light"] .terminal-card {
     background: var(--color-bg-card) !important;
     box-shadow: var(--card-shimmer), var(--card-shadow);
     border-color: var(--color-border);
     transform: none !important;
   }
-  [data-theme="light"] .card-hsociety:hover,
+  [data-theme="light"] .card-qyvora:hover,
   [data-theme="light"] .terminal-card:hover {
     box-shadow: var(--card-shimmer), 0 10px 25px -5px rgba(55, 94, 43, 0.1);
     border-color: var(--color-border-strong);
@@ -727,8 +737,8 @@
       font-size: 0.8125rem;
       letter-spacing: 0.06em;
     }
-    .card-hsociety { transform: none !important; }
-    .card-hsociety:hover {
+    .card-qyvora { transform: none !important; }
+    .card-qyvora:hover {
       box-shadow: var(--card-shimmer), 0 4px 16px var(--color-accent-glow);
     }
   }

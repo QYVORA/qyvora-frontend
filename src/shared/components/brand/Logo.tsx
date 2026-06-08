@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from '../../../core/contexts/ThemeContext';
 
-export const DARK_LOGO_SRC = '/assets/branding/logos/hsociety-logo.webp';
-export const LIGHT_LOGO_SRC = '/assets/branding/logos/hsociety-logo-light.webp';
+export const DARK_LOGO_SRC = '/qyvora-full-logo.webp';
+export const LIGHT_LOGO_SRC = '/qyvora-full-logo.webp';
 
 interface LogoProps {
   className?: string;
@@ -27,7 +27,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
       <div className={`${containerH} ${containerW} overflow-hidden flex-none flex items-center justify-center`}>
         <img
           src={logoSrc}
-          alt="HSociety"
+          alt="QYVORA"
           className={`${imgH} w-auto object-contain flex-none`}
         />
       </div>
@@ -35,13 +35,13 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
   );
 };
 
-export const HSocietyLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const QyvoraLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme } = useTheme();
   const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap ${className}`}>
       <div className="h-12 w-[180px] overflow-hidden flex-none flex items-center justify-center">
-        <img src={logoSrc} alt="HSociety" className="h-[108px] w-auto object-contain flex-none" />
+        <img src={logoSrc} alt="QYVORA" className="h-[108px] w-auto object-contain flex-none" />
       </div>
     </div>
   );

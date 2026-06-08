@@ -4,7 +4,7 @@ import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
 
-const SERVICE_REQUEST_MODAL_EVENT = 'hsociety:open-service-request-modal';
+const SERVICE_REQUEST_MODAL_EVENT = 'qyvora:open-service-request-modal';
 
 export function openServiceRequestModal(packageTier?: string) {
   window.dispatchEvent(new CustomEvent(SERVICE_REQUEST_MODAL_EVENT, { detail: { packageTier } }));
@@ -102,7 +102,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   </ul>
                 </div>
 
-                <div className="pt-6 border-t border-border mt-8">
+                <div className="pt-6 mt-8">
                   <div className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
                     <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Global Operations Active</p>
@@ -150,7 +150,7 @@ const ServiceRequestModalHost: React.FC = () => {
                   <input
                     name="businessName"
                     type="text"
-                    placeholder="HSOCIETY Africa"
+                    placeholder="QYVORA Africa"
                     className="w-full bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm transition-colors"
                   />
                 </div>
@@ -197,7 +197,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
               {status === 'error' && (
                 <p className="text-xs text-red-400 font-mono">
-                  Failed to send request. Please try again or email us directly at ops@hsociety.com
+                  Failed to send request. Please try again or email us directly at ops@qyvora.com
                 </p>
               )}
 

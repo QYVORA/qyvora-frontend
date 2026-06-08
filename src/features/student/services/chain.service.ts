@@ -1,7 +1,7 @@
 /**
  * chainService.ts
  *
- * Frontend service layer for reading data from the HSOCIETY CHAIN blockchain.
+ * Frontend service layer for reading data from the QYVORA CHAIN blockchain.
  *
  * Architecture decision — proxy pattern:
  *   The frontend never calls the chain node directly. All chain reads go
@@ -17,7 +17,7 @@ import api from '../../../core/services/api';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 /**
- * Represents a single block on the HSOCIETY CHAIN as returned by the
+ * Represents a single block on the QYVORA CHAIN as returned by the
  * backend proxy. Fields mirror the chain's block structure exactly so the
  * frontend can render chain history without any further transformation.
  */
@@ -40,7 +40,7 @@ export interface ChainBlock {
 
   /**
    * Identifier of the node (validator) that produced this block.
-   * In the Proof-of-Authority model used by HSOCIETY CHAIN, only
+   * In the Proof-of-Authority model used by QYVORA CHAIN, only
    * pre-approved validators may seal blocks.
    */
   validator: string;

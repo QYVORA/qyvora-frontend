@@ -1,4 +1,4 @@
-# HSOCIETY Platform — Frontend Architecture Reference
+# QYVORA Platform — Frontend Architecture Reference
 
 > Read this before touching any frontend code. It covers the full request lifecycle, component structure, routing, auth flow, and every feature area.
 
@@ -23,7 +23,7 @@
 ## Directory Structure
 
 ```
-hsociety-frontend/src/
+qyvora-frontend/src/
 ├── app/
 │   ├── main.tsx          # React root mount
 │   ├── App.tsx           # Context providers wrapper
@@ -88,7 +88,7 @@ React Component
 api.ts (Axios instance)
   ├── Request interceptor: attaches X-CSRF-Token header from cookie
   ↓
-Backend API (https://hsociety-backend.onrender.com/api/...)
+Backend API (https://qyvora-backend.onrender.com/api/...)
   ↓
 Response interceptor:
   ├── 401 → clear auth state → redirect /login
@@ -310,7 +310,7 @@ Layer 2 — Cache API (image preloading):
 ## Environment Variables
 
 ```env
-VITE_API_URL=https://hsociety-backend.onrender.com/api
+VITE_API_URL=https://qyvora-backend.onrender.com/api
 ```
 
 All other config is handled at build time via Vite.

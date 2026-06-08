@@ -36,14 +36,14 @@ import { resolveImg } from '../components/landing/helpers';
  * The version suffix (_v2) allows a future schema change to start fresh
  * without needing to manually clear old cache entries — simply increment it.
  */
-const LANDING_CACHE_KEY = 'hsociety_landing_cache_v2';
+const LANDING_CACHE_KEY = 'qyvora_landing_cache_v2';
 
 /**
  * Cache Storage bucket name for pre-fetched landing page images.
  * The version suffix (-v1) serves the same purpose as above — bump it to
  * invalidate all cached images when the image URL scheme changes.
  */
-const LANDING_IMAGE_CACHE = 'hsociety-landing-images-v1';
+const LANDING_IMAGE_CACHE = 'qyvora-landing-images-v1';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

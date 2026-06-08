@@ -5,9 +5,9 @@
 ### What was done:
 - Created `public/images/chain-images/` folder
 - Moved both chain logos into the new folder:
-  - `HSOCIETY_CHAIN_LOGO.png`
-  - `HSOCIETY-CHAIN-3D.png`
-- Updated `ChainLogo.tsx` to reference the new path: `/images/chain-images/HSOCIETY_CHAIN_LOGO.png`
+  - `QYVORA_CHAIN_LOGO.png`
+  - `QYVORA-CHAIN-3D.png`
+- Updated `ChainLogo.tsx` to reference the new path: `/images/chain-images/QYVORA_CHAIN_LOGO.png`
 
 ### Result:
 All chain-related images are now organized in a dedicated folder, matching the structure of `cp-images/` for Cyber Points.
@@ -120,17 +120,17 @@ Cleaner, more maintainable code with better mobile UX.
 
 ## Files Modified
 
-1. `hsociety-frontend/src/shared/components/ChainLogo.tsx`
-   - Updated image path to `/images/chain-images/HSOCIETY_CHAIN_LOGO.png`
+1. `qyvora-frontend/src/shared/components/ChainLogo.tsx`
+   - Updated image path to `/images/chain-images/QYVORA_CHAIN_LOGO.png`
 
-2. `hsociety-frontend/src/features/student/pages/BootcampRoomPage.tsx`
+2. `qyvora-frontend/src/features/student/pages/BootcampRoomPage.tsx`
    - Complete mobile redesign
    - Fixed horizontal scroll
    - Improved sidebar drawer
    - Optimized all component sizes
    - Better touch targets throughout
 
-3. `hsociety-frontend/public/images/chain-images/` (new folder)
+3. `qyvora-frontend/public/images/chain-images/` (new folder)
    - Contains both chain logo variants
 
 ---

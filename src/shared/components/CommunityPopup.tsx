@@ -15,8 +15,8 @@ const CommunityPopup: React.FC = () => {
 
   useEffect(() => {
     // Check if user has already interacted
-    const hasJoined = localStorage.getItem('hsociety_community_joined');
-    const hasClosed = localStorage.getItem('hsociety_community_popup_closed');
+    const hasJoined = localStorage.getItem('qyvora_community_joined');
+    const hasClosed = localStorage.getItem('qyvora_community_popup_closed');
     
     if (hasJoined || hasClosed) return;
 
@@ -28,11 +28,11 @@ const CommunityPopup: React.FC = () => {
   const handleClose = () => {
     setIsVisible(false);
     // Persist closed state for 7 days (simplified logic using localStorage)
-    localStorage.setItem('hsociety_community_popup_closed', '1');
+    localStorage.setItem('qyvora_community_popup_closed', '1');
   };
 
   const handleJoin = () => {
-    localStorage.setItem('hsociety_community_joined', '1');
+    localStorage.setItem('qyvora_community_joined', '1');
     setIsVisible(false);
     const whatsappUrl = SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5';
     window.open(whatsappUrl, '_blank', 'noreferrer');
@@ -42,84 +42,87 @@ const CommunityPopup: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 50, x: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 50, x: 20 }}
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 30 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] md:w-96"
+          className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] lg:w-[520px]"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-bg-card/90 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(var(--color-accent-rgb),0.1)]">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row">
             
-            {/* Ambient Background Glow */}
-            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 blur-3xl" />
-            
+            {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 z-20 p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/30 transition-all"
+              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/30 transition-all z-20"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="p-6 sm:p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent">
-                  <Users className="h-7 w-7" />
-                  <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-bg">
-                    <Zap className="h-2.5 w-2.5 fill-current" />
-                  </div>
+            {/* Image Section - Broad Horizontal Design */}
+            <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">
+              <img
+                src="/assets/branding/chain/qyvora-chain-logo-visuals.webp"
+                alt="Community"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/40 via-transparent to-transparent opacity-0 dark:opacity-60" />
+              
+              {/* Icon badge */}
+              <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent shadow-lg">
+                <Users className="h-6 w-6" />
+                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-bg border-2 border-bg-card">
+                  <Zap className="h-2.5 w-2.5 fill-current" />
                 </div>
-                <div>
-                  <h4 className="text-lg font-black text-text-primary uppercase tracking-tight leading-none mb-1.5">
-                    Hacker Community
-                  </h4>
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-1.5 w-1.5 rounded-full bg-[#25D366] animate-pulse" />
-                    <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-widest">
-                      Live Operations
-                    </span>
-                  </div>
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="p-6 sm:p-8 flex flex-col justify-center flex-1">
+              <div>
+                <h4 className="text-lg font-black text-text-primary uppercase tracking-tight leading-none mb-1.5">
+                  Hacker Community
+                </h4>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="flex h-1.5 w-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                  <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-widest">
+                    Live Operations
+                  </span>
                 </div>
               </div>
 
-              <div className="mb-8">
-                <p className="text-sm text-text-secondary leading-relaxed font-mono">
-                  Join Africa's elite offensive security circle. Get real-time updates, collaborate on missions, and learn from the best.
+              <div className="mb-6">
+                <p className="text-xs text-text-secondary leading-relaxed font-mono opacity-80">
+                  Join Africa's elite offensive security circle. Collaborate on missions and learn from the best in real-time.
                 </p>
               </div>
 
-              <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleJoin}
                   className="
-                    group relative flex w-full items-center justify-center gap-3 overflow-hidden
-                    rounded-2xl bg-[#25D366] py-4 text-xs font-black uppercase tracking-[0.15em]
+                    group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
+                    rounded-2xl bg-[#25D366] py-3.5 text-[10px] font-black uppercase tracking-[0.15em]
                     text-white shadow-lg shadow-[#25D366]/20 transition-all
                     hover:scale-[1.02] hover:shadow-[#25D366]/40 active:scale-[0.98]
                   "
                 >
-                  <BrandWhatsAppIcon className="h-5 w-5" />
-                  <span>Join the Community</span>
+                  <BrandWhatsAppIcon className="h-4 h-4" />
+                  <span>Join Now</span>
                 </button>
                 
                 <button
                   onClick={handleClose}
                   className="
-                    flex w-full items-center justify-center gap-2 rounded-2xl
+                    px-5 flex items-center justify-center rounded-2xl
                     border border-border bg-transparent py-3
                     text-[9px] font-black uppercase tracking-[0.2em]
                     text-text-muted transition-all hover:border-accent/30 hover:text-accent
                   "
                 >
-                  Maybe later
+                  Dismiss
                 </button>
               </div>
-            </div>
-
-            {/* Bottom Tech Bar */}
-            <div className="bg-accent/5 border-t border-accent/10 px-6 py-2 flex items-center justify-between">
-              <span className="text-[8px] font-mono text-accent/50 uppercase tracking-[0.2em]">Comm-Link: Active</span>
-              <MessageSquare className="h-3 w-3 text-accent/30" />
             </div>
           </div>
         </motion.div>

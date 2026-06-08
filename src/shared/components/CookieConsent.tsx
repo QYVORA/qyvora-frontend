@@ -9,7 +9,7 @@ import { getCookiePreferences, setCookiePreferences, type CookiePreferences } fr
  * A non-intrusive, clean cookie consent banner that appears at the bottom
  * of the screen for users who haven't made a choice.
  * 
- * Design: Clean, modern, matches hsociety colors but avoids terminal ASCII.
+ * Design: Clean, modern, matches qyvora colors but avoids terminal ASCII.
  */
 const CookieConsent: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,7 +23,7 @@ const CookieConsent: React.FC = () => {
   useEffect(() => {
     // Show after a short delay if no choice exists
     const existing = getCookiePreferences();
-    const dismissed = localStorage.getItem('hsociety_cookie_dismissed');
+    const dismissed = localStorage.getItem('qyvora_cookie_dismissed');
     if (!existing && !dismissed) {
       const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
@@ -38,7 +38,7 @@ const CookieConsent: React.FC = () => {
   const handleDismiss = () => {
     // If they just close it, we still want to remember they saw it.
     // We'll set a "dismissed" flag in localStorage.
-    localStorage.setItem('hsociety_cookie_dismissed', '1');
+    localStorage.setItem('qyvora_cookie_dismissed', '1');
     setIsVisible(false);
   };
 

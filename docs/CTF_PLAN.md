@@ -1,16 +1,16 @@
-# HSOCIETY OFFSEC — CTF Platform Plan
+# QYVORA OFFSEC — CTF Platform Plan
 
 > **Status:** Planning  
-> **Scope:** Browser-native Capture The Flag rooms hosted on a separate Netlify domain, integrated with the main HSOCIETY platform.
+> **Scope:** Browser-native Capture The Flag rooms hosted on a separate Netlify domain, integrated with the main QYVORA platform.
 
 ---
 
 ## 1. Overview
 
-The CTF system is a browser-native hacking challenge platform. Students use their browser's built-in DevTools — no VM, no downloads, no setup. Each challenge is a standalone static HTML "room" hosted on a dedicated Netlify subdomain. The main HSOCIETY app handles authentication, flag submission, CP rewards, and leaderboard tracking.
+The CTF system is a browser-native hacking challenge platform. Students use their browser's built-in DevTools — no VM, no downloads, no setup. Each challenge is a standalone static HTML "room" hosted on a dedicated Netlify subdomain. The main QYVORA app handles authentication, flag submission, CP rewards, and leaderboard tracking.
 
 ```
-hsociety.com (main app)                ctf-rooms.hsociety.com (Netlify)
+qyvora.com (main app)                ctf-rooms.qyvora.com (Netlify)
 ────────────────────────               ──────────────────────────────────
 Student opens CTF challenge   ──────►  Vulnerable room loads in new tab
 Student finds FLAG{...}       ◄──────  Flag is hidden inside the room
@@ -25,21 +25,21 @@ Student submits flag          ──────►  Backend validates, awards C
 
 | Repo | Purpose | Deployment |
 |------|---------|------------|
-| `hsociety-frontend` | Main app — auth, flag submission, leaderboard | `hsociety.com` |
-| `hsociety-ctf-rooms` | Static vulnerable rooms | `ctf-rooms.hsociety.com` (Netlify) |
+| `qyvora-frontend` | Main app — auth, flag submission, leaderboard | `qyvora.com` |
+| `qyvora-ctf-rooms` | Static vulnerable rooms | `ctf-rooms.qyvora.com` (Netlify) |
 
 The CTF rooms repo is **entirely static** — plain HTML, CSS, and JS. No framework, no build step required. Each room is a folder with an `index.html` and optionally a `netlify.toml` for headers, cookies, and redirects.
 
 ### 2.2 Room URL Convention
 
 ```
-https://ctf-rooms.hsociety.com/r/{room-id}/
+https://ctf-rooms.qyvora.com/r/{room-id}/
 ```
 
 Examples:
-- `https://ctf-rooms.hsociety.com/r/html-source-1/`
-- `https://ctf-rooms.hsociety.com/r/console-1/`
-- `https://ctf-rooms.hsociety.com/r/network-header-1/`
+- `https://ctf-rooms.qyvora.com/r/html-source-1/`
+- `https://ctf-rooms.qyvora.com/r/console-1/`
+- `https://ctf-rooms.qyvora.com/r/network-header-1/`
 
 ### 2.3 Flag Format
 
@@ -61,7 +61,7 @@ Flags are **static strings hardcoded into each room** at build time. The backend
 Each `CTFChallenge` document in MongoDB gains one field:
 
 ```js
-roomUrl: String  // e.g. "https://ctf-rooms.hsociety.com/r/html-source-1/"
+roomUrl: String  // e.g. "https://ctf-rooms.qyvora.com/r/html-source-1/"
 ```
 
 The `/student/ctf/:moduleId/scenario` endpoint already returns challenge data — `roomUrl` is added to the response so the frontend can render the "Launch Room" button.
@@ -92,13 +92,13 @@ The existing `CtfPage` (`/ctf/:moduleId`) gets a **"Launch Room"** button that o
 
 ### 3.1 Visual Theme
 
-Every room shares a consistent HSOCIETY terminal aesthetic:
+Every room shares a consistent QYVORA terminal aesthetic:
 
 - **Background:** `#050706` (matches main app `--color-bg`)
 - **Text:** `#eef4ec` (matches `--color-text-primary`)
 - **Accent:** `#B7FF99` (matches `--color-accent`)
 - **Font:** JetBrains Mono (loaded from Google Fonts)
-- **Layout:** Centered card with a scenario description, a fake UI element relevant to the challenge, and a subtle "HSOCIETY CTF" watermark in the corner
+- **Layout:** Centered card with a scenario description, a fake UI element relevant to the challenge, and a subtle "QYVORA CTF" watermark in the corner
 
 Each room looks like a **real (but fake) website** relevant to its scenario — a fake login page, a fake blog, a fake API dashboard — to make the challenge feel authentic. The scenario description is shown as a terminal-style briefing at the top.
 
@@ -112,18 +112,18 @@ Every room uses a shared `_base.html` template structure:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[Room Title] — HSOCIETY CTF</title>
+  <title>[Room Title] — QYVORA CTF</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/shared/room.css" />
   <!-- Challenge-specific meta/script tags go here -->
 </head>
 <body>
-  <!-- HSOCIETY CTF watermark -->
-  <div class="watermark">HSOCIETY CTF</div>
+  <!-- QYVORA CTF watermark -->
+  <div class="watermark">QYVORA CTF</div>
 
   <!-- Scenario briefing terminal -->
   <div class="terminal-briefing">
-    <span class="prompt">operator@hsociety:~$</span>
+    <span class="prompt">operator@qyvora:~$</span>
     <span class="briefing-text">[scenario description]</span>
   </div>
 
@@ -291,7 +291,7 @@ The final destination page displays "You found the end of the chain."
 ## 5. CTF Rooms Repository Structure
 
 ```
-hsociety-ctf-rooms/
+qyvora-ctf-rooms/
 ├── netlify.toml                  ← global headers + redirects
 ├── shared/
 │   ├── room.css                  ← shared terminal theme styles
@@ -336,7 +336,7 @@ Add `roomUrl` field to the existing `CTFChallenge` Mongoose schema:
 roomUrl: {
   type: String,
   default: null,
-  // e.g. "https://ctf-rooms.hsociety.com/r/html-source-1/"
+  // e.g. "https://ctf-rooms.qyvora.com/r/html-source-1/"
 }
 ```
 
@@ -358,7 +358,7 @@ Add a seed script `scripts/seeds/ctf-phase1.mjs` that creates the 10 Phase 1 cha
 
 ### 7.1 CtfPage — Launch Room Button
 
-In `hsociety-frontend/src/features/student/pages/CtfPage.tsx`, add a "Launch Room" button below the challenge description that opens `challenge.roomUrl` in a new tab:
+In `qyvora-frontend/src/features/student/pages/CtfPage.tsx`, add a "Launch Room" button below the challenge description that opens `challenge.roomUrl` in a new tab:
 
 ```tsx
 {challenge.roomUrl && (
@@ -411,11 +411,11 @@ Once Phase 1 is live and validated, the following room types can be added:
 ## 10. Build & Deploy Checklist
 
 ### CTF Rooms Repo
-- [ ] Create `hsociety-ctf-rooms` GitHub repository
+- [ ] Create `qyvora-ctf-rooms` GitHub repository
 - [ ] Build all 10 Phase 1 rooms
 - [ ] Write shared `room.css` and `room.js`
 - [ ] Configure `netlify.toml` with all headers and redirects
-- [ ] Deploy to Netlify → set custom domain `ctf-rooms.hsociety.com`
+- [ ] Deploy to Netlify → set custom domain `ctf-rooms.qyvora.com`
 - [ ] Test all 10 rooms manually — verify each flag is findable
 
 ### Backend

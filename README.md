@@ -1,6 +1,6 @@
-# HSOCIETY OFFSEC — Frontend
+# QYVORA OFFSEC — Frontend
 
-React 19 + Vite frontend for the HSOCIETY offensive security training platform.
+React 19 + Vite frontend for the QYVORA offensive security training platform.
 
 ## Stack
 
@@ -34,7 +34,7 @@ Runs at `http://localhost:5173`.
 VITE_API_BASE_URL=http://localhost:3000/api
 
 # Production — points to deployed backend
-VITE_API_BASE_URL=https://hsociety-backend.onrender.com/api
+VITE_API_BASE_URL=https://qyvora-backend.onrender.com/api
 ```
 
 ## Scripts
@@ -97,7 +97,7 @@ src/
 └── shared/
     ├── components/
     │   ├── brand/Logo.tsx
-    │   ├── ChainLogo.tsx       # HSOCIETY Chain logo component
+    │   ├── ChainLogo.tsx       # QYVORA Chain logo component
     │   ├── CpLogo.tsx          # Cyber Points logo component
     │   └── ScrollReveal.tsx
     ├── layouts/                # PublicLayout, StudentLayout, AdminLayout
@@ -133,7 +133,7 @@ docs/
 | Path | Access | Page |
 |---|---|---|
 | `/` | Public | Landing page |
-| `/chain` | Public | CP + HSOCIETY Chain explainer |
+| `/chain` | Public | CP + QYVORA Chain explainer |
 | `/cyber-points` | Public | Redirects to `/chain` |
 | `/leaderboard` | Public | Operator leaderboard |
 | `/zero-day-market` | Public | Marketplace preview |

@@ -2,7 +2,7 @@
  * Tooltip — accessible tooltip built on Radix UI Tooltip primitive.
  *
  * Handles keyboard focus, ARIA, and pointer events automatically.
- * Styled to match the hsociety design system.
+ * Styled to match the qyvora design system.
  *
  * Usage (simple):
  *   <Tooltip content="Delete user">

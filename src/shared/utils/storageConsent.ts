@@ -16,7 +16,7 @@ export interface CookiePreferences {
   consentedAt?: string;
 }
 
-const STORAGE_KEY = 'hsociety_cookie_preferences';
+const STORAGE_KEY = 'qyvora_cookie_preferences';
 
 export const DEFAULT_PREFERENCES: CookiePreferences = {
   strictly_necessary: true,
@@ -50,7 +50,7 @@ export const setCookiePreferences = (prefs: Omit<CookiePreferences, 'consentedAt
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   
   // Dispatch a custom event so other parts of the app can react instantly
-  window.dispatchEvent(new Event('hsociety_cookie_consent_updated'));
+  window.dispatchEvent(new Event('qyvora_cookie_consent_updated'));
 };
 
 /**

@@ -185,14 +185,14 @@ const Dashboard: React.FC = () => {
             <div className="w-full">
               <ScrollReveal className="h-full">
                 {loading ? (
-                  <div className="card-hsociety p-8 animate-pulse space-y-4 h-full">
+                  <div className="card-qyvora p-8 animate-pulse space-y-4 h-full">
                     <Skeleton className="h-4 w-24" />
                     <Skeleton className="h-8 w-3/4" />
                     <Skeleton className="h-3 w-full rounded-full" />
                     <Skeleton className="h-12 w-48 rounded-xl" />
                   </div>
                 ) : (
-                  <div className="card-hsociety p-8 relative overflow-hidden h-full flex flex-col justify-center border-accent/30 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.15)]">
+                  <div className="card-qyvora p-8 relative overflow-hidden h-full flex flex-col justify-center border-accent/30 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.15)]">
                     <div className="relative z-10">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="h-[1px] w-8 bg-accent/40" />
@@ -263,7 +263,7 @@ const Dashboard: React.FC = () => {
                 <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
               </div>
               {loading ? (
-                <div className="card-hsociety overflow-hidden animate-pulse">
+                <div className="card-qyvora overflow-hidden animate-pulse">
                   <div className="aspect-video bg-accent-dim/30" />
                   <div className="space-y-3 p-5">
                     <Skeleton className="h-4 w-3/4" />
@@ -312,7 +312,7 @@ const Dashboard: React.FC = () => {
                     transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                     className="flex flex-col h-full"
                   >
-                    <div className="card-hsociety flex flex-col h-full overflow-hidden border-border/60 hover:border-accent/30 transition-all duration-300">
+                    <div className="card-qyvora flex flex-col h-full overflow-hidden border-border/60 hover:border-accent/30 transition-all duration-300">
                       <div className="relative aspect-video overflow-hidden">
                         <img
                           src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}
@@ -356,7 +356,7 @@ const Dashboard: React.FC = () => {
                 );
               })()}
               {loading && (
-                <div className="card-hsociety overflow-hidden animate-pulse">
+                <div className="card-qyvora overflow-hidden animate-pulse">
                   <div className="aspect-video bg-accent-dim/30" />
                   <div className="space-y-3 p-5">
                     <Skeleton className="h-4 w-3/4" />

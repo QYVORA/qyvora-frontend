@@ -1,7 +1,7 @@
 /**
  * tokenService.ts
  *
- * Direct client for the HSOCIETY CHAIN token balance endpoint.
+ * Direct client for the QYVORA CHAIN token balance endpoint.
  *
  * Unlike chainService.ts (which reads history through the backend proxy),
  * this service calls the chain API directly from the browser when a base

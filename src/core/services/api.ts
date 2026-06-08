@@ -31,8 +31,8 @@ import axios, { AxiosError, AxiosHeaders, InternalAxiosRequestConfig } from 'axi
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 // Centralised here so a key name change never requires a grep across the codebase.
-const CSRF_TOKEN_KEY        = 'hsociety_csrf_token';
-const AUTH_SESSION_HINT_KEY = 'hsociety_auth_session_hint';
+const CSRF_TOKEN_KEY        = 'qyvora_csrf_token';
+const AUTH_SESSION_HINT_KEY = 'qyvora_auth_session_hint';
 
 // ─── API base URL ─────────────────────────────────────────────────────────────
 // Read from the Vite environment at build time. Falls back to '/api' so the

@@ -1,4 +1,4 @@
-This is the HSOCIETY Official Badge Registry. This list defines
+This is the QYVORA Official Badge Registry. This list defines
   the visual tiering, naming conventions, and earning logic for
   the achievement system as established in the codebase and asset
   architecture.

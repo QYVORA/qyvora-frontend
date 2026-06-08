@@ -234,7 +234,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {/* ── Main content grid ── */}
       <div
         className="
-          relative z-30 w-full max-w-7xl mx-auto px-6 md:px-10
+          relative z-30 w-full max-w-7xl mx-auto px-4 md:px-10
           grid grid-cols-1 lg:grid-cols-2 gap-8 items-center
           text-left
           pt-32 md:pt-32 lg:pt-28 pb-16 md:pb-20
@@ -270,16 +270,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             >
               Train Like a Hacker.
             </motion.span>
-
-            {/* Accent rule — slides in */}
-            <motion.span
-              initial={minimizeEffects ? false : { scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={minimizeEffects ? { duration: 0 } : { duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="block h-[2px] w-12 my-3 origin-left mx-0"
-              style={{ background: 'var(--color-accent)' }}
-              aria-hidden
-            />
 
             <motion.span
               initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
