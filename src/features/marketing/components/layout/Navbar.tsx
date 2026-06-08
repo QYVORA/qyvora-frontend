@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
           <Link to="/" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="lg" />
+            <Logo size="xl" />
           </Link>
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}

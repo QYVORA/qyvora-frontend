@@ -203,7 +203,7 @@ const StudentTopbar = () => {
 
           {/* Left: Logo + dropdown nav */}
           <div className="flex items-center gap-8">
-            <Link to="/dashboard"><Logo size="md" /></Link>
+            <Link to="/dashboard"><Logo size="lg" /></Link>
 
             {/* Desktop nav — HPB direct link + Operate dropdown */}
             <nav className="hidden lg:flex items-center gap-1">

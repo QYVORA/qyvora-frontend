@@ -8,7 +8,7 @@
  *      caused the glyph grid to render as solid opaque bars.
  *   2. A second useEffect reads gl.domElement on mount to set the real size
  *      immediately before the first draw call.
- *   3. Colour ramp: near-black → #88AD7C (matches --color-accent) → soft white.
+ *   3. Colour ramp: near-black → #58A366 (matches --color-accent) → soft white.
  *      Dim trailing digits are near-black; stream head peaks approach white.
  *   4. headGlow is multiplied by glyph — only brightens digit pixels, not
  *      the full lane width (which was causing solid-bar artefacts).
@@ -38,7 +38,7 @@ const STREAM_FRAG = `
   precision highp float;
 
   uniform float uTime;
-  uniform vec3  uAccent;       // #88AD7C sage green — trail colour
+  uniform vec3  uAccent;       // #58A366 sage green — trail colour
   uniform vec3  uWhite;        // near-white — stream head colour
   uniform vec3  uBase;         // Base color for trails (black in dark, light-ash in light)
   uniform vec2  uResolution;
@@ -170,7 +170,7 @@ function StreamFloor({ speedScale = 0.58, isLight }) {
         fragmentShader: STREAM_FRAG,
         uniforms: {
           uTime:         { value: 0 },
-          // #88AD7C — matches --color-accent in your dark theme CSS
+          // #58A366 — matches --color-accent in your dark theme CSS
           uAccent:       { value: isLight ? new THREE.Color(0x37 / 255, 0x5E / 255, 0x2B / 255) : new THREE.Color(0x88 / 255, 0xAD / 255, 0x7C / 255) },
           // Soft warm white for the stream head glow
           uWhite:        { value: isLight ? new THREE.Color(0.2, 0.3, 0.2) : new THREE.Color(0.92, 0.96, 0.90) },

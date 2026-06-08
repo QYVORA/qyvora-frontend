@@ -7,6 +7,7 @@ import BrandYoutubeIcon from '../../../../shared/components/icons/BrandYoutubeIc
 import BrandGithubIcon from '../../../../shared/components/icons/BrandGithubIcon';
 import { ContactTrigger } from '../ContactModal';
 import AdinkraBackground from '../../../../shared/components/backgrounds/AdinkraBackground';
+import Logo from '../../../../shared/components/brand/Logo';
 
 /* ─────────────────────────────────────────────
    DATA
@@ -49,6 +50,11 @@ const Footer: React.FC = () => (
 
         {/* Brand column */}
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-6">
+          <div className="flex flex-col gap-1 -ml-3 sm:-ml-4">
+            <Link to="/">
+              <Logo size="2xl" className="opacity-90 hover:opacity-100 transition-opacity" />
+            </Link>
+          </div>
 
           <p className="text-lg text-text-muted leading-relaxed max-w-[28rem] font-mono">
             An offensive security company focused on building a strong cybersecurity ecosystem in Africa.

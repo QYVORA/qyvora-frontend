@@ -7,8 +7,8 @@ import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 /* ═══════════════════════════════════════════════
    BRAND PALETTE
 ═══════════════════════════════════════════════ */
-const SAGE     = 0x88ad7c;
-const SAGE_HEX = '#88ad7c';
+const SAGE     = 0x58A366;
+const SAGE_HEX = '#58A366';
 
 /* ═══════════════════════════════════════════════
    TARGETS
@@ -157,7 +157,7 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
 
   const dotR     = (step / 180) * H * 0.38; // dot radius scales with step density
   // All lands now use the accent color (sage green) with consistent styling
-  const landFill  = isLight ? '#2f8a1f'  : '#88ad7c';   // sage green for all lands
+  const landFill  = isLight ? '#58A366'  : '#58A366';   // sage green for all lands
   const landAlpha = 1.0;
 
   for (let lat = 89; lat >= -89; lat -= step) {
@@ -464,10 +464,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           style={{
             display: 'none', position: 'absolute', pointerEvents: 'none',
             background: theme === 'light' ? 'rgba(232,240,232,0.95)' : 'rgba(3,6,4,0.92)',
-            border: '1px solid rgba(136,173,124,0.25)',
+            border: '1px solid rgba(88,163,102,0.25)',
             borderRadius: '4px', padding: '7px 12px',
             fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-            color: theme === 'light' ? '#2f8a1f' : '#8aab84',
+            color: theme === 'light' ? '#58A366' : '#58A366',
             zIndex: 10, lineHeight: 1.75,
             whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
           }}

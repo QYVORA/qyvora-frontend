@@ -19,39 +19,39 @@ interface ChainLogoProps {
   showLabel?: boolean;
   labelClassName?: string;
   /** "3d" = 3D render for hero/large; "flat" = transparent PNG for small/inline (default) */
-  /**
-   * QYVORA CHAIN — Logo Component
-  ...
-  const LOGO_SRC: Record<'3d' | 'flat', string> = {
-    '3d':   '/qyvora-full-logo.webp',
-    'flat': '/qyvora-full-logo.webp',
-  };
+  variant?: '3d' | 'flat';
+}
 
-  const ChainLogo: React.FC<ChainLogoProps> = ({
-    size = 40,
-    className = '',
-    showLabel = false,
-    labelClassName = '',
-    variant = 'flat',
-  }) => (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <img
-        src={LOGO_SRC[variant]}
-        alt="QYVORA CHAIN"
-        width={size}
-        height={size}
-        className="object-contain inline-block align-middle"
-        style={{ width: size, height: size }}
-      />
-      {showLabel && (
-        <span
-          className={`font-mono font-black uppercase tracking-widest text-accent ${labelClassName}`}
-          style={{ fontSize: size * 0.28 }}
-        >
-          QYVORA CHAIN
-        </span>
-      )}
-    </span>
-  );
+const LOGO_SRC: Record<'3d' | 'flat', string> = {
+  '3d':   '/qyvora-full-logo.webp',
+  'flat': '/qyvora-full-logo.webp',
+};
+
+const ChainLogo: React.FC<ChainLogoProps> = ({
+  size = 40,
+  className = '',
+  showLabel = false,
+  labelClassName = '',
+  variant = 'flat',
+}) => (
+  <span className={`inline-flex items-center gap-2 ${className}`}>
+    <img
+      src={LOGO_SRC[variant]}
+      alt="QYVORA CHAIN"
+      width={size}
+      height={size}
+      className="object-contain inline-block align-middle"
+      style={{ width: size, height: size }}
+    />
+    {showLabel && (
+      <span
+        className={`font-mono font-black uppercase tracking-widest text-accent ${labelClassName}`}
+        style={{ fontSize: size * 0.28 }}
+      >
+        QYVORA CHAIN
+      </span>
+    )}
+  </span>
+);
 
 export default ChainLogo;

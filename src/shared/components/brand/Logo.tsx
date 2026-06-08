@@ -4,18 +4,22 @@ import { useTheme } from '../../../core/contexts/ThemeContext';
 export const DARK_LOGO_SRC = '/qyvora-full-logo.webp';
 export const LIGHT_LOGO_SRC = '/qyvora-full-logo.webp';
 
+export type LogoSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+
 interface LogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: LogoSize;
 }
 
 // PNG is 1536×1024 (3:2). We render at 2.5× visual height so the mark fills
 // the container, then clip with overflow-hidden.
-const sizes: Record<string, { containerH: string; containerW: string; imgH: string }> = {
-  sm: { containerH: 'h-8',   containerW: 'w-[120px]', imgH: 'h-[72px]'  },
-  md: { containerH: 'h-10',  containerW: 'w-[150px]', imgH: 'h-[90px]'  },
-  lg: { containerH: 'h-12',  containerW: 'w-[180px]', imgH: 'h-[108px]' },
-  xl: { containerH: 'h-14',  containerW: 'w-[210px]', imgH: 'h-[126px]' },
+const sizes: Record<LogoSize, { containerH: string; containerW: string; imgH: string }> = {
+  sm: { containerH: 'h-10',  containerW: 'w-[150px]', imgH: 'h-[90px]'  },
+  md: { containerH: 'h-12',  containerW: 'w-[180px]', imgH: 'h-[108px]' },
+  lg: { containerH: 'h-14',  containerW: 'w-[210px]', imgH: 'h-[126px]' },
+  xl: { containerH: 'h-16',  containerW: 'w-[240px]', imgH: 'h-[144px]' },
+  '2xl': { containerH: 'h-20', containerW: 'w-[300px]', imgH: 'h-[180px]' },
+  '3xl': { containerH: 'h-24', containerW: 'w-[360px]', imgH: 'h-[216px]' },
 };
 
 const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
