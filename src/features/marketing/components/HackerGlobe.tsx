@@ -15,12 +15,20 @@ const SAGE_HEX = '#66B870';
 ═══════════════════════════════════════════════ */
 const TARGETS = [
   { lat:   5.56, lng:  -0.20, label: 'ACCRA',          status: 'home',    region: 'africa' },
-  { lat:   6.52, lng:   3.37, label: '',               status: 'secured', region: 'africa' },
-  { lat:  30.04, lng:  31.23, label: '',               status: 'secured', region: 'africa' },
-  { lat: -26.20, lng:  28.05, label: '',               status: 'secured', region: 'africa' },
-  { lat:  40.71, lng: -74.01, label: '',               status: 'secured', region: 'world'  },
-  { lat:  51.51, lng:  -0.13, label: '',               status: 'secured', region: 'world'  },
-  { lat:  35.68, lng: 139.69, label: '',               status: 'secured', region: 'world'  },
+  { lat:   6.52, lng:   3.37, label: 'LAGOS',          status: 'secured', region: 'africa' },
+  { lat:  30.04, lng:  31.23, label: 'CAIRO',          status: 'secured', region: 'africa' },
+  { lat: -26.20, lng:  28.05, label: 'JOBURG',         status: 'secured', region: 'africa' },
+  { lat:  -1.29, lng:  36.82, label: 'NAIROBI',        status: 'secured', region: 'africa' },
+  { lat:  33.57, lng:  -7.58, label: 'CASABLANCA',     status: 'secured', region: 'africa' },
+  { lat:  -4.32, lng:  15.31, label: 'KINSHASA',       status: 'secured', region: 'africa' },
+  { lat:  14.69, lng: -17.44, label: 'DAKAR',          status: 'secured', region: 'africa' },
+  { lat:  40.71, lng: -74.01, label: 'NEW YORK',       status: 'secured', region: 'world'  },
+  { lat:  48.85, lng:   2.35, label: 'PARIS',          status: 'secured', region: 'world'  },
+  { lat:  25.20, lng:  55.27, label: 'DUBAI',          status: 'secured', region: 'world'  },
+  { lat:   1.35, lng: 103.82, label: 'SINGAPORE',      status: 'secured', region: 'world'  },
+  { lat:  35.68, lng: 139.69, label: 'TOKYO',          status: 'secured', region: 'world'  },
+  { lat: -33.86, lng: 151.20, label: 'SYDNEY',         status: 'secured', region: 'world'  },
+  { lat: -23.55, lng: -46.63, label: 'SAO PAULO',      status: 'secured', region: 'world'  },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -340,22 +348,34 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       arcs.push({ geo, progress: Math.random(), speed: 0.0008 + Math.random() * 0.0012 });
     });
 
-    /* ── Single satellite ── */
-    const satDot = new THREE.Mesh(
-      new THREE.SphereGeometry(0.005, 6, 6),
-      new THREE.MeshBasicMaterial({ color: isLight ? 0x2f8a1f : 0xffffff, transparent: true, opacity: 0.35 }),
-    );
-    scene.add(satDot);
-    const TRAIL_LEN = 24;
-    const trailPts  = Array.from({ length: TRAIL_LEN }, () => new THREE.Vector3());
-    const trailGeo  = new THREE.BufferGeometry().setFromPoints(trailPts);
-    scene.add(new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
-      color: isLight ? 0x8ab88a : 0x2e4038, transparent: true, opacity: 0.18,
-    })));
-    let trailHead = 0;
-    const SAT_RADIUS = 1.40;
-    const SAT_INCL   = Math.PI / 5;
-    const SAT_SPEED  = 0.003;
+    /* ── Multi-satellite system ── */
+    const SATS_COUNT = 3;
+    const sats = Array.from({ length: SATS_COUNT }).map((_, i) => {
+      const dot = new THREE.Mesh(
+        new THREE.SphereGeometry(0.006, 6, 6),
+        new THREE.MeshBasicMaterial({ color: isLight ? 0x2f8a1f : 0xffffff, transparent: true, opacity: 0.45 }),
+      );
+      scene.add(dot);
+      
+      const trailLen = 28;
+      const trailPts = Array.from({ length: trailLen }, () => new THREE.Vector3());
+      const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
+      const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
+        color: isLight ? 0x8ab88a : 0x2e4038, transparent: true, opacity: 0.22,
+      }));
+      scene.add(trailLine);
+
+      return {
+        dot,
+        trailLine,
+        trailPts,
+        trailHead: 0,
+        radius: 1.35 + i * 0.12,
+        incl: (Math.PI / 4) + (i * Math.PI / 6),
+        speed: 0.0025 + (i * 0.0008),
+        phase: i * (Math.PI * 0.5)
+      };
+    });
 
     /* ── Tooltip ── */
     const raycaster = new THREE.Raycaster();
@@ -410,16 +430,18 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         arc.geo.setDrawRange(0, Math.max(2, Math.floor(arc.progress * 80)));
       });
 
-      // Satellite orbit
-      const angle = tick * SAT_SPEED * 60;
-      satDot.position.set(
-        SAT_RADIUS * Math.cos(angle),
-        SAT_RADIUS * Math.sin(angle) * Math.sin(SAT_INCL),
-        SAT_RADIUS * Math.sin(angle) * Math.cos(SAT_INCL),
-      );
-      trailPts[trailHead % TRAIL_LEN].copy(satDot.position);
-      trailHead++;
-      trailGeo.setFromPoints(trailPts);
+      // Multi-satellite orbits
+      sats.forEach(sat => {
+        const angle = sat.phase + tick * sat.speed * 60;
+        sat.dot.position.set(
+          sat.radius * Math.cos(angle),
+          sat.radius * Math.sin(angle) * Math.sin(sat.incl),
+          sat.radius * Math.sin(angle) * Math.cos(sat.incl),
+        );
+        sat.trailPts[sat.trailHead % sat.trailPts.length].copy(sat.dot.position);
+        sat.trailHead++;
+        sat.trailLine.geometry.setFromPoints(sat.trailPts);
+      });
 
       renderer.render(scene, camera);
     };

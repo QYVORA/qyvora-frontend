@@ -80,8 +80,8 @@ const ServicesSection: React.FC = () => {
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full pt-12 md:pt-32 pb-12 flex items-center justify-center">
-      <div className="relative w-full group/carousel h-[620px] sm:h-[580px] lg:h-[540px] xl:h-[580px]">
+    <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full pt-12 md:pt-28 pb-12 flex items-center justify-center">
+      <div className="relative w-full group/carousel h-[620px] sm:h-[580px] lg:h-[480px] xl:h-[520px]">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeIndex}
@@ -127,7 +127,7 @@ const ServicesSection: React.FC = () => {
               </div>
 
               {/* Content Section (Right on Desktop) */}
-              <div className="flex-1 flex flex-col p-10 lg:p-14 xl:p-20 justify-center">
+              <div className="flex-1 flex flex-col p-8 lg:p-10 xl:p-14 justify-center">
                 <div className="max-w-xl">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">
@@ -135,11 +135,11 @@ const ServicesSection: React.FC = () => {
                     </span>
                   </div>
                   
-                  <h3 className="text-3xl lg:text-4xl xl:text-5xl font-black text-text-primary uppercase tracking-tight leading-tight mb-10">
+                  <h3 className="text-2xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-8">
                     {service.title}
                   </h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-10 mb-12">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-10 mb-10">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-4">
                         <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
@@ -175,20 +175,20 @@ const ServicesSection: React.FC = () => {
         </AnimatePresence>
 
         {/* Navigation Arrows */}
-        <div className="absolute top-1/2 -translate-y-1/2 -left-6 -right-6 flex items-center justify-between pointer-events-none z-20">
+        <div className="absolute top-1/2 -translate-y-1/2 -left-8 -right-8 flex items-center justify-between pointer-events-none z-20">
           <button
             onClick={handlePrev}
-            className="w-12 h-12 rounded-full bg-bg-card/80 backdrop-blur-md border border-white/5 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
+            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-white/10 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
             aria-label="Previous service"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-8 h-8" />
           </button>
           <button
             onClick={handleNext}
-            className="w-12 h-12 rounded-full bg-bg-card/80 backdrop-blur-md border border-white/5 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
+            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-white/10 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
             aria-label="Next service"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-8 h-8" />
           </button>
         </div>
       </div>

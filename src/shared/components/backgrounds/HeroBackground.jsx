@@ -59,32 +59,33 @@ function HeroBackground({ className = "" }) {
 
     const draw = () => {
       time += 0.005;
+      const scrollSpeed = 40; // Increased speed (Degrees of longitude per second)
+      const scrollOffset = time * scrollSpeed;
+      
       ctx.clearRect(0, 0, w, h);
       
       const cols = Math.ceil(w / step);
       const rows = Math.ceil(h / step);
       
-      // Map screen coordinates to Lat/Lng roughly
-      // We want to center Africa/Europe area
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
           const x = i * step;
           const y = j * step;
           
-          // Normalized coords -1 to 1
           const nx = (x / w) * 2 - 1;
           const ny = (y / h) * 2 - 1;
           
-          // Convert to pseudo lat/lng
-          const lng = nx * 180;
+          let lng = (nx * 180) + scrollOffset;
+          lng = ((lng + 180) % 360 + 360) % 360 - 180;
+          
           const lat = -ny * 90;
 
           if (isLand(lat, lng)) {
-            // Animated wave effect for dots
             const dist = Math.sqrt(nx * nx + ny * ny);
             const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
             
-            ctx.globalAlpha = isLight ? (0.05 + wave * 0.08) : (0.03 + wave * 0.12);
+            // Increased opacity for better visibility
+            ctx.globalAlpha = isLight ? (0.10 + wave * 0.15) : (0.08 + wave * 0.22);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();
@@ -125,8 +126,8 @@ function HeroBackground({ className = "" }) {
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(circle at 50% 50%, transparent 20%, ${bgBase} 95%)`,
-          opacity: isLight ? 0.7 : 0.85
+          background: `radial-gradient(circle at 50% 50%, transparent 35%, ${bgBase} 100%)`,
+          opacity: isLight ? 0.45 : 0.65
         }}
       />
 

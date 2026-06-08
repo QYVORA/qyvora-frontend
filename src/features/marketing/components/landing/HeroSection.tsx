@@ -93,19 +93,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center
-                       justify-start gap-3 mb-8"
+            className="flex w-full sm:w-auto flex-row items-center justify-start gap-3 mb-8"
           >
             {user ? (
-              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-8 !py-3 text-sm">
-                <LayoutDashboard className="w-4 h-4" /> Dashboard
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2 !px-6 sm:!px-8 !py-2.5 sm:!py-3 text-xs sm:text-sm">
+                <LayoutDashboard className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-sm !px-8 !py-3">
-                  Start Training <ArrowRight className="w-4 h-4" />
+                <Link to="/register" className="btn-primary flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm !px-4 sm:!px-8 !py-2.5 sm:!py-3 whitespace-nowrap">
+                  Start Training <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </Link>
-                <Link to="/login" className="btn-secondary text-sm !px-8 !py-3 text-center">
+                <Link to="/login" className="btn-secondary text-[10px] sm:text-sm !px-5 sm:!px-8 !py-2.5 sm:!py-3 text-center whitespace-nowrap">
                   Log In
                 </Link>
               </>
