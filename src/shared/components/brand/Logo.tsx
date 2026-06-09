@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTheme } from '../../../core/contexts/ThemeContext';
 
-export const DARK_LOGO_SRC = '/qyvora-full-logo.webp';
-export const LIGHT_LOGO_SRC = '/qyvora-full-logo.webp';
-export const DARK_MARK_SRC = '/qyvora-favicon.webp';
-export const LIGHT_MARK_SRC = '/qyvora-favicon.webp';
+export const DARK_LOGO_SRC = '/qyvora-full-logo.png';
+export const LIGHT_LOGO_SRC = '/qyvora-full-logo.png';
+export const DARK_MARK_SRC = '/qyvora-single-logo.png';
+export const LIGHT_MARK_SRC = '/qyvora-single-logo.png';
 
 export type LogoSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 export type LogoVariant = 'full' | 'mark';
@@ -40,22 +40,6 @@ const sizes: Record<LogoSize, string> = {
   '3xl': 'w-[585px]',
 };
 
-// Short Logo (Mark) normalization
-// Canvas: 1024×1024
-// Visible Box: 770×441
-// Left: 247, Top: 264
-// Aspect Ratio: ~1.75:1
-const MARK_VISIBLE_W = 770;
-const MARK_VISIBLE_H = 441;
-const MARK_CANVAS_W = 1024;
-const MARK_CANVAS_H = 1024;
-const MARK_LEFT_M = 247;
-const MARK_TOP_M = 264;
-
-const MARK_IMG_H_PCT = (MARK_CANVAS_H / MARK_VISIBLE_H) * 100;    // ~232.20%
-const MARK_IMG_TOP_PCT = -(MARK_TOP_M / MARK_VISIBLE_H) * 100;    // ~-59.86%
-const MARK_IMG_LEFT_PCT = -(MARK_LEFT_M / MARK_VISIBLE_W) * 100;  // ~-32.08%
-
 const markSizes: Record<LogoSize, string> = {
   sm: 'w-[42px]',
   md: 'w-[56px]',
@@ -73,18 +57,11 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
     const widthClass = markSizes[size];
     return (
       <div className={`logo-wrap flex-none ${widthClass} max-w-full ${className}`}>
-        <div className="w-full aspect-[770/441] overflow-hidden relative">
-          <img
-            src={markSrc}
-            alt="Q"
-            className="absolute max-w-none"
-            style={{
-              height: `${MARK_IMG_H_PCT}%`,
-              top: `${MARK_IMG_TOP_PCT}%`,
-              left: `${MARK_IMG_LEFT_PCT}%`,
-            }}
-          />
-        </div>
+        <img
+          src={markSrc}
+          alt="QYVORA"
+          className="w-full h-auto block"
+        />
       </div>
     );
   }
