@@ -3,7 +3,6 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
-import Logo from '../../../../shared/components/brand/Logo';
 
 interface FinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -88,14 +87,14 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden lg:flex items-center justify-end lg:translate-x-12 xl:translate-x-20"
+            className="hidden lg:flex items-center justify-end lg:-translate-x-4 xl:-translate-x-8"
           >
             <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
-              {/* Large responsive logo - no blur, full opacity */}
-              <Logo 
-                variant="mark" 
-                size="3xl"
-                className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px]"
+              {/* Large responsive logo - using the specific CTA logo asset */}
+              <img
+                src="/qyvora-cta-logo.png"
+                alt="QYVORA"
+                className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block opacity-90"
               />
             </div>
           </motion.div>
