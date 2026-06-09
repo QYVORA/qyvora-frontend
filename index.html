@@ -3,9 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    
+    <!-- Force exact color rendering on all devices -->
     <meta name="theme-color" content="#66B870" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#66B870" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#050706" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="msapplication-navbutton-color" content="#66B870" />
+    
+    <!-- Disable iOS color adjustment -->
+    <meta name="format-detection" content="telephone=no" />
+    <style>
+      /* Critical CSS to prevent color shifts before main CSS loads */
+      :root {
+        --color-accent: #66B870;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    </style>
 
     <title>QYVORA</title>
 
@@ -13,6 +29,7 @@
     <link rel="icon" type="image/webp" href="/qyvora-favicon.webp" />
     <link rel="apple-touch-icon" href="/qyvora-favicon.webp" />
     <meta name="msapplication-TileImage" content="/qyvora-favicon.webp" />
+    <meta name="msapplication-TileColor" content="#66B870" />
 
     <!-- DNS prefetch + preconnect for the API origin -->
     <link rel="preconnect" href="/" crossorigin />

@@ -5,12 +5,12 @@ import { ArrowLeft } from 'lucide-react';
 import HackerGlobe from '../../marketing/components/HackerGlobe';
 
 const AuthHero: React.FC = () => (
-  <div className="hidden lg:flex relative flex-col justify-between h-full overflow-hidden p-12">
+  <div className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
 
-    {/* Globe */}
-    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none">
-      <div className="relative w-full h-full max-w-[520px] max-h-[520px] mx-auto">
+    {/* Globe - properly centered with responsive sizing */}
+    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-8">
+      <div className="relative w-full h-full max-w-[420px] max-h-[420px] xl:max-w-[520px] xl:max-h-[520px] mx-auto my-auto">
         <div className="absolute inset-0 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
         <div className="w-full h-full"><HackerGlobe scale={0.95} /></div>
       </div>
@@ -25,6 +25,9 @@ const AuthHero: React.FC = () => (
         <ArrowLeft className="w-4 h-4" /> Back to Home
       </Link>
     </div>
+    
+    {/* Bottom spacer to push content up */}
+    <div className="relative z-20 h-8" />
   </div>
 );
 

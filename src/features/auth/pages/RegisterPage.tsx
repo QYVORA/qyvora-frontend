@@ -55,16 +55,19 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen lg:overflow-hidden relative grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-screen relative lg:grid lg:grid-cols-2">
       <HeroBackground className="opacity-50" />
       <AuthHero />
-      <div className="flex flex-col items-center justify-center px-4 py-8 md:p-12 relative lg:backdrop-blur-xl lg:h-full lg:overflow-y-auto">
+      <div className="flex flex-col items-center justify-start px-4 py-8 md:p-12 relative lg:backdrop-blur-xl min-h-screen lg:h-screen lg:overflow-y-auto">
+        {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}
         <div className="absolute top-6 left-6 z-20 lg:hidden">
-          <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 bg-text-primary text-bg rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:brightness-110 active:scale-95">
-            <ArrowLeft className="w-4 h-4" /> Home
+          <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
+            <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
         </div>
-        <div className="w-full max-w-lg relative z-10">
+        
+        {/* Scrollable form container */}
+        <div className="w-full max-w-lg relative z-10 my-auto py-12 lg:py-16">
           <p className="sr-only" aria-live="polite">{formMessage}</p>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
             <RegisterForm

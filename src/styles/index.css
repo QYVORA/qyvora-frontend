@@ -89,6 +89,10 @@
     overflow-x: hidden;
     height: 100%;
     color-scheme: dark light;
+    /* Force exact color rendering on all devices */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
   body {
@@ -101,9 +105,21 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: geometricPrecision;
     /* Prevent mobile browsers from adjusting colors */
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    color-adjust: exact;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Force exact accent color rendering across all elements */
+  .bg-accent,
+  .text-accent,
+  .border-accent,
+  [class*="bg-accent"],
+  [class*="text-accent"],
+  [class*="border-accent"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
   #root {
@@ -332,6 +348,19 @@
     body {
       font-size: var(--mobile-text-base);
       line-height: 1.6;
+    }
+
+    /* Force exact accent color on mobile - no browser adjustments */
+    :root {
+      --color-accent: #66B870 !important;
+      --color-accent-rgb: 102, 184, 112 !important;
+    }
+
+    /* Prevent any color profile adjustments on mobile */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
     }
 
     h1 { font-size: 2.25rem !important; }

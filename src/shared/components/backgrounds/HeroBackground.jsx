@@ -49,17 +49,17 @@ function HeroBackground({ className = "" }) {
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
     
-    // Grid settings - more subtle and refined
-    const step = isMobile ? 10 : (constrainedDevice ? 8 : 6);
-    const dotR = isMobile ? 0.9 : 1.1;
+    // Grid settings - bigger and more visible dots
+    const step = isMobile ? 12 : (constrainedDevice ? 10 : 8);
+    const dotR = isMobile ? 1.4 : 1.8;
     const accentColor = '#66B870';
     
     let rafId;
     let time = 0;
 
     const draw = () => {
-      time += 0.004; // Slightly slower for cleaner look
-      const scrollSpeed = 50; // Reduced speed for more stable appearance
+      time += 0.008; // Faster animation (was 0.004)
+      const scrollSpeed = 85; // Much faster scroll (was 50)
       const scrollOffset = time * scrollSpeed;
       
       ctx.clearRect(0, 0, w, h);
@@ -84,8 +84,8 @@ function HeroBackground({ className = "" }) {
             const dist = Math.sqrt(nx * nx + ny * ny);
             const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
             
-            // More subtle opacity for cleaner look
-            ctx.globalAlpha = isLight ? (0.08 + wave * 0.12) : (0.09 + wave * 0.18);
+            // Much more visible opacity
+            ctx.globalAlpha = isLight ? (0.25 + wave * 0.35) : (0.28 + wave * 0.42);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();
@@ -120,7 +120,7 @@ function HeroBackground({ className = "" }) {
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full"
         style={{ 
-          filter: 'blur(0.4px)',
+          filter: 'blur(0.3px)',
           width: '100%',
           height: '100%',
           minWidth: '100vw',
@@ -128,21 +128,21 @@ function HeroBackground({ className = "" }) {
         }}
       />
       
-      {/* Ambient Radial Gradient Overlay - More subtle */}
+      {/* Lighter gradient overlay - more visible background */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse at 50% 40%, transparent 25%, ${bgBase} 90%)`,
-          opacity: isLight ? 0.6 : 0.75
+          background: `radial-gradient(ellipse at 50% 40%, transparent 20%, ${bgBase} 85%)`,
+          opacity: isLight ? 0.4 : 0.5
         }}
       />
 
-      {/* Edge Fades - Smoother transitions */}
+      {/* Lighter edge fades */}
       <div className="absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg via-bg/80 to-transparent opacity-100" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-bg via-bg/80 to-transparent opacity-100" />
-        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg to-transparent opacity-60" />
-        <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-bg to-transparent opacity-60" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg via-bg/60 to-transparent opacity-80" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg via-bg/60 to-transparent opacity-80" />
+        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-bg/80 to-transparent opacity-40" />
+        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-bg/80 to-transparent opacity-40" />
       </div>
     </div>
   );
