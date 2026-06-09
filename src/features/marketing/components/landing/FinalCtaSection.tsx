@@ -22,8 +22,8 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
           
           {/* Left Section - Content */}
           <div className="max-w-2xl">
@@ -88,14 +88,14 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden lg:flex items-center justify-end lg:pl-20 xl:pl-32"
+            className="hidden lg:flex items-center justify-end lg:translate-x-12 xl:translate-x-20"
           >
-            <div className="relative w-full max-w-2xl xl:max-w-3xl flex items-center justify-end">
+            <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
               {/* Large responsive logo - no blur, full opacity */}
               <Logo 
                 variant="mark" 
                 size="3xl"
-                className="relative z-10 w-full max-w-[700px] xl:max-w-[900px]"
+                className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px]"
               />
             </div>
           </motion.div>

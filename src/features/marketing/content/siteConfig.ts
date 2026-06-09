@@ -43,14 +43,6 @@ export const SITE_CONFIG = {
   },
   social: [
     {
-      key: 'x',
-      label: 'Follow on X',
-      handle: '@qyvora',
-      desc: 'Ops updates, alerts, and announcements.',
-      href: 'https://x.com/qyvora',
-      action: 'Follow',
-    },
-    {
       key: 'linkedin',
       label: 'Connect on LinkedIn',
       handle: 'QYVORA',
@@ -71,7 +63,7 @@ export const SITE_CONFIG = {
       label: 'Watch on YouTube',
       handle: 'QYVORA',
       desc: 'Tutorials, walkthroughs, and operator content.',
-      href: 'https://youtube.com/@qyvora',
+      href: 'https://www.youtube.com/@QYVORASEC',
       action: 'Subscribe',
     },
     {
