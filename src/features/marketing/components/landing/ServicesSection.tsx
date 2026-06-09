@@ -81,7 +81,7 @@ const ServicesSection: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full pt-12 md:pt-28 pb-12 flex items-center justify-center">
-      <div className="relative w-full group/carousel h-[620px] sm:h-[580px] lg:h-[480px] xl:h-[520px]">
+      <div className="relative w-full group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeIndex}
@@ -95,12 +95,12 @@ const ServicesSection: React.FC = () => {
               opacity: { duration: 0.4 },
               filter: { duration: 0.4 }
             }}
-            className="absolute inset-0 w-full h-full"
+            className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full h-full overflow-hidden rounded-[2.5rem] border border-white/5 bg-bg-card/40 backdrop-blur-sm shadow-2xl">
+            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 bg-bg-card/40 backdrop-blur-sm shadow-2xl">
               
               {/* Image Section (Left on Desktop) */}
-              <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group h-1/2 lg:h-full">
+              <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group aspect-[16/10] sm:aspect-video lg:aspect-auto lg:h-[480px] xl:h-[520px]">
                 <img
                   src={service.image}
                   alt={service.title}
@@ -109,17 +109,17 @@ const ServicesSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20" />
                 
                 {/* Price Badge */}
-                <div className="absolute top-8 left-8">
-                  <div className="px-6 py-3 bg-bg-card/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
-                    <span className="text-base font-black text-accent uppercase tracking-widest">
+                <div className="absolute top-6 left-6 sm:top-8 sm:left-8">
+                  <div className="px-4 py-2 sm:px-6 sm:py-3 bg-bg-card/90 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl shadow-2xl">
+                    <span className="text-xs sm:text-base font-black text-accent uppercase tracking-widest">
                       {service.price}
                     </span>
                   </div>
                 </div>
 
                 {service.accent && (
-                  <div className="absolute top-8 right-8">
-                    <div className="px-4 py-2 bg-accent text-bg rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20">
+                  <div className="absolute top-6 right-6 sm:top-8 sm:right-8">
+                    <div className="px-3 py-1.5 sm:px-4 sm:py-2 bg-accent text-bg rounded-lg sm:rounded-xl text-[9px] sm:text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20">
                       Popular Choice
                     </div>
                   </div>
@@ -127,42 +127,42 @@ const ServicesSection: React.FC = () => {
               </div>
 
               {/* Content Section (Right on Desktop) */}
-              <div className="flex-1 flex flex-col p-8 lg:p-10 xl:p-14 justify-center">
+              <div className="flex-1 flex flex-col p-6 sm:p-10 xl:p-14 justify-center">
                 <div className="max-w-xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">
+                  <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                    <span className="text-[9px] sm:text-[10px] font-bold text-accent uppercase tracking-[0.2em]">
                       {service.subtitle}
                     </span>
                   </div>
                   
-                  <h3 className="text-2xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-8">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 sm:mb-8">
                     {service.title}
                   </h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-10 mb-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-4 gap-x-10 mb-8 sm:mb-10">
                     {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-4">
-                        <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-text-secondary leading-normal font-medium">
+                      <div key={idx} className="flex items-start gap-3 sm:gap-4">
+                        <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-accent/60 mt-0.5 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-text-secondary leading-normal font-medium">
                           {feature}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                  <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6">
                     <button
                       onClick={() => openServiceRequestModal(service.title)}
-                      className="w-full sm:w-auto px-10 py-5 bg-accent text-bg rounded-2xl font-black uppercase tracking-[0.15em] text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-4"
+                      className="w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-xs sm:text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
                     >
-                      <Lock className="w-5 h-5" />
+                      <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
                       Request Assessment
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                     
                     <div className="flex items-center gap-2 opacity-40">
-                      <ShieldCheck className="w-5 h-5 text-accent" />
-                      <span className="text-[11px] font-bold text-text-muted uppercase tracking-widest">
+                      <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                      <span className="text-[9px] sm:text-[11px] font-bold text-text-muted uppercase tracking-widest">
                         ISO COMPLIANT
                       </span>
                     </div>
@@ -175,7 +175,7 @@ const ServicesSection: React.FC = () => {
         </AnimatePresence>
 
         {/* Navigation Arrows */}
-        <div className="absolute top-1/2 -translate-y-1/2 -left-8 -right-8 flex items-center justify-between pointer-events-none z-20">
+        <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -left-8 -right-8 items-center justify-between pointer-events-none z-20">
           <button
             onClick={handlePrev}
             className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-white/10 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
