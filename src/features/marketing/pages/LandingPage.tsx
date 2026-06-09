@@ -33,7 +33,7 @@ const SnapSection: React.FC<{
       className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
     >
       <div
-        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-20 md:py-24"
+        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-24"
         data-snap-child=""
       >
         {children}

@@ -57,7 +57,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             className="inline-flex items-center gap-2.5 px-4 py-2.5 border border-accent/25 bg-accent-dim rounded-lg"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] text-accent">
+            <span className="font-mono text-[9px] sm:text-[11px] font-black uppercase tracking-[0.12em] sm:tracking-[0.3em] text-accent">
               Africa's Offensive Security Platform
             </span>
           </motion.div>

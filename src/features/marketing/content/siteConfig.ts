@@ -55,7 +55,7 @@ export const SITE_CONFIG = {
       label: 'View on GitHub',
       handle: 'QYVORA',
       desc: 'Open source tools, platform code, and public engineering updates.',
-      href: 'https://github.com/qyvora',
+      href: 'https://github.com/QYVORA',
       action: 'View',
     },
     {
