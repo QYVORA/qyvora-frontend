@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
           'h-[80px] flex items-center',
           'transition-all duration-500',
           !isVisible && !isMenuOpen ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
-          isScrolled || isMenuOpen ? 'bg-bg/80 backdrop-blur-lg' : 'bg-transparent',
+          isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
         ].join(' ')}
         style={{ outline: 'none', border: 'none' }}
       >

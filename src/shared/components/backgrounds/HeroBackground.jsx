@@ -115,16 +115,17 @@ function HeroBackground({ className = "" }) {
   const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
 
   return (
-    <div className={`absolute inset-0 z-0 pointer-events-none overflow-hidden ${className}`}>
+    <div className={`fixed inset-0 z-0 pointer-events-none ${className}`}>
       <canvas 
         ref={canvasRef} 
-        className="absolute inset-0 w-full h-full"
+        className="fixed inset-0 w-screen h-screen"
         style={{ 
           filter: 'blur(0.3px)',
-          width: '100%',
-          height: '100%',
-          minWidth: '100vw',
-          minHeight: '100vh'
+          width: '100vw',
+          height: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: 0
         }}
       />
       
@@ -133,16 +134,14 @@ function HeroBackground({ className = "" }) {
         className="absolute inset-0"
         style={{
           background: `radial-gradient(ellipse at 50% 40%, transparent 20%, ${bgBase} 85%)`,
-          opacity: isLight ? 0.4 : 0.5
+          opacity: isLight ? 0.35 : 0.45
         }}
       />
 
-      {/* Lighter edge fades */}
+      {/* Minimal edge fades - only for content readability */}
       <div className="absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg via-bg/60 to-transparent opacity-80" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg via-bg/60 to-transparent opacity-80" />
-        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-bg/80 to-transparent opacity-40" />
-        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-bg/80 to-transparent opacity-40" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-bg/40 to-transparent opacity-60" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg/40 to-transparent opacity-60" />
       </div>
     </div>
   );
