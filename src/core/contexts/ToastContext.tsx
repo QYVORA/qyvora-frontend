@@ -134,7 +134,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                   ? 'border-accent/40'
                   : toast.type === 'error'
                   ? 'border-red-500/40'
-                  : 'border-blue-500/40'
+                  : 'border-accent/40'
               }`}
               // role="status" makes the element a live region for AT,
               // complementing the parent's aria-live="polite".

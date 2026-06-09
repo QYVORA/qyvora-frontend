@@ -131,7 +131,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
-                className={`btn-primary py-2.5 text-xs font-black uppercase tracking-widest ${item.bootcampAccessRevoked ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'}`}
+                className={`btn-primary py-2.5 text-xs font-black uppercase tracking-widest ${item.bootcampAccessRevoked ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-accent/10 border-accent/30 text-accent'}`}
               >
                 {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
               </button>
@@ -184,7 +184,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
                   <td className="px-6 py-5">
                     <button
                       onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
-                      className={`text-[10px] font-black uppercase tracking-widest px-3 py-2 rounded-xl border-2 transition-all min-h-[36px] ${item.bootcampAccessRevoked ? 'text-red-400 border-red-500/20 bg-red-400/5 hover:border-red-500/40' : 'text-emerald-400 border-emerald-500/20 bg-emerald-400/5 hover:border-emerald-500/40'}`}
+                      className={`text-[10px] font-black uppercase tracking-widest px-3 py-2 rounded-xl border-2 transition-all min-h-[36px] ${item.bootcampAccessRevoked ? 'text-red-400 border-red-500/20 bg-red-400/5 hover:border-red-500/40' : 'text-accent border-accent/20 bg-accent/5 hover:border-accent/40'}`}
                     >
                       {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
                     </button>
@@ -220,7 +220,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
                         <Ban className="w-3 h-3" /> Blocked
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-lg border border-emerald-400/20">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent bg-accent/10 px-2.5 py-1 rounded-lg border border-accent/20">
                         <Unlock className="w-3 h-3" /> Active
                       </span>
                     )}

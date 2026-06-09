@@ -69,7 +69,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({
                   <td className="px-6 py-5 font-black uppercase tracking-tight text-text-primary text-sm whitespace-nowrap">{item.action}</td>
                   <td className="px-6 py-5 font-mono text-text-muted max-w-[240px] truncate">{item.path || '—'}</td>
                   <td className="px-6 py-5">
-                    <span className={`px-2 py-1 rounded text-[10px] font-black font-mono border ${Number(item.statusCode) >= 400 ? 'bg-red-400/10 text-red-400 border-red-400/20' : 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'}`}>
+                    <span className={`px-2 py-1 rounded text-[10px] font-black font-mono border ${Number(item.statusCode) >= 400 ? 'bg-red-400/10 text-red-400 border-red-400/20' : 'bg-accent/10 text-accent border-accent/20'}`}>
                       {item.statusCode}
                     </span>
                   </td>
