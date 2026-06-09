@@ -201,7 +201,7 @@ const Marketplace: React.FC = () => {
                       )}
                       {prod.isFree && !hasPurchased && (
                         <div className="absolute top-2 left-2">
-                          <span className="bg-emerald-500/80 text-white rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest">
+                          <span className="bg-accent/80 text-bg rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest">
                             FREE
                           </span>
                         </div>
@@ -213,7 +213,7 @@ const Marketplace: React.FC = () => {
                     )}
                     <div className="mb-4">
                       {prod.isFree ? (
-                        <span className="text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">FREE</span>
+                        <span className="text-sm font-mono font-bold text-accent uppercase tracking-wider">FREE</span>
                       ) : (
                         <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{formatNumber(Number(prod.cpPrice || 0))} <CpLogo className="w-3.5 h-3.5" /></span>
                       )}

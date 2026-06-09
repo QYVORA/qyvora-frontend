@@ -93,7 +93,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
             <div className="grid grid-cols-2 gap-4">
               <label className="block space-y-2">
                 <span className="text-[10px] font-black uppercase text-text-muted tracking-[0.2em]">
-                  CP Valuation {productForm.isFree && <span className="text-emerald-400">(zero cost)</span>}
+                  CP Valuation {productForm.isFree && <span className="text-accent">(zero cost)</span>}
                 </span>
                 <div className="relative">
                   <input
@@ -123,7 +123,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
               </label>
               <label className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-text-secondary cursor-pointer group">
                 <input type="checkbox" checked={productForm.isFree} onChange={e => setProductForm(p => ({ ...p, isFree: e.target.checked, cpPrice: e.target.checked ? 0 : p.cpPrice }))} className="accent-accent w-5 h-5 rounded-lg border-2 border-border" />
-                <span className="group-hover:text-emerald-400 transition-colors">Public Domain (Free)</span>
+                <span className="group-hover:text-accent transition-colors">Public Domain (Free)</span>
               </label>
             </div>
           </div>
@@ -178,9 +178,9 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
                 <div className="flex flex-wrap items-center gap-2 mt-2">
                   <span className="px-1.5 py-0.5 rounded bg-accent-dim text-[8px] font-black uppercase tracking-widest text-accent border border-accent/10">{item.type}</span>
                   <span className="text-[10px] font-mono font-bold text-text-secondary inline-flex items-center gap-1">
-                    {item.isFree ? <span className="text-emerald-400">FREE</span> : <>{item.cpPrice} <CpLogo className="w-3 h-3" /></>}
+                    {item.isFree ? <span className="text-accent">FREE</span> : <>{item.cpPrice} <CpLogo className="w-3 h-3" /></>}
                   </span>
-                  <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20' : 'bg-red-400/10 text-red-400 border-red-400/20'}`}>
+                  <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-widest border ${item.isActive ? 'bg-accent/10 text-accent border-accent/20' : 'bg-red-400/10 text-red-400 border-red-400/20'}`}>
                     {item.isActive ? 'Active' : 'Offline'}
                   </span>
                 </div>
@@ -233,7 +233,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
                   </td>
                   <td className="px-6 py-5">
                     {item.isFree ? (
-                      <span className="text-[10px] font-black text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded border border-emerald-400/20 uppercase tracking-widest">Free Access</span>
+                      <span className="text-[10px] font-black text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20 uppercase tracking-widest">Free Access</span>
                     ) : (
                       <div className="flex items-center gap-2 font-mono font-bold text-text-primary">
                         <CpLogo className="w-4 h-4" />
@@ -248,8 +248,8 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
                   </td>
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-2">
-                      <span className={`w-2 h-2 rounded-full ${item.isActive ? 'bg-emerald-400 animate-pulse' : 'bg-red-500'}`} />
-                      <span className={`text-[10px] font-black uppercase tracking-widest ${item.isActive ? 'text-emerald-400' : 'text-red-400'}`}>
+                      <span className={`w-2 h-2 rounded-full ${item.isActive ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${item.isActive ? 'text-accent' : 'text-red-400'}`}>
                         {item.isActive ? 'Operational' : 'Offline'}
                       </span>
                     </div>

@@ -41,11 +41,11 @@ export interface BootcampConfig {
 
 // ── Phase Colors ──────────────────────────────────────────────────────────────
 export const PHASE_COLORS: Record<string, string> = {
-  phase1: '#3b82f6', // blue-500 (Mindset)
-  phase2: '#10b981', // emerald-500 (Linux)
-  phase3: '#f59e0b', // amber-500 (Networking)
-  phase4: '#8b5cf6', // violet-500 (Web)
-  phase5: '#ec4899', // pink-500 (Social)
+  phase1: '#66B870', // Main green theme (Mindset)
+  phase2: '#66B870', // Main green theme (Linux)
+  phase3: '#66B870', // Main green theme (Networking)
+  phase4: '#66B870', // Main green theme (Web)
+  phase5: '#66B870', // Main green theme (Social)
 };
 
 // ── Image path builder ────────────────────────────────────────────────────────

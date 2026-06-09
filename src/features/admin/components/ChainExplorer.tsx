@@ -39,8 +39,8 @@ interface ValidateResult {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const EVENT_COLORS: Record<string, string> = {
   ROOM_COMPLETED:    'text-accent border-accent/30 bg-accent/10',
-  MODULE_COMPLETED:  'text-blue-400 border-blue-400/30 bg-blue-400/10',
-  CP_REWARD:         'text-yellow-400 border-yellow-400/30 bg-yellow-400/10',
+  MODULE_COMPLETED:  'text-accent border-accent/30 bg-accent/10',
+  CP_REWARD:         'text-accent border-accent/30 bg-accent/10',
   USER_ACTIVITY_LOG: 'text-text-muted border-border bg-bg',
 };
 
