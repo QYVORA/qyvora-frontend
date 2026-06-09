@@ -21,9 +21,29 @@ const CommunityPopup: React.FC = () => {
     if (hasJoined || hasClosed) return;
 
     // Show after 30 seconds for all users (guests and students)
-    const timer = setTimeout(() => setIsVisible(true), 30000);
+    const timer = setTimeout(() => {
+      // Check if any other modal/dialog is already open to prevent clutter
+      const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
+      if (!isOtherDialogOpen) {
+        setIsVisible(true);
+      }
+    }, 30000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Monitor for other dialogs while visible - if one opens, hide this popup
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const interval = setInterval(() => {
+      const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
+      if (isOtherDialogOpen) {
+        setIsVisible(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isVisible]);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -62,9 +82,9 @@ const CommunityPopup: React.FC = () => {
             {/* Image Section - Broad Horizontal Design */}
             <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">
               <img
-                src="/assets/branding/chain/qyvora-chain-logo-visuals.webp"
+                src="/qyvora-single-logo.png"
                 alt="Community"
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                className="w-full h-full object-contain p-8 bg-bg-card transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/40 via-transparent to-transparent opacity-0 dark:opacity-60" />
               

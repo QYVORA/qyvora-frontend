@@ -310,7 +310,7 @@ Layer 2 — Cache API (image preloading):
 ## Environment Variables
 
 ```env
-VITE_API_URL=https://qyvora-backend.onrender.com/api
+VITE_API_BASE_URL=https://qyvora-backend.onrender.com/api
 ```
 
 All other config is handled at build time via Vite.
