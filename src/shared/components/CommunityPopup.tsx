@@ -51,13 +51,6 @@ const CommunityPopup: React.FC = () => {
     localStorage.setItem('qyvora_community_popup_closed', '1');
   };
 
-  const handleJoin = () => {
-    localStorage.setItem('qyvora_community_joined', '1');
-    setIsVisible(false);
-    const whatsappUrl = SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5';
-    window.open(whatsappUrl, '_blank', 'noreferrer');
-  };
-
   return (
     <AnimatePresence>
       {isVisible && (
@@ -118,8 +111,14 @@ const CommunityPopup: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handleJoin}
+                <a
+                  href={SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5'}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => {
+                    localStorage.setItem('qyvora_community_joined', '1');
+                    setIsVisible(false);
+                  }}
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
                     rounded-2xl bg-[#66B870] py-3.5 text-[10px] font-black uppercase tracking-[0.15em]
@@ -129,7 +128,7 @@ const CommunityPopup: React.FC = () => {
                 >
                   <BrandWhatsAppIcon className="h-4 h-4" />
                   <span>Join Now</span>
-                </button>
+                </a>
                 
                 <button
                   onClick={handleClose}
