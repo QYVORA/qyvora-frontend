@@ -40,9 +40,9 @@ function HeroBackground({ className = "" }) {
   const { isMobile, constrainedDevice } = useAdaptiveUi();
   const isLight = theme === 'light';
 
-  if (isMobile) return null;
-
   useEffect(() => {
+    // Skip animation on mobile
+    if (isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
@@ -115,6 +115,9 @@ function HeroBackground({ className = "" }) {
   }, [theme, isMobile, constrainedDevice, isLight]);
 
   const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
+
+  // Don't render canvas on mobile
+  if (isMobile) return null;
 
   return (
     <div className={`fixed inset-0 z-0 pointer-events-none ${className}`}>
