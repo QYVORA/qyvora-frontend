@@ -339,22 +339,36 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     /* ── Connection arcs ── */
     type ArcObj = { geo: THREE.BufferGeometry; progress: number; speed: number };
     const arcs: ArcObj[] = [];
-    const ARC_PAIRS: Array<[number, number]> = [[0,1],[0,3],[0,4],[0,5]];
+    const ARC_PAIRS: Array<[number, number]> = [
+      // Africa Core Network
+      [0, 1], [1, 2], [2, 4], [4, 3], [3, 6], [6, 0], [7, 0], [8, 4], [9, 2], [5, 7], [0, 4], [1, 7],
+      // International Uplinks
+      [0, 12], [1, 10], [3, 19], [2, 15], [4, 17], [7, 13], [5, 12], [2, 13], [4, 10],
+      // Global Backbone
+      [10, 13], [13, 12], [12, 17], [17, 18], [18, 10], [10, 20], [21, 10], [13, 22], [22, 17], [19, 23], [12, 14], [15, 17]
+    ];
 
     ARC_PAIRS.forEach(([a, b]) => {
       const ta = TARGETS[a], tb = TARGETS[b];
       const s   = latLngToVec3(ta.lat, ta.lng, 1.01);
       const e_  = latLngToVec3(tb.lat, tb.lng, 1.01);
-      const mid = s.clone().add(e_).normalize().multiplyScalar(1.18);
+      
+      // Calculate arc height based on distance
+      const dist = s.distanceTo(e_);
+      const hScale = 1.1 + (dist * 0.15); // Further distance = higher arc
+      
+      const mid = s.clone().add(e_).normalize().multiplyScalar(hScale);
       const curve = new THREE.QuadraticBezierCurve3(s, mid, e_);
       const geo   = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
-      const isPrimary = a === 0;
+      
+      const isAfricaLink = ta.region === 'africa' && tb.region === 'africa';
+      
       globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
-        color:       isPrimary ? (isLight ? 0x2f8a1f : SAGE) : (isLight ? 0x7aaa70 : 0x2a4030),
+        color:       isAfricaLink ? (isLight ? 0x3d9c2d : SAGE) : (isLight ? 0x8ab88a : 0x2e4a35),
         transparent: true,
-        opacity:     isPrimary ? (isLight ? 0.35 : 0.22) : 0.10,
+        opacity:     isAfricaLink ? (isLight ? 0.45 : 0.35) : 0.15,
       })));
-      arcs.push({ geo, progress: Math.random(), speed: 0.0008 + Math.random() * 0.0012 });
+      arcs.push({ geo, progress: Math.random(), speed: 0.001 + Math.random() * 0.002 });
     });
 
     /* ── Multi-satellite system ── */
@@ -386,31 +400,37 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       };
     });
 
-    /* ── Tooltip ── */
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    let rect = renderer.domElement.getBoundingClientRect();
+    /* ── Persistent Labels ── */
+    const labelContainer = document.createElement('div');
+    labelContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:10;';
+    el.appendChild(labelContainer);
 
-    const onHover = (e: MouseEvent) => {
-      mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
-      mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects(hitMeshes);
-      const tip  = tooltipRef.current;
-      if (!tip) return;
-      if (hits.length) {
-        const idx = hitMeshes.indexOf(hits[0].object as THREE.Mesh);
-        const d   = TARGETS[idx];
-        if (!d?.label) { tip.style.display = 'none'; return; }
-        tip.style.display = 'block';
-        tip.style.left    = `${e.clientX - rect.left + 16}px`;
-        tip.style.top     = `${e.clientY - rect.top  - 12}px`;
-        tip.innerHTML = `<span style="color:${SAGE_HEX};font-weight:700;letter-spacing:.09em">${d.label}</span><br><span style="font-size:9px;letter-spacing:.12em;color:${SAGE_HEX}">◈ HQ · GHANA</span>`;
-      } else {
-        tip.style.display = 'none';
-      }
-    };
-    renderer.domElement.addEventListener('mousemove', onHover);
+    const persistentLabels = TARGETS.map((t) => {
+      const div = document.createElement('div');
+      div.style.cssText = `
+        position: absolute;
+        display: none;
+        pointer-events: none;
+        background: ${theme === 'light' ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'};
+        border: 1px solid rgba(102,184,112,0.25);
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-family: JetBrains Mono, monospace;
+        font-size: 9px;
+        color: #66B870;
+        white-space: nowrap;
+        backdrop-filter: blur(4px);
+        transform: translate(-50%, -100%);
+        margin-top: -12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        transition: opacity 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      `;
+      div.textContent = t.label;
+      labelContainer.appendChild(div);
+      return { div, lat: t.lat, lng: t.lng };
+    });
 
     /* ── Render loop ── */
     let rafId = 0, last = 0, tick = 0;
@@ -452,6 +472,31 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         sat.trailLine.geometry.setFromPoints(sat.trailPts);
       });
 
+      // Update persistent labels
+      persistentLabels.forEach((l) => {
+        const pos = latLngToVec3(l.lat, l.lng, 1.005);
+        const worldPos = pos.applyMatrix4(globe.matrixWorld);
+        
+        // Visibility check: point is visible if it's on the side facing the camera
+        const dirToCamera = camera.position.clone().sub(worldPos).normalize();
+        const normal = worldPos.clone().normalize();
+        const dot = normal.dot(dirToCamera);
+        
+        if (dot > 0.15) { // Show when on the front
+          const screenPos = worldPos.project(camera);
+          const x = (screenPos.x * 0.5 + 0.5) * w;
+          const y = (screenPos.y * -0.5 + 0.5) * h;
+          
+          l.div.style.display = 'block';
+          l.div.style.left = `${x}px`;
+          l.div.style.top = `${y}px`;
+          // Fade based on how centered the point is
+          l.div.style.opacity = String(Math.min(1, (dot - 0.15) * 4));
+        } else {
+          l.div.style.display = 'none';
+        }
+      });
+
       renderer.render(scene, camera);
     };
     rafId = requestAnimationFrame(animate);
@@ -462,15 +507,14 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
-      rect = renderer.domElement.getBoundingClientRect();
     };
     window.addEventListener('resize', onResize);
 
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
-      renderer.domElement.removeEventListener('mousemove', onHover);
       dotTex.dispose();
+      if (el.contains(labelContainer)) el.removeChild(labelContainer);
       scene.traverse(obj => {
         const m = obj as THREE.Mesh;
         if (m.geometry) m.geometry.dispose();
