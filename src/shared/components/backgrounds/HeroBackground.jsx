@@ -40,6 +40,8 @@ function HeroBackground({ className = "" }) {
   const { isMobile, constrainedDevice } = useAdaptiveUi();
   const isLight = theme === 'light';
 
+  if (isMobile) return null;
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
