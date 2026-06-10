@@ -27,90 +27,119 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full h-full flex flex-col overflow-hidden">
+    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
       {/* ── Main content grid ── */}
       <div
         className="
-          relative z-30 w-full h-full mx-auto 
+          relative z-30 w-full flex-1 mx-auto 
           grid grid-cols-1 lg:grid-cols-2
           text-left
           items-center
+          min-h-screen
         "
       >
 
         {/* ── Left column - Hero Text Area ── */}
         <div className="
-          flex flex-col items-start justify-center 
+          flex flex-col items-start justify-between
           px-6 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
-          py-8 sm:py-12 
-          lg:py-20 xl:py-24
-          min-h-screen lg:min-h-0
-          space-y-5 sm:space-y-6 lg:space-y-7
+          pt-28 pb-10
+          sm:pt-32 sm:pb-12
+          lg:py-20 xl:py-24 lg:justify-center
+          space-y-0
           w-full
+          min-h-screen lg:min-h-0
         ">
 
-          {/* Status badge */}
+          {/* Top content block */}
+          <div className="flex flex-col items-start w-full space-y-6 sm:space-y-7">
+            {/* Status badge */}
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center gap-2.5 px-5 py-3 border border-accent/25 bg-accent-dim rounded-lg"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
+              <span className="font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-[0.14em] sm:tracking-[0.3em] text-accent">
+                Africa's Offensive Security Platform
+              </span>
+            </motion.div>
+
+            {/* ── Headline ── */}
+            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full">
+
+              <motion.span
+                initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem]"
+              >
+                Train Like a Hacker.
+              </motion.span>
+
+              <motion.span
+                initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-accent text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem]"
+              >
+                Become a Hacker.
+              </motion.span>
+            </h1>
+
+            {/* Subtext */}
+            <motion.p
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl"
+            >
+              {SITE_CONFIG.brand.description}
+            </motion.p>
+          </div>
+
+          {/* ── Mobile Globe — visible only on mobile/tablet ── */}
           <motion.div
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2.5 px-4 py-2.5 border border-accent/25 bg-accent-dim rounded-lg"
+            initial={{ opacity: 0, scale: 0.93 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="
+              relative flex lg:hidden items-center justify-center
+              w-full
+              my-8 sm:my-10
+              -z-10
+            "
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-            <span className="font-mono text-[9px] sm:text-[11px] font-black uppercase tracking-[0.12em] sm:tracking-[0.3em] text-accent">
-              Africa's Offensive Security Platform
-            </span>
+            {/* Ambient glow */}
+            <div
+              className="absolute inset-0 -z-10 rounded-full pointer-events-none opacity-50"
+              style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 65%)' }}
+            />
+            <div className="relative -z-10 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px]">
+              <Suspense fallback={null}>
+                <HackerGlobe scale={1.0} />
+              </Suspense>
+            </div>
           </motion.div>
-
-          {/* ── Headline ── */}
-          <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full">
-
-            <motion.span
-              initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[3.25rem] xl:text-[3.75rem]"
-            >
-              Train Like a Hacker.
-            </motion.span>
-
-            <motion.span
-              initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-accent text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[3.25rem] xl:text-[3.75rem]"
-            >
-              Become a Hacker.
-            </motion.span>
-          </h1>
-
-          {/* Subtext */}
-          <motion.p
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl"
-          >
-            {SITE_CONFIG.brand.description}
-          </motion.p>
 
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-3 sm:gap-4"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 sm:gap-4"
           >
             {user ? (
-              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-4 text-sm sm:text-base min-h-[56px] sm:min-h-[52px]">
-                <LayoutDashboard className="w-[18px] h-[18px]" /> Dashboard
+              <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-10 sm:!px-10 !py-4 text-base sm:text-base min-h-[58px] sm:min-h-[52px]">
+                <LayoutDashboard className="w-5 h-5" /> Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn-primary flex items-center justify-center gap-2.5 text-sm sm:text-base !px-8 sm:!px-10 !py-4 whitespace-nowrap min-h-[56px] sm:min-h-[52px]">
-                  Start Training <ArrowRight className="w-[18px] h-[18px]" />
+                <Link to="/register" className="btn-primary flex items-center justify-center gap-2.5 text-base sm:text-base !px-10 sm:!px-10 !py-4 whitespace-nowrap min-h-[58px] sm:min-h-[52px]">
+                  Start Training <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link to="/login" className="btn-secondary text-sm sm:text-base !px-8 sm:!px-10 !py-4 text-center whitespace-nowrap min-h-[56px] sm:min-h-[52px]">
+                <Link to="/login" className="btn-secondary text-base sm:text-base !px-10 sm:!px-10 !py-4 text-center whitespace-nowrap min-h-[58px] sm:min-h-[52px]">
                   Log In
                 </Link>
               </>
@@ -118,7 +147,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* ── Right column: Globe - Horizontally aligned with visible text content ── */}
+        {/* ── Right column: Globe - Desktop only ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.93 }}
           animate={{ opacity: 1, scale: 1 }}

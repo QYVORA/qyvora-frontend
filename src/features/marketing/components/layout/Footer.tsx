@@ -43,21 +43,21 @@ const Footer: React.FC = () => (
     <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />
 
     {/* CONTENT */}
-    <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 md:px-10 w-full py-8">
+    <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 md:px-10 w-full py-8">
 
       {/* ── Top: brand + nav ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pt-24 sm:pt-28 md:pt-32 pb-8 md:pb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12 pt-20 sm:pt-24 md:pt-28 pb-10 md:pb-12">
 
         {/* Brand column */}
-        <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-6">
+        <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-7">
           <div className="flex flex-col items-start gap-1">
             <Link to="/">
-              <Logo size="lg" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
+              <Logo size="xl" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
               <Logo size="2xl" className="hidden sm:block opacity-90 hover:opacity-100 transition-opacity" />
             </Link>
           </div>
 
-          <p className="text-lg text-text-muted leading-relaxed max-w-[28rem] font-mono text-left">
+          <p className="text-base sm:text-lg text-text-muted leading-relaxed max-w-[28rem] font-mono text-left">
             An offensive security company focused on building a strong cybersecurity ecosystem in Africa.
           </p>
 
@@ -89,12 +89,12 @@ const Footer: React.FC = () => (
           </div>
 
           {/* Live node ticker */}
-          <div className="inline-flex max-w-full items-center gap-2.5 bg-accent/5 border border-accent/20 rounded px-4 py-2 w-fit mt-1">
+          <div className="inline-flex max-w-full items-center gap-2.5 bg-accent/5 border border-accent/20 rounded px-5 py-2.5 w-fit mt-1">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            <span className="min-w-0 text-xs font-mono font-bold text-accent uppercase tracking-[0.12em] sm:tracking-[0.22em] break-words">
+            <span className="min-w-0 text-xs sm:text-xs font-mono font-bold text-accent uppercase tracking-[0.14em] sm:tracking-[0.22em] break-words">
               Ghana | Northern Region | Tamale
             </span>
           </div>
@@ -103,7 +103,7 @@ const Footer: React.FC = () => (
         {/* Nav columns */}
         {FOOTER_COLS.map((col) => (
           <div key={col.heading} className="flex flex-col gap-5">
-            <h4 className="text-xs font-black uppercase tracking-[0.4em] text-accent border-l-2 border-accent/50 pl-3">
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] text-accent border-l-2 border-accent/50 pl-3">
               {col.heading}
             </h4>
             <ul className="flex flex-col gap-4">
@@ -114,7 +114,7 @@ const Footer: React.FC = () => (
                       type="link"
                       className="
                         group/link inline-flex items-center gap-2
-                        text-base text-text font-mono
+                        text-base sm:text-base text-text font-mono
                         hover:text-accent transition-all duration-200
                       "
                     >
@@ -126,7 +126,7 @@ const Footer: React.FC = () => (
                       to={link.path}
                       className="
                         group/link inline-flex items-center gap-2
-                        text-base text-text font-mono
+                        text-base sm:text-base text-text font-mono
                         hover:text-accent transition-all duration-200
                       "
                     >
@@ -144,11 +144,11 @@ const Footer: React.FC = () => (
       {/* ── Bottom bar ── */}
       <div className="
         relative flex flex-col sm:flex-row items-center justify-between
-        gap-4 mt-5 pt-6
-        pb-5 sm:pb-6
-        md:mt-8 md:pt-7 md:pb-6
+        gap-5 mt-8 pt-8
+        pb-8 sm:pb-8
+        md:mt-10 md:pt-8 md:pb-8
       ">
-        <p className="max-w-full text-center text-xs font-mono text-text-muted tracking-[0.14em] sm:tracking-[0.22em] uppercase leading-relaxed">
+        <p className="max-w-full text-center text-xs sm:text-xs font-mono text-text-muted tracking-[0.16em] sm:tracking-[0.22em] uppercase leading-relaxed">
           [<span className="text-accent/80">©</span>] {new Date().getFullYear()}{' '}
           <span className="text-accent">QYVORA OFFSEC</span>
         </p>
@@ -158,7 +158,7 @@ const Footer: React.FC = () => (
             <Link
               key={item.label}
               to={item.path}
-              className="text-[11px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-[0.28em]"
+              className="text-xs sm:text-[11px] font-mono text-text-muted hover:text-accent transition-colors uppercase tracking-[0.24em] sm:tracking-[0.28em]"
             >
               {item.label}
             </Link>
