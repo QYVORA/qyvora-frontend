@@ -27,7 +27,33 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
+    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-visible">
+      
+      {/* ── Mobile Globe — visible only on mobile/tablet (positioned at bottom-right of hero section) ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.93 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="
+          absolute lg:hidden 
+          bottom-4 right-4 sm:bottom-8 sm:right-8
+          w-[280px] h-[280px] sm:w-[340px] sm:h-[340px]
+          z-10
+          pointer-events-none
+        "
+      >
+        {/* Ambient glow */}
+        <div
+          className="absolute inset-0 -z-10 rounded-full pointer-events-none opacity-50"
+          style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 65%)' }}
+        />
+        <div className="relative -z-10 w-full h-full">
+          <Suspense fallback={null}>
+            <HackerGlobe scale={1.2} />
+          </Suspense>
+        </div>
+      </motion.div>
+
       {/* ── Main content grid ── */}
       <div
         className="
@@ -98,30 +124,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {SITE_CONFIG.brand.description}
             </motion.p>
           </div>
-
-          {/* ── Mobile Globe — visible only on mobile/tablet ── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.93 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="
-              relative flex lg:hidden items-center justify-center
-              w-full
-              my-8 sm:my-10
-              -z-10
-            "
-          >
-            {/* Ambient glow */}
-            <div
-              className="absolute inset-0 -z-10 rounded-full pointer-events-none opacity-50"
-              style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 65%)' }}
-            />
-            <div className="relative -z-10 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px]">
-              <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} />
-              </Suspense>
-            </div>
-          </motion.div>
 
           {/* CTAs */}
           <motion.div
