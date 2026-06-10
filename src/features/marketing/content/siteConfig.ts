@@ -2,11 +2,11 @@ export const SITE_CONFIG = {
   brand: {
     name: 'QYVORA',
     description:
-      'An offensive security company focused on building a strong cybersecurity ecosystem in Africa.',
+      'Building a strong cybersecurity ecosystem in Africa.',
   },
   contact: {
-    opsEmail: 'ops@qyvora.com',
-    securityDeskEmail: 'ops@qyvora.com',
+    opsEmail: 'ops@qyvora.netlify.app',
+    securityDeskEmail: 'ops@qyvora.netlify.app',
     whatsappUrl: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
     whatsappLabel: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5',
     headquarters: 'Remote',
