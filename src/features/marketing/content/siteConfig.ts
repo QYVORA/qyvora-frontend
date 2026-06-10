@@ -77,7 +77,6 @@ export const SITE_CONFIG = {
   ],
    nav: {
      platform: [
-       { key: 'terms', label: 'Terms', path: '/terms', desc: 'Legal Framework' },
        { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
      ],
      company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }],
