@@ -220,9 +220,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     let w = el.clientWidth, h = el.clientHeight;
 
     /* ── Renderer ── */
-    const renderer = new THREE.WebGLRenderer({ antialias: !constrainedDevice, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: !constrainedDevice, alpha: true, powerPreference: constrainedDevice ? 'low-power' : 'high-performance' });
     renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, constrainedDevice ? 1.25 : 2));
+    renderer.setPixelRatio(constrainedDevice ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;';
     el.appendChild(renderer.domElement);
@@ -243,10 +243,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     ));
 
     /* ── Dot-map texture on sphere ── */
-    const step = constrainedDevice ? 2.5 : 1.6;
+    const step = constrainedDevice ? 3.5 : 1.6;
     const dotTex = buildDotMapTexture(isLight, step);
+    const sphereSegments = constrainedDevice ? 32 : 64;
     globe.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.001, 64, 64),
+      new THREE.SphereGeometry(1.001, sphereSegments, sphereSegments),
       new THREE.MeshBasicMaterial({
         map:         dotTex,
         transparent: true,
@@ -372,7 +373,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     });
 
     /* ── Multi-satellite system ── */
-    const SATS_COUNT = 6;
+    const SATS_COUNT = constrainedDevice ? 3 : 6;
     const sats = Array.from({ length: SATS_COUNT }).map((_, i) => {
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.006, 6, 6),
@@ -380,7 +381,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       );
       scene.add(dot);
       
-      const trailLen = 28;
+      const trailLen = constrainedDevice ? 15 : 28;
       const trailPts = Array.from({ length: trailLen }, () => new THREE.Vector3());
       const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
       const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({

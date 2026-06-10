@@ -166,8 +166,8 @@ const Landing: React.FC = () => {
 
   return (
     <div className="relative h-screen w-full bg-bg">
-      {/* ── Global Background - Fixed to viewport ── */}
-      <HeroBackground className="opacity-80" />
+      {/* ── Global Background - Fixed to viewport - Lower z-index to stay behind globe ── */}
+      <HeroBackground className="opacity-80 z-0" />
 
       {/* ── Modals ── */}
       <ServiceRequestModal />
@@ -175,12 +175,12 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll bg-transparent md:snap-y md:snap-mandatory"
       >
         {/* ── 1. Hero ── */}
         <section
           id="hero"
-          className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent"
+          className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent overflow-hidden"
         >
           <HeroSection
             heroRef={heroRef}

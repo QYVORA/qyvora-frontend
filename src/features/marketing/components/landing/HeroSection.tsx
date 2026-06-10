@@ -27,18 +27,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-visible">
+    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
       
-      {/* ── Mobile Globe — visible only on mobile/tablet (positioned at bottom-right of hero section) ── */}
+      {/* ── Mobile Globe Decoration — visible only on mobile/tablet (positioned at bottom-right of hero section) ── */}
       <motion.div
         initial={{ opacity: 0, scale: 0.93 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="
           absolute lg:hidden 
-          bottom-4 right-4 sm:bottom-8 sm:right-8
-          w-[280px] h-[280px] sm:w-[340px] sm:h-[340px]
-          z-10
+          bottom-0 right-0
+          w-[280px] h-[280px] sm:w-[320px] sm:h-[320px]
+          translate-x-[35%] translate-y-[35%]
+          z-0
           pointer-events-none
         "
       >
