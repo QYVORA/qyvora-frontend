@@ -92,14 +92,14 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
               {/* Large responsive logo - using the specific CTA logo asset */}
               <img
-                src="/qyvora-single-logo.png"
+                src="/qyvora-cta-logo.png"
                 alt="QYVORA"
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
               />
             </div>
           </motion.div>
 
-        </div>
+        </div> 
       </div>
     </div>
   );
