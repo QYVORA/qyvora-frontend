@@ -116,11 +116,11 @@ function HeroBackground({ className = "" }) {
 
   const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
 
-  // Don't render canvas on mobile
+  // Don't render canvas on mobile - belt and suspenders approach
   if (isMobile) return null;
 
   return (
-    <div className={`fixed inset-0 z-0 pointer-events-none ${className}`}>
+    <div className={`fixed inset-0 z-0 pointer-events-none hidden md:block ${className}`}>
       <canvas 
         ref={canvasRef} 
         className="fixed inset-0 w-screen h-screen"
