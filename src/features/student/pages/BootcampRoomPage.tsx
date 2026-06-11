@@ -77,6 +77,7 @@ const BootcampRoomPage: React.FC = () => {
 
   // ── Mobile sidebar ─────────────────────────────────────────────────────────
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // ── Quiz modal ─────────────────────────────────────────────────────────────
   const [quizOpen, setQuizOpen] = useState(false);
@@ -501,8 +502,12 @@ const BootcampRoomPage: React.FC = () => {
         lg:overflow-hidden
       ">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex lg:flex-col w-72 xl:w-80 shrink-0 bg-bg-card border-r border-border overflow-y-auto overscroll-contain scroll-hover">
-            <nav className="flex flex-col gap-1 p-4 pb-8">
+        <aside className={`
+          hidden lg:flex lg:flex-col shrink-0 bg-bg-card border-r border-border overflow-hidden transition-all duration-300 relative
+          ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}
+        `}>
+          <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
+            <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
               {/* Back link */}
               <div className="mb-4 px-1">
                 <Link
@@ -552,7 +557,20 @@ const BootcampRoomPage: React.FC = () => {
                 </div>
               ))}
             </nav>
-          </aside>
+          </div>
+        </aside>
+
+        {/* Collapse toggle button - Desktop only */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className={`
+            hidden lg:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all shadow-xl hover:scale-110 active:scale-95
+            ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}
+          `}
+          title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+        >
+          <Menu className="h-4 w-4" />
+        </button>
 
           {/* Mobile sidebar drawer */}
           <RoomSidebar

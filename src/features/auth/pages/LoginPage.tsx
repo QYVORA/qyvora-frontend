@@ -8,13 +8,16 @@ import HeroBackground from '../../../shared/components/backgrounds/HeroBackgroun
 import AuthHero from '../components/AuthHero';
 import LoginForm from '../components/LoginForm';
 
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 const LoginPage: React.FC = () => {
   const { login, user: sessionUser, loading: sessionLoading } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAdminLoginRoute = location.pathname === '/mr-robot';
+  const isAdminLoginRoute = location.pathname === _0x5a2b;
   const [isLoading, setIsLoading] = useState(false);
   const [formMessage, setFormMessage] = useState('');
   const [shakePassword, setShakePassword] = useState(false);
@@ -22,7 +25,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     if (sessionLoading || !isAdminLoginRoute) return;
     if (sessionUser?.isAdmin) {
-      navigate('/mr-robot/dashboard', { replace: true });
+      navigate(`${_0x5a2b}/dashboard`, { replace: true });
     }
   }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
@@ -35,7 +38,7 @@ const LoginPage: React.FC = () => {
       const email = String(formData.get('email') || '');
       const password = String(formData.get('password') || '');
 
-      await login({ email, password });
+      await login({ email, password, isAdminRoute: isAdminLoginRoute });
       
       // Check if it's an admin login attempt
       const { default: api } = await import('../../../core/services/api');
@@ -44,7 +47,7 @@ const LoginPage: React.FC = () => {
       
       if (isAdmin) {
         addToast('Session established.', 'success');
-        navigate('/mr-robot/dashboard');
+        navigate(`${_0x5a2b}/dashboard`);
         return;
       }
       

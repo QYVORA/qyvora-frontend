@@ -2734,7 +2734,7 @@ curl "http://<target_ip>/view?url=http://internal-db:8080/phpmyadmin"
 \`\`\`
 
 *Qyvora Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'Identifying OWASP Issues: The Operative\'s Checklist',
@@ -2787,7 +2787,7 @@ curl -v http://<target_ip>/api/admin/config > evidence_A01.txt 2>&1
 \`\`\`
 
 *Training Task:* Open the target application. Using only \`curl\`, find three different OWASP categories that the developers missed. Document your evidence as if you were writing a professional report.`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'Remediation: The Defensive Mindset',
@@ -2845,7 +2845,7 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
 \`\`\`
 
 *Final Insight:* Security is a journey, not a destination. By understanding the OWASP Top 10, you have learned the 'rules of engagement' for the modern web. You are now ready to dive deep into specific exploit chains.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },
@@ -2912,7 +2912,7 @@ curl "http://<target_ip>/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),
 \`\`\`
 
 *Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an Qyvora operative use 'Time-Based' delays to extract data?`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'Authentication Bypass & Credential Theft',

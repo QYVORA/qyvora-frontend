@@ -73,7 +73,7 @@ export class MustChangePasswordError extends Error {
 interface AuthContextType {
   user: User | null;          // null = not authenticated
   loading: boolean;           // true while the initial session check is in flight
-  login: (credentials: { email?: string; password?: string }) => Promise<void>;
+  login: (credentials: { email?: string; password?: string; isAdminRoute?: boolean }) => Promise<void>;
   logout: () => Promise<void>;
   refreshMe: () => Promise<void>; // Re-fetches the current user from /auth/me
 }
@@ -239,11 +239,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
    * Credentials are sanitised (trimmed, coerced to string) before being sent
    * to prevent accidental whitespace issues or type confusion from form inputs.
    */
-  const login = async (credentials: { email?: string; password?: string }) => {
+  const login = async (credentials: { email?: string; password?: string; isAdminRoute?: boolean }) => {
     const email = String(credentials?.email || '').trim();
     const password = String(credentials?.password || '');
+    const isAdminRoute = !!credentials?.isAdminRoute;
 
-    const res = await api.post('/auth/login', { email, password });
+    const res = await api.post('/auth/login', { email, password, isAdminRoute });
 
     // The backend signals a forced password change by returning this flag.
     // We throw a typed error rather than returning a special value so the

@@ -167,7 +167,7 @@ const Landing: React.FC = () => {
   return (
     <div className="relative h-screen w-full bg-bg">
       {/* ── Global Background - Fixed to viewport - Lower z-index to stay behind globe ── */}
-      <HeroBackground className="opacity-80 z-0" />
+      <HeroBackground className="opacity-80 z-0 lg:hidden" />
 
       {/* ── Modals ── */}
       <ServiceRequestModal />

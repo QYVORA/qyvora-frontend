@@ -52,6 +52,10 @@ const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashbo
 import PageLoader from '../shared/components/PageLoader';
 import CommunityPopup from '../shared/components/CommunityPopup';
 
+// ─── Obfuscated Admin Path ──────────────────────────────────────────────────
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 // ─── Route wrapper ────────────────────────────────────────────────────────────
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
@@ -71,14 +75,14 @@ const StudentOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
   if (!user) return <Navigate to="/login" replace />;
-  if (user.isAdmin) return <Navigate to="/mr-robot/dashboard" replace />;
+  if (user.isAdmin) return <Navigate to={`${_0x5a2b}/dashboard`} replace />;
   return <>{children}</>;
 };
 
 const AdminOnly = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (!user) return <Navigate to="/mr-robot" replace />;
+  if (!user) return <Navigate to={_0x5a2b} replace />;
   if (!user.isAdmin) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 };
@@ -105,7 +109,7 @@ export const AppRouter = () => {
         <Route path="/reset-password"  element={<Wrap scope="Reset Password"><ForgotPasswordPage /></Wrap>} />
         <Route path="/verify-email"    element={<Wrap scope="Verify Email"><VerifyEmailPage /></Wrap>} />
         <Route path="/change-password" element={<Wrap scope="Change Password"><ChangePasswordPage /></Wrap>} />
-        <Route path="/mr-robot"        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
+        <Route path={_0x5a2b}        element={<Wrap scope="Admin Login"><LoginPage /></Wrap>} />
 
         {/* ── Student routes ──────────────── */}
         <Route element={<StudentLayout />}>
@@ -134,7 +138,7 @@ export const AppRouter = () => {
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>
-          <Route path="/mr-robot/dashboard" element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
+          <Route path={`${_0x5a2b}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
         {/* ── 404 fallback ───────────────────────────────────────────────── */}

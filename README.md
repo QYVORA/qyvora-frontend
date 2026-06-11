@@ -146,7 +146,7 @@ docs/
 | `/bootcamps/:id/phases/:phaseId/rooms/:roomId` | Student | Room walkthrough |
 | `/wallet` | Student | CP wallet + chain ledger |
 | `/profile` | Student | Operator profile |
-| `/mr-robot/dashboard` | Admin | Admin console |
+| `/*` | Public | Catch-all for 404 / handle resolution |
 
 ## Deployment
 

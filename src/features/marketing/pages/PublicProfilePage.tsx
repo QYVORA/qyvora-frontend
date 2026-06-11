@@ -170,7 +170,7 @@ const PublicProfile: React.FC = () => {
                       initial={{ width: 0 }}
                       animate={{ width: `${progress}%` }}
                       transition={{ duration: 1, ease: 'easeOut' }}
-                      className="h-full bg-accent shadow-[0_0_12px_var(--color-accent-glow)]"
+                      className="h-full bg-accent"
                     />
                   </div>
                   {next && (

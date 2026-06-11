@@ -184,7 +184,7 @@
   }
 
   .glow-shadow {
-    box-shadow: 0 8px 32px var(--color-accent-glow);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   }
 
   .border-beam {
@@ -645,7 +645,7 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)];
+    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 shadow-lg shadow-black/10;
   }
 
   .btn-secondary {
@@ -678,7 +678,7 @@
     z-index: 1;
   }
   .card-qyvora:hover {
-    box-shadow: var(--card-shimmer), 0 8px 32px var(--color-accent-glow);
+    box-shadow: var(--card-shimmer), 0 12px 30px rgba(0, 0, 0, 0.25);
   }
 
   .binary-stream-bg {
@@ -775,7 +775,7 @@
     }
     .card-qyvora { transform: none !important; }
     .card-qyvora:hover {
-      box-shadow: var(--card-shimmer), 0 4px 16px var(--color-accent-glow);
+      box-shadow: var(--card-shimmer), 0 4px 12px rgba(0, 0, 0, 0.2);
     }
   }
 }

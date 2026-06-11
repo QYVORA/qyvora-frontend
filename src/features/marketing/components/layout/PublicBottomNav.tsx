@@ -16,6 +16,8 @@ import { useAuth } from '../../../../core/contexts/AuthContext';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
 import { ContactTrigger } from '../ContactModal';
 
+const _0x5a2b = atob('L21yLXJvYm90');
+
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
   { label: 'Home',    icon: Home,   path: '/'           },
@@ -143,13 +145,12 @@ const PublicBottomNav: React.FC = () => {
                  </div>
                )}
 
-              {/* Auth actions */}
               <div className="px-4 pb-4 space-y-3 pt-4">
                 {user ? (
                   <>
                     {user.isAdmin && (
                       <Link
-                        to="/mr-robot/dashboard"
+                        to={`${_0x5a2b}/dashboard`}
                         onClick={closeMore}
                         className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all active:scale-95"
                       >
@@ -159,7 +160,7 @@ const PublicBottomNav: React.FC = () => {
                     <Link
                       to="/dashboard"
                       onClick={closeMore}
-                      className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-accent/20 active:scale-95"
+                      className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
                       <LayoutDashboard className="w-4 h-4" /> Dashboard
                     </Link>
@@ -176,7 +177,7 @@ const PublicBottomNav: React.FC = () => {
                     <Link
                       to="/register"
                       onClick={closeMore}
-                      className="flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-accent/20 active:scale-95"
+                      className="flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
                       <UserPlus className="w-4 h-4" /> Sign Up
                     </Link>

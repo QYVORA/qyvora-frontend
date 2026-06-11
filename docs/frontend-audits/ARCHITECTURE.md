@@ -128,7 +128,7 @@ Response interceptor:
 | `/reset-password` | Reset Password |
 | `/verify-email` | Email Verification |
 | `/change-password` | Change Password |
-| `/mr-robot` | Admin Login |
+| `/*` | 404 / Handle resolution |
 
 ### Student routes (StudentLayout — requires auth, student role)
 
@@ -144,25 +144,24 @@ Response interceptor:
 | `/notifications` | Notifications |
 | `/settings` | Settings |
 
-### Admin routes (AdminLayout — requires admin role)
+### Admin routes (AdminLayout — hidden)
 
 | Path | Page |
 |------|------|
-| `/mr-robot/dashboard` | Admin Dashboard |
 
 ### Route Guards
 
 ```
 StudentOnly guard:
   not authenticated → /login
-  role = admin      → /mr-robot/dashboard
+  role = admin      → [Admin Dashboard]
   role = student    → render children
 
 AdminOnly guard:
-  not authenticated → /mr-robot (admin login)
+  not authenticated → [Admin Login]
   role = student    → /dashboard
   role = admin      → render children
-```
+```,old_string:
 
 ---
 

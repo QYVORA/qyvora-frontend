@@ -13,44 +13,47 @@ import { AnimatePresence, motion } from 'motion/react';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 // ── Nav groups ────────────────────────────────────────────────────────────────
 const NAV_GROUPS = [
   {
     label: 'Manage',
     items: [
-      { label: 'Users',        icon: Users,         path: '/mr-robot/dashboard?tab=users',        desc: 'Manage operators'       },
-      { label: 'Bootcamps',    icon: Shield,        path: '/mr-robot/dashboard?tab=bootcamps',    desc: 'Phase control'          },
+      { label: 'Users',        icon: Users,         path: `${_0x5a2b}/dashboard?tab=users`,        desc: 'Manage operators'       },
+      { label: 'Bootcamps',    icon: Shield,        path: `${_0x5a2b}/dashboard?tab=bootcamps`,    desc: 'Phase control'          },
     ],
   },
   {
     label: 'Content',
     items: [
-      { label: 'Market',   icon: Database,      path: '/mr-robot/dashboard?tab=zero_day', desc: 'Zero-day vault'         },
-      { label: 'Points',   icon: Coins,         path: '/mr-robot/dashboard?tab=cp',       desc: 'CP analytics'           },
-      { label: 'Chain',    icon: Link2,         path: '/mr-robot/dashboard?tab=chain',    desc: 'Chain explorer'         },
+      { label: 'Market',   icon: Database,      path: `${_0x5a2b}/dashboard?tab=zero_day`, desc: 'Zero-day vault'         },
+      { label: 'Points',   icon: Coins,         path: `${_0x5a2b}/dashboard?tab=cp`,       desc: 'CP analytics'           },
+      { label: 'Chain',    icon: Link2,         path: `${_0x5a2b}/dashboard?tab=chain`,    desc: 'Chain explorer'         },
     ],
   },
   {
     label: 'Monitor',
     items: [
-      { label: 'Security', icon: AlertTriangle, path: '/mr-robot/dashboard?tab=security', desc: 'Security events'        },
-      { label: 'Contacts', icon: Mail,          path: '/mr-robot/dashboard?tab=contacts', desc: 'Contact messages'       },
+      { label: 'Security', icon: AlertTriangle, path: `${_0x5a2b}/dashboard?tab=security`, desc: 'Security events'        },
+      { label: 'Contacts', icon: Mail,          path: `${_0x5a2b}/dashboard?tab=contacts`, desc: 'Contact messages'       },
     ],
   },
 ];
 
 // ── Mobile bottom primary tabs ────────────────────────────────────────────────
 const MOBILE_PRIMARY = [
-  { label: 'Users',     icon: Users,    path: '/mr-robot/dashboard?tab=users'     },
-  { label: 'Bootcamps', icon: Shield,   path: '/mr-robot/dashboard?tab=bootcamps' },
-  { label: 'Market',    icon: Database, path: '/mr-robot/dashboard?tab=zero_day'  },
-  { label: 'Points',    icon: Coins,    path: '/mr-robot/dashboard?tab=cp'        },
+  { label: 'Users',     icon: Users,    path: `${_0x5a2b}/dashboard?tab=users`     },
+  { label: 'Bootcamps', icon: Shield,   path: `${_0x5a2b}/dashboard?tab=bootcamps` },
+  { label: 'Market',    icon: Database, path: `${_0x5a2b}/dashboard?tab=zero_day`  },
+  { label: 'Points',    icon: Coins,    path: `${_0x5a2b}/dashboard?tab=cp`        },
 ];
 
 const MOBILE_MORE = [
-  { label: 'Chain',        icon: Link2,         path: '/mr-robot/dashboard?tab=chain'        },
-  { label: 'Security',     icon: AlertTriangle, path: '/mr-robot/dashboard?tab=security'     },
-  { label: 'Contacts',     icon: Mail,          path: '/mr-robot/dashboard?tab=contacts'     },
+  { label: 'Chain',        icon: Link2,         path: `${_0x5a2b}/dashboard?tab=chain`        },
+  { label: 'Security',     icon: AlertTriangle, path: `${_0x5a2b}/dashboard?tab=security`     },
+  { label: 'Contacts',     icon: Mail,          path: `${_0x5a2b}/dashboard?tab=contacts`     },
 ];
 
 interface NotificationItem {
@@ -127,7 +130,7 @@ const AdminTopbar = () => {
   const handleLogout = async () => {
     await logout();
     addToast('Security session terminated.', 'info');
-    navigate('/mr-robot');
+    navigate(_0x5a2b);
   };
 
   const isTabActive = (path: string) => {
@@ -139,12 +142,12 @@ const AdminTopbar = () => {
     <>
       {/* ── Desktop topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
-        <div className="max-w-7xl mx-auto px-2 md:px-10 h-20 md:h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 md:h-24 flex items-center justify-between">
 
           {/* Left: Logo + admin badge + nav */}
           <div className="flex items-center gap-6 lg:gap-8">
             <div className="flex items-center gap-3">
-              <Link to="/mr-robot/dashboard"><Logo size="md" /></Link>
+              <Link to={`${_0x5a2b}/dashboard`}><Logo size="md" /></Link>
               <div className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
                 <Shield className="h-3 w-3 text-accent" />
                 <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN</span>
