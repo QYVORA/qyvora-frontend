@@ -29,32 +29,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
       
-      {/* ── Mobile Globe Decoration — visible only on mobile/tablet (positioned at bottom-right of hero section) ── */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.93 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="
-          absolute lg:hidden 
-          bottom-0 right-0
-          w-[280px] h-[280px] sm:w-[320px] sm:h-[320px]
-          translate-x-[35%] translate-y-[35%]
-          z-0
-          pointer-events-none
-        "
-      >
-        {/* Ambient glow */}
-        <div
-          className="absolute inset-0 -z-10 rounded-full pointer-events-none opacity-50"
-          style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 65%)' }}
-        />
-        <div className="relative -z-10 w-full h-full">
-          <Suspense fallback={null}>
-            <HackerGlobe scale={1.2} />
-          </Suspense>
-        </div>
-      </motion.div>
-
       {/* ── Main content grid ── */}
       <div
         className="

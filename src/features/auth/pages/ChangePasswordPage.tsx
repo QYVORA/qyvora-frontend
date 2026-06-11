@@ -8,6 +8,9 @@ import api from '../../../core/services/api';
 import AuthHero from '../components/AuthHero';
 import ChangePasswordForm from '../components/ChangePasswordForm';
 
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 const ChangePasswordPage: React.FC = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ const ChangePasswordPage: React.FC = () => {
       
       const meRes = await api.get('/auth/me').catch(() => null);
       if (String(meRes?.data?.role || '').toLowerCase() === 'admin') {
-        navigate('/mr-robot/dashboard');
+        navigate(`${_0x5a2b}/dashboard`);
       } else {
         navigate('/dashboard');
       }

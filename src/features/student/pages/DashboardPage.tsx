@@ -178,7 +178,7 @@ const Dashboard: React.FC = () => {
           scrollBehavior: 'smooth',
         }}
       >
-        <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
 
           {/* ── TOP SECTION: MISSION CARD & STATS CARD ─────────────────────── */}
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
@@ -192,7 +192,7 @@ const Dashboard: React.FC = () => {
                     <Skeleton className="h-12 w-48 rounded-xl" />
                   </div>
                 ) : (
-                  <div className="card-qyvora p-8 relative overflow-hidden h-full flex flex-col justify-center border-accent/30 shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.15)]">
+                  <div className="card-qyvora p-8 relative overflow-hidden h-full flex flex-col justify-center border-border/40 shadow-xl">
                     <div className="relative z-10">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="h-[1px] w-8 bg-accent/40" />
@@ -221,7 +221,7 @@ const Dashboard: React.FC = () => {
                           </div>
                           <div className="h-2 overflow-hidden rounded-full bg-accent-dim/30 border border-accent/10">
                             <div
-                              className="h-full rounded-full bg-accent shadow-[0_0_10px_rgba(var(--color-accent-rgb),0.5)] transition-all duration-1000"
+                              className="h-full rounded-full bg-accent transition-all duration-1000"
                               style={{ width: `${rankProgress}%` }}
                             />
                           </div>
@@ -231,7 +231,7 @@ const Dashboard: React.FC = () => {
                       <div className="flex flex-wrap items-center gap-4">
                         <Link
                           to={continuePath}
-                          className="btn-primary flex items-center justify-center gap-3 px-8 py-4 text-sm font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+                          className="btn-primary flex items-center justify-center gap-3 px-8 py-4 text-sm font-black uppercase tracking-widest shadow-lg shadow-black/10"
                         >
                           {isEnrolled ? 'Continue Mission' : 'Browse Operations'}
                           <ArrowRight className="h-4 w-4" />

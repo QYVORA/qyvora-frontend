@@ -211,9 +211,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const { theme }  = useTheme();
   const shouldReduceMotion  = useReducedMotion();
-  const { constrainedDevice } = useAdaptiveUi();
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
 
   useEffect(() => {
+    if (isMobile) return;
     const el = mountRef.current;
     if (!el) return;
     const isLight = theme === 'light';
@@ -527,6 +528,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       renderer.dispose();
     };
   }, [scale, theme, constrainedDevice]);
+
+  if (isMobile) return null;
 
   return (
     <div className="relative h-full w-full overflow-visible">

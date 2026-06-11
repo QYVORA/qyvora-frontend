@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
                     </Link>
                     <button
                       onClick={() => setEditOpen(true)}
-                      className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-accent/20"
+                      className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-black/10"
                     >
                       <Edit3 className="w-4 h-4" /> Edit Profile
                     </button>
@@ -164,7 +164,7 @@ const Profile: React.FC = () => {
                 ) : (
                   <Link
                     to={`/@${profileData.username}`}
-                    className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-accent/20"
+                    className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-black/10"
                   >
                     <ExternalLink className="w-4 h-4" /> View Public Page
                   </Link>

@@ -1,13 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Users, Shield, Database, Coins, AlertTriangle, Mail } from 'lucide-react';
 
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 const RAIL_LINKS = [
-  { icon: Users,         path: '/mr-robot/dashboard?tab=users',        label: 'Users'     },
-  { icon: Shield,        path: '/mr-robot/dashboard?tab=bootcamps',    label: 'Bootcamps' },
-  { icon: Database,      path: '/mr-robot/dashboard?tab=zero_day',     label: 'Market'    },
-  { icon: Coins,         path: '/mr-robot/dashboard?tab=cp',           label: 'Points'    },
-  { icon: AlertTriangle, path: '/mr-robot/dashboard?tab=security',     label: 'Security'  },
-  { icon: Mail,          path: '/mr-robot/dashboard?tab=contacts',     label: 'Contacts'  },
+  { icon: Users,         path: `${_0x5a2b}/dashboard?tab=users`,        label: 'Users'     },
+  { icon: Shield,        path: `${_0x5a2b}/dashboard?tab=bootcamps`,    label: 'Bootcamps' },
+  { icon: Database,      path: `${_0x5a2b}/dashboard?tab=zero_day`,     label: 'Market'    },
+  { icon: Coins,         path: `${_0x5a2b}/dashboard?tab=cp`,           label: 'Points'    },
+  { icon: AlertTriangle, path: `${_0x5a2b}/dashboard?tab=security`,     label: 'Security'  },
+  { icon: Mail,          path: `${_0x5a2b}/dashboard?tab=contacts`,     label: 'Contacts'  },
 ];
 
 const AdminRightRail = () => {

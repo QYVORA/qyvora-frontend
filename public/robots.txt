@@ -21,8 +21,6 @@ Disallow: /profile
 Disallow: /notifications
 Disallow: /settings
 Disallow: /learn
-Disallow: /mr-robot
-Disallow: /mr-robot/dashboard
 
 # Block auth flows
 Disallow: /login

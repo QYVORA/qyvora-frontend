@@ -19,6 +19,9 @@ import {
   isUserBlocked,
 } from '../types/admin.types';
 
+
+const _0x5a2b = atob('L21yLXJvYm90');
+
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 const Skeleton = () => (
   <div className="space-y-3 p-1">
@@ -37,7 +40,7 @@ const AdminDashboardPage: React.FC = () => {
 
   // Tab is driven by ?tab= URL param so topbar links work
   const activeTab = (new URLSearchParams(location.search).get('tab') as AdminTab) || 'users';
-  const setActiveTab = (tab: AdminTab) => navigate(`/mr-robot/dashboard?tab=${tab}`, { replace: true });
+  const setActiveTab = (tab: AdminTab) => navigate(`${_0x5a2b}/dashboard?tab=${tab}`, { replace: true });
 
   const [loading, setLoading] = useState(true);
 
