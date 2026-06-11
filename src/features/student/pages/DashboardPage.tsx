@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
         scroll-smooth → smooth momentum scrolling
       */}
       <div
-        className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
+        className="scroll-hover md:fixed md:left-0 md:right-20 md:bottom-0 md:top-24 md:overflow-y-auto md:overscroll-contain"
         style={{
           scrollBehavior: 'smooth',
         }}
@@ -254,7 +254,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* ── MAIN CONTENT: BOOTCAMPS + MARKET ─────────────────── */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8 items-start">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 items-start">
             
             {/* 1. BOOTCAMP CARD(S) */}
             <div className="flex flex-col gap-6 h-full">

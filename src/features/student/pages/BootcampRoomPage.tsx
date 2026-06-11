@@ -497,13 +497,13 @@ const BootcampRoomPage: React.FC = () => {
                         parent height chain — no h-full / flex-1 juggling needed.
       */}
       <div className="
-        lg:fixed lg:inset-0 lg:top-24
-        lg:flex lg:flex-row
-        lg:overflow-hidden
+        md:fixed md:inset-0 md:top-24
+        md:flex md:flex-row
+        md:overflow-hidden
       ">
         {/* Desktop sidebar */}
         <aside className={`
-          hidden lg:flex lg:flex-col shrink-0 bg-bg-card border-r border-border overflow-hidden transition-all duration-300 relative
+          hidden md:flex md:flex-col shrink-0 bg-bg-card border-r border-border overflow-hidden transition-all duration-300 relative
           ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}
         `}>
           <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
@@ -564,7 +564,7 @@ const BootcampRoomPage: React.FC = () => {
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
           className={`
-            hidden lg:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all shadow-xl hover:scale-110 active:scale-95
+            hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all shadow-xl hover:scale-110 active:scale-95
             ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}
           `}
           title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
@@ -586,12 +586,12 @@ const BootcampRoomPage: React.FC = () => {
           />
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 min-w-0 lg:overflow-y-auto lg:overscroll-contain scroll-hover">
+          <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
             {/* Content area */}
-            <div className="mx-auto w-full max-w-6xl lg:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
+            <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
 
-              {/* Mobile: curriculum open button — only visible below lg */}
-              <div className="mb-6 flex flex-wrap items-center gap-2.5 lg:hidden">
+              {/* Mobile: curriculum open button — only visible below md */}
+              <div className="mb-6 flex flex-wrap items-center gap-2.5 md:hidden">
                 <button
                   onClick={() => setSidebarOpen(true)}
                   className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent"
@@ -636,7 +636,7 @@ const BootcampRoomPage: React.FC = () => {
               */}
 
               {/* Desktop: all steps visible */}
-              <div className="hidden lg:block mb-10 space-y-4">
+              <div className="hidden md:block mb-10 space-y-4">
                 {room.steps.map((step, idx) => {
                   return (
                     <StepCard
@@ -659,7 +659,7 @@ const BootcampRoomPage: React.FC = () => {
               </div>
 
               {/* Mobile: one step at a time */}
-              <div className="lg:hidden mb-10">
+              <div className="md:hidden mb-10">
                 <StepCard
                   key={currentStepIdx}
                   step={room.steps[currentStepIdx]}

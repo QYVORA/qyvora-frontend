@@ -155,7 +155,7 @@ const AdminTopbar = () => {
             </div>
 
             {/* Desktop nav — dropdown groups */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-1">
               {/* Operator view link */}
               <Link
                 to="/dashboard"

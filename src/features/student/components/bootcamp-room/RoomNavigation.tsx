@@ -33,7 +33,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
   setJumpMenuOpen,
 }) => {
   return (
-    <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'lg:justify-end' : ''}`}>
+    <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
       <button
         onClick={() => setJumpMenuOpen(true)}
         className="btn-secondary inline-flex items-center gap-2"
@@ -54,13 +54,13 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
       <button
         onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
         disabled={currentStepIdx === 0}
-        className="lg:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
+        className="md:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
       >
         <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
         <span>Prev</span>
       </button>
 
-      <span className="lg:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
+      <span className="md:hidden order-3 w-full text-center font-mono text-sm font-bold text-text-muted sm:order-none sm:w-auto">
         {currentStepIdx + 1} / {totalSteps}
       </span>
 
@@ -73,7 +73,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
           }
         }}
         disabled={completing}
-        className={`btn-primary inline-flex flex-1 lg:flex-none items-center justify-center gap-2 sm:flex-none ${
+        className={`btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-2 sm:flex-none ${
           completing ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
@@ -96,8 +96,8 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
           )
         ) : (
           <>
-            <span className="lg:hidden">Next</span>
-            <span className="hidden lg:inline">Next Step</span>
+            <span className="md:hidden">Next</span>
+            <span className="hidden md:inline">Next Step</span>
             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
           </>
         )}

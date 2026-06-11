@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import HackerGlobe from '../../marketing/components/HackerGlobe';
 
 const AuthHero: React.FC = () => (
-  <div className="hidden lg:flex lg:sticky lg:top-0 lg:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
+  <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
     <div className="absolute inset-0 dot-grid opacity-20 z-0" />
 
     {/* Globe - properly centered with responsive sizing */}

@@ -206,7 +206,7 @@ const StudentTopbar = () => {
             <Link to="/dashboard"><Logo size="lg" /></Link>
 
             {/* Desktop nav — HPB direct link + Operate dropdown */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-1">
               <Link
                 to="/dashboard/bootcamps/bc_1775270338500"
                 className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
