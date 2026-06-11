@@ -43,6 +43,18 @@ const TARGETS = [
 /* ═══════════════════════════════════════════════
    GEO HELPERS
 ═══════════════════════════════════════════════ */
+type BBox = { minLat: number; maxLat: number; minLng: number; maxLng: number };
+
+function getBBox(poly: number[]): BBox {
+  let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+  for (let i = 0; i < poly.length; i += 2) {
+    const lat = poly[i], lng = poly[i+1];
+    if (lat < minLat) minLat = lat; if (lat > maxLat) maxLat = lat;
+    if (lng < minLng) minLng = lng; if (lng > maxLng) maxLng = lng;
+  }
+  return { minLat, maxLat, minLng, maxLng };
+}
+
 function latLngToVec3(lat: number, lng: number, r = 1): THREE.Vector3 {
   const phi   = (90 - lat)  * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
@@ -53,7 +65,10 @@ function latLngToVec3(lat: number, lng: number, r = 1): THREE.Vector3 {
   );
 }
 
-function pip(lat: number, lng: number, poly: number[]): boolean {
+function pip(lat: number, lng: number, poly: number[], bbox?: BBox): boolean {
+  if (bbox) {
+    if (lat < bbox.minLat || lat > bbox.maxLat || lng < bbox.minLng || lng > bbox.maxLng) return false;
+  }
   const n = poly.length >> 1;
   let inside = false;
   for (let i = 0, j = n - 1; i < n; j = i++) {
@@ -150,20 +165,53 @@ const BORNEO: number[] = [
   1.0,119,4.0,118,7.0,117,
 ];
 
+const AFRICA_BBOX = getBBox(AFRICA);
+const MADAGASCAR_BBOX = getBBox(MADAGASCAR);
+const N_AMERICA_BBOX = getBBox(N_AMERICA);
+const GREENLAND_BBOX = getBBox(GREENLAND);
+const S_AMERICA_BBOX = getBBox(S_AMERICA);
+const EUROPE_BBOX = getBBox(EUROPE);
+const ASIA_BBOX = getBBox(ASIA);
+const JAPAN_BBOX = getBBox(JAPAN);
+const AUSTRALIA_BBOX = getBBox(AUSTRALIA);
+const NZ_N_BBOX = getBBox(NZ_N);
+const NZ_S_BBOX = getBBox(NZ_S);
+const SUMATRA_BBOX = getBBox(SUMATRA);
+const BORNEO_BBOX = getBBox(BORNEO);
+
 function isAfrica(lat: number, lng: number): boolean {
   if (lat < -36 || lat > 38 || lng < -18 || lng > 52) return false;
-  return pip(lat, lng, AFRICA) || pip(lat, lng, MADAGASCAR);
+  return pip(lat, lng, AFRICA, AFRICA_BBOX) || pip(lat, lng, MADAGASCAR, MADAGASCAR_BBOX);
 }
-const OTHER_POLYS = [N_AMERICA,GREENLAND,S_AMERICA,EUROPE,ASIA,JAPAN,AUSTRALIA,NZ_N,NZ_S,SUMATRA,BORNEO];
+
+const OTHER_POLYS = [
+  { p: N_AMERICA, b: N_AMERICA_BBOX },
+  { p: GREENLAND, b: GREENLAND_BBOX },
+  { p: S_AMERICA, b: S_AMERICA_BBOX },
+  { p: EUROPE,    b: EUROPE_BBOX    },
+  { p: ASIA,      b: ASIA_BBOX      },
+  { p: JAPAN,     b: JAPAN_BBOX     },
+  { p: AUSTRALIA, b: AUSTRALIA_BBOX },
+  { p: NZ_N,      b: NZ_N_BBOX      },
+  { p: NZ_S,      b: NZ_S_BBOX      },
+  { p: SUMATRA,   b: SUMATRA_BBOX   },
+  { p: BORNEO,    b: BORNEO_BBOX    },
+];
+
 function isLand(lat: number, lng: number): boolean {
-  return isAfrica(lat, lng) || OTHER_POLYS.some(p => pip(lat, lng, p));
+  return isAfrica(lat, lng) || OTHER_POLYS.some(({ p, b }) => pip(lat, lng, p, b));
 }
 
 /* ═══════════════════════════════════════════════
    BUILD FLAT DOT-MAP TEXTURE
    Draws a world map as dots on a canvas → sphere texture
 ═══════════════════════════════════════════════ */
+const TEXTURE_CACHE = new Map<string, THREE.CanvasTexture>();
+
 function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
+  const cacheKey = `${isLight}-${step}`;
+  if (TEXTURE_CACHE.has(cacheKey)) return TEXTURE_CACHE.get(cacheKey)!;
+
   const W = 2048, H = 1024;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
@@ -174,7 +222,7 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
 
   const dotR     = (step / 180) * H * 0.38; // dot radius scales with step density
   // All lands now use the accent color (sage green) with consistent styling
-  const landFill  = isLight ? '#66B870'  : '#66B870';   // sage green for all lands
+  const landFill  = '#66B870';   // sage green for all lands
   const landAlpha = 1.0;
 
   for (let lat = 89; lat >= -89; lat -= step) {
@@ -198,6 +246,7 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
+  TEXTURE_CACHE.set(cacheKey, tex);
   return tex;
 }
 
@@ -218,7 +267,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const el = mountRef.current;
     if (!el) return;
     const isLight = theme === 'light';
+    
+    // Guard against zero dimensions — fixes "not showing" issue if parent isn't measured yet
     let w = el.clientWidth, h = el.clientHeight;
+    if (w <= 0 || h <= 0) return;
 
     /* ── Renderer ── */
     const renderer = new THREE.WebGLRenderer({ antialias: !constrainedDevice, alpha: true, powerPreference: constrainedDevice ? 'low-power' : 'high-performance' });
@@ -515,7 +567,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
-      dotTex.dispose();
       if (el.contains(labelContainer)) el.removeChild(labelContainer);
       scene.traverse(obj => {
         const m = obj as THREE.Mesh;
