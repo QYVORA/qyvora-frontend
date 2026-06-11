@@ -21,7 +21,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-8 lg:px-12 xl:px-16 flex flex-col justify-center min-h-[calc(100vh-0px)]">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-3 sm:px-8 md:px-8 lg:px-12 xl:px-16 flex flex-col justify-center min-h-[calc(100vh-0px)]">
 
         {/* Mobile layout: stacked — logo on top, content below */}
         <div className="flex flex-col lg:hidden w-full gap-12">

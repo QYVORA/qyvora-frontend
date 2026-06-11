@@ -178,7 +178,7 @@ const Dashboard: React.FC = () => {
           scrollBehavior: 'smooth',
         }}
       >
-        <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
 
           {/* ── TOP SECTION: MISSION CARD & STATS CARD ─────────────────────── */}
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
@@ -192,7 +192,7 @@ const Dashboard: React.FC = () => {
                     <Skeleton className="h-12 w-48 rounded-xl" />
                   </div>
                 ) : (
-                  <div className="card-qyvora p-8 relative overflow-hidden h-full flex flex-col justify-center border-border/40 shadow-xl">
+                  <div className="card-qyvora p-5 sm:p-8 relative overflow-hidden h-full flex flex-col justify-center border-border/40 shadow-xl">
                     <div className="relative z-10">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="h-[1px] w-8 bg-accent/40" />
@@ -328,7 +328,7 @@ const Dashboard: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-1 flex-col p-6">
+                      <div className="flex flex-1 flex-col p-4 sm:p-6">
                         <h3 className="mb-3 text-lg font-black leading-snug text-text-primary line-clamp-2">{prod.title}</h3>
                         <p className="text-xs text-text-muted mb-6 line-clamp-2 leading-relaxed">{prod.description || 'Access high-value intelligence reports and research papers.'}</p>
                         <div className="mt-auto">

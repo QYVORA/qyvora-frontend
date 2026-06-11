@@ -80,7 +80,7 @@ const ServicesSection: React.FC = () => {
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center px-5 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12">
+    <div className="w-full min-h-screen flex flex-col justify-center px-2.5 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12">
       <div className="max-w-7xl mx-auto w-full relative group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -130,7 +130,7 @@ const ServicesSection: React.FC = () => {
               </div>
 
               {/* Content Section */}
-              <div className="flex-1 flex flex-col p-7 sm:p-8 lg:p-10 xl:p-14 justify-center">
+              <div className="flex-1 flex flex-col p-5 sm:p-8 lg:p-10 xl:p-14 justify-center">
                 <div className="max-w-xl">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-xs sm:text-[11px] font-bold text-accent uppercase tracking-[0.2em]">

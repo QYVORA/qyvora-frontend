@@ -119,7 +119,7 @@ const Settings: React.FC = () => {
   return (
     <div className="bg-bg">
       {/* Mobile-first header (right section header shown before sidebar content) */}
-      <div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
+      <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
         <ScrollReveal className="mb-8">
           <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
           <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
@@ -134,7 +134,7 @@ const Settings: React.FC = () => {
         <div
           className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg scroll-hover"
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
+          <div className="px-2 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
             {/* Security status */}
             <ScrollReveal>
@@ -190,7 +190,7 @@ const Settings: React.FC = () => {
         <div
           className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
+          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
 
 {/* Page header — desktop */}
              <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
