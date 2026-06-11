@@ -132,7 +132,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           className="
             relative hidden lg:flex items-center justify-center
             w-full h-full
-            py-20 xl:py-24
+            py-12 xl:py-16
             pr-8 xl:pr-16
           "
         >
@@ -142,10 +142,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 60%)' }}
           />
 
-          {/* Globe container - matches left section vertical alignment */}
-          <div className="relative z-10 w-full max-w-[480px] xl:max-w-[540px] aspect-square">
+          {/* Globe container - larger bounds to prevent clipping */}
+          <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
             <Suspense fallback={null}>
-              <HackerGlobe scale={1.15} />
+              <HackerGlobe scale={1.4} />
             </Suspense>
           </div>
         </motion.div>

@@ -282,7 +282,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
-    camera.position.z = 3.2;
+    camera.position.z = 4.0;
 
     const globe = new THREE.Group();
     globe.scale.setScalar(scale);
@@ -310,8 +310,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     ));
 
     /* ── Graticule lines (lat/lng grid) — subtle ── */
-    const graticuleColor = isLight ? 0x88aa88 : 0x1a2e1a;
-    const graticuleOpacity = isLight ? 0.15 : 0.18;
+    const graticuleColor = isLight ? 0x88aa88 : 0x224422;
+    const graticuleOpacity = isLight ? 0.30 : 0.38;
     const graticuleGeo = new THREE.BufferGeometry();
     const graticuleVerts: number[] = [];
     // Longitude lines every 30°
@@ -420,7 +420,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
         color:       isAfricaLink ? (isLight ? 0x3d9c2d : SAGE) : (isLight ? 0x8ab88a : 0x2e4a35),
         transparent: true,
-        opacity:     isAfricaLink ? (isLight ? 0.45 : 0.35) : 0.15,
+        opacity:     isAfricaLink ? (isLight ? 0.55 : 0.45) : 0.25,
       })));
       arcs.push({ geo, progress: Math.random(), speed: 0.001 + Math.random() * 0.002 });
     });
@@ -583,26 +583,24 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   if (isMobile) return null;
 
   return (
-    <div className="relative h-full w-full overflow-visible">
+    <div
+      ref={mountRef}
+      className="relative z-10 h-full w-full"
+      style={{ cursor: 'default', willChange: 'transform' }}
+    >
       <div
-        ref={mountRef}
-        className="relative z-10 h-full w-full"
-        style={{ cursor: 'default', willChange: 'transform', contain: 'layout size style' }}
-      >
-        <div
-          ref={tooltipRef}
-          style={{
-            display: 'none', position: 'absolute', pointerEvents: 'none',
-            background: theme === 'light' ? 'rgba(232,240,232,0.95)' : 'rgba(3,6,4,0.92)',
-            border: '1px solid rgba(102,184,112,0.25)',
-            borderRadius: '4px', padding: '7px 12px',
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-            color: theme === 'light' ? '#66B870' : '#66B870',
-            zIndex: 10, lineHeight: 1.75,
-            whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
-          }}
-        />
-      </div>
+        ref={tooltipRef}
+        style={{
+          display: 'none', position: 'absolute', pointerEvents: 'none',
+          background: theme === 'light' ? 'rgba(232,240,232,0.95)' : 'rgba(3,6,4,0.92)',
+          border: '1px solid rgba(102,184,112,0.25)',
+          borderRadius: '4px', padding: '7px 12px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+          color: theme === 'light' ? '#66B870' : '#66B870',
+          zIndex: 10, lineHeight: 1.75,
+          whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
+        }}
+      />
     </div>
   );
 };

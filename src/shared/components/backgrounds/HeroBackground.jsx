@@ -87,7 +87,7 @@ function HeroBackground({ className = "" }) {
             const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
             
             // Much more visible opacity
-            ctx.globalAlpha = isLight ? (0.25 + wave * 0.35) : (0.28 + wave * 0.42);
+            ctx.globalAlpha = isLight ? (0.35 + wave * 0.40) : (0.42 + wave * 0.48);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();

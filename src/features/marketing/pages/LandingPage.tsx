@@ -170,7 +170,7 @@ const Landing: React.FC = () => {
       <HeroBackground 
         className={`
           z-0 transition-opacity duration-700 
-          ${activeSection === 'hero' ? 'opacity-0 pointer-events-none' : 'opacity-80'}
+          ${activeSection === 'hero' ? 'opacity-40' : 'opacity-80'}
         `} 
       />
 
