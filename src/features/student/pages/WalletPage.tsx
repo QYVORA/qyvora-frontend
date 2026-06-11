@@ -89,7 +89,7 @@ const Wallet: React.FC = () => {
   return (
     <div className="bg-bg">
       {/* Mobile-first header (right section header shown before sidebar content) */}
-<div className="px-4 sm:px-6 md:px-8 pt-6 lg:hidden">
+<div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
          <ScrollReveal className="mb-8">
           <h1 className="text-4xl font-black text-text-primary md:text-6xl">Wallet</h1>
            <p className="mt-2 max-w-lg text-base text-text-muted">Your CP balance and full transaction ledger.</p>
@@ -104,7 +104,7 @@ const Wallet: React.FC = () => {
           className="w-full lg:w-72 xl:w-80 2xl:w-96 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg scroll-hover"
           style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
+          <div className="px-2 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
             {/* Balance card */}
             <ScrollReveal>
@@ -166,7 +166,7 @@ const Wallet: React.FC = () => {
           className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
           style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
         >
-          <div className="px-4 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
+          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
 
             {/* Page header */}
 <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">

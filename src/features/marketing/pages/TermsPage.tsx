@@ -163,7 +163,7 @@ const TermsPage: React.FC = () => {
         {/* ── CONTENT SECTION ── */}
         <SnapSection id="terms-content">
           <div className="min-h-full flex flex-col items-center justify-start md:justify-center py-20 md:py-24">
-            <div className="max-w-7xl mx-auto px-4 md:px-10 w-full h-full md:h-auto">
+            <div className="max-w-7xl mx-auto px-2 md:px-10 w-full h-full md:h-auto">
               <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start h-full md:h-auto">
                 {/* Left side: Heading */}
                 <div className="lg:w-1/3 shrink-0 lg:sticky lg:top-8">
@@ -229,7 +229,7 @@ const TermsPage: React.FC = () => {
         {/* ── CTA SECTION ── */}
         <SnapSection id="terms-cta">
           <div className="min-h-full flex flex-col justify-center py-20 md:py-24">
-            <div className="max-w-5xl mx-auto px-4 md:px-10 w-full">
+            <div className="max-w-5xl mx-auto px-2 md:px-10 w-full">
               <ScrollReveal>
                 <div
                   className="terminal-card relative rounded-3xl border border-border bg-bg-card overflow-hidden p-8 md:p-16 text-center"

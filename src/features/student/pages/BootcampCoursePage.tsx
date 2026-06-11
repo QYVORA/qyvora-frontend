@@ -151,7 +151,7 @@ const BootcampCourse: React.FC = () => {
             lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover
           "
         >
-          <div className="px-4 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
+          <div className="px-2 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
             {/* Desktop header */}
             <CourseHeader
               bootcampId={bootcampId || ''}

@@ -101,7 +101,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
       </div>
 
       {/* ── Card body ───────────────────────────────────────────────── */}
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         <h3 className={`mb-1.5 text-base font-black leading-snug transition-colors md:text-lg ${
           isLocked ? 'text-text-muted' : 'text-text-primary group-hover:text-accent'
         }`}>

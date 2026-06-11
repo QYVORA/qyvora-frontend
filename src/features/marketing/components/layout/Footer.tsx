@@ -43,7 +43,7 @@ const Footer: React.FC = () => (
     <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />
 
     {/* CONTENT */}
-    <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 md:px-10 w-full py-8">
+    <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-8 md:px-10 w-full py-8">
 
       {/* ── Top: brand + nav ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12 pt-20 sm:pt-24 md:pt-28 pb-10 md:pb-12">
