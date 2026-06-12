@@ -319,6 +319,45 @@ const BootcampRoomPage: React.FC = () => {
 
   const currentModule = apiCourse?.modules.find(m => m.title.toLowerCase() === phase?.title.toLowerCase());
 
+  // ── Find matching API module for quiz ──────────────────────────────────────
+  const apiModule = apiCourse?.modules.find(
+    (m) => m.title.toLowerCase() === phase?.title.toLowerCase()
+  );
+  const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
+  const quizCourseId = apiCourse?.id || bootcampId || '';
+  // roomId is 1-based index of the room within the phase
+  const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
+
+  const handleComplete = async () => {
+    if (completing) return;
+    setCompleting(true);
+
+    try {
+      const allStepIdxs = room?.steps.map((_, i) => i) || [];
+      setViewedSteps(new Set(allStepIdxs));
+      
+      // ── Normal Room Flow ──
+      // Skip quiz gate if passed or no quiz
+      if (!quizPassed && quizModuleId) {
+        setQuizGateOpen(true);
+        return;
+      }
+
+      // If room is already complete or quiz is passed
+      if (phaseId && roomId) {
+        await markRoomComplete(phaseId, roomId);
+      } else {
+        setShowCompleteOverlay(true);
+      }
+
+    } finally {
+      setCompleting(false);
+    }
+  };
+
+  const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
+  const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
+
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
