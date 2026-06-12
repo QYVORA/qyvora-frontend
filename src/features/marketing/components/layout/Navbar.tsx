@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
         ].join(' ')}
         style={{ outline: 'none', border: 'none' }}
       >
-        <div className="w-full max-w-[100vw] mx-auto px-2 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
+        <div className="w-full max-w-full mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
           <Link to="/" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
@@ -139,7 +139,7 @@ const Navbar: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl flex flex-col pt-24 px-6 pb-10"
+            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl flex flex-col pt-24 px-6 pb-10 overflow-x-hidden"
           >
             <div className="flex-1 flex flex-col gap-6 overflow-y-auto pt-4">
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted mb-2">

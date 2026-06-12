@@ -30,10 +30,10 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden ${className}`}
     >
       <div
-        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-24"
+        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-24 overflow-x-hidden"
         data-snap-child=""
       >
         {children}
@@ -180,7 +180,7 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
         {/* ── 1. Hero ── */}
         <section

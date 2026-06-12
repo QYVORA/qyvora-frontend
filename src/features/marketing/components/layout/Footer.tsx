@@ -43,7 +43,7 @@ const Footer: React.FC = () => (
     <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />
 
     {/* CONTENT */}
-    <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-8 md:px-10 w-full py-8">
+    <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 md:px-10 w-full py-8">
 
       {/* ── Top: brand + nav ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12 pt-20 sm:pt-24 md:pt-28 pb-10 md:pb-12">
@@ -52,8 +52,8 @@ const Footer: React.FC = () => (
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-7">
           <div className="flex flex-col items-start gap-1">
             <Link to="/">
-              <Logo size="xl" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
-              <Logo size="2xl" className="hidden sm:block opacity-90 hover:opacity-100 transition-opacity" />
+              <Logo size="md" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
+              <Logo size="xl" className="hidden sm:block opacity-90 hover:opacity-100 transition-opacity" />
             </Link>
           </div>
 
