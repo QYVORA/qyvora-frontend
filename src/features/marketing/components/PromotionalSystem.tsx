@@ -83,7 +83,7 @@ const PromotionalSystem: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto md:bottom-10 z-[140] lg:w-[500px]"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row">
+          <div className="relative overflow-hidden rounded-3xl bg-bg-card/95 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row">
             
             {/* Close button */}
             <button
@@ -101,11 +101,9 @@ const PromotionalSystem: React.FC = () => {
                 alt={activePromo.title}
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
-              {/* Image overlay - Hidden in light theme, subtle in dark theme */}
-              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/60 via-transparent to-transparent opacity-0 dark:opacity-60" />
               
               {/* Icon badge */}
-              <div className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-xl border border-accent/30 bg-bg-card/80 backdrop-blur-md text-accent shadow-lg">
+              <div className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-bg shadow-lg">
                 <activePromo.icon className="w-5 h-5" />
               </div>
             </div>

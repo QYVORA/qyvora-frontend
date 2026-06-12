@@ -645,20 +645,18 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 shadow-lg shadow-black/10;
+    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 shadow-lg shadow-accent/20;
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-accent text-accent font-bold uppercase tracking-[0.08em] rounded-sm px-7 py-3 transition-all cursor-pointer hover:bg-accent-dim active:scale-95;
+    @apply bg-bg-elevated text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:bg-bg-card active:scale-95 shadow-sm;
   }
 
   .card-qyvora {
-    @apply bg-bg-card border border-border rounded-2xl transition-all duration-300 cursor-default hover:-translate-y-1;
+    @apply bg-transparent rounded-2xl transition-all duration-300 cursor-default;
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    background: var(--color-bg-card);
-    box-shadow: var(--card-shimmer);
   }
   .card-qyvora::after,
   .terminal-card::after {
@@ -669,8 +667,8 @@
     pointer-events: none;
     background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
     background-size: 24px 24px;
-    opacity: 0.2;
-    mask-image: linear-gradient(to bottom, black, transparent 72%);
+    opacity: 0.15;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
   }
   .card-qyvora > *,
   .terminal-card > * {
@@ -678,7 +676,7 @@
     z-index: 1;
   }
   .card-qyvora:hover {
-    box-shadow: var(--card-shimmer), 0 12px 30px rgba(0, 0, 0, 0.25);
+    transform: scale(1.01);
   }
 
   .binary-stream-bg {
@@ -693,10 +691,8 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid var(--color-border);
     border-radius: 1rem;
-    background: var(--color-bg-card);
-    box-shadow: var(--card-shimmer);
+    background: transparent;
   }
 
   .terminal-card:not(.border-beam)::before {
@@ -707,7 +703,7 @@
     right: 0;
     z-index: 1;
     height: 1px;
-    background: var(--color-border);
+    background: transparent;
     pointer-events: none;
   }
 

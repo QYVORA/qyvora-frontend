@@ -29,7 +29,7 @@ const StepCard: React.FC<Props> = ({
 }) => (
   <div
     onClick={onClick}
-    className={`relative cursor-pointer rounded-2xl p-5 sm:p-6 md:p-8 transition-all duration-300 overflow-hidden group w-full bg-transparent ${
+    className={`relative cursor-pointer rounded-2xl px-0 py-6 sm:p-6 md:p-8 transition-all duration-300 overflow-hidden group w-full bg-transparent ${
       isActive
         ? 'shadow-2xl shadow-accent/5 scale-[1.015] z-10'
         : 'opacity-40 hover:opacity-100'
