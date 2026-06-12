@@ -1,13 +1,25 @@
 import React from 'react';
 
+interface PageLoaderProps {
+  /** 
+   * 'full' (default): Fixed inset-0 overlay, covers entire screen.
+   * 'relative': Fills parent container, doesn't block global UI.
+   */
+  mode?: 'full' | 'relative';
+}
+
 /**
- * PageLoader — Full-screen loading state for the application.
+ * PageLoader — Loading state for the application.
  * Used as a Suspense fallback and for initial authentication loading.
  * Minimal round page loader with no text, images, dots, or background glows.
  */
-const PageLoader: React.FC = () => {
+const PageLoader: React.FC<PageLoaderProps> = ({ mode = 'full' }) => {
+  const containerClasses = mode === 'full' 
+    ? "fixed inset-0 z-[9999] bg-bg overflow-hidden select-none touch-none"
+    : "relative w-full h-full min-h-[400px] bg-transparent flex items-center justify-center overflow-hidden select-none";
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-bg overflow-hidden select-none touch-none">
+    <div className={`${containerClasses} flex items-center justify-center`}>
       <div className="relative flex items-center justify-center animate-in fade-in duration-500">
         {/* Main spinning loader arc */}
         <svg 

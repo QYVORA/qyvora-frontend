@@ -100,16 +100,13 @@ const BootcampCourse: React.FC = () => {
       : '0%';
   const progressNum = parseInt(progressValue, 10) || 0;
 
-  // ── Loading ──────────────────────────────────────────────────────────────
-  if (loading) return <PageLoader />;
-
   // ── Enrolled ─────────────────────────────────────────────────────────────
   return (
     <div className="bg-bg">
       {/* Mobile-first header */}
       <CourseHeader
         bootcampId={bootcampId || ''}
-        courseTitle={course?.title || 'Bootcamp'}
+        courseTitle={loading ? 'Loading Bootcamp...' : (course?.title || 'Bootcamp')}
         syncError={syncError}
         lastSync={lastSync}
         progressValue={progressValue}
@@ -132,16 +129,34 @@ const BootcampCourse: React.FC = () => {
             lg:border-r lg:border-border lg:bg-bg
           "
         >
-          <SidebarProgress
-            progressValue={progressValue}
-            progressNum={progressNum}
-            doneRooms={doneRooms}
-            totalRooms={totalRooms}
-            doneModules={doneModules}
-            totalModules={totalModules}
-            courseModules={course?.modules || []}
-            moduleProgressMap={moduleProgressMap}
-          />
+          {loading ? (
+            <div className="p-6 space-y-8 animate-pulse">
+              <div className="space-y-4">
+                <div className="h-4 w-24 bg-accent-dim/20 rounded" />
+                <div className="h-2 w-full bg-accent-dim/20 rounded-full" />
+                <div className="h-3 w-1/2 bg-accent-dim/20 rounded" />
+              </div>
+              <div className="space-y-6 pt-4">
+                {[0, 1, 2, 3].map(i => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="h-5 w-5 bg-accent-dim/20 rounded-full" />
+                    <div className="h-4 w-32 bg-accent-dim/20 rounded" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <SidebarProgress
+              progressValue={progressValue}
+              progressNum={progressNum}
+              doneRooms={doneRooms}
+              totalRooms={totalRooms}
+              doneModules={doneModules}
+              totalModules={totalModules}
+              courseModules={course?.modules || []}
+              moduleProgressMap={moduleProgressMap}
+            />
+          )}
         </div>
 
         {/* ── RIGHT MAIN ─────────────────── */}
@@ -155,7 +170,7 @@ const BootcampCourse: React.FC = () => {
             {/* Desktop header */}
             <CourseHeader
               bootcampId={bootcampId || ''}
-              courseTitle={course?.title || 'Bootcamp'}
+              courseTitle={loading ? 'Loading Bootcamp...' : (course?.title || 'Bootcamp')}
               syncError={syncError}
               lastSync={lastSync}
               progressValue={progressValue}
@@ -163,15 +178,30 @@ const BootcampCourse: React.FC = () => {
               resumePath={resolveNextRoomPath(String(bootcampId || ''), course)}
             />
 
-            {(course?.modules || []).map((mod, modIdx) => (
-              <PhaseSection
-                key={mod.moduleId}
-                bootcampId={bootcampId || ''}
-                mod={mod}
-                modIdx={modIdx}
-                moduleProgressMap={moduleProgressMap}
-              />
-            ))}
+            {loading ? (
+              <div className="space-y-8 animate-pulse">
+                {[0, 1].map(i => (
+                  <div key={i} className="space-y-4">
+                    <div className="h-6 w-48 bg-accent-dim/20 rounded" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {[0, 1].map(j => (
+                        <div key={j} className="h-24 bg-accent-dim/10 rounded-xl" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              (course?.modules || []).map((mod, modIdx) => (
+                <PhaseSection
+                  key={mod.moduleId}
+                  bootcampId={bootcampId || ''}
+                  mod={mod}
+                  modIdx={modIdx}
+                  moduleProgressMap={moduleProgressMap}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

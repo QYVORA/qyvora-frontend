@@ -107,8 +107,6 @@ const Bootcamp: React.FC = () => {
     ])
   );
 
-  if (loading) return <PageLoader />;
-
   return (
     <div className="bg-bg overflow-x-hidden">
       <AnimatePresence>
@@ -138,7 +136,7 @@ const Bootcamp: React.FC = () => {
 
         {loading ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
-            {[0].map((i) => (
+            {[0, 1, 2].map((i) => (
               <div key={i} className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card animate-pulse">
                 <div className="aspect-video bg-accent-dim/30" />
                 <div className="space-y-3 p-6">

@@ -65,7 +65,7 @@ const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <Suspense fallback={<PageLoader />}>{children}</Suspense>
+      <Suspense fallback={<PageLoader mode="relative" />}>{children}</Suspense>
     </motion.div>
   </ErrorBoundary>
 );

@@ -164,8 +164,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  if (loading) return <PageLoader />;
-
   return (
     <div className="bg-bg">
       {/*

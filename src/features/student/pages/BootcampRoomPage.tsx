@@ -319,94 +319,6 @@ const BootcampRoomPage: React.FC = () => {
 
   const currentModule = apiCourse?.modules.find(m => m.title.toLowerCase() === phase?.title.toLowerCase());
 
-  // ── Loading ──────────────────────────────────────────────────────────────
-  if (apiLoading) return <PageLoader />;
-
-  // ── Room not found in config ───────────────────────────────────────────────
-  if (!phase || !room) {
-    return (
-      <div className="min-h-screen bg-bg">
-        <div className="mx-auto max-w-4xl px-4 pt-20 md:pt-24">
-          <Link
-            to={`/dashboard/bootcamps/${bootcampId}`}
-            className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
-          </Link>
-          <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
-            <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-            <h1 className="mb-2 text-lg font-black text-text-primary">Room Not Found</h1>
-            <p className="text-sm text-text-muted">
-              This room doesn't exist in the bootcamp config.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ── Locked ─────────────────────────────────────────────────────────────────
-  const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
-  if (isRoomLocked) {
-    return (
-      <div className="min-h-screen bg-bg">
-        <div className="mx-auto max-w-4xl px-4 pt-20 md:pt-24">
-          <Link
-            to={`/dashboard/bootcamps/${bootcampId}`}
-            className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
-          </Link>
-          <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
-            <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-            <h1 className="mb-2 text-lg font-black text-text-primary">{room.title}</h1>
-            <p className="text-sm text-text-muted">
-              This room is locked. Your instructor will unlock it when it's time.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
-
-  // ── Find matching API module for quiz ──────────────────────────────────────
-  const apiModule = apiCourse?.modules.find(
-    (m) => m.title.toLowerCase() === phase.title.toLowerCase()
-  );
-  const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
-  const quizCourseId = apiCourse?.id || bootcampId || '';
-  // roomId is 1-based index of the room within the phase
-  const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
-
-  const handleComplete = async () => {
-    if (completing) return;
-    setCompleting(true);
-
-    try {
-      const allStepIdxs = room?.steps.map((_, i) => i) || [];
-      setViewedSteps(new Set(allStepIdxs));
-      
-      // ── Normal Room Flow ──
-      // Skip quiz gate if passed or no quiz
-      if (!quizPassed && quizModuleId) {
-        setQuizGateOpen(true);
-        return;
-      }
-
-      // If room is already complete or quiz is passed
-      if (phaseId && roomId) {
-        await markRoomComplete(phaseId, roomId);
-      } else {
-        setShowCompleteOverlay(true);
-      }
-
-    } finally {
-      setCompleting(false);
-    }
-  };
-
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
@@ -466,7 +378,7 @@ const BootcampRoomPage: React.FC = () => {
       {/* Room complete celebration */}
       <RoomCompletionCelebration
         show={showCompleteOverlay}
-        roomTitle={room.title}
+        roomTitle={room?.title || ''}
         cpEarned={completionCpEarned}
         onClose={() => {
           setShowCompleteOverlay(false);
@@ -480,28 +392,23 @@ const BootcampRoomPage: React.FC = () => {
       />
 
       {/* Desktop Floating Toolbar */}
-      <DesktopToolbar
-        setJumpMenuOpen={setJumpMenuOpen}
-        toggleFullscreen={toggleFullscreen}
-        fullscreen={fullscreen}
-        isLastStep={isLastStep}
-        isRoomComplete={isRoomComplete}
-        nextRoom={nextRoom}
-        quizModuleId={quizModuleId}
-        completing={completing}
-        currentStepIdx={currentStepIdx}
-        goToStep={goToStep}
-        handleComplete={handleComplete}
-      />
+      {!apiLoading && (
+        <DesktopToolbar
+          setJumpMenuOpen={setJumpMenuOpen}
+          toggleFullscreen={toggleFullscreen}
+          fullscreen={fullscreen}
+          isLastStep={isLastStep}
+          isRoomComplete={isRoomComplete}
+          nextRoom={nextRoom}
+          quizModuleId={quizModuleId}
+          completing={completing}
+          currentStepIdx={currentStepIdx}
+          goToStep={goToStep}
+          handleComplete={handleComplete}
+        />
+      )}
 
       {/* ── MAIN SPLIT LAYOUT ── */}
-      {/*
-        Mobile  (<lg): normal document flow, page scrolls naturally.
-        Desktop (lg+):  fixed below the topbar (top-24), full width/height.
-                        Each column scrolls independently.
-                        Fixed positioning is completely independent of any
-                        parent height chain — no h-full / flex-1 juggling needed.
-      */}
       <div className="
         md:fixed md:inset-0 md:top-24
         md:flex md:flex-row
@@ -513,194 +420,248 @@ const BootcampRoomPage: React.FC = () => {
           ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}
         `}>
           <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
-            <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-              {/* Back link */}
-              <div className="mb-4 px-1">
-                <Link
-                  to={`/dashboard/bootcamps/${bootcampId}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum
-                </Link>
-              </div>
-
-              {BOOTCAMP_CONFIG.phases.map((phase_) => (
-                <div key={phase_.id} className="mb-4">
-                  <p className="mb-2 px-2 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
-                    {phase_.codename} — {phase_.title}
-                  </p>
-                  <div className="space-y-0.5 border-l-2 border-border/40 ml-2 pl-3">
-                    {phase_.rooms.map((room_) => {
-                      const key = `${phase_.id}:${room_.id}`;
-                      const isActive = phase_.id === phaseId && room_.id === roomId;
-                      const isCompleted = completedRooms.has(key);
-                      const isLocked = lockedRooms.has(key);
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => { if (!isLocked) handleNavigate(phase_.id, room_.id); }}
-                          disabled={isLocked}
-                          className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${
-                            isActive
-                              ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
-                              : isLocked
-                              ? 'opacity-40 cursor-not-allowed text-text-muted'
-                              : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
-                          }`}
-                        >
-                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${
-                            isCompleted ? 'border-accent/40 bg-accent text-bg'
-                              : isActive ? 'border-accent/40 bg-accent-dim text-accent'
-                              : 'border-border bg-bg text-text-muted'
-                          }`}>
-                            {isCompleted ? <CheckCircle2 className="h-3 w-3" /> : isLocked ? <Lock className="h-3 w-3" /> : null}
-                          </span>
-                          <span className="truncate text-sm">{room_.title}</span>
-                        </button>
-                      );
-                    })}
+            {apiLoading ? (
+              <div className="p-4 space-y-6 animate-pulse">
+                {[0, 1, 2].map(i => (
+                  <div key={i} className="space-y-3">
+                    <div className="h-2 w-24 bg-accent-dim/20 rounded" />
+                    <div className="space-y-2 pl-4">
+                      {[0, 1, 2].map(j => (
+                        <div key={j} className="h-10 w-full bg-accent-dim/10 rounded-xl" />
+                      ))}
+                    </div>
                   </div>
+                ))}
+              </div>
+            ) : (
+              <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
+                {/* Back link */}
+                <div className="mb-4 px-1">
+                  <Link
+                    to={`/dashboard/bootcamps/${bootcampId}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum
+                  </Link>
                 </div>
-              ))}
-            </nav>
+
+                {BOOTCAMP_CONFIG.phases.map((phase_) => (
+                  <div key={phase_.id} className="mb-4">
+                    <p className="mb-2 px-2 text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                      {phase_.codename} — {phase_.title}
+                    </p>
+                    <div className="space-y-0.5 border-l-2 border-border/40 ml-2 pl-3">
+                      {phase_.rooms.map((room_) => {
+                        const key = `${phase_.id}:${room_.id}`;
+                        const isActive = phase_.id === phaseId && room_.id === roomId;
+                        const isCompleted = completedRooms.has(key);
+                        const isLocked = lockedRooms.has(key);
+                        return (
+                          <button
+                            key={key}
+                            onClick={() => { if (!isLocked) handleNavigate(phase_.id, room_.id); }}
+                            disabled={isLocked}
+                            className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${
+                              isActive
+                                ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
+                                : isLocked
+                                ? 'opacity-40 cursor-not-allowed text-text-muted'
+                                : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                            }`}
+                          >
+                            <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${
+                              isCompleted ? 'border-accent/40 bg-accent text-bg'
+                                : isActive ? 'border-accent/40 bg-accent-dim text-accent'
+                                : 'border-border bg-bg text-text-muted'
+                            }`}>
+                              {isCompleted ? <CheckCircle2 className="h-3 w-3" /> : isLocked ? <Lock className="h-3 w-3" /> : null}
+                            </span>
+                            <span className="truncate text-sm">{room_.title}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </nav>
+            )}
           </div>
         </aside>
 
         {/* Collapse toggle button - Desktop only */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className={`
-            hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all shadow-xl hover:scale-110 active:scale-95
-            ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}
-          `}
-          title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        >
-          <Menu className="h-4 w-4" />
-        </button>
+        {!apiLoading && (
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className={`
+              hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all shadow-xl hover:scale-110 active:scale-95
+              ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}
+            `}
+            title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+        )}
 
           {/* Mobile sidebar drawer */}
-          <RoomSidebar
-            phases={BOOTCAMP_CONFIG.phases}
-            activePhaseId={phaseId || ''}
-            activeRoomId={roomId || ''}
-            completedRooms={completedRooms}
-            lockedRooms={lockedRooms}
-            bootcampId={bootcampId || ''}
-            onNavigate={handleNavigate}
-            mobileOpen={sidebarOpen}
-            onMobileClose={() => setSidebarOpen(false)}
-          />
+          {!apiLoading && (
+            <RoomSidebar
+              phases={BOOTCAMP_CONFIG.phases}
+              activePhaseId={phaseId || ''}
+              activeRoomId={roomId || ''}
+              completedRooms={completedRooms}
+              lockedRooms={lockedRooms}
+              bootcampId={bootcampId || ''}
+              onNavigate={handleNavigate}
+              mobileOpen={sidebarOpen}
+              onMobileClose={() => setSidebarOpen(false)}
+            />
+          )}
 
           {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
           <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
-            {/* Content area */}
-            <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
-
-              {/* Mobile: curriculum open button — only visible below md */}
-              <div className="mb-6 flex flex-wrap items-center gap-2.5 md:hidden">
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent"
-                  aria-label="Open curriculum"
+            {apiLoading ? (
+              <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 animate-pulse space-y-8">
+                <div className="space-y-4">
+                  <div className="h-3 w-32 bg-accent-dim/20 rounded" />
+                  <div className="h-8 w-1/2 bg-accent-dim/20 rounded" />
+                </div>
+                <div className="h-2 w-full bg-accent-dim/10 rounded-full" />
+                <div className="space-y-6">
+                  {[0, 1].map(i => (
+                    <div key={i} className="h-64 w-full bg-accent-dim/5 rounded-2xl border border-border/40" />
+                  ))}
+                </div>
+              </div>
+            ) : !phase || !room ? (
+              <div className="mx-auto max-w-4xl px-4 py-12">
+                <Link
+                  to={`/dashboard/bootcamps/${bootcampId}`}
+                  className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
                 >
-                  <Menu className="h-4 w-4" /> Curriculum
-                </button>
-                <span className="min-w-0 flex-1 text-[11px] font-black uppercase tracking-[0.12em] text-text-muted">
-                  {phase.codename} — {room.title}
-                </span>
+                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+                </Link>
+                <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
+                  <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
+                  <h1 className="mb-2 text-lg font-black text-text-primary">Room Not Found</h1>
+                  <p className="text-sm text-text-muted">
+                    This room doesn't exist in the bootcamp config.
+                  </p>
+                </div>
               </div>
-
-              {/* Room header */}
-              <RoomHeader
-                phase={phase}
-                room={room}
-                timeSpent={timeSpent}
-                formatTime={formatTime}
-                isRoomComplete={isRoomComplete}
-              />
-
-              {/* Step progress bar */}
-              <RoomProgress
-                viewedStepsCount={viewedSteps.size}
-                totalStepsCount={room.steps.length}
-                timeSpent={timeSpent}
-                formatTime={formatTime}
-                currentStepIdx={currentStepIdx}
-                goToStep={goToStep}
-                steps={room.steps}
-                viewedSteps={viewedSteps}
-              />
-
-              {/*
-                ── STEP RENDERING ──
-                Desktop (lg+):
-                  ≤5 steps → show ALL steps stacked, no next/prev buttons needed
-                  >5 steps → show steps up to currentStepIdx+1 (reveal as student progresses)
-                             with Prev/Next navigation at the bottom
-                Mobile (<lg):
-                  Always show one step at a time with Prev/Next
-              */}
-
-              {/* Desktop: all steps visible */}
-              <div className="hidden md:block mb-10 space-y-4">
-                {room.steps.map((step, idx) => {
-                  return (
-                    <StepCard
-                      key={idx}
-                      step={step}
-                      stepNum={idx + 1}
-                      phaseId={phaseId || ''}
-                      roomId={roomId || ''}
-                      isActive={idx === currentStepIdx}
-                      isViewed={viewedSteps.has(idx)}
-                      isBookmarked={isStepBookmarked(idx)}
-                      phaseColor={phase.color}
-                      footer={null}
-                      onToggleBookmark={() => toggleBookmark(idx)}
-                      onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
-                      onClick={() => goToStep(idx)}
-                    />
-                  );
-                })}
+            ) : isRoomLocked ? (
+              <div className="mx-auto max-w-4xl px-4 py-12">
+                <Link
+                  to={`/dashboard/bootcamps/${bootcampId}`}
+                  className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+                </Link>
+                <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
+                  <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
+                  <h1 className="mb-2 text-lg font-black text-text-primary">{room.title}</h1>
+                  <p className="text-sm text-text-muted">
+                    This room is locked. Your instructor will unlock it when it's time.
+                  </p>
+                </div>
               </div>
+            ) : (
+              <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
 
-              {/* Mobile: one step at a time */}
-              <div className="md:hidden mb-10">
-                <StepCard
-                  key={currentStepIdx}
-                  step={room.steps[currentStepIdx]}
-                  stepNum={currentStepIdx + 1}
-                  phaseId={phaseId || ''}
-                  roomId={roomId || ''}
-                  isActive
-                  isViewed={viewedSteps.has(currentStepIdx)}
-                  isBookmarked={isStepBookmarked(currentStepIdx)}
-                  phaseColor={phase.color}
-                  footer={null}
-                  onToggleBookmark={() => toggleBookmark(currentStepIdx)}
-                  onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
-                  onClick={() => goToStep(currentStepIdx)}
+                {/* Mobile: curriculum open button */}
+                <div className="mb-6 flex flex-wrap items-center gap-2.5 md:hidden">
+                  <button
+                    onClick={() => setSidebarOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent"
+                    aria-label="Open curriculum"
+                  >
+                    <Menu className="h-4 w-4" /> Curriculum
+                  </button>
+                  <span className="min-w-0 flex-1 text-[11px] font-black uppercase tracking-[0.12em] text-text-muted">
+                    {phase.codename} — {room.title}
+                  </span>
+                </div>
+
+                {/* Room header */}
+                <RoomHeader
+                  phase={phase}
+                  room={room}
+                  timeSpent={timeSpent}
+                  formatTime={formatTime}
+                  isRoomComplete={isRoomComplete}
+                />
+
+                {/* Step progress bar */}
+                <RoomProgress
+                  viewedStepsCount={viewedSteps.size}
+                  totalStepsCount={room.steps.length}
+                  timeSpent={timeSpent}
+                  formatTime={formatTime}
+                  currentStepIdx={currentStepIdx}
+                  goToStep={goToStep}
+                  steps={room.steps}
+                  viewedSteps={viewedSteps}
+                />
+
+                {/* Desktop: all steps visible */}
+                <div className="hidden md:block mb-10 space-y-4">
+                  {room.steps.map((step, idx) => {
+                    return (
+                      <StepCard
+                        key={idx}
+                        step={step}
+                        stepNum={idx + 1}
+                        phaseId={phaseId || ''}
+                        roomId={roomId || ''}
+                        isActive={idx === currentStepIdx}
+                        isViewed={viewedSteps.has(idx)}
+                        isBookmarked={isStepBookmarked(idx)}
+                        phaseColor={phase.color}
+                        footer={null}
+                        onToggleBookmark={() => toggleBookmark(idx)}
+                        onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
+                        onClick={() => goToStep(idx)}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Mobile: one step at a time */}
+                <div className="md:hidden mb-10">
+                  <StepCard
+                    key={currentStepIdx}
+                    step={room.steps[currentStepIdx]}
+                    stepNum={currentStepIdx + 1}
+                    phaseId={phaseId || ''}
+                    roomId={roomId || ''}
+                    isActive
+                    isViewed={viewedSteps.has(currentStepIdx)}
+                    isBookmarked={isStepBookmarked(currentStepIdx)}
+                    phaseColor={phase.color}
+                    footer={null}
+                    onToggleBookmark={() => toggleBookmark(currentStepIdx)}
+                    onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
+                    onClick={() => goToStep(currentStepIdx)}
+                  />
+                </div>
+
+                {/* Step navigation */}
+                <RoomNavigation
+                  currentStepIdx={currentStepIdx}
+                  totalSteps={room.steps.length}
+                  isLastStep={isLastStep}
+                  isRoomComplete={isRoomComplete}
+                  nextRoom={nextRoom}
+                  quizPassed={quizPassed}
+                  quizModuleId={quizModuleId}
+                  completing={completing}
+                  fullscreen={fullscreen}
+                  goToStep={goToStep}
+                  handleComplete={handleComplete}
+                  toggleFullscreen={toggleFullscreen}
+                  setJumpMenuOpen={setJumpMenuOpen}
                 />
               </div>
-
-              {/* Step navigation — mobile always, desktop only when >5 steps */}
-              <RoomNavigation
-                currentStepIdx={currentStepIdx}
-                totalSteps={room.steps.length}
-                isLastStep={isLastStep}
-                isRoomComplete={isRoomComplete}
-                nextRoom={nextRoom}
-                quizPassed={quizPassed}
-                quizModuleId={quizModuleId}
-                completing={completing}
-                fullscreen={fullscreen}
-                goToStep={goToStep}
-                handleComplete={handleComplete}
-                toggleFullscreen={toggleFullscreen}
-                setJumpMenuOpen={setJumpMenuOpen}
-              />
-
-            </div>
+            )}
           </main>
         </div>
     </div>
