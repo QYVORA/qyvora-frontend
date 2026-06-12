@@ -151,8 +151,13 @@ const BootcampRoomPage: React.FC = () => {
         setCompletionCpEarned(response.data.reward.points);
       }
       
-      // Refetch course data to get updated completion status
-      await loadCourseData();
+      // ── OPTIMIZATION: Show celebration immediately ──
+      // Don't wait for loadCourseData() which performs two more API calls.
+      // Show the success overlay right now for a snappier experience.
+      setShowCompleteOverlay(true);
+      
+      // Refetch course data in background to update UI (like sidebar checkmarks)
+      loadCourseData();
       
     } catch (err: any) {
       console.error('❌ Failed to complete room in backend:', err?.response?.data || err);
@@ -391,8 +396,11 @@ const BootcampRoomPage: React.FC = () => {
       }
 
       // If room is already complete or quiz is passed
-      if (phaseId && roomId) await markRoomComplete(phaseId, roomId);
-      setShowCompleteOverlay(true);
+      if (phaseId && roomId) {
+        await markRoomComplete(phaseId, roomId);
+      } else {
+        setShowCompleteOverlay(true);
+      }
 
     } finally {
       setCompleting(false);
@@ -424,9 +432,7 @@ const BootcampRoomPage: React.FC = () => {
           onPassed={() => {
             setQuizPassed(true);
             setQuizOpen(false);
-            if (phaseId && roomId) markRoomComplete(phaseId, roomId).then(() => {
-              setShowCompleteOverlay(true);
-            });
+            if (phaseId && roomId) markRoomComplete(phaseId, roomId);
           }}
         />
       )}

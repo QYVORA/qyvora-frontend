@@ -65,7 +65,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
       setResult({ score, passed, reward, questions: quiz.questions });
       if (passed) {
         addToast(`Quiz passed! ${score}% — +${reward} CP`, 'success');
-        onPassed();
+        // Let the user see the "Passed" screen and click "Continue" themselves
       } else {
         addToast(`Score: ${score}% — need 70% to pass`, 'info');
       }

