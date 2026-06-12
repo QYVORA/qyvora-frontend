@@ -3121,7 +3121,7 @@ nmap -p 80 --script http-xssed <target_ip>
 \`\`\`
 
 *Operative Drill:* Why is Stored XSS considered more dangerous than Reflected XSS in a professional engagement? How can an Qyvora operative use Stored XSS to compromise an entire organization?`,
-              image: null,
+              image: 'step-01.webp',
             },
             {
               title: 'XSS Impact: Weaponizing the Session',
@@ -3180,7 +3180,7 @@ echo "c2Vzc2lvbj10cmFpbmVlXzEyMw==" | base64 -d
 \`\`\`
 
 *Training Task:* Identify a page on the Qyvora target that reflects your name. Inject a payload that changes the background color of the page to black. Then, upgrade it to a payload that logs \`document.domain\` to your console.`,
-              image: null,
+              image: 'step-02.webp',
             },
             {
               title: 'Cross-Site Request Forgery (CSRF): The Forced Action',
@@ -3237,7 +3237,7 @@ curl -e "http://<target_ip>/" -d "action=delete" http://<target_ip>/api/data
 \`\`\`
 
 *Operative Insight:* CSRF tokens must be **Random, Unique per session, and Validated on the server**. If any of these are missing, the Qyvora operative has an opening.`,
-              image: null,
+              image: 'step-03.webp',
             },
             {
               title: 'Defensive Engineering: Content Security Policy',
@@ -3288,7 +3288,7 @@ if (req.body.csrf_token !== req.session.csrf_token) {
 \`\`\`
 
 *Final Training Insight:* The war between XSS/CSRF and CSP/Tokens is a game of details. One missing 'HttpOnly' flag or one 'unsafe-eval' in a CSP can be the difference between a secure app and a total compromise. Train like a hacker, build like an engineer.`,
-              image: null,
+              image: 'step-04.webp',
             },
           ],
         },
@@ -3337,7 +3337,7 @@ hydra -L users.txt -p "Password123!" http-post-form \
 - Does it reveal whether the username exists? (username enumeration)
 
 Attempt a brute force on the demo login. Document the application's response to repeated failures.`,
-              image: null,
+              image: 'step-01.webp',
             },
             {
               title: 'Session Token Analysis',
@@ -3376,7 +3376,7 @@ curl -b "session=old_token_here" http://<target_site>/dashboard
 \`\`\`
 
 Log in to the demo application. Collect 5 session tokens from 5 separate logins. Are they random? Are they predictable? Log out and test whether the token is still valid.`,
-              image: null,
+              image: 'step-02.webp',
             },
             {
               title: 'Session Fixation and Hijacking',
@@ -3418,7 +3418,7 @@ echo "After: $AFTER_LOGIN"
 If you have XSS, you can steal the session cookie and use it to impersonate the victim — this is why HttpOnly cookies are important.
 
 Test the demo application for session fixation. Document whether the session token changes after login.`,
-              image: null,
+              image: 'step-03.webp',
             },
             {
               title: 'Authentication Findings Report',
@@ -3453,7 +3453,7 @@ Remediation: Invalidate session tokens server-side on logout.
 \`\`\`
 
 Write findings for every authentication weakness you discovered. Be specific — include the exact evidence, the HTTP requests and responses, and concrete remediation steps.`,
-              image: null,
+              image: 'step-04.webp',
             },
           ],
         },

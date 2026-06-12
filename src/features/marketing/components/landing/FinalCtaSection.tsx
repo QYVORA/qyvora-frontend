@@ -32,26 +32,21 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center w-full"
+            className="flex items-center justify-center w-full px-4"
           >
-            <div className="relative w-full max-w-[420px] sm:max-w-[540px]">
+            <div className="relative w-full max-w-[420px] sm:max-w-[540px] overflow-hidden">
               {/* Glow behind logo */}
               <div
                 className="absolute inset-0 pointer-events-none opacity-50 blur-3xl"
                 style={{ background: 'radial-gradient(circle at center, var(--color-accent-glow) 0%, transparent 70%)' }}
               />
-              {/* 
-                Logo container - accounting for actual visible logo bounding box.
-                The visible logo is 770×441px within a 1024×1024px canvas.
-                We scale up to make the VISIBLE logo more prominent on mobile.
-              */}
               <img
                 src="/qyvora-cta-logo.png"
                 alt="QYVORA"
                 className="relative z-10 w-full h-auto block"
                 style={{
-                  /* Scale to compensate for empty space - visible logo is ~75% of width */
-                  transform: 'scale(1.15)',
+                  /* Scale adjusted to be safer, combined with parent overflow-hidden */
+                  transform: 'scale(1.1)',
                   transformOrigin: 'center center'
                 }}
               />
