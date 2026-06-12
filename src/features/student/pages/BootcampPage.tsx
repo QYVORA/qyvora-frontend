@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpen, Lock, X, ChevronRight, Play, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { formatSyncLabel, getLastSync, setLastSyncNow } from '../utils/studentExperience';
-import type { BootcampLevel } from '../components/BootcampCard';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
 import PageLoader from '../../../shared/components/PageLoader';
 
@@ -32,28 +31,28 @@ const LockedModal: React.FC<LockedModalProps> = ({ bootcamp, onClose }) => {
   useScrollLock();
   return (
   <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-    <div className="relative bg-bg-card border border-border rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl">
+    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={onClose} />
+    <div className="relative bg-transparent p-6 md:p-8 max-w-md w-full">
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full border border-border hover:border-accent/50 text-text-muted hover:text-text-primary transition-colors"
+        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-bg-elevated text-text-muted hover:text-text-primary transition-all active:scale-90"
       >
-        <X className="w-4 h-4" />
+        <X className="w-5 h-5" />
       </button>
-      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-accent-dim border border-accent/20 mx-auto mb-5">
-        <Lock className="w-6 h-6 text-accent" />
+      <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-accent-dim/10 mx-auto mb-8 shadow-sm">
+        <Lock className="w-8 h-8 text-accent" />
       </div>
-      <h3 className="text-lg font-black text-text-primary text-center mb-2 uppercase">{bootcamp.title}</h3>
-      <p className="text-text-muted text-sm text-center mb-1">This bootcamp is not open yet.</p>
-      <p className="text-accent text-xs font-bold text-center mb-5 uppercase tracking-wider">
-        Launching: {bootcamp.launchDate
+      <h3 className="text-2xl font-black text-text-primary text-center mb-3 uppercase tracking-tight">{bootcamp.title}</h3>
+      <p className="text-text-muted text-sm text-center mb-2">Program not yet initialized.</p>
+      <p className="text-accent text-xs font-black text-center mb-8 uppercase tracking-[0.2em]">
+        Launch Sequence: {bootcamp.launchDate
           ? new Date(bootcamp.launchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-          : 'To be announced'}
+          : 'Pending Authorization'}
       </p>
-      <p className="text-text-secondary text-xs text-center mb-6">
-        Check back soon — this program will be available shortly.
+      <p className="text-text-muted/60 text-xs text-center mb-10 font-mono leading-relaxed px-4">
+        This operation is currently classified. Our operatives are finalizing the deployment environment.
       </p>
-      <button onClick={onClose} className="btn-secondary text-sm text-center w-full">Got it</button>
+      <button onClick={onClose} className="w-full bg-bg-elevated text-text-primary py-4 rounded-xl text-xs font-black uppercase tracking-widest active:scale-[0.98] transition-all">Understood</button>
     </div>
   </div>
 );
@@ -88,14 +87,12 @@ const Bootcamp: React.FC = () => {
     return () => { mounted = false; };
   }, []);
 
-  // Build enrolled set from overview — check both bootcampId and id fields
   const enrolledIds = new Set<string>(
     (Array.isArray(overview?.modules) ? overview.modules : []).map((m: any) =>
       String(m.bootcampId || m.id || '')
     )
   );
 
-  // Also treat any non-'not_enrolled' bootcampStatus + bootcampId as enrolled
   if (overview?.bootcampStatus && overview.bootcampStatus !== 'not_enrolled' && overview?.bootcampId) {
     enrolledIds.add(String(overview.bootcampId));
   }
@@ -117,52 +114,22 @@ const Bootcamp: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div
-        className="lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain overflow-x-hidden scroll-hover"
-      >
-        <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
-<ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-           <div>
-             <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-               Arsenal
+      <div className="lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain overflow-x-hidden scroll-hover">
+        <div className="mx-auto max-w-7xl px-0 pt-6 pb-16 md:px-8">
+          <ScrollReveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end px-1 md:px-0">
+             <div>
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">Arsenal</div>
+               <h1 className="text-4xl font-black text-text-primary md:text-6xl">Bootcamps</h1>
+               <p className="mt-2 max-w-lg text-base text-text-muted">
+                 Phased training tracks with mission-based checkpoints. Pick a program and execute.
+               </p>
              </div>
-             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Bootcamps</h1>
-             <p className="mt-2 max-w-lg text-base text-text-muted">
-               Phased training tracks with mission-based checkpoints. Pick a program and execute.
+             <p className={`text-xs shrink-0 ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
+               {syncError || formatSyncLabel(lastSync)}
              </p>
-           </div>
-           <p className={`text-xs shrink-0 ${syncError ? 'text-red-400' : 'text-text-muted'}`}>
-             {syncError || formatSyncLabel(lastSync)}
-           </p>
-         </ScrollReveal>
+          </ScrollReveal>
 
-        {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card animate-pulse">
-                <div className="aspect-video bg-accent-dim/30" />
-                <div className="space-y-3 p-6">
-                  <div className="h-3 w-1/4 rounded bg-accent-dim/30" />
-                  <div className="h-5 w-3/4 rounded bg-accent-dim/30" />
-                  <div className="h-3 w-1/2 rounded bg-accent-dim/20" />
-                  <div className="mt-4 h-11 w-full rounded-xl bg-accent-dim/20" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : bootcamps.length === 0 ? (
-          <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-20 text-center">
-            <img
-              src="/assets/illustrations/bootcamp-operator.webp"
-              alt=""
-              aria-hidden="true"
-              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
-            />
-            <BookOpen className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
-            <p className="text-text-muted md:text-lg">No bootcamps available yet. Check back soon.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 px-1 md:px-0">
             {bootcamps.map((bc, i) => {
               const prog = moduleProgressById.get(String(bc.id || ''));
               const isEnrolled = enrolledIds.has(String(bc.id || ''));
@@ -170,101 +137,73 @@ const Bootcamp: React.FC = () => {
               const progress = Number(prog?.progress || 0);
               const isComplete = progress === 100;
               const image = resolveImg(bc.image, BOOTCAMP_COVER_IMGS[String(bc.id || '')] ?? PHASE_IMGS[i % PHASE_IMGS.length]);
-              const level: BootcampLevel = (['Novice','Operator','Specialist','Elite'] as BootcampLevel[]).includes(bc.level) ? bc.level : 'Operator';
+              const level = bc.level || 'Operator';
 
               return (
                 <motion.div
                   key={bc.id || i}
-                  initial={{ opacity: 0, y: 32, scale: 0.94 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={isLocked ? {} : { y: -6, scale: 1.01 }}
-                  className={`w-full ${isLocked ? 'opacity-70' : ''}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className={`w-full ${isLocked ? 'opacity-40' : ''}`}
                 >
                   <div
-                    className={`card-qyvora group overflow-hidden flex flex-col w-full ${
-                      isLocked ? 'cursor-default' : 'hover:border-accent/40 transition-all'
-                    }`}
+                    className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]"
                     onClick={isLocked ? () => setLockedBootcamp(bc) : undefined}
-                    role={isLocked ? 'button' : undefined}
-                    tabIndex={isLocked ? 0 : undefined}
-                    onKeyDown={isLocked ? (e) => e.key === 'Enter' && setLockedBootcamp(bc) : undefined}
                   >
-                    {/* Cover image */}
-                    <div className="relative aspect-video overflow-hidden">
+                    <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
                       <img
-                        src={image}
-                        alt={bc.title}
-                        className={`w-full h-full object-cover transition-transform duration-500 ${
-                          isLocked ? 'grayscale brightness-50' : 'group-hover:scale-105'
-                        }`}
-                        onError={(e) => {
-                          const el = e.currentTarget;
-                          if (!el.dataset.fallbackApplied) {
-                            el.dataset.fallbackApplied = '1';
-                            el.src = '/assets/bootcamp/hpb-cover.webp';
-                          }
-                        }}
+                        src={image} alt={bc.title}
+                        className={`w-full h-full object-cover transition-transform duration-500 ${isLocked ? 'grayscale brightness-50' : 'group-hover:scale-105'}`}
                       />
-                      {/* Level badge */}
                       <div className="absolute top-4 left-4">
-                        <span className={`px-2 py-1 rounded-sm text-[10px] font-bold uppercase border tracking-widest ${
-                          level === 'Elite' ? 'bg-accent text-bg border-accent' : 'bg-bg/80 text-accent border-accent/30 backdrop-blur-sm'
-                        }`}>
+                        <span className={`px-2.5 py-1 rounded text-[9px] font-black uppercase tracking-widest shadow-sm ${level === 'Elite' ? 'bg-accent text-bg' : 'bg-bg/85 text-accent backdrop-blur-sm'}`}>
                           {isLocked ? 'Coming soon' : level}
                         </span>
                       </div>
-                      {/* Enrolled / complete badge */}
                       {!isLocked && isComplete && (
                         <div className="absolute top-4 right-4">
-                          <span className="px-2 py-1 bg-accent text-bg rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Complete
+                          <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
+                            <CheckCircle2 className="w-3 w-3" /> Complete
                           </span>
                         </div>
                       )}
                       {!isLocked && isEnrolled && !isComplete && (
                         <div className="absolute top-4 right-4">
-                          <span className="px-2 py-1 bg-accent/20 border border-accent/35 text-accent rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 backdrop-blur-sm">
-                            <Play className="w-2.5 h-2.5 fill-current" /> Active
+                          <span className="px-2.5 py-1 bg-accent/20 text-accent rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 backdrop-blur-sm shadow-sm">
+                            <Play className="w-2.5 w-2.5 fill-current" /> Active
                           </span>
                         </div>
                       )}
-                      {/* Progress bar */}
                       {progress > 0 && !isLocked && (
                         <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-bg/40">
-                          <div className="h-full bg-accent transition-all duration-700" style={{ width: `${progress}%` }} />
+                          <div className="h-full bg-accent transition-all duration-700 shadow-[0_0_8px_var(--color-accent)]" style={{ width: `${progress}%` }} />
                         </div>
                       )}
                     </div>
 
-                    {/* Card body */}
-                    <div className="p-6 flex flex-col flex-1">
-                      <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
+                    <div className="pt-5 pb-2 px-1 flex flex-col flex-1">
+                      <h3 className="text-lg font-black text-text-primary mb-1.5 group-hover:text-accent transition-colors tracking-tight">
                         {bc.title || 'Bootcamp'}
                       </h3>
                       {bc.description && (
-                        <p className="text-xs text-text-muted line-clamp-2 mb-3">{bc.description}</p>
+                        <p className="text-xs text-text-muted/70 line-clamp-2 mb-4 font-mono leading-relaxed">{bc.description}</p>
                       )}
-                      <div className="flex items-center justify-between text-xs text-text-muted mb-6 mt-auto">
-                        <span>{bc.duration || ''}</span>
-                        <span className="text-text-secondary font-mono">{bc.priceLabel || 'Free'}</span>
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-text-muted/60 mt-auto mb-6">
+                        <span>{bc.duration || 'Flexible'}</span>
+                        <span className="text-accent">{bc.priceLabel || 'Free Access'}</span>
                       </div>
 
-                      {/* CTA */}
                       {isLocked ? (
-                        <button className="w-full btn-secondary !py-2.5 text-xs flex items-center justify-center gap-2 opacity-80">
-                          <Lock className="w-3.5 h-3.5" /> Coming soon
+                        <button className="w-full bg-bg-elevated text-text-muted rounded-xl py-3.5 text-xs font-black uppercase tracking-widest opacity-60 cursor-default flex items-center justify-center gap-2">
+                          <Lock className="h-4 w-4" /> Coming soon
                         </button>
                       ) : (
                         <Link
                           to={`/dashboard/bootcamps/${bc.id}`}
-                          className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2"
+                          className="w-full bg-accent text-bg rounded-xl py-3.5 text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-2"
                         >
-                          {isComplete
-                            ? <><CheckCircle2 className="w-3.5 h-3.5" /> Review curriculum</>
-                            : isEnrolled 
-                            ? <><Play className="w-3.5 h-3.5 fill-current" /> Continue training</>
-                            : <>Start Training <ChevronRight className="w-4 h-4" /></>}
+                          {isComplete ? <><CheckCircle2 className="h-4 w-4" /> Review curriculum</> : isEnrolled ? <><Play className="h-4 w-4 fill-current" /> Continue training</> : <>Start Training <ChevronRight className="h-4 w-4" /></>}
                         </Link>
                       )}
                     </div>
@@ -273,7 +212,6 @@ const Bootcamp: React.FC = () => {
               );
             })}
           </div>
-        )}
         </div>
       </div>
     </div>

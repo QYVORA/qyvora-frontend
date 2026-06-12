@@ -52,14 +52,14 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({
           </p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-4 py-2.5 inline-flex items-center gap-2">
-            <span className="font-mono text-xl font-black text-accent">{progressValue}</span>
+          <div className="rounded-2xl bg-accent-dim/10 px-6 py-3 inline-flex items-center gap-3 shadow-sm">
+            <span className="font-mono text-3xl font-black text-accent tracking-tighter">{progressValue}</span>
           </div>
           <Link
             to={resumePath || '#'}
-            className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-sm font-black"
+            className="btn-primary inline-flex items-center gap-3 px-8 py-3.5 text-sm font-black"
           >
-            <Play className="h-3.5 w-3.5 fill-current" /> Resume mission
+            <Play className="h-4 w-4 fill-current" /> Resume Training
           </Link>
         </div>
       </div>

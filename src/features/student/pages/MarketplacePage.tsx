@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingBag, Search, Loader2, Download, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, Search, Loader2, Download, CheckCircle2, ChevronRight, BookOpen } from 'lucide-react';
+import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
-
 import { resolveImg } from '../../../shared/utils/resolveImg';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import PageLoader from '../../../shared/components/PageLoader';
 
 const CACHE_KEY = 'qyvora_marketplace_cache_v2';
-
-
 
 const Marketplace: React.FC = () => {
   const { addToast } = useToast();
@@ -26,7 +24,6 @@ const Marketplace: React.FC = () => {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    // Hydrate from cache immediately
     try {
       const raw = localStorage.getItem(CACHE_KEY);
       if (raw) {
@@ -48,11 +45,7 @@ const Marketplace: React.FC = () => {
       const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
       const dbBalance = extractCpBalance(balRes?.data) ?? 0;
       setBalance(dbBalance);
-      const purchasedIds = new Set<string>(
-        txItems
-          .filter((tx: any) => tx.type === 'purchase' && tx.productId)
-          .map((tx: any) => String(tx.productId))
-      );
+      const purchasedIds = new Set<string>(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId)));
       setPurchased(purchasedIds);
     }).catch(() => {
       if (mounted && products.length === 0) setProducts([]);
@@ -69,17 +62,12 @@ const Marketplace: React.FC = () => {
       await api.post('/cp/purchase', { productId: id });
       addToast(`${product.title} purchased successfully.`, 'success');
       setPurchased((prev) => new Set([...prev, id]));
-      const [balRes, txRes] = await Promise.all([
-        api.get('/cp/balance').catch(() => null),
-        api.get('/cp/transactions?limit=100').catch(() => null),
-      ]);
-      const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
+      const [balRes, txRes] = await Promise.all([api.get('/cp/balance').catch(() => null), api.get('/cp/transactions?limit=100').catch(() => null)]);
       const dbBalance = extractCpBalance(balRes?.data) ?? 0;
       setBalance(dbBalance);
     } catch (err: any) {
-      const msg = err?.response?.data?.error || 'Purchase failed. Check your points balance.';
+      addToast(err?.response?.data?.error || 'Purchase failed.', 'error');
       setShakePurchase(id);
-      addToast(msg, 'error');
     } finally {
       setPurchasing(null);
     }
@@ -90,168 +78,88 @@ const Marketplace: React.FC = () => {
     setDownloading(id);
     try {
       const base = String(import.meta.env.VITE_API_BASE_URL || '/api');
-      const url = `${base}/cp/products/${id}/download`;
-      // Fetch with credentials so auth cookie is sent
-      const res = await fetch(url, { credentials: 'include' });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        addToast(data?.error || 'Download failed.', 'error');
-        return;
-      }
+      const res = await fetch(`${base}/cp/products/${id}/download`, { credentials: 'include' });
+      if (!res.ok) { addToast('Download failed.', 'error'); return; }
       const blob = await res.blob();
-      const filename = product.fileName || `${product.title || 'product'}.pdf`;
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = filename;
+      link.download = product.fileName || `${product.title || 'product'}.pdf`;
       link.click();
       URL.revokeObjectURL(link.href);
-    } catch {
-      addToast('Download failed.', 'error');
-    } finally {
-      setDownloading(null);
-    }
+    } catch { addToast('Download failed.', 'error'); }
+    finally { setDownloading(null); }
   };
 
-  const filtered = products.filter((p) =>
-    !query || p.title?.toLowerCase().includes(query.toLowerCase()) || p.type?.toLowerCase().includes(query.toLowerCase())
-  );
+  const filtered = products.filter((p) => !query || p.title?.toLowerCase().includes(query.toLowerCase()) || p.type?.toLowerCase().includes(query.toLowerCase()));
 
   if (loading) return <PageLoader />;
 
   return (
     <div className="bg-bg">
-      <div
-        className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover"
-        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
-      >
-      <div className="mx-auto max-w-7xl px-2 pt-6 pb-16 md:px-8">
-
-{/* Header */}
-         <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-           <div>
-             <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-               Zero-Day Vault
+      <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover">
+        <div className="mx-auto max-w-7xl px-0 pt-6 pb-16 md:px-8">
+          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end px-1 md:px-0">
+             <div>
+               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">Zero-Day Vault</div>
+               <h1 className="text-4xl font-black text-text-primary md:text-6xl">Intelligence Market</h1>
+               <p className="mt-2 max-w-lg text-base text-text-muted">High-value research papers, tools, and mission guides for operators.</p>
              </div>
-             <h1 className="text-4xl font-black text-text-primary md:text-6xl">Zero-Day Market</h1>
-             <p className="mt-2 max-w-lg text-base text-text-muted">Spend CP on tooling and guides — loot for operators.</p>
-           </div>
-           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center flex-wrap max-w-full">
-             {balance !== null && (
-               <div className="rounded-2xl border-2 border-accent/25 bg-accent-dim px-3 sm:px-4 py-2 sm:py-2.5 inline-flex items-center gap-2 max-w-full">
-                 <CpLogo className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
-                 <span className="font-mono text-xl sm:text-2xl font-black text-accent md:text-3xl truncate">{formatNumber(balance)}</span>
+             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center flex-wrap max-w-full">
+               {balance !== null && (
+                 <div className="rounded-2xl bg-accent-dim/10 px-6 py-3 inline-flex items-center gap-3 shadow-sm">
+                   <CpLogo className="h-7 w-7 shrink-0" />
+                   <span className="font-mono text-3xl font-black text-text-primary tracking-tighter">{formatNumber(balance)}</span>
+                 </div>
+               )}
+               <div className="relative w-full sm:w-auto">
+                 <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vault..." className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
+                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted pointer-events-none" />
                </div>
-             )}
-             <div className="relative w-full sm:w-auto">
-               <input
-                 type="text"
-                 value={query}
-                 onChange={(e) => setQuery(e.target.value)}
-                 placeholder="Search products..."
-                 className="w-full sm:w-64 rounded-xl border-2 border-border bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none"
-               />
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
              </div>
-           </div>
-         </ScrollReveal>
+          </ScrollReveal>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filtered.length === 0 ? (
-            <div className="col-span-full relative overflow-hidden py-20 text-center rounded-2xl border-2 border-dashed border-border">
-              <img
-                src="/assets/illustrations/cta-operator.webp"
-                alt=""
-                aria-hidden="true"
-                className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.10] select-none"
-              />
-              <ShoppingBag className="w-10 h-10 text-text-muted mx-auto mb-4 opacity-40" />
-              <p className="text-text-muted text-sm">
-                {query ? 'No products match your search.' : 'No products available yet.'}
-              </p>
-            </div>
-          ) : (
-            filtered.map((prod, idx) => {
-      const id = String(prod.id || '');
-              const isBuying = purchasing === id;
-              const isDownloading = downloading === id;
-              const hasPurchased = purchased.has(id);
-              return (
-                <ScrollReveal key={id || idx} delay={idx * 0.04}>
-                  <div className="card-qyvora p-4 flex flex-col h-full group">
-                    <div className="relative aspect-square overflow-hidden rounded mb-4">
-                      <img
-                        src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')}
-                        alt={prod.title}
-                        className="w-full h-full object-cover transition-all duration-500"
-                      />
-                      {prod.type && (
-                        <div className="absolute top-2 right-2">
-                          <span className="bg-bg/80 backdrop-blur-md border border-border rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase text-accent tracking-widest">
-                            {prod.type}
-                          </span>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 px-1 md:px-0">
+            {filtered.length === 0 ? (
+              <div className="col-span-full relative overflow-hidden py-20 text-center rounded-3xl border-2 border-dashed border-border/20 bg-transparent">
+                <BookOpen className="w-12 h-12 text-text-muted mx-auto mb-4 opacity-40" />
+                <p className="text-text-muted text-base">{query ? 'No matching assets found.' : 'Marketplace is currently empty.'}</p>
+              </div>
+            ) : (
+              filtered.map((prod, idx) => {
+                const id = String(prod.id || '');
+                const hasPurchased = purchased.has(id);
+                return (
+                  <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
+                    <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
+                      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+                        <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute top-4 left-4 flex items-center gap-2">
+                          {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}
+                          {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Public</span>}
                         </div>
-                      )}
-                      {hasPurchased && (
-                        <div className="absolute top-2 left-2">
-                          <span className="bg-accent text-bg rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest flex items-center gap-1">
-                            <CheckCircle2 className="w-2.5 h-2.5" /> Owned
-                          </span>
+                        <div className="absolute bottom-4 left-4"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> Intelligence Asset</span></div>
+                      </div>
+                      <div className="flex flex-1 flex-col p-6 sm:p-8">
+                        <h3 className="mb-2 text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">{prod.title}</h3>
+                        <p className="text-xs text-text-muted/70 mb-8 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Secure intelligence report for offensive security operatives.'}</p>
+                        <div className="mt-auto flex items-center justify-between gap-6">
+                          <div className="flex items-center gap-2">
+                             {prod.isFree ? <span className="text-sm font-black text-accent uppercase tracking-widest">Free Access</span> : <><CpLogo className="h-5 w-5" /><span className="font-mono text-xl font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
+                          </div>
+                          {(hasPurchased || prod.isFree) ? (
+                            <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60 flex items-center gap-2">{downloading === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download</button>
+                          ) : (
+                            <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60 flex items-center gap-2 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <><ShoppingBag className="h-4 w-4" /> Unlock</>}</button>
+                          )}
                         </div>
-                      )}
-                      {prod.isFree && !hasPurchased && (
-                        <div className="absolute top-2 left-2">
-                          <span className="bg-accent/80 text-bg rounded-sm px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest">
-                            FREE
-                          </span>
-                        </div>
-                      )}
+                      </div>
                     </div>
-                    <h3 className="text-sm font-bold text-text-primary mb-1 line-clamp-2 flex-1">{prod.title}</h3>
-                    {prod.description && (
-                      <p className="text-[11px] text-text-muted line-clamp-2 mb-3">{prod.description}</p>
-                    )}
-                    <div className="mb-4">
-                      {prod.isFree ? (
-                        <span className="text-sm font-mono font-bold text-accent uppercase tracking-wider">FREE</span>
-                      ) : (
-                        <span className="text-sm font-mono font-bold text-accent inline-flex items-center gap-1">{formatNumber(Number(prod.cpPrice || 0))} <CpLogo className="w-3.5 h-3.5" /></span>
-                      )}
-                    </div>
-
-                    {(hasPurchased || prod.isFree) ? (
-                      <button
-                        onClick={() => handleDownload(prod)}
-                        disabled={isDownloading}
-                        className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-60 !bg-accent/20 !border-accent/40 hover:!bg-accent/30"
-                      >
-                        {isDownloading ? (
-                          <><Loader2 className="w-3 h-3 animate-spin" /> Downloading...</>
-                        ) : (
-                          <><Download className="w-3 h-3" /> Download</>
-                        )}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handlePurchase(prod)}
-                        disabled={isBuying}
-                        className={`w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-60${shakePurchase === id ? ' animate-shake-x' : ''}`}
-                        onAnimationEnd={() => setShakePurchase(null)}
-                      >
-                        {isBuying ? (
-                          <><Loader2 className="w-3 h-3 animate-spin" /> Processing...</>
-                        ) : (
-                          'Purchase Access'
-                        )}
-                      </button>
-                    )}
-                  </div>
-                </ScrollReveal>
-              );
-            })
-          )}
+                  </motion.div>
+                );
+              })
+            )}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

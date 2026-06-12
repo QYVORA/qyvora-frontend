@@ -26,7 +26,7 @@ const _0x5a2b = atob('L21yLXJvYm90');
 const Skeleton = () => (
   <div className="space-y-3 p-1">
     {[0,1,2,3,4].map(i => (
-      <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" style={{ opacity: 1 - i * 0.15 }} />
+      <div key={i} className="h-14 rounded-xl bg-bg-elevated animate-pulse" style={{ opacity: 1 - i * 0.15 }} />
     ))}
   </div>
 );
@@ -205,7 +205,7 @@ const AdminDashboardPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => void loadAll()}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl border-2 border-accent/25 bg-accent-dim text-accent text-sm font-black uppercase tracking-wider hover:border-accent/40 transition-all active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-accent text-bg text-sm font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-accent/20"
               >
                 <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                 {loading ? 'Syncing' : 'Refresh'}

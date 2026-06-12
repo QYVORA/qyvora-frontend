@@ -38,33 +38,39 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
 
   return (
     <ScrollReveal delay={modIdx * 0.04}>
-      <div className="w-full overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+      <div className="w-full bg-transparent">
         {/* Phase header */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 border-accent/30 bg-accent-dim text-accent font-mono text-sm font-black">
-              {isComplete
-                ? <CheckCircle2 className="h-4 w-4" />
+        <div className="flex flex-wrap items-center justify-between gap-3 px-0 py-6 sm:py-8">
+          <div className="flex items-center gap-4">
+            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-all duration-300 ${
+              isComplete
+                ? 'bg-accent text-bg shadow-lg shadow-accent/20'
                 : isLocked
-                  ? <Lock className="h-3.5 w-3.5" />
+                  ? 'bg-bg-elevated text-text-muted opacity-50'
+                  : 'bg-accent-dim text-accent'
+            }`}>
+              {isComplete
+                ? <CheckCircle2 className="h-5 w-5" />
+                : isLocked
+                  ? <Lock className="h-4 w-4" />
                   : String(modIdx + 1).padStart(2, '0')}
             </div>
             <div>
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent/70 mb-0.5">
                 {configPhase?.codename || `Phase ${modIdx + 1}`}
               </p>
-              <h3 className="mb-0 text-base font-black text-text-primary">
+              <h3 className="mb-0 text-xl font-black text-text-primary tracking-tight">
                 {mod.title}
               </h3>
             </div>
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-text-muted">
-              <ListChecks className="h-3.5 w-3.5 opacity-50" />
-              {roomsDone}/{roomsTotal} rooms
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-text-muted/60">
+              <ListChecks className="h-4 w-4" />
+              {roomsDone}/{roomsTotal} <span className="hidden sm:inline">Modules</span>
             </span>
             {progress > 0 && (
-              <span className="rounded-lg border border-accent/25 bg-accent-dim px-2 py-0.5 font-mono text-xs font-black text-accent">
+              <span className="rounded-xl bg-accent-dim px-3 py-1 font-mono text-xs font-black text-accent shadow-sm">
                 {progress}%
               </span>
             )}
@@ -72,19 +78,19 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
         </div>
 
         {/* Room cards */}
-        <div className="p-4 sm:p-5">
+        <div className="px-0 pb-12">
           {isLocked ? (
-            <div className="flex items-center gap-3 rounded-2xl border border-dashed border-border bg-bg/40 p-5">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-bg">
-                <Lock className="h-4 w-4 text-text-muted opacity-50" />
+            <div className="flex items-center gap-4 rounded-3xl bg-bg-elevated/40 p-8 border border-border/10">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bg/50 text-text-muted opacity-40">
+                <Lock className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-text-muted">Phase locked</p>
-                <p className="text-xs text-text-muted opacity-60">Your instructor will unlock this when it's time.</p>
+                <p className="text-sm font-black uppercase tracking-widest text-text-muted">Phase locked</p>
+                <p className="text-xs text-text-muted/60">Your instructor will unlock this when it's time.</p>
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {(mod.rooms || []).map((room: any, roomIdx: number) => {
                 const configRoom = configPhase?.rooms.find(
                   (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()

@@ -29,16 +29,13 @@ const RoomCard: React.FC<RoomCardProps> = ({
     <Link
       to={!isRoomLocked && roomPath ? roomPath : '#'}
       onClick={isRoomLocked ? (e) => e.preventDefault() : undefined}
-      className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border-2 bg-bg transition-colors duration-200 ${
+      className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 ${
         isRoomLocked
-          ? 'border-border opacity-45 cursor-not-allowed pointer-events-none'
-          : roomDone
-          ? 'hover:border-accent/60'
-          : 'hover:border-accent/40'
+          ? 'opacity-40 cursor-not-allowed pointer-events-none'
+          : 'hover:border-accent/30 hover:scale-[1.01]'
       }`}
-      style={{ borderColor: configPhase?.color ? `${configPhase.color}40` : 'var(--color-border)' }}
     >
-      <div className="relative aspect-video overflow-hidden rounded-t-2xl">
+      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
         <img
           src={roomImg}
           alt={room.title}
@@ -83,13 +80,13 @@ const RoomCard: React.FC<RoomCardProps> = ({
           </div>
         )}
         {configRoom && !roomDone && (
-          <div className="absolute bottom-2 right-2.5 rounded-md bg-bg/80 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/60">
+          <div className="absolute bottom-2.5 right-2.5 rounded-lg bg-bg/80 backdrop-blur-md px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-text-muted shadow-sm">
             {configRoom.steps.length} steps
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className={`mb-1.5 text-sm font-black leading-snug transition-colors ${
+      <div className="flex flex-1 flex-col pt-4 px-1 pb-2">
+        <h3 className={`mb-1 text-base font-black leading-snug transition-colors ${
           isRoomLocked ? 'text-text-muted'
             : roomDone ? 'text-accent'
               : 'text-text-primary group-hover:text-accent'
@@ -97,16 +94,16 @@ const RoomCard: React.FC<RoomCardProps> = ({
           {configRoom?.title || room.title || `Room ${roomIdx + 1}`}
         </h3>
         {(configRoom?.overview || room.overview) && (
-          <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted">
+          <p className="line-clamp-2 text-[11px] leading-relaxed text-text-muted/70 font-mono">
             {configRoom?.overview || room.overview}
           </p>
         )}
         {roomDone ? (
-          <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent/60">
+          <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
             Review room <ArrowRight className="h-3 w-3" />
           </div>
         ) : !isRoomLocked && (
-          <div className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-opacity group-hover:opacity-100">
+          <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
             Enter room <ArrowRight className="h-3 w-3" />
           </div>
         )}
