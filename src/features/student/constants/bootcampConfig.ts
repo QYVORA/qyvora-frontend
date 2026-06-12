@@ -3514,7 +3514,7 @@ dnstwist --format csv <target_ip> > typosquats.csv
 \`\`\`
 
 *Operative Drill:* Look at a real phishing email. Identify the 'Call to Action.' Does it use Urgency ("Reset now") or Authority ("By order of the CEO")? How would an Qyvora operative combine both?`,
-              image: null,
+              image: 'step-01.webp',
             },
             {
               title: 'Anatomy of a Spoofed Engagement',
@@ -3566,7 +3566,7 @@ grep "Received: from" raw_email.txt | awk '{print $4}'
 \`\`\`
 
 *Hacker's Strategy:* A 'Lookalike Domain' (e.g., \`<lookalike_domain>\` with an 'l') is often more effective than direct spoofing, as it bypasses modern SPF/DKIM checks entirely.`,
-              image: null,
+              image: 'step-02.webp',
             },
             {
               title: 'Pretexting & Vishing: The Vocal Exploit',
@@ -3607,7 +3607,7 @@ site:news.<search_engine> "Qyvora" "Acquisition"
 \`\`\`
 
 *Training Task:* You are pretending to be James from IT. Your goal is to get a trainee to reveal their 'Agent ID.' Write a 3-sentence script that uses the **Reciprocity** principle (give a tip, get an ID).`,
-              image: null,
+              image: 'step-03.webp',
             },
             {
               title: 'Defensive Counter-Measures',
@@ -3640,7 +3640,7 @@ If users use password managers, they are less likely to type their password into
 Establish a 'One-Click' reporting system where users can flag suspicious emails directly to the Qyvora security team.
 
 *Final Insight:* Social engineering is the only attack that works on every platform. Whether it's Linux, Windows, or Cloud, the human is always the weakest link. Congratulations on completing this unit of the Qyvora Operative program.`,
-              image: null,
+              image: 'step-04.webp',
             },
           ],
         },
