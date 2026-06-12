@@ -77,13 +77,18 @@ export const SITE_CONFIG = {
   ],
    nav: {
      platform: [
+       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
        { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
      ],
-     company: [{ key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }],
+     company: [
+       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
+     ],
    },
    
   footer: {
     links: [
+      { label: 'Anansi CLI', path: '/anansi' },
       { label: 'Terms of Service', path: '/terms' },
     ],
   },

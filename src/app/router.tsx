@@ -25,6 +25,7 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 // ─── Lazy page imports ────────────────────────────────────────────────────────
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
+const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -100,6 +101,10 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
+        </Route>
+
+        <Route element={<PublicLayout />}>
+          <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
         </Route>
 
         {/* ── Auth routes ───────── */}
