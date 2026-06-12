@@ -40,15 +40,6 @@ function formatTime(ms: number): string {
   return `${seconds}s`;
 }
 
-interface StepNote {
-  phaseId: string;
-  roomId: string;
-  stepIdx: number;
-  note: string;
-  bookmarked: boolean;
-  timestamp: number;
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN PAGE
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,54 +57,28 @@ const BootcampRoomPage: React.FC = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
 
-  // ── API state ──────────────────────────────────────────────────────────────
+  // ── 1. API & Base State ───────────────────────────────────────────────────
   const [apiCourse, setApiCourse] = useState<ApiCourse | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
-
-  // ── Step progression ───────────────────────────────────────────────────────
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [viewedSteps, setViewedSteps] = useState<Set<number>>(new Set([0]));
-
-  // ── Mobile sidebar ─────────────────────────────────────────────────────────
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // ── Quiz modal ─────────────────────────────────────────────────────────────
   const [quizOpen, setQuizOpen] = useState(false);
   const [quizGateOpen, setQuizGateOpen] = useState(false);
-  // Track whether the quiz for the current room has been passed this session
   const [quizPassed, setQuizPassed] = useState(false);
-
-  // ── Room complete overlay ──────────────────────────────────────────────────
   const [showCompleteOverlay, setShowCompleteOverlay] = useState(false);
   const [completionCpEarned, setCompletionCpEarned] = useState(250);
   const [completing, setCompleting] = useState(false);
+  const [reportIssueOpen, setReportIssueOpen] = useState(false);
+  const [reportStepIdx, setReportStepIdx] = useState(0);
+  const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
 
-  // ── Completed rooms from API (NOT localStorage) ───────────────────────────────
-  // Build a set of completed room keys from the API course data
-  const completedRooms = new Set<string>();
-  if (apiCourse) {
-    apiCourse.modules.forEach((mod) => {
-      // Find matching phase by title
-      const matchPhase = BOOTCAMP_CONFIG.phases.find(
-        (p) => p.title.toLowerCase() === mod.title.toLowerCase()
-      );
-      if (matchPhase) {
-        mod.rooms.forEach((apiRoom) => {
-          if (apiRoom.completed) {
-            const matchRoom = matchPhase.rooms.find(
-              (r) => r.title.toLowerCase() === apiRoom.title.toLowerCase()
-            );
-            if (matchRoom) {
-              completedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
-            }
-          }
-        });
-      }
-    });
-  }
+  // ── 2. Custom Hooks ───────────────────────────────────────────────────────
+  const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
 
+  // ── 3. Data Loading Logic ──────────────────────────────────────────────────
   const loadCourseData = useCallback(async () => {
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
@@ -139,54 +104,35 @@ const BootcampRoomPage: React.FC = () => {
   }, [bootcampId]);
 
   const markRoomComplete = async (phId: string, rmId: string) => {
-    // Call backend API to save completion to database
     try {
       const phaseNum = parseInt(phId.replace('phase', ''), 10);
       const roomNum = parseInt(rmId.replace('room', ''), 10);
       const backendRoomId = phaseNum * 100 + roomNum;
       const response = await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/complete`, {});
       
-      // Update completion CP earned for celebration
       if (response.data?.reward?.points) {
         setCompletionCpEarned(response.data.reward.points);
       }
       
-      // ── OPTIMIZATION: Show celebration immediately ──
-      // Don't wait for loadCourseData() which performs two more API calls.
-      // Show the success overlay right now for a snappier experience.
       setShowCompleteOverlay(true);
-      
-      // Refetch course data in background to update UI (like sidebar checkmarks)
-      loadCourseData();
+      loadCourseData(); // Refresh checkmarks in background
       
     } catch (err: any) {
-      console.error('❌ Failed to complete room in backend:', err?.response?.data || err);
+      console.error('❌ Failed to complete room:', err?.response?.data || err);
       addToast('Failed to mark room as complete', 'error');
     }
   };
 
-  // ── Load API data ──────────────────────────────────────────────────────────
+  // ── 4. Lifecycle Effects ───────────────────────────────────────────────────
   useEffect(() => {
     loadCourseData();
   }, [loadCourseData]);
 
-  // ── Call session-open API when room loads ──────────────────────────────────
   useEffect(() => {
-    if (!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled') {
-      return;
-    }
-    
-    // Map frontend IDs to backend IDs
-    // Frontend: phase1, phase2... → Backend: moduleId 1, 2...
-    // Frontend: room1, room2, room3... → Backend: roomId 101, 102, 103... (phase1), 201, 202... (phase2)
+    if (!phaseId || !roomId || !bootcampId || apiLoading || bootcampStatus !== 'enrolled') return;
     const phaseNum = parseInt(phaseId.replace('phase', ''), 10);
     const roomNum = parseInt(roomId.replace('room', ''), 10);
-    
-    // Backend uses roomId format: moduleId * 100 + roomNum
-    // Phase 1: 101, 102, 103
-    // Phase 2: 201, 202, 203, 204
     const backendRoomId = phaseNum * 100 + roomNum;
-    
     const callSessionOpen = async () => {
       try {
         await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {});
@@ -194,35 +140,78 @@ const BootcampRoomPage: React.FC = () => {
         console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err);
       }
     };
-    
     callSessionOpen();
   }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus]);
 
-  // ── Redirect if not enrolled ───────────────────────────────────────────────
   useEffect(() => {
     if (!apiLoading && bootcampStatus === 'not_enrolled') {
       navigate('/dashboard/bootcamps', { replace: true });
     }
   }, [apiLoading, bootcampStatus, navigate]);
 
-  // ── Listen for quiz open event from navbar ────────────────────────────────
   useEffect(() => {
     const handler = () => setQuizOpen(true);
     window.addEventListener('bootcamp:openQuiz', handler);
     return () => window.removeEventListener('bootcamp:openQuiz', handler);
   }, []);
 
-  // ── NEW FEATURES: Session timer & Fullscreen (Extracted Hook) ─────────────
-  const { timeSpent, fullscreen, toggleFullscreen, resetSession } = useRoomSession();
+  useEffect(() => {
+    setCurrentStepIdx(0);
+    setViewedSteps(new Set([0]));
+    setQuizPassed(false);
+    resetSession();
+  }, [phaseId, roomId]);
 
-  // ── NEW FEATURES: Jump menu ────────────────────────────────────────────────
-  const [jumpMenuOpen, setJumpMenuOpen] = useState(false);
+  // ── 5. Derived Technical State (Sets & Lists) ──────────────────────────────
+  const completedRooms = new Set<string>();
+  const lockedRooms = new Set<string>();
 
-  // ── NEW FEATURES: Report issue ─────────────────────────────────────────────
-  const [reportIssueOpen, setReportIssueOpen] = useState(false);
-  const [reportStepIdx, setReportStepIdx] = useState(0);
+  if (apiCourse) {
+    apiCourse.modules.forEach((mod) => {
+      const matchPhase = BOOTCAMP_CONFIG.phases.find(
+        (p) => p.title.toLowerCase() === mod.title.toLowerCase()
+      );
+      if (matchPhase) {
+        if (mod.locked) {
+          matchPhase.rooms.forEach((r) => lockedRooms.add(`${matchPhase.id}:${r.id}`));
+        }
+        mod.rooms.forEach((apiRoom) => {
+          const matchRoom = matchPhase.rooms.find(
+            (r) => r.title.toLowerCase() === apiRoom.title.toLowerCase()
+          );
+          if (matchRoom) {
+            if (apiRoom.completed) completedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
+            if (apiRoom.locked) lockedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
+          }
+        });
+      }
+    });
+  }
 
-  // ── NEW FEATURES: Bookmarks (localStorage) ─────────────────────────────────
+  const allRooms: Array<{ phaseId: string; roomId: string; title: string }> = [];
+  BOOTCAMP_CONFIG.phases.forEach((p) => {
+    p.rooms.forEach((r) => allRooms.push({ phaseId: p.id, roomId: r.id, title: r.title }));
+  });
+
+  // ── 6. Derived Component State (Single Variables) ──────────────────────────
+  const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
+  const room = phase?.rooms.find((r) => r.id === roomId);
+  const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
+  const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
+  const isLastStep = room ? currentStepIdx === room.steps.length - 1 : false;
+
+  const currentRoomIdx = allRooms.findIndex((r) => r.phaseId === phaseId && r.roomId === roomId);
+  const prevRoom = currentRoomIdx > 0 ? allRooms[currentRoomIdx - 1] : null;
+  const nextRoom = currentRoomIdx < allRooms.length - 1 ? allRooms[currentRoomIdx + 1] : null;
+
+  const apiModule = apiCourse?.modules.find(
+    (m) => m.title.toLowerCase() === phase?.title.toLowerCase()
+  );
+  const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
+  const quizCourseId = apiCourse?.id || bootcampId || '';
+  const quizRoomId = room ? String(phase?.rooms.findIndex((r) => r.id === roomId) + 1) : '';
+
+  // ── 7. Bookmarks Logic ─────────────────────────────────────────────────────
   const bookmarksKey = `hpb_bookmarks_${bootcampId || 'hpb'}`;
   const [bookmarkedSteps, setBookmarkedSteps] = useState<Set<string>>(() => {
     try {
@@ -250,49 +239,7 @@ const BootcampRoomPage: React.FC = () => {
     return bookmarkedSteps.has(`${phaseId}:${roomId}:${stepIdx}`);
   };
 
-  // ── Reset step index when room changes ────────────────────────────────────
-  useEffect(() => {
-    setCurrentStepIdx(0);
-    setViewedSteps(new Set([0]));
-    setQuizPassed(false);
-    resetSession();
-  }, [phaseId, roomId]);
-
-  // ── Resolve phase and room from config ────────────────────────────────────
-  const phase = BOOTCAMP_CONFIG.phases.find((p) => p.id === phaseId);
-  const room = phase?.rooms.find((r) => r.id === roomId);
-
-  // Build locked rooms set from API data
-  const lockedRooms = new Set<string>();
-  if (apiCourse) {
-    apiCourse.modules.forEach((mod) => {
-      if (mod.locked) {
-        // find matching phase by title
-        const matchPhase = BOOTCAMP_CONFIG.phases.find(
-          (p) => p.title.toLowerCase() === mod.title.toLowerCase()
-        );
-        if (matchPhase) {
-          matchPhase.rooms.forEach((r) => lockedRooms.add(`${matchPhase.id}:${r.id}`));
-        }
-      } else {
-        mod.rooms.forEach((apiRoom) => {
-          if (apiRoom.locked) {
-            const matchPhase = BOOTCAMP_CONFIG.phases.find(
-              (p) => p.title.toLowerCase() === mod.title.toLowerCase()
-            );
-            if (matchPhase) {
-              const matchRoom = matchPhase.rooms.find(
-                (r) => r.title.toLowerCase() === apiRoom.title.toLowerCase()
-              );
-              if (matchRoom) lockedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
-            }
-          }
-        });
-      }
-    });
-  }
-
-  // ── Navigation helpers ─────────────────────────────────────────────────────
+  // ── 8. Action Handlers ─────────────────────────────────────────────────────
   const handleNavigate = (pId: string, rId: string) => {
     navigate(`/dashboard/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
   };
@@ -306,64 +253,29 @@ const BootcampRoomPage: React.FC = () => {
     });
   };
 
-  const isLastStep = room ? currentStepIdx === room.steps.length - 1 : false;
-
-  // ── Find prev/next room for navigation ────────────────────────────────────
-  const allRooms: Array<{ phaseId: string; roomId: string; title: string }> = [];
-  BOOTCAMP_CONFIG.phases.forEach((p) => {
-    p.rooms.forEach((r) => allRooms.push({ phaseId: p.id, roomId: r.id, title: r.title }));
-  });
-  const currentRoomIdx = allRooms.findIndex((r) => r.phaseId === phaseId && r.roomId === roomId);
-  const prevRoom = currentRoomIdx > 0 ? allRooms[currentRoomIdx - 1] : null;
-  const nextRoom = currentRoomIdx < allRooms.length - 1 ? allRooms[currentRoomIdx + 1] : null;
-
-  const currentModule = apiCourse?.modules.find(m => m.title.toLowerCase() === phase?.title.toLowerCase());
-
-  // ── Find matching API module for quiz ──────────────────────────────────────
-  const apiModule = apiCourse?.modules.find(
-    (m) => m.title.toLowerCase() === phase?.title.toLowerCase()
-  );
-  const quizModuleId = apiModule ? String(apiModule.moduleId) : '';
-  const quizCourseId = apiCourse?.id || bootcampId || '';
-  // roomId is 1-based index of the room within the phase
-  const quizRoomId = room ? String(phase.rooms.findIndex((r) => r.id === roomId) + 1) : '';
-
   const handleComplete = async () => {
     if (completing) return;
     setCompleting(true);
-
     try {
       const allStepIdxs = room?.steps.map((_, i) => i) || [];
       setViewedSteps(new Set(allStepIdxs));
-      
-      // ── Normal Room Flow ──
-      // Skip quiz gate if passed or no quiz
       if (!quizPassed && quizModuleId) {
         setQuizGateOpen(true);
         return;
       }
-
-      // If room is already complete or quiz is passed
       if (phaseId && roomId) {
         await markRoomComplete(phaseId, roomId);
       } else {
         setShowCompleteOverlay(true);
       }
-
     } finally {
       setCompleting(false);
     }
   };
 
-  const isRoomLocked = lockedRooms.has(`${phaseId}:${roomId}`);
-  const isRoomComplete = completedRooms.has(`${phaseId}:${roomId}`);
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────
+  // ── 9. Render ─────────────────────────────────────────────────────────────
   return (
     <div className="bg-bg overflow-x-hidden">
-      {/* Quiz gate modal */}
       <AnimatePresence>
         {quizGateOpen && (
           <QuizGateModal
@@ -373,7 +285,6 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Quiz modal */}
       {quizOpen && quizModuleId && (
         <QuizModal
           moduleId={quizModuleId}
@@ -388,7 +299,6 @@ const BootcampRoomPage: React.FC = () => {
         />
       )}
 
-      {/* NEW: Jump menu */}
       <AnimatePresence>
         {jumpMenuOpen && room && (
           <StepJumpMenu
@@ -402,7 +312,6 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* NEW: Report issue modal */}
       <AnimatePresence>
         {reportIssueOpen && phaseId && roomId && (
           <ReportIssueModal
@@ -414,14 +323,12 @@ const BootcampRoomPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Room complete celebration */}
       <RoomCompletionCelebration
         show={showCompleteOverlay}
         roomTitle={room?.title || ''}
         cpEarned={completionCpEarned}
         onClose={() => {
           setShowCompleteOverlay(false);
-          // Navigate to next room or back to curriculum
           if (nextRoom && !lockedRooms.has(`${nextRoom.phaseId}:${nextRoom.roomId}`)) {
             handleNavigate(nextRoom.phaseId, nextRoom.roomId);
           } else {
@@ -430,7 +337,6 @@ const BootcampRoomPage: React.FC = () => {
         }}
       />
 
-      {/* Desktop Floating Toolbar */}
       {!apiLoading && (
         <DesktopToolbar
           setJumpMenuOpen={setJumpMenuOpen}
@@ -447,13 +353,7 @@ const BootcampRoomPage: React.FC = () => {
         />
       )}
 
-      {/* ── MAIN SPLIT LAYOUT ── */}
-      <div className="
-        md:fixed md:inset-0 md:top-24
-        md:flex md:flex-row
-        md:overflow-hidden
-      ">
-        {/* Desktop sidebar */}
+      <div className="md:fixed md:inset-0 md:top-24 md:flex md:flex-row md:overflow-hidden">
         <aside className={`
           hidden md:flex md:flex-col shrink-0 bg-bg-card border-r border-border overflow-hidden transition-all duration-300 relative
           ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}
@@ -474,7 +374,6 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             ) : (
               <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-                {/* Back link */}
                 <div className="mb-4 px-1">
                   <Link
                     to={`/dashboard/bootcamps/${bootcampId}`}
@@ -527,7 +426,6 @@ const BootcampRoomPage: React.FC = () => {
           </div>
         </aside>
 
-        {/* Collapse toggle button - Desktop only */}
         {!apiLoading && (
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -541,168 +439,113 @@ const BootcampRoomPage: React.FC = () => {
           </button>
         )}
 
-          {/* Mobile sidebar drawer */}
-          {!apiLoading && (
-            <RoomSidebar
-              phases={BOOTCAMP_CONFIG.phases}
-              activePhaseId={phaseId || ''}
-              activeRoomId={roomId || ''}
-              completedRooms={completedRooms}
-              lockedRooms={lockedRooms}
-              bootcampId={bootcampId || ''}
-              onNavigate={handleNavigate}
-              mobileOpen={sidebarOpen}
-              onMobileClose={() => setSidebarOpen(false)}
-            />
-          )}
+        {!apiLoading && (
+          <RoomSidebar
+            phases={BOOTCAMP_CONFIG.phases}
+            activePhaseId={phaseId || ''}
+            activeRoomId={roomId || ''}
+            completedRooms={completedRooms}
+            lockedRooms={lockedRooms}
+            bootcampId={bootcampId || ''}
+            onNavigate={handleNavigate}
+            mobileOpen={sidebarOpen}
+            onMobileClose={() => setSidebarOpen(false)}
+          />
+        )}
 
-          {/* ── WALKTHROUGH CONTENT — independent scroll on desktop ── */}
-          <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
-            {apiLoading ? (
-              <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 animate-pulse space-y-8">
-                <div className="space-y-4">
-                  <div className="h-3 w-32 bg-accent-dim/20 rounded" />
-                  <div className="h-8 w-1/2 bg-accent-dim/20 rounded" />
-                </div>
-                <div className="h-2 w-full bg-accent-dim/10 rounded-full" />
-                <div className="space-y-6">
-                  {[0, 1].map(i => (
-                    <div key={i} className="h-64 w-full bg-accent-dim/5 rounded-2xl border border-border/40" />
-                  ))}
-                </div>
+        <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
+          {apiLoading ? (
+            <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 animate-pulse space-y-8">
+              <div className="space-y-4">
+                <div className="h-3 w-32 bg-accent-dim/20 rounded" />
+                <div className="h-8 w-1/2 bg-accent-dim/20 rounded" />
               </div>
-            ) : !phase || !room ? (
-              <div className="mx-auto max-w-4xl px-4 py-12">
-                <Link
-                  to={`/dashboard/bootcamps/${bootcampId}`}
-                  className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
-                </Link>
-                <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
-                  <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                  <h1 className="mb-2 text-lg font-black text-text-primary">Room Not Found</h1>
-                  <p className="text-sm text-text-muted">
-                    This room doesn't exist in the bootcamp config.
-                  </p>
-                </div>
+              <div className="h-2 w-full bg-accent-dim/10 rounded-full" />
+              <div className="space-y-6">
+                {[0, 1].map(i => (
+                  <div key={i} className="h-64 w-full bg-accent-dim/5 rounded-2xl border border-border/40" />
+                ))}
               </div>
-            ) : isRoomLocked ? (
-              <div className="mx-auto max-w-4xl px-4 py-12">
-                <Link
-                  to={`/dashboard/bootcamps/${bootcampId}`}
-                  className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
-                </Link>
-                <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
-                  <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                  <h1 className="mb-2 text-lg font-black text-text-primary">{room.title}</h1>
-                  <p className="text-sm text-text-muted">
-                    This room is locked. Your instructor will unlock it when it's time.
-                  </p>
-                </div>
+            </div>
+          ) : !phase || !room ? (
+            <div className="mx-auto max-w-4xl px-4 py-12">
+              <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+              </Link>
+              <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
+                <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
+                <h1 className="mb-2 text-lg font-black text-text-primary">Room Not Found</h1>
+                <p className="text-sm text-text-muted">This room doesn't exist in the bootcamp config.</p>
               </div>
-            ) : (
-              <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
+            </div>
+          ) : isRoomLocked ? (
+            <div className="mx-auto max-w-4xl px-4 py-12">
+              <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+              </Link>
+              <div className="rounded-2xl border border-border bg-bg-card p-10 text-center">
+                <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
+                <h1 className="mb-2 text-lg font-black text-text-primary">{room.title}</h1>
+                <p className="text-sm text-text-muted">This room is locked. Your instructor will unlock it when it's time.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="mx-auto w-full max-w-6xl md:max-w-7xl px-4 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
+              <div className="mb-6 flex flex-wrap items-center gap-2.5 md:hidden">
+                <button onClick={() => setSidebarOpen(true)} className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent">
+                  <Menu className="h-4 w-4" /> Curriculum
+                </button>
+                <span className="min-w-0 flex-1 text-[11px] font-black uppercase tracking-[0.12em] text-text-muted">
+                  {phase.codename} — {room.title}
+                </span>
+              </div>
 
-                {/* Mobile: curriculum open button */}
-                <div className="mb-6 flex flex-wrap items-center gap-2.5 md:hidden">
-                  <button
-                    onClick={() => setSidebarOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl border-2 border-accent/40 bg-accent-dim px-3.5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-accent"
-                    aria-label="Open curriculum"
-                  >
-                    <Menu className="h-4 w-4" /> Curriculum
-                  </button>
-                  <span className="min-w-0 flex-1 text-[11px] font-black uppercase tracking-[0.12em] text-text-muted">
-                    {phase.codename} — {room.title}
-                  </span>
-                </div>
+              <RoomHeader phase={phase} room={room} timeSpent={timeSpent} formatTime={formatTime} isRoomComplete={isRoomComplete} />
+              <RoomProgress viewedStepsCount={viewedSteps.size} totalStepsCount={room.steps.length} timeSpent={timeSpent} formatTime={formatTime} currentStepIdx={currentStepIdx} goToStep={goToStep} steps={room.steps} viewedSteps={viewedSteps} />
 
-                {/* Room header */}
-                <RoomHeader
-                  phase={phase}
-                  room={room}
-                  timeSpent={timeSpent}
-                  formatTime={formatTime}
-                  isRoomComplete={isRoomComplete}
-                />
-
-                {/* Step progress bar */}
-                <RoomProgress
-                  viewedStepsCount={viewedSteps.size}
-                  totalStepsCount={room.steps.length}
-                  timeSpent={timeSpent}
-                  formatTime={formatTime}
-                  currentStepIdx={currentStepIdx}
-                  goToStep={goToStep}
-                  steps={room.steps}
-                  viewedSteps={viewedSteps}
-                />
-
-                {/* Desktop: all steps visible */}
-                <div className="hidden md:block mb-10 space-y-4">
-                  {room.steps.map((step, idx) => {
-                    return (
-                      <StepCard
-                        key={idx}
-                        step={step}
-                        stepNum={idx + 1}
-                        phaseId={phaseId || ''}
-                        roomId={roomId || ''}
-                        isActive={idx === currentStepIdx}
-                        isViewed={viewedSteps.has(idx)}
-                        isBookmarked={isStepBookmarked(idx)}
-                        phaseColor={phase.color}
-                        footer={null}
-                        onToggleBookmark={() => toggleBookmark(idx)}
-                        onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
-                        onClick={() => goToStep(idx)}
-                      />
-                    );
-                  })}
-                </div>
-
-                {/* Mobile: one step at a time */}
-                <div className="md:hidden mb-10">
+              <div className="hidden md:block mb-10 space-y-4">
+                {room.steps.map((step, idx) => (
                   <StepCard
-                    key={currentStepIdx}
-                    step={room.steps[currentStepIdx]}
-                    stepNum={currentStepIdx + 1}
+                    key={idx}
+                    step={step}
+                    stepNum={idx + 1}
                     phaseId={phaseId || ''}
                     roomId={roomId || ''}
-                    isActive
-                    isViewed={viewedSteps.has(currentStepIdx)}
-                    isBookmarked={isStepBookmarked(currentStepIdx)}
+                    isActive={idx === currentStepIdx}
+                    isViewed={viewedSteps.has(idx)}
+                    isBookmarked={isStepBookmarked(idx)}
                     phaseColor={phase.color}
                     footer={null}
-                    onToggleBookmark={() => toggleBookmark(currentStepIdx)}
-                    onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
-                    onClick={() => goToStep(currentStepIdx)}
+                    onToggleBookmark={() => toggleBookmark(idx)}
+                    onReportIssue={() => { setReportStepIdx(idx); setReportIssueOpen(true); }}
+                    onClick={() => goToStep(idx)}
                   />
-                </div>
+                ))}
+              </div>
 
-                {/* Step navigation */}
-                <RoomNavigation
-                  currentStepIdx={currentStepIdx}
-                  totalSteps={room.steps.length}
-                  isLastStep={isLastStep}
-                  isRoomComplete={isRoomComplete}
-                  nextRoom={nextRoom}
-                  quizPassed={quizPassed}
-                  quizModuleId={quizModuleId}
-                  completing={completing}
-                  fullscreen={fullscreen}
-                  goToStep={goToStep}
-                  handleComplete={handleComplete}
-                  toggleFullscreen={toggleFullscreen}
-                  setJumpMenuOpen={setJumpMenuOpen}
+              <div className="md:hidden mb-10">
+                <StepCard
+                  key={currentStepIdx}
+                  step={room.steps[currentStepIdx]}
+                  stepNum={currentStepIdx + 1}
+                  phaseId={phaseId || ''}
+                  roomId={roomId || ''}
+                  isActive
+                  isViewed={viewedSteps.has(currentStepIdx)}
+                  isBookmarked={isStepBookmarked(currentStepIdx)}
+                  phaseColor={phase.color}
+                  footer={null}
+                  onToggleBookmark={() => toggleBookmark(currentStepIdx)}
+                  onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }}
+                  onClick={() => goToStep(currentStepIdx)}
                 />
               </div>
-            )}
-          </main>
-        </div>
+
+              <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 };
