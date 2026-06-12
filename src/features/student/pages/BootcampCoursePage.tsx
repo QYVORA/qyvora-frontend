@@ -98,7 +98,10 @@ const BootcampCourse: React.FC = () => {
     : totalRooms > 0
       ? `${Math.round((doneRooms / totalRooms) * 100)}%`
       : '0%';
+
   const progressNum = parseInt(progressValue, 10) || 0;
+
+  if (loading) return <PageLoader />;
 
   // ── Enrolled ─────────────────────────────────────────────────────────────
   return (

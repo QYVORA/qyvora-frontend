@@ -36,7 +36,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
     <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
       <button
         onClick={() => setJumpMenuOpen(true)}
-        className="btn-secondary inline-flex items-center gap-2"
+        className="inline-flex items-center gap-2 bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-5 py-2.5 transition-all shadow-sm"
       >
         <List className="h-4 w-4" />
         <span className="hidden sm:inline">Jump</span>
@@ -44,7 +44,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
 
       <button
         onClick={toggleFullscreen}
-        className="btn-secondary inline-flex items-center gap-2"
+        className="inline-flex items-center gap-2 bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-5 py-2.5 transition-all shadow-sm"
         title="Toggle fullscreen (F)"
       >
         {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -54,7 +54,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
       <button
         onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
         disabled={currentStepIdx === 0}
-        className="md:hidden btn-secondary inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
+        className="md:hidden bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-5 py-2.5 transition-all shadow-sm inline-flex flex-1 items-center justify-center gap-2 disabled:opacity-30 sm:flex-none"
       >
         <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
         <span>Prev</span>
@@ -73,9 +73,11 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
           }
         }}
         disabled={completing}
-        className={`btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-2 sm:flex-none ${
-          completing ? 'opacity-50 cursor-not-allowed' : ''
-        }`}
+        className={`inline-flex flex-1 md:flex-none items-center justify-center gap-2 sm:flex-none font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all shadow-lg ${
+          isLastStep
+            ? 'bg-accent text-bg hover:brightness-110 shadow-accent/20'
+            : 'bg-accent text-bg hover:brightness-110 shadow-accent/20'
+        } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {completing ? (
           <>

@@ -41,7 +41,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={() => setJumpMenuOpen(true)}
         title="Jump to step"
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent transition-colors shadow-sm"
       >
         <List className="h-5 w-5" />
       </button>
@@ -49,12 +49,12 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={toggleFullscreen}
         title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent transition-colors"
+        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent transition-colors shadow-sm"
       >
         {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
       </button>
 
-      <div className="h-px w-6 bg-border/50 my-1" />
+      <div className="h-px w-6 bg-border/30 my-1" />
 
       <button
         onClick={async () => {
@@ -76,10 +76,10 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
               : 'Complete Room'
             : 'Next Step'
         }
-        className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all ${
+        className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all shadow-sm ${
           isLastStep
-            ? 'border-accent bg-accent-dim text-accent hover:bg-accent-dim/80 hover:border-accent/60'
-            : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
+            ? 'bg-accent text-bg hover:brightness-110'
+            : 'bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent'
         } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {completing ? (

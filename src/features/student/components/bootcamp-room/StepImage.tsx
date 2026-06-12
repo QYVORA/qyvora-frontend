@@ -17,7 +17,7 @@ const StepImage: React.FC<Props> = ({ src, alt, stepNum }) => {
   return (
     <>
       <div
-        className={`group mt-4 w-full overflow-hidden rounded-xl border border-border bg-bg-card relative
+        className={`group mt-4 w-full overflow-hidden rounded-xl bg-transparent relative
           ${status === 'loaded' ? '' : 'min-h-[180px] sm:min-h-[220px]'}
         `}
       >

@@ -54,19 +54,19 @@ const RoomSidebar: React.FC<Props> = ({
                   disabled={isLocked}
                   className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-left text-sm transition-all min-h-[44px] ${
                     isActive
-                      ? 'bg-accent-dim border border-accent/30 text-accent font-bold'
+                      ? 'bg-accent text-bg font-bold shadow-md shadow-accent/10'
                       : isLocked
                       ? 'opacity-40 cursor-not-allowed text-text-muted'
                       : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-[9px] font-black font-mono ${
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded font-black font-mono ${
                       isCompleted
-                        ? 'border-accent/40 bg-accent text-bg'
+                        ? isActive ? 'bg-white/20 text-white' : 'bg-accent text-bg'
                         : isActive
-                        ? 'border-accent/40 bg-accent-dim text-accent'
-                        : 'border-border bg-bg text-text-muted'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-bg-elevated text-text-muted'
                     }`}
                   >
                     {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
@@ -105,7 +105,7 @@ const RoomSidebar: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={onMobileClose}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-border text-text-muted hover:text-text-primary hover:border-accent/40 transition-colors"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-bg text-text-muted hover:text-text-primary transition-colors shadow-sm"
                   aria-label="Close curriculum"
                 >
                   <X className="h-4 w-4" />

@@ -107,6 +107,8 @@ const Bootcamp: React.FC = () => {
     ])
   );
 
+  if (loading) return <PageLoader />;
+
   return (
     <div className="bg-bg overflow-x-hidden">
       <AnimatePresence>
