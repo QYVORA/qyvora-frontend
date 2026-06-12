@@ -80,7 +80,7 @@ const ServicesSection: React.FC = () => {
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12 overflow-x-hidden">
+    <div className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12 overflow-x-hidden md:overflow-hidden">
       <div className="max-w-7xl mx-auto w-full relative group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div

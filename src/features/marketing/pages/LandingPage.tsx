@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useLandingData } from '../hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useScrollLock } from '../../../core/hooks/useScrollLock';
 
 import HeroSection from '../components/landing/HeroSection';
 import ServicesSection from '../components/landing/ServicesSection';
@@ -30,10 +31,10 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden ${className}`}
+      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden md:overflow-hidden ${className}`}
     >
       <div
-        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-24 overflow-x-hidden"
+        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-0 overflow-x-hidden md:overflow-hidden"
         data-snap-child=""
       >
         {children}
@@ -45,6 +46,7 @@ const SnapSection: React.FC<{
 const Landing: React.FC = () => {
   const { user } = useAuth();
   const { stats } = useLandingData();
+  useScrollLock(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();

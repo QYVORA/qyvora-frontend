@@ -110,13 +110,15 @@ export default function webpConversion(options: WebpOptions = {}): Plugin {
     // Handle build-time replacement
     transform(code, id) {
       if (!autoReplace) return;
+      if (id.includes('node_modules')) return;
+      if (!id.match(/\.(tsx|ts|jsx|js|css|html)$/)) return;
       
       // Replace image extensions in strings in the source code during build
-      // This is a bit aggressive but works for most cases
+      // only if they are preceded by path or filename characters.
       let newCode = code;
       for (const ext of extensions) {
-        const regex = new RegExp(`\\${ext}(?=["'\\s])`, 'g');
-        newCode = newCode.replace(regex, '.webp');
+        const regex = new RegExp(`([\\w\\/\\.\\-]+)\\${ext}(?=["'\\s])`, 'g');
+        newCode = newCode.replace(regex, '$1.webp');
       }
       return {
         code: newCode,
