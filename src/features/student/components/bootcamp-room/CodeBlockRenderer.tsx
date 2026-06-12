@@ -194,7 +194,7 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         const paragraphs = seg.text.split(/\n\n+/);
 
         return (
-          <div key={segIdx} className="space-y-4">
+          <div key={segIdx} className="space-y-6">
             {paragraphs.map((para, paraIdx) => {
               // Process inline code and bold within each paragraph
               const combinedPattern = /(`[^`]+`|\*\*[^*]+\*\*)/g;
@@ -219,7 +219,7 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
               if (parts.length === 0 && para.trim() === '') return null;
 
               return (
-                <p key={paraIdx} className="leading-[1.8] sm:leading-[1.85]">
+                <p key={paraIdx} className="leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
                   {parts.map((part, partIdx) =>
                     part.type === 'code'
                       ? <InlineCode key={partIdx} code={part.content} />

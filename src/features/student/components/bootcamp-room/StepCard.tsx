@@ -90,7 +90,7 @@ const StepCard: React.FC<Props> = ({
       )}
     </div>
 
-    <div className={`text-sm sm:text-base leading-[1.8] sm:leading-[1.85] transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0`}>
+    <div className={`text-sm sm:text-base leading-[1.8] sm:leading-[1.85] transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full`}>
       <CodeBlockRenderer text={step.instruction} />
     </div>
 
