@@ -51,17 +51,17 @@ function HeroBackground({ className = "" }) {
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
     
-    // Grid settings - bigger and more visible dots
-    const step = isMobile ? 12 : (constrainedDevice ? 10 : 8);
-    const dotR = isMobile ? 1.4 : 1.8;
+    // Grid settings - much bigger and more prominent dots (zoomed in look)
+    const step = isMobile ? 16 : (constrainedDevice ? 14 : 12);
+    const dotR = isMobile ? 2.2 : 2.8;
     const accentColor = '#66B870';
     
     let rafId;
     let time = 0;
 
     const draw = () => {
-      time += 0.008; // Faster animation (was 0.004)
-      const scrollSpeed = 85; // Much faster scroll (was 50)
+      time += 0.006; // Smooth animation
+      const scrollSpeed = 65; 
       const scrollOffset = time * scrollSpeed;
       
       ctx.clearRect(0, 0, w, h);
@@ -77,17 +77,19 @@ function HeroBackground({ className = "" }) {
           const nx = (x / w) * 2 - 1;
           const ny = (y / h) * 2 - 1;
           
-          let lng = (nx * 180) + scrollOffset;
+          // Zoomed in: only show ~180 degrees of longitude across the viewport instead of 360
+          let lng = (nx * 90) + scrollOffset;
           lng = ((lng + 180) % 360 + 360) % 360 - 180;
           
-          const lat = -ny * 90;
+          // Also zoom in on latitude (show ~120 degrees instead of 180)
+          const lat = -ny * 60;
 
           if (isLand(lat, lng)) {
             const dist = Math.sqrt(nx * nx + ny * ny);
-            const wave = Math.sin(dist * 5 - time) * 0.5 + 0.5;
+            const wave = Math.sin(dist * 4 - time) * 0.5 + 0.5;
             
-            // Much more visible opacity
-            ctx.globalAlpha = isLight ? (0.35 + wave * 0.40) : (0.42 + wave * 0.48);
+            // High visibility
+            ctx.globalAlpha = isLight ? (0.40 + wave * 0.45) : (0.48 + wave * 0.50);
             ctx.fillStyle = accentColor;
             
             ctx.beginPath();
@@ -134,19 +136,19 @@ function HeroBackground({ className = "" }) {
         }}
       />
       
-      {/* Lighter gradient overlay - more visible background */}
+      {/* Lighter gradient overlay - much more visible background covering full viewport */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse at 50% 40%, transparent 20%, ${bgBase} 85%)`,
-          opacity: isLight ? 0.35 : 0.45
+          background: `radial-gradient(ellipse at 50% 50%, transparent 40%, ${bgBase} 95%)`,
+          opacity: isLight ? 0.25 : 0.35
         }}
       />
 
-      {/* Minimal edge fades - only for content readability */}
+      {/* Very subtle edge fades - only to ensure text contrast at extreme edges */}
       <div className="absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-bg/40 to-transparent opacity-60" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg/40 to-transparent opacity-60" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg/30 to-transparent opacity-40" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg/30 to-transparent opacity-40" />
       </div>
     </div>
   );

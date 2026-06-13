@@ -109,25 +109,17 @@ const ServicesSection: React.FC = () => {
                     className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20" />
-                
+
                   {/* Price Badge */}
-                  <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
-                    <div className="px-5 py-2.5 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 bg-bg-card/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl">
-                      <span className="text-base sm:text-base font-black text-accent uppercase tracking-widest">
+                  <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
+                    <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+                      <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-[0.2em]">
                         {service.price}
                       </span>
                     </div>
                   </div>
-
-                  {service.accent && (
-                    <div className="absolute top-5 right-5 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
-                      <div className="px-4 py-2 sm:px-4 sm:py-2 bg-accent text-bg rounded-lg sm:rounded-xl text-xs sm:text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20">
-                        Popular Choice
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+                  </div>
+                  </div>
 
               {/* Content Section */}
               <div className="flex-1 flex flex-col p-5 sm:p-8 lg:p-10 xl:p-14 justify-center">

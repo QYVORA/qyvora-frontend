@@ -44,7 +44,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
         </span>
       </div>
     </div>
-    <div className="p-6 flex flex-col flex-1">
+    <div className="p-8 flex flex-col flex-1">
       <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
         {title}
       </h3>

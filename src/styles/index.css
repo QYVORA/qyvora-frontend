@@ -645,11 +645,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 shadow-lg shadow-accent/20;
+    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:brightness-110 active:scale-95 border border-accent/20;
   }
 
   .btn-secondary {
-    @apply bg-bg-elevated text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:bg-bg-card active:scale-95 shadow-sm;
+    @apply bg-bg-elevated text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:bg-bg-card active:scale-95 border border-white/5;
   }
 
   .card-qyvora {

@@ -16,7 +16,7 @@ const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJ
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title="Jump to Step" maxWidth="max-w-md">
+      <DialogContent title="Jump to Step" maxWidth="max-w-xl">
         <div className="flex items-center gap-2 mb-3">
           <List className="h-4 w-4 text-accent" />
           <p className="text-xs font-black uppercase tracking-widest text-text-primary">Select a step</p>

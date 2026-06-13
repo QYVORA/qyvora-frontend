@@ -9,7 +9,7 @@ interface QuizGateModalProps {
 
 const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) => (
   <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-    <DialogContent title="Quiz Required" maxWidth="max-w-sm">
+    <DialogContent title="Quiz Required" maxWidth="max-w-lg">
       <div className="text-center py-2">
       <div className="mb-4 flex justify-center">
         <Lock className="h-10 w-10 text-accent" />

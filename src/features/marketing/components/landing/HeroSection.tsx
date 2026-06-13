@@ -94,7 +94,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl"
+              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl mb-10 lg:mb-12"
             >
               {SITE_CONFIG.brand.description}
             </motion.p>
@@ -136,12 +136,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             pr-8 xl:pr-16
           "
         >
-          {/* Ambient glow */}
-          <div
-            className="absolute inset-0 z-0 rounded-full pointer-events-none opacity-60"
-            style={{ background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 60%)' }}
-          />
-
           {/* Globe container - larger bounds to prevent clipping */}
           <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
             <Suspense fallback={null}>
