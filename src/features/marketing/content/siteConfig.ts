@@ -88,8 +88,7 @@ export const SITE_CONFIG = {
    
   footer: {
     links: [
-      { label: 'Anansi CLI', path: '/anansi' },
-      { label: 'Terms of Service', path: '/terms' },
+      { label: 'Terms of Service', path: '/terms' }
     ],
   },
 } as const;

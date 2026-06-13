@@ -54,7 +54,7 @@ function HeroBackground({ className = "" }) {
     // Grid settings - much bigger and more prominent dots (zoomed in look)
     const step = isMobile ? 16 : (constrainedDevice ? 14 : 12);
     const dotR = isMobile ? 2.2 : 2.8;
-    const accentColor = '#66B870';
+    let accentColor =  isLight ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
     
     let rafId;
     let time = 0;
@@ -117,6 +117,9 @@ function HeroBackground({ className = "" }) {
   }, [theme, isMobile, constrainedDevice, isLight]);
 
   const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
+  
+
+
 
   // Don't render canvas on mobile - belt and suspenders approach
   if (isMobile) return null;
