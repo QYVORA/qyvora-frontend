@@ -32,7 +32,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
         title="[ SYSTEM ACCESS GRANTED ]" 
-        maxWidth="max-w-3xl"
+        maxWidth="max-w-4xl"
         hideClose
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}

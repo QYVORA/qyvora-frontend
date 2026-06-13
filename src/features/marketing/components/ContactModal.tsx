@@ -103,7 +103,7 @@ const ContactModalHost: React.FC = () => {
       <DialogContent
         title="Get in Touch"
         description="We're here to help. Choose your contact type below."
-        maxWidth="max-w-2xl"
+        maxWidth="max-w-4xl"
         className="max-h-[calc(100svh-2rem)] overflow-y-auto"
       >
         {status === 'sent' ? (

@@ -81,7 +81,7 @@ const PromotionalSystem: React.FC = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 30 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto md:bottom-10 z-[140] lg:w-[500px]"
+          className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto md:bottom-10 z-[140] lg:w-[600px]"
         >
           <div className="relative overflow-hidden rounded-3xl bg-bg-card/95 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row">
             

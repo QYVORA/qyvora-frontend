@@ -182,7 +182,7 @@ const Bootcamp: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="pt-5 pb-2 px-1 flex flex-col flex-1">
+                    <div className="pt-6 pb-6 px-6 flex flex-col flex-1">
                       <h3 className="text-lg font-black text-text-primary mb-1.5 group-hover:text-accent transition-colors tracking-tight">
                         {bc.title || 'Bootcamp'}
                       </h3>

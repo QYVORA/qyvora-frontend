@@ -66,7 +66,7 @@ interface DialogContentProps
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Content>,
   DialogContentProps
->(({ className, title, description, hideClose, maxWidth = 'max-w-md', children, ...props }, ref) => (
+>(({ className, title, description, hideClose, maxWidth = 'max-w-xl', children, ...props }, ref) => (
   <RadixDialog.Portal>
     <DialogOverlay />
     <RadixDialog.Content
@@ -160,7 +160,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
 }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent title={title} maxWidth="max-w-sm">
+    <DialogContent title={title} maxWidth="max-w-lg">
       <p className="text-sm text-text-secondary mb-6 -mt-1">{description}</p>
       <div className="flex gap-3">
         <DialogClose asChild>

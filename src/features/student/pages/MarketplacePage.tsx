@@ -139,7 +139,7 @@ const Marketplace: React.FC = () => {
                         </div>
                         <div className="absolute bottom-4 left-4"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> Intelligence Asset</span></div>
                       </div>
-                      <div className="flex flex-1 flex-col p-6 sm:p-8">
+                      <div className="flex flex-1 flex-col p-8 sm:p-10">
                         <h3 className="mb-2 text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">{prod.title}</h3>
                         <p className="text-xs text-text-muted/70 mb-8 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Secure intelligence report for offensive security operatives.'}</p>
                         <div className="mt-auto flex items-center justify-between gap-6">

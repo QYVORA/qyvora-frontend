@@ -85,7 +85,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col pt-4 px-1 pb-2">
+      <div className="flex flex-1 flex-col pt-5 px-6 pb-5">
         <h3 className={`mb-1 text-base font-black leading-snug transition-colors ${
           isRoomLocked ? 'text-text-muted'
             : roomDone ? 'text-accent'

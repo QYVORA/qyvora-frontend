@@ -12,7 +12,6 @@ const AuthHero: React.FC = () => (
     {/* Globe - properly centered with responsive sizing */}
     <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-8">
       <div className="relative w-full h-full max-w-[420px] max-h-[420px] xl:max-w-[520px] xl:max-h-[520px] mx-auto my-auto flex items-center justify-center">
-        <div className="absolute w-[140%] h-[140%] rounded-full bg-accent/[0.05] blur-[120px] pointer-events-none" />
         <div className="w-full h-full"><HackerGlobe scale={1.2} /></div>
       </div>
     </div>

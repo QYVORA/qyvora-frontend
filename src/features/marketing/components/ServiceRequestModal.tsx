@@ -58,7 +58,7 @@ const ServiceRequestModalHost: React.FC = () => {
       <DialogContent
         title="Request Assessment"
         description={packageTier ? `Inquiry for ${packageTier}` : "Tell us about your project requirements and we'll get back to you with a tailored proposal."}
-        maxWidth="max-w-4xl"
+        maxWidth="max-w-6xl"
       >
         {status === 'sent' ? (
           <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">

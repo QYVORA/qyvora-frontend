@@ -40,7 +40,7 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
     <ScrollReveal delay={modIdx * 0.04}>
       <div className="w-full bg-transparent">
         {/* Phase header */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-0 py-6 sm:py-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-6 sm:py-8">
           <div className="flex items-center gap-4">
             <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-mono text-lg font-black transition-all duration-300 ${
               isComplete

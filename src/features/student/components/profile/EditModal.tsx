@@ -46,7 +46,7 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent title="Edit Profile" maxWidth="max-w-md">
+      <DialogContent title="Edit Profile" maxWidth="max-w-xl">
         <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
             <label className={labelCls}>Full Name</label>

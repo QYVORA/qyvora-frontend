@@ -30,8 +30,8 @@ const StepImage: React.FC<Props> = ({ src, alt, stepNum }) => {
           onError={() => setStatus('error')}
           className={`
             block w-full h-auto
-            max-h-[56vw] sm:max-h-[420px] lg:max-h-[520px]
-            object-contain rounded-xl
+            max-h-[85vw] sm:max-h-[640px] lg:max-h-[800px]
+            object-cover rounded-xl
             transition-opacity duration-300
             ${status === 'loaded' ? 'opacity-100 group-hover:opacity-90' : 'opacity-0 absolute inset-0'}
           `}

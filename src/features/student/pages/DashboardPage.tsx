@@ -123,7 +123,7 @@ const Dashboard: React.FC = () => {
       <div className="scroll-hover md:fixed md:left-0 md:right-20 md:bottom-0 md:top-24 md:overflow-y-auto md:overscroll-contain" style={{ scrollBehavior: 'smooth' }}>
         <div className="mx-auto max-w-7xl px-0 pt-6 pb-16 md:px-8">
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-            <div className="w-full px-1 md:px-0">
+            <div className="w-full px-5 md:px-0">
               <ScrollReveal className="h-full">
                 <div className="p-6 sm:p-10 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-xl shadow-black/5">
                   <div className="relative z-10">
@@ -152,28 +152,28 @@ const Dashboard: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
             <div className="flex flex-col gap-6 h-full">
-              <div className="flex items-center justify-between px-1"><h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Active Deployments</h3><Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link></div>
+              <div className="flex items-center justify-between px-5"><h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Active Deployments</h3><Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link></div>
               {enrolledBootcamps.length === 0 ? (
                 <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-16 text-center h-full min-h-[300px] flex flex-col items-center justify-center bg-transparent mx-1">
                   <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" /><p className="mb-5 text-base text-text-muted">No active bootcamps.</p>
                   <Link to="/dashboard/bootcamps" className="bg-accent text-bg px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110">Start Training <ArrowRight className="inline-block ml-2 h-4 w-4" /></Link>
                 </div>
-              ) : enrolledBootcamps.slice(0, 1).map((item, idx) => <div key={item.id} className="h-full px-1 md:px-0"><StudentBootcampCard data={item} index={idx} /></div>)}
+              ) : enrolledBootcamps.slice(0, 1).map((item, idx) => <div key={item.id} className="h-full px-5 md:px-0"><StudentBootcampCard data={item} index={idx} /></div>)}
             </div>
 
             <div className="flex flex-col gap-6 h-full">
-              <div className="flex items-center justify-between px-1"><h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Intelligence Vault</h3><Link to="/dashboard/marketplace" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">Marketplace</Link></div>
+              <div className="flex items-center justify-between px-5"><h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Intelligence Vault</h3><Link to="/dashboard/marketplace" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">Marketplace</Link></div>
               {!loading && products.length > 0 && (() => {
                 const prod = products[0]; const id = String(prod.id || ''); const hasPurchased = purchased.has(id);
                 return (
-                  <motion.div key={id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }} className="flex flex-col h-full px-1 md:px-0">
+                  <motion.div key={id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }} className="flex flex-col h-full px-5 md:px-0">
                     <div className="flex flex-col h-full overflow-hidden border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 group hover:border-accent/30 hover:scale-[1.01]">
                       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
                         <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">{hasPurchased && <span className="px-2 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}</div>
                         <div className="absolute bottom-2.5 left-2.5"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> Premium Asset</span></div>
                       </div>
-                      <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <div className="flex flex-1 flex-col p-8 sm:p-10">
                         <h3 className="mb-2 text-lg font-black leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent">{prod.title}</h3>
                         <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Access high-value intelligence reports and research papers.'}</p>
                         <div className="mt-auto">
@@ -191,7 +191,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8 flex items-center justify-between gap-3 px-1">
+          <div className="mt-8 flex items-center justify-between gap-3 px-5">
             <p className={`flex items-center gap-1.5 text-[11px] ${syncError ? 'text-red-400' : 'text-text-muted'}`}><RefreshCw className="h-3 w-3 shrink-0" />{syncError || formatSyncLabel(lastSync)}</p>
             {syncError && <button onClick={() => window.location.reload()} className="text-[11px] font-bold text-accent hover:underline">Retry</button>}
           </div>
