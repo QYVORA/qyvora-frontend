@@ -113,7 +113,7 @@ const StudentTopbar = () => {
             {/* Back to curriculum */}
             <button
               onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-bg-card text-text-muted hover:text-accent hover:border-accent/40 transition-colors"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
               aria-label="Back to curriculum"
             >
               <ArrowLeft className="h-5 w-5" />
