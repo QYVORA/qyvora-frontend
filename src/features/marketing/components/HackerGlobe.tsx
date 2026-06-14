@@ -38,6 +38,17 @@ const TARGETS = [
   { lat:  19.43, lng: -99.13, label: 'MEXICO CITY',    status: 'secured', region: 'world'  },
   { lat:  55.75, lng:  37.62, label: 'MOSCOW',         status: 'secured', region: 'world'  },
   { lat:  28.61, lng:  77.20, label: 'NEW DELHI',      status: 'secured', region: 'world'  },
+  { lat:   9.03, lng:  38.74, label: 'ADDIS ABABA',    status: 'secured', region: 'africa' },
+  { lat:  -8.83, lng:  13.23, label: 'LUANDA',         status: 'secured', region: 'africa' },
+  { lat:  36.75, lng:   3.04, label: 'ALGIERS',        status: 'secured', region: 'africa' },
+  { lat:  36.80, lng:  10.18, label: 'TUNIS',          status: 'secured', region: 'africa' },
+  { lat:  -6.79, lng:  39.20, label: 'DAR ES SALAAM',  status: 'secured', region: 'africa' },
+  { lat:   5.36, lng:  -4.00, label: 'ABIDJAN',        status: 'secured', region: 'africa' },
+  { lat:  15.50, lng:  32.55, label: 'KHARTOUM',       status: 'secured', region: 'africa' },
+  { lat: -33.92, lng:  18.42, label: 'CAPE TOWN',      status: 'secured', region: 'africa' },
+  { lat:  -1.94, lng:  30.06, label: 'KIGALI',         status: 'secured', region: 'africa' },
+  { lat:  12.63, lng:  -8.00, label: 'BAMAKO',         status: 'secured', region: 'africa' },
+  { lat:  18.07, lng: -15.96, label: 'NOUAKCHOTT',     status: 'secured', region: 'africa' },
 ];
 
 /* ═══════════════════════════════════════════════
@@ -396,6 +407,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const ARC_PAIRS: Array<[number, number]> = [
       // Africa Core Network
       [0, 1], [1, 2], [2, 4], [4, 3], [3, 6], [6, 0], [7, 0], [8, 4], [9, 2], [5, 7], [0, 4], [1, 7],
+      [24, 4], [25, 6], [26, 5], [27, 2], [28, 4], [29, 1], [30, 2], [31, 3], [32, 8], [33, 7], [34, 7],
       // International Uplinks
       [0, 12], [1, 10], [3, 19], [2, 15], [4, 17], [7, 13], [5, 12], [2, 13], [4, 10],
       // Global Backbone
@@ -426,7 +438,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     });
 
     /* ── Multi-satellite system ── */
-    const SATS_COUNT = constrainedDevice ? 3 : 6;
+    const SATS_COUNT = constrainedDevice ? 6 : 15;
     const sats = Array.from({ length: SATS_COUNT }).map((_, i) => {
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.006, 6, 6),

@@ -29,7 +29,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
       
-      {/* ── Layer 1: Background Layout / Text ── */}
+      {/* ── Main content grid ── */}
       <div
         className="
           relative z-30 w-full flex-1 mx-auto 
@@ -40,7 +40,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         "
       >
 
-        {/* Left column - Hero Text Area */}
+        {/* ── Left column - Hero Text Area ── */}
         <div className="
           flex flex-col items-start justify-between
           px-6 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
@@ -124,31 +124,27 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* Right column - Empty placeholder for spacing in the grid */}
-        <div className="hidden lg:block w-full h-full pointer-events-none" />
-      </div>
-
-      {/* ── Layer 2: Foreground Globe (Floating) ── */}
-      <div className="absolute inset-0 z-40 pointer-events-none hidden lg:block overflow-visible">
-        <div className="h-full w-full max-w-full mx-auto relative">
-          <div className="absolute right-0 top-0 w-full lg:w-[60%] h-full flex items-center justify-center lg:justify-end pr-0 lg:pr-12 xl:pr-20">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.93 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full h-full flex items-center justify-center relative"
-            >
-              {/* Globe container - larger bounds to allow scaling without clipping */}
-              <div className="relative z-10 w-full h-full max-w-[800px] xl:max-w-[950px] flex items-center justify-center">
-                <Suspense fallback={null}>
-                  <HackerGlobe scale={1.4} />
-                </Suspense>
-              </div>
-            </motion.div>
+        {/* ── Right column: Globe - Desktop only ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.93 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="
+            relative hidden lg:flex items-center justify-center
+            w-full h-full
+            py-12 xl:py-16
+            pr-8 xl:pr-16
+          "
+        >
+          {/* Globe container - larger bounds to prevent clipping */}
+          <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
+            <Suspense fallback={null}>
+              <HackerGlobe scale={1.4} />
+            </Suspense>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
+      </div>
     </div>
   );
 };
