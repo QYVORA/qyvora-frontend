@@ -213,7 +213,10 @@ const StudentTopbar = () => {
 
           {/* Left: Logo + dropdown nav */}
           <div className="flex items-center gap-8">
-            <Link to="/dashboard"><Logo size="lg" /></Link>
+            <Link to="/dashboard" aria-label="QYVORA Dashboard">
+              <Logo size="lg" className="hidden md:block" />
+              <Logo size="md" variant="mark" className="md:hidden" />
+            </Link>
 
             {/* Desktop nav — HPB direct link + Operate dropdown */}
             <nav className="hidden md:flex items-center gap-1">
