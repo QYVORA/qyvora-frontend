@@ -5,7 +5,7 @@ interface CpLogoProps {
   alt?: string;
 }
 
-const CpLogo: React.FC<CpLogoProps> = ({ className = 'w-4 h-4', alt = 'CP' }) => (
+const CpLogo: React.FC<CpLogoProps> = ({ className = 'w-4 h-4', alt = 'Cyber Points' }) => (
   <img
     src="/assets/branding/logos/cyber-points-logo.webp"
     alt={alt}

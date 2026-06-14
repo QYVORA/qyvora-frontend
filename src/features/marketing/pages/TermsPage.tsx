@@ -52,6 +52,10 @@ const TermsPage: React.FC = () => {
       <SEO 
         title="Terms of Service"
         description="Read the terms and conditions for using QYVORA's offensive security platform and services."
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Terms of Service', item: '/terms' }
+        ]}
       />
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />

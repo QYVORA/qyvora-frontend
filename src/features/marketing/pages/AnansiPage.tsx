@@ -124,6 +124,10 @@ const AnansiPage: React.FC = () => {
       <SEO 
         title="Anansi CLI - Attack Surface Intelligence"
         description="Anansi CLI is a terminal-first attack surface intelligence engine built for speed, portability, and raw technical signal. Automate discovery, probing, and takeover detection."
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Anansi CLI', item: '/anansi' }
+        ]}
         schemaData={{
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
@@ -211,6 +215,7 @@ const AnansiPage: React.FC = () => {
               <img 
                 src="/anansi-main-logo.webp" 
                 alt="Anansi CLI - Offensive Security Intelligence Engine" 
+                fetchpriority="high"
                 className="relative z-10 w-full max-w-[620px] mx-auto filter drop-shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
               />
             </motion.div>

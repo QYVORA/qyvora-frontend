@@ -82,6 +82,11 @@ const PublicProfile: React.FC = () => {
       <SEO 
         title={`${handle}'s Profile`}
         description={`View the operator profile, achievements, and ranking of ${handle} on QYVORA, Africa's offensive security platform.`}
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Operators', item: '/' },
+          { name: handle || 'Profile', item: location.pathname }
+        ]}
       />
       <HeroBackground className="opacity-30" />
       

@@ -176,10 +176,10 @@ const Landing: React.FC = () => {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           'name': 'QYVORA',
-          'url': window.location.origin,
+          'url': SITE_CONFIG.brand.siteUrl,
           'potentialAction': {
             '@type': 'SearchAction',
-            'target': `${window.location.origin}/dashboard/marketplace?q={search_term_string}`,
+            'target': `${SITE_CONFIG.brand.siteUrl}/dashboard/marketplace?q={search_term_string}`,
             'query-input': 'required name=search_term_string'
           },
           'publisher': {
@@ -187,7 +187,7 @@ const Landing: React.FC = () => {
             'name': 'QYVORA',
             'logo': {
               '@type': 'ImageObject',
-              'url': `${window.location.origin}/favicon.png`
+              'url': `${SITE_CONFIG.brand.siteUrl}/favicon.png`
             }
           },
           'mainEntity': [
