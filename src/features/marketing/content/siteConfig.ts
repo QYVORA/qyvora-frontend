@@ -3,6 +3,7 @@ export const SITE_CONFIG = {
     name: 'QYVORA',
     description:
       'Building a strong cybersecurity ecosystem in Africa.',
+    siteUrl: 'https://qyvora.netlify.app',
   },
   contact: {
     opsEmail: 'ops@qyvora.netlify.app',

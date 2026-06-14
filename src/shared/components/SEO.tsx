@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 
 interface SEOProps {
@@ -10,6 +11,8 @@ interface SEOProps {
   canonical?: string;
   type?: 'website' | 'article' | 'software';
   schemaData?: object;
+  /** Optional breadcrumbs for the BreadcrumbList schema */
+  breadcrumbs?: Array<{ name: string; item: string }>;
 }
 
 /**
@@ -24,15 +27,54 @@ const SEO: React.FC<SEOProps> = ({
   image,
   article,
   canonical,
-  type = 'website',
   schemaData,
+  breadcrumbs,
 }) => {
-  const siteUrl = window.location.origin; // Dynamically use the current domain (Netlify or Custom)
+  const location = useLocation();
+  const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
-  const seoTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;
+  const seoTitle = title ? `${title} | ${defaultTitle}` : `${defaultTitle} | Africa's Offensive Security Platform`;
   const seoDescription = description || SITE_CONFIG.brand.description;
-  const seoImage = `${siteUrl}${image || '/qyvora-full-logo.png'}`;
-  const seoCanonical = canonical || window.location.href;
+  
+  // Ensure image is an absolute URL
+  const imagePath = image || '/qyvora-full-logo.png';
+  const seoImage = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
+  
+  const seoCanonical = canonical || `${siteUrl}${location.pathname}${location.search}`;
+
+  const defaultOrganizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': defaultTitle,
+    'url': siteUrl,
+    'logo': `${siteUrl}/favicon.png`,
+    'description': SITE_CONFIG.brand.description,
+    'sameAs': SITE_CONFIG.social.map(s => s.href)
+  };
+
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    'name': seoTitle,
+    'description': seoDescription,
+    'url': seoCanonical,
+    'isPartOf': {
+      '@type': 'WebSite',
+      'name': defaultTitle,
+      'url': siteUrl
+    }
+  };
+
+  const breadcrumbSchema = breadcrumbs ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      'position': index + 1,
+      'name': crumb.name,
+      'item': crumb.item.startsWith('http') ? crumb.item : `${siteUrl}${crumb.item}`
+    }))
+  } : null;
 
   return (
     <Helmet>
@@ -40,6 +82,7 @@ const SEO: React.FC<SEOProps> = ({
       <title>{seoTitle}</title>
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={seoCanonical} />
+      <meta name="robots" content="index,follow,max-image-preview:large" />
       <html lang="en" />
 
       {/* Open Graph / Facebook */}
@@ -47,6 +90,8 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:title" content={seoTitle} />
       <meta property="og:description" content={seoDescription} />
       <meta property="og:image" content={seoImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:url" content={seoCanonical} />
       <meta property="og:site_name" content={defaultTitle} />
       <meta property="og:image:alt" content={title || defaultTitle} />
@@ -60,25 +105,24 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:site" content="@QYVORASEC" />
       <meta name="twitter:creator" content="@QYVORASEC" />
 
-      {/* Schema.org JSON-LD */}
-      {schemaData && (
-        <script type="application/ld+json">
-          {JSON.stringify(schemaData)}
-        </script>
-      )}
+      {/* AI & Search Engine discovery enhancements */}
+      <meta name="author" content="QYVORA" />
+      <meta name="application-name" content="QYVORA" />
+      <meta name="apple-mobile-web-app-title" content="QYVORA" />
+      <meta name="theme-color" content="#66B870" />
 
-      {/* Default Organization Schema if not provided */}
-      {!schemaData && (
+      {/* Schema.org JSON-LD */}
+      <script type="application/ld+json">
+        {JSON.stringify(webPageSchema)}
+      </script>
+
+      <script type="application/ld+json">
+        {JSON.stringify(schemaData || defaultOrganizationSchema)}
+      </script>
+
+      {breadcrumbSchema && (
         <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            'name': defaultTitle,
-            'url': siteUrl,
-            'logo': `${siteUrl}/favicon.png`,
-            'description': SITE_CONFIG.brand.description,
-            'sameAs': SITE_CONFIG.social.map(s => s.href)
-          })}
+          {JSON.stringify(breadcrumbSchema)}
         </script>
       )}
     </Helmet>
