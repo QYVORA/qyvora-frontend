@@ -41,7 +41,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={() => setJumpMenuOpen(true)}
         title="Jump to step"
-        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors shadow-sm"
+        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors"
       >
         <List className="h-5 w-5" />
       </button>
@@ -49,7 +49,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={toggleFullscreen}
         title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors shadow-sm"
+        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors"
       >
         {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
       </button>
@@ -76,7 +76,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
               : 'Complete Room'
             : 'Next Step'
         }
-        className={`flex h-11 w-11 items-center justify-center rounded-xl border border-border transition-all shadow-sm ${
+        className={`flex h-11 w-11 items-center justify-center rounded-xl border border-border transition-all ${
           isLastStep
             ? 'bg-accent border-accent text-bg hover:brightness-110'
             : 'bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent'

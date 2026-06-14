@@ -42,7 +42,7 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title="Report Issue" maxWidth="max-w-xl">
+      <DialogContent title="Report Issue" maxWidth="max-w-xl" className="shadow-none">
         <div className="flex items-center gap-2 mb-4">
           <Flag className="h-4 w-4 text-accent" />
           <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">Room Feedback</h3>

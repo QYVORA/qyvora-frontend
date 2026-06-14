@@ -252,7 +252,7 @@ const BootcampRoomPage: React.FC = () => {
                     {p_.rooms.map((r_) => {
                       const k = `${p_.id}:${r_.id}`; const act = p_.id === phaseId && r_.id === roomId; const comp = completedRooms.has(k); const lock = lockedRooms.has(k);
                       return (
-                        <button key={k} onClick={() => { if (!lock) handleNavigate(p_.id, r_.id); }} disabled={lock} className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${act ? 'bg-accent-dim text-accent font-bold' : lock ? 'opacity-40 cursor-not-allowed text-text-muted' : 'bg-bg-card hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'}`}>
+                        <button key={k} onClick={() => { if (!lock) handleNavigate(p_.id, r_.id); }} disabled={lock} className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${act ? 'text-accent font-bold bg-transparent' : lock ? 'opacity-40 cursor-not-allowed text-text-muted' : 'bg-transparent hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'}`}>
                           <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${comp ? 'border-accent/40 bg-accent text-bg' : act ? 'border-accent/40 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'}`}>{comp ? <CheckCircle2 className="h-3 w-3" /> : lock ? <Lock className="h-3 w-3" /> : null}</span>
                           <span className="truncate text-sm">{r_.title}</span>
                         </button>

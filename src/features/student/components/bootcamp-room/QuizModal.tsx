@@ -84,7 +84,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title="Room Quiz" maxWidth="max-w-5xl">
+      <DialogContent title="Room Quiz" maxWidth="max-w-5xl" className="shadow-none">
         <div>
           {loading && (
             <div className="flex items-center justify-center gap-2 py-10 text-sm text-text-muted">

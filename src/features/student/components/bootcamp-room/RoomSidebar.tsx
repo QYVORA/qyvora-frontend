@@ -54,10 +54,10 @@ const RoomSidebar: React.FC<Props> = ({
                   disabled={isLocked}
                   className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-left text-sm transition-all min-h-[44px] ${
                     isActive
-                      ? 'bg-accent text-bg font-bold shadow-md shadow-accent/10'
+                      ? 'text-accent font-bold bg-transparent'
                       : isLocked
                       ? 'opacity-40 cursor-not-allowed text-text-muted'
-                      : 'bg-bg-card hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                      : 'bg-transparent hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   <span

@@ -39,11 +39,11 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
             exit={{ scale: 0.95, opacity: 0 }}
             className="relative z-10 w-full max-w-md mx-4"
           >
-            <div className="relative overflow-hidden rounded-3xl border-2 border-accent bg-bg-card p-8 text-center shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl border-2 border-accent bg-bg-card p-8 text-center">
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent shadow-lg">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
                   <CheckCircle2 className="h-8 w-8 text-bg" />
                 </div>
 
