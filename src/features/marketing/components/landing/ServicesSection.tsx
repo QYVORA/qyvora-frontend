@@ -106,6 +106,7 @@ const ServicesSection: React.FC = () => {
                   <img
                     src={service.image}
                     alt={service.title}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
@@ -130,9 +131,9 @@ const ServicesSection: React.FC = () => {
                     </span>
                   </div>
                   
-                  <h3 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-8 sm:mb-8">
+                  <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-8 sm:mb-8">
                     {service.title}
-                  </h3>
+                  </h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-10 mb-10 sm:mb-10">
                     {service.features.map((feature, idx) => (

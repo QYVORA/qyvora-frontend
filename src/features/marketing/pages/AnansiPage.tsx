@@ -4,6 +4,7 @@ import { Download, Shield, Zap, Search, Globe, Lock, FileCode, AlertTriangle, Ch
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import Footer from '../components/layout/Footer';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
+import SEO from '../../../shared/components/SEO';
 
 const PHASES = [
   { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force' },
@@ -120,6 +121,23 @@ const AnansiPage: React.FC = () => {
 
   return (
     <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
+      <SEO 
+        title="Anansi CLI - Attack Surface Intelligence"
+        description="Anansi CLI is a terminal-first attack surface intelligence engine built for speed, portability, and raw technical signal. Automate discovery, probing, and takeover detection."
+        schemaData={{
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          'name': 'Anansi CLI',
+          'operatingSystem': 'Linux, macOS, Windows',
+          'applicationCategory': 'SecurityApplication',
+          'description': 'Terminal-first attack surface intelligence engine built for speed, portability, and raw technical signal.',
+          'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+          }
+        }}
+      />
       {/* ── Global Background ── */}
       <HeroBackground 
         className={`
@@ -192,7 +210,7 @@ const AnansiPage: React.FC = () => {
             >
               <img 
                 src="/anansi-main-logo.webp" 
-                alt="Anansi CLI Logo" 
+                alt="Anansi CLI - Offensive Security Intelligence Engine" 
                 className="relative z-10 w-full max-w-[620px] mx-auto filter drop-shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
               />
             </motion.div>
@@ -297,9 +315,9 @@ const AnansiPage: React.FC = () => {
                           </span>
                         </div>
                         
-                        <h3 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 lg:mb-8">
+                        <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 lg:mb-8">
                           {currentPhase.name}
-                        </h3>
+                        </h2>
 
                         <p className="text-base sm:text-lg lg:text-base xl:text-lg text-text-secondary font-mono leading-relaxed mb-8 lg:mb-10">
                           {currentPhase.desc}
@@ -361,7 +379,7 @@ const AnansiPage: React.FC = () => {
             <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
               <div className="flex-1 space-y-10 text-center lg:text-left">
                 <div className="space-y-8">
-                  <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Own the Perimeter</h3>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Own the Perimeter</h2>
                   <p className="text-xl text-text-secondary font-mono max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                     No web UI. No cloud account. No API keys. 
                     Just high-signal intelligence delivered straight to your terminal.
@@ -386,7 +404,8 @@ const AnansiPage: React.FC = () => {
               >
                 <img 
                   src="/anansi-main-logo.webp" 
-                  alt="Anansi CLI" 
+                  alt="Anansi CLI Offensive Security Tool" 
+                  loading="lazy"
                   className="w-full max-w-[480px] mx-auto filter drop-shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.15)]"
                 />
               </motion.div>

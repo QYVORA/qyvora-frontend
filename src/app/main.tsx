@@ -21,6 +21,7 @@
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import '../styles/index.css'; // Global CSS: resets, CSS variables, base typography
 import { AuthProvider } from '../core/contexts/AuthContext';
@@ -56,6 +57,7 @@ createRoot(document.getElementById('root')!).render(
     is incompatible with double-invocation (which is itself a bug in that library).
   */
   <StrictMode>
+    <HelmetProvider>
 
     {/*
       ThemeProvider (outermost context)
@@ -105,5 +107,6 @@ createRoot(document.getElementById('root')!).render(
         </ToastProvider>
       </AuthProvider>
     </ThemeProvider>
+    </HelmetProvider>
   </StrictMode>
 );

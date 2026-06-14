@@ -62,13 +62,19 @@ const _0x5a2b = atob('L21yLXJvYm90');
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
     <motion.div
-      className="w-full h-full"
+      className="w-full flex-1 flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <Suspense fallback={<PageLoader mode="relative" />}>{children}</Suspense>
+      <Suspense fallback={
+        <div className="flex-1 flex items-center justify-center w-full min-h-[60vh]">
+          <PageLoader mode="relative" />
+        </div>
+      }>
+        {children}
+      </Suspense>
     </motion.div>
   </ErrorBoundary>
 );

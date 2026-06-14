@@ -13,6 +13,7 @@ import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import ServiceRequestModal from '../components/ServiceRequestModal';
 import PromotionalSystem from '../components/PromotionalSystem';
+import SEO from '../../../shared/components/SEO';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -168,6 +169,41 @@ const Landing: React.FC = () => {
 
   return (
     <div className="relative h-screen w-full bg-bg">
+      <SEO 
+        title="Africa's Offensive Security Platform"
+        description="QYVORA is an offensive security company building a strong cybersecurity ecosystem in Africa through professional training, penetration testing, and advanced intelligence tools."
+        schemaData={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          'name': 'QYVORA',
+          'url': window.location.origin,
+          'potentialAction': {
+            '@type': 'SearchAction',
+            'target': `${window.location.origin}/dashboard/marketplace?q={search_term_string}`,
+            'query-input': 'required name=search_term_string'
+          },
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'QYVORA',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': `${window.location.origin}/favicon.png`
+            }
+          },
+          'mainEntity': [
+            {
+              '@type': 'Service',
+              'name': 'Basic Web-App Pentesting',
+              'description': 'Essential Security Audit including OWASP Top 10 coverage, XSS & SQLi discovery.'
+            },
+            {
+              '@type': 'Service',
+              'name': 'Standard Penetration Test',
+              'description': 'Full Stack Assessment including business logic analysis and IDOR & JWT security.'
+            }
+          ]
+        }}
+      />
       {/* ── Global Background - Fixed to viewport - Lower z-index to stay behind globe ── */}
       <HeroBackground 
         className={`

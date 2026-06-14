@@ -42,7 +42,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
               />
               <img
                 src="/qyvora-cta-logo.png"
-                alt="QYVORA"
+                alt="QYVORA Logo - Africa's Offensive Security Platform"
                 className="relative z-10 w-full h-auto block"
                 style={{
                   /* Scale adjusted to be safer, combined with parent overflow-hidden */
@@ -174,7 +174,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
               <img
                 src="/qyvora-cta-logo.png"
-                alt="QYVORA"
+                alt="QYVORA Offensive Security Platform"
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
               />
             </div>

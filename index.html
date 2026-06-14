@@ -23,20 +23,35 @@
       }
     </style>
 
-    <title>QYVORA</title>
-
+    <title>QYVORA | Africa's Offensive Security Platform</title>
+    <meta name="description" content="Building a strong cybersecurity ecosystem in Africa through offensive security training, penetration testing, and advanced intelligence tools." />
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="author" href="/humans.txt" />
     <meta name="msapplication-TileImage" content="/favicon.png" />
     <meta name="msapplication-TileColor" content="#66B870" />
 
-    <!-- DNS prefetch + preconnect for the API origin -->
-    <link rel="preconnect" href="/" crossorigin />
-    <link rel="dns-prefetch" href="/" />
+    <!-- Performance: DNS prefetch + preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://chat.whatsapp.com" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/src/app/main.tsx" as="script" />
+    <link rel="preload" href="/qyvora-full-logo.webp" as="image" />
 
-    <!-- Preload the primary font used everywhere (JetBrains Mono via CSS) -->
-    <!-- The actual font files are inlined by Tailwind/Vite; this hint warms the cache -->
+    <!-- Open Graph Fallback -->
+    <meta property="og:site_name" content="QYVORA" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="/qyvora-full-logo.png" />
+    
+    <!-- Twitter Fallback -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@QYVORASEC" />
   </head>
   <body>
     <div id="root"></div>

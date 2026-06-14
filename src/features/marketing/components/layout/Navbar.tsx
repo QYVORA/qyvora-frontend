@@ -50,6 +50,12 @@ const Navbar: React.FC = () => {
 
   return (
     <>
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:font-bold focus:rounded-sm"
+      >
+        Skip to content
+      </a>
       <nav
         className={[
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
@@ -63,7 +69,7 @@ const Navbar: React.FC = () => {
         <div className="w-full max-w-full mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
-          <Link to="/" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
+          <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
             <Logo size="xl" className="hidden md:block" />
             <Logo size="md" variant="mark" className="md:hidden" />
           </Link>
