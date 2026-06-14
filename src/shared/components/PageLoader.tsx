@@ -20,10 +20,10 @@ const PageLoader: React.FC<PageLoaderProps> = ({ mode = 'full' }) => {
 
   return (
     <div className={`${containerClasses} flex items-center justify-center`}>
-      <div className="relative flex items-center justify-center animate-in fade-in duration-500">
+      <div className="relative flex items-center justify-center animate-in fade-in duration-500 scale-[2]">
         {/* Main spinning loader arc */}
         <svg 
-          className="w-16 h-16 animate-spin text-accent" 
+          className="w-20 h-20 animate-spin text-accent" 
           viewBox="0 0 50 50"
         >
           {/* Subtle track */}

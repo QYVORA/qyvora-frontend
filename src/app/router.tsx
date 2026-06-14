@@ -15,6 +15,7 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 // ─── Layouts ──────────────────────────────────────────────────────────────────
 import PublicLayout from '../shared/layouts/PublicLayout';
+import SnapPublicLayout from '../shared/layouts/SnapPublicLayout';
 import LandingLayout from '../shared/layouts/LandingLayout';
 import StudentLayout from '../shared/layouts/StudentLayout';
 import AdminLayout from '../shared/layouts/AdminLayout';
@@ -61,6 +62,7 @@ const _0x5a2b = atob('L21yLXJvYm90');
 const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
   <ErrorBoundary scope={scope}>
     <motion.div
+      className="w-full h-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -101,10 +103,10 @@ export const AppRouter = () => {
         <Route element={<LandingLayout />}>
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
+          <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
         </Route>
 
-        <Route element={<PublicLayout />}>
-          <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
+        <Route element={<SnapPublicLayout />}>
         </Route>
 
         {/* ── Auth routes ───────── */}

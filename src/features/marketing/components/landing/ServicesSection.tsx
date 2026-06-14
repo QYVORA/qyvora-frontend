@@ -97,7 +97,7 @@ const ServicesSection: React.FC = () => {
             }}
             className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-white/5 bg-bg-card/40 backdrop-blur-sm shadow-2xl">
+            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card/40 dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
               
               {/* Image Section */}
               <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
@@ -108,11 +108,11 @@ const ServicesSection: React.FC = () => {
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
 
                   {/* Price Badge */}
                   <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
-                    <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+                    <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
                       <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-[0.2em]">
                         {service.price}
                       </span>
@@ -210,14 +210,14 @@ const ServicesSection: React.FC = () => {
         <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -left-8 -right-8 items-center justify-between pointer-events-none z-20">
           <button
             onClick={handlePrev}
-            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-white/10 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
+            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-accent dark:text-text-primary flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white dark:hover:text-bg hover:border-accent hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
             aria-label="Previous service"
           >
             <ChevronLeft className="w-8 h-8" />
           </button>
           <button
             onClick={handleNext}
-            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-white/10 text-text-primary flex items-center justify-center transition-all hover:bg-accent hover:text-bg hover:border-accent active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
+            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-accent dark:text-text-primary flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white dark:hover:text-bg hover:border-accent hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
             aria-label="Next service"
           >
             <ChevronRight className="w-8 h-8" />
