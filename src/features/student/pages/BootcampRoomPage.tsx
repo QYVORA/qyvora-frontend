@@ -264,7 +264,7 @@ const BootcampRoomPage: React.FC = () => {
             </nav>
           </div>
         </aside>
-        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full items-center justify-center text-text-muted hover:text-accent transition-all hover:scale-110 active:scale-95 ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-4 w-4" /></button>
+        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border items-center justify-center text-text-muted hover:text-accent transition-all hover:scale-110 active:scale-95 ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-4 w-4" /></button>
         <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
         <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
           {!phase || !room ? (
