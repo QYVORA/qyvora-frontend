@@ -241,7 +241,7 @@ const BootcampRoomPage: React.FC = () => {
       />
 
       <div className="md:fixed md:inset-0 md:top-24 md:flex md:flex-row md:overflow-hidden">
-        <aside className={`hidden md:flex md:flex-col shrink-0 bg-bg-card border-r border-border overflow-hidden transition-all duration-300 relative ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}`}>
+        <aside className={`hidden md:flex md:flex-col shrink-0 bg-bg border-r border-border overflow-hidden transition-all duration-300 relative ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}`}>
           <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
             <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
               <div className="mb-4 px-1"><Link to={`/dashboard/bootcamps/${bootcampId}`} className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"><ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum</Link></div>
@@ -253,7 +253,7 @@ const BootcampRoomPage: React.FC = () => {
                       const k = `${p_.id}:${r_.id}`; const act = p_.id === phaseId && r_.id === roomId; const comp = completedRooms.has(k); const lock = lockedRooms.has(k);
                       return (
                         <button key={k} onClick={() => { if (!lock) handleNavigate(p_.id, r_.id); }} disabled={lock} className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${act ? 'text-accent font-bold bg-transparent' : lock ? 'opacity-40 cursor-not-allowed text-text-muted' : 'bg-transparent hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'}`}>
-                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${comp ? 'border-accent/40 bg-accent text-bg' : act ? 'border-accent/40 bg-accent-dim text-accent' : 'border-border bg-bg text-text-muted'}`}>{comp ? <CheckCircle2 className="h-3 w-3" /> : lock ? <Lock className="h-3 w-3" /> : null}</span>
+                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${comp ? 'border-accent/40 text-accent' : act ? 'border-accent/40 text-accent' : 'border-border text-text-muted'}`}>{comp ? <CheckCircle2 className="h-3 w-3" /> : lock ? <Lock className="h-3 w-3" /> : null}</span>
                           <span className="truncate text-sm">{r_.title}</span>
                         </button>
                       );
@@ -264,7 +264,7 @@ const BootcampRoomPage: React.FC = () => {
             </nav>
           </div>
         </aside>
-        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border bg-bg-card items-center justify-center text-text-muted hover:text-accent transition-all hover:scale-110 active:scale-95 ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-4 w-4" /></button>
+        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full items-center justify-center text-text-muted hover:text-accent transition-all hover:scale-110 active:scale-95 ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-4 w-4" /></button>
         <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
         <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
           {!phase || !room ? (

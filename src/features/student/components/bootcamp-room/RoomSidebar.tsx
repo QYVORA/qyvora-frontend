@@ -61,12 +61,12 @@ const RoomSidebar: React.FC<Props> = ({
                   }`}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded font-black font-mono ${
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded font-black font-mono border ${
                       isCompleted
-                        ? isActive ? 'bg-white/20 text-white' : 'bg-accent text-bg'
+                        ? isActive ? 'border-accent/40 text-accent' : 'border-accent/40 text-accent'
                         : isActive
-                        ? 'bg-white/20 text-white'
-                        : 'bg-bg-elevated text-text-muted'
+                        ? 'border-accent/40 text-accent'
+                        : 'border-border text-text-muted'
                     }`}
                   >
                     {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
@@ -96,9 +96,9 @@ const RoomSidebar: React.FC<Props> = ({
             <motion.aside
               initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card lg:hidden overflow-y-auto"
+              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg lg:hidden overflow-y-auto"
             >
-              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
+              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Curriculum</p>
                   <p className="text-xs font-black text-text-primary">Room Navigator</p>
