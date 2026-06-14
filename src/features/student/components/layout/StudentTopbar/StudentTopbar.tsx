@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, ClipboardList
+  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, ClipboardList, Menu
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -38,6 +38,7 @@ const StudentTopbar = () => {
   const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
 
   const openQuiz = () => window.dispatchEvent(new CustomEvent('bootcamp:openQuiz'));
+  const openSidebar = () => window.dispatchEvent(new CustomEvent('bootcamp:openSidebar'));
 
   // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
@@ -116,6 +117,15 @@ const StudentTopbar = () => {
               aria-label="Back to curriculum"
             >
               <ArrowLeft className="h-5 w-5" />
+            </button>
+
+            {/* Mobile Sidebar Toggle */}
+            <button
+              onClick={openSidebar}
+              className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+              aria-label="Toggle curriculum sidebar"
+            >
+              <Menu className="h-5 w-5" />
             </button>
 
             {/* Breadcrumb — desktop */}

@@ -306,7 +306,7 @@ const AnansiPage: React.FC = () => {
 
                         <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
                           <div className="px-6 py-3 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
-                            <span className="text-lg font-black text-accent uppercase tracking-[0.2em]">
+                            <span className="text-base sm:text-lg font-black text-accent uppercase tracking-widest whitespace-nowrap">
                               PHASE {currentPhase.id}
                             </span>
                           </div>
