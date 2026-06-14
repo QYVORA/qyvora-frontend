@@ -1,0 +1,13 @@
+/* TEAM */
+  Site Owner: QYVORA OFFSEC
+  Contact: ops@qyvora.netlify.app
+  Location: Tamale, Ghana
+
+/* SITE */
+  Last update: 2026/06/14
+  Language: English
+  Doctype: HTML5
+  Standards: HTML5, CSS3, Semantic HTML, JSON-LD
+  Components: React, Tailwind CSS, Framer Motion
+  Hosting: Netlify
+  Backend: Render

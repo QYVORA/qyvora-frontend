@@ -10,6 +10,7 @@ import HeroBackground from '../../../shared/components/backgrounds/HeroBackgroun
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import PageLoader from '../../../shared/components/PageLoader';
 import { formatNumber } from '../../../shared/utils/formatNumber';
+import SEO from '../../../shared/components/SEO';
 
 const RANK_THRESHOLDS = [
   { label: 'Vanguard',    min: 1500 },
@@ -78,6 +79,10 @@ const PublicProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bg pb-20 relative overflow-hidden">
+      <SEO 
+        title={`${handle}'s Profile`}
+        description={`View the operator profile, achievements, and ranking of ${handle} on QYVORA, Africa's offensive security platform.`}
+      />
       <HeroBackground className="opacity-30" />
       
       <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 pt-12 md:pt-20">

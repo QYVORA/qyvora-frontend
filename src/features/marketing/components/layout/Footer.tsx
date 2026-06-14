@@ -51,7 +51,7 @@ const Footer: React.FC = () => (
         {/* Brand column */}
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-start gap-7">
           <div className="flex flex-col items-start gap-1">
-            <Link to="/">
+            <Link to="/" aria-label="QYVORA Home">
               <Logo size="md" className="sm:hidden opacity-90 hover:opacity-100 transition-opacity" />
               <Logo size="xl" className="hidden sm:block opacity-90 hover:opacity-100 transition-opacity" />
             </Link>

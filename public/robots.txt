@@ -7,7 +7,7 @@
 #   `Y88'Y8    YP       YP     `Y88P'  88   YD YP   YP                                          
 #
 #  QYVORA — Africa's Offensive Security Platform
-#  https://qyvora.com
+#  https://qyvora.netlify.app
 # ============================================================
 
 User-agent: *
@@ -32,11 +32,9 @@ Disallow: /change-password
 
 # Allow public marketing pages
 Allow: /
-Allow: /services
-Allow: /contact
-Allow: /cyber-points
-Allow: /leaderboard
-Allow: /zero-day-market
-Allow: /u/
+Allow: /anansi
+Allow: /terms
+Allow: /@
+Allow: /manifest.webmanifest
 
-Sitemap: https://qyvora.com/sitemap.xml
+Sitemap: https://qyvora.netlify.app/sitemap.xml

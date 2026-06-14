@@ -1,0 +1,21 @@
+{
+  "name": "QYVORA",
+  "short_name": "QYVORA",
+  "description": "Africa's Offensive Security Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050706",
+  "theme_color": "#66B870",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

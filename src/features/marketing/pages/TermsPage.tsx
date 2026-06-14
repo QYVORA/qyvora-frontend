@@ -10,6 +10,7 @@ import { termsData, TermsSection } from '../content/termsData';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 import Footer from '../components/layout/Footer';
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
+import SEO from '../../../shared/components/SEO';
 
 const SnapSection: React.FC<{
   id: string;
@@ -48,6 +49,10 @@ const TermsPage: React.FC = () => {
 
   return (
     <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
+      <SEO 
+        title="Terms of Service"
+        description="Read the terms and conditions for using QYVORA's offensive security platform and services."
+      />
       {/* ── Global Background ── */}
       <HeroBackground className="opacity-70" />
 
@@ -120,7 +125,7 @@ const TermsPage: React.FC = () => {
                 <div className="relative w-full h-full flex items-center justify-center p-8">
                   <img
                     src="/assets/illustrations/terms.svg"
-                    alt="Terms and conditions illustration"
+                    alt="QYVORA Terms and Conditions Illustration"
                     className="w-full h-full object-contain"
                     onError={(e) => {
                       // Fallback to a simple icon-based illustration if image doesn't exist

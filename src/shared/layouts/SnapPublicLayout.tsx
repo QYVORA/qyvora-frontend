@@ -136,7 +136,7 @@ const SnapPublicLayout = () => (
           leftover from debugging. Safe to remove. ⚠️
     */}
     <main
-      className="w-full pt-[72px] md:pt-[72px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
+      className="w-full min-h-screen flex flex-col pt-[72px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
       style={{ height: undefined }}
     >
       {/*

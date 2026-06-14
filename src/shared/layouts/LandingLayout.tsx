@@ -110,7 +110,7 @@ const LandingLayout = () => (
       <Outlet /> renders the matched child route — in practice, this is always
       LandingPage, which contains the snap scroll container and all snap sections.
     */}
-    <main className="w-full">
+    <main id="main-content" className="w-full min-h-screen flex flex-col">
       <Outlet />
     </main>
 
