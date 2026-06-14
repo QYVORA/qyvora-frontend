@@ -3935,7 +3935,7 @@ hcitool scan
 \`\`\`
 
 *Operative Drill:* You are sitting in the target's lobby. You see an employee walk in with two cups of coffee and a laptop bag. How do you use the **Reciprocity** or **Liking** principle to get them to hold the door for you?`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'RFID Mastery & Badge Cloning',
@@ -3987,7 +3987,7 @@ pm3 -c "lf hid sim --raw 2006f1a23b"
 \`\`\`
 
 *Hacker's Strategy:* The best time to clone a badge is in a crowded elevator or a coffee shop line. A Proxmark3 hidden in a laptop sleeve can capture a 'Read' in less than a second.`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'Dumpster Diving & Data Reconstruction',
@@ -4029,7 +4029,7 @@ Identify employee names and birthdays from discarded 'Happy Birthday' cards or c
 Checking discarded monitors or keyboards for the 'imprint' of a password written on a sticky note.
 
 *Operative Drill:* You find a discarded network diagram that was only torn in half. What is the first thing you look for on that diagram to help your **Phase 3 (Networking)** engagement?`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'OPSEC for Physical Engagements',
@@ -4071,7 +4071,7 @@ dd if=/dev/zero of=/tmp/wipe.tmp bs=1M; rm /tmp/wipe.tmp
 Use silent signals or coded messages with your team if they are monitoring your 'Body-Cam' or audio feed.
 
 *Final Training Insight:* Physical security is the bridge between the digital and the real world. By mastering these techniques, you have become a 'Full-Stack Operative,' capable of compromising a target from the sidewalk to the database. Congratulations on completing the Hacker Protocol Bootcamp.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },
