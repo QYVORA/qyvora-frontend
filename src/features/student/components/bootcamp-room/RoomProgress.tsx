@@ -30,29 +30,15 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
           {viewedStepsCount} / {totalStepsCount} steps
         </span>
       </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-accent-dim">
+      <div className="h-3 overflow-hidden rounded-md bg-accent-dim border border-border/40 shadow-inner">
         <div
-          className="h-full rounded-full bg-accent transition-all duration-500"
+          className="h-full bg-accent transition-all duration-700 ease-out"
           style={{ width: `${(viewedStepsCount / totalStepsCount) * 100}%` }}
         />
       </div>
-      <div className="flex items-center gap-2 text-xs text-text-muted mt-3">
-        <Timer className="h-3.5 w-3.5" />
-        <span>Time in room: {formatTime(timeSpent)}</span>
-      </div>
-      <div className="mt-4 flex gap-2 flex-wrap">
-        {steps.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goToStep(idx)}
-            className={`h-3 flex-1 min-w-[24px] max-w-[52px] rounded-full transition-all ${
-              idx === currentStepIdx ? 'bg-accent scale-y-[1.3]'
-                : viewedSteps.has(idx) ? 'bg-accent/45'
-                : 'bg-accent-dim'
-            }`}
-            title={`Step ${idx + 1}`}
-          />
-        ))}
+      <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted mt-4">
+        <Timer className="h-3.5 w-3.5 text-accent" />
+        <span>Time in session: {formatTime(timeSpent)}</span>
       </div>
     </div>
   );

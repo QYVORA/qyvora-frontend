@@ -57,7 +57,7 @@ const RoomSidebar: React.FC<Props> = ({
                       ? 'bg-accent text-bg font-bold shadow-md shadow-accent/10'
                       : isLocked
                       ? 'opacity-40 cursor-not-allowed text-text-muted'
-                      : 'hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                      : 'bg-bg-card hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   <span
@@ -96,7 +96,7 @@ const RoomSidebar: React.FC<Props> = ({
             <motion.aside
               initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed left-0 top-20 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg-card lg:hidden overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg-card/95 backdrop-blur-md shrink-0">
                 <div>
@@ -105,7 +105,7 @@ const RoomSidebar: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={onMobileClose}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-bg text-text-muted hover:text-text-primary transition-colors shadow-sm"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-bg text-text-muted hover:text-text-primary transition-colors"
                   aria-label="Close curriculum"
                 >
                   <X className="h-4 w-4" />

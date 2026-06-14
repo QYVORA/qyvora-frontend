@@ -84,7 +84,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
   const isBash = !lang || lang === 'bash' || lang === 'sh' || lang === 'shell';
 
   return (
-    <div className="my-4 rounded-xl border border-border overflow-hidden bg-code-bg">
+    <div className="my-10 md:my-14 rounded-xl border border-border overflow-hidden bg-code-bg">
       {/* Header bar */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">
@@ -194,7 +194,7 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
         const paragraphs = seg.text.split(/\n\n+/);
 
         return (
-          <div key={segIdx} className="space-y-6">
+          <div key={segIdx} className="space-y-8 md:space-y-10">
             {paragraphs.map((para, paraIdx) => {
               // Process inline code and bold within each paragraph
               const combinedPattern = /(`[^`]+`|\*\*[^*]+\*\*)/g;

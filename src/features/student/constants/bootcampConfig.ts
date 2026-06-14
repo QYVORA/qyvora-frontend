@@ -3712,7 +3712,7 @@ The Google Hacking Database (GHDB) is your library of pre-built dorks.
 \`\`\`
 
 *Operative Insight:* Google Dorking is passive reconnaissance. The target has no idea you are searching for them because you are talking to Google's servers, not theirs. This is the ultimate 'Invisible' recon.`,
-              image: null,
+              image: 'step-01.png',
             },
             {
               title: 'Automated OSINT: The Harvester & Shodan',
@@ -3775,7 +3775,7 @@ dig +short <target_ip> | xargs -I {} curl -s "https://api.hacker<target_site>/re
 \`\`\`
 
 *Hacker's Strategy:* Shodan is your 'Time Machine.' It shows you what was open yesterday, even if the target has closed the port today. Use it to find 'Shadow IT' that the security team forgot about.`,
-              image: null,
+              image: 'step-02.png',
             },
             {
               title: 'Social Media OSINT & Human Mapping',
@@ -3829,7 +3829,7 @@ curl -s "https://api.hacker<target_site>/reversedns/?q=<target_ip>"
 \`\`\`
 
 *Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an Qyvora engagement.`,
-              image: null,
+              image: 'step-03.png',
             },
             {
               title: 'Operational Security (OPSEC): Staying Invisible',
@@ -3874,7 +3874,7 @@ history -c
 \`\`\`
 
 *Final Training Insight:* OSINT is the foundation of everything that follows. A well-researched engagement takes 5 minutes; a poorly researched one takes 5 days. You have now mastered the art of the 'Invisible Operative.' Congratulations on completing Phase 5.`,
-              image: null,
+              image: 'step-04.png',
             },
           ],
         },

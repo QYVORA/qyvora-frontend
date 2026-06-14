@@ -114,7 +114,7 @@ const ServicesSection: React.FC = () => {
                   {/* Price Badge */}
                   <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
                     <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
-                      <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-[0.2em]">
+                      <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-widest whitespace-nowrap">
                         {service.price}
                       </span>
                     </div>

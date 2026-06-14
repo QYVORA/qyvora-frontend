@@ -29,32 +29,28 @@ const StepCard: React.FC<Props> = ({
 }) => (
   <div
     onClick={onClick}
-    className={`relative cursor-pointer rounded-2xl px-5 py-6 sm:p-6 md:p-8 transition-all duration-300 overflow-hidden group w-full bg-transparent ${
-      isActive
-        ? 'shadow-2xl shadow-accent/5 scale-[1.015] z-10'
-        : 'opacity-40 hover:opacity-100'
-    }`}
+    className={`relative cursor-pointer py-12 md:py-16 overflow-hidden group w-full border-t border-border/10 first:border-t-0`}
   >
     <button
       onClick={(e) => { e.stopPropagation(); onToggleBookmark(); }}
-      className={`absolute top-6 right-6 p-2 rounded-lg transition-all z-10 ${
+      className={`absolute top-12 md:top-16 right-0 p-2 rounded-lg border transition-all z-10 ${
         isBookmarked
-          ? 'bg-transparent text-yellow-500'
-          : 'bg-transparent text-text-muted hover:text-accent opacity-0 group-hover:opacity-100'
+          ? 'border-accent/30 text-yellow-500'
+          : 'bg-transparent border-border text-text-muted hover:text-accent opacity-0 group-hover:opacity-100'
       }`}
       title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
     >
       <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
     </button>
 
-    <div className="mb-5 flex items-center gap-3">
+    <div className="mb-8 md:mb-12 flex items-center gap-4">
       <div
-        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl font-mono text-lg font-black transition-all duration-300 ${
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black ${
           isActive
-            ? 'text-accent scale-110'
+            ? 'bg-accent border-accent text-bg'
             : isViewed
-            ? 'text-accent/60'
-            : 'text-text-muted'
+            ? 'bg-accent-dim border-accent/20 text-accent/60'
+            : 'bg-bg-elevated border-border text-text-muted'
         }`}
       >
         {isViewed && !isActive ? (
@@ -63,21 +59,21 @@ const StepCard: React.FC<Props> = ({
           String(stepNum).padStart(2, '0')
         )}
       </div>
-      <div className="flex-1 min-w-0 overflow-hidden">
-        <span className={`block truncate font-black uppercase tracking-[0.25em] transition-colors duration-300 ${
+      <div className="flex-1 min-w-0">
+        <span className={`block font-black uppercase tracking-[0.25em] transition-colors duration-300 ${
           isActive ? 'text-accent text-xs' : 'text-text-muted text-[10px]'
         }`}>
           {step.title}
         </span>
       </div>
       {isActive && (
-        <span className="shrink-0 text-accent text-[9px] font-black uppercase tracking-widest animate-pulse">
+        <span className="shrink-0 text-accent text-[9px] font-black uppercase tracking-widest px-2 py-1">
           Current Focus
         </span>
       )}
     </div>
 
-    <div className={`text-sm sm:text-base leading-[1.8] sm:leading-[1.85] transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full`}>
+    <div className={`text-sm sm:text-base leading-[1.85] sm:leading-[1.95] transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full mb-10 md:mb-14`}>
       <CodeBlockRenderer text={step.instruction} />
     </div>
 
@@ -92,18 +88,26 @@ const StepCard: React.FC<Props> = ({
     )}
 
     {footer && (
-      <div className="mt-6" onClick={(e) => e.stopPropagation()}>
+      <div className="mt-10 md:mt-14" onClick={(e) => e.stopPropagation()}>
         {footer}
       </div>
     )}
 
-    <button
-      onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
-      className="mt-4 text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
-    >
-      <Flag className="h-3 w-3" />
-      Report issue with this step
-    </button>
+    <div className="mt-10 md:mt-14 flex items-center justify-between border-t border-border/5 pt-6">
+      <button
+        onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
+        className="text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
+      >
+        <Flag className="h-3 w-3" />
+        Report Issue
+      </button>
+
+      {isActive && !isViewed && (
+        <span className="text-[10px] font-bold uppercase tracking-widest text-accent/40">
+          Unread Phase
+        </span>
+      )}
+    </div>
   </div>
 );
 
