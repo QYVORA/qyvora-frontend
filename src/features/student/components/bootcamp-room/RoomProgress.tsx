@@ -30,7 +30,7 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
           {viewedStepsCount} / {totalStepsCount} steps
         </span>
       </div>
-      <div className="h-3 overflow-hidden rounded-md bg-accent-dim border border-border/40 shadow-inner">
+      <div className="h-3 overflow-hidden rounded-md bg-accent-dim border border-border/40">
         <div
           className="h-full bg-accent transition-all duration-700 ease-out"
           style={{ width: `${(viewedStepsCount / totalStepsCount) * 100}%` }}

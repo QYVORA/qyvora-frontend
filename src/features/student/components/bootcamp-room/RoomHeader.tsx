@@ -45,7 +45,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       </div>
       
       {isRoomComplete && (
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20">
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
           <CheckCircle2 className="h-4 w-4" /> Room Complete
         </div>
       )}
