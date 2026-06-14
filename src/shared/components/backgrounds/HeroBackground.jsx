@@ -130,7 +130,7 @@ function HeroBackground({ className = "" }) {
         ref={canvasRef} 
         className="fixed inset-0 w-screen h-screen"
         style={{ 
-          filter: 'blur(0.3px)',
+          filter: 'blur(0.8px)',
           width: '100vw',
           height: '100vh',
           position: 'fixed',

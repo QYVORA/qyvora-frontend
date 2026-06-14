@@ -16,6 +16,7 @@ const Navbar: React.FC = () => {
   const scrollY                              = useScrollY();
   const location                             = useLocation();
 
+  const isAnansiPage = location.pathname === '/anansi';
   const isScrolled = scrollY > 20;
 
   // Hide on scroll-down, reveal on scroll-up
@@ -53,9 +54,9 @@ const Navbar: React.FC = () => {
         className={[
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
           'h-[80px] flex items-center',
-          'transition-all duration-500',
+          'transition-all duration-300',
           !isVisible && !isMenuOpen ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
-          isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
+          isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : (isAnansiPage ? 'bg-transparent' : 'bg-transparent'),
         ].join(' ')}
         style={{ outline: 'none', border: 'none' }}
       >

@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
     <div className={`min-h-screen relative ${isAdminLoginRoute ? '' : 'md:grid md:grid-cols-2'}`}>
       <HeroBackground className="opacity-50" />
       {!isAdminLoginRoute && <AuthHero />}
-      <div className={`flex flex-col items-center justify-center px-4 py-8 md:p-12 relative ${isAdminLoginRoute ? '' : 'md:backdrop-blur-xl'} min-h-screen ${isAdminLoginRoute ? '' : 'md:h-screen md:overflow-y-auto'}`}>
+      <div className={`flex flex-col items-center px-4 py-8 md:p-12 relative ${isAdminLoginRoute ? '' : 'md:backdrop-blur-xl'} min-h-screen ${isAdminLoginRoute ? '' : 'md:h-screen md:overflow-y-auto'}`}>
         {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}
         {!isAdminLoginRoute && (
           <div className="absolute top-6 left-6 z-20 md:hidden">
@@ -86,7 +86,7 @@ const LoginPage: React.FC = () => {
         )}
         
         {/* Centered form container */}
-        <div className="w-full max-w-lg relative z-10 py-12 md:py-16">
+        <div className="w-full max-w-lg relative z-10 py-12 md:py-16 my-auto">
           <p className="sr-only" aria-live="polite">{formMessage}</p>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
             <LoginForm
