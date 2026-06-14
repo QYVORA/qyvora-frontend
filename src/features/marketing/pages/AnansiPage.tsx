@@ -5,6 +5,7 @@ import HeroBackground from '../../../shared/components/backgrounds/HeroBackgroun
 import Footer from '../components/layout/Footer';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
 import SEO from '../../../shared/components/SEO';
+import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
 const PHASES = [
   { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force' },
@@ -37,7 +38,9 @@ const SnapSection: React.FC<{
 };
 
 const AnansiPage: React.FC = () => {
-  useScrollLock(true);
+  const { isMobile } = useAdaptiveUi();
+  useScrollLock(!isMobile);
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState('hero');
   const [activePhaseIndex, setActivePhaseIndex] = useState(0);
@@ -84,7 +87,7 @@ const AnansiPage: React.FC = () => {
   // Detect which section is currently in view
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || isMobile) return;
 
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
@@ -115,12 +118,12 @@ const AnansiPage: React.FC = () => {
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [activeSection]);
+  }, [activeSection, isMobile]);
 
   const currentPhase = PHASES[activePhaseIndex];
 
   return (
-    <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
+    <div className="relative min-h-screen w-full bg-bg">
       <SEO 
         title="Anansi CLI - Attack Surface Intelligence"
         description="Anansi CLI is a terminal-first attack surface intelligence engine built for speed, portability, and raw technical signal. Automate discovery, probing, and takeover detection."
@@ -152,11 +155,11 @@ const AnansiPage: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-auto md:h-[100svh] w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
         {/* ── 1. Hero ── */}
         <SnapSection id="hero">
-          <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 px-6 md:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 px-6 md:px-12 pt-28 pb-10 sm:pt-32 sm:pb-12 lg:pt-0 lg:pb-0">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -215,7 +218,7 @@ const AnansiPage: React.FC = () => {
               <img 
                 src="/anansi-main-logo.webp" 
                 alt="Anansi CLI - Offensive Security Intelligence Engine" 
-                fetchpriority="high"
+                fetchPriority="high"
                 className="relative z-10 w-full max-w-[620px] mx-auto filter drop-shadow-[0_0_30px_rgba(var(--color-accent-rgb),0.2)]"
               />
             </motion.div>
@@ -224,28 +227,28 @@ const AnansiPage: React.FC = () => {
 
         {/* ── 2. Terminal Box Section ── */}
         <SnapSection id="install">
-          <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-12">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
             >
-              <div className="bg-[#121212] border-b border-white/5 px-6 py-4 flex items-center justify-between">
+              <div className="bg-[#121212] border-b border-white/5 px-4 sm:px-6 py-4 flex items-center justify-between">
                 <div className="flex gap-2.5">
                   <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56]" />
                   <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e]" />
                   <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f]" />
                 </div>
-                <div className="text-xs font-mono text-white/40 tracking-[0.2em] uppercase font-bold">
+                <div className="text-[10px] font-mono text-white/40 tracking-[0.2em] uppercase font-bold">
                   operator@qyvora:~
                 </div>
-                <div className="w-10" />
+                <div className="w-10 hidden sm:block" />
               </div>
-              <div className="p-8 md:p-12 font-mono text-sm md:text-lg space-y-10 overflow-x-auto">
+              <div className="p-6 sm:p-8 md:p-12 font-mono text-xs sm:text-sm md:text-lg space-y-10 overflow-x-auto custom-scrollbar">
                 <div className="space-y-4">
-                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-xs"># Step 01: Download for Linux (AMD64)</div>
-                  <div className="flex gap-4 items-start group">
+                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-[10px]"># Step 01: Download for Linux (AMD64)</div>
+                  <div className="flex gap-4 items-start group min-w-max">
                     <span className="text-accent font-bold mt-1">$</span>
                     <code className="text-white whitespace-nowrap bg-white/5 p-2 rounded-lg group-hover:text-accent transition-colors">
                       curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi
@@ -254,8 +257,8 @@ const AnansiPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-xs"># Step 02: Make Executable & Install</div>
-                  <div className="flex gap-4 items-start group">
+                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-[10px]"># Step 02: Make Executable & Install</div>
+                  <div className="flex gap-4 items-start group min-w-max">
                     <span className="text-accent font-bold mt-1">$</span>
                     <code className="text-white whitespace-nowrap bg-white/5 p-2 rounded-lg group-hover:text-accent transition-colors">
                       chmod +x anansi && sudo mv anansi /usr/local/bin/
@@ -264,8 +267,8 @@ const AnansiPage: React.FC = () => {
                 </div>
 
                 <div className="pt-8 space-y-4 border-t border-white/5">
-                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-xs"># Step 03: Run Initial Scan</div>
-                  <div className="flex gap-4 items-start group">
+                  <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-[10px]"># Step 03: Run Initial Scan</div>
+                  <div className="flex gap-4 items-start group min-w-max">
                     <span className="text-accent font-bold mt-1">$</span>
                     <code className="text-white group-hover:text-accent transition-colors">anansi target.com --deep</code>
                   </div>
