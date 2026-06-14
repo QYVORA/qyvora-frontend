@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Shield, Trophy, Zap, Globe, ArrowLeft, ExternalLink, ChevronRight } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -35,6 +35,7 @@ const rankProgress = (cp: number) => {
 
 const PublicProfile: React.FC = () => {
   const { handle } = useParams<{ handle: string }>();
+  const location = useLocation();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);

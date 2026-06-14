@@ -14,6 +14,7 @@ import HeroBackground from '../../../shared/components/backgrounds/HeroBackgroun
 import ServiceRequestModal from '../components/ServiceRequestModal';
 import PromotionalSystem from '../components/PromotionalSystem';
 import SEO from '../../../shared/components/SEO';
+import { SITE_CONFIG } from '../content/siteConfig';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
