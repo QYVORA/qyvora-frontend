@@ -27,8 +27,8 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
 }) => {
   return (
     <div className="px-2 pb-6 lg:p-5 space-y-4">
-      {/* Progress card */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
+      {/* Progress card - Hidden on mobile as it's redundant with CourseHeader */}
+      <div className="hidden lg:block relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-accent/20 blur-3xl" aria-hidden />
         <OptionalDecorImage
           src={STUDENT_DECOR.courseCurriculumMascot}
