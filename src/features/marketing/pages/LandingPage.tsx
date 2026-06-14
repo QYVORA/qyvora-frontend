@@ -48,7 +48,11 @@ const SnapSection: React.FC<{
 const Landing: React.FC = () => {
   const { user } = useAuth();
   const { stats } = useLandingData();
-  useScrollLock(true);
+  const { isMobile } = useAdaptiveUi();
+  
+  // Use a stable reference for scroll lock to prevent re-renders
+  useScrollLock(!isMobile);
+  
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -59,13 +63,6 @@ const Landing: React.FC = () => {
 
   const totalCp = stats?.stats?.totalCpEarned ?? 0;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const scrollToSection = useCallback((index: number) => {
-    const container = containerRef.current;
-    const el = document.getElementById(SECTIONS[index]?.id ?? '');
-    if (container && el) container.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
-  }, []);
-
   // Validate section exists
   const isValidSection = useCallback((sectionId: string): boolean => {
     return SECTIONS.some(s => s.id === sectionId);
@@ -73,16 +70,11 @@ const Landing: React.FC = () => {
 
   // Handle hash-based navigation with validation
   useEffect(() => {
-    const hash = location.hash.replace('#', '');
-    
-    // If there's a hash but it's not a valid section, redirect to 404
-    if (hash && !isValidSection(hash)) {
-      navigate('/404', { replace: true });
-      return;
-    }
+    // Only snaps on desktop
+    if (isMobile) return;
 
+    const hash = location.hash.replace('#', '');
     if (hash && isValidSection(hash)) {
-      // Small delay to ensure DOM is ready
       const timer = setTimeout(() => {
         const element = document.getElementById(hash);
         const container = containerRef.current;
@@ -90,7 +82,6 @@ const Landing: React.FC = () => {
           isScrollingProgrammatically.current = true;
           container.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
           setActiveSection(hash);
-          // Reset flag after scroll animation
           setTimeout(() => {
             isScrollingProgrammatically.current = false;
           }, 1000);
@@ -98,32 +89,28 @@ const Landing: React.FC = () => {
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [location.hash, isValidSection, navigate]);
+    
+    if (hash && !isValidSection(hash)) {
+      navigate('/404', { replace: true });
+    }
+  }, [location.hash, isValidSection, navigate, isMobile]);
 
   // Detect which section is currently in view and update URL
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    // Disable tracking logic entirely on mobile
+    if (!container || isMobile) return;
 
     const handleScroll = () => {
       const now = Date.now();
-      
-      // Skip if we're programmatically scrolling
-      if (isScrollingProgrammatically.current) return;
-      
-      // Throttle to prevent excessive updates
-      if (now - lastScrollTime.current < 100) return;
+      if (isScrollingProgrammatically.current || now - lastScrollTime.current < 100) return;
       lastScrollTime.current = now;
 
       const scrollTop = container.scrollTop;
       const containerHeight = container.clientHeight;
-      
-      // Use top third of viewport for better section detection
       const detectionPoint = scrollTop + containerHeight * 0.3;
 
-      // Find which section contains the detection point
-      let foundSection = SECTIONS[0].id; // Default to hero
-      
+      let foundSection = SECTIONS[0].id;
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
         const section = SECTIONS[i];
         const element = document.getElementById(section.id);
@@ -140,36 +127,17 @@ const Landing: React.FC = () => {
 
       if (activeSection !== foundSection) {
         setActiveSection(foundSection);
-        // Update URL hash without triggering scroll
         navigate(`#${foundSection}`, { replace: true });
       }
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check
     handleScroll();
-
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [activeSection, navigate]);
-
-  // Click handler for dot navigation
-  const handleDotClick = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    const container = containerRef.current;
-    if (element && container) {
-      isScrollingProgrammatically.current = true;
-      container.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
-      setActiveSection(sectionId);
-      navigate(`#${sectionId}`, { replace: true });
-      // Reset flag after scroll animation
-      setTimeout(() => {
-        isScrollingProgrammatically.current = false;
-      }, 1200);
-    }
-  };
+  }, [activeSection, navigate, isMobile]);
 
   return (
-    <div className="relative h-screen w-full bg-bg">
+    <div className="relative min-h-screen w-full bg-bg overflow-x-hidden">
       <SEO 
         title="Africa's Offensive Security Platform"
         description="QYVORA is an offensive security company building a strong cybersecurity ecosystem in Africa through professional training, penetration testing, and advanced intelligence tools."
@@ -190,64 +158,34 @@ const Landing: React.FC = () => {
               '@type': 'ImageObject',
               'url': `${SITE_CONFIG.brand.siteUrl}/favicon.png`
             }
-          },
-          'mainEntity': [
-            {
-              '@type': 'Service',
-              'name': 'Basic Web-App Pentesting',
-              'description': 'Essential Security Audit including OWASP Top 10 coverage, XSS & SQLi discovery.'
-            },
-            {
-              '@type': 'Service',
-              'name': 'Standard Penetration Test',
-              'description': 'Full Stack Assessment including business logic analysis and IDOR & JWT security.'
-            }
-          ]
+          }
         }}
       />
-      {/* ── Global Background - Fixed to viewport - Lower z-index to stay behind globe ── */}
+      
       <HeroBackground 
-        className={`
-          z-0 transition-opacity duration-700 
-          ${activeSection === 'hero' ? 'opacity-65' : 'opacity-90'}
-        `} 
+        className={`z-0 transition-opacity duration-700 ${activeSection === 'hero' ? 'opacity-65' : 'opacity-90'}`} 
       />
 
-      {/* ── Modals ── */}
       <ServiceRequestModal />
       <PromotionalSystem />
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-screen w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-auto md:h-screen w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
-        {/* ── 1. Hero ── */}
-        <section
-          id="hero"
-          className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 box-border relative bg-transparent overflow-hidden"
-        >
-          <HeroSection
-            heroRef={heroRef}
-            user={user}
-            stats={stats}
-            totalCp={totalCp}
-          />
+        <section id="hero" className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent overflow-hidden">
+          <HeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
         </section>
 
-        {/* ── 2. Services ── */}
         <SnapSection id="services">
           <ServicesSection />
         </SnapSection>
 
-        {/* ── 3. Final CTA ── */}
         <SnapSection id="cta">
           <FinalCtaSection user={user} />
         </SnapSection>
 
-        <section
-          id="footer"
-          className="md:snap-start md:snap-always w-full bg-bg"
-        >
+        <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
           <Footer />
         </section>
       </div>

@@ -48,7 +48,7 @@ const TermsPage: React.FC = () => {
   const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
   return (
-    <div className="relative h-[100svh] w-full bg-bg overflow-hidden">
+    <div className="relative min-h-screen w-full bg-bg">
       <SEO 
         title="Terms of Service"
         description="Read the terms and conditions for using QYVORA's offensive security platform and services."
@@ -62,7 +62,7 @@ const TermsPage: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-[100svh] w-full overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-auto md:h-[100svh] w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
         {/* ── HERO SECTION ── */}
         <section className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent overflow-hidden">
