@@ -346,14 +346,14 @@ const AnansiPage: React.FC = () => {
               <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -left-8 -right-8 items-center justify-between pointer-events-none z-20">
                 <button
                   onClick={handlePrevPhase}
-                  className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-accent dark:text-text-primary flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white dark:hover:text-bg hover:border-accent hover:scale-110 active:scale-95 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
+                  className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
                   aria-label="Previous phase"
                 >
                   <ChevronLeft className="w-8 h-8" />
                 </button>
                 <button
                   onClick={handleNextPhase}
-                  className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-accent dark:text-text-primary flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white dark:hover:text-bg hover:border-accent hover:scale-110 active:scale-95 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
+                  className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
                   aria-label="Next phase"
                 >
                   <ChevronRight className="w-8 h-8" />
