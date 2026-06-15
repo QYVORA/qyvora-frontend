@@ -68,11 +68,7 @@ const Wrap = ({ children, scope }: { children: ReactNode; scope?: string }) => (
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <Suspense fallback={
-        <div className="flex-1 flex items-center justify-center w-full min-h-[60vh]">
-          <PageLoader mode="relative" />
-        </div>
-      }>
+      <Suspense fallback={<PageLoader />}>
         {children}
       </Suspense>
     </motion.div>
@@ -101,7 +97,7 @@ export const AppRouter = () => {
   const location = useLocation();
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col relative">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 
@@ -164,7 +160,7 @@ export const AppRouter = () => {
       </Routes>
     </AnimatePresence>
     <MotionCommunityPopup />
-  </>
+  </div>
   );
 };
 

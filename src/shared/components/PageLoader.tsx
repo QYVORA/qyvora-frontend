@@ -15,11 +15,11 @@ interface PageLoaderProps {
  */
 const PageLoader: React.FC<PageLoaderProps> = ({ mode = 'full' }) => {
   const containerClasses = mode === 'full' 
-    ? "fixed inset-0 z-[9999] bg-bg overflow-hidden select-none touch-none"
-    : "relative w-full h-full min-h-[400px] bg-transparent flex items-center justify-center overflow-hidden select-none";
+    ? "fixed inset-0 z-[9999] bg-bg w-screen h-screen flex flex-col items-center justify-center overflow-hidden select-none touch-none"
+    : "relative w-full flex-1 flex flex-col items-center justify-center min-h-[300px] bg-transparent overflow-hidden select-none";
 
   return (
-    <div className={`${containerClasses} flex items-center justify-center`}>
+    <div className={containerClasses}>
       <div className="relative flex items-center justify-center animate-in fade-in duration-500 scale-[2]">
         {/* Main spinning loader arc */}
         <svg 
