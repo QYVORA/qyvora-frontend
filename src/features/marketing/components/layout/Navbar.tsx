@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
         ].join(' ')}
         style={{ outline: 'none', border: 'none' }}
       >
-        <div className="w-full max-w-full mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">

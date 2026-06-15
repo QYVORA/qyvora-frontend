@@ -68,7 +68,7 @@ const TermsPage: React.FC = () => {
         <section className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent overflow-hidden">
           <motion.div 
             style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-            className="relative z-20 h-full max-w-7xl mx-auto px-4 md:px-10 flex flex-col lg:flex-row items-center justify-between gap-12 pt-32 pb-12"
+            className="relative z-20 h-full max-w-[1600px] mx-auto px-4 md:px-10 flex flex-col lg:flex-row items-center justify-between gap-12 pt-32 pb-12"
           >
             {/* Left: Content */}
             <div className="max-w-3xl lg:max-w-xl flex-shrink-0">
@@ -172,7 +172,7 @@ const TermsPage: React.FC = () => {
         {/* ── CONTENT SECTION ── */}
         <SnapSection id="terms-content">
           <div className="min-h-full flex flex-col items-center justify-start md:justify-center py-20 md:py-24">
-            <div className="max-w-7xl mx-auto px-2 md:px-10 w-full h-full md:h-auto">
+            <div className="max-w-[1600px] mx-auto px-2 md:px-10 w-full h-full md:h-auto">
               <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start h-full md:h-auto">
                 {/* Left side: Heading */}
                 <div className="lg:w-1/3 shrink-0 lg:sticky lg:top-8">

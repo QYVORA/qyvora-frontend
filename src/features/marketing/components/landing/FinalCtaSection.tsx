@@ -21,7 +21,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-3 sm:px-8 md:px-8 lg:px-12 xl:px-16 flex flex-col justify-center min-h-[calc(100vh-0px)]">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-3 sm:px-8 md:px-8 lg:px-12 xl:px-16 flex flex-col justify-center min-h-[calc(100vh-0px)]">
 
         {/* Mobile layout: stacked — logo on top, content below */}
         <div className="flex flex-col lg:hidden w-full gap-12">
@@ -34,7 +34,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center justify-center w-full px-4"
           >
-            <div className="relative w-full max-w-[420px] sm:max-w-[540px] overflow-hidden">
+            <div className="relative w-full max-w-[420px] sm:max-w-[540px]">
               {/* Glow behind logo */}
               <div
                 className="absolute inset-0 pointer-events-none opacity-50 blur-3xl"
@@ -44,11 +44,6 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
                 src="/qyvora-cta-logo.png"
                 alt="QYVORA Logo - Africa's Offensive Security Platform"
                 className="relative z-10 w-full h-auto block"
-                style={{
-                  /* Scale adjusted to be safer, combined with parent overflow-hidden */
-                  transform: 'scale(1.1)',
-                  transformOrigin: 'center center'
-                }}
               />
             </div>
           </motion.div>

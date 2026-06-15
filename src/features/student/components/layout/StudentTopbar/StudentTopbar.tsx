@@ -209,7 +209,7 @@ const StudentTopbar = () => {
           </div>
 
         ) : (
-          <div className="max-w-7xl mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between">
+          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between">
 
           {/* Left: Logo + dropdown nav */}
           <div className="flex items-center gap-8">

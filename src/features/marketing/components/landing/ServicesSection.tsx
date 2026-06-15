@@ -80,8 +80,8 @@ const ServicesSection: React.FC = () => {
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12 overflow-x-hidden md:overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full relative group/carousel">
+    <div className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12 overflow-x-hidden">
+      <div className="max-w-[1440px] mx-auto w-full relative group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeIndex}
@@ -97,7 +97,7 @@ const ServicesSection: React.FC = () => {
             }}
             className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card/40 dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
+            <div className="flex flex-col lg:flex-row w-full rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card/40 dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
               
               {/* Image Section */}
               <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
@@ -124,7 +124,7 @@ const ServicesSection: React.FC = () => {
 
               {/* Content Section */}
               <div className="flex-1 flex flex-col p-5 sm:p-8 lg:p-10 xl:p-14 justify-center">
-                <div className="max-w-xl">
+                <div className="max-w-2xl">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-xs sm:text-[11px] font-bold text-accent uppercase tracking-[0.2em]">
                       {service.subtitle}
