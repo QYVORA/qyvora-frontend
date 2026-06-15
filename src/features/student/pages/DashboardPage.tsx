@@ -121,17 +121,17 @@ const Dashboard: React.FC = () => {
   return (
     <div className="bg-bg">
       <div className="scroll-hover md:fixed md:left-0 md:right-20 md:bottom-0 md:top-24 md:overflow-y-auto md:overscroll-contain" style={{ scrollBehavior: 'smooth' }}>
-        <div className="mx-auto max-w-7xl px-0 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-            <div className="w-full px-5 md:px-0">
+            <div className="w-full px-4 md:px-0">
               <ScrollReveal className="h-full">
-                <div className="p-6 sm:p-10 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-xl shadow-black/5">
+                <div className="p-6 sm:p-10 md:p-12 lg:p-16 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-xl shadow-black/5">
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="h-[1.5px] w-10 bg-accent" />
                       <span className="text-xs font-black uppercase tracking-[0.35em] text-accent">{isEnrolled ? (overview?.progressMeta?.currentPhase?.title || 'Active Deployment') : 'New Mission'}</span>
                     </div>
-                    <h2 className="mb-8 text-4xl md:text-6xl font-black leading-tight text-text-primary max-w-3xl tracking-tight">{nextMission ? nextMission.title : isEnrolled ? 'Pick up where you left off' : 'Begin your journey into the offensive underground'}</h2>
+                    <h2 className="mb-8 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] text-text-primary max-w-5xl tracking-tight">{nextMission ? nextMission.title : isEnrolled ? 'Pick up where you left off' : 'Begin your journey into the offensive underground'}</h2>
                     {nextRank && (
                       <div className="mb-10 max-w-lg">
                         <div className="mb-3.5 flex items-center justify-between"><span className="text-[11px] font-black uppercase tracking-[0.25em] text-text-muted">Target Rank: <span className="text-accent">{nextRank.name}</span></span><span className="font-mono text-sm font-black text-accent">{rankProgress}%</span></div>

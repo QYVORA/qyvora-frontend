@@ -27,7 +27,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-hidden">
+    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-x-hidden">
       
       {/* ── Main content grid ── */}
       <div
@@ -62,7 +62,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-accent/35 bg-accent/10 backdrop-blur-sm rounded-lg max-w-full shadow-[0_0_15px_rgba(102,184,112,0.05)]"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-              <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-accent truncate sm:whitespace-normal">
+              <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-accent whitespace-normal">
                 Africa's Offensive Security Platform
               </span>
             </motion.div>
@@ -74,7 +74,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="block text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem]"
+                className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]"
               >
                 Train Like a Hacker.
               </motion.span>
@@ -83,7 +83,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="block text-accent text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem]"
+                className="block text-accent text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]"
               >
                 Become a Hacker.
               </motion.span>

@@ -159,7 +159,7 @@ const AnansiPage: React.FC = () => {
       >
         {/* ── 1. Hero ── */}
         <SnapSection id="hero">
-          <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 px-6 md:px-12 pt-28 pb-10 sm:pt-32 sm:pb-12 lg:pt-0 lg:pb-0">
+          <div className="relative z-10 max-w-[1600px] mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24 px-6 md:px-12 pt-28 pb-10 sm:pt-32 sm:pb-12 lg:pt-0 lg:pb-0">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -281,7 +281,7 @@ const AnansiPage: React.FC = () => {
         {/* ── 3. Pipeline Section (Carousel) ── */}
         <SnapSection id="pipeline">
           <div className="w-full px-4 sm:px-6 md:px-10 py-20 md:py-0">
-            <div className="max-w-7xl mx-auto w-full relative group/carousel">
+            <div className="max-w-[1600px] mx-auto w-full relative group/carousel">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={activePhaseIndex}
@@ -383,7 +383,7 @@ const AnansiPage: React.FC = () => {
 
         {/* ── 4. Call to Action ── */}
         <SnapSection id="cta">
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-20 md:pt-0">
+          <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pt-20 md:pt-0">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
               <div className="flex-1 space-y-10 text-center lg:text-left">
                 <div className="space-y-8">

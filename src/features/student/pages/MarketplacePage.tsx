@@ -97,8 +97,8 @@ const Marketplace: React.FC = () => {
   return (
     <div className="bg-bg">
       <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover">
-        <div className="mx-auto max-w-7xl px-0 pt-6 pb-16 md:px-8">
-          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end px-1 md:px-0">
+        <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+          <ScrollReveal className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end px-4 md:px-0">
              <div>
                <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">Zero-Day Vault</div>
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Intelligence Market</h1>
