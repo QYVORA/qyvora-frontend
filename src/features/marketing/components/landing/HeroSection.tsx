@@ -23,7 +23,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   totalCp,
 }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice, isMobile } = useAdaptiveUi();
+  const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
@@ -139,7 +139,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Globe container - larger bounds to prevent clipping */}
           <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
             <Suspense fallback={null}>
-              <HackerGlobe scale={1.4} />
+              {isLg && <HackerGlobe scale={1.4} />}
             </Suspense>
           </div>
         </motion.div>

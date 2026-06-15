@@ -46,29 +46,37 @@ export function useAdaptiveUi() {
   // Sourced from Framer Motion so it stays in sync with MotionConfig.
   const reduceMotionPreference = useReducedMotion();
 
-  // Initialise isMobile from the current viewport width synchronously so the
+  // Initialise isMobile and isLg from the current viewport width synchronously so the
   // very first render already has the correct value — no flash of wrong layout.
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches);
+  const [isLg, setIsLg] = useState(() => window.matchMedia('(min-width: 1024px)').matches);
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 767px)');
+    const mobileMedia = window.matchMedia('(max-width: 767px)');
+    const lgMedia = window.matchMedia('(min-width: 1024px)');
 
-    // Update state whenever the viewport crosses the 767 px breakpoint.
-    const onChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    // Update state whenever the viewport crosses the breakpoints.
+    const onMobileChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    const onLgChange = (event: MediaQueryListEvent) => setIsLg(event.matches);
 
     // Re-read the current value on mount in case it changed between the
     // useState initialiser and this effect running (rare but possible).
-    setIsMobile(media.matches);
+    setIsMobile(mobileMedia.matches);
+    setIsLg(lgMedia.matches);
 
-    media.addEventListener('change', onChange);
+    mobileMedia.addEventListener('change', onMobileChange);
+    lgMedia.addEventListener('change', onLgChange);
 
-    // Remove the listener on unmount to prevent a memory leak.
-    return () => media.removeEventListener('change', onChange);
-  }, []); // Empty dependency array — the media query listener is set up once.
+    // Remove the listeners on unmount to prevent a memory leak.
+    return () => {
+      mobileMedia.removeEventListener('change', onMobileChange);
+      lgMedia.removeEventListener('change', onLgChange);
+    };
+  }, []); // Empty dependency array — the media query listeners are set up once.
 
   /**
    * Computes the full device profile. Memoized so the object reference is
-   * stable between renders unless isMobile or reduceMotionPreference changes,
+   * stable between renders unless isMobile, isLg or reduceMotionPreference changes,
    * preventing unnecessary re-renders in components that consume this hook.
    *
    * saveData and lowMemory are read inside useMemo rather than useState
@@ -93,12 +101,13 @@ export function useAdaptiveUi() {
 
     return {
       isMobile,
+      isLg,
       saveData,
       lowMemory,
       reduceMotionPreference: Boolean(reduceMotionPreference),
       constrainedDevice,
     };
-  }, [isMobile, reduceMotionPreference]);
+  }, [isMobile, isLg, reduceMotionPreference]);
   // saveData and lowMemory are intentionally omitted from deps — they are
   // static for the session and do not need to trigger recomputation.
 
