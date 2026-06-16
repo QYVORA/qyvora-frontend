@@ -155,34 +155,58 @@ const Navbar: React.FC = () => {
               
               <Link
                 to="/"
+                onClick={() => setIsMenuOpen(false)}
                 className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-text-primary hover:text-accent transition-colors"
               >
                 <Home className="w-5 h-5 text-accent" /> Home
               </Link>
 
-              {SITE_CONFIG.nav.platform.map((item) => (
-                <Link
-                  key={item.key}
-                  to={item.path}
-                  className={`flex items-center gap-4 text-xl font-black uppercase tracking-widest transition-colors ${
-                    location.pathname === item.path ? 'text-accent' : 'text-text-primary'
-                  }`}
-                >
-                   <div className="w-5 h-5 flex items-center justify-center">
-                     <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === item.path ? 'bg-accent' : 'bg-border'}`} />
-                   </div>
-                  {item.label}
-                </Link>
-              ))}
+              {SITE_CONFIG.nav.platform.map((item) => {
+                const active = location.pathname === item.path;
+                const content = (
+                  <>
+                    <div className="w-5 h-5 flex items-center justify-center">
+                      {item.key === 'contact' ? (
+                        <Mail className="w-5 h-5 text-accent" />
+                      ) : (
+                        <div className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-accent' : 'bg-border'}`} />
+                      )}
+                    </div>
+                    {item.label}
+                  </>
+                );
 
-              <ContactTrigger className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-text-primary hover:text-accent transition-colors">
-                <Mail className="w-5 h-5 text-accent" /> Contact
-              </ContactTrigger>
+                if (item.key === 'contact') {
+                  return (
+                    <ContactTrigger
+                      key={item.key}
+                      onOpen={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-text-primary hover:text-accent transition-colors"
+                    >
+                      {content}
+                    </ContactTrigger>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.key}
+                    to={item.path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center gap-4 text-xl font-black uppercase tracking-widest transition-colors ${
+                      active ? 'text-accent' : 'text-text-primary'
+                    }`}
+                  >
+                    {content}
+                  </Link>
+                );
+              })}
 
               <div className="mt-auto pt-10 flex flex-col gap-4">
                 {user ? (
                   <Link
                     to="/dashboard"
+                    onClick={() => setIsMenuOpen(false)}
                     className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
                   >
                     <LayoutDashboard className="w-5 h-5" /> Dashboard
@@ -191,12 +215,14 @@ const Navbar: React.FC = () => {
                   <>
                     <Link
                       to="/register"
+                      onClick={() => setIsMenuOpen(false)}
                       className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
                     >
                       <UserPlus className="w-5 h-5" /> Start Training
                     </Link>
                     <Link
                       to="/login"
+                      onClick={() => setIsMenuOpen(false)}
                       className="w-full btn-secondary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
                     >
                       <LogIn className="w-5 h-5" /> Log In
