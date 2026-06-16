@@ -5,10 +5,10 @@ import { useTheme } from '../../../core/contexts/ThemeContext';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
 /* ═══════════════════════════════════════════════
-   BRAND PALETTE
+   BRAND PALETTE — ACCENT COLOR (SAGE GREEN)
 ═══════════════════════════════════════════════ */
-const SAGE     = 0x66B870;
-const SAGE_HEX = '#66B870';
+const ACCENT_COLOR     = 0x66B870;
+const ACCENT_COLOR_HEX = '#66B870';
 
 /* ═══════════════════════════════════════════════
    TARGETS
@@ -92,7 +92,7 @@ function pip(lat: number, lng: number, poly: number[], bbox?: BBox): boolean {
 }
 
 /* ═══════════════════════════════════════════════
-   LAND POLYGONS (same as before)
+   LAND POLYGONS
 ═══════════════════════════════════════════════ */
 const AFRICA: number[] = [
   35.8,-5.9,35.5,-2.0,35.2,0.0,36.8,2.4,37.1,4.8,36.9,5.5,37.1,8.7,37.4,9.8,
@@ -215,7 +215,6 @@ function isLand(lat: number, lng: number): boolean {
 
 /* ═══════════════════════════════════════════════
    BUILD FLAT DOT-MAP TEXTURE
-   Draws a world map as dots on a canvas → sphere texture
 ═══════════════════════════════════════════════ */
 const TEXTURE_CACHE = new Map<string, THREE.CanvasTexture>();
 
@@ -228,12 +227,10 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d')!;
 
-  // Ocean background — transparent (globe ocean sphere will show through)
   ctx.clearRect(0, 0, W, H);
 
-  const dotR     = (step / 180) * H * 0.38; // dot radius scales with step density
-  // All lands now use the accent color (sage green) with consistent styling
-  const landFill  = '#66B870';   // sage green for all lands
+  const dotR      = (step / 180) * H * 0.38;
+  const landFill  = ACCENT_COLOR_HEX;
   const landAlpha = 1.0;
 
   for (let lat = 89; lat >= -89; lat -= step) {
@@ -243,7 +240,6 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
       const x = ((lng + 180) / 360) * W;
       const y = ((90 - lat) / 180) * H;
 
-      // All lands now use the same color and opacity
       ctx.globalAlpha = landAlpha;
       ctx.fillStyle   = landFill;
 
@@ -252,8 +248,6 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
       ctx.fill();
     }
   }
-
-  ctx.globalAlpha = 1;
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -307,7 +301,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
 
   useEffect(() => {
-    if (isMobile) return;
     const el = mountRef.current;
     if (!el) return;
     
@@ -328,7 +321,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       h = initialH;
       const isLight = theme === 'light';
       
-      /* ── Renderer ── */
       renderer = new THREE.WebGLRenderer({ 
         antialias: !constrainedDevice, 
         alpha: true, 
@@ -348,30 +340,64 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.scale.setScalar(scale);
       scene.add(globe);
 
-      /* ── Ocean sphere ── */
-      const oceanColor = isLight ? 0xffffff : 0x000000;
-      globe.add(new THREE.Mesh(
-        new THREE.SphereGeometry(0.998, 64, 64),
-        new THREE.MeshBasicMaterial({ color: oceanColor }),
-      ));
+      /* ── Glass Outline ── */
+      const outlineGeo = new THREE.SphereGeometry(1.0, 64, 64);
+      const outlineMat = new THREE.MeshBasicMaterial({
+        color: ACCENT_COLOR,
+        transparent: true,
+        opacity: isLight ? 0.05 : 0.08,
+        side: THREE.BackSide,
+        depthWrite: false,
+      });
+      globe.add(new THREE.Mesh(outlineGeo, outlineMat));
 
-      /* ── Dot-map texture on sphere ── */
+      /* ── Equator Ring ── */
+      const equatorGeo = new THREE.TorusGeometry(1.002, 0.001, 16, 128);
+      const equatorMat = new THREE.MeshBasicMaterial({
+        color: ACCENT_COLOR,
+        transparent: true,
+        opacity: isLight ? 0.15 : 0.25,
+      });
+      const equator = new THREE.Mesh(equatorGeo, equatorMat);
+      equator.rotation.x = Math.PI / 2;
+      globe.add(equator);
+
+      /* ── Dot-map texture on transparent sphere ── */
       const step = constrainedDevice ? 3.5 : 1.6;
       const dotTex = buildDotMapTexture(isLight, step);
       const sphereSegments = constrainedDevice ? 32 : 64;
-      globe.add(new THREE.Mesh(
+
+      // Two pass rendering for the dots: back side first, then front side
+      // This ensures we can see the far side through the near side
+      const globeBack = new THREE.Mesh(
+        new THREE.SphereGeometry(1.001, sphereSegments, sphereSegments),
+        new THREE.MeshBasicMaterial({
+          map:         dotTex,
+          transparent: true,
+          opacity:     0.55, // Increased from 0.4 for better visibility
+          depthWrite:  false,
+          side:        THREE.BackSide, 
+        }),
+      );
+      globeBack.renderOrder = 1;
+      globe.add(globeBack);
+
+      const globeFront = new THREE.Mesh(
         new THREE.SphereGeometry(1.001, sphereSegments, sphereSegments),
         new THREE.MeshBasicMaterial({
           map:         dotTex,
           transparent: true,
           opacity:     1.0,
-          depthWrite:  false,
+          depthWrite:  false, 
+          side:        THREE.FrontSide, 
         }),
-      ));
+      );
+      globeFront.renderOrder = 2;
+      globe.add(globeFront);
 
-      /* ── Graticule lines ── */
-      const graticuleColor = isLight ? 0x88aa88 : 0x224422;
-      const graticuleOpacity = isLight ? 0.30 : 0.38;
+      /* ── Graticule lines (Holo Wireframe) ── */
+      const graticuleColor = ACCENT_COLOR;
+      const graticuleOpacity = isLight ? 0.08 : 0.12;
       const graticuleGeo = new THREE.BufferGeometry();
       const graticuleVerts: number[] = [];
       for (let lng = -180; lng < 180; lng += 30) {
@@ -397,7 +423,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       TARGETS.forEach(({ lat, lng, status, region }) => {
         const pos    = latLngToVec3(lat, lng, 1.005);
         const isHome = status === 'home';
-        const col    = SAGE;
+        const col    = ACCENT_COLOR;
         const dotR = isHome ? 0.010 : (region === 'africa' ? 0.007 : 0.006);
         const dot  = new THREE.Mesh(
           new THREE.CircleGeometry(dotR, 16),
@@ -446,14 +472,15 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
         const isAfricaLink = ta.region === 'africa' && tb.region === 'africa';
         globe!.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
-          color: isAfricaLink ? (isLight ? 0x3d9c2d : SAGE) : (isLight ? 0x8ab88a : 0x2e4a35),
-          transparent: true, opacity: isAfricaLink ? (isLight ? 0.55 : 0.45) : 0.25,
+          color: ACCENT_COLOR,
+          transparent: true, 
+          opacity: isAfricaLink ? (isLight ? 0.40 : 0.35) : 0.15,
         })));
         arcs.push({ geo, progress: Math.random(), speed: 0.001 + Math.random() * 0.002 });
       });
 
       /* ── Satellites ── */
-      const SATS_COUNT = constrainedDevice ? 6 : 15;
+      const SATS_COUNT = constrainedDevice ? 6 : 12;
       const satsObjs = Array.from({ length: SATS_COUNT }).map((_, i) => {
         const radius = 1.35 + i * 0.12;
         const incl   = (Math.PI / 4) + (i * Math.PI / 6);
@@ -467,8 +494,8 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         );
 
         const dot = new THREE.Mesh(
-          new THREE.SphereGeometry(0.006, 6, 6),
-          new THREE.MeshBasicMaterial({ color: isLight ? 0x2f8a1f : 0xffffff, transparent: true, opacity: 0.45 }),
+          new THREE.SphereGeometry(0.005, 6, 6),
+          new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.5 }),
         );
         dot.position.copy(startPos);
         scene!.add(dot);
@@ -477,7 +504,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const trailPts = Array.from({ length: trailLen }, () => startPos.clone());
         const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
         const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
-          color: isLight ? 0x8ab88a : 0x2e4038, transparent: true, opacity: 0.22,
+          color: ACCENT_COLOR, transparent: true, opacity: 0.15,
         }));
         scene!.add(trailLine);
         return { dot, trailLine, trailPts, trailHead: 0, radius, incl, speed, phase };
@@ -558,48 +585,25 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
         renderer.dispose();
       }
-      // Reset variables
-      renderer = null;
-      scene = null;
-      camera = null;
-      globe = null;
-      pings = [];
-      arcs = [];
-      sats = [];
-      persistentLabels = [];
+      renderer = null; scene = null; camera = null; globe = null; pings = []; arcs = []; sats = []; persistentLabels = [];
     };
 
-    // Use ResizeObserver to wait for non-zero dimensions
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
       const { width: newW, height: newH } = entry.contentRect;
-      
       if (newW > 0 && newH > 0) {
-        if (!renderer) {
-          init(newW, newH);
-        } else {
-          // Update existing renderer size and camera aspect ratio
-          w = newW;
-          h = newH;
+        if (!renderer) init(newW, newH);
+        else {
+          w = newW; h = newH;
           if (renderer) renderer.setSize(w, h);
-          if (camera) {
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-          }
+          if (camera) { camera.aspect = w / h; camera.updateProjectionMatrix(); }
         }
       }
     });
-
     observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      cleanup();
-    };
+    return () => { observer.disconnect(); cleanup(); };
   }, [scale, theme, constrainedDevice, isMobile, isLg]);
-
-  if (isMobile) return null;
 
   return (
     <div
@@ -615,7 +619,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           border: '1px solid rgba(102,184,112,0.25)',
           borderRadius: '4px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-          color: theme === 'light' ? '#66B870' : '#66B870',
+          color: '#66B870',
           zIndex: 10, lineHeight: 1.75,
           whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
         }}
