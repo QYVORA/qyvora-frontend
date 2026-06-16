@@ -27,7 +27,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-screen flex flex-col overflow-x-hidden">
+    <div ref={heroRef} className="relative w-full md:h-screen md:overflow-hidden flex flex-col">
       
       {/* ── Main content grid ── */}
       <div
@@ -36,24 +36,24 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           grid grid-cols-1 lg:grid-cols-2
           text-left
           items-center
-          min-h-screen
+          md:h-full
         "
       >
 
         {/* ── Left column - Hero Text Area ── */}
         <div className="
-          flex flex-col items-start justify-between
+          flex flex-col items-start justify-center
           px-6 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
-          pt-28 pb-10
-          sm:pt-32 sm:pb-12
-          lg:py-20 xl:py-24 lg:justify-center
+          pt-32 pb-10
+          sm:pt-36 sm:pb-12
+          lg:pt-28 lg:pb-20
           space-y-0
           w-full
-          min-h-screen lg:min-h-0
+          h-full
         ">
 
           {/* Top content block */}
-          <div className="flex flex-col items-start w-full space-y-6 sm:space-y-7">
+          <div className="flex flex-col items-start w-full space-y-5 sm:space-y-6">
             {/* Status badge */}
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
@@ -94,7 +94,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl mb-10 lg:mb-12"
+              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl"
             >
               {SITE_CONFIG.brand.description}
             </motion.p>
@@ -105,7 +105,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 sm:gap-4"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-8 lg:mt-9"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-10 sm:!px-10 !py-4 text-base sm:text-base min-h-[58px] sm:min-h-[52px]">
@@ -132,7 +132,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           className="
             relative hidden lg:flex items-center justify-center
             w-full h-full
-            py-12 xl:py-16
+            pt-28 pb-12 xl:pt-32 xl:pb-16
             pr-8 xl:pr-16
           "
         >

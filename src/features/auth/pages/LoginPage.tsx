@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import AuthHero from '../components/AuthHero';
 import LoginForm from '../components/LoginForm';
 

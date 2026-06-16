@@ -10,7 +10,7 @@ import ServicesSection from '../components/landing/ServicesSection';
 import FinalCtaSection from '../components/landing/FinalCtaSection';
 import Footer from '../components/layout/Footer';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import ServiceRequestModal from '../components/ServiceRequestModal';
 import PromotionalSystem from '../components/PromotionalSystem';
 import SEO from '../../../shared/components/SEO';
@@ -33,10 +33,10 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:min-h-screen w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
     >
       <div
-        className="w-full md:min-h-screen relative z-10 flex flex-col justify-center py-12 md:py-0 overflow-x-hidden"
+        className="w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0"
         data-snap-child=""
       >
         {children}
@@ -171,9 +171,9 @@ const Landing: React.FC = () => {
 
       <div
         ref={containerRef}
-        className="landing-snap relative z-10 h-auto md:h-screen w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
+        className="landing-snap relative z-10 h-auto md:h-screen w-full overflow-y-visible md:overflow-y-auto overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
-        <section id="hero" className="md:min-h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent overflow-x-hidden">
+        <section id="hero" className="md:h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent">
           <HeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
         </section>
 

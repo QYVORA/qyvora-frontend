@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
 import { Mail, ArrowRight } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { SITE_CONFIG } from '../content/siteConfig';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import { ContactTrigger } from '../components/ContactModal';
 import { termsData, TermsSection } from '../content/termsData';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';

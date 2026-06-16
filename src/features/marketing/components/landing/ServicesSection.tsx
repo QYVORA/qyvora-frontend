@@ -61,26 +61,23 @@ const ServicesSection: React.FC = () => {
     enter: (direction: number) => ({
       x: direction > 0 ? 30 : -30,
       opacity: 0,
-      filter: 'blur(8px)'
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
-      filter: 'blur(0px)'
     },
     exit: (direction: number) => ({
       zIndex: 0,
       x: direction < 0 ? 30 : -30,
       opacity: 0,
-      filter: 'blur(8px)'
     })
   };
 
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12 overflow-x-hidden">
+    <div className="w-full md:h-screen md:overflow-hidden flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12">
       <div className="max-w-[1440px] mx-auto w-full relative group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -93,11 +90,10 @@ const ServicesSection: React.FC = () => {
             transition={{
               x: { type: "spring", stiffness: 300, damping: 30 },
               opacity: { duration: 0.4 },
-              filter: { duration: 0.4 }
             }}
             className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card/40 dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
+            <div className="flex flex-col lg:flex-row w-full rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
               
               {/* Image Section */}
               <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
