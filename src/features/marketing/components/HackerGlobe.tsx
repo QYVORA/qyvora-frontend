@@ -455,19 +455,32 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       /* ── Satellites ── */
       const SATS_COUNT = constrainedDevice ? 6 : 15;
       const satsObjs = Array.from({ length: SATS_COUNT }).map((_, i) => {
+        const radius = 1.35 + i * 0.12;
+        const incl   = (Math.PI / 4) + (i * Math.PI / 6);
+        const speed  = 0.0025 + (i * 0.0008);
+        const phase  = i * (Math.PI * 0.5);
+
+        const startPos = new THREE.Vector3(
+          radius * Math.cos(phase),
+          radius * Math.sin(phase) * Math.sin(incl),
+          radius * Math.sin(phase) * Math.cos(incl)
+        );
+
         const dot = new THREE.Mesh(
           new THREE.SphereGeometry(0.006, 6, 6),
           new THREE.MeshBasicMaterial({ color: isLight ? 0x2f8a1f : 0xffffff, transparent: true, opacity: 0.45 }),
         );
+        dot.position.copy(startPos);
         scene!.add(dot);
+
         const trailLen = constrainedDevice ? 15 : 28;
-        const trailPts = Array.from({ length: trailLen }, () => new THREE.Vector3());
+        const trailPts = Array.from({ length: trailLen }, () => startPos.clone());
         const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
         const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
           color: isLight ? 0x8ab88a : 0x2e4038, transparent: true, opacity: 0.22,
         }));
         scene!.add(trailLine);
-        return { dot, trailLine, trailPts, trailHead: 0, radius: 1.35 + i * 0.12, incl: (Math.PI / 4) + (i * Math.PI / 6), speed: 0.0025 + (i * 0.0008), phase: i * (Math.PI * 0.5) };
+        return { dot, trailLine, trailPts, trailHead: 0, radius, incl, speed, phase };
       });
       sats.push(...satsObjs);
 
