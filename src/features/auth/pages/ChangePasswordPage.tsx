@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../../../core/contexts/ToastContext';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import api from '../../../core/services/api';
 import AuthHero from '../components/AuthHero';
 import ChangePasswordForm from '../components/ChangePasswordForm';

@@ -289,11 +289,6 @@
     filter: brightness(1.15);
   }
 
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-accent) var(--color-bg-card);
-  }
-
   img {
     max-width: 100%;
     height: auto;
@@ -817,7 +812,7 @@
 /* ── Snap motion wrapper — fills the snap cell height ── */
 @media (min-width: 768px) {
   [data-snap-child] {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;

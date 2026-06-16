@@ -1,5 +1,4 @@
-import React, { useRef, useMemo, useEffect } from 'react';
-import * as THREE from 'three';
+import React, { useRef, useEffect } from 'react';
 import { useTheme } from '../../../core/contexts/ThemeContext';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
@@ -15,7 +14,7 @@ const AUSTRALIA = [-10.7,142,-14.0,130,-14.0,126,-16.0,122,-22.0,114,-24.0,113,-
 
 const LAND_POLYS = [AFRICA, N_AMERICA, S_AMERICA, EUROPE, ASIA, AUSTRALIA];
 
-function pip(lat, lng, poly) {
+function pip(lat: number, lng: number, poly: number[]) {
   const n = poly.length >> 1;
   let inside = false;
   for (let i = 0, j = n - 1; i < n; j = i++) {
@@ -27,15 +26,19 @@ function pip(lat, lng, poly) {
   return inside;
 }
 
-function isLand(lat, lng) {
+function isLand(lat: number, lng: number) {
   return LAND_POLYS.some(p => pip(lat, lng, p));
 }
 
 /* ═══════════════════════════════════════════════
    HERO BACKGROUND COMPONENT
 ═══════════════════════════════════════════════ */
-function HeroBackground({ className = "" }) {
-  const canvasRef = useRef(null);
+interface HeroBackgroundProps {
+  className?: string;
+}
+
+function HeroBackground({ className = "" }: HeroBackgroundProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useTheme();
   const { isMobile, constrainedDevice } = useAdaptiveUi();
   const isLight = theme === 'light';
@@ -56,7 +59,7 @@ function HeroBackground({ className = "" }) {
     const dotR = isMobile ? 2.2 : 2.8;
     let accentColor =  isLight ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)';
     
-    let rafId;
+    let rafId: number;
     let time = 0;
 
     const draw = () => {
@@ -117,9 +120,6 @@ function HeroBackground({ className = "" }) {
   }, [theme, isMobile, constrainedDevice, isLight]);
 
   const bgBase = isLight ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
-  
-
-
 
   // Don't render canvas on mobile - belt and suspenders approach
   if (isMobile) return null;

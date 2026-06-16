@@ -37,7 +37,7 @@ const SOCIAL = [
    FOOTER
 ───────────────────────────────────────────── */
 const Footer: React.FC = () => (
-  <footer className="relative w-full min-h-screen bg-bg overflow-hidden flex items-center">
+  <footer className="relative w-full md:h-screen md:overflow-hidden bg-bg flex items-center">
 
     {/* Adinkra Background Layer */}
     <AdinkraBackground opacity={0.25} includeGradients={true} includeDotGrid={true} />

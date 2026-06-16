@@ -12,7 +12,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center py-20 sm:py-24 lg:py-20">
+    <div className="relative w-full md:h-screen md:overflow-hidden flex items-center justify-center py-20 sm:py-24 lg:py-20">
       {/* Subtle background accent */}
       <div
         className="absolute inset-0 pointer-events-none opacity-30"

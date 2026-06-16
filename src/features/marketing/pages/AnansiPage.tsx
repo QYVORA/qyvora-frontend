@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Download, Shield, Zap, Search, Globe, Lock, FileCode, AlertTriangle, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import Footer from '../components/layout/Footer';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
 import SEO from '../../../shared/components/SEO';

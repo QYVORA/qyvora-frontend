@@ -262,6 +262,39 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
 }
 
 /* ═══════════════════════════════════════════════
+   TYPES
+═══════════════════════════════════════════════ */
+interface Ping {
+  ring: THREE.Mesh;
+  glow: THREE.Mesh;
+  phase: number;
+  isHome: boolean;
+}
+
+interface Arc {
+  geo: THREE.BufferGeometry;
+  progress: number;
+  speed: number;
+}
+
+interface Satellite {
+  dot: THREE.Mesh;
+  trailLine: THREE.Line;
+  trailPts: THREE.Vector3[];
+  trailHead: number;
+  radius: number;
+  incl: number;
+  speed: number;
+  phase: number;
+}
+
+interface Label {
+  div: HTMLDivElement;
+  lat: number;
+  lng: number;
+}
+
+/* ═══════════════════════════════════════════════
    COMPONENT
 ═══════════════════════════════════════════════ */
 interface HackerGlobeProps { scale?: number }
@@ -279,11 +312,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     if (!el) return;
     
     let renderer: THREE.WebGLRenderer | null = null;
-    let rafId = 0;
-    let labelContainer: HTMLDivElement | null = null;
     let scene: THREE.Scene | null = null;
+    let labelContainer: HTMLDivElement | null = null;
+    let rafId: number | null = null;
+    let camera: THREE.PerspectiveCamera | null = null;
+    let globe: THREE.Group | null = null;
+    let pings: Ping[] = [];
+    let arcs: Arc[] = [];
+    let sats: Satellite[] = [];
+    let persistentLabels: Label[] = [];
+    let w = 0, h = 0;
 
-    const init = (w: number, h: number) => {
+    const init = (initialW: number, initialH: number) => {
+      w = initialW;
+      h = initialH;
       const isLight = theme === 'light';
       
       /* ── Renderer ── */
@@ -299,10 +341,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       el.appendChild(renderer.domElement);
 
       scene  = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
+      camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
       camera.position.z = 4.0;
 
-      const globe = new THREE.Group();
+      globe = new THREE.Group();
       globe.scale.setScalar(scale);
       scene.add(globe);
 
@@ -352,8 +394,6 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       })));
 
       /* ── Target pins ── */
-      type PingObj = { ring: THREE.Mesh; glow: THREE.Mesh; phase: number; isHome: boolean };
-      const pings: PingObj[]   = [];
       TARGETS.forEach(({ lat, lng, status, region }) => {
         const pos    = latLngToVec3(lat, lng, 1.005);
         const isHome = status === 'home';
@@ -366,7 +406,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         dot.position.copy(pos);
         dot.lookAt(new THREE.Vector3(0, 0, 0));
         dot.rotateY(Math.PI);
-        globe.add(dot);
+        globe!.add(dot);
 
         const ri = isHome ? 0.014 : 0.009;
         const ro = isHome ? 0.022 : 0.015;
@@ -377,7 +417,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         ring.position.copy(pos);
         ring.lookAt(new THREE.Vector3(0, 0, 0));
         ring.rotateY(Math.PI);
-        globe.add(ring);
+        globe!.add(ring);
 
         const glow = new THREE.Mesh(
           new THREE.CircleGeometry(isHome ? 0.035 : 0.020, 32),
@@ -386,13 +426,11 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         glow.position.copy(pos.clone().multiplyScalar(1.001));
         glow.lookAt(new THREE.Vector3(0, 0, 0));
         glow.rotateY(Math.PI);
-        globe.add(glow);
+        globe!.add(glow);
         pings.push({ ring, glow, phase: Math.random() * Math.PI * 2, isHome });
       });
 
       /* ── Connection arcs ── */
-      type ArcObj = { geo: THREE.BufferGeometry; progress: number; speed: number };
-      const arcs: ArcObj[] = [];
       const ARC_PAIRS: Array<[number, number]> = [
         [0, 1], [1, 2], [2, 4], [4, 3], [3, 6], [6, 0], [7, 0], [8, 4], [9, 2], [5, 7], [0, 4], [1, 7],
         [24, 4], [25, 6], [26, 5], [27, 2], [28, 4], [29, 1], [30, 2], [31, 3], [32, 8], [33, 7], [34, 7],
@@ -407,7 +445,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const curve = new THREE.QuadraticBezierCurve3(s, mid, e_);
         const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
         const isAfricaLink = ta.region === 'africa' && tb.region === 'africa';
-        globe.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
+        globe!.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
           color: isAfricaLink ? (isLight ? 0x3d9c2d : SAGE) : (isLight ? 0x8ab88a : 0x2e4a35),
           transparent: true, opacity: isAfricaLink ? (isLight ? 0.55 : 0.45) : 0.25,
         })));
@@ -416,7 +454,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
 
       /* ── Satellites ── */
       const SATS_COUNT = constrainedDevice ? 6 : 15;
-      const sats = Array.from({ length: SATS_COUNT }).map((_, i) => {
+      const satsObjs = Array.from({ length: SATS_COUNT }).map((_, i) => {
         const dot = new THREE.Mesh(
           new THREE.SphereGeometry(0.006, 6, 6),
           new THREE.MeshBasicMaterial({ color: isLight ? 0x2f8a1f : 0xffffff, transparent: true, opacity: 0.45 }),
@@ -431,18 +469,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         scene!.add(trailLine);
         return { dot, trailLine, trailPts, trailHead: 0, radius: 1.35 + i * 0.12, incl: (Math.PI / 4) + (i * Math.PI / 6), speed: 0.0025 + (i * 0.0008), phase: i * (Math.PI * 0.5) };
       });
+      sats.push(...satsObjs);
 
       /* ── Labels ── */
       labelContainer = document.createElement('div');
       labelContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:10;';
       el.appendChild(labelContainer);
-      const persistentLabels = TARGETS.map((t) => {
+      const labelObjs = TARGETS.map((t) => {
         const div = document.createElement('div');
         div.style.cssText = `position: absolute; display: none; pointer-events: none; background: ${isLight ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'}; border: 1px solid rgba(102,184,112,0.25); border-radius: 4px; padding: 4px 8px; font-family: JetBrains Mono, monospace; font-size: 9px; color: #66B870; white-space: nowrap; backdrop-filter: blur(4px); transform: translate(-50%, -100%); margin-top: -12px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);`;
         div.textContent = t.label;
         labelContainer!.appendChild(div);
         return { div, lat: t.lat, lng: t.lng };
       });
+      persistentLabels.push(...labelObjs);
 
       /* ── Animation ── */
       let last = 0, tick = 0;
@@ -451,7 +491,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const dt = Math.min(now - last, 50);
         last = now;
         tick += dt * 0.001;
-        globe.rotation.y += dt * (constrainedDevice ? 0.00018 : 0.00030);
+        if (globe) globe.rotation.y += dt * (constrainedDevice ? 0.00018 : 0.00030);
         pings.forEach(({ ring, glow, isHome, phase }) => {
           const spd = isHome ? 1.2 : 1.8, amp = isHome ? 1.8 : 1.4;
           const s = 1 + amp * ((Math.sin(tick * spd + phase) + 1) / 2);
@@ -471,6 +511,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           sat.trailLine.geometry.setFromPoints(sat.trailPts);
         });
         persistentLabels.forEach((l) => {
+          if (!globe || !camera) return;
           const pos = latLngToVec3(l.lat, l.lng, 1.005);
           const worldPos = pos.applyMatrix4(globe.matrixWorld);
           const dirToCamera = camera.position.clone().sub(worldPos).normalize();
@@ -483,7 +524,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
             l.div.style.opacity = String(Math.min(1, (dot - 0.15) * 4));
           } else l.div.style.display = 'none';
         });
-        renderer!.render(scene!, camera);
+        if (renderer && scene && camera) renderer.render(scene, camera);
       };
       rafId = requestAnimationFrame(animate);
     };
@@ -504,26 +545,35 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
         renderer.dispose();
       }
+      // Reset variables
+      renderer = null;
+      scene = null;
+      camera = null;
+      globe = null;
+      pings = [];
+      arcs = [];
+      sats = [];
+      persistentLabels = [];
     };
 
     // Use ResizeObserver to wait for non-zero dimensions
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
-      const { width, height } = entry.contentRect;
+      const { width: newW, height: newH } = entry.contentRect;
       
-      if (width > 0 && height > 0) {
+      if (newW > 0 && newH > 0) {
         if (!renderer) {
-          init(width, height);
+          init(newW, newH);
         } else {
-          // Update existing renderer
-          renderer.setSize(width, height);
-          // We need access to the camera to update aspect ratio, 
-          // but for simplicity we'll just re-init if size changes significantly 
-          // or we could store camera in a ref. 
-          // Actually, let's just re-init for robustness on window restore
-          cleanup();
-          init(width, height);
+          // Update existing renderer size and camera aspect ratio
+          w = newW;
+          h = newH;
+          if (renderer) renderer.setSize(w, h);
+          if (camera) {
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+          }
         }
       }
     });

@@ -6,7 +6,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import { CardBase } from '../../../shared/components/ui/Card';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import PageLoader from '../../../shared/components/PageLoader';
 import { formatNumber } from '../../../shared/utils/formatNumber';
