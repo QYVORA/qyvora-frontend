@@ -27,8 +27,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   return (
-    <div ref={heroRef} className="relative w-full md:h-screen md:overflow-hidden flex flex-col">
+    <div ref={heroRef} className="relative w-full min-h-[85svh] md:h-screen md:overflow-hidden flex flex-col overflow-visible">
       
+      {/* ── Mobile Globe - Background Only ── */}
+      {!isLg && (
+        <div className="absolute bottom-0 right-0 w-[420px] h-[420px] pointer-events-none z-0 overflow-visible opacity-35 translate-y-[15%] translate-x-[10%]">
+           <Suspense fallback={null}>
+              <HackerGlobe scale={1.2} />
+           </Suspense>
+        </div>
+      )}
+
       {/* ── Main content grid ── */}
       <div
         className="

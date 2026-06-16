@@ -93,7 +93,7 @@ const ServicesSection: React.FC = () => {
             }}
             className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] dark:border border-white/5 border-none bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
+            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
               
               {/* Image Section */}
               <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">

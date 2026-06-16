@@ -136,6 +136,9 @@ const Landing: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [activeSection, navigate, isMobile]);
 
+  // Logic to hide background only on Hero section
+  const showBackground = activeSection !== 'hero';
+
   return (
     <div className="relative min-h-screen w-full bg-bg overflow-x-hidden">
       <SEO 
@@ -163,7 +166,7 @@ const Landing: React.FC = () => {
       />
       
       <HeroBackground 
-        className={`z-0 transition-opacity duration-700 ${activeSection === 'hero' ? 'opacity-65' : 'opacity-90'}`} 
+        className={`z-0 transition-opacity duration-700 ${showBackground ? 'opacity-90' : 'opacity-0'}`} 
       />
 
       <ServiceRequestModal />
