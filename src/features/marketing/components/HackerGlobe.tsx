@@ -222,7 +222,8 @@ function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTexture {
   const cacheKey = `${isLight}-${step}`;
   if (TEXTURE_CACHE.has(cacheKey)) return TEXTURE_CACHE.get(cacheKey)!;
 
-  const W = 2048, H = 1024;
+  // Use lower resolution for simplified devices (where step is typically larger)
+  const W = step > 2 ? 1024 : 2048, H = step > 2 ? 512 : 1024;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d')!;
@@ -284,8 +285,7 @@ interface Satellite {
 
 interface Label {
   div: HTMLDivElement;
-  lat: number;
-  lng: number;
+  pos: THREE.Vector3;
 }
 
 /* ═══════════════════════════════════════════════
@@ -299,11 +299,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   const { theme }  = useTheme();
   const shouldReduceMotion  = useReducedMotion();
   const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
+  const isSimplified = constrainedDevice || isMobile;
 
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
-    
+
     let renderer: THREE.WebGLRenderer | null = null;
     let scene: THREE.Scene | null = null;
     let labelContainer: HTMLDivElement | null = null;
@@ -315,19 +316,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     let sats: Satellite[] = [];
     let persistentLabels: Label[] = [];
     let w = 0, h = 0;
+    let isInView = false;
 
     const init = (initialW: number, initialH: number) => {
       w = initialW;
       h = initialH;
       const isLight = theme === 'light';
-      
+
       renderer = new THREE.WebGLRenderer({ 
-        antialias: !constrainedDevice, 
+        antialias: !isSimplified, 
         alpha: true, 
-        powerPreference: constrainedDevice ? 'low-power' : 'high-performance' 
+        powerPreference: isSimplified ? 'low-power' : 'high-performance' 
       });
       renderer.setSize(w, h);
-      renderer.setPixelRatio(constrainedDevice ? 1 : Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isSimplified ? 1 : Math.min(window.devicePixelRatio, 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.domElement.style.cssText = 'position:absolute;inset:0;z-index:1;';
       el.appendChild(renderer.domElement);
@@ -341,7 +343,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       scene.add(globe);
 
       /* ── Glass Outline ── */
-      const outlineGeo = new THREE.SphereGeometry(1.0, 64, 64);
+      const outlineGeo = new THREE.SphereGeometry(1.0, isSimplified ? 32 : 64, isSimplified ? 32 : 64);
       const outlineMat = new THREE.MeshBasicMaterial({
         color: ACCENT_COLOR,
         transparent: true,
@@ -352,7 +354,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.add(new THREE.Mesh(outlineGeo, outlineMat));
 
       /* ── Equator Ring ── */
-      const equatorGeo = new THREE.TorusGeometry(1.002, 0.001, 16, 128);
+      const equatorGeo = new THREE.TorusGeometry(1.002, 0.001, 8, isSimplified ? 64 : 128);
       const equatorMat = new THREE.MeshBasicMaterial({
         color: ACCENT_COLOR,
         transparent: true,
@@ -363,9 +365,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.add(equator);
 
       /* ── Dot-map texture on transparent sphere ── */
-      const step = constrainedDevice ? 3.5 : 1.6;
+      const step = isSimplified ? 4.0 : 1.6;
       const dotTex = buildDotMapTexture(isLight, step);
-      const sphereSegments = constrainedDevice ? 32 : 64;
+      const sphereSegments = isSimplified ? 24 : 64;
 
       // Two pass rendering for the dots: back side first, then front side
       // This ensures we can see the far side through the near side
@@ -374,7 +376,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         new THREE.MeshBasicMaterial({
           map:         dotTex,
           transparent: true,
-          opacity:     0.55, // Increased from 0.4 for better visibility
+          opacity:     0.55, 
           depthWrite:  false,
           side:        THREE.BackSide, 
         }),
@@ -396,37 +398,42 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globe.add(globeFront);
 
       /* ── Graticule lines (Holo Wireframe) ── */
-      const graticuleColor = ACCENT_COLOR;
-      const graticuleOpacity = isLight ? 0.08 : 0.12;
-      const graticuleGeo = new THREE.BufferGeometry();
-      const graticuleVerts: number[] = [];
-      for (let lng = -180; lng < 180; lng += 30) {
-        for (let lat = -88; lat <= 88; lat += 2) {
-          const v1 = latLngToVec3(lat,   lng, 1.003);
-          const v2 = latLngToVec3(lat+2, lng, 1.003);
-          graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
+      if (!isSimplified) {
+        const graticuleColor = ACCENT_COLOR;
+        const graticuleOpacity = isLight ? 0.08 : 0.12;
+        const graticuleGeo = new THREE.BufferGeometry();
+        const graticuleVerts: number[] = [];
+        for (let lng = -180; lng < 180; lng += 30) {
+          for (let lat = -88; lat <= 88; lat += 2) {
+            const v1 = latLngToVec3(lat,   lng, 1.003);
+            const v2 = latLngToVec3(lat+2, lng, 1.003);
+            graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
+          }
         }
-      }
-      for (let lat = -60; lat <= 60; lat += 30) {
-        for (let lng = -180; lng < 180; lng += 2) {
-          const v1 = latLngToVec3(lat, lng,   1.003);
-          const v2 = latLngToVec3(lat, lng+2, 1.003);
-          graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
+        for (let lat = -60; lat <= 60; lat += 30) {
+          for (let lng = -180; lng < 180; lng += 2) {
+            const v1 = latLngToVec3(lat, lng,   1.003);
+            const v2 = latLngToVec3(lat, lng+2, 1.003);
+            graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
+          }
         }
+        graticuleGeo.setAttribute('position', new THREE.Float32BufferAttribute(graticuleVerts, 3));
+        globe.add(new THREE.LineSegments(graticuleGeo, new THREE.LineBasicMaterial({
+          color: graticuleColor, transparent: true, opacity: graticuleOpacity,
+        })));
       }
-      graticuleGeo.setAttribute('position', new THREE.Float32BufferAttribute(graticuleVerts, 3));
-      globe.add(new THREE.LineSegments(graticuleGeo, new THREE.LineBasicMaterial({
-        color: graticuleColor, transparent: true, opacity: graticuleOpacity,
-      })));
 
       /* ── Target pins ── */
-      TARGETS.forEach(({ lat, lng, status, region }) => {
+      TARGETS.forEach(({ lat, lng, status, region }, i) => {
+        // Reduce pins on simplified devices
+        if (isSimplified && i % 2 !== 0 && status !== 'home') return;
+
         const pos    = latLngToVec3(lat, lng, 1.005);
         const isHome = status === 'home';
         const col    = ACCENT_COLOR;
         const dotR = isHome ? 0.010 : (region === 'africa' ? 0.007 : 0.006);
         const dot  = new THREE.Mesh(
-          new THREE.CircleGeometry(dotR, 16),
+          new THREE.CircleGeometry(dotR, isSimplified ? 8 : 16),
           new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide }),
         );
         dot.position.copy(pos);
@@ -437,7 +444,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         const ri = isHome ? 0.014 : 0.009;
         const ro = isHome ? 0.022 : 0.015;
         const ring = new THREE.Mesh(
-          new THREE.RingGeometry(ri, ro, 32),
+          new THREE.RingGeometry(ri, ro, isSimplified ? 16 : 32),
           new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.8, side: THREE.DoubleSide }),
         );
         ring.position.copy(pos);
@@ -446,7 +453,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         globe!.add(ring);
 
         const glow = new THREE.Mesh(
-          new THREE.CircleGeometry(isHome ? 0.035 : 0.020, 32),
+          new THREE.CircleGeometry(isHome ? 0.035 : 0.020, isSimplified ? 16 : 32),
           new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: isHome ? 0.18 : 0.10, side: THREE.DoubleSide }),
         );
         glow.position.copy(pos.clone().multiplyScalar(1.001));
@@ -463,13 +470,20 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         [0, 12], [1, 10], [3, 19], [2, 15], [4, 17], [7, 13], [5, 12], [2, 13], [4, 10],
         [10, 13], [13, 12], [12, 17], [17, 18], [18, 10], [10, 20], [21, 10], [13, 22], [22, 17], [19, 23], [12, 14], [15, 17]
       ];
-      ARC_PAIRS.forEach(([a, b]) => {
+
+      // Subset of arcs for simplified devices
+      const activeArcs = isSimplified ? ARC_PAIRS.filter((_, i) => i % 2 === 0) : ARC_PAIRS;
+
+      activeArcs.forEach(([a, b]) => {
         const ta = TARGETS[a], tb = TARGETS[b];
+        if (!ta || !tb) return;
+
         const s = latLngToVec3(ta.lat, ta.lng, 1.01), e_ = latLngToVec3(tb.lat, tb.lng, 1.01);
         const dist = s.distanceTo(e_), hScale = 1.1 + (dist * 0.15);
         const mid = s.clone().add(e_).normalize().multiplyScalar(hScale);
         const curve = new THREE.QuadraticBezierCurve3(s, mid, e_);
-        const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(80));
+        const segments = isSimplified ? 30 : 80;
+        const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(segments));
         const isAfricaLink = ta.region === 'africa' && tb.region === 'africa';
         globe!.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
           color: ACCENT_COLOR,
@@ -480,7 +494,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       });
 
       /* ── Satellites ── */
-      const SATS_COUNT = constrainedDevice ? 6 : 12;
+      const SATS_COUNT = isSimplified ? 4 : 12;
       const satsObjs = Array.from({ length: SATS_COUNT }).map((_, i) => {
         const radius = 1.35 + i * 0.12;
         const incl   = (Math.PI / 4) + (i * Math.PI / 6);
@@ -494,13 +508,13 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         );
 
         const dot = new THREE.Mesh(
-          new THREE.SphereGeometry(0.005, 6, 6),
+          new THREE.SphereGeometry(0.005, 4, 4),
           new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.5 }),
         );
         dot.position.copy(startPos);
         scene!.add(dot);
 
-        const trailLen = constrainedDevice ? 15 : 28;
+        const trailLen = isSimplified ? 10 : 28;
         const trailPts = Array.from({ length: trailLen }, () => startPos.clone());
         const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
         const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
@@ -515,23 +529,45 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       labelContainer = document.createElement('div');
       labelContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:10;';
       el.appendChild(labelContainer);
-      const labelObjs = TARGETS.map((t) => {
+
+      const labelTargets = isSimplified ? TARGETS.filter((t, i) => i % 3 === 0 || t.status === 'home') : TARGETS;
+
+      const labelObjs = labelTargets.map((t) => {
         const div = document.createElement('div');
-        div.style.cssText = `position: absolute; display: none; pointer-events: none; background: ${isLight ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'}; border: 1px solid rgba(102,184,112,0.25); border-radius: 4px; padding: 4px 8px; font-family: JetBrains Mono, monospace; font-size: 9px; color: #66B870; white-space: nowrap; backdrop-filter: blur(4px); transform: translate(-50%, -100%); margin-top: -12px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);`;
+        // Remove backdrop-filter on simplified devices for performance
+        const backdropBlur = isSimplified ? '' : 'backdrop-filter: blur(4px);';
+        div.style.cssText = `position: absolute; display: none; pointer-events: none; background: ${isLight ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'}; border: 1px solid rgba(102,184,112,0.25); border-radius: 4px; padding: 4px 8px; font-family: JetBrains Mono, monospace; font-size: 9px; color: #66B870; white-space: nowrap; ${backdropBlur} transform: translate(-50%, -100%); margin-top: -12px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);`;
         div.textContent = t.label;
         labelContainer!.appendChild(div);
-        return { div, lat: t.lat, lng: t.lng };
+        return { div, pos: latLngToVec3(t.lat, t.lng, 1.005) };
       });
       persistentLabels.push(...labelObjs);
 
       /* ── Animation ── */
-      let last = 0, tick = 0;
+      let last = 0, tick = 0, frameCount = 0;
+
+      // Reusable vectors for label calculations
+      const worldPos = new THREE.Vector3();
+      const normWorldPos = new THREE.Vector3();
+      const dirToCamera = new THREE.Vector3();
+
       const animate = (now: number) => {
+        if (!isInView) {
+          rafId = null;
+          return;
+        }
+
         rafId = requestAnimationFrame(animate);
+
+        // Throttling for mobile: skip frames if needed (e.g., render at ~30fps)
+        // Actually, better to keep 60fps but skip heavy calculations
         const dt = Math.min(now - last, 50);
         last = now;
         tick += dt * 0.001;
-        if (globe) globe.rotation.y += dt * (constrainedDevice ? 0.00018 : 0.00030);
+        frameCount++;
+
+        if (globe) globe.rotation.y += dt * (isSimplified ? 0.00018 : 0.00030);
+
         pings.forEach(({ ring, glow, isHome, phase }) => {
           const spd = isHome ? 1.2 : 1.8, amp = isHome ? 1.8 : 1.4;
           const s = 1 + amp * ((Math.sin(tick * spd + phase) + 1) / 2);
@@ -539,10 +575,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           (ring.material as THREE.MeshBasicMaterial).opacity = (isHome ? 0.75 : 0.55) * (1 - (s-1)/amp);
           (glow.material as THREE.MeshBasicMaterial).opacity = (isHome ? 0.18 : 0.10) * (0.5 + 0.5 * Math.sin(tick * spd * 0.5 + phase));
         });
+
         arcs.forEach(arc => {
           arc.progress = (arc.progress + arc.speed) % 1;
-          arc.geo.setDrawRange(0, Math.max(2, Math.floor(arc.progress * 80)));
+          arc.geo.setDrawRange(0, Math.max(2, Math.floor(arc.progress * (isSimplified ? 30 : 80))));
         });
+
         sats.forEach(sat => {
           const angle = sat.phase + tick * sat.speed * 60;
           sat.dot.position.set(sat.radius * Math.cos(angle), sat.radius * Math.sin(angle) * Math.sin(sat.incl), sat.radius * Math.sin(angle) * Math.cos(sat.incl));
@@ -550,24 +588,39 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           sat.trailHead++;
           sat.trailLine.geometry.setFromPoints(sat.trailPts);
         });
-        persistentLabels.forEach((l) => {
-          if (!globe || !camera) return;
-          const pos = latLngToVec3(l.lat, l.lng, 1.005);
-          const worldPos = pos.applyMatrix4(globe.matrixWorld);
-          const dirToCamera = camera.position.clone().sub(worldPos).normalize();
-          const dot = worldPos.clone().normalize().dot(dirToCamera);
-          if (dot > 0.15) {
-            const screenPos = worldPos.project(camera);
-            l.div.style.display = 'block';
-            l.div.style.left = `${(screenPos.x * 0.5 + 0.5) * w}px`;
-            l.div.style.top = `${(screenPos.y * -0.5 + 0.5) * h}px`;
-            l.div.style.opacity = String(Math.min(1, (dot - 0.15) * 4));
-          } else l.div.style.display = 'none';
-        });
+
+        // Throttle label updates on simplified devices
+        if (!isSimplified || frameCount % 2 === 0) {
+          persistentLabels.forEach((l) => {
+            if (!globe || !camera) return;
+
+            worldPos.copy(l.pos).applyMatrix4(globe.matrixWorld);
+            normWorldPos.copy(worldPos).normalize();
+            dirToCamera.copy(camera.position).sub(worldPos).normalize();
+
+            const dot = normWorldPos.dot(dirToCamera);
+            if (dot > 0.15) {
+              const screenPos = worldPos.project(camera);
+              l.div.style.display = 'block';
+              l.div.style.left = `${(screenPos.x * 0.5 + 0.5) * w}px`;
+              l.div.style.top = `${(screenPos.y * -0.5 + 0.5) * h}px`;
+              l.div.style.opacity = String(Math.min(1, (dot - 0.15) * 4));
+            } else l.div.style.display = 'none';
+          });
+        }
+
         if (renderer && scene && camera) renderer.render(scene, camera);
       };
-      rafId = requestAnimationFrame(animate);
-    };
+
+      // Start animation if in view
+      if (isInView) {
+        rafId = requestAnimationFrame(animate);
+      }
+
+      // Make animate available to the observer
+      (el as any)._animate = animate;
+      };
+
 
     const cleanup = () => {
       if (rafId) cancelAnimationFrame(rafId);
@@ -588,6 +641,16 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       renderer = null; scene = null; camera = null; globe = null; pings = []; arcs = []; sats = []; persistentLabels = [];
     };
 
+    // Intersection Observer to pause when not in view
+    const viewObserver = new IntersectionObserver((entries) => {
+      const wasInView = isInView;
+      isInView = entries[0].isIntersecting;
+      if (isInView && !wasInView && !rafId) {
+        const animate = (el as any)._animate;
+        if (animate) rafId = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0.1 });
+    viewObserver.observe(el);
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) return;
@@ -602,8 +665,12 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       }
     });
     observer.observe(el);
-    return () => { observer.disconnect(); cleanup(); };
-  }, [scale, theme, constrainedDevice, isMobile, isLg]);
+    return () => { 
+      viewObserver.disconnect();
+      observer.disconnect(); 
+      cleanup(); 
+    };
+  }, [scale, theme, isSimplified, isMobile, isLg]);
 
   return (
     <div
