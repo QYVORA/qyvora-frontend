@@ -120,49 +120,11 @@ const TermsPage: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="hidden lg:flex items-center justify-center flex-1 max-w-lg"
             >
-              <div className="relative w-full aspect-square max-w-md">
-                {/* Decorative background elements */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 rounded-3xl" />
-                <div className="absolute inset-4 border border-accent/20 rounded-3xl" />
-                
-                {/* Main illustration */}
-                <div className="relative w-full h-full flex items-center justify-center p-8">
-                  <img
-                    src="/assets/illustrations/terms.svg"
-                    alt="QYVORA Terms and Conditions Illustration"
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      // Fallback to a simple icon-based illustration if image doesn't exist
-                      e.currentTarget.style.display = 'none';
-                      const parent = e.currentTarget.parentElement;
-                      if (parent && !parent.querySelector('.fallback-icon')) {
-                        const fallback = document.createElement('div');
-                        fallback.className = 'fallback-icon w-full h-full flex items-center justify-center text-accent/30';
-                        fallback.innerHTML = `
-                          <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                          </svg>
-                        `;
-                        parent.appendChild(fallback);
-                      }
-                    }}
-                  />
-                </div>
-
-                {/* Floating accent dots */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-8 right-8 w-3 h-3 rounded-full bg-accent/40"
-                />
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-12 left-12 w-2 h-2 rounded-full bg-accent/30"
+              <div className="relative w-full max-w-md">
+                <img
+                  src="/qyvora-cta-logo.png"
+                  alt="QYVORA Logo - Africa's Offensive Security Platform"
+                  className="w-full h-auto object-contain block"
                 />
               </div>
             </motion.div>

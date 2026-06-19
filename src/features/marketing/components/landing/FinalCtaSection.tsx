@@ -63,9 +63,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-lg sm:text-lg text-text-secondary leading-relaxed max-w-xl"
             >
-              {user
-                ? 'Your training environment is active. Head to your dashboard to continue where you left off and advance through the bootcamp phases.'
-                : 'Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.'}
+              Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.
             </motion.p>
 
             <motion.div
@@ -120,9 +118,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-base md:text-lg text-text-secondary leading-relaxed mb-10 max-w-xl"
             >
-              {user
-                ? 'Your training environment is active. Head to your dashboard to continue where you left off and advance through the bootcamp phases.'
-                : 'Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.'}
+              Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.
             </motion.p>
 
             <motion.div
