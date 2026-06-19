@@ -4,6 +4,7 @@ export interface TeamSocials {
   twitter?: string; // X
   github?: string;
   linkedin?: string;
+  instagram?: string;
 }
 
 export interface TeamMember {
@@ -19,7 +20,7 @@ export interface TeamMember {
 export const teamData: TeamMember[] = [
   {
     id: 'CEO',
-    name: 'wsuits6 | Alhassan Osman Wunpini',
+    name: 'wsuits6',
     handle: 'wsuits6',
     role: 'CEO',
     bio: 'I dont follow paths I burn them then I write my own in code .',
@@ -35,8 +36,13 @@ export const teamData: TeamMember[] = [
     id: 'CFO',
     name: 'Seth Abbey',
     role: 'CFO',
-    bio: 'Architecting the financial models that fuel offensive security innovation.',
-    image: '/assets/team/seth_abbey.jpeg',
-    socials: {},
+    bio: 'Attackers only need that 1 blind spot, find it first',
+    image: '/assets/team/seth_abbey.webp',
+    socials: {
+      youtube: 'https://www.youtube.com/@sethabbey-u2c',
+      github: 'https://github.com/sethabbey987',
+      linkedin: 'https://www.linkedin.com/in/seth-abbey-599029379/',
+      twitter: 'https://x.com/sethabbey328208',
+    },
   },
 ];

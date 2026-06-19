@@ -15,6 +15,7 @@ import BrandLinkedinIcon from '../../../shared/components/icons/BrandLinkedinIco
 import BrandYoutubeIcon from '../../../shared/components/icons/BrandYoutubeIcon';
 import BrandXIcon from '../../../shared/components/icons/BrandXIcon';
 import BrandTiktokIcon from '../../../shared/components/icons/BrandTiktokIcon';
+import BrandInstagramIcon from '../../../shared/components/icons/BrandInstagramIcon';
 
 const SnapSection: React.FC<{
   id?: string;
@@ -27,7 +28,7 @@ const SnapSection: React.FC<{
       className={`relative md:snap-start md:snap-always md:h-full w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden md:overflow-hidden ${className}`}
     >
       <div
-        className="w-full h-full relative z-10 flex flex-col justify-center py-20 md:py-0 overflow-x-hidden md:overflow-hidden"
+        className="w-full h-full relative z-10 flex flex-col justify-center py-20 md:py-0 lg:pt-28 lg:pb-12 overflow-x-hidden md:overflow-hidden"
         data-snap-child=""
       >
         {children}
@@ -77,6 +78,7 @@ const TeamPage: React.FC = () => {
     youtube: BrandYoutubeIcon,
     twitter: BrandXIcon,
     tiktok: BrandTiktokIcon,
+    instagram: BrandInstagramIcon,
   };
 
   const carouselVariants = {

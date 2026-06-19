@@ -8,12 +8,12 @@ import SEO from '../../../shared/components/SEO';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
 
 const PHASES = [
-  { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force' },
-  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles' },
-  { id: '03', name: 'TLS', icon: Lock, desc: 'Certificate analysis, SANs, and protocol audit' },
-  { id: '04', name: 'HEADERS', icon: Shield, desc: 'Security headers and CORS misconfigurations' },
-  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups' },
-  { id: '06', name: 'TAKEOVER', icon: AlertTriangle, desc: 'Dangling CNAME detection for cloud services' },
+  { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: '/assets/anansi/discovery.webp' },
+  { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles', image: '/assets/anansi/probe.webp' },
+  { id: '03', name: 'TLS', icon: Lock, desc: 'Certificate analysis, SANs, and protocol audit', image: '/assets/anansi/tls.webp' },
+  { id: '04', name: 'HEADERS', icon: Shield, desc: 'Security headers and CORS misconfigurations', image: '/assets/anansi/headers.webp' },
+  { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: '/assets/anansi/paths.webp' },
+  { id: '06', name: 'TAKEOVER', icon: AlertTriangle, desc: 'Dangling CNAME detection for cloud services', image: '/assets/anansi/takeover.webp' },
 ];
 
 // ── Snap section ──────────────────────────────────────────────────────────────
@@ -21,14 +21,15 @@ const SnapSection: React.FC<{
   id?: string;
   children: React.ReactNode;
   className?: string;
-}> = ({ id, children, className = '' }) => {
+  innerClassName?: string;
+}> = ({ id, children, className = '', innerClassName = '' }) => {
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:h-full w-full flex-shrink-0 box-border bg-transparent overflow-x-hidden md:overflow-hidden ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
     >
       <div
-        className="w-full h-full relative z-10 flex flex-col justify-center py-20 md:py-0 overflow-x-hidden md:overflow-hidden"
+        className={`w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0 ${innerClassName}`}
         data-snap-child=""
       >
         {children}
@@ -279,7 +280,7 @@ const AnansiPage: React.FC = () => {
         </SnapSection>
 
         {/* ── 3. Pipeline Section (Carousel) ── */}
-        <SnapSection id="pipeline">
+        <SnapSection id="pipeline" innerClassName="lg:pt-28 lg:pb-12">
           <div className="w-full px-4 sm:px-6 md:px-10 py-20 md:py-0">
             <div className="max-w-[1600px] mx-auto w-full relative group/carousel">
               <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -299,12 +300,21 @@ const AnansiPage: React.FC = () => {
                 >
                   <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card/40 dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none lg:h-[480px] xl:h-[520px]">
 
-                    {/* Icon Section */}
-                    <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group bg-accent/5 flex items-center justify-center p-12 lg:p-0">
-                      <div className="relative w-full aspect-square sm:aspect-[16/10] lg:aspect-auto lg:h-full flex items-center justify-center">
-                        <currentPhase.icon className="w-32 h-32 md:w-40 md:h-40 text-accent relative z-10" />
+                    {/* Image Section */}
+                    <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group h-[240px] sm:h-[300px] lg:h-full bg-accent/5">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {currentPhase.image ? (
+                          <img
+                            src={currentPhase.image}
+                            alt={currentPhase.name}
+                            className="w-full h-full object-cover grayscale brightness-90 transition-transform duration-[2000ms] group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-100"
+                          />
+                        ) : (
+                          <currentPhase.icon className="w-32 h-32 md:w-40 md:h-40 text-accent relative z-10" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
 
-                        <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
+                        <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10 z-10">
                           <div className="px-6 py-3 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
                             <span className="text-base sm:text-lg font-black text-accent uppercase tracking-widest whitespace-nowrap">
                               PHASE {currentPhase.id}
