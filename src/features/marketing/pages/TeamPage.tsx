@@ -153,47 +153,11 @@ const TeamPage: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="hidden lg:flex items-center justify-center flex-1 max-w-lg"
             >
-              <div className="relative w-full aspect-square max-w-md">
-                {/* Decorative background elements */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 rounded-3xl" />
-                <div className="absolute inset-4 border border-accent/20 rounded-3xl" />
-                
-                {/* Main illustration */}
-                <div className="relative w-full h-full flex items-center justify-center p-8">
-                  <img
-                    src="/assets/illustrations/team.svg"
-                    alt="QYVORA Team Illustration"
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      const parent = e.currentTarget.parentElement;
-                      if (parent && !parent.querySelector('.fallback-icon')) {
-                        const fallback = document.createElement('div');
-                        fallback.className = 'fallback-icon w-full h-full flex items-center justify-center text-accent/30';
-                        fallback.innerHTML = `
-                          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                          </svg>
-                        `;
-                        parent.appendChild(fallback);
-                      }
-                    }}
-                  />
-                </div>
-
-                {/* Floating accent dots */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-8 right-8 w-3 h-3 rounded-full bg-accent/40"
-                />
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-12 left-12 w-2 h-2 rounded-full bg-accent/30"
+              <div className="relative w-full max-w-md">
+                <img
+                  src="/qyvora-cta-logo.png"
+                  alt="QYVORA Logo - Africa's Offensive Security Platform"
+                  className="w-full h-auto object-contain block"
                 />
               </div>
             </motion.div>
