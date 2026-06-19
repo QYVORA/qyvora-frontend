@@ -38,7 +38,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
 
   return (
     <div className="space-y-10">
-      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-all duration-300 border border-border/40 shadow-xl ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
+      <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-all duration-300 border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
         <div className="flex items-center justify-between border-b border-border/10 pb-4">
           <div className={`text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> Editing Asset: {productForm.title}</> : 'Initialize New Asset'}</div>
           {productForm.id && <button onClick={resetProductForm} className="text-[9px] font-black text-text-muted hover:text-accent uppercase tracking-[0.2em] transition-colors border border-border/40 px-3 py-1 rounded-lg">✕ Abort Protocol</button>}
@@ -75,7 +75,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
 
       <div className="md:hidden space-y-6">
         {products.map(item => (
-          <div key={item._id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4 shadow-lg">
+          <div key={item._id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4">
             <div className="flex items-start gap-4">
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-sm border border-border/40"><img src={resolveImg(item.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={item.title} className="w-full h-full object-cover" /></div>
               <div className="min-w-0 flex-1">
@@ -95,7 +95,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         ))}
       </div>
 
-      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden shadow-xl shadow-black/5">
+      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[640px]">
             <thead className="bg-bg-elevated/50 border-b border-border/40 backdrop-blur-sm">

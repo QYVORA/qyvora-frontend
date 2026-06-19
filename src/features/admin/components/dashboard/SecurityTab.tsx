@@ -4,7 +4,7 @@ import { SecurityEventItem } from '../../types/admin.types';
 interface SecurityTabProps { securitySummary: any; securityEvents: SecurityEventItem[]; }
 
 const StatCard = ({ label, value }: { label: string; value: number | string }) => (
-  <div className="rounded-2xl border border-border/40 bg-bg-card p-5 md:p-6 shadow-sm">
+  <div className="rounded-2xl border border-border/40 bg-bg-card p-5 md:p-6">
     <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
     <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
   </div>
@@ -21,7 +21,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
 
       <div className="md:hidden space-y-6">
         {securityEvents.map(item => (
-          <div key={item.id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-3 text-xs shadow-lg shadow-black/5">
+          <div key={item.id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-3 text-xs">
             <div className="flex justify-between items-center">
               <span className="font-black text-accent uppercase tracking-[0.2em] text-[10px]">{item.eventType}</span>
               <span className="text-[9px] text-text-muted/60 font-mono">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</span>
@@ -38,7 +38,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
         ))}
       </div>
 
-      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden shadow-xl shadow-black/5">
+      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[860px]">
             <thead className="bg-bg-elevated/50 border-b border-border/40 backdrop-blur-sm">

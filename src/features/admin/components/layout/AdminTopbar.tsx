@@ -2,10 +2,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut, Bell, Shield, Users, Database, Coins,
   AlertTriangle, Mail, BookOpen, X, ChevronDown, Link2,
-  LayoutDashboard, FileText,
+  LayoutDashboard, FileText, Sun, Moon,
 } from 'lucide-react';
 import { useAuth } from '../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../core/contexts/ToastContext';
+import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../core/services/api';
@@ -65,6 +66,7 @@ const NOTIF_PREVIEW_LIMIT = 6;
 const AdminTopbar = () => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
+  const { toggleTheme, theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -227,6 +229,15 @@ const AdminTopbar = () => {
           {/* Right: notifications + profile + logout */}
           <div className="flex items-center gap-2 md:gap-3">
 
+            {/* Theme toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-3 md:p-3.5 min-h-12 min-w-12 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              {theme === 'dark' ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+            </button>
+
             {/* Notifications */}
             <div ref={notifRef} className="relative">
               <button
@@ -386,6 +397,16 @@ const AdminTopbar = () => {
               </Link>
             );
           })}
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          >
+            {theme === 'dark' ? <Sun className="w-6 h-6 text-text-muted" /> : <Moon className="w-6 h-6 text-text-muted" />}
+            <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+          </button>
 
           {/* More button */}
           <button

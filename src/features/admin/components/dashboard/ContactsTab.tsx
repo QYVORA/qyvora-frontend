@@ -31,7 +31,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({ contactMessages, updateContac
             <p className="text-sm text-text-muted/60 font-black uppercase tracking-widest">Signal silence</p>
           </div>
         ) : contactMessages.map(item => (
-          <div key={item.id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4 shadow-lg shadow-black/5">
+          <div key={item.id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4">
             <div className="flex justify-between items-start">
               <div className="min-w-0 flex-1 px-1">
                 <div className="font-black text-lg text-text-primary leading-tight truncate">{item.name}</div>
@@ -55,7 +55,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({ contactMessages, updateContac
         ))}
       </div>
 
-      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden shadow-xl shadow-black/5">
+      <div className="hidden md:block bg-bg-card border border-border/40 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[900px]">
             <thead className="bg-bg-elevated/50 border-b border-border/40 backdrop-blur-sm">
