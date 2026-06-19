@@ -307,7 +307,7 @@ const AnansiPage: React.FC = () => {
                           <img
                             src={currentPhase.image}
                             alt={currentPhase.name}
-                            className="w-full h-full object-cover grayscale brightness-90 transition-transform duration-[2000ms] group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-100"
+                            className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                           />
                         ) : (
                           <currentPhase.icon className="w-32 h-32 md:w-40 md:h-40 text-accent relative z-10" />

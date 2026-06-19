@@ -192,7 +192,7 @@ const TeamPage: React.FC = () => {
                           <img
                             src={member.image}
                             alt={member.name}
-                            className="w-full h-full object-cover grayscale brightness-90 transition-transform duration-[2000ms] group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-100"
+                            className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
                               const parent = e.currentTarget.parentElement;
@@ -242,7 +242,7 @@ const TeamPage: React.FC = () => {
                         </p>
 
                         {/* Social Links */}
-                        <div className="flex items-center gap-4 border-t border-border/60 pt-6">
+                        <div className="flex items-center gap-4 pt-6">
                           {Object.entries(member.socials).map(([key, href]) => {
                             if (!href) return null;
                             const IconComponent = socialIcons[key];

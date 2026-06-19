@@ -37,7 +37,7 @@ export const teamData: TeamMember[] = [
     name: 'Seth Abbey',
     role: 'CFO',
     bio: 'Attackers only need that 1 blind spot, find it first',
-    image: '/assets/team/seth_abbey.webp',
+    image: '/assets/team/seth_abbey.png',
     socials: {
       youtube: 'https://www.youtube.com/@sethabbey-u2c',
       github: 'https://github.com/sethabbey987',
