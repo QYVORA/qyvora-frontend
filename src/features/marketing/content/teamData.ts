@@ -1,3 +1,6 @@
+import wsuits6Img from '../../../assets/team/wsuits6.png';
+import sethAbbeyImg from '../../../assets/team/seth_abbey.webp';
+
 export interface TeamSocials {
   youtube?: string;
   tiktok?: string;
@@ -24,7 +27,7 @@ export const teamData: TeamMember[] = [
     handle: 'wsuits6',
     role: 'CEO',
     bio: 'I dont follow paths I burn them then I write my own in code .',
-    image: '/assets/team/wsuits6.png',
+    image: wsuits6Img,
     socials: {
       youtube: 'https://www.youtube.com/@wsuits6',
       twitter: 'https://x.com/wsuits6',
@@ -37,7 +40,7 @@ export const teamData: TeamMember[] = [
     name: 'Seth Abbey',
     role: 'CFO',
     bio: 'Attackers only need that 1 blind spot, find it first',
-    image: '/assets/team/seth_abbey.webp',
+    image: sethAbbeyImg,
     socials: {
       youtube: 'https://www.youtube.com/@sethabbey-u2c',
       github: 'https://github.com/sethabbey987',
