@@ -219,18 +219,7 @@ const ContactModalHost: React.FC = () => {
               )}
             </button>
 
-            {/* Direct Email Link */}
-            <div className="pt-4 flex items-center justify-center gap-2">
-              <p className="text-[10px] text-text-muted">
-                Prefer email?
-              </p>
-              <a
-                href={`mailto:${SITE_CONFIG.contact.opsEmail}`}
-                className="text-[10px] font-bold text-accent hover:underline decoration-accent/30 underline-offset-2 transition-all"
-              >
-                {SITE_CONFIG.contact.opsEmail}
-              </a>
-            </div>
+
           </form>
         )}
       </DialogContent>
