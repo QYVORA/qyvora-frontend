@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Mail, Send, User, Briefcase, MessageSquare, AlertCircle } from 'lucide-react';
+import { CheckCircle, Loader2, Mail, Send, MessageSquare, AlertCircle } from 'lucide-react';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
@@ -101,9 +101,8 @@ const ContactModalHost: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        title="Get in Touch"
-        description="We're here to help. Choose your contact type below."
-        maxWidth="max-w-4xl"
+        title="CONTACT"
+        maxWidth="max-w-xl"
         className="max-h-[calc(100svh-2rem)] overflow-y-auto"
       >
         {status === 'sent' ? (
@@ -127,89 +126,35 @@ const ContactModalHost: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             
             {/* Contact Type Toggle */}
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] block">
-                I am a...
-              </label>
-              <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center justify-between border-b border-border/40 pb-4">
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em]">
+                Category
+              </span>
+              <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-60">
                 <button
                   type="button"
                   onClick={() => setContactType('student')}
                   className={cn(
-                    'relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-300',
+                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'student'
-                      ? 'border-accent bg-accent/5 shadow-[0_0_20px_var(--color-accent-glow)]'
-                      : 'border-border bg-bg-card hover:border-accent/40'
+                      ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      : 'text-text-muted hover:text-text-primary'
                   )}
                 >
-                  <div className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
-                    contactType === 'student' ? 'bg-accent/20 text-accent' : 'bg-bg text-text-muted'
-                  )}>
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div className="text-center">
-                    <p className={cn(
-                      'text-sm font-black uppercase tracking-wide transition-colors',
-                      contactType === 'student' ? 'text-accent' : 'text-text-primary'
-                    )}>
-                      Student
-                    </p>
-                    <p className="text-[10px] text-text-muted mt-1">
-                      Training support
-                    </p>
-                  </div>
-                  {contactType === 'student' && (
-                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  )}
+                  Student
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setContactType('business')}
                   className={cn(
-                    'relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-300',
+                    'flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all',
                     contactType === 'business'
-                      ? 'border-accent bg-accent/5 shadow-[0_0_20px_var(--color-accent-glow)]'
-                      : 'border-border bg-bg-card hover:border-accent/40'
+                      ? 'bg-accent text-bg shadow-[0_0_12px_var(--color-accent-glow)] font-black'
+                      : 'text-text-muted hover:text-text-primary'
                   )}
                 >
-                  <div className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
-                    contactType === 'business' ? 'bg-accent/20 text-accent' : 'bg-bg text-text-muted'
-                  )}>
-                    <Briefcase className="w-6 h-6" />
-                  </div>
-                  <div className="text-center">
-                    <p className={cn(
-                      'text-sm font-black uppercase tracking-wide transition-colors',
-                      contactType === 'business' ? 'text-accent' : 'text-text-primary'
-                    )}>
-                      Business
-                    </p>
-                    <p className="text-[10px] text-text-muted mt-1">
-                      Security services
-                    </p>
-                  </div>
-                  {contactType === 'business' && (
-                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  )}
+                  Business
                 </button>
-              </div>
-            </div>
-
-            {/* Info Banner */}
-            <div className="flex items-start gap-3 p-4 rounded-2xl bg-accent/5 border border-accent/20">
-              <MessageSquare className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <p className="text-xs font-bold text-text-primary">
-                  {contactType === 'student' ? 'Student Support' : 'Business Inquiry'}
-                </p>
-                <p className="text-[11px] text-text-muted leading-relaxed">
-                  {contactType === 'student' 
-                    ? 'Get help with bootcamps, challenges, account issues, or general questions about the platform.'
-                    : 'Inquire about penetration testing, security audits, vulnerability assessments, or custom security solutions.'}
-                </p>
               </div>
             </div>
 
