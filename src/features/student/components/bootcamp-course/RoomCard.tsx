@@ -58,7 +58,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
           className="pointer-events-none absolute inset-0 hidden dark:block dark:bg-black/10"
         />
         {roomDone && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">
+          <div className="room-completed-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">
             <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shadow-lg">
               <CheckCircle2 className="h-6 w-6 text-bg" />
             </div>
