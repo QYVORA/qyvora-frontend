@@ -200,7 +200,7 @@ const TeamPage: React.FC = () => {
 
         {/* ── 2. Carousel Section ── */}
         <SnapSection id="operators-directory">
-          <div className="w-full px-4 sm:px-6 md:px-10 max-w-[1600px] mx-auto">
+          <div className="w-full px-2 sm:px-4 md:px-10 max-w-[1600px] mx-auto">
             {/* Carousel Wrapper */}
             <div className="max-w-[1440px] mx-auto w-full relative group/carousel">
               <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -257,7 +257,7 @@ const TeamPage: React.FC = () => {
                     </div>
 
                     {/* Content Section */}
-                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center">
+                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center min-h-[350px] sm:min-h-[320px] lg:min-h-0">
                       <div className="max-w-2xl">
                         {member.handle && (
                           <div className="flex items-center gap-2 mb-4">
