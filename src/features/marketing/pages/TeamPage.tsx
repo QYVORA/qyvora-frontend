@@ -217,11 +217,11 @@ const TeamPage: React.FC = () => {
                   }}
                   className="relative w-full"
                 >
-                  <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
+                  <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none h-[620px] sm:h-[650px] lg:h-[480px] xl:h-[520px]">
                     
                     {/* Image Section */}
-                    <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
-                      <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[520px] bg-bg flex items-center justify-center">
+                    <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group h-[220px] sm:h-[260px] lg:h-full">
+                      <div className="relative w-full h-full bg-bg flex items-center justify-center">
                         {member.image ? (
                           <img
                             src={member.image}
@@ -257,7 +257,7 @@ const TeamPage: React.FC = () => {
                     </div>
 
                     {/* Content Section */}
-                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center min-h-[350px] sm:min-h-[320px] lg:min-h-0">
+                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center min-h-0">
                       <div className="max-w-2xl">
                         {member.handle && (
                           <div className="flex items-center gap-2 mb-4">
