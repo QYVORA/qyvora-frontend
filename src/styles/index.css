@@ -75,8 +75,8 @@
   --color-code-flag:            #1d4ed8; /* blue-700 */
   --color-code-path:            #6b21a8; /* purple-700 */
 
-  /* ── Light theme card shimmer (subtle white inner edge on light surface) ── */
-  --card-shimmer:         inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(102, 184, 112, 0.03);
+  /* ── Light theme card shadow (subtle depth) ── */
+  --card-shimmer:         0 1px 2px rgba(102, 184, 112, 0.03);
   /* ── Light theme card shadow (soft, green-tinted depth) ── */
   --card-shadow:          0 12px 30px -10px rgba(102, 184, 112, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
 }
@@ -729,6 +729,47 @@
     box-shadow: var(--card-shimmer), 0 10px 25px -5px rgba(102, 184, 112, 0.1);
     border-color: var(--color-border-strong);
     transform: none !important;
+  }
+
+  /* ── Light theme: remove dot pattern overlay from cards ── */
+  [data-theme="light"] .card-qyvora::after,
+  [data-theme="light"] .terminal-card::after {
+    opacity: 0 !important;
+  }
+
+  /* ── Light theme: hide gradient overlays on card images (dark:block bypasses via prefers-color-scheme) ── */
+  [data-theme="light"] .card-qyvora [class*="bg-gradient"]:not([class*="dark:"]),
+  [data-theme="light"] .card-qyvora [class*="from-bg-card"],
+  [data-theme="light"] .card-qyvora [class*="to-bg-card"],
+  [data-theme="light"] .card-qyvora [class*="via-bg-card"],
+  [data-theme="light"] .terminal-card [class*="from-bg-card"],
+  [data-theme="light"] .terminal-card [class*="to-bg-card"],
+  [data-theme="light"] .terminal-card [class*="via-bg-card"],
+  [data-theme="light"] [class*="bg-bg-card"] [class*="from-"],
+  [data-theme="light"] [class*="bg-bg-card"] [class*="to-"],
+  [data-theme="light"] [class*="bg-bg-card"] [class*="via-"] {
+    display: none !important;
+  }
+
+  /* ── Light theme: fully opaque badge backgrounds on cards ── */
+  [data-theme="light"] .card-qyvora [class*="bg-bg/"],
+  [data-theme="light"] .terminal-card [class*="bg-bg/"],
+  [data-theme="light"] [class*="bg-bg-card"] [class*="bg-bg/"] {
+    background-color: var(--color-bg) !important;
+    backdrop-filter: none !important;
+  }
+
+  /* ── Light theme: remove backdrop-blur from card buttons/arrows ── */
+  [data-theme="light"] .card-qyvora button[class*="backdrop-blur"],
+  [data-theme="light"] .terminal-card button[class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    background-color: var(--color-bg-card) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  /* ── Light theme: hide any absolute overlay with from-/to-/via- inside a card ── */
+  [data-theme="light"] [class*="overflow-hidden"] > [class*="absolute"][class*="inset-0"][class*="from-"] {
+    display: none !important;
   }
 
   /* ── Light theme — elevated surfaces (dropdowns, modals, drawers) ── */
