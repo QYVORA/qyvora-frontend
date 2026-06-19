@@ -35,99 +35,79 @@ interface AdinkraBackgroundProps {
 ───────────────────────────────────────────── */
 
 const GyeNyame: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-    <line x1="42" y1="14" x2="58" y2="14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-    <line x1="42" y1="86" x2="58" y2="86" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-    <path d="M50 28 C40 26 18 28 12 42 C8 54 22 64 50 60" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 28 C60 26 82 28 88 42 C92 54 78 64 50 60" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <line x1="18" y1="46" x2="82" y2="46" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <path d="M50 60 C38 60 20 66 22 76 C24 84 38 82 50 78" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 60 C62 60 80 66 78 76 C76 84 62 82 50 78" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 10 C50 10 28 14 18 30 C10 42 12 54 22 60 C28 63 36 62 42 58 C46 55 48 50 50 46 C52 50 54 55 58 58 C64 62 72 63 78 60 C88 54 90 42 82 30 C72 14 50 10 50 10 Z" fill="currentColor" />
+    <path d="M50 46 C44 40 20 40 14 52 C10 62 16 72 28 74 C38 75 46 70 50 64 C54 70 62 75 72 74 C84 72 90 62 86 52 C80 40 56 40 50 46 Z" fill="currentColor" />
   </svg>
 );
 
 const Sankofa: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="50" cy="64" rx="22" ry="15" stroke="currentColor" strokeWidth="3" />
-    <path d="M34 52 C28 42 26 30 36 24 C44 19 54 23 58 34" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M36 24 C30 20 20 20 18 27" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <circle cx="34" cy="24" r="2.5" fill="currentColor" />
-    <ellipse cx="58" cy="48" rx="5" ry="6.5" stroke="currentColor" strokeWidth="2.5" />
-    <path d="M72 62 C80 57 88 61 84 68" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M72 67 C82 63 90 69 86 76" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-    <line x1="42" y1="78" x2="38" y2="90" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="38" y1="90" x2="32" y2="90" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <line x1="38" y1="90" x2="38" y2="95" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <line x1="58" y1="78" x2="62" y2="90" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="62" y1="90" x2="56" y2="90" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <line x1="62" y1="90" x2="66" y2="95" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M54 90 C42 88 34 80 32 70 C28 58 36 44 48 38 L48 30 C48 24 44 18 38 16 C34 15 30 18 30 22 C30 26 34 28 36 26" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <circle cx="36" cy="18" r="5" fill="currentColor" />
+    <path d="M48 30 C56 26 64 28 68 34 C74 42 72 52 64 60" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M60 64 C72 64 84 58 86 46 C86 38 80 34 74 36" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <ellipse cx="50" cy="68" rx="28" ry="14" fill="currentColor" />
+    <path d="M50 54 L50 82" stroke="currentColor" strokeWidth="10" strokeLinecap="round" />
+    <path d="M38 76 L32 90" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M62 76 L68 90" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
   </svg>
 );
 
 const Adinkrahene: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="3" />
-    <circle cx="50" cy="50" r="26" stroke="currentColor" strokeWidth="3" />
-    <circle cx="50" cy="50" r="12" stroke="currentColor" strokeWidth="3" />
-    <circle cx="50" cy="50" r="4" fill="currentColor" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="6" />
+    <circle cx="50" cy="50" r="26" fill="none" stroke="currentColor" strokeWidth="6" />
+    <circle cx="50" cy="50" r="12" fill="currentColor" />
   </svg>
 );
 
 const Dwennimmen: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 50 C50 38 42 22 30 20 C18 18 12 28 18 38 C22 44 32 44 38 40" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C50 38 58 22 70 20 C82 18 88 28 82 38 C78 44 68 44 62 40" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C50 62 42 78 30 80 C18 82 12 72 18 62 C22 56 32 56 38 60" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C50 62 58 78 70 80 C82 82 88 72 82 62 C78 56 68 56 62 60" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <circle cx="50" cy="50" r="5" stroke="currentColor" strokeWidth="2.5" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 50 C50 38 44 18 30 14 C16 10 8 22 14 34 C20 44 32 46 40 42 C44 40 48 36 50 32" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C50 38 56 18 70 14 C84 10 92 22 86 34 C80 44 68 46 60 42 C56 40 52 36 50 32" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C50 62 44 82 30 86 C16 90 8 78 14 66 C20 56 32 54 40 58 C44 60 48 64 50 68" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C50 62 56 82 70 86 C84 90 92 78 86 66 C80 56 68 54 60 58 C56 60 52 64 50 68" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <circle cx="50" cy="50" r="6" fill="currentColor" />
   </svg>
 );
 
 const Nkyinkyim: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 50 C50 42 46 30 40 24 C36 20 34 24 38 30 C40 33 46 36 50 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C58 50 70 46 76 40 C80 36 76 34 70 38 C67 40 65 46 70 50" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C50 58 54 70 60 76 C64 80 66 76 62 70 C59 67 54 66 50 70" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <path d="M50 50 C42 50 30 54 24 60 C20 64 24 66 30 62 C33 59 34 54 30 50" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <circle cx="50" cy="50" r="4.5" fill="currentColor" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 50 C50 36 44 20 30 14 C22 10 24 18 30 22 C36 26 40 34 40 40" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C64 50 80 44 86 30 C90 22 82 24 78 30 C74 36 66 40 60 40" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C50 64 56 80 70 86 C78 90 76 82 70 78 C64 74 60 66 60 60" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 50 C36 50 20 56 14 70 C10 78 18 76 22 70 C26 64 34 60 40 60" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <circle cx="50" cy="50" r="7" fill="currentColor" />
   </svg>
 );
 
 const Nsoromma: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 8 L54 42 L50 92 L46 58 Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
-    <path d="M8 50 L42 46 L92 50 L58 54 Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
-    <line x1="72" y1="28" x2="57" y2="43" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="72" y1="72" x2="57" y2="57" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="28" y1="72" x2="43" y2="57" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="28" y1="28" x2="43" y2="43" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <circle cx="50" cy="50" r="7" stroke="currentColor" strokeWidth="2.5" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 6 L56 42 L94 50 L56 58 L50 94 L44 58 L6 50 L44 42 Z" fill="currentColor" />
+    <circle cx="50" cy="50" r="10" fill="var(--color-bg, #000)" />
   </svg>
 );
 
 const Aya: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="50" y1="90" x2="50" y2="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-    <path d="M50 80 C44 74 30 76 26 68 C22 60 34 56 50 64" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 80 C56 74 70 76 74 68 C78 60 66 56 50 64" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 66 C44 60 28 62 24 54 C20 46 34 42 50 50" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 66 C56 60 72 62 76 54 C80 46 66 42 50 50" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 52 C44 46 30 48 26 40 C22 32 36 28 50 36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 52 C56 46 70 48 74 40 C78 32 64 28 50 36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M50 36 C46 32 38 32 36 26 C34 20 42 18 50 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-    <path d="M50 36 C54 32 62 32 64 26 C66 20 58 18 50 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <line x1="50" y1="90" x2="50" y2="10" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+    <path d="M50 78 C42 70 22 68 18 58 C14 48 30 42 50 54" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M50 78 C58 70 78 68 82 58 C86 48 70 42 50 54" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M50 56 C42 48 24 46 20 36 C16 26 32 22 50 34" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M50 56 C58 48 76 46 80 36 C84 26 68 22 50 34" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+    <path d="M50 36 C44 30 30 28 28 20 C26 14 38 12 50 20" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
+    <path d="M50 36 C56 30 70 28 72 20 C74 14 62 12 50 20" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
   </svg>
 );
 
 const Akoma: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
     <path
-      d="M50 84 C50 84 14 58 14 36 C14 22 24 14 36 16 C42 17 48 22 50 29 C52 22 58 17 64 16 C76 14 86 22 86 36 C86 58 50 84 50 84 Z"
-      stroke="currentColor" strokeWidth="3" strokeLinejoin="round"
+      d="M50 86 C50 86 10 58 10 34 C10 18 22 8 36 10 C44 11 50 18 50 26 C50 18 56 11 64 10 C78 8 90 18 90 34 C90 58 50 86 50 86 Z"
+      fill="currentColor"
     />
-    <line x1="50" y1="6" x2="50" y2="16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="45" y1="11" x2="55" y2="11" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="50" y1="6" x2="50" y2="22" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
   </svg>
 );
 
@@ -139,20 +119,20 @@ interface Placement {
 }
 
 const PLACEMENTS: Placement[] = [
-  { Symbol: GyeNyame, style: { top: '6%', left: '5%', width: 112, height: 112, transform: 'rotate(-6deg)' }, symOpacity: 0.55, label: 'gye-nyame-tl' },
-  { Symbol: Adinkrahene, style: { bottom: '7%', right: '5%', width: 120, height: 120 }, symOpacity: 0.45, label: 'adinkrahene-br' },
-  { Symbol: Dwennimmen, style: { top: '10%', right: '7%', width: 104, height: 104, transform: 'rotate(10deg)' }, symOpacity: 0.50, label: 'dwennimmen-tr' },
-  { Symbol: Aya, style: { bottom: '6%', left: '8%', width: 96, height: 96, transform: 'rotate(5deg)' }, symOpacity: 0.48, label: 'aya-bl' },
-  { Symbol: Sankofa, style: { top: '40%', left: '2%', width: 80, height: 80, transform: 'rotate(8deg)' }, symOpacity: 0.45, label: 'sankofa-ml' },
-  { Symbol: Nkyinkyim, style: { top: '22%', right: '20%', width: 72, height: 72, transform: 'rotate(-12deg)' }, symOpacity: 0.40, label: 'nkyinkyim-tm' },
-  { Symbol: Akoma, style: { bottom: '26%', right: '3%', width: 80, height: 80, transform: 'rotate(-5deg)' }, symOpacity: 0.45, label: 'akoma-mr' },
-  { Symbol: Nsoromma, style: { bottom: '30%', left: '26%', width: 68, height: 68, transform: 'rotate(15deg)' }, symOpacity: 0.38, label: 'nsoromma-bml' },
-  { Symbol: GyeNyame, style: { top: '58%', right: '12%', width: 52, height: 52, transform: 'rotate(18deg)' }, symOpacity: 0.30, label: 'gye-nyame-sm1' },
-  { Symbol: Adinkrahene, style: { top: '16%', left: '38%', width: 48, height: 48 }, symOpacity: 0.28, label: 'adinkrahene-sm' },
-  { Symbol: Nsoromma, style: { top: '7%', right: '30%', width: 44, height: 44, transform: 'rotate(22deg)' }, symOpacity: 0.28, label: 'nsoromma-sm' },
-  { Symbol: Aya, style: { top: '72%', right: '28%', width: 52, height: 52, transform: 'rotate(-8deg)' }, symOpacity: 0.28, label: 'aya-sm' },
-  { Symbol: Dwennimmen, style: { bottom: '16%', left: '46%', width: 56, height: 56, transform: 'rotate(-15deg)' }, symOpacity: 0.28, label: 'dwennimmen-sm' },
-  { Symbol: Sankofa, style: { top: '82%', left: '58%', width: 44, height: 44, transform: 'rotate(12deg)' }, symOpacity: 0.25, label: 'sankofa-sm' },
+  { Symbol: GyeNyame, style: { top: '6%', left: '5%', width: 140, height: 140, transform: 'rotate(-6deg)' }, symOpacity: 0.70, label: 'gye-nyame-tl' },
+  { Symbol: Adinkrahene, style: { bottom: '7%', right: '5%', width: 150, height: 150 }, symOpacity: 0.60, label: 'adinkrahene-br' },
+  { Symbol: Dwennimmen, style: { top: '10%', right: '7%', width: 130, height: 130, transform: 'rotate(10deg)' }, symOpacity: 0.65, label: 'dwennimmen-tr' },
+  { Symbol: Aya, style: { bottom: '6%', left: '8%', width: 120, height: 120, transform: 'rotate(5deg)' }, symOpacity: 0.60, label: 'aya-bl' },
+  { Symbol: Sankofa, style: { top: '40%', left: '2%', width: 100, height: 100, transform: 'rotate(8deg)' }, symOpacity: 0.60, label: 'sankofa-ml' },
+  { Symbol: Nkyinkyim, style: { top: '22%', right: '20%', width: 96, height: 96, transform: 'rotate(-12deg)' }, symOpacity: 0.55, label: 'nkyinkyim-tm' },
+  { Symbol: Akoma, style: { bottom: '26%', right: '3%', width: 100, height: 100, transform: 'rotate(-5deg)' }, symOpacity: 0.60, label: 'akoma-mr' },
+  { Symbol: Nsoromma, style: { bottom: '30%', left: '26%', width: 90, height: 90, transform: 'rotate(15deg)' }, symOpacity: 0.55, label: 'nsoromma-bml' },
+  { Symbol: GyeNyame, style: { top: '58%', right: '14%', width: 80, height: 80, transform: 'rotate(18deg)' }, symOpacity: 0.45, label: 'gye-nyame-sm1' },
+  { Symbol: Adinkrahene, style: { top: '16%', left: '38%', width: 72, height: 72 }, symOpacity: 0.42, label: 'adinkrahene-sm' },
+  { Symbol: Nsoromma, style: { top: '7%', right: '30%', width: 68, height: 68, transform: 'rotate(22deg)' }, symOpacity: 0.42, label: 'nsoromma-sm' },
+  { Symbol: Aya, style: { top: '74%', right: '28%', width: 72, height: 72, transform: 'rotate(-8deg)' }, symOpacity: 0.42, label: 'aya-sm' },
+  { Symbol: Dwennimmen, style: { bottom: '18%', left: '46%', width: 76, height: 76, transform: 'rotate(-15deg)' }, symOpacity: 0.42, label: 'dwennimmen-sm' },
+  { Symbol: Sankofa, style: { top: '84%', left: '56%', width: 68, height: 68, transform: 'rotate(12deg)' }, symOpacity: 0.40, label: 'sankofa-sm' },
 ];
 
 const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({

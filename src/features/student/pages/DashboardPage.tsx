@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
             <div className="w-full px-4 md:px-0">
               <ScrollReveal className="h-full">
-                <div className="p-6 sm:p-10 md:p-12 lg:p-16 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-xl shadow-black/5">
+                <div className="p-6 sm:p-10 md:p-12 lg:p-16 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-none">
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="h-[1.5px] w-10 bg-accent" />
@@ -168,10 +168,10 @@ const Dashboard: React.FC = () => {
                 return (
                   <motion.div key={id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }} className="flex flex-col h-full px-5 md:px-0">
                     <div className="flex flex-col h-full overflow-hidden border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 group hover:border-accent/30 hover:scale-[1.01]">
-                      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+                      <div className="relative aspect-video overflow-hidden rounded-t-2xl">
                         <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">{hasPurchased && <span className="px-2 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}</div>
-                        <div className="absolute bottom-2.5 left-2.5"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> Premium Asset</span></div>
+                        <div className="absolute bottom-2.5 left-2.5"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest"><ShoppingBag className="h-3 w-3 text-accent" /> Premium Asset</span></div>
                       </div>
                       <div className="flex flex-1 flex-col p-8 sm:p-10">
                         <h3 className="mb-2 text-lg font-black leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent">{prod.title}</h3>

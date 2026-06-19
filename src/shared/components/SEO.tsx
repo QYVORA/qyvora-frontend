@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from '../../core/contexts/ThemeContext';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 
 interface SEOProps {
@@ -30,6 +31,7 @@ const SEO: React.FC<SEOProps> = ({
   schemaData,
   breadcrumbs,
 }) => {
+  const { theme } = useTheme();
   const location = useLocation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
@@ -109,7 +111,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="author" content="QYVORA" />
       <meta name="application-name" content="QYVORA" />
       <meta name="apple-mobile-web-app-title" content="QYVORA" />
-      <meta name="theme-color" content="#66B870" />
+      <meta name="theme-color" content={theme === 'light' ? '#66B870' : '#050706'} />
 
       {/* Schema.org JSON-LD */}
       <script type="application/ld+json">

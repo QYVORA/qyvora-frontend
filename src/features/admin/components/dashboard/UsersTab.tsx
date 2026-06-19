@@ -14,7 +14,7 @@ interface UsersTabProps {
 }
 
 const StatCard = ({ label, value }: { label: string; value: number | string }) => (
-  <div className="rounded-2xl border border-border/40 bg-bg-card p-5 md:p-6 shadow-sm">
+  <div className="rounded-2xl border border-border/40 bg-bg-card p-5 md:p-6">
     <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
     <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
   </div>
@@ -47,7 +47,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
         <StatCard label="Admins" value={users.filter(u => u.role === 'admin').length} />
       </div>
 
-      <div className="bg-bg-card border border-border/40 rounded-2xl p-4 space-y-4 shadow-sm">
+      <div className="bg-bg-card border border-border/40 rounded-2xl p-4 space-y-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           <input
