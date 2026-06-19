@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, ArrowRight, Menu, X, Home, Mail, LogIn, UserPlus } from 'lucide-react';
+import { LayoutDashboard, ArrowRight, Menu, X, Home, Mail, LogIn, UserPlus, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollY } from '../../../../core/hooks/useScrollY';
 import { useAuth } from '../../../../core/contexts/AuthContext';
+import { useTheme } from '../../../../core/contexts/ThemeContext';
 import Logo from '../../../../shared/components/brand/Logo';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import { ContactTrigger } from '../ContactModal';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isVisible, setIsVisible]           = useState(true);
   const [isMenuOpen, setIsMenuOpen]         = useState(false);
   const lastScrollY                          = React.useRef(0);
@@ -107,6 +109,19 @@ const Navbar: React.FC = () => {
 
           {/* ── Right controls ───────────────────────────────────────────────── */}
           <div className="flex items-center gap-4 relative z-[110]">
+            {/* Subtle Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-text-primary/70 hover:text-accent hover:bg-white/5 rounded-lg transition-colors cursor-pointer flex items-center justify-center"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
             <div className="hidden md:flex items-center">
               {user ? (
                 <Link
