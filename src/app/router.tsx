@@ -27,6 +27,7 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
+const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -106,6 +107,7 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
+          <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
         </Route>
 
         <Route element={<SnapPublicLayout />}>

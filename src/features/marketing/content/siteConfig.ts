@@ -76,20 +76,23 @@ export const SITE_CONFIG = {
       action: 'Join',
     },
   ],
-   nav: {
-     platform: [
-       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
-       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
-     ],
-     company: [
-       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
-       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
-     ],
-   },
-   
+  nav: {
+    platform: [
+      { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
+    ],
+    company: [
+      { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+      { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
+    ],
+  },
+  
   footer: {
     links: [
-      { label: 'Terms of Service', path: '/terms' }
+      { label: 'Terms of Service', path: '/terms' },
+      { label: 'Team', path: '/team' }
     ],
   },
 } as const;
