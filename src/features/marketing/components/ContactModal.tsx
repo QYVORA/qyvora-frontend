@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Mail, Send, MessageSquare, AlertCircle } from 'lucide-react';
+import { CheckCircle, Loader2, Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
@@ -88,9 +88,10 @@ const ContactModalHost: React.FC = () => {
     try {
       const formData = new FormData(event.currentTarget);
       await api.post('/public/contact', {
+        name: formData.get('name'),
         email: formData.get('email'),
+        subject: `[${contactType === 'student' ? 'Student' : 'Business'}] Contact Form Inquiry`,
         message: formData.get('message'),
-        contactType,
       });
       setStatus('sent');
     } catch {
@@ -156,6 +157,22 @@ const ContactModalHost: React.FC = () => {
                   Business
                 </button>
               </div>
+            </div>
+
+            {/* Name Field */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+                <User className="w-3 h-3" />
+                Your Name
+              </label>
+              <input
+                name="name"
+                type="text"
+                required
+                minLength={2}
+                placeholder="John Doe"
+                className="w-full bg-bg border-2 border-border rounded-2xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-accent/40 outline-none font-mono text-sm transition-all"
+              />
             </div>
 
             {/* Email Field */}
