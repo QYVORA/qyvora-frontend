@@ -29,6 +29,8 @@ const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPa
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
+const BlogsPage         = lazy(() => import('../features/marketing/pages/BlogsPage'));
+const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogPostPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -109,6 +111,8 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
+          <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
+          <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
         </Route>
 
         <Route element={<SnapPublicLayout />}>

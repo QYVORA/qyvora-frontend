@@ -80,6 +80,7 @@ export const SITE_CONFIG = {
     platform: [
       { key: 'learn', label: 'Learn', path: '/learn', desc: 'HPB Bootcamp Phases' },
       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
     ],

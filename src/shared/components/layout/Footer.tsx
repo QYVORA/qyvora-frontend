@@ -119,7 +119,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="w-full max-w-[1600px] mx-auto pt-10 border-t border-border/40 mt-10">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             {/* Pulse text */}
             <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">
               <span className="flex items-center gap-2">
@@ -131,8 +131,8 @@ const Footer: React.FC = () => {
               </span>
             </div>
 
-            {/* Footer legal */}
-            <div className="flex flex-wrap items-center gap-4">
+            {/* Footer legal — right-aligned */}
+            <div className="flex flex-wrap items-center gap-4 md:ml-auto">
               {SITE_CONFIG.footer.links.map((link, idx) => (
                 <Link
                   key={idx}
