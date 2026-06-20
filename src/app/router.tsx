@@ -39,7 +39,6 @@ const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePassw
 
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
-const BootcampPage      = lazy(() => import('../features/student/pages/BootcampPage'));
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
 const WalletPage        = lazy(() => import('../features/student/pages/WalletPage'));
 const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePage'));

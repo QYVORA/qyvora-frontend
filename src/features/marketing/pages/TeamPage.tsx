@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } fr
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
-import Footer from '../components/layout/Footer';
+import { Footer } from '@/shared/components/layout';
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import SEO from '../../../shared/components/SEO';
 import { teamData, TeamMember } from '../content/teamData';

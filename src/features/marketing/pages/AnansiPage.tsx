@@ -2,10 +2,11 @@ import React, { useRef, useEffect, useState, useCallback, lazy, Suspense } from 
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Download, Shield, Zap, Search, Globe, Lock, FileCode, AlertTriangle, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
-import Footer from '../components/layout/Footer';
+import { Footer } from '@/shared/components/layout';
 import { useScrollLock } from '../../../core/hooks/useScrollLock';
 import SEO from '../../../shared/components/SEO';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
+import SnapSection from '@/shared/components/SnapSection';
 
 const PHASES = [
   { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: '/assets/anansi/discovery.webp' },
@@ -15,28 +16,6 @@ const PHASES = [
   { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: '/assets/anansi/paths.webp' },
   { id: '06', name: 'TAKEOVER', icon: AlertTriangle, desc: 'Dangling CNAME detection for cloud services', image: '/assets/anansi/takeover.webp' },
 ];
-
-// ── Snap section ──────────────────────────────────────────────────────────────
-const SnapSection: React.FC<{
-  id?: string;
-  children: React.ReactNode;
-  className?: string;
-  innerClassName?: string;
-}> = ({ id, children, className = '', innerClassName = '' }) => {
-  return (
-    <section
-      id={id}
-      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
-    >
-      <div
-        className={`w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0 ${innerClassName}`}
-        data-snap-child=""
-      >
-        {children}
-      </div>
-    </section>
-  );
-};
 
 const AnansiPage: React.FC = () => {
   const { isMobile } = useAdaptiveUi();

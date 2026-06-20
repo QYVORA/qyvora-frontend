@@ -64,12 +64,12 @@
 
 import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at the top of the viewport.
-import Navbar from '../../features/marketing/components/layout/Navbar';
+import { Navbar } from '@/shared/components/layout';
 // A modal component for the "Contact Us" form — rendered at layout level so it
 // can be triggered from anywhere within the landing page (any snap section).
-import ContactModalHost from '../../features/marketing/components/ContactModal';
+import ContactModalHost from '@/features/marketing/components/ContactModal';
 
-import CookieConsent from '../components/CookieConsent';
+import CookieConsent from '@/shared/components/CookieConsent';
 
 /**
  * LandingLayout Component

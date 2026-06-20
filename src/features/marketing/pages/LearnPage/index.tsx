@@ -2,11 +2,12 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { ChevronLeft, ChevronRight, CheckCircle2, Shield, Terminal, Network, Globe, Users, ArrowRight, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
-import Footer from '../components/layout/Footer';
-import { useScrollLock } from '../../../core/hooks/useScrollLock';
-import SEO from '../../../shared/components/SEO';
-import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
+import { HeroBackground } from '@/shared/components/backgrounds';
+import { Footer } from '@/shared/components/layout';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
+import SEO from '@/shared/components/SEO';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import SnapSection from '@/shared/components/SnapSection';
 
 const PHASES = [
   {
@@ -45,28 +46,6 @@ const PHASES = [
     image: '/assets/bootcamp/rooms/phaseFive.webp',
   },
 ];
-
-// ── Snap section ──────────────────────────────────────────────────────────────
-const SnapSection: React.FC<{
-  id?: string;
-  children: React.ReactNode;
-  className?: string;
-  innerClassName?: string;
-}> = ({ id, children, className = '', innerClassName = '' }) => {
-  return (
-    <section
-      id={id}
-      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
-    >
-      <div
-        className={`w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0 ${innerClassName}`}
-        data-snap-child=""
-      >
-        {children}
-      </div>
-    </section>
-  );
-};
 
 const LearnPage: React.FC = () => {
   const { isMobile } = useAdaptiveUi();

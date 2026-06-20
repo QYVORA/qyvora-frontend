@@ -67,14 +67,14 @@
 
 import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at top, used across all public pages.
-import Navbar from '../../features/marketing/components/layout/Navbar';
+import { Navbar } from '@/shared/components/layout';
 // Shared marketing footer — rendered BELOW the page content, above the mobile nav.
-import Footer from '../../features/marketing/components/layout/Footer';
+import { Footer } from '@/shared/components/layout';
 // Mobile-only bottom navigation — fixed at the screen bottom, hidden on desktop.
-import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
+import { PublicBottomNav } from '@/shared/components/layout';
 // "Contact Us" modal host — sits outside <main> to escape scroll/overflow contexts.
-import ContactModalHost from '../../features/marketing/components/ContactModal';
-import CookieConsent from '../components/CookieConsent';
+import ContactModalHost from '@/features/marketing/components/ContactModal';
+import CookieConsent from '@/shared/components/CookieConsent';
 
 /**
  * PublicLayout Component

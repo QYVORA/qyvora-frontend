@@ -46,8 +46,8 @@
  */
 
 import { Outlet } from 'react-router-dom';
-import AdminTopbar from '../../features/admin/components/layout/AdminTopbar';
-import AdminRightRail from '../../features/admin/components/layout/AdminRightRail';
+import AdminTopbar from '@/features/admin/components/layout/AdminTopbar';
+import AdminRightRail from '@/features/admin/components/layout/AdminRightRail';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
 //
