@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight, Menu, X, Home, Mail, LogIn, UserPlus, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useScrollY } from '../../../../core/hooks/useScrollY';
-import { useAuth } from '../../../../core/contexts/AuthContext';
-import { useTheme } from '../../../../core/contexts/ThemeContext';
-import Logo from '../../../../shared/components/brand/Logo';
-import { SITE_CONFIG } from '../../content/siteConfig';
-import { ContactTrigger } from '../ContactModal';
+import { useScrollY } from '@/core/hooks/useScrollY';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { useTheme } from '@/core/contexts/ThemeContext';
+import { Logo } from '@/shared/components/brand';
+import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();

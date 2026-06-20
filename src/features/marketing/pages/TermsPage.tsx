@@ -8,7 +8,7 @@ import HeroBackground from '../../../shared/components/backgrounds/HeroBackgroun
 import { ContactTrigger } from '../components/ContactModal';
 import { termsData, TermsSection } from '../content/termsData';
 import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
-import Footer from '../components/layout/Footer';
+import { Footer } from '@/shared/components/layout';
 import SimpleHeading from '../../../shared/components/ui/SimpleHeading';
 import SEO from '../../../shared/components/SEO';
 

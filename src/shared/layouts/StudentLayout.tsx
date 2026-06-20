@@ -86,14 +86,14 @@
 
 import { Outlet, useMatch } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../core/contexts/AuthContext';
+import { useAuth } from '@/core/contexts/AuthContext';
 // The student-specific fixed topbar (includes mobile bottom nav internally).
-import StudentTopbar from '../../features/student/components/layout/StudentTopbar';
+import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 // The student-specific right rail sidebar (desktop only).
-import StudentRightRail from '../../features/student/components/layout/StudentRightRail';
-import WelcomeModal from '../../features/student/components/WelcomeModal';
-import RecoveryTokenModal from '../../features/student/components/RecoveryTokenModal';
-import CookieConsent from '../components/CookieConsent';
+import StudentRightRail from '@/features/student/components/layout/StudentRightRail';
+import WelcomeModal from '@/features/student/components/WelcomeModal';
+import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
+import CookieConsent from '@/shared/components/CookieConsent';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
 //

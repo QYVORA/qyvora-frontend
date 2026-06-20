@@ -5,28 +5,28 @@ import {
   CheckCircle2, BookOpen, Menu,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import api from '../../../core/services/api';
-import { useToast } from '../../../core/contexts/ToastContext';
+import api from '@/core/services/api';
+import { useToast } from '@/core/contexts/ToastContext';
 import {
   BOOTCAMP_CONFIG,
   type BootcampPhase,
-} from '../constants/bootcampConfig';
-import CopyButton from '../components/bootcamp-room/CopyButton';
-import StepJumpMenu from '../components/bootcamp-room/StepJumpMenu';
-import ReportIssueModal from '../components/bootcamp-room/ReportIssueModal';
-import StepCard from '../components/bootcamp-room/StepCard';
-import RoomSidebar from '../components/bootcamp-room/RoomSidebar';
-import QuizModal from '../components/bootcamp-room/QuizModal';
-import QuizGateModal from '../components/bootcamp-room/QuizGateModal';
-import RoomCompletionCelebration from '../components/bootcamp-room/RoomCompletionCelebration';
-import RoomHeader from '../components/bootcamp-room/RoomHeader';
-import RoomProgress from '../components/bootcamp-room/RoomProgress';
-import RoomNavigation from '../components/bootcamp-room/RoomNavigation';
-import DesktopToolbar from '../components/bootcamp-room/DesktopToolbar';
-import { useRoomSession } from '../hooks/useRoomSession';
-import type { ApiCourse, RoomQuiz, QuizQuestion } from '../components/bootcamp-room/types';
-import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
-import PageLoader from '../../../shared/components/PageLoader';
+} from '@/features/student/constants/bootcampConfig';
+import CopyButton from '@/features/student/components/bootcamp-room/CopyButton';
+import StepJumpMenu from '@/features/student/components/bootcamp-room/StepJumpMenu';
+import ReportIssueModal from '@/features/student/components/bootcamp-room/ReportIssueModal';
+import StepCard from '@/features/student/components/bootcamp-room/StepCard';
+import RoomSidebar from '@/features/student/components/bootcamp-room/RoomSidebar';
+import QuizModal from '@/features/student/components/bootcamp-room/QuizModal';
+import QuizGateModal from '@/features/student/components/bootcamp-room/QuizGateModal';
+import RoomCompletionCelebration from '@/features/student/components/bootcamp-room/RoomCompletionCelebration';
+import RoomHeader from '@/features/student/components/bootcamp-room/RoomHeader';
+import RoomProgress from '@/features/student/components/bootcamp-room/RoomProgress';
+import RoomNavigation from '@/features/student/components/bootcamp-room/RoomNavigation';
+import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopToolbar';
+import { useRoomSession } from '@/features/student/hooks/useRoomSession';
+import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
+import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import PageLoader from '@/shared/components/PageLoader';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time

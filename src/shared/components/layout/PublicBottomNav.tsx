@@ -12,9 +12,9 @@ import {
   Lock,
   X,
 } from 'lucide-react';
-import { useAuth } from '../../../../core/contexts/AuthContext';
-import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../shared/components/ui/BottomSheet';
-import { ContactTrigger } from '../ContactModal';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui';
+import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 
 const _0x5a2b = atob('L21yLXJvYm90');
 

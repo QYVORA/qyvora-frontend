@@ -6,19 +6,19 @@ import {
   BarChart3, Layers, Trophy, Github, FileText,
 } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
-import { BOOTCAMP_CONFIG } from '../constants/bootcampConfig';
-import ScrollReveal from '../../../shared/components/ScrollReveal';
-import api from '../../../core/services/api';
-import { useToast } from '../../../core/contexts/ToastContext';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '../utils/studentExperience';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
-import PageLoader from '../../../shared/components/PageLoader';
-import CourseHeader from '../components/bootcamp-course/CourseHeader';
-import SidebarProgress from '../components/bootcamp-course/SidebarProgress';
-import PhaseSection from '../components/bootcamp-course/PhaseSection';
-import type { Course } from '../components/bootcamp-course/types';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import ScrollReveal from '@/shared/components/ScrollReveal';
+import api from '@/core/services/api';
+import { useToast } from '@/core/contexts/ToastContext';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
+import OptionalDecorImage from '@/shared/components/OptionalDecorImage';
+import { STUDENT_DECOR } from '@/features/student/constants/studentDecorPaths';
+import PageLoader from '@/shared/components/PageLoader';
+import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
+import SidebarProgress from '@/features/student/components/bootcamp-course/SidebarProgress';
+import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
+import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
   const { bootcampId } = useParams<{ bootcampId?: string }>();

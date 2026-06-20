@@ -1,20 +1,21 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import { useLandingData } from '../hooks/useLandingData';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useScrollLock } from '../../../core/hooks/useScrollLock';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
 
-import HeroSection from '../components/landing/HeroSection';
-import ServicesSection from '../components/landing/ServicesSection';
-import FinalCtaSection from '../components/landing/FinalCtaSection';
-import Footer from '../components/layout/Footer';
-import { useAdaptiveUi } from '../../../core/hooks/useAdaptiveUi';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
-import ServiceRequestModal from '../components/ServiceRequestModal';
-import PromotionalSystem from '../components/PromotionalSystem';
-import SEO from '../../../shared/components/SEO';
-import { SITE_CONFIG } from '../content/siteConfig';
+import HeroSection from '@/features/marketing/components/landing/HeroSection';
+import ServicesSection from '@/features/marketing/components/landing/ServicesSection';
+import FinalCtaSection from '@/features/marketing/components/landing/FinalCtaSection';
+import { Footer } from '@/shared/components/layout';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import { HeroBackground } from '@/shared/components/backgrounds';
+import ServiceRequestModal from '@/features/marketing/components/ServiceRequestModal';
+import PromotionalSystem from '@/features/marketing/components/PromotionalSystem';
+import SEO from '@/shared/components/SEO';
+import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import SnapSection from '@/shared/components/SnapSection';
 
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
@@ -23,27 +24,6 @@ const SECTIONS = [
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
-
-// ── Snap section ──────────────────────────────────────────────────────────────
-const SnapSection: React.FC<{
-  id: string;
-  children: React.ReactNode;
-  className?: string;
-}> = ({ id, children, className = '' }) => {
-  return (
-    <section
-      id={id}
-      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
-    >
-      <div
-        className="w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0"
-        data-snap-child=""
-      >
-        {children}
-      </div>
-    </section>
-  );
-};
 
 const Landing: React.FC = () => {
   const { user } = useAuth();

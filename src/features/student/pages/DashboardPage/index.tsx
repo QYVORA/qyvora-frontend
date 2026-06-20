@@ -5,24 +5,24 @@ import {
   ShoppingBag, Download, Loader2,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import ScrollReveal from '../../../shared/components/ScrollReveal';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import api from '../../../core/services/api';
-import CpLogo from '../../../shared/components/CpLogo';
-import { getRankInfo } from '../utils/rankUtils';
-import { extractCpBalance } from '../../../shared/utils/cpBalance';
+import ScrollReveal from '@/shared/components/ScrollReveal';
+import { useAuth } from '@/core/contexts/AuthContext';
+import api from '@/core/services/api';
+import CpLogo from '@/shared/components/CpLogo';
+import { getRankInfo } from '@/features/student/utils/rankUtils';
+import { extractCpBalance } from '@/shared/utils/cpBalance';
 import {
   formatSyncLabel,
   getBootcampProgressMap,
   getLastSync,
   resolveNextRoomPath,
   setLastSyncNow,
-} from '../utils/studentExperience';
-import { getTokenBalanceForUser } from '../services/tokenBalance.service';
-import StudentBootcampCard, { type StudentBootcampCardData } from '../components/StudentBootcampCard';
-import { resolveImg } from '../../../shared/utils/resolveImg';
-import { useToast } from '../../../core/contexts/ToastContext';
-import PageLoader from '../../../shared/components/PageLoader';
+} from '@/features/student/utils/studentExperience';
+import { getTokenBalanceForUser } from '@/features/student/services/tokenBalance.service';
+import StudentBootcampCard, { type StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
+import { resolveImg } from '@/shared/utils/resolveImg';
+import { useToast } from '@/core/contexts/ToastContext';
+import PageLoader from '@/shared/components/PageLoader';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: '/assets/bootcamp/hpb-cover.webp' };
 const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';

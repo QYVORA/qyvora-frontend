@@ -86,11 +86,11 @@
 
 import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at top of viewport.
-import Navbar from '../../features/marketing/components/layout/Navbar';
+import { Navbar } from '@/shared/components/layout';
 // Shared marketing footer — shown ONLY on mobile via the md:hidden wrapper below.
-import Footer from '../../features/marketing/components/layout/Footer';
+import { Footer } from '@/shared/components/layout';
 // Mobile-only bottom navigation — fixed at screen bottom, hidden on desktop.
-import PublicBottomNav from '../../features/marketing/components/layout/PublicBottomNav';
+import { PublicBottomNav } from '@/shared/components/layout';
 
 /**
  * SnapPublicLayout Component
