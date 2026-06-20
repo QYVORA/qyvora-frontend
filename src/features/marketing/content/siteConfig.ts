@@ -78,6 +78,7 @@ export const SITE_CONFIG = {
   ],
   nav: {
     platform: [
+      { key: 'learn', label: 'Learn', path: '/learn', desc: 'HPB Bootcamp Phases' },
       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
@@ -92,7 +93,8 @@ export const SITE_CONFIG = {
   footer: {
     links: [
       { label: 'Terms of Service', path: '/terms' },
-      { label: 'Team', path: '/team' }
+      { label: 'Team', path: '/team' },
+      { label: 'Learn', path: '/learn' }
     ],
   },
 } as const;

@@ -28,9 +28,9 @@ export interface MarketplaceItem {
 }
 
 export const PHASE_IMGS = [
-  '/assets/bootcamp/rooms/hacker-mindset.webp',
-  '/assets/bootcamp/rooms/linux-foundations.webp',
-  '/assets/bootcamp/rooms/networking.webp',
-  '/assets/bootcamp/rooms/web-and-backend-systems.webp',
-  '/assets/bootcamp/rooms/social-engineering.webp',
+  '/assets/bootcamp/rooms/phaseOne.webp',
+  '/assets/bootcamp/rooms/phaseTwo.webp',
+  '/assets/bootcamp/rooms/phaseThree.webp',
+  '/assets/bootcamp/rooms/phaseFour.webp',
+  '/assets/bootcamp/rooms/phaseFive.webp',
 ];

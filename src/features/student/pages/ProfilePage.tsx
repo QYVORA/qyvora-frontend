@@ -1,29 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Trophy, Zap, Globe, Mail, Edit3, ChevronRight, Activity, Target, Award, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Mail, Edit3, Activity } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import { formatNumber } from '../../../shared/utils/formatNumber';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
 import PageLoader from '../../../shared/components/PageLoader';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 
-const numericStatValue = (value: string | number) => {
-  if (typeof value === 'number') return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
-  const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
-  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
-};
-
-/* ── main page ── */
 const Profile: React.FC = () => {
   const { username: paramUsername } = useParams<{ username?: string }>();
   const { user: authUser } = useAuth();
   const [profileApi, setProfileApi] = useState<any>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showAllRooms, setShowAllRooms] = useState(false);
 
   const isOwnProfile = !paramUsername || paramUsername === authUser?.username;
   const displayHandle = paramUsername || authUser?.username || 'operator';
@@ -55,17 +46,19 @@ const Profile: React.FC = () => {
     organization: String(profileApi?.organization || ''),
     name: String(profileApi?.name || ''),
     cp: Number(profileApi?.cpPoints || authUser?.cp || 0),
-    streakDays: Number(profileApi?.xpSummary?.streakDays || profileApi?.streakDays || 0),
     completedRooms: Array.isArray(profileApi?.learn?.completedRooms) ? profileApi.learn.completedRooms : [],
-    unlockedModules: Array.isArray(profileApi?.emblems?.unlockedModules) ? profileApi.emblems.unlockedModules : [],
     avatarUrl: profileApi?.avatarUrl || '',
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
 
-  const profileStats = [
-    { label: 'CP Balance', value: formatNumber(profileData.cp), icon: Zap, color: 'text-accent' },
-    { label: 'Rooms Done', value: profileData.completedRooms.length, icon: Target, color: 'text-text-primary' },
-    { label: 'Day Streak', value: `${profileData.streakDays}d`, icon: Trophy, color: 'text-orange-400' },
-  ];
+  const rooms = useMemo(() => Array.isArray(profileData.completedRooms) ? profileData.completedRooms : [], [profileData.completedRooms]);
+  const getRoomImage = (roomId: number) => {
+    const phase = String(Math.floor(roomId / 100)).padStart(2, '0');
+    const room = String(roomId % 100).padStart(2, '0');
+    return `/assets/walkthrough/hpb/phase-${phase}/room-${room}/step-01.webp`;
+  };
+
+  const ROOMS_INITIAL = 6;
+  const displayedRooms = showAllRooms ? rooms : rooms.slice(0, ROOMS_INITIAL);
 
   const editInitial = {
     name: profileData.name,
@@ -77,168 +70,150 @@ const Profile: React.FC = () => {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="bg-bg">
-      <div
-        className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover"
-        style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
-      >
-      <div className="mx-auto max-w-[1440px] px-2 pt-6 pb-16 md:px-8">
+    <div className="bg-bg min-h-full">
+      <div className="mx-auto max-w-[1440px] px-4 pt-6 pb-16 md:px-8">
 
-        {/* HEADER */}
-        <ScrollReveal className="mb-8 md:mb-10">
-           <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-bg-card p-8 md:p-12 shadow-2xl">
-            <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-            
-            <OptionalDecorImage
-              src={STUDENT_DECOR.bootcampOperator}
-              className="pointer-events-none absolute right-0 bottom-0 h-full w-auto object-contain object-right-bottom opacity-[0.08] select-none"
-            />
+        {/* Profile Header */}
+        <ScrollReveal className="mb-10">
+          <div className="rounded-3xl bg-bg-card p-6 md:p-10">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
 
-            <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
-              {/* Avatar */}
-              <div className="relative flex-none">
+              {/* Avatar — smaller on mobile, full height on desktop */}
+              <div className="w-32 md:w-48 lg:w-56 flex-shrink-0">
                 {profileData.avatarUrl ? (
-                  <img 
-                    src={profileData.avatarUrl} 
-                    alt="" 
-                    className="w-24 h-24 md:w-32 md:h-32 rounded-2xl border-2 border-accent/20 object-cover shadow-2xl" 
-                  />
+                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl overflow-hidden border border-accent/20">
+                    <img
+                      src={profileData.avatarUrl}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 ) : (
-                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl border-2 border-accent/20 bg-accent-dim flex items-center justify-center text-accent text-3xl md:text-4xl font-black font-mono">
+                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl border border-accent/20 bg-accent-dim flex items-center justify-center text-accent text-4xl md:text-6xl lg:text-7xl font-black font-mono">
                     {profileData.username.substring(0, 2).toUpperCase()}
                   </div>
                 )}
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent text-bg flex items-center justify-center border-4 border-bg-card shadow-lg">
-                  <Shield className="w-4 h-4 md:w-5 md:h-5" />
-                </div>
               </div>
 
-              {/* Identity */}
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h1 className="text-3xl md:text-5xl font-black text-text-primary tracking-tighter uppercase font-mono truncate">
-                    {profileData.username}
-                  </h1>
-                  <span className="px-3 py-1 bg-accent/10 border border-accent/30 text-accent text-[10px] md:text-xs font-bold rounded uppercase tracking-widest flex-none">
-                    {profileData.rank}
+              {/* Identity + CP + Actions */}
+              <div className="flex-1 flex flex-col justify-between min-w-0 gap-y-7">
+
+                {/* Top: Name + Rank + Bio */}
+                <div>
+                  <div className="flex flex-wrap items-center gap-4 mb-2">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter uppercase font-mono leading-none">
+                      {profileData.username}
+                    </h1>
+                    <span className="px-4 py-1.5 bg-accent/10 text-accent text-xs font-bold rounded uppercase tracking-widest flex-none">
+                      {profileData.rank}
+                    </span>
+                  </div>
+                  {profileData.bio && (
+                    <p className="text-text-muted text-sm md:text-base leading-relaxed max-w-2xl">
+                      {profileData.bio}
+                    </p>
+                  )}
+                </div>
+
+                {/* Middle: CP with logo */}
+                <div className="flex items-center gap-3">
+                  <CpLogo className="w-7 h-7 md:w-8 md:h-8 text-accent" />
+                  <span className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter">
+                    {profileData.cp.toLocaleString()} <span className="text-text-muted font-medium">CP</span>
                   </span>
                 </div>
-                {profileData.bio && (
-                  <p className="text-text-muted text-base mb-4 italic leading-relaxed max-w-2xl font-medium">"{profileData.bio}"</p>
-                )}
-                <div className="flex flex-wrap gap-6 text-[11px] font-bold text-text-muted uppercase tracking-widest">
-                  {profileData.organization && (
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-accent" /> {profileData.organization}
-                    </div>
-                  )}
-                  {isOwnProfile && authUser?.email && (
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-accent" /> {authUser.email}
-                    </div>
-                  )}
+
+                {/* Bottom: Metadata + Actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-text-muted">
+                    {profileData.organization && (
+                      <span className="flex items-center gap-2">
+                        <Activity className="w-3.5 h-3.5 text-accent" /> {profileData.organization}
+                      </span>
+                    )}
+                    {isOwnProfile && authUser?.email && (
+                      <span className="flex items-center gap-2">
+                        <Mail className="w-3.5 h-3.5 text-accent" /> {authUser.email}
+                      </span>
+                    )}
+                    {profileData.completedRooms.length > 0 && (
+                      <span className="flex items-center gap-2">
+                        <Activity className="w-3.5 h-3.5 text-accent" /> {profileData.completedRooms.length} rooms
+                      </span>
+                    )}
+                  </div>
+
                   <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-accent" /> Active Status
+                    {isOwnProfile ? (
+                      <>
+                        <Link
+                          to={`/${profileData.username}`}
+                          className="px-4 py-2 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95"
+                        >
+                          Public View
+                        </Link>
+                        <button
+                          onClick={() => setEditOpen(true)}
+                          className="px-4 py-2 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" /> Edit
+                        </button>
+                      </>
+                    ) : (
+                      <Link
+                        to={`/${profileData.username}`}
+                        className="px-4 py-2 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95"
+                      >
+                        View Public Page
+                      </Link>
+                    )}
                   </div>
                 </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center gap-2 flex-none flex-wrap">
-                {isOwnProfile ? (
-                  <>
-                    <Link
-                      to={`/@${profileData.username}`}
-                      className="flex items-center gap-2 px-5 py-3 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95 shadow-sm"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" /> Public View
-                    </Link>
-                    <button
-                      onClick={() => setEditOpen(true)}
-                      className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-black/10"
-                    >
-                      <Edit3 className="w-4 h-4" /> Edit Profile
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    to={`/@${profileData.username}`}
-                    className="flex items-center gap-2 px-5 py-3 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-black/10"
-                  >
-                    <ExternalLink className="w-4 h-4" /> View Public Page
-                  </Link>
-                )}
               </div>
             </div>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-
-          {/* LEFT — stats */}
-          <div className="lg:col-span-2 space-y-6">
-            <ScrollReveal delay={0.1}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {profileStats.map((s, i) => (
-                  <div key={i} className="card-qyvora p-6 flex flex-col gap-3">
-                    <s.icon className={`w-5 h-5 ${s.color} shrink-0`} />
-                    <div className="text-3xl font-black text-text-primary font-mono tracking-tighter">{s.value}</div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{s.label}</div>
+        {/* Completed rooms — below the header card */}
+        {rooms.length > 0 && (
+          <ScrollReveal>
+            <div>
+              <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-4">Completed Rooms</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                {displayedRooms.map((room: { roomId: number; title: string }) => (
+                  <div
+                    key={room.roomId}
+                    className="rounded-xl bg-bg-card border border-border overflow-hidden"
+                  >
+                    <div className="aspect-[16/10] bg-accent-dim overflow-hidden relative">
+                      <img
+                        src={getRoomImage(room.roomId)}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                      />
+                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 bg-accent/80 text-bg text-[10px] font-black uppercase tracking-wider rounded">HPB</span>
+                    </div>
+                    <div className="p-2.5">
+                      <p className="text-xs font-bold text-text-primary leading-tight line-clamp-2">{room.title}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-            </ScrollReveal>
+              {rooms.length > ROOMS_INITIAL && (
+                <button
+                  onClick={() => setShowAllRooms(!showAllRooms)}
+                  className="mt-4 text-xs font-bold text-accent uppercase tracking-widest hover:text-accent/80 transition-colors"
+                >
+                  {showAllRooms ? 'Show Less' : `Show All (${rooms.length})`}
+                </button>
+              )}
+            </div>
+          </ScrollReveal>
+        )}
 
-            {isOwnProfile && (
-              <ScrollReveal delay={0.2}>
-                <div className="grid grid-cols-1 gap-4">
-                  <Link to="/dashboard/wallet" className="p-6 bg-accent-dim border border-accent/20 rounded-2xl hover:bg-accent-dim/50 transition-all group relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <CpLogo className="w-16 h-16" />
-                    </div>
-                    <h4 className="text-xs font-black text-accent mb-1 uppercase tracking-widest">Operator Wallet</h4>
-                    <p className="text-xs text-text-muted mb-4 max-w-[200px]">Manage your CP balance and transaction history.</p>
-                    <div className="flex items-center gap-2 text-[10px] font-black text-text-primary uppercase tracking-widest group-hover:translate-x-1 transition-transform">
-                      Open Wallet <ChevronRight className="w-3.5 h-3.5" />
-                    </div>
-                  </Link>
-                  <Link to="/dashboard" className="p-6 bg-bg border border-border rounded-2xl hover:border-accent/40 transition-all group relative overflow-hidden">
-                    <h4 className="text-xs font-black text-text-primary mb-1 uppercase tracking-widest">Mission Control</h4>
-                    <p className="text-xs text-text-muted mb-4 max-w-[200px]">Back to your active training and bootcamps.</p>
-                    <div className="flex items-center gap-2 text-[10px] font-black text-accent uppercase tracking-widest group-hover:translate-x-1 transition-transform">
-                      Continue <ChevronRight className="w-3.5 h-3.5" />
-                    </div>
-                  </Link>
-                </div>
-              </ScrollReveal>
-            )}
-          </div>
-
-          {/* RIGHT — activity */}
-          <div className="lg:col-span-3 space-y-6">
-
-            {/* Achievements Showcase */}
-            <ScrollReveal delay={0.2}>
-              <div className="card-qyvora p-8 md:p-10 relative overflow-hidden">
-                <div className="absolute inset-0 dot-grid opacity-[0.05] pointer-events-none" />
-                <div className="flex items-center gap-3 mb-8 relative z-10">
-                  <Trophy className="w-5 h-5 text-accent" />
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-primary">Achievement Showcase</h3>
-                </div>
-
-                <div className="relative z-10">
-                  {/* Achievement showcase temporarily disabled - component missing */}
-                  <p className="text-sm text-text-muted italic">Achievement showcase coming soon...</p>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </div>
       </div>
 
-      {/* Edit modal — outside the scrollable div */}
       {isOwnProfile && (
         <EditModal
           open={editOpen}

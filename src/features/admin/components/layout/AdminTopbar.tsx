@@ -398,16 +398,6 @@ const AdminTopbar = () => {
             );
           })}
 
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-          >
-            {theme === 'dark' ? <Sun className="w-6 h-6 text-text-muted" /> : <Moon className="w-6 h-6 text-text-muted" />}
-            <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-          </button>
-
           {/* More button */}
           <button
             onClick={() => setMoreOpen(true)}

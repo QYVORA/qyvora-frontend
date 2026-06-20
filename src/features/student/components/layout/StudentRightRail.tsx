@@ -1,10 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Wallet, ShoppingBag, Bell, Settings, Radar } from 'lucide-react';
+import { Wallet, ShoppingBag, Settings, Radar } from 'lucide-react';
 
 const RAIL_LINKS = [
   { icon: Wallet,      path: '/dashboard/wallet',        label: 'Wallet'    },
   { icon: ShoppingBag, path: '/dashboard/marketplace',   label: 'Store'     },
-  { icon: Bell,        path: '/dashboard/notifications', label: 'Alerts'    },
   { icon: Settings,    path: '/dashboard/settings',      label: 'Settings'  },
 ];
 
