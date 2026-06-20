@@ -165,6 +165,12 @@ const StudentLayout = () => {
   // The right rail is hidden on all of these — bootcamp pages manage their own layout.
   const isBootcampPage = Boolean(isRoomPage || bootcampCourseMatch || bootcampListMatch);
 
+  // ── Profile Pages (Right Rail Hidden) ───────────────────────────────────────
+  // Profile pages should be full-width with the avatar and identity standing alone.
+  const profileMatch = useMatch('/dashboard/profile');
+  const profileParamMatch = useMatch('/dashboard/profile/:username');
+  const isProfilePage = Boolean(profileMatch || profileParamMatch);
+
   // ── Pages With Their Own Sidebar (Right Rail Hidden) ───────────────────────
   // These pages implement their own page-level sidebar/rail, so the shared
   // StudentRightRail would create a duplicate/conflicting sidebar.
@@ -197,10 +203,11 @@ const StudentLayout = () => {
     || settingsLegacyMatch
   );
 
-  // Final decision: hide the right rail if EITHER condition is true.
+  // Final decision: hide the right rail if ANY condition is true.
   //   isBootcampPage     → room/course/list pages have their own layout
   //   hasPageOwnedSidebar → marketplace/wallet/notifications/settings have own sidebar
-  const hideRightRail = isBootcampPage || hasPageOwnedSidebar;
+  //   isProfilePage      → profile pages are full-width with prominent avatar
+  const hideRightRail = isBootcampPage || hasPageOwnedSidebar || isProfilePage;
 
   return (
     /**

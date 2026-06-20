@@ -101,16 +101,6 @@ const Aya: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const Akoma: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M50 86 C50 86 10 58 10 34 C10 18 22 8 36 10 C44 11 50 18 50 26 C50 18 56 11 64 10 C78 8 90 18 90 34 C90 58 50 86 50 86 Z"
-      fill="currentColor"
-    />
-    <line x1="50" y1="6" x2="50" y2="22" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
-  </svg>
-);
-
 interface Placement {
   Symbol: React.FC<{ className?: string }>;
   style: React.CSSProperties;
@@ -125,7 +115,6 @@ const PLACEMENTS: Placement[] = [
   { Symbol: Aya, style: { bottom: '6%', left: '8%', width: 120, height: 120, transform: 'rotate(5deg)' }, symOpacity: 0.60, label: 'aya-bl' },
   { Symbol: Sankofa, style: { top: '40%', left: '2%', width: 100, height: 100, transform: 'rotate(8deg)' }, symOpacity: 0.60, label: 'sankofa-ml' },
   { Symbol: Nkyinkyim, style: { top: '22%', right: '20%', width: 96, height: 96, transform: 'rotate(-12deg)' }, symOpacity: 0.55, label: 'nkyinkyim-tm' },
-  { Symbol: Akoma, style: { bottom: '26%', right: '3%', width: 100, height: 100, transform: 'rotate(-5deg)' }, symOpacity: 0.60, label: 'akoma-mr' },
   { Symbol: Nsoromma, style: { bottom: '30%', left: '26%', width: 90, height: 90, transform: 'rotate(15deg)' }, symOpacity: 0.55, label: 'nsoromma-bml' },
   { Symbol: GyeNyame, style: { top: '58%', right: '14%', width: 80, height: 80, transform: 'rotate(18deg)' }, symOpacity: 0.45, label: 'gye-nyame-sm1' },
   { Symbol: Adinkrahene, style: { top: '16%', left: '38%', width: 72, height: 72 }, symOpacity: 0.42, label: 'adinkrahene-sm' },

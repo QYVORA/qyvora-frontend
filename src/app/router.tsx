@@ -28,6 +28,7 @@ const LandingPage       = lazy(() => import('../features/marketing/pages/Landing
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
+const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));
@@ -108,6 +109,7 @@ export const AppRouter = () => {
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
+          <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
         </Route>
 
         <Route element={<SnapPublicLayout />}>
@@ -152,9 +154,10 @@ export const AppRouter = () => {
           <Route path={`${_0x5a2b}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
-        {/* ── 404 fallback ───────────────────────────────────────────────── */}
-        {/* Handle profile routes that start with @ */}
-        <Route path="/@:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        {/* ── Public profile route (before catch-all) ─────────────────────── */}
+        {/* Matches /:handle for clean profile URLs. The component also strips @
+            prefix, so /@:handle works too if the browser doesn't encode it. */}
+        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         
         {/* Catch-all 404 for any other invalid routes */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />

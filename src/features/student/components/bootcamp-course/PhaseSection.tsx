@@ -5,11 +5,11 @@ import RoomCard from './RoomCard';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {
-  phase1: '/assets/bootcamp/rooms/hacker-mindset.webp',
-  phase2: '/assets/bootcamp/rooms/linux-foundations.webp',
-  phase3: '/assets/bootcamp/rooms/networking.webp',
-  phase4: '/assets/bootcamp/rooms/web-and-backend-systems.webp',
-  phase5: '/assets/bootcamp/rooms/social-engineering.webp',
+  phase1: '/assets/bootcamp/rooms/phaseOne.webp',
+  phase2: '/assets/bootcamp/rooms/phaseTwo.webp',
+  phase3: '/assets/bootcamp/rooms/phaseThree.webp',
+  phase4: '/assets/bootcamp/rooms/phaseFour.webp',
+  phase5: '/assets/bootcamp/rooms/phaseFive.webp',
 };
 
 interface PhaseSectionProps {

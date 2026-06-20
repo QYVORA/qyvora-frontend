@@ -26,6 +26,53 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
+  const [stepIndex, setStepIndex] = React.useState(0);
+  const [displayText, setDisplayText] = React.useState('');
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
+  const steps = React.useMemo(() => [
+    { line1: "Train Like a", line2: "Hacker." },
+    { line1: "Train Like a Hacker.", line2: "Become a Hacker." },
+    { line1: "Building a", line2: "Strong Cybersecurity Ecosystem in Africa." }
+  ], []);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    const currentStep = steps[stepIndex];
+    const fullText = currentStep.line2;
+
+    const tick = () => {
+      if (!isDeleting) {
+        const nextText = fullText.substring(0, displayText.length + 1);
+        setDisplayText(nextText);
+
+        if (nextText === fullText) {
+          const pauseTime = stepIndex === 2 ? 4000 : 2000;
+          timer = setTimeout(() => {
+            setIsDeleting(true);
+          }, pauseTime);
+        } else {
+          const typingSpeed = 80 + Math.random() * 40;
+          timer = setTimeout(tick, typingSpeed);
+        }
+      } else {
+        const nextText = fullText.substring(0, displayText.length - 1);
+        setDisplayText(nextText);
+
+        if (nextText === '') {
+          setIsDeleting(false);
+          setStepIndex((prev) => (prev + 1) % steps.length);
+        } else {
+          timer = setTimeout(tick, 30);
+        }
+      }
+    };
+
+    timer = setTimeout(tick, isDeleting ? 30 : 80);
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, stepIndex, steps]);
+
   return (
     <div ref={heroRef} className="relative w-full min-h-[85svh] md:h-screen md:overflow-hidden flex flex-col overflow-visible">
       
@@ -77,25 +124,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.div>
 
             {/* ── Headline ── */}
-            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full">
-
-              <motion.span
-                initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]"
-              >
-                Train Like a Hacker.
-              </motion.span>
-
-              <motion.span
-                initial={minimizeEffects ? false : { opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={minimizeEffects ? { duration: 0 } : { duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="block text-accent text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]"
-              >
-                Become a Hacker.
-              </motion.span>
+            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full min-h-[190px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[170px] xl:min-h-[150px]">
+              <span className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] transition-all duration-300">
+                {steps[stepIndex].line1}
+              </span>
+              <span className="block text-accent text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] transition-all duration-300">
+                {displayText}
+                <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+              </span>
             </h1>
 
             {/* Subtext */}
@@ -103,7 +139,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl"
+              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in"
             >
               {SITE_CONFIG.brand.description}
             </motion.p>
