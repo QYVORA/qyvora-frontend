@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, ArrowRight, Menu, X, Home, Mail, LogIn, UserPlus, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, Menu, X, Home, LogIn, UserPlus, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollY } from '@/core/hooks/useScrollY';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useTheme } from '@/core/contexts/ThemeContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
-import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
@@ -78,32 +77,19 @@ const Navbar: React.FC = () => {
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}
           <div className="hidden md:flex items-center space-x-10">
-            {SITE_CONFIG.nav.platform.map((item) => (
-              item.key === 'contact' ? (
-                <ContactTrigger
-                  key={item.key}
-                  type="link"
-                  className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:text-accent relative group ${
-                    location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
-                  }`}
-                >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-full" />
-                </ContactTrigger>
-              ) : (
-                <Link
-                  key={item.key}
-                  to={item.path}
-                  className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:text-accent relative group ${
-                    location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
-                  }`}
-                >
-                  {item.label}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-full ${
-                    location.pathname === item.path ? 'w-full' : ''
-                  }`} />
-                </Link>
-              )
+            {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => (
+              <Link
+                key={item.key}
+                to={item.path}
+                className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:text-accent relative group ${
+                  location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
+                }`}
+              >
+                {item.label}
+                <span className={`absolute -bottom-1 left-0 w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-full ${
+                  location.pathname === item.path ? 'w-full' : ''
+                }`} />
+              </Link>
             ))}
           </div>
 
@@ -176,33 +162,8 @@ const Navbar: React.FC = () => {
                 <Home className="w-5 h-5 text-accent" /> Home
               </Link>
 
-              {SITE_CONFIG.nav.platform.map((item) => {
+              {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => {
                 const active = location.pathname === item.path;
-                const content = (
-                  <>
-                    <div className="w-5 h-5 flex items-center justify-center">
-                      {item.key === 'contact' ? (
-                        <Mail className="w-5 h-5 text-accent" />
-                      ) : (
-                        <div className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-accent' : 'bg-border'}`} />
-                      )}
-                    </div>
-                    {item.label}
-                  </>
-                );
-
-                if (item.key === 'contact') {
-                  return (
-                    <ContactTrigger
-                      key={item.key}
-                      onOpen={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-text-primary hover:text-accent transition-colors"
-                    >
-                      {content}
-                    </ContactTrigger>
-                  );
-                }
-
                 return (
                   <Link
                     key={item.key}
@@ -212,7 +173,10 @@ const Navbar: React.FC = () => {
                       active ? 'text-accent' : 'text-text-primary'
                     }`}
                   >
-                    {content}
+                    <div className="w-5 h-5 flex items-center justify-center">
+                      <div className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-accent' : 'bg-border'}`} />
+                    </div>
+                    {item.label}
                   </Link>
                 );
               })}
