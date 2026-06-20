@@ -33,7 +33,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const steps = React.useMemo(() => [
     { line1: "Train Like a", line2: "Hacker." },
     { line1: "Train Like a Hacker.", line2: "Become a Hacker." },
-    { line1: "Building a", line2: "Strong Cybersecurity Ecosystem in Africa." }
+    { line1: "Securing Africa's", line2: "Digital Future." }
   ], []);
 
   React.useEffect(() => {
@@ -125,12 +125,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* ── Headline ── */}
             <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full min-h-[190px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[170px] xl:min-h-[150px]">
-              <span className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] transition-all duration-300">
+              <span className="block whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
                 {steps[stepIndex].line1}
               </span>
-              <span className="block text-accent text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] transition-all duration-300">
-                {displayText}
-                <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+              <span className="relative block whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                {/* Invisible placeholder — reserves space for the full text so width never shifts */}
+                <span className="invisible" aria-hidden="true">{steps[stepIndex].line2}</span>
+                {/* Visible typed text — overlaid on top */}
+                <span className="absolute left-0 top-0 text-accent whitespace-nowrap">
+                  {displayText}
+                  <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+                </span>
               </span>
             </h1>
 
