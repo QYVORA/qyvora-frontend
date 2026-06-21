@@ -3,11 +3,12 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import SnapSection from '@/shared/components/SnapSection';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { TermsHeroSection } from './TermsHeroSection';
 import { TermsContentSection } from './TermsContentSection';
-import { TermsCtaSection } from './TermsCtaSection';
 
 const TermsPage: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,6 +16,7 @@ const TermsPage: React.FC = () => {
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroY = useTransform(scrollY, [0, 300], [0, 60]);
   const { constrainedDevice } = useAdaptiveUi();
+  const { user } = useAuth();
   const shouldReduceMotion = useReducedMotion();
   const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
@@ -47,7 +49,7 @@ const TermsPage: React.FC = () => {
         </SnapSection>
 
         <SnapSection id="terms-cta">
-          <TermsCtaSection />
+          <LandingFinalCtaSection user={user} />
         </SnapSection>
 
         <section id="footer" className="md:snap-start md:snap-always md:min-h-full md:flex md:flex-shrink-0 bg-transparent overflow-hidden">

@@ -2,16 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import SnapSection from '@/shared/components/SnapSection';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { AnansiHeroSection } from './AnansiHeroSection';
 import { AnansiInstallSection } from './AnansiInstallSection';
 import { AnansiPipelineSection } from './AnansiPipelineSection';
-import { AnansiCtaSection } from './AnansiCtaSection';
 
 const AnansiPage: React.FC = () => {
   const { isMobile } = useAdaptiveUi();
+  const { user } = useAuth();
   useScrollLock(!isMobile);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -99,7 +101,7 @@ const AnansiPage: React.FC = () => {
         </SnapSection>
 
         <SnapSection id="cta">
-          <AnansiCtaSection />
+          <LandingFinalCtaSection user={user} />
         </SnapSection>
 
         <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">

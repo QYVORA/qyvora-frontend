@@ -1,5 +1,5 @@
 import { useLocation, Outlet } from 'react-router-dom';
-import { BlogsNavbar } from '@/shared/components/layout';
+import { Navbar } from '@/shared/components/layout';
 import { Footer } from '@/shared/components/layout';
 import { PublicBottomNav } from '@/shared/components/layout';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
@@ -11,16 +11,16 @@ const BlogsLayout = () => {
 
   return (
     <>
-      {!isBlogPost && <BlogsNavbar />}
+      <Navbar />
 
       <main
         id="main-content"
-        className={`w-full min-h-screen flex flex-col ${isBlogPost ? 'pt-0' : 'pt-[80px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0'}`}
+        className="w-full flex flex-col bg-bg pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
       >
         <Outlet />
       </main>
 
-      <Footer />
+      {isBlogPost && <Footer />}
       <PublicBottomNav />
       <ContactModalHost />
       <ConsentBanner />

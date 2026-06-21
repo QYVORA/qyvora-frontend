@@ -4,13 +4,16 @@ import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import SnapSection from '@/shared/components/SnapSection';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { TeamHeroSection } from './TeamHeroSection';
 import { TeamCarouselSection } from './TeamCarouselSection';
 
 const TeamPage: React.FC = () => {
   const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const { user } = useAuth();
   useScrollLock(!isMobile);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,6 +50,10 @@ const TeamPage: React.FC = () => {
 
         <SnapSection id="operators-directory" innerClassName="md:pt-20">
           <TeamCarouselSection />
+        </SnapSection>
+
+        <SnapSection id="cta">
+          <LandingFinalCtaSection user={user} />
         </SnapSection>
 
         <section id="footer" className="md:snap-start md:snap-always md:min-h-full md:flex md:flex-shrink-0 bg-transparent overflow-hidden">

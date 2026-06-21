@@ -1,15 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import SnapSection from '@/shared/components/SnapSection';
 import { Footer } from '@/shared/components/layout';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { LearnHeroSection } from './LearnHeroSection';
 import { LearnPhasesSection } from './LearnPhasesSection';
-import { LearnCtaSection } from './LearnCtaSection';
 
 const LearnPage: React.FC = () => {
   const { isMobile } = useAdaptiveUi();
+  const { user } = useAuth();
   useScrollLock(!isMobile);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ const LearnPage: React.FC = () => {
         </SnapSection>
 
         <SnapSection id="cta">
-          <LearnCtaSection />
+          <LandingFinalCtaSection user={user} />
         </SnapSection>
 
         <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
