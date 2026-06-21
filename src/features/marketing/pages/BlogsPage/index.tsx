@@ -9,6 +9,7 @@ import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { Footer } from '@/shared/components/layout';
 
 const BlogsPage: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -250,6 +251,11 @@ const BlogsPage: React.FC = () => {
       {/* ── CTA Section ── */}
       <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg flex flex-col justify-center min-h-screen">
         <LandingFinalCtaSection user={user} />
+      </section>
+
+      {/* ── Footer Section ── */}
+      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+        <Footer />
       </section>
     </div>
   );
