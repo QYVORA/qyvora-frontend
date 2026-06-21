@@ -40,7 +40,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       const isLight = theme === 'light';
 
       renderer = new THREE.WebGLRenderer({
-        antialias: !isSimplified,
+        antialias: true,
         alpha: true,
         powerPreference: isSimplified ? 'low-power' : 'high-performance'
       });
