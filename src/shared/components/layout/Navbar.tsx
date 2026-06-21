@@ -143,73 +143,85 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl flex flex-col pt-24 px-6 pb-10 overflow-x-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[90] md:hidden bg-bg/95 backdrop-blur-xl"
           >
-            <div className="flex-1 flex flex-col gap-6 overflow-y-auto pt-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted mb-2">
-                Navigation
-              </span>
-              
-              <Link
-                to="/"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-4 text-xl font-black uppercase tracking-widest text-text-primary hover:text-accent transition-colors"
-              >
-                <Home className="w-5 h-5 text-accent" /> Home
-              </Link>
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col h-full pt-24 px-6 pb-10 overflow-y-auto"
+            >
+              {/* Nav links */}
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black uppercase tracking-[0.35em] text-text-muted/50 mb-5 pl-1">
+                  — Pages
+                </span>
 
-              {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => {
-                const active = location.pathname === item.path;
-                return (
-                  <Link
-                    key={item.key}
-                    to={item.path}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-4 text-xl font-black uppercase tracking-widest transition-colors ${
-                      active ? 'text-accent' : 'text-text-primary'
-                    }`}
-                  >
-                    <div className="w-5 h-5 flex items-center justify-center">
-                      <div className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-accent' : 'bg-border'}`} />
-                    </div>
-                    {item.label}
-                  </Link>
-                );
-              })}
+                <Link
+                  to="/"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`relative pl-4 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors border-l-2 ${
+                    location.pathname === '/' ? 'text-accent border-accent' : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
+                  }`}
+                >
+                  Home
+                </Link>
 
-              <div className="mt-auto pt-10 flex flex-col gap-4">
+                {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => {
+                  const active = location.pathname === item.path;
+                  return (
+                    <Link
+                      key={item.key}
+                      to={item.path}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`relative pl-4 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors border-l-2 ${
+                        active ? 'text-accent border-accent' : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Separator */}
+              <div className="my-8 h-px bg-gradient-to-r from-accent/40 via-accent/20 to-transparent" />
+
+              {/* Auth buttons */}
+              <div className="flex flex-col gap-3">
                 {user ? (
                   <Link
                     to="/dashboard"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
+                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                   >
-                    <LayoutDashboard className="w-5 h-5" /> Dashboard
+                    <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
                 ) : (
                   <>
                     <Link
                       to="/register"
                       onClick={() => setIsMenuOpen(false)}
-                      className="w-full btn-primary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
+                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                     >
-                      <UserPlus className="w-5 h-5" /> Start Training
+                      <UserPlus className="w-4 h-4" /> Start Training
                     </Link>
                     <Link
                       to="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="w-full btn-secondary flex items-center justify-center gap-2 py-4 text-sm font-black uppercase tracking-[0.2em]"
+                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:bg-accent/10 active:scale-[0.98]"
                     >
-                      <LogIn className="w-5 h-5" /> Log In
+                      <LogIn className="w-4 h-4" /> Log In
                     </Link>
                   </>
                 )}
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

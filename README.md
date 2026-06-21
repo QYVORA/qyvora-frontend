@@ -59,7 +59,163 @@ To add a new image:
 2. Reference it as `.webp` in your code (e.g., `<img src="/assets/my-image.webp" />`).
 3. The plugin handles the rest.
 
-## Project Structure
+## Code & Folder Structure Rules
+
+### 1. Component Splitting
+
+If a component can be split into smaller, focused sub-components, it **must** be split. This improves maintainability, reusability, and file readability.
+
+- **Single-responsibility**: Each component should do one thing well.
+- **Extract sub-components**: When a component has distinct visual/logical sections, extract them into separate files under a folder named after the parent component.
+- **Example pattern**: For `HackerGlobe.tsx`, extract `hacker-globe/data.ts`, `hacker-globe/helpers.ts`, `hacker-globe/types.ts`, and keep the main component in `hacker-globe/HackerGlobe.tsx`. Re-export from the original file path.
+
+### 2. File Size Limit
+
+No component file should exceed **250 lines**. If a file exceeds this:
+- Extract data constants into a separate file (`data.ts`, `constants.ts`)
+- Extract helper/utility functions into `helpers.ts` or `utils.ts`
+- Extract type definitions into `types.ts`
+- Split the component into sub-components
+
+### 3. Shared Components
+
+If a component is imported by **two or more features** (e.g., used across `auth/`, `student/`, `marketing/`), it must be moved to `src/shared/components/`.
+
+- **Shared UI primitives** go in `src/shared/components/ui/` (e.g., Dialog, BottomSheet, Card, Tooltip)
+- **Shared layout components** go in `src/shared/components/layout/` (e.g., Navbar, Footer, BlogsNavbar)
+- **Shared brand components** go in `src/shared/components/brand/` (e.g., Logo)
+- **Shared backgrounds** go in `src/shared/components/backgrounds/` (e.g., HeroBackground)
+
+Components that depend on feature-specific data (e.g., importing from `features/marketing/content/`) should stay in their feature directory and be imported via the `@/` path alias.
+
+### 4. Folder Structure
+
+```
+src/
+├── app/
+│   ├── App.tsx                    # Root app component
+│   ├── main.tsx                   # Entry point
+│   └── router.tsx                 # All routes (public, student, admin)
+├── core/
+│   ├── contexts/                  # Auth, Theme, Toast contexts
+│   ├── hooks/                     # useScrollY, useAdaptiveUi, useCountUp, etc.
+│   └── services/
+│       └── api.ts                 # Axios instance with interceptors
+├── features/
+│   ├── auth/
+│   │   ├── components/            # AuthHero, LoginForm, RegisterForm, etc.
+│   │   ├── pages/                 # LoginPage, RegisterPage, etc.
+│   │   └── ... (hooks/, services/, validators/ as needed)
+│   ├── marketing/
+│   │   ├── components/
+│   │   │   ├── hacker-globe/      # HackerGlobe sub-components (data, helpers, types)
+│   │   │   ├── landing/           # HeroSection, ServicesSection, FinalCtaSection
+│   │   │   ├── HackerGlobe.tsx    # Barrel re-export
+│   │   │   ├── ContactModal.tsx
+│   │   │   ├── ServiceRequestModal.tsx
+│   │   │   └── PromotionalSystem.tsx
+│   │   ├── content/               # Blog content, site config, team data
+│   │   ├── hooks/                 # useLandingData, landingCache
+│   │   └── pages/                 # LandingPage, BlogsPage, TeamPage, etc.
+│   ├── student/
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   ├── StudentTopbar.tsx          # Barrel re-export
+│   │   │   │   └── StudentTopbar/             # Sub-components:
+│   │   │   │       ├── StudentTopbar.tsx      # Main component
+│   │   │   │       ├── NotificationsDropdown.tsx
+│   │   │   │       ├── MobileNotificationsSheet.tsx
+│   │   │   │       ├── MobileMoreSheet.tsx
+│   │   │   │       ├── navGroups.ts
+│   │   │   │       ├── mobileNav.ts
+│   │   │   │       └── types.ts
+│   │   │   ├── bootcamp-course/    # CourseHeader, PhaseSection, RoomCard, etc.
+│   │   │   ├── bootcamp-room/      # StepCard, CodeBlockRenderer, QuizModal, etc.
+│   │   │   ├── profile/            # EditModal
+│   │   │   ├── BootcampCard.tsx
+│   │   │   ├── RecoveryTokenModal.tsx
+│   │   │   └── WelcomeModal.tsx
+│   │   ├── constants/
+│   │   ├── data/                   # Quiz data
+│   │   ├── hooks/                  # useRoomSession
+│   │   ├── pages/                  # Dashboard, Bootcamp, Wallet, Profile, etc.
+│   │   ├── services/               # Chain service, token balance
+│   │   └── utils/                  # rankUtils, studentExperience
+│   └── admin/
+│       ├── components/
+│       │   ├── layout/
+│       │   │   ├── AdminTopbar.tsx             # Barrel re-export
+│       │   │   └── AdminTopbar/                # Sub-components:
+│       │   │       ├── AdminTopbar.tsx         # Main component
+│       │   │       ├── NotificationsDropdown.tsx
+│       │   │       ├── MobileNotificationsSheet.tsx
+│       │   │       ├── MobileMoreSheet.tsx
+│       │   │       ├── navGroups.ts
+│       │   │       └── types.ts
+│       │   ├── chain-explorer/     # ChainExplorer sub-components
+│       │   │   ├── ChainExplorer.tsx
+│       │   │   ├── BlockCard.tsx
+│       │   │   └── types.ts
+│       │   ├── cp-analytics/       # BarChart, KpiCard, TradingChart, etc.
+│       │   ├── dashboard/          # UsersTab, ContactsTab, SecurityTab, etc.
+│       │   ├── ChainExplorer.tsx   # Barrel re-export
+│       │   ├── BootcampAccessPanel.tsx
+│       │   └── CpAnalytics.tsx
+│       ├── constants/
+│       ├── pages/                  # AdminDashboardPage
+│       └── types/
+├── shared/
+│   ├── components/
+│   │   ├── backgrounds/            # AdinkraBackground, HeroBackground
+│   │   ├── brand/                  # Logo
+│   │   ├── icons/                  # Brand social icons (Github, LinkedIn, etc.)
+│   │   ├── layout/                 # Navbar, Footer, BlogsNavbar, PublicBottomNav
+│   │   ├── ui/                     # BottomSheet, Card, Dialog, SimpleHeading, StatCounter, Tooltip
+│   │   ├── AdaptiveMode.tsx
+│   │   ├── ChainLogo.tsx
+│   │   ├── CommunityPopup.tsx
+│   │   ├── CookieConsent.tsx
+│   │   ├── CpLogo.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── OptionalDecorImage.tsx
+│   │   ├── PageLoader.tsx
+│   │   ├── ScrollReveal.tsx
+│   │   ├── ScrollToTop.tsx
+│   │   ├── SEO.tsx
+│   │   └── SnapSection.tsx
+│   ├── layouts/                    # PublicLayout, StudentLayout, AdminLayout, etc.
+│   ├── pages/                      # NotFoundPage
+│   └── utils/                      # cn, cpBalance, formatNumber, resolveImg, storageConsent
+├── styles/
+│   └── index.css                   # Tailwind CSS v4 entry
+└── vite-env.d.ts
+```
+
+### 5. Barrel Exports
+
+When refactoring a component into a folder of sub-components:
+1. Place the main component file inside the folder (e.g., `ComponentName/ComponentName.tsx`)
+2. Create a `ComponentName.tsx` barrel export at the original location that re-exports the default:
+   ```ts
+   import ComponentName from './ComponentName/ComponentName';
+   export default ComponentName;
+   ```
+3. This keeps all existing imports (`@/features/.../ComponentName`) working.
+
+### 6. Naming Conventions
+
+- **Files**: PascalCase for components (`LoginForm.tsx`), camelCase for utilities (`formatNumber.ts`)
+- **Folders**: kebab-case for multi-word folders (`hacker-globe/`, `bootcamp-room/`)
+- **Exports**: Default export for main components, named exports for types, constants, and utilities
+- **Types**: Co-locate with the component in a `types.ts` file within the component folder
+
+### 7. Imports
+
+- Use the `@/` path alias for imports across the project (configured in `vite.config.ts`)
+- Group imports: React → third-party → internal core → shared → features
+- No circular dependencies: `shared/` must not import from `features/`
+
+## Project Structure (Current)
 
 ```
 src/
@@ -67,42 +223,75 @@ src/
 │   └── router.tsx              # All routes (public, student, admin)
 ├── core/
 │   ├── contexts/               # Auth, Theme, Toast, Modal contexts
-│   ├── hooks/                  # useScrollY, useDebounce, etc.
+│   ├── hooks/                  # useScrollY, useAdaptiveUi, etc.
 │   └── services/
 │       └── api.ts              # Axios instance with interceptors
 ├── features/
 │   ├── auth/
-│   │   └── pages/LoginPage.tsx
+│   │   ├── components/         # AuthHero, LoginForm, PasswordInput, etc.
+│   │   └── pages/              # LoginPage, RegisterPage, VerifyEmailPage, etc.
 │   ├── marketing/
 │   │   ├── components/
-│   │   │   ├── landing/        # HeroSection, EconomySection, etc.
-│   │   │   ├── layout/         # Navbar, Footer
-│   │   │   ├── HackerGlobe.tsx # Three.js globe
-│   │   │   └── HeroCanvas.tsx  # Canvas background
+│   │   │   ├── hacker-globe/   # HackerGlobe (data, helpers, types, component)
+│   │   │   ├── landing/        # HeroSection, ServicesSection, FinalCtaSection
+│   │   │   ├── HackerGlobe.tsx # Barrel re-export
+│   │   │   ├── ContactModal.tsx
+│   │   │   ├── ServiceRequestModal.tsx
+│   │   │   └── PromotionalSystem.tsx
 │   │   ├── content/
 │   │   │   └── siteConfig.ts   # Nav items, brand config
-│   │   └── pages/              # LandingPage, ChainPage, ServicesPage, etc.
+│   │   └── pages/              # LandingPage, Blog pages, TeamPage, etc.
 │   ├── student/
-│   │   ├── components/         # EnrollmentModal, BootcampCard, etc.
+│   │   ├── components/
+│   │   │   ├── layout/StudentTopbar/  # With sub-components
+│   │   │   ├── bootcamp-course/
+│   │   │   ├── bootcamp-room/
+│   │   │   ├── profile/
+│   │   │   ├── BootcampCard.tsx
+│   │   │   ├── RecoveryTokenModal.tsx
+│   │   │   └── WelcomeModal.tsx
 │   │   ├── constants/
 │   │   │   └── bootcampConfig.ts # Single source of truth for bootcamp structure
-│   │   ├── pages/              # Dashboard, Bootcamp, Wallet, Profile, etc.
+│   │   ├── data/
+│   │   │   └── quizzes.ts
+│   │   ├── pages/              # Dashboard, BootcampCourse, BootcampRoom, etc.
 │   │   └── services/
-│   │       └── chain.service.ts # Chain history proxy calls
+│   │       ├── chain.service.ts
+│   │       └── tokenBalance.service.ts
 │   └── admin/
 │       ├── components/
-│       │   ├── ChainExplorer.tsx # Admin chain block viewer
-│       │   └── QuizManager.tsx
+│       │   ├── layout/AdminTopbar/    # With sub-components
+│       │   ├── chain-explorer/        # ChainExplorer + BlockCard + types
+│       │   ├── cp-analytics/          # BarChart, KpiCard, TradingChart, etc.
+│       │   ├── dashboard/             # UsersTab, ContactsTab, etc.
+│       │   ├── ChainExplorer.tsx      # Barrel re-export
+│       │   ├── BootcampAccessPanel.tsx
+│       │   └── CpAnalytics.tsx
+│       ├── constants/
 │       └── pages/AdminDashboardPage.tsx
 └── shared/
     ├── components/
+    │   ├── backgrounds/         # AdinkraBackground, HeroBackground
     │   ├── brand/Logo.tsx
-    │   ├── ChainLogo.tsx       # QYVORA Chain logo component
-    │   ├── CpLogo.tsx          # Cyber Points logo component
-    │   └── ScrollReveal.tsx
-    ├── layouts/                # PublicLayout, StudentLayout, AdminLayout
+    │   ├── icons/               # Brand social icons
+    │   ├── layout/              # Navbar, Footer, BlogsNavbar, PublicBottomNav
+    │   ├── ui/                  # BottomSheet, Card, Dialog, Tooltip, etc.
+    │   ├── ChainLogo.tsx
+    │   ├── CpLogo.tsx
+    │   ├── CookieConsent.tsx
+    │   ├── ErrorBoundary.tsx
+    │   ├── PageLoader.tsx
+    │   ├── ScrollReveal.tsx
+    │   ├── ScrollToTop.tsx
+    │   ├── SEO.tsx
+    │   └── SnapSection.tsx
+    ├── layouts/                 # PublicLayout, StudentLayout, AdminLayout
     └── utils/
-        └── resolveImg.ts
+        ├── cn.ts
+        ├── cpBalance.ts
+        ├── formatNumber.ts
+        ├── resolveImg.ts
+        └── storageConsent.ts
 
 public/
 ├── assets/
@@ -111,14 +300,8 @@ public/
 │   ├── illustrations/          # UI illustration assets
 │   ├── sections/               # Section backgrounds and service/curriculum images
 │   └── social/                 # Social card thumbnails
-├── images/
-│   └── student/                # Student dashboard mascots
 ├── walkthrough/
 │   └── hpb/                    # Step-by-step walkthrough images by phase/room
-├── system/
-│   ├── _headers
-│   ├── _redirects
-│   └── robots.txt
 ├── _headers                    # Netlify/Vercel response headers
 ├── _redirects                  # Netlify SPA redirect rule
 └── robots.txt
