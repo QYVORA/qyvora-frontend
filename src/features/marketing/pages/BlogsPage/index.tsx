@@ -1,15 +1,23 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { HeroBackground } from '@/shared/components/backgrounds';
 import { BLOG_POSTS } from './blogContent';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 
 const BlogsPage: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const shouldReduceMotion = useReducedMotion();
+  const { isMobile } = useAdaptiveUi();
+  const { user } = useAuth();
+  useScrollLock(!isMobile);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const AUTOPLAY_DURATION = 6000;
 
@@ -49,7 +57,16 @@ const BlogsPage: React.FC = () => {
   const post = BLOG_POSTS[activeIndex];
 
   return (
-    <div className="relative min-h-screen w-full bg-bg">
+    <div
+      ref={containerRef}
+      className="
+        w-full h-full
+        md:h-[calc(100dvh-80px)] md:overflow-y-auto
+        md:snap-y md:snap-mandatory
+        relative z-10 scroll-smooth bg-bg
+      "
+      style={{ scrollbarWidth: 'none' }}
+    >
       <SEO
         title="Blogs"
         description="Read about cybersecurity, offensive security tooling, and Africa's growing security ecosystem."
@@ -60,7 +77,7 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative min-h-screen w-full bg-bg overflow-hidden flex items-center">
+      <section className="relative min-h-screen md:snap-start md:snap-always md:min-h-full w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
         <HeroBackground />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-8 md:pt-10 lg:pt-12">
           <div className="max-w-4xl space-y-8 text-left w-full">
@@ -80,8 +97,8 @@ const BlogsPage: React.FC = () => {
       </section>
 
       {/* ── Blog Carousel ── */}
-      <section className="relative w-full pt-8 md:pt-16 lg:pt-20 pb-32 md:pb-40">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16">
+      <section className="relative md:snap-start md:snap-always md:min-h-full w-full flex-shrink-0 bg-bg flex flex-col justify-center pt-8 md:pt-0 pb-32 md:pb-0">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 w-full">
           <div className="w-full relative group/carousel">
             {/* Wrapper for card + arrows — keeps arrows centered to card not dots */}
             <div className="relative">
@@ -228,6 +245,11 @@ const BlogsPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ── CTA Section ── */}
+      <section className="relative md:snap-start md:snap-always min-h-screen md:min-h-full w-full flex-shrink-0 bg-bg flex flex-col justify-center">
+        <LandingFinalCtaSection user={user} />
       </section>
     </div>
   );

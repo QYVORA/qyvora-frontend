@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Menu, X, Home, LogIn, UserPlus, Sun, Moon, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useScrollY } from '@/core/hooks/useScrollY';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useTheme } from '@/core/contexts/ThemeContext';
 import { Logo } from '@/shared/components/brand';
@@ -17,26 +16,8 @@ const BLOG_NAV_ITEMS = [
 const BlogsNavbar: React.FC = () => {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const lastScrollY = React.useRef(0);
-  const scrollY = useScrollY();
   const location = useLocation();
-
-  const isScrolled = scrollY > 20;
-
-  useEffect(() => {
-    if (scrollY < 10) {
-      setIsVisible(true);
-      lastScrollY.current = scrollY;
-      return;
-    }
-    const diff = scrollY - lastScrollY.current;
-    if (Math.abs(diff) > 5) {
-      setIsVisible(diff <= 0);
-      lastScrollY.current = scrollY;
-    }
-  }, [scrollY]);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -54,12 +35,7 @@ const BlogsNavbar: React.FC = () => {
   return (
     <>
       <nav
-        className={[
-          'fixed top-0 left-0 w-full z-[100] overflow-visible',
-          'h-[80px] flex items-center',
-          'transition-all duration-300',
-          !isVisible && !isMenuOpen ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
-        ].join(' ')}
+        className="fixed top-0 left-0 w-full z-[100] overflow-visible h-[80px] flex items-center"
         style={{ outline: 'none', border: 'none' }}
       >
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">

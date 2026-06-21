@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Calendar, Clock, User, Tag, ArrowRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
-import { Footer } from '@/shared/components/layout';
+import { useAuth } from '@/core/contexts/AuthContext';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { BLOG_POSTS } from './blogContent';
 import { HackerProtocolBookBlog } from './HackerProtocolBookBlog';
 import { AnansiCliBlog } from './AnansiCliBlog';
@@ -15,6 +16,7 @@ import { FutureCybersecurityAfricaBlog } from './FutureCybersecurityAfricaBlog';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { user } = useAuth();
   const post = BLOG_POSTS.find((p) => p.slug === slug);
 
   if (!post) {
@@ -66,21 +68,6 @@ const BlogPostPage: React.FC = () => {
           { name: post.title, item: `/blogs/${post.slug}` },
         ]}
       />
-
-      {/* ── Top Navigation Bar ── */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-[80px] bg-bg/90 backdrop-blur-xl border-b border-border/50">
-        <div className="max-w-[1200px] mx-auto px-4 h-full flex items-center justify-between">
-          <Link
-            to="/blogs"
-            className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to Blogs
-          </Link>
-          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">
-            {post.readTime}
-          </span>
-        </div>
-      </div>
 
       {/* ── Article Header ── */}
       <header className="pt-[120px] pb-12 md:pt-[136px] md:pb-16">
@@ -207,7 +194,7 @@ const BlogPostPage: React.FC = () => {
         </section>
       )}
 
-      <Footer />
+      <LandingFinalCtaSection user={user} />
     </div>
   );
 };
