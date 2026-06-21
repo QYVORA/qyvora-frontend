@@ -86,7 +86,9 @@ export const SITE_CONFIG = {
     ],
     company: [
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+      { key: 'learn', label: 'Learn', path: '/learn', desc: 'Bootcamp phases' },
       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
     ],
   },
@@ -94,8 +96,10 @@ export const SITE_CONFIG = {
   footer: {
     links: [
       { label: 'Terms of Service', path: '/terms' },
-      { label: 'Team', path: '/team' },
-      { label: 'Learn', path: '/learn' }
+      { label: 'Anansi CLI', path: '/anansi' },
+      { label: 'Learn', path: '/learn' },
+      { label: 'Blogs', path: '/blogs' },
+      { label: 'Team', path: '/team' }
     ],
   },
 } as const;
