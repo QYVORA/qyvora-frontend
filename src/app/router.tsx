@@ -13,13 +13,13 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 
-// ─── Layouts ──────────────────────────────────────────────────────────────────
-import PublicLayout from '../shared/layouts/PublicLayout';
-import SnapPublicLayout from '../shared/layouts/SnapPublicLayout';
-import LandingLayout from '../shared/layouts/LandingLayout';
-import BlogsLayout from '../shared/layouts/BlogsLayout';
-import StudentLayout from '../shared/layouts/StudentLayout';
-import AdminLayout from '../shared/layouts/AdminLayout';
+// ─── Layouts (lazy-loaded) ─────────────────────────────────────────────────────
+const PublicLayout = lazy(() => import('../shared/layouts/PublicLayout'));
+const SnapPublicLayout = lazy(() => import('../shared/layouts/SnapPublicLayout'));
+const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
+const BlogsLayout = lazy(() => import('../shared/layouts/BlogsLayout'));
+const StudentLayout = lazy(() => import('../shared/layouts/StudentLayout'));
+const AdminLayout = lazy(() => import('../shared/layouts/AdminLayout'));
 
 // Shared pages
 import NotFoundPage from '../shared/pages/NotFoundPage';
