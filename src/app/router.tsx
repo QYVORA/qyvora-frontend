@@ -31,7 +31,7 @@ const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiP
 const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/BlogsPage'));
-const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogPostPage'));
+const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
 // Auth pages
 const LoginPage         = lazy(() => import('../features/auth/pages/LoginPage'));

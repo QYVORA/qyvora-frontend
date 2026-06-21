@@ -14,16 +14,19 @@ import { Logo } from '@/shared/components/brand';
 ───────────────────────────────────────────── */
 const FOOTER_COLS = [
   {
+    title: 'Platform',
+    links: SITE_CONFIG.nav.platform.filter((item: { key: string }) => item.key !== 'contact'),
+  },
+  {
     title: 'Company',
     links: SITE_CONFIG.nav.company.filter((item: { key: string }) => item.key !== 'contact'),
   },
   {
-    title: 'Quick Links',
-    links: ['register', 'login'].map((path) => ({
-      key: path,
-      label: path === 'register' ? 'Register' : 'Log In',
-      path: `/${path}`,
-    })),
+    title: 'Account',
+    links: [
+      { key: 'register', label: 'Register', path: '/register' },
+      { key: 'login', label: 'Log In', path: '/login' },
+    ],
   },
 ];
 

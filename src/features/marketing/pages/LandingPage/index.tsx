@@ -5,9 +5,9 @@ import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 
-import HeroSection from '@/features/marketing/components/landing/HeroSection';
-import ServicesSection from '@/features/marketing/components/landing/ServicesSection';
-import FinalCtaSection from '@/features/marketing/components/landing/FinalCtaSection';
+import LandingHeroSection from '@/features/marketing/components/landing/LandingHeroSection';
+import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { HeroBackground } from '@/shared/components/backgrounds';
@@ -157,15 +157,15 @@ const Landing: React.FC = () => {
         className="landing-snap relative z-10 h-auto md:h-screen w-full overflow-y-visible md:overflow-y-auto overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
       >
         <section id="hero" className="md:h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent">
-          <HeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
+          <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
         </section>
 
         <SnapSection id="services">
-          <ServicesSection />
+          <LandingServicesSection />
         </SnapSection>
 
         <SnapSection id="cta">
-          <FinalCtaSection user={user} />
+          <LandingFinalCtaSection user={user} />
         </SnapSection>
 
         <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
