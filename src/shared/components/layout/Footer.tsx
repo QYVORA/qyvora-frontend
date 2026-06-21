@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
       />
 
       {/* Main grid content wrapper */}
-      <div className="relative z-10 min-h-screen w-full flex flex-col justify-between px-6 md:px-12 lg:px-20 py-12 md:py-20">
+      <div className="relative z-10 min-h-screen w-full flex flex-col justify-between px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30">
         {/* Top Section: Brand Columns */}
         <div className="flex flex-col md:flex-row justify-between gap-y-10 md:gap-16 xl:gap-20 w-full max-w-[1600px] mx-auto">
           {/* Left Column — Brand */}
