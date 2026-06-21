@@ -3,7 +3,7 @@ import { BlogsNavbar } from '@/shared/components/layout';
 import { Footer } from '@/shared/components/layout';
 import { PublicBottomNav } from '@/shared/components/layout';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
-import CookieConsent from '@/shared/components/CookieConsent';
+import ConsentBanner from '@/shared/components/ConsentBanner';
 
 const BlogsLayout = () => {
   const { pathname } = useLocation();
@@ -23,7 +23,7 @@ const BlogsLayout = () => {
       <Footer />
       <PublicBottomNav />
       <ContactModalHost />
-      <CookieConsent />
+      <ConsentBanner />
     </>
   );
 };

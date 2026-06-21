@@ -93,7 +93,7 @@ import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import StudentRightRail from '@/features/student/components/layout/StudentRightRail';
 import WelcomeModal from '@/features/student/components/WelcomeModal';
 import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
-import CookieConsent from '@/shared/components/CookieConsent';
+import ConsentBanner from '@/shared/components/ConsentBanner';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
 //
@@ -269,7 +269,7 @@ const StudentLayout = () => {
       {!hideRightRail && <StudentRightRail />}
 
       {/* Cookie Consent banner */}
-      <CookieConsent />
+      <ConsentBanner />
 
       {/* Welcome Modal for new operators */}
       <WelcomeModal open={welcomeOpen} onOpenChange={setWelcomeOpen} />
