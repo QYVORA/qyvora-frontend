@@ -60,8 +60,8 @@ const BlogsPage: React.FC = () => {
     <div
       ref={containerRef}
       className="
-        w-full h-full
-        md:h-[calc(100dvh-80px)] md:overflow-y-auto
+        w-full h-auto
+        md:h-screen md:overflow-y-auto
         md:snap-y md:snap-mandatory
         relative z-10 scroll-smooth bg-bg
       "
@@ -77,7 +77,7 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative min-h-screen md:snap-start md:snap-always md:min-h-full w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
+      <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
         <HeroBackground />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-8 md:pt-10 lg:pt-12">
           <div className="max-w-4xl space-y-8 text-left w-full">
@@ -97,7 +97,7 @@ const BlogsPage: React.FC = () => {
       </section>
 
       {/* ── Blog Carousel ── */}
-      <section className="relative md:snap-start md:snap-always md:min-h-full w-full flex-shrink-0 bg-bg flex flex-col justify-center pt-8 md:pt-0 pb-32 md:pb-0">
+      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg flex flex-col justify-center pt-8 md:pt-0 pb-32 md:pb-0">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 w-full">
           <div className="w-full relative group/carousel">
             {/* Wrapper for card + arrows — keeps arrows centered to card not dots */}
@@ -248,7 +248,7 @@ const BlogsPage: React.FC = () => {
       </section>
 
       {/* ── CTA Section ── */}
-      <section className="relative md:snap-start md:snap-always min-h-screen md:min-h-full w-full flex-shrink-0 bg-bg flex flex-col justify-center">
+      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg flex flex-col justify-center min-h-screen">
         <LandingFinalCtaSection user={user} />
       </section>
     </div>
