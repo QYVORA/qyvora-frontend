@@ -68,7 +68,7 @@ const BlogPostPage: React.FC = () => {
       />
 
       {/* ── Top Navigation Bar ── */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-16 bg-bg/90 backdrop-blur-xl border-b border-border/50">
+      <div className="fixed top-0 left-0 right-0 z-50 h-[80px] bg-bg/90 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-[1200px] mx-auto px-4 h-full flex items-center justify-between">
           <Link
             to="/blogs"
@@ -83,7 +83,7 @@ const BlogPostPage: React.FC = () => {
       </div>
 
       {/* ── Article Header ── */}
-      <header className="pt-24 pb-12 md:pt-32 md:pb-16">
+      <header className="pt-[120px] pb-12 md:pt-[136px] md:pb-16">
         <div className="max-w-[1200px] mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -1,26 +1,31 @@
-import { Outlet } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 import { BlogsNavbar } from '@/shared/components/layout';
 import { Footer } from '@/shared/components/layout';
 import { PublicBottomNav } from '@/shared/components/layout';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import CookieConsent from '@/shared/components/CookieConsent';
 
-const BlogsLayout = () => (
-  <>
-    <BlogsNavbar />
+const BlogsLayout = () => {
+  const { pathname } = useLocation();
+  const isBlogPost = pathname.startsWith('/blogs/') && pathname !== '/blogs';
 
-    <main
-      id="main-content"
-      className="w-full min-h-screen flex flex-col pt-[80px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
-    >
-      <Outlet />
-    </main>
+  return (
+    <>
+      {!isBlogPost && <BlogsNavbar />}
 
-    <Footer />
-    <PublicBottomNav />
-    <ContactModalHost />
-    <CookieConsent />
-  </>
-);
+      <main
+        id="main-content"
+        className={`w-full min-h-screen flex flex-col ${isBlogPost ? 'pt-0' : 'pt-[80px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0'}`}
+      >
+        <Outlet />
+      </main>
+
+      <Footer />
+      <PublicBottomNav />
+      <ContactModalHost />
+      <CookieConsent />
+    </>
+  );
+};
 
 export default BlogsLayout;
