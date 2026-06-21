@@ -10,7 +10,7 @@ const LearnHeroSection: React.FC = () => {
   return (
     <>
       <HeroBackground />
-      <div className="relative z-10 max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 w-full h-full flex items-center pt-24 md:pt-0">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 w-full h-full flex items-center pt-20 md:pt-20 lg:pt-20">
         <div className="max-w-4xl space-y-8 text-left w-full">
           <div className="space-y-4">
             <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">

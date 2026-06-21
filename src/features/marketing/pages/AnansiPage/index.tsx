@@ -90,7 +90,7 @@ const AnansiPage: React.FC = () => {
           <AnansiHeroSection />
         </SnapSection>
 
-        <SnapSection id="install">
+        <SnapSection id="install" innerClassName="md:pt-20">
           <AnansiInstallSection />
         </SnapSection>
 

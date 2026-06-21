@@ -6,7 +6,7 @@ import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 
 const LearnCtaSection: React.FC = () => {
   return (
-    <div className="relative z-10 max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 w-full h-full flex items-center pt-20 md:pt-0">
+    <div className="relative z-10 max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 w-full h-full flex items-center pt-20 md:pt-20">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center w-full">
         <div className="max-w-2xl space-y-8">
           <SimpleHeading text="Establish Your Profile" align="left" className="mb-0" />

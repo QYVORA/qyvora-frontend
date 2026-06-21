@@ -45,7 +45,7 @@ const TeamPage: React.FC = () => {
           </motion.div>
         </section>
 
-        <SnapSection id="operators-directory">
+        <SnapSection id="operators-directory" innerClassName="md:pt-20">
           <TeamCarouselSection />
         </SnapSection>
 
