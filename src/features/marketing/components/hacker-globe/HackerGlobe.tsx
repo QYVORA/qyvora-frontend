@@ -78,7 +78,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       equator.rotation.x = Math.PI / 2;
       globe.add(equator);
 
-      const step = isSimplified ? 4.0 : 1.6;
+      const step = isSimplified ? 2.2 : 1.6;
       const dotTex = buildDotMapTexture(isLight, step);
       const sphereSegments = isSimplified ? 24 : 64;
 

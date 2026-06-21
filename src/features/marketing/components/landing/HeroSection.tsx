@@ -78,7 +78,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       
       {/* ── Mobile Globe - Background Only ── */}
       {!isLg && (
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] max-w-[80vw] max-h-[80vw] pointer-events-none z-0 overflow-visible opacity-70 translate-y-[10%] translate-x-[5%]">
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] max-w-[80vw] max-h-[80vw] pointer-events-none z-0 overflow-visible translate-y-[10%] translate-x-[5%]">
            <Suspense fallback={null}>
               <HackerGlobe scale={1.2} />
            </Suspense>

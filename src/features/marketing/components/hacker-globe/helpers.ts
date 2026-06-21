@@ -170,7 +170,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTe
 
   ctx.clearRect(0, 0, W, H);
 
-  const dotR      = (step / 180) * H * (step > 2 ? 0.15 : 0.38);
+  const dotR      = (step / 180) * H * (step > 2 ? 0.50 : 0.38);
   const landFill  = ACCENT_COLOR_HEX;
 
   for (let lat = 89; lat >= -89; lat -= step) {
