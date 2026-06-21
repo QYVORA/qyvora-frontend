@@ -7,6 +7,11 @@ import { Footer } from '@/shared/components/layout';
 import { BLOG_POSTS } from '@/features/marketing/content/blogContent';
 import { HackerProtocolBookBlog } from './blog/HackerProtocolBookBlog';
 import { AnansiCliBlog } from './blog/AnansiCliBlog';
+import { AfricaCybersecurityEcosystemBlog } from './blog/AfricaCybersecurityEcosystemBlog';
+import { AttackersDiscoverCompaniesBlog } from './blog/AttackersDiscoverCompaniesBlog';
+import { AfricaNeedsCybersecurityProfessionalsBlog } from './blog/AfricaNeedsCybersecurityProfessionalsBlog';
+import { MappingAttackSurfacesBlog } from './blog/MappingAttackSurfacesBlog';
+import { FutureCybersecurityAfricaBlog } from './blog/FutureCybersecurityAfricaBlog';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,6 +38,16 @@ const BlogPostPage: React.FC = () => {
         return <HackerProtocolBookBlog />;
       case 'anansi-cli':
         return <AnansiCliBlog />;
+      case 'africa-cybersecurity-ecosystem':
+        return <AfricaCybersecurityEcosystemBlog />;
+      case 'attackers-discover-companies':
+        return <AttackersDiscoverCompaniesBlog />;
+      case 'africa-needs-cybersecurity-professionals':
+        return <AfricaNeedsCybersecurityProfessionalsBlog />;
+      case 'mapping-attack-surfaces':
+        return <MappingAttackSurfacesBlog />;
+      case 'future-cybersecurity-africa':
+        return <FutureCybersecurityAfricaBlog />;
       default:
         return null;
     }
@@ -178,12 +193,9 @@ const BlogPostPage: React.FC = () => {
                         </span>
                       ))}
                     </div>
-                    <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2 group-hover:text-accent transition-colors">
+                    <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2">
                       {other.title}
                     </h3>
-                    <p className="text-xs font-mono text-text-secondary leading-relaxed line-clamp-2">
-                      {other.excerpt}
-                    </p>
                     <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
                       Read <ArrowRight className="w-3 h-3" />
                     </div>
