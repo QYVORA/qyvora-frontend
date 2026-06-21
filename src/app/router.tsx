@@ -17,6 +17,7 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 import PublicLayout from '../shared/layouts/PublicLayout';
 import SnapPublicLayout from '../shared/layouts/SnapPublicLayout';
 import LandingLayout from '../shared/layouts/LandingLayout';
+import BlogsLayout from '../shared/layouts/BlogsLayout';
 import StudentLayout from '../shared/layouts/StudentLayout';
 import AdminLayout from '../shared/layouts/AdminLayout';
 
@@ -111,6 +112,9 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
+        </Route>
+
+        <Route element={<BlogsLayout />}>
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
         </Route>

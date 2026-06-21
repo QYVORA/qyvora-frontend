@@ -47,22 +47,23 @@ const SOCIAL_LINKS: SocialLink[] = [
 /* ─────────────────────────────────────────────
    PULSE TEXT — alt to "Live" badge
 ───────────────────────────────────────────── */
-const PULSE_TEXT = 'QYVORA • LIVE NODE • ACCRA, GHANA';
+const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE / ACCRA, GHANA';
 
 const Footer: React.FC = () => {
   return (
     <footer className="relative min-h-screen w-full overflow-hidden select-none bg-bg">
       {/* Background layer */}
       <AdinkraBackground
-        className="absolute inset-0 z-0 opacity-30 dark:opacity-15"
+        opacity={0.55}
+        className="absolute inset-0 z-0"
       />
 
       {/* Main grid content wrapper */}
       <div className="relative z-10 min-h-screen w-full flex flex-col justify-between px-6 md:px-12 lg:px-20 py-12 md:py-20">
         {/* Top Section: Brand Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-16 xl:gap-20 w-full max-w-[1600px] mx-auto">
+        <div className="flex flex-col md:flex-row justify-between gap-y-10 md:gap-16 xl:gap-20 w-full max-w-[1600px] mx-auto">
           {/* Left Column — Brand */}
-          <div className="md:col-span-5 lg:col-span-4 space-y-6">
+          <div className="max-w-sm space-y-6">
             <Logo size="xl" variant="full" className="block" />
             <p className="text-sm text-text-muted font-mono leading-relaxed max-w-xs">
               Offensive Security Platform — discover, exploit, report. Africa&apos;s first dedicated offensive operations ecosystem.
@@ -84,9 +85,9 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Columns — Nav Links */}
+          {/* Right Columns — Nav Links pushed to far right */}
           {FOOTER_COLS.map((col) => (
-            <div key={col.title} className="md:col-span-3 lg:col-span-2 space-y-5">
+            <div key={col.title} className="space-y-5">
               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
                 {col.title}
               </h3>
@@ -101,17 +102,6 @@ const Footer: React.FC = () => {
                     </Link>
                   </li>
                 ))}
-                {/* Add the Contact link only once (rightmost column) */}
-                {col === FOOTER_COLS[FOOTER_COLS.length - 1] && (
-                  <li>
-                    <ContactTrigger
-                      type="link"
-                      className="text-sm font-bold text-text-primary hover:text-accent transition-colors cursor-pointer"
-                    >
-                      Contact
-                    </ContactTrigger>
-                  </li>
-                )}
               </ul>
             </div>
           ))}
@@ -131,7 +121,7 @@ const Footer: React.FC = () => {
               </span>
             </div>
 
-            {/* Footer legal — right-aligned */}
+            {/* Footer legal + Contact — far right */}
             <div className="flex flex-wrap items-center gap-4 md:ml-auto">
               {SITE_CONFIG.footer.links.map((link, idx) => (
                 <Link
@@ -145,6 +135,12 @@ const Footer: React.FC = () => {
               <span className="text-[11px] text-text-muted/40">
                 &copy; {new Date().getFullYear()} QYVORA
               </span>
+              <ContactTrigger
+                type="button"
+                className="px-5 py-2.5 bg-accent text-bg text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:brightness-110 transition-all active:scale-95"
+              >
+                Contact Us
+              </ContactTrigger>
             </div>
           </div>
         </div>
