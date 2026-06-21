@@ -1,7 +1,7 @@
 export { default as AdaptiveMode } from './AdaptiveMode'
 export { default as ChainLogo } from './ChainLogo'
 export { default as CommunityPopup } from './CommunityPopup'
-export { default as CookieConsent } from './CookieConsent'
+export { default as ConsentBanner } from './ConsentBanner'
 export { default as CpLogo } from './CpLogo'
 export { default as ErrorBoundary } from './ErrorBoundary'
 export { default as OptionalDecorImage } from './OptionalDecorImage'

@@ -74,7 +74,7 @@ import { Footer } from '@/shared/components/layout';
 import { PublicBottomNav } from '@/shared/components/layout';
 // "Contact Us" modal host — sits outside <main> to escape scroll/overflow contexts.
 import ContactModalHost from '@/features/marketing/components/ContactModal';
-import CookieConsent from '@/shared/components/CookieConsent';
+import ConsentBanner from '@/shared/components/ConsentBanner';
 
 /**
  * PublicLayout Component
@@ -157,7 +157,7 @@ const PublicLayout = () => (
     <ContactModalHost />
 
     {/* Cookie Consent banner */}
-    <CookieConsent />
+    <ConsentBanner />
   </>
 );
 

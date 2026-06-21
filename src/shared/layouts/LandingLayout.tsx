@@ -69,7 +69,7 @@ import { Navbar } from '@/shared/components/layout';
 // can be triggered from anywhere within the landing page (any snap section).
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 
-import CookieConsent from '@/shared/components/CookieConsent';
+import ConsentBanner from '@/shared/components/ConsentBanner';
 
 /**
  * LandingLayout Component
@@ -79,7 +79,7 @@ import CookieConsent from '@/shared/components/CookieConsent';
  *  - A plain <main> with no padding constraints (snap sections handle their own spacing).
  *  - The mobile bottom nav (PublicBottomNav).
  *  - The ContactModalHost so the contact modal can be opened from any section.
- *  - The CookieConsent banner.
+ *  - The ConsentBanner.
  *
  * This component has NO internal state and NO side effects.
  *
@@ -127,7 +127,7 @@ const LandingLayout = () => (
     <ContactModalHost />
 
     {/* Cookie Consent banner */}
-    <CookieConsent />
+    <ConsentBanner />
   </>
 );
 
