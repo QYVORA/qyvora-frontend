@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
-import { useTheme } from '../../core/contexts/ThemeContext';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
+
+const MOBILE_BREAKPOINT = 768;
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  return isMobile;
+}
 
 interface SEOProps {
   title?: string;
@@ -31,14 +45,13 @@ const SEO: React.FC<SEOProps> = ({
   schemaData,
   breadcrumbs,
 }) => {
-  const { theme } = useTheme();
+  const isMobile = useIsMobile();
   const location = useLocation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
   const seoTitle = title ? `${title} | ${defaultTitle}` : `${defaultTitle} | Africa's Offensive Security Platform`;
   const seoDescription = description || SITE_CONFIG.brand.description;
   
-  // Ensure image is an absolute URL
   const imagePath = image || '/qyvora-full-logo.png';
   const seoImage = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
   
@@ -80,14 +93,12 @@ const SEO: React.FC<SEOProps> = ({
 
   return (
     <Helmet>
-      {/* Standard Meta Tags */}
       <title>{seoTitle}</title>
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={seoCanonical} />
       <meta name="robots" content="index,follow,max-image-preview:large" />
       <html lang="en" />
 
-      {/* Open Graph / Facebook */}
       <meta property="og:type" content={article ? 'article' : 'website'} />
       <meta property="og:title" content={seoTitle} />
       <meta property="og:description" content={seoDescription} />
@@ -98,7 +109,6 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:site_name" content={defaultTitle} />
       <meta property="og:image:alt" content={title || defaultTitle} />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={seoTitle} />
       <meta name="twitter:description" content={seoDescription} />
@@ -107,13 +117,12 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:site" content="@QYVORASEC" />
       <meta name="twitter:creator" content="@QYVORASEC" />
 
-      {/* AI & Search Engine discovery enhancements */}
       <meta name="author" content="QYVORA" />
       <meta name="application-name" content="QYVORA" />
       <meta name="apple-mobile-web-app-title" content="QYVORA" />
-      <meta name="theme-color" content={theme === 'light' ? '#66B870' : '#050706'} />
 
-      {/* Schema.org JSON-LD */}
+      {isMobile && <meta name="theme-color" content="#66B870" />}
+
       <script type="application/ld+json">
         {JSON.stringify(webPageSchema)}
       </script>
