@@ -225,4 +225,4 @@ const ServicesSection: React.FC = () => {
   );
 };
 
-export default ServicesSection;
+export default React.memo(ServicesSection);

@@ -199,4 +199,4 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   );
 };
 
-export default HeroSection;
+export default React.memo(HeroSection);

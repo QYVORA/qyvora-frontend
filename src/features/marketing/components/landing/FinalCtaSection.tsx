@@ -177,4 +177,4 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   );
 };
 
-export default FinalCtaSection;
+export default React.memo(FinalCtaSection);
