@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import { HeroBackground } from '@/shared/components/backgrounds';
 import { BLOG_POSTS } from './blogContent';
 
 const BlogsPage: React.FC = () => {
@@ -60,32 +61,26 @@ const BlogsPage: React.FC = () => {
 
       {/* ── Hero Section ── */}
       <section className="relative min-h-screen w-full bg-bg overflow-hidden flex items-center">
-        <div className="absolute inset-0 dot-grid opacity-30" />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 py-20 md:py-0">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center lg:text-left"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-8">
-              <BookOpen className="w-4 h-4 text-accent" />
-              <span className="text-accent font-mono text-[10px] font-black uppercase tracking-[0.3em]">
-                The QYVORA Blog
+        <HeroBackground />
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-8 md:pt-10 lg:pt-12">
+          <div className="max-w-4xl space-y-8 text-left w-full">
+            <div className="space-y-4">
+              <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
+                // The QYVORA Blog
               </span>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+                Intelligence <span className="text-accent">Reports</span>
+              </h1>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight leading-[1.05] mb-6">
-              Intelligence <span className="text-accent">Reports</span>
-            </h1>
-            <p className="text-lg md:text-xl text-text-secondary font-mono leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
               Field notes, tool philosophy, and the thinking behind Africa's offensive security ecosystem.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── Blog Carousel ── */}
-      <section className="relative w-full pb-32 md:pb-40">
+      <section className="relative w-full pt-8 md:pt-16 lg:pt-20 pb-32 md:pb-40">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16">
           <div className="w-full relative group/carousel">
             {/* Wrapper for card + arrows — keeps arrows centered to card not dots */}

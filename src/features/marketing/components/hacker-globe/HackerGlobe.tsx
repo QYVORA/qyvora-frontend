@@ -102,22 +102,26 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       globeFront.renderOrder = 2;
       globe.add(globeFront);
 
-      if (!isSimplified) {
+      {
         const graticuleColor = ACCENT_COLOR;
         const graticuleOpacity = isLight ? 0.08 : 0.12;
+        const lineStep = isSimplified ? 60 : 30;
+        const latStep = isSimplified ? 4 : 2;
+        const meridianStep = isSimplified ? 60 : 30;
+        const lngStep = isSimplified ? 4 : 2;
         const graticuleGeo = new THREE.BufferGeometry();
         const graticuleVerts: number[] = [];
-        for (let lng = -180; lng < 180; lng += 30) {
-          for (let lat = -88; lat <= 88; lat += 2) {
+        for (let lng = -180; lng < 180; lng += lineStep) {
+          for (let lat = -88; lat <= 88; lat += latStep) {
             const v1 = latLngToVec3(lat,   lng, 1.003);
-            const v2 = latLngToVec3(lat+2, lng, 1.003);
+            const v2 = latLngToVec3(lat+latStep, lng, 1.003);
             graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
           }
         }
-        for (let lat = -60; lat <= 60; lat += 30) {
-          for (let lng = -180; lng < 180; lng += 2) {
+        for (let lat = -60; lat <= 60; lat += meridianStep) {
+          for (let lng = -180; lng < 180; lng += lngStep) {
             const v1 = latLngToVec3(lat, lng,   1.003);
-            const v2 = latLngToVec3(lat, lng+2, 1.003);
+            const v2 = latLngToVec3(lat, lng+lngStep, 1.003);
             graticuleVerts.push(v1.x,v1.y,v1.z, v2.x,v2.y,v2.z);
           }
         }

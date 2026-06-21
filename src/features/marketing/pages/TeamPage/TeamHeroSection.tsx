@@ -1,33 +1,23 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import ScrollReveal from '@/shared/components/ScrollReveal';
-import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 
 const TeamHeroSection: React.FC = () => {
   return (
-    <motion.div
-      className="relative z-20 h-full max-w-[1600px] mx-auto px-4 md:px-10 flex flex-col lg:flex-row items-center justify-between gap-12 pt-32 pb-12"
-    >
-      <div className="max-w-3xl lg:max-w-xl flex-shrink-0">
-        <ScrollReveal>
-          <div className="flex items-center gap-3 mb-4 lg:mb-3">
-            <span className="text-[10px] font-black text-accent uppercase tracking-[0.35em]">
-              Operator Directory
+    <div className="relative z-10 max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 w-full h-full flex items-center pt-28 md:pt-24 lg:pt-28">
+        <div className="max-w-4xl space-y-8 text-left w-full">
+          <div className="space-y-4">
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
+              // Operator Directory
             </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+              THE <span className="text-accent">TEAM</span>
+            </h1>
           </div>
-          <SimpleHeading text="THE TEAM" align="left" className="mb-8" />
-        </ScrollReveal>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-text-secondary text-sm sm:text-base md:text-lg max-w-lg mb-8 leading-relaxed opacity-80"
-        >
-          Meet the core developers, security researchers, and operators building QYVORA&apos;s offensive security ecosystem.
-        </motion.p>
+          <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
+            Meet the core developers, security researchers, and operators building QYVORA&apos;s offensive security ecosystem.
+          </p>
+        </div>
       </div>
-    </motion.div>
   );
 };
 
