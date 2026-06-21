@@ -15,7 +15,7 @@ const BlogsLayout = () => {
 
       <main
         id="main-content"
-        className="w-full flex flex-col bg-bg pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
+        className="w-full flex flex-col bg-bg"
       >
         <Outlet />
       </main>
