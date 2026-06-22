@@ -10,7 +10,7 @@
 The CTF system is a browser-native hacking challenge platform. Students use their browser's built-in DevTools — no VM, no downloads, no setup. Each challenge is a standalone static HTML "room" hosted on a dedicated Netlify subdomain. The main QYVORA app handles authentication, flag submission, CP rewards, and leaderboard tracking.
 
 ```
-qyvora.com (main app)                ctf-rooms.qyvora.com (Netlify)
+<YOUR_MAIN_DOMAIN> (main app)                <YOUR_CTF_ROOMS_DOMAIN> (Netlify)
 ────────────────────────               ──────────────────────────────────
 Student opens CTF challenge   ──────►  Vulnerable room loads in new tab
 Student finds FLAG{...}       ◄──────  Flag is hidden inside the room
@@ -25,21 +25,21 @@ Student submits flag          ──────►  Backend validates, awards C
 
 | Repo | Purpose | Deployment |
 |------|---------|------------|
-| `qyvora-frontend` | Main app — auth, flag submission, leaderboard | `qyvora.com` |
-| `qyvora-ctf-rooms` | Static vulnerable rooms | `ctf-rooms.qyvora.com` (Netlify) |
+| `qyvora-frontend` | Main app — auth, flag submission, leaderboard | `<YOUR_MAIN_DOMAIN>` |
+| `qyvora-ctf-rooms` | Static vulnerable rooms | `<YOUR_CTF_ROOMS_DOMAIN>` (Netlify) |
 
 The CTF rooms repo is **entirely static** — plain HTML, CSS, and JS. No framework, no build step required. Each room is a folder with an `index.html` and optionally a `netlify.toml` for headers, cookies, and redirects.
 
 ### 2.2 Room URL Convention
 
 ```
-https://ctf-rooms.qyvora.com/r/{room-id}/
+https://<YOUR_CTF_ROOMS_DOMAIN>/r/{room-id}/
 ```
 
 Examples:
-- `https://ctf-rooms.qyvora.com/r/html-source-1/`
-- `https://ctf-rooms.qyvora.com/r/console-1/`
-- `https://ctf-rooms.qyvora.com/r/network-header-1/`
+- `https://<YOUR_CTF_ROOMS_DOMAIN>/r/html-source-1/`
+- `https://<YOUR_CTF_ROOMS_DOMAIN>/r/console-1/`
+- `https://<YOUR_CTF_ROOMS_DOMAIN>/r/network-header-1/`
 
 ### 2.3 Flag Format
 
@@ -61,7 +61,7 @@ Flags are **static strings hardcoded into each room** at build time. The backend
 Each `CTFChallenge` document in MongoDB gains one field:
 
 ```js
-roomUrl: String  // e.g. "https://ctf-rooms.qyvora.com/r/html-source-1/"
+roomUrl: String  // e.g. "https://<YOUR_CTF_ROOMS_DOMAIN>/r/html-source-1/"
 ```
 
 The `/student/ctf/:moduleId/scenario` endpoint already returns challenge data — `roomUrl` is added to the response so the frontend can render the "Launch Room" button.
@@ -336,7 +336,7 @@ Add `roomUrl` field to the existing `CTFChallenge` Mongoose schema:
 roomUrl: {
   type: String,
   default: null,
-  // e.g. "https://ctf-rooms.qyvora.com/r/html-source-1/"
+  // e.g. "https://<YOUR_CTF_ROOMS_DOMAIN>/r/html-source-1/"
 }
 ```
 
@@ -415,7 +415,7 @@ Once Phase 1 is live and validated, the following room types can be added:
 - [ ] Build all 10 Phase 1 rooms
 - [ ] Write shared `room.css` and `room.js`
 - [ ] Configure `netlify.toml` with all headers and redirects
-- [ ] Deploy to Netlify → set custom domain `ctf-rooms.qyvora.com`
+- [ ] Deploy to Netlify → set custom domain `<YOUR_CTF_ROOMS_DOMAIN>`
 - [ ] Test all 10 rooms manually — verify each flag is findable
 
 ### Backend
