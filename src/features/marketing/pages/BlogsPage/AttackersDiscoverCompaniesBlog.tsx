@@ -19,7 +19,7 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
       </Section>
 
       {/* ── The Recon Pipeline ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>How Recon Works: The Attacker's Pipeline</Heading>
         <Body>
           Professional reconnaissance follows a structured pipeline. Attackers do not guess — they follow a methodology that systematically expands the attack surface:
@@ -40,7 +40,7 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
       </Section>
 
       {/* ── Subdomain Discovery ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>Subdomain Discovery: The Entry Point</Heading>
         <Body>
           The most common starting point is <Highlight>Certificate Transparency (CT) log enumeration</Highlight>. Every time an organisation issues an SSL/TLS certificate, the certificate is logged publicly. Attackers query these logs to discover subdomains — and they do not need any special access to do so.
@@ -77,32 +77,32 @@ vpn.target.com`} />
       </Section>
 
       {/* ── Technology Fingerprinting ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>Technology Fingerprinting</Heading>
         <Body>
           Once live hosts are identified, attackers <Highlight>fingerprint</Highlight> the technology stack. This tells them what software is running, what version, and — critically — what known vulnerabilities exist for that specific version.
         </Body>
 
         <InlineDiagram>
-          <div className="w-full max-w-2xl">
-            <svg viewBox="0 0 600 180" className="w-full h-auto" fill="none">
-              <text x="300" y="20" textAnchor="middle" className="fill-accent/60 text-[8px] font-mono" fontSize="8">TECHNOLOGY FINGERPRINTING</text>
+          <div className="w-full">
+            <svg viewBox="0 0 600 220" className="w-full h-auto" fill="none">
+              <text x="300" y="24" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="12">TECHNOLOGY FINGERPRINTING</text>
 
-              <rect x="20" y="40" width="260" height="50" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="150" y="60" textAnchor="middle" className="fill-accent text-[9px] font-mono font-bold uppercase" fontSize="9">HTTP Response Headers</text>
-              <text x="150" y="76" textAnchor="middle" className="fill-text-muted text-[8px] font-mono" fontSize="8">Server, X-Powered-By, Set-Cookie</text>
+              <rect x="20" y="45" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <text x="150" y="68" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">HTTP Response Headers</text>
+              <text x="150" y="90" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Server, X-Powered-By, Set-Cookie</text>
 
-              <rect x="320" y="40" width="260" height="50" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="450" y="60" textAnchor="middle" className="fill-accent text-[9px] font-mono font-bold uppercase" fontSize="9">HTML / JS Analysis</text>
-              <text x="450" y="76" textAnchor="middle" className="fill-text-muted text-[8px] font-mono" fontSize="8">Asset paths, comment tags, framework markers</text>
+              <rect x="320" y="45" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <text x="450" y="68" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">HTML / JS Analysis</text>
+              <text x="450" y="90" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Asset paths, comment tags, framework markers</text>
 
-              <rect x="20" y="120" width="260" height="50" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="150" y="140" textAnchor="middle" className="fill-accent text-[9px] font-mono font-bold uppercase" fontSize="9">SSL/TLS Certificate</text>
-              <text x="150" y="156" textAnchor="middle" className="fill-text-muted text-[8px] font-mono" fontSize="8">Issuer, SANs, validity period, cipher suites</text>
+              <rect x="20" y="140" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <text x="150" y="163" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">SSL/TLS Certificate</text>
+              <text x="150" y="185" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Issuer, SANs, validity period, cipher suites</text>
 
-              <rect x="320" y="120" width="260" height="50" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="450" y="140" textAnchor="middle" className="fill-accent text-[9px] font-mono font-bold uppercase" fontSize="9">Favicon Hash</text>
-              <text x="450" y="156" textAnchor="middle" className="fill-text-muted text-[8px] font-mono" fontSize="8">MurmurHash3 — matches default framework icons</text>
+              <rect x="320" y="140" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <text x="450" y="163" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">Favicon Hash</text>
+              <text x="450" y="185" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">MurmurHash3 — matches default framework icons</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -113,7 +113,7 @@ vpn.target.com`} />
       </Section>
 
       {/* ── Exposed Paths & Misconfigurations ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>Exposed Paths and Misconfigurations</Heading>
         <Body>
           This is where reconnaissance becomes dangerous. Attackers scan for <Highlight>exposed paths</Highlight> — common files and directories that should never be publicly accessible but often are:
@@ -138,7 +138,7 @@ vpn.target.com`} />
       </Section>
 
       {/* ── Why This Matters for Your Organisation ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>What This Means for Your Organisation</Heading>
         <Body>
           The uncomfortable truth is that <Highlight>your organisation has already been discovered</Highlight> — at least partially. Certificate transparency logs are public. DNS records are public. Your technology stack is visible to anyone who sends an HTTP request to your servers.
@@ -158,7 +158,7 @@ vpn.target.com`} />
       </Section>
 
       {/* ── Practical Steps ── */}
-      <Section delay={0.6}>
+      <Section>
         <Heading>Closing the Visibility Gap</Heading>
         <Body>
           Protecting your attack surface starts with <Highlight>knowing what exists</Highlight>. You cannot secure what you cannot see. Here are practical steps your organisation can take today:
@@ -184,7 +184,7 @@ vpn.target.com`} />
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.7}>
+      <Section>
         <CTA
           title="Know Your Attack Surface"
           desc="Run an Anansi attack surface intelligence scan against your own organisation. See what attackers see — in under two minutes, from your terminal, for free."

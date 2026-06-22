@@ -1,7 +1,6 @@
 import { useLocation, Outlet } from 'react-router-dom';
 import { Navbar } from '@/shared/components/layout';
 import { Footer } from '@/shared/components/layout';
-import { PublicBottomNav } from '@/shared/components/layout';
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 
@@ -21,7 +20,6 @@ const BlogsLayout = () => {
       </main>
 
       {isBlogPost && <Footer />}
-      <PublicBottomNav />
       <ContactModalHost />
       <ConsentBanner />
     </>

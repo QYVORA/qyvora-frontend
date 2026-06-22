@@ -19,7 +19,7 @@ export const AnansiCliBlog: React.FC = () => {
       </Section>
 
       {/* ── Philosophy ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>The Philosophy</Heading>
         <Body>
           Anansi CLI was built on three convictions:
@@ -48,7 +48,7 @@ export const AnansiCliBlog: React.FC = () => {
       </Section>
 
       {/* ── The Six Phases ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>The Six-Phase Pipeline</Heading>
         <Body>
           When you run <Highlight>anansi target.com</Highlight>, here's what happens under the hood:
@@ -78,7 +78,7 @@ anansi target.com --modules discovery,tls,takeover`} />
       </Section>
 
       {/* ── The Output ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>Terminal-First Output</Heading>
         <Body>
           Anansi's output is designed for operators, not managers. No bar charts, no letter grades, no pie charts. Just <Highlight>structured, scannable intelligence</Highlight> you can act on immediately:
@@ -120,7 +120,7 @@ anansi target.com --modules discovery,tls,takeover`} />
       </Section>
 
       {/* ── Output Formats ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>Multiple Output Formats</Heading>
         <Body>
           Terminal output is great for live scanning, but sometimes you need to share findings or integrate with other tools. Anansi supports four output formats:
@@ -142,7 +142,7 @@ anansi target.com --out html > report.html`} />
       </Section>
 
       {/* ── Performance ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>Performance Architecture</Heading>
         <Body>
           Recon is IO-bound. The bottleneck is almost always network latency, not CPU. Anansi is built to <Highlight>maximize throughput</Highlight> through aggressive concurrency:
@@ -173,7 +173,7 @@ anansi target.com --timeout 10     # per-request timeout in seconds`} />
       </Section>
 
       {/* ── Installation ── */}
-      <Section delay={0.6}>
+      <Section>
         <Heading>Getting Started</Heading>
         <Body>
           Installing Anansi is a two-step process. No package manager, no runtime, no dependencies:
@@ -193,29 +193,15 @@ anansi target.com`} />
         </Body>
       </Section>
 
-      {/* ── The Bigger Picture ── */}
-      <Section delay={0.7}>
-        <Heading>The Bigger Picture</Heading>
+      {/* ── Open Source ── */}
+      <Section>
         <Body>
-          Anansi CLI is the portable companion to the <Highlight>Anansi API service</Highlight> built into the QYVORA platform. Same detection logic, same output philosophy, different deployment model:
-        </Body>
-        <ul className="space-y-4 my-8 text-sm md:text-base font-mono text-text-secondary leading-[2]">
-          <li className="flex items-start gap-3">
-            <Zap className="w-5 h-5 text-accent mt-0.5 shrink-0" />
-            <span><Highlight>CLI</Highlight> — for your laptop. Run ad-hoc scans, integrate into local workflows, generate reports on the fly.</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <Zap className="w-5 h-5 text-accent mt-0.5 shrink-0" />
-            <span><Highlight>API</Highlight> — for your pipeline. Automate continuous monitoring, feed findings into SIEMs, trigger webhooks on new discoveries.</span>
-          </li>
-        </ul>
-        <Body>
-          Both are open source (MIT license), both are built by QYVORA from Accra, Ghana, and both serve the same mission: <Highlight>giving operators the tools they need to own the perimeter</Highlight>.
+          Anansi CLI is <Highlight>open source</Highlight> (MIT license), built by QYVORA from Ghana. It's a single-purpose tool with a single mission: <Highlight>giving operators the tools they need to own the perimeter</Highlight>.
         </Body>
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.8}>
+      <Section>
         <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
             Own the Perimeter

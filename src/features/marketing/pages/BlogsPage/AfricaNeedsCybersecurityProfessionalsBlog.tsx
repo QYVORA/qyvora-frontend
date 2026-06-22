@@ -19,7 +19,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── The Numbers ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>The Gap in Numbers</Heading>
         <Body>
           Let us look at the data. The cybersecurity workforce shortage is not evenly distributed. Africa has some of the lowest ratios of security professionals to population of any region:
@@ -41,7 +41,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── Why the Gap Exists ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>Why the Gap Exists</Heading>
         <Body>
           The talent gap is not about intelligence or aptitude — African professionals compete and excel globally. The gap exists because of <Highlight>structural barriers</Highlight> that prevent talent from entering the field:
@@ -62,25 +62,26 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── The Opportunity ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>The Opportunity: 100,000 Professionals</Heading>
         <Body>
           We believe Africa needs <Highlight>100,000 new cybersecurity professionals</Highlight> over the next five years. This is not an impossible target — it is a <Highlight>strategic necessity</Highlight>. And the opportunity is as much economic as it is defensive.
         </Body>
 
         <InlineDiagram>
-          <div className="w-full max-w-2xl">
-            <svg viewBox="0 0 600 140" className="w-full h-auto" fill="none">
-              <rect x="20" y="10" width="560" height="30" rx="15" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <rect x="20" y="10" width="84" height="30" rx="15" className="fill-accent" opacity="0.8" />
-              <text x="62" y="30" textAnchor="middle" className="fill-white text-[8px] font-mono font-bold uppercase" fontSize="8">Current</text>
-              <text x="100" y="30" textAnchor="middle" className="fill-accent/60 text-[8px] font-mono" fontSize="8">~15,000 professionals</text>
+          <div className="w-full">
+            <svg viewBox="0 0 600 170" className="w-full h-auto" fill="none">
+              <rect x="20" y="15" width="560" height="36" rx="18" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <rect x="20" y="15" width="84" height="36" rx="18" className="fill-accent" opacity="0.8" />
+              <text x="62" y="39" textAnchor="middle" className="fill-white font-mono font-bold uppercase" fontSize="13">Current</text>
+              <text x="130" y="39" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="13">~15,000 professionals</text>
 
-              <rect x="20" y="60" width="560" height="30" rx="15" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <rect x="20" y="60" width="112" height="30" rx="15" className="fill-accent" opacity="0.5" />
-              <text x="400" y="80" textAnchor="middle" className="fill-accent text-[8px] font-mono font-bold uppercase" fontSize="8">Target: 100,000 professionals by 2030</text>
+              <rect x="20" y="70" width="560" height="36" rx="18" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
+              <rect x="20" y="70" width="112" height="36" rx="18" className="fill-accent" opacity="0.5" />
+              <text x="76" y="94" textAnchor="middle" className="fill-white font-mono font-bold uppercase" fontSize="13">Target</text>
+              <text x="400" y="94" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">Target: 100,000 professionals by 2030</text>
 
-              <text x="300" y="125" textAnchor="middle" className="fill-text-muted text-[8px] font-mono" fontSize="8">The gap represents a $2B+ training and services opportunity</text>
+              <text x="300" y="155" textAnchor="middle" className="fill-text-muted font-mono" fontSize="12">The gap represents a $2B+ training and services opportunity</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -91,7 +92,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── Skills in Demand ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>Skills the Market Needs Now</Heading>
         <Body>
           Not all cybersecurity skills are equally in demand. Based on our engagements with African organisations, the most pressing skill gaps are:
@@ -110,7 +111,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── The HPB Solution ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>How the Hacker Protocol Bootcamp Helps</Heading>
         <Body>
           The Hacker Protocol Bootcamp (HPB) was designed specifically to address this talent gap. It is not a traditional course — it is a <Highlight>hands-on, phase-gated pipeline</Highlight> that takes students from zero to operational capability in a structured, measurable way.
@@ -120,7 +121,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
           items={[
             { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>No prerequisites required</Highlight> — Phase 01 is open to everyone, regardless of background. The only requirement is the willingness to learn</span> },
             { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Low-bandwidth accessible</Highlight> — built for the African connectivity reality. The bootcamp works on mobile connections and moderate bandwidth</span> },
-            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Browser-based labs</Highlight> — no local setup, no dependency management. Every room is solved in the browser with an embedded terminal</span> },
+            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Structured walkthroughs</Highlight> — no local setup, no dependency management. Every room guides you step-by-step with built-in quiz validation to confirm understanding</span> },
             { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Verifiable credentials</Highlight> — every completed room earns CyberPoints (CP) recorded on a blockchain, providing provable proof of capability for employers</span> },
           ]}
         />
@@ -131,7 +132,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── Call to Act ── */}
-      <Section delay={0.6}>
+      <Section>
         <Heading>The Path Forward</Heading>
         <Body>
           Closing Africa's cybersecurity talent gap requires coordinated effort from multiple stakeholders. Governments need to invest in cybersecurity education. Companies need to create entry-level positions and apprenticeship programmes. And training providers need to build accessible, practical pathways that work in the African context.
@@ -142,7 +143,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.7}>
+      <Section>
         <CTA
           title="Start Your Journey"
           desc="Phase 01 of the Hacker Protocol Bootcamp is open to everyone. No prerequisites. No cost. Just you, the terminal, and the journey to becoming an offensive security operator."

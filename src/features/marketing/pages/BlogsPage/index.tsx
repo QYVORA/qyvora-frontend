@@ -80,7 +80,7 @@ const BlogsPage: React.FC = () => {
       {/* ── Hero Section ── */}
       <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
         <HeroBackground />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-8 md:pt-10 lg:pt-12">
+          <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-10 lg:pt-12">
           <div className="max-w-4xl space-y-8 text-left w-full">
             <div className="space-y-4">
               <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">

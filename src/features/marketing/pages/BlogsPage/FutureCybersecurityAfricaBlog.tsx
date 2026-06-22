@@ -19,7 +19,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── Trend 1: AI ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>Trend 01: AI Is Reshaping Both Sides</Heading>
         <Body>
           Artificial intelligence is the most transformative force in cybersecurity since the invention of the firewall. But it cuts both ways:
@@ -58,43 +58,43 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── Trend 2 ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>Trend 02: Automation and the Death of Manual Recon</Heading>
         <Body>
           The era of manual reconnaissance is ending. Attackers already use automated pipelines that discover, probe, fingerprint, and map vulnerabilities in minutes — work that used to take days or weeks.
         </Body>
 
         <InlineDiagram>
-          <div className="w-full max-w-2xl">
-            <svg viewBox="0 0 600 100" className="w-full h-auto" fill="none">
-              <text x="300" y="15" textAnchor="middle" className="fill-accent/60 text-[8px] font-mono" fontSize="8">THE RECON AUTOMATION PIPELINE</text>
+          <div className="w-full">
+            <svg viewBox="0 0 700 130" className="w-full h-auto" fill="none">
+              <text x="350" y="20" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="13">THE RECON AUTOMATION PIPELINE</text>
 
-              <rect x="10" y="30" width="90" height="40" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="55" y="55" textAnchor="middle" className="fill-accent text-[8px] font-mono font-bold uppercase" fontSize="8">Discover</text>
+              <rect x="20" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="70" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Discover</text>
 
-              <path d="M 100 50 L 130 50" className="stroke-accent/40" strokeWidth="1.5" />
-              <polygon points="128,44 140,50 128,56" className="fill-accent/40" />
+              <path d="M 120 72 L 168 72" className="stroke-accent/40" strokeWidth="2" />
+              <polygon points="165,64 180,72 165,80" className="fill-accent/40" />
 
-              <rect x="140" y="30" width="90" height="40" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="185" y="55" textAnchor="middle" className="fill-accent text-[8px] font-mono font-bold uppercase" fontSize="8">Probe</text>
+              <rect x="168" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="218" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Probe</text>
 
-              <path d="M 230 50 L 260 50" className="stroke-accent/40" strokeWidth="1.5" />
-              <polygon points="258,44 270,50 258,56" className="fill-accent/40" />
+              <path d="M 268 72 L 316 72" className="stroke-accent/40" strokeWidth="2" />
+              <polygon points="313,64 328,72 313,80" className="fill-accent/40" />
 
-              <rect x="270" y="30" width="90" height="40" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="315" y="55" textAnchor="middle" className="fill-accent text-[8px] font-mono font-bold uppercase" fontSize="8">Analyse</text>
+              <rect x="316" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="366" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Analyse</text>
 
-              <path d="M 360 50 L 390 50" className="stroke-accent/40" strokeWidth="1.5" />
-              <polygon points="388,44 400,50 388,56" className="fill-accent/40" />
+              <path d="M 416 72 L 464 72" className="stroke-accent/40" strokeWidth="2" />
+              <polygon points="461,64 476,72 461,80" className="fill-accent/40" />
 
-              <rect x="400" y="30" width="90" height="40" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="445" y="55" textAnchor="middle" className="fill-accent text-[8px] font-mono font-bold uppercase" fontSize="8">Exploit</text>
+              <rect x="464" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="514" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Exploit</text>
 
-              <path d="M 490 50 L 520 50" className="stroke-accent/40" strokeWidth="1.5" />
-              <polygon points="518,44 530,50 518,56" className="fill-accent/40" />
+              <path d="M 564 72 L 612 72" className="stroke-accent/40" strokeWidth="2" />
+              <polygon points="609,64 624,72 609,80" className="fill-accent/40" />
 
-              <rect x="520" y="30" width="70" height="40" rx="6" className="fill-accent/10 stroke-red-400/30" strokeWidth="1" />
-              <text x="555" y="55" textAnchor="middle" className="fill-red-400 text-[8px] font-mono font-bold uppercase" fontSize="8">Report</text>
+              <rect x="612" y="45" width="75" height="55" rx="8" className="fill-accent/10 stroke-red-400/30" strokeWidth="1.5" />
+              <text x="649" y="78" textAnchor="middle" className="fill-red-400 font-mono font-bold uppercase" fontSize="14">Report</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -109,7 +109,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── Trend 3 ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>Trend 03: Africa's Leapfrog Moment</Heading>
         <Body>
           Africa has a unique advantage that more mature markets do not: <Highlight>minimal legacy infrastructure</Highlight>. Most African organisations are not running mainframes from the 1980s. They are not maintaining on-premise data centres with decades-old configurations. They are building on <Highlight>cloud-native architectures from day one</Highlight>.
@@ -129,7 +129,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── Trend 4 ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>Trend 04: Talent Localisation</Heading>
         <Body>
           The global cybersecurity talent shortage means that organisations everywhere are competing for the same limited pool of professionals. For African organisations, relying on imported expertise is not sustainable — it is too expensive, too slow, and often disconnected from local context.
@@ -143,7 +143,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── Our Vision ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>Our Vision for 2030</Heading>
         <Body>
           By 2030, we envision an Africa where:
@@ -178,7 +178,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.6}>
+      <Section>
         <CTA
           title="Help Build the Future"
           desc="Whether you are a student, a professional, an investor, or an organisation — there is a role for you in building Africa's cybersecurity future. Start where you are, with what you have."

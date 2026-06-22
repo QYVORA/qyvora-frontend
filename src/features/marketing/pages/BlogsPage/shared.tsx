@@ -1,18 +1,11 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { Terminal } from '@/shared/components/blog/Terminal';
 import { OutputBlock as OutputBlockComponent } from '@/shared/components/blog/OutputBlock';
 
-export const Section = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6, delay }}
-    className="mb-16 md:mb-24 last:mb-0"
-  >
+export const Section = ({ children }: { children: React.ReactNode }) => (
+  <div className="mb-16 md:mb-24 last:mb-0">
     {children}
-  </motion.div>
+  </div>
 );
 
 export const Heading = ({ children }: { children: React.ReactNode }) => (
@@ -116,7 +109,7 @@ export const Divider = () => (
 );
 
 export const InlineDiagram = ({ children }: { children: React.ReactNode }) => (
-  <div className="my-8 p-6 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center">
+  <div className="my-8 p-3 md:p-8 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center w-full">
     {children}
   </div>
 );

@@ -50,7 +50,7 @@ const SOCIAL_LINKS: SocialLink[] = [
 /* ─────────────────────────────────────────────
    PULSE TEXT — alt to "Live" badge
 ───────────────────────────────────────────── */
-const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE / ACCRA, GHANA';
+const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
 
 const Footer: React.FC = () => {
   return (
