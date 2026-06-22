@@ -88,7 +88,7 @@ React Component
 api.ts (Axios instance)
   ├── Request interceptor: attaches X-CSRF-Token header from cookie
   ↓
-Backend API (https://qyvora-backend.onrender.com/api/...)
+Backend API (<YOUR_API_BASE_URL>/...)
   ↓
 Response interceptor:
   ├── 401 → clear auth state → redirect /login
@@ -309,7 +309,7 @@ Layer 2 — Cache API (image preloading):
 ## Environment Variables
 
 ```env
-VITE_API_BASE_URL=https://qyvora-backend.onrender.com/api
+VITE_API_BASE_URL=<YOUR_API_BASE_URL>
 ```
 
 All other config is handled at build time via Vite.

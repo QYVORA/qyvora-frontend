@@ -34,7 +34,7 @@ Runs at `http://localhost:5173`.
 VITE_API_BASE_URL=http://localhost:3000/api
 
 # Production — points to deployed backend
-VITE_API_BASE_URL=https://qyvora-backend.onrender.com/api
+VITE_API_BASE_URL=<YOUR_API_BASE_URL>
 ```
 
 ## Scripts
