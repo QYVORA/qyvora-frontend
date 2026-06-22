@@ -119,7 +119,7 @@ const BlogsPage: React.FC = () => {
                 >
                   <Link
                     to={`/blogs/${post.slug}`}
-                    className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-[620px] sm:h-[650px] lg:h-[480px] xl:h-[520px]"
+                    className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:h-[480px] xl:h-[520px]"
                     style={{ boxShadow: 'var(--card-shimmer)' }}
                   >
                     {/* Image */}
@@ -146,7 +146,7 @@ const BlogsPage: React.FC = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center min-h-0">
+                    <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-start md:justify-center min-h-0">
                       <div className="max-w-2xl space-y-6">
                         <h2 className="text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300">
                           {post.title}
