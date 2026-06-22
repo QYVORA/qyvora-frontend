@@ -1,4 +1,4 @@
-import { LayoutDashboard, BookOpen, Radar, ShoppingBag, Wallet, Trophy, Settings } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Radar, ShoppingBag, Wallet, Trophy, Settings, Radio } from 'lucide-react';
 
 export const MOBILE_PRIMARY = [
   { label: 'Home',     icon: LayoutDashboard, path: '/dashboard'  },
@@ -7,8 +7,8 @@ export const MOBILE_PRIMARY = [
 ];
 
 export const MOBILE_MORE = [
+  { label: 'Cyber Feed',   icon: Radio,      path: '/dashboard/news'         },
   { label: 'Market',        icon: ShoppingBag, path: '/dashboard/marketplace'   },
-  { label: 'Wallet',        icon: Wallet,    path: '/dashboard/wallet'        },
-  { label: 'Achievements',  icon: Trophy,    path: '/dashboard/achievements'  },
-  { label: 'Settings',      icon: Settings,  path: '/dashboard/settings'      },
+  { label: 'Wallet',        icon: Wallet,      path: '/dashboard/wallet'        },
+  { label: 'Settings',      icon: Settings,    path: '/dashboard/settings'      },
 ];

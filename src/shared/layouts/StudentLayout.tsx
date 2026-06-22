@@ -191,6 +191,9 @@ const StudentLayout = () => {
   const settingsMatch = useMatch('/dashboard/settings');
   const settingsLegacyMatch = useMatch('/settings');
 
+  // News page
+  const newsMatch = useMatch('/dashboard/news');
+
   // True if the current page has its own sidebar and should suppress the shared rail.
   const hasPageOwnedSidebar = Boolean(
     marketplaceMatch
@@ -201,6 +204,7 @@ const StudentLayout = () => {
     || notificationsLegacyMatch
     || settingsMatch
     || settingsLegacyMatch
+    || newsMatch
   );
 
   // Final decision: hide the right rail if ANY condition is true.
