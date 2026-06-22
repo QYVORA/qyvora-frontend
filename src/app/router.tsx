@@ -40,6 +40,9 @@ const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPassw
 const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
+// News pages
+const NewsFeedPage      = lazy(() => import('../features/news/pages/NewsFeedPage'));
+
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
@@ -112,6 +115,7 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
+          <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
         </Route>
 
         <Route element={<BlogsLayout />}>
@@ -144,6 +148,7 @@ export const AppRouter = () => {
           
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/news"         element={<Wrap scope="Cyber Feed"><StudentOnly><NewsFeedPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
 
