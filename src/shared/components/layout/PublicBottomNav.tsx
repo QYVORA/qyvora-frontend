@@ -6,6 +6,7 @@ import {
   Wrench,
   Mail,
   Radar,
+  Trophy,
   LogIn,
   UserPlus,
   LayoutDashboard,
@@ -20,8 +21,9 @@ const _0x5a2b = atob('L21yLXJvYm90');
 
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
-  { label: 'Home',    icon: Home,   path: '/'           },
-  { label: 'Contact', icon: Mail,   path: '/contact'    },
+  { label: 'Home',        icon: Home,   path: '/'           },
+  { label: 'Leaderboard', icon: Trophy, path: '/leaderboard' },
+  { label: 'Contact',     icon: Mail,   path: '/contact'    },
 ];
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */

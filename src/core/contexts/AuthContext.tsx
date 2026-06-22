@@ -39,16 +39,17 @@ import { extractCpBalance } from '../../shared/utils/cpBalance';
  */
 interface User {
   uid: string;
-  username: string;    // Displayed handle (hackerHandle preferred over real name)
+  username: string;
   email: string;
-  rank: string;        // Human-readable rank derived from CP thresholds (see toFrontendUser)
-  cp: number;          // Cyber Points balance
+  rank: string;
+  cp: number;
   isAdmin: boolean;
-  role: string;        // Raw role string from backend ('admin', 'student', etc.)
+  role: string;
   bootcampId: string;
   bootcampStatus: string;
   onboardingCompletedAt: string | null;
   recoveryTokenAcknowledgedAt: string | null;
+  handleNeedsUpdate: boolean;
 }
 
 /**
@@ -94,6 +95,7 @@ interface BackendUser {
   bootcampStatus?: string;
   onboardingCompletedAt?: string;
   recoveryTokenAcknowledgedAt?: string;
+  handleNeedsUpdate?: boolean;
 }
 
 // ─── Context creation ─────────────────────────────────────────────────────────
@@ -155,6 +157,7 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     bootcampStatus: String(backendUser?.bootcampStatus || 'not_enrolled'),
     onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
     recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
+    handleNeedsUpdate: !!backendUser?.handleNeedsUpdate,
   };
 };
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Mail, Edit3, Activity, ArrowRight } from 'lucide-react';
+import ShareProfile from '../../../shared/components/ShareProfile';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import Identicon from '../../../shared/components/Identicon';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
@@ -38,6 +40,7 @@ const Profile: React.FC = () => {
   }, [isOwnProfile, paramUsername]);
 
   const profileData = useMemo(() => ({
+    id: profileApi?.id || authUser?.uid || '',
     username: isOwnProfile
       ? (profileApi?.hackerHandle || profileApi?.name || displayHandle)
       : (profileApi?.handle || profileApi?.name || displayHandle),
@@ -47,7 +50,6 @@ const Profile: React.FC = () => {
     name: String(profileApi?.name || ''),
     cp: Number(profileApi?.cpPoints || authUser?.cp || 0),
     completedRooms: Array.isArray(profileApi?.learn?.completedRooms) ? profileApi.learn.completedRooms : [],
-    avatarUrl: profileApi?.avatarUrl || '',
   }), [isOwnProfile, profileApi, authUser, displayHandle]);
 
   const rooms = useMemo(() => Array.isArray(profileData.completedRooms) ? profileData.completedRooms : [], [profileData.completedRooms]);
@@ -78,21 +80,11 @@ const Profile: React.FC = () => {
           <div className="rounded-3xl bg-bg-card p-6 md:p-10">
             <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
 
-              {/* Avatar — smaller on mobile, full height on desktop */}
+              {/* Avatar — Identicon based on userId */}
               <div className="w-32 md:w-48 lg:w-56 flex-shrink-0">
-                {profileData.avatarUrl ? (
-                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl overflow-hidden border border-accent/20">
-                    <img
-                      src={profileData.avatarUrl}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl border border-accent/20 bg-accent-dim flex items-center justify-center text-accent text-4xl md:text-6xl lg:text-7xl font-black font-mono">
-                    {profileData.username.substring(0, 2).toUpperCase()}
-                  </div>
-                )}
+                <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-full overflow-hidden border border-accent/20">
+                  <Identicon value={profileData.id} size={256} className="w-full h-full" />
+                </div>
               </div>
 
               {/* Identity + CP + Actions */}
@@ -152,6 +144,7 @@ const Profile: React.FC = () => {
                         >
                           Public View
                         </Link>
+                        <ShareProfile handle={profileData.username} />
                         <button
                           onClick={() => setEditOpen(true)}
                           className="px-4 py-2 bg-accent text-bg border border-accent rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95"

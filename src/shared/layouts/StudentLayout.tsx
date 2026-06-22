@@ -93,6 +93,7 @@ import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import StudentRightRail from '@/features/student/components/layout/StudentRightRail';
 import WelcomeModal from '@/features/student/components/WelcomeModal';
 import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
+import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 
 // ─── Spacing Tokens ───────────────────────────────────────────────────────────
@@ -280,6 +281,9 @@ const StudentLayout = () => {
 
       {/* Recovery Token Modal */}
       <RecoveryTokenModal open={recoveryOpen} onOpenChange={setRecoveryOpen} />
+
+      {/* Username Change Modal (lowest priority — only if no other modal is open) */}
+      {!welcomeOpen && !recoveryOpen && <UsernameChangeModal />}
     </div>
   );
 };
