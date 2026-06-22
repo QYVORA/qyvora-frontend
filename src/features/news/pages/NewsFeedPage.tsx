@@ -40,7 +40,7 @@ const NewsCardSlide = ({ article }: { article: Article }) => {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-[520px] sm:h-[560px] lg:h-[440px] xl:h-[480px]"
+      className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:h-[440px] xl:h-[480px]"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {article.imageUrl && !imgError && (
@@ -70,7 +70,7 @@ const NewsCardSlide = ({ article }: { article: Article }) => {
         </div>
       )}
 
-      <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-center min-h-0">
+      <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-start md:justify-center min-h-0">
         <div className={`${article.imageUrl && !imgError ? 'max-w-2xl' : 'max-w-4xl mx-auto'} space-y-5`}>
           <div className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-wider text-text-muted">
             <span className="flex items-center gap-1.5">

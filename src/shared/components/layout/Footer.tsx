@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { BrandLinkedinIcon } from '@/shared/components/icons';
@@ -53,6 +54,10 @@ const SOCIAL_LINKS: SocialLink[] = [
 const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
 
 const Footer: React.FC = () => {
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <footer className="relative min-h-screen w-full overflow-hidden select-none bg-bg">
       {/* Background layer */}
@@ -109,6 +114,15 @@ const Footer: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* Scroll to top button */}
+        <button
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          className="absolute bottom-8 right-8 z-20 w-12 h-12 flex items-center justify-center rounded-full bg-accent text-bg shadow-lg hover:brightness-110 transition-all active:scale-90 hover:scale-105 animate-in fade-in slide-in-from-bottom-2 duration-300"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </button>
 
         {/* Bottom Bar */}
         <div className="w-full max-w-[1600px] mx-auto pt-10 border-t border-border/40 mt-10">

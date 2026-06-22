@@ -55,7 +55,21 @@
     <meta name="twitter:site" content="@QYVORASEC" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static loader shown while JS bundles load -->
+      <div id="initial-loader" style="position:fixed;inset:0;z-index:9999;background:var(--color-bg,#0A0A0A);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;touch-action:none">
+        <style>
+          #initial-loader .spinner { width:80px;height:80px;animation:spin 1s linear infinite; }
+          #initial-loader .spinner .track { opacity:0.1; }
+          #initial-loader .spinner .arc { opacity:0.9;stroke-dasharray:45 150;stroke-linecap:round; }
+          @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+        </style>
+        <svg class="spinner" viewBox="0 0 50 50">
+          <circle class="track" cx="25" cy="25" r="22" fill="none" stroke="var(--color-accent,#66B870)" stroke-width="3.5" />
+          <circle class="arc" cx="25" cy="25" r="22" fill="none" stroke="var(--color-accent,#66B870)" stroke-width="3.5" />
+        </svg>
+      </div>
+    </div>
     <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

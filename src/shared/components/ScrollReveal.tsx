@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useReducedMotion, type Variants } from 'motion/react';
+import { motion, useInView, useReducedMotion } from 'motion/react';
 import { useAdaptiveUi } from '../../core/hooks/useAdaptiveUi';
 
 interface ScrollRevealProps {
@@ -16,12 +16,6 @@ interface ScrollRevealProps {
   staggerChildren?: number;
 }
 
-/**
- * ScrollReveal
- * ─────────────────────────────────────────────────────────────────────────────
- * A sophisticated reveal-on-scroll component that makes elements "build" into 
- * place with cinematic easing and optional staggering.
- */
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   className = '',
@@ -31,11 +25,47 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   scale = 0.95,
   staggerChildren = 0,
 }) => {
-  // All animations are disabled - component now just renders children directly
+  const prefersReducedMotion = useReducedMotion();
+  const { isMobile } = useAdaptiveUi();
+  const ref = React.useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount });
+
+  if (prefersReducedMotion || isMobile) {
+    return <div className={className}>{children}</div>;
+  }
+
+  const directionOffset = 40;
+  const variants = {
+    hidden: {
+      opacity: 0,
+      x: direction === 'left' ? -directionOffset : direction === 'right' ? directionOffset : 0,
+      y: direction === 'up' ? directionOffset : direction === 'down' ? -directionOffset : 0,
+      scale: direction === 'none' ? 1 : scale,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        staggerChildren: staggerChildren || undefined,
+      },
+    },
+  };
+
   return (
-    <div className={className}>
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      variants={variants}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
