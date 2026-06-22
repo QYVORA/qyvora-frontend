@@ -31,7 +31,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── The Problem ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>The Discovery Problem</Heading>
         <Body>
           Most would-be security operators in Africa face the same wall: <Highlight>information overload with no signal</Highlight>. YouTube tutorials jump between beginner and expert with no ramp. Online courses cost in dollars that don't stretch the same way locally. CTF platforms assume you already know the basics.
@@ -45,7 +45,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── The Five Phases ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>The Five-Phase Pipeline</Heading>
         <Body>
           The HPB is divided into five phases. Each one represents a layer of the offensive security stack. You complete them in order, and each phase unlocks the next.
@@ -79,13 +79,13 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── The Room-Based Architecture ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>Room-Based Architecture</Heading>
         <Body>
           Each phase is composed of <Highlight>rooms</Highlight> — individual, self-contained challenges that teach a specific concept or skill. A room might ask you to enumerate a subdomain, exploit a misconfigured HTTP header, or pivot through a compromised host.
         </Body>
         <Body>
-          Rooms are designed to be <Highlight>solved in the browser</Highlight> using our embedded terminal environment. No local setup, no dependency hell, no "works on my machine." Just you, the target, and your skills.
+          Rooms are designed as <Highlight>structured walkthroughs</Highlight> — step-by-step guides that teach each concept through carefully crafted content with built-in quiz validation to confirm understanding. No local setup, no dependency hell.
         </Body>
         <Body>
           When you complete a room, you earn <Highlight>CyberPoints (CP)</Highlight> — on-chain verified credentials that represent your mastery. These aren't participation trophies. They're <Highlight>provable, transferable signals</Highlight> of your capability. You can show them to employers, add them to your portfolio, or just flex on the leaderboard.
@@ -93,13 +93,13 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── Why This Matters ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>Why This Matters for Africa</Heading>
         <Body>
           The global cybersecurity workforce shortage is projected at <Highlight>4 million professionals</Highlight>. Africa's share of that gap is disproportionate — not because we lack talent, but because we lack <Highlight>infrastructure and pathways</Highlight>.
         </Body>
         <Body>
-          The HPB is our attempt to build that pathway. It's designed for the African context: low-bandwidth-friendly, mobile-accessible, and priced in a way that makes sense for local economies. Every room, every phase, every CyberPoint is a step toward building a self-sustaining cybersecurity ecosystem on the continent.
+          The HPB is our attempt to build that pathway. It's designed for the African context: low-bandwidth-friendly, mobile-accessible, and completely free to start. Every room, every phase, every CyberPoint is a step toward building a self-sustaining cybersecurity ecosystem on the continent.
         </Body>
         <Body>
           We're not just training operators. We're building a <Highlight>credentialing layer</Highlight> that lets talent surface regardless of where they're from, who they know, or what school they went to.
@@ -110,7 +110,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── The Tech Stack ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>How It Works Under the Hood</Heading>
         <Body>
           The HPB runs on a <Highlight>Proof-of-Authority (PoA) blockchain</Highlight> we built specifically for this purpose. Every room completion, every CP award, every phase unlock is recorded on-chain — not because we need a blockchain for the sake of it, but because we wanted <Highlight>verifiable, tamper-proof credentials</Highlight> that outlive any single platform.
@@ -131,7 +131,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── The Philosophy ── */}
-      <Section delay={0.6}>
+      <Section>
         <Heading>The Core Philosophy</Heading>
         <Body>
           Three principles drive everything about the HPB:
@@ -174,7 +174,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.7}>
+      <Section>
         <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
             Ready for the 2026 Cohort?

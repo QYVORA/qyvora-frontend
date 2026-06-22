@@ -9,7 +9,7 @@
  * ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────
  *
  *  ┌──────────────────────────────────────────────┐  ← Fixed Navbar (always on top)
- *  │                  Navbar                       │    72px tall → pt-[72px] on main
+ *  │                  Navbar                       │    72px tall
  *  ├──────────────────────────────────────────────┤
  *  │                                               │
  *  │         Page Content  (<Outlet />)            │  ← Normal continuous scroll
@@ -17,29 +17,15 @@
  *  ├──────────────────────────────────────────────┤
  *  │                  Footer                       │  ← Rendered by this layout
  *  └──────────────────────────────────────────────┘
- *  ┌──────────────────────────────────────────────┐  ← Fixed at screen bottom (mobile only)
- *  │             PublicBottomNav                   │
- *  └──────────────────────────────────────────────┘
  *
  * ─── HOW FIXED ELEMENTS AFFECT SPACING ───────────────────────────────────────
  *
- * Both Navbar and PublicBottomNav use `position: fixed` — they are "lifted"
- * out of the normal document flow and sit on top of page content. This means
- * the browser doesn't automatically make room for them. We handle this manually:
+ * Only the Navbar uses `position: fixed`. We handle this manually:
  *
  *   TOP:    Navbar is ~72px tall. We add `pt-[72px]` (inline Tailwind arbitrary
  *           value) to <main> so content starts below the navbar, not behind it.
  *           NOTE: This is hardcoded. If Navbar's height ever changes, this value
  *           must be updated manually here. ⚠️ Consider making this a shared token.
- *
- *   BOTTOM: PublicBottomNav floats at the bottom on mobile. We add a calculated
- *           bottom padding to <main> so the last content / Footer isn't covered:
- *             `pb-[calc(60px+env(safe-area-inset-bottom,0px))]`
- *             60px → mobile bottom nav height
- *             env(safe-area-inset-bottom) → iPhone home indicator / notch clearance
- *             ,0px → fallback for unsupported browsers
- *           On desktop (md+), `md:pb-0` removes the bottom padding because
- *           PublicBottomNav is hidden on desktop.
  *
  * ─── ROUTING CONTEXT ─────────────────────────────────────────────────────────
  *
@@ -68,10 +54,8 @@
 import { Outlet } from 'react-router-dom';
 // Shared marketing navigation bar — fixed at top, used across all public pages.
 import { Navbar } from '@/shared/components/layout';
-// Shared marketing footer — rendered BELOW the page content, above the mobile nav.
+// Shared marketing footer — rendered BELOW the page content.
 import { Footer } from '@/shared/components/layout';
-// Mobile-only bottom navigation — fixed at the screen bottom, hidden on desktop.
-import { PublicBottomNav } from '@/shared/components/layout';
 // "Contact Us" modal host — sits outside <main> to escape scroll/overflow contexts.
 import ContactModalHost from '@/features/marketing/components/ContactModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
@@ -125,7 +109,7 @@ const PublicLayout = () => (
       <Outlet /> is replaced at runtime by React Router with the currently
       matched child route component (e.g., <ContactPage />, <ServicesPage />).
     */}
-    <main id="main-content" className="w-full min-h-screen flex flex-col pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0">
+    <main id="main-content" className="w-full min-h-screen flex flex-col">
       <Outlet />
     </main>
 
@@ -133,20 +117,8 @@ const PublicLayout = () => (
       ── Site Footer ────────────────────────────────────────────────────────────
       Standard footer with links, copyright, etc. Rendered AFTER <main> so it
       appears below the page content in the normal document flow.
-
-      On mobile, the fixed PublicBottomNav sits on top of this Footer visually.
-      The `pb-[calc(60px+...)]` on <main> ensures the Footer itself is not
-      hidden — but verify Footer's own bottom padding is sufficient on mobile.
     */}
     <Footer />
-
-    {/*
-      ── Mobile Bottom Navigation ───────────────────────────────────────────────
-      Fixed at the bottom of the screen on mobile only. Hidden on desktop via
-      internal CSS classes inside PublicBottomNav. Provides quick-access links
-      (e.g., Home, Services, Contact) for mobile users.
-    */}
-    <PublicBottomNav />
 
     {/*
       ── Contact Modal Host ─────────────────────────────────────────────────────

@@ -16,7 +16,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── The Reality ── */}
-      <Section delay={0.1}>
+      <Section>
         <Heading>The Cybersecurity Reality in Africa</Heading>
         <Body>
           Most organisations in Africa operate with <Highlight>minimal security visibility</Highlight>. A 2024 Interpol report identified Africa as one of the most targeted regions for cybercrime, with losses estimated at over $4 billion annually. Yet the majority of companies have no dedicated security team, no attack surface monitoring, and no incident response plan.
@@ -38,7 +38,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── The Gap ── */}
-      <Section delay={0.2}>
+      <Section>
         <Heading>The Gap: Imported Solutions, Local Problems</Heading>
         <Body>
           Many African organisations rely on imported security products built for Western infrastructure and compliance regimes. These tools assume a certain maturity level — dedicated SOC teams, mature DevSecOps pipelines, and budgets that most African companies do not have.
@@ -52,7 +52,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── Our Approach ── */}
-      <Section delay={0.3}>
+      <Section>
         <Heading>The QYVORA Approach</Heading>
         <Body>
           QYVORA was founded on a simple premise: <Highlight>build African security for African challenges</Highlight>. We are not a reseller. We are not a consultancy that rebadges global frameworks. We are a <Highlight>homegrown offensive security company</Highlight> that builds tools, trains talent, and delivers services designed for the African context.
@@ -64,8 +64,8 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
         <div className="space-y-6 my-8">
           <FeatureCard
             icon={Target}
-            title="Offensive Security Services"
-            desc="Penetration testing, attack surface intelligence, red teaming, and vulnerability assessments — delivered by operators who understand the African infrastructure landscape."
+            title="Attack Surface Intelligence"
+            desc="Tools like the Anansi CLI engine that map, probe, and analyse external attack surfaces — giving organisations the same visibility attackers have, built for the African infrastructure landscape."
           />
           <FeatureCard
             icon={BookOpen}
@@ -81,30 +81,30 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── Pipeline Diagram ── */}
-      <Section delay={0.4}>
+      <Section>
         <Heading>How It All Connects</Heading>
         <Body>
           These three pillars feed into each other. Education produces skilled operators. Skilled operators use and improve our tools. Better tools enable better services. Better services fund more education. It is a <Highlight>self-reinforcing ecosystem</Highlight>:
         </Body>
 
         <InlineDiagram>
-          <div className="w-full max-w-2xl">
-            <svg viewBox="0 0 600 160" className="w-full h-auto" fill="none">
-              <rect x="10" y="10" width="180" height="60" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="100" y="48" textAnchor="middle" className="fill-accent text-[10px] font-mono font-bold uppercase" fontSize="11">Education &amp; Training</text>
+          <div className="w-full">
+            <svg viewBox="0 0 600 200" className="w-full h-auto" fill="none">
+              <rect x="10" y="20" width="180" height="70" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="100" y="63" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Education &amp; Training</text>
 
-              <rect x="210" y="90" width="180" height="60" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="300" y="128" textAnchor="middle" className="fill-accent text-[10px] font-mono font-bold uppercase" fontSize="11">Security Tooling</text>
+              <rect x="210" y="110" width="180" height="70" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="300" y="153" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Security Tooling</text>
 
-              <rect x="410" y="10" width="180" height="60" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="500" y="48" textAnchor="middle" className="fill-accent text-[10px] font-mono font-bold uppercase" fontSize="11">Security Services</text>
+              <rect x="410" y="20" width="180" height="70" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
+              <text x="500" y="63" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Security Services</text>
 
-              <path d="M 190 40 L 400 40" className="stroke-accent/40" strokeWidth="1.5" strokeDasharray="4 4" />
-              <path d="M 300 90 L 300 70" className="stroke-accent/40" strokeWidth="1.5" />
-              <path d="M 410 40 L 300 40 L 300 90" className="stroke-accent/40" strokeWidth="1.5" strokeDasharray="4 4" />
+              <path d="M 190 55 L 410 55" className="stroke-accent/40" strokeWidth="1.5" strokeDasharray="4 4" />
+              <path d="M 300 110 L 300 90" className="stroke-accent/40" strokeWidth="1.5" />
+              <path d="M 410 55 L 300 55 L 300 110" className="stroke-accent/40" strokeWidth="1.5" strokeDasharray="4 4" />
 
-              <text x="295" y="35" textAnchor="middle" className="fill-accent/60 text-[8px] font-mono" fontSize="8">feeds into</text>
-              <text x="278" y="70" textAnchor="middle" className="fill-accent/60 text-[8px] font-mono" fontSize="8">enables</text>
+              <text x="295" y="48" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="11">feeds into</text>
+              <text x="290" y="90" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="11">enables</text>
             </svg>
           </div>
         </InlineDiagram>
@@ -115,7 +115,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── The Big Picture ── */}
-      <Section delay={0.5}>
+      <Section>
         <Heading>Why This Matters for Africa</Heading>
         <Body>
           Cybersecurity is not a luxury — it is a <Highlight>foundational requirement</Highlight> for digital sovereignty. If African companies and governments cannot secure their own infrastructure, they cannot truly own it. They remain dependent on external vendors, external expertise, and external approval.
@@ -129,7 +129,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
       </Section>
 
       {/* ── CTA ── */}
-      <Section delay={0.6}>
+      <Section>
         <CTA
           title="Join the Mission"
           desc="Whether you are a student looking to start your cybersecurity journey, a company needing security assessments, or a partner who shares our vision — there is a place for you in the QYVORA ecosystem."

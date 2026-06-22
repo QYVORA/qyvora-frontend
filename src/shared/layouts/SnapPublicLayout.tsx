@@ -12,7 +12,6 @@
  *  MOBILE (< 768px / below Tailwind's `md` breakpoint):
  *    • Normal, free-scrolling page.
  *    • `pt-[72px]` clears the fixed navbar.
- *    • `pb-[calc(60px+...)]` clears the fixed mobile bottom nav.
  *    • Footer renders normally at the bottom via the `<div className="md:hidden">` block.
  *    • Content stacks vertically as usual.
  *
@@ -24,7 +23,6 @@
  *    • The browser snaps between sections.
  *    • Footer is NOT rendered by this layout on desktop — each page's LAST snap
  *      section embeds its own footer content.
- *    • Bottom padding is removed (md:pb-0) since there's no mobile bottom nav.
  *
  * ─── VISUAL STRUCTURE ────────────────────────────────────────────────────────
  *
@@ -37,8 +35,6 @@
  *  ├──────────────────────────────────────────────┤
  *  │  Footer                                      │  ← Rendered by md:hidden div
  *  └──────────────────────────────────────────────┘
- *  ┌──────────────────────────────────────────────┐  ← Fixed bottom (mobile nav)
- *
  *  DESKTOP:
  *  ┌──────────────────────────────────────────────┐  ← Fixed Navbar (72px)
  *  ├──────────────────────────────────────────────┤
@@ -89,8 +85,6 @@ import { Outlet } from 'react-router-dom';
 import { Navbar } from '@/shared/components/layout';
 // Shared marketing footer — shown ONLY on mobile via the md:hidden wrapper below.
 import { Footer } from '@/shared/components/layout';
-// Mobile-only bottom navigation — fixed at screen bottom, hidden on desktop.
-import { PublicBottomNav } from '@/shared/components/layout';
 
 /**
  * SnapPublicLayout Component
@@ -123,20 +117,12 @@ const SnapPublicLayout = () => (
                        md: prefix is redundant here since both values are identical.
                        ⚠️ The `md:pt-[72px]` can be safely removed.)
 
-      MOBILE ONLY:
-        pb-[calc(60px+env(safe-area-inset-bottom,0px))]
-          → Bottom padding to ensure content isn't hidden under the fixed
-            PublicBottomNav. 60px = nav height. env() adds iPhone home bar clearance.
-
-      DESKTOP (md+):
-        md:pb-0  → removes mobile bottom padding (no bottom nav on desktop).
-
       style={{ height: undefined }}
         → Explicitly sets no inline height. This is a no-op and likely a
           leftover from debugging. Safe to remove. ⚠️
     */}
     <main
-      className="w-full min-h-screen flex flex-col pt-[72px] pb-[calc(60px+env(safe-area-inset-bottom,0px))] md:pb-0"
+      className="w-full min-h-screen flex flex-col pt-[72px]"
       style={{ height: undefined }}
     >
       {/*
@@ -178,12 +164,6 @@ const SnapPublicLayout = () => (
       <Footer />
     </div>
 
-    {/*
-      ── Mobile Bottom Navigation ───────────────────────────────────────────────
-      Fixed at the bottom of the screen on mobile only. Hidden on desktop.
-      Provides quick-access links for mobile users browsing public pages.
-    */}
-    <PublicBottomNav />
   </>
 );
 
