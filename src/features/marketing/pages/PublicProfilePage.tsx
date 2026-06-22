@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Activity, ArrowRight } from 'lucide-react';
+import ShareProfile from '../../../shared/components/ShareProfile';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import Identicon from '../../../shared/components/Identicon';
 import CpLogo from '../../../shared/components/CpLogo';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -73,14 +75,15 @@ const PublicProfile: React.FC = () => {
 
       <div className="mx-auto max-w-[1440px] px-4 pt-6 pb-16 md:px-8">
 
-        {/* Back link */}
-        <div className="mb-6">
+        {/* Back link + Share */}
+        <div className="mb-6 flex items-center justify-between">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest transition-colors group"
           >
             <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" /> Back
           </Link>
+          <ShareProfile handle={handle || ''} />
         </div>
 
         {/* Profile Header */}
@@ -88,21 +91,11 @@ const PublicProfile: React.FC = () => {
           <div className="rounded-3xl p-6 md:p-10">
             <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
 
-              {/* Avatar — smaller on mobile, full height on desktop */}
+              {/* Avatar — Identicon based on userId */}
               <div className="w-32 md:w-48 lg:w-56 flex-shrink-0">
-                {profile.avatarUrl ? (
-                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl overflow-hidden border border-accent/20">
-                    <img
-                      src={profile.avatarUrl}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-2xl md:rounded-3xl border border-accent/20 bg-accent-dim flex items-center justify-center text-accent text-4xl md:text-6xl lg:text-7xl font-black font-mono">
-                    {initials}
-                  </div>
-                )}
+                <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-full overflow-hidden border border-accent/20">
+                  <Identicon value={profile.id} size={256} className="w-full h-full" />
+                </div>
               </div>
 
               {/* Identity + CP + Actions */}

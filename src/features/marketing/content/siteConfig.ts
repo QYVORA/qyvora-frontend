@@ -83,6 +83,7 @@ export const SITE_CONFIG = {
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
     ],
     company: [
@@ -102,7 +103,8 @@ export const SITE_CONFIG = {
       { label: 'Anansi CLI', path: '/anansi' },
       { label: 'Learn', path: '/learn' },
       { label: 'Blogs', path: '/blogs' },
-      { label: 'Team', path: '/team' }
+      { label: 'Team', path: '/team' },
+      { label: 'Leaderboard', path: '/leaderboard' }
     ],
   },
 } as const;

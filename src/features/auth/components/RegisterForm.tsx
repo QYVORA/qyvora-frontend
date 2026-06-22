@@ -20,10 +20,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
         <div className="space-y-2">
           <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
           <div className="relative">
-            <input id="register-handle" type="text" name="handle" required autoComplete="username" placeholder="kwame_operator"
+            <input id="register-handle" type="text" name="handle" required autoComplete="username"
+              pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$"
+              title="Letters, numbers, and hyphens only. No spaces. Must start and end with a letter or number."
+              placeholder="kwame-operator"
               className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
             <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
+          <p className="text-[10px] text-text-muted/60 mt-1">Letters, numbers, and hyphens only. No spaces.</p>
           </div>
 
           {/* Full Name */}

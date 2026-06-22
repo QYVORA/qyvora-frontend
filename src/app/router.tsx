@@ -30,6 +30,7 @@ const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPa
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
+const LeaderboardPage   = lazy(() => import('../features/marketing/pages/LeaderboardPage'));
 const BlogsPage         = lazy(() => import('../features/marketing/pages/BlogsPage'));
 const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
@@ -116,6 +117,7 @@ export const AppRouter = () => {
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
           <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
+          <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
         </Route>
 
         <Route element={<BlogsLayout />}>
