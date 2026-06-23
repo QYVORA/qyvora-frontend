@@ -21,7 +21,7 @@ const LandingPartnersSection: React.FC = () => {
             <img
               src={partner.src}
               alt={partner.name}
-              className="max-h-10 md:max-h-14 lg:max-h-16 w-auto object-contain brightness-0 invert-[0.7] dark:invert-0"
+              className="max-h-10 md:max-h-14 lg:max-h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
               loading="lazy"
             />
           </div>
