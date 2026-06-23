@@ -63,9 +63,6 @@ const LandingHowItWorksSection: React.FC = () => {
 
         {/* Left — heading */}
         <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-6 md:mb-0">
-          <span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
-            Your Path
-          </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
             Learn. <span className="text-accent">Practice.</span> Prove.
           </h2>
