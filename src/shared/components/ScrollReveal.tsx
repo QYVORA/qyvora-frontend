@@ -6,15 +6,13 @@ interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  /** Direction to reveal from. Default: 'up' */
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
-  /** How much of the element must be visible before triggering. Default: 0.1 */
   amount?: number;
-  /** Scale from value. Default: 0.95 */
   scale?: number;
-  /** If true, children will be staggered. Requires children to be motion elements or use variants. */
   staggerChildren?: number;
 }
+
+const DIRECTION_OFFSET = 40;
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
@@ -30,16 +28,13 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   const ref = React.useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount });
 
-  if (prefersReducedMotion || isMobile) {
-    return <div className={className}>{children}</div>;
-  }
+  const noAnimation = prefersReducedMotion || isMobile;
 
-  const directionOffset = 40;
-  const variants = {
+  const variants = React.useMemo(() => ({
     hidden: {
       opacity: 0,
-      x: direction === 'left' ? -directionOffset : direction === 'right' ? directionOffset : 0,
-      y: direction === 'up' ? directionOffset : direction === 'down' ? -directionOffset : 0,
+      x: direction === 'left' ? -DIRECTION_OFFSET : direction === 'right' ? DIRECTION_OFFSET : 0,
+      y: direction === 'up' ? DIRECTION_OFFSET : direction === 'down' ? -DIRECTION_OFFSET : 0,
       scale: direction === 'none' ? 1 : scale,
     },
     visible: {
@@ -54,15 +49,15 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         staggerChildren: staggerChildren || undefined,
       },
     },
-  };
+  }), [direction, scale, delay, staggerChildren]);
 
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={variants}
+      initial={noAnimation ? false : 'hidden'}
+      animate={noAnimation ? false : (isInView ? 'visible' : 'hidden')}
+      variants={noAnimation ? undefined : variants}
     >
       {children}
     </motion.div>
