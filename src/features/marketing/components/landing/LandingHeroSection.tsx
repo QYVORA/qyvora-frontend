@@ -6,6 +6,7 @@ import { lazy, Suspense } from 'react';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
+import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
 
 const HackerGlobe = lazy(() => import('../HackerGlobe'));
 
@@ -79,9 +80,11 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
       {/* ── Mobile Globe - Background Only ── */}
       {!isLg && (
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] max-w-[80vw] max-h-[80vw] pointer-events-none z-0 overflow-visible translate-y-[10%] translate-x-[5%]">
-           <Suspense fallback={null}>
+          <ErrorBoundary scope="HackerGlobe" fallback={null}>
+            <Suspense fallback={null}>
               <HackerGlobe scale={1.2} />
-           </Suspense>
+            </Suspense>
+          </ErrorBoundary>
         </div>
       )}
 
@@ -188,9 +191,11 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         >
           {/* Globe container - larger bounds to prevent clipping */}
           <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
-            <Suspense fallback={null}>
-              {isLg && <HackerGlobe scale={1.4} />}
-            </Suspense>
+            <ErrorBoundary scope="HackerGlobe" fallback={null}>
+              <Suspense fallback={null}>
+                {isLg && <HackerGlobe scale={1.4} />}
+              </Suspense>
+            </ErrorBoundary>
           </div>
         </motion.div>
 

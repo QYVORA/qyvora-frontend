@@ -26,6 +26,14 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
     }
   };
 
+  const handleJoinCommunity = () => {
+    try {
+      localStorage.setItem('qyvora_community_joined', '1');
+    } catch {
+      // localStorage may throw in private browsing on iOS
+    }
+  };
+
   const whatsappUrl = SITE_CONFIG.social.find((s) => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5';
 
   return (
@@ -71,7 +79,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                onClick={() => localStorage.setItem('qyvora_community_joined', '1')}
+                onClick={handleJoinCommunity}
                 className="
                   group relative flex w-full items-center justify-center gap-3 overflow-hidden
                   rounded-2xl bg-[#66B870] py-5 text-sm font-black uppercase tracking-[0.15em]

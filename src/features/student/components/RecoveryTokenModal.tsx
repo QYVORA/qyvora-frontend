@@ -32,7 +32,11 @@ const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenCha
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(token);
+    try {
+      navigator.clipboard.writeText(token);
+    } catch {
+      // Clipboard API unavailable (HTTP, mobile WebView)
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

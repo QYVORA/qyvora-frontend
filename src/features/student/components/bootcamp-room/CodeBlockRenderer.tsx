@@ -59,7 +59,11 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
   const [copied, setCopied] = useState(false);
   const copy = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(text);
+    try {
+      navigator.clipboard.writeText(text);
+    } catch {
+      // Clipboard API unavailable (HTTP, mobile WebView)
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -129,7 +133,11 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
   const [copied, setCopied] = useState(false);
   const copy = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(code);
+    try {
+      navigator.clipboard.writeText(code);
+    } catch {
+      // Clipboard API unavailable (HTTP, mobile WebView)
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };

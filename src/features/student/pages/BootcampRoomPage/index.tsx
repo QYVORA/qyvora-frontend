@@ -56,6 +56,12 @@ const BootcampRoomPage: React.FC = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
 
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => { mountedRef.current = false; };
+  }, []);
+
   const [apiCourse, setApiCourse] = useState<ApiCourse | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
@@ -82,13 +88,14 @@ const BootcampRoomPage: React.FC = () => {
         api.get('/student/overview'),
         api.get(`/student/course${query}`).catch(() => null),
       ]);
+      if (!mountedRef.current) return;
       const ov = ovRes.data;
       const enrolledViaStatus = ov?.bootcampStatus && ov.bootcampStatus !== 'not_enrolled' && String(ov?.bootcampId || '') === String(bootcampId || '');
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some((m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || ''));
       setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
     } catch { /* silent */ }
-    finally { setApiLoading(false); }
+    finally { if (mountedRef.current) setApiLoading(false); }
   }, [bootcampId]);
 
   const markRoomComplete = async (phId: string, rmId: string) => {

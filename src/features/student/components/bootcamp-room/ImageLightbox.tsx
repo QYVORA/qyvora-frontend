@@ -39,9 +39,15 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
     setPos({ x: 0, y: 0 });
   }, []);
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    zoom(e.deltaY < 0 ? 0.25 : -0.25);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      zoom(e.deltaY < 0 ? 0.25 : -0.25);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
   }, [zoom]);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
@@ -136,7 +142,6 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
           ref={containerRef}
           className="flex-1 overflow-hidden flex items-center justify-center"
           style={{ cursor: scale > 1 ? (dragging ? 'grabbing' : 'grab') : 'zoom-in' }}
-          onWheel={onWheel}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import HackerGlobe from '../../marketing/components/HackerGlobe';
+import ErrorBoundary from '../../../shared/components/ErrorBoundary';
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
@@ -12,7 +13,7 @@ const AuthHero: React.FC = () => (
     {/* Globe - properly centered with responsive sizing */}
     <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-8">
       <div className="relative w-full h-full max-w-[420px] max-h-[420px] xl:max-w-[520px] xl:max-h-[520px] mx-auto my-auto flex items-center justify-center">
-        <div className="w-full h-full"><HackerGlobe scale={1.2} /></div>
+        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><HackerGlobe scale={1.2} /></ErrorBoundary></div>
       </div>
     </div>
 
