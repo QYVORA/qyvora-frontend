@@ -148,7 +148,7 @@ old-blog.target.com.  CNAME  target.github.io.
         <CTA
           title="Map Your Surface"
           desc="We built Anansi CLI to give organisations the same visibility attackers have. Run it against your own infrastructure and see what we see. No sign-up, no cost, no commitment."
-          href="https://github.com/wsuits6/qyvora-anansi-cli"
+          href="https://github.com/QYVORA/qyvora-anansi-cli"
           label="Scan Your Organisation"
         />
       </Section>

@@ -188,7 +188,7 @@ vpn.target.com`} />
         <CTA
           title="Know Your Attack Surface"
           desc="Run an Anansi attack surface intelligence scan against your own organisation. See what attackers see — in under two minutes, from your terminal, for free."
-          href="https://github.com/wsuits6/qyvora-anansi-cli"
+          href="https://github.com/QYVORA/qyvora-anansi-cli"
           label="Scan Your Surface"
         />
       </Section>

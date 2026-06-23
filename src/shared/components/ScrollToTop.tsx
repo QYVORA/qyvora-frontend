@@ -29,10 +29,12 @@ const ScrollToTop = () => {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document
-      .querySelector<HTMLElement>(CONTAINER_SEL)
-      ?.scrollTo({ top: 0, behavior: 'smooth' });
+    const container = document.querySelector<HTMLElement>(CONTAINER_SEL);
+    if (container && container.scrollTop > SCROLL_THRESHOLD) {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   if (!visible) return null;
