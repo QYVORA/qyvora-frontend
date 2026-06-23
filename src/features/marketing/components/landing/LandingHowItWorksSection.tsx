@@ -89,7 +89,7 @@ const LandingHowItWorksSection: React.FC = () => {
                 <ChevronLeft className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
 
-              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[200px] md:min-h-[240px]">
+              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim min-h-[200px] md:min-h-[240px]">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={activeIndex}
