@@ -218,28 +218,31 @@ const LeaderboardPage = () => {
         </div>
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24">
-          <div className="max-w-4xl space-y-8">
-            <div className="space-y-4">
-              <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
-                // Global Rankings
-              </span>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
-                Operator <span className="text-accent">Leaderboard</span>
-              </h1>
-            </div>
-            <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
-              Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned.
-              All balances verified on the QYVORA Chain — immutable, tamper-proof,
-              and fully on-ledger.
-            </p>
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted/60 pt-2">
-              <Shield className="w-4 h-4 text-accent" />
-              CP verified on QYVORA Chain
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between md:gap-12">
+            {/* Left — heading + description */}
+            <div className="max-w-2xl space-y-8">
+              <div className="space-y-4">
+                <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
+                  // Global Rankings
+                </span>
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+                  Operator <span className="text-accent">Leaderboard</span>
+                </h1>
+              </div>
+              <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
+                Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned.
+                All balances verified on the QYVORA Chain — immutable, tamper-proof,
+                and fully on-ledger.
+              </p>
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted/60">
+                <Shield className="w-4 h-4 text-accent" />
+                CP verified on QYVORA Chain
+              </div>
             </div>
 
-            {/* Stats summary */}
+            {/* Right — stats summary */}
             {entries.length > 0 && (
-              <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-lg">
+              <div className="grid grid-cols-3 gap-3 md:gap-4 md:min-w-[280px] lg:min-w-[320px] pt-8 md:pt-0">
                 <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
                   <span className="text-xl md:text-2xl font-black text-text-primary">{total.toLocaleString()}</span>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
