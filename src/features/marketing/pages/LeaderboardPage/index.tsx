@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Medal, Shield, ChevronDown, ChevronUp, Search, X } from 'lucide-react';
+import { Trophy, Medal, Shield, ArrowRight } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -154,15 +154,11 @@ const LeaderboardPage = () => {
   const [error, setError] = useState('');
   const [period, setPeriod] = useState<Period>('all');
   const [total, setTotal] = useState(0);
-  const [showAll, setShowAll] = useState(false);
-  const [search, setSearch] = useState('');
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const fetchLeaderboard = useCallback(async (activePeriod: Period) => {
     setLoading(true);
     setError('');
-    setShowAll(false);
     try {
       const res = await api.get(`/public/leaderboard?period=${activePeriod}&limit=50&offset=0`);
       const data = res.data;
@@ -187,15 +183,7 @@ const LeaderboardPage = () => {
     setPeriod(newPeriod);
   };
 
-  const filtered = search.trim()
-    ? entries.filter((e) =>
-        [e.hackerHandle, e.name, e.organization].some((f) =>
-          f?.toLowerCase().includes(search.toLowerCase().trim())
-        )
-      )
-    : entries;
-  const displayedEntries = showAll ? filtered : entries.slice(0, INITIAL_SHOW);
-  const hasMore = entries.length > INITIAL_SHOW;
+  const topEntries = entries.slice(0, INITIAL_SHOW);
 
   return (
     <div
@@ -270,7 +258,7 @@ const LeaderboardPage = () => {
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         </div>
         <div className="h-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex flex-col pt-16 md:pt-24 pb-6 md:pb-10">
-          {/* Period tabs + View All toggle (sticky top) */}
+          {/* Period tabs */}
           <div className="flex items-center justify-between gap-4 mb-4 shrink-0">
             <div className="flex items-center gap-2 flex-wrap">
               {PERIODS.map((p) => (
@@ -287,18 +275,12 @@ const LeaderboardPage = () => {
                 </button>
               ))}
             </div>
-            {hasMore && (
-              <button
-                onClick={() => { setShowAll(!showAll); setSearch(''); }}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shrink-0 ${
-                  showAll
-                    ? 'bg-accent/10 text-accent border border-accent/30'
-                    : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
-                }`}
-              >
-                {showAll ? <>Show Less <ChevronUp className="w-3.5 h-3.5" /></> : <>View All ({total}) <ChevronDown className="w-3.5 h-3.5" /></>}
-              </button>
-            )}
+            <Link
+              to="/leaderboard/all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shrink-0 bg-accent text-bg hover:brightness-110"
+            >
+              View All ({total}) <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
           {error && (
@@ -325,26 +307,6 @@ const LeaderboardPage = () => {
             </div>
           ) : (
             <div className="flex flex-col min-h-0 flex-1">
-              {showAll && (
-                <div className="flex mb-3 shrink-0">
-                  <div className="relative flex-1 max-w-xs">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted/60" />
-                    <input
-                      type="text"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Search operators..."
-                      className="w-full bg-bg-card border border-border rounded-xl py-2.5 pl-10 pr-9 text-sm text-text-primary placeholder:text-text-muted/40 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
-                    />
-                    {search && (
-                      <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-primary transition-colors">
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-
               {/* Desktop header row */}
               <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40 shrink-0">
                 <span>#</span>
@@ -354,11 +316,11 @@ const LeaderboardPage = () => {
                 <span className="text-right">Streak</span>
               </div>
 
-              {/* Scrollable list */}
-              <div className="overflow-y-auto min-h-0 flex-1 space-y-2 py-2 scroll-smooth" style={{ scrollbarWidth: 'none' }}>
-                {displayedEntries.map((entry) => (
+              {/* Top 5 entries — no scroll */}
+              <div className="space-y-2 py-2">
+                {topEntries.map((entry) => (
                   <ScrollReveal key={entry.userId} amount={0.05}>
-                    <LeaderboardRow entry={entry} user={user} isExpanded={showAll} />
+                    <LeaderboardRow entry={entry} user={user} isExpanded={false} />
                   </ScrollReveal>
                 ))}
               </div>
