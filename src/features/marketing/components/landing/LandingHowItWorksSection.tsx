@@ -73,7 +73,6 @@ const LandingHowItWorksSection: React.FC = () => {
                 variants={stepVariants}
                 className="group relative"
               >
-                {/* Desktop connector arrow */}
                 {idx < STEPS.length - 1 && (
                   <div className="hidden md:flex absolute top-1/3 -right-5 lg:-right-6 z-20">
                     <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
@@ -82,17 +81,13 @@ const LandingHowItWorksSection: React.FC = () => {
                   </div>
                 )}
 
-                <div className="relative h-full rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/25 hover:shadow-xl hover:shadow-accent/5 group-hover:-translate-y-1">
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative h-full rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/25 hover:shadow-xl hover:shadow-accent/5">
 
-                  {/* Step number watermark */}
                   <div className="absolute -top-4 -right-4 text-[120px] md:text-[160px] font-black text-accent/[0.04] select-none leading-none pointer-events-none">
                     {String(idx + 1).padStart(2, '0')}
                   </div>
 
                   <div className="relative z-10 p-7 md:p-8 lg:p-10">
-                    {/* Number + Icon row */}
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
                         <span className="text-[10px] font-black text-bg">{String(idx + 1).padStart(2, '0')}</span>

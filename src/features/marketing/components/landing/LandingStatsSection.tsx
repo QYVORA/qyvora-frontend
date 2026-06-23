@@ -75,10 +75,9 @@ const LandingStatsSection: React.FC = () => {
               <motion.div
                 key={card.label}
                 variants={cardVariants}
-                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden"
+                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card"
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.04] to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10 p-6 md:p-8 lg:p-10 text-center md:text-left">
+                <div className="p-6 md:p-8 lg:p-10 text-center md:text-left">
                   <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-5 md:mb-6 mx-auto md:mx-0 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                     <Icon className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-accent" />
                   </div>
@@ -92,7 +91,7 @@ const LandingStatsSection: React.FC = () => {
                     {card.description}
                   </p>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+                <div className="mx-6 md:mx-8 lg:mx-10 h-px bg-border/50" />
               </motion.div>
             );
           })}
