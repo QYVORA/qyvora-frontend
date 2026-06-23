@@ -121,7 +121,7 @@ export const useLandingData = () => {
       // is the last resort. This ensures a partial API failure degrades
       // gracefully using whatever cached data is available.
       const nextSnapshot: LandingSnapshot = {
-        stats:       statsRes?.data                          ?? cached?.stats        ?? null,
+        stats:       statsRes?.data                                               ?? null,
         bootcamps:   bootcampsRes?.data?.items               ?? cached?.bootcamps    ?? [],
         marketItems: marketRes?.data?.items                  ?? cached?.marketItems  ?? [],
       };
