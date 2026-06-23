@@ -3,6 +3,7 @@ import { Loader2, Save } from 'lucide-react';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import api from '../../../../core/services/api';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
+import HandleSuggestions from '../../../../shared/components/HandleSuggestions';
 
 interface EditModalProps {
   open: boolean;
@@ -54,7 +55,15 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
           </div>
           <div>
             <label className={labelCls}>Operator Handle</label>
-            <input value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame_operator" className={inputCls} />
+            <input value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame-operator" className={inputCls} />
+            <div className="mt-2">
+              <HandleSuggestions
+                name={form.name}
+                email=""
+                onSelect={(handle) => setForm((f) => ({ ...f, hackerHandle: handle }))}
+                selectedHandle={form.hackerHandle}
+              />
+            </div>
           </div>
           <div>
             <label className={labelCls}>Organization</label>

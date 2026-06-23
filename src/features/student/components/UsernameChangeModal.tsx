@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { User, Check, AlertCircle } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
+import HandleSuggestions from '@/shared/components/HandleSuggestions';
 
 const HANDLE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$/;
 
@@ -14,13 +15,6 @@ const UsernameChangeModal = () => {
   const [done, setDone] = useState(false);
 
   if (!user?.handleNeedsUpdate || done) return null;
-
-  const suggested = (user?.username || 'operator')
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-{2,}/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 39) || 'operator';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +50,7 @@ const UsernameChangeModal = () => {
                 Choose your username
               </h2>
               <p className="text-sm text-text-muted">
-                Your current username has invalid characters. Pick a new one.
+                Your current username needs updating. We have generated some suggestions for you.
               </p>
             </div>
           </div>
@@ -71,10 +65,16 @@ const UsernameChangeModal = () => {
                 type="text"
                 value={handle}
                 onChange={(e) => { setHandle(e.target.value); setError(''); }}
-                placeholder={suggested}
+                placeholder="Pick a handle or choose one below"
                 maxLength={40}
                 autoFocus
                 className="w-full bg-bg-card border border-border rounded-lg py-3 px-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base"
+              />
+              <HandleSuggestions
+                name={user?.username || user?.email?.split('@')[0] || ''}
+                email={user?.email || ''}
+                onSelect={(h) => { setHandle(h); setError(''); }}
+                selectedHandle={handle}
               />
               <p className="text-[10px] text-text-muted/60">
                 Letters, numbers, and hyphens only. No spaces. Must be unique.
