@@ -9,7 +9,7 @@ import LandingHeroSection from '@/features/marketing/components/landing/LandingH
 import LandingStatsSection from '@/features/marketing/components/landing/LandingStatsSection';
 import LandingHowItWorksSection from '@/features/marketing/components/landing/LandingHowItWorksSection';
 import LandingCurriculumSection from '@/features/marketing/components/landing/LandingCurriculumSection';
-import LandingPartnersSection from '@/features/marketing/components/landing/LandingPartnersSection';
+
 import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -26,7 +26,7 @@ import SnapSection from '@/shared/components/SnapSection';
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
   { id: 'stats',       label: 'Stats'           },
-  { id: 'partners',    label: 'Partners'        },
+
   { id: 'how-it-works',label: 'How It Works'    },
   { id: 'curriculum',  label: 'Curriculum'      },
   { id: 'team',        label: 'Team'            },
@@ -172,10 +172,6 @@ const Landing: React.FC = () => {
 
         <SnapSection id="stats">
           <LandingStatsSection />
-        </SnapSection>
-
-        <SnapSection id="partners">
-          <LandingPartnersSection />
         </SnapSection>
 
         <SnapSection id="how-it-works">
