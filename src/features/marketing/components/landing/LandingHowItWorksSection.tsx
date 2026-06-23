@@ -7,16 +7,19 @@ const STEPS = [
     icon: BookOpen,
     title: 'Learn',
     description: 'Master offensive security foundations with structured modules covering Linux, networking, and web exploitation.',
+    bgImage: '/assets/sections/how-it-works/learn-bg.png',
   },
   {
     icon: Swords,
     title: 'Practice',
     description: 'Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.',
+    bgImage: '/assets/sections/how-it-works/practice-bg.png',
   },
   {
     icon: Award,
     title: 'Prove',
     description: 'Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency.',
+    bgImage: '/assets/sections/how-it-works/prove-bg.png',
   },
 ];
 
@@ -96,9 +99,11 @@ const LandingHowItWorksSection: React.FC = () => {
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className="p-8 md:p-10 lg:p-12"
+                    className="relative p-8 md:p-10 lg:p-12 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${step.bgImage})` }}
                   >
-                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                    <div className="absolute inset-0 bg-gradient-to-r from-bg/95 via-bg/60 to-transparent" />
+                    <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
                         <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
                       </div>
