@@ -52,7 +52,7 @@ const LandingCurriculumSection: React.FC = () => {
     <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full">
         <div className="text-center mb-6 md:mb-10">
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
             What You'll <span className="text-accent">Learn</span>
           </h2>
         </div>
@@ -73,7 +73,7 @@ const LandingCurriculumSection: React.FC = () => {
               <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
             </button>
 
-            <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[260px] md:min-h-[300px]">
+            <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[40svh] md:min-h-[35svh]">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={phase.id}

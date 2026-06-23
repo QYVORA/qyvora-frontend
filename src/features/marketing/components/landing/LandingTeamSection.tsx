@@ -91,7 +91,7 @@ const LandingTeamSection: React.FC = () => {
                 <ChevronLeft className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
 
-              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[200px] md:min-h-[240px]">
+              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[35svh] md:min-h-[30svh]">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={member.id}
@@ -101,7 +101,7 @@ const LandingTeamSection: React.FC = () => {
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className="p-8 md:p-10 lg:p-12"
+                    className="p-6 sm:p-8 md:p-10 lg:p-12"
                   >
                     <div className="flex flex-col md:flex-row gap-5 md:gap-8 items-start text-left">
                       <div className="flex-shrink-0 mx-auto md:mx-0">

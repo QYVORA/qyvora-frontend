@@ -89,7 +89,7 @@ const LandingHowItWorksSection: React.FC = () => {
                 <ChevronLeft className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
 
-              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim min-h-[200px] md:min-h-[240px]">
+              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim min-h-[35svh] md:min-h-[30svh]">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={activeIndex}
@@ -99,7 +99,7 @@ const LandingHowItWorksSection: React.FC = () => {
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className="relative p-8 md:p-10 lg:p-12 bg-cover bg-center"
+                    className="relative p-6 sm:p-8 md:p-10 lg:p-12 bg-cover bg-center"
                     style={{ backgroundImage: `url(${step.bgImage})` }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/60 to-transparent" />
