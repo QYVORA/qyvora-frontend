@@ -67,89 +67,104 @@ const LandingCurriculumSection: React.FC = () => {
             </span>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[260px] md:min-h-[300px]">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={phase.id}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                className="h-full"
-              >
-                <div className="flex flex-col md:flex-row h-full">
-                  {/* Left — phase image */}
-                  <div className="md:w-[38%] lg:w-[42%] h-40 md:h-auto bg-bg-elevated overflow-hidden">
-                    <img
-                      src={phase.image}
-                      alt={phase.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-
-                  {/* Right — content */}
-                  <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
-                        <span className="text-[10px] font-black text-bg">{phase.id}</span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary mb-2 tracking-tight">
-                      {phase.name}
-                    </h3>
-                    <p className="text-sm md:text-base text-text-muted leading-relaxed mb-4 line-clamp-3">
-                      {phase.desc}
-                    </p>
-
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
-                        <Layers className="w-3.5 h-3.5 text-accent" />
-                        <span className="text-xs font-bold text-text-primary">{phase.roomCount} rooms</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
-                        <Clock className="w-3.5 h-3.5 text-accent" />
-                        <span className="text-xs font-bold text-text-primary">{phase.totalSteps} steps</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
+          <div className="relative">
             <button
               onClick={handlePrev}
-              className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+              className="hidden md:flex absolute -left-5 lg:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
               aria-label="Previous phase"
             >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
             </button>
+
+            <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[260px] md:min-h-[300px]">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={phase.id}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                  className="h-full"
+                >
+                  <div className="flex flex-col md:flex-row h-full">
+                    <div className="md:w-[38%] lg:w-[42%] h-40 md:h-auto bg-bg-elevated overflow-hidden">
+                      <img
+                        src={phase.image}
+                        alt={phase.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                          <Icon className="w-5 h-5 text-accent" />
+                        </div>
+                        <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
+                          <span className="text-[10px] font-black text-bg">{phase.id}</span>
+                        </div>
+                      </div>
+                      <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary mb-2 tracking-tight">
+                        {phase.name}
+                      </h3>
+                      <p className="text-sm md:text-base text-text-muted leading-relaxed mb-4 line-clamp-3">
+                        {phase.desc}
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
+                          <Layers className="w-3.5 h-3.5 text-accent" />
+                          <span className="text-xs font-bold text-text-primary">{phase.roomCount} rooms</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
+                          <Clock className="w-3.5 h-3.5 text-accent" />
+                          <span className="text-xs font-bold text-text-primary">{phase.totalSteps} steps</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
             <button
               onClick={handleNext}
-              className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+              className="hidden md:flex absolute -right-5 lg:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
               aria-label="Next phase"
             >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-2 mt-5">
-            {phasesWithRoomCount.map((p, i) => (
-              <button
-                key={p.id}
-                onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                }`}
-                aria-label={`Phase ${p.id}: ${p.name}`}
-              />
-            ))}
+          {/* Mobile arrows + dots */}
+          <div className="flex md:hidden items-center justify-center gap-4 mt-5">
+            <button
+              onClick={handlePrev}
+              className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
+              aria-label="Previous phase"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2">
+              {phasesWithRoomCount.map((p, i) => (
+                <button
+                  key={p.id}
+                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
+                  }`}
+                  aria-label={`Phase ${p.id}: ${p.name}`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={handleNext}
+              className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
+              aria-label="Next phase"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

@@ -68,7 +68,7 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
         ${isCurrentUser
           ? 'border-accent/40 bg-accent-dim/10'
           : isTopThree
-          ? 'border-accent/20 bg-accent-dim/5'
+          ? 'border-accent/20 bg-accent-dim/5 shadow-[0_0_20px_-8px] shadow-accent/10'
           : 'border-border bg-bg-card hover:border-accent/20'
         }
         hover:brightness-110 active:scale-[0.99]
@@ -210,8 +210,15 @@ const LeaderboardPage = () => {
 
       {/* ══ HERO SECTION ══ */}
       <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-border/5" />
+          <div className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full border border-border/10" />
+          <div className="absolute top-1/4 left-1/6 w-[1px] h-64 bg-gradient-to-b from-accent/0 via-accent/10 to-accent/0" />
+        </div>
+
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24">
-          <div className="max-w-4xl space-y-6">
+          <div className="max-w-4xl space-y-8">
             <div className="space-y-4">
               <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
                 // Global Rankings
@@ -229,12 +236,36 @@ const LeaderboardPage = () => {
               <Shield className="w-4 h-4 text-accent" />
               CP verified on QYVORA Chain
             </div>
+
+            {/* Stats summary */}
+            {entries.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-lg">
+                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                  <span className="text-xl md:text-2xl font-black text-text-primary">{total.toLocaleString()}</span>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
+                </div>
+                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                  <span className="text-xl md:text-2xl font-black text-accent">
+                    {entries.slice(0, 20).reduce((s, e) => s + e.cp, 0).toLocaleString()}
+                  </span>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Total CP</p>
+                </div>
+                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                  <span className="text-xl md:text-2xl font-black text-text-primary">{entries[0].cp.toLocaleString()}</span>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Top CP</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* ══ LEADERBOARD SECTION ══ */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden">
+        {/* Background grid pattern */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+          <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+        </div>
         <div className="h-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex flex-col pt-16 md:pt-24 pb-6 md:pb-10">
           {/* Period tabs + View All toggle (sticky top) */}
           <div className="flex items-center justify-between gap-4 mb-4 shrink-0">
