@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 
 const CONTAINER_SEL = '.landing-snap, [class*="md:snap-mandatory"]';
+const SCROLL_THRESHOLD = 200;
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
@@ -9,28 +10,18 @@ const ScrollToTop = () => {
   useEffect(() => {
     const check = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      let containerScroll = 0;
+      let maxScroll = scrollY;
       document.querySelectorAll<HTMLElement>(CONTAINER_SEL).forEach(c => {
-        if (c.scrollTop > containerScroll) containerScroll = c.scrollTop;
+        if (c.scrollTop > maxScroll) maxScroll = c.scrollTop;
       });
-      setVisible(scrollY > 300 || containerScroll > 300);
+      setVisible(maxScroll > SCROLL_THRESHOLD);
     };
 
     window.addEventListener('scroll', check, { passive: true });
-
-    let containers: NodeListOf<HTMLElement>;
-    const attachContainers = () => {
-      containers?.forEach(c => c.removeEventListener('scroll', check));
-      containers = document.querySelectorAll<HTMLElement>(CONTAINER_SEL);
-      containers.forEach(c => c.addEventListener('scroll', check, { passive: true }));
-    };
-    attachContainers();
-
-    const poll = setInterval(attachContainers, 1000);
+    const poll = setInterval(check, 200);
 
     return () => {
       window.removeEventListener('scroll', check);
-      containers?.forEach(c => c.removeEventListener('scroll', check));
       clearInterval(poll);
     };
   }, []);
