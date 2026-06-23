@@ -282,24 +282,43 @@ api.interceptors.response.use(
     return response;
   },
 
-  // ── Error handler (401 retry logic) ───────────────────────────────────────
+  // ── Error handler (401 retry + 403 CSRF recovery) ─────────────────────────
   async (error: AxiosError) => {
     const original = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined;
     const status = error.response?.status;
+    const data = error.response?.data as Record<string, unknown> | undefined;
 
-    // Pass through immediately if:
-    //   - No config is attached (edge case — malformed request)
-    //   - This request has already been retried (_retry flag) — prevents an
-    //     infinite loop where the retried request also returns 401
-    //   - The error is not a 401 — only 401 means "token expired, try refreshing"
-    if (!original || original._retry || status !== 401) {
+    if (!original || original._retry) {
+      return Promise.reject(error);
+    }
+
+    // ── CSRF token recovery (403) ──────────────────────────────────────────
+    // If the backend rejects with "Invalid CSRF token", our local CSRF token
+    // is out of sync with the cookie. Try to get a fresh token from /auth/me
+    // (a GET request, therefore CSRF-exempt) and retry once.
+    if (status === 403 && data?.error === 'Invalid CSRF token' && authSessionHint) {
+      original._retry = true;
+      try {
+        const meRes = await authApi.get('/auth/me');
+        maybeUpdateAuthArtifacts(meRes.data, meRes.headers as Record<string, unknown>);
+        if (csrfToken) {
+          const headers = ensureHeaders(original);
+          if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
+          headers.set('X-CSRF-Token', csrfToken);
+          return api(original);
+        }
+      } catch {
+        // Fall through — heal failed, reject the original error
+      }
+      return Promise.reject(error);
+    }
+
+    // ── Token refresh on 401 ────────────────────────────────────────────────
+    if (status !== 401) {
       return Promise.reject(error);
     }
 
     // Skip the refresh attempt if we have no reason to believe a session exists.
-    // This avoids a pointless /auth/refresh call (and another 401) for guest
-    // visitors whose requests legitimately return 401 because they are not
-    // logged in at all.
     if (!authSessionHint) {
       return Promise.reject(error);
     }
@@ -318,7 +337,6 @@ api.interceptors.response.use(
 
     // Refresh succeeded — update the original request's headers with the new
     // access token and CSRF token, then replay the request transparently.
-    // The calling code never knows a retry happened.
     const headers = ensureHeaders(original);
     headers.set('Authorization', `Bearer ${refreshedToken}`);
     if (csrfToken) headers.set('X-CSRF-Token', csrfToken);
