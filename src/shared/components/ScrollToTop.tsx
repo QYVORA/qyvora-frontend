@@ -9,7 +9,7 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     const check = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const scrollY = window.scrollY || document.documentElement.scrollTop || document.scrollingElement?.scrollTop || 0;
       let maxScroll = scrollY;
       document.querySelectorAll<HTMLElement>(CONTAINER_SEL).forEach(c => {
         if (c.scrollTop > maxScroll) maxScroll = c.scrollTop;
@@ -17,12 +17,12 @@ const ScrollToTop = () => {
       setVisible(maxScroll > SCROLL_THRESHOLD);
     };
 
-    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('scroll', check, { passive: true, capture: true });
     document.addEventListener('touchmove', check, { passive: true });
     const poll = setInterval(check, 200);
 
     return () => {
-      window.removeEventListener('scroll', check);
+      window.removeEventListener('scroll', check, { capture: true } as EventListenerOptions);
       document.removeEventListener('touchmove', check);
       clearInterval(poll);
     };

@@ -102,15 +102,15 @@ const LandingHowItWorksSection: React.FC = () => {
                     className="relative p-8 md:p-10 lg:p-12 bg-cover bg-center"
                     style={{ backgroundImage: `url(${step.bgImage})` }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-bg/95 via-bg/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/60 to-transparent" />
                     <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
                         <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
                       </div>
-                      <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary mb-3 tracking-tight">
+                      <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 tracking-tight">
                         {step.title}
                       </h3>
-                      <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-lg">
+                      <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-lg">
                         {step.description}
                       </p>
                     </div>
