@@ -1,21 +1,12 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
-import { ChevronRight, Layers, Clock } from 'lucide-react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronLeft, ChevronRight, Layers, Clock } from 'lucide-react';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: { delay: i * 0.1, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const },
-  }),
-};
-
 const LandingCurriculumSection: React.FC = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   const phasesWithRoomCount = PHASES.map((phase, idx) => {
     const config = BOOTCAMP_CONFIG.phases[idx];
@@ -24,76 +15,148 @@ const LandingCurriculumSection: React.FC = () => {
     return { ...phase, roomCount, totalSteps };
   });
 
+  const handleNext = useCallback(() => {
+    setDirection(1);
+    setActiveIndex((prev) => (prev + 1) % phasesWithRoomCount.length);
+  }, [phasesWithRoomCount.length]);
+
+  const handlePrev = useCallback(() => {
+    setDirection(-1);
+    setActiveIndex((prev) => (prev - 1 + phasesWithRoomCount.length) % phasesWithRoomCount.length);
+  }, [phasesWithRoomCount.length]);
+
+  useEffect(() => {
+    const interval = setInterval(handleNext, 5000);
+    return () => clearInterval(interval);
+  }, [handleNext]);
+
+  const phase = phasesWithRoomCount[activeIndex];
+  const Icon = phase.icon;
+
+  const variants = {
+    enter: (d: number) => ({
+      x: d > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.95,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (d: number) => ({
+      x: d > 0 ? -300 : 300,
+      opacity: 0,
+      scale: 0.95,
+    }),
+  };
+
   return (
-    <div ref={ref} className="w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center h-full">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-8 md:mb-12"
-      >
-        <motion.span className="inline-block text-xs font-black uppercase tracking-[0.35em] text-accent mb-3">
-          The Curriculum
-        </motion.span>
-        <motion.h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter">
-          What You'll <span className="text-accent">Learn</span>
-        </motion.h2>
-        <motion.p className="mt-3 text-sm md:text-base text-text-muted max-w-2xl mx-auto">
-          Five phases — from hacker mindset to advanced social engineering
-        </motion.p>
-      </motion.div>
+    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="text-center mb-8 md:mb-12">
+          <span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
+            The Curriculum
+          </span>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
+            What You'll <span className="text-accent">Learn</span>
+          </h2>
+          <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto">
+            Five phases — from hacker mindset to advanced social engineering
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4">
-        {phasesWithRoomCount.map((phase, idx) => {
-          const Icon = phase.icon;
-          const isEven = idx % 2 === 0;
+        {/* Carousel */}
+        <div className="relative">
+          {/* Phase counter */}
+          <div className="text-center mb-6">
+            <span className="text-xs md:text-sm font-black uppercase tracking-widest text-text-muted/50">
+              Phase {phase.id} of 05
+            </span>
+          </div>
 
-          return (
-            <motion.div
-              key={phase.id}
-              custom={idx}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={itemVariants}
-              className="group relative"
+          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[320px] md:min-h-[380px]">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={phase.id}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="p-8 md:p-10 lg:p-14"
+              >
+                <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+                  {/* Icon + number column */}
+                  <div className="flex-shrink-0">
+                    <div className="relative">
+                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-3xl bg-accent/10 flex items-center justify-center">
+                        <Icon className="w-10 h-10 md:w-12 md:h-12 text-accent" />
+                      </div>
+                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
+                        <span className="text-[11px] font-black text-bg">{phase.id}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary mb-3 tracking-tight">
+                      {phase.name}
+                    </h3>
+                    <p className="text-sm md:text-base lg:text-lg text-text-muted leading-relaxed mb-6">
+                      {phase.desc}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-4 md:gap-6">
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/5 border border-accent/10">
+                        <Layers className="w-4 h-4 text-accent" />
+                        <span className="text-xs md:text-sm font-bold text-text-primary">{phase.roomCount} rooms</span>
+                      </div>
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/5 border border-accent/10">
+                        <Clock className="w-4 h-4 text-accent" />
+                        <span className="text-xs md:text-sm font-bold text-text-primary">{phase.totalSteps} steps</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Nav arrows */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+              aria-label="Previous phase"
             >
-              <div className={`relative rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 h-full transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-1 overflow-hidden ${isEven ? 'md:mt-4' : 'md:mt-0'}`}>
-                {/* Number badge */}
-                <div className="absolute top-3 right-3 w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <span className="text-[10px] font-black text-accent">{phase.id}</span>
-                </div>
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+              aria-label="Next phase"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
 
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-3 group-hover:bg-accent/20 transition-colors">
-                  <Icon className="w-5 h-5 text-accent" />
-                </div>
-
-                <h3 className="text-sm font-black text-text-primary mb-1 tracking-tight leading-snug">
-                  {phase.name}
-                </h3>
-                <p className="text-[11px] leading-relaxed text-text-muted/70 line-clamp-3 mb-3">
-                  {phase.desc}
-                </p>
-
-                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-                  <span className="flex items-center gap-1">
-                    <Layers className="w-3 h-3" /> {phase.roomCount} rooms
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> {phase.totalSteps} steps
-                  </span>
-                </div>
-              </div>
-
-              {/* Connector between phases */}
-              {idx < phasesWithRoomCount.length - 1 && (
-                <div className="hidden md:flex absolute top-1/2 -right-2.5 z-10 translate-y-[-50%]">
-                  <ChevronRight className="w-4 h-4 text-accent/30" />
-                </div>
-              )}
-            </motion.div>
-          );
-        })}
+          {/* Dots */}
+          <div className="flex items-center justify-center gap-2 mt-6">
+            {phasesWithRoomCount.map((p, i) => (
+              <button
+                key={p.id}
+                onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === activeIndex
+                    ? 'w-8 bg-accent'
+                    : 'bg-border hover:bg-text-muted/40'
+                }`}
+                aria-label={`Phase ${p.id}: ${p.name}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
