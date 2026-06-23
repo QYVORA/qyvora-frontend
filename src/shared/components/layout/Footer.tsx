@@ -16,11 +16,19 @@ import { Logo } from '@/shared/components/brand';
 const FOOTER_COLS = [
   {
     title: 'Platform',
-    links: SITE_CONFIG.nav.platform.filter((item: { key: string }) => item.key !== 'contact'),
+    links: [
+      { key: 'learn', label: 'Learn', path: '/learn' },
+      { key: 'anansi', label: 'Anansi CLI', path: '/anansi' },
+      { key: 'blogs', label: 'Blogs', path: '/blogs' },
+      { key: 'news', label: 'News', path: '/news' },
+      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
+    ],
   },
   {
     title: 'Company',
-    links: SITE_CONFIG.nav.company.filter((item: { key: string }) => item.key !== 'contact'),
+    links: [
+      { key: 'team', label: 'Team', path: '/team' },
+    ],
   },
   {
     title: 'Account',

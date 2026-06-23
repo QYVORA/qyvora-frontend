@@ -1,24 +1,30 @@
 import { useEffect } from 'react';
 
-/**
- * useScrollLock
- * ─────────────────────────────────────────────────────────────────────────────
- * Locks the body scroll when the component is mounted.
- * Useful for custom modals/overlays that don't use a library like Radix UI.
- */
 export function useScrollLock(lock: boolean = true) {
   useEffect(() => {
     if (!lock) return;
 
-    // Save original styles
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    
-    // Prevent scrolling
-    document.body.style.overflow = 'hidden';
+    const scrollY = window.scrollY;
+    const originalOverflow = document.body.style.overflow;
+    const originalPosition = document.body.style.position;
+    const originalTop = document.body.style.top;
+    const originalWidth = document.body.style.width;
 
-    // Cleanup: restore original style
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+
+    const preventTouch = (e: TouchEvent) => e.preventDefault();
+    document.body.addEventListener('touchmove', preventTouch, { passive: false });
+
     return () => {
-      document.body.style.overflow = originalStyle;
+      document.body.style.overflow = originalOverflow;
+      document.body.style.position = originalPosition;
+      document.body.style.top = originalTop;
+      document.body.style.width = originalWidth;
+      window.scrollTo(0, scrollY);
+      document.body.removeEventListener('touchmove', preventTouch);
     };
   }, [lock]);
 }

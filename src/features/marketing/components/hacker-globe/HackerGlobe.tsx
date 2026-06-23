@@ -39,11 +39,16 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       h = initialH;
       const isLight = theme === 'light';
 
-      renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-        powerPreference: isSimplified ? 'low-power' : 'high-performance'
-      });
+      try {
+        renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: isSimplified ? 'low-power' : 'high-performance'
+        });
+      } catch {
+        // WebGL unavailable (old mobile browser, WebView, etc.)
+        return;
+      }
       renderer.setSize(w, h);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSimplified ? 2 : 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -281,7 +286,9 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
             sat.dot.position.set(sat.radius * Math.cos(angle), sat.radius * Math.sin(angle) * Math.sin(sat.incl), sat.radius * Math.sin(angle) * Math.cos(sat.incl));
             sat.trailPts[sat.trailHead % sat.trailPts.length].copy(sat.dot.position);
             sat.trailHead++;
-            sat.trailLine.geometry.setFromPoints(sat.trailPts);
+            if (!isSimplified || frameCount % 4 === 0) {
+              sat.trailLine.geometry.setFromPoints(sat.trailPts);
+            }
           });
         }
 
@@ -304,7 +311,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
           });
         }
 
-        if (renderer && scene && camera) renderer.render(scene, camera);
+        if (renderer && scene && camera && (!isSimplified || frameCount % 2 === 0)) renderer.render(scene, camera);
       };
 
       if (isInView) {

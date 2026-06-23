@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
@@ -30,11 +30,15 @@ const BootcampCourse: React.FC = () => {
   const [loading, setLoading]   = useState(true);
   const [syncError, setSyncError]   = useState('');
   const [lastSync, setLastSync]     = useState<string | null>(getLastSync('bootcamp-course'));
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => { mountedRef.current = false; };
+  }, []);
 
   useEffect(() => {
     const onVisibility = () => {
       if (document.visibilityState === 'visible') {
-        // Refresh overview data when returning to the page to show updated stats
         load();
       }
     };
@@ -45,12 +49,12 @@ const BootcampCourse: React.FC = () => {
   const load = async () => {
     try {
       const query = bootcampId ? `?bootcampId=${encodeURIComponent(bootcampId)}` : '';
-      // Add cache-busting parameter to force fresh data
       const cacheBust = `?_t=${Date.now()}`;
       const [ovRes, courseRes] = await Promise.all([
         api.get(`/student/overview${cacheBust}`),
         api.get(`/student/course${query}`).catch(() => null),
       ]);
+      if (!mountedRef.current) return;
       const ov = ovRes.data || null;
       setOverview(ov);
       
@@ -58,9 +62,10 @@ const BootcampCourse: React.FC = () => {
       setLastSync(setLastSyncNow('bootcamp-course'));
       setSyncError('');
     } catch {
+      if (!mountedRef.current) return;
       setSyncError('Could not sync. Displaying available data.');
     } finally {
-      setLoading(false);
+      if (mountedRef.current) setLoading(false);
     }
   };
 

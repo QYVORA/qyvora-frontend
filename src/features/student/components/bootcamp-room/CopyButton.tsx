@@ -5,7 +5,11 @@ const CopyButton: React.FC<{ text: string }> = ({ text }) => {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
-    navigator.clipboard.writeText(text);
+    try {
+      navigator.clipboard.writeText(text);
+    } catch {
+      // Clipboard API unavailable (HTTP, mobile WebView)
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
