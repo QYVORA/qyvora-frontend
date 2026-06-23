@@ -37,45 +37,37 @@ const LandingCurriculumSection: React.FC = () => {
     enter: (d: number) => ({
       x: d > 0 ? 300 : -300,
       opacity: 0,
-      scale: 0.95,
     }),
     center: {
       x: 0,
       opacity: 1,
-      scale: 1,
     },
     exit: (d: number) => ({
       x: d > 0 ? -300 : 300,
       opacity: 0,
-      scale: 0.95,
     }),
   };
 
   return (
     <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full">
-        <div className="text-center mb-8 md:mb-12">
+        <div className="text-center mb-6 md:mb-10">
           <span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
             The Curriculum
           </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
             What You'll <span className="text-accent">Learn</span>
           </h2>
-          <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto">
-            Five phases — from hacker mindset to advanced social engineering
-          </p>
         </div>
 
-        {/* Carousel */}
         <div className="relative">
-          {/* Phase counter */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-4">
             <span className="text-xs md:text-sm font-black uppercase tracking-widest text-text-muted/50">
               Phase {phase.id} of 05
             </span>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[320px] md:min-h-[380px]">
+          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[260px] md:min-h-[300px]">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={phase.id}
@@ -84,39 +76,46 @@ const LandingCurriculumSection: React.FC = () => {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="p-8 md:p-10 lg:p-14"
+                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                className="h-full"
               >
-                <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-                  {/* Icon + number column */}
-                  <div className="flex-shrink-0">
-                    <div className="relative">
-                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-3xl bg-accent/10 flex items-center justify-center">
-                        <Icon className="w-10 h-10 md:w-12 md:h-12 text-accent" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
-                        <span className="text-[11px] font-black text-bg">{phase.id}</span>
-                      </div>
-                    </div>
+                <div className="flex flex-col md:flex-row h-full">
+                  {/* Left — phase image */}
+                  <div className="md:w-[38%] lg:w-[42%] h-40 md:h-auto bg-bg-elevated overflow-hidden">
+                    <img
+                      src={phase.image}
+                      alt={phase.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary mb-3 tracking-tight">
+                  {/* Right — content */}
+                  <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-accent" />
+                      </div>
+                      <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
+                        <span className="text-[10px] font-black text-bg">{phase.id}</span>
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary mb-2 tracking-tight">
                       {phase.name}
                     </h3>
-                    <p className="text-sm md:text-base lg:text-lg text-text-muted leading-relaxed mb-6">
+                    <p className="text-sm md:text-base text-text-muted leading-relaxed mb-4 line-clamp-3">
                       {phase.desc}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-4 md:gap-6">
-                      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/5 border border-accent/10">
-                        <Layers className="w-4 h-4 text-accent" />
-                        <span className="text-xs md:text-sm font-bold text-text-primary">{phase.roomCount} rooms</span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
+                        <Layers className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-xs font-bold text-text-primary">{phase.roomCount} rooms</span>
                       </div>
-                      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent/5 border border-accent/10">
-                        <Clock className="w-4 h-4 text-accent" />
-                        <span className="text-xs md:text-sm font-bold text-text-primary">{phase.totalSteps} steps</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
+                        <Clock className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-xs font-bold text-text-primary">{phase.totalSteps} steps</span>
                       </div>
                     </div>
                   </div>
@@ -124,7 +123,6 @@ const LandingCurriculumSection: React.FC = () => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Nav arrows */}
             <button
               onClick={handlePrev}
               className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
@@ -141,16 +139,13 @@ const LandingCurriculumSection: React.FC = () => {
             </button>
           </div>
 
-          {/* Dots */}
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-2 mt-5">
             {phasesWithRoomCount.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === activeIndex
-                    ? 'w-8 bg-accent'
-                    : 'bg-border hover:bg-text-muted/40'
+                  i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
                 }`}
                 aria-label={`Phase ${p.id}: ${p.name}`}
               />
