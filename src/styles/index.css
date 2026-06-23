@@ -50,18 +50,18 @@
 
 [data-theme="light"] {
   --color-bg:             #ffffff; /* Pure white background */
-  --color-bg-card:        #eff2ef; /* Ash/sage color for cards (from previous bg) */
-  --color-bg-elevated:    #f7faf7; /* Tinted white-sage for elevation */
+  --color-bg-card:        #e5ece5; /* Soft sage green for cards — less white than before */
+  --color-bg-elevated:    #eef3ee; /* Slightly lighter sage for elevation */
   --color-accent:         #66B870;
   --color-accent-rgb:     102, 184, 112;
-  --color-accent-dim:     rgba(102, 184, 112, 0.06);
-  --color-accent-glow:    rgba(102, 184, 112, 0.12);
+  --color-accent-dim:     rgba(102, 184, 112, 0.10);
+  --color-accent-glow:    rgba(102, 184, 112, 0.18);
   --color-text-primary:   #0a100a; /* Deep forest charcoal instead of harsh pure black */
   --color-text-secondary: rgba(10, 16, 10, 0.72);
   --color-text-muted:     rgba(10, 16, 10, 0.46);
-  --color-border:         rgba(102, 184, 112, 0.11); /* Soft green-tinted border */
-  --color-border-strong:  rgba(102, 184, 112, 0.28);
-  --dot-color:            rgba(102, 184, 112, 0.05);
+  --color-border:         rgba(102, 184, 112, 0.20); /* More visible green-tinted border */
+  --color-border-strong:  rgba(102, 184, 112, 0.35);
+  --dot-color:            rgba(102, 184, 112, 0.08);
   --color-hero-right-bg:  #dff0dc;
   --color-hero-glow:      rgba(102, 184, 112, 0.18);
   --color-hero-dots:      #66B870;
@@ -801,6 +801,14 @@
   }
   [data-theme="light"] .bg-accent\/15 {
     background-color: rgba(102, 184, 112, 0.20) !important;
+  }
+
+  /* ── Light theme: visible borders on secondary buttons ── */
+  [data-theme="light"] .btn-secondary {
+    border-color: var(--color-border) !important;
+  }
+  [data-theme="light"] .btn-secondary:hover {
+    border-color: var(--color-border-strong) !important;
   }
 
   @media (max-width: 767px) {
