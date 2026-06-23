@@ -5,6 +5,7 @@ import ShareProfile from '../../../shared/components/ShareProfile';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import Identicon from '../../../shared/components/Identicon';
 import CpLogo from '../../../shared/components/CpLogo';
+import BootcampBadge from '../../../shared/components/BootcampBadge';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
@@ -33,6 +34,7 @@ const PublicProfile: React.FC = () => {
 
   const cp = Number(profile?.cpPoints || 0);
   const rooms = useMemo(() => Array.isArray(profile?.completedRooms) ? profile.completedRooms : [], [profile?.completedRooms]);
+  const bootcampCompleted = profile?.bootcampStatus === 'completed' || profile?.bootcampCompleted === true;
   const getRoomImage = (roomId: number) => {
     const phase = String(Math.floor(roomId / 100)).padStart(2, '0');
     const room = String(roomId % 100).padStart(2, '0');
@@ -104,8 +106,9 @@ const PublicProfile: React.FC = () => {
                 {/* Top: Name + Rank + Bio */}
                 <div>
                   <div className="flex flex-wrap items-center gap-4 mb-2">
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter uppercase font-mono leading-none">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter uppercase font-mono leading-none flex items-center gap-3">
                       {profile.handle || profile.name}
+                      <BootcampBadge completed={bootcampCompleted} className="w-7 h-7 md:w-9 md:h-9" />
                     </h1>
                     <span className="px-4 py-1.5 bg-accent/10 text-accent text-xs font-bold rounded uppercase tracking-widest flex-none">
                       {profile.rank || 'Operator'}

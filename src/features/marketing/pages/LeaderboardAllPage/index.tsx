@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Trophy, Medal, Shield, Search, X, ArrowLeft } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { ScrollReveal, Identicon } from '@/shared/components';
+import { ScrollReveal, Identicon, BootcampBadge } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 
 const PERIODS = [
@@ -24,6 +24,7 @@ interface LeaderboardEntry {
   rankLabel: string;
   roomsCompleted: number;
   streakDays: number;
+  bootcampCompleted?: boolean;
 }
 
 const TOP_THREE_COLORS = [
@@ -52,6 +53,7 @@ const RankBadge = ({ label }: { label: string }) => {
 const LeaderboardRow = ({ entry, user }: { entry: LeaderboardEntry; user: any }) => {
   const isTopThree = entry.rank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
+  const bootcampCompleted = !!entry.bootcampCompleted;
 
   return (
     <Link
@@ -83,8 +85,9 @@ const LeaderboardRow = ({ entry, user }: { entry: LeaderboardEntry; user: any })
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-black text-text-primary truncate">
+            <span className="text-sm font-black text-text-primary truncate flex items-center gap-1.5">
               {entry.hackerHandle || entry.name || 'Anonymous'}
+              <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
               <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
