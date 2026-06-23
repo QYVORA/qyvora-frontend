@@ -26,9 +26,9 @@ import SnapSection from '@/shared/components/SnapSection';
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
   { id: 'stats',       label: 'Stats'           },
+  { id: 'partners',    label: 'Partners'        },
   { id: 'how-it-works',label: 'How It Works'    },
   { id: 'curriculum',  label: 'Curriculum'      },
-  { id: 'partners',    label: 'Partners'        },
   { id: 'team',        label: 'Team'            },
   { id: 'services',    label: 'Services'        },
   { id: 'cta',         label: 'Get Started'     },
@@ -174,16 +174,16 @@ const Landing: React.FC = () => {
           <LandingStatsSection />
         </SnapSection>
 
+        <SnapSection id="partners">
+          <LandingPartnersSection />
+        </SnapSection>
+
         <SnapSection id="how-it-works">
           <LandingHowItWorksSection />
         </SnapSection>
 
         <SnapSection id="curriculum">
           <LandingCurriculumSection />
-        </SnapSection>
-
-        <SnapSection id="partners" className="overflow-hidden">
-          <LandingPartnersSection />
         </SnapSection>
 
         <SnapSection id="team">

@@ -9,7 +9,7 @@ const SnapSection: React.FC<{
   return (
     <section
       id={id}
-      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent ${className}`}
+      className={`relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 box-border bg-transparent md:overflow-hidden ${className}`}
     >
       <div
         className={`w-full h-full relative z-10 flex flex-col justify-center py-12 md:py-0 ${innerClassName}`}
