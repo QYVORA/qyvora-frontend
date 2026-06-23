@@ -12,10 +12,10 @@ interface StatCard {
   suffix: string;
 }
 
-const STATS_CONFIG: StatCard[] = [
-  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', value: 3400, suffix: '+' },
-  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', value: 1250000, suffix: '+' },
-  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', value: 1200, suffix: '+' },
+const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
+  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+' },
+  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+' },
+  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+' },
 ];
 
 const containerVariants = {
@@ -35,18 +35,61 @@ const cardVariants = {
   },
 };
 
-const LandingStatsSection: React.FC = () => {
-  const { stats } = useLandingData();
-  const s = stats?.stats || {};
+const SkeletonCard: React.FC<{ variants: typeof cardVariants }> = ({ variants }) => (
+  <motion.div
+    variants={variants}
+    className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card"
+  >
+    <div className="p-6 md:p-8 lg:p-10 text-center md:text-left">
+      <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-accent/10 animate-pulse mx-auto md:mx-0 mb-5 md:mb-6" />
+      <div className="h-12 md:h-14 lg:h-16 w-32 md:w-44 bg-border/20 rounded-lg animate-pulse mx-auto md:mx-0 mb-2" />
+      <div className="h-4 w-24 md:w-28 bg-border/20 rounded animate-pulse mx-auto md:mx-0 mb-1" />
+      <div className="h-3 w-36 md:w-44 bg-border/20 rounded animate-pulse mx-auto md:mx-0" />
+    </div>
+    <div className="mx-6 md:mx-8 lg:mx-10 h-px bg-border/50" />
+  </motion.div>
+);
 
-  const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => {
-    const apiValues = [
-      s.learnersTrained ?? 3400,
-      s.cpPoolSize ?? 1250000,
-      s.bootcampsCount ?? 1200,
-    ];
-    return { ...card, value: apiValues[idx] || card.value };
-  });
+const LandingStatsSection: React.FC = () => {
+  const { stats, loading } = useLandingData();
+  const s = stats?.stats;
+
+  if (!s && loading) {
+    return (
+      <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={containerVariants}
+        >
+          <motion.div variants={cardVariants} className="text-center mb-10 md:mb-16">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
+              Built for <span className="text-accent">Impact</span>
+            </h2>
+            <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto">
+              Real metrics from real operators across the continent
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12 max-w-6xl mx-auto">
+            {STATS_CONFIG.map((card) => (
+              <SkeletonCard key={card.label} variants={cardVariants} />
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (!s) return null;
+
+  const values = [s.learnersTrained, s.cpPoolSize, s.bootcampsCount];
+  if (values.some((v) => v == null)) return null;
+
+  const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => ({
+    ...card,
+    value: values[idx],
+  }));
 
   return (
     <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
