@@ -36,9 +36,9 @@ export const teamData: TeamMember[] = [
     },
   },
   {
-    id: 'CFO',
+    id: 'COO',
     name: 'Seth Abbey',
-    role: 'CFO',
+    role: 'COO',
     bio: 'Attackers only need that 1 blind spot, find it first',
     image: sethAbbeyImg,
     socials: {
