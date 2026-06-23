@@ -80,59 +80,79 @@ const LandingHowItWorksSection: React.FC = () => {
               </span>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[200px] md:min-h-[240px]">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={activeIndex}
-                  custom={direction}
-                  variants={variants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                  className="p-8 md:p-10 lg:p-12"
-                >
-                  <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
-                      <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
-                    </div>
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary mb-3 tracking-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-lg">
-                      {step.description}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
+            <div className="relative">
               <button
                 onClick={handlePrev}
-                className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+                className="hidden md:flex absolute -left-4 lg:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
                 aria-label="Previous step"
               >
-                <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <ChevronLeft className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
+
+              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card min-h-[200px] md:min-h-[240px]">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={activeIndex}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                    className="p-8 md:p-10 lg:p-12"
+                  >
+                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
+                        <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
+                      </div>
+                      <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary mb-3 tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-lg">
+                        {step.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
               <button
                 onClick={handleNext}
-                className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20"
+                className="hidden md:flex absolute -right-4 lg:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
                 aria-label="Next step"
               >
-                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+                <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
             </div>
 
-            <div className="flex items-center justify-center md:justify-start gap-2 mt-5">
-              {STEPS.map((s, i) => (
-                <button
-                  key={s.title}
-                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                  }`}
-                  aria-label={`Step ${i + 1}: ${s.title}`}
-                />
-              ))}
+            {/* Mobile arrows + dots */}
+            <div className="flex md:hidden items-center justify-center gap-4 mt-5">
+              <button
+                onClick={handlePrev}
+                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
+                aria-label="Previous step"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <div className="flex items-center gap-2">
+                {STEPS.map((s, i) => (
+                  <button
+                    key={s.title}
+                    onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
+                    }`}
+                    aria-label={`Step ${i + 1}: ${s.title}`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleNext}
+                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
+                aria-label="Next step"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>

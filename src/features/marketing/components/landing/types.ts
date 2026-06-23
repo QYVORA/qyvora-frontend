@@ -5,8 +5,7 @@ export interface BackendStats {
     bootcampsCount?: number;
     zeroDayProductsCount?: number;
     vulnerabilitiesIdentified?: number;
-    pentestersActive?: number;
-    totalCpEarned?: number;
+    cpPoolSize?: number;
   };
 }
 

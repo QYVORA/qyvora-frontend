@@ -51,7 +51,7 @@ const Landing: React.FC = () => {
   const isScrollingProgrammatically = useRef(false);
   const lastScrollTime = useRef(0);
 
-  const totalCp = stats?.stats?.totalCpEarned ?? 0;
+  const totalCp = stats?.stats?.cpPoolSize ?? 0;
 
   // Validate section exists
   const isValidSection = useCallback((sectionId: string): boolean => {
