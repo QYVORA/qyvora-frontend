@@ -57,9 +57,6 @@ const LandingStatsSection: React.FC = () => {
         variants={containerVariants}
       >
         <motion.div variants={cardVariants} className="text-center mb-10 md:mb-16">
-          <span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
-            By The Numbers
-          </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
             Built for <span className="text-accent">Impact</span>
           </h2>

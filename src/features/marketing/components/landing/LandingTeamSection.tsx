@@ -31,9 +31,6 @@ const LandingTeamSection: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-8 md:mb-10"
       >
-        <motion.span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
-          The Operators
-        </motion.span>
         <motion.h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
           Built by <span className="text-accent">Hackers</span>
         </motion.h2>
