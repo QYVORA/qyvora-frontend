@@ -12,9 +12,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({ mode = 'full' }) => {
 
   return (
     <div className={containerClasses}>
-      <div className="relative flex items-center justify-center animate-in fade-in duration-500 scale-[2]">
-        <Loader2 className="w-20 h-20 animate-spin text-accent" />
-      </div>
+      <Loader2 className="w-12 h-12 animate-spin text-accent" />
     </div>
   );
 };
