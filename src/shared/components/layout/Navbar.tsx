@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
               <Link
                 key={item.key}
                 to={item.path}
-                className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:text-accent relative group ${
+                className={`text-xs font-black uppercase tracking-[0.25em] transition-all hover:text-accent relative group ${
                   location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
                 }`}
               >
