@@ -6,7 +6,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import SnapSection from '@/shared/components/SnapSection';
-import { ScrollReveal, Identicon } from '@/shared/components';
+import { ScrollReveal, Identicon, BootcampBadge } from '@/shared/components';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
@@ -29,6 +29,7 @@ interface LeaderboardEntry {
   rankLabel: string;
   roomsCompleted: number;
   streakDays: number;
+  bootcampCompleted?: boolean;
 }
 
 const INITIAL_SHOW = 5;
@@ -59,6 +60,7 @@ const RankBadge = ({ label }: { label: string }) => {
 const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; user: any; isExpanded: boolean }) => {
   const isTopThree = entry.rank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
+  const bootcampCompleted = !!entry.bootcampCompleted;
 
   return (
     <Link
@@ -92,8 +94,9 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-black text-text-primary truncate">
+            <span className="text-sm font-black text-text-primary truncate flex items-center gap-1.5">
               {entry.hackerHandle || entry.name || 'Anonymous'}
+              <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
               <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
