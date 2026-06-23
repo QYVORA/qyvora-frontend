@@ -950,3 +950,34 @@
 body[data-performance-mode='constrained'] .partners-marquee {
   animation: none;
 }
+
+/* ── Dual-direction marquee for partners section ── */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-content {
+  animation: marquee-scroll var(--marquee-speed, 25s) linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-track:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none !important;
+  }
+}
+
+body[data-performance-mode='constrained'] .marquee-content {
+  animation: none !important;
+}

@@ -6,6 +6,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 import LandingHeroSection from '@/features/marketing/components/landing/LandingHeroSection';
+import LandingStatsSection from '@/features/marketing/components/landing/LandingStatsSection';
+import LandingHowItWorksSection from '@/features/marketing/components/landing/LandingHowItWorksSection';
+import LandingCurriculumSection from '@/features/marketing/components/landing/LandingCurriculumSection';
+import LandingPartnersSection from '@/features/marketing/components/landing/LandingPartnersSection';
+import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
@@ -20,6 +25,11 @@ import SnapSection from '@/shared/components/SnapSection';
 // ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
+  { id: 'stats',       label: 'Stats'           },
+  { id: 'how-it-works',label: 'How It Works'    },
+  { id: 'curriculum',  label: 'Curriculum'      },
+  { id: 'partners',    label: 'Partners'        },
+  { id: 'team',        label: 'Team'            },
   { id: 'services',    label: 'Services'        },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
@@ -159,6 +169,26 @@ const Landing: React.FC = () => {
         <section id="hero" className="md:h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent">
           <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
         </section>
+
+        <SnapSection id="stats">
+          <LandingStatsSection />
+        </SnapSection>
+
+        <SnapSection id="how-it-works">
+          <LandingHowItWorksSection />
+        </SnapSection>
+
+        <SnapSection id="curriculum">
+          <LandingCurriculumSection />
+        </SnapSection>
+
+        <SnapSection id="partners" className="overflow-hidden">
+          <LandingPartnersSection />
+        </SnapSection>
+
+        <SnapSection id="team">
+          <LandingTeamSection />
+        </SnapSection>
 
         <SnapSection id="services">
           <LandingServicesSection />
