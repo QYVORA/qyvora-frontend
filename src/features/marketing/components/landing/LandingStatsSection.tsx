@@ -42,7 +42,7 @@ const LandingStatsSection: React.FC = () => {
   const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => {
     const apiValues = [
       s.learnersTrained ?? 3400,
-      s.totalCpEarned ?? 1250000,
+      s.cpPoolSize ?? 1250000,
       s.bootcampsCount ?? 1200,
     ];
     return { ...card, value: apiValues[idx] || card.value };
