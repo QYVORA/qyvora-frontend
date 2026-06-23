@@ -52,9 +52,6 @@ const LandingCurriculumSection: React.FC = () => {
     <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full">
         <div className="text-center mb-6 md:mb-10">
-          <span className="inline-block text-xs md:text-sm font-black uppercase tracking-[0.35em] text-accent mb-4">
-            The Curriculum
-          </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
             What You'll <span className="text-accent">Learn</span>
           </h2>
