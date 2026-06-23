@@ -11,9 +11,9 @@ const AuthHero: React.FC = () => (
     <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent z-0" />
 
     {/* Globe - properly centered with responsive sizing */}
-    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-8">
-      <div className="relative w-full h-full max-w-[420px] max-h-[420px] xl:max-w-[520px] xl:max-h-[520px] mx-auto my-auto flex items-center justify-center">
-        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><HackerGlobe scale={1.2} /></ErrorBoundary></div>
+    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-4 xl:px-8">
+      <div className="relative w-full h-full max-w-[min(420px,70vh)] max-h-[min(420px,70vh)] xl:max-w-[min(520px,70vh)] xl:max-h-[min(520px,70vh)] mx-auto my-auto flex items-center justify-center">
+        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><HackerGlobe scale={1.0} /></ErrorBoundary></div>
       </div>
     </div>
 

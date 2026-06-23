@@ -75,14 +75,14 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [displayText, isDeleting, stepIndex, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-[85svh] md:h-screen md:overflow-hidden flex flex-col overflow-visible">
+    <div ref={heroRef} className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
       
       {/* ── Mobile Globe - Background Only ── */}
       {!isLg && (
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] max-w-[80vw] max-h-[80vw] pointer-events-none z-0 overflow-visible translate-y-[10%] translate-x-[5%]">
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] max-w-[70vw] max-h-[70vw] sm:max-w-[80vw] sm:max-h-[80vw] pointer-events-none z-0">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
             <Suspense fallback={null}>
-              <HackerGlobe scale={1.2} />
+              <HackerGlobe scale={0.9} />
             </Suspense>
           </ErrorBoundary>
         </div>
@@ -185,15 +185,14 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           className="
             relative hidden lg:flex items-center justify-center
             w-full h-full
-            pt-28 pb-12 xl:pt-32 xl:pb-16
-            pr-8 xl:pr-16
+            pt-20 xl:pt-24
           "
         >
-          {/* Globe container - larger bounds to prevent clipping */}
-          <div className="relative z-10 w-full h-full max-w-[600px] xl:max-w-[720px] flex items-center justify-center">
+          {/* Globe container - responsive to prevent clipping */}
+          <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>
-                {isLg && <HackerGlobe scale={1.4} />}
+                {isLg && <HackerGlobe scale={1.0} />}
               </Suspense>
             </ErrorBoundary>
           </div>
