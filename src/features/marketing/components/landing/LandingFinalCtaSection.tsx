@@ -21,7 +21,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
         }}
       />
 
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-3 sm:px-8 md:px-8 lg:px-12 xl:px-16 flex flex-col justify-center min-h-[calc(100vh-0px)]">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
 
         {/* Mobile layout: stacked — logo on top, content below */}
         <div className="flex flex-col lg:hidden w-full gap-12">
@@ -61,7 +61,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-lg sm:text-lg text-text-secondary leading-relaxed max-w-xl"
+              className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-xl"
             >
               Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.
             </motion.p>
@@ -76,7 +76,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               {user ? (
                 <Link 
                   to="/dashboard" 
-                  className="btn-primary min-h-[58px] !px-10 !py-4 text-base inline-flex items-center justify-center gap-2.5"
+                  className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                 >
                   <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
                 </Link>
@@ -84,13 +84,13 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                 <>
                   <Link 
                     to="/register" 
-                    className="btn-primary min-h-[58px] !px-10 !py-4 text-base inline-flex items-center justify-center gap-2.5"
+                    className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                   >
                     Start Free Training <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
                     to="/login" 
-                    className="btn-secondary min-h-[58px] !px-10 !py-4 text-base inline-flex items-center justify-center"
+                    className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center"
                   >
                     Log In
                   </Link>
@@ -131,7 +131,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               {user ? (
                 <Link 
                   to="/dashboard" 
-                  className="btn-primary min-h-[56px] !px-8 !py-4 text-sm inline-flex items-center justify-center gap-2.5"
+                  className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                 >
                   <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
                 </Link>
@@ -139,13 +139,13 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                 <>
                   <Link 
                     to="/register" 
-                    className="btn-primary min-h-[56px] !px-8 !py-4 text-sm inline-flex items-center justify-center gap-2.5"
+                    className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                   >
                     Start Free Training <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
                     to="/login" 
-                    className="btn-secondary min-h-[56px] !px-8 !py-4 text-sm inline-flex items-center justify-center"
+                    className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center"
                   >
                     Log In
                   </Link>

@@ -98,7 +98,7 @@ const LandingServicesSection: React.FC = () => {
               {/* Image Section */}
               <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
                 {/* Mobile: taller image for better visual impact */}
-                <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[520px]">
+                <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] lg:aspect-auto lg:h-[45svh] xl:h-[50svh]">
                   <img
                     src={service.image}
                     alt={service.title}
@@ -109,7 +109,7 @@ const LandingServicesSection: React.FC = () => {
 
                   {/* Price Badge */}
                   <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
-                    <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
+                    <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
                       <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-widest whitespace-nowrap">
                         {service.price}
                       </span>
@@ -127,11 +127,11 @@ const LandingServicesSection: React.FC = () => {
                     </span>
                   </div>
                   
-                  <h2 className="text-3xl sm:text-3xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-8 sm:mb-8">
+                  <h2 className="text-2xl sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 sm:mb-8">
                     {service.title}
                   </h2>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-10 mb-10 sm:mb-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-5 gap-x-6 sm:gap-x-10 mb-8 sm:mb-10">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
                         <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
@@ -145,7 +145,7 @@ const LandingServicesSection: React.FC = () => {
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
                     <button
                       onClick={() => openServiceRequestModal(service.title)}
-                      className="w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4 min-h-[52px]"
+                      className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
                     >
                       <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
                       Request Assessment
@@ -207,14 +207,14 @@ const LandingServicesSection: React.FC = () => {
         <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -left-8 -right-8 items-center justify-between pointer-events-none z-20">
           <button
             onClick={handlePrev}
-            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
+            className="w-14 h-14 xl:w-16 xl:h-16 rounded-full bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
             aria-label="Previous service"
           >
-            <ChevronLeft className="w-8 h-8" />
+            <ChevronLeft className="w-6 h-6 xl:w-8 xl:h-8" />
           </button>
           <button
             onClick={handleNext}
-            className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
+            className="w-14 h-14 xl:w-16 xl:h-16 rounded-full bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100 dark:border-white/10"
             aria-label="Next service"
           >
             <ChevronRight className="w-8 h-8" />
