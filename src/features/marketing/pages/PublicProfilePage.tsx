@@ -136,13 +136,13 @@ const PublicProfile: React.FC = () => {
           <ScrollReveal>
             <div>
               <span className="mb-4 block text-xs font-black uppercase tracking-[0.35em] text-accent">Completed Rooms</span>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {displayedRooms.map((room: { roomId: number; title: string }) => (
                   <div
                     key={room.roomId}
-                    className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]"
+                    className="group relative flex w-full flex-col overflow-hidden rounded-xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:scale-[1.02]"
                   >
-                    <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-t-xl shadow-sm">
                       <img
                         src={getRoomImage(room.roomId)}
                         alt=""
@@ -150,12 +150,12 @@ const PublicProfile: React.FC = () => {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                       />
-                      <span className="absolute top-2.5 left-2.5 flex h-6 w-6 items-center justify-center rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[10px] font-black text-accent">HPB</span>
+                      <span className="absolute top-2 left-2 flex h-5 w-5 items-center justify-center rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[9px] font-black text-accent">HPB</span>
                     </div>
-                    <div className="flex flex-1 flex-col pt-5 px-6 pb-5">
-                      <h3 className="text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors">{room.title}</h3>
-                      <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-                        View room <ArrowRight className="h-3 w-3" />
+                    <div className="flex flex-1 flex-col pt-3 px-4 pb-4">
+                      <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors">{room.title}</h3>
+                      <div className="mt-auto pt-2 flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
+                        View room <ArrowRight className="h-2.5 w-2.5" />
                       </div>
                     </div>
                   </div>
