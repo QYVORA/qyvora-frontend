@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User } from 'lucide-react';
 import { teamData } from './teamData';
 import BrandGithubIcon from '@/shared/components/icons/BrandGithubIcon';
 import BrandLinkedinIcon from '@/shared/components/icons/BrandLinkedinIcon';
@@ -92,14 +92,13 @@ const TeamCarouselSection: React.FC = () => {
                         if (parent && !parent.querySelector('.fallback-avatar')) {
                           const fallback = document.createElement('div');
                           fallback.className = 'fallback-avatar w-full h-full flex items-center justify-center text-accent/20 bg-bg-card';
-                          fallback.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
                           parent.appendChild(fallback);
                         }
                       }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-accent/20 bg-bg-card">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      <User className="w-24 h-24" strokeWidth={1} />
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
