@@ -52,20 +52,7 @@ const LandingCurriculumSection: React.FC = () => {
     <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
 
-        {/* Left — heading */}
-        <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-6 md:mb-0">
-          <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
-            Curriculum
-          </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            What You'll <span className="text-accent">Learn</span>
-          </h2>
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mx-auto md:mx-0">
-            Five phases of structured offensive-security training, from foundations to advanced exploitation.
-          </p>
-        </div>
-
-        {/* Right — vertical carousel */}
+        {/* Left — vertical carousel */}
         <div className="md:w-[65%] lg:w-[62%]">
           <div className="relative">
             <div className="text-center md:text-left mb-3">
@@ -176,6 +163,19 @@ const LandingCurriculumSection: React.FC = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Right — heading */}
+        <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-6 md:mb-0">
+          <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
+            Curriculum
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
+            What You'll <span className="text-accent">Learn</span>
+          </h2>
+          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mx-auto md:ml-auto md:mr-0">
+            Five phases of structured offensive-security training, from foundations to advanced exploitation.
+          </p>
         </div>
 
       </div>
