@@ -77,7 +77,7 @@ const LandingServicesSection: React.FC = () => {
   const service = SERVICES_DATA[activeIndex];
 
   return (
-    <div className="w-full md:h-screen md:overflow-hidden flex flex-col justify-center px-4 sm:px-6 md:px-10 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12">
+    <div className="w-full md:h-screen md:overflow-hidden flex flex-col justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12">
       <div className="max-w-[1440px] mx-auto w-full relative group/carousel">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -93,49 +93,47 @@ const LandingServicesSection: React.FC = () => {
             }}
             className="relative w-full"
           >
-            <div className="flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none">
-              
+            <div className="flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none min-h-[420px] sm:min-h-[460px] lg:min-h-0">
+               
               {/* Image Section */}
-              <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group">
-                {/* Mobile: taller image for better visual impact */}
-                <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] lg:aspect-auto lg:h-[45svh] xl:h-[50svh]">
+              <div className="w-full lg:w-[48%] xl:w-[50%] relative overflow-hidden group lg:self-stretch">
+                <div className="relative w-full aspect-[3/2] sm:aspect-[16/10] lg:h-full">
                   <img
                     src={service.image}
                     alt={service.title}
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
 
                   {/* Price Badge */}
                   <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
                     <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
-                      <span className="text-lg sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-widest whitespace-nowrap">
+                      <span className="text-[clamp(1rem,2.5vw,1.5rem)] sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-widest whitespace-nowrap">
                         {service.price}
                       </span>
                     </div>
                   </div>
-                  </div>
-                  </div>
+                </div>
+              </div>
 
               {/* Content Section */}
               <div className="flex-1 flex flex-col p-5 sm:p-8 lg:p-10 xl:p-14 justify-center">
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs sm:text-[11px] font-bold text-accent uppercase tracking-[0.2em]">
+                    <span className="text-[clamp(0.6rem,1.2vw,0.75rem)] sm:text-xs font-bold text-accent uppercase tracking-[0.2em]">
                       {service.subtitle}
                     </span>
                   </div>
                   
-                  <h2 className="text-2xl sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 sm:mb-8">
+                  <h2 className="text-[clamp(1.25rem,4vw,2rem)] sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 sm:mb-8">
                     {service.title}
                   </h2>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-5 gap-x-6 sm:gap-x-10 mb-8 sm:mb-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-5 gap-x-6 sm:gap-x-10 mb-8 sm:mb-10">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3 sm:gap-4">
                         <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
-                        <span className="text-base text-text-secondary leading-normal font-medium">
+                        <span className="text-[clamp(0.8rem,1.8vw,1rem)] sm:text-base text-text-secondary leading-normal font-medium">
                           {feature}
                         </span>
                       </div>
@@ -145,7 +143,7 @@ const LandingServicesSection: React.FC = () => {
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
                     <button
                       onClick={() => openServiceRequestModal(service.title)}
-                      className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-sm transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
+                      className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-[clamp(0.7rem,1.5vw,0.875rem)] transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
                     >
                       <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
                       Request Assessment
@@ -154,7 +152,7 @@ const LandingServicesSection: React.FC = () => {
                     
                     <div className="flex items-center justify-center sm:justify-start gap-2 opacity-40">
                       <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-widest">
+                      <span className="text-[clamp(0.5rem,1vw,0.65rem)] sm:text-[11px] font-bold text-text-muted uppercase tracking-widest">
                         ISO COMPLIANT
                       </span>
                     </div>
