@@ -1,14 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ChevronUp, ChevronDown, Layers, Clock } from 'lucide-react';
-import { useAutoPlay } from '@/core/hooks/useAutoPlay';
+import React from 'react';
+import { Layers, Clock } from 'lucide-react';
+import ScrollReveal from '@/shared/components/ScrollReveal';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
 const LandingCurriculumSection: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-
   const phasesWithRoomCount = PHASES.map((phase, idx) => {
     const config = BOOTCAMP_CONFIG.phases[idx];
     const roomCount = config?.rooms?.length || 0;
@@ -16,133 +12,10 @@ const LandingCurriculumSection: React.FC = () => {
     return { ...phase, roomCount, totalSteps };
   });
 
-  const handleNext = useCallback(() => {
-    setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % phasesWithRoomCount.length);
-  }, [phasesWithRoomCount.length]);
-
-  const handlePrev = useCallback(() => {
-    setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + phasesWithRoomCount.length) % phasesWithRoomCount.length);
-  }, [phasesWithRoomCount.length]);
-
-  const { containerProps } = useAutoPlay({ onNext: handleNext, duration: 5000 });
-
-  const phase = phasesWithRoomCount[activeIndex];
-  const Icon = phase.icon;
-
-  const variants = {
-    enter: (d: number) => ({
-      y: d > 0 ? 80 : -80,
-      opacity: 0,
-    }),
-    center: {
-      y: 0,
-      opacity: 1,
-    },
-    exit: (d: number) => ({
-      y: d > 0 ? -80 : 80,
-      opacity: 0,
-    }),
-  };
-
   return (
-    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16" {...containerProps}>
-      <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
-
-        {/* Left — vertical carousel */}
-        <div className="order-2 md:order-1 md:w-[65%] lg:w-[62%]">
-          <div className="relative">
-            <div className="relative flex flex-col items-center">
-              {/* Up arrow */}
-              <button
-                onClick={handlePrev}
-                className="hidden md:flex absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
-                aria-label="Previous phase"
-              >
-                <ChevronUp className="w-4 h-4 lg:w-5 lg:h-5" />
-              </button>
-
-              <div className="overflow-hidden rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card w-full min-h-[40svh] md:min-h-[35svh]">
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.div
-                    key={phase.id}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className="h-full"
-                  >
-                    <div className="flex flex-col md:flex-row h-full">
-                      <div className="md:w-[38%] lg:w-[42%] h-40 md:h-auto bg-bg-elevated overflow-hidden">
-                        <img
-                          src={phase.image}
-                          alt={phase.name}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-start md:justify-center">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                            <Icon className="w-5 h-5 text-accent" />
-                          </div>
-                          <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
-                            <span className="text-[10px] font-black text-bg">{phase.id}</span>
-                          </div>
-                        </div>
-                        <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-text-primary mb-2 tracking-tight">
-                          {phase.name}
-                        </h3>
-                        <p className="text-sm md:text-base text-text-muted leading-relaxed mb-4 line-clamp-3">
-                          {phase.desc}
-                        </p>
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
-                            <Layers className="w-3.5 h-3.5 text-accent" />
-                            <span className="text-xs font-bold text-text-primary">{phase.roomCount} rooms</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
-                            <Clock className="w-3.5 h-3.5 text-accent" />
-                            <span className="text-xs font-bold text-text-primary">{phase.totalSteps} steps</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Down arrow */}
-              <button
-                onClick={handleNext}
-                className="hidden md:flex absolute -bottom-5 left-1/2 -translate-x-1/2 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-bg-card border border-border/40 items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all z-20 shadow-lg"
-                aria-label="Next phase"
-              >
-                <ChevronDown className="w-4 h-4 lg:w-5 lg:h-5" />
-              </button>
-            </div>
-
-            {/* Mobile position indicator */}
-            <div className="flex md:hidden items-center justify-center gap-2 mt-5">
-              {phasesWithRoomCount.map((p, i) => (
-                <button
-                  key={p.id}
-                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                  }`}
-                  aria-label={`Phase ${p.id}: ${p.name}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right — heading */}
-        <div className="order-1 md:order-2 md:w-[35%] lg:w-[38%] text-center md:text-right mb-6 md:mb-0">
+    <div className="w-full px-4 md:px-12 lg:px-16">
+      <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+        <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-8 md:mb-0 md:sticky md:top-32 md:order-2">
           <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
             Curriculum
           </span>
@@ -154,6 +27,54 @@ const LandingCurriculumSection: React.FC = () => {
           </p>
         </div>
 
+        <div className="md:w-[65%] lg:w-[62%] md:order-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+            {phasesWithRoomCount.map((phase, i) => {
+              const Icon = phase.icon;
+              return (
+                <ScrollReveal key={phase.id} direction="up" amount={0.1} delay={i * 0.05}>
+                  <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden group h-full flex flex-col">
+                    <div className="relative h-36 sm:h-40 md:h-36 lg:h-44 bg-bg-elevated overflow-hidden">
+                      <img
+                        src={phase.image}
+                        alt={phase.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-bg-card/60 to-transparent" />
+                      <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-accent" />
+                        </div>
+                        <div className="w-5 h-5 rounded-md bg-accent flex items-center justify-center">
+                          <span className="text-[9px] font-black text-bg">{phase.id}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 p-4 sm:p-5 flex flex-col">
+                      <h3 className="text-base sm:text-lg font-black text-text-primary mb-1.5 tracking-tight">
+                        {phase.name}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 mb-3">
+                        {phase.desc}
+                      </p>
+                      <div className="flex items-center gap-2 mt-auto">
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
+                          <Layers className="w-3 h-3 text-accent" />
+                          <span className="text-[10px] font-bold text-text-primary">{phase.roomCount} rooms</span>
+                        </div>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
+                          <Clock className="w-3 h-3 text-accent" />
+                          <span className="text-[10px] font-bold text-text-primary">{phase.totalSteps} steps</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

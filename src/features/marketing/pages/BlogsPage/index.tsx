@@ -77,7 +77,7 @@ const BlogsPage: React.FC = () => {
               <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
                 {post.excerpt}
               </p>
-              <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-border/50">
+              <div className="flex items-center justify-between gap-3 mt-auto pt-3 border-t border-border/50">
                 <div className="flex items-center gap-2 min-w-0">
                   <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
                     <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />

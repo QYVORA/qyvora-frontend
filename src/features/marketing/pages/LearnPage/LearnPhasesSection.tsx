@@ -15,7 +15,7 @@ const LearnPhasesSection: React.FC = () => {
           <h3 className="text-base sm:text-lg lg:text-xl font-black text-text-primary uppercase tracking-tight leading-tight mb-2">
             {s.name}
           </h3>
-          <p className="text-xs sm:text-sm text-text-secondary font-mono leading-relaxed mb-3">
+          <p className="text-xs sm:text-sm text-text-secondary font-mono leading-relaxed mb-3 line-clamp-3">
             {s.desc}
           </p>
           <div className="flex items-center gap-2 text-accent/60 mt-auto">
