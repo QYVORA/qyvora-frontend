@@ -129,7 +129,7 @@ function SharedCarousel<T extends { id: string }>({
                         key={current.id}
                         src={getImage(current)!}
                         alt={getImageAlt ? getImageAlt(current) : ''}
-                        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-[2000ms] group-hover:scale-110"
+                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-110"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
