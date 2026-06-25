@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Shield, Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { Shield, Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
+import { SharedCarousel } from '@/shared/components/carousel';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -24,7 +24,9 @@ interface Article {
 
 const AUTOPLAY_DURATION = 8000;
 
-const NewsCardSlide = ({ article }: { article: Article }) => {
+const NewsCard = ({ article }: { article: Article }) => {
+  const [imgError, setImgError] = useState(false);
+
   const dateStr = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -33,14 +35,12 @@ const NewsCardSlide = ({ article }: { article: Article }) => {
       })
     : '—';
 
-  const [imgError, setImgError] = useState(false);
-
   return (
     <a
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:h-[440px] xl:h-[480px]"
+      className="group flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:min-h-[400px] xl:min-h-[440px]"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {article.imageUrl && !imgError && (
@@ -112,8 +112,6 @@ const NewsFeedPage = () => {
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const fetchNews = useCallback(async (showRefreshIndicator = false) => {
@@ -139,43 +137,7 @@ const NewsFeedPage = () => {
     fetchNews();
   }, [fetchNews]);
 
-  const handleNext = useCallback(() => {
-    if (articles.length === 0) return;
-    setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % articles.length);
-  }, [articles.length]);
-
-  const handlePrev = useCallback(() => {
-    if (articles.length === 0) return;
-    setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + articles.length) % articles.length);
-  }, [articles.length]);
-
-  useEffect(() => {
-    if (shouldReduceMotion || articles.length <= 1) return;
-    const interval = setInterval(handleNext, AUTOPLAY_DURATION);
-    return () => clearInterval(interval);
-  }, [handleNext, shouldReduceMotion, articles.length]);
-
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 120 : -120,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir: number) => ({
-      zIndex: 0,
-      x: dir < 0 ? 120 : -120,
-      opacity: 0,
-    }),
-  };
-
   const hasArticles = articles.length > 0;
-  const current = articles[activeIndex];
 
   return (
     <div
@@ -195,7 +157,7 @@ const NewsFeedPage = () => {
 
       {/* ══ HERO SECTION ══ */}
       <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-10 lg:pt-12">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-24 lg:pt-28">
           <div className="max-w-4xl space-y-6">
             <div className="space-y-4">
               <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
@@ -224,8 +186,8 @@ const NewsFeedPage = () => {
       </section>
 
       {/* ══ CAROUSEL SECTION ══ */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg flex flex-col justify-center pt-8 md:pt-24 pb-32 md:pb-0">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 w-full">
+      <section className="relative md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+        <div className="max-w-[1440px] mx-auto w-full">
           {error && (
             <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
               <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
@@ -256,88 +218,12 @@ const NewsFeedPage = () => {
               <p className="text-sm text-text-muted mt-1">New cyber threat data will appear here as it's published.</p>
             </div>
           ) : (
-            <div className="w-full relative group/carousel">
-              <div className="relative">
-                <AnimatePresence initial={false} custom={direction} mode="wait">
-                  <motion.div
-                    key={current.id}
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      x: { type: 'spring', stiffness: 300, damping: 30 },
-                      opacity: { duration: 0.4 },
-                    }}
-                    className="relative w-full"
-                  >
-                    <NewsCardSlide article={current} />
-                  </motion.div>
-                </AnimatePresence>
-
-                <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -left-8 -right-8 items-center justify-between pointer-events-none z-20">
-                  <button
-                    onClick={handlePrev}
-                    className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
-                    aria-label="Previous article"
-                  >
-                    <ChevronLeft className="w-8 h-8" />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="w-16 h-16 rounded-full bg-bg-card/90 backdrop-blur-xl border border-border text-text-secondary hover:text-bg hover:bg-accent hover:border-accent flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 pointer-events-auto shadow-2xl opacity-0 group-hover/carousel:opacity-100"
-                    aria-label="Next article"
-                  >
-                    <ChevronRight className="w-8 h-8" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-center gap-3 mt-8">
-                {articles.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setDirection(idx > activeIndex ? 1 : -1);
-                      setActiveIndex(idx);
-                    }}
-                    className={`transition-all duration-300 rounded-full ${
-                      idx === activeIndex
-                        ? 'w-6 h-2 bg-accent'
-                        : 'w-2 h-2 bg-text-muted/40'
-                    }`}
-                    aria-label={`Go to article ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center justify-between mt-4 px-2 lg:hidden">
-                <button
-                  onClick={handlePrev}
-                  className="flex items-center gap-1.5 text-text-muted/50 hover:text-accent transition-colors text-xs font-bold uppercase tracking-widest"
-                  aria-label="Previous article"
-                >
-                  <ChevronLeft className="w-4 h-4" /> Prev
-                </button>
-                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                  {activeIndex + 1} / {articles.length}
-                </div>
-                <button
-                  onClick={handleNext}
-                  className="flex items-center gap-1.5 text-text-muted/50 hover:text-accent transition-colors text-xs font-bold uppercase tracking-widest"
-                  aria-label="Next article"
-                >
-                  Next <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="hidden lg:flex mt-6 items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/50">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                Live intelligence feed &middot; {articles.length} reports &middot; {activeIndex + 1} of {articles.length}
-              </div>
-            </div>
+            <SharedCarousel
+              slides={articles}
+              autoPlayInterval={AUTOPLAY_DURATION}
+              slideOffset={120}
+              renderCard={(article) => <NewsCard article={article} />}
+            />
           )}
         </div>
       </section>

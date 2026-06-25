@@ -5,6 +5,7 @@ import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { BrandLinkedinIcon } from '@/shared/components/icons';
 import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
+import { BrandXIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { AdinkraBackground } from '@/shared/components/backgrounds';
 import { Logo } from '@/shared/components/brand';
@@ -49,6 +50,7 @@ interface SocialLink {
 }
 
 const SOCIAL_LINKS: SocialLink[] = [
+  { key: 'x',       label: 'X',          href: 'https://x.com/qyvorasec',              Icon: BrandXIcon },
   { key: 'linkedin', label: 'LinkedIn',   href: 'https://linkedin.com/company/qyvora', Icon: BrandLinkedinIcon },
   { key: 'github',   label: 'GitHub',     href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
   { key: 'youtube',  label: 'YouTube',    href: 'https://www.youtube.com/@QYVORA',      Icon: BrandYoutubeIcon },

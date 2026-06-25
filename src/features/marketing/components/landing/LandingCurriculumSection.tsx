@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronUp, ChevronDown, Layers, Clock } from 'lucide-react';
+import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
@@ -25,10 +26,7 @@ const LandingCurriculumSection: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + phasesWithRoomCount.length) % phasesWithRoomCount.length);
   }, [phasesWithRoomCount.length]);
 
-  useEffect(() => {
-    const interval = setInterval(handleNext, 5000);
-    return () => clearInterval(interval);
-  }, [handleNext]);
+  const { containerProps } = useAutoPlay({ onNext: handleNext, duration: 5000 });
 
   const phase = phasesWithRoomCount[activeIndex];
   const Icon = phase.icon;
@@ -49,7 +47,7 @@ const LandingCurriculumSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
+    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16" {...containerProps}>
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
 
         {/* Left — vertical carousel */}
@@ -92,7 +90,7 @@ const LandingCurriculumSection: React.FC = () => {
                           loading="lazy"
                         />
                       </div>
-                      <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                      <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-start md:justify-center">
                         <div className="flex items-center gap-3 mb-4">
                           <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                             <Icon className="w-5 h-5 text-accent" />
@@ -133,34 +131,18 @@ const LandingCurriculumSection: React.FC = () => {
               </button>
             </div>
 
-            {/* Mobile arrows + dots */}
-            <div className="flex md:hidden items-center justify-center gap-4 mt-5">
-              <button
-                onClick={handlePrev}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Previous phase"
-              >
-                <ChevronUp className="w-4 h-4" />
-              </button>
-              <div className="flex items-center gap-2">
-                {phasesWithRoomCount.map((p, i) => (
-                  <button
-                    key={p.id}
-                    onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                    }`}
-                    aria-label={`Phase ${p.id}: ${p.name}`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={handleNext}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Next phase"
-              >
-                <ChevronDown className="w-4 h-4" />
-              </button>
+            {/* Mobile position indicator */}
+            <div className="flex md:hidden items-center justify-center gap-2 mt-5">
+              {phasesWithRoomCount.map((p, i) => (
+                <button
+                  key={p.id}
+                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
+                  }`}
+                  aria-label={`Phase ${p.id}: ${p.name}`}
+                />
+              ))}
             </div>
           </div>
         </div>

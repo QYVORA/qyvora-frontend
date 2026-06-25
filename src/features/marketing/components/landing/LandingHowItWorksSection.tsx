@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Swords, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 
 const STEPS = [
   {
@@ -37,10 +38,7 @@ const LandingHowItWorksSection: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + STEPS.length) % STEPS.length);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(handleNext, 5000);
-    return () => clearInterval(interval);
-  }, [handleNext]);
+  const { containerProps } = useAutoPlay({ onNext: handleNext, duration: 5000 });
 
   const step = STEPS[activeIndex];
   const Icon = step.icon;
@@ -61,7 +59,7 @@ const LandingHowItWorksSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
+    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16" {...containerProps}>
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
 
         {/* Left — heading */}
@@ -103,7 +101,7 @@ const LandingHowItWorksSection: React.FC = () => {
                     style={{ backgroundImage: `url(${step.bgImage})` }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/60 to-transparent" />
-                    <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
+                    <div className="relative z-10 flex flex-col items-start text-left">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
                         <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
                       </div>
@@ -127,34 +125,18 @@ const LandingHowItWorksSection: React.FC = () => {
               </button>
             </div>
 
-            {/* Mobile arrows + dots */}
-            <div className="flex md:hidden items-center justify-center gap-4 mt-5">
-              <button
-                onClick={handlePrev}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Previous step"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <div className="flex items-center gap-2">
-                {STEPS.map((s, i) => (
-                  <button
-                    key={s.title}
-                    onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                    }`}
-                    aria-label={`Step ${i + 1}: ${s.title}`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={handleNext}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Next step"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            {/* Mobile position indicator */}
+            <div className="flex md:hidden items-center justify-center gap-2 mt-5">
+              {STEPS.map((s, i) => (
+                <button
+                  key={s.title}
+                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
+                  }`}
+                  aria-label={`Step ${i + 1}: ${s.title}`}
+                />
+              ))}
             </div>
           </div>
         </div>

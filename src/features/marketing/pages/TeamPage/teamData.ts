@@ -30,7 +30,7 @@ export const teamData: TeamMember[] = [
     image: wsuits6Img,
     socials: {
       youtube: 'https://www.youtube.com/@wsuits6',
-      twitter: 'https://x.com/wsuits6',
+      twitter: 'https://x.com/qyvorasec',
       github: 'https://github.com/wsuits6',
       linkedin: 'https://www.linkedin.com/in/wsuits6/',
     },
@@ -45,7 +45,7 @@ export const teamData: TeamMember[] = [
       youtube: 'https://www.youtube.com/@sethabbey-u2c',
       github: 'https://github.com/sethabbey987',
       linkedin: 'https://www.linkedin.com/in/seth-abbey-599029379/',
-      twitter: 'https://x.com/sethabbey328208',
+      twitter: 'https://x.com/qyvorasec',
     },
   },
 ];

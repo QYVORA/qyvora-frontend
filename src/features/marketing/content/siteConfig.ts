@@ -44,6 +44,14 @@ export const SITE_CONFIG = {
   },
   social: [
     {
+      key: 'x',
+      label: 'Follow on X',
+      handle: '@QYVORASEC',
+      desc: 'Real-time ops, advisories, and updates.',
+      href: 'https://x.com/qyvorasec',
+      action: 'Follow',
+    },
+    {
       key: 'linkedin',
       label: 'Connect on LinkedIn',
       handle: 'QYVORA',
