@@ -57,11 +57,11 @@ const LandingServicesSection: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-[clamp(1.25rem,4vw,2rem)] sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 sm:mb-8">
+          <h2 className="text-[clamp(1.25rem,4vw,2rem)] sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-4 sm:mb-6">
             {s.title}
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-5 gap-x-6 sm:gap-x-10 mb-8 sm:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 sm:gap-y-2 gap-x-6 sm:gap-x-10 mb-4 sm:mb-6">
             {s.features.map((feature, idx) => (
               <div key={idx} className="flex items-start gap-3 sm:gap-4">
                 <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
@@ -72,10 +72,10 @@ const LandingServicesSection: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             <button
               onClick={() => openServiceRequestModal(s.title)}
-              className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-[clamp(0.7rem,1.5vw,0.875rem)] transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
+              className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-3.5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-[clamp(0.7rem,1.5vw,0.875rem)] transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
             >
               <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
               Request Assessment
