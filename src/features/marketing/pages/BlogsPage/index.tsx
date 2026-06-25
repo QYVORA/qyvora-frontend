@@ -73,7 +73,7 @@ const BlogsPage: React.FC = () => {
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                      className="w-full h-full object-cover object-top transition-transform duration-[2000ms] group-hover:scale-110"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20" />
