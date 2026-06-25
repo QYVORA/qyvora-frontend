@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from '../../../core/contexts/ThemeContext';
 
 interface AdinkraBackgroundProps {
   /**
@@ -130,11 +129,7 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
   includeDotGrid = true,
   className = '',
 }) => {
-  const { theme } = useTheme();
-  const isLight = theme === 'light';
-
-  // Significantly boost opacity in light theme to make symbols "painted" and visible
-  const effectiveOpacity = isLight ? 0.45 : opacity * (includeGradients ? 1.5 : 1);
+  const effectiveOpacity = opacity * (includeGradients ? 1.5 : 1);
 
   return (
     <div
@@ -159,7 +154,7 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
           <div
             key={label}
             className="absolute"
-            style={{ ...style, opacity: isLight ? Math.min(symOpacity * 1.5, 1) : symOpacity }}
+            style={{ ...style, opacity: symOpacity }}
           >
             <Symbol className="w-full h-full" />
           </div>

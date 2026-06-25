@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { useReducedMotion } from 'motion/react';
-import { useTheme } from '../../../../core/contexts/ThemeContext';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import { TARGETS, ARC_PAIRS, ACCENT_COLOR } from './data';
 import { latLngToVec3, buildDotMapTexture } from './helpers';
@@ -12,7 +11,6 @@ interface HackerGlobeProps { scale?: number }
 const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
   const mountRef   = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const { theme }  = useTheme();
   const shouldReduceMotion  = useReducedMotion();
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const isSimplified = constrainedDevice || isMobile;
@@ -37,7 +35,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
     const init = (initialW: number, initialH: number) => {
       w = initialW;
       h = initialH;
-      const isLight = theme === 'light';
+      const isLight = false;
 
       try {
         renderer = new THREE.WebGLRenderer({
@@ -368,7 +366,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       observer.disconnect();
       cleanup();
     };
-  }, [scale, theme, isSimplified]);
+  }, [scale, isSimplified]);
 
   return (
     <div
@@ -380,7 +378,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         ref={tooltipRef}
         style={{
           display: 'none', position: 'absolute', pointerEvents: 'none',
-          background: theme === 'light' ? 'rgba(232,240,232,0.95)' : 'rgba(3,6,4,0.92)',
+          background: 'rgba(3,6,4,0.92)',
           border: '1px solid rgba(102,184,112,0.25)',
           borderRadius: '4px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
