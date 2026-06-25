@@ -828,96 +828,26 @@
 }
 
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SNAP PAGES — navbar clearance + compact section padding
-   ─────────────────────────────────────────────────────────────────────────────
-   Mobile (< md): snap is disabled. Sections stack normally.
-   Desktop (≥ md): snap is active. Each section fills 100vh of viewport.
-
-   The navbar is fixed at 72px height. Sections handle their own content
-   padding internally to avoid overlap.
-───────────────────────────────────────────────────────────────────────────── */
-
-/* Landing snap container base styles */
-.landing-snap {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-
-@media (min-width: 768px) {
-  .landing-snap {
-    /* Improve snap precision and reduce drift */
-    scroll-snap-type: y mandatory;
-    scroll-padding-top: 0;
-  }
-  
-  .landing-snap .md\:snap-start {
-    box-sizing: border-box;
-    scroll-margin-top: 0;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-  
-  /* Desktop: each snap section fills exactly one viewport height */
-  .landing-snap .md\:min-h-screen {
-    min-height: 100vh;
-    height: 100vh;
-  }
-}
-
-/* ── Snap motion wrapper — fills the snap cell height ── */
-@media (min-width: 768px) {
-  [data-snap-child] {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-
-/* ── Mobile section spacing — normal scroll ── */
+/* ── Mobile section spacing ── */
 @media (max-width: 767px) {
-  /* Remove forced height constraints on mobile - let content determine height */
-  section {
-    min-height: auto !important;
-    height: auto !important;
-  }
-  
-  /* Add scroll margin for hash navigation to clear fixed navbar */
   section[id] {
     scroll-margin-top: 80px;
   }
 
-  /* Reduce excessive vertical padding on mobile */
-  [data-snap-child] {
-    padding-top: 6rem !important;
-    padding-bottom: 3rem !important;
-  }
-
-  /* Tighten section padding on mobile for better content density */
   .py-32 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
   .py-24 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
   .py-20 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
   .py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
   .py-14 { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
 
-  /* Tighten heading bottom margins */
   .mb-10 { margin-bottom: 1.25rem !important; }
   .mb-12 { margin-bottom: 1.25rem !important; }
   .mb-14 { margin-bottom: 1.5rem !important; }
   .mb-16 { margin-bottom: 1.75rem !important; }
 
-  /* Social cards — reasonable height on mobile */
   .min-h-\[240px\] { min-height: 160px !important; }
   .min-h-\[280px\] { min-height: 180px !important; }
-
-  /* Service card illustration strip */
   .h-36 { height: 4.5rem !important; }
-
-  /* Snap section wrappers — allow natural height on mobile, no clipping */
-  .md\:snap-start {
-    overflow: visible;
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────

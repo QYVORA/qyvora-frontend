@@ -51,7 +51,7 @@ const LandingCurriculumSection: React.FC = () => {
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
 
         {/* Left — vertical carousel */}
-        <div className="md:w-[65%] lg:w-[62%]">
+        <div className="order-2 md:order-1 md:w-[65%] lg:w-[62%]">
           <div className="relative">
             <div className="relative flex flex-col items-center">
               {/* Up arrow */}
@@ -142,7 +142,7 @@ const LandingCurriculumSection: React.FC = () => {
         </div>
 
         {/* Right — heading */}
-        <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-6 md:mb-0">
+        <div className="order-1 md:order-2 md:w-[35%] lg:w-[38%] text-center md:text-right mb-6 md:mb-0">
           <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
             Curriculum
           </span>

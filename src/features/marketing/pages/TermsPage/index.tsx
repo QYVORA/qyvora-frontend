@@ -1,24 +1,14 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import React from 'react';
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
-import SnapSection from '@/shared/components/SnapSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { TermsHeroSection } from './TermsHeroSection';
 import { TermsContentSection } from './TermsContentSection';
 
 const TermsPage: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({ container: containerRef });
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 300], [0, 60]);
-  const { constrainedDevice } = useAdaptiveUi();
   const { user } = useAuth();
-  const shouldReduceMotion = useReducedMotion();
-  const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
   return (
     <div className="relative min-h-screen w-full bg-bg">
@@ -32,30 +22,21 @@ const TermsPage: React.FC = () => {
       />
       <HeroBackground className="opacity-70" />
 
-      <div
-        ref={containerRef}
-        className="landing-snap relative z-10 h-auto md:h-[100svh] w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
-      >
-        <section className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent overflow-hidden">
-          <motion.div
-            style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-          >
-            <TermsHeroSection />
-          </motion.div>
-        </section>
+      <section className="relative bg-transparent overflow-hidden">
+        <TermsHeroSection />
+      </section>
 
-        <SnapSection id="terms-content">
-          <TermsContentSection />
-        </SnapSection>
+      <section id="terms-content" className="relative w-full">
+        <TermsContentSection />
+      </section>
 
-        <SnapSection id="terms-cta">
-          <LandingFinalCtaSection user={user} />
-        </SnapSection>
+      <section id="terms-cta" className="relative w-full">
+        <LandingFinalCtaSection user={user} />
+      </section>
 
-        <section id="footer" className="md:snap-start md:snap-always md:min-h-full md:flex md:flex-shrink-0 bg-transparent overflow-hidden">
-          <Footer />
-        </section>
-      </div>
+      <section id="footer" className="bg-transparent overflow-hidden">
+        <Footer />
+      </section>
     </div>
   );
 };

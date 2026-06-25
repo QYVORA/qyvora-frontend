@@ -1,40 +1,19 @@
 import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 
-const CONTAINER_SEL = '.landing-snap, [class*="md:snap-mandatory"]';
 const SCROLL_THRESHOLD = 150;
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const check = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop || document.scrollingElement?.scrollTop || 0;
-      let maxScroll = scrollY;
-      document.querySelectorAll<HTMLElement>(CONTAINER_SEL).forEach(c => {
-        if (c.scrollTop > maxScroll) maxScroll = c.scrollTop;
-      });
-      setVisible(maxScroll > SCROLL_THRESHOLD);
-    };
-
-    window.addEventListener('scroll', check, { passive: true, capture: true });
-    document.addEventListener('touchmove', check, { passive: true });
-    const poll = setInterval(check, 200);
-
-    return () => {
-      window.removeEventListener('scroll', check, { capture: true } as EventListenerOptions);
-      document.removeEventListener('touchmove', check);
-      clearInterval(poll);
-    };
+    const check = () => setVisible(window.scrollY > SCROLL_THRESHOLD);
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
   }, []);
 
   const scrollToTop = () => {
-    const container = document.querySelector<HTMLElement>(CONTAINER_SEL);
-    if (container && container.scrollTop > SCROLL_THRESHOLD) {
-      container.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (!visible) return null;

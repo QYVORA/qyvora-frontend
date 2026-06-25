@@ -1,11 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import SnapSection from '@/shared/components/SnapSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { AnansiHeroSection } from './AnansiHeroSection';
 import { AnansiInstallSection } from './AnansiInstallSection';
@@ -14,33 +12,24 @@ import { AnansiPipelineSection } from './AnansiPipelineSection';
 const AnansiPage: React.FC = () => {
   const { isMobile } = useAdaptiveUi();
   const { user } = useAuth();
-  useScrollLock(!isMobile);
-
-  const containerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container || isMobile) return;
+    if (isMobile) return;
 
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const detectionPoint = scrollTop + containerHeight * 0.3;
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const detectionPoint = scrollY + viewportHeight * 0.3;
 
       const sections = ['hero', 'install', 'pipeline', 'cta', 'footer'];
       let foundSection = sections[0];
 
       for (let i = sections.length - 1; i >= 0; i--) {
-        const id = sections[i];
-        const element = document.getElementById(id);
+        const element = document.getElementById(sections[i]);
         if (!element) continue;
-
-        const rect = element.getBoundingClientRect();
-        const elementTop = scrollTop + rect.top;
-
-        if (detectionPoint >= elementTop) {
-          foundSection = id;
+        if (detectionPoint >= element.offsetTop) {
+          foundSection = sections[i];
           break;
         }
       }
@@ -50,8 +39,8 @@ const AnansiPage: React.FC = () => {
       }
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection, isMobile]);
 
   return (
@@ -84,30 +73,25 @@ const AnansiPage: React.FC = () => {
         `}
       />
 
-      <div
-        ref={containerRef}
-        className="landing-snap relative z-10 h-auto md:h-[100svh] w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
-      >
-        <SnapSection id="hero">
-          <AnansiHeroSection />
-        </SnapSection>
+      <section id="hero" className="relative w-full">
+        <AnansiHeroSection />
+      </section>
 
-        <SnapSection id="install" innerClassName="md:pt-20">
-          <AnansiInstallSection />
-        </SnapSection>
+      <section id="install" className="relative w-full py-20 md:py-28 lg:py-32">
+        <AnansiInstallSection />
+      </section>
 
-        <SnapSection id="pipeline" innerClassName="lg:pt-28 lg:pb-12">
-          <AnansiPipelineSection />
-        </SnapSection>
+      <section id="pipeline" className="relative w-full py-20 md:py-28 lg:py-32">
+        <AnansiPipelineSection />
+      </section>
 
-        <SnapSection id="cta">
-          <LandingFinalCtaSection user={user} />
-        </SnapSection>
+      <section id="cta" className="relative w-full">
+        <LandingFinalCtaSection user={user} />
+      </section>
 
-        <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
-          <Footer />
-        </section>
-      </div>
+      <section id="footer" className="w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

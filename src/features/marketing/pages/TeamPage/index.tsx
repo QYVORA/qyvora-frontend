@@ -1,25 +1,17 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import React from 'react';
+import { useReducedMotion } from 'motion/react';
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
-import SnapSection from '@/shared/components/SnapSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { TeamHeroSection } from './TeamHeroSection';
 import { TeamCarouselSection } from './TeamCarouselSection';
 
 const TeamPage: React.FC = () => {
-  const { isMobile, constrainedDevice } = useAdaptiveUi();
+  const { constrainedDevice } = useAdaptiveUi();
   const { user } = useAuth();
-  useScrollLock(!isMobile);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({ container: containerRef });
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 300], [0, 60]);
   const shouldReduceMotion = useReducedMotion();
   const minimizeEffects = shouldReduceMotion || constrainedDevice;
 
@@ -35,31 +27,21 @@ const TeamPage: React.FC = () => {
       />
       <HeroBackground className="opacity-70" />
 
-      <div
-        ref={containerRef}
-        className="landing-snap relative z-10 h-auto md:h-[100svh] w-full overflow-y-visible md:overflow-y-scroll overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
-      >
-        <section className="md:snap-start md:snap-always md:h-full md:flex-shrink-0 md:box-border relative bg-transparent overflow-hidden">
-          <motion.div
-            style={{ y: minimizeEffects ? 0 : heroY, opacity: heroOpacity }}
-            className="relative z-20"
-          >
-            <TeamHeroSection />
-          </motion.div>
-        </section>
+      <section className="relative bg-transparent overflow-hidden">
+        <TeamHeroSection />
+      </section>
 
-        <SnapSection id="operators-directory" innerClassName="md:pt-20">
-          <TeamCarouselSection />
-        </SnapSection>
+      <section id="operators-directory" className="relative w-full py-20 md:py-28 lg:py-32">
+        <TeamCarouselSection />
+      </section>
 
-        <SnapSection id="cta">
-          <LandingFinalCtaSection user={user} />
-        </SnapSection>
+      <section id="cta" className="relative w-full">
+        <LandingFinalCtaSection user={user} />
+      </section>
 
-        <section id="footer" className="md:snap-start md:snap-always md:min-h-full md:flex md:flex-shrink-0 bg-transparent overflow-hidden">
-          <Footer />
-        </section>
-      </div>
+      <section id="footer" className="bg-transparent overflow-hidden">
+        <Footer />
+      </section>
     </div>
   );
 };

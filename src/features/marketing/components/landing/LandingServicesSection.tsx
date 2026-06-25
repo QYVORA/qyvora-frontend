@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, Lock, CheckCircle2, ArrowRight } from 'lucide-react';
-import { SharedCarousel } from '@/shared/components/carousel';
+import { CardMedia } from '@/shared/components/ui/Card';
+import { CardGrid } from '@/shared/components/card-grid';
 import { openServiceRequestModal } from '../ServiceRequestModal';
 
 const SERVICES_DATA = [
@@ -36,62 +37,63 @@ const SERVICES_DATA = [
 
 const LandingServicesSection: React.FC = () => {
   return (
-    <SharedCarousel
+    <CardGrid
       slides={SERVICES_DATA}
-      getImage={(s) => s.image}
-      getImageAlt={(s) => s.title}
-      renderImageOverlay={(s) => (
-        <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
-          <div className="px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
-            <span className="text-[clamp(1rem,2.5vw,1.5rem)] sm:text-xl lg:text-2xl font-black text-accent uppercase tracking-widest whitespace-nowrap">
-              {s.price}
-            </span>
-          </div>
-        </div>
-      )}
-      renderContent={(s) => (
-        <>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-[clamp(0.6rem,1.2vw,0.75rem)] sm:text-xs font-bold text-accent uppercase tracking-[0.2em]">
+      cols={2}
+      renderCard={(s) => (
+        <CardMedia
+          image={s.image}
+          imageAspect="aspect-video"
+          imageBadges={
+            <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
+              <div className="px-4 py-2 sm:px-5 sm:py-2.5 bg-bg-card/90 dark:backdrop-blur-xl backdrop-blur-none dark:border border-white/10 border-none rounded-xl dark:shadow-2xl shadow-none">
+                <span className="text-sm sm:text-base font-black text-accent uppercase tracking-widest whitespace-nowrap">
+                  {s.price}
+                </span>
+              </div>
+            </div>
+          }
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] sm:text-[11px] font-bold text-accent uppercase tracking-[0.2em]">
               {s.subtitle}
             </span>
           </div>
 
-          <h2 className="text-[clamp(1.25rem,4vw,2rem)] sm:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight leading-tight mb-3">
             {s.title}
-          </h2>
+          </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 sm:gap-y-2 gap-x-6 sm:gap-x-10 mb-4 sm:mb-6">
+          <div className="space-y-1 mb-4">
             {s.features.map((feature, idx) => (
-              <div key={idx} className="flex items-start gap-3 sm:gap-4">
-                <CheckCircle2 className="w-5 h-5 text-accent/60 mt-0.5 flex-shrink-0" />
-                <span className="text-[clamp(0.8rem,1.8vw,1rem)] sm:text-base text-text-secondary leading-normal font-medium">
+              <div key={idx} className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-accent/60 mt-0.5 flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-text-secondary leading-normal font-medium">
                   {feature}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-auto">
             <button
               onClick={() => openServiceRequestModal(s.title)}
-              className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-3.5 bg-accent text-bg rounded-xl sm:rounded-2xl font-black uppercase tracking-[0.15em] text-[clamp(0.7rem,1.5vw,0.875rem)] transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-3 sm:gap-4"
+              className="w-full px-5 py-2.5 bg-accent text-bg rounded-xl font-black uppercase tracking-[0.15em] text-[11px] sm:text-xs transition-all hover:brightness-110 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/10 flex items-center justify-center gap-2"
             >
-              <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Request Assessment
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
-            <div className="flex items-center justify-center sm:justify-start gap-2 opacity-40">
-              <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-              <span className="text-[clamp(0.5rem,1vw,0.65rem)] sm:text-[11px] font-bold text-text-muted uppercase tracking-widest">
+            <div className="flex items-center justify-center sm:justify-start gap-1.5 opacity-40">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">
                 ISO COMPLIANT
               </span>
             </div>
           </div>
-        </>
+        </CardMedia>
       )}
-      showMobileNav
     />
   );
 };
