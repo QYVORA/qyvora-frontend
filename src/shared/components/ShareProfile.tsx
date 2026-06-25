@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Share2, Check, X, Linkedin, Twitter } from 'lucide-react';
+import { Share2, Check, X, Linkedin } from 'lucide-react';
+import { BrandXIcon } from '@/shared/components/icons';
 
 const PLATFORMS = [
   {
@@ -7,7 +8,7 @@ const PLATFORMS = [
     name: 'X',
     color: 'hover:bg-black hover:text-white border-black/20',
     getUrl: (url: string, text: string) =>
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
   },
   {
     id: 'linkedin',
@@ -76,7 +77,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-text-primary transition-all ${p.color}`}
                 >
                   {p.id === 'x' ? (
-                    <Twitter className="w-4 h-4" />
+                    <BrandXIcon className="w-4 h-4" />
                   ) : p.id === 'linkedin' ? (
                     <Linkedin className="w-4 h-4" />
                   ) : copied ? (

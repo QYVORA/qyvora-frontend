@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Github, Linkedin, Youtube, Twitter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import { teamData } from '@/features/marketing/pages/TeamPage/teamData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
@@ -25,10 +26,7 @@ const LandingTeamSection: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + members.length) % members.length);
   }, [members.length]);
 
-  useEffect(() => {
-    const interval = setInterval(handleNext, 6000);
-    return () => clearInterval(interval);
-  }, [handleNext]);
+  const { containerProps } = useAutoPlay({ onNext: handleNext, duration: 6000 });
 
   const member = members[activeIndex];
 
@@ -48,7 +46,7 @@ const LandingTeamSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16">
+    <div className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16" {...containerProps}>
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
 
         {/* Left — heading */}
@@ -103,9 +101,9 @@ const LandingTeamSection: React.FC = () => {
                     transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }}
                     className="p-6 sm:p-8 md:p-10 lg:p-12"
                   >
-                    <div className="flex flex-col md:flex-row gap-5 md:gap-8 items-start text-left">
-                      <div className="flex-shrink-0 mx-auto md:mx-0">
-                        <div className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shadow-sm">
+                    <div className="flex flex-row gap-3 sm:gap-4 md:gap-8 items-start text-left">
+                      <div className="flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shadow-sm">
                           <img
                             src={member.image}
                             alt={member.name}
@@ -115,18 +113,18 @@ const LandingTeamSection: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex-1 min-w-0 text-center md:text-left">
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tight">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tight leading-tight">
                           {member.name}
                         </h3>
                         <span className="inline-block mt-1 px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] md:text-xs font-black rounded-lg uppercase tracking-widest">
                           {member.role}
                         </span>
-                        <p className="mt-2 md:mt-3 text-sm md:text-base text-text-muted leading-relaxed">
+                        <p className="mt-1.5 sm:mt-2 md:mt-3 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed">
                           {member.bio}
                         </p>
 
-                        <div className="mt-3 md:mt-4 flex items-center gap-2.5 justify-center md:justify-start">
+                        <div className="mt-2 sm:mt-3 md:mt-4 flex items-center gap-2 sm:gap-2.5">
                           {Object.entries(member.socials || {}).map(([platform, url]) => {
                             const Icon = SOCIAL_ICONS[platform];
                             if (!Icon) return null;
@@ -136,9 +134,9 @@ const LandingTeamSection: React.FC = () => {
                                 href={url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-bg-elevated border border-border/20 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200"
+                                className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-xl bg-bg-elevated border border-border/20 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200"
                               >
-                                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                               </a>
                             );
                           })}
@@ -158,34 +156,18 @@ const LandingTeamSection: React.FC = () => {
               </button>
             </div>
 
-            {/* Mobile arrows + dots */}
-            <div className="flex md:hidden items-center justify-center gap-4 mt-5">
-              <button
-                onClick={handlePrev}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Previous team member"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <div className="flex items-center gap-2">
-                {members.map((m, i) => (
-                  <button
-                    key={m.id}
-                    onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
-                    }`}
-                    aria-label={`Team member ${i + 1}: ${m.name}`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={handleNext}
-                className="w-9 h-9 rounded-full bg-bg-card border border-border/40 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all"
-                aria-label="Next team member"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            {/* Mobile position indicator */}
+            <div className="flex md:hidden items-center justify-center gap-2 mt-5">
+              {members.map((m, i) => (
+                <button
+                  key={m.id}
+                  onClick={() => { setDirection(i > activeIndex ? 1 : -1); setActiveIndex(i); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? 'w-8 bg-accent' : 'bg-border hover:bg-text-muted/40'
+                  }`}
+                  aria-label={`Team member ${i + 1}: ${m.name}`}
+                />
+              ))}
             </div>
           </div>
         </div>

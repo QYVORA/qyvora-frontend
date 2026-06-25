@@ -4,6 +4,7 @@ import {
   ChevronLeft, ChevronRight, Shield,
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import api from '@/core/services/api';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import NewsCard from '@/features/news/components/NewsCard';
@@ -64,11 +65,7 @@ const NewsFeedPage = () => {
     setActiveIndex((prev) => (prev - 1 + articles.length) % articles.length);
   }, [articles.length]);
 
-  useEffect(() => {
-    if (shouldReduceMotion || articles.length <= 1) return;
-    const interval = setInterval(handleNext, AUTOPLAY_DURATION);
-    return () => clearInterval(interval);
-  }, [handleNext, shouldReduceMotion, articles.length]);
+  const { containerProps } = useAutoPlay({ onNext: handleNext, duration: AUTOPLAY_DURATION, disabled: shouldReduceMotion || articles.length <= 1 });
 
   const slideVariants = {
     enter: (dir: number) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
@@ -129,7 +126,7 @@ const NewsFeedPage = () => {
             </ScrollReveal>
           ) : (
             <ScrollReveal>
-              <div className="w-full relative group/carousel mb-10 lg:mb-12">
+              <div className="w-full relative group/carousel mb-10 lg:mb-12" {...containerProps}>
                 <div className="relative">
                   <AnimatePresence initial={false} custom={direction} mode="wait">
                     <motion.div
