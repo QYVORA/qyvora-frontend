@@ -241,9 +241,7 @@ const NewsFeedPage = () => {
                   >
                     <ChevronLeft className="w-3.5 h-3.5" /> Prev
                   </button>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted/50">
-                    {activeIndex + 1} / {articles.length}
-                  </span>
+
                   <button
                     onClick={handleNext}
                     className="flex items-center gap-1 text-text-muted/50 hover:text-accent transition-colors text-[10px] font-bold uppercase tracking-widest"

@@ -13,13 +13,6 @@ const LearnPhasesSection: React.FC = () => {
       renderImageOverlay={(s) => (
         <>
           <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
-          <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10 z-10">
-            <div className="px-6 py-3 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 border-none rounded-2xl dark:shadow-2xl shadow-none">
-              <span className="text-base sm:text-lg font-black text-accent uppercase tracking-widest whitespace-nowrap">
-                PHASE {s.id}
-              </span>
-            </div>
-          </div>
         </>
       )}
       renderContent={(s) => (

@@ -72,12 +72,6 @@ const LandingHowItWorksSection: React.FC = () => {
         {/* Right — carousel */}
         <div className="md:w-[65%] lg:w-[62%]">
           <div className="relative">
-            <div className="text-center md:text-left mb-3">
-              <span className="text-xs md:text-sm font-black uppercase tracking-widest text-text-muted/50">
-                Step {activeIndex + 1} of 3
-              </span>
-            </div>
-
             <div className="relative">
               <button
                 onClick={handlePrev}
