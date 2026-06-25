@@ -41,7 +41,7 @@ const LandingServicesSection: React.FC = () => {
       getImage={(s) => s.image}
       getImageAlt={(s) => s.title}
       cardClassName="min-h-[420px] sm:min-h-[460px] lg:min-h-[420px] xl:min-h-[500px]"
-      imageHeightClasses="h-[200px] sm:h-[260px]"
+      imageHeightClasses="h-[200px] sm:h-[260px] lg:h-auto"
       containerClassName="w-full md:h-screen md:overflow-hidden flex flex-col justify-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 py-20 sm:py-24 md:py-20 lg:pt-28 lg:pb-12"
       renderImageOverlay={(s) => (
         <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10">
