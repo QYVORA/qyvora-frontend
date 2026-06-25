@@ -1,10 +1,7 @@
 import React from 'react';
-import { useTheme } from '../../../core/contexts/ThemeContext';
 
-export const DARK_LOGO_SRC = '/qyvora-full-logo.png';
-export const LIGHT_LOGO_SRC = '/qyvora-full-logo.png';
-export const DARK_MARK_SRC = '/qyvora-single-logo.png';
-export const LIGHT_MARK_SRC = '/qyvora-single-logo.png';
+export const LOGO_SRC = '/qyvora-full-logo.png';
+export const MARK_SRC = '/qyvora-single-logo.png';
 
 export type LogoSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 export type LogoVariant = 'full' | 'mark';
@@ -50,29 +47,21 @@ const markSizes: Record<LogoSize, string> = {
 };
 
 const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full' }) => {
-  const { theme } = useTheme();
-  
   if (variant === 'mark') {
-    const markSrc = theme === 'light' ? LIGHT_MARK_SRC : DARK_MARK_SRC;
     const widthClass = markSizes[size];
     return (
       <div className={`logo-wrap flex-none ${widthClass} max-w-full ${className}`}>
-        <img
-          src={markSrc}
-          alt="QYVORA"
-          className="w-full h-auto block"
-        />
+        <img src={MARK_SRC} alt="QYVORA" className="w-full h-auto block" />
       </div>
     );
   }
 
   const widthClass = sizes[size];
-  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap flex-none ${widthClass} max-w-full ${className}`}>
       <div className="w-full aspect-[848/116] overflow-hidden relative">
         <img
-          src={logoSrc}
+          src={LOGO_SRC}
           alt="QYVORA"
           className="absolute max-w-none"
           style={{
@@ -87,13 +76,11 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
 };
 
 export const QyvoraLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const { theme } = useTheme();
-  const logoSrc = theme === 'light' ? LIGHT_LOGO_SRC : DARK_LOGO_SRC;
   return (
     <div className={`logo-wrap flex-none w-[292px] max-w-full ${className}`}>
       <div className="w-full aspect-[848/116] overflow-hidden relative">
         <img 
-          src={logoSrc} 
+          src={LOGO_SRC} 
           alt="QYVORA" 
           className="absolute max-w-none"
           style={{

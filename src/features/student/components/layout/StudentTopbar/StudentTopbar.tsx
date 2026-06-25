@@ -1,11 +1,10 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, ClipboardList, Menu, Sun, Moon
+  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, ClipboardList, Menu
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
-import { useTheme } from '../../../../../core/contexts/ThemeContext';
 import Logo from '../../../../../shared/components/brand/Logo';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
@@ -22,7 +21,6 @@ const NOTIF_PREVIEW_LIMIT = 6;
 const StudentTopbar = () => {
   const { user, logout } = useAuth();
   const { addToast } = useToast();
-  const { toggleTheme, theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -289,15 +287,6 @@ const StudentTopbar = () => {
 
           {/* Right: notifications + profile */}
           <div className="flex items-center gap-2 md:gap-3">
-
-            {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-3 md:p-3.5 min-h-12 min-w-12 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            >
-              {theme === 'dark' ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-            </button>
 
             <div ref={notifRef} className="relative">
               <button

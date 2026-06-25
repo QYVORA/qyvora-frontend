@@ -48,38 +48,6 @@
   --animate-spin-reverse: spin 3s linear infinite reverse;
 }
 
-[data-theme="light"] {
-  --color-bg:             #ffffff; /* Pure white background */
-  --color-bg-card:        #e5ece5; /* Soft sage green for cards — less white than before */
-  --color-bg-elevated:    #eef3ee; /* Slightly lighter sage for elevation */
-  --color-accent:         #66B870;
-  --color-accent-rgb:     102, 184, 112;
-  --color-accent-dim:     rgba(102, 184, 112, 0.10);
-  --color-accent-glow:    rgba(102, 184, 112, 0.18);
-  --color-text-primary:   #0a100a; /* Deep forest charcoal instead of harsh pure black */
-  --color-text-secondary: rgba(10, 16, 10, 0.72);
-  --color-text-muted:     rgba(10, 16, 10, 0.46);
-  --color-border:         rgba(102, 184, 112, 0.20); /* More visible green-tinted border */
-  --color-border-strong:  rgba(102, 184, 112, 0.35);
-  --dot-color:            rgba(102, 184, 112, 0.08);
-  --color-hero-right-bg:  #dff0dc;
-  --color-hero-glow:      rgba(102, 184, 112, 0.18);
-  --color-hero-dots:      #66B870;
-
-  /* ── Code highlighting (light) ── */
-  --color-code-bg:              #e8ece8;
-  --color-code-keyword:         #66B870;
-  --color-code-string:          #047857; /* emerald-700 */
-  --color-code-number:          #92400e; /* amber-800 */
-  --color-code-flag:            #1d4ed8; /* blue-700 */
-  --color-code-path:            #6b21a8; /* purple-700 */
-
-  /* ── Light theme card shadow (subtle depth) ── */
-  --card-shimmer:         0 1px 2px rgba(102, 184, 112, 0.03);
-  /* ── Light theme card shadow (soft, green-tinted depth) ── */
-  --card-shadow:          0 12px 30px -10px rgba(102, 184, 112, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
-}
-
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -87,7 +55,7 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     height: 100%;
-    color-scheme: dark light;
+    color-scheme: dark;
     /* Force exact color rendering on all devices */
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -138,17 +106,6 @@
     color: var(--color-accent);
   }
 
-  /* ── Revert to dark theme primary color for light theme headings ── */
-  [data-theme="light"] h1, 
-  [data-theme="light"] h2, 
-  [data-theme="light"] h3, 
-  [data-theme="light"] h4, 
-  [data-theme="light"] h5, 
-  [data-theme="light"] h6,
-  [data-theme="light"] pre[role="heading"] {
-    color: var(--color-text-primary);
-  }
-
   :root {
     --mobile-text-base: 17px;
     --mobile-text-meta: 13px;
@@ -175,11 +132,6 @@
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
     opacity: 0.03;
-  }
-
-  /* Light mode: scanlines are invisible — no dark scan artifacts on light bg */
-  [data-theme="light"] .scanlines::after {
-    opacity: 0;
   }
 
   .glow-shadow {
@@ -240,10 +192,6 @@
   .glass-effect {
     @apply backdrop-blur-md bg-white/5 border border-white/10;
   }
-  [data-theme="light"] .glass-effect {
-    @apply backdrop-blur-md bg-black/[0.03] border border-black/[0.08];
-  }
-
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
@@ -441,125 +389,8 @@
   ::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   ::-webkit-scrollbar-corner { background: var(--color-bg); }
 
-  /* ─────────────────────────────────────────────────────────────────────────
-     LIGHT THEME — background image & overlay rules
-  ───────────────────────────────────────────────────────────────────────── */
-
-  /* Section background images — visible in light mode */
-  [data-theme="light"] .section-bg-img {
-    opacity: 1 !important;
-  }
-
-  /* Section overlay — transparent in light mode */
   .section-bg-overlay {
     background: rgba(5, 7, 6, 0.20);
-  }
-  [data-theme="light"] .section-bg-overlay {
-    background: transparent !important;
-    display: none !important;
-  }
-
-  /* Hero background image */
-  [data-theme="light"] .hero-bg-img {
-    opacity: 1 !important;
-  }
-
-  /* Hero vignette — removed in light mode */
-  [data-theme="light"] .hero-vignette {
-    opacity: 0 !important;
-    display: none !important;
-  }
-
-  /* Radial vignette — removed in light mode */
-  [data-theme="light"] .bg-radial-vignette {
-    opacity: 0 !important;
-    display: none !important;
-  }
-
-  /* Light theme: remove blur/filter overlays on image-background sections */
-  [data-theme="light"] .section-bg-img + .section-bg-overlay,
-  [data-theme="light"] .section-bg-img ~ .hero-vignette,
-  [data-theme="light"] .section-bg-img ~ .bg-radial-vignette,
-  [data-theme="light"] .section-bg-overlay {
-    display: none !important;
-    backdrop-filter: none !important;
-    background: transparent !important;
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-  }
-
-  [data-theme="light"] img {
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
-
-  [data-theme="light"] main section .blur-3xl,
-  [data-theme="light"] main section .blur-\[100px\],
-  [data-theme="light"] .blur-3xl,
-  [data-theme="light"] .blur-\[100px\],
-  [data-theme="light"] .blur-\[120px\] {
-    display: none !important;
-  }
-
-  [data-theme="light"] main section .backdrop-blur-sm,
-  [data-theme="light"] main section .backdrop-blur-md,
-  [data-theme="light"] main section .backdrop-blur-lg,
-  [data-theme="light"] main section .backdrop-blur-xl,
-  [data-theme="light"] .backdrop-blur-sm,
-  [data-theme="light"] .backdrop-blur-md,
-  [data-theme="light"] .backdrop-blur-lg,
-  [data-theme="light"] .backdrop-blur-xl {
-    backdrop-filter: none !important;
-    border-color: var(--color-border) !important;
-  }
-
-  [data-theme="light"] .light-theme-hide-bg-overlay,
-  [data-theme="light"] [data-light-overlay="true"] {
-    display: block !important;
-    opacity: revert-layer !important;
-    backdrop-filter: none !important;
-    filter: revert-layer !important;
-    background: revert-layer !important;
-    box-shadow: revert-layer !important;
-  }
-
-  [data-theme="light"] .has-bg-image {
-    background-color: transparent !important;
-  }
-
-  [data-theme="light"] .light-theme-hide-bg-base {
-    display: none !important;
-    background: transparent !important;
-  }
-
-  /* Hero dot grid — slightly more visible in light mode */
-  [data-theme="light"] .hero-dot-grid {
-    opacity: 0.35 !important;
-  }
-
-  /* ─────────────────────────────────────────────────────────────────────────
-     LIGHT THEME — rank pill backgrounds
-     Dark theme uses dark-only Tailwind classes (zinc-800, blue-900, etc.)
-     These overrides replace them with light-appropriate tinted surfaces.
-  ───────────────────────────────────────────────────────────────────────── */
-  [data-theme="light"] .bg-zinc-800 {
-    background-color: rgba(100, 116, 100, 0.15) !important;
-  }
-  [data-theme="light"] .bg-blue-900\/40 {
-    background-color: rgba(37, 99, 235, 0.10) !important;
-  }
-  [data-theme="light"] .bg-purple-900\/40 {
-    background-color: rgba(126, 34, 206, 0.10) !important;
-  }
-  [data-theme="light"] .bg-amber-900\/40 {
-    background-color: rgba(180, 83, 9, 0.10) !important;
-  }
-
-  /* Rank text colors — keep semantic meaning, ensure contrast on light bg */
-  [data-theme="light"] .text-zinc-400 {
-    color: rgba(80, 100, 80, 0.85) !important;
   }
 }
 
@@ -713,102 +544,6 @@
 
   .footer-logo-banner {
     background-color: transparent;
-  }
-
-  /* ── Light theme card overrides ── */
-  [data-theme="light"] .card-qyvora,
-  [data-theme="light"] .terminal-card {
-    background: var(--color-bg-card) !important;
-    box-shadow: none !important;
-    border-color: var(--color-border);
-    transform: none !important;
-  }
-  [data-theme="light"] .card-qyvora:hover,
-  [data-theme="light"] .terminal-card:hover {
-    box-shadow: none !important;
-    border-color: var(--color-border-strong);
-    transform: none !important;
-  }
-
-  /* ── Light theme: remove dot pattern overlay from cards ── */
-  [data-theme="light"] .card-qyvora::after,
-  [data-theme="light"] .terminal-card::after {
-    opacity: 0 !important;
-  }
-
-  /* ── Light theme: hide gradient overlays on card images (dark:block bypasses via prefers-color-scheme) ── */
-  [data-theme="light"] .card-qyvora [class*="bg-gradient"]:not([class*="dark:"]),
-  [data-theme="light"] .card-qyvora [class*="from-bg-card"],
-  [data-theme="light"] .card-qyvora [class*="to-bg-card"],
-  [data-theme="light"] .card-qyvora [class*="via-bg-card"],
-  [data-theme="light"] .terminal-card [class*="from-bg-card"],
-  [data-theme="light"] .terminal-card [class*="to-bg-card"],
-  [data-theme="light"] .terminal-card [class*="via-bg-card"],
-  [data-theme="light"] [class*="bg-bg-card"] [class*="from-"],
-  [data-theme="light"] [class*="bg-bg-card"] [class*="to-"],
-  [data-theme="light"] [class*="bg-bg-card"] [class*="via-"] {
-    display: none !important;
-  }
-
-  /* ── Light theme: fully opaque badge backgrounds on cards ── */
-  [data-theme="light"] .card-qyvora [class*="bg-bg/"],
-  [data-theme="light"] .terminal-card [class*="bg-bg/"],
-  [data-theme="light"] [class*="bg-bg-card"] [class*="bg-bg/"] {
-    background-color: var(--color-bg) !important;
-    backdrop-filter: none !important;
-  }
-
-  /* ── Light theme: remove backdrop-blur from card buttons/arrows ── */
-  [data-theme="light"] .card-qyvora button[class*="backdrop-blur"],
-  [data-theme="light"] .terminal-card button[class*="backdrop-blur"] {
-    backdrop-filter: none !important;
-    background-color: var(--color-bg-card) !important;
-    border-color: var(--color-border) !important;
-  }
-
-  /* ── Light theme: hide any absolute overlay with from-/to-/via- inside a card ── */
-  [data-theme="light"] [class*="overflow-hidden"] > [class*="absolute"][class*="inset-0"][class*="from-"] {
-    display: none !important;
-  }
-
-  /* ── Light theme — completed room overlay uses translucent bg + blur (same as dark) ── */
-  [data-theme="light"] [class*="bg-bg-card"] .room-completed-overlay,
-  [data-theme="light"] .room-completed-overlay {
-    background-color: color-mix(in srgb, var(--color-bg) 60%, transparent) !important;
-    backdrop-filter: blur(2px) !important;
-    -webkit-backdrop-filter: blur(2px) !important;
-  }
-
-  /* ── Light theme — elevated surfaces (dropdowns, modals, drawers) ── */
-  [data-theme="light"] .bg-bg-card,
-  [data-theme="light"] [class*="bg-bg-card/"] {
-    background-color: var(--color-bg-card);
-    border-color: var(--color-border);
-    box-shadow: none !important;
-  }
-
-  /* ── Light theme — section alternation ── */
-  [data-theme="light"] section {
-    background-color: var(--color-bg);
-  }
-
-  /* ── Light theme — ambient glow blobs need more intensity ── */
-  [data-theme="light"] .bg-accent\/5 {
-    background-color: rgba(102, 184, 112, 0.10) !important;
-  }
-  [data-theme="light"] .bg-accent\/8 {
-    background-color: rgba(102, 184, 112, 0.14) !important;
-  }
-  [data-theme="light"] .bg-accent\/15 {
-    background-color: rgba(102, 184, 112, 0.20) !important;
-  }
-
-  /* ── Light theme: visible borders on secondary buttons ── */
-  [data-theme="light"] .btn-secondary {
-    border-color: var(--color-border) !important;
-  }
-  [data-theme="light"] .btn-secondary:hover {
-    border-color: var(--color-border-strong) !important;
   }
 
   @media (max-width: 767px) {

@@ -62,10 +62,9 @@ createRoot(document.getElementById('root')!).render(
     {/*
       ThemeProvider (outermost context)
       ─────────────────────────────────────────────────────────────────────────
-      Manages the active colour theme ('dark' | 'light'), persists it to
-      localStorage, and writes data-theme to <html> so CSS variables update
-      globally. Placed outermost because every other provider and component
-      may depend on theme tokens.
+      Sets data-theme="dark" on <html> so CSS variables are applied.
+      Currently dark-only; placed outermost because every other provider
+      and component may depend on theme tokens.
     */}
     <ThemeProvider>
 
