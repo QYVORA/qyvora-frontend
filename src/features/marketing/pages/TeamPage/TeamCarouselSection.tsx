@@ -47,7 +47,7 @@ const TeamCarouselSection: React.FC = () => {
           <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-text-primary uppercase tracking-tight leading-tight mb-3">
             {m.name}
           </h3>
-          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mb-4 italic">
+          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mb-4 italic line-clamp-3">
             &ldquo;{m.bio}&rdquo;
           </p>
           <div className="flex items-center gap-3 mt-auto pt-3 border-t border-border/40">
