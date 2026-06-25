@@ -4,8 +4,6 @@ import { Trophy, Medal, Shield, ArrowRight } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
-import SnapSection from '@/shared/components/SnapSection';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
@@ -147,9 +145,6 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
 
 const LeaderboardPage = () => {
   const { user } = useAuth();
-  const { isMobile } = useAdaptiveUi();
-  useScrollLock(!isMobile);
-
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -187,18 +182,14 @@ const LeaderboardPage = () => {
   const topEntries = entries.slice(0, INITIAL_SHOW);
 
   return (
-    <div
-      ref={containerRef}
-      className="w-full h-auto md:h-screen md:overflow-y-auto md:snap-y md:snap-mandatory relative z-10 scroll-smooth bg-bg"
-      style={{ scrollbarWidth: 'none' }}
-    >
+    <div className="w-full relative z-10 bg-bg">
       <SEO
         title="Operator Leaderboard"
         description="Top-ranked cybersecurity operators on QYVORA. Ranked by CP earned and verified on the QYVORA Chain."
       />
 
       {/* ══ HERO SECTION ══ */}
-      <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
+      <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28 lg:py-36">
         {/* Background decoration */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-border/5" />
@@ -253,7 +244,7 @@ const LeaderboardPage = () => {
       </section>
 
       {/* ══ LEADERBOARD SECTION ══ */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden">
+      <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28">
         {/* Background grid pattern */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
@@ -337,12 +328,12 @@ const LeaderboardPage = () => {
       </section>
 
       {/* ══ CTA SECTION ══ */}
-      <SnapSection id="cta">
+      <section id="cta" className="relative w-full">
         <LandingFinalCtaSection user={user} />
-      </SnapSection>
+      </section>
 
       {/* ══ FOOTER SECTION ══ */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+      <section className="relative w-full bg-bg">
         <Footer />
       </section>
     </div>

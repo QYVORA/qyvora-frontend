@@ -1,9 +1,7 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 import LandingHeroSection from '@/features/marketing/components/landing/LandingHeroSection';
 import LandingStatsSection from '@/features/marketing/components/landing/LandingStatsSection';
@@ -20,13 +18,10 @@ import ServiceRequestModal from '@/features/marketing/components/ServiceRequestM
 import PromotionalSystem from '@/features/marketing/components/PromotionalSystem';
 import SEO from '@/shared/components/SEO';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
-import SnapSection from '@/shared/components/SnapSection';
 
-// ── Section registry for dot-nav ─────────────────────────────────────────────
 const SECTIONS = [
   { id: 'hero',        label: 'Home'            },
   { id: 'stats',       label: 'Stats'           },
-
   { id: 'how-it-works',label: 'How It Works'    },
   { id: 'curriculum',  label: 'Curriculum'      },
   { id: 'team',        label: 'Team'            },
@@ -39,38 +34,30 @@ const Landing: React.FC = () => {
   const { user } = useAuth();
   const { stats } = useLandingData();
   const { isMobile } = useAdaptiveUi();
-  
-  // Use a stable reference for scroll lock to prevent re-renders
-  useScrollLock(!isMobile);
-  
-  const heroRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+
+  const heroRef = React.useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('hero');
-  const isScrollingProgrammatically = useRef(false);
-  const lastScrollTime = useRef(0);
+  const isScrollingProgrammatically = React.useRef(false);
+  const lastScrollTime = React.useRef(0);
 
   const totalCp = stats?.stats?.cpPoolSize ?? 0;
 
-  // Validate section exists
   const isValidSection = useCallback((sectionId: string): boolean => {
     return SECTIONS.some(s => s.id === sectionId);
   }, []);
 
-  // Handle hash-based navigation with validation
   useEffect(() => {
-    // Only snaps on desktop
     if (isMobile) return;
 
     const hash = location.hash.replace('#', '');
     if (hash && isValidSection(hash)) {
       const timer = setTimeout(() => {
         const element = document.getElementById(hash);
-        const container = containerRef.current;
-        if (element && container) {
+        if (element) {
           isScrollingProgrammatically.current = true;
-          container.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
+          element.scrollIntoView({ behavior: 'smooth' });
           setActiveSection(hash);
           setTimeout(() => {
             isScrollingProgrammatically.current = false;
@@ -79,37 +66,26 @@ const Landing: React.FC = () => {
       }, 100);
       return () => clearTimeout(timer);
     }
-    
-    if (hash && !isValidSection(hash)) {
-      navigate('/404', { replace: true });
-    }
   }, [location.hash, isValidSection, navigate, isMobile]);
 
-  // Detect which section is currently in view and update URL
   useEffect(() => {
-    const container = containerRef.current;
-    // Disable tracking logic entirely on mobile
-    if (!container || isMobile) return;
+    if (isMobile) return;
 
     const handleScroll = () => {
       const now = Date.now();
       if (isScrollingProgrammatically.current || now - lastScrollTime.current < 100) return;
       lastScrollTime.current = now;
 
-      const scrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const detectionPoint = scrollTop + containerHeight * 0.3;
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const detectionPoint = scrollY + viewportHeight * 0.3;
 
       let foundSection = SECTIONS[0].id;
       for (let i = SECTIONS.length - 1; i >= 0; i--) {
         const section = SECTIONS[i];
         const element = document.getElementById(section.id);
         if (!element) continue;
-
-        const rect = element.getBoundingClientRect();
-        const elementTop = scrollTop + rect.top;
-
-        if (detectionPoint >= elementTop) {
+        if (detectionPoint >= element.offsetTop) {
           foundSection = section.id;
           break;
         }
@@ -121,12 +97,11 @@ const Landing: React.FC = () => {
       }
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => container.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection, navigate, isMobile]);
 
-  // Logic to hide background only on Hero section
   const showBackground = activeSection !== 'hero';
 
   return (
@@ -162,42 +137,37 @@ const Landing: React.FC = () => {
       <ServiceRequestModal />
       <PromotionalSystem />
 
-      <div
-        ref={containerRef}
-        className="landing-snap relative z-10 h-auto md:h-screen w-full overflow-y-visible md:overflow-y-auto overflow-x-hidden bg-transparent md:snap-y md:snap-mandatory"
-      >
-        <section id="hero" className="md:h-screen md:snap-start md:snap-always flex-shrink-0 relative bg-transparent">
-          <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
-        </section>
+      <section id="hero" className="relative bg-transparent">
+        <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
+      </section>
 
-        <SnapSection id="stats">
-          <LandingStatsSection />
-        </SnapSection>
+      <section id="stats" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingStatsSection />
+      </section>
 
-        <SnapSection id="how-it-works">
-          <LandingHowItWorksSection />
-        </SnapSection>
+      <section id="how-it-works" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingHowItWorksSection />
+      </section>
 
-        <SnapSection id="curriculum">
-          <LandingCurriculumSection />
-        </SnapSection>
+      <section id="curriculum" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingCurriculumSection />
+      </section>
 
-        <SnapSection id="team">
-          <LandingTeamSection />
-        </SnapSection>
+      <section id="team" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingTeamSection />
+      </section>
 
-        <SnapSection id="services">
-          <LandingServicesSection />
-        </SnapSection>
+      <section id="services" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingServicesSection />
+      </section>
 
-        <SnapSection id="cta">
-          <LandingFinalCtaSection user={user} />
-        </SnapSection>
+      <section id="cta" className="relative w-full">
+        <LandingFinalCtaSection user={user} />
+      </section>
 
-        <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
-          <Footer />
-        </section>
-      </div>
+      <section id="footer" className="w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

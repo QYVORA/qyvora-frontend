@@ -1,33 +1,20 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, User } from 'lucide-react';
-import { SharedCarousel } from '@/shared/components/carousel';
+import { CardMedia } from '@/shared/components/ui/Card';
+import { CardGrid } from '@/shared/components/card-grid';
 import SEO from '@/shared/components/SEO';
 import { HeroBackground } from '@/shared/components/backgrounds';
 import { BLOG_POSTS } from './blogContent';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 
 const BlogsPage: React.FC = () => {
-  const { isMobile } = useAdaptiveUi();
   const { user } = useAuth();
-  useScrollLock(!isMobile);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div
-      ref={containerRef}
-      className="
-        w-full h-auto
-        md:h-screen md:overflow-y-auto
-        md:snap-y md:snap-mandatory
-        relative z-10 scroll-smooth bg-bg
-      "
-      style={{ scrollbarWidth: 'none' }}
-    >
+    <div className="w-full bg-bg">
       <SEO
         title="Blogs"
         description="Read about cybersecurity, offensive security tooling, and Africa's growing security ecosystem."
@@ -38,7 +25,7 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative min-h-screen md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
+      <section className="relative min-h-screen md:h-screen w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
         <HeroBackground />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-24 lg:pt-28">
           <div className="max-w-4xl space-y-8 text-left w-full">
@@ -57,88 +44,74 @@ const BlogsPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── Blog Carousel ── */}
-      <section className="relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 bg-bg flex flex-col justify-center">
-        <div className="max-w-[1440px] mx-auto w-full">
-          <SharedCarousel
-            slides={BLOG_POSTS}
-            renderCard={(post) => (
-              <Link
-                to={`/blogs/${post.slug}`}
-                className="group flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] min-h-[250px] sm:min-h-[300px] lg:min-h-[420px] xl:min-h-[460px]"
-                style={{ boxShadow: 'var(--card-shimmer)' }}
-              >
-                <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group lg:self-stretch h-[220px] sm:h-[260px] lg:h-auto">
-                  <div className="relative w-full h-full bg-bg">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-110"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20" />
-                    <div className="absolute top-5 left-5 sm:top-6 sm:left-6 lg:top-10 lg:left-10 flex flex-wrap gap-2">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-bg/80 backdrop-blur-sm border border-accent/20 rounded-full text-accent"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+      {/* ── Blog Card Grid ── */}
+      <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
+        <CardGrid
+          slides={BLOG_POSTS}
+          cols={2}
+          containerClassName="w-full px-4 md:px-10 lg:px-12 xl:px-16"
+          renderCard={(post) => (
+            <CardMedia
+              image={post.image}
+              imageAspect="aspect-video"
+              href={`/blogs/${post.slug}`}
+              imageBadges={
+                <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex flex-wrap gap-1.5">
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-bg/80 backdrop-blur-sm border border-accent/20 rounded-full text-accent"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              }
+            >
+              <h3 className="text-base sm:text-lg lg:text-xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2">
+                {post.title}
+              </h3>
+              <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-accent/80 mt-1">
+                {post.subtitle}
+              </p>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-3 line-clamp-3">
+                {post.excerpt}
+              </p>
+              <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-border/50">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-text-primary truncate">
+                      {post.author.name}
+                    </div>
+                    <div className="text-[8px] sm:text-[10px] font-mono text-text-muted truncate">
+                      {post.author.handle}
                     </div>
                   </div>
                 </div>
-
-                <div className="flex-1 flex flex-col p-6 sm:p-8 lg:p-10 xl:p-14 justify-start md:justify-center min-h-0">
-                  <div className="max-w-2xl space-y-6">
-                    <h2 className="text-2xl sm:text-3xl lg:text-3xl xl:text-4xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300">
-                      {post.title}
-                    </h2>
-                    <p className="text-sm font-bold uppercase tracking-widest text-accent/80">
-                      {post.subtitle}
-                    </p>
-                    <p className="text-sm sm:text-base text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-5 py-2">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-6 border-t border-border/50">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-full shrink-0 bg-accent/10 border border-accent/20 flex items-center justify-center">
-                          <User className="w-5 h-5 text-accent" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-sm font-black uppercase tracking-widest text-text-primary truncate">
-                            {post.author.name}
-                          </div>
-                          <div className="text-[10px] font-mono text-text-muted truncate">
-                            {post.author.handle}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 text-[11px] font-mono text-text-muted shrink-0">
-                        <span className="flex items-center gap-1.5 whitespace-nowrap">
-                          <Clock className="w-4 h-4 shrink-0" /> {post.readTime}
-                        </span>
-                        <span className="flex items-center gap-1.5 text-accent group-hover:gap-2.5 transition-all whitespace-nowrap">
-                          Read <ArrowRight className="w-4 h-4 shrink-0" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
+                  <span className="flex items-center gap-1 whitespace-nowrap">
+                    <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> {post.readTime}
+                  </span>
+                  <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
+                    Read <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                  </span>
                 </div>
-              </Link>
-            )}
-          />
-        </div>
+              </div>
+            </CardMedia>
+          )}
+        />
       </section>
 
       {/* ── CTA Section ── */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg flex flex-col justify-center min-h-screen">
+      <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
         <LandingFinalCtaSection user={user} />
       </section>
 
       {/* ── Footer Section ── */}
-      <section className="relative md:h-screen md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+      <section className="relative w-full bg-bg">
         <Footer />
       </section>
     </div>

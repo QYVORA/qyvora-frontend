@@ -1,42 +1,30 @@
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
-import { SharedCarousel } from '@/shared/components/carousel';
+import { CardMedia } from '@/shared/components/ui/Card';
+import { CardGrid } from '@/shared/components/card-grid';
 import { PHASES } from './anansiData';
 
 const AnansiPipelineSection: React.FC = () => {
   return (
-    <SharedCarousel
+    <CardGrid
       slides={PHASES}
-      getImage={(s) => s.image}
-      getImageAlt={(s) => s.name}
-      renderImageOverlay={(s) => (
-        <>
-          <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
-        </>
-      )}
-      renderContent={(s) => (
-        <>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-[11px] font-bold text-accent uppercase tracking-[0.2em]">
-              // PIPELINE LIFECYCLE
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-text-primary uppercase tracking-tight leading-tight mb-6 lg:mb-8">
+      cols={3}
+      renderCard={(s) => (
+        <CardMedia image={s.image} imageAspect="aspect-video">
+          <h3 className="text-base sm:text-lg lg:text-xl font-black text-text-primary uppercase tracking-tight leading-tight mb-2">
             {s.name}
-          </h2>
-          <p className="text-base sm:text-lg lg:text-base xl:text-lg text-text-secondary font-mono leading-relaxed mb-8 lg:mb-10">
+          </h3>
+          <p className="text-xs sm:text-sm text-text-secondary font-mono leading-relaxed mb-3">
             {s.desc}
           </p>
-          <div className="flex items-center gap-3 text-accent/60">
-            <CheckCircle2 className="w-5 h-5" />
-            <span className="font-mono text-[11px] uppercase tracking-widest font-bold">
+          <div className="flex items-center gap-2 text-accent/60 mt-auto">
+            <CheckCircle2 className="w-4 h-4" />
+            <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
               Autonomous Execution
             </span>
           </div>
-        </>
+        </CardMedia>
       )}
-      showMobileNav={false}
-      enableBlur
     />
   );
 };

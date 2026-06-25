@@ -1,20 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useScrollLock } from '@/core/hooks/useScrollLock';
+import React from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import SnapSection from '@/shared/components/SnapSection';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { LearnHeroSection } from './LearnHeroSection';
 import { LearnPhasesSection } from './LearnPhasesSection';
 
 const LearnPage: React.FC = () => {
-  const { isMobile } = useAdaptiveUi();
   const { user } = useAuth();
-  useScrollLock(!isMobile);
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="bg-bg select-none">
@@ -23,32 +16,21 @@ const LearnPage: React.FC = () => {
         description="Master the 5 core phases of offensive security in the HPB Bootcamp. Train in mindset, Linux, networking, web systems, and social engineering."
       />
 
-      <div
-        ref={containerRef}
-        className="
-          w-full h-full
-          md:h-screen md:overflow-y-auto
-          md:snap-y md:snap-mandatory
-          relative z-10 scroll-smooth
-        "
-        style={{ scrollbarWidth: 'none' }}
-      >
-        <SnapSection id="hero" className="overflow-hidden">
-          <LearnHeroSection />
-        </SnapSection>
+      <section id="hero" className="relative w-full overflow-hidden">
+        <LearnHeroSection />
+      </section>
 
-        <SnapSection id="phases" innerClassName="lg:pt-28 lg:pb-12">
-          <LearnPhasesSection />
-        </SnapSection>
+      <section id="phases" className="relative w-full">
+        <LearnPhasesSection />
+      </section>
 
-        <SnapSection id="cta">
-          <LandingFinalCtaSection user={user} />
-        </SnapSection>
+      <section id="cta" className="relative w-full">
+        <LandingFinalCtaSection user={user} />
+      </section>
 
-        <section id="footer" className="md:snap-start md:snap-always w-full bg-bg">
-          <Footer />
-        </section>
-      </div>
+      <section id="footer" className="w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };
