@@ -1,5 +1,4 @@
 import React from 'react';
-import { User } from 'lucide-react';
 import { SharedCarousel } from '@/shared/components/carousel';
 import { teamData } from './teamData';
 import BrandGithubIcon from '@/shared/components/icons/BrandGithubIcon';
@@ -24,7 +23,6 @@ const TeamCarouselSection: React.FC = () => {
       slides={teamData}
       getImage={(m) => m.image}
       getImageAlt={(m) => m.name}
-      renderIcon={() => <User className="w-32 h-32 md:w-40 md:h-40 text-accent/20" strokeWidth={1} />}
       renderImageOverlay={(m) => (
         <>
           <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />

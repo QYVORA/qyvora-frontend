@@ -9,7 +9,6 @@ const LearnPhasesSection: React.FC = () => {
       slides={PHASES}
       getImage={(s) => s.image}
       getImageAlt={(s) => s.name}
-      renderIcon={(s) => <s.icon className="w-32 h-32 md:w-40 md:h-40 text-accent/60" />}
       renderImageOverlay={(s) => (
         <>
           <div className="absolute inset-0 bg-gradient-to-t from-bg-card/80 via-bg-card/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-bg-card/20 hidden dark:block" />
