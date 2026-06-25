@@ -61,15 +61,15 @@ const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'>; variants: typeof 
         <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-5 md:mb-6 mx-auto md:mx-0">
           <Icon className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-accent/40" />
         </div>
-        <div className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary font-mono tracking-tighter mb-2 leading-none">
-          —
-        </div>
-        <h3 className="text-sm md:text-base lg:text-lg font-black text-text-primary mb-1 tracking-tight">
-          {card.label}
-        </h3>
-        <p className="text-xs md:text-sm text-text-muted/60">
-          {card.description}
-        </p>
+                <div className="text-5xl md:text-6xl lg:text-7xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
+                  —
+                </div>
+                <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
+                  {card.label}
+                </h3>
+                <p className="text-xs md:text-sm text-white/60">
+                  {card.description}
+                </p>
       </div>
       <div className="mx-6 md:mx-8 lg:mx-10 h-px bg-border/50" />
     </motion.div>
@@ -170,13 +170,13 @@ const LandingStatsSection: React.FC = () => {
                 <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-5 md:mb-6 mx-auto md:mx-0 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
                   <Icon className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-accent" />
                 </div>
-                <div className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary font-mono tracking-tighter mb-2 leading-none">
-                  <StatCounter end={card.value} suffix={card.suffix} />
+                <div className="text-5xl md:text-6xl lg:text-7xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
+                  <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
                 </div>
-                <h3 className="text-sm md:text-base lg:text-lg font-black text-text-primary mb-1 tracking-tight">
+                <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
                   {card.label}
                 </h3>
-                <p className="text-xs md:text-sm text-text-muted/60">
+                <p className="text-xs md:text-sm text-white/60">
                   {card.description}
                 </p>
               </div>
