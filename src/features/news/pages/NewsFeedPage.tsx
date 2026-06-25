@@ -49,7 +49,7 @@ const NewsCard = ({ article }: { article: Article }) => {
             <img
               src={article.imageUrl}
               alt=""
-              className="w-full h-full object-cover object-top transition-transform duration-[2000ms] group-hover:scale-110"
+              className="w-full h-full object-cover object-center transition-transform duration-[2000ms] group-hover:scale-110"
               loading="lazy"
               onError={() => setImgError(true)}
             />
