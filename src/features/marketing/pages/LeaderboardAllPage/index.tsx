@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Trophy, Medal, Shield, Search, X, ArrowLeft } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { ScrollReveal, Identicon, BootcampBadge } from '@/shared/components';
+import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 
 const PERIODS = [
@@ -113,10 +113,8 @@ const LeaderboardRow = ({ entry, user }: { entry: LeaderboardEntry; user: any })
         </span>
       </div>
 
-      <div className="hidden md:block text-right">
-        <span className="text-sm font-mono text-text-muted">
-          {entry.streakDays}d
-        </span>
+      <div className="hidden md:flex items-center justify-end">
+        <StreakIcon days={entry.streakDays} />
       </div>
 
       <div className="md:hidden col-span-2 flex items-center justify-between mt-1">

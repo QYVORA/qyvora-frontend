@@ -6,7 +6,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import SnapSection from '@/shared/components/SnapSection';
-import { ScrollReveal, Identicon, BootcampBadge } from '@/shared/components';
+import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
@@ -125,10 +125,8 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
       </div>
 
       {/* Streak (desktop) */}
-      <div className="hidden md:block text-right">
-        <span className="text-sm font-mono text-text-muted">
-          {entry.streakDays}d
-        </span>
+      <div className="hidden md:flex items-center justify-end">
+        <StreakIcon days={entry.streakDays} />
       </div>
 
       {/* Mobile stats row */}
