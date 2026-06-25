@@ -7,7 +7,6 @@ export interface SharedCarouselProps<T extends { id: string }> {
   slides: readonly T[];
   renderCard?: (slide: T) => React.ReactNode;
   renderContent?: (slide: T) => React.ReactNode;
-  renderIcon?: (slide: T) => React.ReactNode;
   renderImageOverlay?: (slide: T) => React.ReactNode;
   getImage?: (slide: T) => string | undefined | null;
   getImageAlt?: (slide: T) => string;
@@ -25,7 +24,6 @@ function SharedCarousel<T extends { id: string }>({
   slides,
   renderCard,
   renderContent,
-  renderIcon,
   renderImageOverlay,
   getImage,
   getImageAlt,
@@ -134,11 +132,6 @@ function SharedCarousel<T extends { id: string }>({
                           e.currentTarget.style.display = 'none';
                         }}
                       />
-                    )}
-                    {renderIcon && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        {renderIcon(current)}
-                      </div>
                     )}
                     {renderImageOverlay && renderImageOverlay(current)}
                   </div>
