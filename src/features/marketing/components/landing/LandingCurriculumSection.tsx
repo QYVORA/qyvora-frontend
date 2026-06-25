@@ -19,10 +19,10 @@ const LandingCurriculumSection: React.FC = () => {
           <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
             Curriculum
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            What You'll <span className="text-accent">Learn</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-none mb-4">
+            What You'll <span className="text-white">Learn</span>
           </h2>
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mx-auto md:ml-auto md:mr-0">
+          <p className="text-sm md:text-base text-white/60 leading-relaxed max-w-sm mx-auto md:ml-auto md:mr-0">
             Five phases of structured offensive-security training, from foundations to advanced exploitation.
           </p>
         </div>
@@ -33,18 +33,17 @@ const LandingCurriculumSection: React.FC = () => {
               const Icon = phase.icon;
               return (
                 <ScrollReveal key={phase.id} direction="up" amount={0.1} delay={i * 0.05}>
-                  <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden group h-full flex flex-col">
-                    <div className="relative h-36 sm:h-40 md:h-36 lg:h-44 bg-bg-elevated overflow-hidden">
+                  <div className="rounded-2xl md:rounded-3xl border border-white/10 bg-bg-card overflow-hidden group h-full flex flex-col">
+                    <div className="relative h-36 sm:h-40 md:h-36 lg:h-40 bg-bg-elevated overflow-hidden">
                       <img
                         src={phase.image}
                         alt={phase.name}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-bg-card/60 to-transparent" />
                       <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                          <Icon className="w-4 h-4 text-accent" />
+                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-white" />
                         </div>
                         <div className="w-5 h-5 rounded-md bg-accent flex items-center justify-center">
                           <span className="text-[9px] font-black text-bg">{phase.id}</span>
@@ -52,20 +51,20 @@ const LandingCurriculumSection: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex-1 p-4 sm:p-5 flex flex-col">
-                      <h3 className="text-base sm:text-lg font-black text-text-primary mb-1.5 tracking-tight">
+                      <h3 className="text-base sm:text-lg font-black text-white mb-1.5 tracking-tight">
                         {phase.name}
                       </h3>
-                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 mb-3">
+                      <p className="text-xs sm:text-sm text-white/60 leading-relaxed line-clamp-3 mb-3">
                         {phase.desc}
                       </p>
                       <div className="flex items-center gap-2 mt-auto">
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
-                          <Layers className="w-3 h-3 text-accent" />
-                          <span className="text-[10px] font-bold text-text-primary">{phase.roomCount} rooms</span>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
+                          <Layers className="w-3 h-3 text-white" />
+                          <span className="text-[10px] font-bold text-white">{phase.roomCount} rooms</span>
                         </div>
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
-                          <Clock className="w-3 h-3 text-accent" />
-                          <span className="text-[10px] font-bold text-text-primary">{phase.totalSteps} steps</span>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
+                          <Clock className="w-3 h-3 text-white" />
+                          <span className="text-[10px] font-bold text-white">{phase.totalSteps} steps</span>
                         </div>
                       </div>
                     </div>
