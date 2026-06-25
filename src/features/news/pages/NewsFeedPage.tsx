@@ -40,16 +40,16 @@ const NewsCard = ({ article }: { article: Article }) => {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:min-h-[400px] xl:min-h-[440px]"
+      className="group flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] min-h-[250px] sm:min-h-[300px] lg:min-h-[400px] xl:min-h-[440px]"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {article.imageUrl && !imgError && (
-        <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group h-[200px] sm:h-[240px] lg:h-full">
+        <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group lg:self-stretch h-[200px] sm:h-[240px] lg:h-auto">
           <div className="relative w-full h-full bg-bg">
             <img
               src={article.imageUrl}
               alt=""
-              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+              className="w-full h-full object-cover object-top transition-transform duration-[2000ms] group-hover:scale-110"
               loading="lazy"
               onError={() => setImgError(true)}
             />
@@ -186,7 +186,7 @@ const NewsFeedPage = () => {
       </section>
 
       {/* ══ CAROUSEL SECTION ══ */}
-      <section className="relative md:snap-start md:snap-always w-full flex-shrink-0 bg-bg">
+      <section className="relative md:snap-start md:snap-always md:h-screen w-full flex-shrink-0 bg-bg flex flex-col justify-center">
         <div className="max-w-[1440px] mx-auto w-full">
           {error && (
             <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
