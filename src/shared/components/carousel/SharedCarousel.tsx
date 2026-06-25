@@ -123,7 +123,7 @@ function SharedCarousel<T extends { id: string }>({
             {useDefaultLayout ? (
               <div className="max-w-5xl xl:max-w-6xl mx-auto relative">
                 <div className={defaultCardClasses}>
-                  <div className={`w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden lg:self-stretch ${imageHeightClasses ?? 'h-[240px] sm:h-[300px] lg:h-full'} bg-accent/5`}>
+                  <div className={`w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden lg:self-stretch ${imageHeightClasses ?? 'h-[240px] sm:h-[300px]'} bg-accent/5`}>
                     {getImage && current && getImage(current) && (
                       <img
                         key={current.id}
