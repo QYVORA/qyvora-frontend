@@ -94,7 +94,7 @@ const LandingHowItWorksSection: React.FC = () => {
                     className="relative p-6 sm:p-8 md:p-10 lg:p-12 bg-cover bg-center"
                     style={{ backgroundImage: `url(${step.bgImage})` }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:via-bg-card/60" />
                     <div className="relative z-10 flex flex-col items-start text-left">
                       <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
                         <Icon className="w-8 h-8 md:w-10 md:h-10 text-accent" />
