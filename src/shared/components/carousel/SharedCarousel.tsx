@@ -98,9 +98,9 @@ function SharedCarousel<T extends { id: string }>({
 
   const wrapperClasses = containerClassName !== undefined
     ? containerClassName
-    : 'w-full px-4 sm:px-6 md:px-10 py-20 md:pt-28 lg:pt-32 md:pb-16';
+    : 'w-full px-4 sm:px-6 md:px-10 py-20 md:pt-28 lg:pt-36 xl:pt-40 md:pb-16 lg:pb-20';
 
-  const defaultCardClasses = `flex flex-col lg:flex-row overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card/40 dark:backdrop-blur-sm dark:shadow-2xl ${cardClassName ?? 'min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] xl:min-h-[480px]'}`;
+  const defaultCardClasses = `flex flex-col lg:flex-row overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card/40 dark:backdrop-blur-sm dark:shadow-2xl ${cardClassName ?? 'min-h-[250px] sm:min-h-[300px] lg:min-h-[350px] xl:min-h-[400px]'}`;
 
   return (
     <div className={wrapperClasses} {...containerProps}>
