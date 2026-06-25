@@ -68,7 +68,7 @@ const BlogsPage: React.FC = () => {
                 className="group flex flex-col lg:flex-row w-full max-w-5xl xl:max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-border bg-bg-card dark:backdrop-blur-sm backdrop-blur-none dark:shadow-2xl shadow-none transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_40px_rgba(102,184,112,0.06)] h-auto lg:min-h-[420px] xl:min-h-[460px]"
                 style={{ boxShadow: 'var(--card-shimmer)' }}
               >
-                <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group h-[220px] sm:h-[260px] lg:h-full">
+                <div className="w-full lg:w-[48%] xl:w-[52%] relative overflow-hidden group lg:self-stretch h-[220px] sm:h-[260px] lg:h-auto">
                   <div className="relative w-full h-full bg-bg">
                     <img
                       src={post.image}
