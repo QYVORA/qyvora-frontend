@@ -14,9 +14,9 @@ interface StatCard {
 }
 
 const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
-  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+', bgImage: '/assets/sections/how-it-works/learn-bg.png' },
-  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+', bgImage: '/assets/sections/how-it-works/practice-bg.png' },
-  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: '/assets/sections/how-it-works/prove-bg.png' },
+  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+', bgImage: '/assets/sections/stats/students-bg.png' },
+  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+', bgImage: '/assets/sections/stats/cp-earned-bg.png' },
+  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: '/assets/sections/stats/bootcamp-bg.png' },
 ];
 
 const containerVariants = {
@@ -81,31 +81,38 @@ const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'>; variants: typeof 
 };
 
 const SectionHeader: React.FC = () => (
-  <motion.div variants={cardVariants} className="text-center mb-10 md:mb-16">
+  <motion.div variants={cardVariants} className="text-center md:text-right">
     <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
       Built for <span className="text-accent">Impact</span>
     </h2>
-    <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto">
+    <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto md:ml-auto md:mr-0">
       Real metrics from real operators across the continent
     </p>
   </motion.div>
 );
 
 const StatCardsWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
     {children}
   </div>
 );
 
-const SectionShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }> = ({ header, cards }) => (
   <motion.div
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, margin: '-80px' }}
     variants={containerVariants}
-    className="w-full h-full flex flex-col justify-center px-4 md:px-12 lg:px-16"
+    className="w-full h-full px-4 md:px-12 lg:px-16"
   >
-    {children}
+    <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+      <div className="md:w-[65%] lg:w-[62%] md:order-1">
+        {cards}
+      </div>
+      <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-8 md:mb-0 md:sticky md:top-32 md:order-2">
+        {header}
+      </div>
+    </div>
   </motion.div>
 );
 
@@ -115,41 +122,47 @@ const LandingStatsSection: React.FC = () => {
 
   if (!s && loading) {
     return (
-      <SectionShell>
-        <SectionHeader />
-        <StatCardsWrapper>
-          {STATS_CONFIG.map((card) => (
-            <SkeletonCard key={card.label} variants={cardVariants} />
-          ))}
-        </StatCardsWrapper>
-      </SectionShell>
+      <SectionShell
+        header={<SectionHeader />}
+        cards={
+          <StatCardsWrapper>
+            {STATS_CONFIG.map((card) => (
+              <SkeletonCard key={card.label} variants={cardVariants} />
+            ))}
+          </StatCardsWrapper>
+        }
+      />
     );
   }
 
   if (!s) {
     return (
-      <SectionShell>
-        <SectionHeader />
-        <StatCardsWrapper>
-          {STATS_CONFIG.map((card) => (
-            <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
-          ))}
-        </StatCardsWrapper>
-      </SectionShell>
+      <SectionShell
+        header={<SectionHeader />}
+        cards={
+          <StatCardsWrapper>
+            {STATS_CONFIG.map((card) => (
+              <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
+            ))}
+          </StatCardsWrapper>
+        }
+      />
     );
   }
 
   const values = [s.learnersTrained, s.cpPoolSize, s.bootcampsCount];
   if (values.some((v) => v == null)) {
     return (
-      <SectionShell>
-        <SectionHeader />
-        <StatCardsWrapper>
-          {STATS_CONFIG.map((card) => (
-            <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
-          ))}
-        </StatCardsWrapper>
-      </SectionShell>
+      <SectionShell
+        header={<SectionHeader />}
+        cards={
+          <StatCardsWrapper>
+            {STATS_CONFIG.map((card) => (
+              <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
+            ))}
+          </StatCardsWrapper>
+        }
+      />
     );
   }
 
@@ -159,41 +172,43 @@ const LandingStatsSection: React.FC = () => {
   }));
 
   return (
-    <SectionShell>
-      <SectionHeader />
-      <StatCardsWrapper>
-        {resolvedStats.map((card) => {
-          const Icon = card.icon;
-          return (
-            <motion.div
-              key={card.label}
-              variants={cardVariants}
-              className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
-            >
-              <div
-                className="absolute inset-0 bg-cover bg-center hidden dark:block"
-                style={{ backgroundImage: `url(${card.bgImage})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                  <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
+    <SectionShell
+      header={<SectionHeader />}
+      cards={
+        <StatCardsWrapper>
+          {resolvedStats.map((card) => {
+            const Icon = card.icon;
+            return (
+              <motion.div
+                key={card.label}
+                variants={cardVariants}
+                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                  style={{ backgroundImage: `url(${card.bgImage})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
+                    <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
+                  </div>
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
+                    <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
+                  </div>
+                  <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
+                    {card.label}
+                  </h3>
+                  <p className="text-xs md:text-sm text-white/60 leading-relaxed">
+                    {card.description}
+                  </p>
                 </div>
-                <div className="text-4xl md:text-5xl lg:text-6xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
-                  <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
-                </div>
-                <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
-                  {card.label}
-                </h3>
-                <p className="text-xs md:text-sm text-white/60 leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
-      </StatCardsWrapper>
-    </SectionShell>
+              </motion.div>
+            );
+          })}
+        </StatCardsWrapper>
+      }
+    />
   );
 };
 
