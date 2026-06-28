@@ -9,8 +9,7 @@ interface StreakCardProps {
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 interface StreakTheme {
-  primary: string;
-  secondary: string;
+  gradient: string;
   bg: string;
   border: string;
   glow: string;
@@ -21,8 +20,7 @@ interface StreakTheme {
 function getStreakTheme(streak: number): StreakTheme {
   if (streak >= 7) {
     return {
-      primary: 'text-red-500',
-      secondary: 'text-amber-400',
+      gradient: 'bg-gradient-to-b from-blue-400 via-green-400 to-red-500',
       bg: 'bg-gradient-to-br from-red-500/15 via-amber-500/5 to-bg-card',
       border: 'border-red-500/30',
       glow: 'shadow-red-500/25',
@@ -32,8 +30,7 @@ function getStreakTheme(streak: number): StreakTheme {
   }
   if (streak >= 5) {
     return {
-      primary: 'text-orange-400',
-      secondary: 'text-amber-300',
+      gradient: 'bg-gradient-to-b from-blue-400 via-green-400 to-orange-400',
       bg: 'bg-gradient-to-br from-orange-400/12 via-amber-400/5 to-bg-card',
       border: 'border-orange-400/25',
       glow: 'shadow-orange-400/20',
@@ -43,8 +40,7 @@ function getStreakTheme(streak: number): StreakTheme {
   }
   if (streak >= 3) {
     return {
-      primary: 'text-accent',
-      secondary: 'text-emerald-300',
+      gradient: 'bg-gradient-to-b from-blue-400 via-green-400 to-accent',
       bg: 'bg-gradient-to-br from-accent/10 to-bg-card',
       border: 'border-accent/20',
       glow: 'shadow-accent/15',
@@ -54,8 +50,7 @@ function getStreakTheme(streak: number): StreakTheme {
   }
   if (streak >= 1) {
     return {
-      primary: 'text-blue-400',
-      secondary: 'text-blue-300',
+      gradient: 'bg-gradient-to-b from-blue-400 to-cyan-400',
       bg: 'bg-gradient-to-br from-blue-400/8 to-bg-card',
       border: 'border-blue-400/15',
       glow: 'shadow-blue-400/10',
@@ -64,8 +59,7 @@ function getStreakTheme(streak: number): StreakTheme {
     };
   }
   return {
-    primary: 'text-gray-500',
-    secondary: 'text-gray-600',
+    gradient: 'text-gray-500',
     bg: 'bg-bg-card',
     border: 'border-border/30',
     glow: 'shadow-transparent',
@@ -74,36 +68,53 @@ function getStreakTheme(streak: number): StreakTheme {
   };
 }
 
+function GradientFlame({ className, gradient }: { className: string; gradient: string }) {
+  return (
+    <div className={`${gradient} bg-clip-text text-transparent ${className}`}>
+      <Flame className="w-full h-full" />
+    </div>
+  );
+}
+
 function StreakIcon({ streak, theme }: { streak: number; theme: StreakTheme }) {
   if (streak >= 7) {
     return (
-      <div className="relative flex items-center gap-0.5">
-        <Flame className={`h-9 w-9 ${theme.primary} drop-shadow-[0_0_8px_var(--tw-shadow-color)]`} style={{ filter: 'drop-shadow(0 0 8px rgba(239,68,68,0.5))' }} />
-        <Sparkles className={`h-4 w-4 ${theme.secondary} -ml-1 -mt-6`} />
-        <Trophy className={`h-5 w-5 text-yellow-400 -ml-1 -mt-5`} />
+      <div className="relative flex items-center">
+        <GradientFlame className="w-16 h-16" gradient={theme.gradient} />
+        <Sparkles className="w-5 h-5 text-amber-400 -ml-3 -mt-10" />
+        <Trophy className="w-7 h-7 text-yellow-400 -ml-3 -mt-8" />
+        <div className="absolute inset-0 rounded-full bg-red-500/10 blur-xl -z-10" />
       </div>
     );
   }
   if (streak >= 5) {
     return (
       <div className="relative flex items-center">
-        <Flame className={`h-8 w-8 ${theme.primary} drop-shadow-[0_0_6px_var(--tw-shadow-color)]`} style={{ filter: 'drop-shadow(0 0 6px rgba(251,146,60,0.4))' }} />
-        <Zap className={`h-3.5 w-3.5 ${theme.secondary} -ml-1.5 -mb-4`} />
+        <GradientFlame className="w-14 h-14" gradient={theme.gradient} />
+        <Zap className="w-4 h-4 text-amber-300 -ml-2 -mb-6" />
+        <div className="absolute inset-0 rounded-full bg-orange-400/10 blur-lg -z-10" />
       </div>
     );
   }
   if (streak >= 3) {
     return (
-      <Flame className={`h-7 w-7 ${theme.primary} drop-shadow-[0_0_4px_var(--tw-shadow-color)]`} style={{ filter: 'drop-shadow(0 0 4px rgba(102,184,112,0.3))' }} />
+      <div className="relative flex items-center">
+        <GradientFlame className="w-12 h-12" gradient={theme.gradient} />
+        <div className="absolute inset-0 rounded-full bg-accent/10 blur-md -z-10" />
+      </div>
     );
   }
   if (streak >= 1) {
     return (
-      <FlameKindling className={`h-6 w-6 ${theme.primary}`} />
+      <div className="relative flex items-center">
+        <div className={`bg-gradient-to-b from-blue-400 to-cyan-400 bg-clip-text text-transparent`}>
+          <FlameKindling className="w-10 h-10" />
+        </div>
+      </div>
     );
   }
   return (
-    <Zap className="h-5 w-5 text-gray-500" />
+    <Zap className="w-8 h-8 text-gray-500" />
   );
 }
 
@@ -139,8 +150,10 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
   if (variant === 'badge') {
     return (
       <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${theme.border} ${theme.bg}`}>
-        <Flame className={`h-4 w-4 ${theme.primary}`} />
-        <span className={`font-mono text-sm font-black ${theme.primary}`}>{streakDays}</span>
+        <div className={`${theme.gradient} bg-clip-text text-transparent`}>
+          <Flame className="h-4 w-4" />
+        </div>
+        <span className={`font-mono text-sm font-black ${theme.gradient} bg-clip-text text-transparent`}>{streakDays}</span>
         <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Day Streak</span>
       </div>
     );
@@ -152,7 +165,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
         <StreakIcon streak={streakDays} theme={theme} />
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2.5">
-            <span className={`text-3xl font-black font-mono tracking-tighter ${theme.primary} tabular-nums`}>
+            <span className={`text-3xl font-black font-mono tracking-tighter ${theme.gradient} bg-clip-text text-transparent tabular-nums`}>
               {streakDays}
             </span>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/70">Day Streak</span>

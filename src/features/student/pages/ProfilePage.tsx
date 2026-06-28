@@ -86,9 +86,9 @@ const Profile: React.FC = () => {
           <div className="rounded-3xl bg-bg-card p-6 md:p-10">
             <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
 
-              {/* Avatar — Identicon based on userId */}
-              <div className="w-32 md:w-48 lg:w-56 flex-shrink-0">
-                <div className="w-32 h-32 md:w-full md:aspect-auto md:h-full rounded-full overflow-hidden border border-accent/20">
+              {/* Avatar — Identicon based on userId — always a perfect circle */}
+              <div className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 flex-shrink-0">
+                <div className="w-full h-full rounded-full overflow-hidden border border-accent/20">
                   <Identicon value={profileData.id} size={256} className="w-full h-full" />
                 </div>
               </div>
