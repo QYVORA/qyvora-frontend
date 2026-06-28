@@ -71,7 +71,7 @@ const NewsCard = ({ article }: { article: Article }) => {
         </h3>
 
         {article.description && (
-          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-2 line-clamp-3">
+          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-2">
             {article.description}
           </p>
         )}

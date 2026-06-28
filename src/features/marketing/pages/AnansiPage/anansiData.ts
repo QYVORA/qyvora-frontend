@@ -67,7 +67,7 @@ export const RELEASES: AnansiRelease[] = [
     arch: 'Intel',
     icon: 'apple',
     file: 'anansi-macos-amd64',
-    size: '~9.7 MB',
+    size: '~9.8 MB',
     curl: `curl -L ${BASE}/anansi-macos-amd64 -o anansi`,
     steps: [
       { cmd: `curl -L ${BASE}/anansi-macos-amd64 -o anansi` },
@@ -82,7 +82,7 @@ export const RELEASES: AnansiRelease[] = [
     arch: 'Apple Silicon',
     icon: 'apple',
     file: 'anansi-macos-arm64',
-    size: '~9.1 MB',
+    size: '~9.2 MB',
     curl: `curl -L ${BASE}/anansi-macos-arm64 -o anansi`,
     steps: [
       { cmd: `curl -L ${BASE}/anansi-macos-arm64 -o anansi` },
@@ -97,7 +97,7 @@ export const RELEASES: AnansiRelease[] = [
     arch: 'x86_64',
     icon: 'windows',
     file: 'anansi-windows-amd64.exe',
-    size: '~9.8 MB',
+    size: '~9.9 MB',
     curl: `curl -L ${BASE}/anansi-windows-amd64.exe -o anansi.exe`,
     steps: [
       { cmd: `curl -L ${BASE}/anansi-windows-amd64.exe -o anansi.exe` },

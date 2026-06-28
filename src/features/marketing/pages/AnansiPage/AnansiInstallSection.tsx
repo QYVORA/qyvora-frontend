@@ -44,10 +44,10 @@ const AnansiInstallSection: React.FC = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col gap-10 lg:gap-14"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start"
       >
-        {/* Header + platform pills */}
-        <div className="text-center lg:text-left">
+        {/* Left: Header + platform pills */}
+        <div className="text-left lg:sticky lg:top-32">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
             Download <span className="text-accent">Anansi CLI</span>
           </h2>
@@ -74,7 +74,14 @@ const AnansiInstallSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Download card + build from source */}
+        {/* Right: Download card + build from source */}
+        <div className="space-y-8">
+          <motion.div
+            key={selected.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
           <div className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden">
             <div className="p-6 sm:p-8 md:p-10">
               <div className="flex items-start justify-between mb-8">
@@ -140,6 +147,8 @@ const AnansiInstallSection: React.FC = () => {
               Requires Go 1.22+. Runs on any Linux, macOS, or Windows with Go installed.
             </p>
           </div>
+        </motion.div>
+        </div>
       </motion.div>
     </div>
   );

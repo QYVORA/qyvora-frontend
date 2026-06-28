@@ -64,7 +64,7 @@ const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative w-full overflow-hidden select-none bg-bg">
+    <footer className="relative w-full min-h-screen overflow-hidden select-none bg-bg flex flex-col">
       {/* Background layer */}
       <AdinkraBackground
         opacity={0.55}
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
       />
 
       {/* Main grid content wrapper */}
-      <div className="relative z-10 w-full flex flex-col px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30">
+      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30 justify-center">
         {/* Top Section: Brand Columns */}
         <div className="flex flex-col md:flex-row justify-between gap-y-10 md:gap-16 xl:gap-20 w-full max-w-[1600px] mx-auto">
           {/* Left Column — Brand */}

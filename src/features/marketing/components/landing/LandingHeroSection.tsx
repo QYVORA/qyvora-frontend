@@ -77,17 +77,6 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   return (
     <div ref={heroRef} className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
       
-      {/* ── Mobile Globe - Background Only ── */}
-      {!isLg && (
-        <div className="absolute bottom-0 right-0 w-[70vw] h-[70vw] max-w-[500px] max-h-[500px] pointer-events-none z-0">
-          <ErrorBoundary scope="HackerGlobe" fallback={null}>
-            <Suspense fallback={null}>
-              <HackerGlobe scale={0.9} />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-      )}
-
       {/* ── Main content grid ── */}
       <div
         className="
