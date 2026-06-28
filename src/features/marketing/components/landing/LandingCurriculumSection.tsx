@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layers, Clock } from 'lucide-react';
-import ScrollReveal from '@/shared/components/ScrollReveal';
+import { Carousel } from '@/shared/components/carousel';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 
@@ -28,52 +28,47 @@ const LandingCurriculumSection: React.FC = () => {
         </div>
 
         <div className="md:w-[65%] lg:w-[62%] md:order-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            {phasesWithRoomCount.map((phase, i) => {
+          <Carousel
+            slides={phasesWithRoomCount}
+            renderCard={(phase) => {
               const Icon = phase.icon;
               return (
-                <ScrollReveal key={phase.id} direction="up" amount={0.1} delay={i * 0.05}>
-                  <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden group h-full flex flex-col">
-                    <div className="relative h-36 sm:h-40 md:h-36 lg:h-40 bg-bg-elevated overflow-hidden">
-                      <img
-                        src={phase.image}
-                        alt={phase.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-bg-card/60 to-transparent" />
-                      <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                          <Icon className="w-4 h-4 text-accent" />
-                        </div>
-                        <div className="w-5 h-5 rounded-md bg-accent flex items-center justify-center">
-                          <span className="text-[9px] font-black text-bg">{phase.id}</span>
-                        </div>
+                <div className="relative min-h-[300px] md:min-h-[360px]">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                    style={{ backgroundImage: `url(${phase.image})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                  <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[300px] md:min-h-[360px]">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-accent" />
+                      </div>
+                      <div className="w-7 h-7 rounded-md bg-accent flex items-center justify-center">
+                        <span className="text-xs font-black text-bg">{phase.id}</span>
                       </div>
                     </div>
-                    <div className="flex-1 p-4 sm:p-5 flex flex-col">
-                      <h3 className="text-base sm:text-lg font-black text-text-primary mb-1.5 tracking-tight">
-                        {phase.name}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-3 mb-3">
-                        {phase.desc}
-                      </p>
-                      <div className="flex items-center gap-2 mt-auto">
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
-                          <Layers className="w-3 h-3 text-accent" />
-                          <span className="text-[10px] font-bold text-text-primary">{phase.roomCount} rooms</span>
-                        </div>
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-accent/5 border border-accent/10">
-                          <Clock className="w-3 h-3 text-accent" />
-                          <span className="text-[10px] font-bold text-text-primary">{phase.totalSteps} steps</span>
-                        </div>
+                    <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2 tracking-tight">
+                      {phase.name}
+                    </h3>
+                    <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 mb-4">
+                      {phase.desc}
+                    </p>
+                    <div className="flex items-center gap-2 mt-auto">
+                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/5 border border-accent/10">
+                        <Layers className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-[11px] font-bold text-text-primary">{phase.roomCount} rooms</span>
+                      </div>
+                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/5 border border-accent/10">
+                        <Clock className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-[11px] font-bold text-text-primary">{phase.totalSteps} steps</span>
                       </div>
                     </div>
                   </div>
-                </ScrollReveal>
+                </div>
               );
-            })}
-          </div>
+            }}
+          />
         </div>
       </div>
     </div>
