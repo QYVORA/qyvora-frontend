@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Shield, Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
-import { CardMedia } from '@/shared/components/ui/Card';
-import { CardGrid } from '@/shared/components/card-grid';
+import { Carousel } from '@/shared/components/carousel';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -22,8 +21,6 @@ interface Article {
 }
 
 const NewsCard = ({ article }: { article: Article }) => {
-  const [imgError, setImgError] = useState(false);
-
   const dateStr = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -33,15 +30,20 @@ const NewsCard = ({ article }: { article: Article }) => {
     : '—';
 
   return (
-    <CardMedia
-      image={article.imageUrl || ''}
-      imageAlt=""
-      imageAspect="aspect-video"
+    <a
       href={article.url}
-      external
-      imageBadges={
-        article.categories.length > 0 ? (
-          <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex flex-wrap gap-1.5">
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block relative min-h-[320px] md:min-h-[400px] group"
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center hidden dark:block"
+        style={{ backgroundImage: `url(${article.imageUrl || ''})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+      <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[400px]">
+        {article.categories.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {article.categories.slice(0, 2).map((cat) => (
               <span
                 key={cat}
@@ -51,11 +53,8 @@ const NewsCard = ({ article }: { article: Article }) => {
               </span>
             ))}
           </div>
-        ) : undefined
-      }
-      imageClassName={imgError ? 'hidden' : ''}
-    >
-      {imgError ? null : (
+        )}
+
         <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-text-muted mb-2">
           <span className="flex items-center gap-1">
             <Radio className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -66,22 +65,22 @@ const NewsCard = ({ article }: { article: Article }) => {
             {dateStr}
           </span>
         </div>
-      )}
 
-      <h3 className="text-base sm:text-lg lg:text-xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2">
-        {article.title}
-      </h3>
+        <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-text-primary transition-colors duration-300 group-hover:text-accent line-clamp-2">
+          {article.title}
+        </h3>
 
-      {article.description && (
-        <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-2 line-clamp-3">
-          {article.description}
-        </p>
-      )}
+        {article.description && (
+          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mt-2 line-clamp-3">
+            {article.description}
+          </p>
+        )}
 
-      <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-accent group-hover:gap-2 transition-all mt-auto pt-3">
-        Read intelligence <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-accent group-hover:gap-2 transition-all mt-auto pt-3">
+          Read intelligence <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+        </div>
       </div>
-    </CardMedia>
+    </a>
   );
 };
 
@@ -168,18 +167,27 @@ const NewsFeedPage = () => {
           )}
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-border bg-bg-card overflow-hidden animate-pulse">
-                  <div className="aspect-video bg-accent-dim/20" />
-                  <div className="p-5 space-y-3">
+            <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+              <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+                <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block mb-4">
+                  // Feed
+                </span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                  Latest <span className="text-accent">Intel</span>
+                </h2>
+              </div>
+              <div className="md:w-[65%] lg:w-[62%]">
+                <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden animate-pulse min-h-[320px] md:min-h-[400px]">
+                  <div className="p-6 sm:p-8 space-y-4">
+                    <div className="h-4 bg-accent-dim/30 rounded w-1/4" />
                     <div className="h-3 bg-accent-dim/20 rounded w-1/3" />
-                    <div className="h-5 bg-accent-dim/30 rounded w-3/4" />
-                    <div className="h-3 bg-accent-dim/20 rounded w-full" />
-                    <div className="h-3 bg-accent-dim/20 rounded w-2/3" />
+                    <div className="h-8 bg-accent-dim/30 rounded w-3/4" />
+                    <div className="h-4 bg-accent-dim/20 rounded w-1/2" />
+                    <div className="h-4 bg-accent-dim/20 rounded w-5/6" />
+                    <div className="h-4 bg-accent-dim/20 rounded w-2/3" />
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           ) : !hasArticles ? (
             <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-24 text-center">
@@ -188,12 +196,22 @@ const NewsFeedPage = () => {
               <p className="text-sm text-text-muted mt-1">New cyber threat data will appear here as it's published.</p>
             </div>
           ) : (
-            <CardGrid
-              slides={articles}
-              cols={2}
-              containerClassName="w-full"
-              renderCard={(article) => <NewsCard article={article} />}
-            />
+            <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+              <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+                <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block mb-4">
+                  // Feed
+                </span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                  Latest <span className="text-accent">Intel</span>
+                </h2>
+              </div>
+              <div className="md:w-[65%] lg:w-[62%]">
+                <Carousel
+                  slides={articles}
+                  renderCard={(article) => <NewsCard article={article} />}
+                />
+              </div>
+            </div>
           )}
         </div>
       </section>

@@ -55,7 +55,7 @@ const LandingServicesSection: React.FC = () => {
             {SERVICES_DATA.map((s, i) => (
               <ScrollReveal key={s.id} direction="up" amount={0.1} delay={i * 0.1}>
                 <div className="rounded-lg border border-border bg-bg-card overflow-hidden flex flex-col h-full group">
-                  <div className="relative aspect-[3/1] overflow-hidden bg-bg-elevated">
+                  <div className="relative aspect-video overflow-hidden bg-bg-elevated">
                     <img
                       src={s.image}
                       alt={s.title}
