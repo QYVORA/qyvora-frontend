@@ -38,19 +38,7 @@ const LandingServicesSection: React.FC = () => {
   return (
     <div className="w-full px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-        <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-accent block mb-4">
-            // Services
-          </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-            Penetration <span className="text-accent">Testing</span>
-          </h2>
-          <p className="mt-4 text-sm md:text-base text-text-muted leading-relaxed max-w-sm">
-            Structured security assessments for web applications and infrastructure
-          </p>
-        </div>
-
-        <div className="md:w-[65%] lg:w-[62%]">
+        <div className="md:w-[65%] lg:w-[62%] md:order-1">
           <Carousel
             slides={SERVICES_DATA}
             renderCard={(s) => (
@@ -96,6 +84,18 @@ const LandingServicesSection: React.FC = () => {
               </div>
             )}
           />
+        </div>
+
+        <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-8 md:mb-0 md:sticky md:top-32 md:order-2">
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-accent block mb-4">
+            // Services
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+            Penetration <span className="text-accent">Testing</span>
+          </h2>
+          <p className="mt-4 text-sm md:text-base text-text-muted leading-relaxed max-w-sm md:ml-auto">
+            Structured security assessments for web applications and infrastructure
+          </p>
         </div>
       </div>
     </div>
