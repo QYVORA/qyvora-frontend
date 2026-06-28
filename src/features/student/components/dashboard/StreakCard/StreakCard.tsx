@@ -51,20 +51,20 @@ function getStreakTheme(streak: number): StreakTheme {
   if (streak >= 1) {
     return {
       gradient: 'bg-gradient-to-b from-blue-400 to-cyan-400',
-      bg: 'bg-gradient-to-br from-blue-400/8 to-bg-card',
-      border: 'border-blue-400/15',
-      glow: 'shadow-blue-400/10',
-      circleFill: 'fill-blue-400 text-blue-400',
-      circleEmpty: 'text-blue-800/25',
+      bg: 'bg-bg-card',
+      border: 'border-border/30',
+      glow: 'shadow-transparent',
+      circleFill: 'fill-gray-400 text-gray-400',
+      circleEmpty: 'text-gray-700/30',
     };
   }
   return {
-    gradient: 'text-gray-500',
+    gradient: 'text-gray-600',
     bg: 'bg-bg-card',
-    border: 'border-border/30',
+    border: 'border-border/20',
     glow: 'shadow-transparent',
-    circleFill: 'fill-gray-500 text-gray-500',
-    circleEmpty: 'text-gray-700/30',
+    circleFill: 'fill-gray-600 text-gray-600',
+    circleEmpty: 'text-gray-700/25',
   };
 }
 
