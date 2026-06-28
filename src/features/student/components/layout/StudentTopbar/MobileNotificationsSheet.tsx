@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import { NotificationItem } from './types';
 
@@ -11,6 +11,7 @@ interface MobileNotificationsSheetProps {
   notifLoading: boolean;
   notificationsPreview: NotificationItem[];
   markAllNotificationsRead: () => void;
+  onMarkRead: (id: string) => void;
 }
 
 const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
@@ -20,6 +21,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
   notifLoading,
   notificationsPreview,
   markAllNotificationsRead,
+  onMarkRead,
 }) => (
   <BottomSheet open={open} onOpenChange={onOpenChange}>
     <BottomSheetContent ariaLabel="Notifications" className="md:hidden max-h-[75svh] flex flex-col">
@@ -44,12 +46,16 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
       </div>
       <div className="flex-1 overflow-y-auto divide-y divide-border/50">
         {notifLoading ? (
-          <div className="p-5 text-sm text-text-muted text-center">Loading...</div>
+          <div className="p-5 text-sm text-text-muted text-center"><Loader2 className="h-6 w-6 animate-spin inline-block" /> Loading...</div>
         ) : notificationsPreview.length === 0 ? (
           <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
         ) : (
           notificationsPreview.map((item) => (
-            <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
+            <div
+              key={item.id}
+              className={`px-5 py-4 cursor-pointer transition-colors ${item.read ? 'opacity-60' : 'hover:bg-accent-dim/30'}`}
+              onClick={() => { if (!item.read) onMarkRead(item.id); }}
+            >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
                 {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}

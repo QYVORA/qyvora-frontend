@@ -83,6 +83,18 @@ const StudentTopbar = () => {
     }
   };
 
+  const markNotificationRead = async (id: string) => {
+    try {
+      await api.post(`/notifications/${id}/read`, {});
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+      setNotificationsPreview((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, read: true } : item))
+      );
+    } catch {
+      // Silently fail — notification still shows but won't disappear
+    }
+  };
+
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
   useEffect(() => { setMoreOpen(false); setNotifOpen(false); setActiveDropdown(null); }, [location.pathname]);
 
@@ -104,6 +116,14 @@ const StudentTopbar = () => {
 
   return (
     <>
+      {/* ── Skip to content ── */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {/* ── Desktop topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
         {isRoomPage ? (
@@ -190,6 +210,7 @@ const StudentTopbar = () => {
                   notifLoading={notifLoading}
                   notificationsPreview={notificationsPreview}
                   markAllNotificationsRead={markAllNotificationsRead}
+                  onMarkRead={markNotificationRead}
                 />
               </div>
 
@@ -200,6 +221,7 @@ const StudentTopbar = () => {
                 notifLoading={notifLoading}
                 notificationsPreview={notificationsPreview}
                 markAllNotificationsRead={markAllNotificationsRead}
+                onMarkRead={markNotificationRead}
               />
 
               <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
@@ -238,8 +260,16 @@ const StudentTopbar = () => {
                   className="relative h-20 md:h-24 flex items-center"
                   onMouseEnter={() => setActiveDropdown(group.label)}
                   onMouseLeave={() => setActiveDropdown(null)}
+                  onFocus={() => setActiveDropdown(group.label)}
+                  onBlur={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                      setActiveDropdown(null);
+                    }
+                  }}
                 >
-                  <button className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+                  <button
+                    aria-expanded={activeDropdown === group.label}
+                    className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
                     activeDropdown === group.label ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                   }`}>
                     {group.label}
@@ -303,13 +333,14 @@ const StudentTopbar = () => {
               </button>
 
               <NotificationsDropdown
-                open={notifOpen}
-                onClose={() => setNotifOpen(false)}
-                unreadCount={unreadCount}
-                notifLoading={notifLoading}
-                notificationsPreview={notificationsPreview}
-                markAllNotificationsRead={markAllNotificationsRead}
-              />
+                  open={notifOpen}
+                  onClose={() => setNotifOpen(false)}
+                  unreadCount={unreadCount}
+                  notifLoading={notifLoading}
+                  notificationsPreview={notificationsPreview}
+                  markAllNotificationsRead={markAllNotificationsRead}
+                  onMarkRead={markNotificationRead}
+                />
             </div>
 
             <MobileNotificationsSheet
@@ -319,6 +350,7 @@ const StudentTopbar = () => {
               notifLoading={notifLoading}
               notificationsPreview={notificationsPreview}
               markAllNotificationsRead={markAllNotificationsRead}
+              onMarkRead={markNotificationRead}
             />
 
             <Link

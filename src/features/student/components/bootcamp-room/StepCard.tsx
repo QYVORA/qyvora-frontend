@@ -18,6 +18,8 @@ interface Props {
   onToggleBookmark: () => void;
   onReportIssue: () => void;
   onClick: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 const StepCard: React.FC<Props> = ({
@@ -26,9 +28,25 @@ const StepCard: React.FC<Props> = ({
   phaseColor,
   footer,
   onToggleBookmark, onReportIssue, onClick,
-}) => (
+  onNext, onPrev,
+}) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!isActive) return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      onNext?.();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      onPrev?.();
+    }
+  };
+
+  return (
   <div
     onClick={onClick}
+    onKeyDown={handleKeyDown}
+    tabIndex={isActive ? 0 : -1}
+    role="button"
     className={`relative cursor-pointer py-12 md:py-16 overflow-hidden group w-full border-t border-border/10 first:border-t-0`}
   >
     <button
@@ -36,7 +54,7 @@ const StepCard: React.FC<Props> = ({
       className={`absolute top-12 md:top-16 right-0 p-2 rounded-lg border transition-all z-10 ${
         isBookmarked
           ? 'border-accent/30 text-yellow-500'
-          : 'bg-transparent border-border text-text-muted hover:text-accent opacity-0 group-hover:opacity-100'
+          : 'bg-transparent border-border text-text-muted hover:text-accent opacity-100 lg:opacity-0 lg:group-hover:opacity-100'
       }`}
       title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
     >
@@ -73,7 +91,7 @@ const StepCard: React.FC<Props> = ({
       )}
     </div>
 
-    <div className={`text-sm sm:text-base leading-[1.85] sm:leading-[1.95] transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full mb-10 md:mb-14`}>
+    <div className={`text-sm sm:text-base leading-relaxed whitespace-pre-wrap overflow-x-auto transition-colors ${isActive ? 'text-text-primary' : 'text-text-secondary'} w-full mb-10 md:mb-14`}>
       <CodeBlockRenderer text={step.instruction} />
     </div>
 
@@ -96,7 +114,7 @@ const StepCard: React.FC<Props> = ({
     <div className="mt-10 md:mt-14 flex items-center justify-between border-t border-border/5 pt-6">
       <button
         onClick={(e) => { e.stopPropagation(); onReportIssue(); }}
-        className="text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-0 group-hover:opacity-100"
+        className="text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
       >
         <Flag className="h-3 w-3" />
         Report Issue
@@ -109,6 +127,7 @@ const StepCard: React.FC<Props> = ({
       )}
     </div>
   </div>
-);
+  );
+};
 
 export default StepCard;

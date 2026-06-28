@@ -109,6 +109,7 @@ const Footer: React.FC = () => {
                   <li key={link.key}>
                     <Link
                       to={link.path}
+                      onClick={() => window.scrollTo(0, 0)}
                       className="text-sm font-bold text-text-primary hover:text-accent transition-colors"
                     >
                       {link.label}
@@ -140,6 +141,7 @@ const Footer: React.FC = () => {
                 <Link
                   key={idx}
                   to={link.path}
+                  onClick={() => window.scrollTo(0, 0)}
                   className="text-[11px] text-text-muted/60 hover:text-text-muted transition-colors"
                 >
                   {link.label}

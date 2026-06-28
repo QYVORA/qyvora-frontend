@@ -1,39 +1,149 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { INSTALL_COMMANDS } from './anansiData';
+import { Apple, Copy, Check } from 'lucide-react';
+import { RELEASES, BUILD_FROM_SOURCE, type AnansiRelease } from './anansiData';
+
+const TUX = (
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <path d="M12 1.5C9 1.5 6.5 3.2 5.5 6c-.7 1.8-.3 3.8.5 5-.5.5-1 1.2-1 2.2-.3 1.8 1 3.8 2.5 4.8.7.5 1.8 1 3 1.5h3c1.2-.5 2.3-1 3-1.5 1.5-1 2.8-3 2.5-4.8 0-1-.5-1.7-1-2.2.8-1.2 1.2-3.2.5-5C17.5 3.2 15 1.5 12 1.5zm0 2c1.8 0 3.5 1 4.2 2.5.5 1 .5 2.2 0 3-.3.5-.7.8-1.2.8s-1-.3-1.5-.5c-.5-.3-1-.5-1.5-.5s-1 .2-1.5.5c-.5.2-1 .5-1.5.5s-.9-.3-1.2-.8c-.5-.8-.5-2 0-3C8.5 4.5 10.2 3.5 12 3.5zM8.5 8c1 0 2 .8 2 2s-1 2-2 2-2-.8-2-2 1-2 2-2zm7 0c1 0 2 .8 2 2s-1 2-2 2-2-.8-2-2 1-2 2-2zM12 13c1.5 0 3 .5 3.5 1.5.3.5.3 1 0 1.5-.5.5-2 1.2-3.5 1.2s-3-.7-3.5-1.2c-.3-.5-.3-1 0-1.5C9 13.5 10.5 13 12 13z"/>
+  </svg>
+);
+
+const WINDOWS_LOGO = (
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+  </svg>
+);
+
+const PLATFORM_ICONS: Record<string, React.ReactNode> = {
+  linux: TUX,
+  apple: <Apple className="w-5 h-5" />,
+  windows: WINDOWS_LOGO,
+};
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
+      className="p-1.5 rounded-md hover:bg-white/5 transition-colors text-white/30 hover:text-accent shrink-0"
+      aria-label="Copy command"
+    >
+      {copied ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+    </button>
+  );
+}
 
 const AnansiInstallSection: React.FC = () => {
+  const [selected, setSelected] = useState<AnansiRelease>(RELEASES[0]);
+
   return (
-    <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-12">
+    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col md:flex-row md:gap-12 lg:gap-16"
       >
-        <div className="bg-[#121212] border-b border-white/5 px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex gap-2.5">
-            <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56]" />
-            <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e]" />
-            <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f]" />
+        {/* Left: header + platform pills */}
+        <div className="md:w-[35%] lg:w-[38%] mb-8 md:mb-0 md:sticky md:top-32 md:self-start">
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-accent block mb-4">
+            // Install
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+            Download <span className="text-accent">Anansi CLI</span>
+          </h2>
+          <p className="mt-4 text-text-secondary font-mono text-sm md:text-base leading-relaxed">
+            Pre-compiled binaries for every platform. Zero dependencies.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-2">
+            {RELEASES.map(r => (
+              <button
+                key={r.id}
+                onClick={() => setSelected(r)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                  selected.id === r.id
+                    ? 'bg-accent text-bg shadow-[0_0_20px_-5px_rgba(102,184,112,0.3)]'
+                    : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10 border border-white/5'
+                }`}
+              >
+                <span className={selected.id === r.id ? 'text-bg' : 'text-accent'}>{PLATFORM_ICONS[r.icon]}</span>
+                {r.label}
+                <span className={selected.id === r.id ? 'text-bg/60' : 'text-white/30'}>{r.arch}</span>
+              </button>
+            ))}
           </div>
-          <div className="text-[10px] font-mono text-white/40 tracking-[0.2em] uppercase font-bold">
-            operator@qyvora:~
-          </div>
-          <div className="w-10 hidden sm:block" />
         </div>
-        <div className="p-6 sm:p-8 md:p-12 font-mono text-xs sm:text-sm md:text-lg space-y-10 overflow-x-hidden overflow-y-auto custom-scrollbar">
-          {INSTALL_COMMANDS.map((item, i) => (
-            <div key={i} className={`space-y-4 ${i === INSTALL_COMMANDS.length - 1 ? 'pt-8 border-t border-white/5' : ''}`}>
-              <div className="text-accent/40 font-bold uppercase tracking-[0.2em] text-[10px]">{item.step}</div>
-              <div className="flex gap-4 items-start group">
-                <span className="text-accent font-bold mt-1 shrink-0">$</span>
-                <code className="text-white bg-white/5 p-2 rounded-lg group-hover:text-accent transition-colors break-all">
-                  {item.cmd}
-                </code>
+
+        {/* Right: download card + build from source */}
+        <div className="md:w-[65%] lg:w-[62%] min-w-0">
+          <div className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden">
+            <div className="p-6 sm:p-8 md:p-10">
+              <div className="flex items-start justify-between mb-8">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-accent shrink-0">{PLATFORM_ICONS[selected.icon]}</span>
+                    <span className="text-white font-bold text-lg truncate">{selected.label}</span>
+                    <span className="text-white/30 font-mono text-sm shrink-0">{selected.arch}</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-mono text-white/40">
+                    <span className="truncate">Binary: <span className="text-white/60">{selected.file}</span></span>
+                    <span className="hidden sm:inline shrink-0">Size: {selected.size}</span>
+                  </div>
+                </div>
+                <a
+                  href={`https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/${selected.file}`}
+                  className="hidden sm:inline-flex items-center gap-2 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-6 py-3 text-xs hover:brightness-110 active:scale-95 transition-all shrink-0"
+                >
+                  Download
+                </a>
+              </div>
+
+              <div className="space-y-3">
+                {selected.steps.map((step, i) => (
+                  <div key={i} className="flex items-center gap-3 group">
+                    <span className="text-accent/40 font-mono text-xs w-5 shrink-0 text-right">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="flex-1 flex items-center gap-2 bg-white/[0.03] rounded-lg px-4 py-2.5 border border-white/5 min-w-0">
+                      <span className="text-accent font-bold shrink-0">$</span>
+                      <code className="text-white/80 font-mono text-sm truncate">{step.cmd}</code>
+                      <CopyButton text={step.cmd} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href={`https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/${selected.file}`}
+                className="sm:hidden mt-6 flex items-center justify-center gap-2 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-6 py-3.5 text-xs hover:brightness-110 active:scale-95 transition-all"
+              >
+                Download for {selected.label} ({selected.arch})
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-white/30 font-mono text-xs uppercase tracking-widest mb-4">
+              ── or build from source ──
+            </p>
+            <div className="bg-white/[0.03] border border-white/5 rounded-xl inline-block max-w-full overflow-hidden">
+              <div className="px-6 py-4 sm:px-8 space-y-2">
+                {BUILD_FROM_SOURCE.steps.map((s, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span className="text-accent font-bold shrink-0 font-mono text-sm">$</span>
+                    <code className="text-white/60 font-mono text-sm truncate">{s.cmd}</code>
+                    {s.note && <span className="text-white/20 font-mono text-[10px] hidden sm:inline shrink-0">// {s.note}</span>}
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+            <p className="mt-3 text-white/20 font-mono text-xs px-4">
+              Requires Go 1.22+. Runs on any Linux, macOS, or Windows with Go installed.
+            </p>
+          </div>
         </div>
       </motion.div>
     </div>

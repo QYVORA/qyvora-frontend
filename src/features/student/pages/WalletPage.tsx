@@ -3,20 +3,22 @@ import { Zap, Shield, ArrowUpRight, ArrowDownLeft, Link2, CheckCircle2 } from 'l
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
-import { getTokenBalanceForUser } from '../services/tokenBalance.service';
 import PageLoader from '../../../shared/components/PageLoader';
 
 const PAGE_SIZE = 10;
 
 const Wallet: React.FC = () => {
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [balance, setBalance] = useState(0);
+  const [balanceStale, setBalanceStale] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -27,32 +29,31 @@ const Wallet: React.FC = () => {
     let mounted = true;
     (async () => {
       try {
-        const [balanceRes, txRes, tokenBalance] = await Promise.all([
+        const [balanceRes, txRes] = await Promise.all([
           api.get('/cp/balance').catch(() => null),
           api.get('/cp/transactions?limit=100').catch(() => null),
-          getTokenBalanceForUser(user?.uid || ''),
         ]);
         if (!mounted) return;
 
-        const dbBalance = extractCpBalance(balanceRes?.data) ?? 0;
-        const onChainBalance = typeof tokenBalance === 'number' ? tokenBalance : 0;
+        const dbBalance = extractCpBalance(balanceRes?.data) ?? null;
         
         const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
-        const txSum = txItems.reduce((acc: number, tx: any) => acc + Number(tx.points || tx.value || 0), 0);
         
-        // Final balance resolution:
-        // We take the maximum of:
-        // 1. The backend balance (DB)
-        // 2. The direct chain balance
-        // 3. The sum of the last 100 transactions
-        // 4. The user's CP from their authentication session
-        const resolvedBalance = Math.max(dbBalance, onChainBalance, txSum, user?.cp ?? 0);
+        // Use API balance as the single authoritative source.
+        // If the API failed, fall back to the user's session cp with a stale indicator.
+        if (dbBalance !== null) {
+          setBalance(dbBalance);
+          setBalanceStale(false);
+        } else {
+          setBalance(user?.cp ?? 0);
+          setBalanceStale(true);
+        }
         
-        setBalance(resolvedBalance);
         setTransactions(txItems);
         setVisibleCount(PAGE_SIZE);
       } catch {
         if (!mounted) return;
+        addToast('Failed to load balance and transactions', 'error');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -65,7 +66,7 @@ const Wallet: React.FC = () => {
     const timeout = new Promise<ChainBlock[]>((resolve) => setTimeout(() => resolve([]), 6000));
     Promise.race([getChainHistory(), timeout])
       .then(setChainHistory)
-      .catch(() => setChainHistory([]))
+      .catch(() => { setChainHistory([]); addToast('Failed to load chain ledger', 'error'); })
       .finally(() => setChainLoading(false));
   }, []);
 
@@ -117,6 +118,11 @@ const Wallet: React.FC = () => {
                 <div className="relative z-10 mb-6 flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
                   <CpLogo className="w-8 h-8 md:w-10 md:h-10 opacity-90 shrink-0" />
                   <span className="truncate">{loading ? '—' : formatNumber(balance)}</span>
+                  {balanceStale && (
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-md shrink-0">
+                      Stale
+                    </span>
+                  )}
                 </div>
                 {/* Stats row */}
                 <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">

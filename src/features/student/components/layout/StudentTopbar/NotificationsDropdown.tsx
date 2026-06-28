@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
+import { Loader2 } from 'lucide-react';
 import { NotificationItem } from './types';
 
 interface NotificationsDropdownProps {
@@ -10,6 +11,7 @@ interface NotificationsDropdownProps {
   notifLoading: boolean;
   notificationsPreview: NotificationItem[];
   markAllNotificationsRead: () => void;
+  onMarkRead: (id: string) => void;
 }
 
 const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
@@ -19,6 +21,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
   notifLoading,
   notificationsPreview,
   markAllNotificationsRead,
+  onMarkRead,
 }) => {
   return (
     <AnimatePresence>
@@ -41,13 +44,17 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
             )}
           </div>
           {notifLoading ? (
-            <div className="p-4 text-xs text-text-muted">Loading...</div>
+            <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />Loading...</div>
           ) : notificationsPreview.length === 0 ? (
             <div className="p-4 text-xs text-text-muted">No notifications yet.</div>
           ) : (
             <div className="max-h-80 overflow-auto divide-y divide-border/50">
               {notificationsPreview.map((item) => (
-                <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`}>
+                <div
+                  key={item.id}
+                  className={`px-4 py-3 cursor-pointer transition-colors ${item.read ? 'opacity-60' : 'hover:bg-accent-dim/30'}`}
+                  onClick={() => { if (!item.read) onMarkRead(item.id); }}
+                >
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
                     {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}

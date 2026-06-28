@@ -59,8 +59,10 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={async () => {
           if (!isLastStep) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             goToStep(currentStepIdx + 1);
           } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             await handleComplete();
           }
         }}

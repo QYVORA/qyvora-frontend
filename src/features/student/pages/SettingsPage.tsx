@@ -43,6 +43,10 @@ const Settings: React.FC = () => {
   const [dataSaver, setDataSaver] = useState(getDataSaverEnabled());
 
   useEffect(() => {
+    document.documentElement.setAttribute('data-saver', dataSaver ? 'true' : 'false');
+  }, [dataSaver]);
+
+  useEffect(() => {
     let mounted = true;
     api.get('/profile/recovery-token')
       .then((res) => {
@@ -51,7 +55,7 @@ const Settings: React.FC = () => {
         setRecoveryAcked(Boolean(res.data?.acknowledgedAt));
         setRecoveryCreatedAt(res.data?.createdAt || null);
       })
-      .catch(() => {})
+      .catch(() => { addToast('Failed to load recovery token status', 'error'); })
       .finally(() => { if (mounted) setLoadingRecovery(false); });
     return () => { mounted = false; };
   }, []);
@@ -249,7 +253,7 @@ const Settings: React.FC = () => {
 
                   {loadingRecovery ? (
                     <div className="flex items-center gap-2 text-text-muted text-sm">
-                      <Loader2 className="w-4 h-4 animate-spin" /> Loading...
+                      <Loader2 className="w-6 h-6 animate-spin" /> Loading...
                     </div>
                   ) : liveToken ? (
                     <div className="space-y-4">

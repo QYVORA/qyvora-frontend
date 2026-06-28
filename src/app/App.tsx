@@ -15,6 +15,7 @@
  * All actual page content is rendered by AppRouter.
  */
 
+import { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MotionConfig } from 'motion/react';
 import { AppRouter } from './router';
@@ -23,6 +24,13 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 import AdaptiveMode from '../shared/components/AdaptiveMode';
 
 export default function App() {
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+    return () => {
+      window.history.scrollRestoration = 'auto';
+    };
+  }, []);
+
   return (
     /*
       ErrorBoundary (outermost layer)
