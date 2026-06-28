@@ -1,6 +1,6 @@
 import React from 'react';
 import { Github, Linkedin, Youtube, Twitter } from 'lucide-react';
-import ScrollReveal from '@/shared/components/ScrollReveal';
+import { Carousel } from '@/shared/components/carousel';
 import { teamData } from '@/features/marketing/pages/TeamPage/teamData';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
@@ -11,8 +11,6 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
 };
 
 const LandingTeamSection: React.FC = () => {
-  const members = teamData.slice(0, 2);
-
   return (
     <div className="w-full px-4 md:px-12 lg:px-16">
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
@@ -26,56 +24,60 @@ const LandingTeamSection: React.FC = () => {
         </div>
 
         <div className="md:w-[65%] lg:w-[62%]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {members.map((member, i) => (
-              <ScrollReveal key={member.id} direction="up" amount={0.1} delay={i * 0.1}>
-                <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-bg-card overflow-hidden h-full">
-                  <div className="p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col h-full">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shrink-0">
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight leading-tight">
-                          {member.name}
-                        </h3>
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-md uppercase tracking-widest">
-                          {member.role}
-                        </span>
-                      </div>
+          <Carousel
+            slides={teamData}
+            renderCard={(member) => (
+              <div className="relative min-h-[320px] md:min-h-[380px]">
+                <div
+                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                  style={{ backgroundImage: `url(${member.image})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[380px]">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shrink-0">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
-
-                    <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-4 mb-4">
-                      {member.bio}
-                    </p>
-
-                    <div className="flex items-center gap-2 mt-auto pt-3 border-t border-border/30">
-                      {Object.entries(member.socials || {}).map(([platform, url]) => {
-                        const Icon = SOCIAL_ICONS[platform];
-                        if (!Icon) return null;
-                        return (
-                          <a
-                            key={platform}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-bg-elevated border border-border/20 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200"
-                          >
-                            <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                          </a>
-                        );
-                      })}
+                    <div className="min-w-0">
+                      <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight leading-tight">
+                        {member.name}
+                      </h3>
+                      <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-md uppercase tracking-widest">
+                        {member.role}
+                      </span>
                     </div>
                   </div>
+
+                  <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-4 mb-4">
+                    {member.bio}
+                  </p>
+
+                  <div className="flex items-center gap-2 mt-auto pt-3 border-t border-border/30 w-full">
+                    {Object.entries(member.socials || {}).map(([platform, url]) => {
+                      const Icon = SOCIAL_ICONS[platform];
+                      if (!Icon) return null;
+                      return (
+                        <a
+                          key={platform}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-bg-elevated border border-border/20 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200"
+                        >
+                          <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
-              </ScrollReveal>
-            ))}
-          </div>
+              </div>
+            )}
+          />
         </div>
       </div>
     </div>
