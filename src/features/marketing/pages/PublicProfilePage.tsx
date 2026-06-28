@@ -9,6 +9,7 @@ import BootcampBadge from '../../../shared/components/BootcampBadge';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
+import StreakCard from '../../student/components/dashboard/StreakCard/StreakCard';
 
 const PublicProfile: React.FC = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -120,6 +121,13 @@ const PublicProfile: React.FC = () => {
                     </p>
                   )}
                 </div>
+
+                {/* Streak */}
+                {profile?.streakDays != null && (
+                  <div className="max-w-sm">
+                    <StreakCard streakDays={profile.streakDays} />
+                  </div>
+                )}
 
                 {/* Middle: CP with logo */}
                 <div className="flex items-center gap-3">

@@ -11,6 +11,7 @@ import BootcampBadge from '../../../shared/components/BootcampBadge';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
 import PageLoader from '../../../shared/components/PageLoader';
+import StreakCard from '../components/dashboard/StreakCard/StreakCard';
 
 const Profile: React.FC = () => {
   const { username: paramUsername } = useParams<{ username?: string }>();
@@ -112,6 +113,16 @@ const Profile: React.FC = () => {
                     </p>
                   )}
                 </div>
+
+                {/* Streak */}
+                {profileApi?.xpSummary?.streakDays != null && (
+                  <div className="max-w-sm">
+                    <StreakCard
+                      streakDays={profileApi.xpSummary.streakDays}
+                      lastVisitDate={profileApi?.xpSummary?.lastVisitDate || undefined}
+                    />
+                  </div>
+                )}
 
                 {/* Middle: CP with logo */}
                 <div className="flex items-center gap-3">
