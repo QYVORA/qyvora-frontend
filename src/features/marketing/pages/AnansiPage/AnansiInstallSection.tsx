@@ -107,9 +107,6 @@ const AnansiInstallSection: React.FC = () => {
               <div className="space-y-3">
                 {selected.steps.map((step, i) => (
                   <div key={i} className="flex items-center gap-3 group">
-                    <span className="text-accent/40 font-mono text-xs w-5 shrink-0 text-right">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
                     <div className="flex-1 flex items-center gap-2 bg-white/[0.03] rounded-lg px-4 py-2.5 border border-white/5 min-w-0">
                       <span className="text-accent font-bold shrink-0">$</span>
                       <code className="text-white/80 font-mono text-sm truncate">{step.cmd}</code>
