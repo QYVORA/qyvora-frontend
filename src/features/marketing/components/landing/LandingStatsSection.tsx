@@ -75,18 +75,18 @@ const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'> }> = ({ card }) =>
 };
 
 const SectionHeader: React.FC = () => (
-  <motion.div variants={cardVariants} className="text-center md:text-right">
+  <motion.div variants={cardVariants} className="text-left md:text-right">
     <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
       Built for <span className="text-accent">Impact</span>
     </h2>
-    <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl mx-auto md:ml-auto md:mr-0">
+    <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl md:ml-auto md:mr-0">
       Real metrics from real operators across the continent
     </p>
   </motion.div>
 );
 
 const StatCardsWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+  <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
     {children}
   </div>
 );
@@ -99,12 +99,12 @@ const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }
     variants={containerVariants}
     className="w-full h-full px-4 md:px-12 lg:px-16"
   >
-    <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+    <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+      <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32 md:order-2 md:text-right">
+        {header}
+      </div>
       <div className="md:w-[65%] lg:w-[62%] md:order-1">
         {cards}
-      </div>
-      <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-8 md:mb-0 md:sticky md:top-32 md:order-2">
-        {header}
       </div>
     </div>
   </motion.div>
@@ -176,7 +176,7 @@ const LandingStatsSection: React.FC = () => {
               <motion.div
                 key={card.label}
                 variants={cardVariants}
-                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
+                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden snap-start shrink-0 w-[80vw] md:w-auto"
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center hidden dark:block"

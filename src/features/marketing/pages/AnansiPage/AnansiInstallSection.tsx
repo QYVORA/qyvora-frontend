@@ -38,23 +38,20 @@ const AnansiInstallSection: React.FC = () => {
   const [selected, setSelected] = useState<AnansiRelease>(RELEASES[0]);
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col md:flex-row md:gap-12 lg:gap-16"
+        className="flex flex-col gap-10 lg:gap-14"
       >
-        {/* Left: header + platform pills */}
-        <div className="md:w-[35%] lg:w-[38%] mb-8 md:mb-0 md:sticky md:top-32 md:self-start">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-accent block mb-4">
-            // Install
-          </span>
+        {/* Header + platform pills */}
+        <div className="text-center lg:text-left">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
             Download <span className="text-accent">Anansi CLI</span>
           </h2>
-          <p className="mt-4 text-text-secondary font-mono text-sm md:text-base leading-relaxed">
+          <p className="mt-4 text-text-secondary font-mono text-sm md:text-base leading-relaxed max-w-2xl">
             Pre-compiled binaries for every platform. Zero dependencies.
           </p>
 
@@ -77,8 +74,7 @@ const AnansiInstallSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: download card + build from source */}
-        <div className="md:w-[65%] lg:w-[62%] min-w-0">
+        {/* Download card + build from source */}
           <div className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden">
             <div className="p-6 sm:p-8 md:p-10">
               <div className="flex items-start justify-between mb-8">
@@ -144,7 +140,6 @@ const AnansiInstallSection: React.FC = () => {
               Requires Go 1.22+. Runs on any Linux, macOS, or Windows with Go installed.
             </p>
           </div>
-        </div>
       </motion.div>
     </div>
   );
