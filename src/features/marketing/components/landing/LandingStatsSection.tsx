@@ -36,27 +36,21 @@ const cardVariants = {
   },
 };
 
-const SkeletonCard: React.FC<{ variants: typeof cardVariants }> = ({ variants }) => (
-  <motion.div
-    variants={variants}
-    className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
-  >
-    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8">
-      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 animate-pulse mb-4" />
-      <div className="h-12 md:h-14 w-32 md:w-44 bg-border/20 rounded-lg animate-pulse mb-2" />
-      <div className="h-4 w-24 md:w-28 bg-border/20 rounded animate-pulse mb-1" />
-      <div className="h-3 w-36 md:w-44 bg-border/20 rounded animate-pulse" />
+const SkeletonCard: React.FC = () => (
+  <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden min-h-[200px]">
+    <div className="p-6 sm:p-8 space-y-4">
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-border/30 animate-pulse" />
+      <div className="h-10 w-32 md:w-36 bg-border/30 rounded-lg animate-pulse" />
+      <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
+      <div className="h-3 w-44 bg-border/30 rounded animate-pulse" />
     </div>
-  </motion.div>
+  </div>
 );
 
-const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'>; variants: typeof cardVariants }> = ({ card, variants }) => {
+const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'> }> = ({ card }) => {
   const Icon = card.icon;
   return (
-    <motion.div
-      variants={variants}
-      className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
-    >
+    <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center hidden dark:block"
         style={{ backgroundImage: `url(${card.bgImage})` }}
@@ -76,7 +70,7 @@ const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'>; variants: typeof 
           {card.description}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -127,7 +121,7 @@ const LandingStatsSection: React.FC = () => {
         cards={
           <StatCardsWrapper>
             {STATS_CONFIG.map((card) => (
-              <SkeletonCard key={card.label} variants={cardVariants} />
+              <SkeletonCard key={card.label} />
             ))}
           </StatCardsWrapper>
         }
@@ -142,7 +136,7 @@ const LandingStatsSection: React.FC = () => {
         cards={
           <StatCardsWrapper>
             {STATS_CONFIG.map((card) => (
-              <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
+              <EmptyStatCard key={card.label} card={card} />
             ))}
           </StatCardsWrapper>
         }
@@ -158,7 +152,7 @@ const LandingStatsSection: React.FC = () => {
         cards={
           <StatCardsWrapper>
             {STATS_CONFIG.map((card) => (
-              <EmptyStatCard key={card.label} card={card} variants={cardVariants} />
+              <EmptyStatCard key={card.label} card={card} />
             ))}
           </StatCardsWrapper>
         }
