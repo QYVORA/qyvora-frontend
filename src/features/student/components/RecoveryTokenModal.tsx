@@ -3,6 +3,7 @@ import { Shield, Copy, Download, Check, ArrowRight, AlertTriangle } from 'lucide
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { useToast } from '../../../core/contexts/ToastContext';
 
 interface RecoveryTokenModalProps {
   open: boolean;
@@ -11,6 +12,7 @@ interface RecoveryTokenModalProps {
 
 const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenChange }) => {
   const { refreshMe } = useAuth();
+  const { addToast } = useToast();
   const [step, setStep] = useState(1);
   const [token, setToken] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,7 @@ const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenCha
       setToken(res.data.token);
     } catch (err) {
       console.error('Failed to fetch recovery token:', err);
+      addToast('Failed to fetch recovery token', 'error');
     }
   };
 
@@ -53,6 +56,7 @@ const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenCha
       onOpenChange(false);
     } catch (err) {
       console.error('Failed to acknowledge token:', err);
+      addToast('Failed to acknowledge token', 'error');
     } finally {
       setLoading(false);
     }

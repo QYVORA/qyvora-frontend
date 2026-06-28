@@ -654,3 +654,8 @@ body[data-performance-mode='constrained'] .partners-marquee {
 body[data-performance-mode='constrained'] .marquee-content {
   animation: none !important;
 }
+
+[data-saver="true"] * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}

@@ -65,6 +65,7 @@ const BootcampCourse: React.FC = () => {
     } catch {
       if (!mountedRef.current) return;
       setSyncError('Could not sync. Displaying available data.');
+      addToast('Failed to load course data', 'error');
     } finally {
       if (mountedRef.current) setLoading(false);
     }

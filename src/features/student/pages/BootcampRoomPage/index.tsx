@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft, ArrowRight, Lock, Loader2,
   CheckCircle2, BookOpen, Menu,
@@ -57,6 +57,8 @@ const BootcampRoomPage: React.FC = () => {
   const { addToast } = useToast();
 
   const mountedRef = useRef(true);
+  const redirectCountRef = useRef(0);
+  const MAX_REDIRECTS = 3;
 
   useEffect(() => {
     mountedRef.current = true;
@@ -66,7 +68,11 @@ const BootcampRoomPage: React.FC = () => {
   const [apiCourse, setApiCourse] = useState<ApiCourse | null>(null);
   const [apiLoading, setApiLoading] = useState(true);
   const [bootcampStatus, setBootcampStatus] = useState('not_enrolled');
-  const [currentStepIdx, setCurrentStepIdx] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentStepIdx, setCurrentStepIdx] = useState(() => {
+    const step = searchParams.get('step');
+    return step ? Math.max(0, parseInt(step, 10) || 0) : 0;
+  });
   const [viewedSteps, setViewedSteps] = useState<Set<number>>(new Set([0]));
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -95,7 +101,7 @@ const BootcampRoomPage: React.FC = () => {
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some((m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || ''));
       setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
-    } catch { /* silent */ }
+    } catch { addToast('Failed to load course data', 'error'); }
     finally { if (mountedRef.current) setApiLoading(false); }
   }, [bootcampId]);
 
@@ -126,13 +132,16 @@ const BootcampRoomPage: React.FC = () => {
     const backendRoomId = phaseNum * 100 + roomNum;
     const callSessionOpen = async () => {
       try { await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {}); }
-      catch (err: any) { console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err); }
+      catch (err: any) { console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err); addToast('Failed to open room session', 'error'); }
     };
     callSessionOpen();
   }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus]);
 
   useEffect(() => {
-    if (!apiLoading && bootcampStatus === 'not_enrolled') navigate('/dashboard/bootcamps', { replace: true });
+    if (!apiLoading && bootcampStatus === 'not_enrolled' && redirectCountRef.current < MAX_REDIRECTS) {
+      redirectCountRef.current += 1;
+      navigate('/dashboard/bootcamps', { replace: true });
+    }
   }, [apiLoading, bootcampStatus, navigate]);
 
   useEffect(() => {
@@ -147,7 +156,8 @@ const BootcampRoomPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setCurrentStepIdx(0);
+    const step = searchParams.get('step');
+    setCurrentStepIdx(step ? Math.max(0, parseInt(step, 10) || 0) : 0);
     setViewedSteps(new Set([0]));
     setQuizPassed(false);
     resetSession();
@@ -203,7 +213,14 @@ const BootcampRoomPage: React.FC = () => {
   const isStepBookmarked = (stepIdx: number) => bookmarkedSteps.has(`${phaseId}:${roomId}:${stepIdx}`);
 
   const handleNavigate = (pId: string, rId: string) => navigate(`/dashboard/bootcamps/${bootcampId}/phases/${pId}/rooms/${rId}`);
-  const goToStep = (idx: number) => { setCurrentStepIdx(idx); setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; }); };
+  const goToStep = (idx: number) => {
+    setCurrentStepIdx(idx);
+    setSearchParams((prev) => {
+      prev.set('step', String(idx));
+      return prev;
+    }, { replace: true });
+    setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; });
+  };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
     try {
@@ -283,8 +300,18 @@ const BootcampRoomPage: React.FC = () => {
             <div className="mx-auto w-full max-w-6xl md:max-w-[1600px] px-5 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
               <RoomHeader phase={phase} room={room} timeSpent={timeSpent} formatTime={formatTime} isRoomComplete={isRoomComplete} />
               <RoomProgress viewedStepsCount={viewedSteps.size} totalStepsCount={room.steps.length} timeSpent={timeSpent} formatTime={formatTime} currentStepIdx={currentStepIdx} goToStep={goToStep} steps={room.steps} viewedSteps={viewedSteps} />
-              <div className="hidden md:block mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} />)}</div>
-              <div className="md:hidden mb-10"><StepCard key={currentStepIdx} step={room.steps[currentStepIdx]} stepNum={currentStepIdx+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive isViewed={viewedSteps.has(currentStepIdx)} isBookmarked={isStepBookmarked(currentStepIdx)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(currentStepIdx)} onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }} onClick={() => goToStep(currentStepIdx)} /></div>
+              {room.steps.length === 0 && !apiLoading ? (
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
+                  <p className="text-base font-bold text-text-muted">No steps available yet</p>
+                  <p className="text-sm text-text-muted/60 mt-1">Check back later for new content</p>
+                </div>
+              ) : (
+                <>
+                  <div className="hidden md:block mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(i - 1, 0))} />)}</div>
+                  <div className="md:hidden mb-10"><StepCard key={currentStepIdx} step={room.steps[currentStepIdx]} stepNum={currentStepIdx+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive isViewed={viewedSteps.has(currentStepIdx)} isBookmarked={isStepBookmarked(currentStepIdx)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(currentStepIdx)} onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }} onClick={() => goToStep(currentStepIdx)} onNext={() => goToStep(Math.min(currentStepIdx + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(currentStepIdx - 1, 0))} /></div>
+                </>
+              )}
               <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />
             </div>
           )}

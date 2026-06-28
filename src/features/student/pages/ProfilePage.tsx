@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Mail, Edit3, Activity, ArrowRight } from 'lucide-react';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import { useAuth } from '../../../core/contexts/AuthContext';
+import { useToast } from '../../../core/contexts/ToastContext';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import Identicon from '../../../shared/components/Identicon';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -14,6 +15,7 @@ import PageLoader from '../../../shared/components/PageLoader';
 const Profile: React.FC = () => {
   const { username: paramUsername } = useParams<{ username?: string }>();
   const { user: authUser } = useAuth();
+  const { addToast } = useToast();
   const [profileApi, setProfileApi] = useState<any>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ const Profile: React.FC = () => {
         setProfileApi(res.data || null);
       } catch {
         if (!mounted) return;
+        addToast('Failed to load profile', 'error');
       } finally {
         if (mounted) setLoading(false);
       }

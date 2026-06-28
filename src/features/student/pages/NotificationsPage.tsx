@@ -43,7 +43,7 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     api.get('/notifications')
       .then((res) => setNotifications(Array.isArray(res.data) ? res.data : []))
-      .catch(() => setNotifications([]))
+      .catch(() => { setNotifications([]); addToast('Failed to load notifications', 'error'); })
       .finally(() => setLoading(false));
   }, []);
 

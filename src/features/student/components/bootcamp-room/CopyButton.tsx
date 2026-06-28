@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
+import { useToast } from '@/core/contexts/ToastContext';
 
 const CopyButton: React.FC<{ text: string }> = ({ text }) => {
   const [copied, setCopied] = useState(false);
+  const { addToast } = useToast();
 
   const copy = () => {
-    try {
-      navigator.clipboard.writeText(text);
-    } catch {
-      // Clipboard API unavailable (HTTP, mobile WebView)
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {
+        addToast('Failed to copy', 'error');
+      });
   };
 
   return (

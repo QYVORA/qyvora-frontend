@@ -1,5 +1,5 @@
-import React from 'react';
-import { Shield, ArrowRight, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Shield, ArrowRight, Zap, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import BrandWhatsAppIcon from '../../../shared/components/icons/BrandWhatsAppIcon';
 import api from '../../../core/services/api';
@@ -13,16 +13,18 @@ interface WelcomeModalProps {
 
 const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
   const { refreshMe } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
   
   const handleClose = async () => {
+    setSubmitting(true);
     try {
       await api.post('/profile/onboarding/complete');
       await refreshMe();
       onOpenChange(false);
     } catch {
       // If the API fails, we don't close it to avoid the "reappearing" bug
-      // But we can add a toast or alert here if needed. 
-      // For now, keeping it open is the safer bet for state consistency.
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -42,8 +44,6 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
         title="[ SYSTEM ACCESS GRANTED ]" 
         maxWidth="max-w-4xl"
         hideClose
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
         className="border-accent/30 shadow-[0_0_50px_rgba(var(--color-accent-rgb),0.15)]"
       >
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12 py-4">
@@ -96,19 +96,33 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
               
               <button
                 onClick={handleClose}
+                disabled={submitting}
                 className="
                   flex w-full items-center justify-center gap-2 rounded-2xl
                   border border-border bg-bg-card/50 py-4
                   text-[10px] sm:text-xs font-black uppercase tracking-[0.3em]
                   text-text-muted transition-all duration-300
                   hover:border-accent/50 hover:text-accent hover:bg-accent-dim/10
+                  disabled:opacity-50 disabled:cursor-not-allowed
                 "
               >
-                Initialise Dashboard <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                {submitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <ArrowRight className="h-4 w-4" />
+                )}
+                Initialise Dashboard
+              </button>
+
+              <button
+                onClick={() => onOpenChange(false)}
+                className="text-[10px] font-mono text-text-muted/40 hover:text-text-muted/70 uppercase tracking-[0.25em] transition-colors mx-auto"
+              >
+                Skip for now
               </button>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-[9px] font-mono text-text-muted/40 uppercase tracking-[0.25em]">
+            <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-[9px] font-mono text-text-muted/40 uppercase tracking-[0.25em]">
               <span className="flex items-center gap-1.5">
                 <span className="h-1 w-1 rounded-full bg-accent animate-ping" />
                 Node Active

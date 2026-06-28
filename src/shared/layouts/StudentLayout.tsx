@@ -89,8 +89,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 // The student-specific fixed topbar (includes mobile bottom nav internally).
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
-// The student-specific right rail sidebar (desktop only).
-import StudentRightRail from '@/features/student/components/layout/StudentRightRail';
+
 import WelcomeModal from '@/features/student/components/WelcomeModal';
 import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
@@ -137,82 +136,13 @@ const StudentLayout = () => {
     }
   }, [loading, user, welcomeOpen]);
 
-  // ── Route Detection ─────────────────────────────────────────────────────────
-  //
-  // `useMatch` checks if the current browser URL matches a given path pattern.
-  // Patterns like `:bootcampId` are dynamic segments — they match any value.
-  // Returns a match object (truthy) on match, or null (falsy) on no match.
-
   // ── Room Page Detection ────────────────────────────────────────────────────
-  // New URL structure: /dashboard/bootcamps/{id}/phases/{id}/rooms/{id}
+  // Room pages use a fixed-height split-pane shell where each pane scrolls
+  // independently. We detect room pages to avoid adding bottom padding that
+  // would break that layout.
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
-  // Legacy URL structure: /dashboard/bootcamps/{id}/modules/{id}/rooms/{id}
-  // ("phases" was previously called "modules" — both are supported during migration)
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
-  // True if the student is on ANY room page (old or new URL format).
   const isRoomPage = Boolean(roomMatch || roomMatchLegacy);
-
-  // ── Bootcamp Course Page Detection ────────────────────────────────────────
-  // The "course overview" page for a specific bootcamp (curriculum/phase list).
-  // URL: /dashboard/bootcamps/{bootcampId}
-  const bootcampCourseMatch = useMatch('/dashboard/bootcamps/:bootcampId');
-
-  // ── Bootcamp List Page Detection ───────────────────────────────────────────
-  // The page listing all available bootcamps for the student.
-  // URL: /dashboard/bootcamps
-  const bootcampListMatch = useMatch('/dashboard/bootcamps');
-
-  // True if the student is on ANY bootcamp-related page.
-  // The right rail is hidden on all of these — bootcamp pages manage their own layout.
-  const isBootcampPage = Boolean(isRoomPage || bootcampCourseMatch || bootcampListMatch);
-
-  // ── Profile Pages (Right Rail Hidden) ───────────────────────────────────────
-  // Profile pages should be full-width with the avatar and identity standing alone.
-  const profileMatch = useMatch('/dashboard/profile');
-  const profileParamMatch = useMatch('/dashboard/profile/:username');
-  const isProfilePage = Boolean(profileMatch || profileParamMatch);
-
-  // ── Pages With Their Own Sidebar (Right Rail Hidden) ───────────────────────
-  // These pages implement their own page-level sidebar/rail, so the shared
-  // StudentRightRail would create a duplicate/conflicting sidebar.
-
-  // Marketplace page (new and legacy URLs)
-  const marketplaceMatch = useMatch('/dashboard/marketplace');
-  const marketplaceLegacyMatch = useMatch('/marketplace');
-
-  // Wallet page (new and legacy URLs)
-  const walletMatch = useMatch('/dashboard/wallet');
-  const walletLegacyMatch = useMatch('/wallet');
-
-  // Notifications page (new and legacy URLs)
-  const notificationsMatch = useMatch('/dashboard/notifications');
-  const notificationsLegacyMatch = useMatch('/notifications');
-
-  // Settings page (new and legacy URLs)
-  const settingsMatch = useMatch('/dashboard/settings');
-  const settingsLegacyMatch = useMatch('/settings');
-
-  // News page
-  const newsMatch = useMatch('/dashboard/news');
-
-  // True if the current page has its own sidebar and should suppress the shared rail.
-  const hasPageOwnedSidebar = Boolean(
-    marketplaceMatch
-    || marketplaceLegacyMatch
-    || walletMatch
-    || walletLegacyMatch
-    || notificationsMatch
-    || notificationsLegacyMatch
-    || settingsMatch
-    || settingsLegacyMatch
-    || newsMatch
-  );
-
-  // Final decision: hide the right rail if ANY condition is true.
-  //   isBootcampPage     → room/course/list pages have their own layout
-  //   hasPageOwnedSidebar → marketplace/wallet/notifications/settings have own sidebar
-  //   isProfilePage      → profile pages are full-width with prominent avatar
-  const hideRightRail = isBootcampPage || hasPageOwnedSidebar || isProfilePage;
 
   return (
     /**
@@ -252,26 +182,9 @@ const StudentLayout = () => {
 
         <Outlet /> renders the matched child route component at the current URL.
       */}
-      <div className={`${TOPBAR_H} ${isRoomPage ? '' : MOBILE_NAV_PB}`}>
+      <div id="main-content" className={`${TOPBAR_H} ${isRoomPage ? '' : MOBILE_NAV_PB}`}>
         <Outlet />
       </div>
-
-      {/*
-        ── Student Right Rail (Conditional Desktop Sidebar) ───────────────────
-        Rendered ONLY when `hideRightRail` is false (i.e. on standard student
-        pages like the dashboard home, profile, etc.).
-
-        The `{!hideRightRail && <StudentRightRail />}` pattern is a common React
-        idiom for conditional rendering:
-          • If hideRightRail is true  → `!hideRightRail` is false → nothing renders.
-          • If hideRightRail is false → `!hideRightRail` is true  → <StudentRightRail /> renders.
-
-        StudentRightRail handles its own desktop-only visibility internally
-        (it's hidden on mobile via CSS classes inside the component).
-        It is positioned independently of the content wrapper (likely `position: fixed`
-        or `position: sticky` internally).
-      */}
-      {!hideRightRail && <StudentRightRail />}
 
       {/* Cookie Consent banner */}
       <ConsentBanner />

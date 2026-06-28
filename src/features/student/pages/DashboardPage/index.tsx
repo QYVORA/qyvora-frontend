@@ -23,6 +23,7 @@ import StudentBootcampCard, { type StudentBootcampCardData } from '@/features/st
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { useToast } from '@/core/contexts/ToastContext';
 import PageLoader from '@/shared/components/PageLoader';
+import StreakCard from '@/features/student/components/dashboard/StreakCard/StreakCard';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: '/assets/bootcamp/hpb-cover.webp' };
 const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
@@ -71,7 +72,7 @@ const Dashboard: React.FC = () => {
         setPurchased(new Set<string>(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId))));
         setSyncError('');
         setLastSync(setLastSyncNow('dashboard'));
-      } catch { setSyncError('Could not sync. Showing cached data.'); }
+      } catch { setSyncError('Could not sync. Showing cached data.'); addToast('Failed to load dashboard data', 'error'); }
       finally { if (mounted) setLoading(false); }
     })();
     return () => { mounted = false; };
@@ -125,23 +126,23 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
             <div className="w-full px-4 md:px-0">
               <ScrollReveal className="h-full">
-                <div className="p-6 sm:p-10 md:p-12 lg:p-16 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-3xl shadow-none">
+                <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-2xl shadow-none">
                   <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="h-[1.5px] w-10 bg-accent" />
-                      <span className="text-xs font-black uppercase tracking-[0.35em] text-accent">{isEnrolled ? (overview?.progressMeta?.currentPhase?.title || 'Active Deployment') : 'New Mission'}</span>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-[1.5px] w-8 bg-accent" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.35em] text-accent">{isEnrolled ? (overview?.progressMeta?.currentPhase?.title || 'Active Deployment') : 'New Mission'}</span>
                     </div>
-                    <h2 className="mb-8 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] text-text-primary max-w-5xl tracking-tight">{nextMission ? nextMission.title : isEnrolled ? 'Pick up where you left off' : 'Begin your journey into the offensive underground'}</h2>
+                    <h2 className="mb-6 text-2xl md:text-3xl lg:text-4xl font-black leading-[1.1] text-text-primary max-w-3xl tracking-tight">{nextMission ? nextMission.title : isEnrolled ? 'Pick up where you left off' : 'Begin your journey into the offensive underground'}</h2>
                     {nextRank && (
-                      <div className="mb-10 max-w-lg">
-                        <div className="mb-3.5 flex items-center justify-between"><span className="text-[11px] font-black uppercase tracking-[0.25em] text-text-muted">Target Rank: <span className="text-accent">{nextRank.name}</span></span><span className="font-mono text-sm font-black text-accent">{rankProgress}%</span></div>
-                        <div className="h-2.5 overflow-hidden rounded-full bg-accent-dim/20 shadow-inner"><div className="h-full rounded-full bg-accent transition-all duration-1000 shadow-[0_0_12px_var(--color-accent)]" style={{ width: `${rankProgress}%` }} /></div>
+                      <div className="mb-6 max-w-md">
+                        <div className="mb-2.5 flex items-center justify-between"><span className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">Target Rank: <span className="text-accent">{nextRank.name}</span></span><span className="font-mono text-xs font-black text-accent">{rankProgress}%</span></div>
+                        <div className="h-2 overflow-hidden rounded-full bg-accent-dim/20 shadow-inner"><div className="h-full rounded-full bg-accent transition-all duration-1000 shadow-[0_0_10px_var(--color-accent)]" style={{ width: `${rankProgress}%` }} /></div>
                       </div>
                     )}
-                    <div className="flex flex-wrap items-center gap-5">
-                      <Link to={continuePath} className="bg-accent text-bg px-10 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">{isEnrolled ? 'Continue Mission' : 'Browse Operations'}<ArrowRight className="inline-block ml-3 h-5 w-5" /></Link>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <Link to={continuePath} className="bg-accent text-bg px-7 py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">{isEnrolled ? 'Continue Mission' : 'Browse Operations'}<ArrowRight className="inline-block ml-2 h-4 w-4" /></Link>
                       {!loading && (
-                        <div className="flex items-center gap-4 px-7 py-4 rounded-2xl bg-bg-elevated/40 backdrop-blur-md shadow-sm"><CpLogo className="h-7 w-7" /><span className="font-mono text-3xl font-black text-text-primary tracking-tighter">{cpBalance.toLocaleString()}</span></div>
+                        <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-elevated/40 backdrop-blur-md shadow-sm"><CpLogo className="h-5 w-5" /><span className="font-mono text-xl font-black text-text-primary tracking-tighter">{cpBalance.toLocaleString()}</span></div>
                       )}
                     </div>
                   </div>
@@ -150,13 +151,19 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
+          {overview?.xpSummary?.streakDays != null && (
+            <div className="mb-6 px-4 md:px-0">
+              <StreakCard streakDays={overview.xpSummary.streakDays} lastVisitDate={overview.xpSummary.lastVisitDate} />
+            </div>
+          )}
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
             <div className="flex flex-col gap-6 h-full">
               <div className="flex items-center justify-between px-5"><h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Active Deployments</h3><Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link></div>
               {enrolledBootcamps.length === 0 ? (
-                <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-16 text-center h-full min-h-[300px] flex flex-col items-center justify-center bg-transparent mx-1">
-                  <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" /><p className="mb-5 text-base text-text-muted">No active bootcamps.</p>
-                  <Link to="/dashboard/bootcamps" className="bg-accent text-bg px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110">Start Training <ArrowRight className="inline-block ml-2 h-4 w-4" /></Link>
+                <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-12 text-center h-full min-h-[220px] flex flex-col items-center justify-center bg-transparent mx-1">
+                  <BookOpen className="mx-auto mb-3 h-8 w-8 text-text-muted opacity-40" /><p className="mb-4 text-sm text-text-muted">No active bootcamps.</p>
+                  <Link to="/dashboard/bootcamps" className="bg-accent text-bg px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110">Start Training <ArrowRight className="inline-block ml-1.5 h-3.5 w-3.5" /></Link>
                 </div>
               ) : enrolledBootcamps.slice(0, 1).map((item, idx) => <div key={item.id} className="h-full px-5 md:px-0"><StudentBootcampCard data={item} index={idx} /></div>)}
             </div>
@@ -167,24 +174,24 @@ const Dashboard: React.FC = () => {
                 const prod = products[0]; const id = String(prod.id || ''); const hasPurchased = purchased.has(id);
                 return (
                   <motion.div key={id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }} className="flex flex-col h-full px-5 md:px-0">
-                    <div className="flex flex-col h-full overflow-hidden border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 group hover:border-accent/30 hover:scale-[1.01]">
-                      <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-                        <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
-                        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">{hasPurchased && <span className="px-2 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}</div>
-                        <div className="absolute bottom-2.5 left-2.5"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest"><ShoppingBag className="h-3 w-3 text-accent" /> Premium Asset</span></div>
-                      </div>
-                      <div className="flex flex-1 flex-col p-8 sm:p-10">
-                        <h3 className="mb-2 text-lg font-black leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent">{prod.title}</h3>
-                        <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Access high-value intelligence reports and research papers.'}</p>
-                        <div className="mt-auto">
-                          {(hasPurchased || prod.isFree) ? (
-                            <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60">{downloading === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download Intelligence</button>
-                          ) : (
-                            <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60">{purchasing === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <><CpLogo className="h-4 w-4" /> Unlock Access</>}</button>
-                          )}
+                      <div className="flex flex-col h-full overflow-hidden border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 group hover:border-accent/30 hover:scale-[1.01]">
+                        <div className="relative aspect-video overflow-hidden rounded-t-2xl">
+                          <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">{hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded text-[8px] font-black uppercase tracking-widest shadow-md">Owned</span>}</div>
+                          <div className="absolute bottom-2 left-2"><span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg/85 backdrop-blur-md rounded-lg text-[8px] font-black uppercase text-text-primary tracking-widest"><ShoppingBag className="h-2.5 w-2.5 text-accent" /> Premium Asset</span></div>
+                        </div>
+                        <div className="flex flex-1 flex-col p-5 sm:p-6">
+                          <h3 className="mb-1.5 text-sm font-black leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent">{prod.title}</h3>
+                          <p className="text-[11px] text-text-muted/70 mb-4 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Access high-value intelligence reports and research papers.'}</p>
+                          <div className="mt-auto">
+                            {(hasPurchased || prod.isFree) ? (
+                              <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60">{downloading === id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />} Download Intelligence</button>
+                            ) : (
+                              <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60">{purchasing === id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><CpLogo className="h-3.5 w-3.5" /> Unlock Access</>}</button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
                   </motion.div>
                 );
               })()}

@@ -48,7 +48,7 @@ const Marketplace: React.FC = () => {
       const purchasedIds = new Set<string>(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId)));
       setPurchased(purchasedIds);
     }).catch(() => {
-      if (mounted && products.length === 0) setProducts([]);
+      if (mounted) { addToast('Failed to load marketplace', 'error'); if (products.length === 0) setProducts([]); }
     }).finally(() => {
       if (mounted) setLoading(false);
     });

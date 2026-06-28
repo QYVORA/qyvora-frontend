@@ -3,7 +3,6 @@ import { Loader2, ClipboardList, X, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
-import { ROOM_QUIZ_BANK, FALLBACK_QUESTIONS } from '../../data/quizzes';
 import type { RoomQuiz, QuizQuestion } from './types';
 
 interface QuizModalProps {
@@ -24,6 +23,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     passed: boolean;
     reward?: number;
     questions: QuizQuestion[];
+    answerResults?: Array<{ correct: boolean; correctAnswer: string }>;
   } | null>(null);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -32,16 +32,14 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     setLoading(true);
     try {
       const key = `${moduleId}:${roomId}`;
-      const questions = (ROOM_QUIZ_BANK as any)[key] || FALLBACK_QUESTIONS;
-      
-      // We still want to check if the module is unlocked via the backend
-      // But we don't need to fetch questions anymore.
+      const questions: QuizQuestion[] = [
+        { id: 'q1', text: 'What is the primary mindset of an ethical hacker?', options: ['Break everything without limits', 'Think like an attacker while respecting boundaries', 'Ignore rules to find vulnerabilities', 'Automate all security work'] },
+        { id: 'q2', text: 'What is the most important first step when learning a new hacking topic?', options: ['Memorize every tool command', 'Run tools blindly until something works', 'Understand the underlying system and threat model', 'Skip basics and jump into advanced exploits'] },
+        { id: 'q3', text: 'What does the QYVORA operating model focus on?', options: ['Only selling security tools', 'Education, execution, and community', 'Government contracts only', 'Defensive security only'] },
+      ];
       setQuiz({
         scope: { type: 'room', id: key, courseId, moduleId, roomId },
-        questions: questions.map((q: any) => {
-          const { correctIndex, ...rest } = q;
-          return rest;
-        })
+        questions,
       });
     } catch (err: any) {
       setError('Could not load quiz.');
@@ -62,7 +60,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
       const score   = Number(res?.data?.score || 0);
       const passed  = Boolean(res?.data?.passed);
       const reward  = Number(res?.data?.reward?.points || 0);
-      setResult({ score, passed, reward, questions: quiz.questions });
+      const answerResults = res?.data?.answers as Array<{ correct: boolean; correctAnswer: string }> | undefined;
+      setResult({ score, passed, reward, questions: quiz.questions, answerResults });
       if (passed) {
         addToast(`Quiz passed! ${score}% — +${reward} CP`, 'success');
         // Let the user see the "Passed" screen and click "Continue" themselves
@@ -147,14 +146,27 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                           <div className="space-y-1.5 pl-5">
                             {q.options.map((opt, optIdx) => {
                               const isChosenOpt  = optIdx === chosen;
-                              const cls = isChosenOpt
-                                ? 'border-accent/50 bg-accent/10 text-accent font-bold'
-                                : 'border-border text-text-muted';
+                              const ansResult = result.answerResults?.[idx];
+                              const isCorrectOpt = ansResult && opt === ansResult.correctAnswer;
+                              const showCorrect = ansResult && isCorrectOpt && !isChosenOpt;
+                              let cls = 'border-border text-text-muted';
+                              if (isChosenOpt) {
+                                if (ansResult) {
+                                  cls = ansResult.correct
+                                    ? 'border-green-500/50 bg-green-500/10 text-green-500 font-bold'
+                                    : 'border-red-500/50 bg-red-500/10 text-red-500 font-bold';
+                                } else {
+                                  cls = 'border-accent/50 bg-accent/10 text-accent font-bold';
+                                }
+                              } else if (showCorrect) {
+                                cls = 'border-green-500/30 bg-green-500/5 text-green-400';
+                              }
                               return (
                                 <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                                   <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                                   <span>{opt}</span>
-                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Your answer</span>}
+                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black shrink-0">{ansResult ? (ansResult.correct ? 'Correct' : 'Wrong') : 'Your answer'}</span>}
+                                  {showCorrect && <span className="ml-auto text-[10px] font-black text-green-400 shrink-0">Correct answer</span>}
                                 </div>
                               );
                             })}
