@@ -26,20 +26,20 @@ const STEPS = [
 const LandingHowItWorksSection: React.FC = () => {
   return (
     <div className="w-full px-4 md:px-12 lg:px-16">
-      <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-        <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+      <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+        <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
             Learn. <span className="text-accent">Practice.</span> Prove.
           </h2>
         </div>
 
         <div className="md:w-[65%] lg:w-[62%]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
             {STEPS.map((step, i) => {
               const Icon = step.icon;
               return (
                 <ScrollReveal key={step.title} direction="up" amount={0.1} delay={i * 0.1}>
-                  <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden group h-full">
+                  <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden group h-full snap-start shrink-0 w-[80vw] md:w-auto">
                     <div
                       className="absolute inset-0 bg-cover bg-center hidden dark:block"
                       style={{ backgroundImage: `url(${step.bgImage})` }}

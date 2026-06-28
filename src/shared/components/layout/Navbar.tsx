@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="xl" className="hidden md:block" />
+            <Logo size="lg" className="hidden md:block" />
             <Logo size="md" variant="mark" className="md:hidden" />
           </Link>
 

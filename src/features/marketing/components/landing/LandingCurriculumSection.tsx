@@ -14,19 +14,15 @@ const LandingCurriculumSection: React.FC = () => {
 
   return (
     <div className="w-full px-4 md:px-12 lg:px-16">
-      <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-        <div className="md:w-[35%] lg:w-[38%] text-center md:text-right mb-8 md:mb-0 md:sticky md:top-32 md:order-2">
-          <span className="text-xs md:text-sm font-black uppercase tracking-widest text-accent mb-4 block">
-            Curriculum
-          </span>
+      <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+        <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32 md:order-2 md:text-right md:self-start">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
             What You'll <span className="text-accent">Learn</span>
           </h2>
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mx-auto md:ml-auto md:mr-0">
+          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm md:ml-auto md:mr-0">
             Five phases of structured offensive-security training, from foundations to advanced exploitation.
           </p>
         </div>
-
         <div className="md:w-[65%] lg:w-[62%] md:order-1">
           <Carousel
             slides={phasesWithRoomCount}
