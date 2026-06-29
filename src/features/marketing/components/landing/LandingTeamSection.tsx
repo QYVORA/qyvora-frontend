@@ -29,7 +29,7 @@ const LandingTeamSection: React.FC = () => {
             renderCard={(member) => (
               <div className="relative min-h-[320px] md:min-h-[380px]">
                 <div
-                  className="absolute inset-0 bg-cover bg-top hidden dark:block"
+                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
                   style={{ backgroundImage: `url(${member.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />

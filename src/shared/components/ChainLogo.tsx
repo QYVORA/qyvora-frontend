@@ -1,30 +1,17 @@
 import React from 'react';
-
-/**
- * QYVORA CHAIN — Logo Component
- *
- * variant="3d"   → 3D render (QYVORA-CHAIN-3D.webp)  — use in hero sections & large displays
- * variant="flat" → flat transparent PNG (QYVORA_CHAIN_LOGO.webp) — use inline & small sizes
- *
- * Usage:
- *   <ChainLogo />                          — default flat, 40×40
- *   <ChainLogo variant="3d" size={220} />  — 3D hero version
- *   <ChainLogo size={18} />                — small inline flat
- *   <ChainLogo showLabel />                — with "QYVORA CHAIN" wordmark
- */
+import logoSrc from '@/assets/branding/logos/qyvora-full-logo.webp';
 
 interface ChainLogoProps {
   size?: number;
   className?: string;
   showLabel?: boolean;
   labelClassName?: string;
-  /** "3d" = 3D render for hero/large; "flat" = transparent PNG for small/inline (default) */
   variant?: '3d' | 'flat';
 }
 
 const LOGO_SRC: Record<'3d' | 'flat', string> = {
-  '3d':   '/qyvora-full-logo.webp',
-  'flat': '/qyvora-full-logo.webp',
+  '3d':   logoSrc,
+  'flat': logoSrc,
 };
 
 const ChainLogo: React.FC<ChainLogoProps> = ({

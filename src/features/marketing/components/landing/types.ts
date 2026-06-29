@@ -26,10 +26,16 @@ export interface MarketplaceItem {
   coverUrl?: string;
 }
 
+import phaseOneImg from '@/assets/bootcamp/rooms/phaseOne.webp';
+import phaseTwoImg from '@/assets/bootcamp/rooms/phaseTwo.webp';
+import phaseThreeImg from '@/assets/bootcamp/rooms/phaseThree.webp';
+import phaseFourImg from '@/assets/bootcamp/rooms/phaseFour.webp';
+import phaseFiveImg from '@/assets/bootcamp/rooms/phaseFive.webp';
+
 export const PHASE_IMGS = [
-  '/assets/bootcamp/rooms/phaseOne.webp',
-  '/assets/bootcamp/rooms/phaseTwo.webp',
-  '/assets/bootcamp/rooms/phaseThree.webp',
-  '/assets/bootcamp/rooms/phaseFour.webp',
-  '/assets/bootcamp/rooms/phaseFive.webp',
+  phaseOneImg,
+  phaseTwoImg,
+  phaseThreeImg,
+  phaseFourImg,
+  phaseFiveImg,
 ];

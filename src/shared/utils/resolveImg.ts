@@ -20,11 +20,8 @@ export const resolveImg = (value?: string, fallback = ''): string => {
     return src;
   }
 
-  // Public-folder assets — served by the frontend, no API prefix needed
-  if (
-    src.startsWith('/assets/')
-    || src.startsWith('/public/')
-  ) return src;
+  // Public-folder files — served by the frontend, no API prefix needed
+  if (src.startsWith('/public/')) return src;
 
   // Any other root-relative path that isn't an upload — treat as a local public asset
   if (src.startsWith('/') && !src.startsWith('/uploads/')) return src;

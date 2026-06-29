@@ -11,6 +11,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CARD BASE — no image, just a padded surface
@@ -125,7 +126,7 @@ export const CardMedia: React.FC<CardMediaProps> = ({
             const el = e.currentTarget;
             if (!el.dataset.fallbackApplied) {
               el.dataset.fallbackApplied = '1';
-              el.src = '/assets/sections/backgrounds/process-earn.webp';
+              el.src = hpbCoverImg;
             }
           }}
         />

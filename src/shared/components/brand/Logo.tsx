@@ -1,7 +1,9 @@
 import React from 'react';
+import logoSrc from '@/assets/branding/logos/qyvora-full-logo.webp';
+import markSrc from '@/assets/branding/logos/qyvora-single-logo.webp';
 
-export const LOGO_SRC = '/qyvora-full-logo.png';
-export const MARK_SRC = '/qyvora-single-logo.png';
+export const LOGO_SRC = logoSrc;
+export const MARK_SRC = markSrc;
 
 export type LogoSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 export type LogoVariant = 'full' | 'mark';

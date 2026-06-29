@@ -2,6 +2,8 @@ import React from 'react';
 import { Lock, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import { openServiceRequestModal } from '../ServiceRequestModal';
+import basicPackageImg from '@/assets/sections/services/basic-package.webp';
+import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 
 const SERVICES_DATA = [
   {
@@ -9,7 +11,7 @@ const SERVICES_DATA = [
     title: 'Basic Web-App Pentesting',
     price: 'GH₵ 4,000+',
     subtitle: 'Essential Security Audit',
-    image: '/assets/sections/services/basic-package.webp',
+    image: basicPackageImg,
     features: [
       'OWASP Top 10 Coverage',
       'Authentication Testing',
@@ -23,7 +25,7 @@ const SERVICES_DATA = [
     title: 'Standard Penetration Test',
     price: 'GH₵ 8,000+',
     subtitle: 'Full Stack Assessment',
-    image: '/assets/sections/services/standard-package.webp',
+    image: standardPackageImg,
     features: [
       'Authenticated Pentesting',
       'Business Logic Analysis',

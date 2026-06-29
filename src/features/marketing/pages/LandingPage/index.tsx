@@ -125,6 +125,7 @@ const Landing: React.FC = () => {
             'logo': {
               '@type': 'ImageObject',
               'url': `${SITE_CONFIG.brand.siteUrl}/favicon.png`
+              // favicon.png kept in public/ for stable OG URL
             }
           }
         }}

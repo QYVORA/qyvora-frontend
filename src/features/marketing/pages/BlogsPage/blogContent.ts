@@ -1,3 +1,11 @@
+import blogHackerProtocol from '@/assets/blog/hacker-protocol-bootcamp.webp';
+import blogAnansiCli from '@/assets/blog/anansi-cli.webp';
+import blogAfricaEcosystem from '@/assets/blog/africa-cybersecurity-ecosystem.webp';
+import blogAttackersDiscover from '@/assets/blog/attackers-discover-companies.webp';
+import blogAfricaNeeds from '@/assets/blog/africa-needs-professionals.webp';
+import blogMappingSurfaces from '@/assets/blog/mapping-attack-surfaces.webp';
+import blogFutureCybersecurity from '@/assets/blog/future-cybersecurity-africa.webp';
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -18,7 +26,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Hacker Protocol Bootcamp — 2026 Cohort',
     subtitle: 'Building Africa\'s Cybersecurity Pipeline From the Ground Up',
     excerpt: 'How we designed a bootcamp that turns curious minds into offensive security operators — one phase at a time.',
-    image: '/assets/blog/hacker-protocol-bootcamp.png',
+    image: blogHackerProtocol,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-20',
     readTime: '8 min read',
@@ -30,7 +38,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Anansi CLI: Attack Surface Intelligence from the Terminal',
     subtitle: 'Why we built a no-nonsense, single-binary recon engine for operators who hate bloat.',
     excerpt: 'A philosophy-driven walkthrough of the Anansi CLI — what it does, why it exists, and how to wield it.',
-    image: '/assets/blog/anansi-cli.png',
+    image: blogAnansiCli,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-20',
     readTime: '8 min read',
@@ -42,7 +50,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Building Africa\'s Cybersecurity Ecosystem: Why QYVORA Exists',
     subtitle: 'The vision behind Africa\'s first dedicated offensive security ecosystem.',
     excerpt: 'Why we are building a homegrown offensive security company for the African context — from education to tooling to services.',
-    image: '/assets/blog/africa-cybersecurity-ecosystem.png',
+    image: blogAfricaEcosystem,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-21',
     readTime: '7 min read',
@@ -54,7 +62,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'How Attackers Actually Discover Companies on the Internet',
     subtitle: 'The six-phase reconnaissance pipeline and what it means for your organisation.',
     excerpt: 'Learn how attackers map your attack surface using CT logs, DNS brute-force, and automated discovery — and how to defend against it.',
-    image: '/assets/blog/attackers-discover-companies.png',
+    image: blogAttackersDiscover,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-22',
     readTime: '8 min read',
@@ -66,7 +74,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Why Africa Needs 100,000 More Cybersecurity Professionals',
     subtitle: 'The talent gap is growing — here is how we close it.',
     excerpt: 'Africa faces a critical cybersecurity talent shortage. We break down the numbers and the pathway to closing the gap.',
-    image: '/assets/blog/africa-needs-professionals.png',
+    image: blogAfricaNeeds,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-23',
     readTime: '7 min read',
@@ -78,7 +86,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'What We Learned From Mapping Real-World Attack Surfaces',
     subtitle: 'Common patterns, recurring findings, and structural weaknesses from hundreds of assessments.',
     excerpt: 'Real findings from real attack surface assessments — shadow assets, exposed secrets, and misconfigurations we see everywhere.',
-    image: '/assets/blog/mapping-attack-surfaces.png',
+    image: blogMappingSurfaces,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-24',
     readTime: '8 min read',
@@ -90,7 +98,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'The Future of Cybersecurity in Africa: AI, Talent, and Innovation',
     subtitle: 'Where African cybersecurity is heading — and how to prepare.',
     excerpt: 'AI, automation, and Africa\'s unique opportunity to leapfrog legacy security models into a more resilient future.',
-    image: '/assets/blog/future-cybersecurity-africa.png',
+    image: blogFutureCybersecurity,
     author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
     date: '2026-06-25',
     readTime: '7 min read',

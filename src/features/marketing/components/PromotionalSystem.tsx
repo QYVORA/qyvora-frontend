@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Shield, GraduationCap } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { openServiceRequestModal } from './ServiceRequestModal';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
+import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 
 const PROMOTIONS = [
   {
@@ -14,7 +16,7 @@ const PROMOTIONS = [
     cta: 'Explore Bootcamp',
     href: '#bootcamps',
     icon: GraduationCap,
-    image: '/assets/bootcamp/hpb-cover.webp', // Updated correct bootcamp image
+    image: hpbCoverImg,
     color: 'accent',
   },
   {
@@ -26,7 +28,7 @@ const PROMOTIONS = [
     cta: 'Request Assessment',
     action: () => openServiceRequestModal('Standard WebApp Pentest'),
     icon: Shield,
-    image: '/assets/sections/services/standard-package.webp', // Services image
+    image: standardPackageImg,
     color: 'accent',
   },
 ];

@@ -3,6 +3,9 @@ import { motion } from 'motion/react';
 import { Users, Trophy, GraduationCap } from 'lucide-react';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import StatCounter from '@/shared/components/ui/StatCounter';
+import studentsBg from '@/assets/sections/stats/students-bg.webp';
+import cpEarnedBg from '@/assets/sections/stats/cp-earned-bg.webp';
+import bootcampBg from '@/assets/sections/stats/bootcamp-bg.webp';
 
 interface StatCard {
   icon: React.ElementType;
@@ -14,9 +17,9 @@ interface StatCard {
 }
 
 const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
-  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+', bgImage: '/assets/sections/stats/students-bg.png' },
-  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+', bgImage: '/assets/sections/stats/cp-earned-bg.png' },
-  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: '/assets/sections/stats/bootcamp-bg.png' },
+  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+', bgImage: studentsBg },
+  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+', bgImage: cpEarnedBg },
+  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: bootcampBg },
 ];
 
 const containerVariants = {

@@ -1,4 +1,5 @@
-const BADGE_PATH = '/assets/achievements/categories/bootcamp/hpb-completion-badge.png';
+import badgeSrc from '@/assets/achievements/categories/bootcamp/hpb-completion-badge.webp';
+const BADGE_PATH = badgeSrc;
 
 interface BootcampBadgeProps {
   completed: boolean;
