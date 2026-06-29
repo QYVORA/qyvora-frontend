@@ -6,6 +6,7 @@ import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
+import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
@@ -224,8 +225,8 @@ const StudentTopbar = () => {
                 onMarkRead={markNotificationRead}
               />
 
-              <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-sm flex-none hover:border-accent/60 transition-colors">
-                {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
+              <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
               </Link>
             </div>
           </div>
@@ -356,9 +357,9 @@ const StudentTopbar = () => {
             <Link
               to="/dashboard/profile"
               aria-label="Go to profile"
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors"
+              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
             >
-              {user?.username?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || '??'}
+              <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
             </Link>
 
             <button
