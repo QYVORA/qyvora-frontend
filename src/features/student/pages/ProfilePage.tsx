@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
                 {isOwnProfile ? (
                   <>
                     <Link
-                      to={`/${profileData.username}`}
+                      to={`/@${profileData.username}`}
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-bg-card/30 hover:border-accent/40 text-xs font-black uppercase tracking-[0.15em] text-text-muted hover:text-accent transition-all"
                     >
                       Public View
@@ -156,10 +156,10 @@ const Profile: React.FC = () => {
                   </>
                 ) : (
                   <Link
-                    to={`/${profileData.username}`}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-[0.15em] hover:brightness-110 transition-all active:scale-95"
-                  >
-                    View Public Page
+                    to={`/@${profileData.username}`}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-[0.15em] hover:brightness-110 transition-all active:scale-95"
+                    >
+                      View Public Page
                   </Link>
                 )}
               </div>

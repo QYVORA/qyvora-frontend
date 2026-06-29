@@ -25,9 +25,7 @@ const PublicProfile: React.FC = () => {
 
     let mounted = true;
 
-    const cleanHandle = handle.startsWith('@') ? handle.slice(1) : handle;
-
-    api.get(`/public/users/${encodeURIComponent(cleanHandle)}`)
+    api.get(`/public/users/${encodeURIComponent(handle)}`)
       .then((res) => { if (mounted) setProfile(res.data || null); })
       .catch(() => { if (mounted) setNotFound(true); })
       .finally(() => { if (mounted) setLoading(false); });
@@ -49,7 +47,7 @@ const PublicProfile: React.FC = () => {
   if (loading) return <PageLoader />;
 
   if (notFound || !profile) {
-    const displayHandle = handle?.startsWith('@') ? handle : `@${handle}`;
+    const displayHandle = `@${handle}`;
 
     return (
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 px-4">
@@ -67,12 +65,12 @@ const PublicProfile: React.FC = () => {
     <div className="w-full bg-bg">
       <Navbar />
       <SEO
-        title={`${handle}'s Profile`}
-        description={`View the operator profile, achievements, and ranking of ${handle} on QYVORA.`}
+        title={`@${handle}'s Profile`}
+        description={`View the operator profile, achievements, and ranking of @${handle} on QYVORA.`}
         breadcrumbs={[
           { name: 'Home', item: '/' },
           { name: 'Operators', item: '/' },
-          { name: handle || 'Profile', item: location.pathname }
+          { name: handle ? `@${handle}` : 'Profile', item: location.pathname }
         ]}
       />
 
@@ -155,7 +153,7 @@ const PublicProfile: React.FC = () => {
             >
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9]">
-                  {profile.handle || profile.name}
+                  @{profile.handle || profile.name}
                 </h1>
 
                 {profile.bio && (

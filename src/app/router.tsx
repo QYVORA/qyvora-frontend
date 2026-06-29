@@ -171,10 +171,8 @@ export const AppRouter = () => {
           <Route path={`${_0x5a2b}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
-        {/* ── Public profile route (before catch-all) ─────────────────────── */}
-        {/* Matches /:handle for clean profile URLs. The component also strips @
-            prefix, so /@:handle works too if the browser doesn't encode it. */}
-        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        {/* ── Public profile route — must start with @ ─────────────────────── */}
+        <Route path="/@:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         
         {/* Catch-all 404 for any other invalid routes */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
