@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, ChevronRight, Shield } from 'lucide-react';
+import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import Identicon from '../../../shared/components/Identicon';
@@ -15,8 +16,12 @@ import { StreakIcon } from '../../../shared/components';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 
 const PublicProfile: React.FC = () => {
-  const { handle } = useParams<{ handle: string }>();
+  const { handle: rawHandle } = useParams<{ handle: string }>();
   const location = useLocation();
+
+  const isValidHandle = rawHandle && rawHandle.startsWith('@');
+  const handle = isValidHandle ? rawHandle.slice(1) : '';
+
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -43,6 +48,8 @@ const PublicProfile: React.FC = () => {
 
   const [showRooms, setShowRooms] = useState(false);
   const [showBadges, setShowBadges] = useState(false);
+
+  if (!isValidHandle) return <NotFoundPage />;
 
   if (loading) return <PageLoader />;
 
