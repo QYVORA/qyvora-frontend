@@ -29,7 +29,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const profileUrl = `${window.location.origin}/${encodeURIComponent(handle)}`;
+  const profileUrl = `${window.location.origin}/@${encodeURIComponent(handle)}`;
   const shareText = `Check out ${handle}'s cybersecurity operator profile on QYVORA`;
 
   const handleShare = async (id: string) => {
