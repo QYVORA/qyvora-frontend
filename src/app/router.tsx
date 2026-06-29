@@ -171,8 +171,8 @@ export const AppRouter = () => {
           <Route path={`${_0x5a2b}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
         </Route>
 
-        {/* ── Public profile route — must start with @ ─────────────────────── */}
-        <Route path="/@:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
+        {/* ── Public profile route — validates @ prefix inside component ─────── */}
+        <Route path="/:handle" element={<Wrap scope="Profile"><PublicProfilePage /></Wrap>} />
         
         {/* Catch-all 404 for any other invalid routes */}
         <Route path="*" element={<Wrap><NotFoundPage /></Wrap>} />
