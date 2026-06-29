@@ -27,7 +27,7 @@ interface LeaderboardEntry {
   rankLabel: string;
   roomsCompleted: number;
   streakDays: number;
-  bootcampCompleted?: boolean;
+  bootcampStatus?: string;
 }
 
 const INITIAL_SHOW = 5;
@@ -58,11 +58,11 @@ const RankBadge = ({ label }: { label: string }) => {
 const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; user: any; isExpanded: boolean }) => {
   const isTopThree = entry.rank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
-  const bootcampCompleted = !!entry.bootcampCompleted;
+  const bootcampCompleted = entry.bootcampStatus === 'completed';
 
   return (
     <Link
-      to={`/${entry.hackerHandle}`}
+      to={`/@${entry.hackerHandle}`}
       className={`
         grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-all duration-300 items-center
         ${isCurrentUser
