@@ -38,7 +38,7 @@ export const teamData: TeamMember[] = [
   {
     id: 'sopt4',
     name: 'sopt4',
-    role: 'sopt4',
+    role: 'COO',
     bio: "I don't break systems, i find the flaws so others don't",
     image: sopt4Img,
     socials: {
