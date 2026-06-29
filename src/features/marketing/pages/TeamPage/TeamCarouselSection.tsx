@@ -1,20 +1,13 @@
 import React from 'react';
+import { Github, Linkedin, Youtube, Twitter } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import { teamData } from './teamData';
-import BrandGithubIcon from '@/shared/components/icons/BrandGithubIcon';
-import BrandLinkedinIcon from '@/shared/components/icons/BrandLinkedinIcon';
-import BrandYoutubeIcon from '@/shared/components/icons/BrandYoutubeIcon';
-import BrandXIcon from '@/shared/components/icons/BrandXIcon';
-import BrandTiktokIcon from '@/shared/components/icons/BrandTiktokIcon';
-import BrandInstagramIcon from '@/shared/components/icons/BrandInstagramIcon';
 
-const socialIcons: Record<string, React.FC<{ className?: string }>> = {
-  github: BrandGithubIcon,
-  linkedin: BrandLinkedinIcon,
-  youtube: BrandYoutubeIcon,
-  twitter: BrandXIcon,
-  tiktok: BrandTiktokIcon,
-  instagram: BrandInstagramIcon,
+const SOCIAL_ICONS: Record<string, React.ElementType> = {
+  github: Github,
+  linkedin: Linkedin,
+  youtube: Youtube,
+  twitter: Twitter,
 };
 
 const TeamCarouselSection: React.FC = () => {
@@ -29,47 +22,50 @@ const TeamCarouselSection: React.FC = () => {
         <div className="md:w-[65%] lg:w-[62%]">
           <Carousel
             slides={teamData}
-            renderCard={(m) => (
-              <div className="relative min-h-[320px] md:min-h-[400px]">
+            renderCard={(member) => (
+              <div className="relative min-h-[320px] md:min-h-[380px]">
                 <div
-                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
-                  style={{ backgroundImage: `url(${m.image})` }}
+                  className="absolute inset-0 bg-cover bg-top hidden dark:block"
+                  style={{ backgroundImage: `url(${member.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[400px]">
-                  <div className="px-4 py-2 bg-bg-card/90 backdrop-blur-xl dark:border border-white/10 rounded-xl mb-3">
-                    <span className="text-sm font-black text-accent uppercase tracking-widest whitespace-nowrap">
-                      {m.role}
-                    </span>
-                  </div>
-                  {m.handle && (
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[10px] sm:text-[11px] font-bold text-accent uppercase tracking-[0.2em]">
-                        @{m.handle}
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[380px]">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shrink-0">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight leading-tight">
+                        {member.name}
+                      </h3>
+                      <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-md uppercase tracking-widest">
+                        {member.role}
                       </span>
                     </div>
-                  )}
-                  <h3 className="text-xl md:text-2xl font-black text-text-primary uppercase tracking-tight leading-tight mb-3">
-                    {m.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-text-secondary leading-relaxed font-mono opacity-90 border-l-2 border-accent/40 pl-3 py-1.5 mb-4 italic line-clamp-3">
-                    &ldquo;{m.bio}&rdquo;
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-4 mb-4">
+                    {member.bio}
                   </p>
-                  <div className="flex items-center gap-3 mt-auto pt-3 border-t border-border/40 w-full">
-                    {Object.entries(m.socials).map(([key, href]) => {
-                      if (!href) return null;
-                      const IconComponent = socialIcons[key];
-                      if (!IconComponent) return null;
+
+                  <div className="flex items-center gap-2 mt-auto pt-3 border-t border-border/30 w-full">
+                    {Object.entries(member.socials || {}).map(([platform, url]) => {
+                      const Icon = SOCIAL_ICONS[platform];
+                      if (!Icon) return null;
                       return (
                         <a
-                          key={key}
-                          href={href}
+                          key={platform}
+                          href={url}
                           target="_blank"
-                          rel="noreferrer"
-                          aria-label={`${m.name} on ${key}`}
-                          className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-border bg-bg/40 text-text-secondary transition-all duration-300 hover:border-accent/50 hover:text-accent hover:-translate-y-0.5 hover:shadow-[0_4px_12px_var(--color-accent-glow)]"
+                          rel="noopener noreferrer"
+                          className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-bg-elevated border border-border/20 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all duration-200"
                         >
-                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                         </a>
                       );
                     })}
