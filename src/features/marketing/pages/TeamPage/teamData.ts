@@ -1,5 +1,5 @@
 import wsuits6Img from '../../../../assets/team/wsuits6.jpg';
-import sethAbbeyImg from '../../../../assets/team/seth_abbey.webp';
+import sopt4Img from '../../../../assets/team/sopt4.jpeg';
 
 export interface TeamSocials {
   youtube?: string;
@@ -36,11 +36,11 @@ export const teamData: TeamMember[] = [
     },
   },
   {
-    id: 'COO',
-    name: 'Seth Abbey',
-    role: 'COO',
-    bio: 'Attackers only need that 1 blind spot, find it first',
-    image: sethAbbeyImg,
+    id: 'sopt4',
+    name: 'sopt4',
+    role: 'sopt4',
+    bio: "I don't break systems, i find the flaws so others don't",
+    image: sopt4Img,
     socials: {
       youtube: 'https://www.youtube.com/@sethabbey-u2c',
       github: 'https://github.com/sethabbey987',
