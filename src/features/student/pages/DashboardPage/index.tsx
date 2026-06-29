@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, Flame, ChevronRight, RefreshCw, BookOpen,
+  ArrowRight, RefreshCw, BookOpen,
   ShoppingBag, Download, Loader2,
 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -23,7 +23,7 @@ import StudentBootcampCard, { type StudentBootcampCardData } from '@/features/st
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { useToast } from '@/core/contexts/ToastContext';
 import PageLoader from '@/shared/components/PageLoader';
-import StreakCard from '@/features/student/components/dashboard/StreakCard/StreakCard';
+import { StreakIcon } from '@/shared/components';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: '/assets/bootcamp/hpb-cover.webp' };
 const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
@@ -142,7 +142,16 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-4">
                       <Link to={continuePath} className="bg-accent text-bg px-7 py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">{isEnrolled ? 'Continue Mission' : 'Browse Operations'}<ArrowRight className="inline-block ml-2 h-4 w-4" /></Link>
                       {!loading && (
-                        <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-elevated/40 backdrop-blur-md shadow-sm"><CpLogo className="h-5 w-5" /><span className="font-mono text-xl font-black text-text-primary tracking-tighter">{cpBalance.toLocaleString()}</span></div>
+                        <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-elevated/40 backdrop-blur-md shadow-sm">
+                          <CpLogo className="h-5 w-5" />
+                          <span className="font-mono text-xl font-black text-text-primary tracking-tighter">{cpBalance.toLocaleString()}</span>
+                          {overview?.xpSummary?.streakDays != null && overview.xpSummary.streakDays > 0 && (
+                            <span className="w-px h-5 bg-border/40 mx-1" />
+                          )}
+                          {overview?.xpSummary?.streakDays != null && overview.xpSummary.streakDays > 0 && (
+                            <StreakIcon days={overview.xpSummary.streakDays} />
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -150,12 +159,6 @@ const Dashboard: React.FC = () => {
               </ScrollReveal>
             </div>
           </div>
-
-          {overview?.xpSummary?.streakDays != null && (
-            <div className="mb-6 px-4 md:px-0">
-              <StreakCard streakDays={overview.xpSummary.streakDays} lastVisitDate={overview.xpSummary.lastVisitDate} />
-            </div>
-          )}
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
             <div className="flex flex-col gap-6 h-full">
