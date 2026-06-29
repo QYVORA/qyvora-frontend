@@ -46,9 +46,9 @@ export const SITE_CONFIG = {
     {
       key: 'x',
       label: 'Follow on X',
-      handle: '@QYVORASEC',
+      handle: '@sethabbey328208',
       desc: 'Real-time ops, advisories, and updates.',
-      href: 'https://x.com/qyvorasec',
+      href: 'https://x.com/sethabbey328208',
       action: 'Follow',
     },
     {
@@ -62,17 +62,17 @@ export const SITE_CONFIG = {
     {
       key: 'github',
       label: 'View on GitHub',
-      handle: 'QYVORA',
+      handle: 'sopt4',
       desc: 'Open source tools, platform code, and public engineering updates.',
-      href: 'https://github.com/QYVORA',
+      href: 'https://github.com/sopt4',
       action: 'View',
     },
     {
       key: 'youtube',
       label: 'Watch on YouTube',
-      handle: 'QYVORA',
+      handle: '@soptfour-u2c',
       desc: 'Tutorials, walkthroughs, and operator content.',
-      href: 'https://www.youtube.com/@QYVORASEC',
+      href: 'https://www.youtube.com/@soptfour-u2c',
       action: 'Subscribe',
     },
     {
