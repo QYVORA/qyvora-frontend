@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Activity, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ArrowLeft, Activity, ArrowRight, Shield } from 'lucide-react';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import Identicon from '../../../shared/components/Identicon';
@@ -10,6 +11,7 @@ import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
 import StreakCard from '../../student/components/dashboard/StreakCard/StreakCard';
+import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 
 const PublicProfile: React.FC = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -62,10 +64,8 @@ const PublicProfile: React.FC = () => {
     );
   }
 
-  const initials = (profile.handle || profile.name || 'OP').substring(0, 2).toUpperCase();
-
   return (
-    <div className="bg-bg min-h-full">
+    <div className="w-full bg-bg">
       <SEO
         title={`${handle}'s Profile`}
         description={`View the operator profile, achievements, and ranking of ${handle} on QYVORA.`}
@@ -76,84 +76,101 @@ const PublicProfile: React.FC = () => {
         ]}
       />
 
-      <div className="mx-auto max-w-[1440px] px-4 pt-6 pb-16 md:px-8">
+      <HeroBackground className="z-0 opacity-40" />
 
-        {/* Back link + Share */}
-        <div className="mb-6 flex items-center justify-between">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-text-muted hover:text-accent text-xs font-bold uppercase tracking-widest transition-colors group"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" /> Back
-          </Link>
-          <ShareProfile handle={handle || ''} />
-        </div>
+      {/* ══ HERO SECTION ══ */}
+      <section className="relative min-h-[85svh] md:min-h-screen w-full flex items-center overflow-hidden">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28">
+          <div className="max-w-4xl space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-6"
+            >
 
-        {/* Profile Header */}
-        <ScrollReveal className="mb-10">
-          <div className="rounded-3xl p-6 md:p-10">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-stretch">
-
-              {/* Avatar — Identicon based on userId — always a perfect circle */}
-              <div className="w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 flex-shrink-0">
-                <div className="w-full h-full rounded-full overflow-hidden border border-accent/20">
-                  <Identicon value={profile.id} size={256} className="w-full h-full" />
+              <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start md:items-center">
+                <div className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 flex-shrink-0">
+                  <div className="w-full h-full rounded-full overflow-hidden border-2 border-accent/20 shadow-[0_0_30px_var(--color-accent-glow)]">
+                    <Identicon value={profile.id} size={256} className="w-full h-full" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Identity + CP + Actions */}
-              <div className="flex-1 flex flex-col justify-between min-w-0 gap-y-7">
-
-                {/* Top: Name + Rank + Bio */}
-                <div>
-                  <div className="flex flex-wrap items-center gap-4 mb-2">
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter uppercase font-mono leading-none flex items-center gap-3">
+                <div className="flex-1 min-w-0 space-y-4">
+                  <div className="flex flex-wrap items-center gap-4">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9] flex items-center gap-3">
                       {profile.handle || profile.name}
                       <BootcampBadge completed={bootcampCompleted} className="w-7 h-7 md:w-9 md:h-9" />
                     </h1>
-                    <span className="px-4 py-1.5 bg-accent/10 text-accent text-xs font-bold rounded uppercase tracking-widest flex-none">
+                    <span className="px-4 py-1.5 bg-accent/10 text-accent text-xs font-black uppercase tracking-widest rounded-lg border border-accent/20 flex-none">
                       {profile.rank || 'Operator'}
                     </span>
                   </div>
+
                   {profile.bio && (
-                    <p className="text-text-muted text-sm md:text-base leading-relaxed max-w-2xl">
+                    <p className="text-base md:text-lg text-text-secondary font-mono leading-relaxed max-w-2xl">
                       {profile.bio}
                     </p>
                   )}
-                </div>
 
-                {/* Streak */}
-                {profile?.streakDays != null && (
-                  <div className="max-w-sm">
-                    <StreakCard streakDays={profile.streakDays} />
+                  <div className="flex items-center gap-3">
+                    <CpLogo className="w-7 h-7 md:w-8 md:h-8 text-accent" />
+                    <span className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter">
+                      {cp.toLocaleString()} <span className="text-text-muted font-medium">CP</span>
+                    </span>
                   </div>
-                )}
-
-                {/* Middle: CP with logo */}
-                <div className="flex items-center gap-3">
-                  <CpLogo className="w-7 h-7 md:w-8 md:h-8 text-accent" />
-                  <span className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter">
-                    {cp.toLocaleString()} <span className="text-text-muted font-medium">CP</span>
-                  </span>
                 </div>
-
               </div>
-            </div>
-          </div>
-        </ScrollReveal>
+            </motion.div>
 
-        {/* Completed rooms — below the header card */}
-        {rooms.length > 0 && (
-          <ScrollReveal>
-            <div>
-              <span className="mb-4 block text-xs font-black uppercase tracking-[0.35em] text-accent">Completed Rooms</span>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                {displayedRooms.map((room: { roomId: number; title: string }) => (
-                  <div
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-4"
+            >
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border bg-bg-card/30 hover:border-accent/40 text-xs font-black uppercase tracking-[0.15em] text-text-muted hover:text-accent transition-all"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" /> Back
+              </Link>
+              <ShareProfile handle={handle || ''} />
+              {profile?.streakDays != null && (
+                <div className="max-w-xs">
+                  <StreakCard streakDays={profile.streakDays} />
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ ROOMS SECTION ══ */}
+      {rooms.length > 0 && (
+        <section className="relative w-full bg-bg py-20 md:py-28">
+          <div className="max-w-[1600px] mx-auto w-full px-4 md:px-10 lg:px-12 xl:px-16">
+            <ScrollReveal>
+              <div className="max-w-4xl mb-12">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                  Completed <span className="text-accent">Rooms</span>
+                </h2>
+                <p className="mt-4 text-text-secondary font-mono text-sm md:text-base leading-relaxed max-w-2xl">
+                  Walkthrough rooms this operator has successfully completed.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                {displayedRooms.map((room: { roomId: number; title: string }, idx: number) => (
+                  <motion.div
                     key={room.roomId}
-                    className="group relative flex w-full flex-col overflow-hidden rounded-lg border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:scale-[1.02]"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                    className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)] hover:scale-[1.02]"
                   >
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
+                    <div className="relative aspect-[4/3] overflow-hidden">
                       <img
                         src={getRoomImage(room.roomId)}
                         alt=""
@@ -161,30 +178,41 @@ const PublicProfile: React.FC = () => {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                       />
-                      <span className="absolute top-1.5 left-1.5 flex h-4 w-4 items-center justify-center rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[8px] font-black text-accent">HPB</span>
+                      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg-card to-transparent pointer-events-none" />
+                      <span className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[9px] font-black text-accent uppercase tracking-wider">
+                        <Shield className="w-2.5 h-2.5" /> HPB
+                      </span>
                     </div>
-                    <div className="flex flex-1 flex-col pt-2 px-3 pb-3">
-                      <h3 className="text-xs font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{room.title}</h3>
-                      <div className="mt-auto pt-1.5 flex items-center gap-1 text-[8px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-                        View room <ArrowRight className="h-2 w-2" />
+                    <div className="flex flex-1 flex-col p-4">
+                      <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{room.title}</h3>
+                      <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
+                        View room <ArrowRight className="h-3 w-3" />
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-              {rooms.length > ROOMS_INITIAL && (
-                <button
-                  onClick={() => setShowAllRooms(!showAllRooms)}
-                  className="mt-4 text-xs font-bold text-accent uppercase tracking-widest hover:text-accent/80 transition-colors"
-                >
-                  {showAllRooms ? 'Show Less' : `Show All (${rooms.length})`}
-                </button>
-              )}
-            </div>
-          </ScrollReveal>
-        )}
 
-      </div>
+              {rooms.length > ROOMS_INITIAL && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="mt-8 text-center"
+                >
+                  <button
+                    onClick={() => setShowAllRooms(!showAllRooms)}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-accent/30 bg-accent-dim text-accent text-xs font-black uppercase tracking-wider hover:bg-accent-dim/70 transition-colors"
+                  >
+                    {showAllRooms ? 'Show Less' : `Show All (${rooms.length})`}
+                  </button>
+                </motion.div>
+              )}
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
     </div>
   );
 };

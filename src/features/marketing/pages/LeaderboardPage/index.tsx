@@ -202,9 +202,6 @@ const LeaderboardPage = () => {
             {/* Left — heading + description */}
             <div className="max-w-2xl space-y-8">
               <div className="space-y-4">
-                <span className="text-xs font-black uppercase tracking-[0.4em] text-accent block">
-                  // Global Rankings
-                </span>
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
                   Operator <span className="text-accent">Leaderboard</span>
                 </h1>
