@@ -49,39 +49,7 @@ export const PHASE_COLORS: Record<string, string> = {
 };
 
 // ── Image path builder ────────────────────────────────────────────────────────
-export function buildStepImagePath(
-  phaseId: string,
-  roomId: string,
-  filename: string
-): string {
-  // Full URLs (CDN images) or absolute paths are passed through unchanged
-  if (
-    filename.startsWith('http://') ||
-    filename.startsWith('https://') ||
-    filename.startsWith('/')
-  ) {
-    return filename;
-  }
-
-  const phaseMatch = phaseId.match(/\d+/);
-  const roomMatch = roomId.match(/\d+/);
-  const phaseNum = phaseMatch ? Number(phaseMatch[0]) : 0;
-  const roomNum = roomMatch ? Number(roomMatch[0]) : 0;
-  const phaseDir = `phase-${String(phaseNum).padStart(2, '0')}`;
-  const roomDir = `room-${String(roomNum).padStart(2, '0')}`;
-
-  const normalized = filename.trim().toLowerCase().replace(/_/g, '-');
-  const withStepPrefix = normalized.startsWith('step-')
-    ? normalized
-    : normalized.replace(/^(\d+)/, (m) => `step-${m.padStart(2, '0')}`);
-
-  const encoded = withStepPrefix
-    .split('/')
-    .map((part) => encodeURIComponent(part))
-    .join('/');
-
-  return `/assets/walkthrough/hpb/${phaseDir}/${roomDir}/${encoded}`;
-}
+export { getWalkthroughImage as buildStepImagePath } from '../utils/walkthroughImages';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 export const BOOTCAMP_CONFIG: BootcampConfig = {

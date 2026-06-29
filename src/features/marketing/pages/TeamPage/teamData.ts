@@ -1,5 +1,6 @@
-import wsuits6Img from '../../../../assets/team/wsuits6.jpg';
-import sopt4Img from '../../../../assets/team/sopt4.jpeg';
+import wsuits6Img from '@/assets/team/wsuits6.webp';
+import sopt4Img from '@/assets/team/sopt4.webp';
+import rafiqImg from '@/assets/team/mohammed_rafiq.webp';
 
 export interface TeamSocials {
   youtube?: string;
@@ -8,6 +9,8 @@ export interface TeamSocials {
   github?: string;
   linkedin?: string;
   instagram?: string;
+  facebook?: string;
+  website?: string;
 }
 
 export interface TeamMember {
@@ -46,6 +49,18 @@ export const teamData: TeamMember[] = [
       github: 'https://github.com/sethabbey987',
       linkedin: 'https://www.linkedin.com/in/seth-abbey-599029379/',
       twitter: 'https://x.com/qyvorasec',
+    },
+  },
+  {
+    id: 'CFO',
+    name: 'Mohammed Rafiq',
+    role: 'CFO',
+    bio: 'building alongside the best of the best',
+    image: rafiqImg,
+    socials: {
+      twitter: 'https://x.com/nyabubiyoona1?s=11',
+      facebook: 'https://www.facebook.com/share/1E1NGivdg1/?mibextid=wwXIfr',
+      website: 'https://msiieautel.com/reg?code=y64x7d',
     },
   },
 ];

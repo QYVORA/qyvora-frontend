@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Lock, Github, ArrowRight } from 'lucide-react';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 interface RoomCardProps {
   bootcampId: string;
@@ -49,7 +50,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
             const el = e.currentTarget;
             if (!el.dataset.fallbackApplied) {
               el.dataset.fallbackApplied = '1';
-              el.src = '/assets/bootcamp/hpb-cover.webp';
+              el.src = hpbCoverImg;
             }
           }}
         />

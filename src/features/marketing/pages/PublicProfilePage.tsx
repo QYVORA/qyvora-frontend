@@ -14,6 +14,7 @@ import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
 import { StreakIcon } from '../../../shared/components';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import { getRoomCoverImage } from '../../../features/student/utils/walkthroughImages';
 
 const PublicProfile: React.FC = () => {
   const { handle: rawHandle } = useParams<{ handle: string }>();
@@ -40,11 +41,7 @@ const PublicProfile: React.FC = () => {
   const cp = Number(profile?.cpPoints || 0);
   const rooms = useMemo(() => Array.isArray(profile?.completedRooms) ? profile.completedRooms : [], [profile?.completedRooms]);
   const bootcampCompleted = profile?.bootcampStatus === 'completed' || profile?.bootcampCompleted === true;
-  const getRoomImage = (roomId: number) => {
-    const phase = String(Math.floor(roomId / 100)).padStart(2, '0');
-    const room = String(roomId % 100).padStart(2, '0');
-    return `/assets/walkthrough/hpb/phase-${phase}/room-${room}/step-01.webp`;
-  };
+  const getRoomImage = (roomId: number) => getRoomCoverImage(roomId);
 
   const [showRooms, setShowRooms] = useState(false);
   const [showBadges, setShowBadges] = useState(false);

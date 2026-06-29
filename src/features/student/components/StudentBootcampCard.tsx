@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Play, CheckCircle2, Lock, ArrowRight, Clock, Layers } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 export interface StudentBootcampCardData {
   id: string;
@@ -25,7 +26,7 @@ interface Props {
   onLocked?: (data: StudentBootcampCardData) => void;
 }
 
-const FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
+const FALLBACK_IMG = hpbCoverImg;
 
 const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLocked }) => {
   const { id, title, description, level, duration, priceLabel, img, progress, isEnrolled, isLocked } = data;

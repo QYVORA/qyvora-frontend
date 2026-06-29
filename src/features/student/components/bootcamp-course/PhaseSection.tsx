@@ -3,13 +3,19 @@ import { CheckCircle2, Lock, ListChecks } from 'lucide-react';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
+import phaseOneImg from '@/assets/bootcamp/rooms/phaseOne.webp';
+import phaseTwoImg from '@/assets/bootcamp/rooms/phaseTwo.webp';
+import phaseThreeImg from '@/assets/bootcamp/rooms/phaseThree.webp';
+import phaseFourImg from '@/assets/bootcamp/rooms/phaseFour.webp';
+import phaseFiveImg from '@/assets/bootcamp/rooms/phaseFive.webp';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 const PHASE_ROOM_IMAGES: Record<string, string> = {
-  phase1: '/assets/bootcamp/rooms/phaseOne.webp',
-  phase2: '/assets/bootcamp/rooms/phaseTwo.webp',
-  phase3: '/assets/bootcamp/rooms/phaseThree.webp',
-  phase4: '/assets/bootcamp/rooms/phaseFour.webp',
-  phase5: '/assets/bootcamp/rooms/phaseFive.webp',
+  phase1: phaseOneImg,
+  phase2: phaseTwoImg,
+  phase3: phaseThreeImg,
+  phase4: phaseFourImg,
+  phase5: phaseFiveImg,
 };
 
 interface PhaseSectionProps {
@@ -96,9 +102,9 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
                   (r) => r.title.toLowerCase() === String(room.title || '').toLowerCase()
                 ) || configPhase?.rooms[roomIdx];
                 const roomImg = configPhase
-                  ? PHASE_ROOM_IMAGES[configPhase.id] ?? '/assets/bootcamp/hpb-cover.webp'
-                  : '/assets/bootcamp/hpb-cover.webp';
+                  ? PHASE_ROOM_IMAGES[configPhase.id] ?? hpbCoverImg
 
+                  : hpbCoverImg;
                 return (
                   <RoomCard
                     key={room.roomId}

@@ -24,9 +24,10 @@ import { resolveImg } from '@/shared/utils/resolveImg';
 import { useToast } from '@/core/contexts/ToastContext';
 import PageLoader from '@/shared/components/PageLoader';
 import { StreakIcon } from '@/shared/components';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
-const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: '/assets/bootcamp/hpb-cover.webp' };
-const BOOTCAMP_FALLBACK_IMG = '/assets/bootcamp/hpb-cover.webp';
+const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
+const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
   if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;

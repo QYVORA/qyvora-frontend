@@ -13,6 +13,7 @@ import EditModal from '../components/profile/EditModal';
 import PageLoader from '../../../shared/components/PageLoader';
 import { StreakIcon } from '../../../shared/components';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
+import { getRoomCoverImage } from '../utils/walkthroughImages';
 
 const Profile: React.FC = () => {
   const { username: paramUsername } = useParams<{ username?: string }>();
@@ -61,11 +62,7 @@ const Profile: React.FC = () => {
 
   const rooms = useMemo(() => Array.isArray(profileData.completedRooms) ? profileData.completedRooms : [], [profileData.completedRooms]);
   const bootcampCompleted = authUser?.bootcampStatus === 'completed' || profileApi?.bootcampStatus === 'completed';
-  const getRoomImage = (roomId: number) => {
-    const phase = String(Math.floor(roomId / 100)).padStart(2, '0');
-    const room = String(roomId % 100).padStart(2, '0');
-    return `/assets/walkthrough/hpb/phase-${phase}/room-${room}/step-01.webp`;
-  };
+  const getRoomImage = (roomId: number) => getRoomCoverImage(roomId);
 
   const editInitial = {
     name: profileData.name,

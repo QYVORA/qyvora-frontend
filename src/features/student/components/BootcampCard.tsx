@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 export type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
 
@@ -32,7 +33,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
           const el = e.currentTarget;
           if (!el.dataset.fallbackApplied) {
             el.dataset.fallbackApplied = '1';
-            el.src = '/assets/bootcamp/hpb-cover.webp';
+            el.src = hpbCoverImg;
           }
         }}
       />

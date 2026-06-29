@@ -1,25 +1,28 @@
 import React from 'react';
 import { BookOpen, Swords, Award } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import learnBg from '@/assets/sections/how-it-works/learn-bg.webp';
+import practiceBg from '@/assets/sections/how-it-works/practice-bg.webp';
+import proveBg from '@/assets/sections/how-it-works/prove-bg.webp';
 
 const STEPS = [
   {
     icon: BookOpen,
     title: 'Learn',
     description: 'Master offensive security foundations with structured modules covering Linux, networking, and web exploitation.',
-    bgImage: '/assets/sections/how-it-works/learn-bg.png',
+    bgImage: learnBg,
   },
   {
     icon: Swords,
     title: 'Practice',
     description: 'Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.',
-    bgImage: '/assets/sections/how-it-works/practice-bg.png',
+    bgImage: practiceBg,
   },
   {
     icon: Award,
     title: 'Prove',
     description: 'Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency.',
-    bgImage: '/assets/sections/how-it-works/prove-bg.png',
+    bgImage: proveBg,
   },
 ];
 
