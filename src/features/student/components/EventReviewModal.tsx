@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Heart, Loader2, Check, Copy, Video } from 'lucide-react';
+import { Heart, Loader2, Check, Copy, Video, Coins } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import api from '@/core/services/api';
+import { useAuth } from '@/core/contexts/AuthContext';
 import { getEventById, type EventData } from '@/features/marketing/content/eventsData';
+import CpLogo from '@/shared/components/CpLogo';
 
 interface EventReviewModalProps {
   open: boolean;
@@ -10,11 +12,15 @@ interface EventReviewModalProps {
   eventId: string;
 }
 
+const REWARD_CP = 50;
+
 const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange, eventId }) => {
+  const { refreshMe } = useAuth();
   const event = getEventById(eventId);
   const [review, setReview] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [eventKey, setEventKey] = useState<string | null>(null);
+  const [cpAwarded, setCpAwarded] = useState(0);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState<'review' | 'key'>('review');
@@ -43,8 +49,11 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
         review: review.trim(),
       });
       const key = String(res.data?.key || '');
+      const cp = Number(res.data?.cpAwarded || REWARD_CP);
       if (key) {
         setEventKey(key);
+        setCpAwarded(cp);
+        await refreshMe();
         setStep('key');
       }
     } catch {
@@ -138,9 +147,13 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
 
             <div>
               <p className="text-sm font-black text-text-primary mb-1">You're In!</p>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-muted mb-3">
                 Here is your event key. Use it in your dashboard to access the meeting link.
               </p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 text-accent">
+                <CpLogo className="h-4 w-4" />
+                <span className="text-xs font-black">+{cpAwarded} CP</span>
+              </div>
             </div>
 
             {eventKey && (
