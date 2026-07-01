@@ -118,7 +118,7 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
       {/* CP (desktop) */}
       <div className="hidden md:block text-right">
         <span className="text-sm font-black font-mono text-text-primary">
-          {entry.cp.toLocaleString()}
+          {Number(entry.cp).toLocaleString()}
         </span>
       </div>
 
@@ -136,7 +136,7 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
           </span>
         </div>
         <span className="text-sm font-black font-mono text-accent">
-          {entry.cp.toLocaleString()} CP
+          {Number(entry.cp).toLocaleString()} CP
         </span>
       </div>
     </Link>
@@ -221,17 +221,17 @@ const LeaderboardPage = () => {
             {entries.length > 0 && (
               <div className="grid grid-cols-3 gap-3 md:gap-4 md:min-w-[280px] lg:min-w-[320px] pt-8 md:pt-0">
                 <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                  <span className="text-xl md:text-2xl font-black text-text-primary">{total.toLocaleString()}</span>
+                  <span className="text-xl md:text-2xl font-black text-text-primary">{Number(total).toLocaleString()}</span>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
                 </div>
                 <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
                   <span className="text-xl md:text-2xl font-black text-accent">
-                    {entries.slice(0, 20).reduce((s, e) => s + e.cp, 0).toLocaleString()}
+                    {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
                   </span>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Total CP</p>
                 </div>
                 <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                  <span className="text-xl md:text-2xl font-black text-text-primary">{entries[0].cp.toLocaleString()}</span>
+                  <span className="text-xl md:text-2xl font-black text-text-primary">{Number(entries[0].cp).toLocaleString()}</span>
                   <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Top CP</p>
                 </div>
               </div>

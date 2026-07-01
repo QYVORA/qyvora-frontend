@@ -109,7 +109,7 @@ const LeaderboardRow = ({ entry, user }: { entry: LeaderboardEntry; user: any })
 
       <div className="hidden md:block text-right">
         <span className="text-sm font-black font-mono text-text-primary">
-          {entry.cp.toLocaleString()}
+          {Number(entry.cp).toLocaleString()}
         </span>
       </div>
 
@@ -125,7 +125,7 @@ const LeaderboardRow = ({ entry, user }: { entry: LeaderboardEntry; user: any })
           </span>
         </div>
         <span className="text-sm font-black font-mono text-accent">
-          {entry.cp.toLocaleString()} CP
+          {Number(entry.cp).toLocaleString()} CP
         </span>
       </div>
     </Link>
@@ -196,7 +196,7 @@ const LeaderboardAllPage = () => {
               Full <span className="text-accent">Leaderboard</span>
             </h1>
             <p className="text-sm md:text-base text-text-muted mt-2 font-mono">
-              {total.toLocaleString()} operators ranked by CyberPoints
+              {Number(total).toLocaleString()} operators ranked by CyberPoints
             </p>
           </div>
 
