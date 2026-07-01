@@ -25,6 +25,7 @@ import { useToast } from '@/core/contexts/ToastContext';
 import PageLoader from '@/shared/components/PageLoader';
 import { StreakIcon } from '@/shared/components';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
+import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
@@ -180,7 +181,7 @@ const Dashboard: React.FC = () => {
                   <motion.div key={id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08, ease: [0.16, 1, 0.3, 1] }} className="flex flex-col h-full px-5 md:px-0">
                       <div className="flex flex-col h-full overflow-hidden border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 group hover:border-accent/30 hover:scale-[1.01]">
                         <div className="relative aspect-video overflow-hidden rounded-t-2xl">
-                          <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                          <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                           <div className="absolute top-2 left-2 flex items-center gap-1.5">{hasPurchased && <span className="px-2 py-0.5 bg-accent text-bg rounded text-[8px] font-black uppercase tracking-widest shadow-md">Owned</span>}</div>
                           <div className="absolute bottom-2 left-2"><span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg/85 backdrop-blur-md rounded-lg text-[8px] font-black uppercase text-text-primary tracking-widest"><ShoppingBag className="h-2.5 w-2.5 text-accent" /> Premium Asset</span></div>
                         </div>
