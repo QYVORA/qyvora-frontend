@@ -42,6 +42,9 @@ const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPassw
 const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
+// Events pages
+const EventsPage        = lazy(() => import('../features/marketing/pages/EventsPage'));
+
 // News pages
 const NewsFeedPage      = lazy(() => import('../features/news/pages/NewsFeedPage'));
 
@@ -121,6 +124,7 @@ export const AppRouter = () => {
           <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Wrap scope="Leaderboard"><LeaderboardAllPage /></Wrap>} />
+          <Route path="/events" element={<Wrap scope="Events"><EventsPage /></Wrap>} />
         </Route>
 
         <Route element={<BlogsLayout />}>
