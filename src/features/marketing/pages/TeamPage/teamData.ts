@@ -55,7 +55,7 @@ export const teamData: TeamMember[] = [
     id: 'CFO',
     name: 'Mohammed Rafiq',
     role: 'CFO',
-    bio: 'building alongside the best of the best',
+    bio: "I don\u2019t protect assets\u2014I grow them wisely.",
     image: rafiqImg,
     socials: {
       twitter: 'https://x.com/nyabubiyoona1?s=11',

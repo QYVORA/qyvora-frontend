@@ -6,6 +6,7 @@ import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import CpLogo from '../../../shared/components/CpLogo';
 import { resolveImg } from '../../../shared/utils/resolveImg';
+import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import PageLoader from '../../../shared/components/PageLoader';
@@ -132,7 +133,7 @@ const Marketplace: React.FC = () => {
                   <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
                     <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
                       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                        <img src={resolveImg(prod.coverUrl, '/assets/sections/backgrounds/process-earn.webp')} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div className="absolute top-4 left-4 flex items-center gap-2">
                           {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}
                           {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Public</span>}
