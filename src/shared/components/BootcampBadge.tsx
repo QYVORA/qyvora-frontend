@@ -1,4 +1,4 @@
-import badgeSrc from '@/assets/achievements/categories/bootcamp/hpb-completion-badge.webp';
+import badgeSrc from '@/assets/bootcamp/hpb-completion-badge.webp';
 const BADGE_PATH = badgeSrc;
 
 interface BootcampBadgeProps {

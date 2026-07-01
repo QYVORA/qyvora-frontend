@@ -2702,7 +2702,7 @@ curl "http://<target_ip>/view?url=http://internal-db:8080/phpmyadmin"
 \`\`\`
 
 *Qyvora Insight:* SSRF (A10) is one of the most prized findings in cloud environments. It often allows an operative to steal IAM roles and gain full control over the infrastructure.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Identifying OWASP Issues: The Operative\'s Checklist',
@@ -2755,7 +2755,7 @@ curl -v http://<target_ip>/api/admin/config > evidence_A01.txt 2>&1
 \`\`\`
 
 *Training Task:* Open the target application. Using only \`curl\`, find three different OWASP categories that the developers missed. Document your evidence as if you were writing a professional report.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Remediation: The Defensive Mindset',
@@ -2813,7 +2813,7 @@ res.send("<h1>Hello " + encodeHTML(req.query.name) + "</h1>");
 \`\`\`
 
 *Final Insight:* Security is a journey, not a destination. By understanding the OWASP Top 10, you have learned the 'rules of engagement' for the modern web. You are now ready to dive deep into specific exploit chains.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -3680,7 +3680,7 @@ The Google Hacking Database (GHDB) is your library of pre-built dorks.
 \`\`\`
 
 *Operative Insight:* Google Dorking is passive reconnaissance. The target has no idea you are searching for them because you are talking to Google's servers, not theirs. This is the ultimate 'Invisible' recon.`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'Automated OSINT: The Harvester & Shodan',
@@ -3743,7 +3743,7 @@ dig +short <target_ip> | xargs -I {} curl -s "https://api.hacker<target_site>/re
 \`\`\`
 
 *Hacker's Strategy:* Shodan is your 'Time Machine.' It shows you what was open yesterday, even if the target has closed the port today. Use it to find 'Shadow IT' that the security team forgot about.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Social Media OSINT & Human Mapping',
@@ -3797,7 +3797,7 @@ curl -s "https://api.hacker<target_site>/reversedns/?q=<target_ip>"
 \`\`\`
 
 *Operative Drill:* Find a public GitHub repo for a large project. Can you find any 'TODO' comments in the code that mention security issues? These are often the 'First Domino' in an Qyvora engagement.`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'Operational Security (OPSEC): Staying Invisible',
@@ -3842,7 +3842,7 @@ history -c
 \`\`\`
 
 *Final Training Insight:* OSINT is the foundation of everything that follows. A well-researched engagement takes 5 minutes; a poorly researched one takes 5 days. You have now mastered the art of the 'Invisible Operative.' Congratulations on completing Phase 5.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
@@ -3903,7 +3903,7 @@ hcitool scan
 \`\`\`
 
 *Operative Drill:* You are sitting in the target's lobby. You see an employee walk in with two cups of coffee and a laptop bag. How do you use the **Reciprocity** or **Liking** principle to get them to hold the door for you?`,
-              image: 'step-01.png',
+              image: 'step-01.webp',
             },
             {
               title: 'RFID Mastery & Badge Cloning',
@@ -3955,7 +3955,7 @@ pm3 -c "lf hid sim --raw 2006f1a23b"
 \`\`\`
 
 *Hacker's Strategy:* The best time to clone a badge is in a crowded elevator or a coffee shop line. A Proxmark3 hidden in a laptop sleeve can capture a 'Read' in less than a second.`,
-              image: 'step-02.png',
+              image: 'step-02.webp',
             },
             {
               title: 'Dumpster Diving & Data Reconstruction',
@@ -3997,7 +3997,7 @@ Identify employee names and birthdays from discarded 'Happy Birthday' cards or c
 Checking discarded monitors or keyboards for the 'imprint' of a password written on a sticky note.
 
 *Operative Drill:* You find a discarded network diagram that was only torn in half. What is the first thing you look for on that diagram to help your **Phase 3 (Networking)** engagement?`,
-              image: 'step-03.png',
+              image: 'step-03.webp',
             },
             {
               title: 'OPSEC for Physical Engagements',
@@ -4039,7 +4039,7 @@ dd if=/dev/zero of=/tmp/wipe.tmp bs=1M; rm /tmp/wipe.tmp
 Use silent signals or coded messages with your team if they are monitoring your 'Body-Cam' or audio feed.
 
 *Final Training Insight:* Physical security is the bridge between the digital and the real world. By mastering these techniques, you have become a 'Full-Stack Operative,' capable of compromising a target from the sidewalk to the database. Congratulations on completing the Hacker Protocol Bootcamp.`,
-              image: 'step-04.png',
+              image: 'step-04.webp',
             },
           ],
         },
