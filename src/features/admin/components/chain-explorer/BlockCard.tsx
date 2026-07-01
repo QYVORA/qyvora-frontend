@@ -36,7 +36,7 @@ const BlockCard: React.FC<{ block: ChainBlock; isGenesis: boolean }> = ({ block,
         <div className="flex-1 min-w-0 hidden sm:block">
           <div className="font-mono text-[11px] text-text-muted truncate">{shortHash(block.hash)}</div>
           <div className="text-[10px] text-text-muted/60 mt-0.5">
-            {new Date(block.timestamp).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' })}
+            {block.timestamp ? new Date(block.timestamp).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}
           </div>
         </div>
 
@@ -56,13 +56,13 @@ const BlockCard: React.FC<{ block: ChainBlock; isGenesis: boolean }> = ({ block,
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             {[
               { label: 'Block Index', value: String(block.index) },
-              { label: 'Validator', value: block.validator },
-              { label: 'User ID', value: block.data.userId },
-              { label: 'Bootcamp ID', value: block.data.bootcampId },
-              ...(block.data.moduleId ? [{ label: 'Module ID', value: block.data.moduleId }] : []),
-              ...(block.data.roomId ? [{ label: 'Room ID', value: block.data.roomId }] : []),
+              { label: 'Validator', value: String(block.validator) },
+              { label: 'User ID', value: String(block.data.userId ?? '') },
+              { label: 'Bootcamp ID', value: String(block.data.bootcampId ?? '') },
+              ...(block.data.moduleId ? [{ label: 'Module ID', value: String(block.data.moduleId) }] : []),
+              ...(block.data.roomId ? [{ label: 'Room ID', value: String(block.data.roomId) }] : []),
               ...(block.data.cpPoints != null ? [{ label: 'CP Points', value: String(block.data.cpPoints) }] : []),
-              { label: 'Timestamp', value: new Date(block.timestamp).toISOString() },
+              { label: 'Timestamp', value: block.timestamp ? new Date(block.timestamp).toISOString() : '—' },
             ].map(({ label, value }) => (
               <div key={label}>
                 <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-0.5">{label}</div>

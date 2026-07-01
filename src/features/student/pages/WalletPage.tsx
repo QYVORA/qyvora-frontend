@@ -133,7 +133,7 @@ const Wallet: React.FC = () => {
                         <ArrowDownLeft className="w-3.5 h-3.5 text-accent" />
                       </div>
                       <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
-                        <span className="truncate">{totalEarned.toLocaleString()}</span>
+                        <span className="truncate">{Number(totalEarned).toLocaleString()}</span>
                         <CpLogo className="w-3 h-3 shrink-0 opacity-70" />
                       </div>
                     </div>
@@ -145,7 +145,7 @@ const Wallet: React.FC = () => {
                         <ArrowUpRight className="w-3.5 h-3.5 text-red-400" />
                       </div>
                       <div className="font-mono text-sm font-bold text-text-primary inline-flex items-center gap-1 min-w-0 flex-1">
-                        <span className="truncate">{totalSpent.toLocaleString()}</span>
+                        <span className="truncate">{Number(totalSpent).toLocaleString()}</span>
                         <CpLogo className="w-3 h-3 shrink-0 opacity-70" />
                       </div>
                     </div>
@@ -291,7 +291,7 @@ const Wallet: React.FC = () => {
                             {CHAIN_EVENT_LABELS[block.data.type] ?? block.data.type}
                           </div>
                           <div className="text-[10px] font-mono text-text-muted mt-0.5 truncate">
-                            #{block.index} · {new Date(block.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })} · {block.hash.slice(0, 20)}…
+                            #{block.index} · {block.timestamp ? new Date(block.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—'} · {block.hash.slice(0, 20)}…
                           </div>
                         </div>
                         {block.data.cpPoints != null && block.data.cpPoints > 0 && (

@@ -38,9 +38,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    if (import.meta.env.DEV) {
-      console.error('[ErrorBoundary]', error, errorInfo);
-    }
+    console.error(`[ErrorBoundary${this.props.scope ? `/${this.props.scope}` : ''}]`, error, errorInfo);
   }
 
   /**
