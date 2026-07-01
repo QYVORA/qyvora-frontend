@@ -10,6 +10,7 @@ import LandingCurriculumSection from '@/features/marketing/components/landing/La
 
 import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
+import LandingEventsSection from '@/features/marketing/components/landing/LandingEventsSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -26,6 +27,7 @@ const SECTIONS = [
   { id: 'curriculum',  label: 'Curriculum'      },
   { id: 'team',        label: 'Team'            },
   { id: 'services',    label: 'Services'        },
+  { id: 'events',      label: 'Events'          },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -160,6 +162,10 @@ const Landing: React.FC = () => {
 
       <section id="services" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
         <LandingServicesSection />
+      </section>
+
+      <section id="events" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+        <LandingEventsSection user={user} />
       </section>
 
       <section id="cta" className="relative w-full">
