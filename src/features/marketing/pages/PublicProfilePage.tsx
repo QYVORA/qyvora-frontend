@@ -185,35 +185,38 @@ const PublicProfile: React.FC = () => {
 
                   {showRooms && (
                     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {rooms.map((room: { roomId: number; title: string }, idx: number) => (
-                        <motion.div
-                          key={room.roomId}
-                          initial={{ opacity: 0, y: 16 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: idx * 0.03, ease: [0.16, 1, 0.3, 1] }}
-                          className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)] hover:scale-[1.02]"
-                        >
-                          <div className="relative aspect-[4/3] overflow-hidden">
-                            <img
-                              src={getRoomImage(room.roomId)}
-                              alt=""
-                              loading="lazy"
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                            />
-                            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg-card to-transparent pointer-events-none" />
-                            <span className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[9px] font-black text-accent uppercase tracking-wider">
-                              <Shield className="w-2.5 h-2.5" /> HPB
-                            </span>
-                          </div>
-                          <div className="flex flex-1 flex-col p-4">
-                            <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{room.title}</h3>
-                            <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-                              View room <ArrowRight className="h-3 w-3" />
+                      {rooms.map((room: Record<string, unknown>, idx: number) => {
+                        const roomId = Number(room?.roomId) || 0;
+                        const title = String(room?.title ?? '');
+                        const imgSrc = getRoomImage(roomId);
+                        const roomKey = String(idx) + '-' + String(roomId);
+                        return (
+                          <div
+                            key={roomKey}
+                            className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)] hover:scale-[1.02]"
+                          >
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                              <img
+                                src={imgSrc}
+                                alt=""
+                                loading="lazy"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                              />
+                              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg-card to-transparent pointer-events-none" />
+                              <span className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[9px] font-black text-accent uppercase tracking-wider">
+                                <Shield className="w-2.5 h-2.5" /> HPB
+                              </span>
+                            </div>
+                            <div className="flex flex-1 flex-col p-4">
+                              <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{title}</h3>
+                              <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
+                                View room <ArrowRight className="h-3 w-3" />
+                              </div>
                             </div>
                           </div>
-                        </motion.div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
