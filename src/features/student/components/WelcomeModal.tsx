@@ -44,7 +44,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ open, onOpenChange }) => {
         title="[ SYSTEM ACCESS GRANTED ]" 
         maxWidth="max-w-4xl"
         hideClose
-        className="border-accent/30 shadow-[0_0_50px_rgba(var(--color-accent-rgb),0.15)]"
+        className="border-accent/30"
       >
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12 py-4">
           {/* Left Column: Visual (1/3 width on desktop) */}
