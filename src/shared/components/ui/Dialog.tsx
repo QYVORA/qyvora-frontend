@@ -93,7 +93,7 @@ export const DialogContent = React.forwardRef<
         !maxWidth.startsWith('max-w-') && maxWidth,
 
         // Surface — matches card-qyvora
-        'terminal-card bg-bg-card border border-border rounded-2xl shadow-2xl overflow-hidden',
+        'terminal-card bg-bg-card border border-border rounded-2xl overflow-hidden',
         // Radix data-state animations
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
