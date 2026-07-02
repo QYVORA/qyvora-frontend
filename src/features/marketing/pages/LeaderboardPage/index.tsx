@@ -1,13 +1,16 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { Trophy, Medal, Shield, ArrowRight } from 'lucide-react';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
+
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 const PERIODS = [
   { key: 'all',  label: 'All Time'   },
@@ -145,6 +148,7 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
 
 const LeaderboardPage = () => {
   const { user } = useAuth();
+  const { isLg } = useAdaptiveUi();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -189,24 +193,14 @@ const LeaderboardPage = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28 lg:py-36">
-        {/* Background decoration */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-border/5" />
-          <div className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full border border-border/10" />
-          <div className="absolute top-1/4 left-1/6 w-[1px] h-64 bg-gradient-to-b from-accent/0 via-accent/10 to-accent/0" />
-        </div>
-
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between md:gap-12">
-            {/* Left — heading + description */}
-            <div className="max-w-2xl space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
-                  Operator <span className="text-accent">Leaderboard</span>
-                </h1>
-              </div>
-              <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
+      <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden">
+        <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
+          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-28 lg:pt-24 pb-10 sm:pb-12 lg:pb-16 w-full h-full">
+            <div className="flex flex-col items-start w-full space-y-6">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+                Operator <span className="text-accent">Leaderboard</span>
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
                 Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned.
                 All balances verified on the QYVORA Chain — immutable, tamper-proof,
                 and fully on-ledger.
@@ -215,30 +209,37 @@ const LeaderboardPage = () => {
                 <Shield className="w-4 h-4 text-accent" />
                 CP verified on QYVORA Chain
               </div>
+              {entries.length > 0 && (
+                <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
+                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-text-primary">{Number(total).toLocaleString()}</span>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
+                  </div>
+                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-accent">
+                      {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
+                    </span>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Total CP</p>
+                  </div>
+                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-text-primary">{Number(entries[0].cp).toLocaleString()}</span>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Top CP</p>
+                  </div>
+                </div>
+              )}
             </div>
-
-            {/* Right — stats summary */}
-            {entries.length > 0 && (
-              <div className="grid grid-cols-3 gap-3 md:gap-4 md:min-w-[280px] lg:min-w-[320px] pt-8 md:pt-0">
-                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                  <span className="text-xl md:text-2xl font-black text-text-primary">{Number(total).toLocaleString()}</span>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
-                </div>
-                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                  <span className="text-xl md:text-2xl font-black text-accent">
-                    {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
-                  </span>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Total CP</p>
-                </div>
-                <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                  <span className="text-xl md:text-2xl font-black text-text-primary">{Number(entries[0].cp).toLocaleString()}</span>
-                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Top CP</p>
-                </div>
-              </div>
-            )}
+          </div>
+          <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
+            <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
+              <ErrorBoundary scope="HackerGlobe" fallback={null}>
+                <Suspense fallback={null}>
+                  {isLg && <HackerGlobe scale={1.0} />}
+                </Suspense>
+              </ErrorBoundary>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ══ LEADERBOARD SECTION ══ */}
       <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28">
