@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Zap } from 'lucide-react';
 import SimpleHeading from '@/shared/components/ui/SimpleHeading';
-import logoSrc from '@/assets/branding/logos/qyvora-single-logo.webp';
+import { QyvoraMark } from '@/shared/components/brand/QyvoraMark';
 
 const AnansiCtaSection: React.FC = () => {
   return (
@@ -31,9 +31,8 @@ const AnansiCtaSection: React.FC = () => {
           className="flex items-center justify-center lg:justify-end"
         >
           <div className="relative w-full max-w-4xl flex items-center justify-center lg:justify-end">
-            <img
-              src={logoSrc}
-              alt="Anansi CLI"
+            <QyvoraMark
+              aria-label="Anansi CLI"
               className="relative z-10 w-full max-w-[400px] lg:max-w-[500px] h-auto block opacity-60"
             />
           </div>
