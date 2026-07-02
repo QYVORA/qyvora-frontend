@@ -41,7 +41,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
 
   return (
     <div className={`logo-wrap flex-none ${sizes[size]} max-w-full ${className}`}>
-      <QyvoraLogotype className="w-full h-auto block" color={color} />
+      <div className="overflow-hidden aspect-[848/116] flex items-center">
+        <QyvoraLogotype className="w-full h-auto block" color={color} />
+      </div>
     </div>
   );
 };
@@ -49,7 +51,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
 export const QyvoraLogo: React.FC<{ className?: string; color?: string }> = ({ className = '', color }) => {
   return (
     <div className={`logo-wrap flex-none w-[292px] max-w-full ${className}`}>
-      <QyvoraLogotype className="w-full h-auto block" color={color} />
+      <div className="overflow-hidden aspect-[848/116] flex items-center">
+        <QyvoraLogotype className="w-full h-auto block" color={color} />
+      </div>
     </div>
   );
 };
