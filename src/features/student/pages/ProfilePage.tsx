@@ -62,7 +62,7 @@ const Profile: React.FC = () => {
 
   const rooms = useMemo(() => Array.isArray(profileData.completedRooms) ? profileData.completedRooms : [], [profileData.completedRooms]);
   const bootcampCompleted = authUser?.bootcampStatus === 'completed' || profileApi?.bootcampStatus === 'completed';
-  const getRoomImage = (roomId: number) => getRoomCoverImage(roomId);
+  const getRoomImage = (roomId: number) => String(getRoomCoverImage(roomId));
 
   const editInitial = {
     name: profileData.name,
@@ -220,11 +220,8 @@ const Profile: React.FC = () => {
                   {showRooms && (
                     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {rooms.map((room: { roomId: number; title: string }, idx: number) => (
-                        <motion.div
-                          key={room.roomId}
-                          initial={{ opacity: 0, y: 16 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: idx * 0.03, ease: [0.16, 1, 0.3, 1] }}
+                        <div
+                          key={String(room.roomId) + '-' + String(idx)}
                           className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)] hover:scale-[1.02]"
                         >
                           <div className="relative aspect-[4/3] overflow-hidden">
@@ -246,7 +243,7 @@ const Profile: React.FC = () => {
                               View room <ArrowRight className="h-3 w-3" />
                             </div>
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   )}

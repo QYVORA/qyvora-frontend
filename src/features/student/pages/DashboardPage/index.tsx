@@ -8,10 +8,8 @@ import { motion } from 'motion/react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
-import EventReviewModal from '@/features/student/components/EventReviewModal';
-import EventKeyCard from '@/features/student/components/EventKeyCard';
+import EventAccessCard from '@/features/student/components/EventAccessCard';
 import { getActiveEvents } from '@/features/marketing/content/eventsData';
-import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import CpLogo from '@/shared/components/CpLogo';
 import { getRankInfo } from '@/features/student/utils/rankUtils';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
@@ -48,8 +46,6 @@ function Skeleton({ className }: { className?: string }) {
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
-  const pending = getPendingEventJoin();
-  const [showEventModal, setShowEventModal] = useState(!!pending);
   const [overview, setOverview]        = useState<any>(null);
   const [bootcamps, setBootcamps]      = useState<any[]>([]);
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
@@ -212,8 +208,8 @@ const Dashboard: React.FC = () => {
           <div className="mt-10 flex flex-col gap-6 px-5">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Live Events</h3>
             {getActiveEvents().map((evt) => (
-              <div key={evt.id} className="w-full max-w-md">
-                <EventKeyCard eventId={evt.id} eventTitle={evt.title} />
+              <div key={evt.id} className="w-full max-w-lg">
+                <EventAccessCard event={evt} />
               </div>
             ))}
           </div>
@@ -224,19 +220,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {pending && showEventModal && (
-        <EventReviewModal
-          open={showEventModal}
-          onOpenChange={(open) => {
-            setShowEventModal(open);
-            if (!open) {
-              clearPendingEventJoin();
-            }
-          }}
-          eventId={pending.eventId}
-        />
-      )}
     </div>
   );
 };
