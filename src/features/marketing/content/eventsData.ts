@@ -18,7 +18,7 @@ export const EVENTS: EventData[] = [
     title: 'Pound the Calabash',
     description:
       'A 2-hour live ethical hacking session. Join us for an intense, hands-on offensive security challenge where you will attack a live target in real time.',
-    date: '2025-07-04',
+    date: '2026-07-04',
     time: '10:00 AM GMT',
     platform: 'Google Meet',
     flyerUrl: flyerSrc,

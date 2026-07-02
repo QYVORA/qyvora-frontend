@@ -9,7 +9,9 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import EventAccessCard from '@/features/student/components/EventAccessCard';
+import EventReviewModal from '@/features/student/components/EventReviewModal';
 import { getActiveEvents } from '@/features/marketing/content/eventsData';
+import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import CpLogo from '@/shared/components/CpLogo';
 import { getRankInfo } from '@/features/student/utils/rankUtils';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
@@ -46,6 +48,11 @@ function Skeleton({ className }: { className?: string }) {
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
+
+  const pending = getPendingEventJoin();
+  const [showReviewModal, setShowReviewModal] = useState(!!pending);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+
   const [overview, setOverview]        = useState<any>(null);
   const [bootcamps, setBootcamps]      = useState<any[]>([]);
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
@@ -220,6 +227,23 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {pending && showReviewModal && (
+        <EventReviewModal
+          open={showReviewModal}
+          onOpenChange={(open) => {
+            setShowReviewModal(open);
+            if (!open) {
+              clearPendingEventJoin();
+            }
+          }}
+          eventId={pending.eventId}
+          onReviewSubmitted={() => {
+            setReviewSubmitted(true);
+            clearPendingEventJoin();
+          }}
+        />
+      )}
     </div>
   );
 };
