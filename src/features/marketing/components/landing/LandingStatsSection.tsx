@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import { Users, Trophy, GraduationCap } from 'lucide-react';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import StatCounter from '@/shared/components/ui/StatCounter';
+import { Skeleton } from '@/shared/components/ui';
+import { Carousel } from '@/shared/components/carousel';
 import studentsBg from '@/assets/sections/stats/students-bg.webp';
 import cpEarnedBg from '@/assets/sections/stats/cp-earned-bg.webp';
 import bootcampBg from '@/assets/sections/stats/bootcamp-bg.webp';
@@ -22,6 +24,8 @@ const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
   { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: bootcampBg },
 ];
 
+const STATS_CAROUSEL_ITEMS = STATS_CONFIG.map((c, i) => ({ ...c, id: `stat-${i}` }));
+
 const containerVariants = {
   hidden: {},
   visible: {
@@ -39,14 +43,18 @@ const cardVariants = {
   },
 };
 
-const SkeletonCard: React.FC = () => (
-  <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden min-h-[200px]">
-    <div className="p-6 sm:p-8 space-y-4">
-      <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-border/30 animate-pulse" />
-      <div className="h-10 w-32 md:w-36 bg-border/30 rounded-lg animate-pulse" />
-      <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
-      <div className="h-3 w-44 bg-border/30 rounded animate-pulse" />
-    </div>
+const SkeletonCards: React.FC = () => (
+  <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+    {STATS_CONFIG.map((card) => (
+      <div key={card.label} className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden min-h-[200px] snap-start shrink-0 w-[80vw] md:w-auto">
+        <div className="p-6 sm:p-8 space-y-4">
+          <Skeleton variant="icon" className="w-12 h-12 md:w-14 md:h-14 bg-border/30" />
+          <Skeleton variant="stat-value" className="h-10 w-32 md:w-36 bg-border/30" />
+          <Skeleton className="h-4 w-24 bg-border/30" />
+          <Skeleton className="h-3 w-44 bg-border/30" />
+        </div>
+      </div>
+    ))}
   </div>
 );
 
@@ -88,9 +96,45 @@ const SectionHeader: React.FC = () => (
   </motion.div>
 );
 
-const StatCardsWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+const DesktopStatGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="hidden md:grid md:grid-cols-3 gap-4 md:gap-6">
     {children}
+  </div>
+);
+
+const MobileStatCarousel: React.FC<{ cards: (Omit<StatCard, 'value'> & { id: string; value?: number })[] }> = ({ cards }) => (
+  <div className="md:hidden">
+    <Carousel
+      slides={cards}
+      autoPlayInterval={4000}
+      renderCard={(card) => {
+        const Icon = card.icon;
+        const hasValue = card.value != null;
+        return (
+          <div className="relative min-h-[200px]">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${card.bgImage})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+            <div className="relative z-10 p-6 sm:p-8 flex flex-col items-start text-left h-full min-h-[200px]">
+              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
+                <Icon className="w-6 h-6 text-accent" />
+              </div>
+              <div className="text-4xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
+                {hasValue ? <StatCounter end={card.value!} suffix={card.suffix} className="text-white" /> : '—'}
+              </div>
+              <h3 className="text-sm font-black text-white mb-1 tracking-tight">
+                {card.label}
+              </h3>
+              <p className="text-xs text-white/60 leading-relaxed">
+                {card.description}
+              </p>
+            </div>
+          </div>
+        );
+      }}
+    />
   </div>
 );
 
@@ -117,93 +161,84 @@ const LandingStatsSection: React.FC = () => {
   const { stats, loading } = useLandingData();
   const s = stats?.stats;
 
-  if (!s && loading) {
-    return (
-      <SectionShell
-        header={<SectionHeader />}
-        cards={
-          <StatCardsWrapper>
-            {STATS_CONFIG.map((card) => (
-              <SkeletonCard key={card.label} />
-            ))}
-          </StatCardsWrapper>
-        }
-      />
-    );
-  }
+  const values = s ? [s.learnersTrained, s.cpPoolSize, s.bootcampsCount] : [];
+  const hasValidData = s && values.every((v) => v != null);
 
-  if (!s) {
-    return (
-      <SectionShell
-        header={<SectionHeader />}
-        cards={
-          <StatCardsWrapper>
-            {STATS_CONFIG.map((card) => (
-              <EmptyStatCard key={card.label} card={card} />
-            ))}
-          </StatCardsWrapper>
-        }
-      />
-    );
-  }
+  const resolvedStats: StatCard[] = hasValidData
+    ? STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }))
+    : [];
 
-  const values = [s.learnersTrained, s.cpPoolSize, s.bootcampsCount];
-  if (values.some((v) => v == null)) {
-    return (
-      <SectionShell
-        header={<SectionHeader />}
-        cards={
-          <StatCardsWrapper>
-            {STATS_CONFIG.map((card) => (
-              <EmptyStatCard key={card.label} card={card} />
-            ))}
-          </StatCardsWrapper>
-        }
-      />
-    );
-  }
+  const renderDesktopCards = () => {
+    if (loading && !s) {
+      return <SkeletonCards />;
+    }
 
-  const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => ({
-    ...card,
-    value: values[idx],
-  }));
+    if (!s || !hasValidData) {
+      return (
+        <DesktopStatGrid>
+          {STATS_CONFIG.map((card) => (
+            <EmptyStatCard key={card.label} card={card} />
+          ))}
+        </DesktopStatGrid>
+      );
+    }
+
+    return (
+      <DesktopStatGrid>
+        {resolvedStats.map((card) => {
+          const Icon = card.icon;
+          return (
+            <motion.div
+              key={card.label}
+              variants={cardVariants}
+              className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${card.bgImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full">
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
+                  <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
+                </div>
+                <div className="text-4xl md:text-5xl lg:text-6xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
+                  <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
+                </div>
+                <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
+                  {card.label}
+                </h3>
+                <p className="text-xs md:text-sm text-white/60 leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </DesktopStatGrid>
+    );
+  };
+
+  const renderMobileCards = () => {
+    if (loading && !s) {
+      return <SkeletonCards />;
+    }
+
+    const items = STATS_CAROUSEL_ITEMS.map((card, idx) => ({
+      ...card,
+      value: hasValidData ? values[idx] : undefined,
+    }));
+    return <MobileStatCarousel cards={items} />;
+  };
 
   return (
     <SectionShell
       header={<SectionHeader />}
       cards={
-        <StatCardsWrapper>
-          {resolvedStats.map((card) => {
-            const Icon = card.icon;
-            return (
-              <motion.div
-                key={card.label}
-                variants={cardVariants}
-                className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden snap-start shrink-0 w-[80vw] md:w-auto"
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${card.bgImage})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                    <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
-                  </div>
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
-                    <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
-                  </div>
-                  <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
-                    {card.label}
-                  </h3>
-                  <p className="text-xs md:text-sm text-white/60 leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </StatCardsWrapper>
+        <>
+          {renderDesktopCards()}
+          {renderMobileCards()}
+        </>
       }
     />
   );
