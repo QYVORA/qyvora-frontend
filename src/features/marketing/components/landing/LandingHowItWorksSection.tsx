@@ -44,7 +44,7 @@ const LandingHowItWorksSection: React.FC = () => {
                 <ScrollReveal key={step.title} direction="up" amount={0.1} delay={i * 0.1}>
                   <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden group h-full snap-start shrink-0 w-[80vw] md:w-auto">
                     <div
-                      className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                      className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${step.bgImage})` }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
