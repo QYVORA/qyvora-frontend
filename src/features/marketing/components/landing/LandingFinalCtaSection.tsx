@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { LayoutDashboard, ArrowRight } from 'lucide-react';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
-import { QyvoraLogotype } from '../../../../shared/components/brand/QyvoraLogotype';
+import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
 
 interface LandingFinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -41,7 +41,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                 className="absolute inset-0 pointer-events-none opacity-50 blur-3xl"
                 style={{ background: 'radial-gradient(circle at center, var(--color-accent-glow) 0%, transparent 70%)' }}
               />
-              <QyvoraLogotype
+              <QyvoraMark
                 aria-label="QYVORA Logo - Africa's Offensive Security Platform"
                 className="relative z-10 w-full h-auto block"
               />
@@ -163,7 +163,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             className="flex items-center justify-end lg:-translate-x-4 xl:-translate-x-8"
           >
             <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
-              <QyvoraLogotype
+              <QyvoraMark
                 aria-label="QYVORA Offensive Security Platform"
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
               />
