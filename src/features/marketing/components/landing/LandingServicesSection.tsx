@@ -54,7 +54,7 @@ const LandingServicesSection: React.FC = () => {
             renderCard={(s) => (
               <div className="relative min-h-[340px] md:min-h-[400px]">
                 <div
-                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                  className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${s.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />

@@ -55,7 +55,7 @@ const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'> }> = ({ card }) =>
   return (
     <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center hidden dark:block"
+        className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${card.bgImage})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
@@ -182,7 +182,7 @@ const LandingStatsSection: React.FC = () => {
                 className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden snap-start shrink-0 w-[80vw] md:w-auto"
               >
                 <div
-                  className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                  className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${card.bgImage})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />

@@ -31,7 +31,7 @@ const LandingCurriculumSection: React.FC = () => {
               return (
                 <div className="relative min-h-[300px] md:min-h-[360px]">
                   <div
-                    className="absolute inset-0 bg-cover bg-center hidden dark:block"
+                    className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${phase.image})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
