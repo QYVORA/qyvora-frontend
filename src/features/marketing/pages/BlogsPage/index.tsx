@@ -23,9 +23,9 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative min-h-screen md:h-screen w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
+      <section className="relative min-h-[85svh] md:min-h-screen w-full flex-shrink-0 bg-bg overflow-hidden grid place-items-center">
         <HeroBackground />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-24 lg:pt-28">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
           <div className="max-w-4xl space-y-8 text-left w-full">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
