@@ -19,8 +19,8 @@ const LearnHeroSection: React.FC = () => {
               <span className="text-accent">Bootcamp</span>
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
-              Offensive security requires understanding systems from first principles.
-              The HPB curriculum transforms you from a tool runner to a specialized security operator.
+              Master offensive security through hands-on challenges.
+              The HPB curriculum transforms you into a specialized operator.
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
               <Link
