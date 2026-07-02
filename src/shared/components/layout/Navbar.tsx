@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
-          <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110] lg:-ml-12 xl:-ml-16">
+          <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
             <Logo size="lg" className="hidden md:block" />
             <Logo size="md" variant="mark" className="md:hidden" />
           </Link>
