@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Users, Zap, MessageSquare } from 'lucide-react';
 import BrandWhatsAppIcon from './icons/BrandWhatsAppIcon';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
-import logoSrc from '@/assets/branding/logos/qyvora-single-logo.webp';
+import { QyvoraMark } from './brand/QyvoraMark';
 
 /**
  * CommunityPopup
@@ -75,9 +75,8 @@ const CommunityPopup: React.FC = () => {
 
             {/* Image Section - Broad Horizontal Design */}
             <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">
-              <img
-                src={logoSrc}
-                alt="Community"
+              <QyvoraMark
+                aria-label="Community"
                 className="w-full h-full object-contain p-8 bg-bg-card transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/40 via-transparent to-transparent opacity-0 dark:opacity-60" />
