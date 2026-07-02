@@ -168,11 +168,16 @@ const LandingStatsSection: React.FC = () => {
     ? STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }))
     : [];
 
-  const renderDesktopCards = () => {
-    if (loading && !s) {
-      return <SkeletonCards />;
-    }
+  if (loading && !s) {
+    return (
+      <SectionShell
+        header={<SectionHeader />}
+        cards={<SkeletonCards />}
+      />
+    );
+  }
 
+  const desktopCards = () => {
     if (!s || !hasValidData) {
       return (
         <DesktopStatGrid>
@@ -219,11 +224,7 @@ const LandingStatsSection: React.FC = () => {
     );
   };
 
-  const renderMobileCards = () => {
-    if (loading && !s) {
-      return <SkeletonCards />;
-    }
-
+  const mobileCards = () => {
     const items = STATS_CAROUSEL_ITEMS.map((card, idx) => ({
       ...card,
       value: hasValidData ? values[idx] : undefined,
@@ -236,8 +237,8 @@ const LandingStatsSection: React.FC = () => {
       header={<SectionHeader />}
       cards={
         <>
-          {renderDesktopCards()}
-          {renderMobileCards()}
+          {desktopCards()}
+          {mobileCards()}
         </>
       }
     />
