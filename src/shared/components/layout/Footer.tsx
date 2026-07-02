@@ -65,7 +65,7 @@ const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative w-full min-h-screen overflow-hidden select-none bg-bg flex flex-col">
+    <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
       {/* Background layer */}
       <AdinkraBackground
         opacity={0.55}
@@ -73,11 +73,11 @@ const Footer: React.FC = () => {
       />
 
       {/* Main grid content wrapper */}
-      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30 justify-center">
-        {/* Top Section: Brand Columns */}
-        <div className="flex flex-col md:flex-row justify-between gap-y-10 md:gap-16 xl:gap-20 w-full max-w-[1600px] mx-auto">
-          {/* Left Column — Brand */}
-          <div className="max-w-sm space-y-6">
+      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30">
+        {/* Top Section: Brand + Nav Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 w-full max-w-[1600px] mx-auto">
+          {/* Brand Column — spans 2 cols on mobile, 1 on desktop */}
+          <div className="col-span-2 md:col-span-1 max-w-sm space-y-6">
             <Logo size="xl" variant="full" className="block" />
             <p className="text-sm text-text-muted font-mono leading-relaxed max-w-xs">
               Offensive Security Platform — discover, exploit, report. Africa&apos;s first dedicated offensive operations ecosystem.
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Columns — Nav Links pushed to far right */}
+          {/* Nav Link Columns */}
           {FOOTER_COLS.map((col) => (
             <div key={col.title} className="space-y-5">
               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
@@ -123,7 +123,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="w-full max-w-[1600px] mx-auto pt-10 border-t border-border/40 mt-10">
+        <div className="w-full max-w-[1600px] mx-auto pt-10 mt-12 md:mt-16 border-t border-border/40">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             {/* Pulse text */}
             <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">
