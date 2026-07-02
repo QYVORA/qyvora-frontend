@@ -13,6 +13,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
 import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
+import { Skeleton } from '../../../shared/components/ui';
 import {
   type AdminTab, type AdminUser, type CPProduct,
   type ContactMessage, type SecurityEventItem,
@@ -23,11 +24,34 @@ import {
 const _0x5a2b = atob('L21yLXJvYm90');
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
-const Skeleton = () => (
-  <div className="space-y-3 p-1">
-    {[0,1,2,3,4].map(i => (
-      <div key={i} className="h-14 rounded-xl bg-bg-elevated animate-pulse" style={{ opacity: 1 - i * 0.15 }} />
-    ))}
+const AdminSkeleton = () => (
+  <div className="space-y-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[0,1,2,3].map(i => (
+        <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
+          <Skeleton className="h-4 w-24 bg-border/30" />
+          <Skeleton className="h-8 w-20 bg-border/30" />
+          <Skeleton className="h-3 w-32 bg-border/30" />
+        </div>
+      ))}
+    </div>
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-4">
+      <div className="flex items-center gap-4 pb-3 border-b border-border/20">
+        <Skeleton className="h-10 w-10 rounded-full bg-border/30" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-48 bg-border/30" />
+          <Skeleton className="h-3 w-32 bg-border/30" />
+        </div>
+      </div>
+      {[0,1,2,3,4].map(i => (
+        <div key={i} className="flex items-center gap-4">
+          <Skeleton className="h-8 w-8 rounded-full bg-border/30" />
+          <Skeleton className="h-4 flex-1 bg-border/30" />
+          <Skeleton className="h-4 w-20 bg-border/30" />
+          <Skeleton className="h-6 w-16 rounded-lg bg-border/30" />
+        </div>
+      ))}
+    </div>
   </div>
 );
 
@@ -216,7 +240,7 @@ const AdminDashboardPage: React.FC = () => {
           {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
           {loading ? (
             <div className="mx-auto w-full max-w-5xl">
-              <Skeleton />
+              <AdminSkeleton />
             </div>
           ) : (
             <div className="mx-auto w-full max-w-[1440px]">
