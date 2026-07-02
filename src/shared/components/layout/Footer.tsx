@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-20 xl:gap-32">
             {/* Brand — left (logo acts as header to description) */}
             <div className="max-w-xs space-y-3">
-              <Logo size="lg" variant="full" className="block -ml-3" />
+              <Logo size="lg" variant="full" className="block" />
               <p className="text-sm text-text-muted font-mono leading-relaxed">
                 Offensive Security Platform — discover, exploit, report. Africa&apos;s first dedicated offensive operations ecosystem.
               </p>
