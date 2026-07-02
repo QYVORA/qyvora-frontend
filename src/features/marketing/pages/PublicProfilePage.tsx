@@ -41,7 +41,7 @@ const PublicProfile: React.FC = () => {
   const cp = Number(profile?.cpPoints || 0);
   const rooms = useMemo(() => Array.isArray(profile?.completedRooms) ? profile.completedRooms : [], [profile?.completedRooms]);
   const bootcampCompleted = profile?.bootcampStatus === 'completed' || profile?.bootcampCompleted === true;
-  const getRoomImage = (roomId: number) => getRoomCoverImage(roomId);
+  const getRoomImage = (roomId: number) => String(getRoomCoverImage(roomId));
 
   const [showRooms, setShowRooms] = useState(false);
   const [showBadges, setShowBadges] = useState(false);

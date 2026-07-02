@@ -1,0 +1,329 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import { Video, Loader2, Check, Clock, Lock, Calendar, MessageSquare, Heart, Sparkles, ExternalLink, ArrowRight, Shield, Coins } from 'lucide-react';
+import api from '@/core/services/api';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { getPendingEventJoin, clearPendingEventJoin, setPendingEventJoin } from '@/shared/utils/eventJoin';
+import CpLogo from '@/shared/components/CpLogo';
+import type { EventData } from '@/features/marketing/content/eventsData';
+
+interface EventAccessCardProps {
+  event: EventData;
+}
+
+type CardStatus = 'loading' | 'idle' | 'pending_review' | 'reviewed' | 'available';
+
+function parseEventDate(date: string, time: string): Date {
+  const match = time.match(/(\d+):(\d+)\s*(AM|PM)\s*GMT/i);
+  if (!match) return new Date(date);
+  let hours = parseInt(match[1]);
+  const minutes = parseInt(match[2]);
+  const ampm = match[3].toUpperCase();
+  if (ampm === 'PM' && hours !== 12) hours += 12;
+  if (ampm === 'AM' && hours === 12) hours = 0;
+  return new Date(`${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00.000Z`);
+}
+
+const ACCESS_WINDOW_MINUTES = 30;
+
+const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
+  const { refreshMe } = useAuth();
+
+  const [status, setStatus] = useState<CardStatus>('loading');
+  const [review, setReview] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [cpAwarded, setCpAwarded] = useState(0);
+  const [error, setError] = useState('');
+  const [countdown, setCountdown] = useState('');
+  const [joining, setJoining] = useState(false);
+
+  const checkStatus = useCallback(async () => {
+    try {
+      const res = await api.get(`/events/access-status/${event.id}`);
+      const data = res.data;
+
+      if (data.reviewed) {
+        if (data.accessWindowStart) {
+          const windowStart = new Date(data.accessWindowStart).getTime();
+          if (Date.now() >= windowStart) {
+            setStatus('available');
+          } else {
+            setStatus('reviewed');
+          }
+        } else {
+          setStatus('reviewed');
+        }
+      } else {
+        const pending = getPendingEventJoin();
+        if (pending?.eventId === event.id) {
+          setStatus('pending_review');
+        } else {
+          setStatus('idle');
+        }
+      }
+    } catch {
+      setStatus('idle');
+    }
+  }, [event.id]);
+
+  useEffect(() => {
+    checkStatus();
+  }, [checkStatus]);
+
+  useEffect(() => {
+    if (status !== 'reviewed' && status !== 'available') return;
+
+    const eventDate = parseEventDate(event.date, event.time);
+    const windowStart = eventDate.getTime() - ACCESS_WINDOW_MINUTES * 60 * 1000;
+
+    const updateCountdown = () => {
+      const now = Date.now();
+      const diff = windowStart - now;
+
+      if (diff <= 0) {
+        setStatus('available');
+        setCountdown('');
+        return;
+      }
+
+      const mins = Math.floor(diff / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      if (mins > 0) {
+        setCountdown(`${mins}m ${secs}s`);
+      } else {
+        setCountdown(`${secs}s`);
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [status, event.date, event.time]);
+
+  const handleJoinEvent = async () => {
+    setJoining(true);
+    setPendingEventJoin(event.id);
+    setStatus('pending_review');
+    setJoining(false);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!review.trim()) {
+      setError('Please share your thoughts about QYVORA.');
+      return;
+    }
+    setError('');
+    setSubmitting(true);
+    try {
+      const res = await api.post('/events/review', {
+        eventId: event.id,
+        review: review.trim(),
+      });
+      const cp = Number(res.data?.cpAwarded || 50);
+      setCpAwarded(cp);
+      clearPendingEventJoin();
+      await refreshMe();
+      checkStatus();
+    } catch (err: any) {
+      if (err?.response?.status === 409) {
+        clearPendingEventJoin();
+        checkStatus();
+      } else {
+        setError('Failed to submit review. Please try again.');
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleJoinMeet = async () => {
+    setError('');
+    try {
+      const res = await api.post('/events/request-access', { eventId: event.id });
+      const meetLink = String(res.data?.meetLink || '');
+      if (meetLink) {
+        window.open(meetLink, '_blank', 'noopener,noreferrer');
+      }
+    } catch (err: any) {
+      setError(err?.response?.data?.error || 'Access denied.');
+    }
+  };
+
+  const eventDate = parseEventDate(event.date, event.time);
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300">
+      <div className="p-5 sm:p-6 space-y-5">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent shrink-0">
+            <Video className="h-6 w-6" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-black text-text-primary truncate">{event.title}</h3>
+            <p className="text-[11px] text-text-muted font-mono flex flex-wrap gap-x-2">
+              <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> {event.date}</span>
+              <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {event.time}</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Status badge */}
+        <div className="flex items-center gap-2">
+          {status === 'loading' ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-accent-dim/10 text-[9px] font-black uppercase tracking-widest text-text-muted">
+              <Loader2 className="h-3 w-3 animate-spin" /> Loading
+            </span>
+          ) : status === 'idle' ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-bg-elevated border border-border/40 text-[9px] font-black uppercase tracking-widest text-text-muted">
+              Not Registered
+            </span>
+          ) : status === 'pending_review' ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-[9px] font-black uppercase tracking-widest text-amber-400">
+              <Clock className="h-3 w-3" /> Review Required
+            </span>
+          ) : status === 'reviewed' ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 text-[9px] font-black uppercase tracking-widest text-accent">
+              <Check className="h-3 w-3" /> Registered
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-green-500/10 border border-green-500/30 text-[9px] font-black uppercase tracking-widest text-green-400">
+              <Video className="h-3 w-3" /> Live Now
+            </span>
+          )}
+        </div>
+
+        {/* Idle state — not registered */}
+        {status === 'idle' && (
+          <div className="space-y-4">
+            <p className="text-xs text-text-muted/70 font-mono leading-relaxed">
+              {event.description}
+            </p>
+            <button
+              onClick={handleJoinEvent}
+              disabled={joining}
+              className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl bg-accent text-bg text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
+            >
+              {joining ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <ArrowRight className="h-4 w-4" />
+              )}
+              Join Event
+            </button>
+          </div>
+        )}
+
+        {/* Pending review state */}
+        {status === 'pending_review' && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2.5 p-4 rounded-2xl bg-accent/5 border border-accent/10">
+              <Sparkles className="h-5 w-5 text-accent shrink-0" />
+              <p className="text-xs text-text-muted leading-relaxed">
+                Submit a quick review to unlock access. You&apos;ll receive <span className="text-accent font-black">+50 CP</span>.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+                <MessageSquare className="w-3.5 h-3.5" />
+                Leave Your Review
+              </label>
+              <textarea
+                value={review}
+                onChange={(e) => { setReview(e.target.value); setError(''); }}
+                placeholder="Share your thoughts about the platform..."
+                rows={4}
+                className="w-full bg-bg border-2 border-border rounded-2xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-accent/40 outline-none font-mono text-sm resize-none transition-all"
+              />
+            </div>
+
+            {error && (
+              <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border-2 border-red-500/30">
+                <span className="text-xs text-red-400 font-mono flex-1">{error}</span>
+              </div>
+            )}
+
+            <button
+              onClick={handleSubmitReview}
+              disabled={submitting || !review.trim()}
+              className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl bg-accent text-bg text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Heart className="h-4 w-4" />
+              )}
+              Submit Review (+50 CP)
+            </button>
+          </div>
+        )}
+
+        {/* Reviewed state — status + locked meet */}
+        {(status === 'reviewed' || status === 'available') && (
+          <>
+            <div className="flex items-center gap-2.5 p-4 rounded-2xl bg-accent/5 border border-accent/10">
+              <Check className="h-5 w-5 text-accent shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-xs font-black text-accent">Review Submitted</span>
+                {cpAwarded > 0 && (
+                  <span className="text-[11px] text-text-muted font-mono flex items-center gap-1">
+                    <CpLogo className="h-3.5 w-3.5" /> +{cpAwarded} CP Earned
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Google Meet section */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
+                  <Video className="w-3.5 h-3.5" />
+                  Google Meet
+                </span>
+              </div>
+
+              {status === 'reviewed' ? (
+                <div className="flex flex-col gap-3 p-4 rounded-2xl bg-bg-elevated/40 border border-border/30">
+                  <div className="flex items-center gap-3">
+                    <Lock className="h-5 w-5 text-text-muted/40 shrink-0" />
+                    <div>
+                      <p className="text-xs text-text-muted/70 font-mono">
+                        Available {ACCESS_WINDOW_MINUTES} minutes before the event.
+                      </p>
+                      {countdown && (
+                        <p className="text-[11px] text-accent font-mono mt-1">
+                          Opens in {countdown}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2.5 p-3 rounded-xl bg-bg-elevated border border-border/20">
+                    <Calendar className="h-4 w-4 text-text-muted/40 shrink-0" />
+                    <span className="text-[11px] text-text-muted/60 font-mono">
+                      {eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} &middot; {event.time}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={handleJoinMeet}
+                  className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl bg-accent text-bg text-[10px] font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
+                >
+                  <Video className="h-4 w-4" />
+                  Join Google Meet
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </button>
+              )}
+
+              {error && status === 'available' && (
+                <p className="text-[10px] text-red-400 font-mono">{error}</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EventAccessCard;
