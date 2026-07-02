@@ -26,7 +26,7 @@ import { getTokenBalanceForUser } from '@/features/student/services/tokenBalance
 import StudentBootcampCard, { type StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { useToast } from '@/core/contexts/ToastContext';
-import PageLoader from '@/shared/components/PageLoader';
+import { Skeleton } from '@/shared/components/ui';
 import { StreakIcon } from '@/shared/components';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
@@ -41,9 +41,37 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
   return userCp;
 }
 
-function Skeleton({ className }: { className?: string }) {
-  return <div className={`animate-pulse rounded bg-accent-dim/20 ${className ?? ''}`} />;
-}
+const DashboardSkeleton: React.FC = () => (
+  <div className="bg-bg">
+    <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+      <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
+        <div className="w-full px-4 md:px-0">
+          <div className="p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl border border-border/40 bg-bg-card">
+            <div className="space-y-5">
+              <Skeleton className="h-4 w-24 bg-border/30" />
+              <Skeleton className="h-10 w-3/4 bg-border/30" />
+              <Skeleton className="h-2 w-full max-w-md bg-border/30 rounded-full" />
+              <div className="flex gap-4">
+                <Skeleton className="h-12 w-40 bg-border/30 rounded-xl" />
+                <Skeleton className="h-12 w-48 bg-border/30 rounded-xl" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start px-4 md:px-0">
+        <div className="space-y-4">
+          <Skeleton className="h-4 w-44 bg-border/30" />
+          <Skeleton className="h-64 w-full bg-border/30 rounded-2xl" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-4 w-32 bg-border/30" />
+          <Skeleton className="h-80 w-full bg-border/30 rounded-2xl" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -128,7 +156,7 @@ const Dashboard: React.FC = () => {
     finally { setDownloading(null); }
   };
 
-  if (loading) return <PageLoader />;
+  if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="bg-bg">
