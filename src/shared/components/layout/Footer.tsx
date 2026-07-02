@@ -65,19 +65,15 @@ const Footer: React.FC = () => {
       <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30">
         <div className="w-full max-w-[1600px] mx-auto">
 
-          {/* ── Logo Row (full width) ──────────────────────────────────── */}
-          <div className="mb-2">
-            <Logo size="lg" variant="full" className="block" />
-          </div>
-
-          {/* ── Description + Nav Columns (same row on desktop) ──────────── */}
+          {/* ── Brand + Nav Columns (same row on desktop) ──────────────────── */}
           <div className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-20 xl:gap-32">
-            {/* Description + Social — left */}
-            <div className="max-w-xs">
+            {/* Brand — left (logo acts as header to description) */}
+            <div className="max-w-xs space-y-3">
+              <Logo size="lg" variant="full" className="block" />
               <p className="text-sm text-text-muted font-mono leading-relaxed">
                 Offensive Security Platform — discover, exploit, report. Africa&apos;s first dedicated offensive operations ecosystem.
               </p>
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-3 pt-1">
                 {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                   <a
                     key={key}
