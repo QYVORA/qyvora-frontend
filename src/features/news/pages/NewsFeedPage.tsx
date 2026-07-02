@@ -1,12 +1,15 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Shield, Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
+import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
+
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 interface Article {
   id: string;
@@ -86,6 +89,7 @@ const NewsCard = ({ article }: { article: Article }) => {
 
 const NewsFeedPage = () => {
   const { user } = useAuth();
+  const { isLg } = useAdaptiveUi();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -124,27 +128,36 @@ const NewsFeedPage = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <section className="relative min-h-screen md:h-screen w-full flex-shrink-0 bg-bg overflow-hidden flex items-center">
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-24 md:pt-24 lg:pt-28">
-          <div className="max-w-4xl space-y-6">
-            <div className="space-y-4">
+      <section className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden">
+        <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
+          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-28 lg:pt-24 pb-10 sm:pb-12 lg:pb-16 w-full h-full">
+            <div className="flex flex-col items-start w-full space-y-6">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
                 Cyber <span className="text-accent">Feed</span>
               </h1>
+              <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
+                African-focused cybersecurity threat intelligence and situational awareness.
+                Curated cyber events, advisories, and digital safety alerts.
+              </p>
+              <div className="flex items-center gap-4 pt-2">
+                <button
+                  onClick={() => fetchNews(true)}
+                  disabled={refreshing}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-accent/30 bg-accent-dim text-accent text-xs font-black uppercase tracking-wider hover:bg-accent-dim/70 transition-colors disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+                  {refreshing ? 'Updating' : 'Refresh Feed'}
+                </button>
+              </div>
             </div>
-            <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-2xl">
-              African-focused cybersecurity threat intelligence and situational awareness.
-              Curated cyber events, advisories, and digital safety alerts.
-            </p>
-            <div className="flex items-center gap-4 pt-2">
-              <button
-                onClick={() => fetchNews(true)}
-                disabled={refreshing}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-accent/30 bg-accent-dim text-accent text-xs font-black uppercase tracking-wider hover:bg-accent-dim/70 transition-colors disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-                {refreshing ? 'Updating' : 'Refresh Feed'}
-              </button>
+          </div>
+          <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
+            <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
+              <ErrorBoundary scope="HackerGlobe" fallback={null}>
+                <Suspense fallback={null}>
+                  {isLg && <HackerGlobe scale={1.0} />}
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </div>
         </div>
