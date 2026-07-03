@@ -22,6 +22,7 @@ import SEO from '@/shared/components/SEO';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -243,13 +244,10 @@ function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex w-full max-w-3xl flex-col items-start"
         >
-          <div className="flex w-full items-center justify-start gap-4 sm:gap-6 md:gap-8 lg:gap-10">
-            <QuiteRootMark />
-            <div className="min-w-0">
-              <h1 className="text-left text-4xl font-black uppercase leading-[0.82] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem]">
-                QUITE <span className="text-accent">ROOT</span>
-              </h1>
-            </div>
+          <div className="flex w-full items-start justify-start">
+            <h1 className="-ml-1 text-left text-4xl font-black uppercase leading-[0.82] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem]">
+              QUITE <span className="text-accent">ROOT</span>
+            </h1>
           </div>
 
           <div className="mt-8 max-w-2xl text-left">
@@ -289,8 +287,9 @@ function Hero() {
         >
           <div className="relative w-full max-w-[560px] overflow-hidden rounded-[2rem] border border-white/10 bg-bg-card/70 p-4 shadow-[0_0_80px_var(--color-accent-glow)] backdrop-blur-sm sm:p-6">
             <div className="absolute inset-0 dot-grid opacity-25" aria-hidden />
-            <div className="relative aspect-square overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-bg-card via-bg to-bg/90">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-bg-card via-bg to-bg/90 p-8 sm:p-10 lg:p-12">
               <div className="absolute inset-0 rounded-[1.5rem] border border-accent/10" />
+              <div className="absolute inset-x-10 inset-y-10 rounded-full bg-[radial-gradient(circle,rgba(102,184,112,0.16),transparent_70%)] blur-3xl" />
               <motion.div
                 className="absolute left-1/2 top-1/2 h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/20"
                 animate={{ rotate: 360 }}
@@ -314,20 +313,12 @@ function Hero() {
                   transition={{ duration: 3.2 + index * 0.35, repeat: Infinity, ease: 'easeInOut' }}
                 />
               ))}
-              <motion.div
-                className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.2rem] border border-accent/30 bg-bg-card/70 shadow-[0_0_40px_var(--color-accent-glow)]"
-                animate={{ scale: [1, 1.04, 1], rotate: [0, 6, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <QuiteRootMark />
-              </motion.div>
-              <div className="absolute inset-x-6 bottom-6 rounded-2xl border border-white/10 bg-bg-card/70 px-5 py-4 backdrop-blur-sm">
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
-                  // INTELLIGENCE MESH
-                </div>
-                <div className="mt-2 text-sm text-text-secondary">
-                  Distributed research, operator tooling, and signal fusion in motion.
-                </div>
+              <div className="absolute left-1/2 top-1/2 flex h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.2rem] border border-accent/20 bg-bg-card/50 p-4 shadow-[0_0_40px_var(--color-accent-glow)] backdrop-blur-sm">
+                <img
+                  src={quiteRootLogo}
+                  alt="QuiteRoot official logo"
+                  className="h-full w-full object-contain"
+                />
               </div>
             </div>
           </div>
