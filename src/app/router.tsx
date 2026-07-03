@@ -45,6 +45,10 @@ const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePassw
 // Events pages
 const EventsPage        = lazy(() => import('../features/marketing/pages/EventsPage'));
 
+// Courses pages
+const CoursesPage       = lazy(() => import('../features/marketing/pages/CoursesPage'));
+const CourseInfoPage    = lazy(() => import('../features/marketing/pages/CourseInfoPage'));
+
 // News pages
 const NewsFeedPage      = lazy(() => import('../features/news/pages/NewsFeedPage'));
 
@@ -59,6 +63,8 @@ const SettingsPage      = lazy(() => import('../features/student/pages/SettingsP
 const StudentNewsFeedPage = lazy(() => import('../features/student/pages/NewsFeedPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
+const MyCoursesPage     = lazy(() => import('../features/student/pages/MyCoursesPage'));
+const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLessonPage'));
 
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
@@ -125,6 +131,8 @@ export const AppRouter = () => {
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Wrap scope="Leaderboard"><LeaderboardAllPage /></Wrap>} />
           <Route path="/events" element={<Wrap scope="Events"><EventsPage /></Wrap>} />
+          <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
+          <Route path="/courses/:courseId" element={<Wrap scope="Course"><CourseInfoPage /></Wrap>} />
         </Route>
 
         <Route element={<BlogsLayout />}>
@@ -151,6 +159,9 @@ export const AppRouter = () => {
           <Route path="/dashboard/bootcamps/:bootcampId" element={<Wrap scope="Bootcamp Course"><StudentOnly><BootcampCoursePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId" element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId"  element={<Wrap scope="Bootcamp Room"><StudentOnly><BootcampRoomPage /></StudentOnly></Wrap>} />
+
+          <Route path="/dashboard/courses" element={<Wrap scope="Courses"><StudentOnly><MyCoursesPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/courses/:courseId" element={<Wrap scope="Course"><StudentOnly><CourseLessonPage /></StudentOnly></Wrap>} />
 
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
