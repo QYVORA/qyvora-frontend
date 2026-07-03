@@ -296,13 +296,16 @@ api.interceptors.response.use(
     // If the backend rejects with "Invalid/Missing CSRF token", our local CSRF
     // token is out of sync with the cookie. Try to get a fresh token from
     // /auth/me (a GET request, therefore CSRF-exempt) and retry once.
-    // We send the Bearer token explicitly because authApi doesn't attach it,
-    // and the access_token cookie may be stale.
+    // If the in-memory access token is empty (page refresh), first attempt a
+    // token refresh to get a valid Bearer token so /auth/me succeeds.
     const csrfError =
       data?.error === 'Invalid CSRF token' || data?.error === 'Missing CSRF token';
     if (status === 403 && csrfError && authSessionHint) {
       original._retry = true;
       try {
+        if (!accessToken) {
+          await tryRefreshToken();
+        }
         const meRes = await authApi.get('/auth/me', {
           headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
         });
