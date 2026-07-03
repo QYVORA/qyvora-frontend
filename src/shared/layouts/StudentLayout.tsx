@@ -90,7 +90,6 @@ import { useAuth } from '@/core/contexts/AuthContext';
 // The student-specific fixed topbar (includes mobile bottom nav internally).
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 
-import WelcomeModal from '@/features/student/components/WelcomeModal';
 import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
@@ -125,16 +124,13 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
  */
 const StudentLayout = () => {
   const { user, loading } = useAuth();
-  const [welcomeOpen, setWelcomeOpen] = useState(false);
   const [recoveryOpen, setRecoveryOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && user && !user.onboardingCompletedAt && !user.isAdmin) {
-      setWelcomeOpen(true);
-    } else if (!loading && user && !user.recoveryTokenAcknowledgedAt && !user.isAdmin && !welcomeOpen) {
+    if (!loading && user && !user.recoveryTokenAcknowledgedAt && !user.isAdmin) {
       setRecoveryOpen(true);
     }
-  }, [loading, user, welcomeOpen]);
+  }, [loading, user]);
 
   // ── Room Page Detection ────────────────────────────────────────────────────
   // Room pages use a fixed-height split-pane shell where each pane scrolls
@@ -189,14 +185,11 @@ const StudentLayout = () => {
       {/* Cookie Consent banner */}
       <ConsentBanner />
 
-      {/* Welcome Modal for new operators */}
-      <WelcomeModal open={welcomeOpen} onOpenChange={setWelcomeOpen} />
-
       {/* Recovery Token Modal */}
       <RecoveryTokenModal open={recoveryOpen} onOpenChange={setRecoveryOpen} />
 
       {/* Username Change Modal (lowest priority — only if no other modal is open) */}
-      {!welcomeOpen && !recoveryOpen && <UsernameChangeModal />}
+      {!recoveryOpen && <UsernameChangeModal />}
     </div>
   );
 };
