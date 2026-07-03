@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, BookOpen, ChevronLeft, ChevronRight, CircleDot, List } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, List, Lock, Loader2 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses/courseData';
 import CodeBlockRenderer from '@/features/student/components/bootcamp-room/CodeBlockRenderer';
+import api from '@/core/services/api';
 import type { Lesson } from '@/features/student/data/courses/types';
 
 const LessonViewer: React.FC<{ lesson: Lesson; number: number }> = ({ lesson, number }) => {
@@ -29,23 +30,59 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number }> = ({ lesson, nu
   );
 };
 
+const STORAGE_KEY = 'qyvora_course_progress';
+
 const CourseLessonPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
+  const navigate = useNavigate();
   const course = getCourseById(courseId || '');
 
+  const [purchased, setPurchased] = useState<boolean | null>(null);
+  const [checkingAccess, setCheckingAccess] = useState(true);
   const [currentLessonIdx, setCurrentLessonIdx] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (!courseId) { setCheckingAccess(false); return; }
+    const saved = localStorage.getItem(`${STORAGE_KEY}_${courseId}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setCompletedLessons(new Set(parsed.completedLessons));
+        setCurrentLessonIdx(parsed.lastLesson ?? 0);
+      } catch {}
+    }
+    api.get('/cp/transactions?limit=100').then((r) => {
+      const items = Array.isArray(r.data?.items) ? r.data.items : [];
+      const purchasedIds = new Set(items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
+        return tx.metadata?.slug || String(tx.productId);
+      }));
+      setPurchased(purchasedIds.has(courseId || ''));
+    }).catch(() => {
+      setPurchased(false);
+    }).finally(() => setCheckingAccess(false));
+  }, [courseId]);
 
   const lesson = course?.lessons[currentLessonIdx];
   const totalLessons = course?.lessons.length ?? 0;
   const completedCount = completedLessons.size;
   const progress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
+  const saveProgress = useCallback((lessons: Set<string>, idx: number) => {
+    if (!courseId) return;
+    localStorage.setItem(`${STORAGE_KEY}_${courseId}`, JSON.stringify({
+      completedLessons: [...lessons],
+      lastLesson: idx,
+    }));
+  }, [courseId]);
+
   const markComplete = useCallback(() => {
     if (!lesson) return;
-    setCompletedLessons((prev) => new Set([...prev, lesson.id]));
-  }, [lesson]);
+    const next = new Set([...completedLessons, lesson.id]);
+    setCompletedLessons(next);
+    saveProgress(next, currentLessonIdx);
+  }, [lesson, completedLessons, currentLessonIdx, saveProgress]);
 
   const goNext = useCallback(() => {
     if (currentLessonIdx < totalLessons - 1) {
@@ -76,6 +113,34 @@ const CourseLessonPage: React.FC = () => {
         <div className="text-center">
           <p className="text-text-muted text-lg">Course not found.</p>
           <Link to="/dashboard/courses" className="text-accent hover:underline mt-4 inline-block">← Back to My Courses</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (checkingAccess) {
+    return (
+      <div className="min-h-screen bg-bg flex items-center justify-center">
+        <Loader2 className="h-8 w-8 text-accent animate-spin" />
+      </div>
+    );
+  }
+
+  if (!purchased) {
+    return (
+      <div className="min-h-screen bg-bg flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-md mx-auto px-4">
+          <Lock className="h-12 w-12 text-text-muted/30 mx-auto" />
+          <h1 className="text-xl font-black text-text-primary">Course Not Unlocked</h1>
+          <p className="text-sm text-text-muted leading-relaxed">
+            You haven't unlocked {course.title} yet. Purchase it from the course page to start learning.
+          </p>
+          <Link
+            to={`/courses/${course.id}`}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+          >
+            View Course Details <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </div>
     );
@@ -136,7 +201,7 @@ const CourseLessonPage: React.FC = () => {
                 onClick={() => setSidebarOpen(false)}
                 className="md:hidden absolute top-2 right-2 p-2 text-text-muted hover:text-accent"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             )}
             <div className="space-y-1">

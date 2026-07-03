@@ -16,7 +16,7 @@ const FOOTER_COLS = [
     links: [
       { key: 'events', label: 'Events', path: '/events' },
       { key: 'learn', label: 'Learn', path: '/learn' },
-      { key: 'anansi', label: 'Anansi CLI', path: '/anansi' },
+      { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'blogs', label: 'Blogs', path: '/blogs' },
       { key: 'news', label: 'News', path: '/news' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
