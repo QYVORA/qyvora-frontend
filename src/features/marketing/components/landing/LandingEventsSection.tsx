@@ -28,7 +28,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
   };
 
   return (
-    <div className="relative w-full aspect-[3/2] md:aspect-[16/7] overflow-hidden rounded-2xl md:rounded-3xl">
+    <div className="relative w-full aspect-[4/3] md:aspect-[16/7] overflow-hidden rounded-2xl md:rounded-3xl">
       <img
         src={event.flyerUrl}
         alt={event.title}
