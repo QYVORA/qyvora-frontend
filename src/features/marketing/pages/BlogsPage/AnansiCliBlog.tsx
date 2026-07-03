@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search, Globe, Lock, Shield, FileCode, AlertTriangle, Download, Zap, CheckCircle2 } from 'lucide-react';
-import { Section, Body, CodeBlock, Heading, Highlight, PhaseCard, OutputBlock } from './shared';
+import { Section, Body, CodeBlock, TerminalBlock, Heading, Highlight, PhaseCard, OutputBlock } from './shared';
 
 export const AnansiCliBlog: React.FC = () => {
   return (
@@ -63,7 +63,7 @@ export const AnansiCliBlog: React.FC = () => {
           <PhaseCard icon={AlertTriangle} name="Phase 06 — Takeover" desc="Dangling CNAME detection for AWS, Heroku, GitHub Pages, and more" />
         </div>
 
-        <CodeBlock code={`# Full pipeline — one command
+        <TerminalBlock code={`# Full pipeline — one command
 anansi target.com
 
 # Deep scan with extended wordlists
@@ -126,7 +126,7 @@ anansi target.com --modules discovery,tls,takeover`} />
           Terminal output is great for live scanning, but sometimes you need to share findings or integrate with other tools. Anansi supports four output formats:
         </Body>
 
-        <CodeBlock code={`# JSON — pipe to jq or save for downstream tools
+        <TerminalBlock code={`# JSON — pipe to jq or save for downstream tools
 anansi target.com --out json > results.json
 anansi target.com --out json | jq '.Findings[] | select(.Severity == "CRITICAL")'
 
@@ -166,7 +166,7 @@ anansi target.com --out html > report.html`} />
           </li>
         </ul>
 
-        <CodeBlock code={`# Control the throttle
+        <TerminalBlock code={`# Control the throttle
 anansi target.com --threads 100    # concurrent workers (default: 50)
 anansi target.com --delay 100      # rate-limit in ms between requests
 anansi target.com --timeout 10     # per-request timeout in seconds`} />
@@ -179,7 +179,7 @@ anansi target.com --timeout 10     # per-request timeout in seconds`} />
           Installing Anansi is a two-step process. No package manager, no runtime, no dependencies:
         </Body>
 
-        <CodeBlock code={`# Step 1: Download the binary
+        <TerminalBlock code={`# Step 1: Download the binary
 curl -L https://github.com/QYVORA/qyvora-anansi-cli/releases/latest/download/anansi-linux-amd64 -o anansi
 
 # Step 2: Make it executable and install

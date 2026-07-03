@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
 const SCROLL_THRESHOLD = 150;
 
 const ScrollToTop = () => {
+  const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
 
   useEffect(() => {
     const check = () => setVisible(window.scrollY > SCROLL_THRESHOLD);

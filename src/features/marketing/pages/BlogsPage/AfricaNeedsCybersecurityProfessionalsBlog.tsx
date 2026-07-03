@@ -70,18 +70,34 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
 
         <InlineDiagram>
           <div className="w-full">
-            <svg viewBox="0 0 600 170" className="w-full h-auto" fill="none">
-              <rect x="20" y="15" width="560" height="36" rx="18" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <rect x="20" y="15" width="84" height="36" rx="18" className="fill-accent" opacity="0.8" />
-              <text x="62" y="39" textAnchor="middle" className="fill-white font-mono font-bold uppercase" fontSize="13">Current</text>
-              <text x="130" y="39" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="13">~15,000 professionals</text>
+            <svg viewBox="0 0 600 180" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="current-bar-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#66B870" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.6)" />
+                </linearGradient>
+                <linearGradient id="target-bar-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="rgba(102,184,112,0.5)" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.15)" />
+                </linearGradient>
+                <filter id="bar-glow">
+                  <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="rgba(102,184,112,0.15)" />
+                </filter>
+              </defs>
 
-              <rect x="20" y="70" width="560" height="36" rx="18" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <rect x="20" y="70" width="112" height="36" rx="18" className="fill-accent" opacity="0.5" />
-              <text x="76" y="94" textAnchor="middle" className="fill-white font-mono font-bold uppercase" fontSize="13">Target</text>
-              <text x="400" y="94" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">Target: 100,000 professionals by 2030</text>
+              <rect x="20" y="15" width="560" height="42" rx="21" fill="rgba(102,184,112,0.06)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" />
+              <rect x="20" y="15" width="100" height="42" rx="21" fill="url(#current-bar-grad)" filter="url(#bar-glow)" />
+              <rect x="20" y="15" width="100" height="42" rx="21" fill="url(#current-bar-grad)" opacity="0.15" />
+              <text x="70" y="41" textAnchor="middle" fill="#000000" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Current</text>
+              <text x="140" y="41" textAnchor="start" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontSize="13">~15,000 professionals</text>
 
-              <text x="300" y="155" textAnchor="middle" className="fill-text-muted font-mono" fontSize="12">The gap represents a $2B+ training and services opportunity</text>
+              <rect x="20" y="78" width="560" height="42" rx="21" fill="rgba(102,184,112,0.06)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" />
+              <rect x="20" y="78" width="180" height="42" rx="21" fill="url(#target-bar-grad)" filter="url(#bar-glow)" />
+              <text x="110" y="104" textAnchor="middle" fill="#FFFFFF" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Target</text>
+              <text x="220" y="104" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13">100,000 professionals by 2030</text>
+
+              <rect x="140" y="155" width="320" height="20" rx="10" fill="rgba(102,184,112,0.05)" />
+              <text x="300" y="169" textAnchor="middle" fill="rgba(238,240,238,0.35)" fontFamily="JetBrains Mono, monospace" fontSize="11">The gap represents a $2B+ training opportunity</text>
             </svg>
           </div>
         </InlineDiagram>

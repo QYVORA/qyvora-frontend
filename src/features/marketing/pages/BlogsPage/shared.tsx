@@ -1,27 +1,28 @@
 import React from 'react';
 import { Terminal } from '@/shared/components/blog/Terminal';
 import { OutputBlock as OutputBlockComponent } from '@/shared/components/blog/OutputBlock';
+import { IdeBlock } from '@/shared/components/blog/IdeBlock';
 
 export const Section = ({ children }: { children: React.ReactNode }) => (
-  <div className="mb-16 md:mb-24 last:mb-0">
+  <div className="mb-20 md:mb-28 last:mb-0">
     {children}
   </div>
 );
 
 export const Heading = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-8">
+  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-6 md:mb-8">
     {children}
   </h2>
 );
 
 export const SubHeading = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 text-accent">
+  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-5 md:mb-6 text-accent">
     {children}
   </h3>
 );
 
 export const Body = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-base md:text-lg text-text-secondary font-mono leading-[2] mb-8 last:mb-0">
+  <p className="text-sm md:text-base text-text-secondary font-mono leading-[2] md:leading-[2.2] mb-6 md:mb-8 last:mb-0">
     {children}
   </p>
 );
@@ -30,8 +31,12 @@ export const Highlight = ({ children }: { children: React.ReactNode }) => (
   <span className="text-accent font-bold">{children}</span>
 );
 
-export const CodeBlock = ({ code, lang = 'terminal' }: { code: string; lang?: string }) => (
-  <Terminal code={code} title={lang} />
+export const CodeBlock = ({ code, lang = 'typescript' }: { code: string; lang?: string }) => (
+  <IdeBlock code={code} language={lang} />
+);
+
+export const TerminalBlock = ({ code, title = 'terminal' }: { code: string; title?: string }) => (
+  <Terminal code={code} title={title} />
 );
 
 export const OutputBlock = ({ text, title = 'output' }: { text: string; title?: string }) => (
@@ -39,20 +44,20 @@ export const OutputBlock = ({ text, title = 'output' }: { text: string; title?: 
 );
 
 export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/10">
-    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+  <div className="flex items-center gap-4 p-4 md:p-5 rounded-xl bg-white/[0.03] border border-white/5">
+    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
       {icon}
     </div>
     <div>
       <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</div>
-      <div className="text-lg font-black text-text-primary">{value}</div>
+      <div className="text-base md:text-lg font-black text-text-primary">{value}</div>
     </div>
   </div>
 );
 
 export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType; name: string; desc: string }) => (
-  <div className="p-5 rounded-xl border border-accent/10 bg-accent/5 flex items-start gap-4 hover:border-accent/30 transition-colors">
-    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+  <div className="p-5 md:p-6 rounded-xl border border-white/5 bg-white/[0.02] flex items-start gap-4 hover:border-white/10 transition-colors">
+    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
       <Icon className="w-5 h-5 text-accent" />
     </div>
     <div>
@@ -63,12 +68,12 @@ export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType;
 );
 
 export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) => (
-  <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
+  <div className="p-6 md:p-7 rounded-xl border border-white/5 bg-white/[0.02]">
     <div className="flex items-start gap-4">
       <Icon className="w-6 h-6 text-accent mt-1 shrink-0" />
       <div>
-        <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">{title}</h3>
-        <p className="text-sm font-mono text-text-secondary leading-[2]">
+        <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 md:mb-3 text-text-primary">{title}</h3>
+        <p className="text-xs md:text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2]">
           {desc}
         </p>
       </div>
@@ -77,9 +82,9 @@ export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementTy
 );
 
 export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: React.ReactNode }[] }) => (
-  <ul className="space-y-4 my-8 text-sm md:text-base font-mono text-text-secondary leading-[2]">
+  <ul className="space-y-4 md:space-y-5 my-8 md:my-10 text-sm md:text-base font-mono text-text-secondary leading-[2] md:leading-[2.2]">
     {items.map((item, i) => (
-      <li key={i} className="flex items-start gap-3">
+      <li key={i} className="flex items-start gap-3 md:gap-4">
         <span className="mt-0.5 shrink-0">{item.icon}</span>
         <span>{item.text}</span>
       </li>
@@ -88,11 +93,11 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="p-8 md:p-12 rounded-2xl border border-accent/20 bg-accent/5 text-center">
+  <div className="p-8 md:p-14 rounded-2xl border border-white/5 bg-white/[0.02] text-center">
     <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
       {title}
     </h2>
-    <p className="text-base md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed mb-8">
+    <p className="text-sm md:text-lg text-text-secondary font-mono max-w-2xl mx-auto leading-relaxed md:leading-[2] mb-8 md:mb-10">
       {desc}
     </p>
     <a
@@ -105,11 +110,14 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
 );
 
 export const Divider = () => (
-  <div className="w-full h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent my-16 md:my-24" />
+  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent my-16 md:my-24" />
 );
 
 export const InlineDiagram = ({ children }: { children: React.ReactNode }) => (
-  <div className="my-8 p-3 md:p-8 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center w-full">
-    {children}
+  <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+    <div className="relative z-10 flex items-center justify-center w-full">
+      {children}
+    </div>
   </div>
 );

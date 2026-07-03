@@ -34,7 +34,8 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const steps = React.useMemo(() => [
     { line1: "Train Like a", line2: "Hacker." },
     { line1: "Train Like a Hacker.", line2: "Become a Hacker." },
-    { line1: "Securing Africa's", line2: "Digital Future." }
+    { line1: "Securing Africa's", line2: "Digital Future." },
+    { line1: "Creating 100,000", line2: "Cyber Professionals." }
   ], []);
 
   React.useEffect(() => {
@@ -48,7 +49,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         setDisplayText(nextText);
 
         if (nextText === fullText) {
-          const pauseTime = stepIndex === 2 ? 4000 : 2000;
+          const pauseTime = stepIndex === steps.length - 1 ? 4000 : 2000;
           timer = setTimeout(() => {
             setIsDeleting(true);
           }, pauseTime);
