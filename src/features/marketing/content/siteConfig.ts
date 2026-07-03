@@ -89,6 +89,7 @@ export const SITE_CONFIG = {
       { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
       { key: 'learn', label: 'Learn', path: '/learn', desc: 'HPB Bootcamp Phases' },
       { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Offensive research and engineering' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
