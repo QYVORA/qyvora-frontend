@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Binary,
   BookOpen,
-  Boxes,
   BrainCircuit,
   CheckCircle2,
   Cpu,
@@ -17,22 +16,12 @@ import {
   Network,
   Rocket,
   Shield,
-  Sparkles,
-  Terminal,
-  Zap,
 } from 'lucide-react';
+import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import { Footer } from '@/shared/components/layout';
-import { Carousel } from '@/shared/components/carousel';
-import { ContactTrigger } from '@/features/marketing/components/ContactModal';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
-import anansiImage from '@/assets/blog/anansi-cli.webp';
-import researchImage from '@/assets/blog/mapping-attack-surfaces.webp';
-import workspaceImage from '@/assets/team/sopt4.webp';
-import toolingImage from '@/assets/anansi/discovery.webp';
-import intelImage from '@/assets/anansi/tls.webp';
-import labImage from '@/assets/illustrations/hero-terminal-panel.webp';
-import engineeringImage from '@/assets/sections/how-it-works/practice-bg.webp';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -52,40 +41,6 @@ const capabilities = [
   'Cyber Education',
 ];
 
-type ProjectCard = {
-  id: string;
-  name: string;
-  status?: string;
-  description?: string;
-  active?: boolean;
-};
-
-type GallerySlide = {
-  id: string;
-  title: string;
-  label: string;
-  image: string;
-  video?: string;
-};
-
-const projects: ProjectCard[] = [
-  {
-    id: 'anansi-cli',
-    name: 'Anansi CLI',
-    status: 'ACTIVE',
-    description:
-      'A modular offensive security framework built to streamline reconnaissance, automation, and penetration testing workflows.',
-    active: true,
-  },
-  { id: 'qr-recon', name: 'QR Recon' },
-  { id: 'malware-sandbox', name: 'Malware Sandbox' },
-  { id: 'packetscope', name: 'PacketScope' },
-  { id: 'qdns', name: 'QDNS' },
-  { id: 'rootos', name: 'RootOS' },
-  { id: 'threat-atlas', name: 'Threat Atlas' },
-  { id: 'zerotrace', name: 'ZeroTrace' },
-];
-
 const timeline = [
   ['Research Idea', 'Frame the operational problem and collect raw signal.'],
   ['Threat Analysis', 'Map adversary behavior, targets, and defensive gaps.'],
@@ -102,16 +57,6 @@ const principles = [
   ['Operational Security', 'Security is built into every layer.', LockKeyhole],
   ['African Innovation', 'Designed for African defenders.', Globe2],
   ['Continuous Improvement', 'Never finished.', Rocket],
-];
-
-const gallerySlides: GallerySlide[] = [
-  { id: 'anansi', title: 'Anansi CLI', label: 'Flagship framework', image: anansiImage },
-  { id: 'research', title: 'Research', label: 'Original cyber intelligence', image: researchImage },
-  { id: 'workspace', title: 'Team Workspace', label: 'Builders behind QYVORA', image: workspaceImage },
-  { id: 'tooling', title: 'Tooling', label: 'Automation for operators', image: toolingImage },
-  { id: 'intel', title: 'Threat Intelligence', label: 'Signal-rich analysis', image: intelImage },
-  { id: 'engineering', title: 'Engineering', label: 'Production-ready capability', image: engineeringImage },
-  { id: 'lab', title: 'Cyber Lab', label: 'Experiment, test, release', image: labImage },
 ];
 
 const terminalLines = [
@@ -235,12 +180,12 @@ function QuiteRootMark() {
       initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
       animate={{ opacity: 1, scale: 1, rotate: 0 }}
       transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="relative mx-auto mb-8 flex h-36 w-36 items-center justify-center sm:h-44 sm:w-44"
+      className="relative flex h-20 w-20 shrink-0 items-center justify-center sm:h-28 sm:w-28 md:h-36 md:w-36 lg:h-44 lg:w-44"
       aria-label="QuiteRoot geometric mark"
     >
-      <div className="absolute inset-0 rounded-[2rem] border border-accent/25 bg-accent/5 shadow-[0_0_80px_var(--color-accent-glow)] rotate-45" />
-      <div className="absolute inset-5 rounded-2xl border border-white/10 bg-bg-card/70 backdrop-blur-sm" />
-      <div className="relative z-10 grid h-24 w-24 grid-cols-2 gap-2">
+      <div className="absolute inset-0 rounded-[1.35rem] border border-accent/25 bg-accent/5 shadow-[0_0_80px_var(--color-accent-glow)] rotate-45 sm:rounded-[1.75rem] md:rounded-[2rem]" />
+      <div className="absolute inset-3 rounded-xl border border-white/10 bg-bg-card/70 backdrop-blur-sm sm:inset-4 sm:rounded-2xl md:inset-5" />
+      <div className="relative z-10 grid h-12 w-12 grid-cols-2 gap-1.5 sm:h-16 sm:w-16 sm:gap-2 md:h-24 md:w-24">
         <span className="rounded-tl-2xl border border-accent/40 bg-accent/20" />
         <span className="rounded-tr-md border border-white/10 bg-white/5" />
         <span className="rounded-bl-md border border-white/10 bg-white/5" />
@@ -248,7 +193,7 @@ function QuiteRootMark() {
       </div>
       <motion.span
         className="absolute h-2 w-2 rounded-full bg-accent"
-        animate={{ y: [-48, 48, -48], opacity: [0.2, 1, 0.2] }}
+        animate={{ y: [-36, 36, -36], opacity: [0.2, 1, 0.2] }}
         transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
       />
     </motion.div>
@@ -287,100 +232,105 @@ function TerminalPanel({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function GalleryMedia({ slide }: { slide: GallerySlide }) {
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
-
-  React.useEffect(() => {
-    if (!slide.video || !videoRef.current) return;
-
-    const video = videoRef.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          void video.play().catch(() => undefined);
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.35 },
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, [slide.video]);
-
-  if (!slide.video) {
-    return (
-      <img
-        src={slide.image}
-        alt={slide.title}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-55"
-      />
-    );
-  }
-
-  return (
-    <>
-      <video
-        ref={videoRef}
-        className="absolute inset-0 hidden h-full w-full object-cover opacity-55 md:block"
-        src={slide.video}
-        poster={slide.image}
-        muted
-        loop
-        playsInline
-        autoPlay
-        preload="metadata"
-      />
-      <img
-        src={slide.image}
-        alt={slide.title}
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-55 md:hidden"
-      />
-    </>
-  );
-}
-
 function Hero() {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-bg pt-24">
       <AnimatedField />
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] max-w-[1600px] flex-col items-center justify-center px-4 py-16 text-center sm:px-8 lg:px-12 xl:px-16">
-        <QuiteRootMark />
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-[1600px] items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:px-12 xl:px-16">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-5xl"
+          className="flex w-full max-w-3xl flex-col items-start"
         >
-          <h1 className="text-5xl font-black uppercase leading-[0.85] tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
-            QUITE <span className="text-accent">ROOT</span>
-          </h1>
-          <p className="mt-6 text-lg font-black uppercase tracking-[0.22em] text-text-primary md:text-2xl">
-            The Intelligence Behind QYVORA
-          </p>
-          <p className="mx-auto mt-4 max-w-3xl text-base text-text-secondary md:text-xl">
-            Research. Build. Exploit. Defend.
-          </p>
-          <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-text-secondary md:text-base lg:text-lg">
-            We engineer offensive security tools, conduct cyber intelligence research, and transform ideas into
-            production-ready security capabilities.
-          </p>
-          <div className="mt-9 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
+          <div className="flex w-full items-center justify-start gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+            <QuiteRootMark />
+            <div className="min-w-0">
+              <h1 className="text-left text-4xl font-black uppercase leading-[0.82] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem]">
+                QUITE <span className="text-accent">ROOT</span>
+              </h1>
+            </div>
+          </div>
+
+          <div className="mt-8 max-w-2xl text-left">
+            <p className="text-lg font-black uppercase tracking-[0.22em] text-text-primary md:text-2xl">
+              The Intelligence Behind QYVORA
+            </p>
+            <p className="mt-4 text-base text-text-secondary md:text-xl">
+              Research. Build. Exploit. Defend.
+            </p>
+            <p className="mt-6 text-sm leading-relaxed text-text-secondary md:text-base lg:text-lg">
+              We engineer offensive security tools, conduct cyber intelligence research, and transform ideas into
+              production-ready security capabilities.
+            </p>
+          </div>
+
+          <div className="mt-9 flex flex-col items-stretch justify-start gap-4 sm:flex-row sm:items-center">
             <a href="#research" className="btn-primary inline-flex items-center justify-center gap-3 !px-8 !py-4 text-xs">
               Explore Research <ArrowRight className="h-4 w-4" />
             </a>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-10 w-full max-w-2xl"
+          >
+            <TerminalPanel compact />
+          </motion.div>
         </motion.div>
+
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-12 w-full max-w-2xl"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden lg:flex w-full items-center justify-center"
         >
-          <TerminalPanel compact />
+          <div className="relative w-full max-w-[560px] overflow-hidden rounded-[2rem] border border-white/10 bg-bg-card/70 p-4 shadow-[0_0_80px_var(--color-accent-glow)] backdrop-blur-sm sm:p-6">
+            <div className="absolute inset-0 dot-grid opacity-25" aria-hidden />
+            <div className="relative aspect-square overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-bg-card via-bg to-bg/90">
+              <div className="absolute inset-0 rounded-[1.5rem] border border-accent/10" />
+              <motion.div
+                className="absolute left-1/2 top-1/2 h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/20"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+              />
+              <motion.div
+                className="absolute left-1/2 top-1/2 h-[76%] w-[76%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
+                animate={{ rotate: -360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+              />
+              <div className="absolute left-[18%] top-[24%] h-24 w-24 rounded-full border border-accent/20 bg-accent/10 blur-[2px]" />
+              <div className="absolute right-[16%] top-[22%] h-20 w-20 rounded-full border border-white/10 bg-white/5" />
+              <div className="absolute bottom-[18%] left-[22%] h-20 w-20 rounded-full border border-accent/20 bg-accent/10" />
+              <div className="absolute bottom-[16%] right-[20%] h-24 w-24 rounded-full border border-white/10 bg-white/5" />
+              {["18%", "32%", "58%", "72%"].map((pos, index) => (
+                <motion.div
+                  key={pos}
+                  className="absolute h-2.5 w-2.5 rounded-full bg-accent"
+                  style={{ left: pos, top: index % 2 === 0 ? '28%' : '70%' }}
+                  animate={{ opacity: [0.15, 0.95, 0.15], scale: [0.8, 1.2, 0.8] }}
+                  transition={{ duration: 3.2 + index * 0.35, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              ))}
+              <motion.div
+                className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.2rem] border border-accent/30 bg-bg-card/70 shadow-[0_0_40px_var(--color-accent-glow)]"
+                animate={{ scale: [1, 1.04, 1], rotate: [0, 6, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <QuiteRootMark />
+              </motion.div>
+              <div className="absolute inset-x-6 bottom-6 rounded-2xl border border-white/10 bg-bg-card/70 px-5 py-4 backdrop-blur-sm">
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                  // INTELLIGENCE MESH
+                </div>
+                <div className="mt-2 text-sm text-text-secondary">
+                  Distributed research, operator tooling, and signal fusion in motion.
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -473,56 +423,6 @@ function Mission() {
   );
 }
 
-function ResearchProjects() {
-  return (
-    <section id="research" className="relative py-20 md:py-28 lg:py-32">
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <SectionHeader eyebrow="// LAB INDEX" title="Research Discoveries" accent="Projects" />
-          <p className="max-w-xl text-sm leading-relaxed text-text-muted">
-            Release-grade experiments, internal frameworks, and future capability tracks from the QuiteRoot lab.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ ...sectionTransition, delay: index * 0.04 }}
-              className={`card-qyvora border p-5 ${
-                project.active
-                  ? 'md:col-span-2 border-accent/30 bg-accent-dim'
-                  : 'border-border bg-bg-card/60 opacity-80'
-              }`}
-            >
-              <div className="mb-8 flex items-center justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
-                  {project.active ? <Terminal className="h-5 w-5" /> : <Boxes className="h-5 w-5" />}
-                </div>
-                <span className="rounded-lg border border-accent/20 bg-bg/60 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-accent">
-                  {project.active ? project.status : 'Coming Soon'}
-                </span>
-              </div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-text-primary">{project.name}</h3>
-              <p className="mt-3 min-h-20 text-sm leading-relaxed text-text-secondary">
-                {project.description ?? 'Research track under active lab development. Public notes and tooling will ship when operationally ready.'}
-              </p>
-              {project.active && (
-                <Link to="/anansi" className="mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
-                  Explore <ArrowRight className="h-4 w-4" />
-                </Link>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function FeaturedProject() {
   const output = [
     'anansi recon --scope qyvora.netlify.app',
@@ -533,7 +433,7 @@ function FeaturedProject() {
   ];
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-28 lg:py-32">
+    <section id="research" className="relative overflow-hidden py-20 md:py-28 lg:py-32">
       <div className="absolute inset-0 dot-grid opacity-20" aria-hidden />
       <div className="relative z-10 mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12 xl:px-16">
         <motion.div
@@ -662,77 +562,9 @@ function Principles() {
   );
 }
 
-function Gallery() {
-  return (
-    <section className="relative py-20 md:py-28 lg:py-32">
-      <div className="w-full px-4 md:px-10 lg:px-12 xl:px-16">
-        <div className="mx-auto flex w-full max-w-[1600px] flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-          <div className="mb-8 text-center md:sticky md:top-32 md:mb-0 md:w-[35%] md:text-left lg:w-[38%]">
-            <SectionHeader eyebrow="// GALLERY" title="Inside The" accent="Lab" />
-          </div>
-          <div className="md:w-[65%] lg:w-[62%]">
-            <Carousel
-              slides={gallerySlides}
-              autoPlayInterval={5200}
-              renderCard={(slide) => (
-                <div className="relative min-h-[320px] overflow-hidden md:min-h-[420px]">
-                  <GalleryMedia slide={slide} />
-                  <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card/80 to-transparent" />
-                  <div className="relative z-10 flex min-h-[320px] flex-col items-start justify-end p-6 text-left md:min-h-[420px] md:p-8">
-                    <span className="mb-3 rounded-lg border border-accent/20 bg-accent/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em] text-accent">
-                      {slide.label}
-                    </span>
-                    <h3 className="text-3xl font-black uppercase tracking-tight text-text-primary md:text-5xl">
-                      {slide.title}
-                    </h3>
-                  </div>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function JoinMission() {
-  return (
-    <section className="relative overflow-hidden py-20 md:py-28 lg:py-32">
-      <AnimatedField />
-      <div className="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-8 lg:px-12">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          transition={sectionTransition}
-          className="glass-effect rounded-3xl p-8 text-center shadow-[0_0_80px_rgba(0,0,0,0.35)] sm:p-12 lg:p-16"
-        >
-          <Sparkles className="mx-auto mb-6 h-9 w-9 text-accent" />
-          <h2 className="text-4xl font-black uppercase tracking-tight text-text-primary md:text-6xl">
-            Want to build with <span className="text-accent">QuiteRoot?</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-sm leading-relaxed text-text-secondary md:text-base">
-            We are always experimenting with new ideas and looking for contributors passionate about offensive
-            security, tooling, and research.
-          </p>
-          <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
-            <ContactTrigger className="btn-primary inline-flex items-center justify-center gap-3 !px-8 !py-4 text-xs">
-              Contact Us <ArrowRight className="h-4 w-4" />
-            </ContactTrigger>
-            <Link to="/" className="btn-secondary inline-flex items-center justify-center gap-3 !px-8 !py-4 text-xs">
-              Explore QYVORA <Zap className="h-4 w-4" />
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
 const QuiteRootPage: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const { user } = useAuth();
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-bg">
@@ -761,12 +593,12 @@ const QuiteRootPage: React.FC = () => {
         <Hero />
         <WhoWeAre />
         <Mission />
-        <ResearchProjects />
         <FeaturedProject />
         <BuildTimeline />
         <Principles />
-        <Gallery />
-        <JoinMission />
+        <section id="cta" className="relative w-full">
+          <LandingFinalCtaSection user={user} />
+        </section>
       </div>
       <section id="footer" className="w-full bg-bg">
         <Footer />
