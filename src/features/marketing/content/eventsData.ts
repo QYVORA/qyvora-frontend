@@ -29,7 +29,7 @@ export const EVENTS: EventData[] = [
     platform: 'Google Meet',
     flyerUrl: flyerSrc,
     isActive: true,
-    meetLink: 'https://meet.google.com/',
+    meetLink: 'https://meet.google.com/ckb-hyxk-ede',
   },
 ];
 
