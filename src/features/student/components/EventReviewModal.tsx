@@ -3,7 +3,7 @@ import { Heart, Loader2, Check, Video, MessageSquare, Sparkles, Shield } from 'l
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { getEventById } from '@/features/marketing/content/eventsData';
+import { getEventById, formatEventTime } from '@/features/marketing/content/eventsData';
 import CpLogo from '@/shared/components/CpLogo';
 
 interface EventReviewModalProps {
@@ -77,7 +77,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
             </div>
             <div className="min-w-0">
               <p className="text-sm font-black text-text-primary truncate">{event.title}</p>
-              <p className="text-[11px] text-text-muted font-mono">{event.date} &middot; {event.time} &middot; {event.platform}</p>
+              <p className="text-[11px] text-text-muted font-mono">{event.date} &middot; {formatEventTime(event)} &middot; {event.platform}</p>
             </div>
           </div>
 
