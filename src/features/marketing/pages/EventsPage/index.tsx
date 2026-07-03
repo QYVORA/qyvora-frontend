@@ -31,7 +31,7 @@ const EventsPage: React.FC = () => {
         description="Join QYVORA live events - offensive security sessions, hacking challenges, and community meetups."
       />
 
-      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 py-20 md:py-28 lg:py-40">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 pt-28 pb-16 md:py-28 lg:py-40">
         {events.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-text-muted">No upcoming events.</p>
