@@ -293,12 +293,14 @@ api.interceptors.response.use(
     }
 
     // ── CSRF token recovery (403) ──────────────────────────────────────────
-    // If the backend rejects with "Invalid CSRF token", our local CSRF token
-    // is out of sync with the cookie. Try to get a fresh token from /auth/me
-    // (a GET request, therefore CSRF-exempt) and retry once.
+    // If the backend rejects with "Invalid/Missing CSRF token", our local CSRF
+    // token is out of sync with the cookie. Try to get a fresh token from
+    // /auth/me (a GET request, therefore CSRF-exempt) and retry once.
     // We send the Bearer token explicitly because authApi doesn't attach it,
     // and the access_token cookie may be stale.
-    if (status === 403 && data?.error === 'Invalid CSRF token' && authSessionHint) {
+    const csrfError =
+      data?.error === 'Invalid CSRF token' || data?.error === 'Missing CSRF token';
+    if (status === 403 && csrfError && authSessionHint) {
       original._retry = true;
       try {
         const meRes = await authApi.get('/auth/me', {

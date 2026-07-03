@@ -43,12 +43,17 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
       onReviewSubmitted();
       onOpenChange(false);
     } catch (err: any) {
-      if (err?.response?.status === 409) {
+      const status = err?.response?.status;
+      if (status === 409) {
         setSubmitted(true);
         onReviewSubmitted();
         onOpenChange(false);
-      } else if (err?.response?.status === 410) {
+      } else if (status === 410) {
         setError('This event has already ended. Reviews are no longer accepted.');
+      } else if (status === 401) {
+        setError('Session expired. Please log in and try again.');
+      } else if (status === 403) {
+        setError('Security token mismatch. Please refresh the page and try again.');
       } else {
         setError('Failed to submit review. Please try again.');
       }
