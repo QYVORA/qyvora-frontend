@@ -14,7 +14,7 @@ import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
 import { StreakIcon } from '../../../shared/components';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
-import { getRoomCoverImage } from '../../../features/student/utils/walkthroughImages';
+import { getRoomCoverImage } from '../../../shared/utils/walkthroughImages';
 
 const PublicProfile: React.FC = () => {
   const { handle: rawHandle } = useParams<{ handle: string }>();
