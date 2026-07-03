@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Video, Loader2, Check, Clock, Lock, Calendar, MessageSquare, ExternalLink } from 'lucide-react';
 import api from '@/core/services/api';
 import CpLogo from '@/shared/components/CpLogo';
-import type { EventData } from '@/features/marketing/content/eventsData';
+import { formatEventTime, type EventData } from '@/features/marketing/content/eventsData';
 
 interface EventAccessCardProps {
   event: EventData;
@@ -113,7 +113,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
             <h3 className="text-sm font-black text-text-primary truncate">{event.title}</h3>
             <p className="text-[11px] text-text-muted font-mono flex flex-wrap gap-x-2">
               <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> {event.date}</span>
-              <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {event.time}</span>
+              <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {formatEventTime(event)}</span>
             </p>
           </div>
         </div>
@@ -156,7 +156,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
               <div className="flex items-center gap-2.5 p-3 rounded-xl bg-bg-elevated border border-border/20">
                 <Calendar className="h-4 w-4 text-text-muted/40 shrink-0" />
                 <span className="text-[11px] text-text-muted/60 font-mono">
-                  {eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} &middot; {event.time}
+                  {eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} &middot; {formatEventTime(event)}
                 </span>
               </div>
             </div>

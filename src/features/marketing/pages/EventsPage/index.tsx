@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { getActiveEvents } from '@/features/marketing/content/eventsData';
+import { getActiveEvents, formatEventTime } from '@/features/marketing/content/eventsData';
 import { setPendingEventJoin } from '@/shared/utils/eventJoin';
 
 const EventsPage: React.FC = () => {
@@ -59,7 +59,7 @@ const EventsPage: React.FC = () => {
                         <Calendar className="h-3 w-3" /> {event.date}
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
-                        <Clock className="h-3 w-3" /> {event.time}
+                        <Clock className="h-3 w-3" /> {formatEventTime(event)}
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                         {event.platform}

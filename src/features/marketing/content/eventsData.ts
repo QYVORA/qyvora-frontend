@@ -6,10 +6,15 @@ export interface EventData {
   description: string;
   date: string;
   time: string;
+  endTime: string;
   platform: string;
   flyerUrl: string;
   isActive: boolean;
   meetLink?: string;
+}
+
+export function formatEventTime(event: EventData): string {
+  return `${event.time} — ${event.endTime}`;
 }
 
 export const EVENTS: EventData[] = [
@@ -19,10 +24,12 @@ export const EVENTS: EventData[] = [
     description:
       'A 2-hour live ethical hacking session. Join us for an intense, hands-on offensive security challenge where you will attack a live target in real time.',
     date: '2026-07-04',
-    time: '10:00 AM GMT',
+    time: '8:00 PM GMT',
+    endTime: '10:00 PM GMT',
     platform: 'Google Meet',
     flyerUrl: flyerSrc,
     isActive: true,
+    meetLink: 'https://meet.google.com/',
   },
 ];
 

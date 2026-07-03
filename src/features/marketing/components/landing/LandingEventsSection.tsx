@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Calendar, Clock, Video } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import { getActiveEvents, type EventData } from '@/features/marketing/content/eventsData';
+import { getActiveEvents, formatEventTime, type EventData } from '@/features/marketing/content/eventsData';
 import { setPendingEventJoin } from '@/shared/utils/eventJoin';
 
 interface LandingEventsSectionProps {
@@ -44,7 +44,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
             <Calendar className="h-3 w-3" /> {event.date}
           </span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg/50 backdrop-blur-md rounded text-[9px] font-black uppercase tracking-widest text-text-primary border border-border/30">
-            <Clock className="h-3 w-3" /> {event.time}
+            <Clock className="h-3 w-3" /> {formatEventTime(event)}
           </span>
         </div>
         <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight mb-2">
