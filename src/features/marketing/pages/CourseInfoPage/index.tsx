@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Clock, ArrowRight, CheckCircle2, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Target, Lock } from 'lucide-react';
+import { Clock, ArrowLeft, ArrowRight, CheckCircle2, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Lock } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -79,7 +79,7 @@ const CourseInfoPage: React.FC = () => {
 
   const Icon = category ? CATEGORY_ICONS[category.id] : GraduationCap;
   const canAfford = balance !== null && course.cpCost <= balance;
-  const isUnlocked = purchased || (user && false);
+  const isUnlocked = purchased;
 
   return (
     <div className="min-h-screen bg-bg">
@@ -90,7 +90,7 @@ const CourseInfoPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent" />
         <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 pt-28 pb-12 md:pb-20">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6">
-            <ArrowRight className="h-3 w-3 rotate-180" /> All Courses
+            <ArrowLeft className="h-3 w-3" /> All Courses
           </Link>
 
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">

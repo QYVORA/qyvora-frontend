@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Clock, ArrowRight, Zap, CheckCircle2, GraduationCap } from 'lucide-react';
+import { Clock, ArrowRight, Zap, GraduationCap } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';

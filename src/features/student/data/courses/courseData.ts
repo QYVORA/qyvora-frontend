@@ -6,37 +6,31 @@ export const COURSE_CATEGORIES: CourseCategory[] = [
     id: 'terminal',
     name: 'Terminal',
     description: 'Master the command line — the hacker\'s primary interface.',
-    icon: '⌨️',
   },
   {
     id: 'networking',
     name: 'Networking',
     description: 'Understand how data moves across networks and the internet.',
-    icon: '🌐',
   },
   {
     id: 'programming',
     name: 'Programming',
     description: 'Learn to write code that automates, exploits, and defends.',
-    icon: '💻',
   },
   {
     id: 'web-security',
     name: 'Web Security',
     description: 'Explore how web technologies work and how to secure them.',
-    icon: '🔒',
   },
   {
     id: 'wireless',
     name: 'Wireless Security',
     description: 'Understand wireless networks and their unique attack surface.',
-    icon: '📡',
   },
   {
     id: 'tools',
     name: 'Tools',
     description: 'Get hands-on with the essential tools of the trade.',
-    icon: '🛠️',
   },
 ];
 

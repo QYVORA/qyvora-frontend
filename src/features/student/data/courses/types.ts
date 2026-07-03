@@ -31,25 +31,10 @@ export interface CourseCategory {
   id: CourseCategoryId;
   name: string;
   description: string;
-  icon: string;
 }
 
 export interface UserCourseProgress {
   courseId: string;
   completedLessons: string[];
   purchased: boolean;
-}
-
-export function isCoursePurchased(
-  courseId: string,
-  purchases: Set<string>,
-): boolean {
-  return purchases.has(courseId);
-}
-
-export function getCourseProgress(
-  courseId: string,
-  completedLessons: string[],
-): number {
-  return completedLessons.length;
 }
