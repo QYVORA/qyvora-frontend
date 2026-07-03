@@ -27,16 +27,33 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
 
         <InlineDiagram>
           <div className="w-full">
-            <svg viewBox="0 0 600 160" className="w-full h-auto" fill="none">
-              <text x="300" y="22" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="12">KNOWN vs UNKNOWN ASSETS (AVERAGE ORGANISATION)</text>
+            <svg viewBox="0 0 600 170" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="known-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(102,184,112,0.3)" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.12)" />
+                </linearGradient>
+                <linearGradient id="unknown-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(102,184,112,0.12)" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.04)" />
+                </linearGradient>
+                <filter id="bar-shadow">
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(102,184,112,0.08)" />
+                </filter>
+              </defs>
 
-              <rect x="50" y="45" width="140" height="70" rx="8" className="fill-accent/20 stroke-accent/40" strokeWidth="1.5" />
-              <text x="120" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="16">Known</text>
-              <text x="120" y="100" textAnchor="middle" className="fill-text-muted font-mono" fontSize="12">~30-60% of surface</text>
+              <rect x="60" y="10" width="480" height="22" rx="11" fill="rgba(102,184,112,0.06)" />
+              <text x="300" y="25" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="1.5">KNOWN vs UNKNOWN ASSETS (AVERAGE ORGANISATION)</text>
 
-              <rect x="220" y="45" width="340" height="70" rx="8" className="fill-accent/10 stroke-accent/20" strokeWidth="1" strokeDasharray="4 3" />
-              <text x="390" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="16">Unknown (Shadow)</text>
-              <text x="390" y="100" textAnchor="middle" className="fill-text-muted font-mono" fontSize="12">~40-70% of surface — unmonitored, unpatched</text>
+              <rect x="50" y="55" width="200" height="80" rx="10" fill="url(#known-grad)" stroke="rgba(102,184,112,0.35)" strokeWidth="1.5" filter="url(#bar-shadow)" />
+              <rect x="50" y="55" width="200" height="4" rx="2" fill="rgba(102,184,112,0.4)" />
+              <text x="150" y="92" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="18" letterSpacing="1">Known</text>
+              <text x="150" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="12">~30-60% of surface</text>
+
+              <rect x="280" y="55" width="300" height="80" rx="10" fill="url(#unknown-grad)" stroke="rgba(102,184,112,0.15)" strokeWidth="1" strokeDasharray="5 4" filter="url(#bar-shadow)" />
+              <rect x="280" y="55" width="300" height="4" rx="2" fill="rgba(102,184,112,0.2)" />
+              <text x="430" y="92" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="16" letterSpacing="1">Unknown (Shadow)</text>
+              <text x="430" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">~40-70% — unmonitored, unpatched</text>
             </svg>
           </div>
         </InlineDiagram>

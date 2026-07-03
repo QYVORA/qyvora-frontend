@@ -147,7 +147,7 @@ const RecoveryTokenModal: React.FC<RecoveryTokenModalProps> = ({ open, onOpenCha
                   </div>
                   
                   <div className="relative mb-8 group w-full max-w-md">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-accent/5 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div className="absolute -inset-0.5 bg-white/5 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                     <div className="relative bg-bg border border-border rounded-xl p-5 font-mono text-sm break-all text-accent select-all">
                       {token || 'INITIALISING...'}
                     </div>

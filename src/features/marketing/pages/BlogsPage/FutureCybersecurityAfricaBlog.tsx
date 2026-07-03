@@ -66,35 +66,54 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
 
         <InlineDiagram>
           <div className="w-full">
-            <svg viewBox="0 0 700 130" className="w-full h-auto" fill="none">
-              <text x="350" y="20" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="13">THE RECON AUTOMATION PIPELINE</text>
+            <svg viewBox="0 0 700 145" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pipe-box" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(102,184,112,0.12)" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.04)" />
+                </linearGradient>
+                <linearGradient id="pipe-box-last" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(239,68,68,0.12)" />
+                  <stop offset="100%" stopColor="rgba(239,68,68,0.04)" />
+                </linearGradient>
+                <filter id="pipe-shadow">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="rgba(102,184,112,0.06)" />
+                </filter>
+                <marker id="pipe-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="rgba(102,184,112,0.3)" />
+                </marker>
+              </defs>
 
-              <rect x="20" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="70" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Discover</text>
+              <rect x="150" y="8" width="400" height="22" rx="11" fill="rgba(102,184,112,0.06)" />
+              <text x="350" y="23" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="2">THE RECON AUTOMATION PIPELINE</text>
 
-              <path d="M 120 72 L 168 72" className="stroke-accent/40" strokeWidth="2" />
-              <polygon points="165,64 180,72 165,80" className="fill-accent/40" />
+              <rect x="20" y="50" width="100" height="60" rx="10" fill="url(#pipe-box)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#pipe-shadow)" />
+              <rect x="20" y="50" width="100" height="3" rx="1.5" fill="rgba(102,184,112,0.25)" />
+              <text x="70" y="86" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="14" letterSpacing="0.5">Discover</text>
 
-              <rect x="168" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="218" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Probe</text>
+              <path d="M 120 80 L 160 80" stroke="rgba(102,184,112,0.3)" strokeWidth="2" markerEnd="url(#pipe-arrow)" />
 
-              <path d="M 268 72 L 316 72" className="stroke-accent/40" strokeWidth="2" />
-              <polygon points="313,64 328,72 313,80" className="fill-accent/40" />
+              <rect x="168" y="50" width="100" height="60" rx="10" fill="url(#pipe-box)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#pipe-shadow)" />
+              <rect x="168" y="50" width="100" height="3" rx="1.5" fill="rgba(102,184,112,0.25)" />
+              <text x="218" y="86" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="14" letterSpacing="0.5">Probe</text>
 
-              <rect x="316" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="366" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Analyse</text>
+              <path d="M 268 80 L 308 80" stroke="rgba(102,184,112,0.3)" strokeWidth="2" markerEnd="url(#pipe-arrow)" />
 
-              <path d="M 416 72 L 464 72" className="stroke-accent/40" strokeWidth="2" />
-              <polygon points="461,64 476,72 461,80" className="fill-accent/40" />
+              <rect x="316" y="50" width="100" height="60" rx="10" fill="url(#pipe-box)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#pipe-shadow)" />
+              <rect x="316" y="50" width="100" height="3" rx="1.5" fill="rgba(102,184,112,0.25)" />
+              <text x="366" y="86" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="14" letterSpacing="0.5">Analyse</text>
 
-              <rect x="464" y="45" width="100" height="55" rx="8" className="fill-accent/10 stroke-accent/30" strokeWidth="1.5" />
-              <text x="514" y="78" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="14">Exploit</text>
+              <path d="M 416 80 L 456 80" stroke="rgba(102,184,112,0.3)" strokeWidth="2" markerEnd="url(#pipe-arrow)" />
 
-              <path d="M 564 72 L 612 72" className="stroke-accent/40" strokeWidth="2" />
-              <polygon points="609,64 624,72 609,80" className="fill-accent/40" />
+              <rect x="464" y="50" width="100" height="60" rx="10" fill="url(#pipe-box)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#pipe-shadow)" />
+              <rect x="464" y="50" width="100" height="3" rx="1.5" fill="rgba(102,184,112,0.25)" />
+              <text x="514" y="86" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="14" letterSpacing="0.5">Exploit</text>
 
-              <rect x="612" y="45" width="75" height="55" rx="8" className="fill-accent/10 stroke-red-400/30" strokeWidth="1.5" />
-              <text x="649" y="78" textAnchor="middle" className="fill-red-400 font-mono font-bold uppercase" fontSize="14">Report</text>
+              <path d="M 564 80 L 604 80" stroke="rgba(239,68,68,0.25)" strokeWidth="2" markerEnd="url(#pipe-arrow)" />
+
+              <rect x="612" y="50" width="75" height="60" rx="10" fill="url(#pipe-box-last)" stroke="rgba(239,68,68,0.25)" strokeWidth="1.5" filter="url(#pipe-shadow)" />
+              <rect x="612" y="50" width="75" height="3" rx="1.5" fill="rgba(239,68,68,0.25)" />
+              <text x="649" y="86" textAnchor="middle" fill="#f87171" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="0.5">Report</text>
             </svg>
           </div>
         </InlineDiagram>

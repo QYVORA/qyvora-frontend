@@ -129,13 +129,13 @@ const BlogPostPage: React.FC = () => {
       </div>
 
       {/* ── Article Body ── */}
-      <div className="max-w-[1200px] mx-auto px-4 pb-32">
+      <div className="w-full px-6 md:px-10 lg:px-16 xl:px-20 pb-32">
         <article className="prose-custom max-w-none">
           {renderContent()}
         </article>
 
         {/* ── Footer Nav ── */}
-        <div className="mt-20 pt-10 border-t border-border/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="mt-24 pt-10 border-t border-border/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <Link
             to="/blogs"
             className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
@@ -151,7 +151,7 @@ const BlogPostPage: React.FC = () => {
       {/* ── Read Next ── */}
       {otherPosts.length > 0 && (
         <section className="border-t border-border/50">
-          <div className="max-w-[1200px] mx-auto px-4 py-16 md:py-24">
+          <div className="w-full px-6 md:px-10 lg:px-16 xl:px-20 py-16 md:py-24">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10 text-center">
               Keep Reading 📖
             </h2>

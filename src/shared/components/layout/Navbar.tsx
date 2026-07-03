@@ -175,7 +175,7 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Separator */}
-              <div className="my-8 h-px bg-gradient-to-r from-accent/40 via-accent/20 to-transparent" />
+              <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
               {/* Auth buttons */}
               <div className="flex flex-col gap-3">

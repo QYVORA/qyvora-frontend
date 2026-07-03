@@ -7,8 +7,8 @@ import ErrorBoundary from '../../../shared/components/ErrorBoundary';
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
-    {/* Background ambient glow - smoother than dot-grid for this area */}
-    <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent z-0" />
+    {/* Background ambient glow */}
+    <div className="absolute inset-0 bg-white/[0.01] z-0" />
 
     {/* Globe - properly centered with responsive sizing */}
     <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-4 xl:px-8">

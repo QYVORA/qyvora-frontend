@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search, Globe, Radio, Server, AlertTriangle, GitBranch, Eye, Shield } from 'lucide-react';
-import { Section, Heading, SubHeading, Body, Highlight, CodeBlock, PhaseCard, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
+import { Section, Heading, SubHeading, Body, Highlight, CodeBlock, TerminalBlock, PhaseCard, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
 
 export const AttackersDiscoverCompaniesBlog: React.FC = () => {
   return (
@@ -46,7 +46,7 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
           The most common starting point is <Highlight>Certificate Transparency (CT) log enumeration</Highlight>. Every time an organisation issues an SSL/TLS certificate, the certificate is logged publicly. Attackers query these logs to discover subdomains — and they do not need any special access to do so.
         </Body>
 
-        <CodeBlock code={`# Query crt.sh for all logged certificates on target.com
+        <TerminalBlock code={`# Query crt.sh for all logged certificates on target.com
 curl -s 'https://crt.sh/?q=%25.target.com&output=json' | jq -r '.[].name_value' | sort -u
 
 api.target.com
@@ -85,24 +85,43 @@ vpn.target.com`} />
 
         <InlineDiagram>
           <div className="w-full">
-            <svg viewBox="0 0 600 220" className="w-full h-auto" fill="none">
-              <text x="300" y="24" textAnchor="middle" className="fill-accent/60 font-mono" fontSize="12">TECHNOLOGY FINGERPRINTING</text>
+            <svg viewBox="0 0 600 230" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fp-box" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(102,184,112,0.1)" />
+                  <stop offset="100%" stopColor="rgba(102,184,112,0.03)" />
+                </linearGradient>
+                <filter id="fp-shadow">
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(102,184,112,0.06)" />
+                </filter>
+              </defs>
 
-              <rect x="20" y="45" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="150" y="68" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">HTTP Response Headers</text>
-              <text x="150" y="90" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Server, X-Powered-By, Set-Cookie</text>
+              <rect x="100" y="8" width="400" height="22" rx="11" fill="rgba(102,184,112,0.06)" />
+              <text x="300" y="23" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="2">TECHNOLOGY FINGERPRINTING</text>
 
-              <rect x="320" y="45" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="450" y="68" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">HTML / JS Analysis</text>
-              <text x="450" y="90" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Asset paths, comment tags, framework markers</text>
+              <rect x="20" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="20" y="50" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
+              <circle cx="38" cy="66" r="3" fill="rgba(102,184,112,0.3)" />
+              <text x="48" y="70" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTTP Response Headers</text>
+              <text x="38" y="96" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Server, X-Powered-By, Set-Cookie</text>
 
-              <rect x="20" y="140" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="150" y="163" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">SSL/TLS Certificate</text>
-              <text x="150" y="185" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">Issuer, SANs, validity period, cipher suites</text>
+              <rect x="320" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="320" y="50" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
+              <circle cx="338" cy="66" r="3" fill="rgba(102,184,112,0.3)" />
+              <text x="348" y="70" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTML / JS Analysis</text>
+              <text x="338" y="96" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Asset paths, comment tags, framework markers</text>
 
-              <rect x="320" y="140" width="260" height="60" rx="6" className="fill-accent/10 stroke-accent/30" strokeWidth="1" />
-              <text x="450" y="163" textAnchor="middle" className="fill-accent font-mono font-bold uppercase" fontSize="13">Favicon Hash</text>
-              <text x="450" y="185" textAnchor="middle" className="fill-text-muted font-mono" fontSize="11">MurmurHash3 — matches default framework icons</text>
+              <rect x="20" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="20" y="140" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
+              <circle cx="38" cy="156" r="3" fill="rgba(102,184,112,0.3)" />
+              <text x="48" y="160" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">SSL/TLS Certificate</text>
+              <text x="38" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Issuer, SANs, validity period, cipher suites</text>
+
+              <rect x="320" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="320" y="140" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
+              <circle cx="338" cy="156" r="3" fill="rgba(102,184,112,0.3)" />
+              <text x="348" y="160" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">Favicon Hash</text>
+              <text x="338" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">MurmurHash3 — matches default framework icons</text>
             </svg>
           </div>
         </InlineDiagram>
