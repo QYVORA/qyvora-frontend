@@ -17,12 +17,11 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef<{ mx: number; my: number; px: number; py: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+    closeButtonRef.current?.focus();
+  }, []);
 
   const clampScale = (v: number) => Math.min(5, Math.max(1, v));
 
@@ -130,6 +129,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
             {scale > 1 ? 'Drag to pan · Scroll to zoom' : 'Scroll or pinch to zoom · Double-click to zoom in'}
           </p>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors"
             aria-label="Close image viewer"

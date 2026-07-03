@@ -43,7 +43,7 @@ const PromotionalSystem: React.FC = () => {
     if (user) return;
 
     // Check if dismissed in this session (or for 24h)
-    const dismissed = localStorage.getItem('qyvora_promo_dismissed');
+    const dismissed = (() => { try { return localStorage.getItem('qyvora_promo_dismissed'); } catch { return null; } })();
     if (dismissed) {
       return;
     }
@@ -61,7 +61,7 @@ const PromotionalSystem: React.FC = () => {
   if (user || !isVisible || !activePromo) return null;
 
   const handleDismiss = () => {
-    localStorage.setItem('qyvora_promo_dismissed', '1');
+    try { localStorage.setItem('qyvora_promo_dismissed', '1'); } catch {}
     setIsVisible(false);
   };
 
@@ -85,7 +85,7 @@ const PromotionalSystem: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto md:bottom-10 z-[140] lg:w-[600px]"
         >
-          <div className="relative overflow-hidden rounded-3xl bg-bg-card/95 dark:backdrop-blur-xl backdrop-blur-none shadow-2xl flex flex-col sm:flex-row">
+          <div className="relative overflow-hidden rounded-3xl bg-bg-card/95 dark:backdrop-blur-xl backdrop-blur-none shadow-2xl flex flex-col sm:flex-row border border-border">
             
             {/* Close button */}
             <button

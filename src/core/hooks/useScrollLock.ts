@@ -1,30 +1,43 @@
 import { useEffect } from 'react';
 
-export function useScrollLock(lock: boolean = true) {
-  useEffect(() => {
-    if (!lock) return;
+let lockCount = 0;
+let originalStyles: Record<string, string> = {};
+let scrollY = 0;
 
-    const scrollY = window.scrollY;
-    const originalOverflow = document.body.style.overflow;
-    const originalPosition = document.body.style.position;
-    const originalTop = document.body.style.top;
-    const originalWidth = document.body.style.width;
-
+function lock() {
+  if (lockCount === 0) {
+    originalStyles = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    };
+    scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = '100%';
+  }
+  lockCount++;
+}
 
-    const preventTouch = (e: TouchEvent) => e.preventDefault();
-    document.body.addEventListener('touchmove', preventTouch, { passive: false });
+function unlock() {
+  lockCount--;
+  if (lockCount <= 0) {
+    lockCount = 0;
+    document.body.style.overflow = originalStyles.overflow || '';
+    document.body.style.position = originalStyles.position || '';
+    document.body.style.top = originalStyles.top || '';
+    document.body.style.width = originalStyles.width || '';
+    window.scrollTo(0, scrollY);
+    originalStyles = {};
+  }
+}
 
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.position = originalPosition;
-      document.body.style.top = originalTop;
-      document.body.style.width = originalWidth;
-      window.scrollTo(0, scrollY);
-      document.body.removeEventListener('touchmove', preventTouch);
-    };
+export function useScrollLock(lock: boolean = true) {
+  useEffect(() => {
+    if (!lock) return;
+    lock();
+    return () => unlock();
   }, [lock]);
 }

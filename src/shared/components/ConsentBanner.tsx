@@ -14,7 +14,7 @@ const ConsentBanner: React.FC = () => {
 
   useEffect(() => {
     const existing = getCookiePreferences();
-    const dismissed = localStorage.getItem('qyvora_cookie_dismissed');
+    const dismissed = (() => { try { return localStorage.getItem('qyvora_cookie_dismissed'); } catch { return null; } })();
     if (!existing && !dismissed) {
       const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
@@ -27,7 +27,7 @@ const ConsentBanner: React.FC = () => {
   };
 
   const handleDismiss = () => {
-    localStorage.setItem('qyvora_cookie_dismissed', '1');
+    try { localStorage.setItem('qyvora_cookie_dismissed', '1'); } catch {}
     setIsVisible(false);
   };
 
@@ -64,7 +64,7 @@ const ConsentBanner: React.FC = () => {
                   We use cookies to secure your session and optimize performance. No 3rd-party tracking.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={handleDismiss}
                 className="text-text-muted hover:text-text-primary transition-colors p-1"
                 aria-label="Dismiss"
@@ -74,7 +74,7 @@ const ConsentBanner: React.FC = () => {
             </div>
 
             {showDetails && (
-              <motion.div 
+              <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 className="space-y-3 mb-6 pt-4 border-t border-border/30"
@@ -89,7 +89,14 @@ const ConsentBanner: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between cursor-pointer group" onClick={() => toggleCategory('functional')}>
+                <div
+                  className="flex items-center justify-between cursor-pointer group"
+                  onClick={() => toggleCategory('functional')}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCategory('functional'); } }}
+                  role="switch"
+                  aria-checked={prefs.functional}
+                  tabIndex={0}
+                >
                   <div>
                     <div className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">Functional</div>
                     <div className="text-[9px] sm:text-[10px] text-text-muted">Remembers your theme and UI preferences</div>
@@ -99,7 +106,14 @@ const ConsentBanner: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between cursor-pointer group" onClick={() => toggleCategory('analytics')}>
+                <div
+                  className="flex items-center justify-between cursor-pointer group"
+                  onClick={() => toggleCategory('analytics')}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCategory('analytics'); } }}
+                  role="switch"
+                  aria-checked={prefs.analytics}
+                  tabIndex={0}
+                >
                   <div>
                     <div className="text-[10px] sm:text-xs font-bold text-text-primary uppercase tracking-wide group-hover:text-accent transition-colors">Analytics</div>
                     <div className="text-[9px] sm:text-[10px] text-text-muted">Anonymized performance and caching</div>
@@ -113,7 +127,7 @@ const ConsentBanner: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-2.5">
               {showDetails ? (
-                <button 
+                <button
                   onClick={handleSavePreferences}
                   className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
                 >
@@ -121,13 +135,13 @@ const ConsentBanner: React.FC = () => {
                 </button>
               ) : (
                 <>
-                  <button 
+                  <button
                     onClick={handleAcceptAll}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
                   >
                     Accept All
                   </button>
-                  <button 
+                  <button
                     onClick={() => setShowDetails(true)}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-bg border border-border text-text-primary font-bold uppercase tracking-wider text-[10px] transition-all hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
                   >

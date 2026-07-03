@@ -74,7 +74,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    * even if other toasts have been added or removed in the meantime.
    */
   const addToast = (message: string, type: Toast['type']) => {
-    const id = Math.random().toString(36).substr(2, 9);
+    const id = Math.random().toString(36).slice(2, 11);
 
     // Append the new toast to the end of the list (newest at the bottom).
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -136,10 +136,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                   ? 'border-red-500/40'
                   : 'border-accent/40'
               }`}
-              // role="status" makes the element a live region for AT,
-              // complementing the parent's aria-live="polite".
-              role="status"
-            >
+              >
               {/*
                 ── Severity icon ─────────────────────────────────────────────
                 Icon colour mirrors the border colour for visual consistency.

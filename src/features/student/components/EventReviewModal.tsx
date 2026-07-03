@@ -65,17 +65,11 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
   if (!event) return null;
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      if (!isOpen && !submitted) return;
-      onOpenChange(isOpen);
-    }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         title="[ EVENT REGISTRATION ]"
         maxWidth="max-w-lg"
-        hideClose
         className="border-accent/30"
-        onEscapeKeyDown={(e) => { if (!submitted) e.preventDefault(); }}
-        onPointerDownOutside={(e) => { if (!submitted) e.preventDefault(); }}
       >
         <div className="space-y-6">
           <div className="flex items-center gap-4 pb-5 border-b border-border/40">
