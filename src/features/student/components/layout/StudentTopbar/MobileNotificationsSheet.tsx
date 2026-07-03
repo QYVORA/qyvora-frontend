@@ -55,6 +55,10 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
               key={item.id}
               className={`px-5 py-4 cursor-pointer transition-colors ${item.read ? 'opacity-60' : 'hover:bg-accent-dim/30'}`}
               onClick={() => { if (!item.read) onMarkRead(item.id); }}
+              onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && !item.read) { e.preventDefault(); onMarkRead(item.id); } }}
+              role="button"
+              tabIndex={0}
+              aria-label={item.read ? `${item.title} - read` : `${item.title} - unread`}
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>

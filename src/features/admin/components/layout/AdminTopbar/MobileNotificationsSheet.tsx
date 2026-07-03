@@ -45,7 +45,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
         ) : notificationsPreview.length === 0 ? (
           <div className="p-5 text-sm text-text-muted text-center">No notifications yet.</div>
         ) : notificationsPreview.map((item) => (
-          <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`}>
+          <div key={item.id} className={`px-5 py-4 ${item.read ? 'opacity-60' : ''}`} role="listitem">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-text-primary line-clamp-1">{item.title}</span>
               {!item.read && <span className="w-2 h-2 rounded-full bg-accent flex-none" />}

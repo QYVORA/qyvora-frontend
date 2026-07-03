@@ -45,7 +45,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
         ) : (
           <div className="max-h-80 overflow-auto divide-y divide-border/50">
             {notificationsPreview.map((item) => (
-              <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`}>
+              <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`} role="listitem">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
                   {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}

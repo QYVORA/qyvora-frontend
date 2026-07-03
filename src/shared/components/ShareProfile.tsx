@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Share2, Check, X, Linkedin } from 'lucide-react';
 import { BrandXIcon } from '@/shared/components/icons';
 
@@ -49,11 +49,19 @@ const ShareProfile = ({ handle }: { handle: string }) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setOpen(false);
+    }
+  }, []);
+
   return (
-    <div className="relative">
+    <div className="relative" onKeyDown={handleKeyDown}>
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 px-4 py-2 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95"
+        aria-expanded={open}
+        aria-haspopup="true"
       >
         <Share2 className="w-3.5 h-3.5" />
         Share
@@ -61,11 +69,15 @@ const ShareProfile = ({ handle }: { handle: string }) => {
 
       {open && (
         <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 z-50 min-w-[180px] bg-bg-card border border-border rounded-2xl p-2 shadow-xl shadow-black/20">
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden="true" />
+          <div
+            className="absolute right-0 top-full mt-2 z-50 min-w-[180px] bg-bg-card border border-border rounded-2xl p-2 shadow-xl shadow-black/20"
+            role="menu"
+            aria-label="Share options"
+          >
             <div className="flex items-center justify-between px-3 py-2 border-b border-border/40 mb-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Share</span>
-              <button onClick={() => setOpen(false)} className="text-text-muted hover:text-text-primary transition-colors">
+              <button onClick={() => setOpen(false)} className="text-text-muted hover:text-text-primary transition-colors" aria-label="Close">
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -74,7 +86,20 @@ const ShareProfile = ({ handle }: { handle: string }) => {
                 <button
                   key={p.id}
                   onClick={() => handleShare(p.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                      e.preventDefault();
+                      const siblings = Array.from((e.currentTarget.parentElement?.children || []));
+                      const idx = siblings.indexOf(e.currentTarget);
+                      const next = e.key === 'ArrowDown'
+                        ? siblings[idx + 1] || siblings[0]
+                        : siblings[idx - 1] || siblings[siblings.length - 1];
+                      (next as HTMLElement)?.focus();
+                    }
+                  }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-text-primary transition-all ${p.color}`}
+                  role="menuitem"
+                  tabIndex={-1}
                 >
                   {p.id === 'x' ? (
                     <BrandXIcon className="w-4 h-4" />

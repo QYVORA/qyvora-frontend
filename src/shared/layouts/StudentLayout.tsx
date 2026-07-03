@@ -85,12 +85,10 @@
  */
 
 import { Outlet, useMatch } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 // The student-specific fixed topbar (includes mobile bottom nav internally).
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 
-import RecoveryTokenModal from '@/features/student/components/RecoveryTokenModal';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 
@@ -123,15 +121,6 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
  * `const StudentLayout = () => { ... return (...) }` form with a function body.
  */
 const StudentLayout = () => {
-  const { user, loading } = useAuth();
-  const [recoveryOpen, setRecoveryOpen] = useState(false);
-
-  useEffect(() => {
-    if (!loading && user && !user.recoveryTokenAcknowledgedAt && !user.isAdmin) {
-      setRecoveryOpen(true);
-    }
-  }, [loading, user]);
-
   // ── Room Page Detection ────────────────────────────────────────────────────
   // Room pages use a fixed-height split-pane shell where each pane scrolls
   // independently. We detect room pages to avoid adding bottom padding that
@@ -185,11 +174,7 @@ const StudentLayout = () => {
       {/* Cookie Consent banner */}
       <ConsentBanner />
 
-      {/* Recovery Token Modal */}
-      <RecoveryTokenModal open={recoveryOpen} onOpenChange={setRecoveryOpen} />
-
-      {/* Username Change Modal (lowest priority — only if no other modal is open) */}
-      {!recoveryOpen && <UsernameChangeModal />}
+      <UsernameChangeModal />
     </div>
   );
 };

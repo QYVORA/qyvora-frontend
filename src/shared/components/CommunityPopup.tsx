@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Users, Zap, MessageSquare } from 'lucide-react';
+import { X, Users, Zap } from 'lucide-react';
 import BrandWhatsAppIcon from './icons/BrandWhatsAppIcon';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import { QyvoraMark } from './brand/QyvoraMark';
 
-/**
- * CommunityPopup
- * ─────────────────────────────────────────────────────────────────────────────
- * A non-intrusive floating popup that invites all users to join the 
- * WhatsApp community. Appears after a delay and persists its closed state.
- */
 const CommunityPopup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
-    // Check if user has already interacted
-    const hasJoined = localStorage.getItem('qyvora_community_joined');
-    const hasClosed = localStorage.getItem('qyvora_community_popup_closed');
-    
+    const hasJoined = (() => { try { return localStorage.getItem('qyvora_community_joined'); } catch { return null; } })();
+    const hasClosed = (() => { try { return localStorage.getItem('qyvora_community_popup_closed'); } catch { return null; } })();
+
     if (hasJoined || hasClosed) return;
 
-    // Show after 30 seconds for all users (guests and students)
     const timer = setTimeout(() => {
-      // Check if any other modal/dialog is already open to prevent clutter
       const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
       if (!isOtherDialogOpen) {
         setIsVisible(true);
@@ -32,24 +24,25 @@ const CommunityPopup: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Monitor for other dialogs while visible - if one opens, hide this popup
   useEffect(() => {
     if (!isVisible) return;
 
-    const interval = setInterval(() => {
+    const observer = new MutationObserver(() => {
       const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
       if (isOtherDialogOpen) {
         setIsVisible(false);
       }
-    }, 1000);
+    });
 
-    return () => clearInterval(interval);
+    observer.observe(document.body, { childList: true, subtree: true });
+    observerRef.current = observer;
+
+    return () => observer.disconnect();
   }, [isVisible]);
 
   const handleClose = () => {
     setIsVisible(false);
-    // Persist closed state for 7 days (simplified logic using localStorage)
-    localStorage.setItem('qyvora_community_popup_closed', '1');
+    try { localStorage.setItem('qyvora_community_popup_closed', '1'); } catch {}
   };
 
   return (
@@ -63,8 +56,7 @@ const CommunityPopup: React.FC = () => {
           className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] lg:w-[640px]"
         >
           <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row">
-            
-            {/* Close button */}
+
             <button
               onClick={handleClose}
               className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/30 transition-all z-20"
@@ -73,15 +65,13 @@ const CommunityPopup: React.FC = () => {
               <X className="w-4 h-4" />
             </button>
 
-            {/* Image Section - Broad Horizontal Design */}
             <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">
               <QyvoraMark
                 aria-label="Community"
                 className="w-full h-full object-contain p-8 bg-bg-card transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-bg-card/40 via-transparent to-transparent opacity-0 dark:opacity-60" />
-              
-              {/* Icon badge */}
+
               <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/30 bg-accent-dim text-accent shadow-lg">
                 <Users className="h-6 w-6" />
                 <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-bg border-2 border-bg-card">
@@ -90,7 +80,6 @@ const CommunityPopup: React.FC = () => {
               </div>
             </div>
 
-            {/* Content Section */}
             <div className="p-6 sm:p-8 flex flex-col justify-center flex-1">
               <div>
                 <h4 className="text-lg font-black text-text-primary uppercase tracking-tight leading-none mb-1.5">
@@ -116,7 +105,7 @@ const CommunityPopup: React.FC = () => {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => {
-                    localStorage.setItem('qyvora_community_joined', '1');
+                    try { localStorage.setItem('qyvora_community_joined', '1'); } catch {}
                     setIsVisible(false);
                   }}
                   className="
@@ -126,10 +115,10 @@ const CommunityPopup: React.FC = () => {
                     hover:scale-[1.02] hover:shadow-[#66B870]/40 active:scale-[0.98]
                   "
                 >
-                  <BrandWhatsAppIcon className="h-4 h-4" />
+                  <BrandWhatsAppIcon className="h-4 w-4" />
                   <span>Join Now</span>
                 </a>
-                
+
                 <button
                   onClick={handleClose}
                   className="

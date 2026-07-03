@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { User, Check, AlertCircle } from 'lucide-react';
 import api from '@/core/services/api';
@@ -9,12 +9,16 @@ const HANDLE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$/;
 
 const UsernameChangeModal = () => {
   const { user, refreshMe } = useAuth();
+  const [open, setOpen] = useState(false);
   const [handle, setHandle] = useState('');
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
-  const [done, setDone] = useState(false);
 
-  if (!user?.handleNeedsUpdate || done) return null;
+  useEffect(() => {
+    if (user?.handleNeedsUpdate) {
+      setOpen(true);
+    }
+  }, [user?.handleNeedsUpdate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ const UsernameChangeModal = () => {
     try {
       await api.post('/auth/update-handle', { handle: clean });
       await refreshMe();
-      setDone(true);
+      setOpen(false);
     } catch (err: any) {
       setError(err?.response?.data?.error || 'Failed to update handle. Try again.');
     } finally {
@@ -38,7 +42,7 @@ const UsernameChangeModal = () => {
   };
 
   return (
-    <Dialog open={true} onOpenChange={() => {}}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent title="Choose your username" description="Your username needs updating">
         <div className="p-6 space-y-6">
           <div className="flex items-center gap-3">

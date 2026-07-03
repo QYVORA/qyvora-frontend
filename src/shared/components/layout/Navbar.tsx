@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Menu, X, Home, LogIn, UserPlus } from 'lucide-react';
+import { LayoutDashboard, Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollY } from '@/core/hooks/useScrollY';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
@@ -37,15 +38,7 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
-  // Prevent scroll when menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [isMenuOpen]);
+  useScrollLock(isMenuOpen);
 
   return (
     <>
