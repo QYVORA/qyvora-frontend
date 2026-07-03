@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, FlaskConical, Shield, Terminal } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import anansiImage from '@/assets/blog/anansi-cli.webp';
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
 
 const LandingQuiteRootSection: React.FC = () => {
   return (
@@ -28,11 +28,12 @@ const LandingQuiteRootSection: React.FC = () => {
         <ScrollReveal direction="up" amount={0.1}>
           <>
             <div className="md:hidden flex flex-col gap-4 rounded-2xl border border-border/30 bg-bg-card p-3">
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-border/20">
+              <div className="relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-xl border border-border/20 bg-gradient-to-br from-accent/10 via-bg-card to-bg-elevated/70 p-4 sm:p-6">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(102,184,112,0.12),transparent_70%)]" />
                 <img
-                  src={anansiImage}
-                  alt="Anansi CLI interface"
-                  className="w-full h-full object-cover"
+                  src={quiteRootLogo}
+                  alt="QuiteRoot official logo"
+                  className="relative z-10 h-full w-full max-h-[260px] object-contain"
                 />
               </div>
               <div className="flex flex-col gap-3 px-1 pb-1">
@@ -62,37 +63,14 @@ const LandingQuiteRootSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="hidden md:block relative w-full aspect-[16/7] overflow-hidden rounded-3xl">
-              <img
-                src={anansiImage}
-                alt="Anansi CLI interface"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-10 lg:p-12">
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/20 backdrop-blur-md rounded text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
-                    <Terminal className="h-3 w-3" /> Research Lab
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg/50 backdrop-blur-md rounded text-[9px] font-black uppercase tracking-widest text-text-primary border border-border/30">
-                    <FlaskConical className="h-3 w-3" /> Anansi CLI
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg/50 backdrop-blur-md rounded text-[9px] font-black uppercase tracking-widest text-text-primary border border-border/30">
-                    <Shield className="h-3 w-3" /> Offensive Security
-                  </span>
-                </div>
-                <h3 className="text-3xl lg:text-4xl font-black text-white tracking-tight mb-2">
-                  The Intelligence Behind QYVORA
-                </h3>
-                <p className="text-sm md:text-base text-white/70 max-w-2xl mb-4">
-                  QuiteRoot is QYVORA's offensive research and engineering collective, turning practical security research into tools, workflows, and field-ready capability.
-                </p>
-                <Link
-                  to="/quiteroot"
-                  className="inline-flex items-center gap-2.5 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
-                >
-                  Explore QuiteRoot <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
+            <div className="hidden md:block relative overflow-hidden rounded-3xl border border-border/20 bg-gradient-to-br from-accent/10 via-bg-card to-bg-elevated/80 p-8 lg:p-10">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(102,184,112,0.14),transparent_72%)]" />
+              <div className="relative flex min-h-[420px] items-center justify-center">
+                <img
+                  src={quiteRootLogo}
+                  alt="QuiteRoot official logo"
+                  className="h-full max-h-[360px] w-full max-w-[360px] object-contain"
+                />
               </div>
             </div>
           </>
