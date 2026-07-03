@@ -54,13 +54,22 @@ const CourseInfoPage: React.FC = () => {
     if (!course) return;
     setPurchasing(true);
     try {
+      // Refresh CSRF token before purchase to avoid 403 on POST
+      try { await api.get('/cp/balance'); } catch {}
       await api.post('/cp/purchase', { productId: course.id });
       addToast(`${course.title} unlocked successfully.`, 'success');
       setPurchased(true);
       const balRes = await api.get('/cp/balance').catch(() => null);
       setBalance(extractCpBalance(balRes?.data) ?? 0);
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Purchase failed.', 'error');
+      const status = err?.response?.status;
+      const msg = err?.response?.data?.error || '';
+      if (status === 401 || (status === 403 && msg === 'Invalid CSRF token')) {
+        addToast('Session expired. Please log in again.', 'error');
+        navigate('/login');
+      } else {
+        addToast(msg || 'Purchase failed. Please ensure you have enough CP.', 'error');
+      }
     } finally {
       setPurchasing(false);
     }
