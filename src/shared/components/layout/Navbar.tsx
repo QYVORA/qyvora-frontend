@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* ── Right controls ───────────────────────────────────────────────── */}
-          <div className="flex items-center gap-4 relative z-[110]">
+          <div className="flex items-center gap-4 md:ml-12 relative z-[110]">
             <div className="hidden md:flex items-center">
               {user ? (
                 <Link

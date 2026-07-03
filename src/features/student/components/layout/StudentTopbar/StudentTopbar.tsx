@@ -329,7 +329,7 @@ const StudentTopbar = () => {
           </div>
 
           {/* Right: notifications + profile */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-3 md:ml-8">
 
             <div ref={notifRef} className="relative">
               <button
