@@ -89,7 +89,7 @@ export const SITE_CONFIG = {
       { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
       { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
       { key: 'learn', label: 'Learn', path: '/learn', desc: 'HPB Bootcamp Phases' },
-      { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
@@ -99,7 +99,7 @@ export const SITE_CONFIG = {
     company: [
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
       { key: 'learn', label: 'Learn', path: '/learn', desc: 'Bootcamp phases' },
-      { key: 'anansi', label: 'Anansi CLI', path: '/anansi', desc: 'Attack Surface Intelligence' },
+      { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
@@ -110,7 +110,7 @@ export const SITE_CONFIG = {
     links: [
       { label: 'Terms of Service', path: '/terms' },
       { label: 'Cyber Feed', path: '/news' },
-      { label: 'Anansi CLI', path: '/anansi' },
+      { label: 'Anansi', path: '/anansi' },
       { label: 'Learn', path: '/learn' },
       { label: 'Blogs', path: '/blogs' },
       { label: 'Team', path: '/team' },
