@@ -47,6 +47,8 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
         setSubmitted(true);
         onReviewSubmitted();
         onOpenChange(false);
+      } else if (err?.response?.status === 410) {
+        setError('This event has already ended. Reviews are no longer accepted.');
       } else {
         setError('Failed to submit review. Please try again.');
       }
