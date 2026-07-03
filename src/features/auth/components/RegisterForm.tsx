@@ -33,7 +33,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
           <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
           <div className="relative">
             <input ref={handleRef} id="register-handle" type="text" name="handle" required autoComplete="username"
-              pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$"
+              pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
               title="Letters, numbers, and hyphens only. No spaces. Must start and end with a letter or number."
               placeholder="Pick a handle or choose one below"
               className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
