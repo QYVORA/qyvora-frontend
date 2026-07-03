@@ -28,6 +28,7 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
+const QuiteRootPage     = lazy(() => import('../features/marketing/pages/QuiteRootPage'));
 const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
 const LeaderboardPage   = lazy(() => import('../features/marketing/pages/LeaderboardPage'));
@@ -119,6 +120,7 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
+          <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
           <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
