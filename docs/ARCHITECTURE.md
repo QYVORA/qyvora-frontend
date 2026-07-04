@@ -211,7 +211,7 @@ features/
 | `components/layout/` | Navbar, Footer, PublicBottomNav | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | HeroBackground, AdinkraBackground | All features |
-| `layouts/` | LandingLayout, PublicLayout, SnapPublicLayout, BlogsLayout, StudentLayout, AdminLayout | Router only |
+| `layouts/` | LandingLayout, PublicLayout, SnapPublicLayout, BlogsLayout | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
