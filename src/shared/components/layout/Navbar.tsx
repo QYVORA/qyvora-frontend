@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}
-          <div className="hidden md:flex items-center space-x-3 lg:space-x-5 xl:space-x-7 ml-4 lg:ml-8 xl:ml-12">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-5 xl:space-x-7 ml-0 lg:ml-4 xl:ml-8 mr-4 lg:mr-6 xl:mr-8">
             {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => (
               <Link
                 key={item.key}
