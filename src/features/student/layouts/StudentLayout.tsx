@@ -16,7 +16,8 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
 const StudentLayout = () => {
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
-  const isRoomPage = Boolean(roomMatch || roomMatchLegacy);
+  const courseMatch = useMatch('/dashboard/courses/:courseId');
+  const isRoomPage = Boolean(roomMatch || roomMatchLegacy || courseMatch);
 
   return (
     <div className="bg-bg min-h-screen">
