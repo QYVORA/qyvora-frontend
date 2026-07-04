@@ -43,6 +43,8 @@ qyvora-frontend/src/
 │   ├── admin/
 │   │   ├── components/
 │   │   │   └── BootcampManager.tsx  # Full bootcamp CMS (4 sub-tabs)
+│   │   ├── layouts/
+│   │   │   └── AdminLayout.tsx      # Admin shell layout
 │   │   └── pages/
 │   │       └── AdminDashboardPage.tsx  # Admin console (7 tabs)
 │   ├── auth/
@@ -55,6 +57,7 @@ qyvora-frontend/src/
 │   │   └── pages/           # LandingPage, ServicesPage, ContactPage, etc.
 │   └── student/
 │       ├── components/      # Dashboard widgets, course components
+│       ├── layouts/         # StudentLayout.tsx
 │       └── pages/           # DashboardPage, BootcampPage, etc.
 ├── shared/
 │   ├── components/
@@ -65,9 +68,7 @@ qyvora-frontend/src/
 │   │   ├── ScrollReveal.tsx # Intersection observer animation wrapper
 │   │   └── ScrollToTop.tsx  # Route change scroll reset
 │   ├── layouts/
-│   │   ├── AdminLayout.tsx   # Admin shell (no nav — admin has its own sidebar)
-│   │   ├── PublicLayout.tsx  # Marketing shell (Navbar + Footer)
-│   │   └── StudentLayout.tsx # Student shell (sidebar nav)
+│   │   └── PublicLayout.tsx  # Marketing shell (Navbar + Footer)
 │   ├── pages/
 │   │   └── NotFoundPage.tsx
 │   └── utils/

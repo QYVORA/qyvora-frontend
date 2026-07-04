@@ -18,8 +18,8 @@ const PublicLayout = lazy(() => import('../shared/layouts/PublicLayout'));
 const SnapPublicLayout = lazy(() => import('../shared/layouts/SnapPublicLayout'));
 const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
 const BlogsLayout = lazy(() => import('../shared/layouts/BlogsLayout'));
-const StudentLayout = lazy(() => import('../shared/layouts/StudentLayout'));
-const AdminLayout = lazy(() => import('../shared/layouts/AdminLayout'));
+const StudentLayout = lazy(() => import('../features/student/layouts/StudentLayout'));
+const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
 // Shared pages
 import NotFoundPage from '../shared/pages/NotFoundPage';

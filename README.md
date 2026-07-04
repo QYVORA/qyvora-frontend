@@ -138,6 +138,7 @@ src/
 │   │   ├── constants/
 │   │   ├── data/                   # Quiz data
 │   │   ├── hooks/                  # useRoomSession
+│   │   ├── layouts/                # StudentLayout.tsx
 │   │   ├── pages/                  # Dashboard, Bootcamp, Wallet, Profile, etc.
 │   │   ├── services/               # Chain service, token balance
 │   │   └── utils/                  # rankUtils, studentExperience
@@ -183,7 +184,7 @@ src/
 │   │   ├── ScrollToTop.tsx
 │   │   ├── SEO.tsx
 │   │   └── SnapSection.tsx
-│   ├── layouts/                    # PublicLayout, StudentLayout, AdminLayout, etc.
+│   ├── layouts/                    # PublicLayout, SnapPublicLayout, BlogsLayout, LandingLayout
 │   ├── pages/                      # NotFoundPage
 │   └── utils/                      # cn, cpBalance, formatNumber, resolveImg, storageConsent
 ├── styles/
@@ -254,6 +255,8 @@ src/
 │   │   │   └── bootcampConfig.ts # Single source of truth for bootcamp structure
 │   │   ├── data/
 │   │   │   └── quizzes.ts
+│   │   ├── layouts/
+│   │   │   └── StudentLayout.tsx
 │   │   ├── pages/              # Dashboard, BootcampCourse, BootcampRoom, etc.
 │   │   └── services/
 │   │       ├── chain.service.ts
@@ -268,6 +271,8 @@ src/
 │       │   ├── BootcampAccessPanel.tsx
 │       │   └── CpAnalytics.tsx
 │       ├── constants/
+│       ├── layouts/
+│       │   └── AdminLayout.tsx
 │       └── pages/AdminDashboardPage.tsx
 └── shared/
     ├── components/
@@ -285,7 +290,7 @@ src/
     │   ├── ScrollToTop.tsx
     │   ├── SEO.tsx
     │   └── SnapSection.tsx
-    ├── layouts/                 # PublicLayout, StudentLayout, AdminLayout
+    ├── layouts/                 # PublicLayout, SnapPublicLayout, BlogsLayout, LandingLayout
     └── utils/
         ├── cn.ts
         ├── cpBalance.ts
