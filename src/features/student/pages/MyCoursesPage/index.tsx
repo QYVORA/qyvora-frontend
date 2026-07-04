@@ -14,7 +14,7 @@ const MyCoursesPage: React.FC = () => {
     api.get('/cp/transactions?limit=100').then((r) => {
       const items = Array.isArray(r.data?.items) ? r.data.items : [];
       const purchasedIds = items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
-        return tx.metadata?.slug || String(tx.productId);
+        return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
       });
       setPurchased(new Set(purchasedIds));
     }).catch(() => {}).finally(() => setLoading(false));
@@ -65,7 +65,7 @@ const MyCoursesPage: React.FC = () => {
                       to={`/dashboard/courses/${course.id}`}
                       className="group block overflow-hidden rounded-2xl border border-accent/30 bg-bg-card transition-all hover:border-accent/60 hover:shadow-lg hover:shadow-accent/10"
                     >
-                      <div className="aspect-[16/9] overflow-hidden bg-bg-elevated">
+                      <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                         <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       </div>
                       <div className="p-5 space-y-3">
@@ -111,7 +111,7 @@ const MyCoursesPage: React.FC = () => {
                     key={course.id}
                     className="group block overflow-hidden rounded-2xl border border-border/20 bg-bg-card/50 opacity-60"
                   >
-                    <div className="aspect-[16/9] overflow-hidden bg-bg-elevated">
+                    <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                       <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />
                     </div>
                     <div className="p-5 space-y-3">
