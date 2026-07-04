@@ -41,20 +41,20 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={() => setJumpMenuOpen(true)}
         title="Jump to step"
-        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors"
+        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
       >
-        <List className="h-5 w-5" />
+        <List className="h-4 w-4" />
       </button>
 
       <button
         onClick={toggleFullscreen}
         title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-        className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card border border-border text-text-muted hover:bg-accent-dim hover:text-accent transition-colors"
+        className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
       >
-        {fullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+        {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
       </button>
 
-      <div className="h-px w-6 bg-border/30 my-1" />
+      <div className="h-px w-5 bg-border/20 my-1" />
 
       <button
         onClick={async () => {
@@ -78,22 +78,22 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
               : 'Complete Room'
             : 'Next Step'
         }
-        className={`flex h-11 w-11 items-center justify-center rounded-xl border border-border transition-all ${
+        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
           isLastStep
             ? 'bg-accent border-accent text-bg hover:brightness-110'
-            : 'bg-bg-card text-text-muted hover:bg-accent-dim hover:text-accent'
+            : 'bg-bg-card border-border text-text-muted hover:text-accent hover:border-accent/30'
         } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {completing ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" />
         ) : isLastStep ? (
           isRoomComplete ? (
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-4 w-4" />
           ) : (
-            <CheckCircle2 className="h-5 w-5" />
+            <CheckCircle2 className="h-4 w-4" />
           )
         ) : (
-          <ArrowRight className="h-5 w-5" />
+          <ArrowRight className="h-4 w-4" />
         )}
       </button>
     </aside>

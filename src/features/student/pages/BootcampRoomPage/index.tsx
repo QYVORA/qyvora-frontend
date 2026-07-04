@@ -271,14 +271,14 @@ const BootcampRoomPage: React.FC = () => {
             <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
               <div className="mb-4 px-1"><Link to={`/dashboard/bootcamps/${bootcampId}`} className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"><ArrowLeft className="h-3.5 w-3.5" /> Back to Curriculum</Link></div>
               {BOOTCAMP_CONFIG.phases.map((p_) => (
-                <div key={p_.id} className="mb-4">
-                  <p className="mb-2 px-2 text-[10px] font-black uppercase tracking-[0.3em] text-accent">{p_.codename} — {p_.title}</p>
-                  <div className="space-y-0.5 border-l-2 border-border/40 ml-2 pl-3">
+                  <div key={p_.id} className="mb-3">
+                    <p className="mb-1.5 px-2 text-[10px] font-black uppercase tracking-[0.3em] text-accent/70">{p_.codename} — {p_.title}</p>
+                    <div className="space-y-0.5 border-l border-border/30 ml-2 pl-2">
                     {p_.rooms.map((r_) => {
                       const k = `${p_.id}:${r_.id}`; const act = p_.id === phaseId && r_.id === roomId; const comp = completedRooms.has(k); const lock = lockedRooms.has(k);
                       return (
-                        <button key={k} onClick={() => { if (!lock) handleNavigate(p_.id, r_.id); }} disabled={lock} className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all min-h-[52px] ${act ? 'text-accent font-bold bg-transparent' : lock ? 'opacity-40 cursor-not-allowed text-text-muted' : 'bg-transparent hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'}`}>
-                          <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[10px] font-black font-mono ${comp ? 'border-accent/40 text-accent' : act ? 'border-accent/40 text-accent' : 'border-border text-text-muted'}`}>{comp ? <CheckCircle2 className="h-3 w-3" /> : lock ? <Lock className="h-3 w-3" /> : null}</span>
+                        <button key={k} onClick={() => { if (!lock) handleNavigate(p_.id, r_.id); }} disabled={lock} className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-all ${act ? 'text-accent font-semibold bg-accent-dim/20' : lock ? 'opacity-40 cursor-not-allowed text-text-muted' : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'}`}>
+                          <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-[9px] font-bold font-mono ${comp ? 'border-accent/40 text-accent' : act ? 'border-accent/40 text-accent' : 'border-border text-text-muted'}`}>{comp ? <CheckCircle2 className="h-2.5 w-2.5" /> : lock ? <Lock className="h-2.5 w-2.5" /> : null}</span>
                           <span className="truncate text-sm">{r_.title}</span>
                         </button>
                       );
@@ -289,7 +289,7 @@ const BootcampRoomPage: React.FC = () => {
             </nav>
           </div>
         </aside>
-        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-8 w-8 rounded-full border border-border items-center justify-center text-text-muted hover:text-accent transition-all hover:scale-110 active:scale-95 ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-4 w-4" /></button>
+        <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className={`hidden md:flex absolute top-6 z-50 h-7 w-7 rounded-lg bg-bg-card border border-border items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-colors ${sidebarCollapsed ? 'left-6 rotate-180' : 'left-[274px] xl:left-[306px]'}`} title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}><Menu className="h-3.5 w-3.5" /></button>
         <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
         <main className="flex-1 min-h-0 min-w-0 md:overflow-y-auto md:overscroll-contain scroll-hover">
           {!phase || !room ? (
