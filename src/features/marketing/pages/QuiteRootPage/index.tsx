@@ -122,7 +122,7 @@ function Hero() {
 function WhoWeAre() {
   return (
     <ScrollReveal direction="up">
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-10 px-4 sm:px-8 md:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:px-16">
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-10 px-4 sm:px-8 md:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:px-16">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {capabilities.map((item) => (
             <div
@@ -176,7 +176,7 @@ function FeaturedProject() {
 
   return (
     <ScrollReveal direction="up">
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12 xl:px-16">
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12 xl:px-16">
         <div className="rounded-3xl border border-white/10 bg-bg-card/70 p-2">
           <div className="terminal-card overflow-hidden rounded-[1.35rem] bg-bg">
             <div className="border-b border-white/10 px-5 py-4 text-[10px] font-black uppercase tracking-[0.28em] text-text-muted">
