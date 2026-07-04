@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, ClipboardList, Menu
+  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -10,6 +10,7 @@ import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { AnimatePresence, motion } from 'motion/react';
+import { useScrollY } from '../../../../../core/hooks/useScrollY';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
@@ -38,8 +39,22 @@ const StudentTopbar = () => {
   const roomPhaseConfig = BOOTCAMP_CONFIG.phases.find((p) => p.id === roomPhaseId);
   const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
 
-  const openQuiz = () => window.dispatchEvent(new CustomEvent('bootcamp:openQuiz'));
   const openSidebar = () => window.dispatchEvent(new CustomEvent('bootcamp:openSidebar'));
+
+  // ── Scroll-hide (room page only) ──────────────────────────────────────────
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const scrollY = useScrollY();
+
+  useEffect(() => {
+    if (!isRoomPage) { setIsVisible(true); return; }
+    if (scrollY < 10) { setIsVisible(true); lastScrollY.current = scrollY; return; }
+    const diff = scrollY - lastScrollY.current;
+    if (Math.abs(diff) > 5) {
+      setIsVisible(diff <= 0);
+      lastScrollY.current = scrollY;
+    }
+  }, [scrollY, isRoomPage]);
 
   // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
@@ -126,7 +141,11 @@ const StudentTopbar = () => {
       </a>
 
       {/* ── Desktop topbar ── */}
-      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
+      <header
+        className={`fixed top-0 left-0 w-full z-40 bg-bg border-b border-border transition-transform duration-300 ${
+          isRoomPage && !isVisible ? '-translate-y-full' : 'translate-y-0'
+        }`}
+      >
         {isRoomPage ? (
           /* ══ BOOTCAMP ROOM MODE ══ */
           <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-3">
@@ -180,51 +199,8 @@ const StudentTopbar = () => {
               </span>
             </div>
 
-            {/* Right: quiz + notif + profile */}
+            {/* Right: profile only */}
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={openQuiz}
-                className="flex items-center gap-2 h-11 px-4 rounded-xl border-2 border-accent/40 bg-accent-dim text-accent hover:border-accent/70 hover:bg-accent-dim/70 transition-colors text-sm font-black uppercase tracking-wide"
-              >
-                <ClipboardList className="h-4 w-4" />
-                <span className="hidden sm:inline">Quiz</span>
-              </button>
-
-              <div ref={notifRef} className="relative">
-                <button
-                  onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                  className="relative p-3 min-h-11 min-w-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-                  aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
-                >
-                  <Bell className="w-5 h-5" />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </button>
-
-                <NotificationsDropdown
-                  open={notifOpen}
-                  onClose={() => setNotifOpen(false)}
-                  unreadCount={unreadCount}
-                  notifLoading={notifLoading}
-                  notificationsPreview={notificationsPreview}
-                  markAllNotificationsRead={markAllNotificationsRead}
-                  onMarkRead={markNotificationRead}
-                />
-              </div>
-
-              <MobileNotificationsSheet
-                open={notifOpen}
-                onOpenChange={setNotifOpen}
-                unreadCount={unreadCount}
-                notifLoading={notifLoading}
-                notificationsPreview={notificationsPreview}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onMarkRead={markNotificationRead}
-              />
-
               <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                 <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
               </Link>
