@@ -32,7 +32,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
     <aside
       className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
       style={{
-        top: '6rem',
+        top: '5rem',
         bottom: '1.5rem',
         justifyContent: 'center',
       }}
