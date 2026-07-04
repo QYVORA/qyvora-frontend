@@ -94,8 +94,6 @@ function SectionHeader({
   );
 }
 
-
-
 function TerminalPanel({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`terminal-card border border-white/10 bg-bg-card/70 ${compact ? 'rounded-2xl' : 'rounded-3xl'} overflow-hidden`}>
