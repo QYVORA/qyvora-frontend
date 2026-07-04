@@ -201,6 +201,20 @@ const BootcampRoomPage: React.FC = () => {
     try { const raw = localStorage.getItem(bookmarksKey); return raw ? new Set(JSON.parse(raw)) : new Set(); }
     catch { return new Set(); }
   });
+
+  const gotItKey = `gotit_${phaseId}_${roomId}`;
+  const [gotItSteps, setGotItSteps] = useState<Set<number>>(() => {
+    try { const raw = localStorage.getItem(gotItKey); return raw ? new Set(JSON.parse(raw)) : new Set(); }
+    catch { return new Set(); }
+  });
+  const handleGotIt = useCallback((stepNum: number, val: boolean) => {
+    setGotItSteps((prev) => {
+      const next = new Set(prev);
+      if (val) next.add(stepNum); else next.delete(stepNum);
+      try { localStorage.setItem(gotItKey, JSON.stringify([...next])); } catch {}
+      return next;
+    });
+  }, [gotItKey]);
   const toggleBookmark = (stepIdx: number) => {
     const key = `${phaseId}:${roomId}:${stepIdx}`;
     setBookmarkedSteps(prev => {
@@ -308,8 +322,8 @@ const BootcampRoomPage: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div className="hidden md:block mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(i - 1, 0))} />)}</div>
-                  <div className="md:hidden mb-10"><StepCard key={currentStepIdx} step={room.steps[currentStepIdx]} stepNum={currentStepIdx+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive isViewed={viewedSteps.has(currentStepIdx)} isBookmarked={isStepBookmarked(currentStepIdx)} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(currentStepIdx)} onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }} onClick={() => goToStep(currentStepIdx)} onNext={() => goToStep(Math.min(currentStepIdx + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(currentStepIdx - 1, 0))} /></div>
+                  <div className="hidden md:block mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} gotIt={gotItSteps.has(i+1)} onGotIt={handleGotIt} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(i - 1, 0))} />)}</div>
+                  <div className="md:hidden mb-10"><StepCard key={currentStepIdx} step={room.steps[currentStepIdx]} stepNum={currentStepIdx+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive isViewed={viewedSteps.has(currentStepIdx)} isBookmarked={isStepBookmarked(currentStepIdx)} gotIt={gotItSteps.has(currentStepIdx+1)} onGotIt={handleGotIt} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(currentStepIdx)} onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }} onClick={() => goToStep(currentStepIdx)} onNext={() => goToStep(Math.min(currentStepIdx + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(currentStepIdx - 1, 0))} /></div>
                 </>
               )}
               <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />
