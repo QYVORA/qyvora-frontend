@@ -1,41 +1,143 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import ScrollReveal from '@/shared/components/ScrollReveal';
+import { ArrowRight, FlaskConical } from 'lucide-react';
+import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
 
 const LandingQuiteRootSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <div className="w-full px-4 md:px-12 lg:px-16">
-      <div className="w-full lg:max-w-6xl lg:mx-auto">
-        <ScrollReveal direction="up" amount={0.1}>
-          <div className="flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-            <div className="md:w-[55%] lg:w-[58%] flex flex-col items-start gap-4 mb-6 md:mb-0">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-                Quite<span className="text-accent">Root</span>
-              </h2>
-              <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-lg">
-                The research and engineering collective behind QYVORA&apos;s offensive tooling, intelligence, and operator-focused security experiments.
-              </p>
-              <Link
-                to="/quiteroot"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
-              >
-                Explore QuiteRoot <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-            <div className="md:w-[45%] lg:w-[42%] flex items-center justify-center md:justify-end">
+    <div className="relative w-full md:h-screen md:overflow-hidden flex items-center justify-center py-20 sm:py-24 lg:py-20">
+
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
+
+        {/* Mobile layout: stacked — logo on top, content below */}
+        <div className="flex flex-col lg:hidden w-full gap-12">
+
+          <motion.div
+            initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.88 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center w-full px-4"
+          >
+            <div className="relative w-full max-w-[420px] sm:max-w-[540px]">
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
-                className="w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px] lg:max-w-[500px] h-auto object-contain"
+                className="relative z-10 w-full h-auto block"
               />
             </div>
+          </motion.div>
+
+          <div className="flex flex-col items-start w-full gap-7">
+            <SimpleHeading
+              text="Quite Root"
+              align="left"
+              accentWords={1}
+              accentPlacement="end"
+              className="mb-0"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-xl"
+            >
+              The research and engineering collective behind QYVORA&apos;s offensive tooling, intelligence, and operator-focused security experiments.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
+            >
+              <Link
+                to="/quiteroot"
+                className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
+              >
+                Explore QuiteRoot <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/blogs?tag=QuiteRoot"
+                className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
+              >
+                <FlaskConical className="w-5 h-5" /> Research
+              </Link>
+            </motion.div>
           </div>
-        </ScrollReveal>
+        </div>
+
+        {/* Desktop layout: side-by-side grid */}
+        <div className="hidden lg:grid grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
+
+          <div className="max-w-2xl">
+            <SimpleHeading
+              text="Quite Root"
+              align="left"
+              accentWords={1}
+              accentPlacement="end"
+              className="mb-6"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base md:text-lg text-text-secondary leading-relaxed mb-10 max-w-xl"
+            >
+              The research and engineering collective behind QYVORA&apos;s offensive tooling, intelligence, and operator-focused security experiments.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+            >
+              <Link
+                to="/quiteroot"
+                className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
+              >
+                Explore QuiteRoot <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/blogs?tag=QuiteRoot"
+                className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
+              >
+                <FlaskConical className="w-5 h-5" /> Research
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-end lg:-translate-x-4 xl:-translate-x-8"
+          >
+            <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
+              <img
+                src={quiteRootLogo}
+                alt="QuiteRoot"
+                className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
+              />
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </div>
   );
 };
 
-export default LandingQuiteRootSection;
+export default React.memo(LandingQuiteRootSection);
