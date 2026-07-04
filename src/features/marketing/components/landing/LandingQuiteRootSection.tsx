@@ -28,7 +28,7 @@ const LandingQuiteRootSection: React.FC = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
-                className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain"
+                className="w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px] lg:max-w-[500px] h-auto object-contain"
               />
             </div>
           </div>
