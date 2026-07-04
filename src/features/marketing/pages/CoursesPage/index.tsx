@@ -91,7 +91,7 @@ const CoursesPage: React.FC = () => {
                     className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
                   >
                     {/* Cover */}
-                    <div className="aspect-[16/9] overflow-hidden bg-bg-elevated">
+                    <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                       <img
                         src={course.coverSvg}
                         alt={course.title}

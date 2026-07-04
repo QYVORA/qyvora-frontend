@@ -56,7 +56,7 @@ const CourseLessonPage: React.FC = () => {
     api.get('/cp/transactions?limit=100').then((r) => {
       const items = Array.isArray(r.data?.items) ? r.data.items : [];
       const purchasedIds = new Set(items.filter((tx: any) => tx.type === 'purchase').map((tx: any) => {
-        return tx.metadata?.slug || String(tx.productId);
+        return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
       }));
       setPurchased(purchasedIds.has(courseId || ''));
     }).catch(() => {
