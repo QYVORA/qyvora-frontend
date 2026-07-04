@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, Layers } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
+import { Footer } from '@/shared/components/layout';
 import { COURSES, COURSE_CATEGORIES, getCategoryById } from '@/features/student/data/courses/courseData';
 import type { CourseCategoryId } from '@/features/student/data/courses/types';
 
@@ -23,16 +24,16 @@ const CoursesPage: React.FC = () => {
     : COURSES.filter((c) => c.categoryId === activeCategory);
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg flex flex-col pt-[72px]">
       <SEO
         title="Courses"
         description="Self-paced cybersecurity courses. Master one skill at a time with hands-on, beginner-friendly walkthroughs."
       />
 
-      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 pt-28 pb-20">
+      <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 md:py-16 flex-1 flex flex-col">
         {/* Header */}
         <div className="mb-12">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-accent mb-4">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-sm text-[10px] font-black uppercase tracking-widest text-accent mb-4">
             <BookOpen className="h-3.5 w-3.5" /> Self-Paced Learning
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
@@ -48,9 +49,9 @@ const CoursesPage: React.FC = () => {
         <div className="flex flex-wrap gap-2 mb-10">
           <button
             onClick={() => setActiveCategory('all')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all ${
               activeCategory === 'all'
-                ? 'bg-accent text-bg shadow-lg shadow-accent/20'
+                ? 'bg-accent text-bg'
                 : 'bg-bg-elevated text-text-muted border border-border/30 hover:border-accent/30 hover:text-accent'
             }`}
           >
@@ -63,9 +64,9 @@ const CoursesPage: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all ${
                   active
-                    ? 'bg-accent text-bg shadow-lg shadow-accent/20'
+                    ? 'bg-accent text-bg'
                     : 'bg-bg-elevated text-text-muted border border-border/30 hover:border-accent/30 hover:text-accent'
                 }`}
               >
@@ -88,7 +89,7 @@ const CoursesPage: React.FC = () => {
                 <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                   <Link
                     to={`/courses/${course.id}`}
-                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+                    className="group block overflow-hidden rounded-sm border border-border/30 bg-bg-card transition-all hover:border-accent/40"
                   >
                     {/* Cover */}
                     <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
@@ -102,7 +103,7 @@ const CoursesPage: React.FC = () => {
                     {/* Info */}
                     <div className="p-5 space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                           {category?.name}
                         </span>
                         <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
@@ -119,7 +120,7 @@ const CoursesPage: React.FC = () => {
                       </p>
 
                       <div className="flex items-center justify-between pt-2">
-                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-accent/10 text-[10px] font-black text-accent">
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-accent/10 text-[10px] font-black text-accent">
                           <Zap className="h-3 w-3" /> {course.cpCost} CP
                         </span>
                         <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
@@ -134,6 +135,7 @@ const CoursesPage: React.FC = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

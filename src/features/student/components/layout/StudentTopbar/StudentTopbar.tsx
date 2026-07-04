@@ -3,6 +3,7 @@ import {
   Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
+import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
@@ -26,11 +27,14 @@ const StudentTopbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ── Bootcamp room route detection ─────────────────────────────────────────
+  // ── Bootcamp & Course route detection ─────────────────────────────────────
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
+  const courseMatch = useMatch('/dashboard/courses/:courseId');
+  
+  const isCoursePage = Boolean(courseMatch);
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
-  const isRoomPage = Boolean(activeRoomMatch);
+  const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
   const roomBootcampId = activeRoomMatch?.params?.bootcampId ?? '';
   const roomPhaseId = roomMatch?.params?.phaseId
@@ -39,7 +43,10 @@ const StudentTopbar = () => {
   const roomPhaseConfig = BOOTCAMP_CONFIG.phases.find((p) => p.id === roomPhaseId);
   const roomConfig = roomPhaseConfig?.rooms.find((r) => r.id === roomRoomId);
 
-  const openSidebar = () => window.dispatchEvent(new CustomEvent('bootcamp:openSidebar'));
+  const courseId = courseMatch?.params?.courseId ?? '';
+  const courseConfig = getCourseById(courseId);
+
+  const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
 
   // ── Scroll-hide (room page only) ──────────────────────────────────────────
   const [isVisible, setIsVisible] = useState(true);
@@ -150,11 +157,17 @@ const StudentTopbar = () => {
           /* ══ BOOTCAMP ROOM MODE ══ */
           <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-3">
 
-            {/* Back to curriculum */}
+            {/* Back to curriculum or courses */}
             <button
-              onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
+              onClick={() => {
+                if (isCoursePage) {
+                  navigate('/dashboard/courses');
+                } else {
+                  navigate(`/dashboard/bootcamps/${roomBootcampId}`);
+                }
+              }}
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label="Back to curriculum"
+              aria-label={isCoursePage ? "Back to courses" : "Back to curriculum"}
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -163,40 +176,69 @@ const StudentTopbar = () => {
             <button
               onClick={openSidebar}
               className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label="Toggle curriculum sidebar"
+              aria-label={isCoursePage ? "Toggle lessons sidebar" : "Toggle curriculum sidebar"}
             >
               <Menu className="h-5 w-5" />
             </button>
 
             {/* Breadcrumb — desktop */}
             <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
-              <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
-                Curriculum
-              </Link>
-              {roomPhaseConfig && (
+              {isCoursePage ? (
                 <>
-                  <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                  <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
+                  <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
+                    Courses
+                  </Link>
+                  {courseConfig && (
+                    <>
+                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                      <span className="text-text-primary font-black truncate">{courseConfig.title}</span>
+                    </>
+                  )}
                 </>
-              )}
-              {roomConfig && (
+              ) : (
                 <>
-                  <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                  <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
+                  <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
+                    Curriculum
+                  </Link>
+                  {roomPhaseConfig && (
+                    <>
+                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                      <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
+                    </>
+                  )}
+                  {roomConfig && (
+                    <>
+                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                      <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
+                    </>
+                  )}
                 </>
               )}
             </div>
 
-            {/* Mobile: phase + room title */}
+            {/* Mobile: phase + room title / course title */}
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              {roomPhaseConfig && (
-                <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
-                  {roomPhaseConfig.codename}
-                </span>
+              {isCoursePage ? (
+                <>
+                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
+                    Course
+                  </span>
+                  <span className="text-sm font-black text-text-primary truncate leading-tight">
+                    {courseConfig?.title ?? 'Course'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  {roomPhaseConfig && (
+                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
+                      {roomPhaseConfig.codename}
+                    </span>
+                  )}
+                  <span className="text-sm font-black text-text-primary truncate leading-tight">
+                    {roomConfig?.title ?? 'Room'}
+                  </span>
+                </>
               )}
-              <span className="text-sm font-black text-text-primary truncate leading-tight">
-                {roomConfig?.title ?? 'Room'}
-              </span>
             </div>
 
             {/* Right: profile only */}

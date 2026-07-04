@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Clock, ArrowLeft, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Lock } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import { getCourseById, getCategoryById } from '@/features/student/data/courses/courseData';
@@ -89,34 +90,34 @@ const CourseInfoPage: React.FC = () => {
   const isUnlocked = purchased;
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg flex flex-col pt-[72px]">
       <SEO title={course.title} description={course.description} />
 
       {/* Hero */}
-      <div className="border-b border-border/30">
-        <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16">
-          <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6">
+      <div className="border-b border-border/30 flex-1 flex flex-col justify-center lg:min-h-[calc(100dvh-72px)]">
+        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 lg:py-0 flex flex-col justify-center flex-1">
+          <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6 self-start">
             <ArrowLeft className="h-3 w-3" /> All Courses
           </Link>
 
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center w-full">
             {/* Cover */}
-            <div className="lg:w-[40%] shrink-0">
-              <div className="aspect-[8/5] rounded-2xl overflow-hidden border border-border/30 bg-bg-elevated">
+            <div className="w-full lg:w-[40%] shrink-0">
+              <div className="aspect-[8/5] rounded-sm overflow-hidden border border-border/30 bg-bg-elevated">
                 <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Info */}
-            <div className="lg:w-[60%] flex flex-col justify-center">
+            <div className="w-full lg:w-[60%] flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-sm text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
                   <Icon className="h-3 w-3" /> {category?.name}
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-sm text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                   <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-sm text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                   <BookOpen className="h-3 w-3" /> {course.lessons.length} lessons
                 </span>
               </div>
@@ -133,7 +134,7 @@ const CourseInfoPage: React.FC = () => {
               {isUnlocked ? (
                 <Link
                   to={`/dashboard/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
                   Start Learning <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -142,7 +143,7 @@ const CourseInfoPage: React.FC = () => {
                   <button
                     onClick={handlePurchase}
                     disabled={purchasing || !canAfford}
-                    className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {purchasing ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -160,7 +161,7 @@ const CourseInfoPage: React.FC = () => {
               ) : (
                 <Link
                   to={`/register?redirect=/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
                   <Lock className="h-4 w-4" /> Sign Up to Unlock
                 </Link>
@@ -169,6 +170,7 @@ const CourseInfoPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
