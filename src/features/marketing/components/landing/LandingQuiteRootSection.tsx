@@ -9,7 +9,7 @@ const LandingQuiteRootSection: React.FC = () => {
     <div className="w-full px-4 md:px-12 lg:px-16">
       <div className="w-full lg:max-w-6xl lg:mx-auto">
         <ScrollReveal direction="up" amount={0.1}>
-          <div className="flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16">
+          <div className="flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
             <div className="md:w-[55%] lg:w-[58%] flex flex-col items-start gap-4 mb-6 md:mb-0">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
                 Quite<span className="text-accent">Root</span>
