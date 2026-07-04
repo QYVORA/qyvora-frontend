@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   ArrowRight,
-  Binary,
   BookOpen,
-  BrainCircuit,
   CheckCircle2,
   Cpu,
   FlaskConical,
@@ -13,9 +11,7 @@ import {
   GitPullRequest,
   Globe2,
   LockKeyhole,
-  Network,
   Rocket,
-  Shield,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
@@ -54,14 +50,6 @@ const principles = [
   ['Continuous Improvement', 'Never finished.', Rocket],
 ];
 
-const terminalLines = [
-  'root@quiteroot:~$',
-  'loading research...',
-  'building offensive capability...',
-  'initializing intelligence...',
-  'done.',
-];
-
 function SectionHeader({
   eyebrow,
   title,
@@ -94,38 +82,6 @@ function SectionHeader({
   );
 }
 
-function TerminalPanel({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`terminal-card border border-white/10 bg-bg-card/70 ${compact ? 'rounded-2xl' : 'rounded-3xl'} overflow-hidden`}>
-      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-5 py-3">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-accent/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
-        </div>
-        <span className="text-[10px] font-black uppercase tracking-[0.24em] text-text-muted">QuiteRoot Shell</span>
-      </div>
-      <div className="space-y-3 p-5 sm:p-7">
-        {terminalLines.map((line, index) => (
-          <motion.div
-            key={line}
-            initial={{ opacity: 0, x: -8 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.35, delay: index * 0.22 }}
-            className="flex items-center gap-3 font-mono text-xs sm:text-sm text-text-secondary"
-          >
-            <span className={index === 0 || index === terminalLines.length - 1 ? 'text-accent' : 'text-text-muted'}>
-              {index === 0 ? '$' : '>'}
-            </span>
-            <code>{line}</code>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function Hero() {
   return (
     <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
@@ -148,9 +104,6 @@ function Hero() {
               </a>
             </div>
           </div>
-          <div className="mt-10 w-full max-w-2xl">
-            <TerminalPanel compact />
-          </div>
         </div>
         <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
           <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
@@ -170,28 +123,16 @@ function WhoWeAre() {
   return (
     <ScrollReveal direction="up">
       <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-10 px-4 sm:px-8 md:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:px-16">
-        <div className="terminal-card rounded-3xl border border-white/10 bg-bg-card/60 p-6 sm:p-8">
-          <div className="relative min-h-[360px] overflow-hidden rounded-2xl border border-white/10 bg-bg">
-            <div className="absolute inset-0 dot-grid opacity-45" />
-            <div className="absolute inset-x-8 top-12 h-px bg-accent/50" />
-            <div className="absolute inset-y-10 left-16 w-px bg-accent/35" />
-            <div className="absolute bottom-16 left-10 right-12 h-px bg-accent/30" />
-            <div className="absolute right-16 top-16 bottom-10 w-px bg-accent/25" />
-            {[Network, BrainCircuit, Shield, Binary].map((Icon, index) => (
-              <motion.div
-                key={index}
-                className="absolute flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/25 bg-bg-card/90 text-accent"
-                style={{
-                  left: `${18 + (index % 2) * 56}%`,
-                  top: `${18 + Math.floor(index / 2) * 54}%`,
-                }}
-                animate={{ y: [0, -8, 0], opacity: [0.75, 1, 0.75] }}
-                transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <Icon className="h-7 w-7" />
-              </motion.div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {capabilities.map((item) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-bg-card/70 px-4 py-3 text-sm text-text-secondary transition-all hover:border-accent/35 hover:text-text-primary"
+            >
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" />
+              {item}
+            </div>
+          ))}
         </div>
         <div>
           <SectionHeader
@@ -200,17 +141,6 @@ function WhoWeAre() {
             accent="QuiteRoot?"
             body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
           />
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {capabilities.map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-bg-card/70 px-4 py-3 text-sm text-text-secondary transition-all hover:border-accent/35 hover:text-text-primary"
-              >
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" />
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </ScrollReveal>
