@@ -107,99 +107,7 @@ function SectionHeader({
   );
 }
 
-function AnimatedField() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-      <div className="absolute inset-0 dot-grid opacity-40" />
-      <motion.div
-        className="absolute left-[-10%] top-24 h-px w-[120%] bg-gradient-to-r from-transparent via-accent/60 to-transparent"
-        animate={{ x: ['-18%', '18%'], opacity: [0.1, 0.55, 0.1] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
-      />
-      <motion.div
-        className="absolute right-[-10%] bottom-36 h-px w-[90%] bg-gradient-to-r from-transparent via-accent/40 to-transparent"
-        animate={{ x: ['12%', '-16%'], opacity: [0.08, 0.45, 0.08] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
-      />
-      <svg className="absolute inset-0 h-full w-full opacity-45" role="presentation">
-        <defs>
-          <linearGradient id="qr-line" x1="0" x2="1">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="50%" stopColor="rgba(102,184,112,0.8)" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
-        </defs>
-        {[
-          ['8%', '26%', '32%', '40%'],
-          ['28%', '18%', '58%', '31%'],
-          ['58%', '31%', '84%', '20%'],
-          ['18%', '72%', '44%', '54%'],
-          ['44%', '54%', '75%', '70%'],
-        ].map(([x1, y1, x2, y2], index) => (
-          <motion.line
-            key={`${x1}-${y1}`}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="url(#qr-line)"
-            strokeWidth="1"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: [0, 1, 1], opacity: [0, 0.7, 0.2] }}
-            transition={{ duration: 4.5, delay: index * 0.35, repeat: Infinity, repeatDelay: 2 }}
-          />
-        ))}
-        {[
-          ['8%', '26%'],
-          ['32%', '40%'],
-          ['58%', '31%'],
-          ['84%', '20%'],
-          ['18%', '72%'],
-          ['44%', '54%'],
-          ['75%', '70%'],
-        ].map(([cx, cy], index) => (
-          <motion.circle
-            key={`${cx}-${cy}`}
-            cx={cx}
-            cy={cy}
-            r="3"
-            fill="#66B870"
-            animate={{ opacity: [0.25, 0.9, 0.25], scale: [1, 1.45, 1] }}
-            transition={{ duration: 3, delay: index * 0.2, repeat: Infinity }}
-          />
-        ))}
-      </svg>
-      <div className="absolute inset-0 scanlines" />
-      <div className="absolute left-1/2 top-1/2 h-[42rem] w-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl" />
-    </div>
-  );
-}
 
-function QuiteRootMark() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
-      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-      transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex h-20 w-20 shrink-0 items-center justify-center sm:h-28 sm:w-28 md:h-36 md:w-36 lg:h-44 lg:w-44"
-      aria-label="QuiteRoot geometric mark"
-    >
-      <div className="absolute inset-0 rounded-[1.35rem] border border-accent/25 bg-accent/5 shadow-[0_0_80px_var(--color-accent-glow)] rotate-45 sm:rounded-[1.75rem] md:rounded-[2rem]" />
-      <div className="absolute inset-3 rounded-xl border border-white/10 bg-bg-card/70 backdrop-blur-sm sm:inset-4 sm:rounded-2xl md:inset-5" />
-      <div className="relative z-10 grid h-12 w-12 grid-cols-2 gap-1.5 sm:h-16 sm:w-16 sm:gap-2 md:h-24 md:w-24">
-        <span className="rounded-tl-2xl border border-accent/40 bg-accent/20" />
-        <span className="rounded-tr-md border border-white/10 bg-white/5" />
-        <span className="rounded-bl-md border border-white/10 bg-white/5" />
-        <span className="rounded-br-2xl border border-accent/40 bg-accent/20" />
-      </div>
-      <motion.span
-        className="absolute h-2 w-2 rounded-full bg-accent"
-        animate={{ y: [-36, 36, -36], opacity: [0.2, 1, 0.2] }}
-        transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
-      />
-    </motion.div>
-  );
-}
 
 function TerminalPanel({ compact = false }: { compact?: boolean }) {
   return (
@@ -236,7 +144,6 @@ function TerminalPanel({ compact = false }: { compact?: boolean }) {
 function Hero() {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-bg pt-24">
-      <AnimatedField />
       <div className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-[1600px] items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:px-12 xl:px-16">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -285,42 +192,12 @@ function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="hidden lg:flex w-full items-center justify-center"
         >
-          <div className="relative w-full max-w-[560px] overflow-hidden rounded-[2rem] border border-white/10 bg-bg-card/70 p-4 shadow-[0_0_80px_var(--color-accent-glow)] backdrop-blur-sm sm:p-6">
-            <div className="absolute inset-0 dot-grid opacity-25" aria-hidden />
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-bg-card via-bg to-bg/90 p-8 sm:p-10 lg:p-12">
-              <div className="absolute inset-0 rounded-[1.5rem] border border-accent/10" />
-              <div className="absolute inset-x-10 inset-y-10 rounded-full bg-[radial-gradient(circle,rgba(102,184,112,0.16),transparent_70%)] blur-3xl" />
-              <motion.div
-                className="absolute left-1/2 top-1/2 h-[58%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/20"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-              />
-              <motion.div
-                className="absolute left-1/2 top-1/2 h-[76%] w-[76%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
-              />
-              <div className="absolute left-[18%] top-[24%] h-24 w-24 rounded-full border border-accent/20 bg-accent/10 blur-[2px]" />
-              <div className="absolute right-[16%] top-[22%] h-20 w-20 rounded-full border border-white/10 bg-white/5" />
-              <div className="absolute bottom-[18%] left-[22%] h-20 w-20 rounded-full border border-accent/20 bg-accent/10" />
-              <div className="absolute bottom-[16%] right-[20%] h-24 w-24 rounded-full border border-white/10 bg-white/5" />
-              {["18%", "32%", "58%", "72%"].map((pos, index) => (
-                <motion.div
-                  key={pos}
-                  className="absolute h-2.5 w-2.5 rounded-full bg-accent"
-                  style={{ left: pos, top: index % 2 === 0 ? '28%' : '70%' }}
-                  animate={{ opacity: [0.15, 0.95, 0.15], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 3.2 + index * 0.35, repeat: Infinity, ease: 'easeInOut' }}
-                />
-              ))}
-              <div className="absolute left-1/2 top-1/2 flex h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.2rem] border border-accent/20 bg-bg-card/50 p-4 shadow-[0_0_40px_var(--color-accent-glow)] backdrop-blur-sm">
-                <img
-                  src={quiteRootLogo}
-                  alt="QuiteRoot official logo"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            </div>
+          <div className="relative w-full max-w-[560px]">
+            <img
+              src={quiteRootLogo}
+              alt="QuiteRoot official logo"
+              className="w-full h-auto object-contain"
+            />
           </div>
         </motion.div>
       </div>
@@ -339,7 +216,7 @@ function WhoWeAre() {
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           transition={sectionTransition}
-          className="border-beam terminal-card rounded-3xl border border-white/10 bg-bg-card/60 p-6 sm:p-8"
+          className="terminal-card rounded-3xl border border-white/10 bg-bg-card/60 p-6 sm:p-8"
         >
           <div className="relative min-h-[360px] overflow-hidden rounded-2xl border border-white/10 bg-bg">
             <div className="absolute inset-0 dot-grid opacity-45" />
@@ -351,7 +228,7 @@ function WhoWeAre() {
             {[Network, BrainCircuit, Shield, Binary].map((Icon, index) => (
               <motion.div
                 key={index}
-                className="absolute flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/25 bg-bg-card/90 text-accent shadow-[0_0_36px_var(--color-accent-glow)]"
+                className="absolute flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/25 bg-bg-card/90 text-accent"
                 style={{
                   left: `${18 + (index % 2) * 56}%`,
                   top: `${18 + Math.floor(index / 2) * 54}%`,
@@ -398,9 +275,8 @@ function WhoWeAre() {
 function Mission() {
   return (
     <section className="relative overflow-hidden py-20 md:py-28 lg:py-32">
-      <AnimatedField />
       <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-bg-card/50 p-8 text-center backdrop-blur-sm sm:p-12 lg:p-16">
+        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-bg-card/50 p-8 text-center sm:p-12 lg:p-16">
           <SectionHeader
             align="center"
             eyebrow="// MISSION"
@@ -433,7 +309,7 @@ function FeaturedProject() {
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           transition={sectionTransition}
-          className="border-beam rounded-3xl border border-white/10 bg-bg-card/70 p-2"
+          className="rounded-3xl border border-white/10 bg-bg-card/70 p-2"
         >
           <div className="terminal-card overflow-hidden rounded-[1.35rem] bg-bg">
             <div className="border-b border-white/10 px-5 py-4 text-[10px] font-black uppercase tracking-[0.28em] text-text-muted">
@@ -495,7 +371,7 @@ function BuildTimeline() {
       <div className="mx-auto max-w-[1100px] px-4 sm:px-8 lg:px-12">
         <SectionHeader align="center" eyebrow="// BEHIND THE BUILD" title="From Signal" accent="To Release" />
         <div className="relative mt-14">
-          <div className="absolute left-5 top-0 hidden h-full w-px bg-gradient-to-b from-accent/0 via-accent/50 to-accent/0 md:block" />
+          <div className="absolute left-5 top-0 hidden h-full w-px bg-accent/30 md:block" />
           <div className="space-y-5">
             {timeline.map(([title, body], index) => (
               <motion.div
