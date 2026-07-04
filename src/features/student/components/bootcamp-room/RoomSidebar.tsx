@@ -52,16 +52,16 @@ const RoomSidebar: React.FC<Props> = ({
                     if (!isLocked) { onNavigate(phase.id, room.id); onMobileClose(); }
                   }}
                   disabled={isLocked}
-                  className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-left text-sm transition-all min-h-[44px] ${
+                  className={`w-full flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                     isActive
-                      ? 'text-accent font-bold bg-transparent'
+                      ? 'text-accent font-semibold bg-accent-dim/20'
                       : isLocked
                       ? 'opacity-40 cursor-not-allowed text-text-muted'
-                      : 'bg-transparent hover:bg-accent-dim/30 text-text-secondary hover:text-text-primary'
+                      : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'
                   }`}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded font-black font-mono border ${
+                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
                       isCompleted
                         ? isActive ? 'border-accent/40 text-accent' : 'border-accent/40 text-accent'
                         : isActive
@@ -69,7 +69,7 @@ const RoomSidebar: React.FC<Props> = ({
                         : 'border-border text-text-muted'
                     }`}
                   >
-                    {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
+                    {isCompleted ? <CheckCircle2 className="h-2 w-2" /> : isLocked ? <Lock className="h-2 w-2" /> : null}
                   </span>
                   <span className="truncate text-xs flex-1">{room.title}</span>
                 </button>
@@ -105,7 +105,7 @@ const RoomSidebar: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={onMobileClose}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-bg text-text-muted hover:text-text-primary transition-colors"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
                   aria-label="Close curriculum"
                 >
                   <X className="h-4 w-4" />
