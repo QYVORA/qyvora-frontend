@@ -18,13 +18,13 @@ const LearnPhasesSection: React.FC = () => {
             renderCard={(s) => {
               const Icon = s.icon;
               return (
-                <div className="relative min-h-[300px] md:min-h-[360px]">
+                <div className="relative min-h-[260px] md:min-h-[360px]">
                   <div
                     className="absolute inset-0 bg-cover bg-center hidden dark:block"
                     style={{ backgroundImage: `url(${s.image})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                  <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[300px] md:min-h-[360px]">
+                  <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                     <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
                       <Icon className="w-5 h-5 text-accent" />
                     </div>

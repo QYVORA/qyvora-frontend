@@ -146,31 +146,31 @@ const Landing: React.FC = () => {
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
-      <section id="stats" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="stats" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingStatsSection />
       </section>
 
-      <section id="how-it-works" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="how-it-works" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingHowItWorksSection />
       </section>
 
-      <section id="curriculum" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="curriculum" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingCurriculumSection />
       </section>
 
-      <section id="team" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="team" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingTeamSection />
       </section>
 
-      <section id="services" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="services" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingServicesSection />
       </section>
 
-      <section id="quiteroot" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="quiteroot" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingQuiteRootSection />
       </section>
 
-      <section id="events" className="relative w-full min-h-svh md:min-h-0 py-24 md:py-28 lg:py-32">
+      <section id="events" className="relative w-full py-20 md:py-28 lg:py-32">
         <LandingEventsSection user={user} />
       </section>
 
