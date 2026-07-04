@@ -1,9 +1,10 @@
-import { Bookmark, CheckCircle2, Flag } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { Bookmark, CheckCircle2, Flag, Check } from 'lucide-react';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
 import CodeBlockRenderer from './CodeBlockRenderer';
-import StepImage from './StepImage';
-import StepPlaceholder from './StepPlaceholder';
+import AnnotatableImage from '@/shared/components/courses/AnnotatableImage';
+import StepNotes from '@/shared/components/courses/StepNotes';
 
 interface Props {
   step: BootcampStep;
@@ -20,6 +21,8 @@ interface Props {
   onClick: () => void;
   onNext?: () => void;
   onPrev?: () => void;
+  onGotIt?: (stepNum: number, val: boolean) => void;
+  gotIt?: boolean;
 }
 
 const StepCard: React.FC<Props> = ({
@@ -29,6 +32,7 @@ const StepCard: React.FC<Props> = ({
   footer,
   onToggleBookmark, onReportIssue, onClick,
   onNext, onPrev,
+  onGotIt, gotIt = false,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isActive) return;
@@ -96,14 +100,34 @@ const StepCard: React.FC<Props> = ({
     </div>
 
     {step.image ? (
-      <StepImage
+      <AnnotatableImage
         src={buildStepImagePath(phaseId, roomId, step.image)}
         alt={`${step.title}: ${step.instruction}`}
-        stepNum={stepNum}
+        storageKey={`step_${phaseId}_${roomId}_${stepNum}`}
       />
-    ) : (
-      <StepPlaceholder stepNum={stepNum} />
-    )}
+    ) : null}
+
+    {/* Got It & Notes area */}
+    <div className="mt-8 flex flex-wrap items-start gap-4">
+      <button
+        onClick={(e) => { e.stopPropagation(); onGotIt?.(stepNum, !gotIt); }}
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${
+          gotIt
+            ? 'bg-accent text-bg border-accent'
+            : 'border-border text-text-muted hover:border-accent/30 hover:text-accent'
+        }`}
+      >
+        <Check className={`h-3 w-3 ${gotIt ? '' : 'opacity-50'}`} />
+        {gotIt ? 'Got It!' : 'Mark as Got It'}
+      </button>
+    </div>
+
+    <div className="mt-6" onClick={(e) => e.stopPropagation()}>
+      <StepNotes
+        storageKey={`step_notes_${phaseId}_${roomId}_${stepNum}`}
+        placeholder="Write your notes for this step..."
+      />
+    </div>
 
     {footer && (
       <div className="mt-10 md:mt-14" onClick={(e) => e.stopPropagation()}>
