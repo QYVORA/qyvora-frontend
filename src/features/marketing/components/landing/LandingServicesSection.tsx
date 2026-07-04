@@ -52,13 +52,13 @@ const LandingServicesSection: React.FC = () => {
           <Carousel
             slides={SERVICES_DATA}
             renderCard={(s) => (
-              <div className="relative min-h-[340px] md:min-h-[400px]">
+              <div className="relative min-h-[260px] md:min-h-[400px]">
                 <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${s.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[340px] md:min-h-[400px]">
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[400px]">
                   <div className="flex items-center justify-between w-full mb-3">
                     <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em]">
                       {s.subtitle}

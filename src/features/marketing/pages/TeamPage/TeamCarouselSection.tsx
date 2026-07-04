@@ -23,13 +23,13 @@ const TeamCarouselSection: React.FC = () => {
           <Carousel
             slides={teamData}
             renderCard={(member) => (
-              <div className="relative min-h-[320px] md:min-h-[380px]">
+              <div className="relative min-h-[260px] md:min-h-[380px]">
                 <div
                   className="absolute inset-0 bg-cover bg-top hidden dark:block"
                   style={{ backgroundImage: `url(${member.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[380px]">
+                <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[380px]">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 border-border/40 bg-bg-elevated overflow-hidden shrink-0">
                       <img
