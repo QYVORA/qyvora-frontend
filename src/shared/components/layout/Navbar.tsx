@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
         ].join(' ')}
         style={{ outline: 'none', border: 'none' }}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}
-          <div className="hidden md:flex items-center space-x-10">
+          <div className="hidden md:flex items-center space-x-5 lg:space-x-7 xl:space-x-10 ml-8 xl:ml-16">
             {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => (
               <Link
                 key={item.key}
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* ── Right controls ───────────────────────────────────────────────── */}
-          <div className="flex items-center gap-4 md:ml-12 relative z-[110]">
+          <div className="flex items-center gap-4 ml-auto relative z-[110]">
             <div className="hidden md:flex items-center">
               {user ? (
                 <Link
