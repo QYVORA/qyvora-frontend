@@ -67,12 +67,12 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}
-          <div className="hidden md:flex items-center space-x-5 lg:space-x-7 xl:space-x-10 ml-8 xl:ml-16">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-5 xl:space-x-7 ml-4 lg:ml-8 xl:ml-12">
             {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => (
               <Link
                 key={item.key}
                 to={item.path}
-                className={`text-xs font-black uppercase tracking-[0.25em] transition-all hover:text-accent relative group ${
+                className={`text-[11px] lg:text-xs font-black uppercase tracking-[0.15em] lg:tracking-[0.2em] transition-all hover:text-accent relative group ${
                   location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
                 }`}
               >
