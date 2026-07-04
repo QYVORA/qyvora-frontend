@@ -26,53 +26,29 @@ const Terminal: React.FC<{
   }, [code]);
 
   return (
-    <div className="relative bg-[#0a0e0a] border border-[#1a3a1a]/60 rounded-xl overflow-hidden my-8 group shadow-2xl shadow-black/50">
-      {/* ── Title Bar ── */}
-      <div className="relative bg-[#0d120d] border-b border-[#1a3a1a]/40 px-4 sm:px-6 py-3 flex items-center gap-2.5 select-none">
-        <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-        <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-        <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
-        <span className="ml-3 text-[10px] font-mono text-[#3a6a3a]/70 uppercase tracking-[0.15em]">{title}</span>
+    <div className="relative border border-white/10 bg-bg-card/70 rounded-xl overflow-hidden my-8">
+      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-5 py-3 select-none">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-accent/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+          <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
+        </div>
+        <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
       </div>
 
-      {/* ── Terminal Body ── */}
       <div
         ref={wrapperRef}
         className="relative overflow-x-hidden overflow-y-auto max-h-[70vh] custom-scrollbar"
       >
-        {/* CRT Scanline Overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10 opacity-[0.04]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 1px,
-              rgba(102, 184, 112, 0.12) 1px,
-              rgba(102, 184, 112, 0.12) 2px
-            )`
-          }}
-        />
-
-        {/* CRT Vignette */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10"
-          style={{
-            background: `radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%)`
-          }}
-        />
-
-        {/* Content */}
         <div style={{ height: scale < 1 ? `${100 / scale}%` : undefined }}>
           <pre
             ref={preRef}
-            className="p-4 sm:p-6 md:p-8 font-mono leading-relaxed whitespace-pre text-[#4ade80]"
+            className="p-4 sm:p-6 md:p-8 font-mono leading-relaxed whitespace-pre text-text-secondary"
             style={{
               fontSize: '0.8rem',
               transform: `scale(${scale})`,
               transformOrigin: 'top left',
               width: scale < 1 ? `${(1 / scale) * 100}%` : undefined,
-              textShadow: '0 0 4px rgba(74, 222, 128, 0.12), 0 0 1px rgba(74, 222, 128, 0.25)',
             }}
           >
             <code>
@@ -81,12 +57,8 @@ const Terminal: React.FC<{
                   <span>{line || ' '}</span>
                   {i === arr.length - 1 && (
                     <span
-                      className="inline-block w-[0.55em] h-[1.05em] bg-[#4ade80]/90 ml-[1px] animate-pulse"
-                      style={{
-                        boxShadow: '0 0 6px rgba(74, 222, 128, 0.5), 0 0 12px rgba(74, 222, 128, 0.2)',
-                        verticalAlign: 'text-bottom',
-                        marginBottom: '1px',
-                      }}
+                      className="inline-block w-[0.55em] h-[1.05em] bg-accent/90 ml-[1px] animate-pulse"
+                      style={{ verticalAlign: 'text-bottom', marginBottom: '1px' }}
                     />
                   )}
                   {i < arr.length - 1 && '\n'}
