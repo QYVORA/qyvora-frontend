@@ -54,6 +54,8 @@ export const COURSES: Course[] = [
       'Understand file permissions and ownership',
       'Use pipes, redirects, and command chaining',
     ],
+    skillLevel: 'beginner',
+    popular: true,
     lessons: ALL_LESSONS['linux-terminal-101'],
   },
   {
@@ -75,6 +77,7 @@ export const COURSES: Course[] = [
       'Inspect network configuration (ipconfig, netstat)',
       'Write basic batch and PowerShell scripts',
     ],
+    skillLevel: 'beginner',
     lessons: ALL_LESSONS['windows-cmd-101'],
   },
   {
@@ -96,6 +99,9 @@ export const COURSES: Course[] = [
       'Describe how DNS resolves domain names to IP addresses',
       'Use tools like ping, traceroute, and nslookup to inspect network paths',
     ],
+    skillLevel: 'beginner',
+    prerequisites: ['linux-terminal-101'],
+    popular: true,
     lessons: ALL_LESSONS['networking-101'],
   },
   {
@@ -117,6 +123,8 @@ export const COURSES: Course[] = [
       'Use the requests and socket libraries for network tasks',
       'Build a simple port scanner and HTTP request tool',
     ],
+    skillLevel: 'beginner',
+    popular: true,
     lessons: ALL_LESSONS['python-for-hackers-101'],
   },
   {
@@ -138,6 +146,7 @@ export const COURSES: Course[] = [
       'Push and pull from GitHub repositories',
       'Collaborate using pull requests and forks',
     ],
+    skillLevel: 'beginner',
     lessons: ALL_LESSONS['git-github-101'],
   },
   {
@@ -159,6 +168,8 @@ export const COURSES: Course[] = [
       'Describe how browsers enforce the Same-Origin Policy',
       'Identify the components of a URL and a REST API request',
     ],
+    skillLevel: 'beginner',
+    prerequisites: ['networking-101'],
     lessons: ALL_LESSONS['web-technologies-101'],
   },
   {
@@ -180,6 +191,9 @@ export const COURSES: Course[] = [
       'Fingerprint web technologies using WhatWeb and Wappalyzer',
       'Map out a target\'s attack surface from reconnaissance data',
     ],
+    skillLevel: 'intermediate',
+    prerequisites: ['web-technologies-101'],
+    popular: true,
     lessons: ALL_LESSONS['web-recon-101'],
   },
   {
@@ -201,6 +215,8 @@ export const COURSES: Course[] = [
       'Use Repeater to manually craft and resend requests',
       'Use Intruder to automate parameter fuzzing and brute-force attacks',
     ],
+    skillLevel: 'intermediate',
+    prerequisites: ['web-technologies-101'],
     lessons: ALL_LESSONS['burp-suite-101'],
   },
   {
@@ -222,6 +238,9 @@ export const COURSES: Course[] = [
       'Exploit SQLi to bypass authentication and extract data',
       'Apply parameterized queries and prepared statements as defenses',
     ],
+    skillLevel: 'intermediate',
+    prerequisites: ['web-technologies-101'],
+    popular: true,
     lessons: ALL_LESSONS['sql-injection-101'],
   },
   {
@@ -243,6 +262,7 @@ export const COURSES: Course[] = [
       'Describe WPA2 and WPA3 encryption mechanisms',
       'Identify common wireless attack vectors and mitigations',
     ],
+    skillLevel: 'beginner',
     lessons: ALL_LESSONS['wifi-fundamentals-101'],
   },
   {
@@ -264,6 +284,9 @@ export const COURSES: Course[] = [
       'Fingerprint operating systems remotely',
       'Write NSE scripts for automated reconnaissance',
     ],
+    skillLevel: 'beginner',
+    prerequisites: ['networking-101'],
+    popular: true,
     lessons: ALL_LESSONS['nmap-101'],
   },
   {
@@ -285,6 +308,8 @@ export const COURSES: Course[] = [
       'Follow TCP streams to reconstruct conversations',
       'Identify common malicious traffic patterns in packet captures',
     ],
+    skillLevel: 'intermediate',
+    prerequisites: ['networking-101'],
     lessons: ALL_LESSONS['wireshark-101'],
   },
 ];

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Clock, ArrowLeft, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Lock } from 'lucide-react';
+import { Clock, ArrowLeft, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Lock, CheckCircle2, Sparkles, TrendingUp, Layers, ChevronRight } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
-import { getCourseById, getCategoryById } from '@/features/student/data/courses/courseData';
-import type { CourseCategoryId } from '@/features/student/data/courses/types';
+import { getCourseById, getCategoryById, COURSES } from '@/features/student/data/courses/courseData';
+import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses/types';
 import api from '@/core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 
@@ -17,6 +18,12 @@ const CATEGORY_ICONS: Record<CourseCategoryId, React.ElementType> = {
   'web-security': Shield,
   wireless: Wifi,
   tools: Wrench,
+};
+
+const SKILL_LEVEL_CONFIG: Record<SkillLevel, { label: string; color: string }> = {
+  beginner: { label: 'Beginner', color: 'text-accent border-accent/30 bg-accent/10' },
+  intermediate: { label: 'Intermediate', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10' },
+  advanced: { label: 'Advanced', color: 'text-red-400 border-red-400/30 bg-red-400/10' },
 };
 
 const CourseInfoPage: React.FC = () => {
@@ -88,14 +95,19 @@ const CourseInfoPage: React.FC = () => {
   const Icon = category ? CATEGORY_ICONS[category.id] : GraduationCap;
   const canAfford = balance !== null && course.cpCost <= balance;
   const isUnlocked = purchased;
+  const skillCfg = SKILL_LEVEL_CONFIG[course.skillLevel];
+
+  const relatedCourses = COURSES.filter((c) => c.categoryId === course.categoryId && c.id !== course.id).slice(0, 3);
+
+  const prerequisiteCourses = (course.prerequisites || []).map((preqId) => getCourseById(preqId)).filter(Boolean);
 
   return (
     <div className="min-h-screen bg-bg flex flex-col pt-[72px]">
       <SEO title={course.title} description={course.description} />
 
       {/* Hero */}
-      <div className="border-b border-border/30 flex-1 flex flex-col justify-center lg:min-h-[calc(100dvh-72px)]">
-        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 lg:py-0 flex flex-col justify-center flex-1">
+      <div className="border-b border-border/30">
+        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 lg:py-16">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6 self-start">
             <ArrowLeft className="h-3 w-3" /> All Courses
           </Link>
@@ -103,21 +115,24 @@ const CourseInfoPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center w-full">
             {/* Cover */}
             <div className="w-full lg:w-[40%] shrink-0">
-              <div className="aspect-[8/5] rounded-sm overflow-hidden border border-border/30 bg-bg-elevated">
+              <div className="aspect-[8/5] rounded-xl overflow-hidden border border-border/30 bg-bg-elevated">
                 <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Info */}
             <div className="w-full lg:w-[60%] flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-sm text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent/10 rounded-lg text-[9px] font-black uppercase tracking-widest text-accent border border-accent/30">
                   <Icon className="h-3 w-3" /> {category?.name}
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-sm text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
+                  <Sparkles className="h-3 w-3" /> {skillCfg.label}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                   <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-sm text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                   <BookOpen className="h-3 w-3" /> {course.lessons.length} lessons
                 </span>
               </div>
@@ -130,11 +145,29 @@ const CourseInfoPage: React.FC = () => {
                 {course.overview}
               </p>
 
+              {/* Prerequisites */}
+              {prerequisiteCourses.length > 0 && (
+                <div className="mb-6">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Recommended Prerequisites</p>
+                  <div className="flex flex-wrap gap-2">
+                    {prerequisiteCourses.map((preq) => (
+                      <Link
+                        key={preq!.id}
+                        to={`/courses/${preq!.id}`}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-mono text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+                      >
+                        <Layers className="h-2.5 w-2.5" /> {preq!.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Purchase / Access */}
               {isUnlocked ? (
                 <Link
                   to={`/dashboard/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
                   Start Learning <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -143,7 +176,7 @@ const CourseInfoPage: React.FC = () => {
                   <button
                     onClick={handlePurchase}
                     disabled={purchasing || !canAfford}
-                    className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {purchasing ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -161,7 +194,7 @@ const CourseInfoPage: React.FC = () => {
               ) : (
                 <Link
                   to={`/register?redirect=/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-sm text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
                   <Lock className="h-4 w-4" /> Sign Up to Unlock
                 </Link>
@@ -169,6 +202,94 @@ const CourseInfoPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Content sections */}
+      <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 space-y-14">
+        {/* Learning Objectives */}
+        <section>
+          <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">
+            <span className="text-accent">//</span> What You'll Learn
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {course.learningObjectives.map((obj, i) => (
+              <div key={i} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
+                <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                <span className="text-sm text-text-secondary leading-relaxed">{obj}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Syllabus Preview */}
+        <section>
+          <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">
+            <span className="text-accent">//</span> Course Syllabus
+          </h2>
+          <div className="space-y-1">
+            {course.lessons.map((lesson, i) => (
+              <div
+                key={lesson.id}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border/20 bg-bg-card/50"
+              >
+                <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-accent/10 text-[10px] font-black font-mono text-accent">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-text-primary">{lesson.title}</p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  {lesson.hasQuiz && <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black text-accent uppercase">Quiz</span>}
+                  {lesson.hasTerminal && <span className="px-1.5 py-0.5 rounded bg-blue-400/10 text-[8px] font-black text-blue-400 uppercase">Terminal</span>}
+                  {lesson.hasCodePlayground && <span className="px-1.5 py-0.5 rounded bg-purple-400/10 text-[8px] font-black text-purple-400 uppercase">Code</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Related Courses */}
+        {relatedCourses.length > 0 && (
+          <section>
+            <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">
+              <span className="text-accent">//</span> Related Courses
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedCourses.map((relCourse) => {
+                const relCategory = getCategoryById(relCourse.categoryId);
+                const RelIcon = relCategory ? CATEGORY_ICONS[relCategory.id] : GraduationCap;
+                return (
+                  <ScrollReveal key={relCourse.id} direction="up" amount={0.1}>
+                    <Link
+                      to={`/courses/${relCourse.id}`}
+                      className="group block overflow-hidden rounded-xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
+                    >
+                      <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
+                        <img src={relCourse.coverSvg} alt={relCourse.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      </div>
+                      <div className="p-4 space-y-2">
+                        <div className="flex items-center gap-1.5">
+                          <RelIcon className="h-3 w-3 text-accent" />
+                          <span className="text-[9px] font-black uppercase tracking-widest text-accent">{relCategory?.name}</span>
+                        </div>
+                        <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors">{relCourse.title}</h3>
+                        <p className="text-[11px] text-text-muted line-clamp-1">{relCourse.description}</p>
+                        <div className="flex items-center gap-2 pt-1">
+                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
+                            <Zap className="h-2.5 w-2.5" /> {relCourse.cpCost} CP
+                          </span>
+                          <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">
+                            <Clock className="h-2.5 w-2.5" /> {relCourse.estimatedMinutes}min
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </div>
       <Footer />
     </div>

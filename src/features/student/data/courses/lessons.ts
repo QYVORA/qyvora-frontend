@@ -1,7 +1,7 @@
-import type { Lesson } from './types';
+import type { Lesson, QuizQuestion } from './types';
 
-const l = (id: string, title: string, instruction: string, hasQuiz?: boolean): Lesson => ({
-  id, title, instruction, image: null, hasQuiz,
+const l = (id: string, title: string, instruction: string, extras?: Partial<Lesson>): Lesson => ({
+  id, title, instruction, image: null, ...extras,
 });
 
 export const ALL_LESSONS: Record<string, Lesson[]> = {
@@ -27,7 +27,8 @@ Type your first command:
 echo "Hello, Hacker!"
 \`\`\`
 
-The \`echo\` command prints text back to you. This is your first step into the terminal.`),
+The \`echo\` command prints text back to you. This is your first step into the terminal.`,
+      { hasTerminal: true, terminalCommands: ['echo "Hello, Hacker!"', 'whoami', 'pwd', 'ls'], terminalTitle: 'lesson-terminal' }),
 
     l('lt-2', 'Navigating the Filesystem',
       `Every file and folder on Linux lives under the root directory \`/\`. Think of it like an upside-down tree starting at \`/\`.
@@ -206,7 +207,12 @@ Ctrl+Z             # suspend current process
 bg %1              # resume job 1 in background
 \`\`\`
 
-Understanding process management is crucial for controlling long-running tools like scanners and listeners.`, true),
+Understanding process management is crucial for controlling long-running tools like scanners and listeners.`,
+      { hasQuiz: true, quiz: [
+        { id: 'lt-6-q1', question: 'Which command shows a live-updating view of all running processes?', options: ['ps aux', 'top', 'jobs', 'kill'], correctIndex: 1, explanation: 'top shows a live, updating view of processes. ps aux provides a snapshot, not live updates.' },
+        { id: 'lt-6-q2', question: 'What does `kill -9 1234` do?', options: ['Pauses process 1234', 'Gracefully stops process 1234', 'Force kills process 1234 (SIGKILL)', 'Moves process 1234 to background'], correctIndex: 2, explanation: 'kill -9 sends SIGKILL, which forcefully terminates the process immediately without cleanup.' },
+        { id: 'lt-6-q3', question: 'How do you run a command in the background?', options: ['Use Ctrl+Z', 'Append `&` to the command', 'Use the `bg` command', 'Use `run --background`'], correctIndex: 1, explanation: 'Appending `&` to a command runs it in the background, giving you your prompt back immediately.' },
+      ] }),
   ],
 
   'windows-cmd-101': [
@@ -584,7 +590,8 @@ use triple quotes
 """
 \`\`\`
 
-Comments won't affect execution but help others (and your future self) understand your code.`),
+Comments won't affect execution but help others (and your future self) understand your code.`,
+      { hasCodePlayground: true, codePlaygroundInitial: 'print("Hello, Hacker!")\n\nname = "target"\nprint(f"Scanning {name}")', codePlaygroundLanguage: 'python', codePlaygroundExpectedOutput: 'Hello, Hacker!\nScanning target' }),
 
     l('py-2', 'Strings & Data Types',
       `Python has several built-in data types. Understanding them is crucial.
