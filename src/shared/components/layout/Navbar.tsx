@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
               {user ? (
                 <Link
                   to="/dashboard"
-                  className="bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-8 py-3.5 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] flex items-center justify-center gap-2.5 text-sm"
+                  className="bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-5 py-3.5 transition-all hover:brightness-110 active:scale-95 hover:shadow-[0_0_20px_var(--color-accent-glow)] flex items-center justify-center gap-2 text-sm"
                 >
                   <LayoutDashboard className="w-4 h-4" /> Dashboard
                 </Link>
