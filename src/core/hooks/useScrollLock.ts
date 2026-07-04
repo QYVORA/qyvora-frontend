@@ -34,10 +34,10 @@ function unlock() {
   }
 }
 
-export function useScrollLock(lock: boolean = true) {
+export function useScrollLock(shouldLock: boolean = true) {
   useEffect(() => {
-    if (!lock) return;
+    if (!shouldLock) return;
     lock();
     return () => unlock();
-  }, [lock]);
+  }, [shouldLock]);
 }

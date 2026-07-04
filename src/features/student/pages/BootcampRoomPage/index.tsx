@@ -265,7 +265,7 @@ const BootcampRoomPage: React.FC = () => {
         quizModuleId={quizModuleId} completing={completing} currentStepIdx={currentStepIdx} goToStep={goToStep} handleComplete={handleComplete}
       />
 
-      <div className="md:fixed md:inset-0 md:top-24 md:flex md:flex-row md:overflow-hidden">
+      <div className="md:fixed md:inset-0 md:top-20 md:flex md:flex-row md:overflow-hidden">
         <aside className={`hidden md:flex md:flex-col shrink-0 bg-bg border-r border-border overflow-hidden transition-all duration-300 relative ${sidebarCollapsed ? 'w-0 border-r-0' : 'w-72 xl:w-80'}`}>
           <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
             <nav className={`flex flex-col gap-1 p-4 pb-8 transition-opacity duration-200 ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
