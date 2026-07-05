@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu
+  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu, List
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
@@ -46,22 +46,37 @@ const StudentTopbar = () => {
   const courseId = courseMatch?.params?.courseId ?? '';
   const courseConfig = getCourseById(courseId);
 
+  interface CourseLessonMeta {
+    currentLessonIdx: number;
+    totalLessons: number;
+    progress: number;
+    lesson: { hasTerminal?: boolean; hasCodePlayground?: boolean; quiz?: { length: number } } | null;
+  }
+  const [courseMeta, setCourseMeta] = useState<CourseLessonMeta | null>(null);
+
+  useEffect(() => {
+    const handler = (e: CustomEvent<CourseLessonMeta>) => { setCourseMeta(e.detail); };
+    window.addEventListener('course:updateMeta', handler as EventListener);
+    return () => window.removeEventListener('course:updateMeta', handler as EventListener);
+  }, []);
+
   const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
 
-  // ── Scroll-hide (room page only) ──────────────────────────────────────────
+  // ── Scroll-hide (bootcamp room only) ──────────────────────────────────────
+  const isBootcampRoom = Boolean(activeRoomMatch);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
   const scrollY = useScrollY();
 
   useEffect(() => {
-    if (!isRoomPage) { setIsVisible(true); return; }
+    if (!isBootcampRoom) { setIsVisible(true); return; }
     if (scrollY < 10) { setIsVisible(true); lastScrollY.current = scrollY; return; }
     const diff = scrollY - lastScrollY.current;
     if (Math.abs(diff) > 5) {
       setIsVisible(diff <= 0);
       lastScrollY.current = scrollY;
     }
-  }, [scrollY, isRoomPage]);
+  }, [scrollY, isBootcampRoom]);
 
   // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
@@ -150,104 +165,146 @@ const StudentTopbar = () => {
       {/* ── Desktop topbar ── */}
       <header
         className={`fixed top-0 left-0 w-full z-40 bg-bg border-b border-border transition-transform duration-300 ${
-          isRoomPage && !isVisible ? '-translate-y-full' : 'translate-y-0'
+          isBootcampRoom && !isVisible ? '-translate-y-full' : 'translate-y-0'
         }`}
       >
         {isRoomPage ? (
-          /* ══ BOOTCAMP ROOM MODE ══ */
-          <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-3">
-
-            {/* Back to curriculum or courses */}
-            <button
-              onClick={() => {
-                if (isCoursePage) {
-                  navigate('/dashboard/courses');
-                } else {
-                  navigate(`/dashboard/bootcamps/${roomBootcampId}`);
-                }
-              }}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label={isCoursePage ? "Back to courses" : "Back to curriculum"}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-
-            {/* Mobile Sidebar Toggle */}
-            <button
-              onClick={openSidebar}
-              className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label={isCoursePage ? "Toggle lessons sidebar" : "Toggle curriculum sidebar"}
-            >
-              <Menu className="h-5 w-5" />
-            </button>
-
-            {/* Breadcrumb — desktop */}
-            <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
-              {isCoursePage ? (
-                <>
-                  <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
-                    Courses
-                  </Link>
-                  {courseConfig && (
-                    <>
-                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                      <span className="text-text-primary font-black truncate">{courseConfig.title}</span>
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
-                    Curriculum
-                  </Link>
-                  {roomPhaseConfig && (
-                    <>
-                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                      <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
-                    </>
-                  )}
-                  {roomConfig && (
-                    <>
-                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                      <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
-                    </>
-                  )}
-                </>
-              )}
-            </div>
-
-            {/* Mobile: phase + room title / course title */}
-            <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              {isCoursePage ? (
-                <>
-                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
-                    Course
-                  </span>
-                  <span className="text-sm font-black text-text-primary truncate leading-tight">
-                    {courseConfig?.title ?? 'Course'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  {roomPhaseConfig && (
+          isCoursePage ? (
+            /* ══ COURSE MODE ══ */
+            <>
+              <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex flex-col">
+                <div className="flex-1 flex items-center gap-3 min-w-0">
+                  <button
+                    onClick={() => navigate('/dashboard/courses')}
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                    aria-label="Back to courses"
+                  >
+                    <ArrowLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={openSidebar}
+                    className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                    aria-label="Toggle lessons sidebar"
+                  >
+                    <Menu className="h-5 w-5" />
+                  </button>
+                  <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
+                    <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
+                      Courses
+                    </Link>
+                    {courseConfig && (
+                      <>
+                        <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                        <span className="text-text-primary font-black truncate max-w-[200px]">{courseConfig.title}</span>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex sm:hidden flex-col min-w-0 flex-1">
                     <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
-                      {roomPhaseConfig.codename}
+                      Course
                     </span>
-                  )}
-                  <span className="text-sm font-black text-text-primary truncate leading-tight">
-                    {roomConfig?.title ?? 'Room'}
-                  </span>
-                </>
-              )}
-            </div>
+                    <span className="text-sm font-black text-text-primary truncate leading-tight">
+                      {courseConfig?.title ?? 'Course'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0 ml-auto">
+                    {courseMeta && (
+                      <>
+                        <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
+                          {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
+                        </span>
+                        <div className="hidden md:flex items-center gap-1 mr-2">
+                          {courseMeta.lesson?.hasTerminal && (
+                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+                          )}
+                          {courseMeta.lesson?.hasCodePlayground && (
+                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+                          )}
+                          {courseMeta.lesson?.quiz && courseMeta.lesson.quiz.length > 0 && (
+                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+                          )}
+                        </div>
+                        <button
+                          onClick={openSidebar}
+                          className="md:hidden flex items-center gap-1 px-3 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[10px] font-black uppercase tracking-widest border border-border"
+                        >
+                          <List className="h-3.5 w-3.5" /> Lessons
+                        </button>
+                      </>
+                    )}
+                    <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                      <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+                    </Link>
+                  </div>
+                </div>
+                {courseMeta && (
+                  <div className="h-1 bg-bg-elevated">
+                    <div className="h-full bg-accent transition-all duration-500" style={{ width: `${courseMeta.progress}%` }} />
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            /* ══ BOOTCAMP ROOM MODE ══ */
+            <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-3">
 
-            {/* Right: profile only */}
-            <div className="flex items-center gap-2 shrink-0">
-              <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
-                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
-              </Link>
+              {/* Back to curriculum */}
+              <button
+                onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                aria-label="Back to curriculum"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+
+              {/* Mobile Sidebar Toggle */}
+              <button
+                onClick={openSidebar}
+                className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                aria-label="Toggle curriculum sidebar"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+
+              {/* Breadcrumb — desktop */}
+              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
+                <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
+                  Curriculum
+                </Link>
+                {roomPhaseConfig && (
+                  <>
+                    <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                    <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
+                  </>
+                )}
+                {roomConfig && (
+                  <>
+                    <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                    <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
+                  </>
+                )}
+              </div>
+
+              {/* Mobile: phase + room title */}
+              <div className="flex sm:hidden flex-col min-w-0 flex-1">
+                {roomPhaseConfig && (
+                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
+                    {roomPhaseConfig.codename}
+                  </span>
+                )}
+                <span className="text-sm font-black text-text-primary truncate leading-tight">
+                  {roomConfig?.title ?? 'Room'}
+                </span>
+              </div>
+
+              {/* Right: profile only */}
+              <div className="flex items-center gap-2 shrink-0">
+                <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                  <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+                </Link>
+              </div>
             </div>
-          </div>
+          )
 
         ) : (
           <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between">

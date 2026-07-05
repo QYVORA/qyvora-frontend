@@ -19,6 +19,7 @@ const FOOTER_COLS = [
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'blogs', label: 'Blogs', path: '/blogs' },
       { key: 'news', label: 'News', path: '/news' },
+      { key: 'market', label: 'Market', path: '/zero-day-market' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
     ],
   },

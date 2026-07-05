@@ -127,7 +127,7 @@ const PublicProfile: React.FC = () => {
                   <div className="mt-3 pl-7 space-y-3">
                     {bootcampCompleted ? (
                       <div className="flex items-center gap-3">
-                        <BootcampBadge completed className="w-8 h-8" />
+                        <BootcampBadge completed className="w-11 h-11" />
                         <span className="text-xs font-bold text-text-primary">HPB Graduate</span>
                       </div>
                     ) : (

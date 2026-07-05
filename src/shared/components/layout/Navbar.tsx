@@ -61,18 +61,18 @@ const Navbar: React.FC = () => {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center">
 
           {/* ── Logo ─────────────────────────────────────────────────────────── */}
-          <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="lg" className="hidden md:block" />
+          <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
+            <Logo size="md" className="hidden md:block" />
             <Logo size="md" variant="mark" className="md:hidden" />
           </Link>
 
           {/* ── Desktop Navigation ───────────────────────────────────────────── */}
-          <div className="hidden md:flex items-center space-x-3 lg:space-x-5 xl:space-x-7 ml-0 lg:ml-4 xl:ml-8 mr-8 lg:mr-12 xl:mr-16">
+          <div className="hidden md:flex items-center gap-4 lg:gap-5 ml-5 lg:ml-8 mr-5 lg:mr-8 min-w-0 overflow-x-auto no-scrollbar">
             {SITE_CONFIG.nav.platform.filter((item) => item.key !== 'contact').map((item) => (
               <Link
                 key={item.key}
                 to={item.path}
-                className={`text-[11px] lg:text-xs font-black uppercase tracking-[0.15em] lg:tracking-[0.2em] transition-all hover:text-accent relative group ${
+                className={`shrink-0 text-[11px] font-black uppercase tracking-[0.15em] transition-all hover:text-accent relative group ${
                   location.pathname === item.path ? 'text-accent' : 'text-text-primary/70'
                 }`}
               >
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* ── Right controls ───────────────────────────────────────────────── */}
-          <div className="flex items-center gap-4 ml-auto relative z-[110]">
+          <div className="flex items-center gap-4 shrink-0 ml-auto relative z-[110]">
             <div className="hidden md:flex items-center">
               {user ? (
                 <Link
