@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import {
@@ -19,10 +19,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 
 const capabilities = [
   'Offensive Security Research',
@@ -86,8 +83,6 @@ function SectionHeader({
 }
 
 function Hero() {
-  const { isLg } = useAdaptiveUi();
-
   return (
     <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
@@ -112,11 +107,11 @@ function Hero() {
         </div>
         <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
           <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                {isLg && <HackerGlobe scale={1.0} />}
-              </Suspense>
-            </ErrorBoundary>
+            <img
+              src={quiteRootLogo}
+              alt="QuiteRoot"
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
       </div>
