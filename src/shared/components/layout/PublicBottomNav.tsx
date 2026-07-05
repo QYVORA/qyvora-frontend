@@ -8,6 +8,7 @@ import {
   Radar,
   Trophy,
   Calendar,
+  ShoppingBag,
   LogIn,
   UserPlus,
   LayoutDashboard,
@@ -30,6 +31,7 @@ const PRIMARY = [
 /* ── More sheet items ───────────────────────────────────────────────────────── */
 const MORE_ITEMS: { label: string; icon: any; path: string }[] = [
   { label: 'Events', icon: Calendar, path: '/events' },
+  { label: 'Market', icon: ShoppingBag, path: '/zero-day-market' },
 ];
 
 const PublicBottomNav: React.FC = () => {

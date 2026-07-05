@@ -67,6 +67,9 @@ const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampR
 const MyCoursesPage     = lazy(() => import('../features/student/pages/MyCoursesPage'));
 const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLessonPage'));
 
+// Public pages
+const ZeroDayMarketPage = lazy(() => import('../features/marketing/pages/ZeroDayMarketPage'));
+
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
 
@@ -186,6 +189,11 @@ export const AppRouter = () => {
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>
           <Route path={`${_0x5a2b}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
+        </Route>
+
+        {/* ── Public market / info routes ──────────────────────────────── */}
+        <Route element={<PublicLayout />}>
+          <Route path="/zero-day-market" element={<Wrap scope="Zero Day Market"><ZeroDayMarketPage /></Wrap>} />
         </Route>
 
         {/* ── Public profile route — validates @ prefix inside component ─────── */}
