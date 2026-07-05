@@ -352,7 +352,7 @@ Get-Service | Where-Object Status -eq "Running"
 # List all running services
 \`\`\`
 
-Scripting turns manual tasks into automated workflows — a core skill for any Windows operator.`, true),
+Scripting turns manual tasks into automated workflows — a core skill for any Windows operator.`, { hasQuiz: true }),
   ],
 
   'networking-101': [
@@ -550,7 +550,7 @@ curl -X POST -d "user=admin&pass=test" https://example.com/login
 nmap -p 22,80,443 scanme.nmap.org
 \`\`\`
 
-Practice on \`scanme.nmap.org\` (a legal test target provided by the Nmap project).`, true),
+Practice on \`scanme.nmap.org\` (a legal test target provided by the Nmap project).`, { hasQuiz: true }),
   ],
 
   'python-for-hackers-101': [
@@ -850,7 +850,7 @@ with ThreadPoolExecutor(max_workers=50) as executor:
 
 Threading lets you scan many ports simultaneously, making the process much faster.`,
 
-      true),
+      { hasQuiz: true }),
   ],
 
   'git-github-101': [
@@ -1049,7 +1049,7 @@ git reset HEAD file   # Unstage a file
 git checkout -- file  # Discard local changes to a file
 \`\`\`
 
-Git and GitHub are essential tools for any developer or hacker. Every security tool, exploit, and framework lives on GitHub.`, true),
+Git and GitHub are essential tools for any developer or hacker. Every security tool, exploit, and framework lives on GitHub.`, { hasQuiz: true }),
   ],
 
   'web-technologies-101': [
@@ -1213,7 +1213,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \\
   https://api.example.com/protected
 \`\`\`
 
-**API keys** and tokens are how services authenticate API requests. If you find an exposed API key in JavaScript code or network traffic, you can impersonate that user.`, true),
+**API keys** and tokens are how services authenticate API requests. If you find an exposed API key in JavaScript code or network traffic, you can impersonate that user.`, { hasQuiz: true }),
   ],
 
   'web-recon-101': [
@@ -1458,7 +1458,7 @@ Review your findings and look for:
 - Outdated software versions
 - Subdomains with different technologies
 
-Save everything in a structured format. Documentation is as important as discovery.`, true),
+Save everything in a structured format. Documentation is as important as discovery.`, { hasQuiz: true }),
   ],
 
   'burp-suite-101': [
@@ -1653,7 +1653,7 @@ http://testphp.vulnweb.com
 - Stack traces — reveal technology and file paths
 - \`Set-Cookie\` headers — session handling behavior
 
-The more you practice with Burp, the more patterns you'll recognize in web applications.`, true),
+The more you practice with Burp, the more patterns you'll recognize in web applications.`, { hasQuiz: true }),
   ],
 
   'sql-injection-101': [
@@ -1930,7 +1930,7 @@ $stmt->execute([$username]);
 - **WAF** — Web Application Firewall can block known attack patterns
 - **Regular security testing** — scan your applications for SQL injection
 
-SQL injection is preventable. Every modern programming language supports parameterized queries. There is never a valid reason to concatenate user input into SQL queries.`, true),
+SQL injection is preventable. Every modern programming language supports parameterized queries. There is never a valid reason to concatenate user input into SQL queries.`, { hasQuiz: true }),
   ],
 
   'wifi-fundamentals-101': [
@@ -2094,7 +2094,7 @@ sudo wash -i wlan0mon
 - Use EAP-TLS with client certificates for the strongest security
 - Regularly audit connected devices
 
-Many organizations also deploy **wireless intrusion detection systems (WIDS)** to detect rogue access points and deauthentication attacks.`, true),
+Many organizations also deploy **wireless intrusion detection systems (WIDS)** to detect rogue access points and deauthentication attacks.`, { hasQuiz: true }),
   ],
 
   'nmap-101': [
@@ -2352,7 +2352,7 @@ Save as \`my-script.nse\` in \`/usr/share/nmap/scripts/\` and run:
 nmap --script my-script target.com
 \`\`\`
 
-NSE makes Nmap infinitely extensible. The community has written hundreds of scripts covering everything from HTTP to databases to industrial control systems.`, true),
+NSE makes Nmap infinitely extensible. The community has written hundreds of scripts covering everything from HTTP to databases to industrial control systems.`, { hasQuiz: true }),
   ],
 
   'wireshark-101': [
@@ -2632,6 +2632,6 @@ arp.duplicate-address-detected
 
 **Always correlate** suspicious traffic with other evidence. A single strange packet doesn't confirm an attack, but patterns of unusual behavior are worth investigating.
 
-The best way to learn is to practice: download public packet captures from malware-traffic-analysis.net and try to identify the malicious traffic yourself.`, true),
+The best way to learn is to practice: download public packet captures from malware-traffic-analysis.net and try to identify the malicious traffic yourself.`, { hasQuiz: true }),
   ],
 };

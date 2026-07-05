@@ -104,6 +104,7 @@ const StepCard: React.FC<Props> = ({
         src={buildStepImagePath(phaseId, roomId, step.image)}
         alt={`${step.title}: ${step.instruction}`}
         storageKey={`step_${phaseId}_${roomId}_${stepNum}`}
+        stepNum={stepNum}
       />
     ) : null}
 
@@ -125,7 +126,6 @@ const StepCard: React.FC<Props> = ({
     <div className="mt-6" onClick={(e) => e.stopPropagation()}>
       <StepNotes
         storageKey={`step_notes_${phaseId}_${roomId}_${stepNum}`}
-        placeholder="Write your notes for this step..."
       />
     </div>
 

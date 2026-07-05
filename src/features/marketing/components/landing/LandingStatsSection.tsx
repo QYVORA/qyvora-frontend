@@ -1,13 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Users, Trophy, GraduationCap } from 'lucide-react';
+import { Trophy, GraduationCap } from 'lucide-react';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import StatCounter from '@/shared/components/ui/StatCounter';
 import { Skeleton } from '@/shared/components/ui';
-import { Carousel } from '@/shared/components/carousel';
-import studentsBg from '@/assets/sections/stats/students-bg.webp';
-import cpEarnedBg from '@/assets/sections/stats/cp-earned-bg.webp';
-import bootcampBg from '@/assets/sections/stats/bootcamp-bg.webp';
 
 interface StatCard {
   icon: React.ElementType;
@@ -15,16 +11,12 @@ interface StatCard {
   description: string;
   value: number;
   suffix: string;
-  bgImage: string;
 }
 
 const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
-  { icon: Users, label: 'Students Trained', description: 'Active learners across Africa', suffix: '+', bgImage: studentsBg },
-  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+', bgImage: cpEarnedBg },
-  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+', bgImage: bootcampBg },
+  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+' },
+  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+' },
 ];
-
-const STATS_CAROUSEL_ITEMS = STATS_CONFIG.map((c, i) => ({ ...c, id: `stat-${i}` }));
 
 const containerVariants = {
   hidden: {},
@@ -43,48 +35,6 @@ const cardVariants = {
   },
 };
 
-const SkeletonCards: React.FC = () => (
-  <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-    {STATS_CONFIG.map((card) => (
-      <div key={card.label} className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden min-h-[200px] snap-start shrink-0 w-[80vw] md:w-auto">
-        <div className="p-6 sm:p-8 space-y-4">
-          <Skeleton variant="icon" className="w-12 h-12 md:w-14 md:h-14 bg-border/30" />
-          <Skeleton variant="stat-value" className="h-10 w-32 md:w-36 bg-border/30" />
-          <Skeleton className="h-4 w-24 bg-border/30" />
-          <Skeleton className="h-3 w-44 bg-border/30" />
-        </div>
-      </div>
-    ))}
-  </div>
-);
-
-const EmptyStatCard: React.FC<{ card: Omit<StatCard, 'value'> }> = ({ card }) => {
-  const Icon = card.icon;
-  return (
-    <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${card.bgImage})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-      <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left">
-        <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
-          <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent/40" />
-        </div>
-        <div className="text-5xl md:text-6xl lg:text-7xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
-          —
-        </div>
-        <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
-          {card.label}
-        </h3>
-        <p className="text-xs md:text-sm text-white/60">
-          {card.description}
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const SectionHeader: React.FC = () => (
   <motion.div variants={cardVariants} className="text-left md:text-right">
     <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
@@ -94,48 +44,6 @@ const SectionHeader: React.FC = () => (
       Real metrics from real operators across the continent
     </p>
   </motion.div>
-);
-
-const DesktopStatGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="hidden md:grid md:grid-cols-3 gap-4 md:gap-6">
-    {children}
-  </div>
-);
-
-const MobileStatCarousel: React.FC<{ cards: (Omit<StatCard, 'value'> & { id: string; value?: number })[] }> = ({ cards }) => (
-  <div className="md:hidden">
-    <Carousel
-      slides={cards}
-      autoPlayInterval={4000}
-      renderCard={(card) => {
-        const Icon = card.icon;
-        const hasValue = card.value != null;
-        return (
-          <div className="relative min-h-[200px]">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${card.bgImage})` }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-            <div className="relative z-10 p-6 sm:p-8 flex flex-col items-start text-left h-full min-h-[200px]">
-              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
-                <Icon className="w-6 h-6 text-accent" />
-              </div>
-              <div className="text-4xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
-                {hasValue ? <StatCounter end={card.value!} suffix={card.suffix} className="text-white" /> : '—'}
-              </div>
-              <h3 className="text-sm font-black text-white mb-1 tracking-tight">
-                {card.label}
-              </h3>
-              <p className="text-xs text-white/60 leading-relaxed">
-                {card.description}
-              </p>
-            </div>
-          </div>
-        );
-      }}
-    />
-  </div>
 );
 
 const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }> = ({ header, cards }) => (
@@ -151,7 +59,9 @@ const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }
         {header}
       </div>
       <div className="md:w-[65%] lg:w-[62%] md:order-1">
-        {cards}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          {cards}
+        </div>
       </div>
     </div>
   </motion.div>
@@ -161,86 +71,80 @@ const LandingStatsSection: React.FC = () => {
   const { stats, loading } = useLandingData();
   const s = stats?.stats;
 
-  const values = s ? [s.learnersTrained, s.cpPoolSize, s.bootcampsCount] : [];
+  const values = s ? [s.cpPoolSize, s.bootcampsCount] : [];
   const hasValidData = s && values.every((v) => v != null);
-
-  const resolvedStats: StatCard[] = hasValidData
-    ? STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }))
-    : [];
 
   if (loading && !s) {
     return (
       <SectionShell
         header={<SectionHeader />}
-        cards={<SkeletonCards />}
+        cards={STATS_CONFIG.map((card) => (
+          <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+            <div className="p-4 sm:p-5 space-y-3">
+              <Skeleton variant="icon" className="w-10 h-10 bg-border/30" />
+              <Skeleton variant="stat-value" className="h-8 w-28 bg-border/30" />
+              <Skeleton className="h-3 w-20 bg-border/30" />
+              <Skeleton className="h-2.5 w-36 bg-border/30" />
+            </div>
+          </div>
+        ))}
       />
     );
   }
 
-  const desktopCards = () => {
-    if (!s || !hasValidData) {
-      return (
-        <DesktopStatGrid>
-          {STATS_CONFIG.map((card) => (
-            <EmptyStatCard key={card.label} card={card} />
-          ))}
-        </DesktopStatGrid>
-      );
-    }
-
+  if (!s || !hasValidData) {
     return (
-      <DesktopStatGrid>
-        {resolvedStats.map((card) => {
+      <SectionShell
+        header={<SectionHeader />}
+        cards={STATS_CONFIG.map((card) => {
           const Icon = card.icon;
           return (
-            <motion.div
-              key={card.label}
-              variants={cardVariants}
-              className="group relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden"
-            >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${card.bgImage})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-300">
-                  <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
+            <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+              <div className="p-4 sm:p-5 flex flex-col items-start text-left">
+                <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                  <Icon className="w-5 h-5 text-accent/40" />
                 </div>
-                <div className="text-4xl md:text-5xl lg:text-6xl font-black text-white font-mono tracking-tighter mb-2 leading-none">
-                  <StatCounter end={card.value} suffix={card.suffix} className="text-white" />
-                </div>
-                <h3 className="text-sm md:text-base lg:text-lg font-black text-white mb-1 tracking-tight">
-                  {card.label}
-                </h3>
-                <p className="text-xs md:text-sm text-white/60 leading-relaxed">
-                  {card.description}
-                </p>
+                <div className="text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">&mdash;</div>
+                <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">{card.label}</h3>
+                <p className="text-xs text-text-muted/60">{card.description}</p>
               </div>
-            </motion.div>
+            </div>
           );
         })}
-      </DesktopStatGrid>
+      />
     );
-  };
+  }
 
-  const mobileCards = () => {
-    const items = STATS_CAROUSEL_ITEMS.map((card, idx) => ({
-      ...card,
-      value: hasValidData ? values[idx] : undefined,
-    }));
-    return <MobileStatCarousel cards={items} />;
-  };
+  const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }));
 
   return (
     <SectionShell
       header={<SectionHeader />}
-      cards={
-        <>
-          {desktopCards()}
-          {mobileCards()}
-        </>
-      }
+      cards={resolvedStats.map((card) => {
+        const Icon = card.icon;
+        return (
+          <motion.div
+            key={card.label}
+            variants={cardVariants}
+            className="group rounded-2xl border border-border/30 bg-accent-dim overflow-hidden"
+          >
+            <div className="p-4 sm:p-5 flex flex-col items-start text-left">
+              <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3 group-hover:bg-accent/20 transition-all duration-300">
+                <Icon className="w-5 h-5 text-accent" />
+              </div>
+              <div className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">
+                <StatCounter end={card.value} suffix={card.suffix} className="text-text-primary" />
+              </div>
+              <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">
+                {card.label}
+              </h3>
+              <p className="text-xs text-text-muted/60 leading-relaxed">
+                {card.description}
+              </p>
+            </div>
+          </motion.div>
+        );
+      })}
     />
   );
 };
