@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
   BookOpen, Loader2, ArrowRight, Play, ListChecks,
-  BarChart3, Layers, Trophy, Github, FileText, Map, TrendingUp,
+  BarChart3, Layers, Trophy, Github, FileText, TrendingUp, MapIcon,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampConfig';
@@ -73,7 +73,7 @@ const BootcampCourse: React.FC = () => {
 
   useEffect(() => { load(); }, [bootcampId]);
 
-  const moduleProgressMap = new Map<number, any>(
+  const moduleProgressMap: Map<number, any> = new Map(
     (overview?.modules || []).map((m: any) => [Number(m.moduleId ?? m.id), m])
   );
 
@@ -190,7 +190,7 @@ const BootcampCourse: React.FC = () => {
             {/* Journey Map */}
             <div className="border border-border/30 rounded-xl bg-bg-card p-5 md:p-6">
               <div className="flex items-center gap-2 mb-5">
-                <Map className="h-4 w-4 text-accent" />
+                <MapIcon className="h-4 w-4 text-accent" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-accent">Journey Map</span>
               </div>
               <div className="flex flex-wrap gap-3">
