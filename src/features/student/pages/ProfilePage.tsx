@@ -12,6 +12,7 @@ import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
 import PageLoader from '../../../shared/components/PageLoader';
 import { StreakIcon } from '../../../shared/components';
+import SEO from '../../../shared/components/SEO';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import { getRoomCoverImage } from '../utils/walkthroughImages';
 
@@ -75,6 +76,11 @@ const Profile: React.FC = () => {
 
   return (
     <div className="w-full bg-bg">
+      <SEO
+        title={`@${profileData.username}'s Profile`}
+        description={`View the operator profile, rank, and accomplishments of @${profileData.username} on QYVORA. — ${profileData.rank} — ${profileData.cp.toLocaleString()} CP earned.`}
+        image="https://qyvora.netlify.app/favicon.png"
+      />
       <HeroBackground className="z-0 opacity-40" />
 
       {/* ══ HERO SECTION ══ */}

@@ -27,9 +27,9 @@ const TermsCtaSection: React.FC = () => {
                 directly and we&apos;ll respond within {SITE_CONFIG.contact.responseTime}.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href={`mailto:${SITE_CONFIG.contact.opsEmail}`} className="btn-primary !px-10 py-4 inline-flex items-center gap-3 text-sm font-bold w-full sm:w-auto">
-                  <Mail className="w-4 h-4" /> {SITE_CONFIG.contact.opsEmail}
-                </a>
+                <Link to="/contact" className="btn-primary !px-10 py-4 inline-flex items-center gap-3 text-sm font-bold w-full sm:w-auto">
+                  <Mail className="w-4 h-4" /> Contact Us
+                </Link>
                 <Link to="/" className="btn-secondary !px-10 py-4 inline-flex items-center gap-3 text-sm font-bold w-full sm:w-auto">
                   Return Home <ArrowRight className="w-4 h-4" />
                 </Link>

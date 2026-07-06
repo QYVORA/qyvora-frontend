@@ -3,6 +3,7 @@ import { Bell, CheckCheck, Loader2, BellOff } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
+import SEO from '../../../shared/components/SEO';
 import PageLoader from '../../../shared/components/PageLoader';
 
 interface Notification {
@@ -87,6 +88,7 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="bg-bg">
+      <SEO title="Notifications" description="System alerts, mission updates, and activity notifications on QYVORA." />
       {/* Mobile-first header (right section header shown before sidebar content) */}
 <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
          <ScrollReveal className="mb-8">

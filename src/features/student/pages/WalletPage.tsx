@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Zap, Shield, ArrowUpRight, ArrowDownLeft, Link2, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Zap, Shield, ArrowUpRight, ArrowDownLeft, Link2, CheckCircle2, ExternalLink } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
+import SEO from '../../../shared/components/SEO';
 import CpLogo from '../../../shared/components/CpLogo';
 import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '../constants/studentDecorPaths';
@@ -89,6 +91,19 @@ const Wallet: React.FC = () => {
 
   return (
     <div className="bg-bg">
+      <SEO title="Wallet" description="Your CP balance, transaction history, and chain-verified audit trail." />
+      {/* Link to Marketplace History */}
+      <div className="px-2 sm:px-6 md:px-8 pt-6">
+        <div className="rounded-2xl border border-accent/20 bg-accent-dim/10 px-5 py-3 flex items-center justify-between">
+          <p className="text-xs text-text-muted">
+            View full transaction history in{' '}
+            <Link to="/dashboard/marketplace?tab=history" className="text-accent font-bold hover:underline">
+              Marketplace → History tab
+            </Link>
+          </p>
+          <ExternalLink className="w-4 h-4 text-accent shrink-0" />
+        </div>
+      </div>
       {/* Mobile-first header (right section header shown before sidebar content) */}
 <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
          <ScrollReveal className="mb-8">

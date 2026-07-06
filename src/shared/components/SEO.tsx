@@ -116,8 +116,8 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:description" content={seoDescription} />
       <meta name="twitter:image" content={seoImage} />
       <meta name="twitter:image:alt" content={title || defaultTitle} />
-      <meta name="twitter:site" content="@QYVORASEC" />
-      <meta name="twitter:creator" content="@QYVORASEC" />
+      <meta name="twitter:site" content="@qyvorasec" />
+      <meta name="twitter:creator" content="@qyvorasec" />
 
       <meta name="author" content="QYVORA" />
       <meta name="application-name" content="QYVORA" />

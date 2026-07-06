@@ -4,6 +4,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
+import SEO from '../../../shared/components/SEO';
 import PageLoader from '../../../shared/components/PageLoader';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
@@ -122,6 +123,7 @@ const Settings: React.FC = () => {
 
   return (
     <div className="bg-bg">
+      <SEO title="Settings" description="Manage your password, recovery token, and account preferences on QYVORA." />
       {/* Mobile-first header (right section header shown before sidebar content) */}
       <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
         <ScrollReveal className="mb-8">

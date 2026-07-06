@@ -80,9 +80,9 @@ const ContactPage: React.FC = () => {
                   <div>
                     <h3 className="text-sm font-black text-text-primary uppercase tracking-wider">{SITE_CONFIG.contactPage.emailHeading}</h3>
                     <p className="text-xs text-text-muted mt-1">{SITE_CONFIG.contactPage.emailDescription}</p>
-                    <a href={`mailto:${SITE_CONFIG.contact.opsEmail}`} className="inline-block mt-2 text-sm font-mono text-accent hover:underline">
-                      {SITE_CONFIG.contact.opsEmail}
-                    </a>
+                    <span className="inline-block mt-2 text-sm font-mono text-accent/70">
+                      Use the form below
+                    </span>
                   </div>
                 </div>
               </div>

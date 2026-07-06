@@ -26,6 +26,7 @@ import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopT
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import SEO from '@/shared/components/SEO';
 import PageLoader from '@/shared/components/PageLoader';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -246,8 +247,13 @@ const BootcampRoomPage: React.FC = () => {
 
   if (apiLoading) return <PageLoader />;
 
+  const roomTitle = room?.title || 'Room';
   return (
     <div className="bg-bg overflow-x-hidden">
+      <SEO
+        title={roomTitle}
+        description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
+      />
       <AnimatePresence>
         {quizGateOpen && <QuizGateModal onClose={() => setQuizGateOpen(false)} onTakeQuiz={() => { setQuizGateOpen(false); setQuizOpen(true); }} />}
       </AnimatePresence>
