@@ -1,7 +1,5 @@
 import React from 'react';
 import { Layers, BarChart3, Trophy, CheckCircle2, Lock } from 'lucide-react';
-import OptionalDecorImage from '../../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../../constants/studentDecorPaths';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 
 interface SidebarProgressProps {
@@ -30,10 +28,6 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
       {/* Progress card - Hidden on mobile as it's redundant with CourseHeader */}
       <div className="hidden lg:block relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-        <OptionalDecorImage
-          src={STUDENT_DECOR.courseCurriculumMascot}
-          className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[110px] w-auto -translate-y-1/2 object-contain opacity-90"
-        />
         <div className="relative z-10">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">Overall progress</p>
           <div className="text-5xl font-black text-accent font-mono mb-3">{progressValue}</div>

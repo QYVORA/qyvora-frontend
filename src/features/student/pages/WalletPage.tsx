@@ -7,8 +7,6 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import CpLogo from '../../../shared/components/CpLogo';
-import OptionalDecorImage from '../../../shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '../constants/studentDecorPaths';
 import { getChainHistory, CHAIN_EVENT_LABELS, type ChainBlock } from '../services/chain.service';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
@@ -126,10 +124,6 @@ const Wallet: React.FC = () => {
             <ScrollReveal>
               <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6 md:p-8">
                 <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-                <OptionalDecorImage
-                  src={STUDENT_DECOR.walletMascot}
-                  className="pointer-events-none absolute -right-2 top-1/2 z-[1] max-h-[120px] w-auto -translate-y-1/2 object-contain opacity-95 md:max-h-[140px]"
-                />
                 <div className="relative z-10 mb-6 flex items-center gap-3 font-mono text-4xl font-black text-accent md:text-5xl">
                   <CpLogo className="w-8 h-8 md:w-10 md:h-10 opacity-90 shrink-0" />
                   <span className="truncate">{loading ? '—' : formatNumber(balance)}</span>

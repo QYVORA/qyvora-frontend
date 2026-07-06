@@ -130,7 +130,7 @@ const Profile: React.FC = () => {
                   <div className="mt-3 pl-7 space-y-3">
                     {bootcampCompleted ? (
                       <div className="flex items-center gap-3">
-                        <BootcampBadge completed className="w-11 h-11" />
+                        <BootcampBadge completed className="w-20 h-20" />
                         <span className="text-xs font-bold text-text-primary">HPB Graduate</span>
                       </div>
                     ) : (
