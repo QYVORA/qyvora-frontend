@@ -19,7 +19,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 
-const _0x5a2b = atob('L21yLXJvYm90');
+import ADMIN_PATH from '@/shared/utils/adminPath';
 
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
@@ -157,7 +157,7 @@ const PublicBottomNav: React.FC = () => {
                   <>
                     {user.isAdmin && (
                       <Link
-                        to={`${_0x5a2b}/dashboard`}
+                        to={`${ADMIN_PATH}/dashboard`}
                         onClick={closeMore}
                         className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all active:scale-95"
                       >

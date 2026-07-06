@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
-import ScrollReveal from '../../../shared/components/ScrollReveal';
+
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
 import UsersTab from '../components/dashboard/UsersTab';
@@ -11,51 +11,19 @@ import OverviewTab from '../components/dashboard/OverviewTab';
 import InboxTab from '../components/dashboard/InboxTab';
 import BroadcastTab from '../components/dashboard/BroadcastTab';
 import AuditLogTab from '../components/dashboard/AuditLogTab';
-import { useAuth } from '../../../core/contexts/AuthContext';
-import { useToast } from '../../../core/contexts/ToastContext';
-import api from '../../../core/services/api';
-import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
-import { Skeleton } from '../../../shared/components/ui';
+import ADMIN_PATH from '@/shared/utils/adminPath';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { useToast } from '@/core/contexts/ToastContext';
+import api from '@/core/services/api';
+import { ConfirmDialog } from '@/shared/components/ui/Dialog';
+import { PageHeader, SyncIndicator } from '@/shared/components/dashboard';
 import {
   type AdminTab, type AdminUser, type CPProduct,
   type SecurityEventItem,
   isUserBlocked,
 } from '../types/admin.types';
 
-
-const _0x5a2b = atob('L21yLXJvYm90');
-
-// ── Skeleton ──────────────────────────────────────────────────────────────────
-const AdminSkeleton = () => (
-  <div className="space-y-4">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {[0,1,2,3].map(i => (
-        <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
-          <Skeleton className="h-4 w-24 bg-border/30" />
-          <Skeleton className="h-8 w-20 bg-border/30" />
-          <Skeleton className="h-3 w-32 bg-border/30" />
-        </div>
-      ))}
-    </div>
-    <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-4">
-      <div className="flex items-center gap-4 pb-3 border-b border-border/20">
-        <Skeleton className="h-10 w-10 rounded-full bg-border/30" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-48 bg-border/30" />
-          <Skeleton className="h-3 w-32 bg-border/30" />
-        </div>
-      </div>
-      {[0,1,2,3,4].map(i => (
-        <div key={i} className="flex items-center gap-4">
-          <Skeleton className="h-8 w-8 rounded-full bg-border/30" />
-          <Skeleton className="h-4 flex-1 bg-border/30" />
-          <Skeleton className="h-4 w-20 bg-border/30" />
-          <Skeleton className="h-6 w-16 rounded-lg bg-border/30" />
-        </div>
-      ))}
-    </div>
-  </div>
-);
+const LOADING_SUBTITLE = 'Synchronizing encrypted data…';
 
 // ── Main component ────────────────────────────────────────────────────────────
 const AdminDashboardPage: React.FC = () => {
@@ -66,22 +34,23 @@ const AdminDashboardPage: React.FC = () => {
 
   // Tab is driven by ?tab= URL param so topbar links work
   const activeTab = (new URLSearchParams(location.search).get('tab') as AdminTab) || 'overview';
-  const setActiveTab = (tab: AdminTab) => navigate(`${_0x5a2b}/dashboard?tab=${tab}`, { replace: true });
+  const setActiveTab = (tab: AdminTab) => navigate(`${ADMIN_PATH}/dashboard?tab=${tab}`, { replace: true });
 
   const [loading, setLoading] = useState(true);
+  const [lastSync, setLastSync] = useState<string | null>(null);
+  const [syncError, setSyncError] = useState('');
 
   const [overview, setOverview] = useState<Record<string, unknown> | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
-
   const [products, setProducts] = useState<CPProduct[]>([]);
-
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
   const [confirmDeleteUser, setConfirmDeleteUser] = useState<AdminUser | null>(null);
+  const [confirmDeleteProduct, setConfirmDeleteProduct] = useState<string | null>(null);
 
-  // ── Data loading ─────────────────────────────────────────────────────────────
   const loadAll = async () => {
     setLoading(true);
+    setSyncError('');
     try {
       const [ovRes, usersRes, productsRes, summaryRes, eventsRes] =
         await Promise.all([
@@ -93,13 +62,14 @@ const AdminDashboardPage: React.FC = () => {
         ]);
 
       setOverview((ovRes?.data as Record<string, unknown>) || null);
-
       const userItems = Array.isArray(usersRes?.data) ? (usersRes.data as AdminUser[]) : [];
       setUsers(userItems);
-
       setProducts(Array.isArray(productsRes?.data?.items) ? productsRes.data.items : []);
       setSecuritySummary((summaryRes?.data as Record<string, unknown>) || null);
       setSecurityEvents(Array.isArray(eventsRes?.data?.items) ? eventsRes.data.items : []);
+      setLastSync(new Date().toLocaleTimeString());
+    } catch {
+      setSyncError('Failed to sync. Some data may be stale.');
     } finally {
       setLoading(false);
     }
@@ -172,9 +142,14 @@ const AdminDashboardPage: React.FC = () => {
   };
 
   const deleteProduct = async (id: string) => {
-    if (!window.confirm('Delete this product?')) return;
-    try { await api.delete(`/admin/cp-products/${encodeURIComponent(id)}`); addToast('Product deleted', 'success'); await loadAll(); }
+    setConfirmDeleteProduct(id);
+  };
+
+  const handleDeleteProductConfirmed = async () => {
+    if (!confirmDeleteProduct) return;
+    try { await api.delete(`/admin/cp-products/${encodeURIComponent(confirmDeleteProduct)}`); addToast('Product deleted', 'success'); await loadAll(); }
     catch (e: any) { addToast(e?.response?.data?.error || 'Failed to delete', 'error'); }
+    finally { setConfirmDeleteProduct(null); }
   };
 
   // ── Tab label lookup ─────────────────────────────────────────────────────────
@@ -193,43 +168,36 @@ const AdminDashboardPage: React.FC = () => {
     <div className="bg-bg text-text-primary">
       <div
         className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
-        style={{
-          scrollBehavior: 'smooth',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-          maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)',
-        }}
+        style={{ scrollBehavior: 'smooth' }}
       >
         <div className="mx-auto max-w-[1440px] px-4 pt-6 pb-16 md:px-8">
 
-          {/* ── HEADER ───────────────────────────────────────────────────── */}
-          <ScrollReveal className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-             <div>
-               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                 Management Protocol
-               </div>
-               <h1 className="text-4xl font-black text-text-primary md:text-6xl">
-                 {activeLabel}
-               </h1>
-               <p className="mt-1 max-w-lg text-base text-text-muted">
-                 {loading ? 'Synchronizing encrypted data…' : `Managing system ${activeLabel.toLowerCase()}.`}
-               </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => void loadAll()}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-accent text-bg text-sm font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-accent/20"
-              >
-                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                {loading ? 'Syncing' : 'Refresh'}
-              </button>
-            </div>
-          </ScrollReveal>
+          <PageHeader
+            pretitle="Management Protocol"
+            title={activeLabel}
+            subtitle={loading ? LOADING_SUBTITLE : `Managing system ${activeLabel.toLowerCase()}.`}
+            actions={[
+              {
+                label: loading ? 'Syncing' : 'Refresh',
+                icon: <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />,
+                onClick: () => void loadAll(),
+                loading,
+              },
+            ]}
+          />
 
           {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
           {loading ? (
             <div className="mx-auto w-full max-w-5xl">
-              <AdminSkeleton />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[0,1,2,3].map(i => (
+                  <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
+                    <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
+                    <div className="h-8 w-20 bg-border/30 rounded animate-pulse" />
+                    <div className="h-3 w-32 bg-border/30 rounded animate-pulse" />
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="mx-auto w-full max-w-[1440px]">
@@ -289,11 +257,14 @@ const AdminDashboardPage: React.FC = () => {
               )}
             </div>
           )}
+
+          <div className="mt-6">
+            <SyncIndicator lastSync={lastSync} error={syncError} onRetry={() => void loadAll()} />
+          </div>
         </div>
       </div>
     </div>
 
-    {/* Confirm delete user dialog */}
     <ConfirmDialog
       open={confirmDeleteUser !== null}
       onOpenChange={(open) => { if (!open) setConfirmDeleteUser(null); }}
@@ -303,6 +274,17 @@ const AdminDashboardPage: React.FC = () => {
       cancelLabel="Abort"
       destructive
       onConfirm={() => { if (confirmDeleteUser) void handleDeleteUserConfirmed(confirmDeleteUser); }}
+    />
+
+    <ConfirmDialog
+      open={confirmDeleteProduct !== null}
+      onOpenChange={(open) => { if (!open) setConfirmDeleteProduct(null); }}
+      title="Delete Product"
+      description="Are you sure you want to permanently delete this product? This action is irreversible."
+      confirmLabel="Delete"
+      cancelLabel="Cancel"
+      destructive
+      onConfirm={handleDeleteProductConfirmed}
     />
     </>
   );

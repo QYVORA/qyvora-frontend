@@ -9,7 +9,7 @@ import AuthHero from '../components/AuthHero';
 import ChangePasswordForm from '../components/ChangePasswordForm';
 
 
-const _0x5a2b = atob('L21yLXJvYm90');
+import ADMIN_PATH from '@/shared/utils/adminPath';
 
 const ChangePasswordPage: React.FC = () => {
   const { addToast } = useToast();
@@ -44,7 +44,7 @@ const ChangePasswordPage: React.FC = () => {
       
       const meRes = await api.get('/auth/me').catch(() => null);
       if (String(meRes?.data?.role || '').toLowerCase() === 'admin') {
-        navigate(`${_0x5a2b}/dashboard`);
+        navigate(`${ADMIN_PATH}/dashboard`);
       } else {
         navigate('/dashboard');
       }

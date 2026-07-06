@@ -13,7 +13,7 @@ const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
 const AdminLayout = () => (
   <div className="bg-bg min-h-screen">
     <AdminTopbar />
-    <div className={`${TOPBAR_H} ${MOBILE_NAV_PB}`}>
+    <div id="main-content" className={`${TOPBAR_H} ${MOBILE_NAV_PB}`}>
       <Outlet />
     </div>
     <AdminRightRail />

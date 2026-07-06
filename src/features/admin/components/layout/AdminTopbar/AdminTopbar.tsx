@@ -2,22 +2,21 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut, Bell, Shield, LayoutDashboard, ChevronDown,
 } from 'lucide-react';
-import { useAuth } from '../../../../../core/contexts/AuthContext';
-import { useToast } from '../../../../../core/contexts/ToastContext';
-import Logo from '../../../../../shared/components/brand/Logo';
+import { useAuth } from '@/core/contexts/AuthContext';
+import { useToast } from '@/core/contexts/ToastContext';
+import Logo from '@/shared/components/brand/Logo';
+import ADMIN_PATH from '@/shared/utils/adminPath';
 import { useEffect, useRef, useState } from 'react';
-import api from '../../../../../core/services/api';
+import api from '@/core/services/api';
 import { NAV_GROUPS, MOBILE_PRIMARY } from './navGroups';
 import { AnimatePresence, motion } from 'motion/react';
-import { useScrollLock } from '../../../../../core/hooks/useScrollLock';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
 import NotificationsDropdown from './NotificationsDropdown';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
-import { NotificationItem } from './types';
+import type { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
-
-const ADMIN_PREFIX = atob('L21yLXJvYm90');
 
 const AdminTopbar = () => {
   const { user, logout } = useAuth();
@@ -75,7 +74,7 @@ const AdminTopbar = () => {
   useEffect(() => { setMoreOpen(false); setNotifOpen(false); setActiveDropdown(null); }, [location.search]);
 
   useEffect(() => {
-    if (!notifOpen) return undefined;
+    if (!notifOpen) return;
     const onPointerDown = (e: MouseEvent) => {
       if (!notifRef.current || notifRef.current.contains(e.target as Node)) return;
       setNotifOpen(false);
@@ -87,7 +86,7 @@ const AdminTopbar = () => {
   const handleLogout = async () => {
     await logout();
     addToast('Security session terminated.', 'info');
-    navigate(ADMIN_PREFIX);
+    navigate(ADMIN_PATH);
   };
 
   const isTabActive = (path: string) => {
@@ -97,12 +96,19 @@ const AdminTopbar = () => {
 
   return (
     <>
+      {/* Skip to content */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 h-20 md:h-24 flex items-center justify-between">
-
           <div className="flex items-center gap-6 lg:gap-8">
             <div className="flex items-center gap-3">
-              <Link to={`${ADMIN_PREFIX}/dashboard`}><Logo size="md" /></Link>
+              <Link to={`${ADMIN_PATH}/dashboard`}><Logo size="md" /></Link>
               <div className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
                 <Shield className="h-3 w-3 text-accent" />
                 <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN</span>
@@ -178,7 +184,6 @@ const AdminTopbar = () => {
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
-
             <div ref={notifRef} className="relative">
               <button
                 onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
