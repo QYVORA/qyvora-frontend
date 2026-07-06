@@ -3,6 +3,7 @@ import { ShoppingBag, Search, Loader2, Download, BookOpen, Zap, ArrowDownLeft, A
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
+import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
 import CpLogo from '../../../shared/components/CpLogo';
@@ -16,6 +17,7 @@ const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 const PAGE_SIZE = 10;
 
 const Marketplace: React.FC = () => {
+  const { user } = useAuth();
   const { addToast } = useToast();
   const [products, setProducts] = useState<any[]>([]);
   const [balance, setBalance] = useState<number | null>(null);
@@ -50,7 +52,7 @@ const Marketplace: React.FC = () => {
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch { /* ignore */ }
       const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
       setTransactions(txItems);
-      const dbBalance = extractCpBalance(balRes?.data) ?? 0;
+      const dbBalance = extractCpBalance(balRes?.data) ?? user?.cp ?? 0;
       setBalance(dbBalance);
       const purchasedIds = new Set<string>(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId)));
       setPurchased(purchasedIds);

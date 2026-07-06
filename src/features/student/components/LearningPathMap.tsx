@@ -77,7 +77,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           const pillContent = (
             <div
-              className={`flex-none flex flex-col items-center gap-2 p-4 rounded-2xl border min-w-[150px] transition-all duration-300 ${
+              className={`flex-none flex flex-col items-center gap-2 p-4 rounded-2xl border w-[180px] min-h-[200px] transition-all duration-300 ${
                 state === 'locked'
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'

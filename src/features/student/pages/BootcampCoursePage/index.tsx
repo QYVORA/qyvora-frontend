@@ -12,8 +12,6 @@ import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
-import OptionalDecorImage from '@/shared/components/OptionalDecorImage';
-import { STUDENT_DECOR } from '@/features/student/constants/studentDecorPaths';
 import SEO from '@/shared/components/SEO';
 import PageLoader from '@/shared/components/PageLoader';
 import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
