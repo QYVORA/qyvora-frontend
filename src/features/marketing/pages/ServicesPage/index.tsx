@@ -1,76 +1,79 @@
 import React from 'react';
-import { Shield, Smartphone, Globe, Network, ArrowRight, Check, Send, Building2, Users } from 'lucide-react';
+import { Shield, Smartphone, Globe, Network, Users, CheckCircle2, Lock, ArrowRight, Building2, Send } from 'lucide-react';
 import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
+import { Carousel } from '@/shared/components/carousel';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
+import basicPackageImg from '@/assets/sections/services/basic-package.webp';
+import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 
 const PACKAGES = [
   {
-    tier: 'Starter',
-    price: '2,500',
-    desc: 'For early-stage startups and small teams needing a baseline security assessment.',
+    id: 'basic',
+    tier: 'Basic',
+    price: 'GH₵ 4,000+',
+    desc: 'Essential penetration testing for startups and small teams.',
+    image: basicPackageImg,
     features: [
       'Web Application Assessment (up to 5 endpoints)',
       'Automated + Manual Vulnerability Scanning',
       'OWASP Top 10 Coverage',
       'Single PDF Report with Executive Summary',
-      '7-Day Turnaround',
-      '1 Round of Remediation Validation',
     ],
   },
   {
-    tier: 'Professional',
-    price: '7,500',
-    desc: 'For growing organizations requiring comprehensive testing across web and mobile surfaces.',
+    id: 'standard',
+    tier: 'Standard',
+    price: 'GH₵ 8,000+',
+    desc: 'Comprehensive testing for growing organizations.',
+    image: standardPackageImg,
     features: [
       'Web App + Mobile API Assessment',
       'Authenticated & Role-Based Testing',
       'Business Logic & Workflow Analysis',
       'Detailed Report with PoC Walkthroughs',
-      '14-Day Active Testing Window',
-      '2 Rounds of Remediation Validation',
-      'Priority Slack/Email Channel',
     ],
     featured: true,
   },
   {
-    tier: 'Enterprise',
-    price: 'Custom',
-    desc: 'For large-scale deployments, continuous assessment programs, and Red Team engagements.',
+    id: 'bootcamp',
+    tier: 'Employee Bootcamp',
+    price: 'Negotiation',
+    desc: 'Custom security awareness training for your team.',
     features: [
-      'Full External + Internal Network Pentest',
-      'Web, Mobile, API, Cloud, & Social Engineering',
-      'Custom Exploit Development',
-      'Adversary Simulation (Red Team)',
-      'Quarterly or Continuous Engagement Model',
-      'Unlimited Remediation Validation',
-      'Dedicated Operations Lead',
-      'NDA & Legal Framework Included',
+      'Tailored Curriculum Design',
+      'Hands-on Simulated Exercises',
+      'Phishing & Social Engineering Drills',
+      'Progress Tracking & Reporting',
     ],
   },
 ];
 
-const SERVICES = [
+const ASSESSMENT_SERVICES = [
   {
+    id: 'web',
     icon: Globe,
     title: 'Web Application Pentesting',
     desc: 'Deep-dive security assessments of web applications, APIs, and microservices. We test for OWASP Top 10, business logic flaws, authentication bypasses, and server-side vulnerabilities.',
   },
   {
+    id: 'mobile',
     icon: Smartphone,
     title: 'Mobile Application Pentesting',
     desc: 'Android and iOS application security testing including static analysis, dynamic instrumentation, API interception, and data-at-rest assessment.',
   },
   {
+    id: 'network',
     icon: Network,
     title: 'Network Penetration Testing',
     desc: 'External and internal network infrastructure assessments covering service enumeration, vulnerability exploitation, pivot paths, and Active Directory security reviews.',
   },
   {
+    id: 'social',
     icon: Users,
     title: 'Social Engineering',
     desc: 'Phishing simulations, pretexting campaigns, and physical security assessments to evaluate human-layer security controls and awareness.',
@@ -112,32 +115,38 @@ const ServicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ══ SERVICE CATEGORIES ══ */}
+      {/* ══ WHAT WE ASSESS — Carousel ══ */}
       <section className="relative w-full py-20 md:py-28 border-t border-border/20">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
-              What We <span className="text-accent">Assess</span>
-            </h2>
-            <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
-              Comprehensive offensive security testing across the full attack surface.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {SERVICES.map((svc, i) => {
-              const Icon = svc.icon;
-              return (
-                <ScrollReveal key={svc.title} direction="up" amount={0.05} delay={i * 0.05}>
-                  <div className="rounded-2xl border border-border bg-bg-card p-6 md:p-8 hover:border-accent/20 transition-all duration-300 h-full">
-                    <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
-                      <Icon className="w-6 h-6 text-accent" />
+        <div className="w-full px-4 md:px-12 lg:px-16">
+          <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+            <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32 md:order-2 md:text-right md:self-start">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                What We <span className="text-accent">Assess</span>
+              </h2>
+              <p className="mt-4 text-sm md:text-base text-text-muted leading-relaxed max-w-sm md:ml-auto">
+                Comprehensive offensive security testing across the full attack surface.
+              </p>
+            </div>
+            <div className="md:w-[65%] lg:w-[62%] md:order-1">
+              <Carousel
+                slides={ASSESSMENT_SERVICES}
+                renderCard={(s) => {
+                  const Icon = s.icon;
+                  return (
+                    <div className="relative min-h-[260px] md:min-h-[360px]">
+                      <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
+                      <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
+                        <div className="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                          <Icon className="w-6 h-6 text-accent" />
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight mb-3">{s.title}</h3>
+                        <p className="text-sm text-text-secondary leading-relaxed">{s.desc}</p>
+                      </div>
                     </div>
-                    <h3 className="text-xl font-black text-text-primary mb-3 tracking-tight">{svc.title}</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">{svc.desc}</p>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
+                  );
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -157,49 +166,59 @@ const ServicesPage: React.FC = () => {
             {PACKAGES.map((pkg, i) => {
               const isFeatured = pkg.featured;
               return (
-                <ScrollReveal key={pkg.tier} direction="up" amount={0.05} delay={i * 0.05}>
+                <ScrollReveal key={pkg.id} direction="up" amount={0.05} delay={i * 0.05}>
                   <div
-                    className={`relative rounded-2xl border p-6 md:p-8 flex flex-col h-full transition-all duration-300 ${
+                    className={`card-qyvora border flex flex-col h-full transition-all duration-300 ${
                       isFeatured
-                        ? 'border-accent/40 bg-accent-dim/5 shadow-[0_0_30px_-12px] shadow-accent/20'
-                        : 'border-border bg-bg-card hover:border-accent/20'
+                        ? 'border-accent/40 shadow-[0_0_30px_-12px] shadow-accent/20'
+                        : 'border-border hover:border-accent/35'
                     }`}
                   >
+                    {pkg.image && (
+                      <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{ backgroundImage: `url(${pkg.image})` }}
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
                     {isFeatured && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-bg text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-bg text-[10px] font-black uppercase tracking-[0.2em] rounded-full z-10">
                         Most Popular
                       </div>
                     )}
-                    <div className="mb-6">
-                      <h3 className="text-2xl font-black text-text-primary tracking-tight">{pkg.tier}</h3>
-                      <div className="mt-3 flex items-baseline gap-1">
-                        <span className="text-4xl font-black text-accent">
-                          {pkg.price === 'Custom' ? 'Custom' : `$${pkg.price}`}
-                        </span>
-                        {pkg.price !== 'Custom' && (
-                          <span className="text-xs font-bold text-text-muted">USD</span>
-                        )}
+                    <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
+                      <div className="mb-6">
+                        <h3 className="text-2xl font-black text-text-primary tracking-tight">{pkg.tier}</h3>
+                        <div className="mt-3 flex items-baseline gap-1">
+                          <span className="text-4xl font-black text-accent">
+                            {pkg.price}
+                          </span>
+                          {pkg.price === 'Negotiation' && (
+                            <span className="text-xs font-bold text-text-muted">per engagement</span>
+                          )}
+                        </div>
+                        <p className="text-sm text-text-muted mt-3 leading-relaxed">{pkg.desc}</p>
                       </div>
-                      <p className="text-sm text-text-muted mt-3 leading-relaxed">{pkg.desc}</p>
+                      <ul className="space-y-3 mb-8 flex-1">
+                        {pkg.features.map((f) => (
+                          <li key={f} className="flex items-start gap-3 text-sm text-text-secondary">
+                            <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <button
+                        onClick={() => openServiceRequestModal(pkg.tier)}
+                        className={`w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 z-10 ${
+                          isFeatured
+                            ? 'bg-accent text-bg hover:brightness-110'
+                            : 'border border-accent/50 text-accent hover:bg-accent/10'
+                        }`}
+                      >
+                        <Lock className="w-3.5 h-3.5" />
+                        Request Assessment <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                    <ul className="space-y-3 mb-8 flex-1">
-                      {pkg.features.map((f) => (
-                        <li key={f} className="flex items-start gap-3 text-sm text-text-secondary">
-                          <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={() => openServiceRequestModal(pkg.tier)}
-                      className={`w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
-                        isFeatured
-                          ? 'bg-accent text-bg hover:brightness-110'
-                          : 'border border-accent/50 text-accent hover:bg-accent/10'
-                      }`}
-                    >
-                      Request Assessment <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
                 </ScrollReveal>
               );
