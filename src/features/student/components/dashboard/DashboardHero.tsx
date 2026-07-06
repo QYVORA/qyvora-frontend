@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Layers, Flame } from 'lucide-react';
+import { ArrowRight, Layers, Flame, Shield } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import CpLogo from '@/shared/components/CpLogo';
 import { StreakIcon } from '@/shared/components';
+import WeekActivity from './WeekActivity';
 
 interface DashboardHeroProps {
   isEnrolled: boolean;
@@ -15,13 +16,33 @@ interface DashboardHeroProps {
   nextRank: { name: string } | null;
   rankProgress: number;
   currentPhaseTitle?: string;
+  rankName: string;
+  visitDates?: string[];
   loading?: boolean;
 }
+
+const StatPill = ({ icon, label, value, children }: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+  children?: React.ReactNode;
+}) => (
+  <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/30 border border-border/20 min-w-0">
+    <div className="w-9 h-9 rounded-lg bg-accent-dim border border-accent/20 flex items-center justify-center flex-none">
+      {icon}
+    </div>
+    <div className="min-w-0">
+      <div className="text-[9px] font-black uppercase tracking-widest text-text-muted">{label}</div>
+      <div className="font-mono text-sm font-black text-text-primary">{value}</div>
+    </div>
+    {children && <div className="flex-none ml-auto">{children}</div>}
+  </div>
+);
 
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, totalRoomsDone, cpBalance,
   streakDays, continuePath, nextRank, rankProgress, currentPhaseTitle,
-  loading,
+  rankName, visitDates, loading,
 }: DashboardHeroProps) => {
   const renderHeroContent = () => {
     if (allDone) {
@@ -79,7 +100,7 @@ const DashboardHero = ({
               </div>
             </div>
           )}
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4 mb-6">
             <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
               {nextMission ? 'Continue Mission' : 'Review Curriculum'}<ArrowRight className="inline-block ml-2 h-5 w-5" />
             </Link>
@@ -117,7 +138,7 @@ const DashboardHero = ({
             </div>
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4 mb-6">
           <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
             START THE BOOTCAMP<ArrowRight className="inline-block ml-2 h-5 w-5" />
           </Link>
@@ -135,9 +156,47 @@ const DashboardHero = ({
   return (
     <div className="w-full px-4 md:px-0">
       <ScrollReveal className="h-full">
-        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden h-full flex flex-col justify-center border border-border/40 bg-bg-card rounded-2xl shadow-none">
+        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden border border-border/40 bg-bg-card rounded-2xl shadow-none">
           <div className="relative z-10">
             {renderHeroContent()}
+
+            {/* Quick stat pills — always visible */}
+            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 md:grid md:grid-cols-5 md:gap-3">
+              <StatPill
+                icon={<CpLogo className="w-4 h-4" />}
+                label="CP"
+                value={cpBalance.toLocaleString()}
+              />
+              <StatPill
+                icon={<Shield className="w-4 h-4 text-accent" />}
+                label={rankName || 'Candidate'}
+                value={
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
+                      <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${rankProgress}%` }} />
+                    </div>
+                    <span className="font-mono text-[10px] font-bold text-accent">{nextRank ? `→${nextRank.name}` : 'MAX'}</span>
+                  </div>
+                }
+              />
+              <StatPill
+                icon={<Flame className="w-4 h-4 text-orange-400" />}
+                label="Streak"
+                value={`${streakDays ?? 0}d`}
+              />
+              <StatPill
+                icon={<Layers className="w-4 h-4 text-accent" />}
+                label="Rooms"
+                value={totalRoomsDone}
+              />
+              <StatPill
+                icon={<div className="w-4 h-4" />}
+                label="Week"
+                value={`${visitDates?.length ?? 0}d`}
+              >
+                <WeekActivity visitDates={visitDates} />
+              </StatPill>
+            </div>
           </div>
         </div>
       </ScrollReveal>

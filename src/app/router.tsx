@@ -58,7 +58,7 @@ const NewsFeedPage      = lazy(() => import('../features/news/pages/NewsFeedPage
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
 const MarketplacePage   = lazy(() => import('../features/student/pages/MarketplacePage'));
-const WalletPage        = lazy(() => import('../features/student/pages/WalletPage'));
+
 const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePage'));
 const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicProfilePage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
@@ -172,7 +172,6 @@ export const AppRouter = () => {
           <Route path="/dashboard/courses/:courseId" element={<Wrap scope="Course"><StudentOnly><CourseLessonPage /></StudentOnly></Wrap>} />
 
           <Route path="/dashboard/marketplace"   element={<Wrap scope="Market"><StudentOnly><MarketplacePage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/wallet"        element={<Wrap scope="Wallet"><StudentOnly><WalletPage /></StudentOnly></Wrap>} />
           
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
@@ -183,7 +182,6 @@ export const AppRouter = () => {
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />
           <Route path="/marketplace"      element={<Navigate to="/dashboard/marketplace" replace />} />
-          <Route path="/wallet"           element={<Navigate to="/dashboard/wallet" replace />} />
           <Route path="/profile"          element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
