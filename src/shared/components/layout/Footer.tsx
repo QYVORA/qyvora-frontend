@@ -21,6 +21,7 @@ const FOOTER_COLS = [
       { key: 'news', label: 'News', path: '/news' },
       { key: 'market', label: 'Market', path: '/zero-day-market' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
+      { key: 'services', label: 'Services', path: '/services' },
     ],
   },
   {

@@ -26,6 +26,7 @@ import NotFoundPage from '../shared/pages/NotFoundPage';
 
 // ─── Lazy page imports ────────────────────────────────────────────────────────
 const LandingPage       = lazy(() => import('../features/marketing/pages/LandingPage'));
+const ServicesPage      = lazy(() => import('../features/marketing/pages/ServicesPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
 const QuiteRootPage     = lazy(() => import('../features/marketing/pages/QuiteRootPage'));
@@ -131,6 +132,7 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
+          <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/hpb" element={<Wrap scope="HPB"><LearnPage /></Wrap>} />
           <Route path="/learn" element={<Navigate to="/hpb" replace />} />
           <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />

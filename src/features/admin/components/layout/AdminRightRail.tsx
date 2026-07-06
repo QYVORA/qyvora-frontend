@@ -1,27 +1,29 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Users, Shield, Database, Coins, AlertTriangle, Mail } from 'lucide-react';
-
+import { Users, Shield, Database, Coins, Mail, Megaphone, Clock, AlertTriangle, LayoutDashboard } from 'lucide-react';
 
 const _0x5a2b = atob('L21yLXJvYm90');
 
 const RAIL_LINKS = [
-  { icon: Users,         path: `${_0x5a2b}/dashboard?tab=users`,        label: 'Users'     },
-  { icon: Shield,        path: `${_0x5a2b}/dashboard?tab=bootcamps`,    label: 'Bootcamps' },
-  { icon: Database,      path: `${_0x5a2b}/dashboard?tab=zero_day`,     label: 'Market'    },
-  { icon: Coins,         path: `${_0x5a2b}/dashboard?tab=cp`,           label: 'Points'    },
-  { icon: AlertTriangle, path: `${_0x5a2b}/dashboard?tab=security`,     label: 'Security'  },
-  { icon: Mail,          path: `${_0x5a2b}/dashboard?tab=contacts`,     label: 'Contacts'  },
+  { icon: LayoutDashboard, path: `${_0x5a2b}/dashboard?tab=overview`,  label: 'Overview'  },
+  { icon: Users,           path: `${_0x5a2b}/dashboard?tab=users`,     label: 'Users'     },
+  { icon: Shield,          path: `${_0x5a2b}/dashboard?tab=bootcamps`,  label: 'Bootcamps' },
+  { icon: Database,        path: `${_0x5a2b}/dashboard?tab=zero_day`,   label: 'Market'    },
+  { icon: Coins,           path: `${_0x5a2b}/dashboard?tab=cp`,         label: 'Points'    },
+  { icon: Mail,            path: `${_0x5a2b}/dashboard?tab=inbox`,      label: 'Inbox'     },
+  { icon: Megaphone,       path: `${_0x5a2b}/dashboard?tab=broadcast`,  label: 'Broadcast' },
+  { icon: Clock,           path: `${_0x5a2b}/dashboard?tab=audit`,      label: 'Audit'     },
+  { icon: AlertTriangle,   path: `${_0x5a2b}/dashboard?tab=security`,   label: 'Security'  },
 ];
 
 const AdminRightRail = () => {
   const location = useLocation();
-  const currentTab = new URLSearchParams(location.search).get('tab') || 'users';
+  const currentTab = new URLSearchParams(location.search).get('tab') || 'overview';
 
   return (
     <aside
       className="hidden lg:flex fixed right-6 z-30 flex-col items-center gap-3"
       style={{
-        top: '6rem',   // matches md:h-24 topbar height
+        top: '6rem',
         bottom: '1.5rem',
         justifyContent: 'center',
       }}
