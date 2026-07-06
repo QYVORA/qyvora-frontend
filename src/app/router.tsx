@@ -131,7 +131,8 @@ export const AppRouter = () => {
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
           <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
           <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
-          <Route path="/learn" element={<Wrap scope="Learn"><LearnPage /></Wrap>} />
+          <Route path="/hpb" element={<Wrap scope="HPB"><LearnPage /></Wrap>} />
+          <Route path="/learn" element={<Navigate to="/hpb" replace />} />
           <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Wrap scope="Leaderboard"><LeaderboardAllPage /></Wrap>} />

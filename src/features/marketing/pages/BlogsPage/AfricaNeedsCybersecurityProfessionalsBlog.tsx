@@ -163,7 +163,7 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
         <CTA
           title="Start Your Journey"
           desc="Phase 01 of the Hacker Protocol Bootcamp is open to everyone. No prerequisites. No cost. Just you, the terminal, and the journey to becoming an offensive security operator."
-          href="/learn"
+          href="/hpb"
           label="Begin Phase 01"
         />
       </Section>

@@ -290,7 +290,7 @@ const ZeroDayMarketPage: React.FC = () => {
               <Link to="/register" className="btn-primary inline-flex items-center gap-2">
                 <ShoppingBag className="h-4 w-4" /> Get Started
               </Link>
-              <Link to="/learn" className="btn-secondary inline-flex items-center gap-2">
+              <Link to="/hpb" className="btn-secondary inline-flex items-center gap-2">
                 Learn About Bootcamps →
               </Link>
             </div>

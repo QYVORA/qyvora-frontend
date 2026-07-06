@@ -85,10 +85,47 @@ export const SITE_CONFIG = {
     },
   ],
   nav: {
+    groups: [
+      {
+        key: 'learn',
+        label: 'Learn',
+        items: [
+          { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
+          { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
+          { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
+        ],
+      },
+      {
+        key: 'research',
+        label: 'Research',
+        items: [
+          { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
+          { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Offensive research and engineering' },
+          { key: 'market', label: 'Market', path: '/zero-day-market', desc: 'Zero-day intelligence vault' },
+        ],
+      },
+      {
+        key: 'resources',
+        label: 'Resources',
+        items: [
+          { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
+          { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
+          { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
+        ],
+      },
+      {
+        key: 'company',
+        label: 'Company',
+        items: [
+          { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+          { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
+        ],
+      },
+    ],
     platform: [
       { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
       { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
-      { key: 'learn', label: 'Learn', path: '/learn', desc: 'HPB Bootcamp Phases' },
+      { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Offensive research and engineering' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
@@ -100,7 +137,7 @@ export const SITE_CONFIG = {
     ],
     company: [
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
-      { key: 'learn', label: 'Learn', path: '/learn', desc: 'Bootcamp phases' },
+      { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Bootcamp phases' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },

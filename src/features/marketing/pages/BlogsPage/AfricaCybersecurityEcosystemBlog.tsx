@@ -159,7 +159,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
         <CTA
           title="Join the Mission"
           desc="Whether you are a student looking to start your cybersecurity journey, a company needing security assessments, or a partner who shares our vision — there is a place for you in the QYVORA ecosystem."
-          href="/learn"
+          href="/hpb"
           label="Explore the Ecosystem"
         />
       </Section>
