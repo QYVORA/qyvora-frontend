@@ -4,15 +4,19 @@ import { motion, useReducedMotion } from 'motion/react';
 import {
   ArrowRight,
   BookOpen,
-  CheckCircle2,
   Cpu,
   FlaskConical,
-  Github,
-  GitPullRequest,
   Globe2,
   LockKeyhole,
   Rocket,
+  Search,
+  Wrench,
+  Shield,
+  Brain,
+  Cctv,
+  Cloud,
 } from 'lucide-react';
+import { Carousel } from '@/shared/components/carousel';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -22,14 +26,14 @@ import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 
 const capabilities = [
-  'Offensive Security Research',
-  'Tool Development',
-  'Threat Intelligence',
-  'Red Team Automation',
-  'Detection Engineering',
-  'Secure Infrastructure',
-  'AI-assisted Security',
-  'Cyber Education',
+  { id: 'research', title: 'Offensive Security Research', icon: Search, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
+  { id: 'tool-dev', title: 'Tool Development', icon: Wrench, desc: 'Building production-grade security tools purpose-built for the unique challenges of African cybersecurity operations.' },
+  { id: 'threat-intel', title: 'Threat Intelligence', icon: Shield, desc: 'Collecting, analyzing, and operationalizing threat intelligence to protect African organizations and critical infrastructure.' },
+  { id: 'red-team', title: 'Red Team Automation', icon: Brain, desc: 'Automating adversarial simulation workflows to continuously validate security postures at scale.' },
+  { id: 'detection', title: 'Detection Engineering', icon: Cctv, desc: 'Crafting detection logic and signatures that identify real threats while minimizing false positives.' },
+  { id: 'infra', title: 'Secure Infrastructure', icon: Cloud, desc: 'Designing and deploying hardened infrastructure for offensive operations and secure communications.' },
+  { id: 'ai', title: 'AI-assisted Security', icon: Cpu, desc: 'Leveraging machine learning and AI to accelerate vulnerability discovery and security analysis.' },
+  { id: 'education', title: 'Cyber Education', icon: BookOpen, desc: 'Developing curriculum, training, and knowledge-sharing initiatives to grow Africa\'s cybersecurity talent pool.' },
 ];
 
 const timeline = [
@@ -121,29 +125,43 @@ function Hero() {
 
 function WhoWeAre() {
   return (
-    <ScrollReveal direction="up">
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-10 px-4 sm:px-8 md:px-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:px-16">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {capabilities.map((item) => (
-            <div
-              key={item}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-bg-card/70 px-4 py-3 text-sm text-text-secondary transition-all hover:border-accent/35 hover:text-text-primary"
-            >
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" />
-              {item}
-            </div>
-          ))}
-        </div>
-        <div>
-          <SectionHeader
-            eyebrow="// WHO WE ARE"
-            title="Who is"
-            accent="QuiteRoot?"
-            body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
-          />
-        </div>
+    <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
+      <div className="mb-12">
+        <SectionHeader
+          eyebrow="// WHO WE ARE"
+          title="Who is"
+          accent="QuiteRoot?"
+          body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
+        />
       </div>
-    </ScrollReveal>
+      <ScrollReveal direction="up" amount={0.1}>
+        <Carousel
+          slides={capabilities}
+          renderCard={(item) => (
+            <div className="relative min-h-[300px] md:min-h-[420px] overflow-hidden">
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-20"
+                style={{ backgroundImage: `url(${quiteRootLogo})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-bg-card via-bg-card/80 to-bg-card/90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent" />
+              <div className="relative z-10 p-8 sm:p-10 md:p-12 flex flex-col items-start justify-end h-full min-h-[300px] md:min-h-[420px]">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10">
+                  <item.icon className="h-7 w-7 text-accent" />
+                </div>
+                <h3 className="mb-3 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
+                  {item.title}
+                </h3>
+                <p className="max-w-xl text-sm md:text-base text-text-secondary leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          )}
+          autoPlayInterval={6000}
+        />
+      </ScrollReveal>
+    </div>
   );
 }
 
@@ -165,104 +183,7 @@ function Mission() {
   );
 }
 
-function FeaturedProject() {
-  const output = [
-    'anansi recon --scope qyvora.netlify.app',
-    '[discovery] 42 endpoints identified',
-    '[probe] live services mapped',
-    '[headers] controls reviewed',
-    '[report] operator brief exported',
-  ];
 
-  return (
-    <ScrollReveal direction="up">
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12 xl:px-16">
-        <div className="rounded-3xl border border-white/10 bg-bg-card/70 p-2">
-          <div className="terminal-card overflow-hidden rounded-[1.35rem] bg-bg">
-            <div className="border-b border-white/10 px-5 py-4 text-[10px] font-black uppercase tracking-[0.28em] text-text-muted">
-              anansi-session.log
-            </div>
-            <div className="space-y-4 p-5 sm:p-8">
-              {output.map((line, index) => (
-                <motion.div
-                  key={line}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: index * 0.16 }}
-                  className="flex min-w-0 items-center gap-3 font-mono text-xs text-text-secondary sm:text-sm"
-                >
-                  <span className="text-accent">{index === 0 ? '$' : '>'}</span>
-                  <code className="truncate">{line}</code>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div>
-          <SectionHeader
-            eyebrow="// FEATURED PROJECT"
-            title="ANANSI"
-            accent="CLI"
-            body="Built for offensive operators. Anansi CLI is QuiteRoot's flagship command-line framework designed to simplify offensive security operations through modular automation, intelligent workflows, and extensible tooling."
-          />
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {['Reconnaissance', 'Enumeration', 'Web Testing', 'Automation', 'AI Assistance', 'Reporting'].map((item) => (
-              <div key={item} className="rounded-xl border border-border bg-bg-card/70 px-4 py-3 text-xs font-bold uppercase tracking-[0.08em] text-text-secondary">
-                {item}
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <Link to="/blogs/anansi-cli" className="btn-primary inline-flex items-center justify-center gap-3 !px-8 !py-4 text-xs">
-              Documentation <BookOpen className="h-4 w-4" />
-            </Link>
-            <a
-              href="https://github.com/QYVORA/qyvora-anansi-cli"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-secondary inline-flex items-center justify-center gap-3 !px-8 !py-4 text-xs"
-            >
-              GitHub <Github className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </ScrollReveal>
-  );
-}
-
-function BuildTimeline() {
-  return (
-    <ScrollReveal direction="up">
-      <div className="mx-auto max-w-[1100px] px-4 sm:px-8 lg:px-12">
-        <SectionHeader align="center" eyebrow="// BEHIND THE BUILD" title="From Signal" accent="To Release" />
-        <div className="relative mt-14">
-          <div className="absolute left-5 top-0 hidden h-full w-px bg-accent/30 md:block" />
-          <div className="space-y-5">
-            {timeline.map(([title, body], index) => (
-              <div
-                key={title}
-                className="group relative rounded-2xl border border-border bg-bg-card/70 p-5 transition-all hover:border-accent/35 md:ml-14"
-              >
-                <div className="absolute -left-[4.35rem] top-5 hidden h-10 w-10 items-center justify-center rounded-xl border border-accent/25 bg-bg text-accent md:flex">
-                  <GitPullRequest className="h-4 w-4" />
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <h3 className="text-xl font-black uppercase tracking-tight text-text-primary">{title}</h3>
-                  <span className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">
-                    Phase {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </ScrollReveal>
-  );
-}
 
 function Principles() {
   return (
@@ -324,14 +245,6 @@ const QuiteRootPage: React.FC = () => {
 
         <section id="mission" className="relative w-full py-20 md:py-28 lg:py-32">
           <Mission />
-        </section>
-
-        <section id="research" className="relative w-full py-20 md:py-28 lg:py-32">
-          <FeaturedProject />
-        </section>
-
-        <section id="process" className="relative w-full py-20 md:py-28 lg:py-32">
-          <BuildTimeline />
         </section>
 
         <section id="principles" className="relative w-full py-20 md:py-28 lg:py-32">
