@@ -67,7 +67,7 @@ const ServicesPage: React.FC = () => {
       <HeroBackground className="opacity-70" />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-transparent overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24">
+      <section className="relative bg-transparent overflow-hidden min-h-dvh md:min-h-screen flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24">
         <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-accent text-xs font-black uppercase tracking-[0.3em]">
