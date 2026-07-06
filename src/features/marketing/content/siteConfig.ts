@@ -93,6 +93,7 @@ export const SITE_CONFIG = {
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
           { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
+          { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
         ],
       },
       {
@@ -118,9 +119,10 @@ export const SITE_CONFIG = {
         label: 'Company',
         items: [
           { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
-          { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
-        ],
-      },
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
+      { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
+    ],
+  },
     ],
     platform: [
       { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
@@ -154,7 +156,8 @@ export const SITE_CONFIG = {
       { label: 'Market', path: '/zero-day-market' },
       { label: 'Blogs', path: '/blogs' },
       { label: 'Team', path: '/team' },
-      { label: 'Leaderboard', path: '/leaderboard' }
+      { label: 'Leaderboard', path: '/leaderboard' },
+      { label: 'Services', path: '/services' }
     ],
   },
 } as const;

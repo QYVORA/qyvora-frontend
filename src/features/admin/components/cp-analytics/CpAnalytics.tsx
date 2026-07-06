@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { TrendingUp, RefreshCw, Zap, BarChart2 } from 'lucide-react';
+import { TrendingUp, RefreshCw, BarChart2 } from 'lucide-react';
 import api from '../../../../core/services/api';
 import { CpTx, Range } from './types';
-import { buildCandles, buildKpis } from './utils';
-import TradingChart from './TradingChart';
+import { buildKpis } from './utils';
 import BarChart from './BarChart';
 import KpiCard from './KpiCard';
 import PointsControl from './PointsControl';
@@ -67,7 +66,6 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       .catch(() => {});
   }, []);
 
-  const candles = useMemo(() => buildCandles(allTxs, rangeDays), [allTxs, rangeDays]);
   const kpis = useMemo(() => buildKpis(allTxs, rangeDays), [allTxs, rangeDays]);
 
   const typeBreakdown = useMemo(() => {
@@ -173,27 +171,6 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
           icon={<Award className="w-4 h-4" />}
           trend="up"
         />
-      </div>
-
-      <div className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden">
-        <div className="flex items-center gap-2 border-b border-border px-5 py-4">
-          <Zap className="w-4 h-4 text-accent" />
-          <span className="text-sm font-black uppercase tracking-wide text-text-primary">CP Trading Chart</span>
-          <span className="text-[10px] font-mono text-text-muted">candlestick · SMA · volume</span>
-        </div>
-        <div className="p-4 md:p-5">
-          {loading && allTxs.length === 0 ? (
-            <div className="h-[260px] flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full border-2 border-border border-t-accent animate-spin" />
-            </div>
-          ) : candles.every(c => c.volume === 0) ? (
-            <div className="h-[260px] flex items-center justify-center text-sm text-text-muted">
-              No CP activity in this period
-            </div>
-          ) : (
-            <TradingChart candles={candles} range={range} />
-          )}
-        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

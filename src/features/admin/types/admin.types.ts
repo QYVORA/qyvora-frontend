@@ -1,6 +1,6 @@
 export type AdminTab =
-  | 'users' | 'bootcamps' | 'zero_day' | 'cp'
-  | 'security' | 'contacts' | 'quizzes' | 'chain';
+  | 'overview' | 'users' | 'bootcamps' | 'zero_day' | 'cp'
+  | 'inbox' | 'broadcast' | 'audit' | 'security';
 
 export type AdminUser = {
   id: string;
@@ -37,6 +37,33 @@ export type ContactMessage = {
   message: string;
   status: 'new' | 'in_progress' | 'resolved' | 'archived';
   createdAt?: string;
+};
+
+export type ServiceRequestItem = {
+  id: string;
+  name: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  websiteUrl: string;
+  message: string;
+  serviceType: string;
+  packageTier: string;
+  status: 'new' | 'contacted' | 'qualified' | 'closed' | 'archived';
+  handledBy: { id: string; name: string; email: string } | null;
+  handledAt: string | null;
+  createdAt: string;
+};
+
+export type AuditLogEntry = {
+  id: string;
+  admin: { id: string; name: string; email: string } | null;
+  action: string;
+  targetType: string;
+  targetId: string;
+  metadata: Record<string, unknown>;
+  ipAddress: string;
+  createdAt: string;
 };
 
 export type SecurityEventItem = {

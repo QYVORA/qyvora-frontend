@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
-import ChainExplorer from '../components/ChainExplorer';
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
 import UsersTab from '../components/dashboard/UsersTab';
 import ZeroDayMarketTab from '../components/dashboard/ZeroDayMarketTab';
 import SecurityTab from '../components/dashboard/SecurityTab';
-import ContactsTab from '../components/dashboard/ContactsTab';
+import OverviewTab from '../components/dashboard/OverviewTab';
+import InboxTab from '../components/dashboard/InboxTab';
+import BroadcastTab from '../components/dashboard/BroadcastTab';
+import AuditLogTab from '../components/dashboard/AuditLogTab';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import api from '../../../core/services/api';
@@ -16,7 +18,7 @@ import { ConfirmDialog } from '../../../shared/components/ui/Dialog';
 import { Skeleton } from '../../../shared/components/ui';
 import {
   type AdminTab, type AdminUser, type CPProduct,
-  type ContactMessage, type SecurityEventItem,
+  type SecurityEventItem,
   isUserBlocked,
 } from '../types/admin.types';
 
@@ -63,7 +65,7 @@ const AdminDashboardPage: React.FC = () => {
   const location = useLocation();
 
   // Tab is driven by ?tab= URL param so topbar links work
-  const activeTab = (new URLSearchParams(location.search).get('tab') as AdminTab) || 'users';
+  const activeTab = (new URLSearchParams(location.search).get('tab') as AdminTab) || 'overview';
   const setActiveTab = (tab: AdminTab) => navigate(`${_0x5a2b}/dashboard?tab=${tab}`, { replace: true });
 
   const [loading, setLoading] = useState(true);
@@ -75,21 +77,19 @@ const AdminDashboardPage: React.FC = () => {
 
   const [securitySummary, setSecuritySummary] = useState<Record<string, unknown> | null>(null);
   const [securityEvents, setSecurityEvents] = useState<SecurityEventItem[]>([]);
-  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [confirmDeleteUser, setConfirmDeleteUser] = useState<AdminUser | null>(null);
 
   // ── Data loading ─────────────────────────────────────────────────────────────
   const loadAll = async () => {
     setLoading(true);
     try {
-      const [ovRes, usersRes, productsRes, summaryRes, eventsRes, contactsRes] =
+      const [ovRes, usersRes, productsRes, summaryRes, eventsRes] =
         await Promise.all([
           api.get('/admin/overview').catch(() => null),
           api.get('/admin/users').catch(() => null),
           api.get('/admin/cp-products').catch(() => null),
           api.get('/admin/security/summary').catch(() => null),
           api.get('/admin/security/events?limit=50').catch(() => null),
-          api.get('/admin/contact-messages?limit=50').catch(() => null),
         ]);
 
       setOverview((ovRes?.data as Record<string, unknown>) || null);
@@ -100,7 +100,6 @@ const AdminDashboardPage: React.FC = () => {
       setProducts(Array.isArray(productsRes?.data?.items) ? productsRes.data.items : []);
       setSecuritySummary((summaryRes?.data as Record<string, unknown>) || null);
       setSecurityEvents(Array.isArray(eventsRes?.data?.items) ? eventsRes.data.items : []);
-      setContactMessages(Array.isArray(contactsRes?.data?.items) ? contactsRes.data.items : []);
     } finally {
       setLoading(false);
     }
@@ -178,23 +177,13 @@ const AdminDashboardPage: React.FC = () => {
     catch (e: any) { addToast(e?.response?.data?.error || 'Failed to delete', 'error'); }
   };
 
-  const updateContactStatus = async (id: string, status: ContactMessage['status']) => {
-    try { await api.patch(`/admin/contact-messages/${encodeURIComponent(id)}`, { status }); addToast('Updated', 'success'); await loadAll(); }
-    catch (e: any) { addToast(e?.response?.data?.error || 'Failed to update', 'error'); }
-  };
-
-  const deleteContactMessage = async (id: string) => {
-    if (!window.confirm('Delete this message?')) return;
-    try { await api.delete(`/admin/contact-messages/${encodeURIComponent(id)}`); addToast('Deleted', 'success'); await loadAll(); }
-    catch (e: any) { addToast(e?.response?.data?.error || 'Failed to delete', 'error'); }
-  };
-
   // ── Tab label lookup ─────────────────────────────────────────────────────────
   const TAB_LABELS: Record<AdminTab, string> = {
+    overview: 'Overview',
     users: 'Users', bootcamps: 'Bootcamps',
-    zero_day: 'Market', cp: 'Points', chain: 'Chain',
-    security: 'Security', contacts: 'Contacts', 
-    quizzes: 'Quizzes',
+    zero_day: 'Market', cp: 'Points',
+    inbox: 'Inbox', broadcast: 'Broadcast', audit: 'Audit',
+    security: 'Security',
   };
   const activeLabel = TAB_LABELS[activeTab] ?? '';
 
@@ -244,6 +233,9 @@ const AdminDashboardPage: React.FC = () => {
             </div>
           ) : (
             <div className="mx-auto w-full max-w-[1440px]">
+              {/* ── OVERVIEW ──────────────────────────────────────────────── */}
+              {activeTab === 'overview' && <OverviewTab />}
+
               {/* ── USERS ─────────────────────────────────────────────────── */}
               {activeTab === 'users' && (
                 <UsersTab
@@ -279,28 +271,21 @@ const AdminDashboardPage: React.FC = () => {
                 </div>
               )}
 
+              {/* ── INBOX (Contacts + Service Requests) ──────────────────── */}
+              {activeTab === 'inbox' && <InboxTab />}
+
+              {/* ── BROADCAST ─────────────────────────────────────────────── */}
+              {activeTab === 'broadcast' && <BroadcastTab />}
+
+              {/* ── AUDIT LOG ─────────────────────────────────────────────── */}
+              {activeTab === 'audit' && <AuditLogTab />}
+
               {/* ── SECURITY ──────────────────────────────────────────────── */}
               {activeTab === 'security' && (
                 <SecurityTab
                   securitySummary={securitySummary}
                   securityEvents={securityEvents}
                 />
-              )}
-
-              {/* ── CONTACTS ──────────────────────────────────────────────── */}
-              {activeTab === 'contacts' && (
-                <ContactsTab
-                  contactMessages={contactMessages}
-                  updateContactStatus={updateContactStatus}
-                  deleteContactMessage={deleteContactMessage}
-                />
-              )}
-
-              {/* ── CHAIN EXPLORER ────────────────────────────────────────── */}
-              {activeTab === 'chain' && (
-                <div className="card-qyvora p-6 md:p-8 border border-border">
-                  <ChainExplorer />
-                </div>
               )}
             </div>
           )}

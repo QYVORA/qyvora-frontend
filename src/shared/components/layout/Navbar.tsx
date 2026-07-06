@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : (isAnansiPage ? 'bg-transparent' : 'bg-transparent'),
         ].join(' ')}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
                 }}
               >
                 <button
-                  className={`flex items-center gap-1.5 px-2 py-2 text-[11px] font-black uppercase tracking-[0.15em] transition-colors hover:text-accent rounded-sm ${
+                  className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-[0.2em] transition-colors hover:text-accent rounded-sm ${
                     group.items.some((item) => isActive(item.path))
                       ? 'text-accent'
                       : 'text-text-primary/70'
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
                 >
                   {group.label}
                   <ChevronDown
-                    className={`w-3 h-3 transition-transform duration-200 ${
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
                       openDropdown === group.key ? 'rotate-180' : ''
                     }`}
                   />
@@ -107,21 +107,27 @@ const Navbar: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1 min-w-[180px] bg-bg-card border border-border rounded-lg shadow-xl overflow-hidden"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[400px] bg-bg-card border border-border rounded-xl shadow-xl overflow-hidden"
                     >
-                      {group.items.map((item) => (
-                        <Link
-                          key={item.key}
-                          to={item.path}
-                          className={`block px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] transition-colors text-center ${
-                            isActive(item.path)
-                              ? 'text-accent bg-accent/5'
-                              : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
+                      <div className="grid grid-cols-2">
+                        {group.items.map((item, idx) => {
+                          const n = group.items.length;
+                          const hasBottomBorder = idx < n - (2 - n % 2);
+                          return (
+                            <Link
+                              key={item.key}
+                              to={item.path}
+                              className={`text-center px-4 py-4 text-sm font-black uppercase tracking-[0.15em] transition-colors ${
+                                isActive(item.path)
+                                  ? 'text-accent bg-accent/5'
+                                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
+                              } ${idx % 2 === 0 ? 'border-r border-accent/20' : ''} ${hasBottomBorder ? 'border-b border-accent/20' : ''}`}
+                            >
+                              {item.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -149,9 +155,10 @@ const Navbar: React.FC = () => {
               )}
             </div>
 
+            {/* ── Mobile hamburger (far right edge) ────────────── */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-text-primary hover:text-accent transition-colors"
+              className="md:hidden p-2 -mr-2 text-text-primary hover:text-accent transition-colors relative z-[110]"
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -41,7 +41,7 @@ const LearnHeroSection: React.FC = () => {
           </div>
         </div>
         <div className="relative hidden lg:flex items-center justify-center w-full pt-20 xl:pt-24">
-          <div className="relative z-10 w-full max-w-[85%] flex items-center justify-center">
+          <div className="relative z-10 w-full max-w-[95%] flex items-center justify-center">
             <img
               src={hpbBadge}
               alt="HPB Bootcamp"
