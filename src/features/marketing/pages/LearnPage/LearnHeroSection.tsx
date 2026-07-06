@@ -5,10 +5,10 @@ import chatGptImage from '@/assets/bootcamp/ChatGPT Image Jul 6, 2026, 12_54_02 
 
 const LearnHeroSection: React.FC = () => {
   return (
-    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col">
+    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col pt-28 sm:pt-20 lg:pt-24">
       <div className="relative z-30 w-full flex-1 mx-auto max-w-7xl px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full w-full h-full">
-          <div className="flex flex-col items-start justify-center pt-24 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full lg:pr-8 xl:pr-12">
+          <div className="flex flex-col items-start justify-center pt-8 sm:pt-4 lg:pt-0 pb-14 sm:pb-16 lg:pb-16 w-full h-full lg:pr-8 xl:pr-12">
           <div className="flex flex-col items-start w-full space-y-6">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
               Hacker Protocol <br />
