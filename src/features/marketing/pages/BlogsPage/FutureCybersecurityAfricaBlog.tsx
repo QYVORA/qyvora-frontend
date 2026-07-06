@@ -201,7 +201,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
         <CTA
           title="Help Build the Future"
           desc="Whether you are a student, a professional, an investor, or an organisation — there is a role for you in building Africa's cybersecurity future. Start where you are, with what you have."
-          href="/learn"
+          href="/hpb"
           label="Get Involved"
         />
       </Section>

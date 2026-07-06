@@ -183,7 +183,7 @@ export const HackerProtocolBookBlog: React.FC = () => {
             Hacker Protocol Bootcamp — 2026 Cohort is live now. Phase 01 is open to everyone. No prerequisites, no application, no cost.
           </p>
           <a
-            href="/learn"
+            href="/hpb"
             className="inline-flex items-center gap-3 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
           >
             <Target className="w-5 h-5" /> Begin Phase 01
