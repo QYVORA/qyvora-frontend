@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { RefreshCw } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import { getRankInfo } from '@/features/student/utils/rankUtils';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import {
-  formatSyncLabel, getBootcampProgressMap, getLastSync,
-  resolveNextRoomPath, setLastSyncNow,
+  getBootcampProgressMap,
+  resolveNextRoomPath,
 } from '@/features/student/utils/studentExperience';
-import { SyncIndicator } from '@/shared/components/dashboard';
 import { Skeleton } from '@/shared/components/ui';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import SEO from '@/shared/components/SEO';
@@ -19,7 +17,7 @@ import LearningPathMap from '@/features/student/components/LearningPathMap';
 import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import {
-  DashboardHero, QuickStatsRow, ActiveDeployments, IntelligenceVault,
+  DashboardHero, ActiveDeployments,
 } from '@/features/student/components/dashboard';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
@@ -77,31 +75,22 @@ const Dashboard = () => {
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
-  const [products, setProducts] = useState<any[]>([]);
-  const [purchased, setPurchased] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
-  const [lastSync, setLastSync] = useState<string | null>(getLastSync('dashboard'));
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
       try {
-        const [ovRes, bcRes, prodRes, txRes] = await Promise.all([
+        const [ovRes, bcRes] = await Promise.all([
           api.get('/student/overview').catch(() => null),
           api.get('/public/bootcamps').catch(() => null),
-          api.get('/public/cp-products').catch(() => null),
-          api.get('/cp/transactions?limit=100').catch(() => null),
         ]);
         if (!mounted) return;
         setOverview(ovRes?.data || null);
         setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
-        const txItems = Array.isArray(txRes?.data?.items) ? txRes.data.items : [];
         setCpBalance(user?.cp ?? 0);
-        setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items.slice(0, 3) : []);
-        setPurchased(new Set(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId))));
         setSyncError('');
-        setLastSync(setLastSyncNow('dashboard'));
       } catch {
         setSyncError('Could not sync. Showing cached data.');
         addToast('Failed to load dashboard data', 'error');
@@ -148,57 +137,40 @@ const Dashboard = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Dashboard" description="Your training overview, active deployments, and intelligence vault on QYVORA." />
+      <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="scroll-hover md:fixed md:left-0 md:right-20 md:bottom-0 md:top-24 md:overflow-y-auto md:overscroll-contain" style={{ scrollBehavior: 'smooth' }}>
-        <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
-          {/* Hero section — primary mission status */}
-          <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-            <DashboardHero
-              isEnrolled={isEnrolled}
-              allDone={allDone}
-              nextMission={nextMission}
-              totalRoomsDone={totalRoomsDone}
-              cpBalance={cpBalance}
-              streakDays={overview?.xpSummary?.streakDays ?? null}
-              continuePath={continuePath}
-              nextRank={nextRank}
-              rankProgress={rankProgress}
-              currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
-              loading={loading}
-            />
-          </div>
-
-          {/* Quick stats row — secondary KPIs */}
-          <QuickStatsRow
-            cpBalance={cpBalance}
-            rankName={_r?.name || 'Candidate'}
-            nextRankName={nextRank?.name ?? null}
-            rankProgress={rankProgress}
-            streakDays={overview?.xpSummary?.streakDays ?? 0}
+      <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+        {/* Hero — primary mission status with quick stats integrated */}
+        <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
+          <DashboardHero
+            isEnrolled={isEnrolled}
+            allDone={allDone}
+            nextMission={nextMission}
             totalRoomsDone={totalRoomsDone}
+            cpBalance={cpBalance}
+            streakDays={overview?.xpSummary?.streakDays ?? null}
+            continuePath={continuePath}
+            nextRank={nextRank}
+            rankProgress={rankProgress}
+            currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
+            rankName={_r?.name || 'Candidate'}
             visitDates={visitDates}
-            isMaxRank={!nextRank}
+            loading={loading}
           />
+        </div>
 
-          {/* Content grid — Learning Path first, then Deployments & Vault */}
-          <div className="mb-10">
-            <LearningPathMap
-              overview={overview}
-              bootcampId={activeBootcamp ? String(activeBootcamp.id) : BOOTCAMP_CONFIG.id}
-              isEnrolled={isEnrolled}
-            />
-          </div>
+        {/* Learning path — core curriculum */}
+        <div className="mb-10">
+          <LearningPathMap
+            overview={overview}
+            bootcampId={activeBootcamp ? String(activeBootcamp.id) : BOOTCAMP_CONFIG.id}
+            isEnrolled={isEnrolled}
+          />
+        </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
-            <ActiveDeployments bootcamps={enrolledBootcamps} loading={loading} />
-            <IntelligenceVault products={products} purchased={purchased} />
-          </div>
-
-          {/* Sync status */}
-          <div className="mt-8 px-5">
-            <SyncIndicator lastSync={lastSync} error={syncError} onRetry={() => window.location.reload()} />
-          </div>
+        {/* Active deployments */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
+          <ActiveDeployments bootcamps={enrolledBootcamps} loading={loading} />
         </div>
       </div>
 
