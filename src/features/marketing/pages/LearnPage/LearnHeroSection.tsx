@@ -1,14 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import hpbBadge from '@/assets/bootcamp/hpb-completion-badge.webp';
 
 const LearnHeroSection: React.FC = () => {
-  const { isLg, isMobile } = useAdaptiveUi();
-
   return (
     <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
@@ -33,12 +28,10 @@ const LearnHeroSection: React.FC = () => {
                 href="#phases"
                 className="px-8 py-4 border border-border bg-bg-card/30 hover:border-accent/40 rounded-xl text-xs font-black uppercase tracking-[0.15em] hover:text-accent transition-all text-center"
                 onClick={(e) => {
-                  if (!isMobile) {
-                    e.preventDefault();
-                    const el = document.getElementById('phases');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                    }
+                  e.preventDefault();
+                  const el = document.getElementById('phases');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
               >
@@ -47,13 +40,13 @@ const LearnHeroSection: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
-          <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                {isLg && <HackerGlobe scale={1.0} />}
-              </Suspense>
-            </ErrorBoundary>
+        <div className="relative hidden lg:flex items-center justify-center w-full pt-20 xl:pt-24">
+          <div className="relative z-10 w-full max-w-[85%] flex items-center justify-center">
+            <img
+              src={hpbBadge}
+              alt="HPB Bootcamp"
+              className="w-full h-auto object-contain"
+            />
           </div>
         </div>
       </div>

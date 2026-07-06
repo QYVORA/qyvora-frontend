@@ -1,13 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Clock, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield,
   Wifi, Wrench, Layers, Search, TrendingUp, Sparkles, GraduationCap,
-  BookMarked,
 } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
+import ErrorBoundary from '@/shared/components/ErrorBoundary';
+import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { Footer } from '@/shared/components/layout';
+
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 import { COURSES, COURSE_CATEGORIES, getCategoryById } from '@/features/student/data/courses/courseData';
 import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses/types';
 
@@ -29,6 +32,7 @@ const SKILL_LEVEL_CONFIG: Record<SkillLevel, { label: string; color: string; ico
 type SortMode = 'default' | 'popular' | 'price-low' | 'price-high' | 'duration';
 
 const CoursesPage: React.FC = () => {
+  const { isLg } = useAdaptiveUi();
   const [activeCategory, setActiveCategory] = useState<CourseCategoryId | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('default');
@@ -96,23 +100,14 @@ const CoursesPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right column — decorative (desktop only) */}
+          {/* Right column — HackerGlobe (desktop only) */}
           <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
             <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-              <div className="relative w-64 h-64 xl:w-80 xl:h-80">
-                <div className="absolute inset-0 rounded-3xl border border-accent/20 bg-accent-dim/10 flex items-center justify-center">
-                  <BookMarked className="h-24 w-24 xl:h-32 xl:w-32 text-accent/30" />
-                </div>
-                <div className="absolute -top-6 -right-6 w-24 h-24 xl:w-28 xl:h-28 rounded-2xl border border-border/30 bg-bg-card flex items-center justify-center rotate-12 shadow-xl">
-                  <Terminal className="h-10 w-10 xl:h-12 xl:w-12 text-accent/60" />
-                </div>
-                <div className="absolute -bottom-4 -left-4 w-20 h-20 xl:w-24 xl:h-24 rounded-2xl border border-border/30 bg-bg-card flex items-center justify-center -rotate-6 shadow-xl">
-                  <Code className="h-8 w-8 xl:h-10 xl:w-10 text-accent/50" />
-                </div>
-                <div className="absolute -bottom-2 right-4 w-16 h-16 xl:w-20 xl:h-20 rounded-2xl border border-border/30 bg-bg-card flex items-center justify-center rotate-45 shadow-xl">
-                  <Shield className="h-6 w-6 xl:h-8 xl:w-8 text-accent/40" />
-                </div>
-              </div>
+              <ErrorBoundary scope="HackerGlobe" fallback={null}>
+                <Suspense fallback={null}>
+                  {isLg && <HackerGlobe scale={1.0} />}
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </div>
         </div>
