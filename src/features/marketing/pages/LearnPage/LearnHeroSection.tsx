@@ -5,7 +5,7 @@ import chatGptImage from '@/assets/bootcamp/ChatGPT Image Jul 6, 2026, 12_54_02 
 
 const LearnHeroSection: React.FC = () => {
   return (
-    <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
+    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col">
       <div className="relative z-30 w-full flex-1 mx-auto max-w-7xl px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full w-full h-full">
           <div className="flex flex-col items-start justify-center pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full lg:pr-8 xl:pr-12">
