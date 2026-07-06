@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
-import hpbBadge from '@/assets/bootcamp/hpb-completion-badge.webp';
+import chatGptImage from '@/assets/bootcamp/ChatGPT Image Jul 6, 2026, 12_54_02 AM.webp';
 
 const LearnHeroSection: React.FC = () => {
   return (
@@ -43,8 +43,8 @@ const LearnHeroSection: React.FC = () => {
         <div className="relative hidden lg:flex items-center justify-center w-full pt-20 xl:pt-24">
           <div className="relative z-10 w-full max-w-[95%] flex items-center justify-center">
             <img
-              src={hpbBadge}
-              alt="HPB Bootcamp"
+              src={chatGptImage}
+              alt="ChatGPT Bootcamp"
               className="w-full h-auto object-contain"
             />
           </div>
