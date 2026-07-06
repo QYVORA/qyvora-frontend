@@ -8,10 +8,7 @@ import LandingStatsSection from '@/features/marketing/components/landing/Landing
 import LandingHowItWorksSection from '@/features/marketing/components/landing/LandingHowItWorksSection';
 import LandingCurriculumSection from '@/features/marketing/components/landing/LandingCurriculumSection';
 
-import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
-import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
-import LandingQuiteRootSection from '@/features/marketing/components/landing/LandingQuiteRootSection';
-import LandingEventsSection from '@/features/marketing/components/landing/LandingEventsSection';
+import LandingLeaderboardSection from '@/features/marketing/components/landing/LandingLeaderboardSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -26,10 +23,7 @@ const SECTIONS = [
   { id: 'stats',       label: 'Stats'           },
   { id: 'how-it-works',label: 'How It Works'    },
   { id: 'curriculum',  label: 'Curriculum'      },
-  { id: 'team',        label: 'Team'            },
-  { id: 'services',    label: 'Services'        },
-  { id: 'quiteroot',   label: 'QuiteRoot'       },
-  { id: 'events',      label: 'Events'          },
+  { id: 'leaderboard', label: 'Leaderboard'     },
   { id: 'cta',         label: 'Get Started'     },
   { id: 'footer',      label: 'Footer'          },
 ];
@@ -158,20 +152,8 @@ const Landing: React.FC = () => {
         <LandingCurriculumSection />
       </section>
 
-      <section id="team" className="relative w-full py-20 md:py-28 lg:py-32">
-        <LandingTeamSection />
-      </section>
-
-      <section id="services" className="relative w-full py-20 md:py-28 lg:py-32">
-        <LandingServicesSection />
-      </section>
-
-      <section id="quiteroot" className="relative w-full py-20 md:py-28 lg:py-32">
-        <LandingQuiteRootSection />
-      </section>
-
-      <section id="events" className="relative w-full py-20 md:py-28 lg:py-32">
-        <LandingEventsSection user={user} />
+      <section id="leaderboard" className="relative w-full py-20 md:py-28 lg:py-32">
+        <LandingLeaderboardSection />
       </section>
 
       <section id="cta" className="relative w-full">
