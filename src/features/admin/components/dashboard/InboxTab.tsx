@@ -4,7 +4,7 @@ import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import type { ContactMessage, ServiceRequestItem } from '../../types/admin.types';
 import { Skeleton } from '@/shared/components/ui';
-import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import { Dialog, DialogContent, ConfirmDialog } from '@/shared/components/ui/Dialog';
 
 type InboxItem = {
   type: 'contact' | 'service';
@@ -21,6 +21,7 @@ const InboxTab = () => {
   const [selectedItem, setSelectedItem] = useState<InboxItem | null>(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [confirmDelete, setConfirmDelete] = useState<InboxItem | null>(null);
   const limit = 25;
 
   const fetchAll = async (p = 1) => {
@@ -76,17 +77,19 @@ const InboxTab = () => {
     } catch { addToast('Failed to update', 'error'); }
   };
 
-  const deleteContact = async (id: string) => {
-    if (!window.confirm('Delete this message?')) return;
-    try { await api.delete(`/admin/contact-messages/${id}`); addToast('Deleted', 'success'); fetchAll(page); }
-    catch { addToast('Failed to delete', 'error'); }
+  const handleDeleteConfirm = async () => {
+    if (!confirmDelete) return;
+    const id = confirmDelete.data.id;
+    const endpoint = confirmDelete.type === 'contact' ? 'contact-messages' : 'service-requests';
+    try {
+      await api.delete(`/admin/${endpoint}/${id}`);
+      addToast('Deleted', 'success');
+      fetchAll(page);
+    } catch { addToast('Failed to delete', 'error'); }
+    finally { setConfirmDelete(null); }
   };
 
-  const deleteService = async (id: string) => {
-    if (!window.confirm('Delete this request?')) return;
-    try { await api.delete(`/admin/service-requests/${id}`); addToast('Deleted', 'success'); fetchAll(page); }
-    catch { addToast('Failed to delete', 'error'); }
-  };
+  const requestDelete = (item: InboxItem) => setConfirmDelete(item);
 
   const statusOptions = {
     contact: ['new', 'in_progress', 'resolved', 'archived'],
@@ -254,22 +257,32 @@ const InboxTab = () => {
                       {s}
                     </button>
                   ))}
-                  <button
-                    onClick={() => {
-                      if (isContact) deleteContact(d.id);
-                      else deleteService(d.id);
-                      setSelectedItem(null);
-                    }}
-                    className="ml-auto px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-red-400/30 text-red-400 hover:bg-red-400/10 transition-colors"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => {
+                        requestDelete(selectedItem!);
+                        setSelectedItem(null);
+                      }}
+                      className="ml-auto px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-red-400/30 text-red-400 hover:bg-red-400/10 transition-colors"
+                    >
+                      Delete
+                    </button>
                 </div>
               </div>
             );
           })()}
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onOpenChange={(o) => { if (!o) setConfirmDelete(null); }}
+        title="Delete Message"
+        description={`Are you sure you want to delete this ${confirmDelete?.type === 'contact' ? 'contact message' : 'service request'}? This action is irreversible.`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        destructive
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

@@ -9,7 +9,7 @@ import AuthHero from '../components/AuthHero';
 import LoginForm from '../components/LoginForm';
 
 
-const _0x5a2b = atob('L21yLXJvYm90');
+import ADMIN_PATH from '@/shared/utils/adminPath';
 
 const LoginPage: React.FC = () => {
   const { login, user: sessionUser, loading: sessionLoading } = useAuth();
@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAdminLoginRoute = location.pathname === _0x5a2b;
+  const isAdminLoginRoute = location.pathname === ADMIN_PATH;
   const [isLoading, setIsLoading] = useState(false);
   const [formMessage, setFormMessage] = useState('');
   const [shakePassword, setShakePassword] = useState(false);
@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     if (sessionLoading || !isAdminLoginRoute) return;
     if (sessionUser?.isAdmin) {
-      navigate(`${_0x5a2b}/dashboard`, { replace: true });
+      navigate(`${ADMIN_PATH}/dashboard`, { replace: true });
     }
   }, [sessionLoading, sessionUser, isAdminLoginRoute, navigate]);
 
@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
       
       if (isAdmin) {
         addToast('Session established.', 'success');
-        navigate(`${_0x5a2b}/dashboard`);
+        navigate(`${ADMIN_PATH}/dashboard`);
         return;
       }
       
