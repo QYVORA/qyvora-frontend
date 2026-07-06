@@ -14,6 +14,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
 import OptionalDecorImage from '@/shared/components/OptionalDecorImage';
 import { STUDENT_DECOR } from '@/features/student/constants/studentDecorPaths';
+import SEO from '@/shared/components/SEO';
 import PageLoader from '@/shared/components/PageLoader';
 import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
 import SidebarProgress from '@/features/student/components/bootcamp-course/SidebarProgress';
@@ -120,6 +121,10 @@ const BootcampCourse: React.FC = () => {
 
   return (
     <div className="bg-bg">
+      <SEO
+        title={course?.title || 'Bootcamp Course'}
+        description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
+      />
       <CourseHeader
         bootcampId={bootcampId || ''}
         courseTitle={loading ? 'Loading Bootcamp...' : (course?.title || 'Bootcamp')}

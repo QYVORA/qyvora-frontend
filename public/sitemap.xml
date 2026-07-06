@@ -2,26 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://qyvora.netlify.app/</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://qyvora.netlify.app/anansi</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://qyvora.netlify.app/hpb</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/leaderboard</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/leaderboard/all</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/services</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/hacker-protocol-book</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/anansi-cli</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/africa-cybersecurity-ecosystem</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/attackers-discover-companies</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/africa-needs-cybersecurity-professionals</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/mapping-attack-surfaces</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/blogs/future-cybersecurity-africa</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/zero-day-market</loc>
+    <priority>0.70</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/quiteroot</loc>
-    <lastmod>2026-07-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/anansi</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/team</loc>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/events</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/courses</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/contact</loc>
+    <priority>0.60</priority>
   </url>
   <url>
     <loc>https://qyvora.netlify.app/terms</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.30</priority>
+  </url>
+  <url>
+    <loc>https://qyvora.netlify.app/news</loc>
+    <priority>0.60</priority>
   </url>
 </urlset>
