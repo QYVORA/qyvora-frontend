@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Send, Building2, Globe, Phone, User as UserIcon, Shield } from 'lucide-react';
+import { CheckCircle, Loader2, Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
-import { cn } from '../../../shared/utils/cn';
 
 const SERVICE_REQUEST_MODAL_EVENT = 'qyvora:open-service-request-modal';
 
@@ -58,7 +57,7 @@ const ServiceRequestModalHost: React.FC = () => {
       <DialogContent
         title="Request Assessment"
         description={packageTier ? `Inquiry for ${packageTier}` : "Tell us about your project requirements and we'll get back to you with a tailored proposal."}
-        maxWidth="max-w-6xl"
+        maxWidth="max-w-2xl"
       >
         {status === 'sent' ? (
           <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
@@ -78,41 +77,16 @@ const ServiceRequestModalHost: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-            {/* Left Column: Branding / Value Prop (2/5 on desktop) */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="h-full rounded-2xl border border-border bg-bg/40 p-6 flex flex-col justify-between">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Deployment Scope</p>
-                    <h4 className="text-xl font-bold text-text-primary leading-tight">Tailored Offensive Security Solutions</h4>
-                  </div>
-                  
-                  <ul className="space-y-4">
-                    {[
-                      { icon: Shield, text: 'Comprehensive Vulnerability Analysis' },
-                      { icon: Globe, text: 'Cross-Border Infrastructure Testing' },
-                      { icon: Building2, text: 'Enterprise-Grade Security Reporting' }
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm text-text-secondary">
-                        <item.icon className="h-4 w-4 text-accent/60" />
-                        <span>{item.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="pt-6 mt-8">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Global Operations Active</p>
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-5">
+            <div className="rounded-2xl border border-border bg-accent/5 p-4">
+              <p className="text-xs text-text-secondary">
+                We provide offensive security assessments for web applications, infrastructure, and networks —
+                as well as <strong className="text-accent">Employee Security Awareness Bootcamps</strong> for your team.
+                Tell us what you need below.
+              </p>
             </div>
 
-            {/* Right Column: Form (3/5 on desktop) */}
-            <form className="lg:col-span-3 space-y-5" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div className="space-y-1.5">
