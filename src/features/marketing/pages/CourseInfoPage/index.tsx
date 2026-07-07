@@ -262,7 +262,7 @@ const CourseInfoPage: React.FC = () => {
                   <ScrollReveal key={relCourse.id} direction="up" amount={0.1}>
                     <Link
                       to={`/courses/${relCourse.id}`}
-                      className="group block overflow-hidden rounded-xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
+                      className="group block overflow-hidden rounded-xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
                     >
                       <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                         <img src={relCourse.coverSvg} alt={relCourse.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />

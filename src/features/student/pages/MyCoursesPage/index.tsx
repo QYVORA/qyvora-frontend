@@ -260,7 +260,7 @@ const MyCoursesPage: React.FC = () => {
                       <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                         <Link
                           to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                          className="group block overflow-hidden rounded-3xl border border-border/40 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
+                          className="group block overflow-hidden rounded-3xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
                         >
                           <div className="aspect-[8/5] overflow-hidden bg-bg-elevated relative">
                             <img
@@ -356,7 +356,7 @@ const MyCoursesPage: React.FC = () => {
                     return (
                       <div
                         key={course.id}
-                        className="group block overflow-hidden rounded-3xl border border-border/40 bg-bg-card/50 opacity-60"
+                        className="group block overflow-hidden rounded-3xl border border-border/60 bg-bg-card/50 opacity-60"
                       >
                         <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                           <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />

@@ -215,7 +215,7 @@ const CoursesPage: React.FC = () => {
                   <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group block overflow-hidden rounded-xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
+                      className="group block overflow-hidden rounded-xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
                     >
                       <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                         <img

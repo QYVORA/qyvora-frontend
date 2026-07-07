@@ -111,7 +111,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
 
   const inner = (
     <div
-      className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 ${
+      className={`group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-bg-card transition-all duration-300 ${
         isRoomLocked
           ? 'opacity-40 cursor-not-allowed pointer-events-none'
           : 'hover:border-accent/30 hover:scale-[1.01]'
