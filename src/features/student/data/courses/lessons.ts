@@ -146,7 +146,7 @@ echo "example.com" >> targets.txt
 **Pipe** (\`|\`) sends output of one command as input to another:
 
 \`\`\`bash
-ls -la | grep "\.txt"
+ls -la | grep ".txt"
 # Lists only .txt files
 
 cat targets.txt | sort | uniq
@@ -2543,7 +2543,7 @@ if __name__ == "__main__":
     
     for i in range(count):
         print(f"[{i+1}] {generate_password(length)}")
-\# Run: python3 generate.py 16 5
+# Run: python3 generate.py 16 5
 \`\`\`
 
 **Step 5: Save passwords to file:**
@@ -2967,7 +2967,7 @@ git commit -m "Resolve merge conflict in resolved-file.txt"
 # pre-commit hook example (check for secrets)
 cat > .git/hooks/pre-commit << 'EOF'
 #!/bin/bash
-if git diff --cached | grep -q "password\|secret\|api_key"; then
+if git diff --cached | grep -q "password|secret|api_key"; then
     echo "ERROR: Found potential secret in commit!"
     exit 1
 fi
@@ -3323,7 +3323,7 @@ console.log(document.cookie);
 curl -I https://example.com | grep "Set-Cookie"
 
 # Check for secure cookie flags
-curl -s -I https://example.com | grep -i "HttpOnly\|Secure\|SameSite"
+curl -s -I https://example.com | grep -i "HttpOnly|Secure|SameSite"
 \`\`\`
 
 The rule: tokens in httpOnly cookies (protected from XSS), non-sensitive prefs in localStorage, and never store secrets in client-side storage.`),
@@ -5242,7 +5242,7 @@ for host in tree.findall('.//host'):
     addr = host.find('address').get('addr')
     ports = host.findall('.//port')
     for p in ports:
-        print(f'{addr}:{p.get(\"portid\")}/{p.get(\"protocol\")} {p.find(\"state\").get(\"state\")}')
+        print(f'{addr}:{p.get("portid")}/{p.get("protocol")} {p.find("state").get("state")}')
 "
 \`\`\`
 
