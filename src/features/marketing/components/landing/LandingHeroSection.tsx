@@ -76,7 +76,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [displayText, isDeleting, stepIndex, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col">
+    <div ref={heroRef} className="relative w-full min-h-dvh md:min-h-screen flex flex-col">
       
       {/* ── Main content grid ── */}
       <div
@@ -93,7 +93,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         <div className="
           flex flex-col items-start justify-center
           px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12
-          pt-16 sm:pt-20 lg:pt-24
+          pt-20 sm:pt-20 lg:pt-24
           pb-14 sm:pb-16 lg:pb-16
           space-y-0
           w-full
@@ -116,7 +116,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             </motion.div>
 
             {/* ── Headline ── */}
-            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full min-h-[25svh] md:min-h-[22svh] lg:min-h-[18svh] xl:min-h-[16svh]">
+            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full">
               <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
                 {steps[stepIndex].line1}
               </span>
@@ -147,7 +147,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-8 lg:mt-9"
+            className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-4 mt-6 sm:mt-8 lg:mt-9"
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">
