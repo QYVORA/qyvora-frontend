@@ -27,7 +27,7 @@ const StatPill = ({ icon, label, value, children }: {
   value: React.ReactNode;
   children?: React.ReactNode;
 }) => (
-  <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/30 border border-border/20 min-w-0">
+  <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/30 border border-border/20 snap-start shrink-0 min-w-[200px] sm:min-w-0">
     <div className="w-9 h-9 rounded-lg bg-accent-dim border border-accent/20 flex items-center justify-center flex-none">
       {icon}
     </div>
@@ -161,7 +161,7 @@ const DashboardHero = ({
             {renderHeroContent()}
 
             {/* Quick stat pills — always visible */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
+            <div className="mt-6 sm:mt-8 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 sm:grid sm:grid-cols-3 md:grid-cols-5 sm:gap-3 sm:overflow-visible sm:snap-none sm:pb-0 sm:-mx-0 sm:px-0">
               <StatPill
                 icon={<CpLogo className="w-4 h-4" />}
                 label="CP"

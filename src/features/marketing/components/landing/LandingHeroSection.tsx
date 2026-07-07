@@ -116,17 +116,27 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             </motion.div>
 
             {/* ── Headline ── */}
-            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full">
-              <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                {steps[stepIndex].line1}
+            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
+              {/* Hidden placeholder — sets fixed height for tallest text so nothing shifts */}
+              <span className="invisible pointer-events-none select-none" aria-hidden="true">
+                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                  Train Like a Hacker.
+                </span>
+                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                  Cyber Professionals.
+                </span>
               </span>
-              <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                {/* Invisible placeholder — reserves space for the full text so width never shifts */}
-                <span className="invisible" aria-hidden="true">{steps[stepIndex].line2}</span>
-                {/* Visible typed text — overlaid on top */}
-                <span className="absolute left-0 top-0 text-accent">
-                  {displayText}
-                  <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+              {/* Visible animated text — absolute overlay */}
+              <span className="absolute inset-0">
+                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                  {steps[stepIndex].line1}
+                </span>
+                <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                  <span className="invisible" aria-hidden="true">{steps[stepIndex].line2}</span>
+                  <span className="absolute left-0 top-0 text-accent">
+                    {displayText}
+                    <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+                  </span>
                 </span>
               </span>
             </h1>
