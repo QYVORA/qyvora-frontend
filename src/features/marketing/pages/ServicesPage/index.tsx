@@ -103,7 +103,11 @@ const ServicesPage: React.FC = () => {
               return (
                 <div
                   key={service.id}
-                  className={`relative rounded-2xl border-2 flex flex-col transition-all duration-300 ${
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openServiceRequestModal(service.tier)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
+                  className={`relative rounded-2xl border-2 flex flex-col transition-all duration-300 cursor-pointer ${
                     isFeatured
                       ? 'border-accent/50 shadow-[0_0_30px_-8px] shadow-accent/25'
                       : 'border-border hover:border-accent/40'
