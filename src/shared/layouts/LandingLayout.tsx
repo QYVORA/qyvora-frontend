@@ -68,6 +68,7 @@ import { Navbar } from '@/shared/components/layout';
 // A modal component for the "Contact Us" form — rendered at layout level so it
 // can be triggered from anywhere within the landing page (any snap section).
 import ContactModalHost from '@/features/marketing/components/ContactModal';
+import ServiceRequestModalHost from '@/features/marketing/components/ServiceRequestModal';
 
 import ConsentBanner from '@/shared/components/ConsentBanner';
 
@@ -125,6 +126,7 @@ const LandingLayout = () => (
       a "Contact" button anywhere on the landing page.
     */}
     <ContactModalHost />
+    <ServiceRequestModalHost />
 
     {/* Cookie Consent banner */}
     <ConsentBanner />

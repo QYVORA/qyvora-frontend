@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Rocket, Edit3, BookOpen, Zap } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 
@@ -70,13 +71,13 @@ const OnboardingWizard: React.FC = () => {
           <h2 className="text-2xl font-black text-text-primary mb-3 tracking-tight">{current.title}</h2>
           <p className="text-sm text-text-muted leading-relaxed max-w-sm">{current.description}</p>
           {current.action && (
-            <a
-              href={current.action.link}
+            <Link
+              to={current.action.link}
               onClick={handleDismiss}
               className="mt-6 inline-flex items-center gap-2 bg-accent text-bg px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
             >
               {current.action.label}
-            </a>
+            </Link>
           )}
         </div>
 
