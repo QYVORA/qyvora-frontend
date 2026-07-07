@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
@@ -9,7 +9,12 @@ const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    const raf = requestAnimationFrame(() => {
+      document.documentElement.scrollTo({ top: 0, behavior: 'auto' });
+      document.body.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo(0, 0);
+    });
+    return () => cancelAnimationFrame(raf);
   }, [pathname]);
 
   useEffect(() => {
@@ -18,9 +23,9 @@ const ScrollToTop = () => {
     return () => window.removeEventListener('scroll', check);
   }, []);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   if (!visible) return null;
 
