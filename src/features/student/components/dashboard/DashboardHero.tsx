@@ -156,12 +156,12 @@ const DashboardHero = ({
   return (
     <div className="w-full px-4 md:px-0">
       <ScrollReveal className="h-full">
-        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden border border-border/40 bg-bg-card rounded-2xl shadow-none">
+        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden border border-border/60 bg-bg-card rounded-2xl shadow-none">
           <div className="relative z-10">
             {renderHeroContent()}
 
             {/* Quick stat pills — always visible */}
-            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 md:grid md:grid-cols-5 md:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
               <StatPill
                 icon={<CpLogo className="w-4 h-4" />}
                 label="CP"
