@@ -1,11 +1,13 @@
 import { useState, useCallback } from 'react';
-import { Share2, Check, X, Linkedin } from 'lucide-react';
+import { Share2, Check, X, Linkedin, MessageCircle, Mail } from 'lucide-react';
 import { BrandXIcon } from '@/shared/components/icons';
+import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 
 const PLATFORMS = [
   {
     id: 'x',
     name: 'X',
+    icon: <BrandXIcon className="w-5 h-5" />,
     color: 'hover:bg-black hover:text-white border-black/20',
     getUrl: (url: string, text: string) =>
       `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
@@ -13,15 +15,33 @@ const PLATFORMS = [
   {
     id: 'linkedin',
     name: 'LinkedIn',
+    icon: <Linkedin className="w-5 h-5" />,
     color: 'hover:bg-[#0A66C2] hover:text-white border-[#0A66C2]/20',
     getUrl: (url: string, text: string) =>
       `https://linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   {
+    id: 'whatsapp',
+    name: 'WhatsApp',
+    icon: <MessageCircle className="w-5 h-5" />,
+    color: 'hover:bg-[#25D366] hover:text-black border-[#25D366]/20',
+    getUrl: (url: string, text: string) =>
+      `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
+  },
+  {
+    id: 'email',
+    name: 'Email',
+    icon: <Mail className="w-5 h-5" />,
+    color: 'hover:bg-accent hover:text-bg border-accent/20',
+    getUrl: (url: string, text: string) =>
+      `mailto:?subject=${encodeURIComponent('QYVORA Profile')}&body=${encodeURIComponent(text + '\n' + url)}`,
+  },
+  {
     id: 'copy',
     name: 'Copy Link',
+    icon: <Share2 className="w-5 h-5" />,
     color: 'hover:bg-accent hover:text-bg border-accent/20',
-    getUrl: (_url: string) => '',
+    getUrl: () => '',
   },
 ];
 
@@ -38,7 +58,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
         await navigator.clipboard.writeText(profileUrl);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-      } catch { /* fallback — user can copy manually */ }
+      } catch { /* fallback */ }
       return;
     }
 
@@ -56,68 +76,52 @@ const ShareProfile = ({ handle }: { handle: string }) => {
   }, []);
 
   return (
-    <div className="relative" onKeyDown={handleKeyDown}>
+    <>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen(true)}
         className="flex items-center gap-2 px-4 py-2 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95"
-        aria-expanded={open}
-        aria-haspopup="true"
+        aria-label="Share profile"
       >
         <Share2 className="w-3.5 h-3.5" />
         Share
       </button>
 
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden="true" />
-          <div
-            className="absolute right-0 top-full mt-2 z-50 min-w-[180px] bg-bg-card border border-border rounded-2xl p-2 shadow-xl shadow-black/20"
-            role="menu"
-            aria-label="Share options"
-          >
-            <div className="flex items-center justify-between px-3 py-2 border-b border-border/40 mb-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Share</span>
-              <button onClick={() => setOpen(false)} className="text-text-muted hover:text-text-primary transition-colors" aria-label="Close">
-                <X className="w-3.5 h-3.5" />
-              </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent title="Share Profile" maxWidth="max-w-md">
+          <div className="space-y-5" onKeyDown={handleKeyDown}>
+            <div className="p-4 rounded-xl bg-accent/5 border border-accent/10">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                {shareText}
+              </p>
+              <p className="text-xs text-text-muted font-mono mt-2 truncate">
+                {profileUrl}
+              </p>
             </div>
-            <div className="space-y-1">
-              {PLATFORMS.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => handleShare(p.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                      e.preventDefault();
-                      const siblings = Array.from((e.currentTarget.parentElement?.children || []));
-                      const idx = siblings.indexOf(e.currentTarget);
-                      const next = e.key === 'ArrowDown'
-                        ? siblings[idx + 1] || siblings[0]
-                        : siblings[idx - 1] || siblings[siblings.length - 1];
-                      (next as HTMLElement)?.focus();
-                    }
-                  }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-text-primary transition-all ${p.color}`}
-                  role="menuitem"
-                  tabIndex={-1}
-                >
-                  {p.id === 'x' ? (
-                    <BrandXIcon className="w-4 h-4" />
-                  ) : p.id === 'linkedin' ? (
-                    <Linkedin className="w-4 h-4" />
-                  ) : copied ? (
-                    <Check className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <Share2 className="w-4 h-4" />
-                  )}
-                  {copied && p.id === 'copy' ? 'Copied!' : p.name}
-                </button>
-              ))}
+
+            <div className="space-y-2">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                Choose Platform
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {PLATFORMS.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => {
+                      handleShare(p.id);
+                      if (p.id !== 'copy') setOpen(false);
+                    }}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-xs font-bold text-text-primary transition-all ${p.color}`}
+                  >
+                    {p.id === 'copy' && copied ? <Check className="w-5 h-5 text-green-400" /> : p.icon}
+                    {copied && p.id === 'copy' ? 'Copied!' : p.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </>
-      )}
-    </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
