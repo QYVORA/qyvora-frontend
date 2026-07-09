@@ -210,7 +210,10 @@ const Dashboard = () => {
         />
 
         {/* 2. Search Bar */}
-        <div className="relative">
+        <form
+          onSubmit={e => { e.preventDefault(); }}
+          className="relative"
+        >
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
           <input
             ref={searchRef}
@@ -218,17 +221,26 @@ const Dashboard = () => {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search rooms, bootcamps, courses..."
-            className="w-full bg-bg-card border border-border/40 rounded-2xl pl-11 pr-10 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
+            className="w-full bg-bg-card border border-border/40 rounded-2xl pl-11 pr-16 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
           />
           {searchQuery && (
             <button
+              type="button"
               onClick={() => { setSearchQuery(''); searchRef.current?.focus(); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
+              className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
+              aria-label="Clear search"
             >
               <X className="h-4 w-4" />
             </button>
           )}
-        </div>
+          <button
+            type="submit"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 border border-accent/20 transition-all"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        </form>
 
         {/* 3. Stats Strip */}
         <div>
