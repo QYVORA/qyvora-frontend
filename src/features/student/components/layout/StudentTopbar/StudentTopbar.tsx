@@ -1,21 +1,20 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu, List, Terminal
+  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Search, Flame
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
+import CpLogo from '../../../../../shared/components/CpLogo';
 import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
-import { AnimatePresence, motion } from 'motion/react';
 import { useScrollY } from '../../../../../core/hooks/useScrollY';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
-import { NAV_GROUPS } from './navGroups';
 import { MOBILE_PRIMARY } from './mobileNav';
 import { NotificationItem } from './types';
 
@@ -84,8 +83,6 @@ const StudentTopbar = () => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
   const notifRef = useRef<HTMLDivElement>(null);
 
   const loadNotificationsSnapshot = async () => {
@@ -134,7 +131,7 @@ const StudentTopbar = () => {
   };
 
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
-  useEffect(() => { setMoreOpen(false); setNotifOpen(false); setActiveDropdown(null); }, [location.pathname]);
+  useEffect(() => { setMoreOpen(false); setNotifOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -321,104 +318,44 @@ const StudentTopbar = () => {
           )
 
         ) : (
-          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between">
+          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between gap-4">
 
-          {/* Left: Logo + dropdown nav */}
-          <div className="flex items-center gap-8">
-            <Link to="/dashboard" aria-label="QYVORA Dashboard">
-              <Logo size="lg" className="hidden md:block" />
-              <Logo size="md" variant="mark" className="md:hidden" />
+          {/* Left: Search */}
+          <div className="flex-1 max-w-md hidden md:block">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search rooms, paths, topics..."
+                className="w-full bg-bg-elevated border border-border rounded-xl py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-muted/50 font-mono outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
+              />
+            </div>
+          </div>
+
+          {/* Center-right: Stats cluster */}
+          <div className="flex items-center gap-3 md:gap-5">
+            <div className="hidden md:flex items-center gap-3 px-4 py-2 rounded-xl bg-bg-elevated/40 border border-border/20">
+              <div className="flex items-center gap-1.5">
+                <CpLogo className="w-4 h-4" />
+                <span className="font-mono text-sm font-black text-text-primary">{user?.cp?.toLocaleString() ?? 0}</span>
+              </div>
+              <span className="w-px h-4 bg-border/30" />
+              <div className="flex items-center gap-1.5">
+                <Flame className="w-4 h-4 text-orange-400" />
+                <span className="font-mono text-sm font-black text-orange-400">0d</span>
+              </div>
+            </div>
+            <Link
+              to="/dashboard/bootcamps/bc_1775270338500"
+              className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent/10 border border-accent/20 text-accent text-xs font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
+            >
+              <Zap className="w-4 h-4" />
+              Continue
             </Link>
-
-            {/* Desktop nav — HPB direct link + Operate dropdown */}
-            <nav className="hidden md:flex items-center gap-1">
-              <Link
-                to="/dashboard/courses"
-                className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                  location.pathname.startsWith('/dashboard/courses')
-                    ? 'text-accent bg-accent-dim'
-                    : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-                }`}
-              >
-                <BookOpen className="w-4 h-4" />
-                Courses
-              </Link>
-
-              <Link
-                to="/dashboard/bootcamps/bc_1775270338500"
-                className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                  location.pathname.startsWith('/dashboard/bootcamps')
-                    ? 'text-accent bg-accent-dim'
-                    : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-                }`}
-              >
-                <BookOpen className="w-4 h-4" />
-                HPB
-              </Link>
-
-              {NAV_GROUPS.map((group) => (
-                <div
-                  key={group.label}
-                  className="relative h-20 md:h-24 flex items-center"
-                  onMouseEnter={() => setActiveDropdown(group.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                  onFocus={() => setActiveDropdown(group.label)}
-                  onBlur={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                      setActiveDropdown(null);
-                    }
-                  }}
-                >
-                  <button
-                    aria-expanded={activeDropdown === group.label}
-                    className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                    activeDropdown === group.label ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-                  }`}>
-                    {group.label}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === group.label ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {activeDropdown === group.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.15 }}
-                        className={`absolute top-full mt-1 w-64 bg-bg-card border border-border rounded-xl shadow-2xl p-2 z-[80]
-                          ${group.label === 'Operate' ? 'right-0 left-auto' : 'left-0 right-auto'}
-                          max-w-[calc(100vw-2rem)]`}
-                      >
-                        <div className="space-y-1.5">
-                        {group.items.map((item) => {
-                          const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
-                          return (
-                            <Link
-                              key={item.path}
-                              to={item.path}
-                              className={`flex items-center gap-3 px-4 py-3.5 rounded-lg border border-transparent transition-colors ${
-                                active ? 'bg-accent-dim text-accent' : 'text-text-secondary hover:bg-accent-dim/60 hover:text-text-primary'
-                              }`}
-                            >
-                              <item.icon className="w-5 h-5 flex-none" />
-                              <div>
-                                <div className="text-sm font-bold">{item.label}</div>
-                                <div className="text-[10px] text-text-muted">{item.desc}</div>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </nav>
           </div>
 
           {/* Right: terminal + notifications + profile */}
-          <div className="flex items-center gap-2 md:gap-3 md:ml-8">
+          <div className="flex items-center gap-2 md:gap-3">
 
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}

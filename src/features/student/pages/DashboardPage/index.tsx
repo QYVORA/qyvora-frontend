@@ -16,10 +16,13 @@ import OnboardingWizard from '@/features/student/components/OnboardingWizard';
 import LearningPathMap from '@/features/student/components/LearningPathMap';
 import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
-import {
-  DashboardHero, ActiveDeployments,
-} from '@/features/student/components/dashboard';
+import { DashboardHero } from '@/features/student/components/dashboard';
+import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { Layers, Shield, Flame, Trophy, BookOpen } from 'lucide-react';
+import ScrollReveal from '@/shared/components/ScrollReveal';
+import CpLogo from '@/shared/components/CpLogo';
+import { Link } from 'react-router-dom';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
@@ -34,33 +37,30 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-  <div className="bg-bg">
-    <div className="mx-auto max-w-6xl px-0 pt-8 pb-20 lg:pb-24 md:px-6 lg:px-10">
-      <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-        <div className="w-full px-4 md:px-0">
-          <div className="p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl border border-border/40 bg-bg-card">
-            <div className="space-y-5">
-              <Skeleton className="h-4 w-24 bg-border/30" />
-              <Skeleton className="h-10 w-3/4 bg-border/30" />
-              <Skeleton className="h-2 w-full max-w-md bg-border/30 rounded-full" />
-              <div className="flex gap-4">
-                <Skeleton className="h-12 w-40 bg-border/30 rounded-xl" />
-                <Skeleton className="h-12 w-48 bg-border/30 rounded-xl" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start px-4 md:px-0">
-        <div className="space-y-4">
-          <Skeleton className="h-4 w-44 bg-border/30" />
-          <Skeleton className="h-64 w-full bg-border/30 rounded-2xl" />
-        </div>
-        <div className="space-y-4">
-          <Skeleton className="h-4 w-32 bg-border/30" />
-          <Skeleton className="h-80 w-full bg-border/30 rounded-2xl" />
-        </div>
-      </div>
+  <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-6">
+    <Skeleton className="h-24 w-full bg-border/30 rounded-2xl" />
+    <div className="grid grid-cols-4 gap-4">
+      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 bg-border/30 rounded-xl" />)}
+    </div>
+    <Skeleton className="h-48 w-full bg-border/30 rounded-2xl" />
+  </div>
+);
+
+const SectionHeader = ({ label }: { label: string }) => (
+  <div className="flex items-center gap-3 mb-4">
+    <div className="h-[1.5px] w-6 bg-accent" />
+    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">{label}</span>
+  </div>
+);
+
+const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
+  <div className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card">
+    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+      {icon}
+    </div>
+    <div className="min-w-0">
+      <div className="font-mono text-lg font-black text-text-primary leading-none">{value}</div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mt-0.5">{label}</div>
     </div>
   </div>
 );
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   const pending = getPendingEventJoin();
   const [showReviewModal, setShowReviewModal] = useState(!!pending);
-  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [, setReviewSubmitted] = useState(false);
 
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
@@ -132,8 +132,8 @@ const Dashboard = () => {
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
   const totalRoomsDone = overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0);
   const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
-
-  const visitDates: string[] = Array.isArray(overview?.visitDates) ? overview.visitDates : [];
+  const streakDays = overview?.xpSummary?.streakDays ?? null;
+  const rankName = _r?.name || 'Candidate';
 
   if (loading) return <DashboardSkeleton />;
 
@@ -141,31 +141,46 @@ const Dashboard = () => {
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-6xl px-0 pt-8 pb-20 lg:pb-24 md:px-6 lg:px-10">
-        {/* Hero — primary mission status with quick stats integrated */}
-        <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
-          <DashboardHero
-            isEnrolled={isEnrolled}
-            allDone={allDone}
-            nextMission={nextMission}
-            totalRoomsDone={totalRoomsDone}
-            cpBalance={cpBalance}
-            streakDays={overview?.xpSummary?.streakDays ?? null}
-            continuePath={continuePath}
-            nextRank={nextRank}
-            rankProgress={rankProgress}
-            currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
-            rankName={_r?.name || 'Candidate'}
-            visitDates={visitDates}
-            loading={loading}
-            onOpenTerminal={() => setTerminalOpen(true)}
-            uid={user?.uid}
-            username={user?.username}
-          />
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+
+        {/* 1. Welcome Banner */}
+        <DashboardHero
+          isEnrolled={isEnrolled}
+          allDone={allDone}
+          nextMission={nextMission}
+          continuePath={continuePath}
+          currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
+          username={user?.username}
+        />
+
+        {/* 2. Stats Strip */}
+        <div>
+          <SectionHeader label="Overview" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <StatCard icon={<Trophy className="w-5 h-5 text-accent" />} label="Rank" value={rankName} accent />
+            <StatCard icon={<Layers className="w-5 h-5 text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
+            <StatCard icon={<CpLogo className="w-5 h-5" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
+            <StatCard icon={<Flame className="w-5 h-5 text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
+          </div>
         </div>
 
-        {/* Learning path — core curriculum */}
-        <div className="mb-10">
+        {/* 3. In-Progress Rooms Carousel */}
+        {enrolledBootcamps.length > 0 && (
+          <div>
+            <SectionHeader label="In Progress" />
+            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-hover">
+              {enrolledBootcamps.map((bc, idx) => (
+                <div key={bc.id} className="snap-start shrink-0 w-[300px] sm:w-[340px]">
+                  <StudentBootcampCard data={bc} index={idx} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 4. Learning Paths */}
+        <div>
+          <SectionHeader label="Learning Path" />
           <LearningPathMap
             overview={overview}
             bootcampId={activeBootcamp ? String(activeBootcamp.id) : BOOTCAMP_CONFIG.id}
@@ -173,10 +188,44 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Active deployments */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12 items-start">
-          <ActiveDeployments bootcamps={enrolledBootcamps} loading={loading} />
+        {/* 5. Room Grid / Browse All */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <SectionHeader label="All Rooms" />
+            <Link to="/dashboard/bootcamps/bc_1775270338500" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms).slice(0, 6).map((room) => (
+              <Link
+                key={room.id}
+                to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
+                className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen className="w-4 h-4 text-accent/60" />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Room</span>
+                </div>
+                <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug">{room.title}</h3>
+              </Link>
+            ))}
+          </div>
         </div>
+
+        {/* 6. Leaderboard / Progress Section */}
+        {nextRank && (
+          <div>
+            <SectionHeader label="Next Rank" />
+            <div className="rounded-xl border border-border/30 bg-bg-card p-5">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Target: <span className="text-accent">{nextRank.name}</span></span>
+                <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
+              </div>
+              <div className="h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
+                <div className="h-full rounded-full bg-accent transition-all duration-1000 shadow-[0_0_8px_var(--color-accent)]" style={{ width: `${rankProgress}%` }} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {pending && showReviewModal && (

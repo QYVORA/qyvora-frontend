@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
 import { useAuth } from '@/core/contexts/AuthContext';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
+import Sidebar from '@/features/student/components/layout/Sidebar';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
@@ -35,9 +36,12 @@ const StudentLayout = () => {
 
   return (
     <div className="bg-bg min-h-screen">
-      <StudentTopbar />
-      <div id="main-content" className={`${TOPBAR_H} ${isRoomPage ? '' : MOBILE_NAV_PB}`}>
-        <Outlet />
+      <Sidebar />
+      <div className="lg:pl-[240px]">
+        <StudentTopbar />
+        <div id="main-content" className={`${TOPBAR_H} ${isRoomPage ? '' : MOBILE_NAV_PB}`}>
+          <Outlet />
+        </div>
       </div>
       <ConsentBanner />
       <UsernameChangeModal />
