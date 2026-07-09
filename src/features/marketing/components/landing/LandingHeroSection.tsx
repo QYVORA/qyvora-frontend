@@ -8,7 +8,7 @@ import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
 
-const HackerGlobe = lazy(() => import('../HackerGlobe'));
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 interface LandingHeroSectionProps {
   heroRef: React.RefObject<HTMLDivElement | null>;

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
-import HackerGlobe from '../../marketing/components/HackerGlobe';
 import ErrorBoundary from '../../../shared/components/ErrorBoundary';
+
+const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
@@ -13,7 +14,7 @@ const AuthHero: React.FC = () => (
     {/* Globe - properly centered with responsive sizing */}
     <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-4 xl:px-8">
       <div className="relative w-full h-full max-w-[min(420px,70vh)] max-h-[min(420px,70vh)] xl:max-w-[min(520px,70vh)] xl:max-h-[min(520px,70vh)] mx-auto my-auto flex items-center justify-center">
-        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><HackerGlobe scale={1.0} /></ErrorBoundary></div>
+        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><Suspense fallback={null}><HackerGlobe scale={1.0} /></Suspense></ErrorBoundary></div>
       </div>
     </div>
 
