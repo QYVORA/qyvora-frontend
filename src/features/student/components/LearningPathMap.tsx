@@ -15,7 +15,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
   if (!isEnrolled) {
     return (
-      <div className="flex flex-col gap-4 px-5 md:px-0">
+      <div className="flex flex-col gap-4 px-4 md:px-0">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Learning Path</h3>
           <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
@@ -23,7 +23,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
         <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-12 text-center flex flex-col items-center justify-center bg-transparent">
           <BookOpen className="mx-auto mb-3 h-8 w-8 text-text-muted opacity-40" />
           <p className="mb-4 text-sm text-text-muted">Enroll to begin the Hacker Protocol Bootcamp.</p>
-          <Link to="/dashboard/bootcamps" className="bg-accent text-bg px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110">
+          <Link to="/dashboard/bootcamps" className="btn-primary !text-[10px] !px-6 !py-2.5 flex items-center gap-1.5">
             Start Bootcamp <ArrowRight className="inline-block ml-1.5 h-3.5 w-3.5" />
           </Link>
         </div>

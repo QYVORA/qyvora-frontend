@@ -32,7 +32,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
   const { id, title, description, level, duration, priceLabel, img, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
-  const cardClasses = `group relative flex flex-col h-full overflow-hidden rounded-2xl border border-border/60 bg-bg-card transition-all duration-300 ${
+  const cardClasses = `group relative flex flex-col h-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 ${
     isLocked
       ? 'opacity-40 cursor-default'
       : 'hover:border-accent/30 hover:scale-[1.01]'
@@ -135,7 +135,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           ) : isEnrolled ? (
             <Link
               to={`/dashboard/bootcamps/${id}`}
-              className="flex w-full items-center justify-center gap-3 py-3.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
+              className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
             >
               {isComplete ? (
                 <><CheckCircle2 className="h-4 w-4" /> Review curriculum</>
@@ -147,14 +147,14 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             onEnroll ? (
               <button
                 onClick={() => onEnroll(data)}
-                className="flex w-full items-center justify-center gap-3 py-3.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
+                className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
                 Enroll now <ArrowRight className="h-4 w-4" />
               </button>
             ) : (
               <Link
                 to={`/dashboard/bootcamps/${id}`}
-                className="flex w-full items-center justify-center gap-3 py-3.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
+                className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
                 Enroll now <ArrowRight className="h-4 w-4" />
               </Link>

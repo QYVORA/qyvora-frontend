@@ -14,7 +14,7 @@ const EmptyDeployments = () => (
     <p className="mb-4 text-sm text-text-muted">No active bootcamps.</p>
     <Link
       to="/dashboard/bootcamps"
-      className="bg-accent text-bg px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+      className="btn-primary !text-[10px] !px-6 !py-2.5 flex items-center gap-1.5"
     >
       Start Training <ArrowRight className="inline-block ml-1.5 h-3.5 w-3.5" />
     </Link>
@@ -23,7 +23,7 @@ const EmptyDeployments = () => (
 
 const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => (
   <div className="flex flex-col gap-6 h-full">
-    <div className="flex items-center justify-between px-5">
+    <div className="flex items-center justify-between px-4 md:px-0">
       <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Active Deployments</h3>
       <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
     </div>
@@ -31,7 +31,7 @@ const ActiveDeployments = ({ bootcamps }: ActiveDeploymentsProps) => (
       <EmptyDeployments />
     ) : (
       bootcamps.slice(0, 1).map((item, idx) => (
-        <div key={item.id} className="h-full px-5 md:px-0">
+        <div key={item.id} className="h-full px-4 md:px-0">
           <StudentBootcampCard data={item} index={idx} />
         </div>
       ))

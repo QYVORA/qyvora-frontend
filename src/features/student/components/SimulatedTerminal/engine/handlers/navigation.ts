@@ -2,14 +2,23 @@ import type { CommandHandler, VFSNode } from '../../types';
 import { resolvePath, findNode } from '../filesystem';
 
 export const ls: CommandHandler = (args, state) => {
-  const targetPath = args[0] || '.';
+  const flags: string[] = [];
+  const paths: string[] = [];
+  for (const arg of args) {
+    if (arg.startsWith('-') && arg !== '--') {
+      for (const c of arg.slice(1)) flags.push('-' + c);
+    } else {
+      paths.push(arg);
+    }
+  }
+  const targetPath = paths[0] || '.';
   const target = findNode(state.root, targetPath, state.cwd, state.home);
   if (!target) return { output: '', error: `ls: cannot access '${targetPath}': No such file or directory`, exitCode: 2 };
   if (target.type === 'file') return { output: target.name, exitCode: 0 };
 
-  const showAll = args.includes('-a') || args.includes('-la') || args.includes('-al');
-  const long = args.includes('-l') || args.includes('-la') || args.includes('-al');
-  const dirs = args.includes('-d');
+  const showAll = flags.includes('-a');
+  const long = flags.includes('-l');
+  const dirs = flags.includes('-d');
 
   if (dirs) {
     return { output: long

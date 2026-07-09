@@ -81,13 +81,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const getPromptTop = useCallback((s: TerminalState) => {
-    const cwdDisplay = s.cwd === s.home ? '~' : s.cwd.replace(s.home, '~');
-    if (s.inMsfConsole) return '';
-    return `┌──(${s.user}㉿${s.hostname})-[${cwdDisplay}]`;
-  }, []);
-
-  const [promptTop, setPromptTop] = useState(() => getPromptTop(stateRef.current));
+  const [promptTop] = useState('');
 
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
@@ -137,9 +131,8 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
     stateRef.current = result.newState;
     setLines(prev => [...prev, ...result.lines]);
-    setPromptTop(getPromptTop(result.newState));
     setHistoryIndex(-1);
-  }, [onClose, getPromptTop]);
+  }, [onClose]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.ctrlKey && e.key === 'c') {
@@ -151,7 +144,6 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       if (input) {
         setLines(prev => [...prev, { type: 'input', text: `${getInputPrefix(stateRef.current)}${input}^C` }]);
         setInput('');
-        setPromptTop(getPromptTop(stateRef.current));
       }
       return;
     }
@@ -344,7 +336,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         }
       }
     }
-  }, [input, process, historyIndex, getPromptTop, reverseSearchActive, reverseSearchQuery, reverseSearchResults, reverseSearchIdx]);
+  }, [input, process, historyIndex, promptTop, reverseSearchActive, reverseSearchQuery, reverseSearchResults, reverseSearchIdx]);
 
   useEffect(() => {
     const timer = setTimeout(() => focusInput(), 50);
@@ -386,36 +378,39 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         onClick={focusInput}
       >
         {lines.map((line, i) => {
-          let color = KALI_OUTPUT;
-          let opacity: number | undefined = 1;
-          switch (line.type) {
-            case 'input': color = KALI_GREEN; break;
-            case 'output': {
-              const t = line.text;
-              if (t.endsWith('/')) color = KALI_DIR;
-              else if (t.endsWith('*')) color = KALI_EXEC;
-              else color = KALI_OUTPUT;
-              break;
-            }
-            case 'error': color = KALI_ERROR; break;
-            case 'prompt': color = KALI_GREEN; break;
-            case 'system': color = KALI_SYSTEM; opacity = 0.5; break;
+          const baseOpacity: number | undefined = line.type === 'system' ? 0.5 : 1;
+          if (line.type === 'output') {
+            const subLines = line.text.split('\n');
+            return (
+              <div key={i}>
+                {subLines.map((sub, j) => {
+                  let c = KALI_OUTPUT;
+                  if (sub.endsWith('/')) c = KALI_DIR;
+                  else if (sub.endsWith('*')) c = KALI_EXEC;
+                  return (
+                    <div key={j} style={{ color: c }} className="whitespace-pre-wrap">
+                      {sub}
+                    </div>
+                  );
+                })}
+              </div>
+            );
           }
+          let color = KALI_GREEN;
+          if (line.type === 'error') color = KALI_ERROR;
+          else if (line.type === 'prompt') color = KALI_GREEN;
+          else if (line.type === 'system') color = KALI_SYSTEM;
+          else if (line.type !== 'input') color = KALI_OUTPUT;
           return (
             <div
               key={i}
-              style={{ color, opacity }}
+              style={{ color, opacity: baseOpacity }}
               className="whitespace-pre-wrap"
             >
               {line.text}
             </div>
           );
         })}
-        {(promptTop || stateRef.current.inMsfConsole) && (
-          <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap leading-relaxed">
-            {promptTop}
-          </div>
-        )}
         <div className="flex items-center" style={{ color: KALI_GREEN }}>
           <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
           {reverseSearchActive && (
