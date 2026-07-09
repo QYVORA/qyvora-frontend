@@ -189,7 +189,7 @@ function Principles() {
   return (
     <ScrollReveal direction="up">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        <SectionHeader align="center" eyebrow="// CORE PRINCIPLES" title="How QuiteRoot" accent="Builds" />
+        <SectionHeader align="center" title="How QuiteRoot" accent="Builds" />
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map(([title, body, Icon], index) => (
             <div
