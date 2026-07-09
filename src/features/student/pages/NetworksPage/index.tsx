@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import {
-  Globe, Monitor, Server, Wifi, Shield, AlertTriangle,
+  Globe, Monitor, Server, Wifi, Shield,
   Network, Router, HardDrive, Terminal,
 } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import {
   NETWORK_CONFIG, DEVICES, STUDENT_IP, STUDENT_MAC, STUDENT_HOSTNAME,
-  getDiscoverableIps, getHiddenIps,
+  getHiddenIps,
 } from '@/features/student/data/fakeNetwork';
 
 const SubnetBadge = () => (
@@ -37,79 +37,24 @@ const OSIcon = ({ os }: { os: string }) => {
   return <Monitor className="w-3.5 h-3.5 text-text-muted" />;
 };
 
-const DeviceRow = ({ device, index }: { device: typeof DEVICES[0]; index: number }) => {
-  const hidden = device.hidden;
-  const discoverable = device.discoverable;
-  const openPortCount = device.ports.filter(p => p.state === 'open').length;
-  const vulnCount = device.vulnerabilities?.length || 0;
-
-  return (
-    <div
-      className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_140px_140px_180px_80px_80px] gap-2 md:gap-4 px-4 py-3 rounded-xl border transition-all items-center ${
-        hidden
-          ? 'border-red-400/20 bg-red-400/5'
-          : discoverable
-          ? 'border-border/30 bg-bg-card hover:border-accent/20'
-          : 'border-yellow-400/20 bg-yellow-400/5'
-      }`}
-    >
-      <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
-
-      <div className="flex items-center gap-2 min-w-0">
-        <OSIcon os={device.os} />
-        <div className="min-w-0">
-          <p className="text-xs font-bold text-text-primary truncate flex items-center gap-1.5">
-            {device.hostname}
-            {hidden && <Shield className="w-3 h-3 text-red-400 shrink-0" />}
-          </p>
-          <p className="text-[9px] font-mono text-text-muted truncate">{device.vendor}</p>
-        </div>
-      </div>
-
-      <div className="hidden md:block">
-        <p className="text-xs font-mono font-bold text-text-primary">{device.ip}</p>
-      </div>
-
-      <div className="hidden md:block min-w-0">
-        <p className="text-[10px] text-text-primary truncate">{device.os}</p>
-      </div>
-
-      <div className="hidden md:flex items-center justify-center">
-        <span className={`text-[10px] font-mono font-bold ${
-          hidden ? 'text-red-400' : discoverable ? 'text-green-400' : 'text-yellow-400'
-        }`}>
-          {hidden ? 'Hidden' : discoverable ? 'Active' : 'Unknown'}
-        </span>
-      </div>
-
-      <div className="hidden md:flex items-center justify-end gap-1">
-        <span className="text-[10px] font-mono font-bold text-text-primary">{openPortCount}</span>
-        <span className="text-[9px] text-text-muted">ports</span>
-        {vulnCount > 0 && (
-          <AlertTriangle className="w-3 h-3 text-red-400 ml-1" />
-        )}
-      </div>
-
-      <div className="md:hidden text-right">
-        <p className="text-[10px] font-mono text-text-muted">{device.ip}</p>
-        <div className="flex items-center justify-end gap-1">
-          <span className={`text-[9px] font-mono font-bold ${
-            hidden ? 'text-red-400' : 'text-green-400'
-          }`}>
-            {hidden ? 'Hidden' : discoverable ? 'Active' : '?'}
-          </span>
-          {vulnCount > 0 && <AlertTriangle className="w-2.5 h-2.5 text-red-400" />}
-        </div>
+const DeviceRow = ({ device, index }: { device: typeof DEVICES[0]; index: number }) => (
+  <div className="grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-xl border border-border/30 bg-bg-card hover:border-accent/20 transition-all items-center">
+    <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
+    <div className="flex items-center gap-2 min-w-0">
+      <OSIcon os={device.os} />
+      <div className="min-w-0">
+        <p className="text-xs font-bold text-text-primary truncate">{device.hostname}</p>
+        <p className="text-[9px] font-mono text-text-muted truncate">{device.vendor}</p>
       </div>
     </div>
-  );
-};
+    <p className="text-xs font-mono font-bold text-text-primary text-right md:text-left">{device.ip}</p>
+  </div>
+);
 
 const NetworksPage = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  const allDevices = [...DEVICES];
-  const discoverableCount = getDiscoverableIps().length;
+  const knownDevices = DEVICES.filter(d => d.discoverable && !d.hidden);
   const hiddenCount = getHiddenIps().length;
 
   return (
@@ -188,33 +133,34 @@ const NetworksPage = () => {
         <div className="flex flex-wrap items-center gap-4 text-[10px] font-mono">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-            <span className="text-text-muted">Discoverable ({discoverableCount})</span>
+            <span className="text-text-muted">Known hosts ({knownDevices.length})</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-            <span className="text-text-muted">Hidden ({hiddenCount})</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <AlertTriangle className="w-3 h-3 text-red-400" />
-            <span className="text-text-muted">Has vulnerabilities</span>
-          </div>
+          {hiddenCount > 0 && (
+            <div className="flex items-center gap-1.5">
+              <Shield className="w-3 h-3 text-red-400" />
+              <span className="text-text-muted">{hiddenCount} hidden — use <span className="text-accent">nmap</span> to discover</span>
+            </div>
+          )}
         </div>
 
         {/* Device list header */}
-        <div className="hidden md:grid grid-cols-[24px_140px_140px_180px_80px_80px] gap-4 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
+        <div className="hidden md:grid grid-cols-[24px_1fr_140px] gap-4 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
           <span>#</span>
           <span>Hostname</span>
-          <span>IP</span>
-          <span>OS</span>
-          <span className="text-center">Status</span>
-          <span className="text-right">Ports</span>
+          <span className="text-right">IP</span>
         </div>
 
         {/* Device rows */}
         <div className="space-y-1.5">
-          {allDevices.map((device, idx) => (
-            <DeviceRow key={device.ip} device={device} index={idx} />
-          ))}
+          {knownDevices.length === 0 ? (
+            <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/40 rounded-xl">
+              No known hosts discovered. Use the terminal to start scanning.
+            </div>
+          ) : (
+            knownDevices.map((device, idx) => (
+              <DeviceRow key={device.ip} device={device} index={idx} />
+            ))
+          )}
         </div>
 
         {/* Tip box */}

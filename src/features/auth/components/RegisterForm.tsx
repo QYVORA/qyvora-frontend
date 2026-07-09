@@ -69,12 +69,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
 
         <div className="space-y-2">
           <label htmlFor="register-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
-          <PasswordInput id="register-password" name="password" />
+          <PasswordInput id="register-password" name="password" autoComplete="new-password" />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="register-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-          <PasswordInput id="register-confirm-password" name="confirm_password" />
+          <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
 
         <button type="submit" disabled={isLoading}

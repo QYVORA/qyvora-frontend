@@ -37,11 +37,11 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         )}
         <div className="space-y-2">
           <label htmlFor="change-new-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">New Password</label>
-          <PasswordInput id="change-new-password" name="new_password" placeholder="Min 8 characters" />
+          <PasswordInput id="change-new-password" name="new_password" placeholder="Min 8 characters" autoComplete="new-password" />
         </div>
         <div className="space-y-2">
           <label htmlFor="change-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
-          <PasswordInput id="change-confirm-password" name="confirm_password" />
+          <PasswordInput id="change-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
