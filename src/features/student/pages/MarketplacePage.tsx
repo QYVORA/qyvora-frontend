@@ -119,7 +119,7 @@ const Marketplace: React.FC = () => {
   return (
     <div className="bg-bg">
       <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." />
-      <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain scroll-hover">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
         <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
           <ScrollReveal className="mb-8 flex flex-col justify-between gap-8 md:flex-row md:items-end px-4 md:px-0">
              <div>

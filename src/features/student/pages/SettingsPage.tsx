@@ -134,69 +134,11 @@ const Settings: React.FC = () => {
       </div>
 
       {/* Fixed two-column container below topbar */}
-      <div className="lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-6">
 
-        {/* LEFT SIDEBAR */}
-        <div
-          className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain lg:border-r lg:border-border lg:bg-bg scroll-hover"
-        >
-          <div className="px-2 sm:px-6 md:px-8 pb-6 pt-6 lg:p-6 space-y-4">
 
-            {/* Security status */}
-            <ScrollReveal>
-              <div className="relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
-                <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-                <div className="relative z-10">
-                  <div className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center mb-4">
-                    <Shield className="w-5 h-5 text-accent" />
-                  </div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">Security</p>
-                  <p className="text-sm font-bold text-text-primary">Account Protected</p>
-                  <p className="text-xs text-text-secondary mt-1">
-                    {tokenAvailable && recoveryAcked ? 'Recovery token active' : 'Set up a recovery token'}
-                  </p>
-                </div>
-              </div>
-            </ScrollReveal>
 
-            {/* Data saver */}
-            <ScrollReveal>
-              <div className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden">
-                <div className="flex items-center gap-3 border-b border-border px-5 py-4">
-                  <Shield className="h-4 w-4 text-accent" />
-                  <h2 className="text-sm font-black uppercase tracking-widest text-text-primary">Data Saver</h2>
-                </div>
-                <div className="p-5">
-                  <p className="text-xs text-text-secondary mb-4 leading-relaxed">
-                    Reduce image-heavy visuals for lower bandwidth on mobile networks.
-                  </p>
-                  <button
-                    onClick={() => {
-                      const next = !dataSaver;
-                      setDataSaver(next);
-                      setDataSaverEnabled(next);
-                      addToast(next ? 'Data Saver enabled.' : 'Data Saver disabled.', 'success');
-                    }}
-                    className={`w-full px-4 py-2.5 rounded-xl text-sm font-bold border transition-colors ${
-                      dataSaver
-                        ? 'bg-accent-dim border-accent/40 text-accent'
-                        : 'bg-bg border-border text-text-muted hover:border-accent/30 hover:text-accent'
-                    }`}
-                  >
-                    {dataSaver ? 'Data Saver: ON' : 'Data Saver: OFF'}
-                  </button>
-                </div>
-              </div>
-            </ScrollReveal>
 
-          </div>
-        </div>{/* end left sidebar */}
-
-        {/* RIGHT MAIN */}
-        <div
-          className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
-        >
-          <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
 
 {/* Page header — desktop */}
              <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
@@ -358,9 +300,7 @@ const Settings: React.FC = () => {
             </ScrollReveal>
 
           </div>{/* end space-y-6 */}
-          </div>{/* end right main inner */}
-        </div>{/* end right main */}
-      </div>{/* end two-col */}
+      </div>
     </div>
   );
 };

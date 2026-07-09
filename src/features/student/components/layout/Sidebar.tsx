@@ -1,9 +1,17 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Map, BookOpen, Swords, Globe, BarChart3,
   ShoppingBag, Bell, Settings,
+  Trophy, Layers, Flame, CheckCircle2, BookMarked,
 } from 'lucide-react';
+import { useAuth } from '@/core/contexts/AuthContext';
+import api from '@/core/services/api';
+import { getRankInfo } from '@/features/student/utils/rankUtils';
+import { extractCpBalance } from '@/shared/utils/cpBalance';
+import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import Logo from '@/shared/components/brand/Logo';
+import CpLogo from '@/shared/components/CpLogo';
 
 const PRIMARY_NAV = [
   { label: 'Dashboard',    icon: LayoutDashboard, path: '/dashboard' },
@@ -20,6 +28,340 @@ const SECONDARY_NAV = [
   { label: 'Settings',    icon: Settings,    path: '/dashboard/settings' },
 ];
 
+const SidebarPanel = ({ children }: { children: React.ReactNode }) => (
+  <div className="mx-3 mb-2 rounded-xl border border-border/30 bg-bg-card p-3 text-xs space-y-2">
+    {children}
+  </div>
+);
+
+const PanelRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
+  <div className="flex items-center justify-between gap-2">
+    <div className="flex items-center gap-1.5 text-text-muted">
+      <span className="w-3.5 h-3.5 shrink-0">{icon}</span>
+      <span className="text-[9px] font-black uppercase tracking-widest">{label}</span>
+    </div>
+    <span className="font-mono text-xs font-bold text-text-primary truncate">{value}</span>
+  </div>
+);
+
+const DashboardOverviewPanel = () => {
+  const { user } = useAuth();
+  const [overview, setOverview] = useState<any>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/student/overview').then((res) => {
+      if (!mounted) return;
+      setOverview(res.data || null);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, [user?.uid]);
+
+  const totalRoomsDone = Array.isArray(overview?.modules)
+    ? overview.modules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0)
+    : 0;
+  const cp = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
+  const { rank: _r } = getRankInfo(cp);
+  const streakDays = overview?.xpSummary?.streakDays ?? null;
+  const rankName = _r?.name || 'Candidate';
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Overview</div>
+      <PanelRow icon={<Trophy className="w-3.5 h-3.5 text-accent" />} label="Rank" value={rankName} />
+      <PanelRow icon={<Layers className="w-3.5 h-3.5 text-text-primary" />} label="Rooms" value={String(totalRoomsDone)} />
+      <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(cp).toLocaleString()} />
+      <PanelRow icon={<Flame className="w-3.5 h-3.5 text-orange-400" />} label="Streak" value={`${streakDays ?? 0}d`} />
+    </SidebarPanel>
+  );
+};
+
+const LeaderboardFiltersPanel = () => {
+  const { search } = useLocation();
+  const [period, setPeriod] = useState('all');
+
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    setPeriod(params.get('period') || 'all');
+  }, [search]);
+
+  const PERIODS = [
+    { key: 'all', label: 'All Time' },
+    { key: 'week', label: 'Week' },
+    { key: 'month', label: 'Month' },
+  ];
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Filter</div>
+      <div className="flex flex-col gap-1">
+        {PERIODS.map((p) => {
+          const active = period === p.key;
+          return (
+            <Link
+              key={p.key}
+              to={`/dashboard/competitive?period=${p.key}`}
+              className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${
+                active
+                  ? 'bg-accent text-bg'
+                  : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
+              }`}
+            >
+              {p.label}
+            </Link>
+          );
+        })}
+      </div>
+    </SidebarPanel>
+  );
+};
+
+const CourseProgressPanel = () => {
+  const { pathname } = useLocation();
+  const { user } = useAuth();
+  const [overview, setOverview] = useState<any>(null);
+  const [course, setCourse] = useState<any>(null);
+
+  const bootcampId = pathname.split('/dashboard/bootcamps/')[1]?.split('/')[0];
+
+  useEffect(() => {
+    if (!bootcampId) return;
+    let mounted = true;
+    Promise.all([
+      api.get('/student/overview'),
+      api.get(`/student/course?bootcampId=${encodeURIComponent(bootcampId)}`).catch(() => null),
+    ]).then(([ovRes, courseRes]) => {
+      if (!mounted) return;
+      setOverview(ovRes.data || null);
+      if (courseRes?.data) setCourse(courseRes.data);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, [bootcampId, user?.uid]);
+
+  const progMap = Object.fromEntries(
+    (overview?.modules || []).map((m: any) => [Number(m.moduleId ?? m.id), m])
+  );
+  const courseModules = course?.modules || [];
+  const totalRooms = courseModules.reduce((acc: number, m: any) => acc + (m.rooms?.length || 0), 0);
+  const doneRooms = courseModules.reduce((acc: number, _m: any, idx: number) => {
+    const prog = progMap[idx + 1];
+    return acc + Number(prog?.roomsCompleted || 0);
+  }, 0);
+  const progressNum = totalRooms > 0 ? Math.round((doneRooms / totalRooms) * 100) : 0;
+
+  return (
+    <div className="mx-3 mb-2 space-y-2">
+      <div className="rounded-xl border border-accent/25 bg-accent-dim p-3">
+        <p className="text-[8px] font-black uppercase tracking-widest text-accent mb-1">Progress</p>
+        <div className="text-2xl font-black text-accent font-mono">{progressNum}%</div>
+        <div className="h-1 overflow-hidden rounded-full bg-bg/40 mt-1.5 mb-1">
+          <div className="h-full rounded-full bg-accent transition-all duration-700" style={{ width: `${progressNum}%` }} />
+        </div>
+        <p className="text-[10px] text-text-secondary">{doneRooms}/{totalRooms} rooms</p>
+      </div>
+      <div className="rounded-xl border border-border/30 bg-bg-card divide-y divide-border/30 max-h-[260px] overflow-y-auto">
+        {courseModules.map((mod: any, idx: number) => {
+          const prog = progMap[idx + 1];
+          const pct = Number(prog?.progress || 0);
+          const isComplete = pct === 100;
+          const configPhase = BOOTCAMP_CONFIG.phases[idx];
+          return (
+            <div key={mod.moduleId} className="flex items-center gap-2 px-3 py-2">
+              <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-[8px] font-bold font-mono ${
+                isComplete ? 'border-accent/30 bg-accent text-bg'
+                  : 'border-border text-text-muted'
+              }`}>
+                {isComplete ? <CheckCircle2 className="h-3 w-3" /> : String(idx + 1).padStart(2, '0')}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[8px] font-black uppercase tracking-widest text-accent leading-none">{configPhase?.codename || `Phase ${idx + 1}`}</p>
+                <p className="text-[10px] font-bold text-text-primary truncate">{mod.title}</p>
+              </div>
+              {pct > 0 && !isComplete && (
+                <span className="text-[9px] font-mono font-black text-accent">{pct}%</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const CoursesListPanel = () => {
+  const { user } = useAuth();
+  const [courses, setCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/student/courses').then((res) => {
+      if (!mounted) return;
+      const items = Array.isArray(res.data?.items) ? res.data.items : [];
+      setCourses(items);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, [user?.uid]);
+
+  const enrolled = courses.filter((c: any) => c.enrolled);
+  const inProgress = enrolled.filter((c: any) => (c.progress || 0) < 100);
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Courses</div>
+      <PanelRow icon={<BookMarked className="w-3.5 h-3.5 text-accent" />} label="Enrolled" value={String(enrolled.length)} />
+      <PanelRow icon={<BarChart3 className="w-3.5 h-3.5" />} label="In Progress" value={String(inProgress.length)} />
+      {courses.length > 0 && (
+        <div className="pt-1 space-y-1 max-h-[180px] overflow-y-auto">
+          {courses.map((c: any) => {
+            const pct = c.progress || 0;
+            return (
+              <Link
+                key={c.id}
+                to={`/dashboard/courses/${c.id}`}
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-accent-dim/30 transition-colors"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold text-text-primary truncate">{c.title}</p>
+                </div>
+                <span className="text-[9px] font-mono font-black text-accent">{pct}%</span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </SidebarPanel>
+  );
+};
+
+const LessonNavPanel = () => {
+  const { pathname } = useLocation();
+  const [lessons, setLessons] = useState<any[]>([]);
+  const courseId = pathname.split('/dashboard/courses/')[1]?.split('/')[0];
+
+  useEffect(() => {
+    if (!courseId) return;
+    let mounted = true;
+    api.get(`/student/course?courseId=${encodeURIComponent(courseId)}`).then((res) => {
+      if (!mounted) return;
+      setLessons(Array.isArray(res.data?.lessons) ? res.data.lessons : []);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, [courseId]);
+
+  const currentLessonId = pathname.split('/lessons/')[1] || '';
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Lessons</div>
+      <div className="space-y-0.5 max-h-[260px] overflow-y-auto">
+        {lessons.map((lesson: any) => {
+          const active = lesson.id === currentLessonId || lesson.slug === currentLessonId;
+          return (
+            <Link
+              key={lesson.id}
+              to={`/dashboard/courses/${courseId}/lessons/${lesson.slug || lesson.id}`}
+              className={`block px-2 py-1.5 rounded-lg text-[10px] font-bold transition-colors ${
+                active ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
+              }`}
+            >
+              {lesson.title}
+            </Link>
+          );
+        })}
+      </div>
+    </SidebarPanel>
+  );
+};
+
+const MarketBalancePanel = () => {
+  const { user } = useAuth();
+  const [balance, setBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/cp/balance').then((res) => {
+      if (!mounted) return;
+      setBalance(res.data?.balance ?? null);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, []);
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Balance</div>
+      <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(balance ?? user?.cp ?? 0).toLocaleString()} />
+      <Link
+        to="/dashboard/marketplace"
+        className="block text-center px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-accent text-bg hover:brightness-110 transition-all mt-1"
+      >
+        Browse Market
+      </Link>
+    </SidebarPanel>
+  );
+};
+
+const NotificationsFilterPanel = () => {
+  const { search } = useLocation();
+  const filter = new URLSearchParams(search).get('filter') || 'all';
+
+  return (
+    <SidebarPanel>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Filter</div>
+      <div className="flex flex-col gap-1">
+        {[
+          { key: 'all', label: 'All' },
+          { key: 'unread', label: 'Unread' },
+          { key: 'system', label: 'System' },
+          { key: 'achievement', label: 'Achievements' },
+        ].map((f) => {
+          const active = filter === f.key;
+          return (
+            <Link
+              key={f.key}
+              to={`/dashboard/notifications?filter=${f.key}`}
+              className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${
+                active
+                  ? 'bg-accent text-bg'
+                  : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/30'
+              }`}
+            >
+              {f.label}
+            </Link>
+          );
+        })}
+      </div>
+    </SidebarPanel>
+  );
+};
+
+const NavLink = ({ item, active }: { item: typeof PRIMARY_NAV[0]; active: boolean }) => (
+  <Link
+    to={item.path}
+    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+      active
+        ? 'text-accent bg-accent-dim'
+        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+    }`}
+  >
+    <item.icon className="w-5 h-5 shrink-0" />
+    {item.label}
+  </Link>
+);
+
+const RightRailSection = () => {
+  const { pathname } = useLocation();
+
+  if (pathname === '/dashboard') return <DashboardOverviewPanel />;
+  if (pathname.startsWith('/dashboard/competitive')) return <LeaderboardFiltersPanel />;
+  if (pathname.match(/^\/dashboard\/bootcamps\/[^/]+$/)) return <CourseProgressPanel />;
+  if (pathname === '/dashboard/courses') return <CoursesListPanel />;
+  if (pathname.startsWith('/dashboard/courses/')) return <LessonNavPanel />;
+  if (pathname === '/dashboard/marketplace') return <MarketBalancePanel />;
+  if (pathname === '/dashboard/notifications') return <NotificationsFilterPanel />;
+
+  return null;
+};
+
 const Sidebar = () => {
   const { pathname } = useLocation();
 
@@ -28,37 +370,30 @@ const Sidebar = () => {
     return pathname.startsWith(path);
   };
 
+  const isRoomPage = pathname.includes('/rooms/');
+
   return (
     <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[240px] bg-bg border-r border-border z-40">
       {/* Logo */}
-      <div className="h-20 md:h-24 flex items-center px-6 border-b border-border">
+      <div className="h-20 md:h-24 flex items-center px-6 border-b border-border shrink-0">
         <Link to="/dashboard">
           <Logo size="lg" />
         </Link>
       </div>
 
-      {/* Primary nav */}
-      <nav className="flex-1 flex flex-col gap-0.5 px-3 pt-4 overflow-y-auto">
-        {PRIMARY_NAV.map((item) => {
-          const active = isActive(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                active
-                  ? 'text-accent bg-accent-dim'
-                  : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-              }`}
-            >
-              <item.icon className="w-5 h-5 shrink-0" />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Scrollable middle area: primary nav + page panels */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {!isRoomPage && (
+          <nav className="flex flex-col gap-0.5 px-3 pt-4">
+            {PRIMARY_NAV.map((item) => (
+              <NavLink key={item.path} item={item} active={isActive(item.path)} />
+            ))}
+          </nav>
+        )}
+        <RightRailSection />
+      </div>
 
-      {/* Divider + secondary nav */}
+      {/* Secondary nav */}
       <div className="px-3 pb-4 border-t border-border pt-3">
         {SECONDARY_NAV.map((item) => {
           const active = isActive(item.path);
