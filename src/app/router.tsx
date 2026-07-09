@@ -69,6 +69,7 @@ const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampR
 const MyCoursesPage     = lazy(() => import('../features/student/pages/MyCoursesPage'));
 const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLessonPage'));
 const CompetitivePage   = lazy(() => import('../features/student/pages/CompetitivePage'));
+const NetworksPage      = lazy(() => import('../features/student/pages/NetworksPage'));
 
 // Public pages
 const ZeroDayMarketPage = lazy(() => import('../features/marketing/pages/ZeroDayMarketPage'));
@@ -180,6 +181,7 @@ export const AppRouter = () => {
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/competitive"  element={<Wrap scope="Competitive"><StudentOnly><CompetitivePage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/networks"    element={<Wrap scope="Networks"><StudentOnly><NetworksPage /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />

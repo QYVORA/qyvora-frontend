@@ -1,17 +1,8 @@
-import type { CommandHandler, TerminalState, CommandResult, PipelineStage } from '../types';
+import type { CommandHandler, TerminalState, CommandResult, PipelineStage, InternalCommandResult } from '../types';
 import * as handlers from './handlers';
 import { resolvePath, findNode } from './filesystem';
 import { expandVars, applyGlobbing } from './parser';
 import { findNode as findNodeFs } from './filesystem';
-
-type StateOverride = Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot' | 'history' | 'inMsfConsole'>>;
-
-interface InternalCommandResult extends CommandResult {
-  stateOverride?: StateOverride;
-  clearLine?: boolean;
-  exit?: boolean;
-  interactive?: boolean;
-}
 
 const commandMap: Record<string, CommandHandler> = {
   ls: handlers.ls,
@@ -199,7 +190,7 @@ export function executeCommandInternal(
   } as any;
 }
 
-export function executeCommand(input: string, state: TerminalState): CommandResult & { _clearLine?: boolean; _exit?: boolean; _stateOverride?: StateOverride } {
+export function executeCommand(input: string, state: TerminalState): CommandResult & { _clearLine?: boolean; _exit?: boolean; _stateOverride?: InternalCommandResult['stateOverride'] } {
   const expandedInput = input.replace(/\$(\w+|\?)/g, (match, varName) => {
     if (varName === '?') return String(state.lastExitCode);
     return state.env[varName] || '';
