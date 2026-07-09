@@ -19,6 +19,7 @@ import type { StudentBootcampCardData } from '@/features/student/components/Stud
 import {
   DashboardHero, ActiveDeployments,
 } from '@/features/student/components/dashboard';
+import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
@@ -77,6 +78,7 @@ const Dashboard = () => {
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
+  const [terminalOpen, setTerminalOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -156,6 +158,7 @@ const Dashboard = () => {
             rankName={_r?.name || 'Candidate'}
             visitDates={visitDates}
             loading={loading}
+            onOpenTerminal={() => setTerminalOpen(true)}
           />
         </div>
 
@@ -188,6 +191,13 @@ const Dashboard = () => {
           }}
         />
       )}
+
+      <SimulatedTerminal
+        open={terminalOpen}
+        onOpenChange={setTerminalOpen}
+        context={{ type: 'dashboard' }}
+        mode="modal"
+      />
     </div>
   );
 };
