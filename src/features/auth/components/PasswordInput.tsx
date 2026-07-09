@@ -10,6 +10,7 @@ interface PasswordInputProps {
   required?: boolean;
   shake?: boolean;
   onAnimationEnd?: () => void;
+  autoComplete?: string;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
@@ -19,6 +20,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   required = true,
   shake = false,
   onAnimationEnd,
+  autoComplete,
 }) => {
   const [show, setShow] = useState(false);
   return (
@@ -32,6 +34,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         name={name}
         required={required}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className={`${INPUT_BASE}${shake ? ' input-error' : ''}`}
       />
       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />

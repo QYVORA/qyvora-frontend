@@ -62,6 +62,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <PasswordInput
             id="login-password"
             name="password"
+            autoComplete="current-password"
             shake={shakePassword}
             onAnimationEnd={onAnimationEnd}
           />
