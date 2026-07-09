@@ -51,6 +51,8 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const stateRef = useRef<TerminalState>(createInitialState(context));
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const streamingRef = useRef<boolean>(false);
+  const tabTimingRef = useRef<{ time: number; prefix: string }>({ time: 0, prefix: '' });
 
   const [lines, setLines] = useState<TerminalLine[]>(() => {
     let state = stateRef.current;
@@ -81,6 +83,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
   const getPromptTop = useCallback((s: TerminalState) => {
     const cwdDisplay = s.cwd === s.home ? '~' : s.cwd.replace(s.home, '~');
+    if (s.inMsfConsole) return '';
     return `┌──(${s.user}㉿${s.hostname})-[${cwdDisplay}]`;
   }, []);
 
@@ -108,6 +111,11 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     }
   }, []);
 
+  const [reverseSearchActive, setReverseSearchActive] = useState(false);
+  const [reverseSearchQuery, setReverseSearchQuery] = useState('');
+  const [reverseSearchResults, setReverseSearchResults] = useState<number[]>([]);
+  const [reverseSearchIdx, setReverseSearchIdx] = useState(-1);
+
   const process = useCallback((cmd: string) => {
     const trimmed = cmd.trim();
     if (!trimmed) return;
@@ -134,6 +142,145 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   }, [onClose, getPromptTop]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.ctrlKey && e.key === 'c') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (streamingRef.current) {
+        streamingRef.current = false;
+      }
+      if (input) {
+        setLines(prev => [...prev, { type: 'input', text: `${getInputPrefix(stateRef.current)}${input}^C` }]);
+        setInput('');
+        setPromptTop(getPromptTop(stateRef.current));
+      }
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'a') {
+      e.preventDefault();
+      e.stopPropagation();
+      inputRef.current?.setSelectionRange(0, 0);
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'e') {
+      e.preventDefault();
+      e.stopPropagation();
+      const len = input.length;
+      inputRef.current?.setSelectionRange(len, len);
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'u') {
+      e.preventDefault();
+      e.stopPropagation();
+      setInput('');
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'k') {
+      e.preventDefault();
+      e.stopPropagation();
+      const selStart = inputRef.current?.selectionStart || 0;
+      setInput(input.slice(0, selStart));
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'w') {
+      e.preventDefault();
+      e.stopPropagation();
+      const selStart = inputRef.current?.selectionStart || input.length;
+      const before = input.slice(0, selStart);
+      const after = input.slice(selStart);
+      const trimmed = before.replace(/\s*\S+$/, '');
+      setInput(trimmed + after);
+      return;
+    }
+
+    if (e.ctrlKey && e.key === 'r') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!reverseSearchActive) {
+        setReverseSearchActive(true);
+        setReverseSearchQuery('');
+        setReverseSearchResults([]);
+        setReverseSearchIdx(-1);
+      } else {
+        const idx = reverseSearchIdx;
+        const results = reverseSearchResults;
+        if (results.length > 0) {
+          const nextIdx = (idx - 1 + results.length) % results.length;
+          setReverseSearchIdx(nextIdx);
+          setInput(stateRef.current.history[results[nextIdx]]);
+        }
+      }
+      return;
+    }
+
+    if (reverseSearchActive) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        setReverseSearchActive(false);
+        setReverseSearchQuery('');
+        setReverseSearchResults([]);
+        setReverseSearchIdx(-1);
+        return;
+      }
+      if (e.key === 'Escape' || (e.ctrlKey && e.key === 'g')) {
+        e.preventDefault();
+        e.stopPropagation();
+        setReverseSearchActive(false);
+        setReverseSearchQuery('');
+        setReverseSearchResults([]);
+        setReverseSearchIdx(-1);
+        setInput('');
+        return;
+      }
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        e.stopPropagation();
+        const newQuery = reverseSearchQuery.slice(0, -1);
+        setReverseSearchQuery(newQuery);
+        if (newQuery) {
+          const results = stateRef.current.history
+            .map((cmd, i) => ({ cmd, i }))
+            .filter(({ cmd }) => cmd.includes(newQuery))
+            .map(({ i }) => i);
+          setReverseSearchResults(results);
+          if (results.length > 0) {
+            setReverseSearchIdx(results.length - 1);
+            setInput(stateRef.current.history[results[results.length - 1]]);
+          } else {
+            setReverseSearchIdx(-1);
+          }
+        } else {
+          setReverseSearchResults([]);
+          setReverseSearchIdx(-1);
+        }
+        return;
+      }
+      if (e.key.length === 1) {
+        e.preventDefault();
+        e.stopPropagation();
+        const newQuery = reverseSearchQuery + e.key;
+        setReverseSearchQuery(newQuery);
+        const results = stateRef.current.history
+          .map((cmd, i) => ({ cmd, i }))
+          .filter(({ cmd }) => cmd.includes(newQuery))
+          .map(({ i }) => i);
+        setReverseSearchResults(results);
+        if (results.length > 0) {
+          setReverseSearchIdx(results.length - 1);
+          setInput(stateRef.current.history[results[results.length - 1]]);
+        } else {
+          setReverseSearchIdx(-1);
+        }
+        return;
+      }
+      return;
+    }
+
     if (e.key === 'Enter') {
       process(input);
       setInput('');
@@ -174,6 +321,10 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       const parts = trimmed.split(/\s+/);
       const lastPart = parts[parts.length - 1];
 
+      const now = Date.now();
+      const isDoubleTab = (now - tabTimingRef.current.time < 500) && tabTimingRef.current.prefix === lastPart;
+      tabTimingRef.current = { time: now, prefix: lastPart };
+
       const matches = collectTabMatches(stateRef.current.root, lastPart);
 
       if (matches.length === 1) {
@@ -185,7 +336,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
           while (i < prefix.length && i < match.length && prefix[i] === match[i]) i++;
           return prefix.slice(0, i);
         }, matches[0]);
-        if (commonPrefix && commonPrefix !== lastPart) {
+        if (commonPrefix && commonPrefix !== lastPart && !isDoubleTab) {
           parts[parts.length - 1] = commonPrefix;
           setInput(parts.join(' '));
         } else {
@@ -193,7 +344,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         }
       }
     }
-  }, [input, process, historyIndex]);
+  }, [input, process, historyIndex, getPromptTop, reverseSearchActive, reverseSearchQuery, reverseSearchResults, reverseSearchIdx]);
 
   useEffect(() => {
     const timer = setTimeout(() => focusInput(), 50);
@@ -260,11 +411,18 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             </div>
           );
         })}
-        <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap leading-relaxed">
-          {promptTop}
-        </div>
+        {(promptTop || stateRef.current.inMsfConsole) && (
+          <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap leading-relaxed">
+            {promptTop}
+          </div>
+        )}
         <div className="flex items-center" style={{ color: KALI_GREEN }}>
           <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
+          {reverseSearchActive && (
+            <span className="shrink-0 whitespace-nowrap leading-relaxed text-[#ffbd2e] mr-1">
+              (reverse-i-search)`{reverseSearchQuery}':
+            </span>
+          )}
           <input
             ref={inputRef}
             type="text"
