@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu, List
+  Zap, BookOpen, Bell, LogOut, ChevronDown, ChevronRight, ArrowLeft, Menu, List, Terminal
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
@@ -232,6 +232,13 @@ const StudentTopbar = () => {
                         </button>
                       </>
                     )}
+                    <button
+                      onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                      className="w-11 h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                      aria-label="Open terminal"
+                    >
+                      <Terminal className="w-5 h-5" />
+                    </button>
                     <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                       <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                     </Link>
@@ -297,8 +304,15 @@ const StudentTopbar = () => {
                 </span>
               </div>
 
-              {/* Right: profile only */}
+              {/* Right: terminal + profile */}
               <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                  className="w-11 h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                  aria-label="Open terminal"
+                >
+                  <Terminal className="w-5 h-5" />
+                </button>
                 <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                   <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                 </Link>
@@ -403,8 +417,17 @@ const StudentTopbar = () => {
             </nav>
           </div>
 
-          {/* Right: notifications + profile */}
+          {/* Right: terminal + notifications + profile */}
           <div className="flex items-center gap-2 md:gap-3 md:ml-8">
+
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+              className="hidden md:flex p-3 md:p-3.5 items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+              aria-label="Open terminal"
+              title="Open terminal (Ctrl+`)"
+            >
+              <Terminal className="w-5 h-5" />
+            </button>
 
             <div ref={notifRef} className="relative">
               <button

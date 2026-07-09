@@ -21,6 +21,10 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   onToggleFullscreen,
   isFullscreen,
 }) => {
+  const stateRef = useRef<TerminalState>(createInitialState(context));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [lines, setLines] = useState<TerminalLine[]>(() => {
     const initial: TerminalLine[] = [
       { type: 'system', text: 'QYVORA Simulated Terminal v2.0' },
@@ -28,7 +32,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       { type: 'system', text: '────────────────────────────────────────────' },
     ];
 
-    let state = createInitialState(context);
+    let state = stateRef.current;
 
     if (context?.type === 'bootcamp' && context.bootcampId) {
       state = injectBootcampContent(state, context.bootcampId, context.phaseId, context.roomId);
@@ -50,10 +54,6 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   });
 
   const [input, setInput] = useState('');
-  const [state, setInternalState] = useState<TerminalState>(createInitialState(context));
-  const stateRef = useRef(state);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
   const focusInput = useCallback(() => {
@@ -94,14 +94,12 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       if (r._exit) {
         newLines.push({ type: 'system', text: '[Session terminated. Close and reopen to restart.]' });
         stateRef.current = result.newState;
-        setInternalState(result.newState);
         setLines(prev => [...prev, ...newLines]);
         return;
       }
     }
 
     stateRef.current = result.newState;
-    setInternalState(result.newState);
     setLines(prev => [...prev, ...newLines]);
     setHistoryIndex(-1);
   }, []);
