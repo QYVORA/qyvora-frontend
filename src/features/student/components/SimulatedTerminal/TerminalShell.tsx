@@ -170,28 +170,28 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const prompt = getPrompt(stateRef.current);
 
   return (
-    <div className="flex flex-col h-full bg-black">
-      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#1a1a2e] shrink-0">
+    <div className="flex flex-col h-full bg-[#0d1b2a] border border-[#1e3a5f]">
+      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#152238] shrink-0 min-h-0">
         <button
           onClick={onClose}
-          className="h-3 w-3 rounded-full bg-[#ff5555] hover:brightness-125 transition-all focus:outline-none"
+          className="h-2.5 w-2.5 min-h-0 rounded-full bg-[#ff5555] hover:brightness-125 transition-all focus:outline-none"
           aria-label="Close terminal"
         />
         <button
           onClick={onToggleFullscreen}
-          className="h-3 w-3 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
+          className="h-2.5 w-2.5 min-h-0 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
           aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
         />
-        <span className="h-3 w-3 rounded-full bg-[#28c840] opacity-80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840] opacity-80" />
       </div>
 
       <div
         ref={containerRef}
         className="flex-1 overflow-y-auto p-3 font-mono text-sm leading-relaxed"
         style={{
-          background: '#000',
+          background: '#0d1b2a',
           scrollbarWidth: 'thin',
-          scrollbarColor: '#333 #000',
+          scrollbarColor: '#1e3a5f transparent',
         }}
         onClick={focusInput}
       >
@@ -202,12 +202,12 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
               line.type === 'input'
                 ? 'text-[#33ff00]'
                 : line.type === 'output'
-                ? 'text-[#33ff00]'
+                ? 'text-[#e6edf3]'
                 : line.type === 'error'
                 ? 'text-[#ff5555]'
                 : line.type === 'prompt'
                 ? 'text-[#33ff00]'
-                : 'text-[#33ff00]/50'
+                : 'text-[#e6edf3]/50'
             }`}
           >
             {line.text}
@@ -216,7 +216,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         <div className="flex text-[#33ff00]">
           <span className="shrink-0 whitespace-nowrap">{prompt}</span>
           <span>{input}</span>
-          <span className="w-2 bg-[#33ff00] animate-pulse" />
+          <span className="w-2 h-4 bg-[#33ff00] animate-pulse" />
         </div>
       </div>
 
