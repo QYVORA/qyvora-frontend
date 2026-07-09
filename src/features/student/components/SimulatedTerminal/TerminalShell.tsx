@@ -170,8 +170,8 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const prompt = getPrompt(stateRef.current);
 
   return (
-    <div className="flex flex-col h-full bg-[#0d1b2a] border border-[#1e3a5f]">
-      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#152238] shrink-0 min-h-0">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#152238] shrink-0">
         <button
           onClick={onClose}
           className="h-2.5 w-2.5 min-h-0 rounded-full bg-[#ff5555] hover:brightness-125 transition-all focus:outline-none"
@@ -187,11 +187,11 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-3 font-mono text-sm leading-relaxed"
+        className="flex-1 overflow-y-auto px-3 py-2 font-mono text-sm leading-relaxed"
         style={{
-          background: '#0d1b2a',
+          background: '#221b30',
           scrollbarWidth: 'thin',
-          scrollbarColor: '#1e3a5f transparent',
+          scrollbarColor: '#3d2e5c transparent',
         }}
         onClick={focusInput}
       >
@@ -213,25 +213,23 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             {line.text}
           </div>
         ))}
-        <div className="flex text-[#33ff00]">
+        <div className="flex items-center text-[#33ff00]">
           <span className="shrink-0 whitespace-nowrap">{prompt}</span>
-          <span>{input}</span>
-          <span className="w-2 h-4 bg-[#33ff00] animate-pulse" />
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="flex-1 bg-transparent border-none outline-none text-[#33ff00] font-mono text-sm p-0 m-0 min-h-0 h-auto leading-normal caret-[#33ff00]"
+            spellCheck={false}
+            autoComplete="off"
+            autoFocus
+            aria-label="Terminal input"
+          />
+          <span className="w-2 h-4 bg-[#33ff00] animate-pulse shrink-0" />
         </div>
       </div>
-
-      <input
-        ref={inputRef}
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className="absolute opacity-0 w-0 h-0 pointer-events-none"
-        autoFocus
-        spellCheck={false}
-        autoComplete="off"
-        aria-label="Terminal input"
-      />
     </div>
   );
 };
