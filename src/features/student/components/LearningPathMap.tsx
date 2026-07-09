@@ -64,12 +64,12 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between px-5 md:px-0">
+      <div className="flex items-center justify-between px-4 md:px-0">
         <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Learning Path</h3>
         <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-2 px-5 md:px-0 scroll-hover">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 px-4 md:px-0">
         {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
           const state = getPhaseState(phase);
           const { roomsCompleted, totalRooms } = getPhaseProgress(phase);
@@ -77,7 +77,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           const pillContent = (
             <div
-              className={`flex-none flex flex-col items-center gap-1.5 p-3 rounded-xl border min-w-[120px] w-auto transition-all duration-300 ${
+              className={`flex flex-col p-3 rounded-xl border transition-all duration-300 ${
                 state === 'locked'
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'
@@ -85,74 +85,64 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                   : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(102,184,112,0.25)]'
               }`}
             >
-              <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs ${
-                state === 'completed'
-                  ? 'bg-accent text-bg'
-                  : state === 'current'
-                  ? 'bg-accent/20 text-accent'
-                  : 'bg-bg-elevated text-text-muted'
-              }`}>
-                {state === 'completed' ? (
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                ) : state === 'locked' ? (
-                  <Lock className="w-3.5 h-3.5" />
-                ) : (
-                  <span className="text-xs font-black">{idx + 1}</span>
-                )}
-              </div>
-              <div className="text-center leading-tight">
-                <div className={`text-[8px] font-black uppercase tracking-widest ${
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] shrink-0 ${
+                  state === 'completed'
+                    ? 'bg-accent text-bg'
+                    : state === 'current'
+                    ? 'bg-accent/20 text-accent'
+                    : 'bg-bg-elevated text-text-muted'
+                }`}>
+                  {state === 'completed' ? (
+                    <CheckCircle2 className="w-3 h-3" />
+                  ) : state === 'locked' ? (
+                    <Lock className="w-3 h-3" />
+                  ) : (
+                    <span className="text-[10px] font-black">{idx + 1}</span>
+                  )}
+                </div>
+                <span className={`text-[8px] font-black uppercase tracking-widest ${
                   state === 'locked' ? 'text-text-muted' : 'text-accent'
                 }`}>
                   Phase {idx + 1}
-                </div>
-                <div className={`text-[10px] font-bold leading-tight ${
-                  state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
-                }`}>
-                  {phase.title}
-                </div>
+                </span>
               </div>
+              <h4 className={`text-[10px] font-bold leading-snug mb-1 ${
+                state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
+              }`}>
+                {phase.title}
+              </h4>
               {state !== 'locked' && (
-                <div className="text-[9px] font-mono text-text-muted">
-                  {roomsCompleted}/{totalRooms} rooms
-                </div>
-              )}
-              {state === 'current' && totalRooms > 0 && (
-                <div className="w-full h-1 rounded-full bg-accent-dim/20 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-accent transition-all duration-700"
-                    style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
-                  />
+                <div className="mt-auto pt-1">
+                  <div className="text-[9px] font-mono text-text-muted mb-1">
+                    {roomsCompleted}/{totalRooms} rooms
+                  </div>
+                  {state === 'current' && totalRooms > 0 && (
+                    <div className="w-full h-1 rounded-full bg-accent-dim/20 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-accent transition-all duration-700"
+                        style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           );
 
           return (
-            <React.Fragment key={phase.id}>
-              <ScrollReveal delay={idx * 0.07} className="flex-none">
-                {state !== 'locked' && firstRoomId ? (
-                  <Link
-                    to={`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${firstRoomId}`}
-                    className="block"
-                  >
-                    {pillContent}
-                  </Link>
-                ) : (
-                  pillContent
-                )}
-              </ScrollReveal>
-              {idx < BOOTCAMP_CONFIG.phases.length - 1 && (
-                <div className={`flex-none flex items-center w-5 ${
-                  state === 'locked' ? 'opacity-30' : ''
-                }`}>
-                  <svg viewBox="0 0 20 20" className="w-full h-4 text-border" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <line x1="0" y1="10" x2="16" y2="10" />
-                    <path d="M14 6l4 4-4 4" />
-                  </svg>
-                </div>
+            <ScrollReveal key={phase.id} delay={idx * 0.07} className="flex">
+              {state !== 'locked' && firstRoomId ? (
+                <Link
+                  to={`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${firstRoomId}`}
+                  className="flex-1"
+                >
+                  {pillContent}
+                </Link>
+              ) : (
+                <div className="flex-1">{pillContent}</div>
               )}
-            </React.Fragment>
+            </ScrollReveal>
           );
         })}
       </div>
