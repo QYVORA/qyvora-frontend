@@ -33,6 +33,7 @@ export function createInitialState(context?: TerminalContext): TerminalState {
       grep: 'grep --color=auto',
     },
     lastExitCode: 0,
+    discoveredIps: [],
   };
 }
 

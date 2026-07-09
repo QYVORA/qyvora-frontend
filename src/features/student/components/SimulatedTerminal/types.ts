@@ -44,6 +44,7 @@ export interface TerminalState {
   lastExitCode: number;
   inMsfConsole?: boolean;
   stdin?: string;
+  discoveredIps: string[];
 }
 
 export interface PipelineStage {
@@ -62,6 +63,13 @@ export interface TerminalContext {
   roomId?: string;
   courseId?: string;
   lessonId?: string;
+}
+
+export interface InternalCommandResult extends CommandResult {
+  stateOverride?: Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot' | 'history' | 'inMsfConsole' | 'discoveredIps'>>;
+  clearLine?: boolean;
+  exit?: boolean;
+  interactive?: boolean;
 }
 
 export interface SimulatedTerminalProps {
