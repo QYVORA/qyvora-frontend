@@ -101,94 +101,8 @@ const MyCoursesPage: React.FC = () => {
     <div className="bg-bg min-h-screen">
       <SEO title="My Courses" description="Your purchased courses." />
 
-      <div className="lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24 lg:flex lg:flex-row lg:overflow-hidden">
-        {/* ── LEFT SIDEBAR ── */}
-        <div className="w-full lg:w-72 xl:w-80 lg:flex-none lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover lg:border-r lg:border-border lg:bg-bg">
-          <div className="px-2 pt-4 pb-6 lg:p-5 space-y-4">
-            {/* Progress card */}
-            <div className="hidden lg:block relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
-              <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-              <div className="relative z-10">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">Overall progress</p>
-                <div className="text-5xl font-black text-accent font-mono mb-3">{overallPct}%</div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-bg/40 mb-3">
-                  <div className="h-full rounded-full bg-accent transition-all duration-700" style={{ width: `${overallPct}%` }} />
-                </div>
-                <p className="text-xs text-text-secondary">{completedCourses} of {totalCourses} courses completed</p>
-              </div>
-            </div>
+      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
 
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border-2 border-border bg-bg-card p-4 flex flex-col gap-1">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <BookOpen className="w-4 h-4 text-accent" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Courses</span>
-                </div>
-                <div className="font-mono text-2xl font-black text-text-primary">
-                  {completedCourses}<span className="text-sm text-text-muted font-bold">/{totalCourses}</span>
-                </div>
-              </div>
-              <div className="rounded-2xl border-2 border-border bg-bg-card p-4 flex flex-col gap-1">
-                <div className="flex items-center gap-2 text-text-muted mb-1">
-                  <BarChart3 className="w-4 h-4 text-accent" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">In Progress</span>
-                </div>
-                <div className="font-mono text-2xl font-black text-text-primary">
-                  {inProgressCourses}
-                </div>
-              </div>
-            </div>
-
-            {/* Course quick-nav */}
-            <div className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card">
-              <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-                <Trophy className="h-4 w-4 text-accent shrink-0" />
-                <h3 className="text-xs font-black uppercase tracking-widest text-text-primary">Courses</h3>
-              </div>
-              <div className="divide-y divide-border/50">
-                {availableCourses.length === 0 && (
-                  <div className="px-4 py-6 text-center">
-                    <p className="text-[10px] text-text-muted">No courses unlocked yet.</p>
-                  </div>
-                )}
-                {availableCourses.map((c, idx) => {
-                  const p = courseProgress[c.id];
-                  const isComplete = p && p.completed >= p.total;
-                  const isInProgress = p && p.completed > 0 && !isComplete;
-                  return (
-                    <Link
-                      key={c.id}
-                      to={`/dashboard/courses/${c.id}`}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-accent-dim/10 transition-colors"
-                    >
-                      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border font-mono text-[10px] font-black ${
-                        isComplete ? 'border-accent/30 bg-accent text-bg'
-                          : isInProgress ? 'border-accent/30 bg-accent-dim text-accent'
-                          : 'border-border bg-bg text-text-muted'
-                      }`}>
-                        {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" />
-                          : String(idx + 1).padStart(2, '0')}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-text-primary truncate">{c.title}</p>
-                      </div>
-                      {isInProgress && (
-                        <span className="text-[10px] font-mono font-black text-accent shrink-0">
-                          {Math.round((p.completed / p.total) * 100)}%
-                        </span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── RIGHT MAIN ── */}
-        <div className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover">
-          <div className="px-2 pt-4 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
             {/* Header */}
             <div className="mb-8">
               <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-text-muted">
@@ -400,8 +314,6 @@ const MyCoursesPage: React.FC = () => {
                 </Link>
               </div>
             )}
-          </div>
-        </div>
       </div>
     </div>
   );

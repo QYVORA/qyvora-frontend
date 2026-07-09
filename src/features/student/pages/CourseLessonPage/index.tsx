@@ -270,57 +270,49 @@ const CourseLessonPage: React.FC = () => {
   );
 
   return (
-    <div className="bg-bg overflow-hidden h-screen flex flex-col">
+    <div className="bg-bg">
       <SEO title={`${course.title} — ${lesson.title}`} description={course.description} />
 
-      <div className="fixed inset-0 top-20 md:top-24 flex flex-row overflow-hidden bg-bg">
-        <aside className="hidden md:flex md:flex-col shrink-0 bg-bg border-r border-border overflow-hidden transition-all duration-300 w-72 xl:w-80">
-          <div className="w-72 xl:w-80 h-full overflow-y-auto overscroll-contain scroll-hover">
-            {lessonsList}
-          </div>
-        </aside>
-
-        <AnimatePresence>
-          {sidebarOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setSidebarOpen(false)}
-                className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm md:hidden"
-              />
-              <motion.aside
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-                className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg md:hidden overflow-y-auto"
-              >
-                <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
-                  <div>
-                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Course</p>
-                    <p className="text-xs font-black text-text-primary">Lesson Navigator</p>
-                  </div>
-                  <button
-                    onClick={() => setSidebarOpen(false)}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
-                    aria-label="Close sidebar"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm md:hidden"
+            />
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+              className="fixed left-0 top-0 bottom-0 z-[70] w-[92vw] max-w-[360px] flex flex-col bg-bg md:hidden overflow-y-auto"
+            >
+              <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Course</p>
+                  <p className="text-xs font-black text-text-primary">Lesson Navigator</p>
                 </div>
-                <div className="flex-1 overflow-y-auto scroll-hover">
-                  {lessonsList}
-                </div>
-              </motion.aside>
-            </>
-          )}
-        </AnimatePresence>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
+                  aria-label="Close sidebar"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto scroll-hover">
+                {lessonsList}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
-        <main className="flex-1 min-h-0 min-w-0 overflow-y-auto overscroll-contain scroll-hover bg-bg">
-          <div className="mx-auto w-full max-w-6xl md:max-w-[1600px] px-5 sm:px-6 md:px-8 py-8 md:py-12 pb-safe-bottom">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
             <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
               <div className="mb-3 flex items-center justify-between gap-2">
                 <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>
@@ -382,8 +374,6 @@ const CourseLessonPage: React.FC = () => {
                 </Link>
               ) : null}
             </div>
-          </div>
-        </main>
       </div>
     </div>
   );

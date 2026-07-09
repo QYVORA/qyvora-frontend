@@ -15,7 +15,6 @@ import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } fro
 import SEO from '@/shared/components/SEO';
 import PageLoader from '@/shared/components/PageLoader';
 import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
-import SidebarProgress from '@/features/student/components/bootcamp-course/SidebarProgress';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
@@ -134,51 +133,7 @@ const BootcampCourse: React.FC = () => {
         mobileOnly
       />
 
-      <div className="
-        lg:fixed lg:left-0 lg:right-0 lg:bottom-0 lg:top-24
-        lg:flex lg:flex-row lg:overflow-hidden
-      ">
-
-        {/* ── LEFT SIDEBAR ── */}
-        <div className="
-          w-full
-          lg:w-72 xl:w-80 lg:flex-none lg:h-full
-          lg:overflow-y-auto lg:overscroll-contain scroll-hover
-          lg:border-r lg:border-border lg:bg-bg
-        ">
-          {loading ? (
-            <div className="p-6 space-y-8 animate-pulse">
-              <div className="space-y-4">
-                <div className="h-4 w-24 bg-accent-dim/20 rounded" />
-                <div className="h-2 w-full bg-accent-dim/20 rounded-full" />
-                <div className="h-3 w-1/2 bg-accent-dim/20 rounded" />
-              </div>
-              <div className="space-y-6 pt-4">
-                {[0, 1, 2, 3].map(i => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="h-5 w-5 bg-accent-dim/20 rounded-full" />
-                    <div className="h-4 w-32 bg-accent-dim/20 rounded" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <SidebarProgress
-              progressValue={progressValue}
-              progressNum={progressNum}
-              doneRooms={doneRooms}
-              totalRooms={totalRooms}
-              doneModules={doneModules}
-              totalModules={totalModules}
-              courseModules={course?.modules || []}
-              moduleProgressMap={moduleProgressMap}
-            />
-          )}
-        </div>
-
-        {/* ── RIGHT MAIN ── */}
-        <div className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover">
-          <div className="px-2 pb-16 lg:px-8 lg:py-6 space-y-8 max-w-5xl">
+      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
             {/* Desktop header */}
             <CourseHeader
               bootcampId={bootcampId || ''}
@@ -278,8 +233,6 @@ const BootcampCourse: React.FC = () => {
                 );
               })
             )}
-          </div>
-        </div>
       </div>
     </div>
   );
