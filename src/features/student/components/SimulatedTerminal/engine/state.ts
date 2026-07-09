@@ -1,6 +1,9 @@
-import type { TerminalState, TerminalContext, TerminalLine } from '../types';
+import type { TerminalState, TerminalContext, TerminalLine, PipelineStage } from '../types';
 import { buildDefaultFilesystem } from '../data/defaultFilesystem';
-import { executeCommand } from './commands';
+import { executeCommandInternal } from './commands';
+import { parse, expandHistory, expandVars, applyGlobbing, executeSequence } from './parser';
+import { resolvePath, findNode, addChild, updateNodeAtPath } from './filesystem';
+import { pathBasename, pathDirname } from './filesystem';
 
 export function createInitialState(context?: TerminalContext): TerminalState {
   const root = buildDefaultFilesystem();
@@ -33,6 +36,72 @@ export function createInitialState(context?: TerminalContext): TerminalState {
   };
 }
 
+function executeStage(
+  stage: PipelineStage,
+  state: TerminalState,
+): { result: ReturnType<typeof executeCommandInternal>; newState: TerminalState } {
+  let currentState = state;
+
+  if (stage.stdinRedirect) {
+    const node = findNode(currentState.root, stage.stdinRedirect.path, currentState.cwd, currentState.home);
+    if (node && node.content !== undefined) {
+      stage = { ...stage, stdin: node.content };
+    } else {
+      return {
+        result: { output: '', error: `bash: ${stage.stdinRedirect.path}: No such file or directory`, exitCode: 1 },
+        newState: currentState,
+      };
+    }
+  }
+
+  const globbedArgs = applyGlobbing(stage.args, currentState, currentState.cwd, currentState.home);
+  stage = { ...stage, args: globbedArgs };
+
+  const result = executeCommandInternal(stage, currentState) as ReturnType<typeof executeCommandInternal> & { _stateOverride?: any };
+
+  let newState = currentState;
+  if (result._stateOverride) {
+    newState = { ...currentState, ...result._stateOverride };
+  }
+
+  if (stage.stdoutRedirect) {
+    const outputContent = result.output || '';
+    const resolvedPath = resolvePath(stage.stdoutRedirect.path, currentState.cwd, currentState.home);
+    const parentPath = pathDirname(resolvedPath);
+    const name = pathBasename(resolvedPath);
+    const parentNode = findNode(newState.root, parentPath, '/', newState.home);
+
+    if (parentNode && parentNode.type === 'dir') {
+      const existing = parentNode.children.find(c => c.name === name);
+      if (existing) {
+        if (stage.stdoutRedirect.append) {
+          existing.content = (existing.content || '') + outputContent;
+        } else {
+          existing.content = outputContent;
+        }
+      } else {
+        parentNode.children.push({
+          name,
+          type: 'file',
+          content: outputContent,
+          permissions: '-rw-r--r--',
+          owner: newState.user,
+          group: newState.user,
+          size: outputContent.length,
+          children: [],
+        });
+      }
+    }
+
+    return {
+      result: { output: '', exitCode: result.exitCode },
+      newState,
+    };
+  }
+
+  return { result, newState };
+}
+
 export function processInput(
   input: string,
   state: TerminalState,
@@ -42,26 +111,67 @@ export function processInput(
 
   const lines: TerminalLine[] = [];
 
-  const expanded = state.aliases[trimmed.split(' ')[0]]
-    ? trimmed.replace(/^\S+/, state.aliases[trimmed.split(' ')[0]])
-    : trimmed;
+  const historyExpanded = expandHistory(trimmed, state);
 
-  const result = executeCommand(expanded, state);
-  const stateOverride = (result as any)._stateOverride as Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot'>> | undefined;
+  const aliasExpanded = state.aliases[historyExpanded.split(' ')[0]]
+    ? historyExpanded.replace(/^\S+/, state.aliases[historyExpanded.split(' ')[0]])
+    : historyExpanded;
+
+  const parsed = parse(aliasExpanded);
+
+  if (!parsed) {
+    return { lines: [], newState: state };
+  }
+
+  let currentState = state;
+  let finalOutput = '';
+  let finalError = '';
+  let finalExitCode = 0;
+
+  executeSequence(parsed, currentState, executeStage);
+
+  let seqPtr: typeof parsed | undefined = parsed;
+  while (seqPtr) {
+    const { result, newState } = executeStage(seqPtr.stage, currentState);
+    currentState = newState;
+
+    if (result.output) finalOutput = (finalOutput ? finalOutput + '\n' : '') + result.output;
+    if (result.error) finalError = (finalError ? finalError + '\n' : '') + result.error;
+    finalExitCode = result.exitCode;
+
+    if (result.streamLines) {
+      finalOutput = result.streamLines.join('\n');
+    }
+
+    if (seqPtr.operator === '&&' && finalExitCode !== 0) break;
+    if (seqPtr.operator === '||' && finalExitCode === 0) break;
+
+    seqPtr = seqPtr.next || undefined;
+  }
 
   lines.push({ type: 'input', text: `${getInputPrefix(state)}${trimmed}` });
-  if (result.output) lines.push({ type: 'output', text: result.output });
-  if (result.error) lines.push({ type: 'error', text: result.error });
+  if (finalOutput) lines.push({ type: 'output', text: finalOutput });
+  if (finalError) lines.push({ type: 'error', text: finalError });
 
   const newState: TerminalState = {
-    ...state,
-    ...(stateOverride || {}),
-    history: [...state.history, trimmed],
+    ...currentState,
+    history: [...currentState.history, trimmed],
     historyIndex: -1,
-    lastExitCode: result.exitCode,
+    lastExitCode: finalExitCode,
   };
 
-  return { lines, newState, _clearLine: (result as any)._clearLine, _exit: (result as any)._exit };
+  const lastResult = (() => {
+    let ptr = parsed;
+    while (ptr.next) ptr = ptr.next;
+    return executeStage(ptr.stage, currentState);
+  })();
+
+  return {
+    lines,
+    newState,
+    _clearLine: (lastResult.result as any)._clearLine,
+    _exit: (lastResult.result as any)._exit,
+  };
 }
 
 export function getPrompt(state: TerminalState): string {
@@ -72,5 +182,6 @@ export function getPrompt(state: TerminalState): string {
 
 export function getInputPrefix(state: TerminalState): string {
   const indicator = state.isRoot ? '#' : '$';
+  if (state.inMsfConsole) return 'msf6 > ';
   return `└─${indicator} `;
 }

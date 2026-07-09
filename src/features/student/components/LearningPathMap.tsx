@@ -69,7 +69,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
         <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 px-4 md:px-0">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 px-4 md:px-0">
         {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
           const state = getPhaseState(phase);
           const { roomsCompleted, totalRooms } = getPhaseProgress(phase);
@@ -77,7 +77,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           const pillContent = (
             <div
-              className={`flex flex-col p-3 rounded-xl border transition-all duration-300 ${
+              className={`flex flex-col p-4 rounded-xl border transition-all duration-300 ${
                 state === 'locked'
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'
@@ -85,8 +85,8 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                   : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(102,184,112,0.25)]'
               }`}
             >
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] shrink-0 ${
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                   state === 'completed'
                     ? 'bg-accent text-bg'
                     : state === 'current'
@@ -94,31 +94,31 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                     : 'bg-bg-elevated text-text-muted'
                 }`}>
                   {state === 'completed' ? (
-                    <CheckCircle2 className="w-3 h-3" />
+                    <CheckCircle2 className="w-4 h-4" />
                   ) : state === 'locked' ? (
-                    <Lock className="w-3 h-3" />
+                    <Lock className="w-4 h-4" />
                   ) : (
-                    <span className="text-[10px] font-black">{idx + 1}</span>
+                    <span className="text-xs font-black">{idx + 1}</span>
                   )}
                 </div>
-                <span className={`text-[8px] font-black uppercase tracking-widest ${
+                <span className={`text-[10px] font-black uppercase tracking-widest ${
                   state === 'locked' ? 'text-text-muted' : 'text-accent'
                 }`}>
                   Phase {idx + 1}
                 </span>
               </div>
-              <h4 className={`text-[10px] font-bold leading-snug mb-1 ${
+              <h4 className={`text-xs font-bold leading-snug mb-1.5 ${
                 state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
               }`}>
                 {phase.title}
               </h4>
               {state !== 'locked' && (
-                <div className="mt-auto pt-1">
-                  <div className="text-[9px] font-mono text-text-muted mb-1">
+                <div className="mt-auto pt-1.5">
+                  <div className="text-[10px] font-mono text-text-muted mb-1.5">
                     {roomsCompleted}/{totalRooms} rooms
                   </div>
                   {state === 'current' && totalRooms > 0 && (
-                    <div className="w-full h-1 rounded-full bg-accent-dim/20 overflow-hidden">
+                    <div className="w-full h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-accent transition-all duration-700"
                         style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}

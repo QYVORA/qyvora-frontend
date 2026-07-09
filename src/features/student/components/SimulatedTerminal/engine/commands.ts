@@ -1,8 +1,10 @@
-import type { CommandHandler, TerminalState, CommandResult } from '../types';
+import type { CommandHandler, TerminalState, CommandResult, PipelineStage } from '../types';
 import * as handlers from './handlers';
 import { resolvePath, findNode } from './filesystem';
+import { expandVars, applyGlobbing } from './parser';
+import { findNode as findNodeFs } from './filesystem';
 
-type StateOverride = Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot'>>;
+type StateOverride = Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot' | 'history' | 'inMsfConsole'>>;
 
 interface InternalCommandResult extends CommandResult {
   stateOverride?: StateOverride;
@@ -30,6 +32,25 @@ const commandMap: Record<string, CommandHandler> = {
   grep: handlers.grep,
   find: handlers.find,
   sort: handlers.sort,
+  less: handlers.less,
+  more: handlers.more,
+  diff: handlers.diff,
+  ln: handlers.ln,
+  du: handlers.du,
+  df: handlers.df,
+  tar: handlers.tar,
+  zip: handlers.zipCmd,
+  unzip: handlers.unzip,
+  xxd: handlers.xxd,
+  strings: handlers.strings,
+  file: handlers.file,
+  md5sum: handlers.md5sum,
+  sha256sum: handlers.sha256sum,
+  awk: handlers.awk,
+  sed: handlers.sed,
+  cut: handlers.cut,
+  uniq: handlers.uniq,
+  tr: handlers.tr,
   whoami: handlers.whoami,
   id: handlers.id,
   uname: handlers.uname,
@@ -42,6 +63,16 @@ const commandMap: Record<string, CommandHandler> = {
   top: handlers.top,
   kill: handlers.kill,
   sudo: handlers.sudo,
+  free: handlers.free,
+  lsof: handlers.lsof,
+  crontab: handlers.crontab,
+  service: handlers.service,
+  systemctl: handlers.systemctl,
+  chown: handlers.chown,
+  umask: handlers.umask,
+  jobs: handlers.jobs,
+  bg: handlers.bg,
+  fg: handlers.fg,
   ping: handlers.ping,
   curl: handlers.curl,
   nmap: handlers.nmap,
@@ -49,11 +80,25 @@ const commandMap: Record<string, CommandHandler> = {
   dig: handlers.dig,
   whois: handlers.whois,
   ss: handlers.ss,
+  traceroute: handlers.traceroute,
+  arp: handlers.arp,
+  route: handlers.ipRoute,
+  wget: handlers.wget,
+  scp: handlers.scp,
+  ssh: handlers.ssh,
   gobuster: handlers.gobuster,
   hydra: handlers.hydra,
   sqlmap: handlers.sqlmap,
   nikto: handlers.nikto,
   john: handlers.john,
+  searchsploit: handlers.searchsploit,
+  enum4linux: handlers.enum4linux,
+  smbclient: handlers.smbclient,
+  crackmapexec: handlers.crackmapexec,
+  hashcat: handlers.hashcat,
+  exiftool: handlers.exiftool,
+  binwalk: handlers.binwalk,
+  msfconsole: handlers.msfconsole,
   python3: handlers.python3,
   python: handlers.python3,
   node: handlers.node,
@@ -62,12 +107,18 @@ const commandMap: Record<string, CommandHandler> = {
   pip3: handlers.pip,
   apt: handlers.apt,
   npm: handlers.npm,
+  docker: handlers.docker,
+  tmux: handlers.tmux,
+  screen: handlers.screen,
+  make: handlers.make,
+  gcc: handlers.gcc,
   clear: handlers.clear,
   help: handlers.help,
   history: handlers.history,
   alias: handlers.alias,
   export: handlers.exportCmd,
   exit: handlers.exitCmd,
+  reset: handlers.reset,
   man: handlers.man,
   which: handlers.which,
   'qyvora-help': handlers.qyvoraHelp,
@@ -87,6 +138,9 @@ const commandMap: Record<string, CommandHandler> = {
         exitCode: 0,
       };
     }
+    if (args[0] === 'route') {
+      return handlers.ipRoute([], state);
+    }
     return { output: 'Usage: ip [OPTIONS] OBJECT {COMMAND}', exitCode: 1 };
   },
   tcpdump: (_args, _state) => {
@@ -97,28 +151,81 @@ const commandMap: Record<string, CommandHandler> = {
   },
 };
 
+export function executeCommandInternal(
+  inputOrStage: string | PipelineStage,
+  state: TerminalState,
+): any {
+  let cmd: string;
+  let args: string[];
+  let stdin: string | undefined;
+
+  if (typeof inputOrStage === 'string') {
+    const parts = inputOrStage.trim().split(/\s+/);
+    cmd = parts[0];
+    args = parts.slice(1);
+  } else {
+    cmd = inputOrStage.command;
+    args = inputOrStage.args;
+    stdin = inputOrStage.stdin;
+  }
+
+  if (!cmd) return { output: '', exitCode: 0 };
+
+  args = args.map(a => expandVars(a, state));
+
+  const handler = commandMap[cmd];
+  if (!handler) {
+    if (cmd.startsWith('/')) {
+      const node = findNode(state.root, cmd, state.cwd, state.home);
+      if (node && node.executable) {
+        return { output: `bash: ${cmd}: cannot execute binary file: Exec format error`, exitCode: 126 };
+      }
+      if (node) return { output: `bash: ${cmd}: Is a directory`, exitCode: 126 };
+    }
+    return { output: '', error: `bash: ${cmd}: command not found`, exitCode: 127 };
+  }
+
+  const stateWithStdin: TerminalState = stdin !== undefined ? { ...state, stdin } : state;
+  const result = handler(args, stateWithStdin) as any;
+
+  return {
+    output: result.output,
+    error: result.error,
+    exitCode: result.exitCode,
+    clearLine: result.clearLine,
+    exit: result.exit,
+    _stateOverride: result.stateOverride,
+    streamLines: result.streamLines,
+  } as any;
+}
+
 export function executeCommand(input: string, state: TerminalState): CommandResult & { _clearLine?: boolean; _exit?: boolean; _stateOverride?: StateOverride } {
-  const parts = input.trim().split(/\s+/);
+  const expandedInput = input.replace(/\$(\w+|\?)/g, (match, varName) => {
+    if (varName === '?') return String(state.lastExitCode);
+    return state.env[varName] || '';
+  });
+
+  const parts = expandedInput.trim().split(/\s+/);
   const cmd = parts[0];
   const args = parts.slice(1);
 
   if (!cmd) return { output: '', exitCode: 0 };
 
+  const globbedArgs = applyGlobbing(args, state, state.cwd, state.home);
+
   const handler = commandMap[cmd];
   if (!handler) {
-    const name = cmd;
-    if (name.startsWith('/')) {
-      const resolved = resolvePath(name, state.cwd, state.home);
-      const node = findNode(state.root, name, state.cwd, state.home);
+    if (cmd.startsWith('/')) {
+      const node = findNode(state.root, cmd, state.cwd, state.home);
       if (node && node.executable) {
-        return { output: `bash: ${name}: cannot execute binary file: Exec format error`, exitCode: 126 };
+        return { output: `bash: ${cmd}: cannot execute binary file: Exec format error`, exitCode: 126 };
       }
-      if (node) return { output: `bash: ${name}: Is a directory`, exitCode: 126 };
+      if (node) return { output: `bash: ${cmd}: Is a directory`, exitCode: 126 };
     }
     return { output: '', error: `bash: ${cmd}: command not found`, exitCode: 127 };
   }
 
-  const result = handler(args, state) as InternalCommandResult;
+  const result = handler(globbedArgs, state) as InternalCommandResult;
   return {
     output: result.output,
     error: result.error,

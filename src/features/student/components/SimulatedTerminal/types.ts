@@ -21,6 +21,8 @@ export interface CommandResult {
   output: string;
   error?: string;
   exitCode: number;
+  stdin?: string;
+  streamLines?: string[];
 }
 
 export type CommandHandler = (
@@ -40,6 +42,17 @@ export interface TerminalState {
   isRoot: boolean;
   aliases: Record<string, string>;
   lastExitCode: number;
+  inMsfConsole?: boolean;
+  stdin?: string;
+}
+
+export interface PipelineStage {
+  command: string;
+  args: string[];
+  stdin?: string;
+  stdoutRedirect?: { path: string; append: boolean };
+  stdinRedirect?: { path: string };
+  pipeToNext?: boolean;
 }
 
 export interface TerminalContext {
