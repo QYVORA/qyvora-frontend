@@ -21,8 +21,8 @@ export const ls: CommandHandler = (args, state) => {
   let entries = [...target.children];
   if (showAll) {
     entries = [
-      { name: '.', type: 'dir', permissions: 'drwxr-xr-x', owner: state.user, group: 'qyvora-student', size: 4096, children: [] } as VFSNode,
-      { name: '..', type: 'dir', permissions: 'drwxr-xr-x', owner: state.user, group: 'qyvora-student', size: 4096, children: [] } as VFSNode,
+      { name: '.', type: 'dir', permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [] } as VFSNode,
+      { name: '..', type: 'dir', permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [] } as VFSNode,
       ...entries,
     ];
   } else {

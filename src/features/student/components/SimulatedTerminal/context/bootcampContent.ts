@@ -10,7 +10,7 @@ export function injectBootcampContent(
 
   let projectsDir = root.children.find(c => c.name === 'home');
   if (!projectsDir) return state;
-  let homeDir = projectsDir.children.find(c => c.name === 'qyvora-student');
+  let homeDir = projectsDir.children.find(c => c.name === 'kali');
   if (!homeDir) return state;
   let projectsNode = homeDir.children.find(c => c.name === 'Projects');
   if (!projectsNode) return state;
@@ -24,8 +24,8 @@ export function injectBootcampContent(
         type: 'file',
         content: `# HPB Bootcamp - Target Infrastructure\n\nBootcamp: ${bootcampId}\nPhase: ${phaseId || 'N/A'}\nRoom: ${roomId || 'N/A'}\n\nThis directory contains target configurations and\nvulnerability assessment scenarios for your current\nbootcamp phase.\n`,
         permissions: '-rw-r--r--',
-        owner: 'qyvora-student',
-        group: 'qyvora-student',
+        owner: 'kali',
+        group: 'kali',
         size: 210,
         children: [],
       },
@@ -34,8 +34,8 @@ export function injectBootcampContent(
         type: 'file',
         content: '192.168.1.10  - Web server (Apache 2.4.57)\n192.168.1.11  - Database server (MySQL 8.0)\n192.168.1.12  - File server (Samba 4.18)\n10.0.0.100    - Internal API (Node.js/Express)\n10.0.0.200    - Admin panel (hidden)\n',
         permissions: '-rw-r--r--',
-        owner: 'qyvora-student',
-        group: 'qyvora-student',
+        owner: 'kali',
+        group: 'kali',
         size: 185,
         children: [],
       },
@@ -44,15 +44,15 @@ export function injectBootcampContent(
         type: 'file',
         content: 'admin\nroot\nadministrator\nbackup\ntest\nuser\nmanager\nadmin2024\npassword123\nqyvora\nletmein\nwelcome\nsecret\n',
         permissions: '-rw-r--r--',
-        owner: 'qyvora-student',
-        group: 'qyvora-student',
+        owner: 'kali',
+        group: 'kali',
         size: 105,
         children: [],
       },
     ],
     permissions: 'drwxr-xr-x',
-    owner: 'qyvora-student',
-    group: 'qyvora-student',
+    owner: 'kali',
+    group: 'kali',
     size: 4096,
   };
 
@@ -63,8 +63,8 @@ export function injectBootcampContent(
     root,
     env: {
       ...state.env,
-      HPB_TARGETS: '/home/qyvora-student/Projects/hpb-targets/targets.txt',
-      HPB_WORDLIST: '/home/qyvora-student/Projects/hpb-targets/wordlist.txt',
+      HPB_TARGETS: '/home/kali/Projects/hpb-targets/targets.txt',
+      HPB_WORDLIST: '/home/kali/Projects/hpb-targets/wordlist.txt',
     },
   };
 }

@@ -3,7 +3,7 @@ import type { VFSNode } from '../types';
 
 export function buildDefaultFilesystem(): VFSNode {
   const home = createNode('home', 'dir', { permissions: 'drwxr-xr-x', owner: 'root', group: 'root' });
-  const kaliHome = createNode('qyvora-student', 'dir');
+  const kaliHome = createNode('kali', 'dir', { permissions: 'drwxr-xr-x', owner: 'kali', group: 'kali' });
   kaliHome.children = [
     createNode('Desktop', 'dir', { permissions: 'drwxr-xr-x', size: 4096 }),
     createNode('Documents', 'dir', { permissions: 'drwxr-xr-x', size: 4096 }),
@@ -59,10 +59,10 @@ export function buildDefaultFilesystem(): VFSNode {
 
   const etc = root.children.find(c => c.name === 'etc')!;
   etc.children = [
-    createNode('hostname', 'file', { content: 'qyvora-sandbox\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 15 }),
-    createNode('hosts', 'file', { content: '127.0.0.1\tlocalhost\n127.0.1.1\tqyvora-sandbox\n::1\t\tlocalhost ip6-localhost ip6-loopback\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 102 }),
-    createNode('passwd', 'file', { content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nqyvora-student:x:1001:1001:Student:/home/qyvora-student:/bin/bash\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 164 }),
-    createNode('shadow', 'file', { content: 'root:*:19712:0:99999:7:::\ndaemon:*:19712:0:99999:7:::\nqyvora-student:$6$demo$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:19712:0:99999:7:::\n', permissions: '-rw-r-----', owner: 'root', group: 'shadow', size: 175 }),
+    createNode('hostname', 'file', { content: 'kali\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 5 }),
+    createNode('hosts', 'file', { content: '127.0.0.1\tlocalhost\n127.0.1.1\tkali\n::1\t\tlocalhost ip6-localhost ip6-loopback\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 95 }),
+    createNode('passwd', 'file', { content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nkali:x:1000:1000:Kali,,,:/home/kali:/bin/bash\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 128 }),
+    createNode('shadow', 'file', { content: 'root:*:19712:0:99999:7:::\ndaemon:*:19712:0:99999:7:::\nkali:$6$demo$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:19712:0:99999:7:::\n', permissions: '-rw-r-----', owner: 'root', group: 'shadow', size: 164 }),
     createNode('os-release', 'file', { content: 'PRETTY_NAME="Kali GNU/Linux Rolling"\nNAME="Kali GNU/Linux"\nID=kali\nVERSION_ID="2024.1"\nVERSION="2024.1"\n', permissions: '-rw-r--r--', owner: 'root', group: 'root', size: 112 }),
   ];
 

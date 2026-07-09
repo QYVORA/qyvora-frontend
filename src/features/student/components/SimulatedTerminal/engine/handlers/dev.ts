@@ -109,12 +109,12 @@ export const npm: CommandHandler = (args, state) => {
   const subcommand = args[0];
 
   if (subcommand === 'init') {
-    return { output: 'This utility will walk you through creating a package.json file.\nPress ^C at any time to quit.\npackage name: (project) \nversion: (1.0.0) \ndescription: \nentry point: (index.js) \ntest command: \ngit repository: \nkeywords: \nauthor: \nlicense: (ISC) \nAbout to write to /home/qyvora-student/Projects/project/package.json:\n\n{\n  "name": "project",\n  "version": "1.0.0",\n  "description": "",\n  "main": "index.js",\n  "scripts": {},\n  "author": "",\n  "license": "ISC"\n}\n\nIs this OK? (yes) ', exitCode: 0, interactive: true };
+    return { output: 'This utility will walk you through creating a package.json file.\nPress ^C at any time to quit.\npackage name: (project) \nversion: (1.0.0) \ndescription: \nentry point: (index.js) \ntest command: \ngit repository: \nkeywords: \nauthor: \nlicense: (ISC) \nAbout to write to /home/kali/Projects/project/package.json:\n\n{\n  "name": "project",\n  "version": "1.0.0",\n  "description": "",\n  "main": "index.js",\n  "scripts": {},\n  "author": "",\n  "license": "ISC"\n}\n\nIs this OK? (yes) ', exitCode: 0, interactive: true };
   }
   if (subcommand === 'install' || subcommand === 'i') {
     const pkg = args[1] || '';
     if (!pkg) {
-      return { output: 'npm warn You must provide a package name to install\nnpm ERR! code EUSAGE\nnpm ERR! npm install\nnpm ERR! A complete log of this run can be found in:\nnpm ERR!     /home/qyvora-student/.npm/_logs/' + new Date().toISOString().replace(/:/g, '-') + '-0000-debug.log', exitCode: 1 };
+      return { output: 'npm warn You must provide a package name to install\nnpm ERR! code EUSAGE\nnpm ERR! npm install\nnpm ERR! A complete log of this run can be found in:\nnpm ERR!     /home/kali/.npm/_logs/' + new Date().toISOString().replace(/:/g, '-') + '-0000-debug.log', exitCode: 1 };
     }
     return { output: `\nadded 1${Math.floor(Math.random() * 100)} packages in ${Math.floor(Math.random() * 10 + 2)}s\n\n${Math.floor(Math.random() * 50)} packages are looking for funding\n  run "npm fund" for details`, exitCode: 0 };
   }

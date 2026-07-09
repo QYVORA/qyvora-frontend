@@ -44,7 +44,7 @@ export const touch: CommandHandler = (args, state) => {
         content: '',
         permissions: '-rw-r--r--',
         owner: state.user,
-        group: 'qyvora-student',
+        group: state.user,
         size: 0,
         children: [],
       };
@@ -74,7 +74,7 @@ export const mkdir: CommandHandler = (args, state) => {
       content: '',
       permissions: 'drwxr-xr-x',
       owner: state.user,
-      group: 'qyvora-student',
+      group: state.user,
       size: 4096,
       children: [],
     };

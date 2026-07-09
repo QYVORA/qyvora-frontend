@@ -222,7 +222,7 @@ export const john: CommandHandler = (args, state) => {
   ];
 
   const lines: string[] = [
-    `Created directory: /home/qyvora-student/.john`,
+    `Created directory: /home/kali/.john`,
     `John the Ripper 1.9.0-jumbo-1 OMP [linux-gnu 64-bit x86_64 AVX2]`,
     `Copyright (c) 1996-2023 by Solar Designer and others`,
     `Homepage: https://www.openwall.com/john/`,

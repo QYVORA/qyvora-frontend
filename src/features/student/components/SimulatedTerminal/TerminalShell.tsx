@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { TerminalOutput } from './TerminalOutput';
-import { TerminalHeader } from './TerminalHeader';
 import { createInitialState, processInput, getPrompt } from './engine/state';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
@@ -29,7 +27,6 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     const initial: TerminalLine[] = [
       { type: 'system', text: 'QYVORA Simulated Terminal v2.0' },
       { type: 'system', text: 'Type "help" for available commands.' },
-      { type: 'system', text: '────────────────────────────────────────────' },
     ];
 
     let state = stateRef.current;
@@ -64,43 +61,28 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [lines]);
+  }, [lines, input]);
 
   const process = useCallback((cmd: string) => {
     const trimmed = cmd.trim();
-    if (!trimmed) {
-      setLines(prev => [...prev, { type: 'input', text: getPrompt(stateRef.current) }]);
-      return;
-    }
+    if (!trimmed) return;
 
     const result = processInput(trimmed, stateRef.current);
 
-    const newLines: TerminalLine[] = [];
-
-    if (result.lines.length > 0) {
-      newLines.push(...result.lines);
+    if (result._clearLine) {
+      stateRef.current = result.newState;
+      setLines([]);
+      return;
     }
 
-    const lastResult = result.lines[result.lines.length - 1];
-    const lastError = '';
-
-    if (result) {
-      const r = (result as any);
-      if (r._clearLine) {
-        setLines([]);
-        return;
-      }
-
-      if (r._exit) {
-        newLines.push({ type: 'system', text: '[Session terminated. Close and reopen to restart.]' });
-        stateRef.current = result.newState;
-        setLines(prev => [...prev, ...newLines]);
-        return;
-      }
+    if (result._exit) {
+      stateRef.current = result.newState;
+      setLines(prev => [...prev, ...result.lines]);
+      return;
     }
 
     stateRef.current = result.newState;
-    setLines(prev => [...prev, ...newLines]);
+    setLines(prev => [...prev, ...result.lines]);
     setHistoryIndex(-1);
   }, []);
 
@@ -145,27 +127,21 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       const lastPart = parts[parts.length - 1];
 
       const currentState = stateRef.current;
-      const dirs = currentState.root.children;
-      const cwdPath = currentState.cwd;
-
       const matches: string[] = [];
-      function collectMatching(node: any, prefix: string) {
+
+      function collectMatching(node: any) {
         if (node.children) {
           node.children.forEach((child: any) => {
             if (child.name.startsWith(lastPart)) {
               matches.push(child.name + (child.type === 'dir' ? '/' : ''));
             }
             if (child.type === 'dir') {
-              collectMatching(child, prefix + '/' + child.name);
+              collectMatching(child);
             }
           });
         }
       }
-      collectMatching(currentState.root, '');
-
-      const homeDir = currentState.root.children.find((c: any) => c.name === 'home')
-        ?.children.find((c: any) => c.name === 'qyvora-student');
-      if (homeDir) collectMatching(homeDir, '/home/qyvora-student');
+      collectMatching(currentState.root);
 
       if (matches.length === 1) {
         parts[parts.length - 1] = matches[0];
@@ -191,43 +167,73 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     return () => clearTimeout(timer);
   }, [focusInput]);
 
+  const prompt = getPrompt(stateRef.current);
+
   return (
-    <div
-      className="flex flex-col h-full bg-[#0a0a0a] rounded-xl overflow-hidden border border-white/10"
-      onClick={focusInput}
-    >
-      <TerminalHeader
-        title="qyvora-terminal"
-        onClose={onClose}
-        onToggleFullscreen={onToggleFullscreen}
-        isFullscreen={isFullscreen}
-      />
+    <div className="flex flex-col h-full bg-black">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#1a1a2e] shrink-0">
+        <button
+          onClick={onClose}
+          className="h-3 w-3 rounded-full bg-[#ff5555] hover:brightness-125 transition-all focus:outline-none"
+          aria-label="Close terminal"
+        />
+        <button
+          onClick={onToggleFullscreen}
+          className="h-3 w-3 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
+          aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+        />
+        <span className="h-3 w-3 rounded-full bg-[#28c840] opacity-80" />
+      </div>
 
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-4 font-mono text-sm leading-relaxed space-y-1"
-        style={{ background: '#0a0a0a', scrollbarWidth: 'thin', scrollbarColor: '#1a1a1a transparent' }}
+        className="flex-1 overflow-y-auto p-3 font-mono text-sm leading-relaxed"
+        style={{
+          background: '#000',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#333 #000',
+        }}
+        onClick={focusInput}
       >
-        <TerminalOutput lines={lines} />
-
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-green-400 shrink-0 whitespace-nowrap text-xs">
-            {getPrompt(stateRef.current)}
-          </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-green-400/90 font-mono text-sm p-0 min-h-0 caret-green-400"
-            autoFocus
-            spellCheck={false}
-            autoComplete="off"
-            aria-label="Terminal input"
-          />
+        {lines.map((line, i) => (
+          <div
+            key={i}
+            className={`whitespace-pre-wrap break-all ${
+              line.type === 'input'
+                ? 'text-[#33ff00]'
+                : line.type === 'output'
+                ? 'text-[#33ff00]'
+                : line.type === 'error'
+                ? 'text-[#ff5555]'
+                : line.type === 'prompt'
+                ? 'text-[#33ff00]'
+                : 'text-[#33ff00]/50'
+            }`}
+          >
+            {line.text}
+          </div>
+        ))}
+        <div className="flex text-[#33ff00]">
+          <span className="shrink-0 whitespace-nowrap">{prompt}</span>
+          <span>{input}</span>
+          <span className="w-2 bg-[#33ff00] animate-pulse" />
         </div>
       </div>
+
+      <input
+        ref={inputRef}
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className="absolute opacity-0 w-0 h-0 pointer-events-none"
+        autoFocus
+        spellCheck={false}
+        autoComplete="off"
+        aria-label="Terminal input"
+      />
     </div>
   );
 };
+
+export default TerminalShell;
