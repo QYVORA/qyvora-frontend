@@ -35,7 +35,7 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 
 const DashboardSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+    <div className="mx-auto max-w-6xl px-0 pt-8 pb-20 lg:pb-24 md:px-6 lg:px-10">
       <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
         <div className="w-full px-4 md:px-0">
           <div className="p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl border border-border/40 bg-bg-card">
@@ -141,7 +141,7 @@ const Dashboard = () => {
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+      <div className="mx-auto max-w-6xl px-0 pt-8 pb-20 lg:pb-24 md:px-6 lg:px-10">
         {/* Hero — primary mission status with quick stats integrated */}
         <div className="grid grid-cols-1 gap-6 lg:gap-8 mb-10 items-stretch">
           <DashboardHero
@@ -159,6 +159,8 @@ const Dashboard = () => {
             visitDates={visitDates}
             loading={loading}
             onOpenTerminal={() => setTerminalOpen(true)}
+            uid={user?.uid}
+            username={user?.username}
           />
         </div>
 

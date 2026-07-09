@@ -74,7 +74,7 @@ const OnboardingWizard: React.FC = () => {
             <Link
               to={current.action.link}
               onClick={handleDismiss}
-              className="mt-6 inline-flex items-center gap-2 bg-accent text-bg px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
+              className="mt-6 btn-primary inline-flex items-center gap-2 !text-xs !px-6 !py-3"
             >
               {current.action.label}
             </Link>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Layers, Flame, Shield, Terminal } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import CpLogo from '@/shared/components/CpLogo';
+import Identicon from '@/shared/components/Identicon';
 import { StreakIcon } from '@/shared/components';
 import WeekActivity from './WeekActivity';
 
@@ -20,6 +21,8 @@ interface DashboardHeroProps {
   visitDates?: string[];
   loading?: boolean;
   onOpenTerminal?: () => void;
+  uid?: string;
+  username?: string;
 }
 
 const StatPill = ({ icon, label, value, children }: {
@@ -28,8 +31,8 @@ const StatPill = ({ icon, label, value, children }: {
   value: React.ReactNode;
   children?: React.ReactNode;
 }) => (
-  <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-elevated/30 border border-border/20 snap-start shrink-0 min-w-[200px] sm:min-w-0">
-    <div className="w-9 h-9 rounded-lg bg-accent-dim border border-accent/20 flex items-center justify-center flex-none">
+  <div className="flex items-center gap-3 p-3 rounded-2xl border border-border/30 bg-accent-dim snap-start shrink-0 min-w-[200px] sm:min-w-0">
+    <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center flex-none">
       {icon}
     </div>
     <div className="min-w-0">
@@ -43,12 +46,13 @@ const StatPill = ({ icon, label, value, children }: {
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, totalRoomsDone, cpBalance,
   streakDays, continuePath, nextRank, rankProgress, currentPhaseTitle,
-  rankName, visitDates, loading, onOpenTerminal,
+  rankName, visitDates, loading, onOpenTerminal, uid, username,
 }: DashboardHeroProps) => {
   const renderHeroContent = () => {
     if (allDone) {
       return (
         <>
+          <div className="text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2">Welcome back, <span className="text-accent">@{username || 'Operator'}</span></div>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-[1.5px] w-8 bg-accent" />
             <span className="text-[10px] font-black uppercase tracking-[0.35em] text-accent">Mission Complete</span>
@@ -72,8 +76,8 @@ const DashboardHero = ({
             )}
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <Link to={continuePath} className="bg-accent text-bg px-7 py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
-              Review Curriculum<ArrowRight className="inline-block ml-2 h-4 w-4" />
+            <Link to={continuePath} className="btn-primary flex items-center gap-2 !text-xs !px-7 !py-3">
+              Review Curriculum<ArrowRight className="h-4 w-4" />
             </Link>
             {onOpenTerminal && (
               <button
@@ -94,6 +98,7 @@ const DashboardHero = ({
     if (isEnrolled) {
       return (
         <>
+          <div className="text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2">Welcome back, <span className="text-accent">@{username || 'Operator'}</span></div>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-[1.5px] w-8 bg-accent" />
             <span className="text-[10px] font-black uppercase tracking-[0.35em] text-accent">{currentPhaseTitle || 'Active Deployment'}</span>
@@ -113,8 +118,8 @@ const DashboardHero = ({
             </div>
           )}
           <div className="flex flex-wrap items-center gap-4 mb-6">
-            <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
-              {nextMission ? 'Continue Mission' : 'Review Curriculum'}<ArrowRight className="inline-block ml-2 h-5 w-5" />
+            <Link to={continuePath} className="btn-primary flex items-center gap-2 !text-sm !px-8 !py-4">
+              {nextMission ? 'Continue Mission' : 'Review Curriculum'}<ArrowRight className="h-5 w-5" />
             </Link>
             {onOpenTerminal && (
               <button
@@ -144,6 +149,7 @@ const DashboardHero = ({
 
     return (
       <>
+        <div className="text-xs font-black uppercase tracking-[0.3em] text-text-muted mb-2">Welcome, <span className="text-accent">@{username || 'Operator'}</span></div>
         <div className="flex items-center gap-3 mb-4">
           <div className="h-[1.5px] w-8 bg-accent" />
           <span className="text-[10px] font-black uppercase tracking-[0.35em] text-accent">New Mission</span>
@@ -162,8 +168,8 @@ const DashboardHero = ({
           </div>
         )}
           <div className="flex flex-wrap items-center gap-4 mb-6">
-          <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
-            START THE BOOTCAMP<ArrowRight className="inline-block ml-2 h-5 w-5" />
+          <Link to={continuePath} className="btn-primary flex items-center gap-2 !text-sm !px-8 !py-4">
+            START THE BOOTCAMP<ArrowRight className="h-5 w-5" />
           </Link>
           {onOpenTerminal && (
             <button
@@ -190,12 +196,41 @@ const DashboardHero = ({
   return (
     <div className="w-full px-4 md:px-0">
       <ScrollReveal className="h-full">
-        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden border border-border/60 bg-bg-card rounded-2xl shadow-none">
-          <div className="relative z-10">
-            {renderHeroContent()}
+        <div className="p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden border border-border/30 bg-bg-card rounded-2xl shadow-none">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-stretch gap-8 lg:gap-12">
+            {/* Profile — left column */}
+            <div className="flex lg:flex-col items-center lg:items-center gap-6 shrink-0 lg:justify-center">
+              <div className="w-28 h-28 lg:w-48 lg:h-48 rounded-3xl border-2 border-border/15 overflow-hidden flex-none">
+                <Identicon value={uid || username || '?'} size={192} className="w-full h-full" />
+              </div>
+              <div className="text-center space-y-1">
+                <div className="font-black text-xl lg:text-4xl text-text-primary leading-tight">{username ? `@${username}` : 'Operator'}</div>
+                <div className="text-xs font-black uppercase tracking-widest text-text-muted">{rankName}</div>
+                <div className="flex items-center justify-center gap-5 pt-2">
+                  <div className="text-center">
+                    <div className="font-mono text-sm font-black text-accent">{cpBalance.toLocaleString()}</div>
+                    <div className="text-[8px] font-black uppercase tracking-widest text-text-muted">CP</div>
+                  </div>
+                  {streakDays != null && (
+                    <div className="text-center">
+                      <div className="font-mono text-sm font-black text-orange-400">{streakDays}d</div>
+                      <div className="text-[8px] font-black uppercase tracking-widest text-text-muted">Streak</div>
+                    </div>
+                  )}
+                  <div className="text-center">
+                    <div className="font-mono text-sm font-black text-text-primary">{totalRoomsDone}</div>
+                    <div className="text-[8px] font-black uppercase tracking-widest text-text-muted">Rooms</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            {/* Quick stat pills — always visible */}
-            <div className="mt-6 sm:mt-8 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 sm:grid sm:grid-cols-3 md:grid-cols-5 sm:gap-3 sm:overflow-visible sm:snap-none sm:pb-0 sm:-mx-0 sm:px-0">
+            {/* Content — right column */}
+            <div className="flex-1 min-w-0">
+              {renderHeroContent()}
+
+              {/* Quick stat pills — always visible */}
+              <div className="mt-6 sm:mt-8 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 sm:grid sm:grid-cols-3 md:grid-cols-5 sm:gap-3 sm:overflow-visible sm:snap-none sm:pb-0 sm:-mx-0 sm:px-0">
               <StatPill
                 icon={<CpLogo className="w-4 h-4" />}
                 label="CP"
@@ -230,6 +265,7 @@ const DashboardHero = ({
               >
                 <WeekActivity visitDates={visitDates} />
               </StatPill>
+            </div>
             </div>
           </div>
         </div>

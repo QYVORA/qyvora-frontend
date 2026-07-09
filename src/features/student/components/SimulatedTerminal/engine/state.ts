@@ -177,11 +177,12 @@ export function processInput(
 export function getPrompt(state: TerminalState): string {
   const cwdDisplay = state.cwd === state.home ? '~' : state.cwd.replace(state.home, '~');
   const indicator = state.isRoot ? '#' : '$';
-  return `┌──(${state.user}㉿${state.hostname})-[${cwdDisplay}]\n└─${indicator} `;
+  return `${state.user}@${state.hostname}:${cwdDisplay}${indicator} `;
 }
 
 export function getInputPrefix(state: TerminalState): string {
+  const cwdDisplay = state.cwd === state.home ? '~' : state.cwd.replace(state.home, '~');
   const indicator = state.isRoot ? '#' : '$';
   if (state.inMsfConsole) return 'msf6 > ';
-  return `└─${indicator} `;
+  return `${state.user}@${state.hostname}:${cwdDisplay}${indicator} `;
 }
