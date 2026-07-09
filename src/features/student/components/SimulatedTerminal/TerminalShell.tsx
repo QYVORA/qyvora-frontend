@@ -2,7 +2,25 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createInitialState, processInput, getPrompt } from './engine/state';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
-import type { TerminalState, TerminalLine, TerminalContext } from './types';
+import type { TerminalState, TerminalLine, TerminalContext, VFSNode } from './types';
+
+function collectTabMatches(root: VFSNode, lastPart: string): string[] {
+  const matches: string[] = [];
+  function walk(node: VFSNode) {
+    if (node.children) {
+      node.children.forEach((child: VFSNode) => {
+        if (child.name.startsWith(lastPart)) {
+          matches.push(child.name + (child.type === 'dir' ? '/' : ''));
+        }
+        if (child.type === 'dir') {
+          walk(child);
+        }
+      });
+    }
+  }
+  walk(root);
+  return matches;
+}
 
 interface TerminalShellProps {
   context?: TerminalContext;
@@ -126,22 +144,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       const parts = trimmed.split(/\s+/);
       const lastPart = parts[parts.length - 1];
 
-      const currentState = stateRef.current;
-      const matches: string[] = [];
-
-      function collectMatching(node: any) {
-        if (node.children) {
-          node.children.forEach((child: any) => {
-            if (child.name.startsWith(lastPart)) {
-              matches.push(child.name + (child.type === 'dir' ? '/' : ''));
-            }
-            if (child.type === 'dir') {
-              collectMatching(child);
-            }
-          });
-        }
-      }
-      collectMatching(currentState.root);
+      const matches = collectTabMatches(stateRef.current.root, lastPart);
 
       if (matches.length === 1) {
         parts[parts.length - 1] = matches[0];
