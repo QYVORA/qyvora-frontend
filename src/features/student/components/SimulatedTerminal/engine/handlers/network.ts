@@ -1,27 +1,75 @@
-import type { CommandHandler } from '../../types';
-import { findNode } from '../filesystem';
+import type { CommandHandler, InternalCommandResult } from '../../types';
+import {
+  NETWORK_CONFIG, DEVICES, STUDENT_IP, STUDENT_MAC, STUDENT_HOSTNAME,
+  getDeviceByIp, getDeviceByHostname, resolveTarget,
+  getDiscoverableIps, getHiddenIps, isInSubnet,
+  getHostnameForIp, getMacForIp, getOsForIp,
+} from '@/features/student/data/fakeNetwork';
 
 export const ping: CommandHandler = (args, state) => {
   const targets = args.filter(a => !a.startsWith('-'));
   const countFlag = args.indexOf('-c');
   const count = countFlag !== -1 ? parseInt(args[countFlag + 1]) || 4 : 4;
   if (targets.length === 0) return { output: '', error: 'ping: usage error: Destination address required', exitCode: 2 };
+
   const target = targets[0];
-  const ip = target === 'localhost' || target === '127.0.0.1' ? '127.0.0.1'
-    : target === state.hostname ? '10.0.0.42'
-    : `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
-  const lines: string[] = [`PING ${target} (${ip}) 56(84) bytes of data.`];
+  const ip = resolveTarget(target);
+
+  if (!ip || ip === '127.0.0.1') {
+    return {
+      output: `ping: ${target}: Temporary failure in name resolution`,
+      error: '',
+      exitCode: 1,
+    };
+  }
+
+  if (ip === STUDENT_IP) {
+    const lines: string[] = [`PING ${target} (${ip}) 56(84) bytes of data.`];
+    for (let i = 0; i < count; i++) {
+      const ms = (0.02 + Math.random() * 0.05).toFixed(3);
+      const ttl = 64;
+      lines.push(`64 bytes from ${ip}: icmp_seq=${i + 1} ttl=${ttl} time=${ms} ms`);
+    }
+    lines.push('');
+    lines.push(`--- ${target} ping statistics ---`);
+    lines.push(`${count} packets transmitted, ${count} received, 0% packet loss, time ${Math.floor(Math.random() * 10 + 5)}ms`);
+    lines.push('rtt min/avg/max/mdev = 0.021/0.034/0.068/0.012 ms');
+    return { output: lines.join('\n'), exitCode: 0 };
+  }
+
+  const device = getDeviceByIp(ip);
+  if (!device || !device.discoverable) {
+    const lines: string[] = [`PING ${target} (${ip}) 56(84) bytes of data.`];
+    for (let i = 0; i < count; i++) {
+      lines.push(`From ${STUDENT_IP} icmp_seq=${i + 1} Destination Host Unreachable`);
+    }
+    lines.push('');
+    lines.push(`--- ${target} ping statistics ---`);
+    lines.push(`${count} packets transmitted, 0 received, 100% packet loss, time ${Math.floor(Math.random() * 50 + 20)}ms`);
+    return { output: lines.join('\n'), exitCode: 1 };
+  }
+
+  const hostLabel = device.hostname !== ip ? `${device.hostname} (${ip})` : ip;
+  const lines: string[] = [`PING ${hostLabel} 56(84) bytes of data.`];
   for (let i = 0; i < count; i++) {
-    const ms = (Math.random() * 80 + 10).toFixed(2);
-    const ttl = Math.floor(Math.random() * 30 + 55);
+    const ms = (Math.random() * 2 + 0.3).toFixed(3);
+    const ttl = 63;
     lines.push(`64 bytes from ${ip}: icmp_seq=${i + 1} ttl=${ttl} time=${ms} ms`);
   }
-  const rttMin = '12.34'; const rttAvg = '25.67'; const rttMax = '89.01';
   lines.push('');
-  lines.push(`--- ${target} ping statistics ---`);
-  lines.push(`${count} packets transmitted, ${count} received, 0% packet loss, time ${Math.floor(Math.random() * 1000 + 500)}ms`);
-  lines.push(`rtt min/avg/max/mdev = ${rttMin}/${rttAvg}/${rttMax}/${(parseFloat(rttMax) - parseFloat(rttMin)).toFixed(2)} ms`);
-  return { output: lines.join('\n'), exitCode: 0 };
+  lines.push(`--- ${hostLabel} ping statistics ---`);
+  lines.push(`${count} packets transmitted, ${count} received, 0% packet loss, time ${Math.floor(Math.random() * 15 + 8)}ms`);
+  const rttMin = (Math.random() * 0.5 + 0.3).toFixed(3);
+  const rttAvg = (Math.random() * 1 + 0.5).toFixed(3);
+  const rttMax = (Math.random() * 2 + 1).toFixed(3);
+  lines.push(`rtt min/avg/max/mdev = ${rttMin}/${rttAvg}/${rttMax}/${(parseFloat(rttMax) - parseFloat(rttMin)).toFixed(3)} ms`);
+
+  const newDiscovered = state.discoveredIps.includes(ip) ? state.discoveredIps : [...state.discoveredIps, ip];
+  const result: InternalCommandResult = { output: lines.join('\n'), exitCode: 0 };
+  if (newDiscovered.length !== state.discoveredIps.length) {
+    result.stateOverride = { discoveredIps: newDiscovered };
+  }
+  return result;
 };
 
 export const curl: CommandHandler = (args, state) => {
@@ -33,6 +81,7 @@ export const curl: CommandHandler = (args, state) => {
   const data = dataIdx !== -1 ? args[dataIdx + 1] : '';
   if (targets.length === 0) return { output: '', error: 'curl: try \'curl --help\' or \'curl --manual\' for more information', exitCode: 2 };
   const url = targets[0];
+
   if (method === 'POST' && data) {
     const parsed = JSON.parse(data.replace(/'/g, '"'));
     return {
@@ -40,6 +89,28 @@ export const curl: CommandHandler = (args, state) => {
       exitCode: 0,
     };
   }
+
+  const internalUrls = ['10.0.0.5', '10.0.0.51', 'web-server', 'vulnerable-app'];
+  const isInternal = internalUrls.some(u => url.includes(u));
+  if (isInternal) {
+    if (url.includes('10.0.0.5') || url.includes('web-server')) {
+      return {
+        output: silent ? '' : '<html>\n<head><title>Corporate Internal Portal</title></head>\n<body>\n  <h1>QYVORA Corp Internal Portal</h1>\n  <p>Welcome to the internal corporate portal.</p>\n  <p>Server: nginx/1.24.0</p>\n  <hr>\n  <h2>Quick Links</h2>\n  <ul>\n    <li><a href="/hr">HR Portal</a></li>\n    <li><a href="/it">IT Support</a></li>\n    <li><a href="/dashboard">Dashboard</a> (auth required)</li>\n  </ul>\n</body>\n</html>',
+        exitCode: 0,
+      };
+    }
+    if (url.includes('10.0.0.51') || url.includes('vulnerable-app')) {
+      return {
+        output: silent ? '' : '<html>\n<head><title>Legacy Application Server</title></head>\n<body>\n  <h1>Internal Legacy App</h1>\n  <p>Version: 2.4.1 (Build 2023-03-15)</p>\n  <p>Status: Running</p>\n  <hr>\n  <p><strong>Notice:</strong> This server is scheduled for upgrade.</p>\n  <p>Contact IT for access: <a href="mailto:it@qyvora.local">it@qyvora.local</a></p>\n</body>\n</html>',
+        exitCode: 0,
+      };
+    }
+    return {
+      output: silent ? '' : `<html>\n<head><title>QYVORA Internal Server</title></head>\n<body>\n  <h1>Internal Server</h1>\n  <p>Connection established.</p>\n</body>\n</html>`,
+      exitCode: 0,
+    };
+  }
+
   if (url.includes('api.github.com') || url.includes('github.com')) {
     return {
       output: JSON.stringify({
@@ -53,7 +124,7 @@ export const curl: CommandHandler = (args, state) => {
     };
   }
   if (url.includes('ifconfig.me') || url.includes('api.ipify.org')) {
-    return { output: `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`, exitCode: 0 };
+    return { output: STUDENT_IP, exitCode: 0 };
   }
   if (url.includes('http://localhost') || url.includes('http://127.0.0.1')) {
     return {
@@ -73,55 +144,183 @@ export const nmap: CommandHandler = (args, state) => {
   const serviceScan = args.includes('-sV');
   const osDetect = args.includes('-O');
   const allPorts = args.includes('-p-');
-  if (targets.length === 0) return { output: '', error: 'nmap: no target specified. Try --help for help.', exitCode: 1 };
+  const pingScan = args.includes('-sn') || args.includes('-sP');
+  const noPing = args.includes('-Pn');
+
+  if (targets.length === 0 && !pingScan) {
+    return { output: '', error: 'nmap: no target specified. Try --help for help.', exitCode: 1 };
+  }
+
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString();
+  const dateStr = now.toLocaleString();
+  let newDiscovered = [...state.discoveredIps];
+
+  const scanTargetSubnet = (target: string): boolean => {
+    if (target === NETWORK_CONFIG.subnet || target === `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}` || target.endsWith('.0/24')) return true;
+    if (target === `${NETWORK_CONFIG.subnet}/24`) return true;
+    return false;
+  };
+
+  if (pingScan || targets.length === 0 || (targets.length === 1 && scanTargetSubnet(targets[0]))) {
+    const lines: string[] = [
+      '',
+      `Starting Nmap 7.94SVN ( https://nmap.org ) at ${dateStr}`,
+      verbose ? 'NSE: Loaded 155 scripts for scanning.' : '',
+      'Initiating Ping Scan at ' + timeStr,
+    ];
+
+    const scanTarget = targets.length > 0 ? targets[0] : `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}`;
+    const discoverable = getDiscoverableIps();
+    const alreadyKnown = state.discoveredIps;
+    const newlyFound = discoverable.filter(ip => !alreadyKnown.includes(ip));
+
+    if (newlyFound.length > 0) {
+      newDiscovered = [...newDiscovered, ...newlyFound];
+    }
+
+    lines.push(`Completed Ping Scan at ${timeStr}, ${(Math.random() * 3 + 0.5).toFixed(2)}s elapsed`);
+    lines.push(`Initiating Parallel DNS resolution of ${discoverable.length} hosts.`);
+    lines.push(`Completed Ping Scan at ${timeStr}, ${(Math.random() * 2 + 0.3).toFixed(2)}s elapsed`);
+    lines.push('');
+    lines.push(`Nmap scan report for ${scanTarget}`);
+    lines.push(`Host is up (${(Math.random() * 0.05 + 0.01).toFixed(3)}s latency).`);
+    lines.push(`${discoverable.length} IP addresses responding (${newlyFound.length} newly discovered):`);
+    lines.push('');
+
+    discoverable.forEach(ip => {
+      const device = getDeviceByIp(ip)!;
+      lines.push(`  ${ip.padEnd(16)} ${device.hostname.padEnd(20)} ${device.vendor}`);
+    });
+
+    if (!state.discoveredIps.includes('10.0.0.50') && !newDiscovered.includes('10.0.0.50')) {
+      lines.push('');
+      lines.push('Nmap done: 256 IP addresses (11 hosts up) scanned in 3.45 seconds');
+    } else {
+      lines.push('');
+      lines.push('Nmap done: 256 IP addresses (11 hosts up) scanned in 3.45 seconds');
+    }
+
+    lines.push(`Note: ${discoverable.length} hosts responded to ping. Hidden hosts may exist.`);
+
+    const result: InternalCommandResult = { output: lines.filter(Boolean).join('\n'), exitCode: 0, streamLines: lines.filter(Boolean) };
+    if (newDiscovered.length !== state.discoveredIps.length) {
+      result.stateOverride = { discoveredIps: newDiscovered };
+    }
+    return result;
+  }
+
   const target = targets[0];
-  const openPorts = allPorts
-    ? [
-        { port: 22, service: 'ssh', version: 'OpenSSH 8.4p1 Debian 5' },
-        { port: 80, service: 'http', version: 'nginx 1.24.0' },
-        { port: 443, service: 'https', version: 'nginx 1.24.0' },
-        { port: 8080, service: 'http-proxy', version: '' },
-        { port: 3306, service: 'mysql', version: 'MySQL 8.0.35' },
-        { port: 6379, service: 'redis', version: 'Redis 7.2.3' },
-      ]
-    : [
-        { port: 22, service: 'ssh', version: 'OpenSSH 8.4p1 Debian 5' },
-        { port: 80, service: 'http', version: 'nginx 1.24.0' },
-        { port: 443, service: 'https', version: 'nginx 1.24.0' },
-      ];
-  const randomIp = `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+  const ip = resolveTarget(target);
+  if (!ip || (isInSubnet(ip) && !getDeviceByIp(ip))) {
+    return {
+      output: '',
+      error: `Failed to resolve "${target}". Check the address and try again.`,
+      exitCode: 1,
+    };
+  }
+
+  if (ip === '127.0.0.1') {
+    const openPorts = allPorts
+      ? [
+          { port: 22, service: 'ssh', version: 'OpenSSH 9.3p1 Debian' },
+          { port: 80, service: 'http', version: '' },
+          { port: 631, service: 'ipp', version: 'CUPS 2.4.6' },
+        ]
+      : [
+          { port: 22, service: 'ssh', version: 'OpenSSH 9.3p1 Debian' },
+          { port: 631, service: 'ipp', version: 'CUPS 2.4.6' },
+        ];
+    const lines: string[] = [
+      '',
+      `Starting Nmap 7.94SVN ( https://nmap.org ) at ${dateStr}`,
+      `Nmap scan report for ${target} (127.0.0.1)`,
+      'Host is up (0.000043s latency).',
+      `Not shown: ${allPorts ? '65532' : '998'} closed tcp ports (reset)`,
+      'PORT     STATE    SERVICE',
+      ...openPorts.map(p => `${String(p.port).padStart(5)}/tcp open  ${p.service}`),
+      '',
+      'Nmap done: 1 IP address (1 host up) scanned in 0.15 seconds',
+    ];
+    return { output: lines.join('\n'), exitCode: 0, streamLines: lines };
+  }
+
+  const device = getDeviceByIp(ip);
+  if (!device) {
+    const lines: string[] = [
+      '',
+      `Starting Nmap 7.94SVN ( https://nmap.org ) at ${dateStr}`,
+      `Nmap scan report for ${target} (${ip})`,
+      'Host seems down. Consider using -Pn.',
+      '',
+      'Nmap done: 1 IP address (0 hosts up) scanned in 2.12 seconds',
+    ];
+    return { output: lines.join('\n'), exitCode: 0, streamLines: lines };
+  }
+
+  let openPorts = device.ports.filter(p => p.state === 'open');
+  let filteredPorts = device.ports.filter(p => p.state === 'filtered');
+  let closedPorts = device.ports.filter(p => p.state === 'closed');
+
+  if (allPorts) {
+    openPorts = device.ports.filter(p => p.state === 'open');
+  }
+
+  const totalPorts = allPorts ? 65535 : 1000;
+  const shownPorts = allPorts ? '65529' : String(totalPorts - openPorts.length - filteredPorts.length - closedPorts.length);
+
+  if (!state.discoveredIps.includes(ip)) {
+    newDiscovered = [...newDiscovered, ip];
+  }
+
+  const osInfo = getOsForIp(ip);
+  const hostLabel = device.hostname !== ip ? `${device.hostname} (${ip})` : ip;
+
   const lines: string[] = [
     '',
-    `Starting Nmap 7.94SVN ( https://nmap.org ) at ${new Date().toLocaleString()}`,
+    `Starting Nmap 7.94SVN ( https://nmap.org ) at ${dateStr}`,
     verbose ? 'NSE: Loaded 155 scripts for scanning.' : '',
-    `Initiating Ping Scan at ${new Date().toLocaleTimeString()}`,
-    `Completed Ping Scan at ${new Date().toLocaleTimeString()}, ${(Math.random() * 2 + 0.1).toFixed(2)}s elapsed`,
-    `Initiating Parallel DNS resolution of ${Math.floor(Math.random() * 5) + 1} host${Math.floor(Math.random() * 5) + 1 === 1 ? '' : 's'}.`,
-    verbose ? `DNS resolution of ${target} completed in ${(Math.random() * 0.5 + 0.1).toFixed(2)}s` : '',
-    `Initiating SYN Stealth Scan at ${new Date().toLocaleTimeString()}`,
+    `Initiating SYN Stealth Scan at ${timeStr}`,
     ...(verbose ? [
-      `Scanning ${target} [${allPorts ? '65535' : '1000'} ports]`,
-      `Discovered open port ${openPorts[0].port}/${openPorts[0].service} on ${randomIp}`,
-      `Discovered open port ${openPorts[1].port}/${openPorts[1].service} on ${randomIp}`,
-      `Discovered open port ${openPorts[2].port}/${openPorts[2].service} on ${randomIp}`,
+      `Scanning ${hostLabel} [${allPorts ? '65535' : '1000'} ports]`,
+      ...openPorts.slice(0, 5).map(p => `Discovered open port ${p.port}/${p.protocol} on ${ip}`),
     ] : []),
-    `Completed SYN Stealth Scan at ${new Date().toLocaleTimeString()}, ${(Math.random() * 10 + 2).toFixed(2)}s elapsed`,
+    `Completed SYN Stealth Scan at ${timeStr}, ${(Math.random() * 5 + 1).toFixed(2)}s elapsed`,
     ...(serviceScan ? [
-      `Initiating Service scan at ${new Date().toLocaleTimeString()}`,
-      `Completed Service scan at ${new Date().toLocaleTimeString()}, ${(Math.random() * 20 + 5).toFixed(2)}s elapsed`,
+      `Initiating Service scan at ${timeStr}`,
+      `Completed Service scan at ${timeStr}, ${(Math.random() * 8 + 2).toFixed(2)}s elapsed`,
     ] : []),
     ...(osDetect ? ['Initiating OS detection', 'Retrying OS detection', 'Retrying OS detection'] : []),
     '',
-    `Nmap scan report for ${target} (${randomIp})`,
-    `Host is up (${(Math.random() * 0.1 + 0.01).toFixed(3)}s latency).`,
-    `Not shown: ${allPorts ? '65529' : '997'} closed tcp ports (reset)`,
-    'PORT     STATE    SERVICE    VERSION',
-    ...openPorts.map(p => `${String(p.port).padStart(5)}/${'tcp'.padEnd(4)} open     ${p.service.padEnd(10)} ${p.version}`),
+    `Nmap scan report for ${hostLabel}`,
+    `Host is up (${(Math.random() * 0.5 + 0.05).toFixed(3)}s latency).`,
+    `Not shown: ${shownPorts} closed tcp ports (reset)`,
+    'PORT     STATE    SERVICE         VERSION',
+    ...openPorts.map(p =>
+      `${String(p.port).padStart(5)}/${p.protocol.padEnd(4)} open     ${p.service.padEnd(16)} ${serviceScan ? p.version : ''}`
+    ),
+    ...filteredPorts.map(p =>
+      `${String(p.port).padStart(5)}/${p.protocol.padEnd(4)} filtered ${p.service.padEnd(16)}`
+    ),
     ...(serviceScan ? ['Service detection performed. Please report any incorrect results at https://nmap.org/submit/'] : []),
-    ...(osDetect ? ['Device type: general purpose', 'Running: Linux 5.X|6.X', 'OS CPE: cpe:/o:linux:linux_kernel:5 cpe:/o:linux:linux_kernel:6', 'OS details: Linux 5.10 - 6.5'] : []),
-    `Nmap done: 1 IP address (1 host up) scanned in ${(Math.random() * 30 + 10).toFixed(2)} seconds`,
+    ...(osDetect && osInfo ? [
+      'Device type: general purpose',
+      `Running: ${osInfo}`,
+      'OS details: ' + osInfo,
+    ] : osDetect ? [
+      'Device type: general purpose',
+      'Running: Linux 5.X|6.X',
+      'OS CPE: cpe:/o:linux:linux_kernel:5 cpe:/o:linux:linux_kernel:6',
+      'OS details: Linux 5.10 - 6.5',
+    ] : []),
+    `Nmap done: 1 IP address (1 host up) scanned in ${(Math.random() * 15 + 3).toFixed(2)} seconds`,
   ];
-  return { output: lines.filter(Boolean).join('\n'), exitCode: 0, streamLines: lines.filter(Boolean) };
+
+  const result: InternalCommandResult = { output: lines.filter(Boolean).join('\n'), exitCode: 0, streamLines: lines.filter(Boolean) };
+  if (newDiscovered.length !== state.discoveredIps.length) {
+    result.stateOverride = { discoveredIps: newDiscovered };
+  }
+  return result;
 };
 
 export const netstat: CommandHandler = (args, state) => {
@@ -166,9 +365,20 @@ export const dig: CommandHandler = (args, state) => {
   if (targets.length === 0) return { output: '', error: 'dig: no query specified', exitCode: 9 };
   const domain = targets[0];
   const type = targets[1] || 'A';
+
+  const device = getDeviceByHostname(domain);
+  if (device) {
+    if (short) return { output: device.ip, exitCode: 0 };
+    return {
+      output: `; <<>> DiG 9.18.24-1-Debian <<>> ${domain}\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: ${Math.floor(Math.random() * 60000)}\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; QUESTION SECTION:\n;${domain}.\t\t\tIN\tA\n\n;; ANSWER SECTION:\n${domain}.\t\t86400\tIN\tA\t${device.ip}\n\n;; Query time: ${Math.floor(Math.random() * 5 + 1)} msec\n;; SERVER: ${NETWORK_CONFIG.dns[0]}#53(${NETWORK_CONFIG.dns[0]})\n;; WHEN: ${new Date().toString()}\n;; MSG SIZE  rcvd: ${Math.floor(Math.random() * 50 + 40)}`,
+      exitCode: 0,
+    };
+  }
+
   if (domain === 'localhost' || domain === '127.0.0.1') {
     return { output: short ? '127.0.0.1' : `; <<>> DiG 9.18.24 <<>> localhost\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: ${Math.floor(Math.random() * 60000)}\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; QUESTION SECTION:\n;localhost.\t\t\tIN\tA\n\n;; ANSWER SECTION:\nlocalhost.\t\t86400\tIN\tA\t127.0.0.1\n\n;; Query time: ${Math.floor(Math.random() * 50 + 1)} msec\n;; SERVER: 8.8.8.8#53(8.8.8.8)\n;; WHEN: ${new Date().toString()}\n;; MSG SIZE  rcvd: ${Math.floor(Math.random() * 50 + 40)}`, exitCode: 0 };
   }
+
   const ip = `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
   if (short) return { output: ip, exitCode: 0 };
   return {
@@ -217,31 +427,59 @@ export const traceroute: CommandHandler = (args, state) => {
   const targets = args.filter(a => !a.startsWith('-'));
   if (targets.length === 0) return { output: '', error: 'traceroute: missing host', exitCode: 1 };
   const target = targets[0];
+  const ip = resolveTarget(target) || `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+
+  const internalDevice = ip ? getDeviceByIp(ip) : undefined;
+  if (internalDevice && isInSubnet(ip)) {
+    const hops = [
+      { hop: 1, ip: NETWORK_CONFIG.gateway, rtt: '0.345 ms', host: 'gateway.local' },
+      { hop: 2, ip: ip, rtt: `${(Math.random() * 2 + 0.5).toFixed(3)} ms`, host: internalDevice.hostname },
+    ];
+    const lines = [`traceroute to ${target} (${ip}), ${hops.length} hops max, 60 byte packets`];
+    hops.forEach(h => {
+      lines.push(` ${h.hop}  ${h.host} (${h.ip})  ${h.rtt}  ${(parseFloat(h.rtt) * 0.9).toFixed(3)} ms  ${(parseFloat(h.rtt) * 1.1).toFixed(3)} ms`);
+    });
+    return { output: lines.join('\n'), exitCode: 0 };
+  }
+
   const hops = [
-    { hop: 1, ip: '192.168.1.1', rtt: '1.234 ms', host: 'router.local' },
-    { hop: 2, ip: '10.0.0.1', rtt: '3.456 ms', host: 'gateway.isp.net' },
+    { hop: 1, ip: NETWORK_CONFIG.gateway, rtt: '1.234 ms', host: 'gateway.local' },
+    { hop: 2, ip: '10.0.0.1', rtt: '3.456 ms', host: 'core-01.isp.net' },
     { hop: 3, ip: '72.14.237.1', rtt: '12.345 ms', host: 'core1.isp.net' },
     { hop: 4, ip: '216.58.192.1', rtt: '23.456 ms', host: 'edge01.google.com' },
     { hop: 5, ip: '142.250.64.1', rtt: '24.567 ms', host: 'google-1.google.com' },
-    { hop: 6, ip: '142.250.64.200', rtt: '25.678 ms', host: target },
+    { hop: 6, ip, rtt: '25.678 ms', host: target },
   ];
-  const lines = [`traceroute to ${target} (${hops[hops.length - 1].ip}), ${hops.length} hops max, 60 byte packets`];
+  const lines = [`traceroute to ${target} (${ip}), ${hops.length} hops max, 60 byte packets`];
   hops.forEach(h => {
     lines.push(` ${h.hop}  ${h.host} (${h.ip})  ${h.rtt}  ${(parseFloat(h.rtt) * 0.9).toFixed(3)} ms  ${(parseFloat(h.rtt) * 1.1).toFixed(3)} ms`);
   });
   return { output: lines.join('\n'), exitCode: 0 };
 };
 
-export const arp: CommandHandler = (_args, _state) => {
-  return {
-    output: 'Address                  HWtype  HWaddress           Flags Mask            Iface\n192.168.1.1              ether   00:50:56:00:00:01   C                     eth0\n10.0.0.1                 ether   00:50:56:00:00:02   C                     eth0\n172.16.0.1               ether   00:50:56:00:00:03   C                     eth0',
-    exitCode: 0,
-  };
+export const arp: CommandHandler = (_args, state) => {
+  const discovered = state.discoveredIps;
+  if (discovered.length === 0) {
+    const lines = [
+      'Address                  HWtype  HWaddress           Flags Mask            Iface',
+      `${NETWORK_CONFIG.gateway.padEnd(25)} ether   ${getMacForIp(NETWORK_CONFIG.gateway)}   C                     eth0`,
+      `${STUDENT_IP.padEnd(25)} ether   ${STUDENT_MAC}   C                     eth0`,
+    ];
+    return { output: lines.join('\n'), exitCode: 0 };
+  }
+
+  const lines = [
+    'Address                  HWtype  HWaddress           Flags Mask            Iface',
+    `${NETWORK_CONFIG.gateway.padEnd(25)} ether   ${getMacForIp(NETWORK_CONFIG.gateway)}   C                     eth0`,
+    ...discovered.map(ip => `${ip.padEnd(25)} ether   ${getMacForIp(ip)}   C                     eth0`),
+    `${STUDENT_IP.padEnd(25)} ether   ${STUDENT_MAC}   C                     eth0`,
+  ];
+  return { output: lines.join('\n'), exitCode: 0 };
 };
 
 export const ipRoute: CommandHandler = (_args, _state) => {
   return {
-    output: 'default via 192.168.1.1 dev eth0 proto dhcp metric 100\n10.0.0.0/24 dev eth0 proto kernel scope link src 10.0.0.42 metric 100\n172.16.0.0/24 dev eth1 proto kernel scope link src 172.16.0.42 metric 101\n192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100 metric 100',
+    output: `default via ${NETWORK_CONFIG.gateway} dev eth0 proto dhcp metric 100\n${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr} dev eth0 proto kernel scope link src ${STUDENT_IP} metric 100\n172.16.0.0/24 dev eth1 proto kernel scope link src 172.16.0.42 metric 101\n192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100 metric 100`,
     exitCode: 0,
   };
 };
@@ -252,8 +490,13 @@ export const wget: CommandHandler = (args, state) => {
   const url = targets[0];
   const filename = url.split('/').pop() || 'index.html';
   const size = Math.floor(Math.random() * 5000 + 500);
+
+  const hostname = url.replace(/^https?:\/\//, '').split('/')[0];
+  const resolved = resolveTarget(hostname);
+  const resolvedIp = resolved || `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+
   return {
-    output: `--${new Date().toISOString()}--  ${url}\nResolving ${url.replace(/^https?:\/\//, '').split('/')[0]}... ${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}\nConnecting to ${url.replace(/^https?:\/\//, '').split('/')[0]}:${url.startsWith('https') ? '443' : '80'}... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: ${size} [${url.includes('.html') ? 'text/html' : 'application/octet-stream'}]\nSaving to: '${filename}'\n\n${filename}              100%[=================================================================================================================>]  ${(size / 1024).toFixed(1)}K  --.-KB/s    in 0s\n\n${new Date().toISOString()} (${(size / 1024 / 0.5).toFixed(1)} MB/s) - '${filename}' saved [${size}/${size}]`,
+    output: `--${new Date().toISOString()}--  ${url}\nResolving ${hostname}... ${resolvedIp}\nConnecting to ${hostname}:${url.startsWith('https') ? '443' : '80'}... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: ${size} [${url.includes('.html') ? 'text/html' : 'application/octet-stream'}]\nSaving to: '${filename}'\n\n${filename}              100%[=================================================================================================================>]  ${(size / 1024).toFixed(1)}K  --.-KB/s    in 0s\n\n${new Date().toISOString()} (${(size / 1024 / 0.5).toFixed(1)} MB/s) - '${filename}' saved [${size}/${size}]`,
     exitCode: 0,
   };
 };
@@ -264,8 +507,11 @@ export const scp: CommandHandler = (args, state) => {
   const src = targets[0];
   const dest = targets[1];
   if (src.includes('@') || dest.includes('@')) {
+    const remoteHost = dest.includes('@') ? dest.split('@')[1]?.split(':')[0] || 'remote' : src.split('@')[1]?.split(':')[0] || 'remote';
+    const device = getDeviceByHostname(remoteHost) || getDeviceByIp(remoteHost);
+    const ip = device ? device.ip : `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
     return {
-      output: `The authenticity of host '${dest.includes('@') ? dest.split('@')[1]?.split(':')[0] || 'remote' : src.split('@')[1]?.split(':')[0] || 'remote'}' can't be established.\nED25519 key fingerprint is SHA256:${Math.random().toString(36).slice(2, 10)}...\nAre you sure you want to continue connecting (yes/no/[fingerprint])? yes\nWarning: Permanently added '${dest.includes('@') ? dest.split('@')[1]?.split(':')[0] || 'remote' : src.split('@')[1]?.split(':')[0] || 'remote'}' (ED25519) to the list of known hosts.\nkali@remote's password: \n${src.includes(':') ? src.split(':')[1] : src}                                                   100%  ${Math.floor(Math.random() * 500 + 50)}KB  ${Math.floor(Math.random() * 10 + 1)}.${Math.floor(Math.random() * 9)}MB/s   00:00`,
+      output: `The authenticity of host '${remoteHost} (${ip})' can't be established.\nED25519 key fingerprint is SHA256:${Math.random().toString(36).slice(2, 10)}...\nAre you sure you want to continue connecting (yes/no/[fingerprint])? yes\nWarning: Permanently added '${remoteHost} (${ip})' (ED25519) to the list of known hosts.\nkali@remote's password: \n${src.includes(':') ? src.split(':')[1] : src}                                                   100%  ${Math.floor(Math.random() * 500 + 50)}KB  ${Math.floor(Math.random() * 10 + 1)}.${Math.floor(Math.random() * 9)}MB/s   00:00`,
       exitCode: 0,
     };
   }
@@ -277,22 +523,28 @@ export const ssh: CommandHandler = (args, state) => {
   if (targets.length === 0) return { output: '', error: 'usage: ssh [-v] [-p port] [-l login] [user@]hostname [command]', exitCode: 1 };
   const target = targets[0];
   const verbose = args.includes('-v');
+
+  const hostnameOnly = target.includes('@') ? target.split('@')[1] : target;
+  const device = getDeviceByHostname(hostnameOnly) || getDeviceByIp(hostnameOnly);
+  const ip = device ? device.ip : `${Math.floor(Math.random() * 223 + 1)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+  const fingerprint = Math.random().toString(36).slice(2, 10);
+
   const lines: string[] = [];
   if (verbose) {
     lines.push('OpenSSH_9.3p1 Debian-1, OpenSSL 3.0.11 19 Sep 2023');
     lines.push('debug1: Reading configuration data /etc/ssh/ssh_config');
-    lines.push('debug1: Connecting to ' + target + ' [' + Math.floor(Math.random() * 223 + 1) + '.' + Math.floor(Math.random() * 256) + '.' + Math.floor(Math.random() * 256) + '.' + Math.floor(Math.random() * 256) + '] port 22.');
+    lines.push(`debug1: Connecting to ${hostnameOnly} [${ip}] port 22.`);
     lines.push('debug1: Connection established.');
     lines.push('debug1: identity file /home/kali/.ssh/id_rsa type 0');
     lines.push('debug1: Local version string SSH-2.0-OpenSSH_9.3p1 Debian-1');
   }
-  lines.push('The authenticity of host \'' + target + ' (' + Math.floor(Math.random() * 223 + 1) + '.' + Math.floor(Math.random() * 256) + '.' + Math.floor(Math.random() * 256) + '.' + Math.floor(Math.random() * 256) + ')\' can\'t be established.');
-  lines.push('ED25519 key fingerprint is SHA256:' + Math.random().toString(36).slice(2, 10) + '...');
+  lines.push(`The authenticity of host '${hostnameOnly} (${ip})' can't be established.`);
+  lines.push(`ED25519 key fingerprint is SHA256:${fingerprint}...`);
   lines.push('This host key is known by the following other names/addresses:');
   lines.push('    ~/.ssh/known_hosts contains a matching key');
   if (!verbose) lines.push('Are you sure you want to continue connecting (yes/no/[fingerprint])?');
-  lines.push('Warning: Permanently added \'' + target + '\' (ED25519) to the list of known hosts.');
-  lines.push('kali@' + target.split('@').pop() + '\'s password:');
+  lines.push(`Warning: Permanently added '${hostnameOnly} (${ip})' (ED25519) to the list of known hosts.`);
+  lines.push(`kali@${hostnameOnly}'s password:`);
   lines.push('');
   lines.push('Connection closed by remote host.');
   return { output: lines.join('\n'), exitCode: 0 };
