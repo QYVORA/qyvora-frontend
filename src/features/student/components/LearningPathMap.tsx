@@ -77,15 +77,15 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           const pillContent = (
             <div
-              className={`flex-none flex flex-col items-center gap-2 p-4 rounded-2xl border w-[180px] min-h-[200px] transition-all duration-300 ${
+              className={`flex-none flex flex-col items-center gap-1.5 p-3 rounded-xl border min-w-[120px] w-auto transition-all duration-300 ${
                 state === 'locked'
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'
                   ? 'border-accent/40 bg-accent-dim/10'
-                  : 'border-accent bg-accent-dim/15 shadow-[0_0_12px_rgba(102,184,112,0.3)]'
+                  : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(102,184,112,0.25)]'
               }`}
             >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs ${
                 state === 'completed'
                   ? 'bg-accent text-bg'
                   : state === 'current'
@@ -93,32 +93,32 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                   : 'bg-bg-elevated text-text-muted'
               }`}>
                 {state === 'completed' ? (
-                  <CheckCircle2 className="w-5 h-5" />
+                  <CheckCircle2 className="w-3.5 h-3.5" />
                 ) : state === 'locked' ? (
-                  <Lock className="w-5 h-5" />
+                  <Lock className="w-3.5 h-3.5" />
                 ) : (
-                  <span className="text-sm font-black">{idx + 1}</span>
+                  <span className="text-xs font-black">{idx + 1}</span>
                 )}
               </div>
-              <div className="text-center">
-                <div className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${
+              <div className="text-center leading-tight">
+                <div className={`text-[8px] font-black uppercase tracking-widest ${
                   state === 'locked' ? 'text-text-muted' : 'text-accent'
                 }`}>
                   Phase {idx + 1}
                 </div>
-                <div className={`text-xs font-bold leading-tight ${
+                <div className={`text-[10px] font-bold leading-tight ${
                   state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
                 }`}>
                   {phase.title}
                 </div>
               </div>
-              <div className={`text-[10px] font-mono ${
-                state === 'locked' ? 'text-text-muted/40' : 'text-text-muted'
-              }`}>
-                {state !== 'locked' ? `${roomsCompleted}/${totalRooms} rooms` : `${totalRooms} rooms`}
-              </div>
+              {state !== 'locked' && (
+                <div className="text-[9px] font-mono text-text-muted">
+                  {roomsCompleted}/{totalRooms} rooms
+                </div>
+              )}
               {state === 'current' && totalRooms > 0 && (
-                <div className="w-full h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
+                <div className="w-full h-1 rounded-full bg-accent-dim/20 overflow-hidden">
                   <div
                     className="h-full rounded-full bg-accent transition-all duration-700"
                     style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
@@ -143,8 +143,13 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                 )}
               </ScrollReveal>
               {idx < BOOTCAMP_CONFIG.phases.length - 1 && (
-                <div className="flex-none flex items-center">
-                  <ArrowRight className={`w-4 h-4 ${state === 'locked' ? 'text-border' : 'text-text-muted/30'}`} />
+                <div className={`flex-none flex items-center w-5 ${
+                  state === 'locked' ? 'opacity-30' : ''
+                }`}>
+                  <svg viewBox="0 0 20 20" className="w-full h-4 text-border" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <line x1="0" y1="10" x2="16" y2="10" />
+                    <path d="M14 6l4 4-4 4" />
+                  </svg>
                 </div>
               )}
             </React.Fragment>
