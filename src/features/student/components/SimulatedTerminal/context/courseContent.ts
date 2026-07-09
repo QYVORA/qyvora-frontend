@@ -1,0 +1,64 @@
+import type { VFSNode, TerminalState } from '../types';
+
+export function injectCourseContent(
+  state: TerminalState,
+  courseId: string,
+  lessonId?: string,
+): TerminalState {
+  const root = { ...state.root };
+
+  let projectsDir = root.children.find(c => c.name === 'home');
+  if (!projectsDir) return state;
+  let homeDir = projectsDir.children.find(c => c.name === 'qyvora-student');
+  if (!homeDir) return state;
+  let projectsNode = homeDir.children.find(c => c.name === 'Projects');
+  if (!projectsNode) return state;
+
+  const courseDir: VFSNode = {
+    name: 'course-' + courseId.replace(/[^a-zA-Z0-9_-]/g, ''),
+    type: 'dir',
+    children: [
+      {
+        name: 'README.md',
+        type: 'file',
+        content: `# Course: ${courseId}\nLesson: ${lessonId || 'Overview'}\n\nThis directory contains practice files and exercises\nfor the current lesson.\n`,
+        permissions: '-rw-r--r--',
+        owner: 'qyvora-student',
+        group: 'qyvora-student',
+        size: 120,
+        children: [],
+      },
+      {
+        name: 'exercises',
+        type: 'dir',
+        children: [
+          {
+            name: 'practice-1.txt',
+            type: 'file',
+            content: 'Exercise 1: Use ls to explore the file system\nExercise 2: Use cat to read this file\nExercise 3: Try pwd to see your current location\n',
+            permissions: '-rw-r--r--',
+            owner: 'qyvora-student',
+            group: 'qyvora-student',
+            size: 130,
+            children: [],
+          },
+        ],
+        permissions: 'drwxr-xr-x',
+        owner: 'qyvora-student',
+        group: 'qyvora-student',
+        size: 4096,
+      },
+    ],
+    permissions: 'drwxr-xr-x',
+    owner: 'qyvora-student',
+    group: 'qyvora-student',
+    size: 4096,
+  };
+
+  projectsNode.children = [...projectsNode.children, courseDir];
+
+  return {
+    ...state,
+    root,
+  };
+}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Layers, Flame, Shield } from 'lucide-react';
+import { ArrowRight, Layers, Flame, Shield, Terminal } from 'lucide-react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import CpLogo from '@/shared/components/CpLogo';
 import { StreakIcon } from '@/shared/components';
@@ -19,6 +19,7 @@ interface DashboardHeroProps {
   rankName: string;
   visitDates?: string[];
   loading?: boolean;
+  onOpenTerminal?: () => void;
 }
 
 const StatPill = ({ icon, label, value, children }: {
@@ -42,7 +43,7 @@ const StatPill = ({ icon, label, value, children }: {
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, totalRoomsDone, cpBalance,
   streakDays, continuePath, nextRank, rankProgress, currentPhaseTitle,
-  rankName, visitDates, loading,
+  rankName, visitDates, loading, onOpenTerminal,
 }: DashboardHeroProps) => {
   const renderHeroContent = () => {
     if (allDone) {
@@ -74,6 +75,17 @@ const DashboardHero = ({
             <Link to={continuePath} className="bg-accent text-bg px-7 py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
               Review Curriculum<ArrowRight className="inline-block ml-2 h-4 w-4" />
             </Link>
+            {onOpenTerminal && (
+              <button
+                onClick={onOpenTerminal}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl border border-white/10 bg-black/40
+                  hover:border-green-500/30 hover:bg-black/60 transition-all duration-200
+                  text-[10px] font-mono text-white/50 hover:text-green-400 uppercase tracking-wider"
+              >
+                <Terminal className="w-4 h-4" />
+                _terminal
+              </button>
+            )}
           </div>
         </>
       );
@@ -104,6 +116,17 @@ const DashboardHero = ({
             <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
               {nextMission ? 'Continue Mission' : 'Review Curriculum'}<ArrowRight className="inline-block ml-2 h-5 w-5" />
             </Link>
+            {onOpenTerminal && (
+              <button
+                onClick={onOpenTerminal}
+                className="flex items-center gap-2 px-5 py-4 rounded-xl border border-white/10 bg-black/40
+                  hover:border-green-500/30 hover:bg-black/60 transition-all duration-200
+                  text-[10px] font-mono text-white/50 hover:text-green-400 uppercase tracking-wider"
+              >
+                <Terminal className="w-4 h-4" />
+                _terminal
+              </button>
+            )}
             {!loading && (
               <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-elevated/40 backdrop-blur-md shadow-sm">
                 <CpLogo className="h-5 w-5" />
@@ -138,10 +161,21 @@ const DashboardHero = ({
             </div>
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-4 mb-6">
           <Link to={continuePath} className="bg-accent text-bg px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.15em] shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]">
             START THE BOOTCAMP<ArrowRight className="inline-block ml-2 h-5 w-5" />
           </Link>
+          {onOpenTerminal && (
+            <button
+              onClick={onOpenTerminal}
+              className="flex items-center gap-2 px-5 py-4 rounded-xl border border-white/10 bg-black/40
+                hover:border-green-500/30 hover:bg-black/60 transition-all duration-200
+                text-[10px] font-mono text-white/50 hover:text-green-400 uppercase tracking-wider"
+            >
+              <Terminal className="w-4 h-4" />
+              _terminal
+            </button>
+          )}
           {!loading && (
             <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-elevated/40 backdrop-blur-md shadow-sm">
               <CpLogo className="h-5 w-5" />

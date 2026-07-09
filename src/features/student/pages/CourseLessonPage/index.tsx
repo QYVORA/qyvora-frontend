@@ -5,15 +5,15 @@ import { motion, AnimatePresence } from 'motion/react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses/courseData';
 import CodeBlockRenderer from '@/features/student/components/bootcamp-room/CodeBlockRenderer';
-import InteractiveTerminal from '@/shared/components/courses/InteractiveTerminal';
 import InlineQuiz from '@/shared/components/courses/InlineQuiz';
+import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import api from '@/core/services/api';
 import type { Lesson } from '@/features/student/data/courses/types';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
-const LessonViewer: React.FC<{ lesson: Lesson; number: number }> = ({ lesson, number }) => {
+const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string }> = ({ lesson, number, courseId }) => {
   return (
     <div className="w-full border-t border-border/10 first:border-t-0 py-12 md:py-16">
       <div className="mb-8 md:mb-12 flex items-center gap-4">
@@ -46,7 +46,11 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number }> = ({ lesson, nu
             <Zap className="h-4 w-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Try It Yourself</span>
           </div>
-          <InteractiveTerminal
+          <SimulatedTerminal
+            open
+            onOpenChange={() => {}}
+            mode="inline"
+            context={{ type: 'course', courseId: courseId || '', lessonId: lesson.id }}
             initialCommands={lesson.terminalCommands || []}
             title={lesson.terminalTitle || 'lesson-terminal'}
           />
@@ -332,7 +336,7 @@ const CourseLessonPage: React.FC = () => {
               </div>
             </div>
 
-            <LessonViewer lesson={lesson} number={currentLessonIdx + 1} />
+            <LessonViewer lesson={lesson} number={currentLessonIdx + 1} courseId={courseId} />
 
             <div className="flex flex-wrap items-center gap-3 pb-16 mt-10 md:mt-14 border-t border-border/5 pt-6">
               {currentLessonIdx > 0 && (
