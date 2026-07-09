@@ -37,8 +37,8 @@ export const ls: CommandHandler = (args, state) => {
     return { output: `total ${entries.length * 2}\n` + lines.join('\n'), exitCode: 0 };
   }
 
-  const columns = entries.map(c => c.name + (c.type === 'dir' ? '/' : '') + (c.executable ? '*' : ''));
-  return { output: columns.join('  '), exitCode: 0 };
+  const lines = entries.map(c => c.name + (c.type === 'dir' ? '/' : '') + (c.executable ? '*' : ''));
+  return { output: lines.join('\n'), exitCode: 0 };
 };
 
 export const cd: CommandHandler = (args, state) => {

@@ -47,13 +47,15 @@ export function processInput(
     : trimmed;
 
   const result = executeCommand(expanded, state);
+  const stateOverride = (result as any)._stateOverride as Partial<Pick<TerminalState, 'cwd' | 'env' | 'aliases' | 'root' | 'isRoot'>> | undefined;
 
-  lines.push({ type: 'input', text: `${getPrompt(state)}${trimmed}` });
+  lines.push({ type: 'input', text: `${getInputPrefix(state)}${trimmed}` });
   if (result.output) lines.push({ type: 'output', text: result.output });
   if (result.error) lines.push({ type: 'error', text: result.error });
 
   const newState: TerminalState = {
     ...state,
+    ...(stateOverride || {}),
     history: [...state.history, trimmed],
     historyIndex: -1,
     lastExitCode: result.exitCode,
@@ -66,4 +68,9 @@ export function getPrompt(state: TerminalState): string {
   const cwdDisplay = state.cwd === state.home ? '~' : state.cwd.replace(state.home, '~');
   const indicator = state.isRoot ? '#' : '$';
   return `┌──(${state.user}㉿${state.hostname})-[${cwdDisplay}]\n└─${indicator} `;
+}
+
+export function getInputPrefix(state: TerminalState): string {
+  const indicator = state.isRoot ? '#' : '$';
+  return `└─${indicator} `;
 }

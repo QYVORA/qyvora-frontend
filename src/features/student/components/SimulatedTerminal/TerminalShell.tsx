@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { createInitialState, processInput, getPrompt } from './engine/state';
+import { createInitialState, processInput, getInputPrefix } from './engine/state';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
 import type { TerminalState, TerminalLine, TerminalContext, VFSNode } from './types';
@@ -30,6 +30,17 @@ interface TerminalShellProps {
   isFullscreen?: boolean;
 }
 
+const KALI_BG = '#0c0c0c';
+const KALI_GREEN = '#00ff41';
+const KALI_OUTPUT = '#d4d4d4';
+const KALI_ERROR = '#ff3333';
+const KALI_SYSTEM = '#d4d4d4';
+const KALI_CURSOR = '#00ff41';
+const KALI_TITLE_BG = '#1a1a1a';
+const KALI_BORDER = '#2a2a2a';
+const KALI_DIR = '#569cd6';
+const KALI_EXEC = '#00ff41';
+
 export const TerminalShell: React.FC<TerminalShellProps> = ({
   context,
   initialCommands = [],
@@ -42,11 +53,6 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [lines, setLines] = useState<TerminalLine[]>(() => {
-    const initial: TerminalLine[] = [
-      { type: 'system', text: 'QYVORA Simulated Terminal v2.0' },
-      { type: 'system', text: 'Type "help" for available commands.' },
-    ];
-
     let state = stateRef.current;
 
     if (context?.type === 'bootcamp' && context.bootcampId) {
@@ -57,6 +63,8 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     }
 
     stateRef.current = state;
+
+    const initial: TerminalLine[] = [];
 
     for (const cmd of initialCommands) {
       const result = processInput(cmd, state);
@@ -71,15 +79,34 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
 
+  const getPromptTop = useCallback((s: TerminalState) => {
+    const cwdDisplay = s.cwd === s.home ? '~' : s.cwd.replace(s.home, '~');
+    return `┌──(${s.user}㉿${s.hostname})-[${cwdDisplay}]`;
+  }, []);
+
+  const [promptTop, setPromptTop] = useState(() => getPromptTop(stateRef.current));
+
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    const el = containerRef.current;
+    if (el) {
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
     }
-  }, [lines, input]);
+  }, [lines]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (el) {
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
+    }
+  }, []);
 
   const process = useCallback((cmd: string) => {
     const trimmed = cmd.trim();
@@ -96,13 +123,15 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     if (result._exit) {
       stateRef.current = result.newState;
       setLines(prev => [...prev, ...result.lines]);
+      onClose?.();
       return;
     }
 
     stateRef.current = result.newState;
     setLines(prev => [...prev, ...result.lines]);
+    setPromptTop(getPromptTop(result.newState));
     setHistoryIndex(-1);
-  }, []);
+  }, [onClose, getPromptTop]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -138,6 +167,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
+      e.stopPropagation();
       const trimmed = input.trim();
       if (!trimmed) return;
 
@@ -170,67 +200,84 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     return () => clearTimeout(timer);
   }, [focusInput]);
 
-  const prompt = getPrompt(stateRef.current);
+  const prefix = getInputPrefix(stateRef.current);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#152238] shrink-0">
-        <button
-          onClick={onClose}
-          className="h-2.5 w-2.5 min-h-0 rounded-full bg-[#ff5555] hover:brightness-125 transition-all focus:outline-none"
-          aria-label="Close terminal"
-        />
-        <button
-          onClick={onToggleFullscreen}
-          className="h-2.5 w-2.5 min-h-0 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
-          aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
-        />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840] opacity-80" />
+    <div className="flex flex-col h-full" style={{ background: KALI_BG }}>
+      <div
+        className="flex items-center justify-between px-3 py-1 shrink-0 border-b"
+        style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
+      >
+        <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none">_terminal <span className="text-white/20">v2.0 — type "help"</span></span>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={onClose}
+            className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#ff5f56] hover:brightness-125 transition-all focus:outline-none"
+            aria-label="Close terminal"
+          />
+          <button
+            onClick={onToggleFullscreen}
+            className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
+            aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+          />
+          <span className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#27c93f]" />
+        </div>
       </div>
 
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto px-3 py-2 font-mono text-sm leading-relaxed"
+        className="flex-1 overflow-y-auto px-3 pb-4 pt-1 font-mono text-sm leading-relaxed overscroll-contain"
         style={{
-          background: '#221b30',
+          background: KALI_BG,
           scrollbarWidth: 'thin',
-          scrollbarColor: '#3d2e5c transparent',
+          scrollbarColor: `${KALI_BORDER} transparent`,
         }}
         onClick={focusInput}
       >
-        {lines.map((line, i) => (
-          <div
-            key={i}
-            className={`whitespace-pre-wrap break-all ${
-              line.type === 'input'
-                ? 'text-[#33ff00]'
-                : line.type === 'output'
-                ? 'text-[#e6edf3]'
-                : line.type === 'error'
-                ? 'text-[#ff5555]'
-                : line.type === 'prompt'
-                ? 'text-[#33ff00]'
-                : 'text-[#e6edf3]/50'
-            }`}
-          >
-            {line.text}
-          </div>
-        ))}
-        <div className="flex items-center text-[#33ff00]">
-          <span className="shrink-0 whitespace-nowrap">{prompt}</span>
+        {lines.map((line, i) => {
+          let color = KALI_OUTPUT;
+          let opacity: number | undefined = 1;
+          switch (line.type) {
+            case 'input': color = KALI_GREEN; break;
+            case 'output': {
+              const t = line.text;
+              if (t.endsWith('/')) color = KALI_DIR;
+              else if (t.endsWith('*')) color = KALI_EXEC;
+              else color = KALI_OUTPUT;
+              break;
+            }
+            case 'error': color = KALI_ERROR; break;
+            case 'prompt': color = KALI_GREEN; break;
+            case 'system': color = KALI_SYSTEM; opacity = 0.5; break;
+          }
+          return (
+            <div
+              key={i}
+              style={{ color, opacity }}
+              className="whitespace-pre-wrap"
+            >
+              {line.text}
+            </div>
+          );
+        })}
+        <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap leading-relaxed">
+          {promptTop}
+        </div>
+        <div className="flex items-center" style={{ color: KALI_GREEN }}>
+          <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-[#33ff00] font-mono text-sm p-0 m-0 min-h-0 h-auto leading-normal caret-[#33ff00]"
+            className="flex-1 bg-transparent border-none outline-none font-mono text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-0"
+            style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
             spellCheck={false}
             autoComplete="off"
             autoFocus
             aria-label="Terminal input"
           />
-          <span className="w-2 h-4 bg-[#33ff00] animate-pulse shrink-0" />
         </div>
       </div>
     </div>
