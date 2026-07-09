@@ -85,9 +85,9 @@ export const ps: CommandHandler = (args, state) => {
     { pid: 124, ppid: 1, cpu: 0.0, mem: 0.4, cmd: 'cron', user: 'root' },
     { pid: 156, ppid: 1, cpu: 0.2, mem: 2.1, cmd: 'NetworkManager', user: 'root' },
     { pid: 203, ppid: 1, cpu: 0.0, mem: 0.8, cmd: 'sshd', user: 'root' },
-    { pid: 387, ppid: 203, cpu: 0.0, mem: 0.5, cmd: 'sshd: qyvora-student', user: 'root' },
-    { pid: 388, ppid: 387, cpu: 0.1, mem: 0.6, cmd: 'bash', user: 'qyvora-student' },
-    { pid: 391, ppid: 388, cpu: 0.0, mem: 0.3, cmd: 'ps', user: 'qyvora-student' },
+    { pid: 387, ppid: 203, cpu: 0.0, mem: 0.5, cmd: 'sshd: kali', user: 'root' },
+    { pid: 388, ppid: 387, cpu: 0.1, mem: 0.6, cmd: 'bash', user: 'kali' },
+    { pid: 391, ppid: 388, cpu: 0.0, mem: 0.3, cmd: 'ps', user: 'kali' },
   ];
 
   const showAll = args.includes('-a') || args.includes('aux');

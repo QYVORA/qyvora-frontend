@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Terminal } from 'lucide-react';
-import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import * as RadixDialog from '@radix-ui/react-dialog';
 import { TerminalShell } from './TerminalShell';
 import type { SimulatedTerminalProps } from './types';
 
@@ -10,7 +10,6 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
   context,
   initialCommands,
   mode = 'modal',
-  title,
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -34,31 +33,42 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
 
   if (mode === 'modal') {
     return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent
-          title="Simulated Terminal"
-          maxWidth={isFullscreen ? 'max-w-[98vw]' : 'max-w-4xl'}
-          className={isFullscreen ? 'h-[95vh]' : 'h-[75vh]'}
-          hideClose
-        >
-          <div className="h-full -m-6">
+      <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
+        <RadixDialog.Portal>
+          <RadixDialog.Overlay className="fixed inset-0 z-[200] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+          <RadixDialog.Content
+            className={cn(
+              'fixed z-[201] flex flex-col overflow-hidden',
+              'data-[state=open]:animate-in data-[state=closed]:animate-out',
+              'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              'duration-150',
+              isFullscreen
+                ? 'inset-4'
+                : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-3rem)] max-w-5xl h-[75vh]',
+            )}
+          >
             {shell}
-          </div>
-        </DialogContent>
-      </Dialog>
+          </RadixDialog.Content>
+        </RadixDialog.Portal>
+      </RadixDialog.Root>
     );
   }
 
   if (!open) return null;
 
   return (
-    <div className={isFullscreen ? 'fixed inset-0 z-50 p-0' : 'w-full'}>
+    <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full'}>
       <div className={isFullscreen ? 'h-screen' : 'h-[60vh] min-h-[400px]'}>
         {shell}
       </div>
     </div>
   );
 };
+
+function cn(...classes: (string | boolean | undefined | null)[]): string {
+  return classes.filter(Boolean).join(' ');
+}
 
 export const TerminalButton: React.FC<{
   onClick: () => void;

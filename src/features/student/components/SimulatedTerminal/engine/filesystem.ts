@@ -10,8 +10,8 @@ export function createNode(
     type,
     children: type === 'dir' ? [] : [],
     permissions: type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--',
-    owner: 'qyvora-student',
-    group: 'qyvora-student',
+    owner: 'kali',
+    group: 'kali',
     size: type === 'dir' ? 4096 : 0,
     ...opts,
   };

@@ -248,7 +248,7 @@ export const ss: CommandHandler = (args, state) => {
       }
     });
     if (!listening) {
-      lines.push(`ESTAB       0             0                       ${numeric ? '10.0.0.42' : 'qyvora-sandbox'}:22          ${numeric ? '192.168.1.100' : 'student.home'}:45123              users:(("sshd",pid=387,fd=4))`);
+      lines.push(`ESTAB       0             0                       ${numeric ? '10.0.0.42' : 'kali'}:22          ${numeric ? '192.168.1.100' : 'student.home'}:45123              users:(("sshd",pid=387,fd=4))`);
     }
   }
   if (udp) {

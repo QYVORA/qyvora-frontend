@@ -6,19 +6,19 @@ export function createInitialState(context?: TerminalContext): TerminalState {
   const root = buildDefaultFilesystem();
 
   return {
-    cwd: '/home/qyvora-student',
-    user: 'qyvora-student',
-    hostname: 'qyvora-sandbox',
-    home: '/home/qyvora-student',
+    cwd: '/home/kali',
+    user: 'kali',
+    hostname: 'kali',
+    home: '/home/kali',
     env: {
       PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      HOME: '/home/qyvora-student',
-      USER: 'qyvora-student',
+      HOME: '/home/kali',
+      USER: 'kali',
       SHELL: '/bin/bash',
       TERM: 'xterm-256color',
       EDITOR: 'nano',
       LANG: 'en_US.UTF-8',
-      PS1: '\\u@\\h:\\w\\$ ',
+      PS1: '\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ ',
     },
     history: [],
     historyIndex: -1,
@@ -36,7 +36,7 @@ export function createInitialState(context?: TerminalContext): TerminalState {
 export function processInput(
   input: string,
   state: TerminalState,
-): { lines: TerminalLine[]; newState: TerminalState } {
+): { lines: TerminalLine[]; newState: TerminalState; _clearLine?: boolean; _exit?: boolean } {
   const trimmed = input.trim();
   if (!trimmed) return { lines: [], newState: state };
 
@@ -48,7 +48,7 @@ export function processInput(
 
   const result = executeCommand(expanded, state);
 
-  lines.push({ type: 'input', text: `$ ${trimmed}` });
+  lines.push({ type: 'input', text: `${getPrompt(state)}${trimmed}` });
   if (result.output) lines.push({ type: 'output', text: result.output });
   if (result.error) lines.push({ type: 'error', text: result.error });
 
@@ -59,7 +59,7 @@ export function processInput(
     lastExitCode: result.exitCode,
   };
 
-  return { lines, newState };
+  return { lines, newState, _clearLine: (result as any)._clearLine, _exit: (result as any)._exit };
 }
 
 export function getPrompt(state: TerminalState): string {

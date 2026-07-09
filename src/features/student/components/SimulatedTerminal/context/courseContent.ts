@@ -9,7 +9,7 @@ export function injectCourseContent(
 
   let projectsDir = root.children.find(c => c.name === 'home');
   if (!projectsDir) return state;
-  let homeDir = projectsDir.children.find(c => c.name === 'qyvora-student');
+  let homeDir = projectsDir.children.find(c => c.name === 'kali');
   if (!homeDir) return state;
   let projectsNode = homeDir.children.find(c => c.name === 'Projects');
   if (!projectsNode) return state;
@@ -23,8 +23,8 @@ export function injectCourseContent(
         type: 'file',
         content: `# Course: ${courseId}\nLesson: ${lessonId || 'Overview'}\n\nThis directory contains practice files and exercises\nfor the current lesson.\n`,
         permissions: '-rw-r--r--',
-        owner: 'qyvora-student',
-        group: 'qyvora-student',
+        owner: 'kali',
+        group: 'kali',
         size: 120,
         children: [],
       },
@@ -37,21 +37,21 @@ export function injectCourseContent(
             type: 'file',
             content: 'Exercise 1: Use ls to explore the file system\nExercise 2: Use cat to read this file\nExercise 3: Try pwd to see your current location\n',
             permissions: '-rw-r--r--',
-            owner: 'qyvora-student',
-            group: 'qyvora-student',
+            owner: 'kali',
+            group: 'kali',
             size: 130,
             children: [],
           },
         ],
         permissions: 'drwxr-xr-x',
-        owner: 'qyvora-student',
-        group: 'qyvora-student',
+        owner: 'kali',
+        group: 'kali',
         size: 4096,
       },
     ],
     permissions: 'drwxr-xr-x',
-    owner: 'qyvora-student',
-    group: 'qyvora-student',
+    owner: 'kali',
+    group: 'kali',
     size: 4096,
   };
 
