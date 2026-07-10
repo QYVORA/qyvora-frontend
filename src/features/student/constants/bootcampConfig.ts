@@ -4,9 +4,17 @@
  * Single source of truth for the bootcamp walkthrough structure.
  * MUST mirror the backend bootcamp.config.js exactly.
  *
- * Instruction format supports:
+ * Instruction format supports (GitHub-Flavored Markdown):
  *   - Fenced code blocks:  ```bash\ncommand\n```
  *   - Inline code:         `command`
+ *   - Bold:                **text**
+ *   - Italic:              *text*
+ *   - Bold+Italic:         ***text***
+ *   - Unordered lists:     - item
+ *   - Ordered lists:       1. item
+ *   - Headings:            # text
+ *   - Blockquotes:         > text
+ *   - Horizontal rule:     ---
  *   - Plain prose
  */
 
