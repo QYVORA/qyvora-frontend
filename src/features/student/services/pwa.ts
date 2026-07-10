@@ -20,9 +20,17 @@ export async function showInstallPrompt(): Promise<boolean> {
   if (!deferredPrompt) return false;
   const prompt = deferredPrompt as any;
   deferredPrompt = null;
-  prompt.prompt();
-  const result = await prompt.userChoice;
-  return result.outcome === 'accepted';
+  try {
+    prompt.prompt();
+    const choice = prompt.response || prompt.userChoice;
+    const result = await Promise.race([
+      choice,
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 30000)),
+    ]);
+    return result?.outcome === 'accepted';
+  } catch {
+    return false;
+  }
 }
 
 export async function subscribeToPush(publicKey: string): Promise<PushSubscription | null> {
