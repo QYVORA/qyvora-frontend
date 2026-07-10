@@ -29,7 +29,7 @@ const BlogsPage: React.FC = () => {
       {/* ── Hero Section ── */}
       <section className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden">
         <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
-          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
+          <div className="flex flex-col items-start justify-center px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
                 Intelligence <span className="text-accent">Reports</span>
@@ -55,12 +55,12 @@ const BlogsPage: React.FC = () => {
       <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
         <div className="w-full px-4 md:px-10 lg:px-12 xl:px-16">
           <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-            <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+            <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32 min-w-0">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
                 Latest <span className="text-accent">Posts</span>
               </h2>
             </div>
-            <div className="md:w-[65%] lg:w-[62%]">
+            <div className="md:w-[65%] lg:w-[62%] min-w-0">
               <Carousel
                 slides={BLOG_POSTS}
                 renderCard={(post) => (

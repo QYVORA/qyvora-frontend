@@ -97,7 +97,7 @@ const PromotionalSystem: React.FC = () => {
             </button>
 
             {/* Image Section - Vertical on Mobile, Horizontal on Desktop */}
-            <div className="relative h-48 sm:h-auto sm:w-48 shrink-0 overflow-hidden bg-bg">
+            <div className="relative h-36 sm:h-auto sm:w-48 shrink-0 overflow-hidden bg-bg">
               <img
                 src={activePromo.image}
                 alt={activePromo.title}
@@ -112,10 +112,10 @@ const PromotionalSystem: React.FC = () => {
 
             {/* Content Section */}
             <div className="p-6 sm:p-7 flex flex-col justify-center flex-1">
-              <h4 className="text-base font-black text-text-primary uppercase tracking-tight mb-1">
+              <h4 className="text-base font-black text-text-primary uppercase tracking-tight mb-1 break-words">
                 {activePromo.title}
               </h4>
-              <p className="text-[11px] font-bold text-accent uppercase tracking-wider mb-3">
+              <p className="text-[11px] font-bold text-accent uppercase tracking-wider mb-3 break-words">
                 {activePromo.subtitle}
               </p>
               <p className="text-xs text-text-secondary leading-relaxed mb-6 font-mono opacity-80">

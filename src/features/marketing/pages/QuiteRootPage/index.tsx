@@ -90,7 +90,7 @@ function Hero() {
   return (
     <div className="relative w-full md:min-h-screen flex flex-col">
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
-        <div className="flex flex-col items-start justify-start px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
+        <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
               QUITE <span className="text-accent">ROOT</span>
@@ -152,7 +152,7 @@ function WhoWeAre() {
                 <h3 className="mb-3 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
                   {item.title}
                 </h3>
-                <p className="max-w-xl text-sm md:text-base text-text-secondary leading-relaxed">
+                <p className="max-w-xl text-sm md:text-base text-text-secondary leading-relaxed break-words">
                   {item.desc}
                 </p>
               </div>
@@ -198,7 +198,7 @@ function Principles() {
             >
               {React.createElement(Icon as React.ElementType, { className: 'mb-7 h-8 w-8 text-accent' })}
               <h3 className="text-xl font-black uppercase tracking-tight text-text-primary">{title as string}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-text-secondary">{body as string}</p>
+              <p className="mt-3 text-sm leading-relaxed text-text-secondary break-words">{body as string}</p>
             </div>
           ))}
         </div>

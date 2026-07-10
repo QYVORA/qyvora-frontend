@@ -112,7 +112,7 @@ const ContactModalHost: React.FC = () => {
               <CheckCircle className="w-8 h-8 text-accent" />
             </div>
             <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">Message Sent!</h3>
-            <p className="text-sm text-text-muted max-w-md leading-relaxed">
+            <p className="text-sm text-text-muted max-w-md leading-relaxed break-words">
               Thank you for reaching out. We'll get back to you within 24-48 hours.
             </p>
             <button
@@ -131,7 +131,7 @@ const ContactModalHost: React.FC = () => {
               <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em]">
                 Category
               </span>
-              <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-60">
+              <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-full md:w-60">
                 <button
                   type="button"
                   onClick={() => setContactType('student')}

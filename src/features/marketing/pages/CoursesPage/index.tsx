@@ -84,7 +84,7 @@ const CoursesPage: React.FC = () => {
 
         <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
           {/* Left column */}
-          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
+          <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
               <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-md text-[10px] font-black uppercase tracking-widest text-accent">
                 <BookOpen className="h-3.5 w-3.5" /> Self-Paced Learning
@@ -240,10 +240,10 @@ const CoursesPage: React.FC = () => {
                             </span>
                           </div>
                         </div>
-                        <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight">
+                        <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
                           {course.title}
                         </h3>
-                        <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
+                        <p className="text-xs text-text-muted leading-relaxed line-clamp-2 break-words">
                           {course.description}
                         </p>
                         <div className="flex items-center justify-between pt-2">

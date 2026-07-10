@@ -91,7 +91,7 @@ const BlogPostPage: React.FC = () => {
               ))}
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] mb-6">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] mb-6 break-words">
               {post.title}
             </h1>
 
@@ -120,7 +120,7 @@ const BlogPostPage: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative aspect-[21/9] rounded-2xl overflow-hidden border border-border/50"
+          className="relative aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-border/50"
         >
           <img
             src={post.image}
@@ -176,14 +176,14 @@ const BlogPostPage: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/10 to-transparent" />
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 overflow-hidden">
                       {other.tags.map((tag) => (
                         <span key={tag} className="text-[9px] font-black uppercase tracking-widest text-accent">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2">
+                    <h3 className="text-xl font-black uppercase tracking-tight text-text-primary mb-2 break-words">
                       {other.title}
                     </h3>
                     <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">

@@ -48,9 +48,9 @@ export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label:
     <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
       {icon}
     </div>
-    <div>
-      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</div>
-      <div className="text-base md:text-lg font-black text-text-primary">{value}</div>
+    <div className="min-w-0">
+      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted truncate">{label}</div>
+      <div className="text-base md:text-lg font-black text-text-primary truncate">{value}</div>
     </div>
   </div>
 );
@@ -60,9 +60,9 @@ export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType;
     <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
       <Icon className="w-5 h-5 text-accent" />
     </div>
-    <div>
+    <div className="min-w-0">
       <div className="text-sm font-black uppercase tracking-wider text-text-primary mb-1">{name}</div>
-      <div className="text-xs font-mono text-text-secondary leading-relaxed">{desc}</div>
+      <div className="text-xs font-mono text-text-secondary leading-relaxed break-words">{desc}</div>
     </div>
   </div>
 );
@@ -71,8 +71,8 @@ export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementTy
   <div className="p-6 md:p-7 rounded-xl border border-white/5 bg-white/[0.02]">
     <div className="flex items-start gap-4">
       <Icon className="w-6 h-6 text-accent mt-1 shrink-0" />
-      <div>
-        <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 md:mb-3 text-text-primary">{title}</h3>
+      <div className="min-w-0">
+        <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 md:mb-3 text-text-primary break-words">{title}</h3>
         <p className="text-xs md:text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2]">
           {desc}
         </p>
@@ -86,7 +86,7 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
     {items.map((item, i) => (
       <li key={i} className="flex items-start gap-3 md:gap-4">
         <span className="mt-0.5 shrink-0">{item.icon}</span>
-        <span>{item.text}</span>
+        <span className="min-w-0">{item.text}</span>
       </li>
     ))}
   </ul>

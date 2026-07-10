@@ -68,7 +68,7 @@ const ServicesPage: React.FC = () => {
 
       {/* ══ HERO ══ */}
       <section className="relative bg-transparent overflow-hidden min-h-dvh md:min-h-screen flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-accent text-xs font-black uppercase tracking-[0.3em]">
               <Shield className="w-4 h-4" />
@@ -88,7 +88,7 @@ const ServicesPage: React.FC = () => {
 
       {/* ══ SERVICES CARDS ══ */}
       <section className="relative w-full py-20 md:py-28">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
               Engagement <span className="text-accent">Packages</span>
@@ -127,20 +127,20 @@ const ServicesPage: React.FC = () => {
                   )}
                   <div className="relative z-10 p-6 flex flex-col h-full">
                     <div className="mb-5">
-                      <h3 className="text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                      <h3 className="text-xl font-black text-text-primary tracking-tight break-words">{service.tier}</h3>
                       <div className="mt-2 flex items-baseline gap-1">
-                        <span className="text-3xl font-black text-accent">{service.price}</span>
+                        <span className="text-2xl md:text-3xl font-black text-accent">{service.price}</span>
                         {service.price === 'Negotiation' && (
                           <span className="text-xs font-bold text-text-muted">per engagement</span>
                         )}
                       </div>
-                      <p className="text-sm text-text-muted mt-2 leading-relaxed">{service.desc}</p>
+                      <p className="text-sm text-text-muted mt-2 leading-relaxed break-words">{service.desc}</p>
                     </div>
                     <ul className="space-y-2 mb-6 flex-1">
                       {service.features.map((f) => (
                         <li key={f} className="flex items-start gap-2 text-sm text-text-secondary">
                           <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                          <span>{f}</span>
+                          <span className="break-words">{f}</span>
                         </li>
                       ))}
                     </ul>
@@ -165,7 +165,7 @@ const ServicesPage: React.FC = () => {
 
       {/* ══ CUSTOM INQUIRIES ══ */}
       <section className="relative w-full py-20 md:py-28 border-t border-border/20">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-6">
               <Building2 className="w-8 h-8 text-accent" />

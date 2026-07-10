@@ -21,7 +21,7 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
           {String(number).padStart(2, '0')}
         </div>
         <div className="flex-1 min-w-0 flex items-center gap-3 flex-wrap">
-          <span className="block font-black uppercase tracking-[0.25em] text-accent text-xs">
+          <span className="block font-black uppercase tracking-[0.25em] text-accent text-xs truncate">
             {lesson.title}
           </span>
           {lesson.hasQuiz && (

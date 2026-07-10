@@ -7,9 +7,9 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
     <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
       {icon}
     </div>
-    <div>
+    <div className="min-w-0">
       <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</div>
-      <div className="text-lg font-black text-text-primary">{value}</div>
+      <div className="text-base md:text-lg font-black text-text-primary break-words">{value}</div>
     </div>
   </div>
 );
@@ -140,8 +140,8 @@ export const HackerProtocolBookBlog: React.FC = () => {
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-start gap-4">
               <Target className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">Signal Over Noise</h3>
+              <div className="min-w-0">
+                <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Signal Over Noise</h3>
                 <p className="text-sm font-mono text-text-secondary leading-[2]">
                   Every room teaches exactly one concept. No fluff, no filler, no "watch this 45-minute video." You learn by doing, and you prove it by solving.
                 </p>
@@ -151,8 +151,8 @@ export const HackerProtocolBookBlog: React.FC = () => {
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-start gap-4">
               <TrendingUp className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">Progressive Complexity</h3>
+              <div className="min-w-0">
+                <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Progressive Complexity</h3>
                 <p className="text-sm font-mono text-text-secondary leading-[2]">
                   Each phase gates behind the previous one. You can't skip ahead because understanding the foundation is non-negotiable. Mastery is the only shortcut.
                 </p>
@@ -162,8 +162,8 @@ export const HackerProtocolBookBlog: React.FC = () => {
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-start gap-4">
               <Lightbulb className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">Real-World Relevance</h3>
+              <div className="min-w-0">
+                <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Real-World Relevance</h3>
                 <p className="text-sm font-mono text-text-secondary leading-[2]">
                   Every room is based on a real vulnerability class or attack technique. You're not solving abstract puzzles — you're learning skills that map directly to bug bounties, pentest engagements, and red team operations.
                 </p>

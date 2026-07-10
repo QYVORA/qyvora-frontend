@@ -153,12 +153,12 @@ const Notifications: React.FC = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-wrap items-center gap-2 mb-1 pr-4">
-                              <span className="text-xs font-black text-text-primary uppercase tracking-wide">{n.title}</span>
+                              <span className="text-xs font-black text-text-primary uppercase tracking-wide break-words">{n.title}</span>
                               <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest px-1.5 py-0.5 bg-bg border border-border rounded">
                                 {n.type.replace(/_/g, ' ')}
                               </span>
                             </div>
-                            <p className="text-sm text-text-secondary mb-2">{n.message}</p>
+                            <p className="text-sm text-text-secondary mb-2 break-words">{n.message}</p>
                             <div className="flex items-center justify-between gap-2">
                               <span className="text-[10px] text-text-muted font-mono">
                                 {n.createdAt ? new Date(n.createdAt).toLocaleString() : '—'}

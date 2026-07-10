@@ -112,7 +112,7 @@ const CourseInfoPage: React.FC = () => {
             <ArrowLeft className="h-3 w-3" /> All Courses
           </Link>
 
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center w-full">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-16 items-center w-full">
             {/* Cover */}
             <div className="w-full lg:w-[40%] shrink-0">
               <div className="aspect-[8/5] rounded-xl overflow-hidden border border-border/30 bg-bg-elevated">
@@ -215,7 +215,7 @@ const CourseInfoPage: React.FC = () => {
             {course.learningObjectives.map((obj, i) => (
               <div key={i} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
                 <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                <span className="text-sm text-text-secondary leading-relaxed">{obj}</span>
+                <span className="text-sm text-text-secondary leading-relaxed break-words">{obj}</span>
               </div>
             ))}
           </div>
@@ -272,8 +272,8 @@ const CourseInfoPage: React.FC = () => {
                           <RelIcon className="h-3 w-3 text-accent" />
                           <span className="text-[9px] font-black uppercase tracking-widest text-accent">{relCategory?.name}</span>
                         </div>
-                        <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors">{relCourse.title}</h3>
-                        <p className="text-[11px] text-text-muted line-clamp-1">{relCourse.description}</p>
+                        <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors break-words">{relCourse.title}</h3>
+                        <p className="text-[11px] text-text-muted line-clamp-1 break-words">{relCourse.description}</p>
                         <div className="flex items-center gap-2 pt-1">
                           <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
                             <Zap className="h-2.5 w-2.5" /> {relCourse.cpCost} CP
