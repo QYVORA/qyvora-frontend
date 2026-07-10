@@ -159,10 +159,168 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
   );
 };
 
+// ── Inline content renderer ────────────────────────────────────────────────────
+type InlinePart =
+  | { type: 'text'; content: string }
+  | { type: 'code'; content: string }
+  | { type: 'bold'; content: string }
+  | { type: 'italic'; content: string }
+  | { type: 'boldItalic'; content: string };
+
+function renderInline(text: string): React.ReactNode[] {
+  const pattern = /(`[^`]+`|\*\*\*[^*]+\*\*\*|\*\*[^*]+\*\*|\*[^*]+\*)/g;
+  const parts: InlinePart[] = [];
+  let li = 0;
+  let m: RegExpExecArray | null;
+
+  while ((m = pattern.exec(text)) !== null) {
+    if (m.index > li) parts.push({ type: 'text', content: text.slice(li, m.index) });
+    const match = m[0];
+    if (match.startsWith('`')) {
+      parts.push({ type: 'code', content: match.slice(1, -1).trim() });
+    } else if (match.startsWith('***')) {
+      parts.push({ type: 'boldItalic', content: match.slice(3, -3) });
+    } else if (match.startsWith('**')) {
+      parts.push({ type: 'bold', content: match.slice(2, -2) });
+    } else {
+      parts.push({ type: 'italic', content: match.slice(1, -1) });
+    }
+    li = m.index + match.length;
+  }
+  if (li < text.length) parts.push({ type: 'text', content: text.slice(li) });
+
+  return parts.map((part, i) => {
+    switch (part.type) {
+      case 'code':
+        return <InlineCode key={i} code={part.content} />;
+      case 'bold':
+        return <strong key={i} className="font-bold text-text-primary">{part.content}</strong>;
+      case 'italic':
+        return <em key={i} className="italic text-text-primary">{part.content}</em>;
+      case 'boldItalic':
+        return <strong key={i} className="font-bold italic text-text-primary">{part.content}</strong>;
+      default:
+        return <span key={i}>{part.content}</span>;
+    }
+  });
+}
+
+// ── Block types for non-fenced content ─────────────────────────────────────────
+type InlineBlock =
+  | { kind: 'paragraph'; lines: string[] }
+  | { kind: 'ul'; items: string[] }
+  | { kind: 'ol'; items: string[] }
+  | { kind: 'heading'; level: number; text: string }
+  | { kind: 'hr' }
+  | { kind: 'blockquote'; text: string };
+
+const PARA_CLASS = 'leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0';
+
+function parseBlocks(text: string): InlineBlock[] {
+  const rawBlocks = text.split(/\n\n+/);
+  const blocks: InlineBlock[] = [];
+
+  for (const raw of rawBlocks) {
+    const trimmed = raw.trim();
+    if (!trimmed) continue;
+
+    const lines = trimmed.split('\n');
+
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+      blocks.push({ kind: 'hr' });
+      continue;
+    }
+
+    if (lines.length === 1) {
+      const hMatch = lines[0].match(/^(#{1,6})\s+(.+)$/);
+      if (hMatch) {
+        blocks.push({ kind: 'heading', level: hMatch[1].length, text: hMatch[2] });
+        continue;
+      }
+    }
+
+    if (lines.every(l => /^\s*[-*+]\s/.test(l))) {
+      blocks.push({ kind: 'ul', items: lines.map(l => l.replace(/^\s*[-*+]\s+/, '')) });
+      continue;
+    }
+
+    if (lines.every(l => /^\s*\d+\.\s/.test(l))) {
+      blocks.push({ kind: 'ol', items: lines.map(l => l.replace(/^\s*\d+\.\s+/, '')) });
+      continue;
+    }
+
+    if (lines.every(l => /^\s*>/.test(l))) {
+      blocks.push({ kind: 'blockquote', text: lines.map(l => l.replace(/^\s*> ?/, '')).join('\n') });
+      continue;
+    }
+
+    blocks.push({ kind: 'paragraph', lines });
+  }
+
+  return blocks;
+}
+
+function renderBlock(block: InlineBlock, key: number): React.ReactNode {
+  switch (block.kind) {
+    case 'paragraph':
+      return (
+        <p key={key} className={PARA_CLASS}>
+          {renderInline(block.lines.join('\n'))}
+        </p>
+      );
+    case 'ul':
+      return (
+        <ul key={key} className="list-disc list-inside space-y-3 leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+          {block.items.map((item, j) => (
+            <li key={j}>{renderInline(item)}</li>
+          ))}
+        </ul>
+      );
+    case 'ol':
+      return (
+        <ol key={key} className="list-decimal list-inside space-y-3 leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+          {block.items.map((item, j) => (
+            <li key={j}>{renderInline(item)}</li>
+          ))}
+        </ol>
+      );
+    case 'heading': {
+      const level = Math.min(block.level, 4);
+      const size =
+        level === 1 ? 'text-2xl mt-6 mb-4' :
+        level === 2 ? 'text-xl mt-5 mb-3' :
+        level === 3 ? 'text-lg mt-4 mb-2' :
+                      'text-base mt-3 mb-2';
+      const cls = `font-bold text-text-primary leading-snug ${size} px-1 sm:px-0 max-w-prose sm:max-w-[85ch] lg:max-w-3xl`;
+      switch (level) {
+        case 1: return <h1 key={key} className={cls}>{renderInline(block.text)}</h1>;
+        case 2: return <h2 key={key} className={cls}>{renderInline(block.text)}</h2>;
+        case 3: return <h3 key={key} className={cls}>{renderInline(block.text)}</h3>;
+        default: return <h4 key={key} className={cls}>{renderInline(block.text)}</h4>;
+      }
+    }
+    case 'blockquote':
+      return (
+        <blockquote key={key} className="border-l-2 border-accent/40 pl-4 italic text-text-secondary leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
+          {renderInline(block.text)}
+        </blockquote>
+      );
+    case 'hr':
+      return <hr key={key} className="border-border my-12 md:my-16" />;
+  }
+}
+
 // ── Main renderer ─────────────────────────────────────────────────────────────
 // Supports:
 //   - Fenced blocks:  ```bash\n...\n```
 //   - Inline code:    `command`
+//   - Bold:           **text**
+//   - Italic:         *text*
+//   - Bold+Italic:    ***text***
+//   - Lists:          - item / 1. item
+//   - Headings:       # text
+//   - Blockquotes:    > text
+//   - Horizontal rule:--- / *** / ___
 //   - Plain text:     everything else
 const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
   // Split on fenced code blocks first
@@ -198,46 +356,12 @@ const CodeBlockRenderer: React.FC<{ text: string }> = ({ text }) => {
           return <FencedCodeBlock key={segIdx} code={seg.code} lang={seg.lang} />;
         }
 
-        // Split text segments into paragraphs by double newlines
-        const paragraphs = seg.text.split(/\n\n+/);
+        // Parse inline text into blocks (paragraphs, lists, headings, etc.)
+        const blocks = parseBlocks(seg.text);
 
         return (
           <div key={segIdx} className="space-y-8 md:space-y-10">
-            {paragraphs.map((para, paraIdx) => {
-              // Process inline code and bold within each paragraph
-              const combinedPattern = /(`[^`]+`|\*\*[^*]+\*\*)/g;
-              const parts: Array<{ type: 'text' | 'code' | 'bold'; content: string }> = [];
-              let li = 0;
-              let im: RegExpExecArray | null;
-
-              while ((im = combinedPattern.exec(para)) !== null) {
-                if (im.index > li) parts.push({ type: 'text', content: para.slice(li, im.index) });
-                
-                const match = im[0];
-                if (match.startsWith('`')) {
-                  parts.push({ type: 'code', content: match.slice(1, -1).trim() });
-                } else if (match.startsWith('**')) {
-                  parts.push({ type: 'bold', content: match.slice(2, -2) });
-                }
-                
-                li = im.index + im[0].length;
-              }
-              if (li < para.length) parts.push({ type: 'text', content: para.slice(li) });
-
-              if (parts.length === 0 && para.trim() === '') return null;
-
-              return (
-                <p key={paraIdx} className="leading-[1.8] sm:leading-[1.85] max-w-prose sm:max-w-[85ch] lg:max-w-3xl px-1 sm:px-0">
-                  {parts.map((part, partIdx) =>
-                    part.type === 'code'
-                      ? <InlineCode key={partIdx} code={part.content} />
-                      : part.type === 'bold'
-                      ? <strong key={partIdx} className="font-bold text-text-primary">{part.content}</strong>
-                      : <span key={partIdx}>{part.content}</span>
-                  )}
-                </p>
-              );
-            })}
+            {blocks.map((block, blockIdx) => renderBlock(block, blockIdx))}
           </div>
         );
       })}
