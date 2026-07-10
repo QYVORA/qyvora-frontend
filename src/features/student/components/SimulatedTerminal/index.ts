@@ -1,3 +1,3 @@
 export { SimulatedTerminal, TerminalButton } from './SimulatedTerminal';
-export { TerminalShell } from './TerminalShell';
+export { TerminalShell, clearTerminalStorage } from './TerminalShell';
 export type { SimulatedTerminalProps, TerminalContext } from './types';

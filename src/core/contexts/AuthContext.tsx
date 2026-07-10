@@ -29,6 +29,7 @@ import api, {
   hasAuthSessionHint, // Reads that hint before attempting silent token refresh
 } from '../services/api';
 import { extractCpBalance } from '../../shared/utils/cpBalance';
+import { clearTerminalStorage } from '../../features/student/components/SimulatedTerminal';
 
 // ─── Domain types ────────────────────────────────────────────────────────────
 
@@ -291,6 +292,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // on the client even if the server request failed.
     } finally {
       clearAuthStorage();
+      clearTerminalStorage();
       setUser(null);
     }
   };
