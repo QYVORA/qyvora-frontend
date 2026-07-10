@@ -7,7 +7,7 @@ import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
-import { initPWA } from '@/features/student/services/pwa';
+import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
 const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
@@ -19,7 +19,10 @@ const StudentLayout = () => {
   const isRoomPage = Boolean(roomMatch || roomMatchLegacy || courseMatch);
   const [terminalOpen, setTerminalOpen] = useState(false);
 
-  useEffect(() => { initPWA(); }, []);
+  useEffect(() => {
+    initPWA();
+    tryAutoSubscribePush();
+  }, []);
 
   useEffect(() => {
     const handler = () => setTerminalOpen(true);

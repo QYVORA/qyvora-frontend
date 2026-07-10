@@ -1,3 +1,5 @@
+import api from '../../../core/services/api';
+
 let deferredPrompt: Event | null = null;
 
 export function initPWA(): void {
@@ -10,6 +12,40 @@ export function initPWA(): void {
     e.preventDefault();
     deferredPrompt = e;
   });
+}
+
+export async function tryAutoSubscribePush(): Promise<void> {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'denied') return;
+
+  let permission = Notification.permission;
+  if (permission === 'default') {
+    permission = await Notification.requestPermission();
+  }
+  if (permission !== 'granted') return;
+
+  try {
+    const { data } = await api.get<{ publicKey: string }>('/push/vapid-public-key');
+    if (!data?.publicKey) return;
+
+    const registration = await navigator.serviceWorker.ready;
+    const existingSub = await registration.pushManager.getSubscription();
+    if (existingSub) {
+      const json = existingSub.toJSON();
+      if (json.endpoint) return;
+      await existingSub.unsubscribe();
+    }
+
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
+    });
+
+    await api.post('/push/subscribe', subscription.toJSON());
+  } catch {
+    /* silent fail — push is best-effort */
+  }
 }
 
 export function isInstallable(): boolean {
