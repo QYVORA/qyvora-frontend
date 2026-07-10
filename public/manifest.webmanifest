@@ -1,11 +1,14 @@
 {
-  "name": "QYVORA",
+  "name": "QYVORA Student Dashboard",
   "short_name": "QYVORA",
-  "description": "Africa's Offensive Security Platform",
-  "start_url": "/",
+  "description": "Africa's Offensive Security Platform — Student Dashboard",
+  "start_url": "/dashboard/",
+  "scope": "/dashboard/",
   "display": "standalone",
   "background_color": "#050706",
   "theme_color": "#66B870",
+  "orientation": "portrait",
+  "categories": ["education", "security"],
   "icons": [
     {
       "src": "/favicon.png",
@@ -17,7 +20,7 @@
       "src": "/favicon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

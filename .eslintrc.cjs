@@ -5,6 +5,7 @@ module.exports = {
     es2022: true,
     node: true,
   },
+  ignorePatterns: ['public/sw.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
