@@ -5,6 +5,7 @@ import blogAttackersDiscover from '@/assets/blog/attackers-discover-companies.we
 import blogAfricaNeeds from '@/assets/blog/africa-needs-professionals.webp';
 import blogMappingSurfaces from '@/assets/blog/mapping-attack-surfaces.webp';
 import blogFutureCybersecurity from '@/assets/blog/future-cybersecurity-africa.webp';
+import blogCaseStudyCover from '@/assets/blog/01-hpb-2026-online-class-screenshot.png';
 
 export interface BlogPost {
   id: string;
@@ -103,5 +104,17 @@ export const BLOG_POSTS: BlogPost[] = [
     date: '2026-06-25',
     readTime: '7 min read',
     tags: ['Future', 'AI', 'Innovation'],
+  },
+  {
+    id: 'hpb-2026-cohort-case-study',
+    slug: 'hpb-2026-cohort-case-study',
+    title: 'HPB 2026 Cohort — Case Study',
+    subtitle: 'From Training to Team Building: The Hacker Protocol Bootcamp Story',
+    excerpt: 'How the HPB 2026 Cohort produced a COO, formed the QuiteRoot tech team, and proved Africa\'s talent pipeline works.',
+    image: blogCaseStudyCover,
+    author: { name: 'WSUITS6', handle: 'Alhassan Osman Wunpini' },
+    date: '2026-07-10',
+    readTime: '10 min read',
+    tags: ['Case Study', 'Bootcamp', 'Africa', 'Cybersecurity'],
   },
 ];

@@ -13,6 +13,7 @@ import { AttackersDiscoverCompaniesBlog } from './AttackersDiscoverCompaniesBlog
 import { AfricaNeedsCybersecurityProfessionalsBlog } from './AfricaNeedsCybersecurityProfessionalsBlog';
 import { MappingAttackSurfacesBlog } from './MappingAttackSurfacesBlog';
 import { FutureCybersecurityAfricaBlog } from './FutureCybersecurityAfricaBlog';
+import { Hpb2026CaseStudy } from './Hpb2026CaseStudy';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -50,6 +51,8 @@ const BlogPostPage: React.FC = () => {
         return <MappingAttackSurfacesBlog />;
       case 'future-cybersecurity-africa':
         return <FutureCybersecurityAfricaBlog />;
+      case 'hpb-2026-cohort-case-study':
+        return <Hpb2026CaseStudy />;
       default:
         return null;
     }
