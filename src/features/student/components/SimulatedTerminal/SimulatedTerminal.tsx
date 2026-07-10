@@ -41,13 +41,13 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
               if (e.key === 'Tab') e.stopPropagation();
             }}
             className={cn(
-              'fixed z-[201] flex flex-col overflow-hidden',
+              'fixed z-[201] flex flex-col overflow-hidden rounded-2xl',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
               'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
               'duration-150',
               isFullscreen
-                ? 'inset-4'
+                ? 'inset-4 rounded-2xl'
                 : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
             )}
           >

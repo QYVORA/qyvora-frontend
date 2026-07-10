@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Search, Flame, X
+  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Flame, X
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
@@ -60,14 +60,11 @@ const StudentTopbar = () => {
   }, []);
 
   const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
-
-  // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
   const loadNotificationsSnapshot = async () => {
@@ -202,15 +199,6 @@ const StudentTopbar = () => {
                             <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
                           )}
                         </div>
-        <button
-          onClick={() => setMobileSearchOpen(true)}
-          className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
-          aria-label="Search"
-        >
-          <Search className="w-6 h-6 text-text-muted" />
-          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">Search</span>
-        </button>
-
                           <button
                               onClick={openSidebar}
                               className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
@@ -308,46 +296,20 @@ const StudentTopbar = () => {
           )
 
         ) : (
-          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-end md:justify-between gap-4">
+          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between gap-2 md:gap-4">
 
           {/* Left: Search */}
           <div className="flex-1 max-w-md hidden md:block">
             <SearchBar />
           </div>
 
-          {/* Center-right: Stats cluster */}
-          <div className="flex items-center gap-3 md:gap-5">
-            <div className="hidden md:flex items-center gap-3 px-4 py-2 rounded-xl bg-bg-elevated/40 border border-border/20">
-              <div className="flex items-center gap-1.5">
-                <CpLogo className="w-4 h-4" />
-                <span className="font-mono text-sm font-black text-text-primary">{user?.cp?.toLocaleString() ?? 0}</span>
-              </div>
-              <span className="w-px h-4 bg-border/30" />
-              <div className="flex items-center gap-1.5">
-                <Flame className="w-4 h-4 text-orange-400" />
-                <span className="font-mono text-sm font-black text-orange-400">0d</span>
-              </div>
-            </div>
-            <Link
-              to="/dashboard/bootcamps/bc_1775270338500"
-              className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent/10 border border-accent/20 text-accent text-xs font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
-            >
-              <Zap className="w-4 h-4" />
-              Continue
-            </Link>
+          {/* Mobile left: Search bar */}
+          <div className="flex-1 md:hidden">
+            <SearchBar compact onClose={() => {}} />
           </div>
 
-          {/* Right: terminal + notifications + search + profile */}
-          <div className="flex items-center gap-1 md:gap-3">
-
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              className="hidden md:flex p-3 md:p-3.5 items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
-              aria-label="Open terminal"
-              title="Open terminal (Ctrl+`)"
-            >
-              <Terminal className="w-5 h-5" />
-            </button>
+          {/* Right: notifications + profile */}
+          <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
 
             <div ref={notifRef} className="relative">
               <button
@@ -383,14 +345,6 @@ const StudentTopbar = () => {
               markAllNotificationsRead={markAllNotificationsRead}
               onMarkRead={markNotificationRead}
             />
-
-            <button
-              onClick={() => setMobileSearchOpen(true)}
-              className="md:hidden p-2.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-              aria-label="Open search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
 
             <Link
               to="/dashboard/profile"
@@ -451,24 +405,6 @@ const StudentTopbar = () => {
           )}
         </button>
       </nav>
-
-      {mobileSearchOpen && (
-        <div className="fixed inset-0 z-[60] md:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSearchOpen(false)} />
-          <div className="absolute top-0 left-0 right-0 bg-bg border-b border-border p-4 pt-6">
-            <div className="flex items-center gap-3">
-              <SearchBar compact onClose={() => setMobileSearchOpen(false)} />
-              <button
-                onClick={() => setMobileSearchOpen(false)}
-                className="shrink-0 p-2 text-text-muted hover:text-text-primary"
-                aria-label="Close search"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <MobileMoreSheet
         open={moreOpen}
