@@ -107,7 +107,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                   Phase {idx + 1}
                 </span>
               </div>
-              <h4 className={`text-xs font-bold leading-snug mb-1.5 ${
+              <h4 className={`text-xs font-bold leading-snug mb-1.5 break-words ${
                 state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
               }`}>
                 {phase.title}

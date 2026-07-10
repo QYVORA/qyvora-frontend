@@ -384,6 +384,14 @@ const StudentTopbar = () => {
               onMarkRead={markNotificationRead}
             />
 
+            <button
+              onClick={() => setMobileSearchOpen(true)}
+              className="md:hidden p-3 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+              aria-label="Open search"
+            >
+              <Search className="w-6 h-6" />
+            </button>
+
             <Link
               to="/dashboard/profile"
               aria-label="Go to profile"

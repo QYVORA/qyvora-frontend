@@ -187,13 +187,13 @@ const Dashboard = () => {
               <Link
                 key={`${room._phaseId}-${room.id}`}
                 to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-                className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300"
+                className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300 flex flex-col h-full"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <BookOpen className="w-4 h-4 text-accent/60" />
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Room</span>
                 </div>
-                <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug">{room.title}</h3>
+                <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
               </Link>
             ))}
           </div>
