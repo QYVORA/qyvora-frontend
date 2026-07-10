@@ -3,7 +3,7 @@ import { Bookmark, CheckCircle2, Flag, Check } from 'lucide-react';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
 import CodeBlockRenderer from './CodeBlockRenderer';
-import AnnotatableImage from '@/shared/components/courses/AnnotatableImage';
+import StepImage from './StepImage';
 import StepNotes from '@/shared/components/courses/StepNotes';
 
 interface Props {
@@ -100,10 +100,9 @@ const StepCard: React.FC<Props> = ({
     </div>
 
     {step.image ? (
-      <AnnotatableImage
+      <StepImage
         src={buildStepImagePath(phaseId, roomId, step.image)}
         alt={`${step.title}: ${step.instruction}`}
-        storageKey={`step_${phaseId}_${roomId}_${stepNum}`}
         stepNum={stepNum}
       />
     ) : null}

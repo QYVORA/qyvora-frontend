@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Map, BookOpen, Swords, Globe, BarChart3,
   ShoppingBag, Bell, Settings,
-  Trophy, Layers, Flame, CheckCircle2, BookMarked,
+  Trophy, Layers, Flame, CheckCircle2, BookMarked, Lock, Loader2,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
@@ -334,6 +334,100 @@ const NotificationsFilterPanel = () => {
   );
 };
 
+const RoomCurriculumPanel = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const match = pathname.match(/\/dashboard\/bootcamps\/([^/]+)\/phases\/([^/]+)\/rooms\/([^/]+)/);
+  const bootcampId = match?.[1];
+  const activePhaseId = match?.[2];
+  const activeRoomId = match?.[3];
+
+  const [apiCourse, setApiCourse] = useState<any>(null);
+  const [overview, setOverview] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!bootcampId) return;
+    let mounted = true;
+    setLoading(true);
+    Promise.all([
+      api.get('/student/overview'),
+      api.get(`/student/course?bootcampId=${encodeURIComponent(bootcampId)}`).catch(() => null),
+    ]).then(([ovRes, courseRes]) => {
+      if (!mounted) return;
+      setOverview(ovRes.data);
+      if (courseRes?.data) setApiCourse(courseRes.data);
+    }).catch(() => {}).finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, [bootcampId, user?.uid]);
+
+  const completedRooms = new Set<string>();
+  const lockedRooms = new Set<string>();
+  if (apiCourse) {
+    apiCourse.modules.forEach((mod: any) => {
+      const matchPhase = BOOTCAMP_CONFIG.phases.find(p => p.title.toLowerCase() === mod.title.toLowerCase());
+      if (matchPhase) {
+        if (mod.locked) matchPhase.rooms.forEach((r) => lockedRooms.add(`${matchPhase.id}:${r.id}`));
+        mod.rooms.forEach((apiRoom: any) => {
+          const matchRoom = matchPhase.rooms.find(r => r.title.toLowerCase() === apiRoom.title.toLowerCase());
+          if (matchRoom) {
+            if (apiRoom.completed) completedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
+            if (apiRoom.locked) lockedRooms.add(`${matchPhase.id}:${matchRoom.id}`);
+          }
+        });
+      }
+    });
+  }
+
+  return (
+    <div className="mx-3 mb-2 space-y-2">
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-5 w-5 animate-spin text-accent/50" />
+        </div>
+      ) : (
+        BOOTCAMP_CONFIG.phases.map((phase) => (
+          <div key={phase.id} className="mb-2">
+            <p className="mb-1 px-2 text-[8px] font-black uppercase tracking-[0.3em] text-accent/70">
+              {phase.codename}
+            </p>
+            <div className="space-y-0.5 border-l border-border/30 ml-2 pl-2">
+              {phase.rooms.map((room) => {
+                const key = `${phase.id}:${room.id}`;
+                const isActive = phase.id === activePhaseId && room.id === activeRoomId;
+                const isCompleted = completedRooms.has(key);
+                const isLocked = lockedRooms.has(key);
+                return (
+                  <button
+                    key={key}
+                    onClick={() => { if (!isLocked) navigate(`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${room.id}`); }}
+                    disabled={isLocked}
+                    className={`w-full flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-colors ${
+                      isActive
+                        ? 'text-accent font-semibold bg-accent-dim/20'
+                        : isLocked
+                        ? 'opacity-40 cursor-not-allowed text-text-muted'
+                        : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'
+                    }`}
+                  >
+                    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[7px] font-bold font-mono ${
+                      isCompleted ? 'border-accent/40 text-accent' : isActive ? 'border-accent/40 text-accent' : 'border-border text-text-muted'
+                    }`}>
+                      {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
+                    </span>
+                    <span className="truncate flex-1">{room.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
+
 const NavLink = ({ item, active }: { item: typeof PRIMARY_NAV[0]; active: boolean }) => (
   <Link
     to={item.path}
@@ -358,6 +452,7 @@ const RightRailSection = () => {
   if (pathname.startsWith('/dashboard/courses/')) return <LessonNavPanel />;
   if (pathname === '/dashboard/marketplace') return <MarketBalancePanel />;
   if (pathname === '/dashboard/notifications') return <NotificationsFilterPanel />;
+  if (pathname.includes('/rooms/')) return <RoomCurriculumPanel />;
 
   return null;
 };
