@@ -248,7 +248,7 @@ export const jobs: CommandHandler = (_args, _state) => {
 };
 
 export const bg: CommandHandler = (args, _state) => {
-  const jobId = args[0] ? parseInt(args[0].replace(/[%\[\]]/g, '')) : null;
+  const jobId = args[0] ? parseInt(args[0].replace(/[%[\]]/g, '')) : null;
   if (jobId !== null && JOB_STORE[jobId]) {
     JOB_STORE[jobId].status = 'running';
     return { output: `[${jobId}] ${JOB_STORE[jobId].cmd} &`, exitCode: 0 };
@@ -262,7 +262,7 @@ export const bg: CommandHandler = (args, _state) => {
 };
 
 export const fg: CommandHandler = (args, _state) => {
-  const jobId = args[0] ? parseInt(args[0].replace(/[%\[\]]/g, '')) : null;
+  const jobId = args[0] ? parseInt(args[0].replace(/[%[\]]/g, '')) : null;
   if (jobId !== null && JOB_STORE[jobId]) {
     JOB_STORE[jobId].status = 'foreground';
     return { output: JOB_STORE[jobId].cmd, exitCode: 0 };
