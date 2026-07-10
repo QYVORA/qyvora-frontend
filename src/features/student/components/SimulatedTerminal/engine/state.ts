@@ -128,13 +128,13 @@ export function processInput(
   let finalOutput = '';
   let finalError = '';
   let finalExitCode = 0;
-
-  executeSequence(parsed, currentState, executeStage);
+  let lastStageResult: any = null;
 
   let seqPtr: typeof parsed | undefined = parsed;
   while (seqPtr) {
     const { result, newState } = executeStage(seqPtr.stage, currentState);
     currentState = newState;
+    lastStageResult = result;
 
     if (result.output) finalOutput = (finalOutput ? finalOutput + '\n' : '') + result.output;
     if (result.error) finalError = (finalError ? finalError + '\n' : '') + result.error;
@@ -161,17 +161,11 @@ export function processInput(
     lastExitCode: finalExitCode,
   };
 
-  const lastResult = (() => {
-    let ptr = parsed;
-    while (ptr.next) ptr = ptr.next;
-    return executeStage(ptr.stage, currentState);
-  })();
-
   return {
     lines,
     newState,
-    _clearLine: (lastResult.result as any)._clearLine,
-    _exit: (lastResult.result as any)._exit,
+    _clearLine: lastStageResult?.clearLine,
+    _exit: lastStageResult?.exit,
   };
 }
 
