@@ -151,17 +151,17 @@ const StudentTopbar = () => {
             /* ══ COURSE MODE ══ */
             <>
               <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex flex-col">
-                <div className="flex-1 flex items-center gap-3 min-w-0">
+                <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
                   <button
                     onClick={() => navigate('/dashboard/courses')}
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                    className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                     aria-label="Back to courses"
                   >
-                    <ArrowLeft className="h-5 w-5" />
+                    <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
                   </button>
                   <button
                     onClick={openSidebar}
-                    className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                    className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                     aria-label="Toggle lessons sidebar"
                   >
                     <Menu className="h-5 w-5" />
@@ -185,7 +185,7 @@ const StudentTopbar = () => {
                       {courseConfig?.title ?? 'Course'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0 ml-auto">
+                  <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
                     {courseMeta && (
                       <>
                         <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
@@ -211,22 +211,22 @@ const StudentTopbar = () => {
           <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">Search</span>
         </button>
 
-        <button
-                          onClick={openSidebar}
-                          className="md:hidden flex items-center gap-1 px-3 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[10px] font-black uppercase tracking-widest border border-border"
-                        >
-                          <List className="h-3.5 w-3.5" /> Lessons
-                        </button>
+                          <button
+                              onClick={openSidebar}
+                              className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
+                            >
+                              <List className="h-3 w-3" /> Lessons
+                            </button>
                       </>
                     )}
                     <button
                       onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                      className="w-11 h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                      className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
                       aria-label="Open terminal"
                     >
-                      <Terminal className="w-5 h-5" />
+                      <Terminal className="w-4 h-4 md:w-5 md:h-5" />
                     </button>
-                    <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                    <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                       <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                     </Link>
                   </div>
@@ -240,24 +240,24 @@ const StudentTopbar = () => {
             </>
           ) : (
             /* ══ BOOTCAMP ROOM MODE ══ */
-            <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-3">
+            <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
 
               {/* Back to curriculum */}
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                 aria-label="Back to curriculum"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
               </button>
 
               {/* Mobile Sidebar Toggle */}
               <button
                 onClick={openSidebar}
-                className="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                 aria-label="Toggle curriculum sidebar"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
               </button>
 
               {/* Breadcrumb — desktop */}
@@ -292,15 +292,15 @@ const StudentTopbar = () => {
               </div>
 
               {/* Right: terminal + profile */}
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  className="w-11 h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                  className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
                   aria-label="Open terminal"
                 >
-                  <Terminal className="w-5 h-5" />
+                  <Terminal className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
-                <Link to="/dashboard/profile" className="w-11 h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                   <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                 </Link>
               </div>
@@ -308,7 +308,7 @@ const StudentTopbar = () => {
           )
 
         ) : (
-          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between gap-4">
+          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-end md:justify-between gap-4">
 
           {/* Left: Search */}
           <div className="flex-1 max-w-md hidden md:block">
@@ -337,8 +337,8 @@ const StudentTopbar = () => {
             </Link>
           </div>
 
-          {/* Right: terminal + notifications + profile */}
-          <div className="flex items-center gap-2 md:gap-3">
+          {/* Right: terminal + notifications + search + profile */}
+          <div className="flex items-center gap-1 md:gap-3">
 
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
@@ -352,12 +352,12 @@ const StudentTopbar = () => {
             <div ref={notifRef} className="relative">
               <button
                 onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                className="relative p-3 md:p-3.5 min-h-12 min-w-12 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                className="relative p-2.5 md:p-3.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <Bell className="w-6 h-6" />
+                  <Bell className="w-5 h-5 md:w-6 md:h-6" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                    <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
@@ -386,16 +386,16 @@ const StudentTopbar = () => {
 
             <button
               onClick={() => setMobileSearchOpen(true)}
-              className="md:hidden p-3 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+              className="md:hidden p-2.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
               aria-label="Open search"
             >
-              <Search className="w-6 h-6" />
+              <Search className="w-5 h-5" />
             </button>
 
             <Link
               to="/dashboard/profile"
               aria-label="Go to profile"
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
+              className="w-9 h-9 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
             >
               <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
             </Link>
