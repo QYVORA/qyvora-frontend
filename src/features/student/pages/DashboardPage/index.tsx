@@ -53,7 +53,7 @@ const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="font-mono text-lg font-black text-text-primary leading-none">{value}</div>
+      <div className="font-mono text-lg font-black text-text-primary leading-none break-words">{value}</div>
       <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mt-0.5">{label}</div>
     </div>
   </div>

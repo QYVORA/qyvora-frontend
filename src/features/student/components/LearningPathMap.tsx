@@ -77,7 +77,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           const pillContent = (
             <div
-              className={`flex flex-col p-4 rounded-xl border transition-all duration-300 ${
+              className={`flex flex-col p-4 rounded-xl border transition-all duration-300 min-h-[160px] ${
                 state === 'locked'
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'
@@ -112,21 +112,20 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
               }`}>
                 {phase.title}
               </h4>
-              {state !== 'locked' && (
-                <div className="mt-auto pt-1.5">
-                  <div className="text-[10px] font-mono text-text-muted mb-1.5">
-                    {roomsCompleted}/{totalRooms} rooms
-                  </div>
-                  {state === 'current' && totalRooms > 0 && (
-                    <div className="w-full h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-accent transition-all duration-700"
-                        style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
-                      />
-                    </div>
-                  )}
+              <div className="mt-auto pt-1.5">
+                <div className={`text-[10px] font-mono text-text-muted mb-1.5 ${state === 'locked' ? 'invisible' : ''}`}>
+                  {state !== 'locked' ? `${roomsCompleted}/${totalRooms} rooms` : '0/0 rooms'}
                 </div>
-              )}
+                {state === 'current' && totalRooms > 0 && (
+                  <div className="w-full h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-accent transition-all duration-700"
+                      style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
+                    />
+                  </div>
+                )}
+                {state !== 'current' && <div className="h-1.5" />}
+              </div>
             </div>
           );
 

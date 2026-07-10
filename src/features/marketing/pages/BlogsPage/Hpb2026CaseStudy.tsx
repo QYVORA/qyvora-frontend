@@ -1,6 +1,8 @@
 import React from 'react';
 import { Shield, Terminal, Network, Globe, Users, Target, Search, Map, Flag, Trophy } from 'lucide-react';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
+import sopt4Img from '@/assets/team/sopt4.webp';
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import img01 from '@/assets/blog/01-hpb-2026-online-class-screenshot.png';
 import img02 from '@/assets/blog/02-hpb-2026-online-class-screenshot.png';
 import img03 from '@/assets/blog/03-hpb-2026-online-class-screenshot.png';
@@ -38,6 +40,9 @@ export const Hpb2026CaseStudy: React.FC = () => {
         </Body>
         <Body>
           Over the course of the bootcamp, participants moved through five intensive phases — from the hacker mindset all the way to advanced social engineering — completing <Highlight>20 rooms</Highlight> and earning <Highlight>on-chain verified CyberPoints (CP)</Highlight>. But the real story isn't the curriculum. It's the <Highlight>community, the outcomes, and the team</Highlight> that emerged from this cohort.
+        </Body>
+        <Body>
+          <Highlight>Note on our evolution:</Highlight> When the HPB 2026 Cohort launched, we operated under the name <Highlight>HSOCIETY OFFSEC</Highlight>. Since then, we have evolved into <Highlight>QYVORA</Highlight> — a unified platform for offensive security training, credentialing, and operations. The bootcamp's results and participants remain the same; only the banner has grown.
         </Body>
       </Section>
 
@@ -137,39 +142,41 @@ export const Hpb2026CaseStudy: React.FC = () => {
         </Body>
 
         <div className="space-y-6 my-8">
-          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <div className="flex items-start gap-4">
-              <Users className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">sopt4 — Our COO</h3>
-                <p className="text-sm font-mono text-text-secondary leading-[2]">
-                  Among the participants, one stood out not just for technical ability but for <Highlight>leadership, discipline, and vision</Highlight>. <Highlight>sopt4</Highlight> demonstrated an exceptional understanding of offensive security concepts and the operational maturity to lead. After the bootcamp, we recruited sopt4 as QYVORA's <Highlight>Chief Operating Officer (COO)</Highlight> — a testament to the calibre of talent the HPB pipeline can identify and develop.
-                </p>
-              </div>
+          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-6">
+            <img
+              src={sopt4Img}
+              alt="sopt4"
+              className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-accent/20 shrink-0"
+            />
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">sopt4 — Our COO</h3>
+              <p className="text-sm font-mono text-text-secondary leading-[2]">
+                Among the participants, one stood out not just for technical ability but for <Highlight>leadership, discipline, and vision</Highlight>. <Highlight>sopt4</Highlight> demonstrated an exceptional understanding of offensive security concepts and the operational maturity to lead. After the bootcamp, we recruited sopt4 as QYVORA's <Highlight>Chief Operating Officer (COO)</Highlight> — a testament to the calibre of talent the HPB pipeline can identify and develop.
+              </p>
             </div>
           </div>
 
-          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <div className="flex items-start gap-4">
-              <Target className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">QuiteRoot — The Tech Team</h3>
-                <p className="text-sm font-mono text-text-secondary leading-[2]">
-                  From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> — QYVORA's offensive research and engineering collective. QuiteRoot is responsible for building the tools, frameworks, and intelligence capabilities that power QYVORA's platform. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator.
-                </p>
-              </div>
+          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-6">
+            <img
+              src={quiteRootLogo}
+              alt="QuiteRoot logo"
+              className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shrink-0"
+            />
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">QuiteRoot — The Tech Team</h3>
+              <p className="text-sm font-mono text-text-secondary leading-[2]">
+                From the HPB cohort, we identified the most <Highlight>serious and dedicated learners</Highlight> and formed <Highlight>QuiteRoot</Highlight> — QYVORA's offensive research and engineering collective. QuiteRoot is responsible for building the tools, frameworks, and intelligence capabilities that power QYVORA's platform. The team emerged organically from the bootcamp because the curriculum itself was a filter: those who completed all 20 rooms demonstrated the <Highlight>grit, curiosity, and technical aptitude</Highlight> that makes a great operator.
+              </p>
             </div>
           </div>
 
-          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <div className="flex items-start gap-4">
-              <Trophy className="w-6 h-6 text-accent mt-1 shrink-0" />
-              <div>
-                <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">Verifiable Credentials</h3>
-                <p className="text-sm font-mono text-text-secondary leading-[2]">
-                  Every participant who completed rooms earned <Highlight>CyberPoints (CP)</Highlight> recorded on QYVORA's Proof-of-Authority blockchain. These are not certificates — they are <Highlight>tamper-proof, independently verifiable on-chain credentials</Highlight> that participants can present to employers as proof of capability.
-                </p>
-              </div>
+          <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-start gap-4 md:gap-6">
+            <Trophy className="w-8 h-8 md:w-10 md:h-10 text-accent shrink-0" />
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">Verifiable Credentials</h3>
+              <p className="text-sm font-mono text-text-secondary leading-[2]">
+                Every participant who completed rooms earned <Highlight>CyberPoints (CP)</Highlight> recorded on QYVORA's Proof-of-Authority blockchain. These are not certificates — they are <Highlight>tamper-proof, independently verifiable on-chain credentials</Highlight> that participants can present to employers as proof of capability.
+              </p>
             </div>
           </div>
         </div>

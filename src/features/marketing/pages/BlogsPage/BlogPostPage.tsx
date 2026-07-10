@@ -132,7 +132,7 @@ const BlogPostPage: React.FC = () => {
       </div>
 
       {/* ── Article Body ── */}
-      <div className="w-full px-6 md:px-10 lg:px-16 xl:px-20 pb-32">
+      <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-32">
         <article className="prose-custom max-w-none">
           {renderContent()}
         </article>
@@ -154,7 +154,7 @@ const BlogPostPage: React.FC = () => {
       {/* ── Read Next ── */}
       {otherPosts.length > 0 && (
         <section className="border-t border-border/50">
-          <div className="w-full px-6 md:px-10 lg:px-16 xl:px-20 py-16 md:py-24">
+          <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 md:py-24">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-10 text-center">
               Keep Reading 📖
             </h2>
