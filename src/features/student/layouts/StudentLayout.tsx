@@ -3,9 +3,11 @@ import { Outlet, useMatch } from 'react-router-dom';
 import { useAuth } from '@/core/contexts/AuthContext';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
 import Sidebar from '@/features/student/components/layout/Sidebar';
+import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
+import { initPWA } from '@/features/student/services/pwa';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
 const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
@@ -16,6 +18,8 @@ const StudentLayout = () => {
   const courseMatch = useMatch('/dashboard/courses/:courseId');
   const isRoomPage = Boolean(roomMatch || roomMatchLegacy || courseMatch);
   const [terminalOpen, setTerminalOpen] = useState(false);
+
+  useEffect(() => { initPWA(); }, []);
 
   useEffect(() => {
     const handler = () => setTerminalOpen(true);
@@ -44,6 +48,7 @@ const StudentLayout = () => {
         </div>
       </div>
       <ConsentBanner />
+      <InstallBanner />
       <UsernameChangeModal />
 
       <SimulatedTerminal
