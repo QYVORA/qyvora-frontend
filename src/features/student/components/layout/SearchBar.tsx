@@ -203,7 +203,6 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
   return (
     <div className="relative w-full max-w-md">
       <form onSubmit={handleFormSubmit} className="relative" onKeyDown={handleKeyDown}>
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
         <input
           ref={searchRef}
           type="text"
@@ -211,7 +210,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
           onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
           onFocus={() => { if (searchQuery.trim()) setShowSuggestions(true); }}
           placeholder="Search rooms, bootcamps, courses..."
-          className="w-full bg-bg-card border border-border/40 rounded-2xl pl-11 pr-16 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
+          className="w-full bg-bg-card border border-border/40 rounded-2xl pl-4 pr-16 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
           autoComplete="off"
           role="combobox"
           aria-expanded={showSuggestions}
@@ -230,7 +229,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
         )}
         <button
           type="submit"
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 border border-accent/20 transition-all"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-text-muted hover:text-accent transition-colors"
           aria-label="Search"
         >
           <Search className="h-4 w-4" />

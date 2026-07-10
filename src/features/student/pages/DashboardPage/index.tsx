@@ -20,12 +20,14 @@ import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import {
-  Layers, Flame, Trophy, BookOpen,
+  Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
 } from 'lucide-react';
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
+import { resolveImg } from '@/shared/utils/resolveImg';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
+import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
@@ -59,6 +61,60 @@ const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label
   </div>
 );
 
+const DashboardProductCard = ({ product }: { product: any }) => {
+  const id = String(product?.id || '');
+  const title = String(product?.title || 'Intelligence Asset');
+  const description = String(product?.description || 'Secure intelligence report for offensive security operatives.');
+  const coverUrl = resolveImg(product?.coverUrl, productFallbackImg);
+
+  return (
+    <div className="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
+      <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
+        <img
+          src={coverUrl}
+          alt={title}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          onError={(e) => { e.currentTarget.src = productFallbackImg; }}
+        />
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+          <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded text-[9px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
+            <ShoppingBag className="w-2.5 h-2.5" /> Intelligence Asset
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="mb-1.5 text-base font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-1">
+          {title}
+        </h3>
+        <p className="mb-4 text-xs leading-relaxed text-text-muted/70 font-mono line-clamp-2">
+          {description}
+        </p>
+        <div className="mt-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {product?.isFree ? (
+              <span className="text-xs font-black text-accent uppercase tracking-widest">Free</span>
+            ) : (
+              <>
+                <CpLogo className="w-4 h-4" />
+                <span className="font-mono text-sm font-black text-text-primary">
+                  {Number(product?.cpPrice || 0).toLocaleString()}
+                </span>
+              </>
+            )}
+          </div>
+          <Link
+            to="/dashboard/marketplace"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
+          >
+            View <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
@@ -74,18 +130,22 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [products, setProducts] = useState<any[]>([]);
+  const [activeProductIdx, setActiveProductIdx] = useState(0);
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
       try {
-        const [ovRes, bcRes] = await Promise.all([
+        const [ovRes, bcRes, prodRes] = await Promise.all([
           api.get('/student/overview').catch(() => null),
           api.get('/public/bootcamps').catch(() => null),
+          api.get('/public/cp-products').catch(() => null),
         ]);
         if (!mounted) return;
         setOverview(ovRes?.data || null);
         setBootcamps(Array.isArray(bcRes?.data?.items) ? bcRes.data.items : []);
+        setProducts(Array.isArray(prodRes?.data?.items) ? prodRes.data.items : []);
         setCpBalance(user?.cp ?? 0);
         setSyncError('');
       } catch {
@@ -158,16 +218,41 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* 3. In-Progress Bootcamps Carousel */}
-        {enrolledBootcamps.length > 0 && (
-          <div>
-            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-hover">
-              {enrolledBootcamps.map((bc, idx) => (
-                <div key={bc.id} className="snap-start shrink-0 w-[300px] sm:w-[340px]">
-                  <StudentBootcampCard data={bc} index={idx} />
+        {/* 3. In-Progress Bootcamps + Featured Product */}
+        {(enrolledBootcamps.length > 0 || products.length > 0) && (
+          <div className="flex flex-col md:flex-row gap-4">
+            {enrolledBootcamps.length > 0 && (
+              <div className="flex-1 min-w-0">
+                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-hover">
+                  {enrolledBootcamps.map((bc, idx) => (
+                    <div key={bc.id} className="snap-start shrink-0 w-[300px] sm:w-[340px]">
+                      <StudentBootcampCard data={bc} index={idx} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+            {products.length > 0 && (
+              <div className="w-full md:w-[340px] shrink-0">
+                <DashboardProductCard product={products[activeProductIdx]} />
+                {products.length > 1 && (
+                  <div className="flex items-center justify-center gap-1.5 mt-3">
+                    {products.map((_: any, i: number) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveProductIdx(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          i === activeProductIdx
+                            ? 'bg-accent w-5'
+                            : 'bg-border/50 w-1.5 hover:bg-accent/40'
+                        }`}
+                        aria-label={`Show product ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 

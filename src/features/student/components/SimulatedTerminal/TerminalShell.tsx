@@ -429,17 +429,17 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
         <div className="flex items-center gap-1">
           <button
             onClick={onToggleFullscreen}
-            className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-white/60"
+            className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-white/60"
             aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
           >
-            {isFullscreen ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
+            {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
           <button
             onClick={() => { saveTerminalData(lines, stateRef.current); onClose?.(); }}
-            className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
+            className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
             aria-label="Close terminal"
           >
-            <X size={12} />
+            <X size={14} />
           </button>
         </div>
       </div>

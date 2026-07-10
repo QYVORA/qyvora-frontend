@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, Lock, Loader2, Target, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, X, Lock, Loader2, Target, Zap, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from '@/shared/components/SEO';
 import { getCourseById } from '@/features/student/data/courses/courseData';
@@ -14,6 +14,8 @@ import type { Lesson } from '@/features/student/data/courses/types';
 const STORAGE_KEY = 'qyvora_course_progress';
 
 const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string }> = ({ lesson, number, courseId }) => {
+  const [terminalOpen, setTerminalOpen] = useState(false);
+
   return (
     <div className="w-full border-t border-border/10 first:border-t-0 py-12 md:py-16">
       <div className="mb-8 md:mb-12 flex items-center gap-4">
@@ -41,20 +43,49 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
       </div>
 
       {lesson.hasTerminal && (
-        <div className="mt-10 md:mt-14">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-4 w-4 text-accent" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Try It Yourself</span>
+        <>
+          {/* Mobile: button to open terminal modal */}
+          <div className="mt-10 md:mt-14 md:hidden">
+            <button
+              onClick={() => setTerminalOpen(true)}
+              className="flex items-center gap-3 w-full px-5 py-4 rounded-xl border border-border/30 bg-bg-card hover:border-green-400/30 transition-all duration-300"
+            >
+              <div className="w-10 h-10 rounded-xl bg-green-400/10 flex items-center justify-center shrink-0">
+                <Terminal className="h-5 w-5 text-green-400" />
+              </div>
+              <div className="text-left min-w-0">
+                <span className="text-[10px] font-black uppercase tracking-widest text-accent block">Try It Yourself</span>
+                <span className="text-xs text-text-muted mt-0.5 block">Open the interactive terminal</span>
+              </div>
+            </button>
           </div>
+
+          {/* Desktop: inline terminal */}
+          <div className="hidden md:block mt-10 md:mt-14">
+            <div className="flex items-center gap-2 mb-4">
+              <Zap className="h-4 w-4 text-accent" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-accent">Try It Yourself</span>
+            </div>
+            <SimulatedTerminal
+              open
+              onOpenChange={() => {}}
+              mode="inline"
+              context={{ type: 'course', courseId: courseId || '', lessonId: lesson.id }}
+              initialCommands={lesson.terminalCommands || []}
+              title={lesson.terminalTitle || 'lesson-terminal'}
+            />
+          </div>
+
+          {/* Mobile: terminal modal */}
           <SimulatedTerminal
-            open
-            onOpenChange={() => {}}
-            mode="inline"
+            open={terminalOpen}
+            onOpenChange={setTerminalOpen}
+            mode="modal"
             context={{ type: 'course', courseId: courseId || '', lessonId: lesson.id }}
             initialCommands={lesson.terminalCommands || []}
             title={lesson.terminalTitle || 'lesson-terminal'}
           />
-        </div>
+        </>
       )}
 
       {lesson.hasCodePlayground && (
