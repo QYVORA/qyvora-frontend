@@ -133,9 +133,9 @@ export const sqlmap: CommandHandler = (args, state) => {
       `+----+----------+--------------------------+--------------------------+--------+--------------------------+`,
       `| id | username | password_hash            | email                    | role   | created_at               |`,
       `+----+----------+--------------------------+--------------------------+--------+--------------------------+`,
-      `| 1  | admin    | \$2y$10\$xxxxxxxxxxxxxxxxxx | admin@qyvora.io          | admin  | 2024-01-15 08:30:00      |`,
-      `| 2  | student1 | \$2y$10\$yyyyyyyyyyyyyyyyyy | student1@qyvora.io       | user   | 2024-03-22 14:15:00      |`,
-      `| 3  | student2 | \$2y$10\$zzzzzzzzzzzzzzzzzz | student2@qyvora.io       | user   | 2024-05-10 09:45:00      |`,
+      `| 1  | admin    | $2y$10$xxxxxxxxxxxxxxxxxx | admin@qyvora.io          | admin  | 2024-01-15 08:30:00      |`,
+      `| 2  | student1 | $2y$10$yyyyyyyyyyyyyyyyyy | student1@qyvora.io       | user   | 2024-03-22 14:15:00      |`,
+      `| 3  | student2 | $2y$10$zzzzzzzzzzzzzzzzzz | student2@qyvora.io       | user   | 2024-05-10 09:45:00      |`,
       `+----+----------+--------------------------+--------------------------+--------+--------------------------+`,
     ] : [
       '[INFO] you can add --batch to automatically fetch all entries',
