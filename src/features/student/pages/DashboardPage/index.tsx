@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -93,7 +93,20 @@ const Dashboard = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedSuggestionIdx, setSelectedSuggestionIdx] = useState(-1);
   const searchRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 150);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    setSelectedSuggestionIdx(-1);
+  }, [searchQuery]);
 
   useEffect(() => {
     let mounted = true;
@@ -118,31 +131,6 @@ const Dashboard = () => {
     load();
     return () => { mounted = false; };
   }, [user?.uid, user?.cp]);
-
-  const moduleProgressById = getBootcampProgressMap(overview);
-  const enrolledBootcamps: StudentBootcampCardData[] = bootcamps
-    .map((item: any) => ({ item, prog: moduleProgressById.get(String(item.id || '')) }))
-    .filter(({ prog }) => prog !== undefined)
-    .slice(0, 4)
-    .map(({ item, prog }) => ({
-      id: String(item.id || ''),
-      title: item.title || 'Bootcamp',
-      description: String(item.description || '').trim(),
-      level: String(item.level || '').trim(),
-      duration: String(item.duration || '').trim(),
-      priceLabel: String(item.priceLabel || '').trim(),
-      progress: Number(prog?.progress || 0),
-      img: BOOTCAMP_COVER_IMGS[String(item.id || '')] ?? BOOTCAMP_FALLBACK_IMG,
-      isEnrolled: true,
-      isLocked: false,
-    }));
-
-  const activeBootcamp = bootcamps.find((bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined);
-  const continuePath = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) || `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps';
-  const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
-  const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
-  const { rank: _r, next: nextRank, progress: rankProgress } = getRankInfo(cpBalance);
-  const nextMission = (overview?.learningPath || []).find((m: any) => m.status === 'in-progress' || m.status === 'next');
 
   const allRooms = useMemo(() => BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, phase: p }))), []);
 
@@ -183,7 +171,102 @@ const Dashboard = () => {
     return { rooms: matchedRooms, bootcamps: matchedBootcamps, courses: matchedCourses, pages: matchedPages };
   }, [searchQuery, bootcamps, allRooms]);
 
+  const suggestions = useMemo(() => {
+    const q = debouncedQuery.trim().toLowerCase();
+    if (!q || q.length < 1) return [];
+
+    const items: { id: string; label: string; type: 'room' | 'course' | 'bootcamp' | 'page'; path: string; icon: React.ComponentType<{ className?: string }> }[] = [];
+
+    for (const room of allRooms) {
+      if (items.length >= 8) break;
+      const stepMatch = room.steps.some(s => s.title.toLowerCase().includes(q) || s.instruction.toLowerCase().includes(q));
+      if (room.title.toLowerCase().includes(q) || room.overview.toLowerCase().includes(q) || stepMatch) {
+        items.push({ id: room.id, label: room.title, type: 'room', path: `/dashboard/bootcamps/bc_1775270338500/phases/${room.phase.id}/rooms/${room.id}`, icon: BookOpen });
+      }
+    }
+
+    for (const course of COURSES) {
+      if (items.length >= 12) break;
+      if (course.title.toLowerCase().includes(q) || course.description.toLowerCase().includes(q)) {
+        items.push({ id: course.id, label: course.title, type: 'course', path: `/dashboard/courses/${course.id}`, icon: BookOpen });
+      }
+    }
+
+    for (const page of SEARCHABLE_PAGES) {
+      if (items.length >= 14) break;
+      if (page.label.toLowerCase().includes(q)) {
+        items.push({ id: page.path, label: page.label, type: 'page', path: page.path, icon: page.icon });
+      }
+    }
+
+    return items;
+  }, [debouncedQuery, allRooms]);
+
   const isSearching = searchQuery.trim().length > 0;
+
+  useEffect(() => {
+    if (!showSuggestions) return;
+    const handler = (e: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node) &&
+          searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showSuggestions]);
+
+  const handleSuggestionClick = useCallback((path: string) => {
+    setSearchQuery('');
+    setShowSuggestions(false);
+    window.location.href = path;
+  }, []);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!showSuggestions || suggestions.length === 0) {
+      if (e.key === 'ArrowDown') {
+        setShowSuggestions(true);
+      }
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedSuggestionIdx(prev => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedSuggestionIdx(prev => Math.max(prev - 1, 0));
+    } else if (e.key === 'Enter' && selectedSuggestionIdx >= 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[selectedSuggestionIdx].path);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+    }
+  }, [showSuggestions, suggestions, selectedSuggestionIdx, handleSuggestionClick]);
+
+  const moduleProgressById = getBootcampProgressMap(overview);
+  const enrolledBootcamps: StudentBootcampCardData[] = bootcamps
+    .map((item: any) => ({ item, prog: moduleProgressById.get(String(item.id || '')) }))
+    .filter(({ prog }) => prog !== undefined)
+    .slice(0, 4)
+    .map(({ item, prog }) => ({
+      id: String(item.id || ''),
+      title: item.title || 'Bootcamp',
+      description: String(item.description || '').trim(),
+      level: String(item.level || '').trim(),
+      duration: String(item.duration || '').trim(),
+      priceLabel: String(item.priceLabel || '').trim(),
+      progress: Number(prog?.progress || 0),
+      img: BOOTCAMP_COVER_IMGS[String(item.id || '')] ?? BOOTCAMP_FALLBACK_IMG,
+      isEnrolled: true,
+      isLocked: false,
+    }));
+
+  const activeBootcamp = bootcamps.find((bc: any) => moduleProgressById.get(String(bc.id || '')) !== undefined);
+  const continuePath = activeBootcamp ? resolveNextRoomPath(String(activeBootcamp.id || '')) || `/dashboard/bootcamps/${activeBootcamp.id}` : '/dashboard/bootcamps';
+  const isEnrolled = (overview?.bootcampStatus || 'not_enrolled') !== 'not_enrolled';
+  const cpBalance = pickCpBalance(user?.cp ?? 0, overview, cpBalanceState);
+  const { rank: _r, next: nextRank, progress: rankProgress } = getRankInfo(cpBalance);
+  const nextMission = (overview?.learningPath || []).find((m: any) => m.status === 'in-progress' || m.status === 'next');
 
   const overviewModules = Array.isArray(overview?.modules) ? overview.modules : [];
   const totalRoomsDone = overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0);
@@ -211,22 +294,56 @@ const Dashboard = () => {
 
         {/* 2. Search Bar */}
         <form
-          onSubmit={e => { e.preventDefault(); }}
+          onSubmit={e => {
+            e.preventDefault();
+            const q = searchQuery.trim();
+            if (!q) return;
+
+            if (selectedSuggestionIdx >= 0 && suggestions[selectedSuggestionIdx]) {
+              handleSuggestionClick(suggestions[selectedSuggestionIdx].path);
+              return;
+            }
+            if (suggestions.length > 0) {
+              handleSuggestionClick(suggestions[0].path);
+              return;
+            }
+
+            if (!searchResults) return;
+            const first = (searchResults.rooms[0] ?? searchResults.courses[0] ?? searchResults.bootcamps[0] ?? searchResults.pages[0]) as any;
+            if (!first) return;
+            if (searchResults.rooms.includes(first)) {
+              const phase = (BOOTCAMP_CONFIG.phases.find(p => p.id === first.phase?.id) || BOOTCAMP_CONFIG.phases[0]);
+              handleSuggestionClick(`/dashboard/bootcamps/bc_1775270338500/phases/${phase.id}/rooms/${first.id}`);
+            } else if (searchResults.courses.includes(first)) {
+              handleSuggestionClick(`/dashboard/courses/${first.id}`);
+            } else if (searchResults.bootcamps.includes(first)) {
+              handleSuggestionClick(`/dashboard/bootcamps/${first.id}`);
+            } else {
+              handleSuggestionClick(first.path);
+            }
+          }}
           className="relative"
+          onKeyDown={handleKeyDown}
         >
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
           <input
             ref={searchRef}
             type="text"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
+            onFocus={() => { if (searchQuery.trim()) setShowSuggestions(true); }}
             placeholder="Search rooms, bootcamps, courses..."
             className="w-full bg-bg-card border border-border/40 rounded-2xl pl-11 pr-16 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
+            autoComplete="off"
+            role="combobox"
+            aria-expanded={showSuggestions}
+            aria-controls="search-suggestions"
+            aria-activedescendant={selectedSuggestionIdx >= 0 ? `suggestion-${selectedSuggestionIdx}` : undefined}
           />
           {searchQuery && (
             <button
               type="button"
-              onClick={() => { setSearchQuery(''); searchRef.current?.focus(); }}
+              onClick={() => { setSearchQuery(''); setShowSuggestions(false); searchRef.current?.focus(); }}
               className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
               aria-label="Clear search"
             >
@@ -240,6 +357,43 @@ const Dashboard = () => {
           >
             <Search className="h-4 w-4" />
           </button>
+
+          {/* Suggestions Dropdown */}
+          {showSuggestions && debouncedQuery.trim() && suggestions.length > 0 && (
+            <div
+              id="search-suggestions"
+              ref={suggestionsRef}
+              role="listbox"
+              className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border/40 bg-bg-card shadow-2xl overflow-hidden"
+            >
+              {suggestions.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <button
+                    key={`${s.type}-${s.id}`}
+                    id={`suggestion-${i}`}
+                    role="option"
+                    aria-selected={i === selectedSuggestionIdx}
+                    type="button"
+                    onMouseDown={e => { e.preventDefault(); handleSuggestionClick(s.path); }}
+                    onMouseEnter={() => setSelectedSuggestionIdx(i)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
+                      i === selectedSuggestionIdx ? 'bg-accent/10 text-accent' : 'text-text-primary hover:bg-accent-dim/10'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 shrink-0 text-accent/70" />
+                    <span className="flex-1 min-w-0 truncate font-medium">{s.label}</span>
+                    <span className="shrink-0 text-[9px] font-black uppercase tracking-widest text-text-muted">
+                      {s.type === 'room' ? 'Room' : s.type === 'course' ? 'Course' : s.type === 'page' ? 'Page' : 'Bootcamp'}
+                    </span>
+                  </button>
+                );
+              })}
+              <div className="border-t border-border/20 px-4 py-2 text-[9px] font-mono text-text-muted/50 text-center">
+                {suggestions.length} result{suggestions.length !== 1 ? 's' : ''} — use ↑↓ to navigate, Enter to open
+              </div>
+            </div>
+          )}
         </form>
 
         {/* 3. Stats Strip */}
@@ -285,7 +439,7 @@ const Dashboard = () => {
                         const configRoom = configPhase.rooms.find(r => r.id === room.id);
                         return (
                           <RoomCard
-                            key={room.id}
+                            key={`${room.phase?.id || 'phase'}-${room.id}`}
                             bootcampId="bc_1775270338500"
                             room={room}
                             roomIdx={idx}
@@ -445,9 +599,9 @@ const Dashboard = () => {
                 <Link to="/dashboard/bootcamps/bc_1775270338500" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms).slice(0, 6).map((room) => (
+                {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
                   <Link
-                    key={room.id}
+                    key={`${room._phaseId}-${room.id}`}
                     to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
                     className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300"
                   >
