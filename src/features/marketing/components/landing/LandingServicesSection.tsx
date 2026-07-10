@@ -76,7 +76,7 @@ const LandingServicesSection: React.FC = () => {
                     {s.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-1.5">
                         <CheckCircle2 className="w-3 h-3 text-accent/60 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-text-secondary leading-normal font-medium">
+                        <span className="text-xs sm:text-sm text-text-secondary leading-normal font-medium break-words">
                           {feature}
                         </span>
                       </div>

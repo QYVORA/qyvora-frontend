@@ -191,8 +191,8 @@ const BootcampCourse: React.FC = () => {
                     <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
                       <TrendingUp className="h-5 w-5 text-accent" />
                     </div>
-                    <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-accent">Recommended Next</p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">Recommended Next</p>
                       <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase} — {nextRoomLabel.room}</p>
                     </div>
                   </div>

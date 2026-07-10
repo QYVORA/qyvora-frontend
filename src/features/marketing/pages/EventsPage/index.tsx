@@ -39,7 +39,7 @@ const EventsPage: React.FC = () => {
         ) : (
           <div className="flex flex-col gap-16 md:gap-24">
             {events.map((event, i) => (
-              <div key={event.id} className="flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-40">
+              <div key={event.id} className="flex flex-col lg:flex-row lg:items-start gap-8 md:gap-12 lg:gap-40">
                 <div className="lg:w-[28%] lg:sticky lg:top-32 shrink-0">
                   <ScrollReveal direction="left" amount={0.1}>
                     <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-accent mb-4">
@@ -48,7 +48,7 @@ const EventsPage: React.FC = () => {
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4 mt-4">
                       {event.title}
                     </h1>
-                    <p className="text-sm md:text-base text-text-muted max-w-md leading-relaxed">
+                    <p className="text-sm md:text-base text-text-muted max-w-md leading-relaxed break-words">
                       {event.description}
                     </p>
                     <div className="flex flex-wrap items-center gap-3 mt-6">

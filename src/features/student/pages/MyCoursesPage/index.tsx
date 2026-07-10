@@ -204,7 +204,7 @@ const MyCoursesPage: React.FC = () => {
                                 <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
                               </span>
                             </div>
-                            <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight">
+                            <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
                               {course.title}
                             </h3>
                             <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
@@ -284,9 +284,9 @@ const MyCoursesPage: React.FC = () => {
                               <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                             </span>
                           </div>
-                          <h3 className="text-base font-black text-text-muted leading-tight">
-                            {course.title}
-                          </h3>
+                           <h3 className="text-base font-black text-text-muted leading-tight break-words">
+                             {course.title}
+                           </h3>
                           <Link
                             to={`/courses/${course.id}`}
                             className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"

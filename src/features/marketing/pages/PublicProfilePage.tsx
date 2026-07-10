@@ -161,7 +161,7 @@ const PublicProfile: React.FC = () => {
                 </h1>
 
                 {profile.bio && (
-                  <p className="text-base md:text-lg text-text-secondary font-mono leading-relaxed max-w-2xl">
+                  <p className="text-base md:text-lg text-text-secondary font-mono leading-relaxed max-w-2xl break-words">
                     {profile.bio}
                   </p>
                 )}
@@ -209,7 +209,7 @@ const PublicProfile: React.FC = () => {
                               </span>
                             </div>
                             <div className="flex flex-1 flex-col p-4">
-                              <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{title}</h3>
+                              <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2 break-words">{title}</h3>
                               <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
                                 View room <ArrowRight className="h-3 w-3" />
                               </div>

@@ -177,7 +177,7 @@ const Profile: React.FC = () => {
             >
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-4">
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9]">
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9] break-words">
                     {profileData.username}
                   </h1>
                 </div>

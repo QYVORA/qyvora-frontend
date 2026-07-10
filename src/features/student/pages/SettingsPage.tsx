@@ -233,7 +233,7 @@ const Settings: React.FC = () => {
                         <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center flex-none">
                           <Key className="w-4 h-4 text-accent" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <div className="text-sm font-bold text-text-primary">
                             {recoveryAcked ? 'Token saved and acknowledged' : 'Token exists'}
                           </div>

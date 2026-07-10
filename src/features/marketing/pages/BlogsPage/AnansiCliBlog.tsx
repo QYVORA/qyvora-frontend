@@ -27,19 +27,19 @@ export const AnansiCliBlog: React.FC = () => {
 
         <div className="space-y-6 my-8">
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">1. Single Binary, Zero Friction</h3>
+            <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">1. Single Binary, Zero Friction</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
               You should not need a package manager, a runtime, or a cloud account to run recon. Download one binary, chmod it, and run it. That's it. Go makes this possible — Anansi is compiled to a static binary with <Highlight>zero runtime dependencies</Highlight>.
             </p>
           </div>
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">2. Signal Over Noise</h3>
+            <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">2. Signal Over Noise</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
               Most recon tools dump everything at you and let you figure out what matters. Anansi flips that — by default, it <Highlight>only shows what it finds</Highlight>. If a subdomain is dead, it's hidden. If a path returns 404, it's suppressed. You get a clean terminal with <Highlight>actionable intelligence</Highlight> and nothing else.
             </p>
           </div>
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
-            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-text-primary">3. Pipeline, Not Point Tool</h3>
+            <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">3. Pipeline, Not Point Tool</h3>
             <p className="text-sm font-mono text-text-secondary leading-[2]">
               Recon is not a single step — it's a <Highlight>pipeline</Highlight>. You discover subdomains, probe for live hosts, check TLS configs, audit headers, find exposed paths, and check for takeovers. Anansi runs this entire pipeline in one command, passing data between phases automatically.
             </p>

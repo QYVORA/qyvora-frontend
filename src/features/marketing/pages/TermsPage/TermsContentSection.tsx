@@ -8,7 +8,7 @@ import { termsData } from './termsData';
 const TermsContentSection: React.FC = () => {
   return (
     <div className="min-h-full flex flex-col items-center justify-start md:justify-center py-20 md:py-24">
-      <div className="max-w-[1600px] mx-auto px-2 md:px-10 w-full h-full md:h-auto">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-10 w-full h-full md:h-auto">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start h-full md:h-auto">
           <div className="lg:w-1/3 shrink-0 lg:sticky lg:top-8">
             <ScrollReveal>

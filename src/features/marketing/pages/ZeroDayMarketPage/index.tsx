@@ -62,7 +62,7 @@ const ZeroDayMarketPage: React.FC = () => {
       {/* ── HERO ── */}
       <section id="zd-hero" className="relative w-full min-h-screen overflow-hidden">
         <div className="relative z-30 w-full min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
-          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
+          <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -152,8 +152,8 @@ const ZeroDayMarketPage: React.FC = () => {
                       <f.icon className="h-5 w-5 text-accent" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black text-text-primary mb-1 group-hover:text-accent transition-colors">{f.label}</h3>
-                      <p className="text-xs text-text-muted leading-relaxed font-mono">{f.desc}</p>
+                      <h3 className="text-sm font-black text-text-primary mb-1 group-hover:text-accent transition-colors break-words">{f.label}</h3>
+                      <p className="text-xs text-text-muted leading-relaxed font-mono break-words">{f.desc}</p>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -200,10 +200,10 @@ const ZeroDayMarketPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex flex-1 flex-col p-6 sm:p-8">
-                        <h3 className="mb-2 text-lg font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">
+                        <h3 className="mb-2 text-lg font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1 break-words">
                           {prod.title}
                         </h3>
-                        <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono">
+                        <p className="text-xs text-text-muted/70 mb-6 line-clamp-2 leading-relaxed font-mono break-words">
                           {prod.description || 'Secure intelligence report for offensive security operatives.'}
                         </p>
                         <div className="mt-auto flex items-center justify-between">

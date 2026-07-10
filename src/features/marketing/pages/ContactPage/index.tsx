@@ -45,7 +45,7 @@ const ContactPage: React.FC = () => {
       <HeroBackground className="opacity-70" />
 
       <section className="relative bg-transparent overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-accent text-xs font-black uppercase tracking-[0.3em]">
               <Mail className="w-4 h-4" />
@@ -68,8 +68,8 @@ const ContactPage: React.FC = () => {
       </section>
 
       <section className="relative w-full py-20 md:py-28 border-t border-border/20">
-        <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-16">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-16">
             {/* Left info cards */}
             <div className="md:col-span-2 space-y-6">
               <div className="card-qyvora border border-border bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
@@ -79,7 +79,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-text-primary uppercase tracking-wider">{SITE_CONFIG.contactPage.emailHeading}</h3>
-                    <p className="text-xs text-text-muted mt-1">{SITE_CONFIG.contactPage.emailDescription}</p>
+                    <p className="text-xs text-text-muted mt-1 break-words">{SITE_CONFIG.contactPage.emailDescription}</p>
                     <span className="inline-block mt-2 text-sm font-mono text-accent/70">
                       Use the form below
                     </span>
@@ -109,7 +109,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-text-primary uppercase tracking-wider">{SITE_CONFIG.contactPage.hqHeading}</h3>
-                    <p className="text-xs text-text-muted mt-1">{SITE_CONFIG.contact.headquarters} — {SITE_CONFIG.contactPage.hqDescriptionSuffix}</p>
+                    <p className="text-xs text-text-muted mt-1 break-words">{SITE_CONFIG.contact.headquarters} — {SITE_CONFIG.contactPage.hqDescriptionSuffix}</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +141,7 @@ const ContactPage: React.FC = () => {
                       <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em]">
                         {SITE_CONFIG.contactPage.formTitle}
                       </span>
-                      <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-60">
+                      <div className="flex bg-bg/50 border border-border p-1 rounded-xl w-full md:w-60">
                         <button
                           type="button"
                           onClick={() => setContactType('student')}
