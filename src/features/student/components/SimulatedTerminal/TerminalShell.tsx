@@ -1,8 +1,62 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Minimize2, Maximize2, X } from 'lucide-react';
 import { createInitialState, processInput, getInputPrefix } from './engine/state';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
 import type { TerminalState, TerminalLine, TerminalContext, VFSNode } from './types';
+
+const LS_KEY_LINES = 'qyvora_terminal_lines';
+const LS_KEY_STATE = 'qyvora_terminal_state';
+
+function saveTerminalData(lines: TerminalLine[], state: TerminalState) {
+  try {
+    localStorage.setItem(LS_KEY_LINES, JSON.stringify(lines));
+    const serializable = {
+      cwd: state.cwd,
+      user: state.user,
+      hostname: state.hostname,
+      home: state.home,
+      env: state.env,
+      history: state.history,
+      root: state.root,
+      isRoot: state.isRoot,
+      aliases: state.aliases,
+      lastExitCode: state.lastExitCode,
+      inMsfConsole: state.inMsfConsole,
+      discoveredIps: state.discoveredIps,
+    };
+    localStorage.setItem(LS_KEY_STATE, JSON.stringify(serializable));
+  } catch {}
+}
+
+function loadTerminalLines(): TerminalLine[] | null {
+  try {
+    const raw = localStorage.getItem(LS_KEY_LINES);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed as TerminalLine[];
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function loadTerminalState(): TerminalState | null {
+  try {
+    const raw = localStorage.getItem(LS_KEY_STATE);
+    if (!raw) return null;
+    return JSON.parse(raw) as TerminalState;
+  } catch {
+    return null;
+  }
+}
+
+export function clearTerminalStorage() {
+  try {
+    localStorage.removeItem(LS_KEY_LINES);
+    localStorage.removeItem(LS_KEY_STATE);
+  } catch {}
+}
 
 function collectTabMatches(root: VFSNode, lastPart: string): string[] {
   const matches: string[] = [];
@@ -48,13 +102,22 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   onToggleFullscreen,
   isFullscreen,
 }) => {
-  const stateRef = useRef<TerminalState>(createInitialState(context));
+  const savedLines = useRef<TerminalLine[] | null>(loadTerminalLines());
+  const savedState = useRef<TerminalState | null>(savedLines.current ? loadTerminalState() : null);
+
+  const stateRef = useRef<TerminalState>(
+    savedState.current ?? createInitialState(context),
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const streamingRef = useRef<boolean>(false);
   const tabTimingRef = useRef<{ time: number; prefix: string }>({ time: 0, prefix: '' });
 
   const [lines, setLines] = useState<TerminalLine[]>(() => {
+    if (savedLines.current) {
+      return savedLines.current;
+    }
+
     let state = stateRef.current;
 
     if (context?.type === 'bootcamp' && context.bootcampId) {
@@ -77,6 +140,16 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
     return initial;
   });
+
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      saveTerminalData(lines, stateRef.current);
+    }, 300);
+    return () => { if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current); };
+  }, [lines]);
 
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -125,6 +198,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     if (result._exit) {
       stateRef.current = result.newState;
       setLines(prev => [...prev, ...result.lines]);
+      saveTerminalData([...lines, ...result.lines], result.newState);
       onClose?.();
       return;
     }
@@ -132,7 +206,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     stateRef.current = result.newState;
     setLines(prev => [...prev, ...result.lines]);
     setHistoryIndex(-1);
-  }, [onClose]);
+  }, [onClose, lines]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.ctrlKey && e.key === 'c') {
@@ -348,22 +422,25 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   return (
     <div className="flex flex-col h-full" style={{ background: KALI_BG }}>
       <div
-        className="flex items-center justify-between px-3 py-1 shrink-0 border-b"
+        className="flex items-center justify-between px-2.5 py-1 shrink-0 border-b"
         style={{ background: KALI_TITLE_BG, borderColor: KALI_BORDER }}
       >
         <span className="text-[10px] font-mono text-white/30 tracking-[0.12em] select-none">_terminal <span className="text-white/20">v2.0 — type "help"</span></span>
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={onClose}
-            className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#ff5f56] hover:brightness-125 transition-all focus:outline-none"
-            aria-label="Close terminal"
-          />
+        <div className="flex items-center gap-1">
           <button
             onClick={onToggleFullscreen}
-            className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#ffbd2e] hover:brightness-125 transition-all focus:outline-none"
+            className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-white/60"
             aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
-          />
-          <span className="h-2.5 w-2.5 min-h-0 min-w-0 shrink-0 rounded-full bg-[#27c93f]" />
+          >
+            {isFullscreen ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
+          </button>
+          <button
+            onClick={() => { saveTerminalData(lines, stateRef.current); onClose?.(); }}
+            className="flex items-center justify-center h-5 w-5 rounded hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
+            aria-label="Close terminal"
+          >
+            <X size={12} />
+          </button>
         </div>
       </div>
 
@@ -424,7 +501,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none font-mono text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-0"
+            className="flex-1 bg-transparent border-none outline-none font-mono text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-1.5"
             style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
             spellCheck={false}
             autoComplete="off"
