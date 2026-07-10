@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Search, Flame
+  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Search, Flame, X
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
@@ -11,11 +11,11 @@ import CpLogo from '../../../../../shared/components/CpLogo';
 import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
-import { useScrollY } from '../../../../../core/hooks/useScrollY';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
 import { MOBILE_PRIMARY } from './mobileNav';
+import SearchBar from '../SearchBar';
 import { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
@@ -61,28 +61,13 @@ const StudentTopbar = () => {
 
   const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
 
-  // ── Scroll-hide (bootcamp room only) ──────────────────────────────────────
-  const isBootcampRoom = Boolean(activeRoomMatch);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const scrollY = useScrollY();
-
-  useEffect(() => {
-    if (!isBootcampRoom) { setIsVisible(true); return; }
-    if (scrollY < 10) { setIsVisible(true); lastScrollY.current = scrollY; return; }
-    const diff = scrollY - lastScrollY.current;
-    if (Math.abs(diff) > 5) {
-      setIsVisible(diff <= 0);
-      lastScrollY.current = scrollY;
-    }
-  }, [scrollY, isBootcampRoom]);
-
   // ── Shared state ───────────────────────────────────────────────────────────
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
   const loadNotificationsSnapshot = async () => {
@@ -160,11 +145,7 @@ const StudentTopbar = () => {
       </a>
 
       {/* ── Desktop topbar ── */}
-      <header
-        className={`fixed top-0 left-0 w-full z-40 bg-bg border-b border-border transition-transform duration-300 ${
-          isBootcampRoom && !isVisible ? '-translate-y-full' : 'translate-y-0'
-        }`}
-      >
+      <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
@@ -221,7 +202,16 @@ const StudentTopbar = () => {
                             <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
                           )}
                         </div>
-                        <button
+        <button
+          onClick={() => setMobileSearchOpen(true)}
+          className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
+          aria-label="Search"
+        >
+          <Search className="w-6 h-6 text-text-muted" />
+          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">Search</span>
+        </button>
+
+        <button
                           onClick={openSidebar}
                           className="md:hidden flex items-center gap-1 px-3 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[10px] font-black uppercase tracking-widest border border-border"
                         >
@@ -322,14 +312,7 @@ const StudentTopbar = () => {
 
           {/* Left: Search */}
           <div className="flex-1 max-w-md hidden md:block">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input
-                type="text"
-                placeholder="Search rooms, paths, topics..."
-                className="w-full bg-bg-elevated border border-border rounded-xl py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-muted/50 font-mono outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
-              />
-            </div>
+            <SearchBar />
           </div>
 
           {/* Center-right: Stats cluster */}
@@ -460,6 +443,24 @@ const StudentTopbar = () => {
           )}
         </button>
       </nav>
+
+      {mobileSearchOpen && (
+        <div className="fixed inset-0 z-[60] md:hidden">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileSearchOpen(false)} />
+          <div className="absolute top-0 left-0 right-0 bg-bg border-b border-border p-4 pt-6">
+            <div className="flex items-center gap-3">
+              <SearchBar compact onClose={() => setMobileSearchOpen(false)} />
+              <button
+                onClick={() => setMobileSearchOpen(false)}
+                className="shrink-0 p-2 text-text-muted hover:text-text-primary"
+                aria-label="Close search"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <MobileMoreSheet
         open={moreOpen}
