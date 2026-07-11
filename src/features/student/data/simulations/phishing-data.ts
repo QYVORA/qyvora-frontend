@@ -32,7 +32,6 @@ export interface PhishingChallenge {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   emails: PhishingEmail[];
   questions: PhishingQuestion[];
-  flag: string;
   cpReward: number;
 }
 
@@ -52,7 +51,6 @@ export const PHISHING_CHALLENGES: PhishingChallenge[] = [
       'A suspicious email claims your PayPal account has been limited. Analyze the email headers, links, and content to identify the phishing attempt.',
     difficulty: 'beginner',
     cpReward: 150,
-    flag: 'FLAG{phish_credential_paypa1_scam}',
     emails: [
       {
         id: 'ph-ch1-email-001',
@@ -252,7 +250,6 @@ export const PHISHING_CHALLENGES: PhishingChallenge[] = [
       'An email appears to be from the CEO requesting an urgent wire transfer. This Business Email Compromise (BEC) attack uses authority and urgency. Identify the red flags.',
     difficulty: 'intermediate',
     cpReward: 250,
-    flag: 'FLAG{phish_bec_wire_fraud}',
     emails: [
       {
         id: 'ph-ch2-email-001',
@@ -448,7 +445,6 @@ export const PHISHING_CHALLENGES: PhishingChallenge[] = [
       'A fake IT department email requests a password reset. Analyze the email to identify inconsistencies that reveal it as a phishing attempt.',
     difficulty: 'beginner',
     cpReward: 150,
-    flag: 'FLAG{phish_techsupport_password_hijack}',
     emails: [
       {
         id: 'ph-ch3-email-001',
@@ -646,7 +642,6 @@ export const PHISHING_CHALLENGES: PhishingChallenge[] = [
       'A highly personalized email appears to come from a known colleague, referencing real company events. This advanced attack uses OSINT to craft a convincing lure.',
     difficulty: 'advanced',
     cpReward: 400,
-    flag: 'FLAG{phish_spear_macro_pivot}',
     emails: [
       {
         id: 'ph-ch4-email-001',
@@ -830,7 +825,6 @@ export const PHISHING_CHALLENGES: PhishingChallenge[] = [
       'A professional-looking HR email contains a QR code for "mandatory benefits enrollment." Analyze the email and QR code to identify the phishing attempt.',
     difficulty: 'intermediate',
     cpReward: 250,
-    flag: 'FLAG{phish_qr_harvest_benefits}',
     emails: [
       {
         id: 'ph-ch5-email-001',

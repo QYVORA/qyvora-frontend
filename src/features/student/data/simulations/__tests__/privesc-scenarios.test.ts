@@ -21,7 +21,6 @@ describe('privesc-scenarios', () => {
       expect(Object.keys(s.filesystem).length).toBeGreaterThan(0);
       expect(Array.isArray(s.solutionCommands)).toBe(true);
       expect(s.solutionCommands.length).toBeGreaterThan(0);
-      expect(s.flag).toMatch(/^FLAG\{.+\}$/);
     });
   });
 

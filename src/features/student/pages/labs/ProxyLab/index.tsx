@@ -7,6 +7,7 @@ import { PROXY_SCENARIOS } from '@/features/student/data/simulations/proxy-data'
 import type {
   ProxyRequest, ProxyTask,
 } from '@/features/student/data/simulations/proxy-data';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 type DetailTab = 'headers' | 'body' | 'raw';
 type MobilePanel = 'list' | 'request' | 'response';
@@ -93,15 +94,28 @@ export default function ProxyLab() {
     setMobilePanel('request');
   }, []);
 
-  const handleTaskFlagSubmit = useCallback((scenarioId: string, taskIndex: number, task: ProxyTask) => {
+  const handleTaskFlagSubmit = useCallback(async (scenarioId: string, taskIndex: number, task: ProxyTask) => {
     const key = `${scenarioId}-${taskIndex}`;
     setTaskStates((prev) => {
       const current = prev[key] ?? { completed: false, hintUsed: false, flagInput: '', flagFeedback: null };
-      if (current.flagInput.trim() === task.flag) {
-        return { ...prev, [key]: { ...current, completed: true, flagFeedback: 'success' as const } };
-      }
-      return { ...prev, [key]: { ...current, flagFeedback: 'error' as const } };
+      return { ...prev, [key]: { ...current, flagFeedback: null as 'success' | 'error' | null } };
     });
+    try {
+      const currentInput = taskStates[key]?.flagInput ?? '';
+      const result = await verifyLabFlag('proxy', scenarioId, currentInput.trim());
+      setTaskStates((prev) => {
+        const current = prev[key] ?? { completed: false, hintUsed: false, flagInput: '', flagFeedback: null };
+        if (result.correct) {
+          return { ...prev, [key]: { ...current, completed: true, flagFeedback: 'success' as const } };
+        }
+        return { ...prev, [key]: { ...current, flagFeedback: 'error' as const } };
+      });
+    } catch {
+      setTaskStates((prev) => {
+        const current = prev[key] ?? { completed: false, hintUsed: false, flagInput: '', flagFeedback: null };
+        return { ...prev, [key]: { ...current, flagFeedback: 'error' as const } };
+      });
+    }
     setTimeout(() => {
       setTaskStates((prev) => {
         const current = prev[key];
@@ -111,7 +125,7 @@ export default function ProxyLab() {
         return prev;
       });
     }, 3000);
-  }, []);
+  }, [taskStates]);
 
   const handleTaskHintToggle = useCallback((scenarioId: string, taskIndex: number) => {
     const key = `${scenarioId}-${taskIndex}`;

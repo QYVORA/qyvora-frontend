@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Database, Terminal, ArrowLeft, CheckCircle, AlertTriangle, Play, Copy, Table } from 'lucide-react';
 import { SQL_INJECTION_TARGETS, type SqlInjectionTarget } from '@/features/student/data/simulations/sql-injection-data';
 import SEO from '@/shared/components/SEO';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, { bg: string; text: string }> = {
   beginner: { bg: 'bg-accent/10', text: 'text-accent' },
@@ -161,6 +162,7 @@ const SqlInjectionLab = () => {
   const [flagInput, setFlagInput] = useState('');
   const [flagSubmitted, setFlagSubmitted] = useState(false);
   const [flagCorrect, setFlagCorrect] = useState(false);
+  const [flagLoading, setFlagLoading] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
 
   const allStepsCompleted = activeTarget && completedSteps.size >= activeTarget.steps.length;
@@ -177,6 +179,7 @@ const SqlInjectionLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
   }, []);
 
   const handleStartTarget = useCallback((target: SqlInjectionTarget) => {
@@ -185,6 +188,7 @@ const SqlInjectionLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
   }, []);
 
   const handleExecuteStep = useCallback((stepIndex: number) => {
@@ -195,12 +199,20 @@ const SqlInjectionLab = () => {
     });
   }, []);
 
-  const handleSubmitFlag = useCallback(() => {
-    if (!activeTarget) return;
-    const correct = flagInput.trim() === activeTarget.flag;
-    setFlagCorrect(correct);
-    setFlagSubmitted(true);
-  }, [activeTarget, flagInput]);
+  const handleSubmitFlag = useCallback(async () => {
+    if (!activeTarget || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('sql-injection', activeTarget.id, flagInput.trim());
+      setFlagCorrect(result.correct);
+      setFlagSubmitted(true);
+    } catch {
+      setFlagCorrect(false);
+      setFlagSubmitted(true);
+    } finally {
+      setFlagLoading(false);
+    }
+  }, [activeTarget, flagInput, flagLoading]);
 
   const handleCopyUrl = useCallback(() => {
     if (!activeTarget) return;
@@ -373,10 +385,10 @@ const SqlInjectionLab = () => {
                 />
                 <button
                   onClick={handleSubmitFlag}
-                  disabled={!flagInput.trim()}
+                  disabled={!flagInput.trim() || flagLoading}
                   className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
                 >
-                  Submit
+                  {flagLoading ? 'Verifying...' : 'Submit'}
                 </button>
               </div>
             </div>

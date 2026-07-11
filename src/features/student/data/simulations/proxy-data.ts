@@ -20,7 +20,6 @@ export interface ProxyRequest {
 export interface ProxyTask {
   description: string;
   hint: string;
-  flag: string;
 }
 
 export interface ProxyScenario {
@@ -30,7 +29,6 @@ export interface ProxyScenario {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   requests: ProxyRequest[];
   tasks: ProxyTask[];
-  flag: string;
   cpReward: number;
 }
 
@@ -116,10 +114,9 @@ export const PROXY_SCENARIOS: ProxyScenario[] = [
       },
     ],
     tasks: [
-      { description: 'Find the request containing cleartext credentials', hint: 'Look at the POST request body', flag: 'FLAG{proxy_cleartext_creds_found}' },
-      { description: 'What password was transmitted?', hint: 'Check the login POST body', flag: 'FLAG{proxy_password_extracted}' },
+      { description: 'Find the request containing cleartext credentials', hint: 'Look at the POST request body' },
+      { description: 'What password was transmitted?', hint: 'Check the login POST body' },
     ],
-    flag: 'FLAG{proxy_intercept_credentials}',
     cpReward: 150,
   },
   {
@@ -210,11 +207,10 @@ export const PROXY_SCENARIOS: ProxyScenario[] = [
       },
     ],
     tasks: [
-      { description: 'Find the hidden price parameter that can be tampered with', hint: 'Look at the hidden form fields in the product page', flag: 'FLAG{proxy_price_tampered}' },
-      { description: 'Find the hidden admin parameter in the transfer request', hint: 'Compare the two transfer requests', flag: 'FLAG{proxy_admin_override_found}' },
-      { description: 'Identify the IDOR vulnerability', hint: 'Check the user API endpoints with different IDs', flag: 'FLAG{proxy_idor_user_access}' },
+      { description: 'Find the hidden price parameter that can be tampered with', hint: 'Look at the hidden form fields in the product page' },
+      { description: 'Find the hidden admin parameter in the transfer request', hint: 'Compare the two transfer requests' },
+      { description: 'Identify the IDOR vulnerability', hint: 'Check the user API endpoints with different IDs' },
     ],
-    flag: 'FLAG{proxy_tamper_complete}',
     cpReward: 300,
   },
   {
@@ -297,11 +293,10 @@ export const PROXY_SCENARIOS: ProxyScenario[] = [
       },
     ],
     tasks: [
-      { description: 'Decode the JWT token and understand its structure', hint: 'Base64 decode the payload section', flag: 'FLAG{proxy_jwt_decoded}' },
-      { description: 'Identify the session hijacking vector', hint: 'Look at where the session token appears', flag: 'FLAG{proxy_session_hijack_vector}' },
-      { description: 'Find the CSRF vulnerability', hint: 'Check the HTML page with a hidden form', flag: 'FLAG{proxy_csrf_found}' },
+      { description: 'Decode the JWT token and understand its structure', hint: 'Base64 decode the payload section' },
+      { description: 'Identify the session hijacking vector', hint: 'Look at where the session token appears' },
+      { description: 'Find the CSRF vulnerability', hint: 'Check the HTML page with a hidden form' },
     ],
-    flag: 'FLAG{proxy_session_hijacked}',
     cpReward: 400,
   },
 ];

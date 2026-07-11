@@ -18,7 +18,6 @@ describe('phishing-data', () => {
       expect(c.emails.length).toBeGreaterThan(0);
       expect(Array.isArray(c.questions)).toBe(true);
       expect(c.questions.length).toBeGreaterThan(0);
-      expect(c.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof c.cpReward).toBe('number');
     });
   });

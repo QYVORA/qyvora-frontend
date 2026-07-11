@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { TRAFFIC_CHALLENGES } from '@/features/student/data/simulations/traffic-data';
 import SEO from '@/shared/components/SEO';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 interface TrafficChallenge {
   id: string;
@@ -14,7 +15,6 @@ interface TrafficChallenge {
   packets: PcapPacket[];
   analysisTasks: TrafficTask[];
   filterCommands: TrafficFilter[];
-  flag: string;
   cpReward: number;
 }
 
@@ -228,6 +228,7 @@ const TrafficLab = () => {
   const [revealedHints, setRevealedHints] = useState<Set<number>>(new Set());
   const [flagInput, setFlagInput] = useState('');
   const [flagStatus, setFlagStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
+  const [flagLoading, setFlagLoading] = useState(false);
 
   const filteredPackets = useMemo(() => {
     if (!activeChallenge) return [];
@@ -255,6 +256,7 @@ const TrafficLab = () => {
     setRevealedHints(new Set());
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
   }, []);
 
   const handleStartChallenge = useCallback((challenge: TrafficChallenge) => {
@@ -265,20 +267,29 @@ const TrafficLab = () => {
     setRevealedHints(new Set());
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
   }, []);
 
   const handleApplyFilter = useCallback((filter: string) => {
     setFilterText(filter);
   }, []);
 
-  const handleSubmitFlag = useCallback(() => {
-    if (!activeChallenge || !flagInput.trim()) return;
-    if (flagInput.trim() === activeChallenge.flag) {
-      setFlagStatus('correct');
-    } else {
+  const handleSubmitFlag = useCallback(async () => {
+    if (!activeChallenge || !flagInput.trim() || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('traffic', activeChallenge.id, flagInput.trim());
+      if (result.correct) {
+        setFlagStatus('correct');
+      } else {
+        setFlagStatus('incorrect');
+      }
+    } catch {
       setFlagStatus('incorrect');
+    } finally {
+      setFlagLoading(false);
     }
-  }, [activeChallenge, flagInput]);
+  }, [activeChallenge, flagInput, flagLoading]);
 
   const toggleHint = useCallback((index: number) => {
     setRevealedHints((prev) => {
@@ -600,10 +611,10 @@ const TrafficLab = () => {
                 />
                 <button
                   onClick={handleSubmitFlag}
-                  disabled={!flagInput.trim()}
+                  disabled={!flagInput.trim() || flagLoading}
                   className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
                 >
-                  Submit
+                  {flagLoading ? 'Verifying...' : 'Submit'}
                 </button>
               </div>
               {flagStatus === 'incorrect' && (

@@ -9,7 +9,6 @@ export interface PasswordExercise {
   crackedPassword: string;
   wordlist: string;
   steps: string[];
-  flag: string;
   cpReward: number;
 }
 
@@ -58,7 +57,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 0 mystery_hash.txt rockyou.txt',
       'hashcat -m 0 mystery_hash.txt rockyou.txt --show',
     ],
-    flag: 'FLAG{pwd_crack_md5_dictionary}',
     cpReward: 50,
   },
   {
@@ -77,7 +75,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 1400 user_hash.txt rockyou.txt',
       'hashcat -m 1400 user_hash.txt rockyou.txt --show',
     ],
-    flag: 'FLAG{pwd_crack_sha256_common}',
     cpReward: 75,
   },
   {
@@ -96,7 +93,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 3200 bcrypt_hash.txt rockyou.txt --force',
       'hashcat -m 3200 bcrypt_hash.txt rockyou.txt --show',
     ],
-    flag: 'FLAG{pwd_crack_bcrypt_slow_hash}',
     cpReward: 150,
   },
   {
@@ -115,7 +111,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 1000 ntlm_hash.txt rockyou.txt',
       'hashcat -m 1000 ntlm_hash.txt rockyou.txt --show',
     ],
-    flag: 'FLAG{pwd_crack_ntlm_windows}',
     cpReward: 125,
   },
   {
@@ -137,7 +132,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 1800 shadow.txt rockyou.txt',
       'hashcat -m 3200 shadow.txt rockyou.txt',
     ],
-    flag: 'FLAG{pwd_crack_shadow_privilege}',
     cpReward: 250,
   },
   {
@@ -169,7 +163,6 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
       'hashcat -m 1800 multi_hashes.txt rockyou.txt',
       'hashcat --show multi_hashes.txt',
     ],
-    flag: 'FLAG{pwd_crack_multi_algorithm_complete}',
     cpReward: 300,
   },
 ];

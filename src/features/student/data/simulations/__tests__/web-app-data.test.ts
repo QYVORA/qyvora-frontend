@@ -47,7 +47,6 @@ describe('web-app-data', () => {
       expect(['beginner', 'intermediate', 'advanced']).toContain(v.difficulty);
       expect(Array.isArray(v.steps)).toBe(true);
       expect(v.steps.length).toBeGreaterThan(0);
-      expect(v.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof v.cpReward).toBe('number');
     });
   });

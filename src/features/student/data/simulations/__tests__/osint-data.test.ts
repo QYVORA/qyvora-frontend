@@ -19,7 +19,6 @@ describe('osint-data', () => {
       expect(c.steps.length).toBeGreaterThan(0);
       expect(Array.isArray(c.skills)).toBe(true);
       expect(c.skills.length).toBeGreaterThan(0);
-      expect(c.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof c.cpReward).toBe('number');
     });
   });

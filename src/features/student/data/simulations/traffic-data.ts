@@ -31,7 +31,6 @@ export interface TrafficChallenge {
   packets: PcapPacket[];
   analysisTasks: TrafficTask[];
   filterCommands: TrafficFilter[];
-  flag: string;
   cpReward: number;
 }
 
@@ -67,7 +66,6 @@ export const TRAFFIC_CHALLENGES: TrafficChallenge[] = [
       { filter: 'http.request.method == "POST"', description: 'Show only HTTP POST requests' },
       { filter: 'http.request.uri contains "login"', description: 'Show requests to login endpoint' },
     ],
-    flag: 'FLAG{pcap_cleartext_password}',
     cpReward: 150,
   },
   {
@@ -96,7 +94,6 @@ export const TRAFFIC_CHALLENGES: TrafficChallenge[] = [
       { filter: 'dns.qry.name.len > 50', description: 'Show DNS queries with long names' },
       { filter: 'dns', description: 'Show all DNS traffic' },
     ],
-    flag: 'FLAG{pcap_dns_tunnel_detected}',
     cpReward: 300,
   },
   {
@@ -127,7 +124,6 @@ export const TRAFFIC_CHALLENGES: TrafficChallenge[] = [
       { filter: 'arp', description: 'Show all ARP traffic' },
       { filter: 'arp.opcode == 2', description: 'Show ARP replies only' },
     ],
-    flag: 'FLAG{pcap_arp_spoof_detected}',
     cpReward: 300,
   },
   {
@@ -161,7 +157,6 @@ export const TRAFFIC_CHALLENGES: TrafficChallenge[] = [
       { filter: 'ip.dst == 185.234.72.10', description: 'Show traffic to C2 server' },
       { filter: 'http.request.method == "POST"', description: 'Show POST requests (exfil)' },
     ],
-    flag: 'FLAG{pcap_c2_beacon_identified}',
     cpReward: 400,
   },
 ];

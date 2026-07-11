@@ -22,7 +22,6 @@ describe('password-exercises', () => {
       expect(e.crackedPassword).toBeTruthy();
       expect(e.wordlist).toBeTruthy();
       expect(Array.isArray(e.steps)).toBe(true);
-      expect(e.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof e.cpReward).toBe('number');
       expect(e.cpReward).toBeGreaterThan(0);
     });

@@ -7,6 +7,7 @@ import {
 import SEO from '@/shared/components/SEO';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
 import type { KillChainScenario, KillChainPhase, KillChainCommand } from '@/features/student/data/simulations/kill-chain-data';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400',
@@ -43,6 +44,7 @@ const KillChainLab = () => {
   const [terminalLines, setTerminalLines] = useState<TerminalLine[]>([]);
   const [flagInput, setFlagInput] = useState('');
   const [flagStatus, setFlagStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
+  const [flagLoading, setFlagLoading] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
   const lineIdRef = useRef(0);
 
@@ -73,6 +75,7 @@ const KillChainLab = () => {
     setTerminalLines([]);
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
     lineIdRef.current = 0;
     setTimeout(() => {
       addLine('info', `[ Kill Chain Simulation: ${scenario.title} ]`);
@@ -86,6 +89,7 @@ const KillChainLab = () => {
     setTerminalLines([]);
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
   }, []);
 
   const allPhasesCompleted = selectedScenario?.phases.every(
@@ -125,16 +129,25 @@ const KillChainLab = () => {
     }
   }, [selectedScenario, currentPhase, activePhaseIndex, addLine]);
 
-  const submitFlag = useCallback(() => {
-    if (!selectedScenario || !flagInput.trim()) return;
-    if (flagInput.trim() === selectedScenario.flag) {
-      setFlagStatus('correct');
-      addLine('success', '\n🎉 Kill Chain Complete! Full penetration chain executed successfully!');
-    } else {
+  const submitFlag = useCallback(async () => {
+    if (!selectedScenario || !flagInput.trim() || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('kill-chain', selectedScenario.id, flagInput.trim());
+      if (result.correct) {
+        setFlagStatus('correct');
+        addLine('success', '\n🎉 Kill Chain Complete! Full penetration chain executed successfully!');
+      } else {
+        setFlagStatus('incorrect');
+        addLine('error', `\n✗ ${result.message}`);
+      }
+    } catch {
       setFlagStatus('incorrect');
-      addLine('error', '\n✗ Incorrect flag. Review the full chain.');
+      addLine('error', '\n✗ Verification failed. Please try again.');
+    } finally {
+      setFlagLoading(false);
     }
-  }, [selectedScenario, flagInput, addLine]);
+  }, [selectedScenario, flagInput, flagLoading, addLine]);
 
   const getPhaseIcon = (iconName: string) => {
     return ICON_MAP[iconName] || Target;
@@ -442,10 +455,10 @@ const KillChainLab = () => {
                 />
                 <button
                   onClick={submitFlag}
-                  disabled={!flagInput.trim()}
+                  disabled={!flagInput.trim() || flagLoading}
                   className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 disabled:opacity-50"
                 >
-                  Submit
+                  {flagLoading ? 'Verifying...' : 'Submit'}
                 </button>
               </div>
             )}

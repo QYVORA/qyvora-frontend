@@ -13,7 +13,6 @@ export interface OsintChallenge {
   targetName: string;
   targetDescription: string;
   steps: OsintStep[];
-  flag: string;
   cpReward: number;
   skills: string[];
 }
@@ -58,7 +57,6 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
         explanation: 'Email format patterns help find additional addresses.',
       },
     ],
-    flag: 'FLAG{osint_email_harvest_complete}',
     cpReward: 150,
     skills: ['WHOIS lookup', 'DNS enumeration', 'Email harvesting', 'theHarvester'],
   },
@@ -95,7 +93,6 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
         explanation: 'Profile photo contains GPS coordinates (Lagos, Nigeria) and device info.',
       },
     ],
-    flag: 'FLAG{osint_social_profile_built}',
     cpReward: 250,
     skills: ['Username enumeration', 'GitHub dorking', 'Metadata extraction', 'Social media analysis'],
   },
@@ -132,7 +129,6 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
         explanation: 'Port scanning reveals services running on each subdomain.',
       },
     ],
-    flag: 'FLAG{osint_subdomain_surface_mapped}',
     cpReward: 250,
     skills: ['Subdomain enumeration', 'DNS brute-forcing', 'Service detection', 'Attack surface mapping'],
   },
@@ -163,7 +159,6 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
         explanation: 'Pattern analysis helps predict other employee passwords.',
       },
     ],
-    flag: 'FLAG{osint_breach_analysis_complete}',
     cpReward: 150,
     skills: ['Breach database checking', 'Credential analysis', 'Pattern recognition'],
   },
@@ -212,7 +207,6 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
         explanation: 'Phase 6: Compile all findings into actionable intelligence.',
       },
     ],
-    flag: 'FLAG{osint_full_recon_mastered}',
     cpReward: 400,
     skills: ['WHOIS', 'DNS enumeration', 'Email harvesting', 'Username enumeration', 'Social media analysis', 'Service detection', 'Intelligence compilation'],
   },

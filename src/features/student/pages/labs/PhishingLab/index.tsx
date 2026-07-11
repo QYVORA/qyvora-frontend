@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { Mail, ArrowLeft, CheckCircle, AlertTriangle, ExternalLink, Shield, Eye, FileText, Paperclip, Search, ChevronDown, ChevronRight, X, Info } from 'lucide-react';
 import { PHISHING_CHALLENGES } from '@/features/student/data/simulations/phishing-data';
 import type { PhishingChallenge, PhishingEmail, PhishingIndicator } from '@/features/student/data/simulations/phishing-data';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 type Tab = 'email' | 'headers' | 'analysis';
 
@@ -519,6 +520,7 @@ const PhishingLab = () => {
   const [flagInput, setFlagInput] = useState('');
   const [flagSubmitted, setFlagSubmitted] = useState(false);
   const [flagCorrect, setFlagCorrect] = useState(false);
+  const [flagLoading, setFlagLoading] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
 
   const selectedEmail = useMemo(() => {
@@ -532,6 +534,7 @@ const PhishingLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
     setQuizComplete(false);
   }, []);
 
@@ -541,15 +544,24 @@ const PhishingLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
     setQuizComplete(false);
   }, []);
 
-  const handleFlag = useCallback(() => {
-    if (!activeChallenge) return;
-    const correct = flagInput.trim() === activeChallenge.flag;
-    setFlagCorrect(correct);
-    setFlagSubmitted(true);
-  }, [activeChallenge, flagInput]);
+  const handleFlag = useCallback(async () => {
+    if (!activeChallenge || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('phishing', activeChallenge.id, flagInput.trim());
+      setFlagCorrect(result.correct);
+      setFlagSubmitted(true);
+    } catch {
+      setFlagCorrect(false);
+      setFlagSubmitted(true);
+    } finally {
+      setFlagLoading(false);
+    }
+  }, [activeChallenge, flagInput, flagLoading]);
 
   const handleQuizComplete = useCallback(() => {
     setQuizComplete(true);
@@ -677,10 +689,10 @@ const PhishingLab = () => {
               />
               <button
                 onClick={handleFlag}
-                disabled={!flagInput.trim()}
+                disabled={!flagInput.trim() || flagLoading}
                 className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
               >
-                Submit
+                {flagLoading ? 'Verifying...' : 'Submit'}
               </button>
             </div>
             {flagSubmitted && (

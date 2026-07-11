@@ -6,6 +6,7 @@ import {
 import SEO from '@/shared/components/SEO';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations/privesc-scenarios';
 import type { PrivescScenario } from '@/features/student/data/simulations/types';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400',
@@ -68,6 +69,7 @@ const PrivescLab = () => {
   const [hintIndex, setHintIndex] = useState(-1);
   const [flagInput, setFlagInput] = useState('');
   const [flagStatus, setFlagStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
+  const [flagLoading, setFlagLoading] = useState(false);
   const [showFileContent, setShowFileContent] = useState<string | null>(null);
   const [expandedDirs, setExpandedDirs] = useState<Set<string>>(new Set(['/']));
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -112,6 +114,7 @@ const PrivescLab = () => {
     setHintIndex(-1);
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
     setShowFileContent(null);
     lineIdRef.current = 0;
     setExpandedDirs(new Set(['/']));
@@ -131,6 +134,7 @@ const PrivescLab = () => {
     setHintIndex(-1);
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
     setShowFileContent(null);
   }, []);
 
@@ -305,16 +309,25 @@ const PrivescLab = () => {
     }
   }, [selectedScenario, addLine]);
 
-  const submitFlag = useCallback(() => {
-    if (!selectedScenario || !flagInput.trim()) return;
-    if (flagInput.trim() === selectedScenario.flag) {
-      setFlagStatus('correct');
-      addLine('success', '\n🎉 FLAG CAPTURED! Privilege escalation successful!');
-    } else {
+  const submitFlag = useCallback(async () => {
+    if (!selectedScenario || !flagInput.trim() || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('privesc', selectedScenario.id, flagInput.trim());
+      if (result.correct) {
+        setFlagStatus('correct');
+        addLine('success', '\n🎉 FLAG CAPTURED! Privilege escalation successful!');
+      } else {
+        setFlagStatus('incorrect');
+        addLine('error', `\n✗ ${result.message}`);
+      }
+    } catch {
       setFlagStatus('incorrect');
-      addLine('error', '\n✗ Incorrect flag. Try again.');
+      addLine('error', '\n✗ Verification failed. Please try again.');
+    } finally {
+      setFlagLoading(false);
     }
-  }, [selectedScenario, flagInput, addLine]);
+  }, [selectedScenario, flagInput, flagLoading, addLine]);
 
   const completedSteps = executedCommands.size;
   const totalSteps = selectedScenario?.solutionCommands.length || 0;
@@ -572,10 +585,10 @@ const PrivescLab = () => {
               />
               <button
                 onClick={submitFlag}
-                disabled={!flagInput.trim()}
+                disabled={!flagInput.trim() || flagLoading}
                 className="btn-primary !rounded-xl !text-[10px] px-6 disabled:opacity-50"
               >
-                Submit
+                {flagLoading ? 'Verifying...' : 'Submit'}
               </button>
             </div>
           )}
