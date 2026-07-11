@@ -240,18 +240,20 @@ const Dashboard = () => {
 
         {/* 2.5 PWA Install */}
         {canInstall && (
-          <div className="flex items-center gap-4 p-4 rounded-xl border border-accent/20 bg-accent/5">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10">
-              <Download className="w-5 h-5 text-accent" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-black text-text-primary">Install QYVORA</p>
-              <p className="text-[10px] font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-accent/20 bg-accent/5">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10">
+                <Download className="w-5 h-5 text-accent" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-black text-text-primary">Install QYVORA</p>
+                <p className="text-[10px] font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
+              </div>
             </div>
             <button
               onClick={handleInstall}
               disabled={installing}
-              className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
+              className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
             >
               {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
               {installing ? 'Installing…' : 'Install'}
