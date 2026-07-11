@@ -12,7 +12,7 @@ const DayBar = ({ label, active, maxActive }: { label: string; active: boolean; 
         <div
           className={`absolute bottom-0 w-full max-w-[20px] rounded-t-sm transition-all duration-500 ${
             active
-              ? 'bg-accent shadow-[0_0_6px_rgba(102,184,112,0.5)]'
+              ? 'bg-accent shadow-[0_0_6px_rgba(6,182,111,0.5)]'
               : 'bg-border/20'
           }`}
           style={{ height: `${height}%` }}

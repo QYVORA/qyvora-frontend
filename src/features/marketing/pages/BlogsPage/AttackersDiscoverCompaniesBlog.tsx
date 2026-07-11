@@ -88,39 +88,39 @@ vpn.target.com`} />
             <svg viewBox="0 0 600 230" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="fp-box" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(102,184,112,0.1)" />
-                  <stop offset="100%" stopColor="rgba(102,184,112,0.03)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.1)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.03)" />
                 </linearGradient>
                 <filter id="fp-shadow">
-                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(102,184,112,0.06)" />
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(6,182,111,0.06)" />
                 </filter>
               </defs>
 
-              <rect x="100" y="8" width="400" height="22" rx="11" fill="rgba(102,184,112,0.06)" />
-              <text x="300" y="23" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="2">TECHNOLOGY FINGERPRINTING</text>
+              <rect x="100" y="8" width="400" height="22" rx="11" fill="rgba(6,182,111,0.06)" />
+              <text x="300" y="23" textAnchor="middle" fill="rgba(6,182,111,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="2">TECHNOLOGY FINGERPRINTING</text>
 
-              <rect x="20" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
-              <rect x="20" y="50" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
-              <circle cx="38" cy="66" r="3" fill="rgba(102,184,112,0.3)" />
-              <text x="48" y="70" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTTP Response Headers</text>
+              <rect x="20" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(6,182,111,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="20" y="50" width="260" height="3" rx="1.5" fill="rgba(6,182,111,0.2)" />
+              <circle cx="38" cy="66" r="3" fill="rgba(6,182,111,0.3)" />
+              <text x="48" y="70" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTTP Response Headers</text>
               <text x="38" y="96" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Server, X-Powered-By, Set-Cookie</text>
 
-              <rect x="320" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
-              <rect x="320" y="50" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
-              <circle cx="338" cy="66" r="3" fill="rgba(102,184,112,0.3)" />
-              <text x="348" y="70" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTML / JS Analysis</text>
+              <rect x="320" y="50" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(6,182,111,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="320" y="50" width="260" height="3" rx="1.5" fill="rgba(6,182,111,0.2)" />
+              <circle cx="338" cy="66" r="3" fill="rgba(6,182,111,0.3)" />
+              <text x="348" y="70" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">HTML / JS Analysis</text>
               <text x="338" y="96" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Asset paths, comment tags, framework markers</text>
 
-              <rect x="20" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
-              <rect x="20" y="140" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
-              <circle cx="38" cy="156" r="3" fill="rgba(102,184,112,0.3)" />
-              <text x="48" y="160" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">SSL/TLS Certificate</text>
+              <rect x="20" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(6,182,111,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="20" y="140" width="260" height="3" rx="1.5" fill="rgba(6,182,111,0.2)" />
+              <circle cx="38" cy="156" r="3" fill="rgba(6,182,111,0.3)" />
+              <text x="48" y="160" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">SSL/TLS Certificate</text>
               <text x="38" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">Issuer, SANs, validity period, cipher suites</text>
 
-              <rect x="320" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(102,184,112,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
-              <rect x="320" y="140" width="260" height="3" rx="1.5" fill="rgba(102,184,112,0.2)" />
-              <circle cx="338" cy="156" r="3" fill="rgba(102,184,112,0.3)" />
-              <text x="348" y="160" textAnchor="start" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">Favicon Hash</text>
+              <rect x="320" y="140" width="260" height="65" rx="8" fill="url(#fp-box)" stroke="rgba(6,182,111,0.2)" strokeWidth="1" filter="url(#fp-shadow)" />
+              <rect x="320" y="140" width="260" height="3" rx="1.5" fill="rgba(6,182,111,0.2)" />
+              <circle cx="338" cy="156" r="3" fill="rgba(6,182,111,0.3)" />
+              <text x="348" y="160" textAnchor="start" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="12" letterSpacing="0.5">Favicon Hash</text>
               <text x="338" y="186" textAnchor="start" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">MurmurHash3 — matches default framework icons</text>
             </svg>
           </div>

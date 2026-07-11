@@ -15,7 +15,7 @@ interface AnnotatableImageProps {
   className?: string;
 }
 
-const COLORS = ['#66B870', '#FF5F57', '#FFBD2E', '#60A5FA', '#A78BFA', '#FFFFFF'];
+const COLORS = ['#06B66F', '#FF5F57', '#FFBD2E', '#60A5FA', '#A78BFA', '#FFFFFF'];
 
 const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
   src,

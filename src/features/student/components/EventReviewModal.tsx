@@ -99,12 +99,12 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
               onChange={(e) => { setReview(e.target.value); setError(''); }}
               placeholder="Share your thoughts about the platform..."
               rows={4}
-              className="w-full bg-bg border-2 border-border rounded-2xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-accent/40 outline-none font-mono text-sm resize-none transition-all"
+              className="w-full bg-bg border border-border rounded-xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
             />
           </div>
 
           {error && (
-            <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border-2 border-red-500/30">
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
               <span className="text-xs text-red-400 font-mono flex-1">{error}</span>
             </div>
           )}
@@ -112,7 +112,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
           <button
             onClick={handleSubmitReview}
             disabled={submitting || !review.trim()}
-            className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl bg-accent text-bg text-[10px] font-black uppercase tracking-[0.15em] transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-[0.15em] transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />

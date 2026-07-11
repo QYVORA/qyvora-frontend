@@ -178,7 +178,7 @@ const ServiceRequestModalHost: React.FC = () => {
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-60"
+                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {status === 'sending'
                   ? <><Loader2 className="w-4 h-4 animate-spin" /> Transmitting...</>

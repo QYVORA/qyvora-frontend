@@ -16,23 +16,23 @@
   --color-bg:             #000000;
   --color-bg-card:        #050505;
   --color-bg-elevated:    #0b0b0b;
-  --color-accent:         #66B870;
-  --color-accent-rgb:     102, 184, 112;
-  --color-accent-dim:     rgba(102, 184, 112, 0.05);
-  --color-accent-glow:    rgba(102, 184, 112, 0.12);
+  --color-accent:         #06B66F;
+  --color-accent-rgb:     6, 182, 111;
+  --color-accent-dim:     rgba(6, 182, 111, 0.05);
+  --color-accent-glow:    rgba(6, 182, 111, 0.12);
   --color-text-primary:   #EEF0EE;
   --color-text-secondary: rgba(238, 240, 238, 0.70);
   --color-text-muted:     rgba(238, 240, 238, 0.40);
   --color-border:         rgba(171, 181, 192, 0.12);
-  --color-border-strong:  rgba(102, 184, 112, 0.18);
-  --dot-color:            rgba(102, 184, 112, 0.05);
+  --color-border-strong:  rgba(6, 182, 111, 0.18);
+  --dot-color:            rgba(6, 182, 111, 0.05);
   --color-hero-right-bg:  #000e08;
-  --color-hero-glow:      rgba(102, 184, 112, 0.15);
-  --color-hero-dots:      #66B870;
+  --color-hero-glow:      rgba(6, 182, 111, 0.15);
+  --color-hero-dots:      #06B66F;
 
   /* ── Code highlighting ── */
   --color-code-bg:              #0d0d0d;
-  --color-code-keyword:         #66B870;
+  --color-code-keyword:         #06B66F;
   --color-code-string:          #34d399; /* emerald-400 */
   --color-code-number:          #fbbf24; /* amber-400 */
   --color-code-flag:            #60a5fa; /* blue-400 */
@@ -294,8 +294,8 @@
 
     /* Force exact accent color on mobile - no browser adjustments */
     :root {
-      --color-accent: #66B870 !important;
-      --color-accent-rgb: 102, 184, 112 !important;
+      --color-accent: #06B66F !important;
+      --color-accent-rgb: 6, 182, 111 !important;
     }
 
     /* Prevent any color profile adjustments on mobile */
@@ -475,6 +475,10 @@
 
   .btn-secondary {
     @apply bg-bg-elevated text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:bg-bg-card active:scale-95 border border-white/5;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/10 text-red-400 font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 transition-all cursor-pointer hover:bg-red-500/20 active:scale-95 border border-red-500/40;
   }
 
   .card-qyvora {

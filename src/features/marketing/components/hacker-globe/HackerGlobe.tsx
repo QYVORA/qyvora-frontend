@@ -233,7 +233,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
       const labelObjs = labelTargets.map((t) => {
         const div = document.createElement('div');
         const backdropBlur = isSimplified ? '' : 'backdrop-filter: blur(4px);';
-        div.style.cssText = `position: absolute; display: none; pointer-events: none; background: ${isLight ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'}; border: 1px solid rgba(102,184,112,0.25); border-radius: 4px; padding: 4px 8px; font-family: JetBrains Mono, monospace; font-size: 9px; color: #66B870; white-space: nowrap; ${backdropBlur} transform: translate(-50%, -100%); margin-top: -12px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);`;
+        div.style.cssText = `position: absolute; display: none; pointer-events: none; background: ${isLight ? 'rgba(232,240,232,0.85)' : 'rgba(3,6,4,0.75)'}; border: 1px solid rgba(6,182,111,0.25); border-radius: 4px; padding: 4px 8px; font-family: JetBrains Mono, monospace; font-size: 9px; color: #06B66F; white-space: nowrap; ${backdropBlur} transform: translate(-50%, -100%); margin-top: -12px; font-weight: 700; letter-spacing: 0.08em; transition: opacity 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);`;
         div.textContent = t.label;
         labelContainer!.appendChild(div);
         return { div, pos: latLngToVec3(t.lat, t.lng, 1.005) };
@@ -379,10 +379,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88 }) => {
         style={{
           display: 'none', position: 'absolute', pointerEvents: 'none',
           background: 'rgba(3,6,4,0.92)',
-          border: '1px solid rgba(102,184,112,0.25)',
+          border: '1px solid rgba(6,182,111,0.25)',
           borderRadius: '4px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-          color: '#66B870',
+          color: '#06B66F',
           zIndex: 10, lineHeight: 1.75,
           whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
         }}

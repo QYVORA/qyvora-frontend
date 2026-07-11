@@ -37,6 +37,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
         <RadixDialog.Portal>
           <RadixDialog.Overlay className="fixed inset-0 z-[200] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
           <RadixDialog.Content
+            aria-label="Terminal"
             onKeyDown={(e) => {
               if (e.key === 'Tab') e.stopPropagation();
             }}
@@ -51,6 +52,7 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
                 : 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] sm:w-[calc(100vw-3rem)] max-w-5xl h-[75vh] max-h-[90vh]',
             )}
           >
+            <RadixDialog.Title className="sr-only">Terminal</RadixDialog.Title>
             {shell}
           </RadixDialog.Content>
         </RadixDialog.Portal>
@@ -80,8 +82,8 @@ export const TerminalButton: React.FC<{
   <button
     onClick={onClick}
     className="flex items-center gap-2 px-4 py-2.5 bg-black/80 border border-white/10 rounded-xl
-      hover:border-green-500/30 hover:bg-black transition-all duration-200
-      text-xs font-mono text-white/70 hover:text-green-400 uppercase tracking-wider"
+      hover:border-accent/30 hover:bg-black transition-all duration-200
+      text-xs font-mono text-white/70 hover:text-accent uppercase tracking-wider"
   >
     <Terminal className="w-4 h-4" />
     {label || '_terminal'}

@@ -155,7 +155,7 @@ const InboxTab = () => {
                       {isContact ? 'Contact' : 'Service'}
                     </span>
                     <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
-                      d.status === 'new' ? 'bg-green-500/10 text-green-400' :
+                      d.status === 'new' ? 'bg-accent/10 text-accent' :
                       d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
                       'bg-amber-500/10 text-amber-400'
                     }`}>
@@ -188,7 +188,7 @@ const InboxTab = () => {
                     {isContact ? 'Contact Message' : 'Service Inquiry'}
                   </span>
                   <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                    d.status === 'new' ? 'bg-green-500/10 text-green-400' :
+                    d.status === 'new' ? 'bg-accent/10 text-accent' :
                     d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
                     'bg-amber-500/10 text-amber-400'
                   }`}>

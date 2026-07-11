@@ -9,6 +9,7 @@ import InlineQuiz from '@/shared/components/courses/InlineQuiz';
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import CodePlayground from '@/shared/components/courses/CodePlayground';
 import api from '@/core/services/api';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
 import type { Lesson } from '@/features/student/data/courses/types';
 
 const STORAGE_KEY = 'qyvora_course_progress';
@@ -48,10 +49,10 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
           <div className="mt-10 md:mt-14 md:hidden">
             <button
               onClick={() => setTerminalOpen(true)}
-              className="flex items-center gap-3 w-full px-5 py-4 rounded-xl border border-border/30 bg-bg-card hover:border-green-400/30 transition-all duration-300"
+              className="flex items-center gap-3 w-full px-5 py-4 rounded-xl border border-border/30 bg-bg-card hover:border-accent/30 transition-all duration-300"
             >
-              <div className="w-10 h-10 rounded-xl bg-green-400/10 flex items-center justify-center shrink-0">
-                <Terminal className="h-5 w-5 text-green-400" />
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                <Terminal className="h-5 w-5 text-accent" />
               </div>
               <div className="text-left min-w-0">
                 <span className="text-[10px] font-black uppercase tracking-widest text-accent block">Try It Yourself</span>
@@ -125,6 +126,7 @@ const CourseLessonPage: React.FC = () => {
   const [currentLessonIdx, setCurrentLessonIdx] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useScrollLock(sidebarOpen);
 
   useEffect(() => {
     const sidebarHandler = () => setSidebarOpen(true);

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Map, BookOpen, Swords, Globe, BarChart3,
-  ShoppingBag, Bell, Settings,
+  ShoppingBag, Bell, Settings, Menu, X,
   Trophy, Layers, Flame, CheckCircle2, BookMarked, Lock, Loader2,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -12,6 +12,7 @@ import { extractCpBalance } from '@/shared/utils/cpBalance';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import Logo from '@/shared/components/brand/Logo';
 import CpLogo from '@/shared/components/CpLogo';
+import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 const PRIMARY_NAV = [
   { label: 'Dashboard',    icon: LayoutDashboard, path: '/dashboard' },
@@ -459,6 +460,18 @@ const RightRailSection = () => {
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useScrollLock(mobileOpen);
+
+  useEffect(() => {
+    const handler = () => setMobileOpen(true);
+    window.addEventListener('qyvora:open-main-sidebar', handler);
+    return () => window.removeEventListener('qyvora:open-main-sidebar', handler);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return pathname === '/dashboard';
@@ -467,13 +480,20 @@ const Sidebar = () => {
 
   const isRoomPage = pathname.includes('/rooms/');
 
-  return (
-    <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[240px] bg-bg border-r border-border z-40">
+  const navContent = (
+    <>
       {/* Logo */}
       <div className="h-20 md:h-24 flex items-center px-6 border-b border-border shrink-0">
-        <Link to="/dashboard">
+        <Link to="/dashboard" className="flex-1">
           <Logo size="lg" />
         </Link>
+        <button
+          onClick={() => setMobileOpen(false)}
+          className="lg:hidden p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
+          aria-label="Close sidebar"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Scrollable middle area: primary nav + page panels */}
@@ -508,7 +528,29 @@ const Sidebar = () => {
           );
         })}
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar — always visible on lg+ */}
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[240px] bg-bg border-r border-border z-40">
+        {navContent}
+      </aside>
+
+      {/* Mobile sidebar — drawer */}
+      {mobileOpen && (
+        <>
+          <div
+            onClick={() => setMobileOpen(false)}
+            className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm lg:hidden"
+          />
+          <aside className="fixed left-0 top-0 bottom-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg border-r border-border lg:hidden overflow-y-auto">
+            {navContent}
+          </aside>
+        </>
+      )}
+    </>
   );
 };
 

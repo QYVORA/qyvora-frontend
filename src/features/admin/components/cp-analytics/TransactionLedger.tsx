@@ -159,12 +159,12 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
                 <button
                   onClick={() => void loadTxs(txPage - 1)}
                   disabled={txPage <= 1}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-text-muted disabled:opacity-40 hover:border-accent/30 hover:text-accent transition-colors text-xs"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-text-muted disabled:opacity-50 hover:border-accent/30 hover:text-accent transition-colors text-xs"
                 >‹</button>
                 <button
                   onClick={() => void loadTxs(txPage + 1)}
                   disabled={txPage >= totalPages}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-text-muted disabled:opacity-40 hover:border-accent/30 hover:text-accent transition-colors text-xs"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-border text-text-muted disabled:opacity-50 hover:border-accent/30 hover:text-accent transition-colors text-xs"
                 >›</button>
               </div>
             </div>

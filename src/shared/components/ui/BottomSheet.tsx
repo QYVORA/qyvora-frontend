@@ -38,6 +38,7 @@ export const BottomSheetContent = React.forwardRef<
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       {...props}
     >
+      <RadixDialog.Title className="sr-only">{ariaLabel}</RadixDialog.Title>
       {children}
     </RadixDialog.Content>
   </RadixDialog.Portal>

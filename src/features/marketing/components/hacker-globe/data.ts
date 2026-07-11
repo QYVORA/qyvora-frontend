@@ -43,5 +43,5 @@ export const ARC_PAIRS: Array<[number, number]> = [
   [10, 13], [13, 12], [12, 17], [17, 18], [18, 10], [10, 20], [21, 10], [13, 22], [22, 17], [19, 23], [12, 14], [15, 17],
 ];
 
-export const ACCENT_COLOR     = 0x66B870;
-export const ACCENT_COLOR_HEX = '#66B870';
+export const ACCENT_COLOR     = 0x06B66F;
+export const ACCENT_COLOR_HEX = '#06B66F';

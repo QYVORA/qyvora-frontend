@@ -31,7 +31,7 @@ const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string
 
 const OSIcon = ({ os }: { os: string }) => {
   if (os.toLowerCase().includes('windows')) return <Monitor className="w-3.5 h-3.5 text-blue-400" />;
-  if (os.toLowerCase().includes('ubuntu') || os.toLowerCase().includes('debian') || os.toLowerCase().includes('fedora') || os.toLowerCase().includes('linux')) return <Server className="w-3.5 h-3.5 text-green-400" />;
+  if (os.toLowerCase().includes('ubuntu') || os.toLowerCase().includes('debian') || os.toLowerCase().includes('fedora') || os.toLowerCase().includes('linux')) return <Server className="w-3.5 h-3.5 text-accent" />;
   if (os.toLowerCase().includes('cisco')) return <Router className="w-3.5 h-3.5 text-amber-400" />;
   if (os.toLowerCase().includes('embedded')) return <HardDrive className="w-3.5 h-3.5 text-purple-400" />;
   return <Monitor className="w-3.5 h-3.5 text-text-muted" />;
@@ -78,8 +78,8 @@ const NetworksPage = () => {
           <button
             onClick={() => setTerminalOpen(true)}
             className="flex items-center gap-2 px-5 py-2.5 bg-black/80 border border-white/10 rounded-xl
-              hover:border-green-500/30 hover:bg-black transition-all duration-200
-              text-xs font-mono text-white/70 hover:text-green-400 uppercase tracking-wider"
+              hover:border-accent/30 hover:bg-black transition-all duration-200
+              text-xs font-mono text-white/70 hover:text-accent uppercase tracking-wider"
           >
             <Terminal className="w-4 h-4" />
             _open terminal

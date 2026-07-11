@@ -209,7 +209,7 @@ const StudentTopbar = () => {
                     )}
                     <button
                       onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                      className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                      className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                       aria-label="Open terminal"
                     >
                       <Terminal className="w-4 h-4 md:w-5 md:h-5" />
@@ -283,7 +283,7 @@ const StudentTopbar = () => {
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-green-400 transition-colors rounded-xl hover:bg-green-400/10"
+                  className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label="Open terminal"
                 >
                   <Terminal className="w-4 h-4 md:w-5 md:h-5" />
@@ -308,8 +308,16 @@ const StudentTopbar = () => {
             <SearchBar compact onClose={() => {}} />
           </div>
 
-          {/* Right: notifications + profile */}
+          {/* Right: hamburger (mobile) + notifications + profile */}
           <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
+
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
+              className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+              aria-label="Open navigation"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
 
             <div ref={notifRef} className="relative">
               <button
@@ -345,6 +353,14 @@ const StudentTopbar = () => {
               markAllNotificationsRead={markAllNotificationsRead}
               onMarkRead={markNotificationRead}
             />
+
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+              className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+              aria-label="Open terminal"
+            >
+              <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+            </button>
 
             <Link
               to="/dashboard/profile"

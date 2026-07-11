@@ -54,7 +54,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
       <button
         onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
         disabled={currentStepIdx === 0}
-        className="md:hidden bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors inline-flex flex-1 items-center justify-center gap-1.5 disabled:opacity-30 sm:flex-none text-xs"
+        className="md:hidden bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors inline-flex flex-1 items-center justify-center gap-1.5 disabled:opacity-50 sm:flex-none text-xs"
       >
         <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
         <span>Prev</span>

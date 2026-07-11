@@ -153,14 +153,14 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                                   cls = 'border-accent/50 bg-accent/10 text-accent font-bold';
                                 }
                               } else if (showCorrect) {
-                                cls = 'border-green-500/30 bg-green-500/5 text-green-400';
+                                cls = 'border-accent/30 bg-accent/5 text-accent';
                               }
                               return (
                                 <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                                   <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                                   <span>{opt}</span>
                                   {isChosenOpt && <span className="ml-auto text-[10px] font-black shrink-0">{ansResult ? (ansResult.correct ? 'Correct' : 'Wrong') : 'Your answer'}</span>}
-                                  {showCorrect && <span className="ml-auto text-[10px] font-black text-green-400 shrink-0">Correct answer</span>}
+                                  {showCorrect && <span className="ml-auto text-[10px] font-black text-accent shrink-0">Correct answer</span>}
                                 </div>
                               );
                             })}

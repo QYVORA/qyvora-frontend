@@ -82,7 +82,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                   ? 'border-border/20 bg-bg-card/30 opacity-50'
                   : state === 'completed'
                   ? 'border-accent/40 bg-accent-dim/10'
-                  : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(102,184,112,0.25)]'
+                  : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(6,182,111,0.25)]'
               }`}
             >
               <div className="flex items-center gap-2.5 mb-1.5">
