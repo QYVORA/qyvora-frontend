@@ -21,10 +21,12 @@ import StudentBootcampCard from '@/features/student/components/StudentBootcampCa
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import {
   Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
+  Download, Loader2,
 } from 'lucide-react';
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { resolveImg } from '@/shared/utils/resolveImg';
+import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
@@ -132,6 +134,24 @@ const Dashboard = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [activeProductIdx, setActiveProductIdx] = useState(0);
+  const [installing, setInstalling] = useState(false);
+  const [canInstall, setCanInstall] = useState(false);
+
+  useEffect(() => {
+    setCanInstall(isInstallable());
+    const interval = setInterval(() => setCanInstall(isInstallable()), 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleInstall = async () => {
+    setInstalling(true);
+    try {
+      await showInstallPrompt();
+      setCanInstall(isInstallable());
+    } finally {
+      setInstalling(false);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -217,6 +237,27 @@ const Dashboard = () => {
             <StatCard icon={<Flame className="w-5 h-5 text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
           </div>
         </div>
+
+        {/* 2.5 PWA Install */}
+        {canInstall && (
+          <div className="flex items-center gap-4 p-4 rounded-xl border border-accent/20 bg-accent/5">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10">
+              <Download className="w-5 h-5 text-accent" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-black text-text-primary">Install QYVORA</p>
+              <p className="text-[10px] font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
+            </div>
+            <button
+              onClick={handleInstall}
+              disabled={installing}
+              className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
+            >
+              {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+              {installing ? 'Installing…' : 'Install'}
+            </button>
+          </div>
+        )}
 
         {/* 3. In-Progress Bootcamps + Featured Product */}
         {(enrolledBootcamps.length > 0 || products.length > 0) && (
