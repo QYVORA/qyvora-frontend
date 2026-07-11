@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Rocket, Edit3, BookOpen, Zap } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
+import { usePopupManager } from '@/core/hooks/usePopupManager';
+
+const ONBOARDING_SEEN_KEY = 'qyvora_onboarding_dismissed';
+const ONBOARDING_SEEN_LEGACY = 'qyvora_onboarding_seen';
 
 const STEPS = [
   {
@@ -29,20 +33,22 @@ const STEPS = [
 ];
 
 const OnboardingWizard: React.FC = () => {
-  const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
+  const { isVisible, onDismiss } = usePopupManager('onboarding', 2);
 
-  useEffect(() => {
+  const [needsOnboarding, setNeedsOnboarding] = useState(() => {
     try {
-      if (localStorage.getItem('qyvora_onboarding_seen') !== '1') {
-        setOpen(true);
-      }
-    } catch { /* ignore */ }
-  }, []);
+      return localStorage.getItem(ONBOARDING_SEEN_KEY) !== '1'
+        && localStorage.getItem(ONBOARDING_SEEN_LEGACY) !== '1';
+    } catch { return false; }
+  });
+
+  const open = needsOnboarding && isVisible;
 
   const handleDismiss = () => {
-    try { localStorage.setItem('qyvora_onboarding_seen', '1'); } catch { /* ignore */ }
-    setOpen(false);
+    try { localStorage.setItem(ONBOARDING_SEEN_KEY, '1'); } catch { /* ignore */ }
+    setNeedsOnboarding(false);
+    onDismiss();
     setStep(0);
   };
 
@@ -74,7 +80,7 @@ const OnboardingWizard: React.FC = () => {
             <Link
               to={current.action.link}
               onClick={handleDismiss}
-              className="mt-6 btn-primary inline-flex items-center gap-2 !text-xs !px-6 !py-3"
+              className="mt-6 btn-primary inline-flex items-center gap-2 !text-xs !px-6 !py-3 !rounded-2xl"
             >
               {current.action.label}
             </Link>
@@ -92,14 +98,14 @@ const OnboardingWizard: React.FC = () => {
             {step > 0 && (
               <button
                 onClick={handleBack}
-                className="px-5 py-2.5 rounded-xl border border-border text-xs font-black uppercase tracking-widest text-text-primary hover:border-accent/40 transition-all"
+                className="px-5 py-2.5 rounded-2xl border border-border text-xs font-black uppercase tracking-widest text-text-primary hover:border-accent/40 transition-all"
               >
                 Back
               </button>
             )}
             <button
               onClick={handleNext}
-              className="px-5 py-2.5 rounded-xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
+              className="px-5 py-2.5 rounded-2xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
             >
               {step < STEPS.length - 1 ? 'Next' : 'Finish'}
             </button>

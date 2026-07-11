@@ -13,7 +13,6 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { HeroBackground } from '@/shared/components/backgrounds';
-import ServiceRequestModal from '@/features/marketing/components/ServiceRequestModal';
 import PromotionalSystem from '@/features/marketing/components/PromotionalSystem';
 import SEO from '@/shared/components/SEO';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
@@ -133,7 +132,6 @@ const Landing: React.FC = () => {
         className={`z-0 transition-opacity duration-700 ${showBackground ? 'opacity-90' : 'opacity-0'}`} 
       />
 
-      <ServiceRequestModal />
       <PromotionalSystem />
 
       <section id="hero" className="relative bg-transparent">
