@@ -147,7 +147,6 @@ const Dashboard = () => {
     setInstalling(true);
     try {
       await showInstallPrompt();
-      setCanInstall(isInstallable());
     } finally {
       setInstalling(false);
     }
