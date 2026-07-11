@@ -72,6 +72,27 @@ export interface InternalCommandResult extends CommandResult {
   interactive?: boolean;
 }
 
+export interface CommandTiming {
+  startupDelay?: number;
+  lineDelay: number | [number, number];
+  mode: 'instant' | 'batched' | 'line';
+  batchSize?: number;
+  batchDelay?: number | [number, number];
+}
+
+export interface StreamingDescriptor {
+  streamLines: string[];
+  timing: CommandTiming;
+}
+
+export interface ProcessInputResult {
+  lines: TerminalLine[];
+  newState: TerminalState;
+  _clearLine?: boolean;
+  _exit?: boolean;
+  streaming?: StreamingDescriptor;
+}
+
 export interface SimulatedTerminalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -34,7 +34,7 @@ export const ping: CommandHandler = (args, state) => {
     lines.push(`--- ${target} ping statistics ---`);
     lines.push(`${count} packets transmitted, ${count} received, 0% packet loss, time ${Math.floor(Math.random() * 10 + 5)}ms`);
     lines.push('rtt min/avg/max/mdev = 0.021/0.034/0.068/0.012 ms');
-    return { output: lines.join('\n'), exitCode: 0 };
+    return { output: lines.join('\n'), exitCode: 0, streamLines: lines };
   }
 
   const device = getDeviceByIp(ip);
@@ -46,7 +46,7 @@ export const ping: CommandHandler = (args, state) => {
     lines.push('');
     lines.push(`--- ${target} ping statistics ---`);
     lines.push(`${count} packets transmitted, 0 received, 100% packet loss, time ${Math.floor(Math.random() * 50 + 20)}ms`);
-    return { output: lines.join('\n'), exitCode: 1 };
+    return { output: lines.join('\n'), exitCode: 1, streamLines: lines };
   }
 
   const hostLabel = device.hostname !== ip ? `${device.hostname} (${ip})` : ip;
@@ -65,7 +65,7 @@ export const ping: CommandHandler = (args, state) => {
   lines.push(`rtt min/avg/max/mdev = ${rttMin}/${rttAvg}/${rttMax}/${(parseFloat(rttMax) - parseFloat(rttMin)).toFixed(3)} ms`);
 
   const newDiscovered = state.discoveredIps.includes(ip) ? state.discoveredIps : [...state.discoveredIps, ip];
-  const result: InternalCommandResult = { output: lines.join('\n'), exitCode: 0 };
+  const result: InternalCommandResult = { output: lines.join('\n'), exitCode: 0, streamLines: lines };
   if (newDiscovered.length !== state.discoveredIps.length) {
     result.stateOverride = { discoveredIps: newDiscovered };
   }
@@ -439,7 +439,7 @@ export const traceroute: CommandHandler = (args, state) => {
     hops.forEach(h => {
       lines.push(` ${h.hop}  ${h.host} (${h.ip})  ${h.rtt}  ${(parseFloat(h.rtt) * 0.9).toFixed(3)} ms  ${(parseFloat(h.rtt) * 1.1).toFixed(3)} ms`);
     });
-    return { output: lines.join('\n'), exitCode: 0 };
+    return { output: lines.join('\n'), exitCode: 0, streamLines: lines };
   }
 
   const hops = [
@@ -454,7 +454,7 @@ export const traceroute: CommandHandler = (args, state) => {
   hops.forEach(h => {
     lines.push(` ${h.hop}  ${h.host} (${h.ip})  ${h.rtt}  ${(parseFloat(h.rtt) * 0.9).toFixed(3)} ms  ${(parseFloat(h.rtt) * 1.1).toFixed(3)} ms`);
   });
-  return { output: lines.join('\n'), exitCode: 0 };
+  return { output: lines.join('\n'), exitCode: 0, streamLines: lines };
 };
 
 export const arp: CommandHandler = (_args, state) => {

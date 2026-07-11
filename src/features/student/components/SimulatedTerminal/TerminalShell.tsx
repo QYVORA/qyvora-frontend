@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Minimize2, Maximize2, X } from 'lucide-react';
 import { createInitialState, processInput, getInputPrefix } from './engine/state';
+import { streamOutput, hasStreamingOutput } from './engine/streaming';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
-import type { TerminalState, TerminalLine, TerminalContext, VFSNode } from './types';
+import type { TerminalState, TerminalLine, TerminalContext, VFSNode, ProcessInputResult } from './types';
 
 const LS_KEY_LINES = 'qyvora_terminal_lines';
 const LS_KEY_STATE = 'qyvora_terminal_state';
@@ -111,6 +112,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const streamingRef = useRef<boolean>(false);
+  const streamingAbortRef = useRef<{ aborted: boolean } | null>(null);
   const tabTimingRef = useRef<{ time: number; prefix: string }>({ time: 0, prefix: '' });
 
   const [lines, setLines] = useState<TerminalLine[]>(() => {
@@ -153,6 +155,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
 
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
+  const [streamingActive, setStreamingActive] = useState(false);
 
   const [promptTop] = useState('');
 
@@ -183,7 +186,9 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
   const [reverseSearchResults, setReverseSearchResults] = useState<number[]>([]);
   const [reverseSearchIdx, setReverseSearchIdx] = useState(-1);
 
-  const process = useCallback((cmd: string) => {
+  const isInitialRender = useRef(true);
+
+  const process = useCallback(async (cmd: string) => {
     const trimmed = cmd.trim();
     if (!trimmed) return;
 
@@ -204,16 +209,67 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     }
 
     stateRef.current = result.newState;
-    setLines(prev => [...prev, ...result.lines]);
-    setHistoryIndex(-1);
+
+    if (result.streaming && hasStreamingOutput(result.streaming) && !isInitialRender.current) {
+      streamingRef.current = true;
+      setStreamingActive(true);
+      const inputLine = result.lines[0];
+      const streamingDescriptor = result.streaming;
+      const finalState = result.newState;
+
+      setLines(prev => [...prev, inputLine]);
+      setHistoryIndex(-1);
+
+      const signal = { aborted: false };
+      streamingAbortRef.current = signal;
+
+      let lastRevealed: string[] = [];
+      let isFirstBatch = true;
+      for await (const batch of streamOutput(streamingDescriptor, signal)) {
+        if (signal.aborted) break;
+        lastRevealed = batch;
+        const joined = batch.join('\n');
+        if (isFirstBatch) {
+          setLines(prev => [...prev, { type: 'output', text: joined }]);
+          isFirstBatch = false;
+        } else {
+          setLines(prev => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { type: 'output', text: joined };
+            return updated;
+          });
+        }
+      }
+
+      if (signal.aborted) {
+        const partialOutput = lastRevealed.join('\n');
+        setLines(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { type: 'output', text: partialOutput };
+          updated.push({ type: 'system', text: '^C' });
+          return updated;
+        });
+        stateRef.current = { ...finalState, lastExitCode: 130 };
+      }
+
+      streamingRef.current = false;
+      streamingAbortRef.current = null;
+      setStreamingActive(false);
+      saveTerminalData([], stateRef.current);
+      setTimeout(() => focusInput(), 50);
+    } else {
+      setLines(prev => [...prev, ...result.lines]);
+      setHistoryIndex(-1);
+    }
   }, [onClose, lines]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.ctrlKey && e.key === 'c') {
       e.preventDefault();
       e.stopPropagation();
-      if (streamingRef.current) {
-        streamingRef.current = false;
+      if (streamingRef.current && streamingAbortRef.current) {
+        streamingAbortRef.current.aborted = true;
+        return;
       }
       if (input) {
         setLines(prev => [...prev, { type: 'input', text: `${getInputPrefix(stateRef.current)}${input}^C` }]);
@@ -348,6 +404,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     }
 
     if (e.key === 'Enter') {
+      if (streamingRef.current) return;
       process(input);
       setInput('');
     } else if (e.key === 'ArrowUp') {
@@ -372,7 +429,9 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       }
     } else if (e.key === 'l' && e.ctrlKey) {
       e.preventDefault();
-      setLines([]);
+      if (!streamingRef.current) {
+        setLines([]);
+      }
     } else if (e.key === 'd' && e.ctrlKey) {
       e.preventDefault();
       if (input === '') {
@@ -416,6 +475,10 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     const timer = setTimeout(() => focusInput(), 50);
     return () => clearTimeout(timer);
   }, [focusInput]);
+
+  useEffect(() => {
+    isInitialRender.current = false;
+  }, []);
 
   const prefix = getInputPrefix(stateRef.current);
 
@@ -488,27 +551,34 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             </div>
           );
         })}
-        <div className="flex items-center" style={{ color: KALI_GREEN }}>
-          <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
-          {reverseSearchActive && (
-            <span className="shrink-0 whitespace-nowrap leading-relaxed text-[#ffbd2e] mr-1">
-              (reverse-i-search)`{reverseSearchQuery}':
-            </span>
-          )}
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none font-mono text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-1.5"
-            style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
-            spellCheck={false}
-            autoComplete="off"
-            autoFocus
-            aria-label="Terminal input"
-          />
-        </div>
+        {streamingActive && (
+          <div style={{ color: KALI_GREEN }} className="whitespace-pre-wrap">
+            <span className="inline-block w-2 h-4 bg-current animate-pulse" />
+          </div>
+        )}
+        {!streamingActive && (
+          <div className="flex items-center" style={{ color: KALI_GREEN }}>
+            <span className="shrink-0 whitespace-nowrap leading-relaxed">{prefix}</span>
+            {reverseSearchActive && (
+              <span className="shrink-0 whitespace-nowrap leading-relaxed text-[#ffbd2e] mr-1">
+                (reverse-i-search)`{reverseSearchQuery}':
+              </span>
+            )}
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1 bg-transparent border-none outline-none font-mono text-sm p-0 m-0 min-h-0 h-auto leading-relaxed ml-1.5"
+              style={{ color: KALI_GREEN, caretColor: KALI_CURSOR }}
+              spellCheck={false}
+              autoComplete="off"
+              autoFocus
+              aria-label="Terminal input"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

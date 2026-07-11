@@ -1,4 +1,5 @@
-import type { TerminalState, TerminalContext, TerminalLine, PipelineStage } from '../types';
+import type { TerminalState, TerminalContext, TerminalLine, PipelineStage, ProcessInputResult, StreamingDescriptor } from '../types';
+import { getTimingProfile } from './streaming';
 import { buildDefaultFilesystem } from '../data/defaultFilesystem';
 import { executeCommandInternal } from './commands';
 import { parse, expandHistory, expandVars, applyGlobbing, executeSequence } from './parser';
@@ -106,7 +107,7 @@ function executeStage(
 export function processInput(
   input: string,
   state: TerminalState,
-): { lines: TerminalLine[]; newState: TerminalState; _clearLine?: boolean; _exit?: boolean } {
+): ProcessInputResult {
   const trimmed = input.trim();
   if (!trimmed) return { lines: [], newState: state };
 
@@ -129,6 +130,7 @@ export function processInput(
   let finalError = '';
   let finalExitCode = 0;
   let lastStageResult: any = null;
+  let allStreamLines: string[] | undefined;
 
   let seqPtr: typeof parsed | undefined = parsed;
   while (seqPtr) {
@@ -141,6 +143,7 @@ export function processInput(
     finalExitCode = result.exitCode;
 
     if (result.streamLines) {
+      allStreamLines = result.streamLines;
       finalOutput = result.streamLines.join('\n');
     }
 
@@ -161,11 +164,21 @@ export function processInput(
     lastExitCode: finalExitCode,
   };
 
+  let streaming: StreamingDescriptor | undefined;
+  if (allStreamLines && allStreamLines.length > 0) {
+    const cmdName = parsed.stage.command;
+    streaming = {
+      streamLines: allStreamLines,
+      timing: getTimingProfile(cmdName),
+    };
+  }
+
   return {
     lines,
     newState,
     _clearLine: lastStageResult?.clearLine,
     _exit: lastStageResult?.exit,
+    streaming,
   };
 }
 
