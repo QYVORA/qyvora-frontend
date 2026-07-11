@@ -92,7 +92,7 @@ const CommunityPopup: React.FC = () => {
                   Hacker Community
                 </h4>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="flex h-1.5 w-1.5 rounded-full bg-[#66B870] animate-pulse" />
+                  <span className="flex h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                   <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-widest">
                     Live Operations
                   </span>
@@ -116,9 +116,9 @@ const CommunityPopup: React.FC = () => {
                   }}
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
-                    rounded-2xl bg-[#66B870] py-3.5 text-[10px] font-black uppercase tracking-widest
-                    text-white shadow-lg shadow-[#66B870]/20 transition-all
-                    hover:scale-[1.02] hover:shadow-[#66B870]/40 active:scale-[0.98]
+                    rounded-2xl bg-accent py-3.5 text-[10px] font-black uppercase tracking-widest
+                    text-white shadow-lg shadow-accent/20 transition-all
+                    hover:scale-[1.02] hover:shadow-accent/40 active:scale-[0.98]
                   "
                 >
                   <BrandWhatsAppIcon className="h-4 w-4" />

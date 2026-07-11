@@ -71,7 +71,7 @@ export const DialogContent = React.forwardRef<
     <DialogOverlay />
     <RadixDialog.Content
       ref={ref}
-      aria-describedby={description ? 'dialog-description' : undefined}
+      aria-describedby="dialog-description"
       className={cn(
         // Position
         'fixed left-1/2 top-1/2 z-[201] -translate-x-1/2 -translate-y-1/2',
@@ -122,12 +122,13 @@ export const DialogContent = React.forwardRef<
 
       {/* Scrollable Area */}
       <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain scroll-hover">
-        {/* Optional description */}
-        {description && (
-          <p id="dialog-description" className="px-5 sm:px-8 pt-5 text-sm text-text-muted">
-            {description}
-          </p>
-        )}
+        {/* Description — always render for aria-describedby; visually hidden when empty */}
+        <p id="dialog-description" className={cn(
+          'px-5 sm:px-8 pt-5 text-sm text-text-muted',
+          !description && 'sr-only'
+        )}>
+          {description || title}
+        </p>
 
         {/* Body */}
         <div className="p-5 sm:p-8">{children}</div>

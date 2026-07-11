@@ -49,7 +49,7 @@ export interface BootcampConfig {
 
 // ── Phase Colors ──────────────────────────────────────────────────────────────
 export const PHASE_COLORS: Record<string, string> = {
-  phase1: '#66B870', // Green (Mindset)
+  phase1: '#06B66F', // Green (Mindset)
   phase2: '#60A5FA', // Blue (Linux)
   phase3: '#A78BFA', // Purple (Networking)
   phase4: '#F59E0B', // Amber (Web)

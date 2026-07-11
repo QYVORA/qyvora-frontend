@@ -59,7 +59,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ candles, range }) => {
     setHovered({ idx: clamped, x: toX(clamped) });
   }, [n, gap]);
 
-  const GREEN = '#66B870', RED = '#f87171', GRID = 'rgba(255,255,255,0.04)';
+  const GREEN = '#06B66F', RED = '#f87171', GRID = 'rgba(255,255,255,0.04)';
 
   return (
     <div className="relative w-full select-none">

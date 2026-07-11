@@ -92,45 +92,45 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
             <svg viewBox="0 0 600 220" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="eco-box-grad-1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(102,184,112,0.12)" />
-                  <stop offset="100%" stopColor="rgba(102,184,112,0.04)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.12)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.04)" />
                 </linearGradient>
                 <linearGradient id="eco-box-grad-2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(102,184,112,0.15)" />
-                  <stop offset="100%" stopColor="rgba(102,184,112,0.05)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.15)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.05)" />
                 </linearGradient>
                 <filter id="eco-shadow">
-                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(102,184,112,0.08)" />
+                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(6,182,111,0.08)" />
                 </filter>
                 <marker id="eco-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="rgba(102,184,112,0.35)" />
+                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="rgba(6,182,111,0.35)" />
                 </marker>
                 <marker id="eco-arrow-down" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
-                  <path d="M 0 0 L 10 0 L 5 10 Z" fill="rgba(102,184,112,0.35)" />
+                  <path d="M 0 0 L 10 0 L 5 10 Z" fill="rgba(6,182,111,0.35)" />
                 </marker>
               </defs>
 
-              <rect x="10" y="15" width="180" height="75" rx="10" fill="url(#eco-box-grad-1)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
-              <rect x="10" y="15" width="180" height="3" rx="1.5" fill="rgba(102,184,112,0.3)" />
-              <text x="100" y="62" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Education &amp; Training</text>
+              <rect x="10" y="15" width="180" height="75" rx="10" fill="url(#eco-box-grad-1)" stroke="rgba(6,182,111,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
+              <rect x="10" y="15" width="180" height="3" rx="1.5" fill="rgba(6,182,111,0.3)" />
+              <text x="100" y="62" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Education &amp; Training</text>
 
-              <rect x="210" y="120" width="180" height="75" rx="10" fill="url(#eco-box-grad-2)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
-              <rect x="210" y="120" width="180" height="3" rx="1.5" fill="rgba(102,184,112,0.3)" />
-              <text x="300" y="167" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Security Tooling</text>
+              <rect x="210" y="120" width="180" height="75" rx="10" fill="url(#eco-box-grad-2)" stroke="rgba(6,182,111,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
+              <rect x="210" y="120" width="180" height="3" rx="1.5" fill="rgba(6,182,111,0.3)" />
+              <text x="300" y="167" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Security Tooling</text>
 
-              <rect x="410" y="15" width="180" height="75" rx="10" fill="url(#eco-box-grad-1)" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
-              <rect x="410" y="15" width="180" height="3" rx="1.5" fill="rgba(102,184,112,0.3)" />
-              <text x="500" y="62" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Security Services</text>
+              <rect x="410" y="15" width="180" height="75" rx="10" fill="url(#eco-box-grad-1)" stroke="rgba(6,182,111,0.25)" strokeWidth="1.5" filter="url(#eco-shadow)" />
+              <rect x="410" y="15" width="180" height="3" rx="1.5" fill="rgba(6,182,111,0.3)" />
+              <text x="500" y="62" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="13" letterSpacing="1">Security Services</text>
 
-              <path d="M 190 52 L 410 52" stroke="rgba(102,184,112,0.3)" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#eco-arrow)" />
-              <path d="M 300 195 L 300 115" stroke="rgba(102,184,112,0.3)" strokeWidth="1.5" markerEnd="url(#eco-arrow-down)" />
-              <path d="M 410 52 L 300 52 L 300 90" stroke="rgba(102,184,112,0.25)" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#eco-arrow-down)" />
+              <path d="M 190 52 L 410 52" stroke="rgba(6,182,111,0.3)" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#eco-arrow)" />
+              <path d="M 300 195 L 300 115" stroke="rgba(6,182,111,0.3)" strokeWidth="1.5" markerEnd="url(#eco-arrow-down)" />
+              <path d="M 410 52 L 300 52 L 300 90" stroke="rgba(6,182,111,0.25)" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#eco-arrow-down)" />
 
-              <rect x="252" y="34" width="96" height="18" rx="9" fill="rgba(102,184,112,0.08)" />
-              <text x="300" y="46" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1">FEEDS INTO</text>
+              <rect x="252" y="34" width="96" height="18" rx="9" fill="rgba(6,182,111,0.08)" />
+              <text x="300" y="46" textAnchor="middle" fill="rgba(6,182,111,0.5)" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1">FEEDS INTO</text>
 
-              <rect x="264" y="94" width="72" height="18" rx="9" fill="rgba(102,184,112,0.08)" />
-              <text x="300" y="106" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1">ENABLES</text>
+              <rect x="264" y="94" width="72" height="18" rx="9" fill="rgba(6,182,111,0.08)" />
+              <text x="300" y="106" textAnchor="middle" fill="rgba(6,182,111,0.5)" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="1">ENABLES</text>
             </svg>
           </div>
         </InlineDiagram>

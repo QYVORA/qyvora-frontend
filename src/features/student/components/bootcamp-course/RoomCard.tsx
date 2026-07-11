@@ -72,7 +72,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
     if (!pos || !lastPointRef.current) return;
     const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
-    ctx.strokeStyle = '#66B870';
+    ctx.strokeStyle = '#06B66F';
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.beginPath();

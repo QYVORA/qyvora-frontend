@@ -25,7 +25,6 @@ import RoomNavigation from '@/features/student/components/bootcamp-room/RoomNavi
 import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopToolbar';
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
-import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import SEO from '@/shared/components/SEO';
 import PageLoader from '@/shared/components/PageLoader';
 
@@ -130,11 +129,19 @@ const BootcampRoomPage: React.FC = () => {
     const phaseNum = parseInt(phaseId.replace('phase', ''), 10);
     const roomNum = parseInt(roomId.replace('room', ''), 10);
     const backendRoomId = phaseNum * 100 + roomNum;
+    const controller = new AbortController();
     const callSessionOpen = async () => {
-      try { await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {}); }
-      catch (err: any) { console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err); addToast('Failed to open room session', 'error'); }
+      try {
+        await api.post(`/student/modules/${phaseNum}/rooms/${backendRoomId}/session-open`, {}, { signal: controller.signal });
+      } catch (err: any) {
+        if (err?.name === 'CanceledError' || err?.name === 'AbortError') return;
+        if (err?.response?.status === 403) return;
+        console.error('❌ Failed to open room session:', err?.response?.data || err?.message || err);
+        addToast('Failed to open room session', 'error');
+      }
     };
     callSessionOpen();
+    return () => controller.abort();
   }, [phaseId, roomId, bootcampId, apiLoading, bootcampStatus]);
 
   useEffect(() => {
@@ -145,12 +152,9 @@ const BootcampRoomPage: React.FC = () => {
   }, [apiLoading, bootcampStatus, navigate]);
 
   useEffect(() => {
-    const handler = () => setQuizOpen(true);
     const sidebarHandler = () => setSidebarOpen(true);
-    window.addEventListener('bootcamp:openQuiz', handler);
     window.addEventListener('bootcamp:openSidebar', sidebarHandler);
     return () => {
-      window.removeEventListener('bootcamp:openQuiz', handler);
       window.removeEventListener('bootcamp:openSidebar', sidebarHandler);
     };
   }, []);

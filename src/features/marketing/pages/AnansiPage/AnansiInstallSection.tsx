@@ -62,7 +62,7 @@ const AnansiInstallSection: React.FC = () => {
                 onClick={() => setSelected(r)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                   selected.id === r.id
-                    ? 'bg-accent text-bg shadow-[0_0_20px_-5px_rgba(102,184,112,0.3)]'
+                    ? 'bg-accent text-bg shadow-[0_0_20px_-5px_rgba(6,182,111,0.3)]'
                     : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10 border border-white/5'
                 }`}
               >

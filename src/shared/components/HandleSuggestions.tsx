@@ -59,7 +59,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
             type="button"
             onClick={() => fetchSuggestions(name)}
             disabled={loading}
-            className="ml-auto text-[10px] text-accent hover:text-accent/80 font-bold uppercase tracking-wider transition-colors disabled:opacity-40"
+            className="ml-auto text-[10px] text-accent hover:text-accent/80 font-bold uppercase tracking-wider transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
           </button>

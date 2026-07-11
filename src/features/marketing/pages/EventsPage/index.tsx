@@ -69,7 +69,7 @@ const EventsPage: React.FC = () => {
                       <button
                         onClick={() => handleJoin(event.id)}
                         disabled={joiningId === event.id}
-                        className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
+                        className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
                       >
                         {joiningId === event.id ? (
                           <Loader2 className="h-4 w-4 animate-spin" />

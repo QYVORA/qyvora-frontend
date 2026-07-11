@@ -123,7 +123,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="application-name" content="QYVORA" />
       <meta name="apple-mobile-web-app-title" content="QYVORA" />
 
-      {isMobile && <meta name="theme-color" content="#66B870" />}
+      {isMobile && <meta name="theme-color" content="#06B66F" />}
 
       <script type="application/ld+json">
         {JSON.stringify(webPageSchema)}

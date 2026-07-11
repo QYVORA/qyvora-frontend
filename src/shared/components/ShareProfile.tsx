@@ -112,7 +112,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
                     }}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-xs font-bold text-text-primary transition-all ${p.color}`}
                   >
-                    {p.id === 'copy' && copied ? <Check className="w-5 h-5 text-green-400" /> : p.icon}
+                    {p.id === 'copy' && copied ? <Check className="w-5 h-5 text-accent" /> : p.icon}
                     {copied && p.id === 'copy' ? 'Copied!' : p.name}
                   </button>
                 ))}

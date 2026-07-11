@@ -219,7 +219,7 @@ const ContactPage: React.FC = () => {
                     <button
                       type="submit"
                       disabled={status === 'sending'}
-                      className="w-full bg-accent text-bg font-bold uppercase tracking-[0.1em] rounded-xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                      className="w-full bg-accent text-bg font-bold uppercase tracking-[0.1em] rounded-xl px-8 py-4 transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
                       {status === 'sending' ? (
                         <>

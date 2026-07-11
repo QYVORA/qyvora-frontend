@@ -12,7 +12,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({ contactMessages, updateContac
     switch (status) {
       case 'new': return 'text-accent bg-accent/10';
       case 'in_progress': return 'text-blue-400 bg-blue-400/10';
-      case 'resolved': return 'text-green-400 bg-green-400/10';
+      case 'resolved': return 'text-accent bg-accent/10';
       case 'archived': return 'text-text-muted bg-bg-elevated';
       default: return 'text-text-muted bg-bg-elevated';
     }

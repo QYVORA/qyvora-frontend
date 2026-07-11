@@ -185,7 +185,7 @@ const ChainExplorer: React.FC = () => {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-40"
+            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-50"
           >
             ← Prev
           </button>
@@ -196,7 +196,7 @@ const ChainExplorer: React.FC = () => {
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-40"
+            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-50"
           >
             Next →
           </button>

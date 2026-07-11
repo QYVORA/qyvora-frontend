@@ -30,29 +30,29 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
             <svg viewBox="0 0 600 170" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="known-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(102,184,112,0.3)" />
-                  <stop offset="100%" stopColor="rgba(102,184,112,0.12)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.3)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.12)" />
                 </linearGradient>
                 <linearGradient id="unknown-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(102,184,112,0.12)" />
-                  <stop offset="100%" stopColor="rgba(102,184,112,0.04)" />
+                  <stop offset="0%" stopColor="rgba(6,182,111,0.12)" />
+                  <stop offset="100%" stopColor="rgba(6,182,111,0.04)" />
                 </linearGradient>
                 <filter id="bar-shadow">
-                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(102,184,112,0.08)" />
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="rgba(6,182,111,0.08)" />
                 </filter>
               </defs>
 
-              <rect x="60" y="10" width="480" height="22" rx="11" fill="rgba(102,184,112,0.06)" />
-              <text x="300" y="25" textAnchor="middle" fill="rgba(102,184,112,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="1.5">KNOWN vs UNKNOWN ASSETS (AVERAGE ORGANISATION)</text>
+              <rect x="60" y="10" width="480" height="22" rx="11" fill="rgba(6,182,111,0.06)" />
+              <text x="300" y="25" textAnchor="middle" fill="rgba(6,182,111,0.5)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="10" letterSpacing="1.5">KNOWN vs UNKNOWN ASSETS (AVERAGE ORGANISATION)</text>
 
-              <rect x="50" y="55" width="200" height="80" rx="10" fill="url(#known-grad)" stroke="rgba(102,184,112,0.35)" strokeWidth="1.5" filter="url(#bar-shadow)" />
-              <rect x="50" y="55" width="200" height="4" rx="2" fill="rgba(102,184,112,0.4)" />
-              <text x="150" y="92" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="18" letterSpacing="1">Known</text>
+              <rect x="50" y="55" width="200" height="80" rx="10" fill="url(#known-grad)" stroke="rgba(6,182,111,0.35)" strokeWidth="1.5" filter="url(#bar-shadow)" />
+              <rect x="50" y="55" width="200" height="4" rx="2" fill="rgba(6,182,111,0.4)" />
+              <text x="150" y="92" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="18" letterSpacing="1">Known</text>
               <text x="150" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="12">~30-60% of surface</text>
 
-              <rect x="280" y="55" width="300" height="80" rx="10" fill="url(#unknown-grad)" stroke="rgba(102,184,112,0.15)" strokeWidth="1" strokeDasharray="5 4" filter="url(#bar-shadow)" />
-              <rect x="280" y="55" width="300" height="4" rx="2" fill="rgba(102,184,112,0.2)" />
-              <text x="430" y="92" textAnchor="middle" fill="#66B870" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="16" letterSpacing="1">Unknown (Shadow)</text>
+              <rect x="280" y="55" width="300" height="80" rx="10" fill="url(#unknown-grad)" stroke="rgba(6,182,111,0.15)" strokeWidth="1" strokeDasharray="5 4" filter="url(#bar-shadow)" />
+              <rect x="280" y="55" width="300" height="4" rx="2" fill="rgba(6,182,111,0.2)" />
+              <text x="430" y="92" textAnchor="middle" fill="#06B66F" fontFamily="JetBrains Mono, monospace" fontWeight="900" fontSize="16" letterSpacing="1">Unknown (Shadow)</text>
               <text x="430" y="118" textAnchor="middle" fill="rgba(238,240,238,0.4)" fontFamily="JetBrains Mono, monospace" fontSize="11">~40-70% — unmonitored, unpatched</text>
             </svg>
           </div>
