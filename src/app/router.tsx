@@ -71,6 +71,19 @@ const CourseLessonPage  = lazy(() => import('../features/student/pages/CourseLes
 const CompetitivePage   = lazy(() => import('../features/student/pages/CompetitivePage'));
 const NetworksPage      = lazy(() => import('../features/student/pages/NetworksPage'));
 
+// Lab pages
+const LabsPage          = lazy(() => import('../features/student/pages/labs/LabsPage'));
+const PrivescLab        = lazy(() => import('../features/student/pages/labs/PrivescLab'));
+const PasswordLab       = lazy(() => import('../features/student/pages/labs/PasswordLab'));
+const WebExploitationLab= lazy(() => import('../features/student/pages/labs/WebExploitationLab'));
+const SqlInjectionLab   = lazy(() => import('../features/student/pages/labs/SqlInjectionLab'));
+const PhishingLab       = lazy(() => import('../features/student/pages/labs/PhishingLab'));
+const ProxyLab          = lazy(() => import('../features/student/pages/labs/ProxyLab'));
+const TrafficLab        = lazy(() => import('../features/student/pages/labs/TrafficLab'));
+const OsintLab          = lazy(() => import('../features/student/pages/labs/OsintLab'));
+const WirelessLab       = lazy(() => import('../features/student/pages/labs/WirelessLab'));
+const KillChainLab      = lazy(() => import('../features/student/pages/labs/KillChainLab'));
+
 // Public pages
 const ZeroDayMarketPage = lazy(() => import('../features/marketing/pages/ZeroDayMarketPage'));
 
@@ -182,6 +195,19 @@ export const AppRouter = () => {
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/competitive"  element={<Wrap scope="Competitive"><StudentOnly><CompetitivePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/networks"    element={<Wrap scope="Networks"><StudentOnly><NetworksPage /></StudentOnly></Wrap>} />
+
+          {/* Lab routes */}
+          <Route path="/dashboard/labs" element={<Wrap scope="Attack Labs"><StudentOnly><LabsPage /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/privesc" element={<Wrap scope="Privesc Lab"><StudentOnly><PrivescLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/passwords" element={<Wrap scope="Password Lab"><StudentOnly><PasswordLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/web-exploitation" element={<Wrap scope="Web Exploitation Lab"><StudentOnly><WebExploitationLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/sql-injection" element={<Wrap scope="SQL Injection Lab"><StudentOnly><SqlInjectionLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/phishing" element={<Wrap scope="Phishing Lab"><StudentOnly><PhishingLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/proxy" element={<Wrap scope="Proxy Lab"><StudentOnly><ProxyLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/traffic" element={<Wrap scope="Traffic Lab"><StudentOnly><TrafficLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/osint" element={<Wrap scope="OSINT Lab"><StudentOnly><OsintLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/wireless" element={<Wrap scope="Wireless Lab"><StudentOnly><WirelessLab /></StudentOnly></Wrap>} />
+          <Route path="/dashboard/labs/kill-chain" element={<Wrap scope="Kill Chain Lab"><StudentOnly><KillChainLab /></StudentOnly></Wrap>} />
 
           {/* Legacy redirects */}
           <Route path="/bootcamps"        element={<Navigate to="/dashboard/bootcamps/bc_1775270338500" replace />} />

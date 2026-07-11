@@ -4,6 +4,7 @@ import {
   LayoutDashboard, Map, BookOpen, Swords, Globe, BarChart3,
   ShoppingBag, Bell, Settings, Menu, X,
   Trophy, Layers, Flame, CheckCircle2, BookMarked, Lock, Loader2,
+  FlaskConical,
 } from 'lucide-react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
@@ -15,12 +16,13 @@ import CpLogo from '@/shared/components/CpLogo';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 const PRIMARY_NAV = [
-  { label: 'Dashboard',    icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Learning Paths', icon: Map,           path: '/dashboard/bootcamps' },
-  { label: 'Rooms',        icon: BookOpen,        path: '/dashboard/bootcamps/bc_1775270338500' },
-  { label: 'Competitive',  icon: Swords,          path: '/dashboard/competitive' },
-  { label: 'Networks',     icon: Globe,           path: '/dashboard/networks' },
-  { label: 'My Progress',  icon: BarChart3,       path: '/dashboard/profile' },
+  { label: 'Dashboard',      icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Courses',        icon: BookMarked,      path: '/dashboard/courses' },
+  { label: 'Learning Paths',  icon: Map,             path: '/dashboard/bootcamps' },
+  { label: 'Attack Labs',    icon: FlaskConical,    path: '/dashboard/labs' },
+  { label: 'Competitive',    icon: Swords,          path: '/dashboard/competitive' },
+  { label: 'Networks',       icon: Globe,           path: '/dashboard/networks' },
+  { label: 'My Progress',    icon: BarChart3,       path: '/dashboard/profile' },
 ];
 
 const SECONDARY_NAV = [
