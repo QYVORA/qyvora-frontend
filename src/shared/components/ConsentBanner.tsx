@@ -2,9 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShieldCheck, Info, X } from 'lucide-react';
 import { getCookiePreferences, setCookiePreferences, type CookiePreferences } from '../utils/storageConsent';
+import { usePopupManager } from '../../core/hooks/usePopupManager';
+
+const CONSENT_DISMISS_KEY = 'qyvora_consent_dismissed';
+const CONSENT_DISMISS_LEGACY = 'qyvora_cookie_dismissed';
 
 const ConsentBanner: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const existing = getCookiePreferences();
+  const dismissed = (() => {
+    try {
+      return localStorage.getItem(CONSENT_DISMISS_KEY) === '1'
+        || localStorage.getItem(CONSENT_DISMISS_LEGACY) === '1';
+    } catch { return false; }
+  })();
+  const needsConsent = !existing && !dismissed;
+
+  const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('consent-banner', 1);
+
+  const [delayReady, setDelayReady] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [prefs, setPrefs] = useState<Omit<CookiePreferences, 'consentedAt'>>({
     strictly_necessary: true,
@@ -13,27 +28,26 @@ const ConsentBanner: React.FC = () => {
   });
 
   useEffect(() => {
-    const existing = getCookiePreferences();
-    const dismissed = (() => { try { return localStorage.getItem('qyvora_cookie_dismissed'); } catch { return null; } })();
-    if (!existing && !dismissed) {
-      const timer = setTimeout(() => setIsVisible(true), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+    if (!needsConsent) return;
+    const timer = setTimeout(() => setDelayReady(true), 1500);
+    return () => clearTimeout(timer);
+  }, [needsConsent]);
+
+  const isVisible = needsConsent && delayReady && managerVisible;
 
   const handleAcceptAll = () => {
     setCookiePreferences({ strictly_necessary: true, functional: true, analytics: true });
-    setIsVisible(false);
+    managerDismiss();
   };
 
   const handleDismiss = () => {
-    try { localStorage.setItem('qyvora_cookie_dismissed', '1'); } catch {}
-    setIsVisible(false);
+    try { localStorage.setItem(CONSENT_DISMISS_KEY, '1'); } catch {}
+    managerDismiss();
   };
 
   const handleSavePreferences = () => {
     setCookiePreferences(prefs);
-    setIsVisible(false);
+    managerDismiss();
   };
 
   const toggleCategory = (cat: keyof typeof prefs) => {
@@ -51,7 +65,7 @@ const ConsentBanner: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-0 left-0 right-0 sm:bottom-6 sm:left-6 sm:right-auto z-[150] md:max-w-2xl sm:max-w-lg w-full"
         >
-          <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
+          <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
             <div className="flex items-start gap-4 mb-6">
               <div className="p-2.5 rounded-lg bg-accent/10 text-accent flex-none">
                 <ShieldCheck className="w-5 h-5" />
@@ -66,7 +80,7 @@ const ConsentBanner: React.FC = () => {
               </div>
               <button
                 onClick={handleDismiss}
-                className="text-text-muted hover:text-text-primary transition-colors p-1"
+                className="p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all"
                 aria-label="Dismiss"
               >
                 <X className="w-4 h-4" />
@@ -129,7 +143,7 @@ const ConsentBanner: React.FC = () => {
               {showDetails ? (
                 <button
                   onClick={handleSavePreferences}
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
+                  className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-bg font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
                 >
                   Save My Choices
                 </button>
@@ -137,13 +151,13 @@ const ConsentBanner: React.FC = () => {
                 <>
                   <button
                     onClick={handleAcceptAll}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-accent text-bg font-bold uppercase tracking-wider text-[10px] transition-all hover:brightness-110 active:scale-95"
+                    className="flex-1 px-4 py-2.5 rounded-2xl bg-accent text-bg font-black uppercase tracking-widest text-[10px] transition-all hover:brightness-110 active:scale-95"
                   >
                     Accept All
                   </button>
                   <button
                     onClick={() => setShowDetails(true)}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-bg border border-border text-text-primary font-bold uppercase tracking-wider text-[10px] transition-all hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2.5 rounded-2xl bg-bg border border-border text-text-primary font-black uppercase tracking-widest text-[10px] transition-all hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
                   >
                     <Info className="w-3.5 h-3.5" /> Customize
                   </button>

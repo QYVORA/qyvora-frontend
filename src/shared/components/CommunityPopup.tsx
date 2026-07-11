@@ -4,45 +4,51 @@ import { X, Users, Zap } from 'lucide-react';
 import BrandWhatsAppIcon from './icons/BrandWhatsAppIcon';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import { QyvoraMark } from './brand/QyvoraMark';
+import { usePopupManager } from '../../core/hooks/usePopupManager';
+
+const COMMUNITY_CLOSE_KEY = 'qyvora_community_dismissed';
+const COMMUNITY_CLOSE_LEGACY = 'qyvora_community_popup_closed';
+const COMMUNITY_JOINED_KEY = 'qyvora_community_joined';
 
 const CommunityPopup: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [delayReady, setDelayReady] = useState(false);
   const observerRef = useRef<MutationObserver | null>(null);
 
-  useEffect(() => {
-    const hasJoined = (() => { try { return localStorage.getItem('qyvora_community_joined'); } catch { return null; } })();
-    const hasClosed = (() => { try { return localStorage.getItem('qyvora_community_popup_closed'); } catch { return null; } })();
+  const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('community', 3);
 
+  useEffect(() => {
+    const hasJoined = (() => { try { return localStorage.getItem(COMMUNITY_JOINED_KEY); } catch { return null; } })();
+    const hasClosed = (() => {
+      try {
+        return localStorage.getItem(COMMUNITY_CLOSE_KEY) === '1'
+          || localStorage.getItem(COMMUNITY_CLOSE_LEGACY) === '1';
+      } catch { return false; }
+    })();
     if (hasJoined || hasClosed) return;
 
-    const timer = setTimeout(() => {
-      const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
-      if (!isOtherDialogOpen) {
-        setIsVisible(true);
-      }
-    }, 30000);
+    const timer = setTimeout(() => setDelayReady(true), 30000);
     return () => clearTimeout(timer);
   }, []);
+
+  const isVisible = delayReady && managerVisible;
 
   useEffect(() => {
     if (!isVisible) return;
 
     const observer = new MutationObserver(() => {
       const isOtherDialogOpen = !!document.querySelector('[role="dialog"], [data-radix-portal]');
-      if (isOtherDialogOpen) {
-        setIsVisible(false);
-      }
+      if (isOtherDialogOpen) managerDismiss();
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
     observerRef.current = observer;
 
     return () => observer.disconnect();
-  }, [isVisible]);
+  }, [isVisible, managerDismiss]);
 
   const handleClose = () => {
-    setIsVisible(false);
-    try { localStorage.setItem('qyvora_community_popup_closed', '1'); } catch {}
+    try { localStorage.setItem(COMMUNITY_CLOSE_KEY, '1'); } catch {}
+    managerDismiss();
   };
 
   return (
@@ -55,12 +61,12 @@ const CommunityPopup: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-24 md:bottom-10 right-4 left-4 md:left-auto md:right-10 z-[145] lg:w-[640px]"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.4)] flex flex-col sm:flex-row">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-card/95 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row">
 
             <button
               onClick={handleClose}
-              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/30 transition-all z-20"
-              aria-label="Close"
+              className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all z-20"
+              aria-label="Dismiss"
             >
               <X className="w-4 h-4" />
             </button>
@@ -105,12 +111,12 @@ const CommunityPopup: React.FC = () => {
                   target="_blank"
                   rel="noreferrer"
                   onClick={() => {
-                    try { localStorage.setItem('qyvora_community_joined', '1'); } catch {}
-                    setIsVisible(false);
+                    try { localStorage.setItem(COMMUNITY_JOINED_KEY, '1'); } catch {}
+                    managerDismiss();
                   }}
                   className="
                     group relative flex-1 flex items-center justify-center gap-2 overflow-hidden
-                    rounded-2xl bg-[#66B870] py-3.5 text-[10px] font-black uppercase tracking-[0.15em]
+                    rounded-2xl bg-[#66B870] py-3.5 text-[10px] font-black uppercase tracking-widest
                     text-white shadow-lg shadow-[#66B870]/20 transition-all
                     hover:scale-[1.02] hover:shadow-[#66B870]/40 active:scale-[0.98]
                   "
@@ -124,7 +130,7 @@ const CommunityPopup: React.FC = () => {
                   className="
                     px-5 flex items-center justify-center rounded-2xl
                     border border-border bg-transparent py-3
-                    text-[9px] font-black uppercase tracking-[0.2em]
+                    text-[10px] font-black uppercase tracking-widest
                     text-text-muted transition-all hover:border-accent/30 hover:text-accent
                   "
                 >
