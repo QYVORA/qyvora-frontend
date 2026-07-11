@@ -10,7 +10,7 @@ const LearnPage: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-bg select-none">
+    <div className="bg-bg">
       <SEO
         title="Learn | Hacker Protocol Bootcamp"
         description="Master the 5 core phases of offensive security in the HPB Bootcamp. Train in mindset, Linux, networking, web systems, and social engineering."

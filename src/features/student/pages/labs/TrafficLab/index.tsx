@@ -208,7 +208,7 @@ const PacketDetailPanel = ({ packet }: { packet: PcapPacket }) => {
         {packet.payload && (
           <div className="space-y-2">
             <p className="text-[9px] font-black uppercase tracking-widest text-text-muted">Payload (Hex Dump)</p>
-            <div className="bg-[#050706] rounded-xl p-4 max-h-48 overflow-y-auto">
+            <div className="bg-bg-card rounded-xl p-4 max-h-48 overflow-y-auto">
               <pre className="font-mono text-[10px] text-accent/70 whitespace-pre leading-relaxed">
                 {toHexDump(packet.payload)}
               </pre>
@@ -434,16 +434,18 @@ const TrafficLab = () => {
           {/* Packet List */}
           <div className="flex-1 min-w-0 rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
             {/* Table header */}
-            <div className="grid grid-cols-[48px_80px_1fr_1fr_70px_64px_1fr] gap-0 border-b border-border/30 bg-bg-elevated/50">
+            <div className="overflow-x-auto">
+            <div className="grid grid-cols-[48px_80px_1fr_1fr_70px_64px_1fr] gap-0 border-b border-border/30 bg-bg-elevated/50 min-w-[600px]">
               {['No.', 'Time', 'Source', 'Destination', 'Proto', 'Len', 'Info'].map((col) => (
                 <div key={col} className="px-3 py-2 text-[8px] font-black uppercase tracking-widest text-text-muted border-r border-border/10 last:border-r-0">
                   {col}
                 </div>
               ))}
             </div>
+            </div>
 
             {/* Packet rows */}
-            <div className="max-h-[400px] overflow-y-auto">
+            <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
               {filteredPackets.length === 0 && (
                 <div className="p-8 text-center">
                   <Filter className="w-6 h-6 text-text-muted/30 mx-auto mb-2" />
@@ -458,7 +460,7 @@ const TrafficLab = () => {
                   <button
                     key={packet.number}
                     onClick={() => setSelectedPacket(packet)}
-                    className={`grid grid-cols-[48px_80px_1fr_1fr_70px_64px_1fr] gap-0 w-full text-left border-b border-border/10 transition-colors ${rowBg} ${
+                    className={`grid grid-cols-[48px_80px_1fr_1fr_70px_64px_1fr] gap-0 w-full text-left border-b border-border/10 transition-colors min-w-[600px] ${rowBg} ${
                       isSelected ? 'ring-1 ring-accent/50 bg-accent/10' : ''
                     }`}
                   >
@@ -541,6 +543,7 @@ const TrafficLab = () => {
                           value={taskAnswers[i] || ''}
                           onChange={(e) => setTaskAnswers((prev) => ({ ...prev, [i]: e.target.value }))}
                           placeholder="Your answer"
+                        aria-label={`Answer for task ${i + 1}`}
                           className={`flex-1 bg-bg border rounded-xl px-3 py-2 text-xs font-mono text-text-primary focus:outline-none placeholder:text-text-muted/30 ${
                             isCorrect
                               ? 'border-accent/50 text-accent'

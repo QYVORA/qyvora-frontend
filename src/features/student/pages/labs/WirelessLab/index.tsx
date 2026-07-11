@@ -299,7 +299,7 @@ const StepTerminal = ({
                 )}
               </div>
 
-              <div className="bg-[#050706] rounded-xl p-3 mb-2">
+              <div className="bg-bg-card rounded-xl p-3 mb-2">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-[9px] font-mono text-accent/50">$</span>
                   <code className="text-[11px] font-mono text-accent leading-relaxed break-all">

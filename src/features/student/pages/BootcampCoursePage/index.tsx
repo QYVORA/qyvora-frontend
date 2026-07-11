@@ -124,7 +124,7 @@ const BootcampCourse: React.FC = () => {
       />
       <CourseHeader
         bootcampId={bootcampId || ''}
-        courseTitle={loading ? 'Loading Bootcamp...' : (course?.title || 'Bootcamp')}
+        courseTitle={course?.title || 'Bootcamp'}
         syncError={syncError}
         lastSync={lastSync}
         progressValue={progressValue}
@@ -133,11 +133,11 @@ const BootcampCourse: React.FC = () => {
         mobileOnly
       />
 
-      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
             {/* Desktop header */}
             <CourseHeader
               bootcampId={bootcampId || ''}
-              courseTitle={loading ? 'Loading Bootcamp...' : (course?.title || 'Bootcamp')}
+              courseTitle={course?.title || 'Bootcamp'}
               syncError={syncError}
               lastSync={lastSync}
               progressValue={progressValue}
@@ -184,7 +184,7 @@ const BootcampCourse: React.FC = () => {
             </div>
 
             {/* Recommended Next Room */}
-            {nextRoomLabel && !nextRoomPath.includes('undefined') && (
+            {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
               <div className="border border-accent/20 rounded-xl bg-accent-dim/20 p-5">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
@@ -206,22 +206,7 @@ const BootcampCourse: React.FC = () => {
               </div>
             )}
 
-            {loading ? (
-              <div className="space-y-8 animate-pulse">
-                {[0, 1].map(i => (
-                  <div key={i} className="space-y-4">
-                    <div className="h-6 w-48 bg-accent-dim/20 rounded" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[0, 1].map(j => (
-                        <div key={j} className="h-24 bg-accent-dim/10 rounded-xl" />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              (course?.modules || []).map((mod, modIdx) => {
-                const configPhase = BOOTCAMP_CONFIG.phases[modIdx];
+            {(course?.modules || []).map((mod, modIdx) => {
                 return (
                   <PhaseSection
                     key={mod.moduleId}
@@ -231,8 +216,7 @@ const BootcampCourse: React.FC = () => {
                     moduleProgressMap={moduleProgressMap}
                   />
                 );
-              })
-            )}
+              })}
       </div>
     </div>
   );

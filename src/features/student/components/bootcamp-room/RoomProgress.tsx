@@ -30,10 +30,15 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
           {viewedStepsCount} / {totalStepsCount} steps
         </span>
       </div>
-      <div className="h-3 overflow-hidden rounded-md bg-accent-dim border border-border/40">
+      <div className="h-3 overflow-hidden rounded-full bg-accent-dim border border-border/40">
         <div
-          className="h-full bg-accent transition-all duration-700 ease-out"
-          style={{ width: `${(viewedStepsCount / totalStepsCount) * 100}%` }}
+          className="h-full bg-accent transition-all duration-700 ease-out rounded-full"
+          style={{ width: `${totalStepsCount > 0 ? (viewedStepsCount / totalStepsCount) * 100 : 0}%` }}
+          role="progressbar"
+          aria-valuenow={totalStepsCount > 0 ? Math.round((viewedStepsCount / totalStepsCount) * 100) : 0}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Progress: ${viewedStepsCount} of ${totalStepsCount} steps viewed`}
         />
       </div>
       <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted mt-4">

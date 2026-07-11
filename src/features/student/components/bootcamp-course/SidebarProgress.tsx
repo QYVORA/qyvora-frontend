@@ -26,7 +26,7 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
   return (
     <div className="px-2 pb-6 lg:p-5 space-y-4">
       {/* Progress card - Hidden on mobile as it's redundant with CourseHeader */}
-      <div className="hidden lg:block relative overflow-hidden rounded-3xl border-2 border-accent/25 bg-accent-dim p-6">
+      <div className="hidden lg:block relative overflow-hidden rounded-2xl border border-accent/25 bg-accent-dim p-6">
         <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-accent/20 blur-3xl" aria-hidden />
         <div className="relative z-10">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-1">Overall progress</p>
@@ -43,7 +43,7 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border-2 border-border bg-bg-card p-4 flex flex-col gap-1">
+        <div className="rounded-2xl border border-border bg-bg-card p-4 flex flex-col gap-1">
           <div className="flex items-center gap-2 text-text-muted mb-1">
             <Layers className="w-4 h-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest">Phases</span>
@@ -52,7 +52,7 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
             {doneModules}<span className="text-sm text-text-muted font-bold">/{totalModules}</span>
           </div>
         </div>
-        <div className="rounded-2xl border-2 border-border bg-bg-card p-4 flex flex-col gap-1">
+        <div className="rounded-2xl border border-border bg-bg-card p-4 flex flex-col gap-1">
           <div className="flex items-center gap-2 text-text-muted mb-1">
             <BarChart3 className="w-4 h-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest">Rooms</span>
@@ -64,7 +64,7 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
       </div>
 
       {/* Phase quick-nav */}
-      <div className="overflow-hidden rounded-2xl border-2 border-border bg-bg-card">
+      <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
         <div className="flex items-center gap-2 border-b border-border px-4 py-3">
           <Trophy className="h-4 w-4 text-accent shrink-0" />
           <h3 className="text-xs font-black uppercase tracking-widest text-text-primary">Phases</h3>

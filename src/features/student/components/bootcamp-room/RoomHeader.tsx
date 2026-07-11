@@ -18,11 +18,11 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
   isRoomComplete,
 }) => {
   return (
-    <div className="mb-8">
+    <header className="mb-8">
       <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
         {phase.codename} — {phase.title}
       </div>
-      <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
+      <h1 className="mb-4 text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
         {room.title}
       </h1>
       <p className="border-l-4 border-accent/50 pl-4 text-sm sm:text-base leading-relaxed text-text-secondary">
@@ -45,11 +45,11 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       </div>
       
       {isRoomComplete && (
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
+        <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
           <CheckCircle2 className="h-4 w-4" /> Room Complete
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

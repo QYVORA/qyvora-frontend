@@ -86,7 +86,7 @@ const CoursesPage: React.FC = () => {
           {/* Left column */}
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-md text-[10px] font-black uppercase tracking-widest text-accent">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-accent">
                 <BookOpen className="h-3.5 w-3.5" /> Self-Paced Learning
               </span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
@@ -125,20 +125,23 @@ const CoursesPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search courses..."
-                className="w-full bg-bg-elevated border border-border rounded-lg pl-9 pr-4 py-2.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
+                aria-label="Search courses"
+                className="w-full bg-bg-elevated border border-border rounded-xl pl-9 pr-4 py-2.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
               />
             </div>
             <div className="relative">
               <button
                 onClick={() => setShowSort(!showSort)}
-                className="px-4 py-2.5 rounded-lg bg-bg-elevated border border-border text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
+                aria-expanded={showSort}
+                aria-haspopup="listbox"
+                className="px-4 py-2.5 rounded-xl bg-bg-elevated border border-border text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
               >
                 {sortMode === 'default' ? 'Sort' : sortMode === 'popular' ? 'Popular' : sortMode === 'price-low' ? 'Lowest CP' : sortMode === 'price-high' ? 'Highest CP' : 'Duration'}
               </button>
               {showSort && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowSort(false)} />
-                  <div className="absolute right-0 top-full mt-1 z-50 bg-bg-card border border-border rounded-xl p-2 min-w-[160px] shadow-xl">
+                  <div className="absolute right-0 top-full mt-1 z-50 bg-bg-card border border-border rounded-2xl p-2 min-w-[160px] shadow-xl" role="listbox" aria-label="Sort options">
                     {(['default', 'popular', 'price-low', 'price-high', 'duration'] as SortMode[]).map((mode) => (
                       <button
                         key={mode}
@@ -160,7 +163,8 @@ const CoursesPage: React.FC = () => {
           <div className="flex flex-wrap gap-2 mb-10">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+              aria-pressed={activeCategory === 'all'}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                 activeCategory === 'all'
                   ? 'bg-accent text-bg'
                   : 'bg-bg-elevated text-text-muted border border-border/30 hover:border-accent/30 hover:text-accent'
@@ -175,7 +179,8 @@ const CoursesPage: React.FC = () => {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                  aria-pressed={active}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                     active
                       ? 'bg-accent text-bg'
                       : 'bg-bg-elevated text-text-muted border border-border/30 hover:border-accent/30 hover:text-accent'
@@ -215,7 +220,7 @@ const CoursesPage: React.FC = () => {
                   <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group block overflow-hidden rounded-xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
+                      className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
                     >
                       <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                         <img
@@ -226,7 +231,7 @@ const CoursesPage: React.FC = () => {
                       </div>
                       <div className="p-5 space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                             {category?.name}
                           </span>
                           <div className="flex items-center gap-2">
@@ -248,10 +253,10 @@ const CoursesPage: React.FC = () => {
                         </p>
                         <div className="flex items-center justify-between pt-2">
                           <div className="flex items-center gap-2">
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
+                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
                               <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
                             </span>
-                            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-accent/10 text-[10px] font-black text-accent">
+                            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-accent/10 text-[10px] font-black text-accent">
                               <Zap className="h-3 w-3" /> {course.cpCost} CP
                             </span>
                           </div>

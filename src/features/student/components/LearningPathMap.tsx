@@ -69,7 +69,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
         <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 px-4 md:px-0">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 px-4 md:px-0" role="list" aria-label="Learning path phases">
         {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
           const state = getPhaseState(phase);
           const { roomsCompleted, totalRooms } = getPhaseProgress(phase);
@@ -121,6 +121,11 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                     <div
                       className="h-full rounded-full bg-accent transition-all duration-700"
                       style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
+                      role="progressbar"
+                      aria-valuenow={Math.round((roomsCompleted / totalRooms) * 100)}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${roomsCompleted} of ${totalRooms} rooms completed`}
                     />
                   </div>
                 )}
@@ -131,16 +136,21 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
 
           return (
             <ScrollReveal key={phase.id} delay={idx * 0.07} className="flex">
+              <div role="listitem" className="flex-1">
               {state !== 'locked' && firstRoomId ? (
                 <Link
                   to={`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${firstRoomId}`}
-                  className="flex-1"
+                  className="flex-1 block"
+                  aria-label={`Phase ${idx + 1}: ${phase.title}, ${roomsCompleted} of ${totalRooms} rooms${state === 'completed' ? ', completed' : ''}`}
                 >
                   {pillContent}
                 </Link>
               ) : (
-                <div className="flex-1">{pillContent}</div>
+                <div className="flex-1" aria-disabled={state === 'locked'} aria-label={`Phase ${idx + 1}: ${phase.title}${state === 'locked' ? ', locked' : ''}`}>
+                  {pillContent}
+                </div>
               )}
+              </div>
             </ScrollReveal>
           );
         })}

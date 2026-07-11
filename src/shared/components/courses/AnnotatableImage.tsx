@@ -49,13 +49,21 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
     try { localStorage.setItem(saveKey, JSON.stringify(anns)); } catch {}
   }, [saveKey]);
 
-  const getCanvasPos = (e: React.MouseEvent | MouseEvent): { x: number; y: number } => {
+  const getCanvasPos = (clientX: number, clientY: number): { x: number; y: number } => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
     return {
-      x: (e.clientX - rect.left) * (canvasRef.current!.width / rect.width),
-      y: (e.clientY - rect.top) * (canvasRef.current!.height / rect.height),
+      x: (clientX - rect.left) * (canvasRef.current!.width / rect.width),
+      y: (clientY - rect.top) * (canvasRef.current!.height / rect.height),
     };
+  };
+
+  const getPosFromEvent = (e: React.MouseEvent | React.TouchEvent): { x: number; y: number } => {
+    if ('touches' in e) {
+      const touch = e.touches[0] || e.changedTouches[0];
+      return getCanvasPos(touch.clientX, touch.clientY);
+    }
+    return getCanvasPos((e as React.MouseEvent).clientX, (e as React.MouseEvent).clientY);
   };
 
   const redraw = useCallback(() => {
@@ -148,10 +156,11 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
     }
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     if (!activeTool) return;
+    e.preventDefault();
     setIsDrawing(true);
-    const pos = getCanvasPos(e);
+    const pos = getPosFromEvent(e);
     startPoint.current = pos;
     currentAnnot.current = { type: activeTool, color: activeColor, points: [pos] };
     if (activeTool === 'freehand') {
@@ -159,9 +168,10 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing || !currentAnnot.current) return;
-    const pos = getCanvasPos(e);
+    e.preventDefault();
+    const pos = getPosFromEvent(e);
     if (currentAnnot.current.type === 'freehand') {
       currentAnnot.current.points.push(pos);
     } else if (startPoint.current) {
@@ -220,6 +230,9 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
       />
       <div className="absolute bottom-3 left-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
         {(['freehand', 'rect', 'arrow'] as const).map((tool) => (
@@ -231,26 +244,28 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
                 ? 'bg-accent text-bg border-accent'
                 : 'bg-bg-card/80 text-text-muted border-border hover:text-accent'
             }`}
+            aria-label={tool === 'freehand' ? 'Freehand draw' : tool === 'rect' ? 'Draw rectangle' : 'Draw arrow'}
             title={tool === 'freehand' ? 'Freehand' : tool === 'rect' ? 'Rectangle' : 'Arrow'}
           >
             {tool === 'freehand' ? <Pencil className="h-3.5 w-3.5" /> :
              tool === 'rect' ? <Square className="h-3.5 w-3.5" /> : <ArrowUpRight className="h-3.5 w-3.5" />}
           </button>
         ))}
-        <div className="w-px h-5 bg-border mx-1" />
+        <div className="w-px h-5 bg-border mx-1" aria-hidden="true" />
         {COLORS.map((c) => (
           <button
             key={c}
             onClick={() => setActiveColor(c)}
             className={`w-4 h-4 rounded-full border-2 transition-all ${activeColor === c ? 'border-accent scale-125' : 'border-transparent'}`}
             style={{ backgroundColor: c }}
+            aria-label={`Select color ${c}`}
           />
         ))}
-        <div className="w-px h-5 bg-border mx-1" />
-        <button onClick={handleUndo} className="p-1.5 rounded-lg bg-bg-card/80 border border-border text-text-muted hover:text-accent transition-colors" title="Undo">
+        <div className="w-px h-5 bg-border mx-1" aria-hidden="true" />
+        <button onClick={handleUndo} className="p-1.5 rounded-lg bg-bg-card/80 border border-border text-text-muted hover:text-accent transition-colors" title="Undo" aria-label="Undo last annotation">
           <Undo2 className="h-3.5 w-3.5" />
         </button>
-        <button onClick={handleClear} className="p-1.5 rounded-lg bg-bg-card/80 border border-border text-text-muted hover:text-red-400 transition-colors" title="Clear all">
+        <button onClick={handleClear} className="p-1.5 rounded-lg bg-bg-card/80 border border-border text-text-muted hover:text-red-400 transition-colors" title="Clear all" aria-label="Clear all annotations">
           <Eraser className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -258,6 +273,7 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
         onClick={() => setShowFullscreen(true)}
         className="absolute top-3 right-3 p-1.5 rounded-lg bg-bg-card/80 border border-border text-text-muted hover:text-accent transition-colors opacity-0 group-hover:opacity-100"
         title="Expand"
+        aria-label="Expand image to fullscreen"
       >
         <Maximize2 className="h-3.5 w-3.5" />
       </button>
@@ -268,8 +284,8 @@ const AnnotatableImage: React.FC<AnnotatableImageProps> = ({
     <>
       {canvasContent}
       {showFullscreen && (
-        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-4" onClick={() => setShowFullscreen(false)}>
-          <button className="absolute top-6 right-6 text-text-muted hover:text-accent transition-colors" onClick={() => setShowFullscreen(false)}>
+        <div className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-4" onClick={() => setShowFullscreen(false)}>
+          <button className="absolute top-6 right-6 text-text-muted hover:text-accent transition-colors" onClick={() => setShowFullscreen(false)} aria-label="Close fullscreen">
             <X className="h-6 w-6" />
           </button>
           <div className="max-w-[90vw] max-h-[90vh]" onClick={(e) => e.stopPropagation()}>

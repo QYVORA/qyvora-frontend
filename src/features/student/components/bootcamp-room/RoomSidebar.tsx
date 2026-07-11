@@ -83,7 +83,6 @@ const RoomSidebar: React.FC<Props> = ({
 
   return (
     <>
-      <aside className="hidden">{content}</aside>
       <AnimatePresence>
         {mobileOpen && (
           <>

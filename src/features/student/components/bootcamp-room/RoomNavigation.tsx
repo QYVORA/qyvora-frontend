@@ -36,7 +36,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
     <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
       <button
         onClick={() => setJumpMenuOpen(true)}
-        className="inline-flex items-center gap-1.5 bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors text-xs"
+        className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
       >
         <List className="h-3.5 w-3.5" />
         <span className="hidden sm:inline">Jump</span>
@@ -44,7 +44,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
 
       <button
         onClick={toggleFullscreen}
-        className="inline-flex items-center gap-1.5 bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors text-xs"
+        className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
         title="Toggle fullscreen (F)"
       >
         {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
@@ -54,7 +54,8 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
       <button
         onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
         disabled={currentStepIdx === 0}
-        className="md:hidden bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 font-semibold uppercase tracking-[0.08em] rounded-lg px-3.5 py-2 transition-colors inline-flex flex-1 items-center justify-center gap-1.5 disabled:opacity-50 sm:flex-none text-xs"
+        className="btn-secondary md:hidden inline-flex flex-1 items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest disabled:opacity-50 sm:flex-none px-3.5 py-2"
+        aria-label="Previous step"
       >
         <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
         <span>Prev</span>
@@ -75,11 +76,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
           }
         }}
         disabled={completing}
-        className={`inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none font-semibold uppercase tracking-[0.08em] rounded-lg border border-accent/20 px-5 py-2.5 transition-colors text-xs ${
-          isLastStep
-            ? 'bg-accent text-bg hover:brightness-110'
-            : 'bg-accent text-bg hover:brightness-110'
-        } ${completing ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`btn-primary inline-flex flex-1 md:flex-none items-center justify-center gap-1.5 sm:flex-none !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5 ${completing ? 'disabled:opacity-50' : ''}`}
       >
         {completing ? (
           <>
