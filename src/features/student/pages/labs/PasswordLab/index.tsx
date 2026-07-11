@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Key, Terminal, ArrowLeft, CheckCircle, FileText, Copy, AlertTriangle } from 'lucide-react';
 import { PASSWORD_EXERCISES, getShadowFileContent } from '@/features/student/data/simulations/password-exercises';
 import SEO from '@/shared/components/SEO';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 interface PasswordExercise {
   id: string;
@@ -14,7 +15,6 @@ interface PasswordExercise {
   crackedPassword: string;
   wordlist: string;
   steps: string[];
-  flag: string;
   cpReward: number;
 }
 
@@ -109,6 +109,7 @@ const PasswordLab = () => {
   const [flagInput, setFlagInput] = useState('');
   const [flagSubmitted, setFlagSubmitted] = useState(false);
   const [flagCorrect, setFlagCorrect] = useState(false);
+  const [flagLoading, setFlagLoading] = useState(false);
   const [copiedHash, setCopiedHash] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -127,6 +128,7 @@ const PasswordLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
     setCopiedHash(false);
   }, []);
 
@@ -136,6 +138,7 @@ const PasswordLab = () => {
     setFlagInput('');
     setFlagSubmitted(false);
     setFlagCorrect(false);
+    setFlagLoading(false);
     setCopiedHash(false);
   }, []);
 
@@ -147,12 +150,20 @@ const PasswordLab = () => {
     });
   }, []);
 
-  const handleSubmitFlag = useCallback(() => {
-    if (!activeExercise) return;
-    const correct = flagInput.trim() === activeExercise.flag;
-    setFlagCorrect(correct);
-    setFlagSubmitted(true);
-  }, [activeExercise, flagInput]);
+  const handleSubmitFlag = useCallback(async () => {
+    if (!activeExercise || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('passwords', activeExercise.id, flagInput.trim());
+      setFlagCorrect(result.correct);
+      setFlagSubmitted(true);
+    } catch {
+      setFlagCorrect(false);
+      setFlagSubmitted(true);
+    } finally {
+      setFlagLoading(false);
+    }
+  }, [activeExercise, flagInput, flagLoading]);
 
   const handleCopyHash = useCallback(() => {
     if (!activeExercise) return;
@@ -368,10 +379,10 @@ const PasswordLab = () => {
                 />
                 <button
                   onClick={handleSubmitFlag}
-                  disabled={!flagInput.trim()}
+                  disabled={!flagInput.trim() || flagLoading}
                   className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
                 >
-                  Submit
+                  {flagLoading ? 'Verifying...' : 'Submit'}
                 </button>
               </div>
             </div>

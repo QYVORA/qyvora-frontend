@@ -24,7 +24,6 @@ export interface SqlInjectionTarget {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   injectionType: string;
   steps: SqlInjectionStep[];
-  flag: string;
   cpReward: number;
 }
 
@@ -94,7 +93,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: 'Extract all rows from the users table, including password hashes and email addresses.',
       },
     ],
-    flag: 'FLAG{sql_union_novacorp_breached}',
     cpReward: 200,
   },
   {
@@ -141,7 +139,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: 'sqlmap confirms boolean-based blind injection.',
       },
     ],
-    flag: 'FLAG{sql_blind_boolean_extracted}',
     cpReward: 300,
   },
   {
@@ -182,7 +179,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: 'sqlmap confirms time-based blind injection.',
       },
     ],
-    flag: 'FLAG{sql_time_sleep_extracted}',
     cpReward: 400,
   },
   {
@@ -224,7 +220,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: 'Error-based injection extracts the secrets table.',
       },
     ],
-    flag: 'FLAG{sql_error_secrets_leaked}',
     cpReward: 300,
   },
   {
@@ -265,7 +260,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: "When logging in, the stored payload executes: admin'-- comments out the password check.",
       },
     ],
-    flag: 'FLAG{sql_second_order_admin_access}',
     cpReward: 400,
   },
   {
@@ -306,7 +300,6 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
         explanation: 'Verify the injected row exists.',
       },
     ],
-    flag: 'FLAG{sql_stacked_injected}',
     cpReward: 300,
   },
 ];

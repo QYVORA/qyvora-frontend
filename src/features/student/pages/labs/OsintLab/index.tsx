@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
 import type { OsintChallenge, OsintStep } from '@/features/student/data/simulations/osint-data';
+import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, { bg: string; text: string }> = {
   beginner: { bg: 'bg-accent/10', text: 'text-accent' },
@@ -109,6 +110,7 @@ const OsintLab = () => {
   const [executedSteps, setExecutedSteps] = useState<Set<number>>(new Set());
   const [flagInput, setFlagInput] = useState('');
   const [flagStatus, setFlagStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle');
+  const [flagLoading, setFlagLoading] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -122,6 +124,7 @@ const OsintLab = () => {
     setExecutedSteps(new Set());
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
   }, []);
 
   const handleBack = useCallback(() => {
@@ -129,6 +132,7 @@ const OsintLab = () => {
     setExecutedSteps(new Set());
     setFlagInput('');
     setFlagStatus('idle');
+    setFlagLoading(false);
   }, []);
 
   const executeStep = useCallback((index: number) => {
@@ -139,14 +143,22 @@ const OsintLab = () => {
     });
   }, []);
 
-  const submitFlag = useCallback(() => {
-    if (!activeChallenge || !flagInput.trim()) return;
-    if (flagInput.trim() === activeChallenge.flag) {
-      setFlagStatus('correct');
-    } else {
+  const submitFlag = useCallback(async () => {
+    if (!activeChallenge || !flagInput.trim() || flagLoading) return;
+    setFlagLoading(true);
+    try {
+      const result = await verifyLabFlag('osint', activeChallenge.id, flagInput.trim());
+      if (result.correct) {
+        setFlagStatus('correct');
+      } else {
+        setFlagStatus('incorrect');
+      }
+    } catch {
       setFlagStatus('incorrect');
+    } finally {
+      setFlagLoading(false);
     }
-  }, [activeChallenge, flagInput]);
+  }, [activeChallenge, flagInput, flagLoading]);
 
   const allStepsCompleted = activeChallenge
     ? executedSteps.size >= activeChallenge.steps.length
@@ -342,10 +354,10 @@ const OsintLab = () => {
               />
               <button
                 onClick={submitFlag}
-                disabled={!flagInput.trim()}
+                disabled={!flagInput.trim() || flagLoading}
                 className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
               >
-                Submit
+                {flagLoading ? 'Verifying...' : 'Submit'}
               </button>
             </div>
             {flagStatus === 'incorrect' && (

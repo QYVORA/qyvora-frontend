@@ -19,7 +19,6 @@ describe('traffic-data', () => {
       expect(Array.isArray(c.analysisTasks)).toBe(true);
       expect(c.analysisTasks.length).toBeGreaterThan(0);
       expect(Array.isArray(c.filterCommands)).toBe(true);
-      expect(c.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof c.cpReward).toBe('number');
     });
   });

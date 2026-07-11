@@ -29,7 +29,6 @@ export interface WirelessChallenge {
   accessPoints: WirelessAccessPoint[];
   targetBssid: string;
   steps: WirelessStep[];
-  flag: string;
   cpReward: number;
 }
 
@@ -110,7 +109,6 @@ export const WIRELESS_CHALLENGES: WirelessChallenge[] = [
         explanation: 'Crack the WPA2 handshake using the rockyou.txt wordlist. Password found: N0vaC0rp!2024',
       },
     ],
-    flag: 'FLAG{wifi_wpa2_cracked}',
     cpReward: 200,
   },
   {
@@ -172,7 +170,6 @@ export const WIRELESS_CHALLENGES: WirelessChallenge[] = [
         explanation: 'Different file hashes confirm different captures - the rogue AP is serving different traffic.',
       },
     ],
-    flag: 'FLAG{wifi_evil_twin_detected}',
     cpReward: 300,
   },
   {
@@ -226,7 +223,6 @@ export const WIRELESS_CHALLENGES: WirelessChallenge[] = [
         explanation: 'Crack WEP key with captured IVs. WEP is fundamentally insecure.',
       },
     ],
-    flag: 'FLAG{wifi_wep_cracked_legacy}',
     cpReward: 400,
   },
 ];

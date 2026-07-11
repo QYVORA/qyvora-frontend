@@ -65,7 +65,6 @@ export interface WebCookie {
 export interface HiddenElement {
   type: 'comment' | 'hidden-input' | 'meta' | 'script-var' | 'base64';
   content: string;
-  flag: string;
 }
 
 export interface PhishingEmail {
@@ -173,5 +172,4 @@ export interface PrivescScenario {
   hints: string[];
   filesystem: Record<string, string>;
   solutionCommands: string[];
-  flag: string;
 }

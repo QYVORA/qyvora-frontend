@@ -18,7 +18,6 @@ describe('kill-chain-data', () => {
       expect(Array.isArray(s.phases)).toBe(true);
       expect(s.phases.length).toBeGreaterThan(0);
       expect(typeof s.cpReward).toBe('number');
-      expect(s.flag).toMatch(/^FLAG\{.+\}$/);
     });
   });
 

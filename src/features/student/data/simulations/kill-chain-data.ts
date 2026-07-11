@@ -21,7 +21,6 @@ export interface KillChainScenario {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   targetDescription: string;
   phases: KillChainPhase[];
-  flag: string;
   cpReward: number;
 }
 
@@ -196,7 +195,6 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
         completed: false,
       },
     ],
-    flag: 'FLAG{kc_internal_full_chain_pwned}',
     cpReward: 500,
   },
   {
@@ -336,7 +334,6 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
         completed: false,
       },
     ],
-    flag: 'FLAG{kc_web_full_chain_complete}',
     cpReward: 600,
   },
 ];

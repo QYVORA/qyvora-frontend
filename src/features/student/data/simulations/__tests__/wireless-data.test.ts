@@ -19,7 +19,6 @@ describe('wireless-data', () => {
       expect(s.targetBssid).toBeTruthy();
       expect(Array.isArray(s.steps)).toBe(true);
       expect(s.steps.length).toBeGreaterThan(0);
-      expect(s.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof s.cpReward).toBe('number');
     });
   });

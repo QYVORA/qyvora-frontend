@@ -18,7 +18,6 @@ describe('proxy-data', () => {
       expect(s.requests.length).toBeGreaterThan(0);
       expect(Array.isArray(s.tasks)).toBe(true);
       expect(s.tasks.length).toBeGreaterThan(0);
-      expect(s.flag).toMatch(/^FLAG\{.+\}$/);
       expect(typeof s.cpReward).toBe('number');
     });
   });
