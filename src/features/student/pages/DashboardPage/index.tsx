@@ -18,10 +18,9 @@ import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/event
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
-import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import {
   Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
-  Download, Loader2, FlaskConical, Target, Shield, Eye, Wifi,
+  Download, Loader2, FlaskConical, Target, Shield, Eye,
   Network, Crosshair,
 } from 'lucide-react';
 import CpLogo from '@/shared/components/CpLogo';
@@ -43,9 +42,9 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-  <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-6">
     <Skeleton className="h-24 w-full bg-border/30 rounded-2xl" />
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 bg-border/30 rounded-xl" />)}
     </div>
     <Skeleton className="h-48 w-full bg-border/30 rounded-2xl" />
@@ -53,13 +52,13 @@ const DashboardSkeleton = () => (
 );
 
 const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
-  <div className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card">
+  <div className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card" aria-label={`${label}: ${value}`}>
     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
       {icon}
     </div>
     <div className="min-w-0">
       <div className="font-mono text-lg font-black text-text-primary leading-none break-words">{value}</div>
-      <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mt-0.5">{label}</div>
+      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-0.5">{label}</div>
     </div>
   </div>
 );
@@ -81,7 +80,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
           onError={(e) => { e.currentTarget.src = productFallbackImg; }}
         />
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-          <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded text-[9px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
+                        <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[10px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
             <ShoppingBag className="w-2.5 h-2.5" /> Intelligence Asset
           </span>
         </div>
@@ -132,7 +131,6 @@ const Dashboard = () => {
   const [cpBalanceState, setCpBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState('');
-  const [terminalOpen, setTerminalOpen] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [activeProductIdx, setActiveProductIdx] = useState(0);
   const [installing, setInstalling] = useState(false);
@@ -242,6 +240,7 @@ const Dashboard = () => {
         <Link
           to="/dashboard/labs"
           className="group rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-all duration-300 block"
+          aria-label="Navigate to Attack Labs"
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
@@ -263,7 +262,7 @@ const Dashboard = () => {
             ].map((lab) => (
               <div key={lab.label} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-elevated/50 border border-border/20">
                 <span className="text-accent">{lab.icon}</span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{lab.label}</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">{lab.label}</span>
               </div>
             ))}
           </div>
@@ -350,7 +349,7 @@ const Dashboard = () => {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <BookOpen className="w-4 h-4 text-accent/60" />
-                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Room</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Room</span>
                 </div>
                 <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
               </Link>
@@ -389,12 +388,6 @@ const Dashboard = () => {
         />
       )}
 
-      <SimulatedTerminal
-        open={terminalOpen}
-        onOpenChange={setTerminalOpen}
-        context={{ type: 'dashboard' }}
-        mode="modal"
-      />
     </div>
   );
 };

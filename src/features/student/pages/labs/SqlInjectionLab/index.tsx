@@ -68,7 +68,7 @@ const StepTerminal = ({ step, command, output, isExecuted, explanation }: { step
           Step {step}
         </span>
       </div>
-      <div className="bg-[#050706] p-4 space-y-1.5 max-h-48 overflow-y-auto">
+      <div className="bg-bg-card p-4 space-y-1.5 max-h-48 overflow-y-auto">
         <div className="flex items-start gap-2 font-mono text-sm">
           <span className="text-accent shrink-0">$</span>
           <span className="text-accent break-all">{command}</span>
@@ -103,7 +103,7 @@ const DatabaseSchemaViewer = ({ target }: { target: SqlInjectionTarget }) => {
           <div key={table.name} className="rounded-xl border border-border/20 overflow-hidden">
             <button
               onClick={() => setExpandedTable(expandedTable === table.name ? null : table.name)}
-              className="w-full flex items-center justify-between px-4 py-2.5 bg-[#050706] hover:bg-[#0a0f0d] transition-colors"
+              className="w-full flex items-center justify-between px-4 py-2.5 bg-bg-card hover:bg-bg-elevated transition-colors"
             >
               <div className="flex items-center gap-2">
                 <Database className="w-3.5 h-3.5 text-accent/70" />
@@ -293,7 +293,7 @@ const SqlInjectionLab = () => {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/30 bg-[#050706] p-4">
+        <div className="rounded-xl border border-border/30 bg-bg-card p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[9px] font-black uppercase tracking-widest text-accent">Target URL</span>
             <button

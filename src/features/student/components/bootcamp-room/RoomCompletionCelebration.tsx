@@ -39,7 +39,7 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
             exit={{ scale: 0.95, opacity: 0 }}
             className="relative z-10 w-full max-w-md mx-4"
           >
-            <div className="relative overflow-hidden rounded-3xl border-2 border-accent bg-bg-card p-8 text-center">
+            <div className="relative overflow-hidden rounded-2xl border-2 border-accent bg-bg-card p-8 text-center">
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon */}

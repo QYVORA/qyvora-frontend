@@ -28,13 +28,13 @@ const LessonViewer: React.FC<{ lesson: Lesson; number: number; courseId?: string
             {lesson.title}
           </span>
           {lesson.hasQuiz && (
-            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
           )}
           {lesson.hasTerminal && (
-            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
           )}
           {lesson.hasCodePlayground && (
-            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
           )}
         </div>
       </div>
@@ -238,7 +238,7 @@ const CourseLessonPage: React.FC = () => {
       <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="text-center space-y-4 max-w-md mx-auto px-4">
           <Lock className="h-12 w-12 text-text-muted/30 mx-auto" />
-          <h1 className="text-xl font-black text-text-primary font-mono">Course Not Unlocked</h1>
+          <h1 className="text-3xl font-black text-text-primary font-mono">Course Not Unlocked</h1>
           <p className="text-sm text-text-muted leading-relaxed">
             You haven't unlocked {course.title} yet. Purchase it from the course page to start learning.
           </p>
@@ -345,7 +345,7 @@ const CourseLessonPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
             <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
               <div className="mb-3 flex items-center justify-between gap-2">
                 <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>

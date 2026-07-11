@@ -42,6 +42,9 @@ const StepCard: React.FC<Props> = ({
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       onPrev?.();
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
     }
   };
 
@@ -145,7 +148,7 @@ const StepCard: React.FC<Props> = ({
 
       {isActive && !isViewed && (
         <span className="text-[10px] font-bold uppercase tracking-widest text-accent/40">
-          Unread Phase
+          Unread Step
         </span>
       )}
     </div>

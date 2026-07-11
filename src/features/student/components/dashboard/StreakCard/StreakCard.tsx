@@ -105,7 +105,7 @@ function StreakIcon({ streak, theme }: { streak: number; theme: StreakTheme }) {
     );
   }
   return (
-    <Zap className="w-8 h-8 text-gray-500" />
+    <Zap className="w-8 h-8 text-text-muted" />
   );
 }
 
@@ -126,8 +126,9 @@ function StreakRing({ days, theme }: { days: number; theme: StreakTheme }) {
               }`}
               fill={isActive ? 'currentColor' : 'none'}
               fillOpacity={isActive ? 0.5 : 0}
+              aria-hidden="true"
             />
-            <span className="text-[8px] font-mono font-bold uppercase text-text-muted/50">{label}</span>
+            <span className="text-[10px] font-mono font-bold uppercase text-text-muted/50">{label}</span>
           </div>
         );
       })}
@@ -150,16 +151,16 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
     );
   }
 
-  return (
-    <div className={`rounded-2xl border ${theme.border} ${theme.bg} p-5 md:p-6 transition-all duration-500`}>
-      <div className="flex items-center gap-4 mb-5">
-        <StreakIcon streak={streakDays} theme={theme} />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-baseline gap-2.5">
-            <span className={`text-3xl font-black font-mono tracking-tighter ${theme.textColor} tabular-nums`}>
-              {streakDays}
-            </span>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/70">Day Streak</span>
+    return (
+      <div className={`rounded-2xl border ${theme.border} ${theme.bg} p-5 md:p-6 transition-all duration-500`}>
+        <div className="flex items-center gap-4 mb-5">
+          <StreakIcon streak={streakDays} theme={theme} />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-2.5">
+              <span className={`text-3xl font-black font-mono tracking-tighter ${theme.textColor} tabular-nums`} aria-label={`${streakDays} day streak`}>
+                {streakDays}
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/70">Day Streak</span>
           </div>
           {lastVisitDate && (
             <p className="text-[10px] text-text-muted/50 mt-0.5 font-mono">

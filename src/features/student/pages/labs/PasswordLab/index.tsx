@@ -51,7 +51,7 @@ const StepTerminal = ({ step, output, isExecuted, command }: { step: number; out
           Step {step}
         </span>
       </div>
-      <div className="bg-[#050706] p-4 space-y-1.5 max-h-48 overflow-y-auto">
+      <div className="bg-bg-card p-4 space-y-1.5 max-h-48 overflow-y-auto">
         <TerminalLine text={command} isCommand />
         {isExecuted && output.split('\n').map((line, i) => (
           <TerminalLine key={i} text={line} />
@@ -305,7 +305,7 @@ const PasswordLab = () => {
               </button>
             )}
           </div>
-          <div className="bg-[#050706] rounded-xl p-4 max-h-64 overflow-y-auto" ref={terminalRef}>
+          <div className="bg-bg-card rounded-xl p-4 max-h-64 overflow-y-auto" ref={terminalRef}>
             <pre className="font-mono text-xs text-accent/80 whitespace-pre-wrap break-all">
               {isShadowExercise ? getShadowFileContent() : activeExercise.hashContent}
             </pre>
@@ -362,7 +362,7 @@ const PasswordLab = () => {
               <CheckCircle className="w-5 h-5 text-accent" />
               <span className="text-sm font-black text-accent">All Steps Completed</span>
             </div>
-            <div className="rounded-xl border border-border/30 bg-[#050706] p-4">
+            <div className="rounded-xl border border-border/30 bg-bg-card p-4">
               <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2">Cracked Password(s)</p>
               <p className="font-mono text-lg font-black text-accent">{activeExercise.crackedPassword}</p>
             </div>

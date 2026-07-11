@@ -147,45 +147,45 @@ export const InteractiveTerminal: React.FC<InteractiveTerminalProps> = ({
   };
 
   return (
-        <div className={`relative border border-[#2a2a2a] rounded-xl overflow-hidden my-8 bg-[#0c0c0c] ${className}`}>
-      <div className="flex items-center justify-between border-b border-[#2a2a2a] bg-[#1a1a1a] px-5 py-3 select-none">
+        <div className={`relative border border-border rounded-xl overflow-hidden my-8 bg-bg-card ${className}`}>
+      <div className="flex items-center justify-between border-b border-border bg-bg-elevated px-5 py-3 select-none">
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
           <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
           <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
         </div>
-        <span className="text-[10px] font-mono text-[#666] uppercase tracking-[0.15em]">{title}</span>
+        <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.15em]">{title}</span>
       </div>
 
       <div
         ref={containerRef}
-        className="overflow-y-auto max-h-[70vh] p-4 sm:p-6 font-mono text-sm leading-relaxed"
-        style={{ background: '#0c0c0c' }}
+        className="overflow-y-auto max-h-[70vh] p-4 sm:p-6 font-mono text-sm leading-relaxed bg-bg-card"
         onClick={() => inputRef.current?.focus()}
       >
         {lines.map((line, i) => (
           <div key={i} className={`mb-1 ${
-            line.type === 'input' ? 'text-[#00ff41]' :
-            line.type === 'output' ? 'text-[#d4d4d4]' :
-            line.type === 'error' ? 'text-[#ff3333]' :
-            'text-[#d4d4d4] text-[11px] opacity-50'
+            line.type === 'input' ? 'text-accent' :
+            line.type === 'output' ? 'text-text-primary' :
+            line.type === 'error' ? 'text-red-400' :
+            'text-text-muted text-[11px] opacity-50'
           }`}>
             {line.text}
           </div>
         ))}
         <div className="flex items-center mb-1">
-          <span className="text-[#00ff41] mr-2 shrink-0">$</span>
+          <span className="text-accent mr-2 shrink-0">$</span>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-[#00ff41] font-mono text-sm p-0 min-h-0"
-            style={{ caretColor: '#00ff41' }}
+            className="flex-1 bg-transparent border-none outline-none text-accent font-mono text-sm p-0 min-h-0"
+            style={{ caretColor: 'var(--color-accent)' }}
             autoFocus
             spellCheck={false}
             autoComplete="off"
+            aria-label="Terminal input"
           />
         </div>
       </div>

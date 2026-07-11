@@ -101,7 +101,7 @@ const MyCoursesPage: React.FC = () => {
     <div className="bg-bg min-h-screen">
       <SEO title="My Courses" description="Your purchased courses." />
 
-      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
 
             {/* Header */}
             <div className="mb-8">
@@ -134,15 +134,18 @@ const MyCoursesPage: React.FC = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search my courses..."
-                    className="w-full bg-bg-elevated border border-border rounded-lg pl-9 pr-4 py-2 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
+                    aria-label="Search my courses"
+                    className="w-full bg-bg-elevated border border-border rounded-xl pl-9 pr-4 py-2 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
                   />
                 </div>
-                <div className="flex items-center gap-1 bg-bg-elevated rounded-lg p-1 border border-border">
+                <div className="flex items-center gap-1 bg-bg-elevated rounded-xl p-1 border border-border" role="tablist" aria-label="Course filter">
                   {(['all', 'in-progress', 'completed'] as CourseTab[]).map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${
+                      role="tab"
+                      aria-selected={activeTab === tab}
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
                         activeTab === tab ? 'bg-accent text-bg' : 'text-text-muted hover:text-accent'
                       }`}
                     >
@@ -174,7 +177,7 @@ const MyCoursesPage: React.FC = () => {
                       <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                         <Link
                           to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                          className="group block overflow-hidden rounded-3xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
+                          className="group block overflow-hidden rounded-2xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
                         >
                           <div className="aspect-[8/5] overflow-hidden bg-bg-elevated relative">
                             <img
@@ -197,7 +200,7 @@ const MyCoursesPage: React.FC = () => {
                           </div>
                           <div className="p-5 space-y-3">
                             <div className="flex items-center justify-between">
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
                                 {category?.name}
                               </span>
                               <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
@@ -270,7 +273,7 @@ const MyCoursesPage: React.FC = () => {
                     return (
                       <div
                         key={course.id}
-                        className="group block overflow-hidden rounded-3xl border border-border/60 bg-bg-card/50 opacity-60"
+                        className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card/50 opacity-60"
                       >
                         <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                           <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />

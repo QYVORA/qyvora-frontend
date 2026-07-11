@@ -18,7 +18,7 @@ import { useScrollLock } from '@/core/hooks/useScrollLock';
 const PRIMARY_NAV = [
   { label: 'Dashboard',      icon: LayoutDashboard, path: '/dashboard' },
   { label: 'Courses',        icon: BookMarked,      path: '/dashboard/courses' },
-  { label: 'Learning Paths',  icon: Map,             path: '/dashboard/bootcamps' },
+  { label: 'Bootcamp',       icon: Map,             path: '/dashboard/bootcamps' },
   { label: 'Attack Labs',    icon: FlaskConical,    path: '/dashboard/labs' },
   { label: 'Competitive',    icon: Swords,          path: '/dashboard/competitive' },
   { label: 'Networks',       icon: Globe,           path: '/dashboard/networks' },

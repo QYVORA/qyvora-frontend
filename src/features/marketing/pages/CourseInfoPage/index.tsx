@@ -50,7 +50,9 @@ const CourseInfoPage: React.FC = () => {
         return tx.metadata?.slug || tx.metadata?.courseId || String(tx.productId);
       }));
       setPurchased(purchasedIds.has(courseId || ''));
-    }).catch(() => {});
+    }).catch(() => {
+      if (courseId) addToast('Could not verify purchase status', 'error');
+    });
   }, [user, courseId]);
 
   const handlePurchase = async () => {
@@ -85,7 +87,8 @@ const CourseInfoPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="text-center">
-          <p className="text-text-muted text-lg">Course not found.</p>
+          <h1 className="text-3xl font-black text-text-primary mb-2">Course not found.</h1>
+          <p className="text-text-muted text-sm">The course you're looking for doesn't exist.</p>
           <Link to="/courses" className="text-accent hover:underline mt-4 inline-block">← Back to Courses</Link>
         </div>
       </div>
@@ -115,7 +118,7 @@ const CourseInfoPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-16 items-center w-full">
             {/* Cover */}
             <div className="w-full lg:w-[40%] shrink-0">
-              <div className="aspect-[8/5] rounded-xl overflow-hidden border border-border/30 bg-bg-elevated">
+              <div className="aspect-[8/5] rounded-2xl overflow-hidden border border-border/30 bg-bg-elevated">
                 <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />
               </div>
             </div>
@@ -137,7 +140,7 @@ const CourseInfoPage: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tight leading-none mb-4">
                 {course.title}
               </h1>
 
@@ -211,14 +214,14 @@ const CourseInfoPage: React.FC = () => {
           <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">
             <span className="text-accent">//</span> What You'll Learn
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {course.learningObjectives.map((obj, i) => (
-              <div key={i} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
+              <li key={i} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
                 <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                 <span className="text-sm text-text-secondary leading-relaxed break-words">{obj}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         {/* Syllabus Preview */}
@@ -226,9 +229,9 @@ const CourseInfoPage: React.FC = () => {
           <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">
             <span className="text-accent">//</span> Course Syllabus
           </h2>
-          <div className="space-y-1">
+          <ol className="space-y-1 list-none">
             {course.lessons.map((lesson, i) => (
-              <div
+              <li
                 key={lesson.id}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border/20 bg-bg-card/50"
               >
@@ -239,13 +242,13 @@ const CourseInfoPage: React.FC = () => {
                   <p className="text-sm font-bold text-text-primary">{lesson.title}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  {lesson.hasQuiz && <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black text-accent uppercase">Quiz</span>}
-                  {lesson.hasTerminal && <span className="px-1.5 py-0.5 rounded bg-blue-400/10 text-[8px] font-black text-blue-400 uppercase">Terminal</span>}
-                  {lesson.hasCodePlayground && <span className="px-1.5 py-0.5 rounded bg-purple-400/10 text-[8px] font-black text-purple-400 uppercase">Code</span>}
+                  {lesson.hasQuiz &&                    <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[8px] font-black text-accent uppercase">Quiz</span>}
+                  {lesson.hasTerminal && <span className="px-1.5 py-0.5 rounded-lg bg-blue-400/10 text-[8px] font-black text-blue-400 uppercase">Terminal</span>}
+                  {lesson.hasCodePlayground && <span className="px-1.5 py-0.5 rounded-lg bg-purple-400/10 text-[8px] font-black text-purple-400 uppercase">Code</span>}
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
         {/* Related Courses */}
@@ -262,7 +265,7 @@ const CourseInfoPage: React.FC = () => {
                   <ScrollReveal key={relCourse.id} direction="up" amount={0.1}>
                     <Link
                       to={`/courses/${relCourse.id}`}
-                      className="group block overflow-hidden rounded-xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
+                       className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30"
                     >
                       <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
                         <img src={relCourse.coverSvg} alt={relCourse.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -275,7 +278,7 @@ const CourseInfoPage: React.FC = () => {
                         <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors break-words">{relCourse.title}</h3>
                         <p className="text-[11px] text-text-muted line-clamp-1 break-words">{relCourse.description}</p>
                         <div className="flex items-center gap-2 pt-1">
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
+                           <span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
                             <Zap className="h-2.5 w-2.5" /> {relCourse.cpCost} CP
                           </span>
                           <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">

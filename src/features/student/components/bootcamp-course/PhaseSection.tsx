@@ -86,7 +86,7 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
         {/* Room cards */}
         <div className="px-0 pb-12">
           {isLocked ? (
-            <div className="flex items-center gap-4 rounded-3xl bg-bg-elevated/40 p-8 border border-border/10">
+            <div className="flex items-center gap-4 rounded-2xl bg-bg-elevated/40 p-8 border border-border/10">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bg/50 text-text-muted opacity-40">
                 <Lock className="h-5 w-5" />
               </div>

@@ -438,7 +438,7 @@ const StepBlock = ({
           )}
         </div>
 
-        <div className="rounded-xl bg-[#0d1117] p-3 font-mono text-sm mb-2">
+        <div className="rounded-xl bg-bg-card p-3 font-mono text-sm mb-2">
           <span className="text-green-400">root@osint</span>
           <span className="text-text-muted">:</span>
           <span className="text-blue-400">~</span>
@@ -448,7 +448,7 @@ const StepBlock = ({
 
         {isExecuted && showOutput && (
           <div className="space-y-2 mt-2">
-            <div className="rounded-xl bg-[#0d1117] p-3 font-mono text-xs overflow-x-auto">
+            <div className="rounded-xl bg-bg-card p-3 font-mono text-xs overflow-x-auto">
               <pre className="text-text-muted/70 whitespace-pre-wrap break-words">{step.output}</pre>
             </div>
             <div className="px-3 py-2 rounded-xl bg-accent/5 border border-accent/10">
