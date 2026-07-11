@@ -21,7 +21,8 @@ import StudentBootcampCard from '@/features/student/components/StudentBootcampCa
 import { SimulatedTerminal } from '@/features/student/components/SimulatedTerminal';
 import {
   Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
-  Download, Loader2,
+  Download, Loader2, FlaskConical, Target, Shield, Eye, Wifi,
+  Network, Crosshair,
 } from 'lucide-react';
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
@@ -237,7 +238,38 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* 2.5 PWA Install */}
+        {/* 2.5 Attack Labs Progress */}
+        <Link
+          to="/dashboard/labs"
+          className="group rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-all duration-300 block"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+              <FlaskConical className="w-5 h-5 text-accent" />
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors">Attack Labs</h3>
+              <p className="text-[10px] font-mono text-text-muted">Hands-on offensive security simulations</p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-text-muted ml-auto group-hover:text-accent transition-colors" />
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {[
+              { icon: <Target className="w-3.5 h-3.5" />, label: 'Privesc' },
+              { icon: <Shield className="w-3.5 h-3.5" />, label: 'Passwords' },
+              { icon: <Eye className="w-3.5 h-3.5" />, label: 'Web Exploit' },
+              { icon: <Network className="w-3.5 h-3.5" />, label: 'SQLi' },
+              { icon: <Crosshair className="w-3.5 h-3.5" />, label: 'Kill Chain' },
+            ].map((lab) => (
+              <div key={lab.label} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-elevated/50 border border-border/20">
+                <span className="text-accent">{lab.icon}</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{lab.label}</span>
+              </div>
+            ))}
+          </div>
+        </Link>
+
+        {/* 2.6 PWA Install */}
         {canInstall && (
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
