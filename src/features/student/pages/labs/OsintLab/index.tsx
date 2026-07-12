@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe } from 'lucide-react';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
+import SEO from '@/shared/components/SEO';
+import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -58,6 +60,7 @@ const OsintLab = () => {
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
+        <SEO title="OSINT Recon Lab" description="Master open-source intelligence gathering techniques." />
         <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
@@ -73,31 +76,18 @@ const OsintLab = () => {
             </p>
           </div>
           <div className="border-t border-border/30 mb-10" />
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {OSINT_CHALLENGES.map((challenge, index) => (
-              <button
+              <ScenarioCard
                 key={challenge.id}
-                onClick={() => startChallenge(challenge)}
-                className="group w-full text-left rounded-2xl border border-border/30 bg-bg-card p-6 hover:border-accent/30 transition-all duration-300"
-              >
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 transition-colors">
-                    <span className="text-sm font-black text-text-muted group-hover:text-accent transition-colors">{String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-black text-text-primary group-hover:text-accent transition-colors">{challenge.title}</h3>
-                      <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[challenge.difficulty]}`}>
-                        {challenge.difficulty}
-                      </span>
-                    </div>
-                    <p className="text-sm text-text-muted/70 font-mono leading-relaxed line-clamp-2">{challenge.description}</p>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-border/20 shrink-0">
-                    <span className="text-sm font-mono text-text-muted">{challenge.cpReward} CP</span>
-                  </div>
-                </div>
-              </button>
+                index={index}
+                title={challenge.title}
+                difficulty={challenge.difficulty}
+                description={challenge.description}
+                cpReward={challenge.cpReward}
+                accentColor="#0EA5E9"
+                onStart={() => startChallenge(challenge)}
+              />
             ))}
           </div>
         </div>
