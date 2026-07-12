@@ -1,8 +1,56 @@
-const svg = (bg: string, border: string, lines: string) =>
-  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect width="400" height="200" fill="${bg}"/><rect x="16" y="16" width="368" height="168" rx="8" fill="${bg.replace('0a', '1a')}" stroke="${border}" stroke-width="1"/><rect x="16" y="16" width="368" height="30" rx="8" fill="${bg.replace('0a', '2a')}"/><circle cx="34" cy="31" r="5" fill="#ff5f57"/><circle cx="50" cy="31" r="5" fill="#ffbd2e"/><circle cx="66" cy="31" r="5" fill="#28c840"/>${lines}</svg>`)}`;
+const svg = (bg: string, border: string, lines: string) => {
+  const windowBg = bg.replace('0a', '12'); // slightly lighter background for window content
+  const headerBg = bg.replace('0a', '1c'); // even lighter for title bar
+  
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+    <defs>
+      <!-- Shadow filter for window -->
+      <filter id="win-shadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#000000" flood-opacity="0.5"/>
+      </filter>
+      <!-- Glow filter for terminal text -->
+      <filter id="txt-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1.2" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <!-- Scanline pattern -->
+      <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+        <rect width="4" height="2" fill="#000000" fill-opacity="0.12"/>
+      </pattern>
+      <!-- Linear gradient for subtle metallic border -->
+      <linearGradient id="border-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${border}"/>
+        <stop offset="50%" stop-color="${border}88"/>
+        <stop offset="100%" stop-color="${border}"/>
+      </linearGradient>
+    </defs>
+    <!-- Outer base background -->
+    <rect width="400" height="200" fill="${bg}" rx="12"/>
+    <!-- Terminal window container -->
+    <rect x="12" y="12" width="376" height="176" rx="8" fill="${windowBg}" stroke="url(#border-grad)" stroke-width="1.5" filter="url(#win-shadow)"/>
+    <!-- Terminal Scanline overlay -->
+    <rect x="13" y="13" width="374" height="174" rx="7" fill="url(#scanlines)" pointer-events="none"/>
+    <!-- Terminal Header (Title bar) -->
+    <path d="M13 20c0-3.866 3.134-7 7-7h360c3.866 0 7 3.134 7 7v20H13V20z" fill="${headerBg}"/>
+    <line x1="13" y1="40" x2="387" y2="40" stroke="${border}33" stroke-width="1"/>
+    <!-- Window Control Buttons -->
+    <circle cx="28" cy="27" r="4" fill="#ff5f57"/>
+    <circle cx="40" cy="27" r="4" fill="#ffbd2e"/>
+    <circle cx="52" cy="27" r="4" fill="#28c840"/>
+    <!-- Small console icon in header -->
+    <path d="M360 23l4 4-4 4m6-8v8" stroke="${border}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+    <!-- Terminal lines -->
+    <g filter="url(#txt-glow)">
+      ${lines}
+    </g>
+  </svg>`)}`;
+};
 
 const mono = (x: number, y: number, fill: string, size: number, text: string) =>
-  `<text x="${x}" y="${y}" fill="${fill}" font-family="monospace" font-size="${size}">${text}</text>`;
+  `<text x="${x}" y="${y}" fill="${fill}" font-family="Courier New, Courier, monospace" font-weight="bold" font-size="${size}">${text}</text>`;
 
 const tspan = (fill: string, text: string) =>
   `<tspan fill="${fill}">${text}</tspan>`;
