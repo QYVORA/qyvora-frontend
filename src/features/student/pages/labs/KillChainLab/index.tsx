@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import ScenarioCard from '@/shared/components/ScenarioCard';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
 import { verifyLabFlag } from '../../../services/lab.service';
 
@@ -9,26 +10,6 @@ const DIFFICULTY_STYLES: Record<string, string> = {
   intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
   advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
-
-const ScenarioCard = ({ scenario, index, onClick }) => (
-  <button onClick={onClick} className="group w-full text-left rounded-2xl border border-border/30 bg-bg-card p-6 hover:border-accent/30 transition-all duration-300">
-    <div className="flex items-start gap-5">
-      <div className="w-12 h-12 rounded-xl bg-white/5 border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 transition-colors">
-        <span className="text-sm font-black text-text-muted group-hover:text-accent transition-colors">{String(index + 1).padStart(2, '0')}</span>
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-3 mb-2">
-          <h3 className="text-lg font-black text-text-primary group-hover:text-accent transition-colors">{scenario.title}</h3>
-          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[scenario.difficulty]}`}>{scenario.difficulty}</span>
-        </div>
-        <p className="text-sm text-text-muted/70 font-mono leading-relaxed line-clamp-2">{scenario.description}</p>
-      </div>
-      <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-border/20 shrink-0">
-        <span className="text-sm font-mono text-text-muted">{scenario.cpReward} CP</span>
-      </div>
-    </div>
-  </button>
-);
 
 const KillChainLab = () => {
   const [activeScenario, setActiveScenario] = useState(null);
@@ -87,8 +68,19 @@ const KillChainLab = () => {
           <p className="text-base text-text-muted font-mono max-w-2xl">Execute full kill chain simulations — from reconnaissance to exfiltration.</p>
         </div>
         <div className="border-t border-border/30 mb-10" />
-        <div className="space-y-4">
-          {KILL_CHAIN_SCENARIOS.map((s, i) => <ScenarioCard key={s.id} scenario={s} index={i} onClick={() => startScenario(s)} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {KILL_CHAIN_SCENARIOS.map((s, i) => (
+            <ScenarioCard
+              key={s.id}
+              index={i}
+              title={s.title}
+              difficulty={s.difficulty}
+              description={s.description}
+              cpReward={s.cpReward}
+              accentColor="#DC2626"
+              onStart={() => startScenario(s)}
+            />
+          ))}
         </div>
       </div>
     </div>

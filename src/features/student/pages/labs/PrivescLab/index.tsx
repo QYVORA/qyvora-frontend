@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Shield } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
+import ScenarioCard from '@/shared/components/ScenarioCard';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations/privesc-scenarios';
@@ -82,35 +83,21 @@ const PrivescLab = () => {
 
           <div className="border-t border-border/30 mb-8" />
 
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PRIVESC_SCENARIOS.map((scenario, i) => (
-              <button
+              <ScenarioCard
                 key={scenario.id}
-                onClick={() => {
+                index={i}
+                title={scenario.title}
+                difficulty={scenario.difficulty}
+                description={scenario.technique}
+                cpReward={50}
+                accentColor="#FBBF24"
+                onStart={() => {
                   setCompletedSteps(new Set());
                   setSelectedScenario(scenario);
                 }}
-                className="group w-full text-left rounded-xl border border-border/30 bg-bg-card px-5 py-4 hover:border-accent/30 transition-all duration-300 flex items-center gap-4"
-              >
-                <span className="text-xs font-black text-text-muted group-hover:text-accent transition-colors w-6">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors">
-                      {scenario.title}
-                    </h3>
-                    <span
-                      className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[scenario.difficulty]}`}
-                    >
-                      {scenario.difficulty}
-                    </span>
-                  </div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-accent/60 mt-1">
-                    {scenario.technique}
-                  </p>
-                </div>
-              </button>
+              />
             ))}
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
 import SEO from '@/shared/components/SEO';
+import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -75,34 +76,19 @@ const SqlInjectionLab = () => {
             </p>
           </div>
           <div className="border-t border-border/30 mb-10" />
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {SQL_INJECTION_TARGETS.map((target, index) => (
-              <button
+              <ScenarioCard
                 key={target.id}
-                onClick={() => startTarget(target)}
-                className="group w-full text-left rounded-2xl border border-border/30 bg-bg-card p-6 hover:border-accent/30 transition-all duration-300"
-              >
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 transition-colors">
-                    <span className="text-sm font-black text-text-muted group-hover:text-accent transition-colors">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-black text-text-primary group-hover:text-accent transition-colors">{target.name}</h3>
-                      <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[target.difficulty]}`}>
-                        {target.difficulty}
-                      </span>
-                    </div>
-                    <p className="text-xs font-black uppercase tracking-widest text-accent/70 mb-2">{target.injectionType} &middot; {target.dbms}</p>
-                    <p className="text-sm text-text-muted/70 font-mono leading-relaxed line-clamp-2">{target.description}</p>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-border/20 shrink-0">
-                    <span className="text-sm font-mono text-text-muted">{target.cpReward} CP</span>
-                  </div>
-                </div>
-              </button>
+                index={index}
+                title={target.name}
+                difficulty={target.difficulty}
+                description={target.description}
+                cpReward={target.cpReward}
+                subtitle={`${target.injectionType} · ${target.dbms}`}
+                accentColor="#06B66F"
+                onStart={() => startTarget(target)}
+              />
             ))}
           </div>
         </div>
