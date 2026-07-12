@@ -18,11 +18,24 @@ import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/event
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
+import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
 import {
   Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
-  Download, Loader2, FlaskConical, Target, Shield, Eye,
-  Network, Crosshair,
+  Download, Loader2, FlaskConical,
 } from 'lucide-react';
+
+const LABS = [
+  { id: 'privesc', title: 'Privilege Escalation', description: 'Escalate permissions and gain root access', difficulty: 'beginner-advanced', cpReward: '50-400', route: '/dashboard/labs/privesc', accentColor: '#FBBF24' },
+  { id: 'passwords', title: 'Password Cracking', description: 'Crack password hashes using brute-force', difficulty: 'beginner-advanced', cpReward: '100-300', route: '/dashboard/labs/passwords', accentColor: '#F59E0B' },
+  { id: 'webapp', title: 'Web Exploitation', description: 'Exploit web application vulnerabilities', difficulty: 'beginner-advanced', cpReward: '100-400', route: '/dashboard/labs/web-exploitation', accentColor: '#EF4444' },
+  { id: 'sqli', title: 'SQL Injection', description: 'Extract data through SQL injection attacks', difficulty: 'beginner-advanced', cpReward: '200-400', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F' },
+  { id: 'phishing', title: 'Phishing Analysis', description: 'Identify and analyze phishing campaigns', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/phishing', accentColor: '#8B5CF6' },
+  { id: 'proxy', title: 'Web Proxy', description: 'Intercept and manipulate HTTP traffic', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/proxy', accentColor: '#10B981' },
+  { id: 'traffic', title: 'Traffic Analysis', description: 'Analyze network traffic patterns', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/traffic', accentColor: '#84CC16' },
+  { id: 'osint', title: 'OSINT Recon', description: 'Gather intelligence using open source techniques', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/osint', accentColor: '#0EA5E9' },
+  { id: 'wireless', title: 'Wireless Security', description: 'Test wireless network security', difficulty: 'beginner-advanced', cpReward: '200-400', route: '/dashboard/labs/wireless', accentColor: '#F59E0B' },
+  { id: 'killchain', title: 'Kill Chain', description: 'Execute a full penetration test', difficulty: 'intermediate-advanced', cpReward: '500-600', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626' },
+];
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { resolveImg } from '@/shared/utils/resolveImg';
@@ -355,37 +368,28 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* 2.5 Attack Labs Progress */}
-        <Link
-          to="/dashboard/labs"
-          className="group rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-all duration-300 block"
-          aria-label="Navigate to Attack Labs"
-        >
+        {/* 2.5 Attack Labs */}
+        <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
               <FlaskConical className="w-5 h-5 text-accent" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors">Attack Labs</h3>
+              <h3 className="text-sm font-black text-text-primary">Attack Labs</h3>
               <p className="text-[10px] font-mono text-text-muted">Hands-on offensive security simulations</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-text-muted ml-auto group-hover:text-accent transition-colors" />
+            <Link to="/dashboard/labs" className="ml-auto text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
+              View All
+            </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            {[
-              { icon: <Target className="w-3.5 h-3.5" />, label: 'Privesc' },
-              { icon: <Shield className="w-3.5 h-3.5" />, label: 'Passwords' },
-              { icon: <Eye className="w-3.5 h-3.5" />, label: 'Web Exploit' },
-              { icon: <Network className="w-3.5 h-3.5" />, label: 'SQLi' },
-              { icon: <Crosshair className="w-3.5 h-3.5" />, label: 'Kill Chain' },
-            ].map((lab) => (
-              <div key={lab.label} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-elevated/50 border border-border/20">
-                <span className="text-accent">{lab.icon}</span>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">{lab.label}</span>
+          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-1 px-1">
+            {LABS.map((lab) => (
+              <div key={lab.id} className="min-w-[260px] max-w-[280px] flex-shrink-0">
+                <LabCard {...lab} />
               </div>
             ))}
           </div>
-        </Link>
+        </div>
 
         {/* 2.6 PWA Install */}
         {canInstall && (
