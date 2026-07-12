@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Activity, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { TRAFFIC_CHALLENGES } from '@/features/student/data/simulations/traffic-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
@@ -124,6 +125,7 @@ const TrafficLab = () => {
               <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeChallenge.title}</h1>
               <div className="flex items-center gap-3 mt-2">
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeChallenge.difficulty]}`}>{activeChallenge.difficulty}</span>
+                <LabConnectButton labId="traffic" scenarioId={activeChallenge.id} />
               </div>
             </div>
           </div>

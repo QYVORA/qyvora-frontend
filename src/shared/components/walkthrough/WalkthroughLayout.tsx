@@ -1,5 +1,6 @@
-import { ArrowLeft, Clock } from 'lucide-react';
+import { ArrowLeft, Clock, Terminal, Unplug, Loader2 } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
+import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 
 export interface WalkthroughLayoutProps {
   title: string;
@@ -9,6 +10,7 @@ export interface WalkthroughLayoutProps {
   difficultyColor?: string;
   estimatedMinutes?: number;
   labId: string;
+  scenarioId?: string;
   children: React.ReactNode;
   onBack: () => void;
   completedCount?: number;
@@ -23,12 +25,19 @@ export function WalkthroughLayout({
   difficultyColor,
   estimatedMinutes,
   labId,
+  scenarioId,
   children,
   onBack,
   completedCount = 0,
   totalSteps = 0,
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
+  const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
+
+  const handleConnect = async () => {
+    if (!scenarioId) return;
+    await connect(labId, scenarioId);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[1600px] px-4 md:px-6 lg:px-8 py-6 font-mono">
@@ -74,6 +83,40 @@ export function WalkthroughLayout({
             <span className="px-2.5 py-1 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted">
               {labId}
             </span>
+
+            {/* Connect / Disconnect button */}
+            {scenarioId && (
+              <div className="ml-auto flex items-center gap-2">
+                {isConnected ? (
+                  <>
+                    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-500/10 text-[9px] font-black uppercase tracking-widest text-green-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      {connection?.targetIp ?? 'Connected'}
+                    </span>
+                    <button
+                      onClick={disconnect}
+                      disabled={isLoading}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 text-[9px] font-black uppercase tracking-widest text-red-400 hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                    >
+                      {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Unplug className="w-3 h-3" />}
+                      Disconnect
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleConnect}
+                    disabled={isLoading}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+                  >
+                    {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Terminal className="w-3 h-3" />}
+                    Connect
+                  </button>
+                )}
+                {error && (
+                  <span className="text-[9px] text-red-400">{error}</span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

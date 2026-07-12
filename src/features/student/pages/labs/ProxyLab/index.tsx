@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Network, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PROXY_SCENARIOS } from '@/features/student/data/simulations/proxy-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
@@ -124,6 +125,7 @@ const ProxyLab = () => {
               <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeScenario.title}</h1>
               <div className="flex items-center gap-3 mt-2">
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeScenario.difficulty]}`}>{activeScenario.difficulty}</span>
+                <LabConnectButton labId="proxy" scenarioId={activeScenario.id} />
               </div>
             </div>
           </div>

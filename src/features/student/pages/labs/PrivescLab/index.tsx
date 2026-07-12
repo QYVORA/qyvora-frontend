@@ -120,6 +120,7 @@ const PrivescLab = () => {
         difficulty={selectedScenario.difficulty}
         difficultyColor={DIFFICULTY_STYLES[selectedScenario.difficulty]}
         labId="privesc"
+        scenarioId={selectedScenario.id}
         onBack={() => {
           setCompletedSteps(new Set());
           setSelectedScenario(null);
