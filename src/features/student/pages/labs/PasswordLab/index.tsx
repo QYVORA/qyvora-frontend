@@ -1,242 +1,112 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Key, Terminal, ArrowLeft, CheckCircle, FileText, Copy, AlertTriangle } from 'lucide-react';
-import { PASSWORD_EXERCISES, getShadowFileContent } from '@/features/student/data/simulations/password-exercises';
+import { useState, useCallback } from 'react';
+import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
+import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
 import SEO from '@/shared/components/SEO';
 import { verifyLabFlag } from '../../../services/lab.service';
 
-interface PasswordExercise {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  hashType: string;
-  hashFile: string;
-  hashContent: string;
-  crackedPassword: string;
-  wordlist: string;
-  steps: string[];
-  cpReward: number;
-}
-
-const DIFFICULTY_STYLES: Record<string, { bg: string; text: string }> = {
-  beginner: { bg: 'bg-accent/10', text: 'text-accent' },
-  intermediate: { bg: 'bg-yellow-400/10', text: 'text-yellow-400' },
-  advanced: { bg: 'bg-red-400/10', text: 'text-red-400' },
-};
-
-const TerminalLine = ({ text, isCommand }: { text: string; isCommand?: boolean }) => {
-  if (isCommand) {
-    return (
-      <div className="flex items-start gap-2 font-mono text-sm">
-        <span className="text-accent shrink-0">operator@qyvora:~$</span>
-        <span className="text-accent break-all">{text}</span>
-      </div>
-    );
-  }
-  return (
-    <div className="font-mono text-sm text-white/80 whitespace-pre-wrap break-all">{text}</div>
-  );
-};
-
-const StepTerminal = ({ step, output, isExecuted, command }: { step: number; output: string; isExecuted: boolean; command: string }) => {
-  return (
-    <div className="rounded-xl border border-border/30 overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 bg-bg-card border-b border-border/20">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-red-400" />
-          <div className="w-2 h-2 rounded-full bg-yellow-400" />
-          <div className="w-2 h-2 rounded-full bg-accent" />
-        </div>
-        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
-          Step {step}
-        </span>
-      </div>
-      <div className="bg-bg-card p-4 space-y-1.5 max-h-48 overflow-y-auto">
-        <TerminalLine text={command} isCommand />
-        {isExecuted && output.split('\n').map((line, i) => (
-          <TerminalLine key={i} text={line} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const ExerciseCard = ({ exercise, onClick }: { exercise: PasswordExercise; onClick: () => void }) => {
-  const difficulty = DIFFICULTY_STYLES[exercise.difficulty];
-
-  return (
-    <button
-      onClick={onClick}
-      className="group flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-all duration-300 text-left w-full"
-    >
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-          <Key className="w-5 h-5 text-accent" />
-        </div>
-        <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug">
-          {exercise.title}
-        </h3>
-      </div>
-
-      <p className="text-xs text-text-muted/70 font-mono leading-relaxed mb-4 flex-1 line-clamp-2">
-        {exercise.description}
-      </p>
-
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        <span className="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent">
-          {exercise.hashType}
-        </span>
-        <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${difficulty.bg} ${difficulty.text}`}>
-          {exercise.difficulty}
-        </span>
-      </div>
-
-      <div className="flex items-center justify-between pt-3 border-t border-border/20">
-        <span className="text-[10px] font-black uppercase tracking-widest text-accent">
-          {exercise.cpReward} CP
-        </span>
-        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent transition-colors">
-          Start Lab
-        </span>
-      </div>
-    </button>
-  );
+const DIFFICULTY_STYLES: Record<string, string> = {
+  beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
+  intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
+  advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
 
 const PasswordLab = () => {
-  const [activeExercise, setActiveExercise] = useState<PasswordExercise | null>(null);
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [activeScenario, setActiveScenario] = useState(null);
+  const [completedSteps, setCompletedSteps] = useState(new Set());
   const [flagInput, setFlagInput] = useState('');
-  const [flagSubmitted, setFlagSubmitted] = useState(false);
-  const [flagCorrect, setFlagCorrect] = useState(false);
+  const [flagStatus, setFlagStatus] = useState('idle');
   const [flagLoading, setFlagLoading] = useState(false);
-  const [copiedHash, setCopiedHash] = useState(false);
-  const terminalRef = useRef<HTMLDivElement>(null);
 
-  const isShadowExercise = activeExercise?.id === 'pwd-crack-shadow-extract';
-  const allStepsCompleted = activeExercise && completedSteps.size >= activeExercise.steps.length;
-
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [completedSteps]);
-
-  const handleBack = useCallback(() => {
-    setActiveExercise(null);
+  const startScenario = useCallback((scenario) => {
+    setActiveScenario(scenario);
     setCompletedSteps(new Set());
     setFlagInput('');
-    setFlagSubmitted(false);
-    setFlagCorrect(false);
+    setFlagStatus('idle');
     setFlagLoading(false);
-    setCopiedHash(false);
   }, []);
 
-  const handleStartExercise = useCallback((exercise: PasswordExercise) => {
-    setActiveExercise(exercise);
+  const exitScenario = useCallback(() => {
+    setActiveScenario(null);
     setCompletedSteps(new Set());
     setFlagInput('');
-    setFlagSubmitted(false);
-    setFlagCorrect(false);
+    setFlagStatus('idle');
     setFlagLoading(false);
-    setCopiedHash(false);
   }, []);
 
-  const handleExecuteStep = useCallback((stepIndex: number) => {
-    setCompletedSteps((prev) => {
+  const handleStepComplete = useCallback((index) => {
+    setCompletedSteps(prev => {
       const next = new Set(prev);
-      next.add(stepIndex);
+      next.add(index);
       return next;
     });
   }, []);
 
   const handleSubmitFlag = useCallback(async () => {
-    if (!activeExercise || flagLoading) return;
+    if (!activeScenario || !flagInput.trim() || flagLoading) return;
     setFlagLoading(true);
     try {
-      const result = await verifyLabFlag('passwords', activeExercise.id, flagInput.trim());
-      setFlagCorrect(result.correct);
-      setFlagSubmitted(true);
+      const result = await verifyLabFlag('passwords', activeScenario.id, flagInput.trim());
+      setFlagStatus(result.correct ? 'correct' : 'incorrect');
     } catch {
-      setFlagCorrect(false);
-      setFlagSubmitted(true);
+      setFlagStatus('incorrect');
     } finally {
       setFlagLoading(false);
     }
-  }, [activeExercise, flagInput, flagLoading]);
+  }, [activeScenario, flagInput, flagLoading]);
 
-  const handleCopyHash = useCallback(() => {
-    if (!activeExercise) return;
-    navigator.clipboard.writeText(activeExercise.hashContent);
-    setCopiedHash(true);
-    setTimeout(() => setCopiedHash(false), 2000);
-  }, [activeExercise]);
+  const allStepsCompleted = activeScenario && completedSteps.size >= activeScenario.steps.length;
 
-  const getStepOutput = useCallback((exercise: PasswordExercise, stepIndex: number): string => {
-    const step = exercise.steps[stepIndex];
-    const isLastCrackStep = stepIndex === exercise.steps.length - 2 && step.includes('--show');
-    const isShowStep = step.includes('--show');
-    const isJohnShow = step.includes('john --show');
-
-    if (isJohnShow || isLastCrackStep) {
-      return `${exercise.hashFile}:${exercise.crackedPassword}`;
-    }
-    if (isShowStep) {
-      return `${exercise.hashContent}:${exercise.crackedPassword}`;
-    }
-
-    if (step.includes('echo') && step.includes('>')) {
-      return '';
-    }
-    if (step.includes('hashcat') && !step.includes('--show')) {
-      return `Session..........: hashcat\nStatus...........: Cracked\nHash.Mode........: (${exercise.hashType})\nRecovered........: 1/1 (100.00%)\nSpeed.#1...........: 1234.5 kH/s`;
-    }
-    if (step.includes('john') && !step.includes('--show') && !step.includes('unshadow')) {
-      return `Loaded 1 password hash [${exercise.hashType}]\n1g 0:00:00:02 100.00%\nSession completed`;
-    }
-    if (step.includes('cat') && step.includes('shadow')) {
-      return 'shadow file extracted (21 entries)';
-    }
-    if (step.includes('unshadow')) {
-      return 'unshadowed.txt created (6 crackable entries)';
-    }
-    if (step.includes('cat >')) {
-      return '';
-    }
-    if (step.includes('EOF')) {
-      return '';
-    }
-
-    return 'done';
-  }, []);
-
-  if (!activeExercise) {
+  if (!activeScenario) {
     return (
       <div className="bg-bg min-h-full">
         <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." />
-
-        <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
-                <Key className="w-6 h-6 text-accent" />
+        <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                <Key className="w-7 h-7 text-accent" />
               </div>
-              <h1 className="text-4xl md:text-6xl font-black text-text-primary tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">
                 Password <span className="text-accent">Cracking</span>
               </h1>
             </div>
-            <p className="text-sm text-text-muted font-mono">
-              Extract and crack password hashes using John the Ripper and Hashcat
+            <p className="text-base text-text-muted font-mono max-w-2xl">
+              Extract and crack password hashes using John the Ripper and Hashcat.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {PASSWORD_EXERCISES.map((exercise) => (
-              <ExerciseCard
-                key={exercise.id}
-                exercise={exercise}
-                onClick={() => handleStartExercise(exercise)}
-              />
+          <div className="border-t border-border/30 mb-10" />
+
+          <div className="space-y-4">
+            {PASSWORD_EXERCISES.map((scenario, index) => (
+              <button
+                key={scenario.id}
+                onClick={() => startScenario(scenario)}
+                className="group w-full text-left rounded-2xl border border-border/30 bg-bg-card p-6 hover:border-accent/30 transition-all duration-300"
+              >
+                <div className="flex items-start gap-5">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 transition-colors">
+                    <span className="text-sm font-black text-text-muted group-hover:text-accent transition-colors">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-black text-text-primary group-hover:text-accent transition-colors">
+                        {scenario.title}
+                      </h3>
+                      <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[scenario.difficulty]}`}>
+                        {scenario.difficulty}
+                      </span>
+                    </div>
+                    <p className="text-xs font-black uppercase tracking-widest text-accent/70 mb-2">{scenario.hashType}</p>
+                    <p className="text-sm text-text-muted/70 font-mono leading-relaxed line-clamp-2">{scenario.description}</p>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-border/20 shrink-0">
+                    <span className="text-sm font-mono text-text-muted">{scenario.cpReward} CP</span>
+                  </div>
+                </div>
+              </button>
             ))}
           </div>
         </div>
@@ -244,189 +114,129 @@ const PasswordLab = () => {
     );
   }
 
-  const difficulty = DIFFICULTY_STYLES[activeExercise.difficulty];
-
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeExercise.title} — Password Lab`} description={activeExercise.description} />
-
-      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-6">
-        {/* Back button */}
-        <button
-          onClick={handleBack}
-          className="flex items-center gap-2 text-text-muted hover:text-accent transition-colors text-sm font-mono"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-[10px] font-black uppercase tracking-widest">Back to Exercises</span>
-        </button>
-
-        {/* Exercise info */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-          <div className="flex items-start justify-between gap-4 mb-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                <Key className="w-5 h-5 text-accent" />
+      <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} />
+      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
+        <div className="mb-8">
+          <button onClick={exitScenario} className="flex items-center gap-2 text-text-muted hover:text-accent transition-colors mb-6">
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-widest">All Exercises</span>
+          </button>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+              <Key className="w-7 h-7 text-accent" />
+            </div>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeScenario.title}</h1>
+              <div className="flex items-center gap-3 mt-2">
+                <span className="text-[11px] font-black uppercase tracking-widest text-accent">{activeScenario.hashType}</span>
+                <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeScenario.difficulty]}`}>
+                  {activeScenario.difficulty}
+                </span>
               </div>
-              <h2 className="text-lg font-black text-text-primary">{activeExercise.title}</h2>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent">
-                {activeExercise.hashType}
-              </span>
-              <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${difficulty.bg} ${difficulty.text}`}>
-                {activeExercise.difficulty}
-              </span>
-              <span className="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent/10 text-accent">
-                {activeExercise.cpReward} CP
-              </span>
-            </div>
-          </div>
-          <p className="text-xs text-text-muted/70 font-mono leading-relaxed">
-            {activeExercise.description}
-          </p>
-        </div>
-
-        {/* Hash file content */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-accent" />
-              <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-                {isShadowExercise ? 'Shadow File Content' : `Hash File: ${activeExercise.hashFile}`}
-              </span>
-            </div>
-            {!isShadowExercise && (
-              <button
-                onClick={handleCopyHash}
-                className="btn-secondary flex items-center gap-1.5 px-3 py-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest text-accent hover:bg-accent/20 transition-colors"
-              >
-                <Copy className="w-3 h-3" />
-                {copiedHash ? 'Copied' : 'Copy'}
-              </button>
-            )}
-          </div>
-          <div className="bg-bg-card rounded-xl p-4 max-h-64 overflow-y-auto" ref={terminalRef}>
-            <pre className="font-mono text-xs text-accent/80 whitespace-pre-wrap break-all">
-              {isShadowExercise ? getShadowFileContent() : activeExercise.hashContent}
-            </pre>
           </div>
         </div>
 
         {/* Steps */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-accent" />
-            <span className="text-[9px] font-black uppercase tracking-widest text-accent">
-              Step-by-Step Walkthrough
-            </span>
+        <div className="mb-8 space-y-3">
+          <div className="flex items-center gap-2 mb-4">
+            <Terminal className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-black text-text-primary uppercase tracking-wider">Walkthrough</h2>
           </div>
-
-          {activeExercise.steps.map((step, index) => {
+          {activeScenario.steps.map((step, index) => {
             const isCompleted = completedSteps.has(index);
-            const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1) && !completedSteps.has(index);
+            const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
             const isLocked = !isNextStep && !isCompleted;
 
             return (
-              <div key={index} className={`transition-opacity duration-300 ${isLocked ? 'opacity-40' : ''}`}>
-                <StepTerminal
-                  step={index + 1}
-                  command={step}
-                  output={isCompleted ? getStepOutput(activeExercise, index) : ''}
-                  isExecuted={isCompleted}
-                />
-                {isNextStep && (
-                  <div className="mt-2 flex justify-end">
-                    <button
-                      onClick={() => handleExecuteStep(index)}
-                      className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
-                    >
-                      Execute
-                    </button>
+              <div
+                key={index}
+                className={`rounded-2xl border p-6 transition-all ${
+                  isCompleted ? 'border-accent/30 bg-accent/5' : isNextStep ? 'border-accent/30 bg-bg-card' : 'border-border/20 bg-bg-card opacity-50'
+                }`}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black ${
+                    isCompleted ? 'bg-accent text-white' : isNextStep ? 'bg-accent/20 text-accent' : 'bg-white/5 text-text-muted/30'
+                  }`}>
+                    {isCompleted ? <CheckCircle className="w-4 h-4" /> : index + 1}
                   </div>
+                  <span className="text-xs font-black uppercase tracking-widest text-accent">Step {index + 1}</span>
+                </div>
+                <p className="text-base text-text-secondary font-mono leading-relaxed mb-4">
+                  Run: <code className="px-2 py-0.5 bg-white/5 rounded text-accent">{step}</code>
+                </p>
+                {isNextStep && !isCompleted && (
+                  <button onClick={() => handleStepComplete(index)} className="btn-primary !rounded-xl !text-[10px] px-5 py-2.5">
+                    Mark Step Done
+                  </button>
                 )}
-                {isCompleted && (
-                  <div className="mt-2 flex items-center gap-1.5 justify-end">
-                    <CheckCircle className="w-3.5 h-3.5 text-accent" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-accent">Completed</span>
-                  </div>
-                )}
+                {isCompleted && <span className="text-sm font-black text-accent">Step Completed</span>}
               </div>
             );
           })}
         </div>
 
-        {/* Cracked password reveal */}
-        {allStepsCompleted && !flagSubmitted && (
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-accent" />
-              <span className="text-sm font-black text-accent">All Steps Completed</span>
-            </div>
-            <div className="rounded-xl border border-border/30 bg-bg-card p-4">
-              <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-2">Cracked Password(s)</p>
-              <p className="font-mono text-lg font-black text-accent">{activeExercise.crackedPassword}</p>
-            </div>
+        {allStepsCompleted && (
+          <>
+            <div className="border-t border-border/30 mb-8" />
 
-            <div>
-              <p className="text-xs text-text-muted font-mono mb-2">Submit the flag to claim your {activeExercise.cpReward} CP reward:</p>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={flagInput}
-                  onChange={(e) => setFlagInput(e.target.value)}
-                  placeholder="FLAG{...}"
-                  className="flex-1 bg-bg border border-border rounded-xl py-3 px-4 text-text-primary focus:border-accent outline-none font-mono text-sm"
-                />
-                <button
-                  onClick={handleSubmitFlag}
-                  disabled={!flagInput.trim() || flagLoading}
-                  className="btn-primary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-6 py-3 disabled:opacity-50"
-                >
-                  {flagLoading ? 'Verifying...' : 'Submit'}
-                </button>
+            <div className="mb-8">
+              <h2 className="text-lg font-black text-text-primary uppercase tracking-wider mb-4">Completion</h2>
+              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6">
+                <p className="text-sm font-black text-accent mb-2">All steps completed!</p>
+                <p className="text-sm text-text-muted font-mono mb-4">
+                  Submit the flag to claim your {activeScenario.cpReward} CP reward.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="text"
+                    value={flagInput}
+                    onChange={(e) => { setFlagInput(e.target.value); setFlagStatus('idle'); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleSubmitFlag(); }}
+                    placeholder="FLAG{...}"
+                    className="flex-1 bg-bg border border-border rounded-xl py-3 px-4 text-text-primary font-mono text-sm focus:border-accent outline-none"
+                  />
+                  <button onClick={handleSubmitFlag} disabled={!flagInput.trim() || flagLoading} className="btn-primary !rounded-xl !text-[11px] px-8 disabled:opacity-50">
+                    {flagLoading ? 'Verifying...' : 'Submit Flag'}
+                  </button>
+                </div>
+                {flagStatus === 'incorrect' && (
+                  <div className="flex items-center gap-2 mt-3 text-sm text-red-400 font-mono">
+                    <AlertTriangle className="w-4 h-4" />
+                    Incorrect flag. Review your work and try again.
+                  </div>
+                )}
               </div>
             </div>
+          </>
+        )}
+
+        {!allStepsCompleted && (
+          <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-4 flex items-start gap-2">
+            <AlertTriangle className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+            <p className="text-sm font-mono text-text-muted">
+              Complete all steps above to unlock flag submission.
+            </p>
           </div>
         )}
 
-        {/* Flag result */}
-        {flagSubmitted && (
-          <div className={`rounded-2xl border p-5 ${flagCorrect ? 'border-accent/30 bg-accent/5' : 'border-red-400/30 bg-red-400/5'}`}>
-            {flagCorrect ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-accent" />
-                  <span className="text-sm font-black text-accent">Flag Accepted!</span>
-                </div>
-                <p className="text-xs text-text-muted font-mono">
-                  Congratulations! You earned <span className="text-accent font-black">{activeExercise.cpReward} CP</span> for completing this exercise.
-                </p>
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleBack}
-                    className="btn-secondary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
-                  >
-                    Back to Exercises
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-red-400" />
-                  <span className="text-sm font-black text-red-400">Incorrect Flag</span>
-                </div>
-                <p className="text-xs text-text-muted font-mono">
-                  The flag you submitted is incorrect. Review the cracked output and try again.
-                </p>
-                <button
-                  onClick={() => { setFlagSubmitted(false); setFlagInput(''); }}
-                  className="btn-secondary !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-5 py-2.5"
-                >
-                  Try Again
-                </button>
-              </div>
-            )}
+        {flagStatus === 'correct' && (
+          <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
+              <CheckCircle className="w-6 h-6 text-accent" />
+            </div>
+            <div>
+              <p className="text-lg font-black text-accent">Flag Captured!</p>
+              <p className="text-sm font-mono text-text-muted mt-1">
+                You earned {activeScenario.cpReward} CP for completing this exercise.
+              </p>
+              <button onClick={exitScenario} className="btn-secondary !rounded-xl !text-[10px] mt-3 px-5 py-2">
+                Back to Exercises
+              </button>
+            </div>
           </div>
         )}
       </div>
