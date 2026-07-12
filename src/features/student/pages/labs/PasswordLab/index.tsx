@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -89,6 +90,7 @@ const PasswordLab = () => {
                 cpReward={scenario.cpReward}
                 subtitle={scenario.hashType}
                 accentColor="#F59E0B"
+                diagramSvg={SCENARIO_DIAGRAMS[scenario.id]}
                 onStart={() => startScenario(scenario)}
               />
             ))}

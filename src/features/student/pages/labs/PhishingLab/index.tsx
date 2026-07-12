@@ -3,6 +3,7 @@ import { Mail, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Shield } from 'l
 import { PHISHING_CHALLENGES } from '@/features/student/data/simulations/phishing-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -86,6 +87,7 @@ const PhishingLab = () => {
                 description={challenge.description}
                 cpReward={challenge.cpReward}
                 accentColor="#8B5CF6"
+                diagramSvg={SCENARIO_DIAGRAMS[challenge.id]}
                 onStart={() => startChallenge(challenge)}
               />
             ))}

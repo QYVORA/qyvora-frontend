@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
 import { verifyLabFlag } from '../../../services/lab.service';
 
@@ -70,15 +71,16 @@ const KillChainLab = () => {
         <div className="border-t border-border/30 mb-10" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {KILL_CHAIN_SCENARIOS.map((s, i) => (
-            <ScenarioCard
-              key={s.id}
-              index={i}
-              title={s.title}
-              difficulty={s.difficulty}
-              description={s.description}
-              cpReward={s.cpReward}
-              accentColor="#DC2626"
-              onStart={() => startScenario(s)}
+              <ScenarioCard
+                key={s.id}
+                index={i}
+                title={s.title}
+                difficulty={s.difficulty}
+                description={s.description}
+                cpReward={s.cpReward}
+                accentColor="#DC2626"
+                diagramSvg={SCENARIO_DIAGRAMS[s.id]}
+                onStart={() => startScenario(s)}
             />
           ))}
         </div>

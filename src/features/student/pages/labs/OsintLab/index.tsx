@@ -3,6 +3,7 @@ import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe } from '
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -86,6 +87,7 @@ const OsintLab = () => {
                 description={challenge.description}
                 cpReward={challenge.cpReward}
                 accentColor="#0EA5E9"
+                diagramSvg={SCENARIO_DIAGRAMS[challenge.id]}
                 onStart={() => startChallenge(challenge)}
               />
             ))}

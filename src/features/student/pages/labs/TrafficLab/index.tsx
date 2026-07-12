@@ -3,6 +3,7 @@ import { Activity, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucid
 import { TRAFFIC_CHALLENGES } from '@/features/student/data/simulations/traffic-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -86,6 +87,7 @@ const TrafficLab = () => {
                 description={challenge.description}
                 cpReward={challenge.cpReward}
                 accentColor="#84CC16"
+                diagramSvg={SCENARIO_DIAGRAMS[challenge.id]}
                 onStart={() => startChallenge(challenge)}
               />
             ))}

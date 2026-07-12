@@ -3,6 +3,7 @@ import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucid
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -87,6 +88,7 @@ const SqlInjectionLab = () => {
                 cpReward={target.cpReward}
                 subtitle={`${target.injectionType} · ${target.dbms}`}
                 accentColor="#06B66F"
+                diagramSvg={SCENARIO_DIAGRAMS[target.id]}
                 onStart={() => startTarget(target)}
               />
             ))}

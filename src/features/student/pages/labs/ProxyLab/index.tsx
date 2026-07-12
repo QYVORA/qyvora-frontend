@@ -3,6 +3,7 @@ import { Network, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide
 import { PROXY_SCENARIOS } from '@/features/student/data/simulations/proxy-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -86,6 +87,7 @@ const ProxyLab = () => {
                 description={scenario.description}
                 cpReward={scenario.cpReward}
                 accentColor="#10B981"
+                diagramSvg={SCENARIO_DIAGRAMS[scenario.id]}
                 onStart={() => startScenario(scenario)}
               />
             ))}
