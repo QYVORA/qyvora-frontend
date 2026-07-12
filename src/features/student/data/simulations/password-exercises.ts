@@ -45,7 +45,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-md5-simple',
     title: 'MD5 Hash Cracking',
     description:
-      'A suspected attacker left behind an MD5 hash on a compromised server. Crack it to recover the original password and claim your flag.',
+      'Crack a simple MD5 password hash using Hashcat to find the original password.',
     difficulty: 'beginner',
     hashType: 'MD5',
     hashFile: 'mystery_hash.txt',
@@ -63,7 +63,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-sha256-common',
     title: 'SHA-256 Hash Cracking',
     description:
-      'A user account was found with a weakly-hashed password. The hash was stored as SHA-256. Recover the password to proceed.',
+      'Use Hashcat to crack a standard SHA-256 hash and recover the admin password.',
     difficulty: 'beginner',
     hashType: 'SHA-256',
     hashFile: 'user_hash.txt',
@@ -81,7 +81,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-bcrypt',
     title: 'bcrypt Hash Cracking',
     description:
-      'A bcrypt hash was extracted from a web application database. Cracking bcrypt requires more time and a targeted approach. Identify the password.',
+      'Crack a secure bcrypt database hash. Bcrypt is slow to crack, so it needs a targeted dictionary attack.',
     difficulty: 'intermediate',
     hashType: 'bcrypt',
     hashFile: 'bcrypt_hash.txt',
@@ -99,7 +99,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-ntlm-windows',
     title: 'NTLM Hash Cracking',
     description:
-      'During a Windows domain penetration test, you obtained NTLM hashes from the SAM database. Crack this NTLM hash to gain a foothold.',
+      'Crack an NTLM password hash dumped from a Windows system using a fast dictionary attack with Hashcat.',
     difficulty: 'intermediate',
     hashType: 'NTLM',
     hashFile: 'ntlm_hash.txt',
@@ -117,7 +117,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-shadow-extract',
     title: '/etc/shadow Extraction and Cracking',
     description:
-      'You have root access to a Linux server. Extract password hashes from /etc/shadow and crack them to audit weak credentials across user accounts.',
+      'Combine Linux passwd and shadow files using the unshadow tool, then crack the hashes using John the Ripper.',
     difficulty: 'advanced',
     hashType: 'Multiple (SHA-512 / bcrypt / MD5)',
     hashFile: 'shadow.txt',
@@ -138,7 +138,7 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     id: 'pwd-crack-multi-hash',
     title: 'Multi-Hash Type Cracking',
     description:
-      'A developer left a file containing password hashes from multiple systems. Each line uses a different hash algorithm. Crack all hashes and submit the combined flag.',
+      'Identify and crack a list of multiple different hash types (MD5, SHA-1, SHA-256, SHA-512) left behind in a developer file.',
     difficulty: 'advanced',
     hashType: 'Mixed (MD5, SHA-1, SHA-256, SHA-512)',
     hashFile: 'multi_hashes.txt',
