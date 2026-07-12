@@ -13,7 +13,7 @@ import { useToast } from '@/core/contexts/ToastContext';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
 import SEO from '@/shared/components/SEO';
-import PageLoader from '@/shared/components/PageLoader';
+import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
 import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
@@ -114,7 +114,7 @@ const BootcampCourse: React.FC = () => {
     return null;
   })();
 
-  if (loading) return <PageLoader />;
+  if (loading) return <BootcampCourseSkeleton />;
 
   return (
     <div className="bg-bg">

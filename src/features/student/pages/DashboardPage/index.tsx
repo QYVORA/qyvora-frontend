@@ -42,12 +42,131 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-    <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-6">
-    <Skeleton className="h-24 w-full bg-border/30 rounded-2xl" />
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 bg-border/30 rounded-xl" />)}
+  <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+    {/* 1. Hero Banner */}
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+      <div className="space-y-2 w-full sm:w-auto">
+        <Skeleton className="h-3 w-40 bg-border/30 rounded" />
+        <Skeleton className="h-6 w-56 bg-border/30 rounded-lg" />
+        <Skeleton className="h-3 w-36 bg-border/30 rounded" />
+      </div>
+      <Skeleton className="h-10 w-full sm:w-32 bg-border/30 rounded-xl" />
     </div>
-    <Skeleton className="h-48 w-full bg-border/30 rounded-2xl" />
+
+    {/* 2. Stats Strip */}
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card">
+          <Skeleton className="w-10 h-10 bg-border/30 rounded-xl shrink-0" />
+          <div className="space-y-1.5 flex-1">
+            <Skeleton className="h-4 w-20 bg-border/30 rounded" />
+            <Skeleton className="h-3 w-14 bg-border/30 rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* 3. Attack Labs Progress */}
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+      <div className="flex items-center gap-3 mb-4">
+        <Skeleton className="w-10 h-10 bg-border/30 rounded-xl shrink-0" />
+        <div className="space-y-1.5">
+          <Skeleton className="h-3.5 w-24 bg-border/30 rounded" />
+          <Skeleton className="h-2.5 w-40 bg-border/30 rounded" />
+        </div>
+        <Skeleton className="w-4 h-4 bg-border/30 rounded ml-auto shrink-0" />
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-bg-elevated/50 border border-border/20">
+            <Skeleton className="w-3.5 h-3.5 bg-border/30 rounded shrink-0" />
+            <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* 4. In-Progress Bootcamps + Featured Product */}
+    <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex-1 min-w-0">
+        <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="shrink-0 w-[300px] sm:w-[340px] rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+              <Skeleton className="aspect-video w-full bg-border/30" />
+              <div className="p-5 space-y-3">
+                <Skeleton className="h-5 w-3/4 bg-border/30 rounded" />
+                <Skeleton className="h-3 w-full bg-border/30 rounded" />
+                <Skeleton className="h-3 w-1/2 bg-border/30 rounded" />
+                <div className="flex items-center gap-4 pt-2">
+                  <Skeleton className="h-2.5 w-16 bg-border/30 rounded" />
+                  <Skeleton className="h-2.5 w-20 bg-border/30 rounded" />
+                </div>
+                <Skeleton className="h-10 w-full bg-border/30 rounded-xl mt-4" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="w-full md:w-[340px] shrink-0">
+        <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+          <Skeleton className="aspect-video w-full bg-border/30" />
+          <div className="p-5 space-y-3">
+            <Skeleton className="h-4 w-3/4 bg-border/30 rounded" />
+            <Skeleton className="h-3 w-full bg-border/30 rounded" />
+            <div className="flex items-center justify-between pt-2">
+              <Skeleton className="h-3 w-16 bg-border/30 rounded" />
+              <Skeleton className="h-8 w-20 bg-border/30 rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* 5. Learning Path */}
+    <div className="space-y-4">
+      <div className="flex items-center justify-between px-4 md:px-0">
+        <Skeleton className="h-3 w-24 bg-border/30 rounded" />
+        <Skeleton className="h-2.5 w-14 bg-border/30 rounded" />
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 px-4 md:px-0">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="flex flex-col p-4 rounded-xl border border-border/20 bg-bg-card/30 min-h-[160px]">
+            <div className="flex items-center gap-2.5 mb-1.5">
+              <Skeleton className="w-8 h-8 bg-border/30 rounded-lg shrink-0" />
+              <Skeleton className="h-2.5 w-14 bg-border/30 rounded" />
+            </div>
+            <Skeleton className="h-3 w-full bg-border/30 rounded mb-1.5" />
+            <Skeleton className="h-2.5 w-3/4 bg-border/30 rounded" />
+            <div className="mt-auto pt-1.5 space-y-1.5">
+              <Skeleton className="h-2.5 w-20 bg-border/30 rounded" />
+              <Skeleton className="h-1.5 w-full bg-border/30 rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* 6. Room Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="rounded-xl border border-border/30 bg-bg-card p-4 space-y-2">
+          <div className="flex items-center gap-2">
+            <Skeleton className="w-4 h-4 bg-border/30 rounded shrink-0" />
+            <Skeleton className="h-2.5 w-10 bg-border/30 rounded" />
+          </div>
+          <Skeleton className="h-3.5 w-3/4 bg-border/30 rounded" />
+        </div>
+      ))}
+    </div>
+
+    {/* 7. Rank Progress */}
+    <div className="rounded-xl border border-border/30 bg-bg-card p-5">
+      <div className="flex items-center justify-between mb-2">
+        <Skeleton className="h-3 w-32 bg-border/30 rounded" />
+        <Skeleton className="h-3.5 w-10 bg-border/30 rounded" />
+      </div>
+      <Skeleton className="h-2.5 w-full bg-border/30 rounded-full" />
+    </div>
   </div>
 );
 

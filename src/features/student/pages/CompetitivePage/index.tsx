@@ -5,6 +5,7 @@ import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
+import { CompetitiveSkeleton } from '@/features/student/components/StudentSkeletons';
 
 const PERIODS = [
   { key: 'all',  label: 'All Time'   },
@@ -216,11 +217,7 @@ const CompetitivePage = () => {
         )}
 
         {loading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-16 rounded-2xl bg-bg-card border border-border animate-pulse" />
-            ))}
-          </div>
+          <CompetitiveSkeleton />
         ) : entries.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center">
             <Trophy className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />

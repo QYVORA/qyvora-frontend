@@ -8,6 +8,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
 import api from '@/core/services/api';
+import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
@@ -157,11 +158,7 @@ const MyCoursesPage: React.FC = () => {
             )}
 
             {/* Loading */}
-            {loading && (
-              <div className="text-center py-20">
-                <p className="text-text-muted">Loading your courses...</p>
-              </div>
-            )}
+            {loading && <MyCoursesSkeleton />}
 
             {/* Available courses */}
             {!loading && filteredAvailable.length > 0 && (
