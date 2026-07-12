@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
@@ -104,6 +105,7 @@ const KillChainLab = () => {
               <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeScenario.title}</h1>
               <div className="flex items-center gap-3 mt-2">
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeScenario.difficulty]}`}>{activeScenario.difficulty}</span>
+                <LabConnectButton labId="killchain" scenarioId={activeScenario.id} />
               </div>
             </div>
           </div>

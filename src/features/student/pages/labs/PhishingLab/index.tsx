@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Mail, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Shield } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PHISHING_CHALLENGES } from '@/features/student/data/simulations/phishing-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
@@ -119,6 +120,7 @@ const PhishingLab = () => {
               <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeChallenge.title}</h1>
               <div className="flex items-center gap-3 mt-2">
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeChallenge.difficulty]}`}>{activeChallenge.difficulty}</span>
+                <LabConnectButton labId="phishing" scenarioId={activeChallenge.id} />
               </div>
             </div>
           </div>

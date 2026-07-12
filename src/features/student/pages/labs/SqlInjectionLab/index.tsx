@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
@@ -118,6 +119,7 @@ const SqlInjectionLab = () => {
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeTarget.difficulty]}`}>
                   {activeTarget.difficulty}
                 </span>
+                <LabConnectButton labId="sql-injection" scenarioId={activeTarget.id} />
               </div>
             </div>
           </div>

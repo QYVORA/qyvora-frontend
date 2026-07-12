@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
+import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
 import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import SEO from '@/shared/components/SEO';
@@ -120,6 +121,7 @@ const PasswordLab = () => {
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeScenario.difficulty]}`}>
                   {activeScenario.difficulty}
                 </span>
+                <LabConnectButton labId="passwords" scenarioId={activeScenario.id} />
               </div>
             </div>
           </div>
