@@ -8,7 +8,7 @@ import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 import api from '@/core/services/api';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import NewsCard from '@/features/news/components/NewsCard';
-import PageLoader from '@/shared/components/PageLoader';
+import { NewsFeedSkeleton } from '@/features/student/components/StudentSkeletons';
 
 interface Article {
   id: string;
@@ -76,7 +76,7 @@ const NewsFeedPage = () => {
   const hasArticles = articles.length > 0;
   const current = articles[activeIndex];
 
-  if (loading) return <PageLoader />;
+  if (loading) return <NewsFeedSkeleton />;
 
   return (
     <div className="bg-bg">

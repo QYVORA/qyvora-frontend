@@ -10,7 +10,7 @@ import CpLogo from '../../../shared/components/CpLogo';
 import BootcampBadge from '../../../shared/components/BootcampBadge';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
-import PageLoader from '../../../shared/components/PageLoader';
+import { ProfileSkeleton } from '../components/StudentSkeletons';
 import { StreakIcon } from '../../../shared/components';
 import SEO from '../../../shared/components/SEO';
 import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
@@ -72,7 +72,7 @@ const Profile: React.FC = () => {
     organization: profileData.organization,
   };
 
-  if (loading) return <PageLoader />;
+  if (loading) return <ProfileSkeleton />;
 
   return (
     <div className="w-full bg-bg">

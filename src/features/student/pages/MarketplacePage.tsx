@@ -11,7 +11,7 @@ import { resolveImg } from '../../../shared/utils/resolveImg';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
-import PageLoader from '../../../shared/components/PageLoader';
+import { MarketplaceSkeleton } from '../components/StudentSkeletons';
 
 const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 const PAGE_SIZE = 10;
@@ -114,7 +114,7 @@ const Marketplace: React.FC = () => {
   const visibleTxRows = txRows.slice(0, visibleCount);
   const hasMore = visibleCount < txRows.length;
 
-  if (loading) return <PageLoader />;
+  if (loading) return <MarketplaceSkeleton />;
 
   return (
     <div className="bg-bg">

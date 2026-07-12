@@ -4,7 +4,7 @@ import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '../../../shared/components/SEO';
-import PageLoader from '../../../shared/components/PageLoader';
+import { NotificationsSkeleton } from '../components/StudentSkeletons';
 
 interface Notification {
   id: string;
@@ -84,7 +84,7 @@ const Notifications: React.FC = () => {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
 
-  if (loading) return <PageLoader />;
+  if (loading) return <NotificationsSkeleton />;
 
   return (
     <div className="bg-bg">
@@ -118,17 +118,7 @@ const Notifications: React.FC = () => {
                <h1 className="text-4xl font-black text-text-primary md:text-6xl">Notifications</h1>
                <p className="mt-2 max-w-lg text-base text-text-muted">System alerts and mission updates.</p>
              </ScrollReveal>
-            {loading ? (
-              <div className="space-y-3">
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((i) => (
-                  <div key={i} className="animate-pulse rounded-2xl border border-border bg-bg-card p-5">
-                    <div className="h-3 bg-accent-dim/30 rounded w-1/4 mb-2" />
-                    <div className="h-4 bg-accent-dim/30 rounded w-2/3 mb-2" />
-                    <div className="h-3 bg-accent-dim/20 rounded w-full" />
-                  </div>
-                ))}
-              </div>
-            ) : displayed.length === 0 ? (
+            {displayed.length === 0 ? (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
                 <BellOff className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
                 <p className="text-base text-text-muted">

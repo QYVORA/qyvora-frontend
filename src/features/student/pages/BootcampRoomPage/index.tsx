@@ -26,7 +26,7 @@ import DesktopToolbar from '@/features/student/components/bootcamp-room/DesktopT
 import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
 import SEO from '@/shared/components/SEO';
-import PageLoader from '@/shared/components/PageLoader';
+import { BootcampRoomSkeleton } from '@/features/student/components/StudentSkeletons';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -248,7 +248,7 @@ const BootcampRoomPage: React.FC = () => {
     } finally { setCompleting(false); }
   };
 
-  if (apiLoading) return <PageLoader />;
+  if (apiLoading) return <BootcampRoomSkeleton />;
 
   const roomTitle = room?.title || 'Room';
   return (
