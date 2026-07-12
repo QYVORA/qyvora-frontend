@@ -19,7 +19,7 @@ export async function tryAutoSubscribePush(): Promise<void> {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'denied') return;
 
-  let permission = Notification.permission;
+  let permission: NotificationPermission = Notification.permission;
   if (permission === 'default') {
     permission = await Notification.requestPermission();
   }
@@ -28,6 +28,7 @@ export async function tryAutoSubscribePush(): Promise<void> {
   try {
     const { data } = await api.get<{ publicKey: string }>('/push/vapid-public-key');
     if (!data?.publicKey) return;
+    const { publicKey } = data;
 
     const registration = await navigator.serviceWorker.ready;
     const existingSub = await registration.pushManager.getSubscription();
