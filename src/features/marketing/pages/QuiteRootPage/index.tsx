@@ -21,6 +21,7 @@ import { Footer } from '@/shared/components/layout';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
+import { ResearchersCarouselSection } from './ResearchersCarouselSection';
 
 const capabilities = [
   { id: 'research', title: 'Offensive Security Research', icon: IconSearch, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
@@ -248,6 +249,10 @@ const QuiteRootPage: React.FC = () => {
 
         <section id="about" className="relative w-full py-20 md:py-28 lg:py-32">
           <WhoWeAre />
+        </section>
+
+        <section id="researchers" className="relative w-full py-20 md:py-28 lg:py-32">
+          <ResearchersCarouselSection />
         </section>
 
         <section id="mission" className="relative w-full py-20 md:py-28 lg:py-32">
