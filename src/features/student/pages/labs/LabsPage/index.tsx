@@ -1,11 +1,7 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { FlaskConical, Search } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
-
-const CATEGORIES = ['all', 'exploitation', 'recon', 'analysis', 'advanced'] as const;
-type Category = typeof CATEGORIES[number];
 
 const LABS = [
   {
@@ -16,7 +12,6 @@ const LABS = [
     cpReward: '50-400',
     route: '/dashboard/labs/privesc',
     accentColor: '#FBBF24',
-    category: 'exploitation' as Category,
   },
   {
     id: 'passwords',
@@ -26,7 +21,6 @@ const LABS = [
     cpReward: '100-300',
     route: '/dashboard/labs/passwords',
     accentColor: '#F59E0B',
-    category: 'analysis' as Category,
   },
   {
     id: 'webapp',
@@ -36,7 +30,6 @@ const LABS = [
     cpReward: '100-400',
     route: '/dashboard/labs/web-exploitation',
     accentColor: '#EF4444',
-    category: 'exploitation' as Category,
   },
   {
     id: 'sqli',
@@ -46,7 +39,6 @@ const LABS = [
     cpReward: '200-400',
     route: '/dashboard/labs/sql-injection',
     accentColor: '#06B66F',
-    category: 'exploitation' as Category,
   },
   {
     id: 'phishing',
@@ -56,7 +48,6 @@ const LABS = [
     cpReward: '150-400',
     route: '/dashboard/labs/phishing',
     accentColor: '#8B5CF6',
-    category: 'recon' as Category,
   },
   {
     id: 'proxy',
@@ -66,7 +57,6 @@ const LABS = [
     cpReward: '150-400',
     route: '/dashboard/labs/proxy',
     accentColor: '#10B981',
-    category: 'analysis' as Category,
   },
   {
     id: 'traffic',
@@ -76,7 +66,6 @@ const LABS = [
     cpReward: '150-400',
     route: '/dashboard/labs/traffic',
     accentColor: '#84CC16',
-    category: 'analysis' as Category,
   },
   {
     id: 'osint',
@@ -86,7 +75,6 @@ const LABS = [
     cpReward: '150-400',
     route: '/dashboard/labs/osint',
     accentColor: '#0EA5E9',
-    category: 'recon' as Category,
   },
   {
     id: 'wireless',
@@ -96,7 +84,6 @@ const LABS = [
     cpReward: '200-400',
     route: '/dashboard/labs/wireless',
     accentColor: '#F59E0B',
-    category: 'advanced' as Category,
   },
   {
     id: 'killchain',
@@ -106,23 +93,21 @@ const LABS = [
     cpReward: '500-600',
     route: '/dashboard/labs/kill-chain',
     accentColor: '#DC2626',
-    category: 'advanced' as Category,
   },
 ];
 
 const LabsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<Category>('all');
 
   const filteredLabs = useMemo(() => {
-    return LABS.filter((lab) => {
-      const matchesSearch =
-        lab.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lab.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = activeCategory === 'all' || lab.category === activeCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, activeCategory]);
+    if (!searchQuery) return LABS;
+    const q = searchQuery.toLowerCase();
+    return LABS.filter(
+      (lab) =>
+        lab.title.toLowerCase().includes(q) ||
+        lab.description.toLowerCase().includes(q)
+    );
+  }, [searchQuery]);
 
   return (
     <div className="bg-bg min-h-full">
@@ -140,7 +125,7 @@ const LabsPage = () => {
 
         <div className="border-t border-border/30 mb-6" />
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex gap-4 mb-8">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
             <input
@@ -150,38 +135,6 @@ const LabsPage = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors"
             />
-          </div>
-
-          <div className="hidden md:flex items-center gap-2 bg-bg-elevated rounded-xl border border-border/60 p-1">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-200 ${
-                  activeCategory === cat
-                    ? 'bg-accent text-bg'
-                    : 'text-text-muted hover:text-accent'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="md:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
-                  activeCategory === cat
-                    ? 'bg-accent text-bg'
-                    : 'text-text-muted hover:text-accent border border-border/60'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
           </div>
         </div>
 
