@@ -119,7 +119,7 @@ export const SITE_CONFIG = {
         label: 'Company',
         items: [
           { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
-      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch', modal: true },
       { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
     ],
   },
@@ -135,7 +135,7 @@ export const SITE_CONFIG = {
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
       { key: 'market', label: 'Market', path: '/zero-day-market', desc: 'Zero-day intelligence vault' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
-      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch' },
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch', modal: true },
     ],
     company: [
       { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
@@ -143,7 +143,7 @@ export const SITE_CONFIG = {
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
       { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
-      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal' }
+      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal', modal: true }
     ],
   },
   

@@ -7,6 +7,7 @@ import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
@@ -113,15 +114,30 @@ const Navbar: React.FC = () => {
                         {group.items.map((item, idx) => {
                           const n = group.items.length;
                           const hasBottomBorder = idx < n - (2 - n % 2);
+                          const linkClasses = `text-center px-4 py-4 text-sm font-black uppercase tracking-[0.15em] transition-colors ${
+                            isActive(item.path)
+                              ? 'text-accent bg-accent/5'
+                              : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
+                          } ${idx % 2 === 0 ? 'border-r border-accent/20' : ''} ${hasBottomBorder ? 'border-b border-accent/20' : ''}`;
+
+                          if ((item as any).modal) {
+                            return (
+                              <ContactTrigger
+                                key={item.key}
+                                className={linkClasses}
+                                onOpen={() => setOpenDropdown(null)}
+                              >
+                                {item.label}
+                              </ContactTrigger>
+                            );
+                          }
+
                           return (
                             <Link
                               key={item.key}
                               to={item.path}
-                              className={`text-center px-4 py-4 text-sm font-black uppercase tracking-[0.15em] transition-colors ${
-                                isActive(item.path)
-                                  ? 'text-accent bg-accent/5'
-                                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
-                              } ${idx % 2 === 0 ? 'border-r border-accent/20' : ''} ${hasBottomBorder ? 'border-b border-accent/20' : ''}`}
+                              onClick={() => setOpenDropdown(null)}
+                              className={linkClasses}
                             >
                               {item.label}
                             </Link>
@@ -222,20 +238,36 @@ const Navbar: React.FC = () => {
                           className="overflow-hidden"
                         >
                           <div className="pl-6 pb-2 flex flex-col gap-1">
-                            {group.items.map((item) => (
-                              <Link
-                                key={item.key}
-                                to={item.path}
-                                onClick={() => setIsMenuOpen(false)}
-                                className={`relative pl-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] transition-colors border-l-2 ${
-                                  isActive(item.path)
-                                    ? 'text-accent border-accent'
-                                    : 'text-text-secondary border-transparent hover:text-accent hover:border-accent/50'
-                                }`}
-                              >
-                                {item.label}
-                              </Link>
-                            ))}
+                            {group.items.map((item) => {
+                              const linkClasses = `relative pl-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] transition-colors border-l-2 ${
+                                isActive(item.path)
+                                  ? 'text-accent border-accent'
+                                  : 'text-text-secondary border-transparent hover:text-accent hover:border-accent/50'
+                              }`;
+
+                              if ((item as any).modal) {
+                                return (
+                                  <ContactTrigger
+                                    key={item.key}
+                                    className={linkClasses}
+                                    onOpen={() => setIsMenuOpen(false)}
+                                  >
+                                    {item.label}
+                                  </ContactTrigger>
+                                );
+                              }
+
+                              return (
+                                <Link
+                                  key={item.key}
+                                  to={item.path}
+                                  onClick={() => setIsMenuOpen(false)}
+                                  className={linkClasses}
+                                >
+                                  {item.label}
+                                </Link>
+                              );
+                            })}
                           </div>
                         </motion.div>
                       )}
