@@ -382,9 +382,9 @@ const Dashboard = () => {
               View All
             </Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-1 px-1">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-1 px-1">
             {LABS.map((lab) => (
-              <div key={lab.id} className="min-w-[260px] max-w-[280px] flex-shrink-0">
+              <div key={lab.id} className="min-w-[calc((100%-32px)/3)] snap-start flex-shrink-0">
                 <LabCard {...lab} />
               </div>
             ))}
