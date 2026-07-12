@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import api from '../../../core/services/api';
 import type { LabConnectionState } from '../data/simulations/types';
 
@@ -16,29 +16,36 @@ export function useLabConnection(): UseLabConnectionReturn {
   const [connection, setConnection] = useState<LabConnectionState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const connectionRef = useRef<LabConnectionState | null>(null);
 
   useEffect(() => {
-    checkExistingConnection();
-  }, []);
+    connectionRef.current = connection;
+  }, [connection]);
 
-  const checkExistingConnection = async () => {
-    try {
-      const { data } = await api.get('/student/labs/connections');
-      if (data.connections && data.connections.length > 0) {
-        const active = data.connections[0];
-        setConnection({
-          connectionId: active.connectionId,
-          targetIp: active.targetIp,
-          expiresAt: active.expiresAt,
-          commandsRun: active.commandsRun || [],
-          chaptersCompleted: active.chaptersCompleted || [],
-          currentChapterId: active.currentChapterId || '',
-        });
+  useEffect(() => {
+    let cancelled = false;
+    const checkExistingConnection = async () => {
+      try {
+        const { data } = await api.get('/student/labs/connections');
+        if (cancelled) return;
+        if (data.connections && data.connections.length > 0) {
+          const active = data.connections[0];
+          setConnection({
+            connectionId: active.connectionId,
+            targetIp: active.targetIp,
+            expiresAt: active.expiresAt,
+            commandsRun: active.commandsRun || [],
+            chaptersCompleted: active.chaptersCompleted || [],
+            currentChapterId: active.currentChapterId || '',
+          });
+        }
+      } catch {
+        // No active connection
       }
-    } catch {
-      // No active connection
-    }
-  };
+    };
+    checkExistingConnection();
+    return () => { cancelled = true; };
+  }, []);
 
   const connect = useCallback(async (labId: string, scenarioId: string) => {
     setIsLoading(true);
@@ -61,11 +68,12 @@ export function useLabConnection(): UseLabConnectionReturn {
   }, []);
 
   const disconnect = useCallback(async () => {
-    if (!connection) return;
+    const conn = connectionRef.current;
+    if (!conn) return;
     setIsLoading(true);
     try {
       await api.post('/student/labs/disconnect', {
-        connectionId: connection.connectionId,
+        connectionId: conn.connectionId,
       });
       setConnection(null);
     } catch (err: any) {
@@ -73,14 +81,15 @@ export function useLabConnection(): UseLabConnectionReturn {
     } finally {
       setIsLoading(false);
     }
-  }, [connection]);
+  }, []);
 
   const updateProgress = useCallback(
     async (command?: string, chapterId?: string) => {
-      if (!connection) return;
+      const conn = connectionRef.current;
+      if (!conn) return;
       try {
         const { data } = await api.put('/student/labs/progress', {
-          connectionId: connection.connectionId,
+          connectionId: conn.connectionId,
           command,
           chapterId,
         });
@@ -98,7 +107,7 @@ export function useLabConnection(): UseLabConnectionReturn {
         // Progress update failed silently
       }
     },
-    [connection]
+    []
   );
 
   return {

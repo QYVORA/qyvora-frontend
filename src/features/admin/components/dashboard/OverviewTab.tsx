@@ -30,15 +30,16 @@ const OverviewTab = () => {
         const ov = ovRes?.data || {};
         const allUsers = Array.isArray(usersRes?.data) ? usersRes.data : [];
         const weekAgo = Date.now() - 7 * 86_400_000;
-        const recent = allUsers
-          .filter((u: any) => new Date(u.createdAt).getTime() > weekAgo)
+        const signupsThisWeek = allUsers
+          .filter((u: any) => new Date(u.createdAt).getTime() > weekAgo);
+        const recent = [...signupsThisWeek]
           .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, 5);
 
         setData({
           users: { total: ov.users?.total || 0, active24h: ov.users?.active24h || 0, byRole: ov.users?.byRole || {} },
           recentSignups: recent,
-          newSignupsWeek: recent.length,
+          newSignupsWeek: signupsThisWeek.length,
           totalCpMinted: ov.totalCpMinted || 0,
           bootcampEnrollmentRate: ov.bootcampEnrollmentRate || 0,
           chainReachable: ov.chainReachable !== false,
