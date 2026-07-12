@@ -172,4 +172,34 @@ export interface PrivescScenario {
   hints: string[];
   filesystem: Record<string, string>;
   solutionCommands: string[];
+  story?: LabStory;
+}
+
+// ── Lab Story System ───────────────────────────────────────────────────────
+export interface LabStory {
+  title: string;
+  chapters: LabChapter[];
+}
+
+export interface LabChapter {
+  id: string;
+  title: string;
+  narrative: string;
+  triggers: ChapterTrigger[];
+  hint?: string;
+}
+
+export interface ChapterTrigger {
+  type: 'command' | 'output_contains' | 'file_access' | 'privilege_check';
+  value: string;
+}
+
+// ── Lab Connection State ────────────────────────────────────────────────────
+export interface LabConnectionState {
+  connectionId: string;
+  targetIp: string;
+  expiresAt: string;
+  commandsRun: string[];
+  chaptersCompleted: string[];
+  currentChapterId: string;
 }
