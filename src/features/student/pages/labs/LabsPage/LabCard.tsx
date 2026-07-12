@@ -23,10 +23,6 @@ const LabCard = ({ id, title, description, difficulty, cpReward, route, accentCo
         className="relative flex items-center justify-center py-8 px-4 overflow-hidden"
         style={{ backgroundColor: `${accentColor}15` }}
       >
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `radial-gradient(${accentColor}40 1px, transparent 1px)`,
-          backgroundSize: '16px 16px'
-        }} />
         <div className="relative text-accent transition-transform duration-300 group-hover:scale-110">
           <Icon className="w-28 h-28 md:w-32 md:h-32" />
         </div>
