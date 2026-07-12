@@ -6,6 +6,7 @@ interface ScenarioCardProps {
   cpReward: number | string;
   subtitle?: string;
   accentColor?: string;
+  diagramSvg?: string;
   onStart: () => void;
 }
 
@@ -15,22 +16,32 @@ const DIFFICULTY_STYLES: Record<string, string> = {
   advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
 
-const ScenarioCard = ({ index, title, difficulty, description, cpReward, subtitle, accentColor = '#06B66F', onStart }: ScenarioCardProps) => (
+const ScenarioCard = ({ index, title, difficulty, description, cpReward, subtitle, accentColor = '#06B66F', diagramSvg, onStart }: ScenarioCardProps) => (
   <button
     onClick={onStart}
     className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 text-left w-full"
   >
     <div
-      className="relative flex items-center justify-center py-6 px-4 overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: `${accentColor}15` }}
     >
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `radial-gradient(${accentColor}40 1px, transparent 1px)`,
-        backgroundSize: '16px 16px'
-      }} />
-      <span className="relative text-3xl font-black transition-transform duration-300 group-hover:scale-110" style={{ color: accentColor }}>
-        {String(index + 1).padStart(2, '0')}
-      </span>
+      {diagramSvg ? (
+        <img
+          src={diagramSvg}
+          alt={title}
+          className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <>
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage: `radial-gradient(${accentColor}40 1px, transparent 1px)`,
+            backgroundSize: '16px 16px'
+          }} />
+          <span className="relative py-6 text-3xl font-black transition-transform duration-300 group-hover:scale-110" style={{ color: accentColor }}>
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        </>
+      )}
     </div>
 
     <div className="flex flex-col gap-2 p-4 flex-1">

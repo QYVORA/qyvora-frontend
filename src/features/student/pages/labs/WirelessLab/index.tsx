@@ -3,6 +3,7 @@ import { Wifi, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-re
 import { WIRELESS_CHALLENGES } from '@/features/student/data/simulations/wireless-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
+import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -86,6 +87,7 @@ const WirelessLab = () => {
                 description={challenge.description}
                 cpReward={challenge.cpReward}
                 accentColor="#F59E0B"
+                diagramSvg={SCENARIO_DIAGRAMS[challenge.id]}
                 onStart={() => startChallenge(challenge)}
               />
             ))}
