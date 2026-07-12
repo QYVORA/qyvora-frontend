@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Terminal, X, Wifi, WifiOff, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { Terminal, X, Wifi, WifiOff, Clock } from 'lucide-react';
 import { SimulatedTerminal } from '../SimulatedTerminal/SimulatedTerminal';
 import { useLabConnection } from '../../hooks/useLabConnection';
 import type { PrivescScenario, ChapterTrigger } from '../../data/simulations/types';
@@ -18,8 +18,6 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
 }) => {
   const { connection, isConnected, connect, disconnect, updateProgress } = useLabConnection();
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
-  const [storyExpanded, setStoryExpanded] = useState(true);
-  const lastCommandRef = useRef<string>('');
 
   const handleConnect = useCallback(async () => {
     await connect('privesc', scenario.id);
@@ -34,7 +32,6 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
     async (command: string) => {
       if (!connection) return;
 
-      lastCommandRef.current = command;
       await updateProgress(command);
 
       if (scenario.story) {
@@ -61,43 +58,44 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
 
   return (
     <div className="flex flex-col h-full">
-      {/* Connection Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-black/80 border-b border-border/30">
+      {/* Terminal Chrome Bar */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-black/40 border-b border-border/20">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            {isConnected ? (
-              <Wifi className="w-4 h-4 text-accent" />
-            ) : (
-              <WifiOff className="w-4 h-4 text-white/30" />
-            )}
-            <span className="text-xs font-mono text-white/50 uppercase tracking-wider">
-              {isConnected ? 'Connected' : 'Disconnected'}
+          {/* Traffic Lights */}
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-400/80" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+            <div className="w-3 h-3 rounded-full bg-green-400/80" />
+          </div>
+
+          {/* Terminal Title */}
+          <div className="flex items-center gap-2 ml-2">
+            <Terminal className="w-4 h-4 text-accent" />
+            <span className="text-[10px] font-mono text-text-muted">
+              {isConnected ? `trainee@${connection?.targetIp || 'target'}:~$` : 'Not connected'}
             </span>
           </div>
-          {connection && (
-            <div className="flex items-center gap-2 text-xs font-mono text-white/30">
-              <Clock className="w-3 h-3" />
-              <span>Expires: {new Date(connection.expiresAt).toLocaleTimeString()}</span>
-            </div>
-          )}
         </div>
-        <div className="flex items-center gap-2">
+
+        {/* Connection Status */}
+        <div className="flex items-center gap-3">
           {isConnected ? (
             <>
-              <button
-                onClick={() => setStoryExpanded(!storyExpanded)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-white/5 border border-border/30 rounded-lg
-                  hover:border-accent/30 hover:bg-white/10 transition-all duration-200
-                  text-[10px] font-mono text-white/50 hover:text-white/70 uppercase tracking-wider"
-              >
-                {storyExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                Story
-              </button>
+              <div className="flex items-center gap-1.5 text-[10px] font-mono text-accent">
+                <Wifi className="w-3 h-3" />
+                <span>Connected</span>
+              </div>
+              {connection?.expiresAt && (
+                <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted/50">
+                  <Clock className="w-3 h-3" />
+                  <span>{new Date(connection.expiresAt).toLocaleTimeString()}</span>
+                </div>
+              )}
               <button
                 onClick={() => setShowDisconnectConfirm(true)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-red-500/10 border border-red-500/30 rounded-lg
-                  hover:border-red-500/50 hover:bg-red-500/20 transition-all duration-200
-                  text-[10px] font-mono text-red-400/70 hover:text-red-400 uppercase tracking-wider"
+                className="flex items-center gap-1 px-2 py-1 bg-white/5 border border-border/20 rounded-lg
+                  hover:border-red-500/30 hover:bg-red-500/10 transition-all duration-200
+                  text-[10px] font-mono text-text-muted/50 hover:text-red-400"
               >
                 <X className="w-3 h-3" />
                 Disconnect
@@ -106,18 +104,18 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
           ) : (
             <button
               onClick={handleConnect}
-              className="flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 rounded-xl
+              className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 border border-accent/30 rounded-lg
                 hover:border-accent/50 hover:bg-accent/20 transition-all duration-200
-                text-xs font-mono text-accent uppercase tracking-wider"
+                text-[10px] font-mono text-accent uppercase tracking-wider"
             >
-              <Terminal className="w-4 h-4" />
-              Connect to Target
+              <Terminal className="w-3 h-3" />
+              Connect
             </button>
           )}
         </div>
       </div>
 
-      {/* Terminal */}
+      {/* Terminal Content */}
       <div className="flex-1 min-h-0">
         <SimulatedTerminal
           open={true}
@@ -132,8 +130,8 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
       {showDisconnectConfirm && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80">
           <div className="bg-bg border border-border/30 rounded-2xl p-6 max-w-sm mx-4">
-            <h3 className="text-lg font-bold text-text-primary mb-2">Disconnect from Lab?</h3>
-            <p className="text-sm text-text-secondary mb-4">
+            <h3 className="text-lg font-bold text-text-primary mb-2">Disconnect from Target?</h3>
+            <p className="text-sm text-text-secondary font-mono mb-4">
               Your terminal session will end. Progress is saved automatically.
             </p>
             <div className="flex gap-2 justify-end">
