@@ -30,17 +30,17 @@ const LabsPage = () => (
       </div>
       <p className="text-sm text-text-muted font-mono mb-8">Hands-on offensive security simulations</p>
       <div className="border-t border-border/30 mb-6" />
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-12 gap-y-10">
         {LABS.map((lab) => {
           const Icon = LAB_ICONS[lab.id] || LAB_ICONS.privesc;
           return (
             <Link
               key={lab.id}
               to={lab.route}
-              className="group flex flex-col items-center gap-3 py-6 px-4 hover:bg-accent/5 rounded-2xl transition-all duration-200"
+              className="group flex flex-col items-center gap-3 py-6 px-6 rounded-2xl transition-all duration-200"
             >
               <div className="text-accent transition-transform duration-200 group-hover:scale-105">
-                <Icon className="w-44 h-44 sm:w-40 sm:h-40" />
+                <Icon className="w-44 h-44 md:w-48 md:h-48" />
               </div>
               <div className="flex flex-col items-center gap-1.5">
                 <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors text-center leading-snug">

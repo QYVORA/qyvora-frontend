@@ -82,49 +82,42 @@ export const BOOTCAMP_CONFIG: BootcampConfig = {
             {
               title: 'What Is Offensive Security?',
               instruction:
-                `Offensive security (also called red teaming or ethical hacking) is the discipline of proactively attacking systems, networks, and applications to discover vulnerabilities before malicious actors do. The key word is **proactively** — you are not waiting for an attack to happen; you are simulating one under controlled conditions.
+                `Valkyrie: "Welcome. At QYVORA, we test security by attacking systems before real hackers do. This is called offensive security.
 
-The field sits on the opposite side of defensive security (blue teaming), which focuses on detection, response, and hardening. Both sides need each other: defenders need to know what attackers do, and attackers need to understand what defenders look for.
+We simulate real-world attacks to find security bugs. Once we find them, organisations can patch them.
 
-**Core disciplines in offensive security:**
-- **Penetration testing** — a scoped, time-boxed engagement to find and report vulnerabilities in a specific target
-- **Red teaming** — a longer, more realistic simulation of a full adversary campaign, including social engineering and physical access
-- **Bug bounty hunting** — independently finding vulnerabilities in public programmes and reporting them for a reward
-- **Vulnerability research** — discovering new, previously unknown vulnerabilities in software or hardware
+**Core Fields:**
+- **Penetration Testing** — Finding security bugs in an application or network.
+- **Red Teaming** — Simulating a full attack on a company to test their response times.
+- **Bug Bounties** — Finding bugs independently for cash rewards.
+- **Vulnerability Research** — Finding new bugs in system code.
 
-In your notes, write down the key difference between offensive and defensive security in your own words. Then write one sentence explaining why organisations pay people to attack their own systems.`,
+*Task:* Write down the difference between offensive (attacking) and defensive (protecting) security in your own words."`,
               image: 'step-01.webp',
             },
             {
               title: 'The QYVORA Operating Model',
               instruction:
-                `QYVORA is built on three pillars: **education**, **execution**, and **community**. Understanding this model tells you exactly what you are training for and how the programme is structured.
+                `Valkyrie: "QYVORA operates on three simple pillars:
 
-**Education** — You are here. The bootcamp gives you the technical foundation, the methodology, and the mindset. No prior experience is assumed. Everything is built from first principles.
+**Pillar 1 — Education** — Learning the technical skills in this bootcamp.
+**Pillar 2 — Execution** — Applying your skills in real challenges and live exercises.
+**Pillar 3 — Community** — Sharing findings and working with other students.
 
-**Execution** — After the bootcamp, you apply what you have learned in real engagements: CTF competitions, bug bounty programmes, and eventually client work. Execution is where theory becomes skill.
-
-**Community** — Offensive security is a team sport. The QYVORA community is where you share findings, ask questions, collaborate on challenges, and build your reputation as an operator.
-
-Write down what each pillar means to you personally. Be specific — not "I want to learn hacking" but "I want to be able to conduct a web application penetration test independently within six months."`,
+*Task:* Write down one specific skill you want to learn in this bootcamp over the next month."`,
               image: 'step-02.webp',
             },
             {
               title: 'Career Paths in Offensive Security',
               instruction:
-                `The offensive security field has several distinct career paths. Knowing which one interests you helps you focus your learning.
+                `Valkyrie: "Here are the main job roles in this field:
 
-**Penetration Tester** — Works for a consultancy or in-house security team. Conducts scoped assessments of networks, web applications, and infrastructure. Produces written reports with findings and remediation advice. This is the most common entry point.
+- **Penetration Tester** — Tests apps and networks, then writes reports to help fix bugs.
+- **Red Team Operator** — Simulates real cyber attackers using stealth and custom tools.
+- **Bug Bounty Hunter** — Finds bugs on public websites for direct payments.
+- **Security Researcher** — Analyzes code to discover brand new exploits.
 
-**Red Team Operator** — Simulates advanced persistent threats (APTs). Works in longer engagements, often without the blue team knowing. Requires deep technical skill and creativity.
-
-**Bug Bounty Hunter** — Works independently, finding vulnerabilities in public programmes run by companies like Google, Microsoft, and HackerOne. Income is variable but uncapped.
-
-**Security Researcher** — Discovers new vulnerability classes, writes exploits, and publishes research. Often works at security firms, universities, or independently.
-
-**CTF Player** — Competes in Capture The Flag competitions. A great way to build skills and reputation. Many professionals started here.
-
-In your notes, rank these paths from most to least interesting to you and explain why. This is not a permanent decision — it is a starting point for your learning focus.`,
+*Task:* Rank these jobs from most to least interesting to you."`,
               image: 'step-03.webp',
             },
           ],
@@ -139,49 +132,39 @@ In your notes, rank these paths from most to least interesting to you and explai
             {
               title: 'The Three Core Traits',
               instruction:
-                `Every effective operator shares three cognitive traits. These are not personality types you are born with — they are habits you develop through deliberate practice.
+                `Valkyrie: "To be a successful operator, you need three key habits:
 
-**1. Curiosity** — The drive to understand how things work, not just that they work. When you see a login form, a curious operator asks: what happens if I send an unexpected character? What database is behind this? What framework is the application built on? Curiosity is what makes you look one layer deeper than everyone else.
+1. **Curiosity** — Always ask how a system works under the hood. When you see a login box, ask what happens if you input unexpected data.
+2. **Persistence** — Most attacks fail the first time. You must be willing to try different methods until you succeed.
+3. **Lateral Thinking** — Solve problems from unexpected angles. If the front gate is locked, look for a side window.
 
-**2. Persistence** — Most attacks fail on the first attempt. Effective operators iterate. They try a different payload, a different port, a different approach. The difference between finding a vulnerability and missing it is often just one more attempt.
-
-**3. Lateral thinking** — The ability to approach a problem from an unexpected angle. Security controls are designed to stop expected attacks. Lateral thinking is how you find the path the defender did not anticipate.
-
-For each trait, write a concrete example of how it would apply in a real engagement. Do not use generic examples — think of a specific scenario.`,
+*Task:* Write down a quick example of using lateral thinking in daily life."`,
               image: 'step-01.webp',
             },
             {
               title: 'Applying the Mindset',
               instruction:
-                `The hacker mindset is not something you switch on during an engagement — it is a way of observing the world. You can practise it right now, without any tools.
+                `Valkyrie: "You can practice this mindset on any object around you. Pick something nearby (like a door lock or a coffee machine) and answer these questions:
 
-Pick any object near you — a door lock, a coffee machine, a website you use daily. Apply the following questions:
+1. What is the system designed to do?
+2. What assumptions did the designer make?
+3. How could you abuse or misuse it?
+4. What inputs does it accept without checking?
 
-1. **How was this built?** What assumptions did the designer make about how it would be used?
-2. **What is the intended use?** What is the system designed to do?
-3. **What is the unintended use?** What can it do that the designer did not intend?
-4. **What does it trust?** What inputs does it accept without verification?
-5. **What happens at the boundary?** What happens when you give it input that is too long, too short, unexpected, or malformed?
-
-This exercise is not trivial. The ability to ask these questions about any system — a web application, a network protocol, a physical lock — is the foundation of every vulnerability discovery.
-
-Write your answers for the object you chose. Be specific and detailed.`,
+*Task:* Write down your answers for the object you chose."`,
               image: 'step-02.webp',
             },
             {
               title: 'Tools vs. Understanding',
               instruction:
-                `There is a critical distinction between someone who runs tools and someone who understands what those tools do. This distinction determines your ceiling as an operator.
+                `Valkyrie: "There is a difference between running a tool and understanding how it works.
 
-A tool runner opens Metasploit, selects an exploit, and runs it. If it works, they report it. If it does not, they move on. They cannot adapt when the tool fails, cannot explain the vulnerability to a client, and cannot find vulnerabilities that no tool covers.
+- **Tool Runners** — Just download scripts and run them. If the script fails, they cannot fix it.
+- **Operators** — Understand the underlying bug. They can write custom scripts and adapt when tools fail.
 
-An operator understands the underlying vulnerability — the memory corruption, the logic flaw, the misconfiguration. They can replicate the attack manually, adapt it to a different context, and explain it clearly in a report.
+**Our goal is to make you an operator.**
 
-**The goal of this bootcamp is to make you an operator, not a tool runner.**
-
-Every tool you use in this programme, you will understand from first principles before you use it. You will know what it does, why it works, and how to replicate its core function manually.
-
-In your notes, answer this question honestly: right now, are you closer to a tool runner or an operator? What specific knowledge gaps would you need to close to move further toward operator?`,
+*Task:* Assess yourself honestly. Are you a tool runner or an operator? What do you need to learn next?"`,
               image: 'step-03.webp',
             },
           ],
@@ -196,55 +179,42 @@ In your notes, answer this question honestly: right now, are you closer to a too
             {
               title: 'The Legal Framework',
               instruction:
-                `Offensive security without written authorisation is illegal. This is not a grey area. The following laws apply depending on your jurisdiction:
+                `Valkyrie: "Unauthorized access to any computer system is illegal. The line between security testing and criminal hacking is simple: **written permission**.
 
-**United Kingdom** — The Computer Misuse Act 1990 (CMA) makes it a criminal offence to access a computer system without authorisation (Section 1), to access with intent to commit further offences (Section 2), and to impair the operation of a computer (Section 3). Penalties range from fines to 10 years imprisonment.
+Major computer crime laws:
+- **United Kingdom** — Computer Misuse Act 1990.
+- **United States** — Computer Fraud and Abuse Act (CFAA).
+- **European Union** — Directive 2013/40/EU.
 
-**United States** — The Computer Fraud and Abuse Act (CFAA) prohibits unauthorised access to protected computers. Penalties can reach 20 years imprisonment for serious offences.
-
-**European Union** — Directive 2013/40/EU on attacks against information systems criminalises unauthorised access across all member states.
-
-**The key principle in every jurisdiction:** authorisation is the line between legal security testing and criminal hacking. The technical actions are identical — only the authorisation differs.
-
-In your notes, research the specific law that applies in your country. Write down the key offences and their maximum penalties. You are responsible for knowing this.`,
+*Task:* Write down the name of the cyber crime law in your country."`,
               image: 'step-01.webp',
             },
             {
               title: 'Scope and Authorisation',
               instruction:
-                `In a professional engagement, **scope** defines exactly what you are and are not permitted to test. It is documented in a written agreement before any testing begins.
+                `Valkyrie: "In a professional security test, the **Scope** defines exactly what you are allowed to attack.
 
-A typical scope document includes:
-- **In-scope targets** — specific IP ranges, domains, or applications you are permitted to test
-- **Out-of-scope targets** — systems you must not touch, even if you discover them during testing
-- **Permitted techniques** — what attack types are allowed (e.g. no denial of service, no physical access)
-- **Testing window** — the dates and times during which testing is permitted
-- **Emergency contacts** — who to call if you accidentally cause an outage or find a critical vulnerability
+A scope document lists:
+- **In-Scope Targets** — The domains and IP addresses you can test.
+- **Out-of-Scope Targets** — Systems you must not touch.
+- **Allowed Methods** — What attacks you are permitted to use.
+- **Testing Times** — The exact dates and hours for the test.
 
-**Why this matters:** If you test a system that is out of scope — even accidentally — you may have committed a criminal offence. The authorisation document is your legal protection. Without it, you have none.
-
-Write down in your notes: what would you do if, during a penetration test, you discovered a critical vulnerability in a system that was out of scope? There is a correct answer — research it.`,
+*Task:* What would you do if you found a bug on a system that is out-of-scope? (Hint: Do not exploit it)."`,
               image: 'step-02.webp',
             },
             {
               title: 'Responsible Disclosure',
               instruction:
-                `Responsible disclosure (also called coordinated disclosure) is the process of reporting a vulnerability to the affected organisation before making it public, giving them time to fix it.
+                `Valkyrie: "When you find a security bug in public software, follow **Responsible Disclosure**:
 
-**The standard disclosure process:**
+1. **Report** the bug privately to the vendor.
+2. **Wait** 90 days for them to create a patch.
+3. **Publish** your findings only after the patch is released.
 
-1. **Discover** the vulnerability and document it thoroughly — what it is, how to reproduce it, and what the impact is
-2. **Identify** the correct contact — most organisations have a security@[domain] address or a published security policy
-3. **Report** the vulnerability privately, including all technical details and a proof of concept
-4. **Agree on a timeline** — the industry standard is 90 days for the organisation to release a fix before you publish
-5. **Follow up** if there is no response within a reasonable time (typically 7-14 days)
-6. **Publish** your findings after the fix is released, or after the agreed deadline passes
+This protects users from being attacked before the bug is fixed.
 
-**Why this matters:** Publishing a vulnerability before a fix is available puts every user of that software at risk. Responsible disclosure balances the public's right to know with the need to protect users.
-
-**Bug bounty programmes** formalise this process — companies publish the rules, the scope, and the rewards. Always read the programme rules before testing.
-
-Document the full responsible disclosure process in your notes. Include what you would do if the organisation ignored your report after 90 days.`,
+*Task:* Summarize the steps of reporting a bug privately."`,
               image: 'step-03.webp',
             },
           ],
