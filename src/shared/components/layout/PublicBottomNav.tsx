@@ -52,9 +52,11 @@ const PublicBottomNav: React.FC = () => {
           const active = isActive(item.path);
           const content = (
             <>
+              {active && (
+                <span className="absolute top-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
+              )}
               <item.icon
-                className={`w-5 h-5 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}
-                strokeWidth={active ? 2.5 : 1.8}
+                className={`w-5 h-5 transition-all ${active ? 'text-accent drop-shadow-[0_0_6px_rgba(6,182,111,0.4)]' : 'text-text-muted'}`}
               />
               <span
                 className={`text-[10px] font-bold uppercase tracking-wide transition-colors ${

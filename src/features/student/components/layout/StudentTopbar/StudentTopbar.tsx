@@ -356,20 +356,20 @@ const StudentTopbar = () => {
                     to={item.path}
                     className={`flex flex-col items-center gap-1.5 px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                       active
-                        ? 'bg-accent text-bg'
+                        ? 'bg-accent text-white'
                         : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                     }`}
                   >
                     {active ? (
                       <AnimatedIcon trigger="mount" duration={0.6}>
-                        <item.icon size={26} />
+                        <item.icon size={26} className="text-white" />
                       </AnimatedIcon>
                     ) : (
                       <AnimatedIcon trigger="hover" duration={0.5}>
                         <item.icon size={26} />
                       </AnimatedIcon>
                     )}
-                    {item.label}
+                    <span className={active ? 'text-white' : ''}>{item.label}</span>
                   </Link>
                 );
               })}
@@ -523,10 +523,15 @@ const StudentTopbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
+                  className={`relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-all ${
+                    active ? 'bg-accent/5' : ''
+                  }`}
                   aria-current={active ? 'page' : undefined}
                 >
-                  <item.icon size={26} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
+                  {active && (
+                    <span className="absolute top-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
+                  )}
+                  <item.icon size={26} className={`transition-colors ${active ? 'text-accent drop-shadow-[0_0_6px_rgba(6,182,111,0.4)]' : 'text-text-muted'}`} />
                   <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
                     {item.label}
                   </span>
@@ -536,14 +541,14 @@ const StudentTopbar = () => {
 
             <button
               onClick={() => setMoreOpen(true)}
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors relative"
+              className="relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-colors"
               aria-label="More"
               aria-expanded={moreOpen}
             >
               <IconNotification size={26} className="text-text-muted" />
               <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
               {unreadCount > 0 && (
-                <span className="absolute top-2.5 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                <span className="absolute top-2.5 right-[calc(50%-14px)] w-4.5 h-4.5 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-sm shadow-accent/30">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
