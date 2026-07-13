@@ -102,7 +102,7 @@ const MyCoursesPage: React.FC = () => {
     <div className="bg-bg min-h-screen">
       <SEO title="My Courses" description="Your purchased courses." />
 
-      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
 
             {/* Header */}
             <div className="mb-8">
@@ -176,25 +176,6 @@ const MyCoursesPage: React.FC = () => {
                           to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
                           className="group block overflow-hidden rounded-2xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
                         >
-                          <div className="aspect-[8/5] overflow-hidden bg-bg-elevated relative">
-                            <img
-                              src={course.coverSvg}
-                              alt={course.title}
-                              className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isComplete ? 'brightness-75' : ''}`}
-                            />
-                            {(pct > 0 || isComplete) && (
-                              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-bg/40">
-                                <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
-                              </div>
-                            )}
-                            {isComplete && (
-                              <div className="absolute top-3 right-3">
-                                <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-accent text-bg text-[8px] font-black uppercase tracking-widest">
-                                  <CheckCircle2 className="h-2.5 w-2.5" /> Done
-                                </div>
-                              </div>
-                            )}
-                          </div>
                           <div className="p-5 space-y-3">
                             <div className="flex items-center justify-between">
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
@@ -272,9 +253,6 @@ const MyCoursesPage: React.FC = () => {
                         key={course.id}
                         className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card/50 opacity-60"
                       >
-                        <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
-                          <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" />
-                        </div>
                         <div className="p-5 space-y-3">
                           <div className="flex items-center justify-between">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">

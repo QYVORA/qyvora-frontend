@@ -67,7 +67,7 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-  <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+  <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
     {/* 1. Hero Banner */}
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
       <div className="space-y-2 w-full sm:w-auto">
@@ -201,7 +201,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
     <Link
       ref={hoverRef}
       to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      className="group rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-colors flex flex-col h-full"
+      className="group rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 hover:border-accent/30 transition-colors flex flex-col h-full"
     >
       <div className="flex items-center gap-2 mb-3">
         <IconCode size={22} className="text-accent/60" />
@@ -213,8 +213,8 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
 };
 
 const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
-  <div className="flex flex-col items-center gap-3 p-5 md:p-6 rounded-2xl border border-border/30 bg-bg-card text-center" aria-label={`${label}: ${value}`}>
-    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+  <div className="flex flex-col items-center gap-3 p-5 md:p-6 lg:p-7 rounded-2xl border border-border/30 bg-bg-card text-center transition-all duration-300 hover:border-accent/30" aria-label={`${label}: ${value}`}>
+    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
       {icon}
     </div>
     <div className="min-w-0">
@@ -399,7 +399,7 @@ const Dashboard = () => {
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
 
         {/* 1. Welcome Banner */}
         <div ref={heroRef}>
@@ -415,7 +415,7 @@ const Dashboard = () => {
 
         {/* 2. Stats Strip */}
         <div ref={statsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
             <StatCard icon={<IconRank size={32} className="text-accent" />} label="Rank" value={rankName} accent />
             <StatCard icon={<IconDashboard size={32} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
             <StatCard icon={<CpLogo className="w-10 h-10" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
@@ -430,8 +430,8 @@ const Dashboard = () => {
               <IconLabs size={28} className="text-accent" />
             </div>
             <div>
-              <h3 className="text-base md:text-lg font-black text-text-primary">Attack Labs</h3>
-              <p className="text-[10px] md:text-xs font-mono text-text-muted">Hands-on offensive security simulations</p>
+              <h3 className="text-base md:text-lg lg:text-xl font-black text-text-primary">Attack Labs</h3>
+              <p className="text-[10px] md:text-xs font-mono text-text-muted mt-0.5">Hands-on offensive security simulations</p>
             </div>
             <Link to="/dashboard/labs" className="ml-auto text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
               View All
@@ -448,7 +448,7 @@ const Dashboard = () => {
 
         {/* 2.6 PWA Install */}
         {canInstall && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 md:p-5 rounded-2xl border border-accent/20 bg-accent/5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-5 md:p-6 rounded-2xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-accent/10">
                 <IconDownload size={28} className="text-accent" />
@@ -518,7 +518,7 @@ const Dashboard = () => {
 
         {/* 5. Room Grid / Browse All */}
         <div ref={roomsRef}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
             {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
               <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
             ))}
@@ -528,7 +528,7 @@ const Dashboard = () => {
         {/* 6. Next Rank Progress */}
         {nextRank && (
           <div ref={rankRef}>
-            <div ref={progressRef} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+            <div ref={progressRef} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 lg:p-8">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">Target: <span className="text-accent">{nextRank.name}</span></span>
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>

@@ -61,7 +61,7 @@ const NetworksPage = () => {
     <div className="bg-bg min-h-full">
       <SEO title="Network Lab" description="Simulated corporate network environment for terminal practice." />
 
-      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>

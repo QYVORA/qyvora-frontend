@@ -76,7 +76,7 @@ const PhishingLab = () => {
     return (
       <div className="bg-bg min-h-full">
         <SEO title="Phishing Analysis Lab" description="Analyze simulated phishing emails for signs of deception." />
-        <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
+        <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
