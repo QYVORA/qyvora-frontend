@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, Video, ArrowRight, Users, Loader2 } from 'lucide-react';
+import { Calendar, Video, Users, Loader2 } from 'lucide-react';
+import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { motion } from 'motion/react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
@@ -60,7 +61,7 @@ const EventsPage: React.FC = () => {
                         <Calendar className="h-3 w-3" /> {event.date}
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
-                        <Clock className="h-3 w-3" /> {formatEventTime(event)}
+                        <IconClock size={12} /> {formatEventTime(event)}
                       </span>
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                         {event.platform}
@@ -75,7 +76,7 @@ const EventsPage: React.FC = () => {
                         {joiningId === event.id ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <ArrowRight className="h-4 w-4" />
+                           <IconArrowRight className="h-4 w-4" />
                         )}
                         Join Event
                       </button>

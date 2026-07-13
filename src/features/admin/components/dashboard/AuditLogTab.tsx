@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Search, Clock, Filter } from 'lucide-react';
+import { Filter } from 'lucide-react';
+import { IconClock } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Skeleton } from '@/shared/components/ui';
 import type { AuditLogEntry } from '../../types/admin.types';
@@ -78,7 +79,7 @@ const AuditLogTab = () => {
         <div className="space-y-2">{Array.from({ length: 10 }).map((_, i) => <div key={i} className="h-12 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
       ) : entries.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
-          <Clock className="mx-auto mb-3 h-10 w-10 text-text-muted opacity-30" />
+          <IconClock size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
           <p className="text-sm text-text-muted font-bold">No audit log entries</p>
         </div>
       ) : (

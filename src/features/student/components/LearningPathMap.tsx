@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Lock, ArrowRight, BookOpen, Layers, Clock } from 'lucide-react';
+import { BookOpen, Layers } from 'lucide-react';
+import { IconCheck, IconLock, IconArrowRight, IconClock } from '@/shared/components/icons';
 import { BOOTCAMP_CONFIG, type BootcampPhase } from '@/features/student/constants/bootcampConfig';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -25,7 +26,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
           <BookOpen className="mx-auto mb-3 h-8 w-8 text-text-muted opacity-40" />
           <p className="mb-4 text-sm text-text-muted">Enroll to begin the Hacker Protocol Bootcamp.</p>
           <Link to="/dashboard/bootcamps" className="btn-primary !text-[10px] !px-6 !py-2.5 flex items-center gap-1.5">
-            Start Bootcamp <ArrowRight className="inline-block ml-1.5 h-3.5 w-3.5" />
+            Start Bootcamp <IconArrowRight size={14} className="inline-block ml-1.5" />
           </Link>
         </div>
       </div>
@@ -110,7 +111,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                         ? 'bg-bg-elevated text-text-muted'
                         : 'bg-accent/10 text-accent'
                     }`}>
-                      {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : isLocked ? <Lock className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                      {isCompleted ? <IconCheck size={20} /> : isLocked ? <IconLock size={20} /> : <Icon className="w-5 h-5" />}
                     </div>
                   )}
                   <div className="w-7 h-7 rounded-md bg-accent flex items-center justify-center shrink-0">
@@ -133,7 +134,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                         <span className="text-[10px] font-bold text-white">{totalRooms} rooms</span>
                       </div>
                       <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
-                        <Clock className="w-3 h-3 text-accent" />
+                        <IconClock size={12} className="text-accent" />
                         <span className="text-[10px] font-bold text-white">{totalSteps} steps</span>
                       </div>
                     </>
@@ -144,7 +145,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                 </div>
                 {isCompleted && (
                   <div className="absolute top-4 right-4 w-7 h-7 rounded-full bg-accent flex items-center justify-center">
-                    <CheckCircle2 className="w-4 h-4 text-bg" />
+                    <IconCheck size={16} className="text-bg" />
                   </div>
                 )}
                 {!isLocked && !isCompleted && roomsCompleted > 0 && totalRooms > 0 && (

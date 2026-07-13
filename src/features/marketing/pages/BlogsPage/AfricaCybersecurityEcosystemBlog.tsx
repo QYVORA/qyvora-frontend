@@ -1,5 +1,6 @@
 import React from 'react';
-import { Globe, Shield, Users, TrendingUp, Lightbulb, Target, Zap, BookOpen } from 'lucide-react';
+import { Globe, Users, TrendingUp, Lightbulb, Zap, BookOpen, Shield } from 'lucide-react';
+import { IconShield, IconTarget } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
 
 export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
@@ -27,7 +28,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
           <StatCard icon={<Globe className="w-5 h-5 text-accent" />} label="Digital Adoption" value="Fastest Growing" />
-          <StatCard icon={<Shield className="w-5 h-5 text-accent" />} label="With Security Coverage" value="Less than 15%" />
+          <StatCard icon={<IconShield size={20} className="text-accent" />} label="With Security Coverage" value="Less than 15%" />
           <StatCard icon={<Users className="w-5 h-5 text-accent" />} label="Cybersecurity Professionals" value="Critically Low" />
           <StatCard icon={<TrendingUp className="w-5 h-5 text-accent" />} label="Annual Cyber Losses" value="$4B+" />
         </div>
@@ -63,7 +64,7 @@ export const AfricaCybersecurityEcosystemBlog: React.FC = () => {
 
         <div className="space-y-6 my-8">
           <FeatureCard
-            icon={Target}
+            icon={IconTarget}
             title="Attack Surface Intelligence"
             desc="Tools like the Anansi CLI engine that map, probe, and analyse external attack surfaces — giving organisations the same visibility attackers have, built for the African infrastructure landscape."
           />

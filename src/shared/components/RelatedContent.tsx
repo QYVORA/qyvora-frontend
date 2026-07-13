@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, FlaskConical, Swords } from 'lucide-react';
+import { BookOpen, Swords } from 'lucide-react';
+import { IconArrowRight, IconLabs } from '@/shared/components/icons';
 import { type ContentRef } from '@/shared/constants/topicMap';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 
@@ -12,7 +13,7 @@ interface RelatedContentProps {
 
 const TYPE_CONFIG: Record<string, { label: string; icon: React.ElementType; color: string }> = {
   course: { label: 'Course', icon: BookOpen, color: 'text-accent border-accent/30 bg-accent/10' },
-  lab: { label: 'Lab', icon: FlaskConical, color: 'text-amber-400 border-amber-400/30 bg-amber-400/10' },
+  lab: { label: 'Lab', icon: IconLabs, color: 'text-amber-400 border-amber-400/30 bg-amber-400/10' },
   hpb: { label: 'HPB Room', icon: Swords, color: 'text-purple-400 border-purple-400/30 bg-purple-400/10' },
 };
 
@@ -36,7 +37,7 @@ function ContentCard({ item }: { item: ContentRef }) {
         <p className="text-[11px] text-text-muted line-clamp-1">{item.subtitle}</p>
       )}
       <div className="mt-auto pt-2 flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent transition-colors">
-        Open <ArrowRight className="h-2.5 w-2.5 transition-transform group-hover:translate-x-0.5" />
+        Open <IconArrowRight size={10} className="transition-transform group-hover:translate-x-0.5" />
       </div>
     </Link>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Cpu, Brain, Globe, Users, Shield, TrendingUp, Zap, Lightbulb, Target, Rocket, Cloud, AlertTriangle } from 'lucide-react';
+import { Cpu, Brain, Globe, Users, TrendingUp, Zap, Lightbulb, Target, Rocket, Cloud } from 'lucide-react';
+import { IconShield, IconWarning } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, FeatureCard, StatCard, PhaseCard, BulletList, CTA, InlineDiagram, Divider } from './shared';
 
 export const FutureCybersecurityAfricaBlog: React.FC = () => {
@@ -28,7 +29,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-center gap-3 mb-4">
-              <AlertTriangle className="w-5 h-5 text-red-400" />
+              <IconWarning size={20} className="text-red-400" />
               <h3 className="text-sm font-black uppercase tracking-wider text-text-primary">Attacker Advantage</h3>
             </div>
             <ul className="space-y-3 text-sm font-mono text-text-secondary leading-relaxed">
@@ -40,7 +41,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
           </div>
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5">
             <div className="flex items-center gap-3 mb-4">
-              <Shield className="w-5 h-5 text-accent" />
+              <IconShield size={20} className="text-accent" />
               <h3 className="text-sm font-black uppercase tracking-wider text-text-primary">Defender Advantage</h3>
             </div>
             <ul className="space-y-3 text-sm font-mono text-text-secondary leading-relaxed">
@@ -170,7 +171,7 @@ export const FutureCybersecurityAfricaBlog: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
           <FeatureCard
-            icon={Shield}
+            icon={IconShield}
             title="Security Is Native"
             desc="Every African organisation building digital infrastructure treats security as a core requirement, not an afterthought — embedded from design through deployment."
           />

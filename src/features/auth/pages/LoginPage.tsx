@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft } from 'lucide-react';
+import { IconArrowLeft } from '@/shared/components/icons';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import AuthHero from '../components/AuthHero';
@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
         {!isAdminLoginRoute && (
           <div className="absolute top-6 left-6 z-20 md:hidden">
             <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
-              <ArrowLeft className="w-4 h-4" /> Back to Home
+              <IconArrowLeft size={16} /> Back to Home
             </Link>
           </div>
         )}

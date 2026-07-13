@@ -1,7 +1,8 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { Shield, ShoppingBag, Cloud, Lock, FileText, BookOpen, Cpu } from 'lucide-react';
+import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
+import { IconShield, IconMarketplace, IconLock } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import { Carousel } from '@/shared/components/carousel';
 import ScrollReveal from '@/shared/components/ScrollReveal';
@@ -72,7 +73,7 @@ const ZeroDayMarketPage: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
                 <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
-                  <Shield className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Intelligence Exchange
+                  <IconShield className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Intelligence Exchange
                 </span>
               </div>
 
@@ -91,7 +92,7 @@ const ZeroDayMarketPage: React.FC = () => {
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                 <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-                  <ShoppingBag className="h-4 w-4" /> Access the Market
+                  <IconMarketplace className="h-4 w-4" /> Access the Market
                 </Link>
                 <button onClick={() => scrollToSection('zd-products')} className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
                   Browse Assets
@@ -168,7 +169,7 @@ const ZeroDayMarketPage: React.FC = () => {
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
-              <Lock className="h-3 w-3" /> Featured Assets
+              <IconLock className="h-3 w-3" /> Featured Assets
             </span>
             <SimpleHeading text="Recently Published" align="left" className="mb-0" />
           </ScrollReveal>
@@ -195,7 +196,7 @@ const ZeroDayMarketPage: React.FC = () => {
                         <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div className="absolute bottom-4 left-4">
                           <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
-                            <ShoppingBag className="h-3 w-3 text-accent" /> Intelligence Asset
+                            <IconMarketplace className="h-3 w-3 text-accent" /> Intelligence Asset
                           </span>
                         </div>
                       </div>
@@ -230,7 +231,7 @@ const ZeroDayMarketPage: React.FC = () => {
                         <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         <div className="absolute bottom-4 left-4">
                           <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
-                            <ShoppingBag className="h-3 w-3 text-accent" /> Intelligence Asset
+                            <IconMarketplace className="h-3 w-3 text-accent" /> Intelligence Asset
                           </span>
                         </div>
                       </div>
@@ -262,7 +263,7 @@ const ZeroDayMarketPage: React.FC = () => {
 
           <div className="mt-10 text-center">
             <Link to="/dashboard/marketplace" className="btn-primary inline-flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4" /> Explore Full Vault
+              <IconMarketplace className="h-4 w-4" /> Explore Full Vault
             </Link>
           </div>
         </div>
@@ -273,7 +274,7 @@ const ZeroDayMarketPage: React.FC = () => {
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
           <ScrollReveal direction="up">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-4">
-              <Lock className="h-3 w-3" /> Classified Access
+              <IconLock className="h-3 w-3" /> Classified Access
             </div>
 
             <SimpleHeading
@@ -288,7 +289,7 @@ const ZeroDayMarketPage: React.FC = () => {
 
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/register" className="btn-primary inline-flex items-center gap-2">
-                <ShoppingBag className="h-4 w-4" /> Get Started
+                <IconMarketplace className="h-4 w-4" /> Get Started
               </Link>
               <Link to="/hpb" className="btn-secondary inline-flex items-center gap-2">
                 Learn About Bootcamps →

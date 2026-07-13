@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Lock, CheckCircle2, Lightbulb } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
+import { IconLock, IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
 
@@ -54,9 +55,9 @@ export function WalkthroughStep({
           )}
         >
           {isCompleted ? (
-            <CheckCircle2 className="h-4 w-4" />
+            <IconCheck size={16} />
           ) : isLocked ? (
-            <Lock className="h-3.5 w-3.5" />
+            <IconLock size={14} />
           ) : (
             String(stepIndex + 1).padStart(2, '0')
           )}

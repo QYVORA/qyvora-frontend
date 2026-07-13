@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Bookmark, CheckCircle2, Flag, Check } from 'lucide-react';
+import { Bookmark, Flag } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { buildStepImagePath } from '../../constants/bootcampConfig';
 import CodeBlockRenderer from './CodeBlockRenderer';
@@ -79,7 +80,7 @@ const StepCard: React.FC<Props> = ({
         }`}
       >
         {isViewed && !isActive ? (
-          <CheckCircle2 className="h-6 w-6" />
+          <IconCheck size={24} />
         ) : (
           String(stepNum).padStart(2, '0')
         )}
@@ -120,7 +121,7 @@ const StepCard: React.FC<Props> = ({
             : 'border-border text-text-muted hover:border-accent/30 hover:text-accent'
         }`}
       >
-        <Check className={`h-3 w-3 ${gotIt ? '' : 'opacity-50'}`} />
+        <IconCheck size={12} className={gotIt ? '' : 'opacity-50'} />
         {gotIt ? 'Got It!' : 'Mark as Got It'}
       </button>
     </div>

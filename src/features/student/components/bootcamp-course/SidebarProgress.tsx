@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layers, BarChart3, Trophy, CheckCircle2, Lock } from 'lucide-react';
+import { Layers, BarChart3, Trophy } from 'lucide-react';
+import { IconCheck, IconLock } from '@/shared/components/icons';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 
 interface SidebarProgressProps {
@@ -85,8 +86,8 @@ const SidebarProgress: React.FC<SidebarProgressProps> = ({
                     : isLocked ? 'border-border bg-bg text-text-muted'
                     : 'border-accent/30 bg-accent-dim text-accent'
                 }`}>
-                  {isComplete ? <CheckCircle2 className="h-3.5 w-3.5" />
-                    : isLocked ? <Lock className="h-3 w-3" />
+                  {isComplete ? <IconCheck size={14} />
+                    : isLocked ? <IconLock size={12} />
                     : String(idx + 1).padStart(2, '0')}
                 </div>
                 <div className="flex-1 min-w-0">

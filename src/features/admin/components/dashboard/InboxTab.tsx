@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Mail, Shield, Search, ChevronDown, X, Eye, Trash2, Archive, CheckCircle, PhoneCall, Star } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { IconShield, IconSearch } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import type { ContactMessage, ServiceRequestItem } from '../../types/admin.types';
@@ -113,7 +114,7 @@ const InboxTab = () => {
           ))}
         </div>
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
+          <IconSearch size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             value={search}
@@ -144,7 +145,7 @@ const InboxTab = () => {
                 onClick={() => setSelectedItem(item)}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isContact ? 'bg-blue-500/10' : 'bg-accent/10'}`}>
-                  {isContact ? <Mail className="w-4 h-4 text-blue-400" /> : <Shield className="w-4 h-4 text-accent" />}
+                  {isContact ? <Mail className="w-4 h-4 text-blue-400" /> : <IconShield size={16} className="text-accent" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

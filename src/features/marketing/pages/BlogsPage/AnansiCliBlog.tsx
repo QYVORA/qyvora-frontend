@@ -1,5 +1,6 @@
 import React from 'react';
-import { Search, Globe, Lock, Shield, FileCode, AlertTriangle, Download, Zap, CheckCircle2 } from 'lucide-react';
+import { Globe, FileCode, Download, Zap } from 'lucide-react';
+import { IconSearch, IconLock, IconShield, IconWarning, IconCheck } from '@/shared/components/icons';
 import { Section, Body, CodeBlock, TerminalBlock, Heading, Highlight, PhaseCard, OutputBlock } from './shared';
 
 export const AnansiCliBlog: React.FC = () => {
@@ -55,12 +56,12 @@ export const AnansiCliBlog: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <PhaseCard icon={Search} name="Phase 01 — Discovery" desc="Subdomain enumeration via crt.sh CT logs + DNS brute-force wordlist" />
+          <PhaseCard icon={IconSearch} name="Phase 01 — Discovery" desc="Subdomain enumeration via crt.sh CT logs + DNS brute-force wordlist" />
           <PhaseCard icon={Globe} name="Phase 02 — Probe" desc="Live HTTP/HTTPS host detection with status codes, servers, and titles" />
-          <PhaseCard icon={Lock} name="Phase 03 — TLS" desc="Certificate analysis, SAN extraction, protocol version, and cipher audit" />
-          <PhaseCard icon={Shield} name="Phase 04 — Headers" desc="Security header audit and CORS misconfiguration detection" />
+          <PhaseCard icon={IconLock} name="Phase 03 — TLS" desc="Certificate analysis, SAN extraction, protocol version, and cipher audit" />
+          <PhaseCard icon={IconShield} name="Phase 04 — Headers" desc="Security header audit and CORS misconfiguration detection" />
           <PhaseCard icon={FileCode} name="Phase 05 — Paths" desc="Exposed file detection — .env, .git, admin panels, backups, API docs" />
-          <PhaseCard icon={AlertTriangle} name="Phase 06 — Takeover" desc="Dangling CNAME detection for AWS, Heroku, GitHub Pages, and more" />
+          <PhaseCard icon={IconWarning} name="Phase 06 — Takeover" desc="Dangling CNAME detection for AWS, Heroku, GitHub Pages, and more" />
         </div>
 
         <TerminalBlock code={`# Full pipeline — one command
@@ -149,19 +150,19 @@ anansi target.com --out html > report.html`} />
         </Body>
         <ul className="space-y-4 my-8 text-sm md:text-base font-mono text-text-secondary leading-[2]">
           <li className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+            <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
             <span><Highlight>Native Go DNS Resolver</Highlight> — bypasses slow cgo-blocked system lookups with pure Go goroutines</span>
           </li>
           <li className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+            <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
             <span><Highlight>Concurrent Probing</Highlight> — HTTP probes, TLS analyses, and header checks run in parallel across configurable thread pools</span>
           </li>
           <li className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+            <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
             <span><Highlight>Smart Takeover Filtering</Highlight> — only scans subdomains with verified dead CNAME records instead of testing every candidate</span>
           </li>
           <li className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+            <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
             <span><Highlight>Parallel Path Probing</Highlight> — custom 404 baselines are fetched concurrently, and paths are scanned in parallel</span>
           </li>
         </ul>

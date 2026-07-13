@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Medal, Shield, Search, X, ArrowLeft } from 'lucide-react';
+import { Medal } from 'lucide-react';
+import { IconShield, IconSearch, IconX, IconArrowLeft, IconLeaderboard } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
@@ -186,7 +187,7 @@ const LeaderboardAllPage = () => {
           to="/leaderboard"
           className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <IconArrowLeft className="w-3.5 h-3.5" />
           Back to Leaderboard
         </Link>
 
@@ -222,7 +223,7 @@ const LeaderboardAllPage = () => {
       {/* Search */}
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 pb-4">
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted/60" />
+          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted/60" />
           <input
             type="text"
             value={search}
@@ -235,7 +236,7 @@ const LeaderboardAllPage = () => {
               onClick={() => setSearch('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-primary transition-colors"
             >
-              <X className="w-3.5 h-3.5" />
+              <IconX className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
@@ -257,7 +258,7 @@ const LeaderboardAllPage = () => {
           </div>
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center w-full">
-            <Trophy className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
+            <IconLeaderboard className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
             <p className="text-lg text-text-muted font-bold">
               {search ? 'No operators match your search' : 'No operators ranked yet'}
             </p>
@@ -279,7 +280,7 @@ const LeaderboardAllPage = () => {
               ))}
             </div>
             <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-              <Shield className="w-3 h-3 text-accent" />
+              <IconShield className="w-3 h-3 text-accent" />
               CP balances verified on QYVORA Chain &middot; {filtered.length} of {total} operators
             </div>
           </div>

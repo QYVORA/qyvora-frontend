@@ -22,7 +22,7 @@
 
 import React from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { X } from 'lucide-react';
+import { IconX } from '../icons';
 import { cn } from '../../utils/cn';
 
 // ── Re-export primitives you might need directly ─────────────────────────────
@@ -115,7 +115,7 @@ export const DialogContent = React.forwardRef<
             className="p-1.5 rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             aria-label="Close"
           >
-            <X className="w-4 h-4" />
+            <IconX size={16} />
           </RadixDialog.Close>
         )}
       </div>

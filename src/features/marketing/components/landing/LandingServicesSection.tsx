@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { Shield, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { IconShield, IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '../ServiceRequestModal';
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
@@ -69,7 +70,7 @@ const LandingServicesSection: React.FC = () => {
             className="mb-6 md:mb-8"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-4">
-              <Shield className="h-3 w-3" /> Enterprise Services
+              <IconShield size={12} /> Enterprise Services
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none mb-4">
               Penetration <span className="text-text-secondary">Testing</span>
@@ -125,7 +126,7 @@ const LandingServicesSection: React.FC = () => {
                       <ul className="space-y-2.5 flex-1">
                         {service.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-2.5">
-                            <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+                            <IconCheck size={16} className="text-accent mt-0.5 shrink-0" />
                             <span className="text-xs text-text-secondary leading-relaxed">{feature}</span>
                           </li>
                         ))}
@@ -135,7 +136,7 @@ const LandingServicesSection: React.FC = () => {
                         className="mt-5 w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
                       >
                         Request Assessment
-                        <ArrowRight className="w-3 h-3" />
+                        <IconArrowRight size={12} />
                       </button>
                     </div>
                   </div>
@@ -198,7 +199,7 @@ const LandingServicesSection: React.FC = () => {
                   <ul className="space-y-3 flex-1">
                     {featured.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                        <IconCheck size={20} className="text-accent mt-0.5 shrink-0" />
                         <span className="text-sm text-text-secondary leading-relaxed">{feature}</span>
                       </li>
                     ))}
@@ -207,9 +208,9 @@ const LandingServicesSection: React.FC = () => {
                     onClick={() => openServiceRequestModal(featured.tier)}
                     className="mt-6 w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30 text-base"
                   >
-                    <Shield className="w-3.5 h-3.5" />
+                    <IconShield size={14} />
                     Request Assessment
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <IconArrowRight size={14} />
                   </button>
                 </div>
               </div>
@@ -228,7 +229,7 @@ const LandingServicesSection: React.FC = () => {
               href="/services"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
-              View All Services <ArrowRight className="h-3.5 w-3.5" />
+              View All Services <IconArrowRight size={14} />
             </a>
           </motion.div>
         </div>

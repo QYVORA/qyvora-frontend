@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FlaskConical } from 'lucide-react';
+import { IconArrowRight, IconLabs } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
 import DotMapBackground from '@/shared/components/DotMapBackground';
@@ -64,13 +64,13 @@ const LandingQuiteRootSection: React.FC = () => {
                 to="/quiteroot"
                 className="btn-primary !border-accent/30 !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
               >
-                Explore QuiteRoot <ArrowRight className="w-5 h-5" />
+                Explore QuiteRoot <IconArrowRight size={20} />
               </Link>
               <Link
                 to="/blogs?tag=QuiteRoot"
                 className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
               >
-                <FlaskConical className="w-5 h-5" /> Research
+                <IconLabs size={20} /> Research
               </Link>
             </motion.div>
           </div>
@@ -109,13 +109,13 @@ const LandingQuiteRootSection: React.FC = () => {
                 to="/quiteroot"
                 className="btn-primary !border-accent/30 !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
               >
-                Explore QuiteRoot <ArrowRight className="w-5 h-5" />
+                Explore QuiteRoot <IconArrowRight size={20} />
               </Link>
               <Link
                 to="/blogs?tag=QuiteRoot"
                 className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
               >
-                <FlaskConical className="w-5 h-5" /> Research
+                <IconLabs size={20} /> Research
               </Link>
             </motion.div>
           </div>

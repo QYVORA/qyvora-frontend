@@ -1,5 +1,6 @@
 import React from 'react';
-import { KeyRound, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
+import { KeyRound } from 'lucide-react';
 
 interface VerifyEmailFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -21,7 +22,7 @@ const VerifyEmailForm: React.FC<VerifyEmailFormProps> = ({
   return (
     <div>
       <button onClick={onBackToLogin} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Back to Login
+        <IconArrowLeft size={16} /> Back to Login
       </button>
       <div className="mb-8">
         <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Verify Email</h1>
@@ -40,7 +41,7 @@ const VerifyEmailForm: React.FC<VerifyEmailFormProps> = ({
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          {isLoading ? 'Verifying...' : 'Verify Email'} <CheckCircle2 className="w-5 h-5" />
+          {isLoading ? 'Verifying...' : 'Verify Email'} <IconCheck size={20} />
         </button>
       </form>
       {email && (

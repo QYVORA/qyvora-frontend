@@ -1,8 +1,21 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  LayoutDashboard, BookMarked, Map, FlaskConical, ShoppingBag, Settings,
-  Bell, LogOut, ChevronRight, ArrowLeft, Menu, Terminal, X,
+  LogOut, Loader2,
 } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
+import {
+  IconDashboard,
+  IconBootcamp,
+  IconLabs,
+  IconMarketplace,
+  IconSettings,
+  IconNotification,
+  IconArrowLeft,
+  IconMenu,
+  IconTerminal,
+  IconCode,
+  IconChevronRight,
+} from '@/shared/components/icons';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -21,18 +34,18 @@ import { NotificationItem } from './types';
 const NOTIF_PREVIEW_LIMIT = 6;
 
 const DESKTOP_NAV_ITEMS = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Courses',   icon: BookMarked,      path: '/dashboard/courses' },
-  { label: 'Bootcamp',  icon: Map,             path: '/dashboard/bootcamps' },
-  { label: 'Labs',      icon: FlaskConical,    path: '/dashboard/labs' },
-  { label: 'Market',    icon: ShoppingBag,     path: '/dashboard/marketplace' },
-  { label: 'Settings',  icon: Settings,        path: '/dashboard/settings' },
+  { label: 'Dashboard', icon: IconDashboard, path: '/dashboard' },
+  { label: 'Courses',   icon: IconCode,      path: '/dashboard/courses' },
+  { label: 'Bootcamp',  icon: IconBootcamp,  path: '/dashboard/bootcamps' },
+  { label: 'Labs',      icon: IconLabs,      path: '/dashboard/labs' },
+  { label: 'Market',    icon: IconMarketplace, path: '/dashboard/marketplace' },
+  { label: 'Settings',  icon: IconSettings,  path: '/dashboard/settings' },
 ];
 
 const ALL_NAV_ITEMS = [
   ...DESKTOP_NAV_ITEMS,
-  { label: 'Competitive', icon: LayoutDashboard, path: '/dashboard/competitive' },
-  { label: 'Notifications', icon: Bell, path: '/dashboard/notifications' },
+  { label: 'Competitive', icon: IconDashboard, path: '/dashboard/competitive' },
+  { label: 'Notifications', icon: IconNotification, path: '/dashboard/notifications' },
 ];
 
 const StudentTopbar = () => {
@@ -170,14 +183,14 @@ const StudentTopbar = () => {
                   className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                   aria-label="Back to courses"
                 >
-                  <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
+                  <IconArrowLeft size={20} />
                 </button>
                 <button
                   onClick={openSidebar}
                   className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                   aria-label="Toggle lessons sidebar"
                 >
-                  <Menu className="h-5 w-5" />
+                  <IconMenu size={20} />
                 </button>
                 <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
                   <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
@@ -185,7 +198,7 @@ const StudentTopbar = () => {
                   </Link>
                   {courseConfig && (
                     <>
-                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                      <IconChevronRight size={12} className="opacity-40 shrink-0" />
                       <span className="text-text-primary font-black truncate max-w-[200px]">{courseConfig.title}</span>
                     </>
                   )}
@@ -224,7 +237,7 @@ const StudentTopbar = () => {
                     className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                     aria-label="Open terminal"
                   >
-                    <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+                    <IconTerminal size={20} />
                   </button>
                   <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                     <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
@@ -245,14 +258,14 @@ const StudentTopbar = () => {
                 className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                 aria-label="Back to curriculum"
               >
-                <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
+                <IconArrowLeft size={20} />
               </button>
               <button
                 onClick={openSidebar}
                 className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
                 aria-label="Toggle curriculum sidebar"
               >
-                <Menu className="h-4 w-4" />
+                <IconMenu size={16} />
               </button>
               <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
@@ -260,13 +273,13 @@ const StudentTopbar = () => {
                 </Link>
                 {roomPhaseConfig && (
                   <>
-                    <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                    <IconChevronRight size={12} className="opacity-40 shrink-0" />
                     <span className="text-accent shrink-0">{roomPhaseConfig.codename}</span>
                   </>
                 )}
                 {roomConfig && (
                   <>
-                    <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                    <IconChevronRight size={12} className="opacity-40 shrink-0" />
                     <span className="text-text-primary font-black truncate">{roomConfig.title}</span>
                   </>
                 )}
@@ -287,7 +300,7 @@ const StudentTopbar = () => {
                   className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label="Open terminal"
                 >
-                  <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+                  <IconTerminal size={20} />
                 </button>
                 <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                   <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
@@ -332,7 +345,7 @@ const StudentTopbar = () => {
               className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
               aria-label="Open navigation"
             >
-              <Menu className="h-5 w-5" />
+              <IconMenu size={20} />
             </button>
 
             {/* Right actions */}
@@ -343,7 +356,7 @@ const StudentTopbar = () => {
                   className="relative p-2.5 md:p-3 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <Bell className="w-5 h-5" />
+                  <IconNotification size={20} />
                   {unreadCount > 0 && (
                     <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}
@@ -376,7 +389,7 @@ const StudentTopbar = () => {
                 className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                 aria-label="Open terminal"
               >
-                <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+                <IconTerminal size={20} />
               </button>
 
               <Link
@@ -417,7 +430,7 @@ const StudentTopbar = () => {
                 className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
                 aria-label="Close navigation"
               >
-                <X className="w-5 h-5" />
+                <IconX size={20} />
               </button>
             </div>
 
@@ -486,7 +499,7 @@ const StudentTopbar = () => {
               aria-label="More"
               aria-expanded={moreOpen}
             >
-              <Bell className="w-6 h-6 text-text-muted" />
+              <IconNotification size={24} className="text-text-muted" />
               <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
               {unreadCount > 0 && (
                 <span className="absolute top-2.5 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">

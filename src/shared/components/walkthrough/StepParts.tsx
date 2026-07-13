@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CheckCircle2, Copy, Check } from 'lucide-react';
+import { Copy } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 
 export function CommandBlock({ command, labId }: { command: string; labId: string }) {
@@ -15,7 +16,7 @@ export function CommandBlock({ command, labId }: { command: string; labId: strin
       <div className="flex items-center gap-2 rounded-xl border border-border/30 bg-bg-card px-4 py-3">
         <code className="flex-1 text-base font-mono text-accent break-all">$ {command}</code>
         <button type="button" onClick={handleCopy} className="shrink-0 rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-elevated" aria-label="Copy">
-          {copied ? <Check className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
+          {copied ? <IconCheck size={16} className="text-accent" /> : <Copy className="h-4 w-4" />}
         </button>
       </div>
       <p className="text-sm text-text-muted font-mono">Terminal: <span className="text-accent">qyvora connect {labId}</span></p>
@@ -65,7 +66,7 @@ export function FlagInput({ flagId, disabled, onFlagSubmit, onCorrect }: FlagInp
 export function StepComplete() {
   return (
     <div className="flex items-center gap-2 rounded-xl border border-accent/20 bg-accent-dim px-4 py-3">
-      <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+      <IconCheck size={16} className="text-accent shrink-0" />
       <span className="text-sm font-mono font-bold text-accent">Step completed!</span>
     </div>
   );

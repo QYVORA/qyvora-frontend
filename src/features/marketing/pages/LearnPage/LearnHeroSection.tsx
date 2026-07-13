@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play } from 'lucide-react';
+import { IconPlay } from '@/shared/components/icons';
 import chatGptImage from '@/assets/bootcamp/ChatGPT Image Jul 6, 2026, 12_54_02 AM.webp';
 
 const LearnHeroSection: React.FC = () => {
@@ -23,7 +23,7 @@ const LearnHeroSection: React.FC = () => {
                 to="/register"
                 className="btn-primary px-8 py-4 font-black uppercase tracking-[0.15em] text-xs flex items-center justify-center gap-3"
               >
-                <Play className="w-4 h-4 fill-current" /> Start Training
+                <IconPlay size={16} className="fill-current" /> Start Training
               </Link>
               <a
                 href="#phases"

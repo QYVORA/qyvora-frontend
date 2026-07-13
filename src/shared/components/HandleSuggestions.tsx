@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Sparkles, RefreshCw, Check } from 'lucide-react';
+import { Sparkles, RefreshCw } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 
 interface HandleSuggestionsProps {
@@ -97,7 +98,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
               <span className="text-text-muted group-hover:text-accent/60 transition-colors">@</span>
               {handle}
               {selectedHandle === handle && (
-                <Check className="w-3 h-3 ml-0.5" />
+                <IconCheck size={12} className="ml-0.5" />
               )}
             </button>
           ))}

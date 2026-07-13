@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  LogOut, Bell, Shield, LayoutDashboard, ChevronDown,
+  LogOut, ChevronDown,
 } from 'lucide-react';
+import { IconShield, IconDashboard, IconNotification } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import Logo from '@/shared/components/brand/Logo';
@@ -110,7 +111,7 @@ const AdminTopbar = () => {
             <div className="flex items-center gap-3">
               <Link to={`${ADMIN_PATH}/dashboard`}><Logo size="md" /></Link>
               <div className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
-                <Shield className="h-3 w-3 text-accent" />
+                <IconShield size={12} className="text-accent" />
                 <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN</span>
               </div>
             </div>
@@ -120,7 +121,7 @@ const AdminTopbar = () => {
                 to="/dashboard"
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50"
               >
-                <LayoutDashboard className="w-4 h-4" />
+                <IconDashboard size={16} />
                 Operator
               </Link>
 
@@ -166,7 +167,7 @@ const AdminTopbar = () => {
                                   : 'text-text-secondary hover:bg-accent-dim/60 hover:text-text-primary'
                               }`}
                             >
-                              <item.icon className="w-5 h-5 flex-none" />
+                              <item.icon size={20} className="flex-none" />
                               <div>
                                 <div className="text-sm font-bold">{item.label}</div>
                                 <div className="text-[10px] text-text-muted">{item.desc}</div>
@@ -190,7 +191,7 @@ const AdminTopbar = () => {
                 className="relative p-3 md:p-3.5 min-h-12 min-w-12 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                 aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
               >
-                <Bell className="w-6 h-6" />
+                <IconNotification size={24} />
                 {unreadCount > 0 && (
                   <span className="absolute top-2 right-2 min-w-4 h-4 px-1 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
                     {unreadCount > 9 ? '9+' : unreadCount}
@@ -257,7 +258,7 @@ const AdminTopbar = () => {
               className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
               aria-current={active ? 'page' : undefined}
             >
-              <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
+              <item.icon size={24} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
               <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
                 {item.label}
               </span>
@@ -269,7 +270,7 @@ const AdminTopbar = () => {
           onClick={() => setMoreOpen(true)}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
         >
-          <Shield className="w-6 h-6 text-text-muted" />
+          <IconShield size={24} className="text-text-muted" />
           <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
         </button>
       </nav>

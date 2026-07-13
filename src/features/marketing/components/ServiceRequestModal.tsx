@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
+import { Loader2, Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 
@@ -62,7 +63,7 @@ const ServiceRequestModalHost: React.FC = () => {
         {status === 'sent' ? (
           <div className="flex flex-col items-center justify-center py-10 gap-4 text-center">
             <div className="w-14 h-14 rounded-2xl bg-accent-dim border border-accent/30 flex items-center justify-center">
-              <CheckCircle className="w-7 h-7 text-accent" />
+              <IconCheck size={28} className="text-accent" />
             </div>
             <h3 className="text-lg font-bold text-text-primary">Request Received</h3>
             <p className="text-sm text-text-muted">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, Shield } from 'lucide-react';
+import { IconArrowRight, IconShield } from '@/shared/components/icons';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG, PHASE_COLORS } from '@/features/student/constants/bootcampConfig';
 
@@ -39,7 +39,7 @@ const LandingBootcampSection: React.FC = () => {
             className="mb-6 md:mb-8"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-3">
-              <Shield className="h-3 w-3" /> Structured Program
+              <IconShield size={12} /> Structured Program
             </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
               Hacker Protocol <span className="text-bg/70">Bootcamp</span>
@@ -99,7 +99,7 @@ const LandingBootcampSection: React.FC = () => {
                           <div className="mt-auto flex items-center gap-2">
                             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all group-hover:gap-2.5" style={{ background: color, color: '#000' }}>
                               Start Phase {phase.id}
-                              <ArrowRight className="w-3 h-3" />
+                               <IconArrowRight size={12} />
                             </span>
                           </div>
                         </div>
@@ -143,7 +143,7 @@ const LandingBootcampSection: React.FC = () => {
               to="/hpb"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
             >
-              View Full Curriculum <ArrowRight className="h-3.5 w-3.5" />
+              View Full Curriculum <IconArrowRight size={14} />
             </Link>
           </motion.div>
         </div>

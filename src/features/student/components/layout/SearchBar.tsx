@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, BookOpen, Map, Swords, Globe } from 'lucide-react';
+import { BookOpen, Map, Swords, Globe } from 'lucide-react';
+import { IconSearch, IconX } from '@/shared/components/icons';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
 import { COURSES } from '../../data/courses/courseData';
 import api from '@/core/services/api';
@@ -135,7 +136,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
     return (
       <div className="relative w-full">
         <form onSubmit={handleFormSubmit} className="relative" onKeyDown={handleKeyDown}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted pointer-events-none" />
+          <IconSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
           <input
             ref={searchRef}
             type="text"
@@ -157,7 +158,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
               className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded text-text-muted hover:text-text-primary transition-colors"
               aria-label="Clear search"
             >
-              <X className="h-4 w-4" />
+              <IconX size={16} />
             </button>
           )}
         </form>
@@ -224,7 +225,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
             className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
             aria-label="Clear search"
           >
-            <X className="h-4 w-4" />
+            <IconX size={16} />
           </button>
         )}
         <button
@@ -232,7 +233,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
           className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-text-muted hover:text-accent transition-colors"
           aria-label="Search"
         >
-          <Search className="h-4 w-4" />
+          <IconSearch size={16} />
         </button>
       </form>
       {showSuggestions && debouncedQuery.trim() && suggestions.length > 0 && (

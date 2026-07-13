@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
+import { XCircle } from 'lucide-react';
+import { IconCheck, IconChevronRight } from '@/shared/components/icons';
 
 export interface QuizQuestion {
   id: string;
@@ -74,7 +75,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             {score}%
           </div>
           <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${passed ? 'text-accent' : 'text-red-400'}`}>
-            {passed ? <><CheckCircle2 className="h-4 w-4" /> Passed</> : <><XCircle className="h-4 w-4" /> Needs Review</>}
+            {passed ? <><IconCheck size={16} /> Passed</> : <><XCircle className="h-4 w-4" /> Needs Review</>}
           </div>
           <p className="text-xs text-text-muted mt-2">{correct} of {questions.length} correct ({(passThreshold)}% to pass)</p>
         </div>
@@ -87,7 +88,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
               <div key={q.id} className="border border-border rounded-lg p-4 space-y-3">
                 <div className="flex items-start gap-2">
                   <span className={`shrink-0 mt-0.5 ${isCorrect ? 'text-accent' : 'text-red-400'}`}>
-                    {isCorrect ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
+                    {isCorrect ? <IconCheck size={16} /> : <XCircle className="h-4 w-4" />}
                   </span>
                   <div>
                     <p className="text-sm font-bold text-text-primary">{q.question}</p>
@@ -148,7 +149,7 @@ const InlineQuiz: React.FC<InlineQuizProps> = ({
             disabled={selectedIdx < 0}
             className="btn-primary text-xs py-2.5 inline-flex items-center gap-1.5 disabled:opacity-50"
           >
-            Next <ChevronRight className="h-3.5 w-3.5" />
+            Next <IconChevronRight size={14} />
           </button>
         ) : (
           <button

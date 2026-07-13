@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Video, Loader2, Check, Clock, Lock, Calendar, MessageSquare, ExternalLink } from 'lucide-react';
+import { Video, Loader2, Calendar, MessageSquare, ExternalLink } from 'lucide-react';
+import { IconCheck, IconClock, IconLock } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import CpLogo from '@/shared/components/CpLogo';
 import { formatEventTime, type EventData } from '@/features/marketing/content/eventsData';
@@ -113,7 +114,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
             <h3 className="text-sm font-black text-text-primary truncate">{event.title}</h3>
             <p className="text-[11px] text-text-muted font-mono flex flex-wrap gap-x-2">
               <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> {event.date}</span>
-              <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {formatEventTime(event)}</span>
+              <span className="inline-flex items-center gap-1"><IconClock size={12} /> {formatEventTime(event)}</span>
             </p>
           </div>
         </div>
@@ -125,7 +126,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 text-[9px] font-black uppercase tracking-widest text-accent">
-              <Check className="h-3 w-3" /> Registered
+              <IconCheck size={12} className="text-accent" /> Registered
             </span>
           )}
         </div>
@@ -141,7 +142,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
           {status === 'reviewed' ? (
             <div className="flex flex-col gap-3 p-4 rounded-2xl bg-bg-elevated/40 border border-border/30">
               <div className="flex items-center gap-3">
-                <Lock className="h-5 w-5 text-text-muted/40 shrink-0" />
+                <IconLock size={20} className="text-text-muted/40 shrink-0" />
                 <div>
                   <p className="text-xs text-text-muted/70 font-mono">
                     Available {ACCESS_WINDOW_MINUTES} minutes before the event.

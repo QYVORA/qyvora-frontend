@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
+import { IconMinus } from '@/shared/components/icons';
 import { Skeleton } from '@/shared/components/ui';
 
 export interface TrendData {
@@ -27,7 +28,7 @@ const TrendIcon = ({ direction }: { direction: TrendData['direction'] }) => {
     case 'down':
       return <TrendingDown className="w-3 h-3 text-red-400" />;
     default:
-      return <Minus className="w-3 h-3 text-text-muted" />;
+      return <IconMinus size={12} className="text-text-muted" />;
   }
 };
 

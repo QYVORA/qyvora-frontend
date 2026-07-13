@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { IconArrowRight } from '@/shared/components/icons';
 import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '@/shared/components/brand/QyvoraMark';
 
@@ -19,7 +19,7 @@ const LearnCtaSection: React.FC = () => {
             to="/register"
             className="inline-flex items-center gap-4 text-accent font-black uppercase tracking-[0.4em] text-sm hover:gap-6 transition-all"
           >
-            Create Trainee Operator Account <ArrowRight className="w-5 h-5" />
+            Create Trainee Operator Account <IconArrowRight size={20} />
           </Link>
         </div>
         <motion.div

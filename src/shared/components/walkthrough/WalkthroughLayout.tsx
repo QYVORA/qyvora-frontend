@@ -1,4 +1,5 @@
-import { ArrowLeft, Clock, Terminal, Unplug, Loader2 } from 'lucide-react';
+import { Unplug, Loader2 } from 'lucide-react';
+import { IconArrowLeft, IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 
@@ -49,7 +50,7 @@ export function WalkthroughLayout({
         onClick={onBack}
         className="group mb-8 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary"
       >
-        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+        <IconArrowLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
         <span className="text-[10px] font-black uppercase tracking-widest">All Labs</span>
       </button>
 
@@ -72,7 +73,7 @@ export function WalkthroughLayout({
               )}
               {estimatedMinutes && (
                 <span className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted">
-                  <Clock className="h-3 w-3" />
+                  <IconClock size={12} />
                   {estimatedMinutes} min
                 </span>
               )}
@@ -88,7 +89,7 @@ export function WalkthroughLayout({
       {scenarioId && (
         <div className="mb-10 rounded-2xl border border-border/20 bg-bg-card p-6">
           <div className="flex items-center gap-3 mb-3">
-            <Terminal className="w-4 h-4 text-accent" />
+            <IconTerminal size={16} className="text-accent" />
             <h3 className="text-[10px] font-black uppercase tracking-widest text-accent">
               Lab Connection
             </h3>
@@ -105,7 +106,7 @@ export function WalkthroughLayout({
                   disabled={isLoading}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
                 >
-                  {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Terminal className="w-3 h-3" />}
+                  {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <IconTerminal size={12} />}
                   {isLoading ? 'Connecting...' : 'Connect to Lab'}
                 </button>
                 {error && <span className="text-[9px] text-red-400">{error}</span>}

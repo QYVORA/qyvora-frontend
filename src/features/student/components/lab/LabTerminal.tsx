@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Terminal, X, Wifi, WifiOff, Clock } from 'lucide-react';
+import { Wifi, WifiOff } from 'lucide-react';
+import { IconTerminal, IconX, IconClock } from '@/shared/components/icons';
 import { SimulatedTerminal } from '../SimulatedTerminal/SimulatedTerminal';
 import { useLabConnection } from '../../hooks/useLabConnection';
 import type { PrivescScenario, ChapterTrigger } from '../../data/simulations/types';
@@ -70,7 +71,7 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
 
           {/* Terminal Title */}
           <div className="flex items-center gap-2 ml-2">
-            <Terminal className="w-4 h-4 text-accent" />
+            <IconTerminal size={16} className="text-accent" />
             <span className="text-[10px] font-mono text-text-muted">
               {isConnected ? `trainee@${connection?.targetIp || 'target'}:~$` : 'Not connected'}
             </span>
@@ -87,7 +88,7 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
               </div>
               {connection?.expiresAt && (
                 <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted/50">
-                  <Clock className="w-3 h-3" />
+                  <IconClock size={12} />
                   <span>{new Date(connection.expiresAt).toLocaleTimeString()}</span>
                 </div>
               )}
@@ -97,7 +98,7 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
                   hover:border-red-500/30 hover:bg-red-500/10 transition-all duration-200
                   text-[10px] font-mono text-text-muted/50 hover:text-red-400"
               >
-                <X className="w-3 h-3" />
+                <IconX size={12} />
                 Disconnect
               </button>
             </>
@@ -108,7 +109,7 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
                 hover:border-accent/50 hover:bg-accent/20 transition-all duration-200
                 text-[10px] font-mono text-accent uppercase tracking-wider"
             >
-              <Terminal className="w-3 h-3" />
+              <IconTerminal size={12} />
               Connect
             </button>
           )}

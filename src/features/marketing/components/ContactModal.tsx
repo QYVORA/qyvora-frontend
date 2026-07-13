@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Loader2, Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
+import { Loader2, Mail, Send, MessageSquare, AlertCircle, User } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { Dialog, DialogContent } from '../../../shared/components/ui/Dialog';
 import { cn } from '../../../shared/utils/cn';
@@ -109,7 +110,7 @@ const ContactModalHost: React.FC = () => {
         {status === 'sent' ? (
           <div className="flex flex-col items-center justify-center py-12 gap-5 text-center">
             <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 text-accent" />
+              <IconCheck size={32} className="text-accent" />
             </div>
             <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">Message Sent!</h3>
             <p className="text-sm text-text-muted max-w-md leading-relaxed break-words">

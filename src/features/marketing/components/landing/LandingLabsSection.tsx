@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { IconArrowRight } from '@/shared/components/icons';
 
 const LABS = [
   { id: 'privesc', title: 'Privilege Escalation', desc: 'Escalate permissions and gain root access through misconfigs, kernel exploits, and SUID binaries', cp: '50-400 CP', color: '#FBBF24' },
@@ -103,7 +104,7 @@ const LandingLabsSection: React.FC = () => {
                             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-[9px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-2.5">
                               <Zap className="w-3 h-3" />
                               Launch Lab
-                              <ArrowRight className="w-3 h-3" />
+                              <IconArrowRight size={12} />
                             </span>
                           </div>
                         </div>
@@ -145,7 +146,7 @@ const LandingLabsSection: React.FC = () => {
               to="/dashboard/labs"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
             >
-              View All Labs <ArrowRight className="h-3.5 w-3.5" />
+              View All Labs <IconArrowRight size={14} />
             </Link>
           </motion.div>
         </div>

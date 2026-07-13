@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Terminal, Network, Globe, Users, Target, Search, Map, Flag, Trophy } from 'lucide-react';
+import { Globe, Users, Map, Flag, Search, Trophy, Target } from 'lucide-react';
+import { IconShield, IconTerminal, IconNetwork, IconTarget, IconSearch, IconLeaderboard } from '@/shared/components/icons';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
@@ -60,9 +61,9 @@ export const Hpb2026CaseStudy: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <StatRow icon={<Shield className="w-5 h-5 text-accent" />} label="Phase 01" value="Hacker Mindset" />
-          <StatRow icon={<Terminal className="w-5 h-5 text-accent" />} label="Phase 02" value="Linux Foundations" />
-          <StatRow icon={<Network className="w-5 h-5 text-accent" />} label="Phase 03" value="Networking & Protocol Analysis" />
+          <StatRow icon={<IconShield size={20} className="text-accent" />} label="Phase 01" value="Hacker Mindset" />
+          <StatRow icon={<IconTerminal size={20} className="text-accent" />} label="Phase 02" value="Linux Foundations" />
+          <StatRow icon={<IconNetwork size={20} className="text-accent" />} label="Phase 03" value="Networking & Protocol Analysis" />
           <StatRow icon={<Globe className="w-5 h-5 text-accent" />} label="Phase 04" value="Web & Backend Systems" />
           <div className="md:col-span-2">
             <StatRow icon={<Users className="w-5 h-5 text-accent" />} label="Phase 05" value="Social Engineering & Operational Security" />
@@ -108,7 +109,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-accent/10 bg-accent/5">
-            <Search className="w-6 h-6 text-accent mb-3" />
+            <IconSearch size={24} className="text-accent mb-3" />
             <h3 className="text-sm font-black uppercase tracking-wider mb-2 break-words">Shodan</h3>
             <p className="text-xs font-mono text-text-secondary leading-[2] break-words">
               Deep dive into Shodan for internet-wide device discovery — identifying exposed industrial control systems, open databases, and misconfigured servers.
@@ -171,7 +172,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
           </div>
 
           <div className="p-6 rounded-xl border border-accent/10 bg-accent/5 flex flex-col md:flex-row items-start gap-4 md:gap-6">
-            <Trophy className="w-8 h-8 md:w-10 md:h-10 text-accent shrink-0" />
+            <IconLeaderboard size={32} className="text-accent shrink-0" />
             <div className="min-w-0">
               <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 text-text-primary break-words">Verifiable Credentials</h3>
               <p className="text-sm font-mono text-text-secondary leading-[2]">
@@ -242,7 +243,7 @@ export const Hpb2026CaseStudy: React.FC = () => {
             href="/hpb"
             className="inline-flex items-center gap-3 bg-accent text-bg font-black uppercase tracking-[0.12em] rounded-xl px-10 py-4 text-sm hover:brightness-110 active:scale-95 transition-all"
           >
-            <Target className="w-5 h-5" /> Begin Phase 01
+            <IconTarget size={20} /> Begin Phase 01
           </a>
         </div>
       </Section>

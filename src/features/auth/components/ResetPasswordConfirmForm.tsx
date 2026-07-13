@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, KeyRound, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
+import { Mail, KeyRound } from 'lucide-react';
 import PasswordInput from './PasswordInput';
 
 interface ResetPasswordConfirmFormProps {
@@ -22,7 +23,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
   return (
     <div>
       <button onClick={onBack} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Back
+        <IconArrowLeft size={16} /> Back
       </button>
       <div className="mb-8">
         <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Set New Password</h1>
@@ -56,7 +57,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          {isLoading ? 'Resetting...' : 'Reset Password'} <CheckCircle2 className="w-5 h-5" />
+          {isLoading ? 'Resetting...' : 'Reset Password'} <IconCheck size={20} />
         </button>
       </form>
     </div>

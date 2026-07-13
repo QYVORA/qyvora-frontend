@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import { PHASES } from './anansiData';
 
@@ -35,7 +35,7 @@ const AnansiPipelineSection: React.FC = () => {
                       {s.desc}
                     </p>
                     <div className="flex items-center gap-2 text-accent/60 mt-auto">
-                      <CheckCircle2 className="w-4 h-4" />
+                      <IconCheck size={16} />
                       <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
                         Autonomous Execution
                       </span>

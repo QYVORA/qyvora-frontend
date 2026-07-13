@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, CheckCircle2, Lock, X, Github } from 'lucide-react';
+import { Github } from 'lucide-react';
+import { IconArrowLeft, IconCheck, IconLock, IconX } from '@/shared/components/icons';
 import type { BootcampPhase } from '../../constants/bootcampConfig';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
@@ -30,7 +31,7 @@ const RoomSidebar: React.FC<Props> = ({
           className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           onClick={onMobileClose}
         >
-          <ArrowLeft className="h-3 w-3" /> Back to Curriculum
+          <IconArrowLeft size={12} /> Back to Curriculum
         </Link>
       </div>
 
@@ -69,7 +70,7 @@ const RoomSidebar: React.FC<Props> = ({
                         : 'border-border text-text-muted'
                     }`}
                   >
-                    {isCompleted ? <CheckCircle2 className="h-2 w-2" /> : isLocked ? <Lock className="h-2 w-2" /> : null}
+                    {isCompleted ? <IconCheck size={8} /> : isLocked ? <IconLock size={8} /> : null}
                   </span>
                   <span className="truncate text-xs flex-1">{room.title}</span>
                 </button>
@@ -107,7 +108,7 @@ const RoomSidebar: React.FC<Props> = ({
                   className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
                   aria-label="Close curriculum"
                 >
-                  <X className="h-4 w-4" />
+                  <IconX size={16} />
                 </button>
               </div>
               <div className="flex-1">{content}</div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { IconArrowRight } from '@/shared/components/icons';
 
 interface DashboardHeroProps {
   isEnrolled: boolean;
@@ -27,7 +27,7 @@ const DashboardHero = ({
             <p className="text-sm text-bg/70 mt-1">You have completed every available room.</p>
           </div>
           <Link to={continuePath} className="btn-primary shrink-0 !text-xs w-full sm:w-auto text-center" aria-label="Review completed curriculum">
-            Review Curriculum <ArrowRight className="inline h-3.5 w-3.5" />
+            Review Curriculum <IconArrowRight size={14} className="inline" />
           </Link>
         </div>
       </div>
@@ -44,7 +44,7 @@ const DashboardHero = ({
             <p className="text-sm text-bg/70 mt-1">Pick up where you left off.</p>
           </div>
           <Link to={continuePath} className="btn-primary shrink-0 !text-xs w-full sm:w-auto text-center" aria-label="Continue training">
-            Continue <ArrowRight className="inline h-3.5 w-3.5" />
+            Continue <IconArrowRight size={14} className="inline" />
           </Link>
         </div>
       </div>
@@ -60,7 +60,7 @@ const DashboardHero = ({
           <p className="text-sm text-bg/70 mt-1">Start the Hacker Protocol Bootcamp and earn your first CP.</p>
         </div>
         <Link to={continuePath} className="btn-primary shrink-0 !text-xs w-full sm:w-auto text-center" aria-label="Start Hacker Protocol Bootcamp training">
-          Start Training <ArrowRight className="inline h-3.5 w-3.5" />
+          Start Training <IconArrowRight size={14} className="inline" />
         </Link>
       </div>
     </div>

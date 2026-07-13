@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Calendar, Clock, Video } from 'lucide-react';
+import { Calendar, Video } from 'lucide-react';
+import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { getActiveEvents, formatEventTime, type EventData } from '@/features/marketing/content/eventsData';
@@ -47,7 +48,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
               <Calendar className="h-2.5 w-2.5" /> {event.date}
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-bg-elevated rounded text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
-              <Clock className="h-2.5 w-2.5" /> {formatEventTime(event)}
+               <IconClock size={10} /> {formatEventTime(event)}
             </span>
           </div>
           <h3 className="text-xl font-black text-text-primary tracking-tight leading-tight">
@@ -60,7 +61,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
             onClick={handleJoin}
             className="self-start inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
           >
-            Join Event <ArrowRight className="h-3 w-3" />
+            Join Event <IconArrowRight size={12} />
           </button>
         </div>
       </div>
@@ -82,7 +83,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
               <Calendar className="h-3 w-3" /> {event.date}
             </span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg/50 backdrop-blur-md rounded text-[9px] font-black uppercase tracking-widest text-text-primary border border-border/30">
-              <Clock className="h-3 w-3" /> {formatEventTime(event)}
+               <IconClock size={12} /> {formatEventTime(event)}
             </span>
           </div>
           <h3 className="text-3xl lg:text-4xl font-black text-white tracking-tight mb-2">
@@ -95,7 +96,7 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
             onClick={handleJoin}
             className="inline-flex items-center gap-2.5 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98]"
           >
-            Join Event <ArrowRight className="h-3.5 w-3.5" />
+            Join Event <IconArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -123,7 +124,7 @@ const LandingEventsSection: React.FC<LandingEventsSectionProps> = ({ user }) => 
             to="/events"
             className="hidden md:inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
           >
-            View All <ArrowRight className="h-3 w-3" />
+            View All <IconArrowRight size={12} />
           </Link>
         </div>
 
@@ -140,7 +141,7 @@ const LandingEventsSection: React.FC<LandingEventsSectionProps> = ({ user }) => 
             to="/events"
             className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
           >
-            View All Events <ArrowRight className="h-3 w-3" />
+            View All Events <IconArrowRight size={12} />
           </Link>
         </div>
       </div>

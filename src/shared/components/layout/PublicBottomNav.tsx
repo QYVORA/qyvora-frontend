@@ -6,15 +6,11 @@ import {
   Wrench,
   Mail,
   Radar,
-  Trophy,
   Calendar,
-  ShoppingBag,
   LogIn,
   UserPlus,
-  LayoutDashboard,
-  Lock,
-  X,
 } from 'lucide-react';
+import { IconLeaderboard, IconMarketplace, IconDashboard, IconLock, IconX } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
@@ -24,14 +20,14 @@ import ADMIN_PATH from '@/shared/utils/adminPath';
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
   { label: 'Home',        icon: Home,   path: '/'           },
-  { label: 'Leaderboard', icon: Trophy, path: '/leaderboard' },
+  { label: 'Leaderboard', icon: IconLeaderboard, path: '/leaderboard' },
   { label: 'Contact',     icon: Mail,   path: '/contact'    },
 ];
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */
 const MORE_ITEMS: { label: string; icon: any; path: string }[] = [
   { label: 'Events', icon: Calendar, path: '/events' },
-  { label: 'Market', icon: ShoppingBag, path: '/zero-day-market' },
+  { label: 'Market', icon: IconMarketplace, path: '/zero-day-market' },
 ];
 
 const PublicBottomNav: React.FC = () => {
@@ -122,7 +118,7 @@ const PublicBottomNav: React.FC = () => {
                   className="p-2 text-text-muted hover:text-accent transition-colors"
                   aria-label="Close"
                 >
-                  <X className="w-5 h-5" />
+                  <IconX size={20} />
                 </BottomSheetClose>
               </div>
 
@@ -161,7 +157,7 @@ const PublicBottomNav: React.FC = () => {
                         onClick={closeMore}
                         className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all active:scale-95"
                       >
-                        <Lock className="w-4 h-4" /> Admin Console
+                        <IconLock size={16} /> Admin Console
                       </Link>
                     )}
                     <Link
@@ -169,7 +165,7 @@ const PublicBottomNav: React.FC = () => {
                       onClick={closeMore}
                       className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
-                      <LayoutDashboard className="w-4 h-4" /> Dashboard
+                      <IconDashboard size={16} /> Dashboard
                     </Link>
                   </>
                 ) : (

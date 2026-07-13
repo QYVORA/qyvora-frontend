@@ -1,9 +1,10 @@
 import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Clock, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield,
-  Wifi, Wrench, Layers, Search, TrendingUp, Sparkles, GraduationCap,
+  BookOpen, Zap, Terminal, Globe,
+  Wifi, Wrench, Layers, Sparkles, GraduationCap, TrendingUp,
 } from 'lucide-react';
+import { IconArrowRight, IconCode, IconShield, IconSearch, IconClock } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
@@ -17,8 +18,8 @@ import type { CourseCategoryId, SkillLevel } from '@/features/student/data/cours
 const CATEGORY_ICONS: Record<CourseCategoryId, React.ElementType> = {
   terminal: Terminal,
   networking: Globe,
-  programming: Code,
-  'web-security': Shield,
+  programming: IconCode,
+  'web-security': IconShield,
   wireless: Wifi,
   tools: Wrench,
 };
@@ -119,7 +120,7 @@ const CoursesPage: React.FC = () => {
           {/* Search + Sort */}
           <div className="flex items-center gap-3 mb-6">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
+              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
               <input
                 type="text"
                 value={searchQuery}
@@ -201,7 +202,7 @@ const CoursesPage: React.FC = () => {
           {/* Course grid */}
           {filtered.length === 0 ? (
             <div className="text-center py-20 space-y-4">
-              <Search className="h-12 w-12 text-text-muted/20 mx-auto" />
+              <IconSearch className="h-12 w-12 text-text-muted/20 mx-auto" />
               <p className="text-text-muted">No courses found matching your criteria.</p>
               <button
                 onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
@@ -241,7 +242,7 @@ const CoursesPage: React.FC = () => {
                               </span>
                             )}
                             <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
-                              <Clock className="h-3 w-3" /> {course.estimatedMinutes}min
+                              <IconClock size={12} /> {course.estimatedMinutes}min
                             </span>
                           </div>
                         </div>
@@ -261,7 +262,7 @@ const CoursesPage: React.FC = () => {
                             </span>
                           </div>
                           <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                            View <ArrowRight className="h-3 w-3" />
+                            View <IconArrowRight className="h-3 w-3" />
                           </span>
                         </div>
                       </div>

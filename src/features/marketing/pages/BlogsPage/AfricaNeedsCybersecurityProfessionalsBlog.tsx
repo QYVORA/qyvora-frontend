@@ -1,5 +1,6 @@
 import React from 'react';
-import { Users, TrendingUp, GraduationCap, Globe, Shield, Target, Zap, DollarSign, BookOpen, CheckCircle2 } from 'lucide-react';
+import { Users, TrendingUp, GraduationCap, Globe, Zap, DollarSign, BookOpen } from 'lucide-react';
+import { IconShield, IconTarget, IconCheck } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, StatCard, FeatureCard, CodeBlock, BulletList, CTA, InlineDiagram, Divider } from './shared';
 
 export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
@@ -115,8 +116,8 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <FeatureCard icon={Target} title="Penetration Testing" desc="Hands-on offensive security skills — web application testing, network penetration testing, mobile app security assessments. The most in-demand and highest-paid skill in the African market." />
-          <FeatureCard icon={Shield} title="SOC Operations" desc="Security Operations Centre analysts who can triage alerts, investigate incidents, and manage SIEM platforms. Critical for banks, telcos, and government agencies." />
+          <FeatureCard icon={IconTarget} title="Penetration Testing" desc="Hands-on offensive security skills — web application testing, network penetration testing, mobile app security assessments. The most in-demand and highest-paid skill in the African market." />
+          <FeatureCard icon={IconShield} title="SOC Operations" desc="Security Operations Centre analysts who can triage alerts, investigate incidents, and manage SIEM platforms. Critical for banks, telcos, and government agencies." />
           <FeatureCard icon={Globe} title="Cloud Security" desc="With African organisations migrating to AWS, Azure, and GCP at record rates, cloud security architects who understand IAM, network segmentation, and compliance are urgently needed." />
           <FeatureCard icon={Users} title="Security Awareness" desc="Professionals who can build security culture — policy development, training delivery, phishing simulations. Often undervalued but critical for organisational security maturity." />
         </div>
@@ -135,10 +136,10 @@ export const AfricaNeedsCybersecurityProfessionalsBlog: React.FC = () => {
 
         <BulletList
           items={[
-            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>No prerequisites required</Highlight> — Phase 01 is open to everyone, regardless of background. The only requirement is the willingness to learn</span> },
-            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Low-bandwidth accessible</Highlight> — built for the African connectivity reality. The bootcamp works on mobile connections and moderate bandwidth</span> },
-            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Structured walkthroughs</Highlight> — no local setup, no dependency management. Every room guides you step-by-step with built-in quiz validation to confirm understanding</span> },
-            { icon: <CheckCircle2 className="w-5 h-5 text-accent" />, text: <span><Highlight>Verifiable credentials</Highlight> — every completed room earns CyberPoints (CP) recorded on a blockchain, providing provable proof of capability for employers</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>No prerequisites required</Highlight> — Phase 01 is open to everyone, regardless of background. The only requirement is the willingness to learn</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Low-bandwidth accessible</Highlight> — built for the African connectivity reality. The bootcamp works on mobile connections and moderate bandwidth</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Structured walkthroughs</Highlight> — no local setup, no dependency management. Every room guides you step-by-step with built-in quiz validation to confirm understanding</span> },
+            { icon: <IconCheck size={20} className="text-accent" />, text: <span><Highlight>Verifiable credentials</Highlight> — every completed room earns CyberPoints (CP) recorded on a blockchain, providing provable proof of capability for employers</span> },
           ]}
         />
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Heart, Loader2, Check, Video, MessageSquare, Sparkles, Shield } from 'lucide-react';
+import { Loader2, Video, MessageSquare, Sparkles } from 'lucide-react';
+import { IconHeart, IconCheck, IconShield } from '@/shared/components/icons';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -117,7 +118,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
             {submitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <Heart className="h-4 w-4" />
+              <IconHeart size={16} />
             )}
             Submit Review (+50 CP)
           </button>

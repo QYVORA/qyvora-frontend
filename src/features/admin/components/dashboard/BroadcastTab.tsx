@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Send, Megaphone, Users, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
+import { Send, Megaphone, Users } from 'lucide-react';
+import { IconWarning } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useToast } from '@/core/contexts/ToastContext';
 import { ConfirmDialog } from '@/shared/components/ui/Dialog';
@@ -76,7 +77,7 @@ const BroadcastTab = () => {
             {([
               { value: 'all', label: 'All Users', icon: Users },
               { value: 'bootcamp_enrolled', label: 'Bootcamp Enrolled', icon: Users },
-              { value: 'by_role', label: 'By Role', icon: AlertTriangle },
+              { value: 'by_role', label: 'By Role', icon: IconWarning },
             ] as const).map((opt) => {
               const Icon = opt.icon;
               return (
@@ -89,7 +90,7 @@ const BroadcastTab = () => {
                       : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" /> {opt.label}
+                  <Icon size={14} /> {opt.label}
                 </button>
               );
             })}

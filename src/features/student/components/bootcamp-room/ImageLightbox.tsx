@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
-import { X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ZoomIn, ZoomOut } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
 interface Props {
@@ -134,7 +135,7 @@ const ImageLightbox: React.FC<Props> = ({ src, alt, onClose }) => {
             className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors"
             aria-label="Close image viewer"
           >
-            <X className="h-4 w-4" />
+            <IconX size={16} />
           </button>
         </div>
 

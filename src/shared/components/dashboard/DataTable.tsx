@@ -1,5 +1,6 @@
 import { useState, useMemo, type ReactNode } from 'react';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { IconChevronRight, IconSearch } from '@/shared/components/icons';
 import { Skeleton } from '@/shared/components/ui';
 
 export interface Column<T> {
@@ -85,7 +86,7 @@ function DataTable<T>({
       {(searchable || searchFilter) && (
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="relative flex-1 max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted pointer-events-none" />
+            <IconSearch size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
             <input
               type="text"
               value={query}
@@ -186,7 +187,7 @@ function DataTable<T>({
                   disabled={safePage >= totalPages}
                   className="w-9 h-9 flex items-center justify-center rounded-lg bg-bg-elevated text-text-muted disabled:opacity-50 hover:text-accent transition-all active:scale-90 shadow-sm"
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <IconChevronRight size={20} />
                 </button>
               </div>
             </div>

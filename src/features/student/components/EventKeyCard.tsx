@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { KeyRound, Loader2, ExternalLink, Video, Check, X } from 'lucide-react';
+import { KeyRound, Loader2, ExternalLink, Video } from 'lucide-react';
+import { IconCheck, IconX } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 
@@ -83,21 +84,21 @@ const EventKeyCard: React.FC<EventKeyCardProps> = ({ eventId, eventTitle }) => {
                   {verifying ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
-                    <Check className="h-3 w-3" />
+                    <IconCheck size={12} />
                   )}
                   Unlock
                 </button>
               </div>
               {error && (
                 <p className="text-[10px] text-red-400 font-mono flex items-center gap-1">
-                  <X className="h-3 w-3" /> {error}
+                  <IconX size={12} /> {error}
                 </p>
               )}
             </div>
           ) : (
             <div className="space-y-3">
               <div className="flex items-center gap-2 p-3 rounded-xl bg-accent/5 border border-accent/20">
-                <Check className="h-4 w-4 text-accent shrink-0" />
+                <IconCheck size={16} className="text-accent shrink-0" />
                 <span className="text-[11px] text-text-primary font-mono">Key verified successfully</span>
               </div>
               {meetLink && (

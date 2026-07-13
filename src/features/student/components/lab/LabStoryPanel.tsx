@@ -1,5 +1,6 @@
 import React from 'react';
-import { CheckCircle, Circle, Lightbulb } from 'lucide-react';
+import { Circle, Lightbulb } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import type { LabStory, LabChapter } from '../../data/simulations/types';
 
 interface LabStoryPanelProps {
@@ -51,7 +52,7 @@ export const LabStoryPanel: React.FC<LabStoryPanelProps> = ({
                     <div className="relative z-10 flex-shrink-0 mt-0.5">
                       {status === 'completed' ? (
                         <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center">
-                          <CheckCircle className="w-4 h-4 text-white" />
+                          <IconCheck size={16} className="text-white" />
                         </div>
                       ) : status === 'current' ? (
                         <div className="w-6 h-6 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center">

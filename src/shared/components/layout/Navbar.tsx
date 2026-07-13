@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Menu, X, LogIn, UserPlus, ChevronDown, ChevronRight } from 'lucide-react';
+import { IconDashboard, IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
+import { LogIn, UserPlus, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -145,7 +146,7 @@ const Navbar: React.FC = () => {
                       : 'bg-accent text-bg hover:brightness-110'
                   }`}
                 >
-                  <LayoutDashboard className="w-4 h-4" /> Dashboard
+                  <IconDashboard className="w-4 h-4" /> Dashboard
                 </Link>
               ) : (
                 <Link
@@ -167,7 +168,7 @@ const Navbar: React.FC = () => {
               className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-bg hover:text-bg/70' : 'text-text-primary hover:text-accent'}`}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? <IconX size={24} /> : <IconMenu size={24} />}
             </button>
           </div>
 
@@ -212,8 +213,9 @@ const Navbar: React.FC = () => {
                       className="w-full flex items-center justify-between pl-4 pr-2 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors text-text-primary/70 hover:text-accent"
                     >
                       {group.label}
-                      <ChevronRight
-                        className={`w-4 h-4 transition-transform duration-200 ${
+                      <IconChevronRight
+                        size={16}
+                        className={`transition-transform duration-200 ${
                           isOpen ? 'rotate-90' : ''
                         }`}
                       />
@@ -277,7 +279,7 @@ const Navbar: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                   >
-                    <LayoutDashboard className="w-4 h-4" /> Dashboard
+                  <IconDashboard size={16} /> Dashboard
                   </Link>
                 ) : (
                   <>

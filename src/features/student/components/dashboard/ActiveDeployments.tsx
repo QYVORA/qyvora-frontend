@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
+import { IconArrowRight } from '@/shared/components/icons';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 
@@ -16,7 +17,7 @@ const EmptyDeployments = () => (
       to="/dashboard/bootcamps"
       className="btn-primary !text-[10px] !px-6 !py-2.5 flex items-center gap-1.5"
     >
-      Start Training <ArrowRight className="inline-block ml-1.5 h-3.5 w-3.5" />
+      Start Training <IconArrowRight size={14} className="inline-block ml-1.5" />
     </Link>
   </div>
 );

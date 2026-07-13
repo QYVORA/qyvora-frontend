@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Map, BookOpen, Swords, Globe, BarChart3,
-  ShoppingBag, Bell, Settings, Menu, X,
-  Trophy, Layers, Flame, CheckCircle2, BookMarked, Lock, Loader2,
-  FlaskConical,
+  Map, BookOpen, Swords, Globe, BarChart3,
+  Layers, BookMarked, Loader2,
 } from 'lucide-react';
+import {
+  IconDashboard,
+  IconMarketplace,
+  IconNotification,
+  IconSettings,
+  IconX,
+  IconLeaderboard,
+  IconFire,
+  IconCheck,
+  IconLock,
+  IconLabs,
+} from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import api from '@/core/services/api';
 import { getRankInfo } from '@/features/student/utils/rankUtils';
@@ -16,19 +26,19 @@ import CpLogo from '@/shared/components/CpLogo';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 const PRIMARY_NAV = [
-  { label: 'Dashboard',      icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Dashboard',      icon: IconDashboard, path: '/dashboard' },
   { label: 'Courses',        icon: BookMarked,      path: '/dashboard/courses' },
   { label: 'Bootcamp',       icon: Map,             path: '/dashboard/bootcamps' },
-  { label: 'Attack Labs',    icon: FlaskConical,    path: '/dashboard/labs' },
+  { label: 'Attack Labs',    icon: IconLabs,        path: '/dashboard/labs' },
   { label: 'Competitive',    icon: Swords,          path: '/dashboard/competitive' },
   { label: 'Networks',       icon: Globe,           path: '/dashboard/networks' },
   { label: 'My Progress',    icon: BarChart3,       path: '/dashboard/profile' },
 ];
 
 const SECONDARY_NAV = [
-  { label: 'Market',      icon: ShoppingBag, path: '/dashboard/marketplace' },
-  { label: 'Notifications', icon: Bell,      path: '/dashboard/notifications' },
-  { label: 'Settings',    icon: Settings,    path: '/dashboard/settings' },
+  { label: 'Market',      icon: IconMarketplace, path: '/dashboard/marketplace' },
+  { label: 'Notifications', icon: IconNotification, path: '/dashboard/notifications' },
+  { label: 'Settings',    icon: IconSettings,    path: '/dashboard/settings' },
 ];
 
 const SidebarPanel = ({ children }: { children: React.ReactNode }) => (
@@ -71,10 +81,10 @@ const DashboardOverviewPanel = () => {
   return (
     <SidebarPanel>
       <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Overview</div>
-      <PanelRow icon={<Trophy className="w-3.5 h-3.5 text-accent" />} label="Rank" value={rankName} />
+      <PanelRow icon={<IconLeaderboard size={14} className="text-accent" />} label="Rank" value={rankName} />
       <PanelRow icon={<Layers className="w-3.5 h-3.5 text-text-primary" />} label="Rooms" value={String(totalRoomsDone)} />
       <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(cp).toLocaleString()} />
-      <PanelRow icon={<Flame className="w-3.5 h-3.5 text-orange-400" />} label="Streak" value={`${streakDays ?? 0}d`} />
+      <PanelRow icon={<IconFire size={14} className="text-orange-400" />} label="Streak" value={`${streakDays ?? 0}d`} />
     </SidebarPanel>
   );
 };
@@ -174,7 +184,7 @@ const CourseProgressPanel = () => {
                 isComplete ? 'border-accent/30 bg-accent text-bg'
                   : 'border-border text-text-muted'
               }`}>
-                {isComplete ? <CheckCircle2 className="h-3 w-3" /> : String(idx + 1).padStart(2, '0')}
+                {isComplete ? <IconCheck size={12} /> : String(idx + 1).padStart(2, '0')}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[8px] font-black uppercase tracking-widest text-accent leading-none">{configPhase?.codename || `Phase ${idx + 1}`}</p>
@@ -417,7 +427,7 @@ const RoomCurriculumPanel = () => {
                     <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[7px] font-bold font-mono ${
                       isCompleted ? 'border-accent/40 text-accent' : isActive ? 'border-accent/40 text-accent' : 'border-border text-text-muted'
                     }`}>
-                      {isCompleted ? <CheckCircle2 className="h-2.5 w-2.5" /> : isLocked ? <Lock className="h-2.5 w-2.5" /> : null}
+                      {isCompleted ? <IconCheck size={10} /> : isLocked ? <IconLock size={10} /> : null}
                     </span>
                     <span className="truncate flex-1">{room.title}</span>
                   </button>
@@ -494,7 +504,7 @@ const Sidebar = () => {
           className="lg:hidden p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
           aria-label="Close sidebar"
         >
-          <X className="w-5 h-5" />
+          <IconX size={20} />
         </button>
       </div>
 

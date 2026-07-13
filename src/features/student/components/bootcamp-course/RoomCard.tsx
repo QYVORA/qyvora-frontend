@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Lock, ArrowRight, Pencil, Undo2, Trash2 } from 'lucide-react';
+import { Pencil, Undo2, Trash2 } from 'lucide-react';
+import { IconCheck, IconLock, IconArrowRight } from '@/shared/components/icons';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 interface RoomCardProps {
@@ -153,7 +154,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
         {roomDone && (
           <div className="room-completed-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 bg-bg/60 backdrop-blur-[2px] rounded-t-2xl">
             <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shadow-lg">
-              <CheckCircle2 className="h-6 w-6 text-bg" />
+              <IconCheck size={24} className="text-bg" />
             </div>
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Completed</span>
           </div>
@@ -170,7 +171,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
         {isRoomLocked && (
           <div className="absolute top-2.5 left-2.5">
             <div className="flex h-6 w-6 items-center justify-center rounded-lg border border-border bg-bg/80 font-mono text-[10px] font-black text-text-muted">
-              <Lock className="h-2.5 w-2.5" />
+              <IconLock size={10} />
             </div>
           </div>
         )}
@@ -222,11 +223,11 @@ const RoomCard: React.FC<RoomCardProps> = ({
         )}
         {roomDone ? (
           <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
-            Review room <ArrowRight className="h-3 w-3" />
+            Review room <IconArrowRight size={12} />
           </div>
         ) : !isRoomLocked && (
           <div className="mt-auto pt-3 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-            Enter room <ArrowRight className="h-3 w-3" />
+            Enter room <IconArrowRight size={12} />
           </div>
         )}
       </div>

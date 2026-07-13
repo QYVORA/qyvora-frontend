@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Play, RotateCcw, Copy, CheckCircle2, Terminal as TerminalIcon } from 'lucide-react';
+import { RotateCcw, Copy } from 'lucide-react';
+import { IconPlay, IconCheck, IconTerminal } from '@/shared/components/icons';
 
 interface CodePlaygroundProps {
   initialCode: string;
@@ -87,7 +88,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
     <div className={`border border-border rounded-xl overflow-hidden my-8 ${className}`}>
       <div className="flex items-center justify-between bg-bg-card px-5 py-3 border-b border-border">
         <div className="flex items-center gap-2">
-          <TerminalIcon className="h-4 w-4 text-accent" />
+          <IconTerminal size={16} className="text-accent" />
           <span className="text-[10px] font-mono font-black uppercase tracking-widest text-text-muted">{title}</span>
           {language && (
             <span className="px-1.5 py-0.5 rounded-sm bg-accent/10 text-[9px] font-mono font-black text-accent uppercase">{language}</span>
@@ -95,7 +96,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <button onClick={handleCopy} className="text-text-muted hover:text-accent transition-colors p-1" title="Copy code">
-            {copied ? <CheckCircle2 className="h-3.5 w-3.5 text-accent" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? <IconCheck size={14} className="text-accent" /> : <Copy className="h-3.5 w-3.5" />}
           </button>
           <button onClick={handleReset} className="text-text-muted hover:text-accent transition-colors p-1" title="Reset">
             <RotateCcw className="h-3.5 w-3.5" />
@@ -115,7 +116,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
       <div className="flex items-center gap-3 px-5 py-3 bg-bg-card border-t border-border">
         <button onClick={handleRun} className="btn-primary text-[10px] py-2 px-5 inline-flex items-center gap-1.5">
-          <Play className="h-3 w-3" /> Run
+          <IconPlay size={12} /> Run
         </button>
         {expectedOutput && (
           <button onClick={() => setShowHint(!showHint)} className="text-[10px] font-mono text-text-muted hover:text-accent transition-colors">

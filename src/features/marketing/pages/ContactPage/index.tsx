@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Send, Loader2, CheckCircle, AlertCircle, Mail, MapPin, Globe } from 'lucide-react';
+import { Send, Loader2, AlertCircle, Mail, MapPin, Globe } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
@@ -119,7 +120,7 @@ const ContactPage: React.FC = () => {
                 {status === 'sent' ? (
                   <div className="flex flex-col items-center justify-center py-12 gap-5 text-center">
                     <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
-                      <CheckCircle className="w-8 h-8 text-accent" />
+                      <IconCheck size={32} className="text-accent" />
                     </div>
                     <h3 className="text-xl font-black text-text-primary uppercase tracking-wide">{SITE_CONFIG.contactPage.sentTitle}</h3>
                     <p className="text-sm text-text-muted max-w-md leading-relaxed">

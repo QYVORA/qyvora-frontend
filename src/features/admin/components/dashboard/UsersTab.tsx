@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Shield, Copy, Ban, Unlock, Trash2 } from 'lucide-react';
+import { Copy, Ban, Unlock, Trash2 } from 'lucide-react';
+import { IconShield } from '@/shared/components/icons';
 import type { AdminUser } from '../../types/admin.types';
 import { isUserBlocked } from '../../types/admin.types';
 import CpLogo from '@/shared/components/CpLogo';
@@ -88,7 +89,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
             </button>
             {item.recoveryTokenAcknowledgedAt && (
               <Tooltip content="User has acknowledged token">
-                <Shield className="w-4 h-4 text-emerald-500" />
+                <IconShield size={16} className="text-emerald-500" />
               </Tooltip>
             )}
           </div>
@@ -161,7 +162,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
         </div>
         {item.recoveryToken && (
           <div className="flex items-center gap-3 mt-4 p-3 bg-bg-elevated rounded-xl shadow-sm">
-            <Shield className="w-4 h-4 text-accent" />
+            <IconShield size={16} className="text-accent" />
             <span className="font-mono text-[10px] text-accent/70 truncate flex-1">{item.recoveryToken}</span>
             <button onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast('Token copied', 'success'); }} className="p-1.5 hover:text-accent transition-colors">
               <Copy className="w-4 h-4" />
@@ -196,9 +197,9 @@ const UsersTab: React.FC<UsersTabProps> = ({
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard icon={<Shield className="w-5 h-5 text-text-muted" />} label="Total Users" value={Number((overview?.users as any)?.total || 0)} />
-        <StatCard icon={<Shield className="w-5 h-5 text-accent" />} label="Active 24h" value={Number((overview?.users as any)?.active24h || 0)} accent />
-        <StatCard icon={<Shield className="w-5 h-5 text-text-muted" />} label="Admins" value={adminsCount} />
+        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label="Total Users" value={Number((overview?.users as any)?.total || 0)} />
+        <StatCard icon={<IconShield size={20} className="text-accent" />} label="Active 24h" value={Number((overview?.users as any)?.active24h || 0)} accent />
+        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label="Admins" value={adminsCount} />
       </div>
 
       <DataTable

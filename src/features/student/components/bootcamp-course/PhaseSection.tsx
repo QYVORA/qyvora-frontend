@@ -1,5 +1,6 @@
 import React from 'react';
-import { CheckCircle2, Lock, ListChecks } from 'lucide-react';
+import { ListChecks } from 'lucide-react';
+import { IconCheck, IconLock } from '@/shared/components/icons';
 import ScrollReveal from '../../../../shared/components/ScrollReveal';
 import RoomCard from './RoomCard';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
@@ -56,9 +57,9 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
                   : 'bg-accent-dim text-accent'
             }`}>
               {isComplete
-                ? <CheckCircle2 className="h-5 w-5" />
+                ? <IconCheck size={20} />
                 : isLocked
-                  ? <Lock className="h-4 w-4" />
+                  ? <IconLock size={16} />
                   : String(modIdx + 1).padStart(2, '0')}
             </div>
             <div>
@@ -88,7 +89,7 @@ const PhaseSection: React.FC<PhaseSectionProps> = ({
           {isLocked ? (
             <div className="flex items-center gap-4 rounded-2xl bg-bg-elevated/40 p-8 border border-border/10">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bg/50 text-text-muted opacity-40">
-                <Lock className="h-5 w-5" />
+                <IconLock size={20} />
               </div>
               <div>
                 <p className="text-sm font-black uppercase tracking-widest text-text-muted">Phase locked</p>

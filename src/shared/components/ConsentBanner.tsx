@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Info, X } from 'lucide-react';
+import { IconShield, IconInfo, IconX } from '@/shared/components/icons';
 import { getCookiePreferences, setCookiePreferences, type CookiePreferences } from '../utils/storageConsent';
 import { usePopupManager } from '../../core/hooks/usePopupManager';
 
@@ -68,7 +68,7 @@ const ConsentBanner: React.FC = () => {
           <div className="bg-bg-card/95 backdrop-blur-xl border-t sm:border border-border rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
             <div className="flex items-start gap-4 mb-6">
               <div className="p-2.5 rounded-lg bg-accent/10 text-accent flex-none">
-                <ShieldCheck className="w-5 h-5" />
+                <IconShield size={20} />
               </div>
               <div className="flex-1">
                 <h3 className="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider mb-1.5">
@@ -83,7 +83,7 @@ const ConsentBanner: React.FC = () => {
                 className="p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all"
                 aria-label="Dismiss"
               >
-                <X className="w-4 h-4" />
+                <IconX size={16} />
               </button>
             </div>
 
@@ -159,7 +159,7 @@ const ConsentBanner: React.FC = () => {
                     onClick={() => setShowDetails(true)}
                     className="flex-1 px-4 py-2.5 rounded-2xl bg-bg border border-border text-text-primary font-black uppercase tracking-widest text-[10px] transition-all hover:border-accent/40 hover:bg-accent-dim/20 active:scale-95 inline-flex items-center justify-center gap-2"
                   >
-                    <Info className="w-3.5 h-3.5" /> Customize
+                    <IconInfo size={14} /> Customize
                   </button>
                 </>
               )}
