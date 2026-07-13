@@ -8,6 +8,8 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import { getCourseById, getCategoryById, COURSES } from '@/features/student/data/courses/courseData';
 import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses/types';
+import { getRelatedContentForCourse } from '@/shared/constants/topicMap';
+import RelatedContent from '@/shared/components/RelatedContent';
 import api from '@/core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 
@@ -293,6 +295,20 @@ const CourseInfoPage: React.FC = () => {
             </div>
           </section>
         )}
+
+        {/* Related Content from Topic Map */}
+        {(() => {
+          const related = getRelatedContentForCourse(course.id);
+          const hasRelated = related.labs.length > 0 || related.hpbRooms.length > 0 || related.courses.length > 0;
+          return hasRelated ? (
+            <RelatedContent
+              title="Continue This Topic"
+              courses={related.courses}
+              labs={related.labs}
+              hpbRooms={related.hpbRooms}
+            />
+          ) : null;
+        })()}
       </div>
       <Footer />
     </div>

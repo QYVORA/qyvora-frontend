@@ -1,6 +1,5 @@
 import React from 'react';
 import { Shield, Lock, ArrowRight, Building2, Send, CheckCircle2 } from 'lucide-react';
-import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -8,12 +7,14 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
+import ScrollReveal from '@/shared/components/ScrollReveal';
 
 const SERVICES_DATA = [
   {
     id: 'basic',
     tier: 'Basic',
     price: 'GH₵ 4,000+',
+    subtitle: 'Essential Security Audit',
     desc: 'Essential penetration testing for startups and small teams.',
     image: basicPackageImg,
     features: [
@@ -27,6 +28,7 @@ const SERVICES_DATA = [
     id: 'standard',
     tier: 'Standard',
     price: 'GH₵ 8,000+',
+    subtitle: 'Full Stack Assessment',
     desc: 'Comprehensive testing for growing organizations.',
     image: standardPackageImg,
     features: [
@@ -40,7 +42,8 @@ const SERVICES_DATA = [
   {
     id: 'bootcamp',
     tier: 'Employee Bootcamp',
-    price: 'Negotiation',
+    price: 'Custom',
+    subtitle: 'Team Training',
     desc: 'Custom security awareness training for your team.',
     features: [
       'Tailored Curriculum Design',
@@ -64,21 +67,20 @@ const ServicesPage: React.FC = () => {
           { name: 'Services', item: '/services' },
         ]}
       />
-      <HeroBackground className="opacity-70" />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-transparent overflow-hidden min-h-dvh md:min-h-screen flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24">
+      <section className="relative bg-accent overflow-hidden min-h-dvh md:min-h-screen flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 text-accent text-xs font-black uppercase tracking-[0.3em]">
+            <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
               <Shield className="w-4 h-4" />
               Offensive Security Assessments
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6 text-bg">
               Test Your <br />
-              <span className="text-accent">Defenses</span>
+              <span className="text-bg/80">Defenses</span>
             </h1>
-            <p className="text-lg md:text-xl text-text-secondary font-mono leading-relaxed max-w-2xl">
+            <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed max-w-2xl">
               Professional penetration testing services tailored for African organizations.
               From startups to enterprises — we assess your attack surface before adversaries do.
             </p>
@@ -86,77 +88,89 @@ const ServicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ══ SERVICES CARDS ══ */}
-      <section className="relative w-full py-20 md:py-28">
+      {/* ══ SERVICES CARDS — accent bg ══ */}
+      <section className="relative w-full bg-accent py-20 md:py-28" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
-              Engagement <span className="text-accent">Packages</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4 text-bg">
+              Engagement <span className="text-bg/70">Packages</span>
             </h2>
-            <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
+            <p className="text-bg/60 text-sm md:text-base max-w-xl mx-auto">
               Fixed-scope packages with optional add-ons. Every engagement includes a detailed report with actionable findings.
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {SERVICES_DATA.map((service) => {
-              const isFeatured = 'featured' in service && service.featured;
+            {SERVICES_DATA.map((service, idx) => {
+              const isFeatured = service.featured;
               return (
-                <div
-                  key={service.id}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openServiceRequestModal(service.tier)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
-                  className={`relative rounded-2xl border-2 flex flex-col transition-all duration-300 cursor-pointer ${
-                    isFeatured
-                      ? 'border-accent/50 shadow-[0_0_30px_-8px] shadow-accent/25'
-                      : 'border-border hover:border-accent/40'
-                  }`}
-                >
-                  {service.image && (
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${service.image})` }}
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-b from-bg-card/95 via-bg-card/90 to-bg-card" />
-                  {isFeatured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-bg text-[10px] font-black uppercase tracking-[0.2em] rounded-full z-10">
-                      Most Popular
-                    </div>
-                  )}
-                  <div className="relative z-10 p-6 flex flex-col h-full">
-                    <div className="mb-5">
-                      <h3 className="text-xl font-black text-text-primary tracking-tight break-words">{service.tier}</h3>
-                      <div className="mt-2 flex items-baseline gap-1">
-                        <span className="text-2xl md:text-3xl font-black text-accent">{service.price}</span>
-                        {service.price === 'Negotiation' && (
-                          <span className="text-xs font-bold text-text-muted">per engagement</span>
-                        )}
+                <ScrollReveal key={service.id} delay={idx * 0.1}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openServiceRequestModal(service.tier)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
+                    className={`group relative rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 cursor-pointer h-full ${
+                      isFeatured
+                        ? 'border-accent/40 bg-bg-card shadow-[0_0_30px_-8px] shadow-accent/20'
+                        : 'border-border/30 bg-bg-card hover:border-accent/30'
+                    }`}
+                  >
+                    {isFeatured && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-bg" />
+                    )}
+                    {/* Image */}
+                    {service.image && (
+                      <div className="relative h-44 overflow-hidden">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                          style={{ backgroundImage: `url(${service.image})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                            <h3 className="text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                          </div>
+                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-card/80 backdrop-blur-sm border border-border/30">
+                            {service.price}
+                          </span>
+                        </div>
                       </div>
-                      <p className="text-sm text-text-muted mt-2 leading-relaxed break-words">{service.desc}</p>
+                    )}
+                    {!service.image && (
+                      <div className="p-5 pb-0">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                        <div className="flex items-end justify-between mb-2">
+                          <h3 className="text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-elevated border border-border/30">
+                            {service.price}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {/* Features */}
+                    <div className="p-5 flex-1 flex flex-col">
+                      <p className="text-xs text-bg/50 mb-4">{service.desc}</p>
+                      <ul className="space-y-2.5 flex-1">
+                        {service.features.map((f) => (
+                          <li key={f} className="flex items-start gap-2.5">
+                            <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                            <span className="text-xs text-text-secondary leading-relaxed break-words">{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <button
+                        onClick={() => openServiceRequestModal(service.tier)}
+                        className="mt-5 w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary"
+                      >
+                        <Lock className="w-3 h-3" />
+                        Request Assessment
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
                     </div>
-                    <ul className="space-y-2 mb-6 flex-1">
-                      {service.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 text-sm text-text-secondary">
-                          <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                          <span className="break-words">{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={() => openServiceRequestModal(service.tier)}
-                      className={`w-full py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
-                        isFeatured
-                          ? 'bg-accent text-bg hover:brightness-110'
-                          : 'border-2 border-accent/50 text-accent hover:bg-accent/10'
-                      }`}
-                    >
-                      <Lock className="w-3.5 h-3.5" />
-                      Request Assessment <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>

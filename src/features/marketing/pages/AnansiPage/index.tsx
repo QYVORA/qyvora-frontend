@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
@@ -65,12 +64,6 @@ const AnansiPage: React.FC = () => {
             'priceCurrency': 'USD'
           }
         }}
-      />
-      <HeroBackground
-        className={`
-          z-0 transition-opacity duration-700
-          ${activeSection === 'hero' ? 'opacity-65' : 'opacity-90'}
-        `}
       />
 
       <section id="hero" className="relative w-full">

@@ -7,7 +7,7 @@ import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperi
 import SEO from '../../../shared/components/SEO';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
 
-const INPUT_CLS = 'w-full bg-bg border border-border rounded-lg py-2.5 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono';
+const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono';
 
 const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd }) => {
   const [show, setShow] = useState(false);
@@ -153,7 +153,7 @@ const Settings: React.FC = () => {
 
             {/* Change password */}
             <ScrollReveal>
-              <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Shield className="h-5 w-5 text-accent" />
                   <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Change Password</h2>
@@ -180,7 +180,7 @@ const Settings: React.FC = () => {
 
             {/* Recovery token */}
             <ScrollReveal>
-              <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Key className="h-5 w-5 text-accent" />
                   <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Recovery Token</h2>

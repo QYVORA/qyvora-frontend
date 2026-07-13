@@ -36,7 +36,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
               pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
               title="Letters, numbers, and hyphens only. No spaces. Must start and end with a letter or number."
               placeholder="Pick a handle or choose one below"
-              className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
           <HandleSuggestions
@@ -54,7 +54,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
             <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Kwame Mensah"
               value={fullName}
               onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }}
-              className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
           </div>
         </div>
 
@@ -62,7 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
           <label htmlFor="register-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
           <div className="relative">
             <input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@qyvora.africa"
-              className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
@@ -78,7 +78,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
         </div>
 
         <button type="submit" disabled={isLoading}
-          className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+          className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
           {isLoading ? 'Creating account...' : 'Create Account'} <LogIn className="w-5 h-5" />
         </button>
       </form>

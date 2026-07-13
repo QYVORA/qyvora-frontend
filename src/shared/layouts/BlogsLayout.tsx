@@ -14,7 +14,7 @@ const BlogsLayout = () => {
 
       <main
         id="main-content"
-        className="w-full min-h-screen flex flex-col pt-[72px]"
+        className="w-full min-h-screen flex flex-col pt-[80px]"
       >
         <Outlet />
       </main>

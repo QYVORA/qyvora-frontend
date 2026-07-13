@@ -1,11 +1,15 @@
 import { useState, useCallback } from 'react';
 import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
+import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
 import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
+import { getRelatedContentForLab } from '@/shared/constants/topicMap';
+import RelatedContent from '@/shared/components/RelatedContent';
+
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
@@ -79,7 +83,6 @@ const PasswordLab = () => {
           </div>
 
           <div className="border-t border-border/30 mb-10" />
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PASSWORD_EXERCISES.map((scenario, index) => (
               <ScenarioCard
@@ -96,120 +99,67 @@ const PasswordLab = () => {
               />
             ))}
           </div>
+
+          <div className="mt-10"><RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" /></div>
         </div>
       </div>
     );
   }
 
+  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
+    if (!activeScenario) return { correct: false };
+    try {
+      return await verifyLabFlag('passwords', activeScenario.id, flag);
+    } catch {
+      return { correct: false };
+    }
+  }, [activeScenario]);
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
-        <div className="mb-8">
-          <button onClick={exitScenario} className="flex items-center gap-2 text-text-muted hover:text-accent transition-colors mb-6">
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">All Exercises</span>
-          </button>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-              <Key className="w-7 h-7 text-accent" />
-            </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tight">{activeScenario.title}</h1>
-              <div className="flex items-center gap-3 mt-2">
-                <span className="text-[11px] font-black uppercase tracking-widest text-accent">{activeScenario.hashType}</span>
-                <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${DIFFICULTY_STYLES[activeScenario.difficulty]}`}>
-                  {activeScenario.difficulty}
-                </span>
-                <LabConnectButton labId="passwords" scenarioId={activeScenario.id} />
-              </div>
-            </div>
-          </div>
-        </div>
+      <WalkthroughLayout
+        title={activeScenario.title}
+        subtitle={`${activeScenario.hashType} — ${activeScenario.description}`}
+        icon={<Key className="w-6 h-6" />}
+        difficulty={activeScenario.difficulty}
+        labId="passwords"
+        scenarioId={activeScenario.id}
+        onBack={exitScenario}
+        completedCount={completedSteps.size}
+        totalSteps={activeScenario.steps.length}
+      >
+        {activeScenario.steps.map((step, index) => {
+          const isCompleted = completedSteps.has(index);
+          const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
+          const isLocked = !isNextStep && !isCompleted;
+          const isActive = isNextStep && !isCompleted;
 
-        {/* Steps */}
-        <div className="mb-8 space-y-3">
-          <div className="flex items-center gap-2 mb-4">
-            <Terminal className="w-5 h-5 text-accent" />
-            <h2 className="text-lg font-black text-text-primary uppercase tracking-wider">Walkthrough</h2>
-          </div>
-          {activeScenario.steps.map((step, index) => {
-            const isCompleted = completedSteps.has(index);
-            const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
-            const isLocked = !isNextStep && !isCompleted;
+          const narratives = [
+            `🔑 Initialize your cracking session.\n\nBefore attacking, we identify the hash type and prepare our toolchain. Different hashes require different approaches:\n\n  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐\n  │  Hash File   │────▶│  Identify    │────▶│  Select Tool │\n  │  (input.txt) │     │  Hash Type   │     │  (john)      │\n  └──────────────┘     └──────────────┘     └──────────────┘\n\nFollow the command below to prepare your environment.`,
+            `⚡ Launch the cracking attack.\n\nJohn the Ripper iterates through password candidates, hashing each one and comparing against the target hash:\n\n  Password Candidates ──▶ Hash Function ──▶ Compare ──▶ Match?\n       (wordlist)          (MD5/SHA)        (target hash)\n\nExecute the command below to begin cracking.`,
+            `🎯 Extract and analyze results.\n\nOnce cracks are found, retrieve the plaintext passwords from the output. These credentials are your foothold into the target system.\n\n  Cracked Hashes ──▶ Plaintext ──▶ Credential Harvest\n\nRun the command below to view your results.`,
+            `💀 Advanced cracking techniques.\n\nIf standard dictionary attacks fail, we escalate to rule-based mutations and incremental mode. This遍历 password patterns systematically.\n\n  Rules ──▶ Wordlist Mutations ──▶ New Candidates\n  Aa1 → Aa1! → Aa1@ → ...\n\nApply advanced techniques with the command below.`,
+            `🏆 Final credential extraction.\n\nCompile all cracked passwords and verify them against the target. The flag is embedded within the recovered credential data.\n\n  ┌──────────┐     ┌──────────┐     ┌──────────┐\n  │  Cracked  │────▶│  Verify  │────▶│  Extract │\n  │  List     │     │  Access  │     │  Flag    │\n  └──────────┘     └──────────┘     └──────────┘\n\nExecute the final command to complete the exercise.`,
+          ];
 
-            return (
-              <div
-                key={index}
-                className={`rounded-2xl border p-6 transition-all ${
-                  isCompleted ? 'border-accent/30 bg-accent/5' : isNextStep ? 'border-accent/30 bg-bg-card' : 'border-border/20 bg-bg-card opacity-50'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black ${
-                    isCompleted ? 'bg-accent text-white' : isNextStep ? 'bg-accent/20 text-accent' : 'bg-white/5 text-text-muted/30'
-                  }`}>
-                    {isCompleted ? <CheckCircle className="w-4 h-4" /> : index + 1}
-                  </div>
-                  <span className="text-xs font-black uppercase tracking-widest text-accent">Step {index + 1}</span>
-                </div>
-                <p className="text-base text-text-secondary font-mono leading-relaxed mb-4">
-                  Run: <code className="px-2 py-0.5 bg-white/5 rounded text-accent">{step}</code>
-                </p>
-                {isNextStep && !isCompleted && (
-                  <button onClick={() => handleStepComplete(index)} className="btn-primary !rounded-xl !text-[10px] px-5 py-2.5">
-                    Mark Step Done
-                  </button>
-                )}
-                {isCompleted && <span className="text-sm font-black text-accent">Step Completed</span>}
-              </div>
-            );
-          })}
-        </div>
-
-        {allStepsCompleted && (
-          <>
-            <div className="border-t border-border/30 mb-8" />
-
-            <div className="mb-8">
-              <h2 className="text-lg font-black text-text-primary uppercase tracking-wider mb-4">Completion</h2>
-              <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6">
-                <p className="text-sm font-black text-accent mb-2">All steps completed!</p>
-                <p className="text-sm text-text-muted font-mono mb-4">
-                  Submit the flag to claim your {activeScenario.cpReward} CP reward.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="text"
-                    value={flagInput}
-                    onChange={(e) => { setFlagInput(e.target.value); setFlagStatus('idle'); }}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleSubmitFlag(); }}
-                    placeholder="FLAG{...}"
-                    className="flex-1 bg-bg border border-border rounded-xl py-3 px-4 text-text-primary font-mono text-sm focus:border-accent outline-none"
-                  />
-                  <button onClick={handleSubmitFlag} disabled={!flagInput.trim() || flagLoading} className="btn-primary !rounded-xl !text-[11px] px-8 disabled:opacity-50">
-                    {flagLoading ? 'Verifying...' : 'Submit Flag'}
-                  </button>
-                </div>
-                {flagStatus === 'incorrect' && (
-                  <div className="flex items-center gap-2 mt-3 text-sm text-red-400 font-mono">
-                    <AlertTriangle className="w-4 h-4" />
-                    Incorrect flag. Review your work and try again.
-                  </div>
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {!allStepsCompleted && (
-          <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-4 flex items-start gap-2">
-            <AlertTriangle className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
-            <p className="text-sm font-mono text-text-muted">
-              Complete all steps above to unlock flag submission.
-            </p>
-          </div>
-        )}
+          return (
+            <WalkthroughStep
+              key={index}
+              stepIndex={index}
+              title={`Step ${index + 1}`}
+              narrative={narratives[index % narratives.length]}
+              commandInstruction={step}
+              isLocked={isLocked}
+              isCompleted={isCompleted}
+              isActive={isActive}
+              flagId={`${activeScenario.id}-step-${index}`}
+              labId="passwords"
+              onFlagSubmit={handleFlagSubmit}
+              onComplete={() => handleStepComplete(index)}
+            />
+          );
+        })}
 
         {flagStatus === 'correct' && (
           <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 flex items-center gap-4">
@@ -227,7 +177,7 @@ const PasswordLab = () => {
             </div>
           </div>
         )}
-      </div>
+      </WalkthroughLayout>
     </div>
   );
 };

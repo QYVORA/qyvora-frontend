@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Lock, ArrowRight, BookOpen } from 'lucide-react';
+import { CheckCircle2, Lock, ArrowRight, BookOpen, Layers, Clock } from 'lucide-react';
 import { BOOTCAMP_CONFIG, type BootcampPhase } from '@/features/student/constants/bootcampConfig';
+import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 
 interface LearningPathMapProps {
@@ -69,55 +70,85 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
         <Link to="/dashboard/bootcamps" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">View All</Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 px-4 md:px-0" role="list" aria-label="Learning path phases">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-4 md:px-0" role="list" aria-label="Learning path phases">
         {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
           const state = getPhaseState(phase);
           const { roomsCompleted, totalRooms } = getPhaseProgress(phase);
           const firstRoomId = phase.rooms[0]?.id;
+          const learnPhase = PHASES[idx];
+          const Icon = learnPhase?.icon;
+          const totalSteps = phase.rooms.reduce((acc, r) => acc + (r.steps?.length || 0), 0);
+
+          const isLocked = state === 'locked';
+          const isCompleted = state === 'completed';
 
           const pillContent = (
             <div
-              className={`flex flex-col p-4 rounded-xl border transition-all duration-300 min-h-[160px] ${
-                state === 'locked'
-                  ? 'border-border/20 bg-bg-card/30 opacity-50'
-                  : state === 'completed'
-                  ? 'border-accent/40 bg-accent-dim/10'
-                  : 'border-accent bg-accent-dim/15 shadow-[0_0_8px_rgba(6,182,111,0.25)]'
+              className={`relative min-h-[220px] md:min-h-[280px] rounded-2xl border overflow-hidden transition-all duration-300 ${
+                isLocked
+                  ? 'border-border/20 opacity-40'
+                  : isCompleted
+                  ? 'border-accent/40'
+                  : 'border-accent shadow-[0_0_12px_rgba(6,182,111,0.3)]'
               }`}
             >
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                  state === 'completed'
-                    ? 'bg-accent text-bg'
-                    : state === 'current'
-                    ? 'bg-accent/20 text-accent'
-                    : 'bg-bg-elevated text-text-muted'
-                }`}>
-                  {state === 'completed' ? (
-                    <CheckCircle2 className="w-4 h-4" />
-                  ) : state === 'locked' ? (
-                    <Lock className="w-4 h-4" />
-                  ) : (
-                    <span className="text-xs font-black">{idx + 1}</span>
+              {learnPhase?.image && (
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${learnPhase.image})` }}
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+              {isLocked && <div className="absolute inset-0 bg-black/40" />}
+              <div className="relative z-10 p-5 flex flex-col h-full min-h-[220px] md:min-h-[280px]">
+                <div className="flex items-center gap-2.5 mb-3">
+                  {Icon && (
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      isCompleted
+                        ? 'bg-accent text-bg'
+                        : isLocked
+                        ? 'bg-bg-elevated text-text-muted'
+                        : 'bg-accent/10 text-accent'
+                    }`}>
+                      {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : isLocked ? <Lock className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                    </div>
+                  )}
+                  <div className="w-7 h-7 rounded-md bg-accent flex items-center justify-center shrink-0">
+                    <span className="text-xs font-black text-bg">{String(idx + 1).padStart(2, '0')}</span>
+                  </div>
+                </div>
+                <h4 className={`text-base font-black tracking-tight mb-1.5 ${isLocked ? 'text-text-muted/60' : 'text-white'}`}>
+                  {phase.title}
+                </h4>
+                {learnPhase?.desc && (
+                  <p className={`text-xs leading-relaxed line-clamp-3 mb-3 ${isLocked ? 'text-text-muted/50' : 'text-white/70'}`}>
+                    {learnPhase.desc}
+                  </p>
+                )}
+                <div className="mt-auto flex items-center gap-2">
+                  {!isLocked && (
+                    <>
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
+                        <Layers className="w-3 h-3 text-accent" />
+                        <span className="text-[10px] font-bold text-white">{totalRooms} rooms</span>
+                      </div>
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
+                        <Clock className="w-3 h-3 text-accent" />
+                        <span className="text-[10px] font-bold text-white">{totalSteps} steps</span>
+                      </div>
+                    </>
+                  )}
+                  {isLocked && (
+                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Locked</span>
                   )}
                 </div>
-                <span className={`text-[10px] font-black uppercase tracking-widest ${
-                  state === 'locked' ? 'text-text-muted' : 'text-accent'
-                }`}>
-                  Phase {idx + 1}
-                </span>
-              </div>
-              <h4 className={`text-xs font-bold leading-snug mb-1.5 break-words ${
-                state === 'locked' ? 'text-text-muted/60' : 'text-text-primary'
-              }`}>
-                {phase.title}
-              </h4>
-              <div className="mt-auto pt-1.5">
-                <div className={`text-[10px] font-mono text-text-muted mb-1.5 ${state === 'locked' ? 'invisible' : ''}`}>
-                  {state !== 'locked' ? `${roomsCompleted}/${totalRooms} rooms` : '0/0 rooms'}
-                </div>
-                {state === 'current' && totalRooms > 0 && (
-                  <div className="w-full h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
+                {isCompleted && (
+                  <div className="absolute top-4 right-4 w-7 h-7 rounded-full bg-accent flex items-center justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-bg" />
+                  </div>
+                )}
+                {!isLocked && !isCompleted && roomsCompleted > 0 && totalRooms > 0 && (
+                  <div className="mt-2.5 w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
                     <div
                       className="h-full rounded-full bg-accent transition-all duration-700"
                       style={{ width: `${(roomsCompleted / totalRooms) * 100}%` }}
@@ -129,7 +160,6 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                     />
                   </div>
                 )}
-                {state !== 'current' && <div className="h-1.5" />}
               </div>
             </div>
           );
@@ -137,19 +167,19 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
           return (
             <ScrollReveal key={phase.id} delay={idx * 0.07} className="flex">
               <div role="listitem" className="flex-1">
-              {state !== 'locked' && firstRoomId ? (
-                <Link
-                  to={`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${firstRoomId}`}
-                  className="flex-1 block"
-                  aria-label={`Phase ${idx + 1}: ${phase.title}, ${roomsCompleted} of ${totalRooms} rooms${state === 'completed' ? ', completed' : ''}`}
-                >
-                  {pillContent}
-                </Link>
-              ) : (
-                <div className="flex-1" aria-disabled={state === 'locked'} aria-label={`Phase ${idx + 1}: ${phase.title}${state === 'locked' ? ', locked' : ''}`}>
-                  {pillContent}
-                </div>
-              )}
+                {state !== 'locked' && firstRoomId ? (
+                  <Link
+                    to={`/dashboard/bootcamps/${bootcampId}/phases/${phase.id}/rooms/${firstRoomId}`}
+                    className="flex-1 block"
+                    aria-label={`Phase ${idx + 1}: ${phase.title}, ${roomsCompleted} of ${totalRooms} rooms${state === 'completed' ? ', completed' : ''}`}
+                  >
+                    {pillContent}
+                  </Link>
+                ) : (
+                  <div className="flex-1" aria-disabled={state === 'locked'} aria-label={`Phase ${idx + 1}: ${phase.title}${state === 'locked' ? ', locked' : ''}`}>
+                    {pillContent}
+                  </div>
+                )}
               </div>
             </ScrollReveal>
           );

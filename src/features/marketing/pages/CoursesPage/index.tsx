@@ -77,7 +77,7 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col pt-[72px] overflow-hidden">
+      <section className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
         <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />
@@ -86,14 +86,14 @@ const CoursesPage: React.FC = () => {
           {/* Left column */}
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-accent">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-bg/20 bg-bg/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-bg">
                 <BookOpen className="h-3.5 w-3.5" /> Self-Paced Learning
               </span>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
                 QYVORA{' '}
-                <span className="text-accent">Courses</span>
+                <span className="text-bg/80">Courses</span>
               </h1>
-              <p className="text-lg md:text-xl text-text-secondary font-mono leading-relaxed">
+              <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed">
                 Focused, beginner-friendly courses that teach one skill at a time.
                 Learn at your own pace and build your cybersecurity foundation lesson by lesson.
               </p>

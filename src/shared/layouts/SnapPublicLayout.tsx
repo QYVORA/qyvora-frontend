@@ -122,7 +122,7 @@ const SnapPublicLayout = () => (
           leftover from debugging. Safe to remove. ⚠️
     */}
     <main
-      className="w-full min-h-screen flex flex-col pt-[72px]"
+      className="w-full min-h-screen flex flex-col pt-[80px]"
       style={{ height: undefined }}
     >
       {/*
@@ -144,7 +144,7 @@ const SnapPublicLayout = () => (
         <Outlet /> is replaced at runtime by the matched child route (e.g.,
         <FeaturesPage />), which internally sets up the snap scroll sections.
       */}
-      <div className="w-full md:h-[calc(100dvh-72px)]">
+      <div className="w-full md:h-[calc(100dvh-80px)]">
         <Outlet />
       </div>
     </main>

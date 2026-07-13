@@ -1,5 +1,4 @@
 import React from 'react';
-import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
@@ -20,7 +19,6 @@ const TermsPage: React.FC = () => {
           { name: 'Terms of Service', item: '/terms' }
         ]}
       />
-      <HeroBackground className="opacity-70" />
 
       <section className="relative bg-transparent overflow-hidden">
         <TermsHeroSection />

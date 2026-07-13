@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import AuthHero from '../components/AuthHero';
 import LoginForm from '../components/LoginForm';
 
@@ -73,7 +72,6 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={`min-h-screen relative ${isAdminLoginRoute ? '' : 'md:grid md:grid-cols-2'}`}>
-      <HeroBackground className="opacity-50" />
       {!isAdminLoginRoute && <AuthHero />}
       <div className={`flex flex-col items-center px-4 py-8 md:p-12 relative ${isAdminLoginRoute ? '' : 'md:backdrop-blur-xl'} min-h-screen ${isAdminLoginRoute ? '' : 'md:h-screen md:overflow-y-auto'}`}>
         {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}

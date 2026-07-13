@@ -8,6 +8,9 @@ import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations/privesc-s
 import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import type { PrivescScenario } from '@/features/student/data/simulations/types';
 import { verifyLabFlag } from '../../../services/lab.service';
+import { getRelatedContentForLab } from '@/shared/constants/topicMap';
+import RelatedContent from '@/shared/components/RelatedContent';
+
 
 const DIFFICULTY_STYLES: Record<string, string> = {
   beginner: 'bg-green-400/10 text-green-400 border-green-400/20',
@@ -101,6 +104,10 @@ const PrivescLab = () => {
                 }}
               />
             ))}
+          </div>
+
+          <div className="mt-10">
+            <RelatedContent {...getRelatedContentForLab('privesc')} title="Continue This Topic" />
           </div>
         </div>
       </div>

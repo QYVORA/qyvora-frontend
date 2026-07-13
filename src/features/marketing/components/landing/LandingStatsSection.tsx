@@ -37,10 +37,10 @@ const cardVariants = {
 
 const SectionHeader: React.FC = () => (
   <motion.div variants={cardVariants} className="text-left md:text-right">
-    <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
-      Built for <span className="text-accent">Impact</span>
+    <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-bg tracking-tighter leading-none">
+      Built for <span className="text-bg/70">Impact</span>
     </h2>
-    <p className="mt-4 text-sm md:text-lg text-text-muted max-w-xl md:ml-auto md:mr-0">
+    <p className="mt-4 text-sm md:text-lg text-bg/60 max-w-xl md:ml-auto md:mr-0">
       Real metrics from real operators across the continent
     </p>
   </motion.div>
@@ -76,76 +76,82 @@ const LandingStatsSection: React.FC = () => {
 
   if (loading && !s) {
     return (
-      <SectionShell
-        header={<SectionHeader />}
-        cards={STATS_CONFIG.map((card) => (
-          <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
-            <div className="p-4 sm:p-5 space-y-3">
-              <Skeleton variant="icon" className="w-10 h-10 bg-border/30" />
-              <Skeleton variant="stat-value" className="h-8 w-28 bg-border/30" />
-              <Skeleton className="h-3 w-20 bg-border/30" />
-              <Skeleton className="h-2.5 w-36 bg-border/30" />
+      <div className="bg-accent" data-nav-invert>
+        <SectionShell
+          header={<SectionHeader />}
+          cards={STATS_CONFIG.map((card) => (
+            <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+              <div className="p-4 sm:p-5 space-y-3">
+                <Skeleton variant="icon" className="w-10 h-10 bg-border/30" />
+                <Skeleton variant="stat-value" className="h-8 w-28 bg-border/30" />
+                <Skeleton className="h-3 w-20 bg-border/30" />
+                <Skeleton className="h-2.5 w-36 bg-border/30" />
+              </div>
             </div>
-          </div>
-        ))}
-      />
+          ))}
+        />
+      </div>
     );
   }
 
   if (!s || !hasValidData) {
     return (
-      <SectionShell
-        header={<SectionHeader />}
-        cards={STATS_CONFIG.map((card) => {
-          const Icon = card.icon;
-          return (
-            <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
-              <div className="p-4 sm:p-5 flex flex-col items-start text-left">
-                <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
-                  <Icon className="w-5 h-5 text-accent/40" />
+      <div className="bg-accent" data-nav-invert>
+        <SectionShell
+          header={<SectionHeader />}
+          cards={STATS_CONFIG.map((card) => {
+            const Icon = card.icon;
+            return (
+              <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+                <div className="p-4 sm:p-5 flex flex-col items-start text-left">
+                  <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                    <Icon className="w-5 h-5 text-bg/40" />
+                  </div>
+                  <div className="text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">&mdash;</div>
+                  <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">{card.label}</h3>
+                  <p className="text-xs text-bg/60">{card.description}</p>
                 </div>
-                <div className="text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">&mdash;</div>
-                <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">{card.label}</h3>
-                <p className="text-xs text-text-muted/60">{card.description}</p>
               </div>
-            </div>
-          );
-        })}
-      />
+            );
+          })}
+        />
+      </div>
     );
   }
 
   const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }));
 
   return (
-    <SectionShell
-      header={<SectionHeader />}
-      cards={resolvedStats.map((card) => {
-        const Icon = card.icon;
-        return (
-          <motion.div
-            key={card.label}
-            variants={cardVariants}
-            className="group rounded-2xl border border-border/30 bg-accent-dim overflow-hidden"
-          >
-            <div className="p-4 sm:p-5 flex flex-col items-start text-left">
-              <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3 group-hover:bg-accent/20 transition-all duration-300">
-                <Icon className="w-5 h-5 text-accent" />
+    <div className="bg-accent" data-nav-invert>
+      <SectionShell
+        header={<SectionHeader />}
+        cards={resolvedStats.map((card) => {
+          const Icon = card.icon;
+          return (
+            <motion.div
+              key={card.label}
+              variants={cardVariants}
+              className="group rounded-2xl border border-border/30 bg-accent-dim overflow-hidden"
+            >
+              <div className="p-4 sm:p-5 flex flex-col items-start text-left">
+                <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3 group-hover:bg-accent/20 transition-all duration-300">
+                  <Icon className="w-5 h-5 text-bg" />
+                </div>
+                <div className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">
+                  <StatCounter end={card.value} suffix={card.suffix} className="text-bg" />
+                </div>
+                <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">
+                  {card.label}
+                </h3>
+                <p className="text-xs text-bg/60 leading-relaxed">
+                  {card.description}
+                </p>
               </div>
-              <div className="text-2xl md:text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">
-                <StatCounter end={card.value} suffix={card.suffix} className="text-text-primary" />
-              </div>
-              <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">
-                {card.label}
-              </h3>
-              <p className="text-xs text-text-muted/60 leading-relaxed">
-                {card.description}
-              </p>
-            </div>
-          </motion.div>
-        );
-      })}
-    />
+            </motion.div>
+          );
+        })}
+      />
+    </div>
   );
 };
 

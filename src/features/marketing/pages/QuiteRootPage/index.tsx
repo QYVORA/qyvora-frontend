@@ -60,25 +60,32 @@ function SectionHeader({
   accent,
   body,
   align = 'left',
+  light = false,
 }: {
   eyebrow?: string;
   title: string;
   accent?: string;
   body?: string;
   align?: 'left' | 'center';
+  light?: boolean;
 }) {
+  const eybrowCls = light ? 'text-bg' : 'text-accent';
+  const titleCls = light ? 'text-bg' : 'text-text-primary';
+  const accentCls = light ? 'text-bg/70' : 'text-accent';
+  const bodyCls = light ? 'text-bg/60' : 'text-text-secondary';
+
   return (
     <div className={align === 'center' ? 'mx-auto max-w-4xl text-center' : 'max-w-3xl'}>
       {eyebrow && (
-        <span className="mb-4 block text-[10px] font-black uppercase tracking-[0.35em] text-accent">
+        <span className={`mb-4 block text-[10px] font-black uppercase tracking-[0.35em] ${eybrowCls}`}>
           {eyebrow}
         </span>
       )}
-      <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none text-text-primary">
-        {title} {accent && <span className="text-accent">{accent}</span>}
+      <h2 className={`text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none ${titleCls}`}>
+        {title} {accent && <span className={accentCls}>{accent}</span>}
       </h2>
       {body && (
-        <p className="mt-5 text-sm md:text-base lg:text-lg text-text-secondary leading-relaxed">
+        <p className={`mt-5 text-sm md:text-base lg:text-lg leading-relaxed ${bodyCls}`}>
           {body}
         </p>
       )}
@@ -88,17 +95,17 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full md:min-h-screen flex flex-col">
+    <div className="relative w-full md:min-h-screen flex flex-col bg-accent" data-nav-invert>
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
         <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
-              QUITE <span className="text-accent">ROOT</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
+              QUITE <span className="text-bg/80">ROOT</span>
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl lg:text-2xl text-bg/70 font-mono leading-relaxed max-w-xl">
               The Intelligence Behind QYVORA
             </p>
-            <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-2xl">
+            <p className="text-sm md:text-base text-bg/60 leading-relaxed max-w-2xl">
               We engineer offensive security tools, conduct cyber intelligence research, and transform ideas into
               production-ready security capabilities.
             </p>
@@ -125,42 +132,45 @@ function Hero() {
 
 function WhoWeAre() {
   return (
-    <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-      <div className="mb-12">
+    <div className="bg-accent py-20 md:py-28 lg:py-32" data-nav-invert>
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div className="mb-12">
         <SectionHeader
           eyebrow="// WHO WE ARE"
           title="Who is"
           accent="QuiteRoot?"
           body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
+          light
         />
-      </div>
-      <ScrollReveal direction="up" amount={0.1}>
-        <Carousel
-          slides={capabilities}
-          renderCard={(item) => (
-            <div className="relative min-h-[300px] md:min-h-[420px] overflow-hidden">
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-20"
-                style={{ backgroundImage: `url(${quiteRootLogo})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-bg-card via-bg-card/80 to-bg-card/90" />
-              <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent" />
-              <div className="relative z-10 p-8 sm:p-10 md:p-12 flex flex-col items-start justify-end h-full min-h-[300px] md:min-h-[420px]">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10">
-                  <item.icon className="h-7 w-7 text-accent" />
+        </div>
+        <ScrollReveal direction="up" amount={0.1}>
+          <Carousel
+            slides={capabilities}
+            renderCard={(item) => (
+              <div className="relative min-h-[300px] md:min-h-[420px] overflow-hidden">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-20"
+                  style={{ backgroundImage: `url(${quiteRootLogo})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-bg-card via-bg-card/80 to-bg-card/90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent" />
+                <div className="relative z-10 p-8 sm:p-10 md:p-12 flex flex-col items-start justify-end h-full min-h-[300px] md:min-h-[420px]">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10">
+                    <item.icon className="h-7 w-7 text-accent" />
+                  </div>
+                  <h3 className="mb-3 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
+                    {item.title}
+                  </h3>
+                  <p className="max-w-xl text-sm md:text-base text-text-secondary leading-relaxed break-words">
+                    {item.desc}
+                  </p>
                 </div>
-                <h3 className="mb-3 text-2xl md:text-3xl font-black uppercase tracking-tight text-text-primary">
-                  {item.title}
-                </h3>
-                <p className="max-w-xl text-sm md:text-base text-text-secondary leading-relaxed break-words">
-                  {item.desc}
-                </p>
               </div>
-            </div>
-          )}
-          autoPlayInterval={6000}
-        />
-      </ScrollReveal>
+            )}
+            autoPlayInterval={6000}
+          />
+        </ScrollReveal>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Send, Loader2, CheckCircle, AlertCircle, Mail, MapPin, Globe } from 'lucide-react';
 import api from '@/core/services/api';
-import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -42,25 +41,24 @@ const ContactPage: React.FC = () => {
           { name: 'Contact', item: '/contact' },
         ]}
       />
-      <HeroBackground className="opacity-70" />
 
-      <section className="relative bg-transparent overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24">
+      <section className="relative bg-accent overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 text-accent text-xs font-black uppercase tracking-[0.3em]">
+            <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
               <Mail className="w-4 h-4" />
               {SITE_CONFIG.contactPage.heroTag}
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6 text-bg">
               {SITE_CONFIG.contactPage.heroTitle.split(' ').map((word, i) =>
                 i === SITE_CONFIG.contactPage.heroTitle.split(' ').length - 1 ? (
-                  <span key={i} className="text-accent">{word}</span>
+                  <span key={i} className="text-bg/80">{word}</span>
                 ) : (
                   <React.Fragment key={i}>{word} </React.Fragment>
                 )
               )}
             </h1>
-            <p className="text-lg md:text-xl text-text-secondary font-mono leading-relaxed max-w-2xl">
+            <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed max-w-2xl">
               {SITE_CONFIG.contactPage.heroSubtitle}
             </p>
           </div>

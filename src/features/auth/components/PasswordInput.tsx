@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, Eye, EyeOff } from 'lucide-react';
 
-const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base';
+const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm';
 
 interface PasswordInputProps {
   id?: string;

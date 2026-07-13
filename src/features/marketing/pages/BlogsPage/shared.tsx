@@ -44,8 +44,8 @@ export const OutputBlock = ({ text, title = 'output' }: { text: string; title?: 
 );
 
 export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-4 p-4 md:p-5 rounded-xl bg-white/[0.03] border border-white/5">
-    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+  <div className="flex items-center gap-4 p-4 md:p-5 rounded-xl bg-bg-elevated border border-border/30">
+    <div className="w-10 h-10 rounded-lg bg-bg-card flex items-center justify-center shrink-0">
       {icon}
     </div>
     <div className="min-w-0">
@@ -56,8 +56,8 @@ export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label:
 );
 
 export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType; name: string; desc: string }) => (
-  <div className="p-5 md:p-6 rounded-xl border border-white/5 bg-white/[0.02] flex items-start gap-4 hover:border-white/10 transition-colors">
-    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+  <div className="p-5 md:p-6 rounded-xl border border-border/30 bg-bg-card flex items-start gap-4 hover:border-accent/30 transition-colors">
+    <div className="w-10 h-10 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0">
       <Icon className="w-5 h-5 text-accent" />
     </div>
     <div className="min-w-0">
@@ -68,7 +68,7 @@ export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType;
 );
 
 export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) => (
-  <div className="p-6 md:p-7 rounded-xl border border-white/5 bg-white/[0.02]">
+  <div className="p-6 md:p-7 rounded-xl border border-border/30 bg-bg-card">
     <div className="flex items-start gap-4">
       <Icon className="w-6 h-6 text-accent mt-1 shrink-0" />
       <div className="min-w-0">
@@ -93,7 +93,7 @@ export const BulletList = ({ items }: { items: { icon: React.ReactNode; text: Re
 );
 
 export const CTA = ({ title, desc, href, label }: { title: string; desc: string; href: string; label: string }) => (
-  <div className="p-8 md:p-14 rounded-2xl border border-white/5 bg-white/[0.02] text-center">
+  <div className="p-8 md:p-14 rounded-2xl border border-border/30 bg-bg-card text-center">
     <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight mb-6">
       {title}
     </h2>
@@ -110,12 +110,12 @@ export const CTA = ({ title, desc, href, label }: { title: string; desc: string;
 );
 
 export const Divider = () => (
-  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent my-16 md:my-24" />
+  <div className="w-full h-px bg-gradient-to-r from-transparent via-border/30 to-transparent my-16 md:my-24" />
 );
 
 export const InlineDiagram = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+  <div className="relative my-10 md:my-12 p-4 sm:p-6 md:p-8 lg:p-10 rounded-xl bg-bg-card border border-border/30 overflow-hidden">
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
     <div className="relative z-10 flex items-center justify-center w-full">
       {children}
     </div>
