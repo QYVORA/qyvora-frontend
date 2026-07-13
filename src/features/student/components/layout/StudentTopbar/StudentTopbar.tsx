@@ -3,6 +3,8 @@ import {
   LogOut, Loader2,
 } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
+import AnimatedIcon from '@/shared/components/AnimatedIcon';
+import { gsap } from '@/shared/utils/gsapSetup';
 import {
   IconDashboard,
   IconBootcamp,
@@ -21,10 +23,12 @@ import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
+import CpLogo from '../../../../../shared/components/CpLogo';
 import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import { useScrollLock } from '../../../../../core/hooks/useScrollLock';
 import api from '../../../../../core/services/api';
+import { extractCpBalance } from '@/shared/utils/cpBalance';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
@@ -93,6 +97,7 @@ const StudentTopbar = () => {
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
   const notifRef = useRef<HTMLDivElement>(null);
   useScrollLock(mobileNavOpen);
 
@@ -140,7 +145,30 @@ const StudentTopbar = () => {
   };
 
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/student/overview').then((res) => {
+      if (!mounted) return;
+      const overview = res.data || null;
+      const cp = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
+      setCpBalance(cp);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, [user?.uid]);
   useEffect(() => { setMoreOpen(false); setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
+
+  const bellRef = useRef<HTMLSpanElement>(null);
+  const prevUnreadRef = useRef(unreadCount);
+  useEffect(() => {
+    if (unreadCount > prevUnreadRef.current && bellRef.current) {
+      gsap.fromTo(bellRef.current,
+        { rotation: 0 },
+        { rotation: 15, duration: 0.1, yoyo: true, repeat: 5, ease: 'power1.inOut', transformOrigin: '50% 100%' }
+      );
+    }
+    prevUnreadRef.current = unreadCount;
+  }, [unreadCount]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -318,21 +346,29 @@ const StudentTopbar = () => {
               <Logo size="md" />
             </Link>
 
-            {/* Desktop icon tabs */}
-            <nav className="hidden lg:flex items-center gap-1 flex-1 min-w-0">
+            {/* Desktop icon tabs — spread across full width */}
+            <nav className="hidden lg:flex items-center justify-between flex-1 min-w-0">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                    className={`flex flex-col items-center gap-1.5 px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                       active
                         ? 'bg-accent text-bg'
                         : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                     }`}
                   >
-                    <item.icon className="w-3.5 h-3.5" />
+                    {active ? (
+                      <AnimatedIcon trigger="mount" duration={0.6}>
+                        <item.icon size={26} />
+                      </AnimatedIcon>
+                    ) : (
+                      <AnimatedIcon trigger="hover" duration={0.5}>
+                        <item.icon size={26} />
+                      </AnimatedIcon>
+                    )}
                     {item.label}
                   </Link>
                 );
@@ -345,18 +381,23 @@ const StudentTopbar = () => {
               className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
               aria-label="Open navigation"
             >
-              <IconMenu size={20} />
+              <IconMenu size={22} />
             </button>
 
             {/* Right actions */}
-            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
+            <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+              {/* CP Coin badge */}
+              <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5">
+                <CpLogo className="w-5 h-5" />
+                <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
+              </div>
               <div ref={notifRef} className="relative">
                 <button
                   onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                  className="relative p-2.5 md:p-3 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                  className="relative p-3 md:p-3.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <IconNotification size={20} />
+                  <span ref={bellRef} className="inline-flex"><IconNotification size={26} /></span>
                   {unreadCount > 0 && (
                     <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}
@@ -386,18 +427,18 @@ const StudentTopbar = () => {
 
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                className="w-12 h-12 md:w-13 md:h-13 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                 aria-label="Open terminal"
               >
-                <IconTerminal size={20} />
+                <IconTerminal size={26} />
               </button>
 
               <Link
                 to="/dashboard/profile"
                 aria-label="Go to profile"
-                className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
+                className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
               >
-                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+                <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
               </Link>
 
               <button
@@ -405,7 +446,7 @@ const StudentTopbar = () => {
                 className="hidden md:flex p-3 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10"
                 aria-label="Log out"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-6 h-6" />
               </button>
             </div>
           </div>
@@ -449,7 +490,7 @@ const StudentTopbar = () => {
                         : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                     }`}
                   >
-                    <item.icon className="w-5 h-5 shrink-0" />
+                    <item.icon size={22} className="shrink-0" />
                     {item.label}
                   </Link>
                 );
@@ -485,7 +526,7 @@ const StudentTopbar = () => {
                   className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
                   aria-current={active ? 'page' : undefined}
                 >
-                  <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
+                  <item.icon size={26} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
                   <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
                     {item.label}
                   </span>
@@ -499,7 +540,7 @@ const StudentTopbar = () => {
               aria-label="More"
               aria-expanded={moreOpen}
             >
-              <IconNotification size={24} className="text-text-muted" />
+              <IconNotification size={26} className="text-text-muted" />
               <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
               {unreadCount > 0 && (
                 <span className="absolute top-2.5 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">

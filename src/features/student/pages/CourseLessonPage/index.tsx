@@ -345,7 +345,7 @@ const CourseLessonPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24 space-y-8">
             <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
               <div className="mb-3 flex items-center justify-between gap-2">
                 <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>

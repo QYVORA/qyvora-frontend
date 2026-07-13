@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from '@/shared/utils/gsapSetup';
 
 interface AdinkraBackgroundProps {
   /**
@@ -131,6 +132,34 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
 }) => {
   const effectiveOpacity = opacity * (includeGradients ? 1.5 : 1);
 
+  const symbolsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = symbolsRef.current;
+    if (!container) return;
+    const symbols = container.querySelectorAll<HTMLElement>('.adinkra-symbol');
+    if (!symbols.length) return;
+
+    const tweens: gsap.core.Tween[] = [];
+    symbols.forEach((sym, i) => {
+      const speed = 3 + (i % 4) * 1.5;
+      const range = 3 + (i % 3) * 2;
+      tweens.push(
+        gsap.to(sym, {
+          y: range,
+          rotation: `+=${2 + (i % 3)}`,
+          duration: speed,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          delay: i * 0.3,
+        })
+      );
+    });
+
+    return () => tweens.forEach((t) => t.kill());
+  }, []);
+
   return (
     <div
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
@@ -147,13 +176,14 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
 
       {/* Adinkra symbols layer - Force text-accent to match light theme green */}
       <div 
+        ref={symbolsRef}
         className="absolute inset-0 text-accent transition-opacity duration-300" 
         style={{ opacity: effectiveOpacity }}
       >
         {PLACEMENTS.map(({ Symbol, style, symOpacity, label }) => (
           <div
             key={label}
-            className="absolute"
+            className="absolute adinkra-symbol"
             style={{ ...style, opacity: symOpacity }}
           >
             <Symbol className="w-full h-full" />

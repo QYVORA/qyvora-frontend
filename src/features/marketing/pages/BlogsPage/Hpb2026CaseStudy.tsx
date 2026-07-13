@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Users, Map, Flag, Search, Trophy, Target } from 'lucide-react';
+import { Globe, Users, Map, Flag } from 'lucide-react';
 import { IconShield, IconTerminal, IconNetwork, IconTarget, IconSearch, IconLeaderboard } from '@/shared/components/icons';
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 import sopt4Img from '@/assets/team/sopt4.webp';
