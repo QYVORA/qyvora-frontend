@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
-import { Shield, Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
+import { Radio, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
+import { IconShield, IconWarning } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -168,7 +169,7 @@ const NewsFeedPage = () => {
         <div className="max-w-[1440px] mx-auto w-full px-4 md:px-10 lg:px-12 xl:px-16">
           {error && (
             <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
-              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+              <IconWarning size={20} className="text-red-400 shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-bold text-red-400">Feed Error</p>
                 <p className="text-sm text-text-secondary mt-1">{error}</p>
@@ -198,7 +199,7 @@ const NewsFeedPage = () => {
             </div>
           ) : !hasArticles ? (
             <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-24 text-center">
-              <Shield className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
+              <IconShield size={56} className="mx-auto mb-4 text-text-muted opacity-30" />
               <p className="text-lg text-text-muted font-bold">No intelligence feeds available</p>
               <p className="text-sm text-text-muted mt-1">New cyber threat data will appear here as it's published.</p>
             </div>

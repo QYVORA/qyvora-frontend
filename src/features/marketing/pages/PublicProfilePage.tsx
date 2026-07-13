@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, ArrowRight, ChevronRight, Shield } from 'lucide-react';
+import { IconArrowLeft, IconArrowRight, IconChevronRight, IconShield } from '@/shared/components/icons';
 import NotFoundPage from '../../../shared/pages/NotFoundPage';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -54,7 +54,7 @@ const PublicProfile: React.FC = () => {
 
     return (
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 px-4">
-        <ArrowLeft className="w-4 h-4 text-text-muted" />
+        <IconArrowLeft className="w-4 h-4 text-text-muted" />
         <div className="text-center">
           <h1 className="text-3xl font-black text-text-primary uppercase tracking-tighter mb-2">Operator Not Found</h1>
           <p className="text-text-muted text-sm max-w-xs mx-auto">The handle <span className="text-accent font-mono">{displayHandle}</span> does not exist.</p>
@@ -116,7 +116,7 @@ const PublicProfile: React.FC = () => {
                   onClick={() => setShowBadges(!showBadges)}
                   className="flex items-center gap-2 w-full text-left group rounded-xl border border-accent/20 bg-accent-dim/40 hover:bg-accent-dim/70 hover:border-accent/40 transition-all px-4 py-3"
                 >
-                  <ChevronRight className="w-4 h-4 text-accent transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <IconChevronRight className="w-4 h-4 text-accent transition-transform duration-300 group-hover:translate-x-0.5" />
                   <span className="text-xs font-black uppercase tracking-widest text-accent">Badges</span>
                   <span className="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-md">{bootcampCompleted ? '1' : '0'}</span>
                 </button>
@@ -139,7 +139,7 @@ const PublicProfile: React.FC = () => {
                   to="/"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-bg-card/30 hover:border-accent/40 text-xs font-black uppercase tracking-[0.15em] text-text-muted hover:text-accent transition-all"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" /> Back
+                  <IconArrowLeft className="w-3.5 h-3.5" /> Back
                 </Link>
                 <ShareProfile handle={handle || ''} />
               </div>
@@ -171,7 +171,7 @@ const PublicProfile: React.FC = () => {
                     onClick={() => setShowRooms(!showRooms)}
                     className="flex items-center gap-2 w-full text-left group rounded-xl border border-border/30 bg-bg-card/50 hover:bg-bg-card hover:border-accent/30 transition-all px-4 py-3"
                   >
-                    <ChevronRight className="w-4 h-4 text-accent transition-transform duration-300 group-hover:translate-x-0.5" />
+                    <IconChevronRight className="w-4 h-4 text-accent transition-transform duration-300 group-hover:translate-x-0.5" />
                     <span className="text-base md:text-lg font-black text-text-primary tracking-tight">
                       Completed Rooms
                     </span>
@@ -202,13 +202,13 @@ const PublicProfile: React.FC = () => {
                               />
                               <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg-card to-transparent pointer-events-none" />
                               <span className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-lg border border-accent/25 bg-bg/80 backdrop-blur-sm font-mono text-[9px] font-black text-accent uppercase tracking-wider">
-                                <Shield className="w-2.5 h-2.5" /> HPB
+                                <IconShield className="w-2.5 h-2.5" /> HPB
                               </span>
                             </div>
                             <div className="flex flex-1 flex-col p-4">
                               <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2 break-words">{title}</h3>
                               <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-                                View room <ArrowRight className="h-3 w-3" />
+                                View room <IconArrowRight className="h-3 w-3" />
                               </div>
                             </div>
                           </div>

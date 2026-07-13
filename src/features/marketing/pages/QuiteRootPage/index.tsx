@@ -2,20 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import {
-  ArrowRight,
   BookOpen,
   Cpu,
-  FlaskConical,
   Globe2,
   LockKeyhole,
   Rocket,
-  Search,
   Wrench,
-  Shield,
   Brain,
   Cctv,
   Cloud,
 } from 'lucide-react';
+import { IconArrowRight, IconLabs, IconSearch, IconShield } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import { useAuth } from '@/core/contexts/AuthContext';
 import SEO from '@/shared/components/SEO';
@@ -26,9 +23,9 @@ import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 
 const capabilities = [
-  { id: 'research', title: 'Offensive Security Research', icon: Search, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
+  { id: 'research', title: 'Offensive Security Research', icon: IconSearch, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
   { id: 'tool-dev', title: 'Tool Development', icon: Wrench, desc: 'Building production-grade security tools purpose-built for the unique challenges of African cybersecurity operations.' },
-  { id: 'threat-intel', title: 'Threat Intelligence', icon: Shield, desc: 'Collecting, analyzing, and operationalizing threat intelligence to protect African organizations and critical infrastructure.' },
+  { id: 'threat-intel', title: 'Threat Intelligence', icon: IconShield, desc: 'Collecting, analyzing, and operationalizing threat intelligence to protect African organizations and critical infrastructure.' },
   { id: 'red-team', title: 'Red Team Automation', icon: Brain, desc: 'Automating adversarial simulation workflows to continuously validate security postures at scale.' },
   { id: 'detection', title: 'Detection Engineering', icon: Cctv, desc: 'Crafting detection logic and signatures that identify real threats while minimizing false positives.' },
   { id: 'infra', title: 'Secure Infrastructure', icon: Cloud, desc: 'Designing and deploying hardened infrastructure for offensive operations and secure communications.' },
@@ -46,7 +43,7 @@ const timeline = [
 ];
 
 const principles = [
-  ['Research First', 'Every tool begins with understanding the problem.', FlaskConical],
+  ['Research First', 'Every tool begins with understanding the problem.', IconLabs],
   ['Precision Engineering', 'Every feature serves a purpose.', Cpu],
   ['Open Knowledge', 'Learning accelerates innovation.', BookOpen],
   ['Operational Security', 'Security is built into every layer.', LockKeyhole],
@@ -111,7 +108,7 @@ function Hero() {
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
               <a href="#research" className="btn-primary px-8 py-4 font-black uppercase tracking-[0.15em] text-xs flex items-center justify-center gap-3">
-                Explore Research <ArrowRight className="w-4 h-4" />
+                Explore Research <IconArrowRight size={16} />
               </a>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, Shield, Server, Globe, Lock, FileCode, Eye, Zap, CheckCircle2, XCircle } from 'lucide-react';
+import { Server, Globe, FileCode, Zap, XCircle } from 'lucide-react';
+import { IconWarning, IconShield, IconLock, IconEye, IconCheck } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, CodeBlock, StatCard, FeatureCard, PhaseCard, BulletList, CTA, InlineDiagram, Divider } from './shared';
 
 export const MappingAttackSurfacesBlog: React.FC = () => {
@@ -66,7 +67,7 @@ export const MappingAttackSurfacesBlog: React.FC = () => {
           items={[
             { icon: <Server className="w-5 h-5 text-accent" />, text: <span><Highlight>Staging environments</Highlight> — deployed by developers, accessible from the internet, often with default credentials and production-like data</span> },
             { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Forgotten subdomains</Highlight> — old marketing sites, archived applications, experiment deployments that were never decommissioned</span> },
-            { icon: <Eye className="w-5 h-5 text-accent" />, text: <span><Highlight>Cloud resources</Highlight> — storage buckets, databases, and compute instances provisioned outside official cloud accounts or governance policies</span> },
+            { icon: <IconEye size={20} className="text-accent" />, text: <span><Highlight>Cloud resources</Highlight> — storage buckets, databases, and compute instances provisioned outside official cloud accounts or governance policies</span> },
           ]}
         />
 
@@ -107,10 +108,10 @@ swagger.json / openapi.json — full API documentation including auth endpoints`
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <StatCard icon={<Lock className="w-5 h-5 text-accent" />} label="Weak TLS Protocols" value="TLS 1.0 / 1.1 Enabled" />
-          <StatCard icon={<Lock className="w-5 h-5 text-accent" />} label="Missing HSTS" value="No Strict Transport Security" />
+          <StatCard icon={<IconLock size={20} className="text-accent" />} label="Weak TLS Protocols" value="TLS 1.0 / 1.1 Enabled" />
+          <StatCard icon={<IconLock size={20} className="text-accent" />} label="Missing HSTS" value="No Strict Transport Security" />
           <StatCard icon={<FileCode className="w-5 h-5 text-accent" />} label="Missing Security Headers" value="X-Frame-Options, CSP, etc." />
-          <StatCard icon={<AlertTriangle className="w-5 h-5 text-accent" />} label="CORS Misconfiguration" value="Permissive Cross-Origin Policy" />
+          <StatCard icon={<IconWarning size={20} className="text-accent" />} label="CORS Misconfiguration" value="Permissive Cross-Origin Policy" />
         </div>
 
         <Body>

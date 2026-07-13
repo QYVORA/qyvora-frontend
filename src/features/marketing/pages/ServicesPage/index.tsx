@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Lock, ArrowRight, Building2, Send, CheckCircle2 } from 'lucide-react';
+import { Building2, Send } from 'lucide-react';
+import { IconShield, IconLock, IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -73,7 +74,7 @@ const ServicesPage: React.FC = () => {
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
-              <Shield className="w-4 h-4" />
+              <IconShield className="w-4 h-4" />
               Offensive Security Assessments
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6 text-bg">
@@ -155,7 +156,7 @@ const ServicesPage: React.FC = () => {
                       <ul className="space-y-2.5 flex-1">
                         {service.features.map((f) => (
                           <li key={f} className="flex items-start gap-2.5">
-                            <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                            <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
                             <span className="text-xs text-text-secondary leading-relaxed break-words">{f}</span>
                           </li>
                         ))}
@@ -164,9 +165,9 @@ const ServicesPage: React.FC = () => {
                         onClick={() => openServiceRequestModal(service.tier)}
                         className="mt-5 w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary"
                       >
-                        <Lock className="w-3 h-3" />
+                        <IconLock className="w-3 h-3" />
                         Request Assessment
-                        <ArrowRight className="w-3 h-3" />
+                        <IconArrowRight className="w-3 h-3" />
                       </button>
                     </div>
                   </div>

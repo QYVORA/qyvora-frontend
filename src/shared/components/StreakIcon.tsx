@@ -1,4 +1,4 @@
-import { Flame } from 'lucide-react';
+import { IconFire } from '@/shared/components/icons';
 
 export interface StreakIconProps {
   days: number;
@@ -30,7 +30,7 @@ const StreakIcon: React.FC<StreakIconProps> = ({ days, className = '' }) => {
       className={`inline-flex items-center gap-1 ${className}`}
       title={`${days} day${days === 1 ? '' : 's'}`}
     >
-      <Flame
+      <IconFire
         className={config.color}
         size={config.size}
         strokeWidth={level === 3 ? 1.5 : 2}

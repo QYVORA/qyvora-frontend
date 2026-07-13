@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Check, Copy, Terminal } from 'lucide-react';
+import { Copy } from 'lucide-react';
+import { IconCheck, IconTerminal } from '@/shared/components/icons';
 
 // ── Syntax token types ────────────────────────────────────────────────────────
 type TokenType = 'keyword' | 'string' | 'comment' | 'number' | 'flag' | 'path' | 'plain';
@@ -77,7 +78,7 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
       }`}
       title="Copy to clipboard"
     >
-      {copied ? <><Check className="h-3 w-3" />Copied</> : <><Copy className="h-3 w-3" />Copy</>}
+      {copied ? <><IconCheck size={12} />Copied</> : <><Copy className="h-3 w-3" />Copy</>}
     </button>
   );
 };
@@ -92,7 +93,7 @@ const FencedCodeBlock: React.FC<{ code: string; lang: string }> = ({ code, lang 
       {/* Header bar */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/60 bg-bg-card/80">
         <div className="flex items-center gap-2">
-          <Terminal className="h-3.5 w-3.5 text-accent opacity-70" />
+          <IconTerminal size={14} className="text-accent opacity-70" />
           <span className="text-[10px] font-black uppercase tracking-[0.25em] text-text-muted">
             {lang || 'bash'}
           </span>
@@ -153,7 +154,7 @@ const InlineCode: React.FC<{ code: string }> = ({ code }) => {
     >
       <span className="truncate max-w-[240px]">{code}</span>
       <span className={`flex-shrink-0 transition-opacity ${copied ? 'opacity-100' : 'opacity-0 group-hover/inline:opacity-60'}`}>
-        {copied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
+        {copied ? <IconCheck size={10} /> : <Copy className="h-2.5 w-2.5" />}
       </span>
     </button>
   );

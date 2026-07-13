@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Play } from 'lucide-react';
+import { IconArrowLeft, IconChevronRight, IconPlay } from '@/shared/components/icons';
 import { formatSyncLabel } from '../../utils/studentExperience';
 
 interface CourseHeaderProps {
@@ -31,9 +31,9 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({
           to="/dashboard/bootcamps"
           className="inline-flex items-center gap-1 font-black uppercase tracking-widest transition-colors hover:text-accent"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Bootcamps
+          <IconArrowLeft size={14} /> Bootcamps
         </Link>
-        <ChevronRight className="h-3.5 w-3.5 opacity-40" />
+        <IconChevronRight size={14} className="opacity-40" />
         <span className="truncate font-black uppercase tracking-wide text-text-primary">
           {courseTitle}
         </span>
@@ -59,7 +59,7 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({
             to={resumePath || '#'}
             className="btn-primary inline-flex items-center gap-3 px-8 py-3.5 text-sm font-black"
           >
-            <Play className="h-4 w-4 fill-current" /> Resume Training
+            <IconPlay size={16} className="fill-current" /> Resume Training
           </Link>
         </div>
       </div>

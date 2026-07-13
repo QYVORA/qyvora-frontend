@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock } from 'lucide-react';
+import { IconLock } from '@/shared/components/icons';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
 interface QuizGateModalProps {
@@ -12,7 +12,7 @@ const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) =>
     <DialogContent title="Quiz Required" maxWidth="max-w-lg" className="shadow-none">
       <div className="text-center py-2">
       <div className="mb-4 flex justify-center">
-        <Lock className="h-10 w-10 text-accent" />
+        <IconLock size={40} className="text-accent" />
       </div>
       <h2 className="mb-2 text-lg font-black text-text-primary">Not so fast, operator.</h2>
       <p className="mb-6 text-sm text-text-muted leading-relaxed">

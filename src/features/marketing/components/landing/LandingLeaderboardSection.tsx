@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Medal, ArrowRight, Shield } from 'lucide-react';
+import { Medal } from 'lucide-react';
+import { IconLeaderboard, IconArrowRight, IconShield } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { ScrollReveal, Identicon, StreakIcon } from '@/shared/components';
 
@@ -67,7 +68,7 @@ const LandingLeaderboardSection = () => {
             </div>
           ) : entries.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
-              <Trophy className="mx-auto mb-3 h-10 w-10 text-text-muted opacity-30" />
+              <IconLeaderboard size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
               <p className="text-sm text-text-muted font-bold">No operators ranked yet</p>
               <p className="text-xs text-text-muted mt-1">Complete bootcamp rooms to earn CP and appear here.</p>
             </div>
@@ -118,13 +119,13 @@ const LandingLeaderboardSection = () => {
                     to="/leaderboard"
                     className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:brightness-110 transition-all active:scale-95"
                   >
-                    View Full Leaderboard ({total}) <ArrowRight className="w-3.5 h-3.5" />
+                    View Full Leaderboard ({total}) <IconArrowRight size={14} />
                   </Link>
                 </div>
               )}
 
               <div className="flex items-center justify-center gap-2 pt-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-                <Shield className="w-3 h-3 text-accent" />
+                <IconShield size={12} className="text-accent" />
                 CP verified on QYVORA Chain
               </div>
             </div>

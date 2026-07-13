@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { IconChevronRight } from '@/shared/components/icons';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
 export type BootcampLevel = 'Novice' | 'Operator' | 'Specialist' | 'Elite';
@@ -57,7 +57,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
         <span className="text-text-secondary font-mono">{price}</span>
       </div>
       <div className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2">
-        Enroll Now <ChevronRight className="w-4 h-4" />
+        Enroll Now <IconChevronRight size={16} />
       </div>
     </div>
   </Link>

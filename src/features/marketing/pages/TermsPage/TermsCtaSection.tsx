@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Mail, ArrowRight } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { IconArrowRight } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
@@ -32,7 +33,7 @@ const TermsCtaSection: React.FC = () => {
                   <Mail className="w-4 h-4" /> Contact Us
                 </ContactTrigger>
                 <Link to="/" className="btn-secondary !px-10 py-4 inline-flex items-center gap-3 text-sm font-bold w-full sm:w-auto">
-                  Return Home <ArrowRight className="w-4 h-4" />
+                  Return Home <IconArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Download, Loader2, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { IconDownload, IconX } from '@/shared/components/icons';
 import { isInstallable, showInstallPrompt } from '../../services/pwa';
 import { usePopupManager } from '@/core/hooks/usePopupManager';
 
@@ -43,7 +44,7 @@ const InstallBanner = () => {
                 {installing ? (
                   <Loader2 className="w-5 h-5 text-accent animate-spin" />
                 ) : (
-                  <Download className="w-5 h-5 text-accent" />
+                  <IconDownload size={20} className="text-accent" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
@@ -65,7 +66,7 @@ const InstallBanner = () => {
                   className="p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all"
                   aria-label="Dismiss"
                 >
-                  <X className="w-4 h-4" />
+                  <IconX size={16} />
                 </button>
               </div>
             </div>

@@ -1,6 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play, CheckCircle2, Lock, ArrowRight, Clock, Layers } from 'lucide-react';
+import {
+  IconPlay,
+  IconCheck,
+  IconLock,
+  IconArrowRight,
+  IconClock,
+  IconDashboard,
+} from '@/shared/components/icons';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 
@@ -73,17 +80,17 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           )}
           {isLocked && (
             <span className="px-2 py-0.5 bg-black/75 rounded text-[9px] font-black uppercase text-text-muted tracking-widest flex items-center gap-1 shadow-sm">
-              <Lock className="w-2.5 h-2.5" /> Coming soon
+              <IconLock size={10} /> Coming soon
             </span>
           )}
           {isComplete && !isLocked && (
             <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
-              <CheckCircle2 className="w-2.5 h-2.5" /> Complete
+              <IconCheck size={10} /> Complete
             </span>
           )}
           {isEnrolled && !isComplete && !isLocked && (
             <span className="px-2 py-0.5 bg-accent/20 text-accent rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
-              <Play className="w-2 h-2 fill-current" /> Active
+              <IconPlay size={8} /> Active
             </span>
           )}
         </div>
@@ -114,13 +121,13 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-black uppercase text-text-muted/60 tracking-widest">
           {duration && (
             <span className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 opacity-60" /> {duration}
+              <IconClock size={14} className="opacity-60" /> {duration}
             </span>
           )}
           {duration && priceLabel && <span className="opacity-30">·</span>}
           {priceLabel && <span className="text-accent">{priceLabel}</span>}
           <span className="flex items-center gap-1.5 ml-auto">
-            <Layers className="w-3.5 h-3.5 opacity-60" /> 5 phases
+            <IconDashboard size={14} className="opacity-60" /> 5 phases
           </span>
         </div>
 
@@ -130,7 +137,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             <button
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-bg-elevated text-text-muted text-xs font-black uppercase tracking-widest opacity-60 cursor-default"
             >
-              <Lock className="h-3.5 w-3.5" /> Coming soon
+              <IconLock size={14} /> Coming soon
             </button>
           ) : isEnrolled ? (
             <Link
@@ -138,9 +145,9 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
               className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
             >
               {isComplete ? (
-                <><CheckCircle2 className="h-4 w-4" /> Review curriculum</>
+                <><IconCheck size={16} /> Review curriculum</>
               ) : (
-                <><Play className="h-4 w-4 fill-current" /> Continue training</>
+                <><IconPlay size={16} /> Continue training</>
               )}
             </Link>
           ) : (
@@ -149,14 +156,14 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
                 onClick={() => onEnroll(data)}
                 className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
-                Enroll now <ArrowRight className="h-4 w-4" />
+                Enroll now <IconArrowRight size={16} />
               </button>
             ) : (
               <Link
                 to={`/dashboard/bootcamps/${id}`}
                 className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
-                Enroll now <ArrowRight className="h-4 w-4" />
+                Enroll now <IconArrowRight size={16} />
               </Link>
             )
           )}

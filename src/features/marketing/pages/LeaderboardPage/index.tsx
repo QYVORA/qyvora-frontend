@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Medal, Shield, ArrowRight } from 'lucide-react';
+import { Medal } from 'lucide-react';
+import { IconShield, IconArrowRight, IconLeaderboard } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
@@ -206,7 +207,7 @@ const LeaderboardPage = () => {
                 and fully on-ledger.
               </p>
               <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
-                <Shield className="w-4 h-4 text-bg/80" />
+                <IconShield className="w-4 h-4 text-bg/80" />
                 CP verified on QYVORA Chain
               </div>
               {entries.length > 0 && (
@@ -269,7 +270,7 @@ const LeaderboardPage = () => {
               to="/leaderboard/all"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shrink-0 bg-accent text-bg hover:brightness-110"
             >
-              View All ({total}) <ArrowRight className="w-3.5 h-3.5" />
+              View All ({total}) <IconArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
@@ -290,7 +291,7 @@ const LeaderboardPage = () => {
           ) : entries.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center w-full">
-                <Trophy className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
+                <IconLeaderboard className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
                 <p className="text-lg text-text-muted font-bold">No operators ranked yet</p>
                 <p className="text-sm text-text-muted mt-1">Complete bootcamp rooms to earn CP and appear on the leaderboard.</p>
               </div>
@@ -317,7 +318,7 @@ const LeaderboardPage = () => {
 
               {/* Chain verification badge */}
               <div className="flex items-center justify-center gap-2 pt-3 shrink-0 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-                <Shield className="w-3 h-3 text-accent" />
+                <IconShield className="w-3 h-3 text-accent" />
                 CP balances verified on QYVORA Chain &middot; {total} operators
               </div>
             </div>

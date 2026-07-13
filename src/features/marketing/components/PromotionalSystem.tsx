@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Shield, GraduationCap } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
+import { IconX, IconShield } from '@/shared/components/icons';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { usePopupManager } from '../../../core/hooks/usePopupManager';
 import { openServiceRequestModal } from './ServiceRequestModal';
@@ -30,7 +31,7 @@ const PROMOTIONS = [
     description: 'Protect your apps with our comprehensive penetration testing services.',
     cta: 'Request Assessment',
     action: () => openServiceRequestModal('Standard WebApp Pentest'),
-    icon: Shield,
+    icon: IconShield,
     image: standardPackageImg,
     color: 'accent',
   },
@@ -91,7 +92,7 @@ const PromotionalSystem: React.FC = () => {
               className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all z-20"
               aria-label="Dismiss"
             >
-              <X className="w-4 h-4" />
+              <IconX size={16} />
             </button>
 
             {/* Image Section - Vertical on Mobile, Horizontal on Desktop */}
@@ -104,7 +105,7 @@ const PromotionalSystem: React.FC = () => {
               
               {/* Icon badge */}
               <div className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-bg shadow-lg">
-                <activePromo.icon className="w-5 h-5" />
+                <activePromo.icon size={20} />
               </div>
             </div>
 

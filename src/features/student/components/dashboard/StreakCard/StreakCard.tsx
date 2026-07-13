@@ -1,4 +1,5 @@
-import { Circle, Flame, FlameKindling, Zap, Sparkles, Trophy } from 'lucide-react';
+import { Circle, FlameKindling, Zap, Sparkles } from 'lucide-react';
+import { IconFire, IconLeaderboard } from '@/shared/components/icons';
 
 interface StreakCardProps {
   streakDays: number;
@@ -65,7 +66,7 @@ function getStreakTheme(streak: number): StreakTheme {
 function StreakFlame({ className, textColor }: { className: string; textColor: string }) {
   return (
     <div className={`${textColor} ${className}`}>
-      <Flame className="w-full h-full" />
+      <IconFire size={24} className="w-full h-full" />
     </div>
   );
 }
@@ -76,7 +77,7 @@ function StreakIcon({ streak, theme }: { streak: number; theme: StreakTheme }) {
       <div className="relative flex items-center">
         <StreakFlame className="w-16 h-16" textColor={theme.textColor} />
         <Sparkles className="w-5 h-5 text-amber-400 -ml-3 -mt-10" />
-        <Trophy className="w-7 h-7 text-yellow-400 -ml-3 -mt-8" />
+        <IconLeaderboard size={28} className="text-yellow-400 -ml-3 -mt-8" />
       </div>
     );
   }
@@ -143,7 +144,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
     return (
       <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${theme.border} ${theme.bg}`}>
         <div className={theme.textColor}>
-          <Flame className="h-4 w-4" />
+          <IconFire size={16} />
         </div>
         <span className={`font-mono text-sm font-black ${theme.textColor}`}>{streakDays}</span>
         <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Day Streak</span>

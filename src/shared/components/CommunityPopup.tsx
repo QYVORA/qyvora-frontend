@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Users, Zap } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
+import { Users, Zap } from 'lucide-react';
 import BrandWhatsAppIcon from './icons/BrandWhatsAppIcon';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import { QyvoraMark } from './brand/QyvoraMark';
@@ -68,7 +69,7 @@ const CommunityPopup: React.FC = () => {
               className="absolute top-3 right-3 p-2 rounded-xl text-text-muted hover:text-text-primary hover:bg-bg/80 transition-all z-20"
               aria-label="Dismiss"
             >
-              <X className="w-4 h-4" />
+              <IconX size={16} />
             </button>
 
             <div className="relative h-44 sm:h-auto sm:w-52 shrink-0 overflow-hidden bg-bg">

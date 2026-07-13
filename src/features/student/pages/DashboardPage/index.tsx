@@ -20,9 +20,19 @@ import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
 import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
 import {
-  Layers, Flame, Trophy, BookOpen, ShoppingBag, ArrowRight,
-  Download, Loader2, FlaskConical,
+  Loader2,
 } from 'lucide-react';
+import {
+  IconRank,
+  IconFire,
+  IconDashboard,
+  IconCode,
+  IconMarketplace,
+  IconArrowRight,
+  IconDownload,
+  IconLabs,
+  IconWallet,
+} from '@/shared/components/icons';
 
 const LABS = [
   { id: 'privesc', title: 'Privilege Escalation', description: 'Escalate permissions and gain root access', difficulty: 'beginner-advanced', cpReward: '50-400', route: '/dashboard/labs/privesc', accentColor: '#FBBF24' },
@@ -213,7 +223,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
         />
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                         <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[10px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
-            <ShoppingBag className="w-2.5 h-2.5" /> Intelligence Asset
+            <IconMarketplace size={10} /> Intelligence Asset
           </span>
         </div>
       </div>
@@ -241,7 +251,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
             to="/dashboard/marketplace"
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
           >
-            View <ArrowRight className="w-3 h-3" />
+            View <IconArrowRight size={12} />
           </Link>
         </div>
       </div>
@@ -361,10 +371,10 @@ const Dashboard = () => {
         {/* 2. Stats Strip */}
         <div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <StatCard icon={<Trophy className="w-5 h-5 text-accent" />} label="Rank" value={rankName} accent />
-            <StatCard icon={<Layers className="w-5 h-5 text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
-            <StatCard icon={<CpLogo className="w-5 h-5" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
-            <StatCard icon={<Flame className="w-5 h-5 text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
+            <StatCard icon={<IconRank size={20} className="text-accent" />} label="Rank" value={rankName} accent />
+            <StatCard icon={<IconDashboard size={20} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
+            <StatCard icon={<IconWallet size={20} className="text-accent" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
+            <StatCard icon={<IconFire size={20} className="text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
           </div>
         </div>
 
@@ -372,7 +382,7 @@ const Dashboard = () => {
         <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-              <FlaskConical className="w-5 h-5 text-accent" />
+              <IconLabs size={20} className="text-accent" />
             </div>
             <div>
               <h3 className="text-sm font-black text-text-primary">Attack Labs</h3>
@@ -396,7 +406,7 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10">
-                <Download className="w-5 h-5 text-accent" />
+                <IconDownload size={20} className="text-accent" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-black text-text-primary">Install QYVORA</p>
@@ -408,7 +418,7 @@ const Dashboard = () => {
               disabled={installing}
               className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
             >
-              {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+              {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconDownload size={14} />}
               {installing ? 'Installing…' : 'Install'}
             </button>
           </div>
@@ -471,7 +481,7 @@ const Dashboard = () => {
                 className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300 flex flex-col h-full"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <BookOpen className="w-4 h-4 text-accent/60" />
+                  <IconCode size={16} className="text-accent/60" />
                   <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Room</span>
                 </div>
                 <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>

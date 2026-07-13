@@ -1,5 +1,6 @@
 import React from 'react';
-import { Download, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { IconDownload } from '@/shared/components/icons';
 import anansiLogo from '@/assets/anansi/anansi-main-logo.png';
 
 const AnansiHeroSection: React.FC = () => {
@@ -19,7 +20,7 @@ const AnansiHeroSection: React.FC = () => {
                 href="#install"
                 className="btn-primary px-8 py-4 font-black uppercase tracking-[0.15em] text-xs flex items-center justify-center gap-3"
               >
-                <Download className="w-4 h-4" /> Get Binary
+                <IconDownload size={16} /> Get Binary
               </a>
               <a
                 href="https://github.com/QYVORA/qyvora-anansi-cli"

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Terminal } from 'lucide-react';
+import { IconTerminal } from '@/shared/components/icons';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { TerminalShell } from './TerminalShell';
 import type { SimulatedTerminalProps } from './types';
@@ -85,7 +85,7 @@ export const TerminalButton: React.FC<{
       hover:border-accent/30 hover:bg-black transition-all duration-200
       text-xs font-mono text-white/70 hover:text-accent uppercase tracking-wider"
   >
-    <Terminal className="w-4 h-4" />
+    <IconTerminal size={16} />
     {label || '_terminal'}
   </button>
 );

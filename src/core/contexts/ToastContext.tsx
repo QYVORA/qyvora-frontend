@@ -14,7 +14,8 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ShieldAlert, CheckCircle, Info, X } from 'lucide-react';
+import { Info } from 'lucide-react';
+import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -151,8 +152,8 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                     : 'text-blue-400'
                 }`}
               >
-                {toast.type === 'success' && <CheckCircle className="w-5 h-5" />}
-                {toast.type === 'error' && <ShieldAlert className="w-5 h-5" />}
+                {toast.type === 'success' && <IconCheck size={20} />}
+                {toast.type === 'error' && <IconShield size={20} />}
                 {toast.type === 'info' && <Info className="w-5 h-5" />}
               </div>
 
@@ -179,7 +180,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 className="flex-none text-text-muted hover:text-text-primary transition-colors mt-0.5"
                 aria-label="Dismiss"
               >
-                <X className="w-5 h-5" />
+                <IconX size={20} />
               </button>
             </motion.div>
           ))}

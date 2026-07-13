@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { LayoutDashboard, ArrowRight } from 'lucide-react';
+import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
 
@@ -64,7 +64,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                   to="/dashboard"
                   className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                 >
-                  <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
+                  <IconDashboard size={20} /> Go to Dashboard
                 </Link>
               ) : (
                 <>
@@ -72,7 +72,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                     to="/register"
                     className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                   >
-                    Start Free Training <ArrowRight className="w-5 h-5" />
+                    Start Free Training <IconArrowRight size={20} />
                   </Link>
                   <Link
                     to="/login"
@@ -118,7 +118,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                   to="/dashboard"
                   className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                 >
-                  <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
+                  <IconDashboard size={20} /> Go to Dashboard
                 </Link>
               ) : (
                 <>
@@ -126,7 +126,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                     to="/register"
                     className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                   >
-                    Start Free Training <ArrowRight className="w-5 h-5" />
+                    Start Free Training <IconArrowRight size={20} />
                   </Link>
                   <Link
                     to="/login"

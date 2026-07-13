@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import CpLogo from '../../../../shared/components/CpLogo';
 import { useScrollLock } from '../../../../core/hooks/useScrollLock';
 
@@ -44,7 +45,7 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
               <div className="relative z-10">
                 {/* Icon */}
                 <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
-                  <CheckCircle2 className="h-8 w-8 text-bg" />
+                  <IconCheck size={32} className="text-bg" />
                 </div>
 
                 {/* Title */}

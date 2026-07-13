@@ -58,7 +58,7 @@ export const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label:
 export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType; name: string; desc: string }) => (
   <div className="p-5 md:p-6 rounded-xl border border-border/30 bg-bg-card flex items-start gap-4 hover:border-accent/30 transition-colors">
     <div className="w-10 h-10 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0">
-      <Icon className="w-5 h-5 text-accent" />
+      <Icon size={20} className="text-accent" />
     </div>
     <div className="min-w-0">
       <div className="text-sm font-black uppercase tracking-wider text-text-primary mb-1">{name}</div>
@@ -70,7 +70,7 @@ export const PhaseCard = ({ icon: Icon, name, desc }: { icon: React.ElementType;
 export const FeatureCard = ({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) => (
   <div className="p-6 md:p-7 rounded-xl border border-border/30 bg-bg-card">
     <div className="flex items-start gap-4">
-      <Icon className="w-6 h-6 text-accent mt-1 shrink-0" />
+      <Icon size={24} className="text-accent mt-1 shrink-0" />
       <div className="min-w-0">
         <h3 className="text-base md:text-lg font-black uppercase tracking-wider mb-2 md:mb-3 text-text-primary break-words">{title}</h3>
         <p className="text-xs md:text-sm font-mono text-text-secondary leading-[2] md:leading-[2.2]">

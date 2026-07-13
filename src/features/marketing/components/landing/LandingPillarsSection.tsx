@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { FlaskConical, BookOpen, Shield, Lock, ArrowRight, Zap } from 'lucide-react';
+import { BookOpen, Zap } from 'lucide-react';
+import { IconLabs, IconShield, IconLock, IconArrowRight } from '@/shared/components/icons';
 import DotMapBackground from '@/shared/components/DotMapBackground';
 
 const PILLARS = [
@@ -9,7 +10,7 @@ const PILLARS = [
     id: 'labs',
     title: 'Attack Labs',
     desc: '10 live labs — crack passwords, inject SQL, escalate privileges, and phish real targets in sandboxed environments.',
-    icon: FlaskConical,
+    icon: IconLabs,
     stat: '10 Labs',
     link: '/dashboard/labs',
     color: '#EF4444',
@@ -29,7 +30,7 @@ const PILLARS = [
     id: 'bootcamp',
     title: 'Hacker Protocol Bootcamp',
     desc: '5-phase guided bootcamp from mindset to exploitation. 19 rooms, 100+ walkthrough steps, CP on completion.',
-    icon: Shield,
+    icon: IconShield,
     stat: '5 Phases',
     link: '/hpb',
     color: '#06B66F',
@@ -39,7 +40,7 @@ const PILLARS = [
     id: 'services',
     title: 'Penetration Testing',
     desc: 'Enterprise-grade security assessments. OWASP Top 10, business logic analysis, and remediation retesting.',
-    icon: Lock,
+    icon: IconLock,
     stat: 'From GH₵ 4,000',
     link: '/services',
     color: '#A78BFA',
@@ -100,7 +101,7 @@ const LandingPillarsSection: React.FC = () => {
                       className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
                       style={{ background: `${featured.color}25` }}
                     >
-                      <featured.icon className="w-8 h-8" style={{ color: featured.color }} />
+                      <featured.icon size={32} style={{ color: featured.color }} />
                     </div>
                     <span
                       className="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border"
@@ -121,7 +122,7 @@ const LandingPillarsSection: React.FC = () => {
                     <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-3">
                       <Zap className="w-3.5 h-3.5" />
                       Start Bootcamp
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <IconArrowRight size={14} />
                     </span>
                   </div>
                 </div>
@@ -150,7 +151,7 @@ const LandingPillarsSection: React.FC = () => {
                           className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                           style={{ background: `${pillar.color}20` }}
                         >
-                          <pillar.icon className="w-5 h-5" style={{ color: pillar.color }} />
+                          <pillar.icon size={20} style={{ color: pillar.color }} />
                         </div>
                         <span
                           className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border"
@@ -169,7 +170,7 @@ const LandingPillarsSection: React.FC = () => {
 
                       <div className="flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
                         <span className="text-[10px] font-black uppercase tracking-widest">Explore</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                        <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
                   </Link>

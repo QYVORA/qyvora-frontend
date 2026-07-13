@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Apple, Copy, Check } from 'lucide-react';
+import { Apple, Copy } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import { RELEASES, BUILD_FROM_SOURCE, type AnansiRelease } from './anansiData';
 
 const TUX = (
@@ -29,7 +30,7 @@ function CopyButton({ text }: { text: string }) {
       className="p-1.5 rounded-lg hover:bg-bg-elevated transition-colors text-text-muted hover:text-accent shrink-0"
       aria-label="Copy command"
     >
-      {copied ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
+      {copied ? <IconCheck size={14} className="text-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
 }

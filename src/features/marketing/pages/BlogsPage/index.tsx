@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
-import { ArrowRight, Clock, User } from 'lucide-react';
+import { User } from 'lucide-react';
+import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import SEO from '@/shared/components/SEO';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
@@ -109,10 +110,10 @@ const BlogsPage: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-text-muted shrink-0">
                           <span className="flex items-center gap-1 whitespace-nowrap">
-                            <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> {post.readTime}
+                            <IconClock size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" /> {post.readTime}
                           </span>
                           <span className="flex items-center gap-1 text-accent group-hover:gap-1.5 transition-all whitespace-nowrap">
-                            Read <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                            Read <IconArrowRight size={12} className="sm:w-3.5 sm:h-3.5 shrink-0" />
                           </span>
                         </div>
                       </div>

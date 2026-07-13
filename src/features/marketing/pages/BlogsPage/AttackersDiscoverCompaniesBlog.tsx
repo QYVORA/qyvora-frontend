@@ -1,5 +1,6 @@
 import React from 'react';
-import { Search, Globe, Radio, Server, AlertTriangle, GitBranch, Eye, Shield } from 'lucide-react';
+import { Globe, Radio, Server, GitBranch, Search, Eye, AlertTriangle, Shield } from 'lucide-react';
+import { IconSearch, IconWarning, IconEye, IconShield } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, CodeBlock, TerminalBlock, PhaseCard, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
 
 export const AttackersDiscoverCompaniesBlog: React.FC = () => {
@@ -26,12 +27,12 @@ export const AttackersDiscoverCompaniesBlog: React.FC = () => {
         </Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-          <PhaseCard icon={Search} name="Step 01 — Surface Enumeration" desc="Identify the known attack surface: main domains, ASNs, SSL certs, DNS records" />
+          <PhaseCard icon={IconSearch} name="Step 01 — Surface Enumeration" desc="Identify the known attack surface: main domains, ASNs, SSL certs, DNS records" />
           <PhaseCard icon={GitBranch} name="Step 02 — Subdomain Discovery" desc="Find every subdomain via certificate transparency logs, DNS brute-force, and crawlers" />
           <PhaseCard icon={Radio} name="Step 03 — Host Probing" desc="Check which discovered hosts are live, what ports are open, and what services are running" />
           <PhaseCard icon={Globe} name="Step 04 — Technology Fingerprinting" desc="Identify web servers, frameworks, CMS platforms, and their version numbers" />
-          <PhaseCard icon={Eye} name="Step 05 — Directory Enumeration" desc="Discover exposed paths: admin panels, .env files, API docs, backup archives, staging environments" />
-          <PhaseCard icon={AlertTriangle} name="Step 06 — Vulnerability Mapping" desc="Cross-reference findings against known vulnerabilities and misconfigurations" />
+          <PhaseCard icon={IconEye} name="Step 05 — Directory Enumeration" desc="Discover exposed paths: admin panels, .env files, API docs, backup archives, staging environments" />
+          <PhaseCard icon={IconWarning} name="Step 06 — Vulnerability Mapping" desc="Cross-reference findings against known vulnerabilities and misconfigurations" />
         </div>
 
         <Body>
@@ -68,7 +69,7 @@ vpn.target.com`} />
 
         <BulletList
           items={[
-            { icon: <Search className="w-5 h-5 text-accent" />, text: <span><Highlight>CT logs</Highlight> — certificate transparency records (crt.sh, CertSpotter)</span> },
+            { icon: <IconSearch size={20} className="text-accent" />, text: <span><Highlight>CT logs</Highlight> — certificate transparency records (crt.sh, CertSpotter)</span> },
             { icon: <GitBranch className="w-5 h-5 text-accent" />, text: <span><Highlight>DNS brute-force</Highlight> — common subdomain wordlists (subdomains-top1million)</span> },
             { icon: <Globe className="w-5 h-5 text-accent" />, text: <span><Highlight>Search engines</Highlight> — Google dorking for site:*.target.com</span> },
             { icon: <Radio className="w-5 h-5 text-accent" />, text: <span><Highlight>Zone transfers</Highlight> — misconfigured DNS servers leaking entire zone files</span> },
@@ -169,9 +170,9 @@ vpn.target.com`} />
 
         <BulletList
           items={[
-            { icon: <Eye className="w-5 h-5 text-accent" />, text: <span>Most organisations discover <Highlight>30-60%</Highlight> of their own attack surface in internal audits</span> },
-            { icon: <AlertTriangle className="w-5 h-5 text-accent" />, text: <span>Attackers routinely find <Highlight>3-5x more assets</Highlight> than organisations know about</span> },
-            { icon: <Shield className="w-5 h-5 text-accent" />, text: <span>Continuous monitoring reduces the discovery gap from <Highlight>weeks to minutes</Highlight></span> },
+            { icon: <IconEye size={20} className="text-accent" />, text: <span>Most organisations discover <Highlight>30-60%</Highlight> of their own attack surface in internal audits</span> },
+            { icon: <IconWarning size={20} className="text-accent" />, text: <span>Attackers routinely find <Highlight>3-5x more assets</Highlight> than organisations know about</span> },
+            { icon: <IconShield size={20} className="text-accent" />, text: <span>Continuous monitoring reduces the discovery gap from <Highlight>weeks to minutes</Highlight></span> },
           ]}
         />
       </Section>
@@ -185,12 +186,12 @@ vpn.target.com`} />
 
         <div className="space-y-4 my-8">
           <FeatureCard
-            icon={Search}
+            icon={IconSearch}
             title="Map Your Full Attack Surface"
             desc="Run comprehensive reconnaissance against your own organisation. Use the same techniques attackers use — CT log enumeration, subdomain brute-forcing, technology fingerprinting — to discover everything externally visible."
           />
           <FeatureCard
-            icon={Shield}
+            icon={IconShield}
             title="Eliminate Shadow Assets"
             desc="Shut down or secure any discovered assets that are not meant to be public. Staging environments, old APIs, dev subdomains — if they do not need to be on the internet, remove them or put them behind authentication."
           />

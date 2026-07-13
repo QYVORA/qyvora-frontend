@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { LayoutDashboard, ArrowRight } from 'lucide-react';
+import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import { lazy, Suspense } from 'react';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
@@ -161,12 +161,12 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">
-                <LayoutDashboard className="w-5 h-5" /> Dashboard
+                <IconDashboard size={20} /> Dashboard
               </Link>
             ) : (
               <>
                 <Link to="/register" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-                  Start Training <ArrowRight className="w-5 h-5" />
+                   Start Training <IconArrowRight size={20} />
                 </Link>
                 <Link to="/login" className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
                   Log In

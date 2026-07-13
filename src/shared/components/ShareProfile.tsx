@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { Share2, Check, X, Linkedin, MessageCircle, Mail } from 'lucide-react';
-import { BrandXIcon } from '@/shared/components/icons';
+import { Share2, X, Linkedin, MessageCircle, Mail } from 'lucide-react';
+import { BrandXIcon, IconCheck } from '@/shared/components/icons';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 
 const PLATFORMS = [
@@ -112,7 +112,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
                     }}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-xs font-bold text-text-primary transition-all ${p.color}`}
                   >
-                    {p.id === 'copy' && copied ? <Check className="w-5 h-5 text-accent" /> : p.icon}
+                    {p.id === 'copy' && copied ? <IconCheck size={20} className="text-accent" /> : p.icon}
                     {copied && p.id === 'copy' ? 'Copied!' : p.name}
                   </button>
                 ))}

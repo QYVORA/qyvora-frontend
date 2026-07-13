@@ -1,4 +1,5 @@
-import { Search, Globe, Lock, Shield, FileCode, AlertTriangle, type LucideIcon } from 'lucide-react';
+import { Globe, FileCode, type LucideIcon } from 'lucide-react';
+import { IconSearch, IconLock, IconShield, IconWarning } from '@/shared/components/icons';
 import discoveryImg from '@/assets/anansi/discovery.webp';
 import probeImg from '@/assets/anansi/probe.webp';
 import tlsImg from '@/assets/anansi/tls.webp';
@@ -9,18 +10,18 @@ import takeoverImg from '@/assets/anansi/takeover.webp';
 export interface AnansiPhase {
   id: string;
   name: string;
-  icon: LucideIcon;
+  icon: LucideIcon | React.FC<{ size?: number | string; className?: string }>;
   desc: string;
   image: string;
 }
 
 export const PHASES: AnansiPhase[] = [
-  { id: '01', name: 'DISCOVERY', icon: Search, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: discoveryImg },
+  { id: '01', name: 'DISCOVERY', icon: IconSearch, desc: 'Subdomains via crt.sh CT logs + DNS brute-force', image: discoveryImg },
   { id: '02', name: 'PROBE', icon: Globe, desc: 'Live HTTP/HTTPS hosts, status codes, and titles', image: probeImg },
-  { id: '03', name: 'TLS', icon: Lock, desc: 'Certificate analysis, SANs, and protocol audit', image: tlsImg },
-  { id: '04', name: 'HEADERS', icon: Shield, desc: 'Security headers and CORS misconfigurations', image: headersImg },
+  { id: '03', name: 'TLS', icon: IconLock, desc: 'Certificate analysis, SANs, and protocol audit', image: tlsImg },
+  { id: '04', name: 'HEADERS', icon: IconShield, desc: 'Security headers and CORS misconfigurations', image: headersImg },
   { id: '05', name: 'PATHS', icon: FileCode, desc: 'Exposed files (.env, .git), admin panels, and backups', image: pathsImg },
-  { id: '06', name: 'TAKEOVER', icon: AlertTriangle, desc: 'Dangling CNAME detection for cloud services', image: takeoverImg },
+  { id: '06', name: 'TAKEOVER', icon: IconWarning, desc: 'Dangling CNAME detection for cloud services', image: takeoverImg },
 ];
 
 export interface AnansiRelease {

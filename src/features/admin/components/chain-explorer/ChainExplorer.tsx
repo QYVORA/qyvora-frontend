@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Link2, RefreshCw, ShieldCheck, ShieldAlert, Hash,
+  Link2, RefreshCw, Hash,
   Activity, Cpu,
 } from 'lucide-react';
+import { IconShield } from '@/shared/components/icons';
 import api from '../../../../core/services/api';
 import { ChainBlock, ChainStats, ValidateResult, EVENT_LABELS } from './types';
 import BlockCard from './BlockCard';
@@ -93,9 +94,9 @@ const ChainExplorer: React.FC = () => {
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {validation ? (
             validation.valid ? (
-              <ShieldCheck className="h-6 w-6 text-accent shrink-0" />
+              <IconShield size={24} className="text-accent shrink-0" />
             ) : (
-              <ShieldAlert className="h-6 w-6 text-red-400 shrink-0" />
+              <IconShield size={24} className="text-red-400 shrink-0" />
             )
           ) : (
             <Cpu className="h-6 w-6 text-text-muted shrink-0" />
@@ -118,7 +119,7 @@ const ChainExplorer: React.FC = () => {
           disabled={validating}
           className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-xs font-black uppercase tracking-widest text-text-muted hover:border-accent/40 hover:text-accent transition-colors disabled:opacity-50 shrink-0"
         >
-          <ShieldCheck className="h-3.5 w-3.5" />
+          <IconShield size={14} />
           {validating ? 'Checking…' : 'Validate Chain'}
         </button>
       </div>

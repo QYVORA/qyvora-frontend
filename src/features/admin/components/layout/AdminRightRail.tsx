@@ -1,17 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Users, Shield, Database, Coins, Mail, Megaphone, Clock, AlertTriangle, LayoutDashboard } from 'lucide-react';
+import { Users, Database, Coins, Mail, Megaphone } from 'lucide-react';
+import { IconShield, IconClock, IconWarning, IconDashboard } from '@/shared/components/icons';
 import ADMIN_PATH from '@/shared/utils/adminPath';
 
 const RAIL_LINKS = [
-  { icon: LayoutDashboard, path: `${ADMIN_PATH}/dashboard?tab=overview`,  label: 'Overview'  },
-  { icon: Users,           path: `${ADMIN_PATH}/dashboard?tab=users`,     label: 'Users'     },
-  { icon: Shield,          path: `${ADMIN_PATH}/dashboard?tab=bootcamps`,  label: 'Bootcamps' },
-  { icon: Database,        path: `${ADMIN_PATH}/dashboard?tab=zero_day`,   label: 'Market'    },
-  { icon: Coins,           path: `${ADMIN_PATH}/dashboard?tab=cp`,         label: 'Points'    },
-  { icon: Mail,            path: `${ADMIN_PATH}/dashboard?tab=inbox`,      label: 'Inbox'     },
-  { icon: Megaphone,       path: `${ADMIN_PATH}/dashboard?tab=broadcast`,  label: 'Broadcast' },
-  { icon: Clock,           path: `${ADMIN_PATH}/dashboard?tab=audit`,      label: 'Audit'     },
-  { icon: AlertTriangle,   path: `${ADMIN_PATH}/dashboard?tab=security`,   label: 'Security'  },
+  { icon: IconDashboard, path: `${ADMIN_PATH}/dashboard?tab=overview`,  label: 'Overview'  },
+  { icon: Users,         path: `${ADMIN_PATH}/dashboard?tab=users`,     label: 'Users'     },
+  { icon: IconShield,    path: `${ADMIN_PATH}/dashboard?tab=bootcamps`,  label: 'Bootcamps' },
+  { icon: Database,      path: `${ADMIN_PATH}/dashboard?tab=zero_day`,   label: 'Market'    },
+  { icon: Coins,         path: `${ADMIN_PATH}/dashboard?tab=cp`,         label: 'Points'    },
+  { icon: Mail,          path: `${ADMIN_PATH}/dashboard?tab=inbox`,      label: 'Inbox'     },
+  { icon: Megaphone,     path: `${ADMIN_PATH}/dashboard?tab=broadcast`,  label: 'Broadcast' },
+  { icon: IconClock,     path: `${ADMIN_PATH}/dashboard?tab=audit`,      label: 'Audit'     },
+  { icon: IconWarning,   path: `${ADMIN_PATH}/dashboard?tab=security`,   label: 'Security'  },
 ];
 
 const AdminRightRail = () => {
@@ -39,7 +40,7 @@ const AdminRightRail = () => {
                 : 'border-border bg-bg-card text-text-muted hover:border-accent/40 hover:text-accent'
             }`}
           >
-            <Icon className="h-5 w-5" />
+            <Icon size={20} />
           </Link>
         );
       })}

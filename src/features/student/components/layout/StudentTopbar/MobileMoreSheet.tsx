@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import { MOBILE_MORE } from './mobileNav';
 
@@ -40,7 +41,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
             </div>
           </div>
           <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors">
-            <X className="w-5 h-5" />
+            <IconX size={20} />
           </BottomSheetClose>
         </div>
 

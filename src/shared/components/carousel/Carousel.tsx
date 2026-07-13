@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { IconChevronRight } from '@/shared/components/icons';
 import { useAutoPlay } from '@/core/hooks/useAutoPlay';
 
 export interface CarouselProps<T extends { id: string }> {
@@ -98,7 +99,7 @@ function Carousel<T extends { id: string }>({
               onClick={next}
               className="w-9 h-9 rounded-full border border-border/50 bg-bg-card flex items-center justify-center text-text-secondary hover:border-accent/40 hover:text-accent transition-colors"
             >
-              <ChevronRight className="w-4 h-4" />
+              <IconChevronRight size={16} />
             </button>
           </div>
         </div>

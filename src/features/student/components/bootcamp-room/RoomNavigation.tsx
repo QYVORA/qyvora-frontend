@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Minimize2, Maximize2, ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
+import { List, Minimize2, Maximize2, Loader2 } from 'lucide-react';
+import { IconArrowLeft, IconArrowRight, IconCheck } from '@/shared/components/icons';
 
 interface RoomNavigationProps {
   currentStepIdx: number;
@@ -57,7 +58,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
         className="btn-secondary md:hidden inline-flex flex-1 items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest disabled:opacity-50 sm:flex-none px-3.5 py-2"
         aria-label="Previous step"
       >
-        <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+        <IconArrowLeft size={14} className="shrink-0" />
         <span>Prev</span>
       </button>
 
@@ -87,19 +88,19 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
           isRoomComplete ? (
             <>
               <span>{nextRoom ? 'Next Room' : 'Finish'}</span>
-              <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+              <IconArrowRight size={14} className="shrink-0" />
             </>
           ) : (
             <>
               <span>{quizPassed ? 'Complete' : quizModuleId ? 'Quiz & Complete' : 'Complete'}</span>
-              <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+              <IconCheck size={14} className="shrink-0" />
             </>
           )
         ) : (
           <>
             <span className="md:hidden">Next</span>
             <span className="hidden md:inline">Next Step</span>
-            <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+            <IconArrowRight size={14} className="shrink-0" />
           </>
         )}
       </button>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clock, BookOpen, Timer, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Timer } from 'lucide-react';
+import { IconClock, IconCheck } from '@/shared/components/icons';
 import type { BootcampPhase, BootcampRoom } from '../../constants/bootcampConfig';
 
 interface RoomHeaderProps {
@@ -31,7 +32,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       
       <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mt-4">
         <div className="flex items-center gap-1.5">
-          <Clock className="h-4 w-4" />
+          <IconClock size={16} />
           <span>{room.estimatedMinutes} min</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -46,7 +47,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       
       {isRoomComplete && (
         <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
-          <CheckCircle2 className="h-4 w-4" /> Room Complete
+          <IconCheck size={16} /> Room Complete
         </div>
       )}
     </header>

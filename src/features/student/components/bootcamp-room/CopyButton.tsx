@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Copy } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import { useToast } from '@/core/contexts/ToastContext';
 
 const CopyButton: React.FC<{ text: string }> = ({ text }) => {
@@ -26,7 +27,7 @@ const CopyButton: React.FC<{ text: string }> = ({ text }) => {
       title="Copy to clipboard"
     >
       {copied ? (
-        <><Check className="h-3 w-3" />Copied</>
+        <><IconCheck size={12} />Copied</>
       ) : (
         <><Copy className="h-3 w-3" />Copy</>
       )}

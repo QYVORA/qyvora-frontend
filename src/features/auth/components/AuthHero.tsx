@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Shield, Terminal, Target } from 'lucide-react';
+import { IconArrowLeft, IconShield, IconTerminal, IconTarget } from '@/shared/components/icons';
 import { Logo } from '@/shared/components/brand';
 
 const bullets = [
-  { icon: Terminal, text: 'Hands-on penetration testing labs' },
-  { icon: Shield, text: 'Real-world offensive security scenarios' },
-  { icon: Target, text: 'Capture the flag challenges & rankings' },
+  { icon: IconTerminal, text: 'Hands-on penetration testing labs' },
+  { icon: IconShield, text: 'Real-world offensive security scenarios' },
+  { icon: IconTarget, text: 'Capture the flag challenges & rankings' },
 ];
 
 const AuthHero: React.FC = () => (
@@ -18,7 +18,7 @@ const AuthHero: React.FC = () => (
         to="/"
         className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to Home
+        <IconArrowLeft size={16} /> Back to Home
       </Link>
     </div>
 

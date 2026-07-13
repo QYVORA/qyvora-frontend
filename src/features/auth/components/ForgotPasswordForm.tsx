@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, ArrowLeft, Send } from 'lucide-react';
+import { IconArrowLeft } from '@/shared/components/icons';
+import { Mail, Send } from 'lucide-react';
 
 interface ForgotPasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -17,7 +18,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   return (
     <div>
       <button onClick={onBackToLogin} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Back to Login
+        <IconArrowLeft size={16} /> Back to Login
       </button>
 
       <div className="mb-8">

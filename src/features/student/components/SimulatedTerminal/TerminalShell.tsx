@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Minimize2, Maximize2, X } from 'lucide-react';
+import { Minimize2, Maximize2 } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
 import { createInitialState, processInput, getInputPrefix } from './engine/state';
 import { streamOutput, hasStreamingOutput } from './engine/streaming';
 import { injectBootcampContent } from './context/bootcampContent';
@@ -502,7 +503,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
             className="flex items-center justify-center h-8 w-8 md:h-5 md:w-5 rounded-lg hover:bg-white/5 transition-all focus:outline-none text-white/30 hover:text-red-400"
             aria-label="Close terminal"
           >
-            <X size={14} />
+            <IconX size={14} />
           </button>
         </div>
       </div>

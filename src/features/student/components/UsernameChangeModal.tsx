@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
-import { User, Check, AlertCircle } from 'lucide-react';
+import { User, AlertCircle } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
@@ -97,7 +98,7 @@ const UsernameChangeModal = () => {
               disabled={saving}
               className="w-full flex items-center justify-center gap-2 bg-accent text-bg font-bold uppercase tracking-wider rounded-xl py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
-              {saving ? 'Saving...' : <><Check className="w-4 h-4" /> Update Username</>}
+              {saving ? 'Saving...' : <><IconCheck size={16} /> Update Username</>}
             </button>
           </form>
         </div>

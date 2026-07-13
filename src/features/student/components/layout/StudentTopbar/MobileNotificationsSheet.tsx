@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import { NotificationItem } from './types';
 
@@ -40,7 +41,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
             </button>
           )}
           <BottomSheetClose className="p-1.5 text-text-muted hover:text-accent transition-colors">
-            <X className="w-5 h-5" />
+            <IconX size={20} />
           </BottomSheetClose>
         </div>
       </div>

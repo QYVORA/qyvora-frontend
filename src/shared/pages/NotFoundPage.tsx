@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Terminal } from 'lucide-react';
+import { IconTerminal } from '@/shared/components/icons';
 import SEO from '../components/SEO';
 
 const NotFoundPage = () => (
@@ -8,7 +8,7 @@ const NotFoundPage = () => (
       title="404 - Node Not Found"
       description="The requested page could not be located on the QYVORA network."
     />
-    <Terminal className="w-12 h-12 text-accent mb-6 opacity-60" />
+    <IconTerminal size={48} className="text-accent mb-6 opacity-60" />
     <div className="text-accent font-mono text-sm mb-2 uppercase tracking-widest">// 404 — NODE NOT FOUND</div>
     <h1 className="text-4xl md:text-6xl font-black text-text-primary mb-4">Lost in the Network ?</h1>
     <p className="text-text-muted text-sm mb-8 max-w-sm">

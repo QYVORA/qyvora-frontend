@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp, Terminal, Wifi, Clock, ShieldAlert, X } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Wifi } from 'lucide-react';
+import { IconTerminal, IconClock, IconShield, IconX } from '@/shared/components/icons';
 
 interface LabConnectionGuideProps {
   labId: string;
@@ -7,7 +8,7 @@ interface LabConnectionGuideProps {
 
 const GUIDE_STEPS = [
   {
-    icon: Terminal,
+    icon: IconTerminal,
     title: 'Open the Terminal',
     description: 'Click the "Connect" button in the walkthrough header. This spins up a fresh lab machine and gives you a terminal connected to it.',
   },
@@ -17,17 +18,17 @@ const GUIDE_STEPS = [
     description: 'The first connection takes 5-15 seconds. You\'ll see a green "Connected" badge with the target IP address when it\'s ready.',
   },
   {
-    icon: Terminal,
+    icon: IconTerminal,
     title: 'Run Commands',
     description: 'Use the terminal below to run commands on the target machine. Type commands and press Enter just like a real terminal.',
   },
   {
-    icon: Clock,
+    icon: IconClock,
     title: 'Session Timeout',
     description: 'Lab machines auto-expire after a set time. If you see "Disconnected", just reconnect — your progress is saved.',
   },
   {
-    icon: ShieldAlert,
+    icon: IconShield,
     title: 'Hints & Flags',
     description: 'Each step has a "Show Hint" button if you get stuck. Complete all steps and submit the flag to earn CP.',
   },
@@ -52,7 +53,7 @@ export function LabConnectionGuide({ labId }: LabConnectionGuideProps) {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-black text-text-primary">Lab Connection Guide</h3>
             <button onClick={() => setIsOpen(false)} className="text-text-muted hover:text-text-primary">
-              <X className="w-4 h-4" />
+              <IconX size={16} />
             </button>
           </div>
 

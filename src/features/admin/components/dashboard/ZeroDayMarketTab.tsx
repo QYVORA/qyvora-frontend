@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { RefreshCw, Search, Trash2 } from 'lucide-react';
+import { RefreshCw, Trash2 } from 'lucide-react';
+import { IconSearch } from '@/shared/components/icons';
 import { CPProduct } from '../../types/admin.types';
 import { resolveImg } from '../../../../shared/utils/resolveImg';
 import CpLogo from '../../../../shared/components/CpLogo';
@@ -110,7 +111,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
                   <td className="px-6 py-6">{item.isFree ? <span className="text-[9px] font-black text-accent bg-accent/10 px-2.5 py-1 rounded-lg uppercase tracking-widest border border-accent/20">Free Access</span> : <div className="flex items-center gap-2 font-mono font-bold text-text-primary"><CpLogo className="w-4 h-4" />{Number(item.cpPrice || 0).toLocaleString()}</div>}</td>
                   <td className="px-6 py-6"><span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent whitespace-nowrap border border-accent/10">{item.type}</span></td>
                   <td className="px-6 py-6"><div className="flex items-center gap-2"><span className={`w-2 h-2 rounded-full ${item.isActive ? 'bg-accent animate-pulse shadow-[0_0_8px_var(--color-accent)]' : 'bg-red-500'}`} /><span className={`text-[9px] font-black uppercase tracking-widest ${item.isActive ? 'text-accent' : 'text-red-400'}`}>{item.isActive ? 'Operational' : 'Offline'}</span></div></td>
-                  <td className="px-6 py-6 text-right"><div className="inline-flex gap-3"><button onClick={() => editProduct(item)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bg border border-border/60 text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"><Search className="w-4.5 h-4.5" /></button><button onClick={() => void deleteProduct(item._id)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bg border border-red-500/20 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"><Trash2 className="w-4.5 h-4.5" /></button></div></td>
+                  <td className="px-6 py-6 text-right"><div className="inline-flex gap-3"><button onClick={() => editProduct(item)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bg border border-border/60 text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"><IconSearch size={18} /></button><button onClick={() => void deleteProduct(item._id)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-bg border border-red-500/20 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"><Trash2 className="w-4.5 h-4.5" /></button></div></td>
                 </tr>
               ))}
             </tbody>

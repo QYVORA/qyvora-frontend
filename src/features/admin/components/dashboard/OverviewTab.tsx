@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Users, Activity, UserPlus, Award, BookOpen, CheckCircle, XCircle } from 'lucide-react';
+import { Users, Activity, UserPlus, Award, BookOpen, XCircle } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { StatCard } from '@/shared/components/dashboard';
 import { DataTable } from '@/shared/components/dashboard';
@@ -60,7 +61,7 @@ const OverviewTab = () => {
     { icon: <UserPlus className="w-5 h-5 text-text-muted" />, label: 'New This Week', value: data?.newSignupsWeek ?? 0, accent: false },
     { icon: <Award className="w-5 h-5 text-accent" />, label: 'Total CP Minted', value: Number(data?.totalCpMinted ?? 0).toLocaleString(), accent: true },
     { icon: <BookOpen className="w-5 h-5 text-text-muted" />, label: 'Bootcamp Enrollment', value: `${Math.round((data?.bootcampEnrollmentRate ?? 0) * 100)}%`, accent: false },
-    { icon: data?.chainReachable ? <CheckCircle className="w-5 h-5 text-accent" /> : <XCircle className="w-5 h-5 text-red-400" />, label: 'Chain Status', value: data?.chainReachable ? 'Reachable' : 'Unreachable', accent: data?.chainReachable ?? false },
+    { icon: data?.chainReachable ? <IconCheck size={20} className="text-accent" /> : <XCircle className="w-5 h-5 text-red-400" />, label: 'Chain Status', value: data?.chainReachable ? 'Reachable' : 'Unreachable', accent: data?.chainReachable ?? false },
   ];
 
   const signupColumns: Column<any>[] = [

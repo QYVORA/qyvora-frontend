@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Clock, ArrowLeft, ArrowRight, BookOpen, Zap, Terminal, Globe, Code, Shield, Wifi, Wrench, GraduationCap, Loader2, Lock, CheckCircle2, Sparkles, TrendingUp, Layers, ChevronRight } from 'lucide-react';
+import { Clock, BookOpen, Zap, Terminal, Globe, Wifi, Wrench, GraduationCap, Loader2, Sparkles, TrendingUp, Layers } from 'lucide-react';
+import { IconArrowLeft, IconArrowRight, IconCode, IconShield, IconLock, IconCheck, IconChevronRight, IconClock } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import { Footer } from '@/shared/components/layout';
@@ -16,8 +17,8 @@ import { extractCpBalance } from '@/shared/utils/cpBalance';
 const CATEGORY_ICONS: Record<CourseCategoryId, React.ElementType> = {
   terminal: Terminal,
   networking: Globe,
-  programming: Code,
-  'web-security': Shield,
+  programming: IconCode,
+  'web-security': IconShield,
   wireless: Wifi,
   tools: Wrench,
 };
@@ -114,7 +115,7 @@ const CourseInfoPage: React.FC = () => {
       <div className="border-b border-border/30">
         <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 lg:py-16">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6 self-start">
-            <ArrowLeft className="h-3 w-3" /> All Courses
+            <IconArrowLeft size={12} /> All Courses
           </Link>
 
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-16 items-center w-full">
@@ -135,7 +136,7 @@ const CourseInfoPage: React.FC = () => {
                   <Sparkles className="h-3 w-3" /> {skillCfg.label}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
-                  <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
+                  <IconClock size={12} className="text-accent" /> {course.estimatedMinutes} min
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-bg-elevated rounded-lg text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/30">
                   <BookOpen className="h-3 w-3" /> {course.lessons.length} lessons
@@ -174,7 +175,7 @@ const CourseInfoPage: React.FC = () => {
                   to={`/dashboard/courses/${course.id}`}
                   className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
-                  Start Learning <ArrowRight className="h-4 w-4" />
+                  Start Learning <IconArrowRight size={16} />
                 </Link>
               ) : user ? (
                 <div className="flex items-center gap-4">
@@ -201,7 +202,7 @@ const CourseInfoPage: React.FC = () => {
                   to={`/register?redirect=/courses/${course.id}`}
                   className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
                 >
-                  <Lock className="h-4 w-4" /> Sign Up to Unlock
+                  <IconLock size={16} /> Sign Up to Unlock
                 </Link>
               )}
             </div>
@@ -219,7 +220,7 @@ const CourseInfoPage: React.FC = () => {
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {course.learningObjectives.map((obj, i) => (
               <li key={i} className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
-                <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                <IconCheck size={16} className="text-accent shrink-0 mt-0.5" />
                 <span className="text-sm text-text-secondary leading-relaxed break-words">{obj}</span>
               </li>
             ))}
@@ -284,7 +285,7 @@ const CourseInfoPage: React.FC = () => {
                             <Zap className="h-2.5 w-2.5" /> {relCourse.cpCost} CP
                           </span>
                           <span className="flex items-center gap-1 text-[9px] text-text-muted font-mono">
-                            <Clock className="h-2.5 w-2.5" /> {relCourse.estimatedMinutes}min
+                            <IconClock size={10} /> {relCourse.estimatedMinutes}min
                           </span>
                         </div>
                       </div>

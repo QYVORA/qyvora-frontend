@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
-import { ArrowRight, GraduationCap, Terminal, Network, Code, Globe, Wifi, Wrench } from 'lucide-react';
+import { GraduationCap, Globe, Wifi, Wrench } from 'lucide-react';
+import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import DotMapBackground from '@/shared/components/DotMapBackground';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  terminal: Terminal,
-  networking: Network,
-  programming: Code,
+  terminal: IconTerminal,
+  networking: IconNetwork,
+  programming: IconCode,
   'web-security': Globe,
   wireless: Wifi,
   tools: Wrench,
@@ -207,7 +208,7 @@ const LandingCoursesSection: React.FC = () => {
                           </span>
                           <span className="text-[9px] text-text-muted/60 font-mono">{course.minutes}m</span>
                         </div>
-                        <ArrowRight className="w-3.5 h-3.5 text-text-muted/40 group-hover/card:text-accent transition-colors" />
+                        <IconArrowRight size={14} className="text-text-muted/40 group-hover/card:text-accent transition-colors" />
                       </div>
                     </Link>
                   );
@@ -222,7 +223,7 @@ const LandingCoursesSection: React.FC = () => {
               to="/courses"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
-              View All {COURSES.length} Courses <ArrowRight className="h-3.5 w-3.5" />
+              View All {COURSES.length} Courses <IconArrowRight size={14} />
             </Link>
             <div className="flex items-center gap-1.5">
               {Array.from({ length: totalPages }).map((_, i) => (

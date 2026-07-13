@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, LogOut, Shield } from 'lucide-react';
+import { LogOut } from 'lucide-react';
+import { IconX } from '@/shared/components/icons';
 import { MOBILE_MORE } from './navGroups';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -41,7 +42,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
                 className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
                 aria-label="Close"
               >
-                <X className="w-4 h-4" />
+                <IconX size={16} />
               </button>
             </div>
             <nav className="grid grid-cols-3 gap-2 p-4">
@@ -58,7 +59,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
                         : 'border-border bg-bg text-text-muted hover:border-accent/20 hover:text-text-primary'
                     }`}
                   >
-                    <item.icon className="w-5 h-5" />
+                    <item.icon size={20} />
                     <span className="text-[10px] font-bold uppercase tracking-wide">{item.label}</span>
                   </Link>
                 );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Loader2, ClipboardList, X, CheckCircle2, XCircle } from 'lucide-react';
+import { Loader2, ClipboardList, XCircle } from 'lucide-react';
+import { IconX, IconCheck } from '@/shared/components/icons';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
@@ -100,7 +101,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 </div>
                 <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
                   {result.passed
-                    ? <><CheckCircle2 className="h-4 w-4" /> Passed</>
+                    ? <><IconCheck size={16} /> Passed</>
                     : <><XCircle className="h-4 w-4" /> Not quite — 70% needed</>
                   }
                 </div>

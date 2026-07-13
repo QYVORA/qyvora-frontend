@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Minimize2, Maximize2, Loader2, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { List, Minimize2, Maximize2, Loader2 } from 'lucide-react';
+import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 
 interface DesktopToolbarProps {
   setJumpMenuOpen: (open: boolean) => void;
@@ -88,12 +89,12 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : isLastStep ? (
           isRoomComplete ? (
-            <ArrowRight className="h-4 w-4" />
+            <IconArrowRight size={16} />
           ) : (
-            <CheckCircle2 className="h-4 w-4" />
+            <IconCheck size={16} />
           )
         ) : (
-          <ArrowRight className="h-4 w-4" />
+          <IconArrowRight size={16} />
         )}
       </button>
     </aside>

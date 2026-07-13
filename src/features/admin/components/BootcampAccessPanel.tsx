@@ -1,5 +1,6 @@
 import React from 'react';
-import { CheckCircle2, Unlock } from 'lucide-react';
+import { Unlock } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
 import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '../constants/bootcampModules';
 
@@ -147,7 +148,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
                 }`}
               >
                 <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black ${unlocked ? 'bg-accent text-bg' : 'border border-border bg-bg text-text-muted'}`}>
-                  {unlocked ? <CheckCircle2 className="h-4 w-4" /> : String(mod.moduleId).padStart(2, '0')}
+                  {unlocked ? <IconCheck size={16} /> : String(mod.moduleId).padStart(2, '0')}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-bold text-text-primary md:text-base">{mod.title}</div>

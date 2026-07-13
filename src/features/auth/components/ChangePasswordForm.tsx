@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, KeyRound, CheckCircle2 } from 'lucide-react';
+import { IconShield, IconCheck } from '@/shared/components/icons';
+import { KeyRound } from 'lucide-react';
 import PasswordInput from './PasswordInput';
 
 interface ChangePasswordFormProps {
@@ -18,7 +19,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-yellow-500" />
+            <IconShield size={20} className="text-yellow-500" />
           </div>
           <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight">Password Change Required</h1>
         </div>
@@ -45,7 +46,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          {isLoading ? 'Updating...' : 'Set New Password'} <CheckCircle2 className="w-5 h-5" />
+          {isLoading ? 'Updating...' : 'Set New Password'} <IconCheck size={20} />
         </button>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Eye, EyeOff } from 'lucide-react';
+import { IconLock, IconEye, IconEyeOff } from '@/shared/components/icons';
 
 const INPUT_BASE = 'w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-12 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm';
 
@@ -37,7 +37,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         autoComplete={autoComplete}
         className={`${INPUT_BASE}${shake ? ' input-error' : ''}`}
       />
-      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
+      <IconLock size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
       <button
         type="button"
         onClick={() => setShow((s) => !s)}
@@ -45,7 +45,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         aria-label={show ? 'Hide password' : 'Show password'}
         aria-pressed={show}
       >
-        {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+        {show ? <IconEyeOff size={20} /> : <IconEye size={20} />}
       </button>
     </div>
   );

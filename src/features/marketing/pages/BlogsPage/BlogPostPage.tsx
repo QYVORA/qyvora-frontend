@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Calendar, Clock, User, Tag, ArrowRight } from 'lucide-react';
+import { Calendar, User, Tag } from 'lucide-react';
+import { IconArrowLeft, IconArrowRight, IconClock } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -107,7 +108,7 @@ const BlogPostPage: React.FC = () => {
                 <Calendar className="w-4 h-4 text-accent" /> {post.date}
               </span>
               <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-accent" /> {post.readTime}
+                <IconClock size={16} className="text-accent" /> {post.readTime}
               </span>
             </div>
           </motion.div>
@@ -143,7 +144,7 @@ const BlogPostPage: React.FC = () => {
             to="/blogs"
             className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to all blogs
+            <IconArrowLeft size={16} /> Back to all blogs
           </Link>
           <span className="text-[10px] font-mono text-text-muted">
             QYVORA // {post.date}
@@ -187,7 +188,7 @@ const BlogPostPage: React.FC = () => {
                       {other.title}
                     </h3>
                     <div className="mt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                      Read <ArrowRight className="w-3 h-3" />
+                      Read <IconArrowRight size={12} />
                     </div>
                   </div>
                 </Link>

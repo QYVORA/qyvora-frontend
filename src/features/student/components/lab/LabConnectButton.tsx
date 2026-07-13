@@ -1,4 +1,5 @@
-import { Terminal, Unplug, Loader2 } from 'lucide-react';
+import { Unplug, Loader2 } from 'lucide-react';
+import { IconTerminal } from '@/shared/components/icons';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
 
 interface LabConnectButtonProps {
@@ -36,7 +37,7 @@ export function LabConnectButton({ labId, scenarioId }: LabConnectButtonProps) {
           disabled={isLoading}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
         >
-          {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Terminal className="w-3 h-3" />}
+          {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <IconTerminal size={12} />}
           Connect
         </button>
       )}

@@ -1,4 +1,5 @@
-import { CheckCircle2, List } from 'lucide-react';
+import { List } from 'lucide-react';
+import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
 
@@ -37,7 +38,7 @@ const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJ
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <span className="truncate flex-1">{step.title}</span>
-                {viewedSteps.has(idx) && <CheckCircle2 className="h-3.5 w-3.5 ml-auto text-accent shrink-0" />}
+                {viewedSteps.has(idx) && <IconCheck size={14} className="ml-auto text-accent shrink-0" />}
               </button>
             ))}
           </div>
