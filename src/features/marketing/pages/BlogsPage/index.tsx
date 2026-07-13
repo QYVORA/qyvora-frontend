@@ -16,7 +16,7 @@ const BlogsPage: React.FC = () => {
   const { isLg } = useAdaptiveUi();
 
   return (
-    <div className="w-full bg-bg">
+    <div className="min-h-screen w-full bg-bg">
       <SEO
         title="Blogs"
         description="Read about cybersecurity, offensive security tooling, and Africa's growing security ecosystem."

@@ -186,7 +186,7 @@ const LeaderboardPage = () => {
   const topEntries = entries.slice(0, INITIAL_SHOW);
 
   return (
-    <div className="w-full relative z-10 bg-bg">
+    <div className="min-h-screen w-full relative z-10 bg-bg">
       <SEO
         title="Operator Leaderboard"
         description="Top-ranked cybersecurity operators on QYVORA. Ranked by CP earned and verified on the QYVORA Chain."

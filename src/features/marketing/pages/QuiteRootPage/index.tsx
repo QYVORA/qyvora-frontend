@@ -95,7 +95,7 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full md:min-h-screen flex flex-col bg-accent" data-nav-invert>
+    <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col bg-accent" data-nav-invert>
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
         <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">

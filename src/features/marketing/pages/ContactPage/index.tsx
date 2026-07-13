@@ -42,7 +42,7 @@ const ContactPage: React.FC = () => {
         ]}
       />
 
-      <section className="relative bg-accent overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
+      <section className="relative bg-accent overflow-hidden min-h-[85svh] md:min-h-screen pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
