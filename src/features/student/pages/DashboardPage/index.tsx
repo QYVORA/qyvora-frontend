@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -50,6 +50,8 @@ import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
+import { useGsapReveal, useGsapHover } from '@/shared/hooks/useGsap';
+import { gsap } from '@/shared/utils/gsapSetup';
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
@@ -65,7 +67,7 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-  <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+  <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
     {/* 1. Hero Banner */}
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
       <div className="space-y-2 w-full sm:w-auto">
@@ -77,13 +79,13 @@ const DashboardSkeleton = () => (
     </div>
 
     {/* 2. Stats Strip */}
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card">
-          <Skeleton className="w-10 h-10 bg-border/30 rounded-xl shrink-0" />
-          <div className="space-y-1.5 flex-1">
-            <Skeleton className="h-4 w-20 bg-border/30 rounded" />
-            <Skeleton className="h-3 w-14 bg-border/30 rounded" />
+        <div key={i} className="flex flex-col items-center gap-3 p-5 md:p-6 rounded-2xl border border-border/30 bg-bg-card">
+          <Skeleton className="w-16 h-16 bg-border/30 rounded-2xl shrink-0" />
+          <div className="space-y-1.5 flex-1 text-center">
+            <Skeleton className="h-5 w-20 bg-border/30 rounded mx-auto" />
+            <Skeleton className="h-3 w-14 bg-border/30 rounded mx-auto" />
           </div>
         </div>
       ))}
@@ -92,7 +94,7 @@ const DashboardSkeleton = () => (
     {/* 3. Attack Labs Progress */}
     <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
       <div className="flex items-center gap-3 mb-4">
-        <Skeleton className="w-10 h-10 bg-border/30 rounded-xl shrink-0" />
+        <Skeleton className="w-14 h-14 bg-border/30 rounded-2xl shrink-0" />
         <div className="space-y-1.5">
           <Skeleton className="h-3.5 w-24 bg-border/30 rounded" />
           <Skeleton className="h-2.5 w-40 bg-border/30 rounded" />
@@ -193,14 +195,31 @@ const DashboardSkeleton = () => (
   </div>
 );
 
+const DashboardRoomCard = ({ room }: { room: any }) => {
+  const hoverRef = useGsapHover<HTMLAnchorElement>({ scale: 1.02, y: -4 });
+  return (
+    <Link
+      ref={hoverRef}
+      to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
+      className="group rounded-2xl border border-border/30 bg-bg-card p-5 hover:border-accent/30 transition-colors flex flex-col h-full"
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <IconCode size={22} className="text-accent/60" />
+        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Room</span>
+      </div>
+      <h3 className="text-sm md:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
+    </Link>
+  );
+};
+
 const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
-  <div className="flex items-center gap-3 p-4 rounded-xl border border-border/30 bg-bg-card" aria-label={`${label}: ${value}`}>
-    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+  <div className="flex flex-col items-center gap-3 p-5 md:p-6 rounded-2xl border border-border/30 bg-bg-card text-center" aria-label={`${label}: ${value}`}>
+    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="font-mono text-lg font-black text-text-primary leading-none break-words">{value}</div>
-      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-0.5">{label}</div>
+      <div className="font-mono text-xl md:text-2xl font-black text-text-primary leading-none break-words">{value}</div>
+      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1.5">{label}</div>
     </div>
   </div>
 );
@@ -350,43 +369,69 @@ const Dashboard = () => {
   const streakDays = overview?.xpSummary?.streakDays ?? null;
   const rankName = _r?.name || 'Candidate';
 
+  const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const statsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.1 });
+  const labsRef = useGsapReveal<HTMLDivElement>({ y: 30 });
+  const roomsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.08 });
+  const rankRef = useGsapReveal<HTMLDivElement>({ y: 30 });
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const bar = progressRef.current;
+    if (!bar) return;
+    const fill = bar.querySelector<HTMLElement>('.progress-fill');
+    if (!fill) return;
+    const tween = gsap.fromTo(fill, { width: '0%' }, {
+      width: `${rankProgress}%`,
+      duration: 1.2,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: bar, start: 'top 85%', once: true },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+  }, [rankProgress]);
+
   if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 pt-8 pb-20 lg:pb-24 space-y-8">
 
         {/* 1. Welcome Banner */}
-        <DashboardHero
-          isEnrolled={isEnrolled}
-          allDone={allDone}
-          nextMission={nextMission}
-          continuePath={continuePath}
-          currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
-          username={user?.username}
-        />
+        <div ref={heroRef}>
+          <DashboardHero
+            isEnrolled={isEnrolled}
+            allDone={allDone}
+            nextMission={nextMission}
+            continuePath={continuePath}
+            currentPhaseTitle={overview?.progressMeta?.currentPhase?.title}
+            username={user?.username}
+          />
+        </div>
 
         {/* 2. Stats Strip */}
-        <div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <StatCard icon={<IconRank size={20} className="text-accent" />} label="Rank" value={rankName} accent />
-            <StatCard icon={<IconDashboard size={20} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
-            <StatCard icon={<IconWallet size={20} className="text-accent" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
-            <StatCard icon={<IconFire size={20} className="text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
+        <div ref={statsRef}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+            <StatCard icon={<IconRank size={32} className="text-accent" />} label="Rank" value={rankName} accent />
+            <StatCard icon={<IconDashboard size={32} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
+            <StatCard icon={<CpLogo className="w-10 h-10" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
+            <StatCard icon={<IconFire size={32} className="text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
           </div>
         </div>
 
         {/* 2.5 Attack Labs */}
-        <div>
+        <div ref={labsRef}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-              <IconLabs size={20} className="text-accent" />
+            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
+              <IconLabs size={28} className="text-accent" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-text-primary">Attack Labs</h3>
-              <p className="text-[10px] font-mono text-text-muted">Hands-on offensive security simulations</p>
+              <h3 className="text-base md:text-lg font-black text-text-primary">Attack Labs</h3>
+              <p className="text-[10px] md:text-xs font-mono text-text-muted">Hands-on offensive security simulations</p>
             </div>
             <Link to="/dashboard/labs" className="ml-auto text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
               View All
@@ -403,14 +448,14 @@ const Dashboard = () => {
 
         {/* 2.6 PWA Install */}
         {canInstall && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-accent/20 bg-accent/5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 md:p-5 rounded-2xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10">
-                <IconDownload size={20} className="text-accent" />
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-accent/10">
+                <IconDownload size={28} className="text-accent" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-black text-text-primary">Install QYVORA</p>
-                <p className="text-[10px] font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
+                <p className="text-sm md:text-base font-black text-text-primary">Install QYVORA</p>
+                <p className="text-[10px] md:text-xs font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
               </div>
             </div>
             <button
@@ -472,34 +517,24 @@ const Dashboard = () => {
         </div>
 
         {/* 5. Room Grid / Browse All */}
-        <div>
+        <div ref={roomsRef}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
-              <Link
-                key={`${room._phaseId}-${room.id}`}
-                to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-                className="group rounded-xl border border-border/30 bg-bg-card p-4 hover:border-accent/30 transition-all duration-300 flex flex-col h-full"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <IconCode size={16} className="text-accent/60" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Room</span>
-                </div>
-                <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
-              </Link>
+              <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
             ))}
           </div>
         </div>
 
         {/* 6. Next Rank Progress */}
         {nextRank && (
-          <div>
-            <div className="rounded-xl border border-border/30 bg-bg-card p-5">
-              <div className="flex items-center justify-between mb-2">
+          <div ref={rankRef}>
+            <div ref={progressRef} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
+              <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">Target: <span className="text-accent">{nextRank.name}</span></span>
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
               </div>
-              <div className="h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
-                <div className="h-full rounded-full bg-accent transition-all duration-1000 shadow-[0_0_8px_var(--color-accent)]" style={{ width: `${rankProgress}%` }} />
+              <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">
+                <div className="progress-fill h-full rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" style={{ width: 0 }} />
               </div>
             </div>
           </div>

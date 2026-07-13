@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Users, TrendingUp, Lightbulb, Zap, BookOpen, Shield } from 'lucide-react';
+import { Globe, Users, TrendingUp, Lightbulb, Zap, BookOpen } from 'lucide-react';
 import { IconShield, IconTarget } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
 

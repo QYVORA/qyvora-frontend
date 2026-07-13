@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Radio, Server, GitBranch, Search, Eye, AlertTriangle, Shield } from 'lucide-react';
+import { Globe, Radio, Server, GitBranch } from 'lucide-react';
 import { IconSearch, IconWarning, IconEye, IconShield } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, CodeBlock, TerminalBlock, PhaseCard, FeatureCard, StatCard, BulletList, CTA, InlineDiagram } from './shared';
 

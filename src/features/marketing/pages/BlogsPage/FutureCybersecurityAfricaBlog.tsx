@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cpu, Brain, Globe, Users, TrendingUp, Zap, Lightbulb, Target, Rocket, Cloud } from 'lucide-react';
+import { Cpu, Brain, Globe, Users, TrendingUp, Zap, Lightbulb, Rocket, Cloud } from 'lucide-react';
 import { IconShield, IconWarning } from '@/shared/components/icons';
 import { Section, Heading, SubHeading, Body, Highlight, FeatureCard, StatCard, PhaseCard, BulletList, CTA, InlineDiagram, Divider } from './shared';
 
