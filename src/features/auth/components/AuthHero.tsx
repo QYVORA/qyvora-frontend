@@ -1,34 +1,48 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { ArrowLeft } from 'lucide-react';
-import ErrorBoundary from '../../../shared/components/ErrorBoundary';
+import { ArrowLeft, Shield, Terminal, Target } from 'lucide-react';
+import { Logo } from '@/shared/components/brand';
 
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+const bullets = [
+  { icon: Terminal, text: 'Hands-on penetration testing labs' },
+  { icon: Shield, text: 'Real-world offensive security scenarios' },
+  { icon: Target, text: 'Capture the flag challenges & rankings' },
+];
 
 const AuthHero: React.FC = () => (
-  <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden p-8 xl:p-12">
-    {/* Background ambient glow */}
-    <div className="absolute inset-0 bg-white/[0.01] z-0" />
-
-    {/* Globe - properly centered with responsive sizing */}
-    <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none px-4 xl:px-8">
-      <div className="relative w-full h-full max-w-[min(420px,70vh)] max-h-[min(420px,70vh)] xl:max-w-[min(520px,70vh)] xl:max-h-[min(520px,70vh)] mx-auto my-auto flex items-center justify-center">
-        <div className="w-full h-full"><ErrorBoundary scope="HackerGlobe" fallback={null}><Suspense fallback={null}><HackerGlobe scale={1.0} /></Suspense></ErrorBoundary></div>
-      </div>
-    </div>
+  <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden bg-accent p-8 xl:p-12" data-nav-invert>
 
     {/* Back to Home — top-left */}
     <div className="relative z-20">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+        className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
       >
         <ArrowLeft className="w-4 h-4" /> Back to Home
       </Link>
     </div>
-    
-    {/* Bottom spacer to push content up */}
+
+    {/* Centered content */}
+    <div className="relative z-20 flex-1 flex flex-col items-start justify-center gap-10 max-w-md mx-auto w-full">
+      <Logo size="xl" variant="full" color="#000000" />
+
+      <p className="text-bg/80 text-sm font-bold leading-relaxed max-w-sm">
+        Africa&apos;s offensive security platform built to sharpen your skills
+        from the ground up.
+      </p>
+
+      <ul className="flex flex-col gap-4">
+        {bullets.map(({ icon: Icon, text }) => (
+          <li key={text} className="flex items-center gap-3">
+            <span className="flex-none w-9 h-9 rounded-xl bg-bg/10 flex items-center justify-center">
+              <Icon className="w-4.5 h-4.5 text-bg" />
+            </span>
+            <span className="text-bg text-sm font-bold">{text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
     <div className="relative z-20 h-8" />
   </div>
 );

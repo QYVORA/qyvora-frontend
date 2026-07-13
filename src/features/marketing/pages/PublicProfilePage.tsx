@@ -13,7 +13,6 @@ import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
 import { StreakIcon } from '../../../shared/components';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground';
 import { getRoomCoverImage } from '../../../shared/utils/walkthroughImages';
 
 const PublicProfile: React.FC = () => {
@@ -77,8 +76,6 @@ const PublicProfile: React.FC = () => {
           { name: handle ? `@${handle}` : 'Profile', item: location.pathname }
         ]}
       />
-
-      <HeroBackground className="z-0 opacity-40" />
 
       {/* ══ HERO SECTION ══ */}
       <section className="relative w-full">

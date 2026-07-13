@@ -26,7 +26,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-      className="p-1.5 rounded-md hover:bg-white/5 transition-colors text-white/30 hover:text-accent shrink-0"
+      className="p-1.5 rounded-lg hover:bg-bg-elevated transition-colors text-text-muted hover:text-accent shrink-0"
       aria-label="Copy command"
     >
       {copied ? <Check className="w-3.5 h-3.5 text-accent" /> : <Copy className="w-3.5 h-3.5" />}
@@ -63,12 +63,12 @@ const AnansiInstallSection: React.FC = () => {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                   selected.id === r.id
                     ? 'bg-accent text-bg shadow-[0_0_20px_-5px_rgba(6,182,111,0.3)]'
-                    : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10 border border-white/5'
+                    : 'bg-bg-card text-text-muted hover:text-text-primary hover:bg-bg-elevated border border-border/30'
                 }`}
               >
                 <span className={selected.id === r.id ? 'text-bg' : 'text-accent'}>{PLATFORM_ICONS[r.icon]}</span>
                 {r.label}
-                <span className={selected.id === r.id ? 'text-bg/60' : 'text-white/30'}>{r.arch}</span>
+                <span className={selected.id === r.id ? 'text-bg/60' : 'text-text-muted'}>{r.arch}</span>
               </button>
             ))}
           </div>
@@ -82,17 +82,17 @@ const AnansiInstallSection: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
-          <div className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden">
+          <div className="bg-bg-card border border-border/30 rounded-2xl overflow-hidden">
             <div className="p-6 sm:p-8 md:p-10">
               <div className="flex items-start justify-between mb-8">
                 <div className="min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-accent shrink-0">{PLATFORM_ICONS[selected.icon]}</span>
-                    <span className="text-white font-bold text-lg truncate">{selected.label}</span>
-                    <span className="text-white/30 font-mono text-sm shrink-0">{selected.arch}</span>
+                    <span className="text-text-primary font-bold text-lg truncate">{selected.label}</span>
+                    <span className="text-text-muted font-mono text-sm shrink-0">{selected.arch}</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-mono text-white/40">
-                    <span className="truncate">Binary: <span className="text-white/60">{selected.file}</span></span>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-mono text-text-muted">
+                    <span className="truncate">Binary: <span className="text-text-secondary">{selected.file}</span></span>
                     <span className="hidden sm:inline shrink-0">Size: {selected.size}</span>
                   </div>
                 </div>
@@ -107,9 +107,9 @@ const AnansiInstallSection: React.FC = () => {
               <div className="space-y-3">
                 {selected.steps.map((step, i) => (
                   <div key={i} className="flex items-center gap-3 group">
-                    <div className="flex-1 flex items-center gap-2 bg-white/[0.03] rounded-lg px-4 py-2.5 border border-white/5 min-w-0">
+                    <div className="flex-1 flex items-center gap-2 bg-bg-elevated rounded-lg px-4 py-2.5 border border-border/30 min-w-0">
                       <span className="text-accent font-bold shrink-0">$</span>
-                      <code className="text-white/80 font-mono text-sm truncate">{step.cmd}</code>
+                      <code className="text-text-primary font-mono text-sm truncate">{step.cmd}</code>
                       <CopyButton text={step.cmd} />
                     </div>
                   </div>
@@ -126,21 +126,21 @@ const AnansiInstallSection: React.FC = () => {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-white/30 font-mono text-xs uppercase tracking-widest mb-4">
+            <p className="text-text-muted font-mono text-xs uppercase tracking-widest mb-4">
               ── or build from source ──
             </p>
-            <div className="bg-white/[0.03] border border-white/5 rounded-xl inline-block max-w-full overflow-hidden">
+            <div className="bg-bg-elevated border border-border/30 rounded-xl inline-block max-w-full overflow-hidden">
               <div className="px-6 py-4 sm:px-8 space-y-2">
                 {BUILD_FROM_SOURCE.steps.map((s, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <span className="text-accent font-bold shrink-0 font-mono text-sm">$</span>
-                    <code className="text-white/60 font-mono text-sm truncate">{s.cmd}</code>
-                    {s.note && <span className="text-white/20 font-mono text-[10px] hidden sm:inline shrink-0">// {s.note}</span>}
+                    <code className="text-text-secondary font-mono text-sm truncate">{s.cmd}</code>
+                    {s.note && <span className="text-text-muted font-mono text-[10px] hidden sm:inline shrink-0">// {s.note}</span>}
                   </div>
                 ))}
               </div>
             </div>
-            <p className="mt-3 text-white/20 font-mono text-xs px-4">
+            <p className="mt-3 text-text-muted font-mono text-xs px-4">
               Requires Go 1.22+. Runs on any Linux, macOS, or Windows with Go installed.
             </p>
           </div>

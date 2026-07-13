@@ -18,6 +18,8 @@ interface SimpleHeadingProps {
   accentWords?: number;
   /** Whether to highlight words from the 'start' or 'end' of the text. Default: 'start' */
   accentPlacement?: 'start' | 'end';
+  /** Color variant: 'default' = white+accent on dark bg, 'inverted' = black on accent bg */
+  variant?: 'default' | 'inverted';
 }
 
 const SimpleHeading: React.FC<SimpleHeadingProps> = ({
@@ -27,6 +29,7 @@ const SimpleHeading: React.FC<SimpleHeadingProps> = ({
   compact = false,
   accentWords = 0,
   accentPlacement = 'start',
+  variant = 'default',
 }) => {
   const words = text.split(' ');
   
@@ -54,6 +57,9 @@ const SimpleHeading: React.FC<SimpleHeadingProps> = ({
     ? 'text-3xl md:text-4xl lg:text-5xl' 
     : 'text-4xl md:text-5xl lg:text-6xl xl:text-7xl';
 
+  const primaryClass = variant === 'inverted' ? 'text-bg' : 'text-text-primary';
+  const accentClass = variant === 'inverted' ? 'text-bg/80' : 'text-accent';
+
   return (
     <h2
       className={cn(
@@ -66,17 +72,17 @@ const SimpleHeading: React.FC<SimpleHeadingProps> = ({
       {accentWords > 0 ? (
         accentPlacement === 'start' ? (
           <>
-            <span className="text-accent">{accentPart}</span>
-            {primaryPart && <span className="text-text-primary"> {primaryPart}</span>}
+            <span className={accentClass}>{accentPart}</span>
+            {primaryPart && <span className={primaryClass}> {primaryPart}</span>}
           </>
         ) : (
           <>
-            <span className="text-text-primary">{primaryPart}</span>
-            {accentPart && <span className="text-accent"> {accentPart}</span>}
+            <span className={primaryClass}>{primaryPart}</span>
+            {accentPart && <span className={accentClass}> {accentPart}</span>}
           </>
         )
       ) : (
-        <span className="text-text-primary">{text}</span>
+        <span className={primaryClass}>{text}</span>
       )}
     </h2>
   );

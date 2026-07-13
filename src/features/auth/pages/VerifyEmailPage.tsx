@@ -3,7 +3,6 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../../../core/contexts/ToastContext';
-import HeroBackground from '../../../shared/components/backgrounds/HeroBackground.tsx';
 import api from '../../../core/services/api';
 import AuthHero from '../components/AuthHero';
 import VerifyEmailForm from '../components/VerifyEmailForm';
@@ -48,7 +47,6 @@ const VerifyEmailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen relative md:grid md:grid-cols-2">
-      <HeroBackground className="opacity-50" />
       <AuthHero />
       <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">
         {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}

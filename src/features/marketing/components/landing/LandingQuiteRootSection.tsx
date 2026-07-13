@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, FlaskConical } from 'lucide-react';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
+import DotMapBackground from '@/shared/components/DotMapBackground';
 
 const LandingQuiteRootSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <div className="relative w-full md:h-screen md:overflow-hidden flex items-center justify-center py-20 sm:py-24 lg:py-20">
+      <DotMapBackground />
 
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
 
@@ -60,7 +62,7 @@ const LandingQuiteRootSection: React.FC = () => {
             >
               <Link
                 to="/quiteroot"
-                className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
+                className="btn-primary !border-accent/30 !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
               >
                 Explore QuiteRoot <ArrowRight className="w-5 h-5" />
               </Link>
@@ -105,7 +107,7 @@ const LandingQuiteRootSection: React.FC = () => {
             >
               <Link
                 to="/quiteroot"
-                className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
+                className="btn-primary !border-accent/30 !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
               >
                 Explore QuiteRoot <ArrowRight className="w-5 h-5" />
               </Link>

@@ -5,16 +5,16 @@ import chatGptImage from '@/assets/bootcamp/ChatGPT Image Jul 6, 2026, 12_54_02 
 
 const LearnHeroSection: React.FC = () => {
   return (
-    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col pt-28 sm:pt-20 lg:pt-24">
+    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col pt-28 sm:pt-20 lg:pt-24 bg-accent" data-nav-invert>
       <div className="relative z-30 w-full flex-1 mx-auto max-w-7xl px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full w-full h-full">
           <div className="flex flex-col items-start justify-center pt-8 sm:pt-4 lg:pt-0 pb-14 sm:pb-16 lg:pb-16 w-full h-full lg:pr-8 xl:pr-12">
           <div className="flex flex-col items-start w-full space-y-6">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
               Hacker Protocol <br />
-              <span className="text-accent">Bootcamp</span>
+              <span className="text-bg/80">Bootcamp</span>
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl lg:text-2xl text-bg/70 font-mono leading-relaxed max-w-xl">
               Master offensive security through hands-on challenges.
               The HPB curriculum transforms you into a specialized operator.
             </p>
@@ -27,7 +27,7 @@ const LearnHeroSection: React.FC = () => {
               </Link>
               <a
                 href="#phases"
-                className="px-8 py-4 border border-border bg-bg-card/30 hover:border-accent/40 rounded-xl text-xs font-black uppercase tracking-[0.15em] hover:text-accent transition-all text-center"
+                className="px-8 py-4 border border-bg/30 bg-bg/10 hover:bg-bg/20 rounded-xl text-xs font-black uppercase tracking-[0.15em] text-bg transition-all text-center"
                 onClick={(e) => {
                   e.preventDefault();
                   const el = document.getElementById('phases');

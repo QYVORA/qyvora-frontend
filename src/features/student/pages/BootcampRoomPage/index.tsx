@@ -27,6 +27,8 @@ import { useRoomSession } from '@/features/student/hooks/useRoomSession';
 import type { ApiCourse, RoomQuiz, QuizQuestion } from '@/features/student/components/bootcamp-room/types';
 import SEO from '@/shared/components/SEO';
 import { BootcampRoomSkeleton } from '@/features/student/components/StudentSkeletons';
+import { getRelatedContentForHpbRoom } from '@/shared/constants/topicMap';
+import RelatedContent from '@/shared/components/RelatedContent';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILITY: Format time
@@ -327,6 +329,11 @@ const BootcampRoomPage: React.FC = () => {
                   <div className="hidden md:block mb-10 space-y-8">{room.steps.map((s, i) => <StepCard key={i} step={s} stepNum={i+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive={i===currentStepIdx} isViewed={viewedSteps.has(i)} isBookmarked={isStepBookmarked(i)} gotIt={gotItSteps.has(i+1)} onGotIt={handleGotIt} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(i)} onReportIssue={() => { setReportStepIdx(i); setReportIssueOpen(true); }} onClick={() => goToStep(i)} onNext={() => goToStep(Math.min(i + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(i - 1, 0))} />)}</div>
                   <div className="md:hidden mb-10"><StepCard key={currentStepIdx} step={room.steps[currentStepIdx]} stepNum={currentStepIdx+1} phaseId={phaseId || ''} roomId={roomId || ''} isActive isViewed={viewedSteps.has(currentStepIdx)} isBookmarked={isStepBookmarked(currentStepIdx)} gotIt={gotItSteps.has(currentStepIdx+1)} onGotIt={handleGotIt} phaseColor={phase.color} footer={null} onToggleBookmark={() => toggleBookmark(currentStepIdx)} onReportIssue={() => { setReportStepIdx(currentStepIdx); setReportIssueOpen(true); }} onClick={() => goToStep(currentStepIdx)} onNext={() => goToStep(Math.min(currentStepIdx + 1, room.steps.length - 1))} onPrev={() => goToStep(Math.max(currentStepIdx - 1, 0))} /></div>
                 </>
+              )}
+              {phaseId && roomId && (
+                <div className="mb-8">
+                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title="Continue This Topic" />
+                </div>
               )}
               <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />
             </>

@@ -28,11 +28,11 @@ const STEPS = [
 
 const LandingHowItWorksSection: React.FC = () => {
   return (
-    <div className="w-full px-4 md:px-12 lg:px-16">
+    <div className="w-full px-4 md:px-12 lg:px-16 bg-accent" data-nav-invert>
       <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-            Learn. <span className="text-accent">Practice.</span> Prove.
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none">
+            Learn. <span className="text-bg/70">Practice.</span> Prove.
           </h2>
         </div>
 

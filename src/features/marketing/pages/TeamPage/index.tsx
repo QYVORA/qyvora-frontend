@@ -1,6 +1,5 @@
 import React from 'react';
 import { useReducedMotion } from 'motion/react';
-import HeroBackground from '@/shared/components/backgrounds/HeroBackground';
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { useAuth } from '@/core/contexts/AuthContext';
@@ -25,7 +24,6 @@ const TeamPage: React.FC = () => {
           { name: 'Team', item: '/team' }
         ]}
       />
-      <HeroBackground className="opacity-70" />
 
       <section className="relative bg-transparent overflow-hidden">
         <TeamHeroSection />

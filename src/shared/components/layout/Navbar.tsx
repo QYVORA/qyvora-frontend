@@ -2,39 +2,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Menu, X, LogIn, UserPlus, ChevronDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useScrollY } from '@/core/hooks/useScrollY';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
+import { useNavInvert } from '@/shared/hooks/useNavInvert';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
-  const [isVisible, setIsVisible]               = useState(true);
   const [isMenuOpen, setIsMenuOpen]             = useState(false);
   const [openDropdown, setOpenDropdown]         = useState<string | null>(null);
   const [openMobileGroup, setOpenMobileGroup]   = useState<string | null>(null);
-  const lastScrollY                              = useRef(0);
-  const scrollY                                  = useScrollY();
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inverted                                 = useNavInvert();
 
   const isAnansiPage = location.pathname === '/anansi';
-
-  // Hide on scroll-down, reveal on scroll-up
-  useEffect(() => {
-    if (scrollY < 10) {
-      setIsVisible(true);
-      lastScrollY.current = scrollY;
-      return;
-    }
-    const diff = scrollY - lastScrollY.current;
-    if (Math.abs(diff) > 5) {
-      setIsVisible(diff <= 0);
-      lastScrollY.current = scrollY;
-    }
-  }, [scrollY]);
 
   // Close menu/dropdowns on route change
   useEffect(() => {
@@ -59,17 +43,15 @@ const Navbar: React.FC = () => {
         className={[
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
           'h-[80px] flex items-center',
-          'transition-all duration-300',
-          !isVisible && !isMenuOpen ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100',
-          isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : (isAnansiPage ? 'bg-transparent' : 'bg-transparent'),
+          isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
         ].join(' ')}
       >
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="md" className="hidden md:block" />
-            <Logo size="md" variant="mark" className="md:hidden" />
+            <Logo size="md" className="hidden md:block" color={inverted ? '#000000' : undefined} />
+            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#000000' : undefined} />
           </Link>
 
           {/* ── Desktop Navigation (centered, hover dropdowns) ──── */}
@@ -87,10 +69,10 @@ const Navbar: React.FC = () => {
                 }}
               >
                 <button
-                  className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-[0.2em] transition-colors hover:text-accent rounded-sm ${
+                  className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-widest transition-colors rounded-xl ${
                     group.items.some((item) => isActive(item.path))
-                      ? 'text-accent'
-                      : 'text-text-primary/70'
+                      ? inverted ? 'text-bg hover:text-bg/80' : 'text-accent hover:text-accent/80'
+                      : inverted ? 'text-bg/70 hover:text-bg' : 'text-text-primary/70 hover:text-accent'
                   }`}
                 >
                   {group.label}
@@ -157,14 +139,22 @@ const Navbar: React.FC = () => {
               {user ? (
                 <Link
                   to="/dashboard"
-                  className="bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-sm px-5 py-3.5 transition-all hover:brightness-110 active:scale-95 flex items-center justify-center gap-2 text-sm"
+                  className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm ${
+                    inverted
+                      ? 'bg-bg text-accent hover:brightness-110'
+                      : 'bg-accent text-bg hover:brightness-110'
+                  }`}
                 >
                   <LayoutDashboard className="w-4 h-4" /> Dashboard
                 </Link>
               ) : (
                 <Link
                   to="/register"
-                  className="bg-accent text-bg font-bold uppercase tracking-[0.12em] rounded-sm px-9 py-3.5 transition-all hover:brightness-110 active:scale-95 flex items-center justify-center gap-2.5 text-sm"
+                  className={`font-bold uppercase tracking-widest rounded-xl px-9 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2.5 text-sm ${
+                    inverted
+                      ? 'bg-bg text-accent hover:brightness-110'
+                      : 'bg-accent text-bg hover:brightness-110'
+                  }`}
                 >
                   START
                 </Link>
@@ -174,7 +164,7 @@ const Navbar: React.FC = () => {
             {/* ── Mobile hamburger (far right edge) ────────────── */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 -mr-2 text-text-primary hover:text-accent transition-colors relative z-[110]"
+              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-bg hover:text-bg/70' : 'text-text-primary hover:text-accent'}`}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -285,7 +275,7 @@ const Navbar: React.FC = () => {
                   <Link
                     to="/dashboard"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                   >
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
@@ -294,14 +284,14 @@ const Navbar: React.FC = () => {
                     <Link
                       to="/register"
                       onClick={() => setIsMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
+                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                     >
                       <UserPlus className="w-4 h-4" /> Start Training
                     </Link>
                     <Link
                       to="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-[0.15em] rounded-sm px-6 py-3.5 text-sm transition-all hover:bg-accent/10 active:scale-[0.98]"
+                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:bg-accent/10 active:scale-[0.98]"
                     >
                       <LogIn className="w-4 h-4" /> Log In
                     </Link>

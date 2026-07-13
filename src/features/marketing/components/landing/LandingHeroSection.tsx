@@ -76,7 +76,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [displayText, isDeleting, stepIndex, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-dvh md:min-h-screen flex flex-col">
+    <div ref={heroRef} className="relative w-full min-h-dvh md:min-h-screen flex flex-col bg-accent" data-nav-invert>
       
       {/* ── Main content grid ── */}
       <div
@@ -107,16 +107,16 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-accent/35 bg-accent/10 dark:backdrop-blur-sm backdrop-blur-none rounded-lg max-w-full shadow-[0_0_15px_rgba(6,182,111,0.05)]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 dark:backdrop-blur-sm backdrop-blur-none rounded-lg max-w-full shadow-[0_0_15px_rgba(0,0,0,0.05)]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse flex-none" />
-              <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-accent whitespace-normal">
+              <span className="w-1.5 h-1.5 rounded-full bg-bg animate-pulse flex-none" />
+              <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
                 Africa's Offensive Security Platform
               </span>
             </motion.div>
 
             {/* ── Headline ── */}
-            <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
+            <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
               {/* Hidden placeholder — sets fixed height for tallest text so nothing shifts */}
               <span className="invisible pointer-events-none select-none" aria-hidden="true">
                 <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
@@ -133,9 +133,9 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
                 </span>
                 <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
                   <span className="invisible" aria-hidden="true">{steps[stepIndex].line2}</span>
-                  <span className="absolute left-0 top-0 text-accent">
+                  <span className="absolute left-0 top-0 text-bg">
                     {displayText}
-                    <span className="text-accent ml-1 font-extralight select-none animate-pulse">|</span>
+                    <span className="text-bg ml-1 font-extralight select-none animate-pulse">|</span>
                   </span>
                 </span>
               </span>
@@ -146,7 +146,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in"
+              className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in"
             >
               {SITE_CONFIG.brand.description}
             </motion.p>

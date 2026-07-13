@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChevronRight, Lock, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import { Lock, CheckCircle2, Lightbulb } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { CommandBlock, FlagInput, StepComplete } from './StepParts';
 
@@ -24,54 +24,115 @@ export function WalkthroughStep({
   isLocked, isCompleted, isActive, flagId, labId,
   onFlagSubmit, onComplete, children,
 }: WalkthroughStepProps) {
-  const [expanded, setExpanded] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [flagSuccess, setFlagSuccess] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
 
-  useEffect(() => {
-    if (contentRef.current) setContentHeight(contentRef.current.scrollHeight);
-  }, [expanded, showHint, flagSuccess]);
-
-  const toggle = () => { if (!isLocked && !isCompleted) setExpanded((p) => !p); };
-  const handleCorrect = () => { setFlagSuccess(true); setExpanded(false); onComplete(flagId); };
+  const handleCorrect = () => { setFlagSuccess(true); onComplete(flagId); };
 
   return (
-    <div className="w-full">
-      <button type="button" onClick={toggle} disabled={isLocked} aria-expanded={expanded}
-        className={cn('group flex w-full items-center gap-3 rounded-xl border px-4 py-3.5 text-left font-mono transition-all duration-200',
-          isLocked && 'opacity-40 cursor-not-allowed border-border/20 bg-bg-card',
-          isCompleted && 'border-accent/20 bg-accent-dim cursor-default',
-          isActive && !expanded && 'border-border/30 bg-bg-card hover:border-accent/30',
-          isActive && expanded && 'border-accent/30 bg-bg-card')}>
-        <span className={cn('flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-black',
-          isCompleted ? 'bg-accent/20 text-accent' : isLocked ? 'bg-bg-elevated text-text-muted' : 'bg-bg-elevated text-text-secondary')}>
-          {isCompleted ? <CheckCircle2 className="h-4 w-4" /> : isLocked ? <Lock className="h-3.5 w-3.5" /> : String(stepIndex + 1).padStart(2, '0')}
+    <div
+      className={cn(
+        'w-full rounded-2xl border transition-all duration-200',
+        isLocked && 'opacity-40 border-border/20 bg-bg-card',
+        isCompleted && 'border-accent/30 bg-accent/5',
+        isActive && !isCompleted && 'border-accent/30 bg-bg-card',
+        !isActive && !isCompleted && !isLocked && 'border-border/20 bg-bg-card',
+      )}
+    >
+      {/* Step Header — always visible */}
+      <div className="flex items-center gap-3 px-5 py-4">
+        <span
+          className={cn(
+            'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-[11px] font-black',
+            isCompleted
+              ? 'bg-accent/20 text-accent'
+              : isLocked
+                ? 'bg-bg-elevated text-text-muted'
+                : isActive
+                  ? 'bg-accent text-bg'
+                  : 'bg-bg-elevated text-text-secondary',
+          )}
+        >
+          {isCompleted ? (
+            <CheckCircle2 className="h-4 w-4" />
+          ) : isLocked ? (
+            <Lock className="h-3.5 w-3.5" />
+          ) : (
+            String(stepIndex + 1).padStart(2, '0')
+          )}
         </span>
-        <span className={cn('flex-1 truncate text-base font-bold tracking-wide',
-          isCompleted ? 'text-accent' : isLocked ? 'text-text-muted' : 'text-text-primary')}>
-          {title}
-        </span>
-        {!isLocked && <ChevronRight className={cn('h-4 w-4 shrink-0 text-text-muted transition-transform duration-200', expanded && 'rotate-90 text-accent')} />}
-      </button>
-
-      <div className="overflow-hidden transition-[max-height] duration-300 ease-[var(--ease-smooth)]" style={{ maxHeight: expanded ? contentHeight : 0 }}>
-        <div ref={contentRef} className="px-4 pb-4 pt-3">
-          <div className="rounded-xl border border-border/20 bg-bg-elevated p-4 space-y-4">
-            <p className="text-base leading-relaxed text-text-secondary font-mono whitespace-pre-wrap">{narrative}</p>
-            {commandInstruction && <CommandBlock command={commandInstruction} labId={labId} />}
-            {hint && (
-              showHint
-                ? <div className="rounded-lg border border-border/20 bg-bg-card px-3 py-2"><p className="text-xs font-mono text-text-muted">{hint}</p></div>
-                : <button type="button" onClick={() => setShowHint(true)} className="text-xs font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors">Show hint</button>
+        <div className="flex-1 min-w-0">
+          <h3
+            className={cn(
+              'text-sm font-black tracking-wide',
+              isCompleted ? 'text-accent' : isLocked ? 'text-text-muted' : 'text-text-primary',
             )}
-            {children}
-            {!isCompleted && <FlagInput flagId={flagId} disabled={false} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />}
-            {flagSuccess && <StepComplete />}
-          </div>
+          >
+            {title}
+          </h3>
         </div>
+        {isCompleted && (
+          <span className="text-[9px] font-black uppercase tracking-widest text-accent">
+            Done
+          </span>
+        )}
       </div>
+
+      {/* Step Content — always visible when active, hidden when locked */}
+      {!isLocked && (
+        <div className="px-5 pb-5 space-y-4">
+          {/* Narrative */}
+          <div className="rounded-xl border border-border/20 bg-bg-elevated p-5">
+            <div className="text-sm leading-relaxed text-text-secondary font-mono whitespace-pre-wrap">
+              {narrative}
+            </div>
+          </div>
+
+          {/* Command Block */}
+          {commandInstruction && (
+            <CommandBlock command={commandInstruction} labId={labId} />
+          )}
+
+          {/* Hint */}
+          {hint && (
+            <div>
+              {showHint ? (
+                <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 px-4 py-3 flex items-start gap-2">
+                  <Lightbulb className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+                  <p className="text-xs font-mono text-yellow-300/80 leading-relaxed">{hint}</p>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowHint(true)}
+                  className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-yellow-400 transition-colors"
+                >
+                  <Lightbulb className="w-3 h-3" />
+                  Need a hint?
+                </button>
+              )}
+            </div>
+          )}
+
+          {children}
+
+          {/* Flag Input */}
+          {!isCompleted && (
+            <FlagInput flagId={flagId} disabled={false} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />
+          )}
+
+          {flagSuccess && <StepComplete />}
+        </div>
+      )}
+
+      {/* Locked overlay */}
+      {isLocked && (
+        <div className="px-5 pb-4">
+          <p className="text-xs font-mono text-text-muted/50">
+            Complete the previous step to unlock this one.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

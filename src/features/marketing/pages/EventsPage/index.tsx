@@ -4,6 +4,7 @@ import { Calendar, Clock, Video, ArrowRight, Users, Loader2 } from 'lucide-react
 import { motion } from 'motion/react';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
+import { Footer } from '@/shared/components/layout';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { getActiveEvents, formatEventTime } from '@/features/marketing/content/eventsData';
 import { setPendingEventJoin } from '@/shared/utils/eventJoin';
@@ -102,6 +103,10 @@ const EventsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      <section id="footer" className="w-full bg-bg">
+        <Footer />
+      </section>
     </div>
   );
 };

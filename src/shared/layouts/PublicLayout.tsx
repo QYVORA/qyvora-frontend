@@ -109,7 +109,7 @@ const PublicLayout = () => (
       <Outlet /> is replaced at runtime by React Router with the currently
       matched child route component (e.g., <ContactPage />, <ServicesPage />).
     */}
-    <main id="main-content" className="w-full min-h-screen flex flex-col pt-[72px]">
+    <main id="main-content" className="w-full min-h-screen flex flex-col pt-[80px]">
       <Outlet />
     </main>
 

@@ -34,7 +34,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
           <div className="relative">
             <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder="operator@qyvora.africa"
               onChange={(e) => onEmailChange(e.target.value)}
-              className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
@@ -42,7 +42,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
           <label htmlFor="reset-token" className="text-xs font-bold text-text-muted uppercase tracking-widest">Reset Token</label>
           <div className="relative">
             <input id="reset-token" type="text" name="token" required defaultValue={token} placeholder="Paste reset token here"
-              className="w-full bg-bg-card border border-border rounded-lg py-4 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base" />
+              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
@@ -55,7 +55,7 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
           <PasswordInput id="reset-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
-          className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 text-base font-bold">
+          className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
           {isLoading ? 'Resetting...' : 'Reset Password'} <CheckCircle2 className="w-5 h-5" />
         </button>
       </form>

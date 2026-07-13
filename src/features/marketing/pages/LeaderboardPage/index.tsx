@@ -193,37 +193,37 @@ const LeaderboardPage = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden">
+      <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden bg-accent" data-nav-invert>
         <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
           <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9]">
-                Operator <span className="text-accent">Leaderboard</span>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
+                Operator <span className="text-bg/80">Leaderboard</span>
               </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-text-secondary font-mono leading-relaxed max-w-xl">
+              <p className="text-lg md:text-xl lg:text-2xl text-bg/70 font-mono leading-relaxed max-w-xl">
                 Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned.
                 All balances verified on the QYVORA Chain — immutable, tamper-proof,
                 and fully on-ledger.
               </p>
-              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted/60">
-                <Shield className="w-4 h-4 text-accent" />
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
+                <Shield className="w-4 h-4 text-bg/80" />
                 CP verified on QYVORA Chain
               </div>
               {entries.length > 0 && (
                 <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
-                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-text-primary">{Number(total).toLocaleString()}</span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Operators</p>
+                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-bg">{Number(total).toLocaleString()}</span>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Operators</p>
                   </div>
-                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-accent">
+                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-bg">
                       {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
                     </span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Total CP</p>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Total CP</p>
                   </div>
-                  <div className="rounded-2xl border border-border/30 bg-bg-card/50 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-text-primary">{Number(entries[0].cp).toLocaleString()}</span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted/50 mt-1">Top CP</p>
+                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+                    <span className="text-xl md:text-2xl font-black text-bg">{Number(entries[0].cp).toLocaleString()}</span>
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Top CP</p>
                   </div>
                 </div>
               )}

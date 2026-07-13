@@ -45,3 +45,4 @@ export const ARC_PAIRS: Array<[number, number]> = [
 
 export const ACCENT_COLOR     = 0x06B66F;
 export const ACCENT_COLOR_HEX = '#06B66F';
+export const MAP_COLOR_HEX    = '#000000';
