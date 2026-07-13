@@ -65,7 +65,7 @@ const PublicProfile: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-bg">
+    <div className="min-h-screen w-full bg-bg">
       <Navbar />
       <SEO
         title={`@${handle}'s Profile`}
@@ -78,7 +78,7 @@ const PublicProfile: React.FC = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <section className="relative w-full">
+      <section className="relative w-full min-h-[85svh] md:min-h-screen">
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
             {/* ── Left sidebar: avatar, stats, badges, actions (sticky on desktop) ── */}

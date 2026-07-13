@@ -1,24 +1,39 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  Zap, BookOpen, Bell, LogOut, ChevronRight, ArrowLeft, Menu, List, Terminal, Flame, X
+  LayoutDashboard, BookMarked, Map, FlaskConical, ShoppingBag, Settings,
+  Bell, LogOut, ChevronRight, ArrowLeft, Menu, Terminal, X,
 } from 'lucide-react';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
-import CpLogo from '../../../../../shared/components/CpLogo';
 import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
+import { useScrollLock } from '../../../../../core/hooks/useScrollLock';
 import api from '../../../../../core/services/api';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
 import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
 import { MOBILE_PRIMARY } from './mobileNav';
-import SearchBar from '../SearchBar';
 import { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
+
+const DESKTOP_NAV_ITEMS = [
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Courses',   icon: BookMarked,      path: '/dashboard/courses' },
+  { label: 'Bootcamp',  icon: Map,             path: '/dashboard/bootcamps' },
+  { label: 'Labs',      icon: FlaskConical,    path: '/dashboard/labs' },
+  { label: 'Market',    icon: ShoppingBag,     path: '/dashboard/marketplace' },
+  { label: 'Settings',  icon: Settings,        path: '/dashboard/settings' },
+];
+
+const ALL_NAV_ITEMS = [
+  ...DESKTOP_NAV_ITEMS,
+  { label: 'Competitive', icon: LayoutDashboard, path: '/dashboard/competitive' },
+  { label: 'Notifications', icon: Bell, path: '/dashboard/notifications' },
+];
 
 const StudentTopbar = () => {
   const { user, logout } = useAuth();
@@ -26,11 +41,10 @@ const StudentTopbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ── Bootcamp & Course route detection ─────────────────────────────────────
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
-  
+
   const isCoursePage = Boolean(courseMatch);
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
@@ -65,7 +79,9 @@ const StudentTopbar = () => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+  useScrollLock(mobileNavOpen);
 
   const loadNotificationsSnapshot = async () => {
     setNotifLoading(true);
@@ -107,13 +123,11 @@ const StudentTopbar = () => {
       setNotificationsPreview((prev) =>
         prev.map((item) => (item.id === id ? { ...item, read: true } : item))
       );
-    } catch {
-      // Silently fail — notification still shows but won't disappear
-    }
+    } catch { /* silent */ }
   };
 
   useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
-  useEffect(() => { setMoreOpen(false); setNotifOpen(false); }, [location.pathname]);
+  useEffect(() => { setMoreOpen(false); setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -131,9 +145,13 @@ const StudentTopbar = () => {
     navigate('/login');
   };
 
+  const isActive = (path: string) => {
+    if (path === '/dashboard') return location.pathname === '/dashboard';
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <>
-      {/* ── Skip to content ── */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
@@ -141,96 +159,87 @@ const StudentTopbar = () => {
         Skip to main content
       </a>
 
-      {/* ── Desktop topbar ── */}
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
-            <>
-              <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex flex-col">
-                <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
-                  <button
-                    onClick={() => navigate('/dashboard/courses')}
-                    className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-                    aria-label="Back to courses"
-                  >
-                    <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
-                  </button>
-                  <button
-                    onClick={openSidebar}
-                    className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-                    aria-label="Toggle lessons sidebar"
-                  >
-                    <Menu className="h-5 w-5" />
-                  </button>
-                  <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
-                    <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
-                      Courses
-                    </Link>
-                    {courseConfig && (
-                      <>
-                        <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
-                        <span className="text-text-primary font-black truncate max-w-[200px]">{courseConfig.title}</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex sm:hidden flex-col min-w-0 flex-1">
-                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
-                      Course
-                    </span>
-                    <span className="text-sm font-black text-text-primary truncate leading-tight">
-                      {courseConfig?.title ?? 'Course'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
-                    {courseMeta && (
-                      <>
-                        <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
-                          {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
-                        </span>
-                        <div className="hidden md:flex items-center gap-1 mr-2">
-                          {courseMeta.lesson?.hasTerminal && (
-                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
-                          )}
-                          {courseMeta.lesson?.hasCodePlayground && (
-                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
-                          )}
-                          {courseMeta.lesson?.quiz && courseMeta.lesson.quiz.length > 0 && (
-                            <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
-                          )}
-                        </div>
-                          <button
-                              onClick={openSidebar}
-                              className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
-                            >
-                              <List className="h-3 w-3" /> Lessons
-                            </button>
-                      </>
-                    )}
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                      className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-                      aria-label="Open terminal"
-                    >
-                      <Terminal className="w-4 h-4 md:w-5 md:h-5" />
-                    </button>
-                    <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
-                      <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
-                    </Link>
-                  </div>
+            <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex flex-col">
+              <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
+                <button
+                  onClick={() => navigate('/dashboard/courses')}
+                  className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                  aria-label="Back to courses"
+                >
+                  <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
+                </button>
+                <button
+                  onClick={openSidebar}
+                  className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+                  aria-label="Toggle lessons sidebar"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
+                  <Link to="/dashboard/courses" className="hover:text-accent transition-colors shrink-0">
+                    Courses
+                  </Link>
+                  {courseConfig && (
+                    <>
+                      <ChevronRight className="h-3 w-3 opacity-40 shrink-0" />
+                      <span className="text-text-primary font-black truncate max-w-[200px]">{courseConfig.title}</span>
+                    </>
+                  )}
                 </div>
-                {courseMeta && (
-                  <div className="h-1 bg-bg-elevated">
-                    <div className="h-full bg-accent transition-all duration-500" style={{ width: `${courseMeta.progress}%` }} />
-                  </div>
-                )}
+                <div className="flex sm:hidden flex-col min-w-0 flex-1">
+                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">Course</span>
+                  <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? 'Course'}</span>
+                </div>
+                <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
+                  {courseMeta && (
+                    <>
+                      <span className="text-[10px] font-mono text-text-muted hidden sm:inline">
+                        {courseMeta.currentLessonIdx + 1}/{courseMeta.totalLessons}
+                      </span>
+                      <div className="hidden md:flex items-center gap-1 mr-2">
+                        {courseMeta.lesson?.hasTerminal && (
+                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">TERM</span>
+                        )}
+                        {courseMeta.lesson?.hasCodePlayground && (
+                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">CODE</span>
+                        )}
+                        {courseMeta.lesson?.quiz && courseMeta.lesson.quiz.length > 0 && (
+                          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-black uppercase tracking-widest text-accent">QUIZ</span>
+                        )}
+                      </div>
+                      <button
+                        onClick={openSidebar}
+                        className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
+                      >
+                        Lessons
+                      </button>
+                    </>
+                  )}
+                  <button
+                    onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                    className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                    aria-label="Open terminal"
+                  >
+                    <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+                  </button>
+                  <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                    <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+                  </Link>
+                </div>
               </div>
-            </>
+              {courseMeta && (
+                <div className="h-1 bg-bg-elevated">
+                  <div className="h-full bg-accent transition-all duration-500" style={{ width: `${courseMeta.progress}%` }} />
+                </div>
+              )}
+            </div>
           ) : (
             /* ══ BOOTCAMP ROOM MODE ══ */
             <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
-
-              {/* Back to curriculum */}
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
                 className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
@@ -238,8 +247,6 @@ const StudentTopbar = () => {
               >
                 <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
               </button>
-
-              {/* Mobile Sidebar Toggle */}
               <button
                 onClick={openSidebar}
                 className="md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
@@ -247,8 +254,6 @@ const StudentTopbar = () => {
               >
                 <Menu className="h-4 w-4" />
               </button>
-
-              {/* Breadcrumb — desktop */}
               <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
                   Curriculum
@@ -266,8 +271,6 @@ const StudentTopbar = () => {
                   </>
                 )}
               </div>
-
-              {/* Mobile: phase + room title */}
               <div className="flex sm:hidden flex-col min-w-0 flex-1">
                 {roomPhaseConfig && (
                   <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">
@@ -278,8 +281,6 @@ const StudentTopbar = () => {
                   {roomConfig?.title ?? 'Room'}
                 </span>
               </div>
-
-              {/* Right: terminal + profile */}
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
@@ -296,45 +297,61 @@ const StudentTopbar = () => {
           )
 
         ) : (
-          <div className="max-w-[1600px] mx-auto px-2 md:px-8 h-20 md:h-24 flex items-center justify-between gap-2 md:gap-4">
+          /* ══ DASHBOARD MODE ══ */
+          <div className="max-w-[1600px] mx-auto px-2 md:px-6 h-20 md:h-24 flex items-center gap-2 md:gap-4">
 
-          {/* Left: Search */}
-          <div className="flex-1 max-w-md hidden md:block">
-            <SearchBar />
-          </div>
+            {/* Logo */}
+            <Link to="/dashboard" className="flex-none shrink-0">
+              <Logo size="md" />
+            </Link>
 
-          {/* Mobile left: Search bar */}
-          <div className="flex-1 md:hidden">
-            <SearchBar compact onClose={() => {}} />
-          </div>
+            {/* Desktop icon tabs */}
+            <nav className="hidden lg:flex items-center gap-1 flex-1 min-w-0">
+              {DESKTOP_NAV_ITEMS.map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                      active
+                        ? 'bg-accent text-bg'
+                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+                    }`}
+                  >
+                    <item.icon className="w-3.5 h-3.5" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
 
-          {/* Right: hamburger (mobile) + notifications + profile */}
-          <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
-
+            {/* Mobile: hamburger */}
             <button
-              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
+              onClick={() => setMobileNavOpen(true)}
               className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
               aria-label="Open navigation"
             >
               <Menu className="h-5 w-5" />
             </button>
 
-            <div ref={notifRef} className="relative">
-              <button
-                onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                className="relative p-2.5 md:p-3.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+            {/* Right actions */}
+            <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
+              <div ref={notifRef} className="relative">
+                <button
+                  onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
+                  className="relative p-2.5 md:p-3 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <Bell className="w-5 h-5 md:w-6 md:h-6" />
+                  <Bell className="w-5 h-5" />
                   {unreadCount > 0 && (
                     <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
                 </button>
-
                 <NotificationsDropdown
-                    open={notifOpen}
+                  open={notifOpen}
                   onClose={() => setNotifOpen(false)}
                   unreadCount={unreadCount}
                   notifLoading={notifLoading}
@@ -342,94 +359,151 @@ const StudentTopbar = () => {
                   markAllNotificationsRead={markAllNotificationsRead}
                   onMarkRead={markNotificationRead}
                 />
+              </div>
+
+              <MobileNotificationsSheet
+                open={notifOpen}
+                onOpenChange={setNotifOpen}
+                unreadCount={unreadCount}
+                notifLoading={notifLoading}
+                notificationsPreview={notificationsPreview}
+                markAllNotificationsRead={markAllNotificationsRead}
+                onMarkRead={markNotificationRead}
+              />
+
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                aria-label="Open terminal"
+              >
+                <Terminal className="w-4 h-4 md:w-5 md:h-5" />
+              </button>
+
+              <Link
+                to="/dashboard/profile"
+                aria-label="Go to profile"
+                className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
+              >
+                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="hidden md:flex p-3 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10"
+                aria-label="Log out"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             </div>
-
-            <MobileNotificationsSheet
-              open={notifOpen}
-              onOpenChange={setNotifOpen}
-              unreadCount={unreadCount}
-              notifLoading={notifLoading}
-              notificationsPreview={notificationsPreview}
-              markAllNotificationsRead={markAllNotificationsRead}
-              onMarkRead={markNotificationRead}
-            />
-
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-              className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-              aria-label="Open terminal"
-            >
-              <Terminal className="w-4 h-4 md:w-5 md:h-5" />
-            </button>
-
-            <Link
-              to="/dashboard/profile"
-              aria-label="Go to profile"
-              className="w-9 h-9 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
-            >
-              <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
-            </Link>
-
-            <button
-              onClick={handleLogout}
-              className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10"
-              aria-label="Log out"
-            >
-              <LogOut className="w-6 h-6" />
-            </button>
           </div>
-        </div>
         )}
       </header>
 
+      {/* ── Mobile nav overlay ── */}
+      {mobileNavOpen && (
+        <>
+          <div
+            onClick={() => setMobileNavOpen(false)}
+            className="fixed inset-0 z-[90] bg-black/65 backdrop-blur-sm lg:hidden"
+          />
+          <div className="fixed inset-y-0 left-0 z-[95] w-[85vw] max-w-[320px] flex flex-col bg-bg border-r border-border lg:hidden overflow-y-auto">
+            {/* Header */}
+            <div className="h-20 flex items-center justify-between px-6 border-b border-border shrink-0">
+              <Link to="/dashboard" onClick={() => setMobileNavOpen(false)}>
+                <Logo size="md" />
+              </Link>
+              <button
+                onClick={() => setMobileNavOpen(false)}
+                className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
+                aria-label="Close navigation"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex-1 px-3 pt-4">
+              {ALL_NAV_ITEMS.map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileNavOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+                      active
+                        ? 'text-accent bg-accent-dim'
+                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+                    }`}
+                  >
+                    <item.icon className="w-5 h-5 shrink-0" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Bottom actions */}
+            <div className="px-3 pb-4 border-t border-border pt-3 space-y-2">
+              <button
+                onClick={() => { handleLogout(); setMobileNavOpen(false); }}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-400/20 text-red-400 text-sm font-bold uppercase tracking-widest hover:bg-red-400/10 transition-all"
+              >
+                <LogOut className="w-4 h-4" /> Log Out
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* ── Mobile bottom nav — hidden on room pages ── */}
       {!isRoomPage && (
-      <>
-      <nav
-        className="fixed bottom-0 left-0 w-full bg-bg-card/95 backdrop-blur-md border-t border-border flex md:hidden z-50"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
-        {MOBILE_PRIMARY.map((item) => {
-          const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
-              aria-current={active ? 'page' : undefined}
+        <>
+          <nav
+            className="fixed bottom-0 left-0 w-full bg-bg-card/95 backdrop-blur-md border-t border-border flex md:hidden z-50"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          >
+            {MOBILE_PRIMARY.map((item) => {
+              const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
+                  <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+
+            <button
+              onClick={() => setMoreOpen(true)}
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors relative"
+              aria-label="More"
+              aria-expanded={moreOpen}
             >
-              <item.icon className={`w-6 h-6 transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
-              <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
-                {item.label}
-              </span>
-            </Link>
-          );
-        })}
+              <Bell className="w-6 h-6 text-text-muted" />
+              <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
+              {unreadCount > 0 && (
+                <span className="absolute top-2.5 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+          </nav>
 
-        <button
-          onClick={() => setMoreOpen(true)}
-          className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors relative"
-          aria-label="More"
-          aria-expanded={moreOpen}
-        >
-          <Zap className="w-6 h-6 text-text-muted" />
-          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
-          {unreadCount > 0 && (
-            <span className="absolute top-2.5 right-[calc(50%-14px)] w-4 h-4 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none">
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
-          )}
-        </button>
-      </nav>
-
-      <MobileMoreSheet
-        open={moreOpen}
-        onOpenChange={setMoreOpen}
-        user={user}
-        unreadCount={unreadCount}
-        handleLogout={handleLogout}
-      />
-      </>
+          <MobileMoreSheet
+            open={moreOpen}
+            onOpenChange={setMoreOpen}
+            user={user}
+            unreadCount={unreadCount}
+            handleLogout={handleLogout}
+          />
+        </>
       )}
     </>
   );

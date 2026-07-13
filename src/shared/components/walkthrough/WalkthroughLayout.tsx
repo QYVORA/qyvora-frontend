@@ -42,29 +42,29 @@ export function WalkthroughLayout({
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 md:px-6 lg:px-8 py-6 font-mono">
+    <div className="mx-auto w-full max-w-4xl px-4 md:px-6 lg:px-8 py-8 md:py-12 font-mono">
       {/* Back button */}
       <button
         type="button"
         onClick={onBack}
-        className="group mb-6 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary"
+        className="group mb-8 flex items-center gap-2 text-text-muted transition-colors hover:text-text-primary"
       >
         <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
         <span className="text-[10px] font-black uppercase tracking-widest">All Labs</span>
       </button>
 
       {/* Room Header */}
-      <div className="mb-6 rounded-2xl border border-border/30 bg-bg-card p-5">
-        <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border/30 bg-bg-elevated text-accent">
+      <div className="mb-10 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+        <div className="flex items-start gap-5">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/30 bg-bg-elevated text-accent">
             {icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-black text-text-primary tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-black text-text-primary tracking-tight">
               {title}
             </h1>
-            <p className="mt-1 text-sm text-text-secondary">{subtitle}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+            <p className="mt-2 text-base text-text-secondary leading-relaxed">{subtitle}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               {difficulty && (
                 <span className={cn('px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest', difficultyColor ?? 'bg-accent/10 text-accent')}>
                   {difficulty}
@@ -86,7 +86,7 @@ export function WalkthroughLayout({
 
       {/* Connection Panel */}
       {scenarioId && (
-        <div className="mb-6 rounded-2xl border border-border/30 bg-bg-card p-5">
+        <div className="mb-10 rounded-2xl border border-border/20 bg-bg-card p-6">
           <div className="flex items-center gap-3 mb-3">
             <Terminal className="w-4 h-4 text-accent" />
             <h3 className="text-[10px] font-black uppercase tracking-widest text-accent">
@@ -96,7 +96,7 @@ export function WalkthroughLayout({
 
           {!isConnected ? (
             <div className="space-y-3">
-              <p className="text-xs text-text-muted font-mono leading-relaxed">
+              <p className="text-sm text-text-muted font-mono leading-relaxed">
                 Connect to a live lab machine to run commands and complete this walkthrough.
               </p>
               <div className="flex items-center gap-3">
@@ -136,12 +136,12 @@ export function WalkthroughLayout({
       )}
 
       {/* Steps */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {children}
       </div>
 
       {/* Progress */}
-      <div className="mt-8 rounded-2xl border border-border/20 bg-bg-card px-5 py-4 flex items-center justify-between">
+      <div className="mt-10 rounded-2xl border border-border/20 bg-bg-card px-6 py-5 flex items-center justify-between">
         <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
           Progress
         </span>
@@ -151,7 +151,7 @@ export function WalkthroughLayout({
       </div>
 
       {allDone && (
-        <div className="mt-4 rounded-2xl border border-accent/20 bg-accent/5 px-5 py-4 text-center">
+        <div className="mt-4 rounded-2xl border border-accent/20 bg-accent/5 px-6 py-5 text-center">
           <span className="text-xs font-black uppercase tracking-widest text-accent">
             Walkthrough complete! Claim your CP below.
           </span>

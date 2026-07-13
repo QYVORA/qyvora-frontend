@@ -53,15 +53,15 @@ const ZeroDayMarketPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-bg">
+    <div className="min-h-screen bg-bg">
       <SEO
         title="Zero-Day Intelligence Market"
         description="Classified digital exchange for offensive security assets. Access exploitation guides, red-team tooling, and threat intelligence reports."
       />
 
       {/* ── HERO ── */}
-      <section id="zd-hero" className="relative w-full min-h-screen overflow-hidden bg-accent" data-nav-invert>
-        <div className="relative z-30 w-full min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
+      <section id="zd-hero" className="relative w-full min-h-[85svh] md:min-h-screen overflow-hidden bg-accent" data-nav-invert>
+        <div className="relative z-30 w-full min-h-[85svh] md:min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
@@ -118,7 +118,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="zd-features" className="relative w-full min-h-screen flex items-center bg-accent" data-nav-invert>
+      <section id="zd-features" className="relative w-full min-h-[85svh] md:min-h-screen flex items-center bg-accent" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="space-y-6">
@@ -164,7 +164,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── PRODUCTS ── */}
-      <section id="zd-products" className="relative w-full min-h-screen flex items-center border-t border-border/20">
+      <section id="zd-products" className="relative w-full min-h-[85svh] md:min-h-screen flex items-center border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
@@ -269,7 +269,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative w-full min-h-screen flex items-center border-t border-border/20">
+      <section className="relative w-full min-h-[85svh] md:min-h-screen flex items-center border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
           <ScrollReveal direction="up">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-4">
