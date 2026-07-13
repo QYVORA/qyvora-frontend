@@ -221,15 +221,8 @@ const CoursesPage: React.FC = () => {
                   <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
                     <Link
                       to={`/courses/${course.id}`}
-                      className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card transition-all hover:border-accent/40"
+                      className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
                     >
-                      <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
-                        <img
-                          src={course.coverSvg}
-                          alt={course.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
                       <div className="p-5 space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">

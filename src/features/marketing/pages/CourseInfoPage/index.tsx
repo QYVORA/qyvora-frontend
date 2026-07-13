@@ -270,9 +270,6 @@ const CourseInfoPage: React.FC = () => {
                       to={`/courses/${relCourse.id}`}
                        className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30"
                     >
-                      <div className="aspect-[8/5] overflow-hidden bg-bg-elevated">
-                        <img src={relCourse.coverSvg} alt={relCourse.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </div>
                       <div className="p-4 space-y-2">
                         <div className="flex items-center gap-1.5">
                           <RelIcon className="h-3 w-3 text-accent" />
