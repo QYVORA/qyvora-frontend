@@ -4,6 +4,7 @@ import { Trophy, GraduationCap } from 'lucide-react';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import StatCounter from '@/shared/components/ui/StatCounter';
 import { Skeleton } from '@/shared/components/ui';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 interface StatCard {
   icon: React.ElementType;
@@ -76,7 +77,9 @@ const LandingStatsSection: React.FC = () => {
 
   if (loading && !s) {
     return (
-      <div className="bg-accent" data-nav-invert>
+      <div className="relative bg-accent overflow-hidden" data-nav-invert>
+        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+        <div className="relative z-10">
         <SectionShell
           header={<SectionHeader />}
           cards={STATS_CONFIG.map((card) => (
@@ -90,13 +93,16 @@ const LandingStatsSection: React.FC = () => {
             </div>
           ))}
         />
+        </div>
       </div>
     );
   }
 
   if (!s || !hasValidData) {
     return (
-      <div className="bg-accent" data-nav-invert>
+      <div className="relative bg-accent overflow-hidden" data-nav-invert>
+        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+        <div className="relative z-10">
         <SectionShell
           header={<SectionHeader />}
           cards={STATS_CONFIG.map((card) => {
@@ -115,6 +121,7 @@ const LandingStatsSection: React.FC = () => {
             );
           })}
         />
+        </div>
       </div>
     );
   }
@@ -122,7 +129,9 @@ const LandingStatsSection: React.FC = () => {
   const resolvedStats: StatCard[] = STATS_CONFIG.map((card, idx) => ({ ...card, value: values[idx] }));
 
   return (
-    <div className="bg-accent" data-nav-invert>
+    <div className="relative bg-accent overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+      <div className="relative z-10">
       <SectionShell
         header={<SectionHeader />}
         cards={resolvedStats.map((card) => {
@@ -151,6 +160,7 @@ const LandingStatsSection: React.FC = () => {
           );
         })}
       />
+      </div>
     </div>
   );
 };

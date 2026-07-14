@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 interface LandingFinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
@@ -14,6 +15,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
 
   return (
     <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
 
         {/* Mobile layout */}

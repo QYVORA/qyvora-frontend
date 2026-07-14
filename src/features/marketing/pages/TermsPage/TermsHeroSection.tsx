@@ -2,12 +2,16 @@ import React, { lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { termsData } from './termsData';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 const TermsHeroSection: React.FC = () => {
   return (
     <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden bg-accent" data-nav-invert>
+
+      {/* ── Grid background ── */}
+      <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
 
       {/* ── Globe ── */}
       <div className="absolute inset-0 z-0 flex items-end justify-end">

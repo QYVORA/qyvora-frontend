@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import DotMapBackground from '@/shared/components/DotMapBackground';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const LABS = [
   { id: 'privesc', title: 'Privilege Escalation', desc: 'Escalate permissions and gain root access through misconfigs, kernel exploits, and SUID binaries', cp: '50-400 CP' },
@@ -45,8 +46,9 @@ const LandingLabsSection: React.FC = () => {
   const visible = order.slice(0, VISIBLE);
 
   return (
-    <div className="bg-accent h-full flex flex-col overflow-hidden" data-nav-invert>
-      <div className="w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
+    <div className="relative bg-accent h-full flex flex-col overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
           <motion.div

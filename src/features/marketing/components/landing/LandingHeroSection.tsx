@@ -7,7 +7,7 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
-import HeroGridAnimation from './HeroGridAnimation';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -27,6 +27,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const shouldReduceMotion = useReducedMotion();
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
+  const disableTypewriter = shouldReduceMotion;
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -55,12 +56,18 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [isMobile, constrainedDevice]);
 
   React.useEffect(() => {
-    if (minimizeEffects) return;
-
     const l1 = line1Ref.current;
     const l2d = line2DisplayRef.current;
     const l2p = line2PlaceholderRef.current;
     if (!l1 || !l2d || !l2p) return;
+
+    // Only disable typewriter for reduced-motion preference (not mobile)
+    if (disableTypewriter) {
+      l1.textContent = steps[0].line1;
+      l2d.textContent = steps[0].line2;
+      l2p.textContent = steps[0].line2;
+      return;
+    }
 
     let stepIdx = 0;
     let charIdx = 0;
@@ -102,22 +109,13 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
 
     const id = setTimeout(tick, 600);
     return () => { alive = false; clearTimeout(id); };
-  }, [minimizeEffects, steps]);
+  }, [disableTypewriter, steps]);
 
   return (
     <div ref={heroRef} className="relative w-full h-full min-h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
 
       {/* ── Animated grid background — fades in from globe side ── */}
-      <div
-        className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-60"
-        style={{
-          filter: 'blur(2px)',
-          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 80%, black 100%)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 80%, black 100%)',
-        }}
-      >
-        <HeroGridAnimation reduced={minimizeEffects} />
-      </div>
+      <GridBoxedBackground reduced={minimizeEffects} mask="right" />
 
       {/* ── Globe - positioned absolutely behind text, expands + fades on scroll ── */}
       <motion.div

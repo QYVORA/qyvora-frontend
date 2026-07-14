@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowLeft, IconShield, IconTerminal, IconTarget } from '@/shared/components/icons';
 import { Logo } from '@/shared/components/brand';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const bullets = [
   { icon: IconTerminal, text: 'Hands-on penetration testing labs' },
@@ -11,6 +12,7 @@ const bullets = [
 
 const AuthHero: React.FC = () => (
   <div className="hidden md:flex md:sticky md:top-0 md:h-screen relative flex-col justify-between overflow-hidden bg-accent p-8 xl:p-12" data-nav-invert>
+    <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
 
     {/* Back to Home — top-left */}
     <div className="relative z-20">
