@@ -50,30 +50,33 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   React.useEffect(() => {
     if (minimizeEffects) return;
 
-    let stepIdx = 0;
-    let charIdx = 0;
-    let deleting = false;
-    let timer: NodeJS.Timeout;
-
     const l1 = line1Ref.current;
     const l2d = line2DisplayRef.current;
     const l2p = line2PlaceholderRef.current;
     if (!l1 || !l2d || !l2p) return;
 
-    const tick = () => {
+    let stepIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+    let alive = true;
+
+    l1.textContent = steps[0].line1;
+    l2p.textContent = steps[0].line2;
+
+    function tick() {
+      if (!alive) return;
       const fullText = steps[stepIdx].line2;
 
       if (!deleting) {
         charIdx++;
-        const shown = fullText.substring(0, charIdx);
-        l2d.textContent = shown;
+        l2d.textContent = fullText.substring(0, charIdx);
 
         if (charIdx === fullText.length) {
-          const pauseTime = stepIdx === steps.length - 1 ? 4000 : 2000;
-          timer = setTimeout(() => { deleting = true; tick(); }, pauseTime);
+          const pause = stepIdx === steps.length - 1 ? 4000 : 2000;
+          setTimeout(() => { deleting = true; tick(); }, pause);
           return;
         }
-        timer = setTimeout(tick, 80 + Math.random() * 40);
+        setTimeout(tick, 80 + Math.random() * 40);
       } else {
         charIdx--;
         l2d.textContent = fullText.substring(0, charIdx);
@@ -83,18 +86,15 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           stepIdx = (stepIdx + 1) % steps.length;
           l1.textContent = steps[stepIdx].line1;
           l2p.textContent = steps[stepIdx].line2;
-          timer = setTimeout(tick, 400);
+          setTimeout(tick, 400);
           return;
         }
-        timer = setTimeout(tick, 30);
+        setTimeout(tick, 30);
       }
-    };
+    }
 
-    l1.textContent = steps[0].line1;
-    l2p.textContent = steps[0].line2;
-    timer = setTimeout(tick, 600);
-
-    return () => clearTimeout(timer);
+    const id = setTimeout(tick, 600);
+    return () => { alive = false; clearTimeout(id); };
   }, [minimizeEffects, steps]);
 
   return (
