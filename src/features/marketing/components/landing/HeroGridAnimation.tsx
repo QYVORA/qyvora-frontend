@@ -50,7 +50,7 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
         currentOpacity: baseOpacity,
         prevDrawnOpacity: baseOpacity,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.0005 + Math.random() * 0.0015,
+        speed: 0.0002 + Math.random() * 0.0006,
       });
     }
   }
@@ -133,7 +133,7 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
         cell.phase += cell.speed * FRAME_INTERVAL;
         const wave = (Math.sin(cell.phase) + 1) / 2;
         const target = cell.baseOpacity * (0.08 + wave * 0.92);
-        cell.currentOpacity += (target - cell.currentOpacity) * 0.015;
+        cell.currentOpacity += (target - cell.currentOpacity) * 0.008;
 
         if (cell.currentOpacity < 0.01) continue;
 
