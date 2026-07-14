@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft, ChevronRight, Lock, CheckCircle2,
@@ -14,8 +14,8 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { formatSyncLabel, getLastSync, resolveNextRoomPath, setLastSyncNow } from '@/features/student/utils/studentExperience';
 import SEO from '@/shared/components/SEO';
 import { BootcampCourseSkeleton } from '@/features/student/components/StudentSkeletons';
-import CourseHeader from '@/features/student/components/bootcamp-course/CourseHeader';
 import PhaseSection from '@/features/student/components/bootcamp-course/PhaseSection';
+import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
 import type { Course } from '@/features/student/components/bootcamp-course/types';
 
 const BootcampCourse: React.FC = () => {
@@ -28,6 +28,7 @@ const BootcampCourse: React.FC = () => {
   const [loading, setLoading]   = useState(true);
   const [syncError, setSyncError]   = useState('');
   const [lastSync, setLastSync]     = useState<string | null>(getLastSync('bootcamp-course'));
+  const [activePhase, setActivePhase] = useState('all');
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -99,7 +100,6 @@ const BootcampCourse: React.FC = () => {
 
   const progressNum = parseInt(progressValue, 10) || 0;
 
-  // Find the next recommended room
   const nextRoomPath = resolveNextRoomPath(String(bootcampId || ''), course);
   const nextRoomLabel = (() => {
     if (!course) return null;
@@ -114,6 +114,24 @@ const BootcampCourse: React.FC = () => {
     return null;
   })();
 
+  const phaseFilters = useMemo(() => {
+    if (!course?.modules) return [{ id: 'all', label: 'All Phases' }];
+    return [
+      { id: 'all', label: 'All Phases', count: totalModules },
+      ...course.modules.map((mod) => ({
+        id: String(mod.moduleId),
+        label: mod.title,
+        count: mod.rooms?.length,
+      })),
+    ];
+  }, [course, totalModules]);
+
+  const filteredModules = useMemo(() => {
+    if (!course?.modules) return [];
+    if (activePhase === 'all') return course.modules;
+    return course.modules.filter((mod) => String(mod.moduleId) === activePhase);
+  }, [course, activePhase]);
+
   if (loading) return <BootcampCourseSkeleton />;
 
   return (
@@ -122,101 +140,105 @@ const BootcampCourse: React.FC = () => {
         title={course?.title || 'Bootcamp Course'}
         description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
       />
-      <CourseHeader
-        bootcampId={bootcampId || ''}
-        courseTitle={course?.title || 'Bootcamp'}
-        syncError={syncError}
-        lastSync={lastSync}
-        progressValue={progressValue}
-        progressNum={progressNum}
-        resumePath={nextRoomPath}
-        mobileOnly
-      />
 
       <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
-            {/* Desktop header */}
-            <CourseHeader
-              bootcampId={bootcampId || ''}
-              courseTitle={course?.title || 'Bootcamp'}
-              syncError={syncError}
-              lastSync={lastSync}
-              progressValue={progressValue}
-              progressNum={progressNum}
-              resumePath={nextRoomPath}
-            />
 
-            {/* Journey Map */}
-            <div className="border border-border/30 rounded-xl bg-bg-card p-5 md:p-6">
-              <div className="flex items-center gap-2 mb-5">
-                <MapIcon className="h-4 w-4 text-accent" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-accent">Journey Map</span>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
-                  const color = PHASE_COLORS[phase.id] || '#06B66F';
-                  const modProgress = moduleProgressMap.get(idx + 1);
-                  const isComplete = modProgress && Number(modProgress.progress) === 100;
-                  const isCurrent = !isComplete && (!moduleProgressMap.get(idx) || Number(moduleProgressMap.get(idx)?.progress) === 100);
-                  return (
-                    <div key={phase.id} className="flex-1 min-w-[120px]">
-                      <div
-                        className={`rounded-lg border px-3 py-2.5 transition-all ${
-                          isComplete ? 'border-accent/30 bg-accent-dim' :
-                          isCurrent ? 'border-accent/50 bg-accent-dim/30' :
-                          'border-border/20 bg-bg-elevated'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{phase.codename}</span>
-                        </div>
-                        <p className="text-xs font-bold text-text-primary truncate">{phase.title}</p>
-                        {modProgress && (
-                          <div className="mt-1.5 h-1 bg-bg-elevated rounded-full overflow-hidden">
-                            <div className="h-full transition-all duration-700 rounded-full" style={{ width: `${modProgress.progress}%`, backgroundColor: color }} />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+        <LearningOverviewCard
+          icon={<BookOpen className="w-6 h-6 text-bg" />}
+          title={course?.title || 'Bootcamp'}
+          description={syncError || `Track your progress through ${course?.title || 'the bootcamp'}. ${formatSyncLabel(lastSync)}`}
+          stats={[
+            { label: 'Modules', value: `${doneModules}/${totalModules}` },
+            { label: 'Rooms', value: `${doneRooms}/${totalRooms}` },
+          ]}
+          action={nextRoomPath ? {
+            label: 'Continue Training',
+            to: nextRoomPath,
+          } : undefined}
+          progress={progressNum}
+          breadcrumbs={[
+            { label: 'Bootcamps', to: '/dashboard/bootcamps' },
+            { label: course?.title || 'Course' },
+          ]}
+        />
 
-            {/* Recommended Next Room */}
-            {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
-              <div className="border border-accent/20 rounded-xl bg-accent-dim/20 p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-                      <TrendingUp className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">Recommended Next</p>
-                      <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase} — {nextRoomLabel.room}</p>
-                    </div>
-                  </div>
-                  <Link
-                    to={nextRoomLabel.path}
-                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 shrink-0"
+        <LearningFilterStrip
+          filters={phaseFilters}
+          activeFilter={activePhase}
+          onFilterChange={setActivePhase}
+        />
+
+        <div className="border border-border/30 rounded-xl bg-bg-card p-5 md:p-6">
+          <div className="flex items-center gap-2 mb-5">
+            <MapIcon className="h-4 w-4 text-accent" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-accent">Journey Map</span>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
+              const color = PHASE_COLORS[phase.id] || '#06B66F';
+              const modProgress = moduleProgressMap.get(idx + 1);
+              const isComplete = modProgress && Number(modProgress.progress) === 100;
+              const isCurrent = !isComplete && (!moduleProgressMap.get(idx) || Number(moduleProgressMap.get(idx)?.progress) === 100);
+              return (
+                <div key={phase.id} className="flex-1 min-w-[120px]">
+                  <div
+                    className={`rounded-lg border px-3 py-2.5 transition-all ${
+                      isComplete ? 'border-accent/30 bg-accent-dim' :
+                      isCurrent ? 'border-accent/50 bg-accent-dim/30' :
+                      'border-border/20 bg-bg-elevated'
+                    }`}
                   >
-                    Continue <Play className="h-3 w-3" />
-                  </Link>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{phase.codename}</span>
+                    </div>
+                    <p className="text-xs font-bold text-text-primary truncate">{phase.title}</p>
+                    {modProgress && (
+                      <div className="mt-1.5 h-1 bg-bg-elevated rounded-full overflow-hidden">
+                        <div className="h-full transition-all duration-700 rounded-full" style={{ width: `${modProgress.progress}%`, backgroundColor: color }} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
+          <div className="border border-accent/20 rounded-xl bg-accent-dim/20 p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-accent" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-accent truncate">Recommended Next</p>
+                  <p className="text-sm font-bold text-text-primary">{nextRoomLabel.phase} — {nextRoomLabel.room}</p>
                 </div>
               </div>
-            )}
+              <Link
+                to={nextRoomLabel.path}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110 shrink-0"
+              >
+                Continue <Play className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        )}
 
-            {(course?.modules || []).map((mod, modIdx) => {
-                return (
-                  <PhaseSection
-                    key={mod.moduleId}
-                    bootcampId={bootcampId || ''}
-                    mod={mod}
-                    modIdx={modIdx}
-                    moduleProgressMap={moduleProgressMap}
-                  />
-                );
-              })}
+        {filteredModules.map((mod, modIdx) => {
+          const originalIdx = course?.modules ? course.modules.indexOf(mod) : modIdx;
+          return (
+            <PhaseSection
+              key={mod.moduleId}
+              bootcampId={bootcampId || ''}
+              mod={mod}
+              modIdx={originalIdx}
+              moduleProgressMap={moduleProgressMap}
+            />
+          );
+        })}
       </div>
     </div>
   );

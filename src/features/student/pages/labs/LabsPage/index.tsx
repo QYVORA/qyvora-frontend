@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { FlaskConical, Search } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
+import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
 
 const LABS = [
   {
@@ -98,44 +99,79 @@ const LABS = [
 
 const LabsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const difficultyFilters = useMemo(() => {
+    const difficulties = new Set(LABS.map((lab) => {
+      const parts = lab.difficulty.split('-');
+      return parts[0];
+    }));
+    return [
+      { id: 'all', label: 'All Labs', count: LABS.length },
+      ...Array.from(difficulties).sort().map((d) => ({
+        id: d,
+        label: d.charAt(0).toUpperCase() + d.slice(1),
+        count: LABS.filter((lab) => lab.difficulty.startsWith(d)).length,
+      })),
+    ];
+  }, []);
 
   const filteredLabs = useMemo(() => {
-    if (!searchQuery) return LABS;
-    const q = searchQuery.toLowerCase();
-    return LABS.filter(
-      (lab) =>
-        lab.title.toLowerCase().includes(q) ||
-        lab.description.toLowerCase().includes(q)
-    );
-  }, [searchQuery]);
+    let result = [...LABS];
+
+    if (activeFilter !== 'all') {
+      result = result.filter((lab) => lab.difficulty.startsWith(activeFilter));
+    }
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (lab) =>
+          lab.title.toLowerCase().includes(q) ||
+          lab.description.toLowerCase().includes(q)
+      );
+    }
+
+    return result;
+  }, [searchQuery, activeFilter]);
+
+  const totalCpMin = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[0]), 0);
+  const totalCpMax = LABS.reduce((sum, lab) => sum + parseInt(lab.cpReward.split('-')[1]), 0);
 
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Attack Labs" description="Hands-on offensive security simulations on QYVORA." />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
-            <FlaskConical className="w-6 h-6 text-accent" />
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-text-primary tracking-tight">
-            Attack <span className="text-accent">Labs</span>
-          </h1>
-        </div>
-        <p className="text-sm text-text-muted font-mono mb-6">Hands-on offensive security simulations</p>
+      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
 
-        <div className="border-t border-border/30 mb-6" />
+        <LearningOverviewCard
+          icon={<FlaskConical className="w-6 h-6 text-bg" />}
+          title="Attack Labs"
+          description="Hands-on offensive security simulations. Practice real-world attack techniques in isolated environments."
+          stats={[
+            { label: 'Labs', value: LABS.length },
+            { label: 'CP Range', value: `${totalCpMin}-${totalCpMax}` },
+          ]}
+          action={{
+            label: 'Start First Lab',
+            to: LABS[0]?.route,
+          }}
+        />
 
-        <div className="flex gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-            <input
-              type="text"
-              placeholder="Search labs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors"
-            />
-          </div>
+        <LearningFilterStrip
+          filters={difficultyFilters}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
+
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+          <input
+            type="text"
+            placeholder="Search labs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-text-primary focus:border-accent outline-none font-mono text-sm transition-colors"
+          />
         </div>
 
         {filteredLabs.length === 0 ? (
