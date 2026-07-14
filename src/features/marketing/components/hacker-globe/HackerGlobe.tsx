@@ -261,10 +261,10 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         tick += dt * 0.001;
         frameCount++;
 
-        if (globe) globe.rotation.y += dt * (isSimplified ? 0.00025 : 0.00030);
+        if (globe) globe.rotation.y += dt * (isSimplified ? 0.00040 : 0.00050);
 
         if (camera) {
-          const orbitSpeed = isSimplified ? 0.12 : 0.18;
+          const orbitSpeed = isSimplified ? 0.20 : 0.30;
           const orbitRadius = 0.35;
           const verticalDrift = 0.12;
           camera.position.x = Math.sin(tick * orbitSpeed) * orbitRadius;
