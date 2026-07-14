@@ -50,7 +50,7 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
         currentOpacity: baseOpacity,
         prevDrawnOpacity: baseOpacity,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.0002 + Math.random() * 0.0006,
+        speed: 0.00005 + Math.random() * 0.00015,
       });
     }
   }
