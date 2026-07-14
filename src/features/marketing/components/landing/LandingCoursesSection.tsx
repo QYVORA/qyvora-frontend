@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { GraduationCap, Globe, Wifi, Wrench } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
-import DotMapBackground from '@/shared/components/DotMapBackground';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -78,7 +77,6 @@ const LandingCoursesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden h-full flex flex-col">
-      <DotMapBackground />
       <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
@@ -164,8 +162,9 @@ const LandingCoursesSection: React.FC = () => {
                     <Link
                       key={course.id}
                       to={`/courses/${course.id}`}
-                      className="group/card rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
+                      className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
                     >
+                      <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                           {CatIc && <CatIc className="w-4 h-4 text-accent" />}
