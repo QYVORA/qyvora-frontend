@@ -50,7 +50,7 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
         currentOpacity: baseOpacity,
         prevDrawnOpacity: baseOpacity,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.00005 + Math.random() * 0.00015,
+        speed: 0.00003 + Math.random() * 0.0001,
       });
     }
   }
@@ -120,11 +120,6 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
       if (timestamp - lastFrameTime < FRAME_INTERVAL) return;
       lastFrameTime = timestamp;
 
-      const w = canvas!.width / dpr;
-      const h = canvas!.height / dpr;
-
-      ctx!.clearRect(0, 0, w, h);
-
       const cells = cellsRef.current;
       const inset = gap / 2;
 
@@ -135,20 +130,32 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
         const target = cell.baseOpacity * (0.08 + wave * 0.92);
         cell.currentOpacity += (target - cell.currentOpacity) * 0.008;
 
-        if (cell.currentOpacity < 0.01) continue;
-
         const delta = cell.currentOpacity - cell.prevDrawnOpacity;
         if (delta > -REDRAW_THRESHOLD && delta < REDRAW_THRESHOLD) continue;
 
-        cell.prevDrawnOpacity = cell.currentOpacity;
+        const prevVis = cell.prevDrawnOpacity >= 0.01;
+        const currVis = cell.currentOpacity >= 0.01;
 
-        ctx!.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.currentOpacity})`;
-        ctx!.fillRect(
-          cell.x + inset,
-          cell.y + inset,
-          cell.size - gap,
-          cell.size - gap,
-        );
+        if (prevVis) {
+          ctx!.clearRect(
+            cell.x + inset,
+            cell.y + inset,
+            cell.size - gap,
+            cell.size - gap,
+          );
+        }
+
+        if (currVis) {
+          ctx!.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.currentOpacity})`;
+          ctx!.fillRect(
+            cell.x + inset,
+            cell.y + inset,
+            cell.size - gap,
+            cell.size - gap,
+          );
+        }
+
+        cell.prevDrawnOpacity = cell.currentOpacity;
       }
     }
 
