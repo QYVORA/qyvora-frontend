@@ -71,7 +71,7 @@ const ServicesPage: React.FC = () => {
       />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-accent overflow-hidden min-h-dvh md:h-dvh flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
+      <section className="relative bg-accent min-h-dvh md:h-dvh md:overflow-hidden flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">

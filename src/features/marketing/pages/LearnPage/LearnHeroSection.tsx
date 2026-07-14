@@ -6,7 +6,7 @@ import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const LearnHeroSection: React.FC = () => {
   return (
-    <div className="relative w-full min-h-dvh md:min-h-screen flex flex-col pt-28 sm:pt-20 lg:pt-24 bg-accent overflow-hidden" data-nav-invert>
+    <div className="relative w-full min-h-dvh md:min-h-screen md:overflow-hidden flex flex-col pt-28 sm:pt-20 lg:pt-24 bg-accent" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-30 w-full flex-1 mx-auto max-w-7xl px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full w-full h-full">
