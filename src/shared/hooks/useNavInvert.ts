@@ -4,51 +4,65 @@ import { useEffect, useState } from 'react';
  * Detects whether any element with `data-nav-invert` attribute overlaps
  * with the fixed Navbar (80px tall at the top of the viewport).
  *
- * Uses IntersectionObserver + MutationObserver + rAF delay to
- * reliably track elements regardless of render timing.
+ * Uses scroll + resize listener with getBoundingClientRect for
+ * reliable detection, plus MutationObserver to catch DOM changes.
  */
 export function useNavInvert(): boolean {
   const [inverted, setInverted] = useState(false);
 
   useEffect(() => {
     const navHeight = 80;
-    const observed = new Set<Element>();
+    let ticking = false;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        const anyIntersecting = entries.some((e) => e.isIntersecting);
-        setInverted(anyIntersecting);
-      },
-      {
-        rootMargin: `-${navHeight}px 0px -100% 0px`,
-        threshold: 0,
-      },
-    );
+    const check = () => {
+      const els = document.querySelectorAll<HTMLElement>('[data-nav-invert]');
+      let found = false;
 
-    const observeAll = () => {
-      document.querySelectorAll('[data-nav-invert]').forEach((el) => {
-        if (!observed.has(el)) {
-          observed.add(el);
-          io.observe(el);
+      for (const el of els) {
+        const rect = el.getBoundingClientRect();
+        // Check if element overlaps the navbar zone (top 0 → navHeight)
+        if (rect.top < navHeight && rect.bottom > 0) {
+          found = true;
+          break;
         }
-      });
+      }
+
+      setInverted(found);
+      ticking = false;
     };
 
-    // Delay initial observe to let React finish mounting accent sections
-    const raf = requestAnimationFrame(() => {
-      observeAll();
-      // Second pass for elements that mounted after the first rAF
-      requestAnimationFrame(observeAll);
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(check);
+      }
+    };
+
+    // Initial check after a frame to let React mount
+    requestAnimationFrame(check);
+
+    // Also check on DOM mutations (for lazy-loaded components)
+    const observer = new MutationObserver(() => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(check);
+      }
     });
 
-    // Watch for DOM changes (dynamic elements)
-    const mo = new MutationObserver(observeAll);
-    mo.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-nav-invert']
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
 
     return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      mo.disconnect();
+      observer.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, []);
 

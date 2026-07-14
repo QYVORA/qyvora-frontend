@@ -88,11 +88,6 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
             {regions.map((region) => (
               <div key={region} className="mb-2">
                 <div className="px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-text-muted/60">
-                  {region === 'West Africa' && '🌍 '}
-                  {region === 'East Africa' && '🌍 '}
-                  {region === 'Southern Africa' && '🌍 '}
-                  {region === 'Central Africa' && '🌍 '}
-                  {region === 'Global' && '🌐 '}
                   {region}
                 </div>
                 {grouped[region]?.map((lang) => (
@@ -111,7 +106,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
                       <div className="text-[10px] text-text-muted truncate">{lang.name}</div>
                     </div>
                     {i18n.language === lang.code && (
-                      <span className="text-accent text-lg">✓</span>
+                      <span className="text-accent text-lg">&#10003;</span>
                     )}
                   </button>
                 ))}

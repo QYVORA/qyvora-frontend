@@ -62,7 +62,8 @@ const ZeroDayMarketPage: React.FC = () => {
       />
 
       {/* ── HERO ── */}
-      <section id="zd-hero" className="relative w-full h-dvh overflow-hidden bg-accent" data-nav-invert>
+      <section id="zd-hero" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <div className="relative w-full h-full bg-accent overflow-hidden" data-nav-invert>
 
         {/* ── Grid background ── */}
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
@@ -78,7 +79,7 @@ const ZeroDayMarketPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative z-10 w-full min-h-[85svh] md:min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
+        <div className="relative z-10 w-full h-full mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
@@ -118,10 +119,11 @@ const ZeroDayMarketPage: React.FC = () => {
           </div>
           <div className="hidden lg:block" />
         </div>
+        </div>
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="zd-features" className="relative w-full h-dvh flex items-center">
+      <section id="zd-features" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="space-y-6">
@@ -167,7 +169,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── PRODUCTS ── */}
-      <section id="zd-products" className="relative w-full h-dvh flex items-center border-t border-border/20">
+      <section id="zd-products" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
@@ -272,7 +274,8 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative w-full h-dvh flex items-center bg-accent overflow-hidden" data-nav-invert>
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
           <ScrollReveal direction="up">
@@ -299,6 +302,7 @@ const ZeroDayMarketPage: React.FC = () => {
               </Link>
             </div>
           </ScrollReveal>
+        </div>
         </div>
       </section>
     </div>

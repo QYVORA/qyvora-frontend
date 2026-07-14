@@ -77,7 +77,7 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full h-dvh flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
+      <section className="relative w-full min-h-dvh md:h-dvh flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
@@ -98,14 +98,19 @@ const CoursesPage: React.FC = () => {
           {/* Left column */}
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-bg/20 bg-bg/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-bg">
-                <BookOpen className="h-3.5 w-3.5" /> Self-Paced Learning
+              <span className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
+                <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
+                  <BookOpen className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Self-Paced Learning
+                </span>
               </span>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
-                QYVORA{' '}
-                <span className="text-bg/80">Courses</span>
+              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
+                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+                  QYVORA{' '}
+                  <span className="text-bg/80">Courses</span>
+                </span>
               </h1>
-              <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed">
+              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
                 Focused, beginner-friendly courses that teach one skill at a time.
                 Learn at your own pace and build your cybersecurity foundation lesson by lesson.
               </p>

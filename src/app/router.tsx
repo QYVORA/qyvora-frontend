@@ -14,8 +14,8 @@ import { useAuth } from '../core/contexts/AuthContext';
 import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 // ─── Layouts (lazy-loaded) ─────────────────────────────────────────────────────
-const PublicLayout = lazy(() => import('../shared/layouts/PublicLayout'));
-const SnapPublicLayout = lazy(() => import('../shared/layouts/SnapPublicLayout'));
+
+
 const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
 const BlogsLayout = lazy(() => import('../shared/layouts/BlogsLayout'));
 const StudentLayout = lazy(() => import('../features/student/layouts/StudentLayout'));
@@ -154,14 +154,12 @@ export const AppRouter = () => {
           <Route path="/events" element={<Wrap scope="Events"><EventsPage /></Wrap>} />
           <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
           <Route path="/courses/:courseId" element={<Wrap scope="Course"><CourseInfoPage /></Wrap>} />
+          <Route path="/zero-day-market" element={<Wrap scope="Zero Day Market"><ZeroDayMarketPage /></Wrap>} />
         </Route>
 
         <Route element={<BlogsLayout />}>
           <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
-        </Route>
-
-        <Route element={<SnapPublicLayout />}>
         </Route>
 
         {/* ── Auth routes ───────── */}
@@ -218,11 +216,6 @@ export const AppRouter = () => {
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>
           <Route path={`${ADMIN_PATH}/dashboard`} element={<Wrap scope="Admin Dashboard"><AdminOnly><AdminDashboardPage /></AdminOnly></Wrap>} />
-        </Route>
-
-        {/* ── Public market / info routes ──────────────────────────────── */}
-        <Route element={<PublicLayout />}>
-          <Route path="/zero-day-market" element={<Wrap scope="Zero Day Market"><ZeroDayMarketPage /></Wrap>} />
         </Route>
 
         {/* ── Public profile route — validates @ prefix inside component ─────── */}

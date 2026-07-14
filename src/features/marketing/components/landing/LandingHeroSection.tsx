@@ -3,6 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import { lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
@@ -24,6 +25,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   stats,
   totalCp,
 }) => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
@@ -43,11 +45,11 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const line2PlaceholderRef = React.useRef<HTMLSpanElement>(null);
 
   const steps = React.useMemo(() => [
-    { line1: "Train Like a", line2: "Hacker." },
-    { line1: "Train Like a Hacker.", line2: "Become a Hacker." },
-    { line1: "Securing Africa's", line2: "Digital Future." },
-    { line1: "Creating 100,000", line2: "Cyber Professionals." }
-  ], []);
+    { line1: t('typewriter.trainLikeA'), line2: t('typewriter.hacker') },
+    { line1: t('typewriter.trainLikeAHacker'), line2: t('typewriter.becomeAHacker') },
+    { line1: t('typewriter.securingAfricas'), line2: t('typewriter.digitalFuture') },
+    { line1: t('typewriter.creating100k'), line2: t('typewriter.cyberProfessionals') }
+  ], [t]);
 
   const globeOffset = React.useMemo<[number, number, number]>(() => {
     if (isMobile) return [0.15, -0.25, 0];
@@ -168,7 +170,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             >
               <span className="w-1.5 h-1.5 rounded-full bg-bg animate-pulse flex-none" />
               <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
-                Africa's Offensive Security Platform
+                {t('hero.tagline')}
               </span>
             </motion.div>
 
@@ -177,10 +179,10 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               {/* Hidden placeholder — sets fixed height for tallest text so nothing shifts */}
               <span className="invisible pointer-events-none select-none" aria-hidden="true">
                 <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                  Train Like a Hacker.
+                  {t('typewriter.trainLikeAHacker')}
                 </span>
                 <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                  Cyber Professionals.
+                  {t('typewriter.cyberProfessionals')}
                 </span>
               </span>
               {/* Visible animated text — absolute overlay */}
@@ -218,15 +220,15 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           >
             {user ? (
               <Link to="/dashboard" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4">
-                <IconDashboard size={20} /> Dashboard
+                <IconDashboard size={20} /> {t('button.goToDashboard')}
               </Link>
             ) : (
               <>
                 <Link to="/register" className="btn-primary flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-                   Start Training <IconArrowRight size={20} />
+                   {t('button.startTraining')} <IconArrowRight size={20} />
                 </Link>
                 <Link to="/login" className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
-                  Log In
+                  {t('button.logIn')}
                 </Link>
               </>
             )}
