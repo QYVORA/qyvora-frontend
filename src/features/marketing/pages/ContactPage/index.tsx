@@ -44,7 +44,7 @@ const ContactPage: React.FC = () => {
         ]}
       />
 
-      <section className="relative bg-accent overflow-hidden min-h-[85svh] md:min-h-screen pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
+      <section className="relative bg-accent min-h-[85svh] md:min-h-screen md:overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">

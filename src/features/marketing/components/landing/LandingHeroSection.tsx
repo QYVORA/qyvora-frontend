@@ -114,7 +114,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [disableTypewriter, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full h-full min-h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
+    <div ref={heroRef} className="relative w-full h-full min-h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
 
       {/* ── Animated grid background — fades in from globe side ── */}
       <GridBoxedBackground reduced={minimizeEffects} mask="right" />

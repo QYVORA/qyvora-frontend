@@ -77,7 +77,7 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full min-h-dvh md:h-dvh flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col pt-[72px] bg-accent" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
