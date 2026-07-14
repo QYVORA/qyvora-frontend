@@ -119,32 +119,32 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 2. Platform — dark */}
-      <section id="pillars" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingPillarsSection />
       </section>
 
       {/* 3. Labs — accent */}
-      <section id="labs" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="labs" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingLabsSection />
       </section>
 
       {/* 4. Courses — dark */}
-      <section id="courses" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="courses" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingCoursesSection />
       </section>
 
       {/* 5. Bootcamp — accent */}
-      <section id="bootcamp" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingBootcampSection />
       </section>
 
       {/* 6. Services — dark */}
-      <section id="services" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="services" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingServicesSection />
       </section>
 
       {/* 7. CTA — accent */}
-      <section id="cta" className="relative w-full md:h-dvh md:overflow-hidden">
+      <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 
