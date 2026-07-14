@@ -38,7 +38,13 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     { line1: "Creating 100,000", line2: "Cyber Professionals." }
   ], []);
 
-  const globeOffset = React.useMemo(() => [0.9, -0.7, 0] as [number, number, number], []);
+  const globeOffset = React.useMemo<[number, number, number]>(() => {
+    if (isMobile) return [0.15, -0.25, 0];
+    if (constrainedDevice) return [0.45, -0.45, 0];
+    return [0.9, -0.7, 0];
+  }, [isMobile, constrainedDevice]);
+
+  const globeScale = isMobile ? 0.75 : 1.0;
 
   React.useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -90,7 +96,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
             <Suspense fallback={null}>
-              <HackerGlobe scale={1.0} offset={globeOffset} />
+              <HackerGlobe scale={globeScale} offset={globeOffset} />
             </Suspense>
           </ErrorBoundary>
         </div>
