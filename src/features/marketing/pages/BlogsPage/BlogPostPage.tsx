@@ -198,7 +198,9 @@ const BlogPostPage: React.FC = () => {
         </section>
       )}
 
-      <LandingFinalCtaSection user={user} />
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
+      </section>
     </div>
   );
 };

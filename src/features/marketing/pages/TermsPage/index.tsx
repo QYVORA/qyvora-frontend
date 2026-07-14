@@ -28,7 +28,7 @@ const TermsPage: React.FC = () => {
         <TermsContentSection />
       </section>
 
-      <section id="terms-cta" className="relative w-full">
+      <section id="terms-cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 

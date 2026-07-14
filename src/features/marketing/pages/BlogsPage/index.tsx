@@ -133,7 +133,7 @@ const BlogsPage: React.FC = () => {
       </section>
 
       {/* ── CTA Section ── */}
-      <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 
