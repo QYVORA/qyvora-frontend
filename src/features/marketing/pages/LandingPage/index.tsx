@@ -94,7 +94,7 @@ const Landing: React.FC = () => {
   }, [activeSection, navigate, isMobile]);
 
   return (
-    <div className="relative min-h-screen w-full bg-bg overflow-x-hidden">
+    <div className="relative min-h-screen w-full bg-bg overflow-hidden">
       <SEO
         title="Africa's Offensive Security Platform"
         description="QYVORA is an offensive security company building Africa's cybersecurity ecosystem through structured training, live labs, and enterprise-grade penetration testing services."
@@ -113,38 +113,38 @@ const Landing: React.FC = () => {
       />
       <PromotionalSystem />
 
-      {/* 1. Hero — dark (no accent bg) */}
-      <section id="hero" className="relative bg-transparent">
+      {/* 1. Hero — accent */}
+      <section id="hero" className="relative h-dvh w-full overflow-hidden">
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
-      {/* 2. What We Build — accent */}
-      <section id="pillars" className="relative w-full">
+      {/* 2. Platform — dark */}
+      <section id="pillars" className="relative w-full h-dvh overflow-hidden">
         <LandingPillarsSection />
       </section>
 
-      {/* 3. Labs — dark */}
-      <section id="labs" className="relative w-full">
+      {/* 3. Labs — accent */}
+      <section id="labs" className="relative w-full h-dvh overflow-hidden">
         <LandingLabsSection />
       </section>
 
-      {/* 4. Courses — accent */}
-      <section id="courses" className="relative w-full">
+      {/* 4. Courses — dark */}
+      <section id="courses" className="relative w-full h-dvh overflow-hidden">
         <LandingCoursesSection />
       </section>
 
-      {/* 5. Bootcamp — dark */}
-      <section id="bootcamp" className="relative w-full">
+      {/* 5. Bootcamp — accent */}
+      <section id="bootcamp" className="relative w-full h-dvh overflow-hidden">
         <LandingBootcampSection />
       </section>
 
-      {/* 6. Services — accent */}
-      <section id="services" className="relative w-full">
+      {/* 6. Services — dark */}
+      <section id="services" className="relative w-full h-dvh overflow-hidden">
         <LandingServicesSection />
       </section>
 
-      {/* 7. CTA — dark */}
-      <section id="cta" className="relative w-full">
+      {/* 7. CTA — accent */}
+      <section id="cta" className="relative w-full h-dvh overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 

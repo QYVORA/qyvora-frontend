@@ -346,6 +346,15 @@ const StudentTopbar = () => {
               <Logo size="md" />
             </Link>
 
+            {/* Mobile: hamburger */}
+            <button
+              onClick={() => setMobileNavOpen(true)}
+              className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors ml-auto"
+              aria-label="Open navigation"
+            >
+              <IconMenu size={24} />
+            </button>
+
             {/* Desktop icon tabs — spread across full width */}
             <nav className="hidden lg:flex items-center justify-between flex-1 min-w-0">
               {DESKTOP_NAV_ITEMS.map((item) => {
@@ -354,35 +363,29 @@ const StudentTopbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex flex-col items-center gap-1.5 px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                    className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all ${
                       active
-                        ? 'bg-accent text-bg'
-                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+                        ? 'text-accent'
+                        : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     {active ? (
                       <AnimatedIcon trigger="mount" duration={0.6}>
-                        <item.icon size={26} className="text-bg" />
+                        <item.icon size={30} className="text-accent" />
                       </AnimatedIcon>
                     ) : (
                       <AnimatedIcon trigger="hover" duration={0.5}>
-                        <item.icon size={26} />
+                        <item.icon size={30} />
                       </AnimatedIcon>
                     )}
-                    <span className={active ? 'text-bg' : ''}>{item.label}</span>
+                    <span>{item.label}</span>
+                    {active && (
+                      <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
+                    )}
                   </Link>
                 );
               })}
             </nav>
-
-            {/* Mobile: hamburger */}
-            <button
-              onClick={() => setMobileNavOpen(true)}
-              className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
-              aria-label="Open navigation"
-            >
-              <IconMenu size={22} />
-            </button>
 
             {/* Right actions */}
             <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
@@ -397,7 +400,7 @@ const StudentTopbar = () => {
                   className="relative p-3 md:p-3.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <span ref={bellRef} className="inline-flex"><IconNotification size={26} /></span>
+                  <span ref={bellRef} className="inline-flex"><IconNotification size={28} /></span>
                   {unreadCount > 0 && (
                     <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}
@@ -430,7 +433,7 @@ const StudentTopbar = () => {
                 className="w-12 h-12 md:w-13 md:h-13 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                 aria-label="Open terminal"
               >
-                <IconTerminal size={26} />
+                <IconTerminal size={28} />
               </button>
 
               <Link
@@ -486,11 +489,11 @@ const StudentTopbar = () => {
                     onClick={() => setMobileNavOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
                       active
-                        ? 'text-accent bg-accent-dim'
+                        ? 'text-accent'
                         : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                     }`}
                   >
-                    <item.icon size={22} className="shrink-0" />
+                    <item.icon size={24} className="shrink-0" />
                     {item.label}
                   </Link>
                 );
@@ -523,15 +526,13 @@ const StudentTopbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-all ${
-                    active ? 'bg-accent/5' : ''
-                  }`}
+                  className={`relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-all`}
                   aria-current={active ? 'page' : undefined}
                 >
                   {active && (
                     <span className="absolute top-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
                   )}
-                  <item.icon size={26} className={`transition-colors ${active ? 'text-accent drop-shadow-[0_0_6px_rgba(6,182,111,0.4)]' : 'text-text-muted'}`} />
+                  <item.icon size={28} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
                   <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
                     {item.label}
                   </span>
@@ -545,7 +546,7 @@ const StudentTopbar = () => {
               aria-label="More"
               aria-expanded={moreOpen}
             >
-              <IconNotification size={26} className="text-text-muted" />
+              <IconNotification size={28} className="text-text-muted" />
               <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
               {unreadCount > 0 && (
                 <span className="absolute top-2.5 right-[calc(50%-14px)] w-4.5 h-4.5 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-sm shadow-accent/30">

@@ -8,7 +8,6 @@ import { IconArrowRight, IconCode, IconShield, IconSearch, IconClock } from '@/s
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { Footer } from '@/shared/components/layout';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
@@ -33,7 +32,6 @@ const SKILL_LEVEL_CONFIG: Record<SkillLevel, { label: string; color: string; ico
 type SortMode = 'default' | 'popular' | 'price-low' | 'price-high' | 'duration';
 
 const CoursesPage: React.FC = () => {
-  const { isLg } = useAdaptiveUi();
   const [activeCategory, setActiveCategory] = useState<CourseCategoryId | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('default');
@@ -78,12 +76,23 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
+      <section className="relative w-full h-dvh flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
         <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />
 
-        <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
+        {/* ── Globe ── */}
+        <div className="absolute inset-0 z-0 flex items-end justify-end">
+          <div className="relative w-full h-full flex items-end justify-end">
+            <ErrorBoundary scope="HackerGlobe" fallback={null}>
+              <Suspense fallback={null}>
+                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        </div>
+
+        <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
           {/* Left column */}
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
@@ -101,16 +110,7 @@ const CoursesPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right column — HackerGlobe (desktop only) */}
-          <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
-            <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-              <ErrorBoundary scope="HackerGlobe" fallback={null}>
-                <Suspense fallback={null}>
-                  {isLg && <HackerGlobe scale={1.0} />}
-                </Suspense>
-              </ErrorBoundary>
-            </div>
-          </div>
+          <div className="hidden lg:block" />
         </div>
       </section>
 

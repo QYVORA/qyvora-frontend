@@ -34,7 +34,7 @@ const ZeroDayMarketPage: React.FC = () => {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   useEffect(() => {
@@ -61,8 +61,20 @@ const ZeroDayMarketPage: React.FC = () => {
       />
 
       {/* ── HERO ── */}
-      <section id="zd-hero" className="relative w-full min-h-[85svh] md:min-h-screen overflow-hidden bg-accent" data-nav-invert>
-        <div className="relative z-30 w-full min-h-[85svh] md:min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
+      <section id="zd-hero" className="relative w-full h-dvh overflow-hidden bg-accent" data-nav-invert>
+
+        {/* ── Globe ── */}
+        <div className="absolute inset-0 z-0 flex items-end justify-end">
+          <div className="relative w-full h-full flex items-end justify-end">
+            <ErrorBoundary scope="HackerGlobe" fallback={null}>
+              <Suspense fallback={null}>
+                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        </div>
+
+        <div className="relative z-10 w-full min-h-[85svh] md:min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
           <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
@@ -78,15 +90,15 @@ const ZeroDayMarketPage: React.FC = () => {
               </div>
 
               <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-                <span className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
                   Zero-Day
                 </span>
-                <span className="block text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05] uppercase text-bg/80">
+                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase text-bg/80">
                   Market
                 </span>
               </h1>
 
-              <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
                 A classified digital exchange where offensive security operators access high-value research assets. Each asset is a curated intelligence package — from exploitation guides and red-team tooling to vulnerability disclosures and network datasets.
               </p>
 
@@ -100,46 +112,32 @@ const ZeroDayMarketPage: React.FC = () => {
               </div>
             </motion.div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.93 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24"
-          >
-            <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-              <ErrorBoundary scope="HackerGlobe" fallback={null}>
-                <Suspense fallback={null}>
-                  {isLg && <HackerGlobe scale={1.0} />}
-                </Suspense>
-              </ErrorBoundary>
-            </div>
-          </motion.div>
+          <div className="hidden lg:block" />
         </div>
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="zd-features" className="relative w-full min-h-[85svh] md:min-h-screen flex items-center bg-accent" data-nav-invert>
+      <section id="zd-features" className="relative w-full h-dvh flex items-center">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="space-y-6">
               <ScrollReveal direction="up">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-2">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-2">
                   <Cloud className="h-3 w-3" /> Asset Categories
                 </span>
                 <SimpleHeading
                   text="The Operator's Intelligence Supply Chain"
                   align="left"
-                  className="mb-4 !text-bg"
+                  className="mb-4"
                 />
               </ScrollReveal>
               <ScrollReveal direction="up" delay={0.1}>
-                <p className="text-sm sm:text-base text-bg/70 font-mono leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-secondary font-mono leading-relaxed">
                   The Zero-Day Intelligence Market is a classified digital exchange where offensive security operators, penetration testers, and cyber intelligence analysts access high-value research assets. Assets are acquired using CP (Cyber Points), earned through bootcamp completion, challenge solving, and platform contributions.
                 </p>
               </ScrollReveal>
               <ScrollReveal direction="up" delay={0.15}>
-                <Link to="/dashboard/marketplace" className="text-[10px] font-black uppercase tracking-widest text-bg inline-flex items-center gap-2 hover:gap-3 transition-all">
+                <Link to="/dashboard/marketplace" className="text-[10px] font-black uppercase tracking-widest text-accent inline-flex items-center gap-2 hover:gap-3 transition-all">
                   Browse the Vault →
                 </Link>
               </ScrollReveal>
@@ -148,13 +146,13 @@ const ZeroDayMarketPage: React.FC = () => {
             <div className="space-y-4">
               {FEATURES.map((f, i) => (
                 <ScrollReveal key={f.label} direction="up" delay={0.1 + i * 0.08}>
-                  <div className="group flex items-start gap-5 p-5 sm:p-6 rounded-2xl border border-bg/20 bg-bg/5 transition-all hover:border-bg/30 hover:bg-bg/10">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-bg/20 bg-bg/10">
-                      <f.icon className="h-5 w-5 text-bg" />
+                  <div className="group flex items-start gap-5 p-5 sm:p-6 rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30 hover:bg-bg-elevated">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
+                      <f.icon className="h-5 w-5 text-accent" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-black text-bg mb-1 group-hover:text-bg/80 transition-colors break-words">{f.label}</h3>
-                      <p className="text-xs text-bg/70 leading-relaxed font-mono break-words">{f.desc}</p>
+                      <h3 className="text-sm font-black text-text-primary mb-1 group-hover:text-accent transition-colors break-words">{f.label}</h3>
+                      <p className="text-xs text-text-muted leading-relaxed font-mono break-words">{f.desc}</p>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -165,7 +163,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── PRODUCTS ── */}
-      <section id="zd-products" className="relative w-full min-h-[85svh] md:min-h-screen flex items-center border-t border-border/20">
+      <section id="zd-products" className="relative w-full h-dvh flex items-center border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
@@ -270,20 +268,20 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative w-full min-h-[85svh] md:min-h-screen flex items-center border-t border-border/20">
+      <section className="relative w-full h-dvh flex items-center bg-accent" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
           <ScrollReveal direction="up">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-4">
               <IconLock className="h-3 w-3" /> Classified Access
             </div>
 
             <SimpleHeading
               text="Ready to Access the Intelligence Vault?"
               align="center"
-              className="mb-4"
+              className="mb-4 !text-bg"
             />
 
-            <p className="text-sm sm:text-base text-text-muted font-mono max-w-xl mx-auto mb-8">
+            <p className="text-xs sm:text-sm text-bg/70 font-mono max-w-xl mx-auto mb-8">
               Create an account, complete the Hacker Protocol Bootcamp, and earn CP to unlock premium intelligence assets.
             </p>
 
@@ -291,7 +289,7 @@ const ZeroDayMarketPage: React.FC = () => {
               <Link to="/register" className="btn-primary inline-flex items-center gap-2">
                 <IconMarketplace className="h-4 w-4" /> Get Started
               </Link>
-              <Link to="/hpb" className="btn-secondary inline-flex items-center gap-2">
+              <Link to="/hpb" className="btn-secondary !border-bg/30 !text-bg inline-flex items-center gap-2">
                 Learn About Bootcamps →
               </Link>
             </div>

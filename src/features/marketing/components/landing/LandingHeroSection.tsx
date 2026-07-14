@@ -24,7 +24,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   totalCp,
 }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice, isMobile, isLg } = useAdaptiveUi();
+  const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   const [stepIndex, setStepIndex] = React.useState(0);
@@ -37,6 +37,8 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     { line1: "Securing Africa's", line2: "Digital Future." },
     { line1: "Creating 100,000", line2: "Cyber Professionals." }
   ], []);
+
+  const globeOffset = React.useMemo(() => [0.9, -0.7, 0] as [number, number, number], []);
 
   React.useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -76,16 +78,32 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [displayText, isDeleting, stepIndex, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full min-h-dvh md:min-h-screen flex flex-col bg-accent" data-nav-invert>
-      
+    <div ref={heroRef} className="relative w-full h-full flex flex-col bg-accent overflow-hidden" data-nav-invert>
+
+      {/* ── Globe - positioned absolutely behind text ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.93 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 z-0 flex items-end justify-end"
+      >
+        <div className="relative w-full h-full flex items-end justify-end">
+          <ErrorBoundary scope="HackerGlobe" fallback={null}>
+            <Suspense fallback={null}>
+              <HackerGlobe scale={1.0} offset={globeOffset} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </motion.div>
+
       {/* ── Main content grid ── */}
       <div
         className="
-          relative z-30 w-full flex-1 mx-auto 
+          relative z-10 w-full flex-1 mx-auto
           grid grid-cols-1 lg:grid-cols-2
           text-left
           items-center
-          md:h-full
+          h-full
         "
       >
 
@@ -176,26 +194,8 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
           </motion.div>
         </div>
 
-        {/* ── Right column: Globe - Desktop only ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.93 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="
-            relative hidden lg:flex items-center justify-center
-            w-full h-full
-            pt-20 xl:pt-24
-          "
-        >
-          {/* Globe container - responsive to prevent clipping */}
-          <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                {isLg && <HackerGlobe scale={1.0} />}
-              </Suspense>
-            </ErrorBoundary>
-          </div>
-        </motion.div>
+        {/* ── Right column spacer - pushes text to left on desktop ── */}
+        <div className="hidden lg:block" />
 
       </div>
     </div>

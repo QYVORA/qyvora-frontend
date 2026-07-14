@@ -93,7 +93,7 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col bg-accent" data-nav-invert>
+    <div className="relative w-full h-dvh flex flex-col bg-accent" data-nav-invert>
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
         <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">
@@ -130,7 +130,7 @@ function Hero() {
 
 function WhoWeAre() {
   return (
-    <div className="bg-accent py-20 md:py-28 lg:py-32" data-nav-invert>
+    <div className="py-20 md:py-28 lg:py-32">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="mb-12">
         <SectionHeader
@@ -138,7 +138,6 @@ function WhoWeAre() {
           title="Who is"
           accent="QuiteRoot?"
           body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
-          light
         />
         </div>
         <ScrollReveal direction="up" amount={0.1}>
@@ -243,11 +242,11 @@ const QuiteRootPage: React.FC = () => {
         }}
       />
       <div data-saver={shouldReduceMotion ? 'true' : undefined}>
-        <section id="hero" className="relative w-full">
+        <section id="hero" className="relative w-full h-dvh">
           <Hero />
         </section>
 
-        <section id="about" className="relative w-full py-20 md:py-28 lg:py-32">
+        <section id="about" className="relative w-full">
           <WhoWeAre />
         </section>
 

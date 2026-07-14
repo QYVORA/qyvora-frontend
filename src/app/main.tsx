@@ -22,6 +22,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/i18n';
 import App from './App';
 import '../styles/index.css'; // Global CSS: resets, CSS variables, base typography
 import { AuthProvider } from '../core/contexts/AuthContext';
@@ -58,6 +60,7 @@ createRoot(document.getElementById('root')!).render(
   */
   <StrictMode>
     <HelmetProvider>
+    <I18nextProvider i18n={i18n}>
 
     {/*
       ThemeProvider (outermost context)
@@ -106,6 +109,7 @@ createRoot(document.getElementById('root')!).render(
         </ToastProvider>
       </AuthProvider>
     </ThemeProvider>
+    </I18nextProvider>
     </HelmetProvider>
   </StrictMode>
 );

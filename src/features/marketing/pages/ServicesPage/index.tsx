@@ -70,7 +70,7 @@ const ServicesPage: React.FC = () => {
       />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-accent overflow-hidden min-h-dvh md:min-h-screen flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
+      <section className="relative bg-accent overflow-hidden h-dvh flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
@@ -89,14 +89,14 @@ const ServicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ══ SERVICES CARDS — accent bg ══ */}
-      <section className="relative w-full bg-accent py-20 md:py-28" data-nav-invert>
+      {/* ══ SERVICES CARDS — dark bg ══ */}
+      <section className="relative w-full py-20 md:py-28">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4 text-bg">
-              Engagement <span className="text-bg/70">Packages</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
+              Engagement <span className="text-accent">Packages</span>
             </h2>
-            <p className="text-bg/60 text-sm md:text-base max-w-xl mx-auto">
+            <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
               Fixed-scope packages with optional add-ons. Every engagement includes a detailed report with actionable findings.
             </p>
           </div>
@@ -152,7 +152,7 @@ const ServicesPage: React.FC = () => {
                     )}
                     {/* Features */}
                     <div className="p-5 flex-1 flex flex-col">
-                      <p className="text-xs text-bg/50 mb-4">{service.desc}</p>
+                      <p className="text-xs text-text-muted mb-4">{service.desc}</p>
                       <ul className="space-y-2.5 flex-1">
                         {service.features.map((f) => (
                           <li key={f} className="flex items-start gap-2.5">

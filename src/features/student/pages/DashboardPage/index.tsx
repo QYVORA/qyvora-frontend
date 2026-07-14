@@ -201,7 +201,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
     <Link
       ref={hoverRef}
       to={`/dashboard/bootcamps/bc_1775270338500/phases/${room.id.split('-')[0]}/rooms/${room.id}`}
-      className="group rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 hover:border-accent/30 transition-colors flex flex-col h-full"
+      className="group rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 min-h-[120px] hover:border-accent/30 transition-colors flex flex-col h-full"
     >
       <div className="flex items-center gap-2 mb-3">
         <IconCode size={22} className="text-accent/60" />
@@ -213,13 +213,17 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
 };
 
 const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
-  <div className="flex flex-col items-center gap-3 p-5 md:p-6 lg:p-7 rounded-2xl border border-border/30 bg-bg-card text-center transition-all duration-300 hover:border-accent/30" aria-label={`${label}: ${value}`}>
-    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-accent/10' : 'bg-bg-elevated'}`}>
+  <div className={`flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border text-center transition-all duration-300 ${
+    accent
+      ? 'border-bg/20 bg-accent text-bg'
+      : 'border-border/30 bg-bg-card hover:border-accent/30'
+  }`} aria-label={`${label}: ${value}`}>
+    <div className={`w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-bg/15' : 'bg-bg-elevated'}`}>
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="font-mono text-xl md:text-2xl font-black text-text-primary leading-none break-words">{value}</div>
-      <div className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1.5">{label}</div>
+      <div className={`font-mono text-xl md:text-2xl font-black leading-none break-words ${accent ? 'text-bg' : 'text-text-primary'}`}>{value}</div>
+      <div className={`text-[10px] font-black uppercase tracking-widest mt-1.5 ${accent ? 'text-bg/60' : 'text-text-muted'}`}>{label}</div>
     </div>
   </div>
 );
@@ -399,7 +403,7 @@ const Dashboard = () => {
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-10">
 
         {/* 1. Welcome Banner */}
         <div ref={heroRef}>
@@ -416,7 +420,7 @@ const Dashboard = () => {
         {/* 2. Stats Strip */}
         <div ref={statsRef}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
-            <StatCard icon={<IconRank size={32} className="text-accent" />} label="Rank" value={rankName} accent />
+            <StatCard icon={<IconRank size={32} className="text-bg" />} label="Rank" value={rankName} accent />
             <StatCard icon={<IconDashboard size={32} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
             <StatCard icon={<CpLogo className="w-10 h-10" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
             <StatCard icon={<IconFire size={32} className="text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
@@ -528,7 +532,7 @@ const Dashboard = () => {
         {/* 6. Next Rank Progress */}
         {nextRank && (
           <div ref={rankRef}>
-            <div ref={progressRef} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6 lg:p-8">
+            <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">Target: <span className="text-accent">{nextRank.name}</span></span>
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>

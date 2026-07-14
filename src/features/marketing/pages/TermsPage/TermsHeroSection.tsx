@@ -1,17 +1,26 @@
 import React, { lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import { termsData } from './termsData';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
 const TermsHeroSection: React.FC = () => {
-  const { isLg } = useAdaptiveUi();
-
   return (
-    <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col bg-accent" data-nav-invert>
-      <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
+    <div className="relative w-full min-h-[85svh] md:min-h-screen flex flex-col overflow-hidden bg-accent" data-nav-invert>
+
+      {/* ── Globe ── */}
+      <div className="absolute inset-0 z-0 flex items-end justify-end">
+        <div className="relative w-full h-full flex items-end justify-end">
+          <ErrorBoundary scope="HackerGlobe" fallback={null}>
+            <Suspense fallback={null}>
+              <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </div>
+
+      <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
         <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
           <div className="flex flex-col items-start w-full space-y-6">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
@@ -42,15 +51,7 @@ const TermsHeroSection: React.FC = () => {
             </motion.div>
           </div>
         </div>
-        <div className="relative hidden lg:flex items-center justify-center w-full h-full pt-20 xl:pt-24">
-          <div className="relative z-10 w-full h-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                {isLg && <HackerGlobe scale={1.0} />}
-              </Suspense>
-            </ErrorBoundary>
-          </div>
-        </div>
+        <div className="hidden lg:block" />
       </div>
     </div>
   );
