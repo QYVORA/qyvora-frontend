@@ -6,13 +6,16 @@ interface Cell {
   size: number;
   color: [number, number, number];
   baseOpacity: number;
-  targetOpacity: number;
   currentOpacity: number;
+  prevDrawnOpacity: number;
   phase: number;
   speed: number;
 }
 
 const ACCENT: [number, number, number] = [6, 182, 111];
+const REDRAW_THRESHOLD = 0.008;
+const TARGET_FPS = 18;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
 
 function createCells(cols: number, rows: number, cellSize: number): Cell[] {
   const cells: Cell[] = [];
@@ -44,8 +47,8 @@ function createCells(cols: number, rows: number, cellSize: number): Cell[] {
         size: cellSize,
         color,
         baseOpacity,
-        targetOpacity: baseOpacity,
         currentOpacity: baseOpacity,
+        prevDrawnOpacity: baseOpacity,
         phase: Math.random() * Math.PI * 2,
         speed: 0.002 + Math.random() * 0.006,
       });
@@ -63,7 +66,6 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cellsRef = useRef<Cell[]>([]);
   const rafRef = useRef<number>(0);
-  const timeRef = useRef<number>(0);
 
   const gap = 3;
 
@@ -75,7 +77,7 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
     if (!ctx) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cellSize = reduced ? 52 : 38;
+    const cellSize = reduced ? 56 : 42;
 
     function resize() {
       const rect = canvas!.parentElement!.getBoundingClientRect();
@@ -102,45 +104,58 @@ const HeroGridAnimation: React.FC<HeroGridAnimationProps> = ({ className = '', r
       return () => window.removeEventListener('resize', resize);
     }
 
-    let lastFrame = 0;
+    let lastFrameTime = 0;
+    let visible = true;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { visible = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
 
     function draw(timestamp: number) {
-      if (!lastFrame) lastFrame = timestamp;
-      const dt = timestamp - lastFrame;
-      lastFrame = timestamp;
-      timeRef.current += dt;
+      rafRef.current = requestAnimationFrame(draw);
+
+      if (!visible) return;
+      if (timestamp - lastFrameTime < FRAME_INTERVAL) return;
+      lastFrameTime = timestamp;
 
       const w = canvas!.width / dpr;
       const h = canvas!.height / dpr;
 
       ctx!.clearRect(0, 0, w, h);
 
-      const t = timeRef.current;
+      const cells = cellsRef.current;
+      const inset = gap / 2;
 
-      for (const cell of cellsRef.current) {
-        cell.phase += cell.speed * dt;
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        cell.phase += cell.speed * FRAME_INTERVAL;
         const wave = (Math.sin(cell.phase) + 1) / 2;
-        cell.targetOpacity = cell.baseOpacity * (0.08 + wave * 0.92);
-        cell.currentOpacity += (cell.targetOpacity - cell.currentOpacity) * 0.03;
+        const target = cell.baseOpacity * (0.08 + wave * 0.92);
+        cell.currentOpacity += (target - cell.currentOpacity) * 0.04;
 
         if (cell.currentOpacity < 0.01) continue;
 
-        const inset = gap / 2;
+        const delta = cell.currentOpacity - cell.prevDrawnOpacity;
+        if (delta > -REDRAW_THRESHOLD && delta < REDRAW_THRESHOLD) continue;
+
+        cell.prevDrawnOpacity = cell.currentOpacity;
+
         ctx!.fillStyle = `rgba(${cell.color[0]},${cell.color[1]},${cell.color[2]},${cell.currentOpacity})`;
         ctx!.fillRect(
           cell.x + inset,
           cell.y + inset,
           cell.size - gap,
-          cell.size - gap
+          cell.size - gap,
         );
       }
-
-      rafRef.current = requestAnimationFrame(draw);
     }
 
     rafRef.current = requestAnimationFrame(draw);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafRef.current);
     };
