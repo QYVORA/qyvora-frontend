@@ -7,6 +7,7 @@ import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
+import HeroGridAnimation from './HeroGridAnimation';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -84,14 +85,26 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [displayText, isDeleting, stepIndex, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full h-full flex flex-col bg-accent overflow-hidden" data-nav-invert>
+    <div ref={heroRef} className="relative w-full h-full min-h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
+
+      {/* ── Animated grid background — fades in from globe side ── */}
+      <div
+        className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-60"
+        style={{
+          filter: 'blur(2px)',
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 80%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 80%, black 100%)',
+        }}
+      >
+        <HeroGridAnimation reduced={minimizeEffects} />
+      </div>
 
       {/* ── Globe - positioned absolutely behind text ── */}
       <motion.div
         initial={{ opacity: 0, scale: 0.93 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 z-0 flex items-end justify-end"
+        className="absolute inset-0 z-[1] flex items-end justify-end"
       >
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
