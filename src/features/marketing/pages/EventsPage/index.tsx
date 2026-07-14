@@ -33,7 +33,43 @@ const EventsPage: React.FC = () => {
         description="Join QYVORA live events - offensive security sessions, hacking challenges, and community meetups."
       />
 
-      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 pt-28 pb-16 md:py-28 lg:py-40">
+      {/* Hero */}
+      <section id="events-hero" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <div className="relative w-full h-full bg-accent overflow-hidden" data-nav-invert>
+
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)',
+              backgroundSize: '40px 40px'
+            }} />
+          </div>
+
+          <div className="relative z-10 flex flex-col items-start justify-center h-full px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full">
+            <div className="space-y-5 sm:space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
+                <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
+                  <Calendar className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Live Operations
+                </span>
+              </div>
+
+              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
+                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+                  Events
+                </span>
+              </h1>
+
+              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
+                Join QYVORA live events — offensive security sessions, hacking challenges, and community meetups.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Events list */}
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 py-16 md:py-24">
         {events.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-text-muted">No upcoming events.</p>

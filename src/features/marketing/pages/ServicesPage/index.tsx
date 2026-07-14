@@ -71,7 +71,7 @@ const ServicesPage: React.FC = () => {
       />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-accent overflow-hidden h-dvh flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
+      <section className="relative bg-accent overflow-hidden min-h-dvh md:h-dvh flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
@@ -79,11 +79,13 @@ const ServicesPage: React.FC = () => {
               <IconShield className="w-4 h-4" />
               Offensive Security Assessments
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6 text-bg">
-              Test Your <br />
-              <span className="text-bg/80">Defenses</span>
+            <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
+              <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+                Test Your <br />
+                <span className="text-bg/80">Defenses</span>
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed max-w-2xl">
+            <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
               Professional penetration testing services tailored for African organizations.
               From startups to enterprises — we assess your attack surface before adversaries do.
             </p>

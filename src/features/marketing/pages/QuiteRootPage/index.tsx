@@ -94,18 +94,20 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
+    <div className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
         <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-bg">
-              QUITE <span className="text-bg/80">ROOT</span>
+            <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
+              <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+                QUITE <span className="text-bg/80">ROOT</span>
+              </span>
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-bg/70 font-mono leading-relaxed max-w-xl">
+            <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
               The Intelligence Behind QYVORA
             </p>
-            <p className="text-sm md:text-base text-bg/60 leading-relaxed max-w-2xl">
+            <p className="text-bg/60 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-2xl font-mono">
               We engineer offensive security tools, conduct cyber intelligence research, and transform ideas into
               production-ready security capabilities.
             </p>
@@ -244,7 +246,7 @@ const QuiteRootPage: React.FC = () => {
         }}
       />
       <div data-saver={shouldReduceMotion ? 'true' : undefined}>
-        <section id="hero" className="relative w-full h-dvh">
+        <section id="hero" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
           <Hero />
         </section>
 
