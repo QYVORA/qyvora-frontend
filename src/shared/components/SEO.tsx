@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
 import ogImageSrc from '@/assets/branding/logos/qyvora-full-logo.webp';
 
@@ -48,6 +49,7 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const location = useLocation();
+  const { i18n } = useTranslation();
   const siteUrl = SITE_CONFIG.brand.siteUrl; 
   const defaultTitle = SITE_CONFIG.brand.name;
   const seoTitle = title ? `${title} | ${defaultTitle}` : `${defaultTitle} | Africa's Offensive Security Platform`;
@@ -99,7 +101,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={seoCanonical} />
       <meta name="robots" content="index,follow,max-image-preview:large" />
-      <html lang="en" />
+      <html lang={i18n.language} />
 
       <meta property="og:type" content={article ? 'article' : 'website'} />
       <meta property="og:title" content={seoTitle} />

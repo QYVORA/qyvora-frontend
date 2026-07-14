@@ -9,6 +9,7 @@ import { Logo } from '@/shared/components/brand';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { useNavInvert } from '@/shared/hooks/useNavInvert';
+import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
@@ -135,14 +136,15 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* ── Right controls ──────────────────────────────────── */}
-          <div className="flex items-center gap-4 shrink-0 relative z-[110]">
+          <div className="flex items-center gap-3 shrink-0 relative z-[110]">
+            <LanguageSwitcher inverted={inverted} />
             <div className="hidden md:flex items-center">
               {user ? (
                 <Link
                   to="/dashboard"
                   className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm ${
                     inverted
-                      ? 'bg-bg text-accent hover:brightness-110'
+                      ? 'bg-bg text-text-primary hover:brightness-110'
                       : 'bg-accent text-bg hover:brightness-110'
                   }`}
                 >
@@ -153,7 +155,7 @@ const Navbar: React.FC = () => {
                   to="/register"
                   className={`font-bold uppercase tracking-widest rounded-xl px-9 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2.5 text-sm ${
                     inverted
-                      ? 'bg-bg text-accent hover:brightness-110'
+                      ? 'bg-bg text-text-primary hover:brightness-110'
                       : 'bg-accent text-bg hover:brightness-110'
                   }`}
                 >
@@ -270,6 +272,11 @@ const Navbar: React.FC = () => {
 
               {/* Separator */}
               <div className="my-6 h-px bg-border/20" />
+
+              {/* Language switcher */}
+              <div className="mb-4">
+                <LanguageSwitcher inverted={false} />
+              </div>
 
               {/* Auth buttons */}
               <div className="flex flex-col gap-3">

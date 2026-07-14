@@ -7,8 +7,8 @@ import { BrandYoutubeIcon } from '@/shared/components/icons';
 import { BrandGithubIcon } from '@/shared/components/icons';
 import { BrandXIcon } from '@/shared/components/icons';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
-import { AdinkraBackground } from '@/shared/components/backgrounds';
 import { Logo } from '@/shared/components/brand';
+import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const FOOTER_COLS = [
   {
@@ -59,12 +59,8 @@ const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
 const Footer: React.FC = () => {
   return (
     <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
-      <AdinkraBackground
-        opacity={0.55}
-        className="absolute inset-0 z-0"
-      />
 
-      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20 backdrop-blur-sm bg-bg/30">
+      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20">
         <div className="w-full max-w-[1600px] mx-auto">
 
           {/* ── Brand + Nav Columns (same row on desktop) ──────────────────── */}
@@ -130,6 +126,7 @@ const Footer: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap items-center gap-4 md:ml-auto">
+                <LanguageSwitcher />
                 {SITE_CONFIG.footer.links.map((link, idx) => (
                   <Link
                     key={idx}

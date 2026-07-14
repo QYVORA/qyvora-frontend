@@ -36,7 +36,7 @@ const DashboardHero = ({
     return () => { tl.kill(); };
   }, []);
 
-  const cardClass = "rounded-2xl border border-bg/20 bg-accent p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
+  const cardClass = "rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
 
   if (allDone) {
     return (

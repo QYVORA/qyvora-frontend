@@ -13,7 +13,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative w-full py-12 sm:py-16 lg:py-12 bg-accent" data-nav-invert>
+    <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
 
         {/* Mobile layout */}
@@ -144,7 +144,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-end lg:-translate-x-4 xl:-translate-x-8"
+            className="flex items-center justify-end"
           >
             <div className="relative w-full max-w-4xl xl:max-w-5xl flex items-center justify-end">
               <QyvoraMark

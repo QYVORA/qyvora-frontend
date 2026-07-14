@@ -13,7 +13,6 @@ const PILLARS = [
     icon: IconLabs,
     stat: '10 Labs',
     link: '/dashboard/labs',
-    color: '#EF4444',
     featured: false,
   },
   {
@@ -23,7 +22,6 @@ const PILLARS = [
     icon: BookOpen,
     stat: '12 Courses',
     link: '/courses',
-    color: '#60A5FA',
     featured: false,
   },
   {
@@ -33,7 +31,6 @@ const PILLARS = [
     icon: IconShield,
     stat: '5 Phases',
     link: '/hpb',
-    color: '#06B66F',
     featured: true,
   },
   {
@@ -43,7 +40,6 @@ const PILLARS = [
     icon: IconLock,
     stat: 'From GH₵ 4,000',
     link: '/services',
-    color: '#A78BFA',
     featured: false,
   },
 ];
@@ -54,31 +50,31 @@ const LandingPillarsSection: React.FC = () => {
   const supporting = PILLARS.filter((p) => !p.featured);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden h-full flex flex-col">
       <DotMapBackground />
-      <div className="relative w-full px-4 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20">
-        <div className="w-full lg:max-w-6xl lg:mx-auto">
+      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
+        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading — left aligned */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-6 md:mb-8"
+            className="mb-4 md:mb-8 shrink-0"
           >
-            <span className="inline-block px-4 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.3em] text-text-primary mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.3em] text-text-primary mb-3">
               What We Build
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-none">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
               The Platform
             </h2>
-            <p className="mt-4 text-sm md:text-base text-text-secondary max-w-xl">
+            <p className="mt-3 text-xs md:text-sm text-text-secondary max-w-xl">
               Everything you need to become an offensive security operator — from zero knowledge to production-ready.
             </p>
           </motion.div>
 
           {/* Asymmetric grid: Featured card + supporting cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 md:gap-4 flex-1">
             {/* Featured card — takes 3 columns on large screens */}
             <motion.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
@@ -89,36 +85,29 @@ const LandingPillarsSection: React.FC = () => {
             >
               <Link
                 to={featured.link}
-                className="group relative block rounded-2xl border border-border/30 bg-bg-card p-8 sm:p-10 transition-all duration-300 hover:border-accent/30 overflow-hidden h-full flex flex-col"
+                className="group relative block rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30"
               >
-                {/* Background glow */}
-                <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 -translate-y-1/3 translate-x-1/3" style={{ background: featured.color }} />
-                <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-5 translate-y-1/3 -translate-x-1/3" style={{ background: featured.color }} />
+                {/* Dot pattern background */}
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
 
-                <div className="relative flex-1 flex flex-col">
-                  <div className="flex items-center justify-between mb-8">
-                    <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
-                      style={{ background: `${featured.color}25` }}
-                    >
-                      <featured.icon size={32} style={{ color: featured.color }} />
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-3 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                      <featured.icon size={22} className="text-accent sm:w-7 sm:h-7" />
                     </div>
-                    <span
-                      className="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border"
-                      style={{ color: featured.color, borderColor: `${featured.color}40`, background: `${featured.color}15` }}
-                    >
+                    <span className="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent">
                       {featured.stat}
                     </span>
                   </div>
 
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary tracking-tighter leading-none mb-4">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-3">
                     {featured.title}
                   </h3>
-                  <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-lg mb-8">
+                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-3 sm:mb-6 line-clamp-3">
                     {featured.desc}
                   </p>
 
-                  <div className="mt-auto flex items-center gap-3">
+                  <div className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-3">
                       <Zap className="w-3.5 h-3.5" />
                       Start Bootcamp
@@ -130,7 +119,7 @@ const LandingPillarsSection: React.FC = () => {
             </motion.div>
 
             {/* Supporting cards — stacked vertically, takes 2 columns */}
-            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 md:gap-4">
               {supporting.map((pillar, idx) => (
                 <motion.div
                   key={pillar.id}
@@ -141,30 +130,25 @@ const LandingPillarsSection: React.FC = () => {
                 >
                   <Link
                     to={pillar.link}
-                    className="group relative block rounded-2xl border border-border/30 bg-bg-card p-6 transition-all duration-300 hover:border-accent/30 overflow-hidden h-full"
+                    className="group relative block rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30"
                   >
-                    <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -translate-y-1/2 translate-x-1/2" style={{ background: pillar.color }} />
+                    {/* Dot pattern */}
+                    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
 
                     <div className="relative">
-                      <div className="flex items-center justify-between mb-4">
-                        <div
-                          className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: `${pillar.color}20` }}
-                        >
-                          <pillar.icon size={20} style={{ color: pillar.color }} />
+                      <div className="flex items-center justify-between mb-2 sm:mb-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                          <pillar.icon size={18} className="text-accent" />
                         </div>
-                        <span
-                          className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border"
-                          style={{ color: pillar.color, borderColor: `${pillar.color}40`, background: `${pillar.color}10` }}
-                        >
+                        <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-accent/20 bg-accent/10 text-accent">
                           {pillar.stat}
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-black text-text-primary tracking-tight mb-1.5">
+                      <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1 sm:mb-1.5">
                         {pillar.title}
                       </h3>
-                      <p className="text-xs text-text-muted leading-relaxed mb-4 line-clamp-2">
+                      <p className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed mb-2 sm:mb-3 line-clamp-2">
                         {pillar.desc}
                       </p>
 

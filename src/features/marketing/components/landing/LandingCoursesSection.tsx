@@ -14,15 +14,6 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   tools: Wrench,
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  terminal: '#4ade80',
-  networking: '#60A5FA',
-  programming: '#A78BFA',
-  'web-security': '#F59E0B',
-  wireless: '#10B981',
-  tools: '#EF4444',
-};
-
 const CATEGORY_LABELS: Record<string, string> = {
   terminal: 'Terminal',
   networking: 'Networking',
@@ -47,7 +38,7 @@ const COURSES = [
   { id: 'wifi-fundamentals-101', title: 'Wi-Fi Fundamentals', category: 'wireless', level: 'beginner', minutes: 55, popular: false, desc: 'Wireless networks and encryption protocols.' },
 ];
 
-const CATEGORIES = Object.keys(CATEGORY_COLORS);
+const CATEGORIES = Object.keys(CATEGORY_LABELS);
 const PER_PAGE = 3;
 const CYCLE_MS = 3000;
 
@@ -82,29 +73,29 @@ const LandingCoursesSection: React.FC = () => {
   const pageCourses = filteredCourses.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
   // Get the color for the first visible course's category
-  const activeColor = pageCourses[0] ? CATEGORY_COLORS[pageCourses[0].category] : '#06B66F';
+  const activeColor = '#06B66F';
   const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden h-full flex flex-col">
       <DotMapBackground />
-      <div className="relative w-full px-4 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20">
-        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col">
+      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
+        <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-6 md:mb-8"
+            className="mb-4 md:mb-8 shrink-0"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
               <GraduationCap className="h-3 w-3" /> Self-Paced
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               Courses
             </h2>
-            <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-lg">
+            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg">
               12 courses across 6 categories. Each lesson earns CP.
             </p>
           </motion.div>
@@ -115,7 +106,7 @@ const LandingCoursesSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-hide flex-wrap"
+            className="flex gap-2 mb-2 md:mb-4 overflow-x-auto pb-1 scrollbar-hide flex-wrap shrink-0"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <button
@@ -133,7 +124,6 @@ const LandingCoursesSection: React.FC = () => {
             </button>
             {CATEGORIES.map((cat) => {
               const isActive = cat === activeCategory;
-              const catColor = CATEGORY_COLORS[cat];
               const CatIconBtn = CATEGORY_ICONS[cat];
               const count = COURSES.filter((c) => c.category === cat).length;
               return (
@@ -146,7 +136,7 @@ const LandingCoursesSection: React.FC = () => {
                       : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
                   }`}
                 >
-                  {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" style={isActive ? { color: catColor } : {}} />}
+                  {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" />}
                   {CATEGORY_LABELS[cat]}
                   <span className={`text-[9px] font-mono ${isActive ? 'text-text-muted' : 'text-text-muted/60'}`}>
                     {count}
@@ -157,7 +147,7 @@ const LandingCoursesSection: React.FC = () => {
           </motion.div>
 
           {/* Carousel — fills remaining space */}
-          <div className="flex-1 flex flex-col justify-center overflow-hidden">
+          <div className="flex-1 flex flex-col justify-center">
             <AnimatePresence mode="wait" custom={dir}>
               <motion.div
                 key={`${activeCategory}-${page}`}
@@ -166,23 +156,19 @@ const LandingCoursesSection: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4"
               >
                 {pageCourses.map((course) => {
-                  const cColor = CATEGORY_COLORS[course.category];
                   const CatIc = CATEGORY_ICONS[course.category];
                   return (
                     <Link
                       key={course.id}
                       to={`/courses/${course.id}`}
-                      className="group/card rounded-2xl border border-border/30 bg-bg-card p-4 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
+                      className="group/card rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <div
-                          className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: `${cColor}25` }}
-                        >
-                          {CatIc && <CatIc className="w-4 h-4" style={{ color: cColor }} />}
+                        <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
+                          {CatIc && <CatIc className="w-4 h-4 text-accent" />}
                         </div>
                         {course.popular && (
                           <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
@@ -200,10 +186,7 @@ const LandingCoursesSection: React.FC = () => {
 
                       <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
                         <div className="flex items-center gap-2">
-                          <span
-                            className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
-                            style={{ color: cColor, background: `${cColor}20` }}
-                          >
+                          <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-accent/20 bg-accent/10 text-accent">
                             {course.level}
                           </span>
                           <span className="text-[9px] text-text-muted/60 font-mono">{course.minutes}m</span>
@@ -218,7 +201,7 @@ const LandingCoursesSection: React.FC = () => {
           </div>
 
           {/* Footer */}
-          <div className="mt-4 md:mt-6 flex items-center justify-between">
+          <div className="mt-3 md:mt-4 flex items-center justify-between shrink-0">
             <Link
               to="/courses"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
