@@ -204,7 +204,7 @@ const ServicesPage: React.FC = () => {
       </section>
 
       {/* ══ CTA ══ */}
-      <section id="cta" className="relative w-full">
+      <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 

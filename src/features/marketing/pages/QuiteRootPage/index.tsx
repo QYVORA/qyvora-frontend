@@ -264,7 +264,7 @@ const QuiteRootPage: React.FC = () => {
           <Principles />
         </section>
 
-        <section id="cta" className="relative w-full">
+        <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
           <LandingFinalCtaSection user={user} />
         </section>
       </div>
