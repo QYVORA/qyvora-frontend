@@ -28,9 +28,9 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
-  const [stepIndex, setStepIndex] = React.useState(0);
-  const [displayText, setDisplayText] = React.useState('');
-  const [isDeleting, setIsDeleting] = React.useState(false);
+  const line1Ref = React.useRef<HTMLSpanElement>(null);
+  const line2DisplayRef = React.useRef<HTMLSpanElement>(null);
+  const line2PlaceholderRef = React.useRef<HTMLSpanElement>(null);
 
   const steps = React.useMemo(() => [
     { line1: "Train Like a", line2: "Hacker." },
@@ -48,41 +48,54 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const globeScale = isMobile ? 0.75 : 1.0;
 
   React.useEffect(() => {
+    if (minimizeEffects) return;
+
+    let stepIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
     let timer: NodeJS.Timeout;
-    const currentStep = steps[stepIndex];
-    const fullText = currentStep.line2;
+
+    const l1 = line1Ref.current;
+    const l2d = line2DisplayRef.current;
+    const l2p = line2PlaceholderRef.current;
+    if (!l1 || !l2d || !l2p) return;
 
     const tick = () => {
-      if (!isDeleting) {
-        const nextText = fullText.substring(0, displayText.length + 1);
-        setDisplayText(nextText);
+      const fullText = steps[stepIdx].line2;
 
-        if (nextText === fullText) {
-          const pauseTime = stepIndex === steps.length - 1 ? 4000 : 2000;
-          timer = setTimeout(() => {
-            setIsDeleting(true);
-          }, pauseTime);
-        } else {
-          const typingSpeed = 80 + Math.random() * 40;
-          timer = setTimeout(tick, typingSpeed);
+      if (!deleting) {
+        charIdx++;
+        const shown = fullText.substring(0, charIdx);
+        l2d.textContent = shown;
+
+        if (charIdx === fullText.length) {
+          const pauseTime = stepIdx === steps.length - 1 ? 4000 : 2000;
+          timer = setTimeout(() => { deleting = true; tick(); }, pauseTime);
+          return;
         }
+        timer = setTimeout(tick, 80 + Math.random() * 40);
       } else {
-        const nextText = fullText.substring(0, displayText.length - 1);
-        setDisplayText(nextText);
+        charIdx--;
+        l2d.textContent = fullText.substring(0, charIdx);
 
-        if (nextText === '') {
-          setIsDeleting(false);
-          setStepIndex((prev) => (prev + 1) % steps.length);
-        } else {
-          timer = setTimeout(tick, 30);
+        if (charIdx === 0) {
+          deleting = false;
+          stepIdx = (stepIdx + 1) % steps.length;
+          l1.textContent = steps[stepIdx].line1;
+          l2p.textContent = steps[stepIdx].line2;
+          timer = setTimeout(tick, 400);
+          return;
         }
+        timer = setTimeout(tick, 30);
       }
     };
 
-    timer = setTimeout(tick, isDeleting ? 30 : 80);
+    l1.textContent = steps[0].line1;
+    l2p.textContent = steps[0].line2;
+    timer = setTimeout(tick, 600);
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, stepIndex, steps]);
+  }, [minimizeEffects, steps]);
 
   return (
     <div ref={heroRef} className="relative w-full h-full min-h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
@@ -165,13 +178,13 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               </span>
               {/* Visible animated text — absolute overlay */}
               <span className="absolute inset-0">
-                <span className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                  {steps[stepIndex].line1}
+                <span ref={line1Ref} className="block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
+                  {steps[0].line1}
                 </span>
                 <span className="relative block whitespace-normal lg:whitespace-nowrap text-[2.5rem] min-[400px]:text-[3rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[3.25rem] xl:text-[3.75rem] lg:leading-[1.1] xl:leading-[1.05]">
-                  <span className="invisible" aria-hidden="true">{steps[stepIndex].line2}</span>
+                  <span ref={line2PlaceholderRef} className="invisible" aria-hidden="true">{steps[0].line2}</span>
                   <span className="absolute left-0 top-0 text-bg">
-                    {displayText}
+                    <span ref={line2DisplayRef}></span>
                     <span className="text-bg ml-1 font-extralight select-none animate-pulse">|</span>
                   </span>
                 </span>
