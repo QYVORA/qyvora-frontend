@@ -9,6 +9,7 @@ import SEO from '@/shared/components/SEO';
 import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
 import api from '@/core/services/api';
 import { MyCoursesSkeleton } from '@/features/student/components/StudentSkeletons';
+import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
 
 const STORAGE_KEY = 'qyvora_course_progress';
 
@@ -98,200 +99,199 @@ const MyCoursesPage: React.FC = () => {
   }).length;
   const overallPct = totalCourses > 0 ? Math.round((completedCourses / totalCourses) * 100) : 0;
 
+  const continuePath = useMemo(() => {
+    const inProgress = availableCourses.find((c) => {
+      const p = courseProgress[c.id];
+      return p && p.completed > 0 && p.completed < p.total;
+    });
+    if (inProgress) {
+      const p = courseProgress[inProgress.id];
+      return `/dashboard/courses/${inProgress.id}?lesson=${p?.lastLesson || 0}`;
+    }
+    if (availableCourses.length > 0) {
+      return `/dashboard/courses/${availableCourses[0].id}`;
+    }
+    return '/courses';
+  }, [availableCourses, courseProgress]);
+
+  const filterTabs = useMemo(() => [
+    { id: 'all', label: 'All', count: totalCourses },
+    { id: 'in-progress', label: 'In Progress', count: inProgressCourses },
+    { id: 'completed', label: 'Completed', count: completedCourses },
+  ], [totalCourses, inProgressCourses, completedCourses]);
+
   return (
     <div className="bg-bg min-h-screen">
       <SEO title="My Courses" description="Your purchased courses." />
 
       <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
 
-            {/* Header */}
-            <div className="mb-8">
-              <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-text-muted">
-                <span className="font-black uppercase tracking-widest text-accent">Dashboard</span>
-              </div>
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-                <div>
-                  <h1 className="mb-2 text-4xl font-black text-text-primary md:text-5xl lg:text-6xl">
-                    My <span className="text-accent">Courses</span>
-                  </h1>
-                  <p className="text-sm text-text-muted">Continue learning where you left off.</p>
-                </div>
-                <Link
-                  to="/courses"
-                  className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
-                >
-                  Browse Courses <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-            </div>
+        <LearningOverviewCard
+          icon={<GraduationCap className="w-6 h-6 text-bg" />}
+          title="My Courses"
+          description="Continue learning where you left off. Track your progress across all enrolled courses."
+          stats={[
+            { label: 'Enrolled', value: totalCourses },
+            { label: 'In Progress', value: inProgressCourses },
+            { label: 'Completed', value: completedCourses },
+          ]}
+          action={{
+            label: totalCourses > 0 ? 'Continue Learning' : 'Browse Courses',
+            to: continuePath,
+          }}
+          progress={overallPct}
+        />
 
-            {/* Search + Tabs */}
-            {!loading && availableCourses.length > 0 && (
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="relative flex-1 min-w-[200px] max-w-sm">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search my courses..."
-                    aria-label="Search my courses"
-                    className="w-full bg-bg-elevated border border-border rounded-xl pl-9 pr-4 py-2 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
-                  />
-                </div>
-                <div className="flex items-center gap-1 bg-bg-elevated rounded-xl p-1 border border-border" role="tablist" aria-label="Course filter">
-                  {(['all', 'in-progress', 'completed'] as CourseTab[]).map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      role="tab"
-                      aria-selected={activeTab === tab}
-                      className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
-                        activeTab === tab ? 'bg-accent text-bg' : 'text-text-muted hover:text-accent'
-                      }`}
-                    >
-                      {tab === 'all' ? 'All' : tab === 'in-progress' ? 'In Progress' : 'Completed'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+        {!loading && availableCourses.length > 0 && (
+          <LearningFilterStrip
+            filters={filterTabs}
+            activeFilter={activeTab}
+            onFilterChange={(id) => setActiveTab(id as CourseTab)}
+          />
+        )}
 
-            {/* Loading */}
-            {loading && <MyCoursesSkeleton />}
+        {!loading && availableCourses.length > 0 && (
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search my courses..."
+              aria-label="Search my courses"
+              className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
+            />
+          </div>
+        )}
 
-            {/* Available courses */}
-            {!loading && filteredAvailable.length > 0 && (
-              <div className="mb-12">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  {filteredAvailable.map((course, i) => {
-                    const category = getCategoryById(course.categoryId);
-                    const progress = courseProgress[course.id];
-                    const pct = progress ? Math.round((progress.completed / progress.total) * 100) : 0;
-                    const canResume = progress && progress.completed > 0 && progress.completed < progress.total;
-                    const isComplete = progress && progress.completed >= progress.total;
-                    return (
-                      <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
-                        <Link
-                          to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
-                          className="group block overflow-hidden rounded-2xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
-                        >
-                          <div className="p-5 space-y-3">
-                            <div className="flex items-center justify-between">
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
-                                {category?.name}
-                              </span>
-                              <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
-                                <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
-                              </span>
-                            </div>
-                            <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
-                              {course.title}
-                            </h3>
-                            <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
-                              {course.description}
-                            </p>
+        {loading && <MyCoursesSkeleton />}
 
-                            <div className="space-y-1.5">
-                              <div className="flex items-center justify-between">
-                                <span className="text-[9px] font-mono text-text-muted">
-                                  {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
-                                </span>
-                                <span className="text-[9px] font-mono text-accent">{pct}%</span>
-                              </div>
-                              <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
-                                <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
-                              </div>
-                            </div>
+        {!loading && filteredAvailable.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {filteredAvailable.map((course, i) => {
+              const category = getCategoryById(course.categoryId);
+              const progress = courseProgress[course.id];
+              const pct = progress ? Math.round((progress.completed / progress.total) * 100) : 0;
+              const canResume = progress && progress.completed > 0 && progress.completed < progress.total;
+              const isComplete = progress && progress.completed >= progress.total;
+              return (
+                <ScrollReveal key={course.id} direction="up" amount={0.1} delay={i * 0.05}>
+                  <Link
+                    to={`/dashboard/courses/${course.id}${canResume ? `?lesson=${progress.lastLesson}` : ''}`}
+                    className="group block overflow-hidden rounded-2xl border border-border/70 bg-bg-card transition-all hover:border-accent/30 hover:scale-[1.01]"
+                  >
+                    <div className="p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                          {category?.name}
+                        </span>
+                        <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
+                          <Clock className="h-3 w-3" /> {course.estimatedMinutes} min
+                        </span>
+                      </div>
+                      <h3 className="text-base font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
+                        {course.title}
+                      </h3>
+                      <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
+                        {course.description}
+                      </p>
 
-                            <div className="pt-1">
-                              {isComplete ? (
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
-                                  <CheckCircle2 className="h-3 w-3" /> Completed
-                                </span>
-                              ) : canResume ? (
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                                  <Play className="h-3 w-3" /> Continue Lesson {progress.lastLesson + 1} <ArrowRight className="h-3 w-3" />
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                                  <BarChart3 className="h-3 w-3" /> Start Learning <ArrowRight className="h-3 w-3" />
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* No results */}
-            {!loading && availableCourses.length > 0 && filteredAvailable.length === 0 && (
-              <div className="text-center py-16 space-y-3">
-                <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
-                <p className="text-text-muted text-sm">No courses match your current filter.</p>
-                <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline">
-                  Clear filters
-                </button>
-              </div>
-            )}
-
-            {/* Locked courses */}
-            {!loading && lockedCourses.length > 0 && (
-              <div>
-                <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
-                  Locked Courses
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  {lockedCourses.map((course, i) => {
-                    const category = getCategoryById(course.categoryId);
-                    return (
-                      <div
-                        key={course.id}
-                        className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card/50 opacity-60"
-                      >
-                        <div className="p-5 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
-                              {category?.name}
-                            </span>
-                            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
-                              <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
-                            </span>
-                          </div>
-                           <h3 className="text-base font-black text-text-muted leading-tight break-words">
-                             {course.title}
-                           </h3>
-                          <Link
-                            to={`/courses/${course.id}`}
-                            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
-                          >
-                            View Details <ArrowRight className="h-3 w-3" />
-                          </Link>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-mono text-text-muted">
+                            {progress?.completed || 0}/{progress?.total || course.lessons.length} lessons
+                          </span>
+                          <span className="text-[9px] font-mono text-accent">{pct}%</span>
+                        </div>
+                        <div className="h-1.5 bg-bg-elevated rounded-full overflow-hidden">
+                          <div className="h-full bg-accent transition-all duration-700" style={{ width: `${pct}%` }} />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
-            {/* Empty state */}
-            {!loading && availableCourses.length === 0 && (
-              <div className="text-center py-20 space-y-4">
-                <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
-                <p className="text-text-muted">You haven't unlocked any courses yet.</p>
-                <Link
-                  to="/courses"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
-                >
-                  Browse Courses <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-            )}
+                      <div className="pt-1">
+                        {isComplete ? (
+                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
+                            <CheckCircle2 className="h-3 w-3" /> Completed
+                          </span>
+                        ) : canResume ? (
+                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
+                            <Play className="h-3 w-3" /> Continue Lesson {progress.lastLesson + 1} <ArrowRight className="h-3 w-3" />
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
+                            <BarChart3 className="h-3 w-3" /> Start Learning <ArrowRight className="h-3 w-3" />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        )}
+
+        {!loading && availableCourses.length > 0 && filteredAvailable.length === 0 && (
+          <div className="text-center py-16 space-y-3">
+            <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
+            <p className="text-text-muted text-sm">No courses match your current filter.</p>
+            <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline">
+              Clear filters
+            </button>
+          </div>
+        )}
+
+        {!loading && lockedCourses.length > 0 && (
+          <div>
+            <h2 className="text-sm font-black text-text-muted uppercase tracking-widest mb-4">
+              Locked Courses
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {lockedCourses.map((course) => {
+                const category = getCategoryById(course.categoryId);
+                return (
+                  <div
+                    key={course.id}
+                    className="group block overflow-hidden rounded-2xl border border-border/60 bg-bg-card/50 opacity-60"
+                  >
+                    <div className="p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
+                          {category?.name}
+                        </span>
+                        <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
+                          <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
+                        </span>
+                      </div>
+                       <h3 className="text-base font-black text-text-muted leading-tight break-words">
+                         {course.title}
+                       </h3>
+                      <Link
+                        to={`/courses/${course.id}`}
+                        className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent hover:gap-2 transition-all"
+                      >
+                        View Details <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {!loading && availableCourses.length === 0 && (
+          <div className="text-center py-20 space-y-4">
+            <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
+            <p className="text-text-muted">You haven't unlocked any courses yet.</p>
+            <Link
+              to="/courses"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+            >
+              Browse Courses <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
