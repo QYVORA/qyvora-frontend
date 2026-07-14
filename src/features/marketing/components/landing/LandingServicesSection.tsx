@@ -61,107 +61,131 @@ const LandingServicesSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-2 md:mb-6 shrink-0"
+            className="mb-3 md:mb-5 shrink-0"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary">
               <IconShield size={12} /> Enterprise Services
             </span>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-3">
-              Penetration <span className="text-text-secondary">Testing</span>
-            </h2>
-            <p className="text-xs md:text-sm text-text-secondary max-w-xl">
-              Structured security assessments for web applications, APIs, and infrastructure. Report-driven, remediation-focused.
-            </p>
           </motion.div>
 
-          {/* Featured layout: Supporting cards left, featured card right */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 md:gap-6 flex-1">
-            {/* Supporting cards — stacked vertically, 2 columns */}
-            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
-              {supporting.map((service, idx) => (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="group relative rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 hover:border-accent/30">
-                    <div className="p-3 sm:p-4 lg:p-5 shrink-0">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{service.subtitle}</span>
-                      <div className="flex items-end justify-between mb-1.5">
-                        <h3 className="text-lg lg:text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
-                        <span className="text-xs sm:text-sm font-black text-accent px-2.5 py-1 rounded-lg bg-bg-elevated border border-border/30">
-                          {service.price}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-3 sm:p-4 lg:p-5 pt-0">
-                      <ul className="space-y-2">
-                        {service.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2.5">
-                            <IconCheck size={16} className="text-accent mt-0.5 shrink-0" />
-                            <span className="text-xs text-text-secondary leading-relaxed">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <button
-                        onClick={() => openServiceRequestModal(service.tier)}
-                        className="mt-3 sm:mt-5 w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30 shrink-0"
-                      >
-                        Request Assessment
-                        <IconArrowRight size={12} />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Featured card — Standard tier, takes 3 columns */}
+          {/* Bento grid: 4 columns on desktop — same structure as pillars */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-4 flex-1 auto-rows-fr">
+            {/* Featured card — Standard tier, 2 cols, 2 rows */}
             <motion.div
-              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-3"
+              transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-2 lg:row-span-2"
             >
-              <div className="group relative rounded-2xl border border-border/50 bg-bg-card transition-all duration-300 hover:border-accent/30 shadow-lg">
-                {/* Top accent bar */}
-                <div className="h-1 w-full bg-accent shrink-0" />
-
-                <div className="p-4 sm:p-5 lg:p-6 shrink-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{featured.subtitle}</span>
-                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
-                      <Sparkles className="w-2.5 h-2.5" /> Most Popular
-                    </span>
-                  </div>
-                  <div className="flex items-end justify-between mb-1.5">
-                    <h3 className="text-2xl lg:text-3xl font-black text-text-primary tracking-tight">{featured.tier}</h3>
-                    <span className="text-base lg:text-lg font-black text-accent px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl bg-bg-elevated border border-border/30">
-                      {featured.price}
-                    </span>
-                  </div>
+              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="flex items-center gap-2 mb-3 sm:mb-6">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{featured.subtitle}</span>
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
+                    <Sparkles className="w-2.5 h-2.5" /> Most Popular
+                  </span>
                 </div>
 
-                <div className="p-4 sm:p-5 lg:p-6 pt-0">
-                  <ul className="space-y-2.5">
-                    {featured.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <IconCheck size={18} className="text-accent mt-0.5 shrink-0" />
-                        <span className="text-xs sm:text-sm text-text-secondary leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-text-primary tracking-tighter leading-none mb-3">
+                  {featured.tier}
+                </h3>
+                <span className="text-base lg:text-lg font-black text-accent mb-3 sm:mb-6">
+                  {featured.price}
+                </span>
+
+                <ul className="space-y-2.5 mb-3 sm:mb-6 flex-1">
+                  {featured.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <IconCheck size={18} className="text-accent mt-0.5 shrink-0" />
+                      <span className="text-xs sm:text-sm text-text-secondary leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto flex items-center gap-3">
                   <button
                     onClick={() => openServiceRequestModal(featured.tier)}
-                    className="mt-4 sm:mt-5 w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30 text-base shrink-0"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all active:scale-[0.98]"
                   >
                     <IconShield size={14} />
                     Request Assessment
                     <IconArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Basic — top right, 2 cols */}
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-2"
+            >
+              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[0].subtitle}</span>
+                <div className="flex items-end justify-between mb-2 sm:mb-3">
+                  <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[0].tier}</h3>
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-accent/20 bg-accent/10 text-accent">
+                    {supporting[0].price}
+                  </span>
+                </div>
+
+                <ul className="space-y-2 flex-1">
+                  {supporting[0].features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <IconCheck size={16} className="text-accent mt-0.5 shrink-0" />
+                      <span className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto pt-2 sm:pt-3">
+                  <button
+                    onClick={() => openServiceRequestModal(supporting[0].tier)}
+                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
+                  >
+                    Request Assessment
+                    <IconArrowRight size={12} />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Employee Bootcamp — bottom right, 2 cols */}
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-2"
+            >
+              <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[1].subtitle}</span>
+                <div className="flex items-end justify-between mb-2 sm:mb-3">
+                  <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[1].tier}</h3>
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-accent/20 bg-accent/10 text-accent">
+                    {supporting[1].price}
+                  </span>
+                </div>
+
+                <ul className="space-y-2 flex-1">
+                  {supporting[1].features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <IconCheck size={16} className="text-accent mt-0.5 shrink-0" />
+                      <span className="text-[10px] sm:text-[11px] text-text-muted leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto pt-2 sm:pt-3">
+                  <button
+                    onClick={() => openServiceRequestModal(supporting[1].tier)}
+                    className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
+                  >
+                    Request Assessment
+                    <IconArrowRight size={12} />
                   </button>
                 </div>
               </div>

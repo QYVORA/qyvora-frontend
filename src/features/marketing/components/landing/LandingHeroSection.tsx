@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import { lazy, Suspense } from 'react';
@@ -28,6 +28,15 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   const { constrainedDevice, isMobile } = useAdaptiveUi();
   const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const rawGlobeScale = isMobile ? 0.75 : 1.0;
+  const globeScaleValue = useTransform(scrollYProgress, [0, 1], [rawGlobeScale, 2.5]);
+  const globeOpacityValue = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.8, 0]);
+
   const line1Ref = React.useRef<HTMLSpanElement>(null);
   const line2DisplayRef = React.useRef<HTMLSpanElement>(null);
   const line2PlaceholderRef = React.useRef<HTMLSpanElement>(null);
@@ -44,8 +53,6 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     if (constrainedDevice) return [0.45, -0.45, 0];
     return [0.9, -0.7, 0];
   }, [isMobile, constrainedDevice]);
-
-  const globeScale = isMobile ? 0.75 : 1.0;
 
   React.useEffect(() => {
     if (minimizeEffects) return;
@@ -112,17 +119,19 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
         <HeroGridAnimation reduced={minimizeEffects} />
       </div>
 
-      {/* ── Globe - positioned absolutely behind text ── */}
+      {/* ── Globe - positioned absolutely behind text, expands + fades on scroll ── */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.93 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        style={
+          minimizeEffects
+            ? { opacity: 1, scale: 1 }
+            : { opacity: globeOpacityValue, scale: globeScaleValue }
+        }
         className="absolute inset-0 z-[1] flex items-end justify-end"
       >
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
             <Suspense fallback={null}>
-              <HackerGlobe scale={globeScale} offset={globeOffset} />
+              <HackerGlobe scale={rawGlobeScale} offset={globeOffset} />
             </Suspense>
           </ErrorBoundary>
         </div>

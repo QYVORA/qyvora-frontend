@@ -139,7 +139,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 6. Services — dark */}
-      <section id="services" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="services" className="relative w-full min-h-dvh md:min-h-dvh">
         <LandingServicesSection />
       </section>
 

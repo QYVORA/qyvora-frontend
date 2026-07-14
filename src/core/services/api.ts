@@ -310,6 +310,14 @@ api.interceptors.response.use(
           headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
         });
         maybeUpdateAuthArtifacts(meRes.data, meRes.headers as Record<string, unknown>);
+        // If /auth/me didn't return a valid CSRF token, our in-memory token is
+        // stale. Clear it so the retry won't send a header — the backend will
+        // see both sides empty and seed a fresh token.
+        const serverCsrf =
+          typeof meRes.data === 'object' && meRes.data !== null
+            ? String((meRes.data as Record<string, unknown>).csrfToken || '')
+            : '';
+        if (!serverCsrf) persistCsrfToken('');
         if (csrfToken) {
           const headers = ensureHeaders(original);
           if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
