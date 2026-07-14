@@ -9,6 +9,7 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 import ScrollReveal from '@/shared/components/ScrollReveal';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const SERVICES_DATA = [
   {
@@ -71,7 +72,8 @@ const ServicesPage: React.FC = () => {
 
       {/* ══ HERO ══ */}
       <section className="relative bg-accent overflow-hidden h-dvh flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
+        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
               <IconShield className="w-4 h-4" />

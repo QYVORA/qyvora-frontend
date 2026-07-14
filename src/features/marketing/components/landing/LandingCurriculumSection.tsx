@@ -3,6 +3,7 @@ import { Layers, Clock } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const LandingCurriculumSection: React.FC = () => {
   const phasesWithRoomCount = PHASES.map((phase, idx) => {
@@ -13,8 +14,9 @@ const LandingCurriculumSection: React.FC = () => {
   });
 
   return (
-    <div className="w-full px-4 md:px-12 lg:px-16 bg-accent" data-nav-invert>
-      <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+    <div className="relative w-full px-4 md:px-12 lg:px-16 bg-accent overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+      <div className="relative z-10 w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32 md:order-2 md:text-right md:self-start">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-4">
             What You'll <span className="text-bg/70">Learn</span>

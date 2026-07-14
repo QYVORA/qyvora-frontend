@@ -22,6 +22,7 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { ResearchersCarouselSection } from './ResearchersCarouselSection';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const capabilities = [
   { id: 'research', title: 'Offensive Security Research', icon: IconSearch, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
@@ -93,7 +94,8 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full h-dvh flex flex-col bg-accent" data-nav-invert>
+    <div className="relative w-full h-dvh flex flex-col bg-accent overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
         <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
           <div className="flex flex-col items-start w-full space-y-5">

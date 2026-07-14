@@ -9,6 +9,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { Footer } from '@/shared/components/layout';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 import { COURSES, COURSE_CATEGORIES, getCategoryById } from '@/features/student/data/courses/courseData';
@@ -77,6 +78,7 @@ const CoursesPage: React.FC = () => {
 
       {/* ─── HERO: Full viewport ─── */}
       <section className="relative w-full h-dvh flex flex-col pt-[72px] overflow-hidden bg-accent" data-nav-invert>
+        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
         <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />

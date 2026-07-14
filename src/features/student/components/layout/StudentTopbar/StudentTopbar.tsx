@@ -1,10 +1,8 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import {
-  LogOut, Loader2,
+  LogOut,
 } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
-import AnimatedIcon from '@/shared/components/AnimatedIcon';
-import { gsap } from '@/shared/utils/gsapSetup';
 import {
   IconDashboard,
   IconBootcamp,
@@ -157,18 +155,6 @@ const StudentTopbar = () => {
     return () => { mounted = false; };
   }, [user?.uid]);
   useEffect(() => { setMoreOpen(false); setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
-
-  const bellRef = useRef<HTMLSpanElement>(null);
-  const prevUnreadRef = useRef(unreadCount);
-  useEffect(() => {
-    if (unreadCount > prevUnreadRef.current && bellRef.current) {
-      gsap.fromTo(bellRef.current,
-        { rotation: 0 },
-        { rotation: 15, duration: 0.1, yoyo: true, repeat: 5, ease: 'power1.inOut', transformOrigin: '50% 100%' }
-      );
-    }
-    prevUnreadRef.current = unreadCount;
-  }, [unreadCount]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -363,21 +349,9 @@ const StudentTopbar = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all ${
-                      active
-                        ? 'text-accent'
-                        : 'text-text-muted hover:text-text-primary'
-                    }`}
+                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
                   >
-                    {active ? (
-                      <AnimatedIcon trigger="mount" duration={0.6}>
-                        <item.icon size={30} className="text-accent" />
-                      </AnimatedIcon>
-                    ) : (
-                      <AnimatedIcon trigger="hover" duration={0.5}>
-                        <item.icon size={30} />
-                      </AnimatedIcon>
-                    )}
+                    <item.icon size={30} />
                     <span>{item.label}</span>
                     {active && (
                       <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
@@ -387,8 +361,8 @@ const StudentTopbar = () => {
               })}
             </nav>
 
-            {/* Right actions */}
-            <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+            {/* Right actions — hidden on mobile, bottom nav handles those */}
+            <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
               {/* CP Coin badge */}
               <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5">
                 <CpLogo className="w-5 h-5" />
@@ -400,7 +374,7 @@ const StudentTopbar = () => {
                   className="relative p-3 md:p-3.5 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
                   aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
                 >
-                  <span ref={bellRef} className="inline-flex"><IconNotification size={28} /></span>
+                  <span className="inline-flex"><IconNotification size={28} /></span>
                   {unreadCount > 0 && (
                     <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
                       {unreadCount > 9 ? '9+' : unreadCount}

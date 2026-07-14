@@ -12,6 +12,7 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import ErrorBoundary from '@/shared/components/ErrorBoundary';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -62,6 +63,9 @@ const ZeroDayMarketPage: React.FC = () => {
 
       {/* ── HERO ── */}
       <section id="zd-hero" className="relative w-full h-dvh overflow-hidden bg-accent" data-nav-invert>
+
+        {/* ── Grid background ── */}
+        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
 
         {/* ── Globe ── */}
         <div className="absolute inset-0 z-0 flex items-end justify-end">
@@ -268,8 +272,9 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative w-full h-dvh flex items-center bg-accent" data-nav-invert>
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
+      <section className="relative w-full h-dvh flex items-center bg-accent overflow-hidden" data-nav-invert>
+        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
           <ScrollReveal direction="up">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-4">
               <IconLock className="h-3 w-3" /> Classified Access

@@ -1,71 +1,83 @@
 /**
  * QYVORA Icons - Export Index
- * Central export point for all custom icons
+ * Re-exports lucide-react icons aliased to the legacy Icon* names.
+ * All existing `import { IconXxx } from '@/shared/components/icons'` paths continue to work.
  */
 
-// Export all individual icon components
 export {
-  IconDashboard,
-  IconBootcamp,
-  IconLabs,
-  IconCTF,
-  IconChallenges,
-  IconLeaderboard,
-  IconMarketplace,
-  IconWallet,
-  IconProfile,
-  IconSettings,
-  IconLock,
-  IconUnlock,
-  IconTerminal,
-  IconShield,
-  IconBadge,
-  IconCode,
-  IconHack,
-  IconNetwork,
-  IconTarget,
-  IconBinary,
-  IconExploit,
-  IconBug,
-  IconCertificate,
-  IconClock,
-  IconRank,
-  IconFire,
-  IconNotification,
-  IconSearch,
-  IconStar,
-  IconHeart,
-  IconDownload,
-  IconUpload,
-  IconPlay,
-  IconStop,
-  IconCheck,
-  IconX,
-  IconPlus,
-  IconMinus,
-  IconArrowRight,
-  IconArrowLeft,
-  IconChevronRight,
-  IconMenu,
-  IconEye,
-  IconEyeOff,
-  IconInfo,
-  IconWarning,
-} from './QyvoraIcons';
+  // Layout / navigation
+  LayoutGrid as IconDashboard,
+  Menu as IconMenu,
 
-// Export the icon map and types
-export { default as QyvoraIcons } from './QyvoraIcons';
-export type { IconProps } from './QyvoraIcons';
+  // Domain
+  Terminal as IconBootcamp,
+  FlaskConical as IconLabs,
+  Flag as IconCTF,
+  CircuitBoard as IconChallenges,
+  Trophy as IconLeaderboard,
+  ShoppingBag as IconMarketplace,
+  Coins as IconWallet,
+  User as IconProfile,
+  Settings as IconSettings,
 
+  // Security
+  Lock as IconLock,
+  Unlock as IconUnlock,
+  Shield as IconShield,
+  Award as IconBadge,
+  Target as IconTarget,
+  Award as IconCertificate,
+
+  // Dev / terminal
+  Terminal as IconTerminal,
+  FileCode as IconCode,
+  Skull as IconHack,
+  Network as IconNetwork,
+  Binary as IconBinary,
+  Bug as IconExploit,
+  Bug as IconBug,
+
+  // Status / time
+  Clock as IconClock,
+  BarChart3 as IconRank,
+  FlameKindling as IconFire,
+  Bell as IconNotification,
+
+  // Actions
+  Search as IconSearch,
+  Star as IconStar,
+  Heart as IconHeart,
+  Download as IconDownload,
+  Upload as IconUpload,
+  Play as IconPlay,
+  Square as IconStop,
+
+  // Feedback
+  CheckCircle as IconCheck,
+  XCircle as IconX,
+  PlusCircle as IconPlus,
+  Minus as IconMinus,
+  Info as IconInfo,
+  AlertTriangle as IconWarning,
+
+  // Navigation arrows
+  ArrowRight as IconArrowRight,
+  ArrowLeft as IconArrowLeft,
+  ChevronRight as IconChevronRight,
+
+  // Visibility
+  Eye as IconEye,
+  EyeOff as IconEyeOff,
+} from 'lucide-react';
+
+import type { LucideProps } from 'lucide-react';
+
+/** Backward-compatible alias — all custom icons used this interface. */
+export type IconProps = LucideProps;
+
+// Brand icons (custom SVGs — lucide lacks full brand coverage)
 export { default as BrandXIcon } from './BrandXIcon';
 export { default as BrandWhatsAppIcon } from './BrandWhatsAppIcon';
 export { default as BrandLinkedinIcon } from './BrandLinkedinIcon';
 export { default as BrandYoutubeIcon } from './BrandYoutubeIcon';
 export { default as BrandGithubIcon } from './BrandGithubIcon';
-
-// Export showcase components (for development/documentation)
-export {
-  StudentDashboardNav,
-  InlineIconExample,
-  AllIconsShowcase,
-} from './IconShowcase';

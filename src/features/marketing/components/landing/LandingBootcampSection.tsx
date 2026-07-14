@@ -5,6 +5,7 @@ import { IconArrowRight, IconShield } from '@/shared/components/icons';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import DotMapBackground from '@/shared/components/DotMapBackground';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const CYCLE_MS = 4500;
 
@@ -28,8 +29,9 @@ const LandingBootcampSection: React.FC = () => {
   const visible = [featured, ...others];
 
   return (
-    <div className="bg-accent h-full flex flex-col overflow-hidden" data-nav-invert>
-      <div className="w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
+    <div className="relative bg-accent h-full flex flex-col overflow-hidden" data-nav-invert>
+      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
           <motion.div

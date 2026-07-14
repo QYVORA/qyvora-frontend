@@ -7,6 +7,7 @@ import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 type ContactType = 'student' | 'business';
 
@@ -44,7 +45,8 @@ const ContactPage: React.FC = () => {
       />
 
       <section className="relative bg-accent overflow-hidden min-h-[85svh] md:min-h-screen pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
+        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
               <Mail className="w-4 h-4" />

@@ -9,6 +9,7 @@ import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/com
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
 
@@ -194,6 +195,9 @@ const LeaderboardPage = () => {
 
       {/* ══ HERO SECTION ══ */}
       <div className="relative w-full h-dvh flex flex-col overflow-hidden bg-accent" data-nav-invert>
+
+        {/* ── Grid background ── */}
+        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
 
         {/* ── Globe ── */}
         <div className="absolute inset-0 z-0 flex items-end justify-end">
