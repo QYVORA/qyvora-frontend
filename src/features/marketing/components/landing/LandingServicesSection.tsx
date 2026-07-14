@@ -79,6 +79,7 @@ const LandingServicesSection: React.FC = () => {
               className="lg:col-span-2 lg:row-span-2"
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-4 sm:p-8 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                 <div className="flex items-center gap-2 mb-3 sm:mb-6">
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{featured.subtitle}</span>
                   <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
@@ -124,6 +125,7 @@ const LandingServicesSection: React.FC = () => {
               className="lg:col-span-2"
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[0].subtitle}</span>
                 <div className="flex items-end justify-between mb-2 sm:mb-3">
                   <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[0].tier}</h3>
@@ -162,6 +164,7 @@ const LandingServicesSection: React.FC = () => {
               className="lg:col-span-2"
             >
               <div className="group relative h-full rounded-2xl border border-border/30 bg-bg-card p-3 sm:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col">
+                <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                 <span className="text-[9px] font-black uppercase tracking-widest text-text-muted block mb-1">{supporting[1].subtitle}</span>
                 <div className="flex items-end justify-between mb-2 sm:mb-3">
                   <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight">{supporting[1].tier}</h3>
