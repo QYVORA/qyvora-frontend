@@ -126,7 +126,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             ? { opacity: 1, scale: 1 }
             : { opacity: globeOpacityValue, scale: globeScaleValue }
         }
-        className="absolute inset-0 z-[1] flex items-end justify-end"
+        className="absolute inset-0 z-[1] hidden md:flex items-end justify-end overflow-hidden"
       >
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
