@@ -9,6 +9,7 @@ import {
   NETWORK_CONFIG, DEVICES, STUDENT_IP, STUDENT_MAC, STUDENT_HOSTNAME,
   getHiddenIps,
 } from '@/features/student/data/fakeNetwork';
+import { useSimulation } from '@/features/student/components/simulations';
 import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
 
 const SubnetBadge = () => (
@@ -38,25 +39,31 @@ const OSIcon = ({ os }: { os: string }) => {
   return <Monitor className="w-3.5 h-3.5 text-text-muted" />;
 };
 
-const DeviceRow = ({ device, index }: { device: typeof DEVICES[0]; index: number }) => (
-  <div className="grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border border-border/30 bg-bg-card hover:border-accent/20 transition-all items-center">
+const DeviceRow = ({ device, index, discovered }: { device: typeof DEVICES[0]; index: number; discovered: boolean }) => (
+  <div className={`grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border transition-all items-center ${
+    discovered ? 'border-border/30 bg-bg-card hover:border-accent/20' : 'border-border/10 bg-bg-card/50 opacity-50'
+  }`}>
     <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
     <div className="flex items-center gap-2 min-w-0">
       <OSIcon os={device.os} />
       <div className="min-w-0">
-        <p className="text-xs font-bold text-text-primary truncate">{device.hostname}</p>
-        <p className="text-[9px] font-mono text-text-muted truncate">{device.vendor}</p>
+        <p className="text-xs font-bold text-text-primary truncate">{discovered ? device.hostname : 'Unknown Device'}</p>
+        <p className="text-[9px] font-mono text-text-muted truncate">{discovered ? device.vendor : '???'}</p>
       </div>
     </div>
-    <p className="text-xs font-mono font-bold text-text-primary text-right md:text-left">{device.ip}</p>
+    <p className="text-xs font-mono font-bold text-text-primary text-right md:text-left">
+      {discovered ? device.ip : '?.?.?.?'}
+    </p>
   </div>
 );
 
 const NetworksPage = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const { discovery } = useSimulation();
 
   const knownDevices = DEVICES.filter(d => d.discoverable && !d.hidden);
   const hiddenCount = getHiddenIps().length;
+  const discoveredCount = knownDevices.filter(d => discovery.discoveredIps.includes(d.ip)).length;
 
   return (
     <div className="bg-bg min-h-full">
@@ -123,7 +130,11 @@ const NetworksPage = () => {
         <div className="flex flex-wrap items-center gap-4 text-[10px] font-mono">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-            <span className="text-text-muted">Known hosts ({knownDevices.length})</span>
+            <span className="text-text-muted">Discovered ({discoveredCount}/{knownDevices.length})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-text-muted/30" />
+            <span className="text-text-muted">Undiscovered ({knownDevices.length - discoveredCount})</span>
           </div>
           {hiddenCount > 0 && (
             <div className="flex items-center gap-1.5">
@@ -140,16 +151,24 @@ const NetworksPage = () => {
           <span className="text-right">IP</span>
         </div>
 
-        {/* Device rows */}
+        {/* Device rows — only show discovered devices */}
         <div className="space-y-1.5">
-          {knownDevices.length === 0 ? (
+          {discoveredCount === 0 ? (
             <div className="px-4 py-6 text-center text-xs text-text-muted font-mono border border-dashed border-border/40 rounded-xl">
-              No known hosts discovered. Use the terminal to start scanning.
+              No hosts discovered yet. Open the terminal and run <span className="text-accent">nmap -sn 10.0.0.0/24</span> to start scanning.
             </div>
           ) : (
-            knownDevices.map((device, idx) => (
-              <DeviceRow key={device.ip} device={device} index={idx} />
-            ))
+            knownDevices
+              .filter(d => discovery.discoveredIps.includes(d.ip))
+              .map((device, idx) => (
+                <DeviceRow key={device.ip} device={device} index={idx} discovered={true} />
+              ))
+          )}
+          {/* Show placeholders for undiscovered */}
+          {discoveredCount > 0 && discoveredCount < knownDevices.length && (
+            <div className="px-4 py-3 text-center text-[10px] text-text-muted/50 font-mono border border-dashed border-border/20 rounded-xl">
+              {knownDevices.length - discoveredCount} more device(s) to discover
+            </div>
           )}
         </div>
 
