@@ -1,17 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
-import { Mail, Edit3, Activity, ArrowRight, ChevronRight, ChevronDown, Shield, User, Trophy } from 'lucide-react';
+import { Mail, Edit3, Activity, ArrowRight, ChevronDown, Shield, User, Trophy } from 'lucide-react';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import Identicon from '../../../shared/components/Identicon';
-import CpLogo from '../../../shared/components/CpLogo';
 import BootcampBadge from '../../../shared/components/BootcampBadge';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
-import { StreakIcon } from '../../../shared/components';
 import SEO from '../../../shared/components/SEO';
 import { getRoomCoverImage } from '../utils/walkthroughImages';
 import LearningOverviewCard from '../components/learning/LearningOverviewCard';
@@ -105,26 +103,21 @@ const Profile: React.FC = () => {
           } : undefined}
         />
 
-        {/* Meta Row: streak, org, email, actions */}
+        {/* Meta Row: info + actions */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-3">
-            {profileApi?.xpSummary?.streakDays != null && profileApi.xpSummary.streakDays > 0 && (
-              <StreakIcon days={profileApi.xpSummary.streakDays} className="scale-[1.6] origin-left" />
+          <div className="flex flex-wrap items-center gap-4 text-xs text-text-muted">
+            {profileData.organization && (
+              <span className="flex items-center gap-1.5">
+                <Activity className="w-3 h-3 text-accent" /> {profileData.organization}
+              </span>
             )}
-            <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-text-muted">
-              {profileData.organization && (
-                <span className="flex items-center gap-1.5">
-                  <Activity className="w-3 h-3 text-accent" /> {profileData.organization}
-                </span>
-              )}
-              {isOwnProfile && authUser?.email && (
-                <span className="flex items-center gap-1.5">
-                  <Mail className="w-3 h-3 text-accent" /> {authUser.email}
-                </span>
-              )}
-            </div>
+            {isOwnProfile && authUser?.email && (
+              <span className="flex items-center gap-1.5">
+                <Mail className="w-3 h-3 text-accent" /> {authUser.email}
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
             <Link
               to={`/@${profileData.username}`}
               className="btn-secondary !text-xs inline-flex items-center gap-2"
