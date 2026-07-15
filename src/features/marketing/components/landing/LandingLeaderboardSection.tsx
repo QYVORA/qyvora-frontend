@@ -16,9 +16,7 @@ interface LeaderboardEntry {
   bootcampStatus?: string;
 }
 
-const GRID_COLS = 8;
-const GRID_ROWS = 5;
-const TOTAL_CELLS = GRID_COLS * GRID_ROWS;
+const GRID_COLS = 7;
 
 const TOP_THREE_BORDER = [
   'border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.35)]',
@@ -38,7 +36,7 @@ const LandingLeaderboardSection = () => {
     let cancelled = false;
     const fetchTop = async () => {
       try {
-        const res = await api.get('/public/leaderboard?period=all&limit=20');
+        const res = await api.get('/public/leaderboard?period=all&limit=35');
         const data = res.data;
         if (data.success && !cancelled) {
           setEntries(data.entries || []);
@@ -56,7 +54,7 @@ const LandingLeaderboardSection = () => {
 
   const gridCells = useMemo(() => {
     const cells: { entry: LeaderboardEntry | null; idx: number }[] = [];
-    for (let i = 0; i < TOTAL_CELLS; i++) {
+    for (let i = 0; i < 35; i++) {
       cells.push({
         entry: i < entries.length ? entries[i] : null,
         idx: i,
@@ -66,127 +64,126 @@ const LandingLeaderboardSection = () => {
   }, [entries]);
 
   return (
-    <div className="w-full px-4 md:px-12 lg:px-16">
-      <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-        {/* Left column — title + description */}
-        <div className="md:w-[35%] lg:w-[38%] mb-8 md:mb-0 md:sticky md:top-32">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            Top <span className="text-accent">Operators</span>
-          </h2>
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mb-6">
-            Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.
-          </p>
+    <div className="relative w-full h-full flex items-center overflow-hidden">
+      {/* Left column — title + description */}
+      <div className="relative z-10 w-full lg:w-[42%] xl:w-[38%] px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
+          Top <span className="text-accent">Operators</span>
+        </h2>
+        <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mb-6">
+          Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.
+        </p>
 
-          {total > 0 && (
-            <Link
-              to="/leaderboard"
-              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:brightness-110 transition-all active:scale-95"
-            >
-              View Full Leaderboard ({total}) <IconArrowRight size={14} />
-            </Link>
-          )}
-        </div>
+        {total > 0 && (
+          <Link
+            to="/leaderboard"
+            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:brightness-110 transition-all active:scale-95"
+          >
+            View Full Leaderboard ({total}) <IconArrowRight size={14} />
+          </Link>
+        )}
+      </div>
 
-        {/* Right column — identicon grid */}
-        <div className="md:w-[65%] lg:w-[62%]">
-          {loading ? (
+      {/* Right column — identicon grid (Athens-style) */}
+      <div
+        className="absolute inset-0 lg:left-[42%] xl:left-[38%] z-0 overflow-hidden pointer-events-none"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 10%, rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.2) 35%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.7) 65%, rgba(0,0,0,0.9) 80%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 10%, rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.2) 35%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.7) 65%, rgba(0,0,0,0.9) 80%, black 100%)',
+        }}
+      >
+        {loading ? (
+          <div
+            className="grid h-full gap-[3px] p-4"
+            style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+          >
+            {Array.from({ length: 35 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse"
+                style={{ animationDelay: `${i * 40}ms` }}
+              />
+            ))}
+          </div>
+        ) : entries.length === 0 ? null : (
+          <ScrollReveal direction="right" amount={0.05}>
             <div
-              className="grid gap-[3px]"
+              className="pointer-events-auto grid h-full gap-[3px] p-4"
               style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
             >
-              {Array.from({ length: TOTAL_CELLS }).map((_, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse"
-                  style={{ animationDelay: `${i * 30}ms` }}
-                />
-              ))}
-            </div>
-          ) : entries.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center">
-              <p className="text-sm text-text-muted font-bold">No operators ranked yet</p>
-              <p className="text-xs text-text-muted mt-1">Complete bootcamp rooms to earn CP and appear here.</p>
-            </div>
-          ) : (
-            <ScrollReveal direction="up" amount={0.1}>
-              <div
-                className="grid gap-[3px]"
-                style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
-              >
-                {gridCells.map(({ entry, idx }) => {
-                  const isFilled = entry !== null;
-                  const isTopThree = isFilled && entry!.rank <= 3;
-                  const isHovered = hoveredIdx === idx;
+              {gridCells.map(({ entry, idx }) => {
+                const isFilled = entry !== null;
+                const isTopThree = isFilled && entry!.rank <= 3;
+                const isHovered = hoveredIdx === idx;
 
-                  if (!isFilled) {
-                    return (
-                      <div
-                        key={idx}
-                        className="aspect-square rounded-lg bg-bg/60 border border-border/10"
-                      />
-                    );
-                  }
-
+                if (!isFilled) {
                   return (
-                    <Link
+                    <div
                       key={idx}
-                      to={`/@${entry!.hackerHandle}`}
-                      onMouseEnter={() => setHoveredIdx(idx)}
-                      onMouseLeave={() => setHoveredIdx(null)}
+                      className="aspect-square rounded-lg bg-bg/40 border border-border/5"
+                    />
+                  );
+                }
+
+                return (
+                  <Link
+                    key={idx}
+                    to={`/@${entry!.hackerHandle}`}
+                    onMouseEnter={() => setHoveredIdx(idx)}
+                    onMouseLeave={() => setHoveredIdx(null)}
+                    className={[
+                      'aspect-square rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
+                      'hover:z-10 hover:scale-110 hover:shadow-lg',
+                      isTopThree
+                        ? TOP_THREE_BORDER[entry!.rank - 1]
+                        : 'border-accent/10 hover:border-accent/40',
+                      isHovered && 'z-10 scale-110 shadow-lg',
+                    ].join(' ')}
+                  >
+                    {/* Identicon fill */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-bg-card">
+                      <Identicon value={entry!.userId} size={80} />
+                    </div>
+
+                    {/* Rank badge */}
+                    <div className="absolute top-0.5 left-0.5 z-10">
+                      {isTopThree ? (
+                        <Medal className={`w-3 h-3 ${TOP_THREE_RANK[entry!.rank - 1]}`} />
+                      ) : (
+                        <span className="text-[8px] font-mono font-bold text-text-muted/50 bg-bg/80 rounded px-0.5 leading-none">
+                          {entry!.rank}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Hover overlay */}
+                    <div
                       className={[
-                        'aspect-square rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
-                        'hover:z-10 hover:scale-110 hover:shadow-lg',
-                        isTopThree
-                          ? TOP_THREE_BORDER[entry!.rank - 1]
-                          : 'border-accent/15 hover:border-accent/40',
-                        isHovered && 'z-10 scale-110 shadow-lg',
+                        'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg/95 via-bg/80 to-transparent',
+                        'flex flex-col items-center justify-end p-1 pt-4',
+                        'transition-opacity duration-200',
+                        isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
                       ].join(' ')}
                     >
-                      {/* Identicon fill */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-bg-card">
-                        <Identicon value={entry!.userId} size={80} />
-                      </div>
+                      <span className="text-[9px] font-black text-text-primary truncate w-full text-center leading-tight">
+                        {entry!.hackerHandle || entry!.name || 'Anon'}
+                      </span>
+                      <span className="text-[8px] font-mono font-bold text-accent">
+                        {Number(entry!.cp).toLocaleString()} CP
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </ScrollReveal>
+        )}
+      </div>
 
-                      {/* Rank badge */}
-                      <div className="absolute top-0.5 left-0.5 z-10">
-                        {isTopThree ? (
-                          <Medal className={`w-3 h-3 ${TOP_THREE_RANK[entry!.rank - 1]}`} />
-                        ) : (
-                          <span className="text-[8px] font-mono font-bold text-text-muted/50 bg-bg/80 rounded px-0.5 leading-none">
-                            {entry!.rank}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Hover overlay */}
-                      <div
-                        className={[
-                          'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg/95 via-bg/80 to-transparent',
-                          'flex flex-col items-center justify-end p-1 pt-4',
-                          'transition-opacity duration-200',
-                          isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
-                        ].join(' ')}
-                      >
-                        <span className="text-[9px] font-black text-text-primary truncate w-full text-center leading-tight">
-                          {entry!.hackerHandle || entry!.name || 'Anon'}
-                        </span>
-                        <span className="text-[8px] font-mono font-bold text-accent">
-                          {Number(entry!.cp).toLocaleString()} CP
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
-                <IconShield size={12} className="text-accent" />
-                CP verified on QYVORA Chain
-              </div>
-            </ScrollReveal>
-          )}
-        </div>
+      {/* Footer badge */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
+        <IconShield size={12} className="text-accent" />
+        CP verified on QYVORA Chain
       </div>
     </div>
   );
