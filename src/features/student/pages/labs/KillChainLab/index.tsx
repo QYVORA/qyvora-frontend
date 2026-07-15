@@ -69,6 +69,11 @@ const KillChainLab = () => {
   const currentPhase = activeScenario?.phases[activePhaseIndex] ?? null;
   const allPhasesCompleted = activeScenario && completedPhases.size === activeScenario.phases.length;
 
+  const simulations = useMemo(
+    () => activeScenario ? createKillChainSimulations(activeScenario.phases.map(p => ({ name: p.name, commands: p.commands.map(c => ({ command: c.command, output: c.output })) }))) : [],
+    [activeScenario],
+  );
+
   if (!activeScenario) return (
     <div className="bg-bg min-h-full">
       <SEO title="Kill Chain Lab" description="Execute full penetration test simulations." />
@@ -101,11 +106,6 @@ const KillChainLab = () => {
         <div className="mt-10"><RelatedContent {...getRelatedContentForLab('killchain')} title="Continue This Topic" /></div>
       </div>
     </div>
-  );
-
-  const simulations = useMemo(
-    () => activeScenario ? createKillChainSimulations(activeScenario.phases.map(p => ({ name: p.name, commands: p.commands.map(c => ({ command: c.command, output: c.output })) }))) : [],
-    [activeScenario],
   );
 
   return (

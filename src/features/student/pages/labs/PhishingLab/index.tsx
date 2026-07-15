@@ -72,6 +72,11 @@ const PhishingLab = () => {
 
   const allStepsCompleted = activeChallenge && completedSteps.size >= 3;
 
+  const simulations = useMemo(
+    () => activeChallenge ? createPhishingSimulations(activeChallenge.emails) : [],
+    [activeChallenge],
+  );
+
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
@@ -129,11 +134,6 @@ const PhishingLab = () => {
       commandInstruction: undefined,
     },
   ];
-
-  const simulations = useMemo(
-    () => activeChallenge ? createPhishingSimulations(activeChallenge.emails) : [],
-    [activeChallenge],
-  );
 
   return (
     <div className="bg-bg min-h-full">

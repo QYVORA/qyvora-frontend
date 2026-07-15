@@ -72,6 +72,11 @@ const TrafficLab = () => {
 
   const allStepsCompleted = activeChallenge && completedSteps.size >= activeChallenge.analysisTasks.length;
 
+  const simulations = useMemo(
+    () => activeChallenge ? createTrafficSimulations(activeChallenge.packets) : [],
+    [activeChallenge],
+  );
+
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
@@ -122,11 +127,6 @@ const TrafficLab = () => {
   const packetSummary = activeChallenge.packets.map(p =>
     `#${p.number} ${p.time}  ${p.source} -> ${p.destination}  ${p.protocol}  ${p.info}`
   ).join('\n');
-
-  const simulations = useMemo(
-    () => activeChallenge ? createTrafficSimulations(activeChallenge.packets) : [],
-    [activeChallenge],
-  );
 
   return (
     <div className="bg-bg min-h-full">

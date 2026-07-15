@@ -72,6 +72,11 @@ const ProxyLab = () => {
 
   const allStepsCompleted = activeScenario && completedSteps.size >= activeScenario.tasks.length;
 
+  const simulations = useMemo(
+    () => activeScenario ? createProxySimulations(activeScenario.requests) : [],
+    [activeScenario],
+  );
+
   if (!activeScenario) {
     return (
       <div className="bg-bg min-h-full">
@@ -122,11 +127,6 @@ const ProxyLab = () => {
   const requestInstructions = activeScenario.requests.map(r =>
     `[${r.method}] ${r.url} — Status: ${r.response.statusCode}`
   ).join('\n');
-
-  const simulations = useMemo(
-    () => activeScenario ? createProxySimulations(activeScenario.requests) : [],
-    [activeScenario],
-  );
 
   return (
     <div className="bg-bg min-h-full">

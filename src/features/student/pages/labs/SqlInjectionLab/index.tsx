@@ -72,6 +72,11 @@ const SqlInjectionLab = () => {
 
   const allStepsCompleted = activeTarget && completedSteps.size >= activeTarget.steps.length;
 
+  const simulations = useMemo(
+    () => activeTarget ? createSqlInjectionSimulations(activeTarget.tables, activeTarget.url) : [],
+    [activeTarget],
+  );
+
   if (!activeTarget) {
     return (
       <div className="bg-bg min-h-full">
@@ -112,11 +117,6 @@ const SqlInjectionLab = () => {
       </div>
     );
   }
-
-  const simulations = useMemo(
-    () => activeTarget ? createSqlInjectionSimulations(activeTarget.tables, activeTarget.url) : [],
-    [activeTarget],
-  );
 
   return (
     <div className="bg-bg min-h-full">
