@@ -114,7 +114,7 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                       {isCompleted ? <IconCheck size={20} /> : isLocked ? <IconLock size={20} /> : <Icon className="w-5 h-5" />}
                     </div>
                   )}
-                  <div className="w-7 h-7 rounded-md bg-accent flex items-center justify-center shrink-0">
+                   <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center shrink-0">
                     <span className="text-xs font-black text-bg">{String(idx + 1).padStart(2, '0')}</span>
                   </div>
                 </div>
@@ -129,11 +129,11 @@ const LearningPathMap: React.FC<LearningPathMapProps> = ({ overview, bootcampId,
                 <div className="mt-auto flex items-center gap-2">
                   {!isLocked && (
                     <>
-                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
-                        <Layers className="w-3 h-3 text-accent" />
-                        <span className="text-[10px] font-bold text-white">{totalRooms} rooms</span>
-                      </div>
-                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-white/10">
+                       <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/10">
+                         <Layers className="w-3 h-3 text-accent" />
+                         <span className="text-[10px] font-bold text-white">{totalRooms} rooms</span>
+                       </div>
+                       <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/10">
                         <IconClock size={12} className="text-accent" />
                         <span className="text-[10px] font-bold text-white">{totalSteps} steps</span>
                       </div>

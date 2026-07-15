@@ -24,7 +24,7 @@ const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, cate
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block relative rounded-2xl border border-border bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)]"
+      className="group block relative rounded-2xl border border-border/30 bg-bg-card overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_30px_var(--color-accent-glow)]"
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden bg-bg-elevated">
@@ -68,7 +68,7 @@ const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, cate
             {categories.slice(0, 3).map((cat) => (
               <span
                 key={cat}
-                className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md border border-accent/20 bg-accent-dim text-accent"
+                className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-lg border border-accent/20 bg-accent-dim text-accent"
               >
                 {cat}
               </span>

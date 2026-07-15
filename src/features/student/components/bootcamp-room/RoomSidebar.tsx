@@ -53,7 +53,7 @@ const RoomSidebar: React.FC<Props> = ({
                     if (!isLocked) { onNavigate(phase.id, room.id); onMobileClose(); }
                   }}
                   disabled={isLocked}
-                  className={`w-full flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
+                  className={`w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${
                     isActive
                       ? 'text-accent font-semibold bg-accent-dim/20'
                       : isLocked

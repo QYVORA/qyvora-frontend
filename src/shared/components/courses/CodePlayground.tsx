@@ -91,7 +91,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
           <IconTerminal size={16} className="text-accent" />
           <span className="text-[10px] font-mono font-black uppercase tracking-widest text-text-muted">{title}</span>
           {language && (
-            <span className="px-1.5 py-0.5 rounded-sm bg-accent/10 text-[9px] font-mono font-black text-accent uppercase">{language}</span>
+            <span className="px-1.5 py-0.5 rounded-lg bg-accent/10 text-[9px] font-mono font-black text-accent uppercase">{language}</span>
           )}
         </div>
         <div className="flex items-center gap-2">

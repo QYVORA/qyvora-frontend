@@ -169,7 +169,7 @@ const TradingChart: React.FC<TradingChartProps> = ({ candles, range }) => {
           <div key={label} className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted">
             {line
               ? <span className="w-5 h-0.5 inline-block rounded" style={{ background: color }} />
-              : <span className="w-3 h-3 inline-block rounded-sm opacity-85" style={{ background: color }} />
+               : <span className="w-3 h-3 inline-block rounded-lg opacity-85" style={{ background: color }} />
             }
             {label}
           </div>
