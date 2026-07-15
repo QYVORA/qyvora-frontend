@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
 import StudentTopbar from '@/features/student/components/layout/StudentTopbar';
+import Sidebar from '@/features/student/components/layout/Sidebar';
 import InstallBanner from '@/features/student/components/layout/InstallBanner';
 import UsernameChangeModal from '@/features/student/components/UsernameChangeModal';
 import ConsentBanner from '@/shared/components/ConsentBanner';
@@ -40,6 +41,7 @@ const StudentLayout = () => {
 
   return (
     <div className="bg-bg min-h-screen">
+      <Sidebar />
       <StudentTopbar />
       <div id="main-content" className={`${TOPBAR_H} md:pb-6`}>
         <Outlet />
