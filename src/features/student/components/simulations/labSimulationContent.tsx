@@ -5,6 +5,18 @@ import type {
   HttpRequest, HttpResponse, SqlTable, ApiEndpoint, PasswordHash,
   TopologyNode, TopologyLink, OsintModule, TimelineEvent,
 } from './types';
+import { BrowserSimulation } from './BrowserSimulation';
+import { HttpInspector } from './HttpInspector';
+import { EmailClient } from './EmailClient';
+import { PacketViewer } from './PacketViewer';
+import { FileExplorer } from './FileExplorer';
+import { LogViewer } from './LogViewer';
+import { SqlConsole } from './SqlConsole';
+import { ApiExplorer } from './ApiExplorer';
+import { PasswordCracker } from './PasswordCracker';
+import { NetworkTopology } from './NetworkTopology';
+import { OsintDashboard } from './OsintDashboard';
+import { TimelineInvestigation } from './TimelineInvestigation';
 
 export type SimulationContent = { type: SimulationType; content: React.ReactNode };
 
@@ -16,49 +28,36 @@ export function createSqlInjectionSimulations(
   return [
     {
       type: 'sql-console',
-      content: React.createElement(
-        // Lazy import to avoid circular deps — inline the component
-        (() => {
-          const { SqlConsole } = require('./SqlConsole');
-          return SqlConsole;
-        })(),
-        {
-          tables,
-          predefinedQueries: [
-            { query: `SELECT * FROM ${tables[0]?.name || 'users'} LIMIT 10;`, description: 'View all records' },
-            { query: `SELECT column_name FROM information_schema.columns WHERE table_name='${tables[0]?.name || 'users'}';`, description: 'Enumerate columns' },
-            { query: `' UNION SELECT NULL,NULL,NULL--`, description: 'Test UNION injection' },
-          ],
-        },
-      ),
+      content: React.createElement(SqlConsole, {
+        tables,
+        predefinedQueries: [
+          { query: `SELECT * FROM ${tables[0]?.name || 'users'} LIMIT 10;`, description: 'View all records' },
+          { query: `SELECT column_name FROM information_schema.columns WHERE table_name='${tables[0]?.name || 'users'}';`, description: 'Enumerate columns' },
+          { query: `' UNION SELECT NULL,NULL,NULL--`, description: 'Test UNION injection' },
+        ],
+      }),
     },
     {
       type: 'browser',
-      content: React.createElement(
-        (() => {
-          const { BrowserSimulation } = require('./BrowserSimulation');
-          return BrowserSimulation;
-        })(),
-        {
-          pages: [
-            {
-              url: targetUrl,
-              title: 'Target Application',
-              html: `<html><head><title>Target</title></head><body><h1>Login Form</h1><form method="POST"><input name="username" placeholder="Username"/><input name="password" type="password" placeholder="Password"/><button type="submit">Login</button></form><p class="hint" style="display:none">Hint: Try SQL injection in the username field</p></body></html>`,
-              headers: { 'Content-Type': 'text/html', 'Server': 'nginx/1.24.0', 'X-Powered-By': 'PHP/8.2' },
-              cookies: [],
-            },
-            {
-              url: `${targetUrl}?error=1`,
-              title: 'Error Page',
-              html: `<html><head><title>Error</title></head><body><h1>Login Failed</h1><pre>SQL syntax error near '' LIMIT 1' at line 1</pre><p>Debug mode is enabled.</p></body></html>`,
-              headers: { 'Content-Type': 'text/html', 'Server': 'nginx/1.24.0' },
-              cookies: [],
-            },
-          ],
-          defaultUrl: targetUrl,
-        },
-      ),
+      content: React.createElement(BrowserSimulation, {
+        pages: [
+          {
+            url: targetUrl,
+            title: 'Target Application',
+            html: `<html><head><title>Target</title></head><body><h1>Login Form</h1><form method="POST"><input name="username" placeholder="Username"/><input name="password" type="password" placeholder="Password"/><button type="submit">Login</button></form><p class="hint" style="display:none">Hint: Try SQL injection in the username field</p></body></html>`,
+            headers: { 'Content-Type': 'text/html', 'Server': 'nginx/1.24.0', 'X-Powered-By': 'PHP/8.2' },
+            cookies: [],
+          },
+          {
+            url: `${targetUrl}?error=1`,
+            title: 'Error Page',
+            html: `<html><head><title>Error</title></head><body><h1>Login Failed</h1><pre>SQL syntax error near '' LIMIT 1' at line 1</pre><p>Debug mode is enabled.</p></body></html>`,
+            headers: { 'Content-Type': 'text/html', 'Server': 'nginx/1.24.0' },
+            cookies: [],
+          },
+        ],
+        defaultUrl: targetUrl,
+      }),
     },
   ];
 }
@@ -70,74 +69,56 @@ export function createWebExploitationSimulations(
   return [
     {
       type: 'browser',
-      content: React.createElement(
-        (() => {
-          const { BrowserSimulation } = require('./BrowserSimulation');
-          return BrowserSimulation;
-        })(),
-        {
-          pages: [
-            {
-              url: baseUrl,
-              title: 'Vulnerable Web App',
-              html: `<html><head><title>Corp Portal</title></head><body><h1>QYVORA Corp Portal</h1><nav><a href="${baseUrl}/login">Login</a> <a href="${baseUrl}/search">Search</a> <a href="${baseUrl}/admin">Admin</a></nav><p>Welcome to the corporate portal.</p></body></html>`,
-              headers: { 'Content-Type': 'text/html', 'Server': 'Apache/2.4.52', 'X-Powered-By': 'Express' },
-              cookies: [],
-            },
-            {
-              url: `${baseUrl}/login`,
-              title: 'Login',
-              html: `<html><head><title>Login</title></head><body><h1>Login</h1><form method="POST"><input name="user"/><input name="pass" type="password"/><button>Login</button></form><p class="debug" style="color:red;display:none">DEBUG: SELECT * FROM users WHERE user='...' AND pass='...'</p></body></html>`,
-              headers: { 'Content-Type': 'text/html' },
-              cookies: [],
-            },
-            {
-              url: `${baseUrl}/search`,
-              title: 'Search',
-              html: `<html><head><title>Search</title></head><body><h1>Search Employees</h1><input id="q" placeholder="Search..."/><div id="results"></div><script>document.getElementById('q').addEventListener('keyup',function(){document.getElementById('results').innerHTML='<p>Results for: '+this.value+'</p>';});</script></body></html>`,
-              headers: { 'Content-Type': 'text/html' },
-              cookies: [],
-              hiddenElements: [{ type: 'comment', content: 'TODO: Sanitize user input', location: 'search.html' }],
-            },
-          ],
-          defaultUrl: baseUrl,
-        },
-      ),
+      content: React.createElement(BrowserSimulation, {
+        pages: [
+          {
+            url: baseUrl,
+            title: 'Vulnerable Web App',
+            html: `<html><head><title>Corp Portal</title></head><body><h1>QYVORA Corp Portal</h1><nav><a href="${baseUrl}/login">Login</a> <a href="${baseUrl}/search">Search</a> <a href="${baseUrl}/admin">Admin</a></nav><p>Welcome to the corporate portal.</p></body></html>`,
+            headers: { 'Content-Type': 'text/html', 'Server': 'Apache/2.4.52', 'X-Powered-By': 'Express' },
+            cookies: [],
+          },
+          {
+            url: `${baseUrl}/login`,
+            title: 'Login',
+            html: `<html><head><title>Login</title></head><body><h1>Login</h1><form method="POST"><input name="user"/><input name="pass" type="password"/><button>Login</button></form><p class="debug" style="color:red;display:none">DEBUG: SELECT * FROM users WHERE user='...' AND pass='...'</p></body></html>`,
+            headers: { 'Content-Type': 'text/html' },
+            cookies: [],
+          },
+          {
+            url: `${baseUrl}/search`,
+            title: 'Search',
+            html: `<html><head><title>Search</title></head><body><h1>Search Employees</h1><input id="q" placeholder="Search..."/><div id="results"></div><script>document.getElementById('q').addEventListener('keyup',function(){document.getElementById('results').innerHTML='<p>Results for: '+this.value+'</p>';});</script></body></html>`,
+            headers: { 'Content-Type': 'text/html' },
+            cookies: [],
+            hiddenElements: [{ type: 'comment', content: 'TODO: Sanitize user input', location: 'search.html' }],
+          },
+        ],
+        defaultUrl: baseUrl,
+      }),
     },
     {
       type: 'http-inspector',
-      content: React.createElement(
-        (() => {
-          const { HttpInspector } = require('./HttpInspector');
-          return HttpInspector;
-        })(),
-        {
-          requests: [
-            makeHttpRequest('GET', `${baseUrl}/`, 200, 'text/html', '<html>...</html>'),
-            makeHttpRequest('POST', `${baseUrl}/login`, 302, 'text/html', 'Redirect to /dashboard'),
-            makeHttpRequest('GET', `${baseUrl}/admin`, 403, 'text/html', 'Forbidden'),
-            makeHttpRequest('GET', `${baseUrl}/api/users`, 200, 'application/json', '{"users":[{"id":1,"name":"admin","role":"admin"}]}'),
-          ],
-        },
-      ),
+      content: React.createElement(HttpInspector, {
+        requests: [
+          makeHttpRequest('GET', `${baseUrl}/`, 200, 'text/html', '<html>...</html>'),
+          makeHttpRequest('POST', `${baseUrl}/login`, 302, 'text/html', 'Redirect to /dashboard'),
+          makeHttpRequest('GET', `${baseUrl}/admin`, 403, 'text/html', 'Forbidden'),
+          makeHttpRequest('GET', `${baseUrl}/api/users`, 200, 'application/json', '{"users":[{"id":1,"name":"admin","role":"admin"}]}'),
+        ],
+      }),
     },
     {
       type: 'api-explorer',
-      content: React.createElement(
-        (() => {
-          const { ApiExplorer } = require('./ApiExplorer');
-          return ApiExplorer;
-        })(),
-        {
-          endpoints: [
-            { id: 'list-users', method: 'GET' as const, path: '/api/users', description: 'List all users', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"users":[{"id":1,"name":"admin","role":"admin","email":"admin@corp.local"},{"id":2,"name":"jdoe","role":"user","email":"jdoe@corp.local"}]}' } },
-            { id: 'get-user', method: 'GET' as const, path: '/api/users/1', description: 'Get user by ID', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"id":1,"name":"admin","role":"admin","email":"admin@corp.local","lastLogin":"2024-01-15T10:30:00Z"}' } },
-            { id: 'create-user', method: 'POST' as const, path: '/api/users', description: 'Create new user', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer <token>' }, body: '{"name":"newuser","role":"user","email":"new@corp.local"}', response: { statusCode: 201, headers: { 'Content-Type': 'application/json' }, body: '{"id":3,"name":"newuser","role":"user","email":"new@corp.local","created":"2024-01-15T12:00:00Z"}' } },
-            { id: 'delete-user', method: 'DELETE' as const, path: '/api/users/2', description: 'Delete user', headers: { 'Authorization': 'Bearer <token>' }, response: { statusCode: 204, headers: {}, body: '' } },
-            { id: 'admin-config', method: 'GET' as const, path: '/api/admin/config', description: 'Admin config (forbidden for non-admin)', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 403, headers: { 'Content-Type': 'application/json' }, body: '{"error":"Forbidden","message":"Admin access required"}' } },
-          ],
-        },
-      ),
+      content: React.createElement(ApiExplorer, {
+        endpoints: [
+          { id: 'list-users', method: 'GET' as const, path: '/api/users', description: 'List all users', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"users":[{"id":1,"name":"admin","role":"admin","email":"admin@corp.local"},{"id":2,"name":"jdoe","role":"user","email":"jdoe@corp.local"}]}' } },
+          { id: 'get-user', method: 'GET' as const, path: '/api/users/1', description: 'Get user by ID', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"id":1,"name":"admin","role":"admin","email":"admin@corp.local","lastLogin":"2024-01-15T10:30:00Z"}' } },
+          { id: 'create-user', method: 'POST' as const, path: '/api/users', description: 'Create new user', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer <token>' }, body: '{"name":"newuser","role":"user","email":"new@corp.local"}', response: { statusCode: 201, headers: { 'Content-Type': 'application/json' }, body: '{"id":3,"name":"newuser","role":"user","email":"new@corp.local","created":"2024-01-15T12:00:00Z"}' } },
+          { id: 'delete-user', method: 'DELETE' as const, path: '/api/users/2', description: 'Delete user', headers: { 'Authorization': 'Bearer <token>' }, response: { statusCode: 204, headers: {}, body: '' } },
+          { id: 'admin-config', method: 'GET' as const, path: '/api/admin/config', description: 'Admin config (forbidden for non-admin)', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 403, headers: { 'Content-Type': 'application/json' }, body: '{"error":"Forbidden","message":"Admin access required"}' } },
+        ],
+      }),
     },
   ];
 }
@@ -182,13 +163,7 @@ export function createPhishingSimulations(
   return [
     {
       type: 'email-client',
-      content: React.createElement(
-        (() => {
-          const { EmailClient } = require('./EmailClient');
-          return EmailClient;
-        })(),
-        { emails: simEmails },
-      ),
+      content: React.createElement(EmailClient, { emails: simEmails }),
     },
   ];
 }
@@ -207,29 +182,17 @@ export function createPasswordSimulations(
   return [
     {
       type: 'password-cracker',
-      content: React.createElement(
-        (() => {
-          const { PasswordCracker } = require('./PasswordCracker');
-          return PasswordCracker;
-        })(),
-        { hashes, wordlist },
-      ),
+      content: React.createElement(PasswordCracker, { hashes, wordlist }),
     },
     {
       type: 'file-explorer',
-      content: React.createElement(
-        (() => {
-          const { FileExplorer } = require('./FileExplorer');
-          return FileExplorer;
-        })(),
-        {
-          files: [
-            { name: 'hashes.txt', type: 'file' as const, size: hashContent.length, modified: '2024-01-15', permissions: '-rw-r--r--', content: hashContent, mimeType: 'text/plain' },
-            { name: 'rockyou.txt', type: 'file' as const, size: 139920860, modified: '2023-10-01', permissions: '-rw-r--r--', mimeType: 'text/plain' },
-            { name: 'shadow.bak', type: 'file' as const, size: 1247, modified: '2024-01-10', permissions: '-rw-r-----', content: 'root:$6$rounds=656000$...:19000:0:99999:7:::\nkali:$6$rounds=656000$...:19000:0:99999:7:::', mimeType: 'text/plain' },
-          ],
-        },
-      ),
+      content: React.createElement(FileExplorer, {
+        files: [
+          { name: 'hashes.txt', type: 'file' as const, size: hashContent.length, modified: '2024-01-15', permissions: '-rw-r--r--', content: hashContent, mimeType: 'text/plain' },
+          { name: 'rockyou.txt', type: 'file' as const, size: 139920860, modified: '2023-10-01', permissions: '-rw-r--r--', mimeType: 'text/plain' },
+          { name: 'shadow.bak', type: 'file' as const, size: 1247, modified: '2024-01-10', permissions: '-rw-r-----', content: 'root:$6$rounds=656000$...:19000:0:99999:7:::\nkali:$6$rounds=656000$...:19000:0:99999:7:::', mimeType: 'text/plain' },
+        ],
+      }),
     },
   ];
 }
@@ -250,34 +213,22 @@ export function createOsintSimulations(
   return [
     {
       type: 'osint-dashboard',
-      content: React.createElement(
-        (() => {
-          const { OsintDashboard } = require('./OsintDashboard');
-          return OsintDashboard;
-        })(),
-        { modules },
-      ),
+      content: React.createElement(OsintDashboard, { modules }),
     },
     {
       type: 'browser',
-      content: React.createElement(
-        (() => {
-          const { BrowserSimulation } = require('./BrowserSimulation');
-          return BrowserSimulation;
-        })(),
-        {
-          pages: [
-            {
-              url: `https://www.${targetName.toLowerCase().replace(/\s/g, '')}.com`,
-              title: `${targetName} - Official Website`,
-              html: `<html><head><title>${targetName}</title></head><body><h1>${targetName}</h1><p>Corporate website</p><a href="/about">About</a> <a href="/careers">Careers</a> <a href="/contact">Contact</a></body></html>`,
-              headers: { 'Content-Type': 'text/html', 'Server': 'cloudflare' },
-              cookies: [],
-            },
-          ],
-          defaultUrl: `https://www.${targetName.toLowerCase().replace(/\s/g, '')}.com`,
-        },
-      ),
+      content: React.createElement(BrowserSimulation, {
+        pages: [
+          {
+            url: `https://www.${targetName.toLowerCase().replace(/\s/g, '')}.com`,
+            title: `${targetName} - Official Website`,
+            html: `<html><head><title>${targetName}</title></head><body><h1>${targetName}</h1><p>Corporate website</p><a href="/about">About</a> <a href="/careers">Careers</a> <a href="/contact">Contact</a></body></html>`,
+            headers: { 'Content-Type': 'text/html', 'Server': 'cloudflare' },
+            cookies: [],
+          },
+        ],
+        defaultUrl: `https://www.${targetName.toLowerCase().replace(/\s/g, '')}.com`,
+      }),
     },
   ];
 }
@@ -305,36 +256,24 @@ export function createTrafficSimulations(
   return [
     {
       type: 'packet-viewer',
-      content: React.createElement(
-        (() => {
-          const { PacketViewer } = require('./PacketViewer');
-          return PacketViewer;
-        })(),
-        { packets: simPackets },
-      ),
+      content: React.createElement(PacketViewer, { packets: simPackets }),
     },
     {
       type: 'log-viewer',
-      content: React.createElement(
-        (() => {
-          const { LogViewer } = require('./LogViewer');
-          return LogViewer;
-        })(),
-        {
-          sources: [
-            {
-              id: 'capture',
-              label: 'Packet Capture',
-              entries: packets.slice(0, 20).map(p => ({
-                timestamp: p.time,
-                level: 'info' as const,
-                source: p.source,
-                message: `${p.protocol} ${p.info}`,
-              })),
-            },
-          ],
-        },
-      ),
+      content: React.createElement(LogViewer, {
+        sources: [
+          {
+            id: 'capture',
+            label: 'Packet Capture',
+            entries: packets.slice(0, 20).map(p => ({
+              timestamp: p.time,
+              level: 'info' as const,
+              source: p.source,
+              message: `${p.protocol} ${p.info}`,
+            })),
+          },
+        ],
+      }),
     },
   ];
 }
@@ -365,13 +304,7 @@ export function createProxySimulations(
   return [
     {
       type: 'http-inspector',
-      content: React.createElement(
-        (() => {
-          const { HttpInspector } = require('./HttpInspector');
-          return HttpInspector;
-        })(),
-        { requests: simRequests },
-      ),
+      content: React.createElement(HttpInspector, { requests: simRequests }),
     },
   ];
 }
@@ -402,29 +335,17 @@ export function createWirelessSimulations(
   return [
     {
       type: 'network-topology',
-      content: React.createElement(
-        (() => {
-          const { NetworkTopology } = require('./NetworkTopology');
-          return NetworkTopology;
-        })(),
-        { nodes, links },
-      ),
+      content: React.createElement(NetworkTopology, { nodes, links }),
     },
     {
       type: 'packet-viewer',
-      content: React.createElement(
-        (() => {
-          const { PacketViewer } = require('./PacketViewer');
-          return PacketViewer;
-        })(),
-        {
-          packets: [
-            { number: 1, time: '00:00:01', source: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', destination: 'FF:FF:FF:FF:FF:FF', protocol: '802.11', length: 256, info: 'Beacon frame', flags: 'Beacon' },
-            { number: 2, time: '00:00:02', source: '11:22:33:44:55:66', destination: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', protocol: '802.11', length: 128, info: 'Probe Request', flags: 'Probe' },
-            { number: 3, time: '00:00:03', source: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', destination: '11:22:33:44:55:66', protocol: '802.11', length: 192, info: 'Probe Response', flags: 'Probe' },
-          ],
-        },
-      ),
+      content: React.createElement(PacketViewer, {
+        packets: [
+          { number: 1, time: '00:00:01', source: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', destination: 'FF:FF:FF:FF:FF:FF', protocol: '802.11', length: 256, info: 'Beacon frame', flags: 'Beacon' },
+          { number: 2, time: '00:00:02', source: '11:22:33:44:55:66', destination: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', protocol: '802.11', length: 128, info: 'Probe Request', flags: 'Probe' },
+          { number: 3, time: '00:00:03', source: accessPoints[0]?.bssid || 'AA:BB:CC:DD:EE:FF', destination: '11:22:33:44:55:66', protocol: '802.11', length: 192, info: 'Probe Response', flags: 'Probe' },
+        ],
+      }),
     },
   ];
 }
@@ -447,66 +368,48 @@ export function createKillChainSimulations(
   return [
     {
       type: 'timeline-investigation',
-      content: React.createElement(
-        (() => {
-          const { TimelineInvestigation } = require('./TimelineInvestigation');
-          return TimelineInvestigation;
-        })(),
-        { events: allEvents },
-      ),
+      content: React.createElement(TimelineInvestigation, { events: allEvents }),
     },
     {
       type: 'network-topology',
-      content: React.createElement(
-        (() => {
-          const { NetworkTopology } = require('./NetworkTopology');
-          return NetworkTopology;
-        })(),
-        {
-          nodes: [
-            { id: 'attacker', label: 'Attacker', type: 'workstation' as const, x: 50, y: 150, discovered: true },
-            { id: 'target', label: 'Target Server', type: 'server' as const, x: 350, y: 150, discovered: true },
-            { id: 'firewall', label: 'Firewall', type: 'firewall' as const, x: 200, y: 50, discovered: true },
-            { id: 'db', label: 'Database', type: 'server' as const, x: 350, y: 250, discovered: false },
-          ],
-          links: [
-            { from: 'attacker', to: 'firewall', label: 'recon', discovered: true },
-            { from: 'firewall', to: 'target', label: 'exploit', discovered: true },
-            { from: 'target', to: 'db', label: 'pivot', discovered: false },
-          ],
-        },
-      ),
+      content: React.createElement(NetworkTopology, {
+        nodes: [
+          { id: 'attacker', label: 'Attacker', type: 'workstation' as const, x: 50, y: 150, discovered: true },
+          { id: 'target', label: 'Target Server', type: 'server' as const, x: 350, y: 150, discovered: true },
+          { id: 'firewall', label: 'Firewall', type: 'firewall' as const, x: 200, y: 50, discovered: true },
+          { id: 'db', label: 'Database', type: 'server' as const, x: 350, y: 250, discovered: false },
+        ],
+        links: [
+          { from: 'attacker', to: 'firewall', label: 'recon', discovered: true },
+          { from: 'firewall', to: 'target', label: 'exploit', discovered: true },
+          { from: 'target', to: 'db', label: 'pivot', discovered: false },
+        ],
+      }),
     },
     {
       type: 'log-viewer',
-      content: React.createElement(
-        (() => {
-          const { LogViewer } = require('./LogViewer');
-          return LogViewer;
-        })(),
-        {
-          sources: [
-            {
-              id: 'auth',
-              label: 'Auth Log',
-              entries: [
-                { timestamp: '2024-01-15 10:00:01', level: 'info' as const, source: 'sshd', message: 'Accepted password for kali from 10.0.0.42' },
-                { timestamp: '2024-01-15 10:05:23', level: 'warn' as const, source: 'sudo', message: 'kali : TTY=pts/0 ; PWD=/home/kali ; USER=root ; COMMAND=/usr/bin/apt update' },
-                { timestamp: '2024-01-15 10:12:45', level: 'error' as const, source: 'kernel', message: 'UFW BLOCK IN=eth0 SRC=10.0.0.42 DST=10.0.0.10 PROTO=TCP DPT=4444' },
-              ],
-            },
-            {
-              id: 'web',
-              label: 'Web Server',
-              entries: [
-                { timestamp: '2024-01-15 10:02:15', level: 'info' as const, source: 'nginx', message: 'GET /login HTTP/1.1 200 1234' },
-                { timestamp: "2024-01-15 10:03:22", level: 'warn' as const, source: 'nginx', message: "POST /login HTTP/1.1 302 - ' OR 1=1--" },
-                { timestamp: '2024-01-15 10:08:01', level: 'error' as const, source: 'nginx', message: 'GET /admin HTTP/1.1 403 512' },
-              ],
-            },
-          ],
-        },
-      ),
+      content: React.createElement(LogViewer, {
+        sources: [
+          {
+            id: 'auth',
+            label: 'Auth Log',
+            entries: [
+              { timestamp: '2024-01-15 10:00:01', level: 'info' as const, source: 'sshd', message: 'Accepted password for kali from 10.0.0.42' },
+              { timestamp: '2024-01-15 10:05:23', level: 'warn' as const, source: 'sudo', message: 'kali : TTY=pts/0 ; PWD=/home/kali ; USER=root ; COMMAND=/usr/bin/apt update' },
+              { timestamp: '2024-01-15 10:12:45', level: 'error' as const, source: 'kernel', message: 'UFW BLOCK IN=eth0 SRC=10.0.0.42 DST=10.0.0.10 PROTO=TCP DPT=4444' },
+            ],
+          },
+          {
+            id: 'web',
+            label: 'Web Server',
+            entries: [
+              { timestamp: '2024-01-15 10:02:15', level: 'info' as const, source: 'nginx', message: 'GET /login HTTP/1.1 200 1234' },
+              { timestamp: '2024-01-15 10:03:22', level: 'warn' as const, source: 'nginx', message: "POST /login HTTP/1.1 302 - ' OR 1=1--" },
+              { timestamp: '2024-01-15 10:08:01', level: 'error' as const, source: 'nginx', message: 'GET /admin HTTP/1.1 403 512' },
+            ],
+          },
+        ],
+      }),
     },
   ];
 }
@@ -532,45 +435,33 @@ export function createPrivescSimulations(
   return [
     {
       type: 'file-explorer',
-      content: React.createElement(
-        (() => {
-          const { FileExplorer } = require('./FileExplorer');
-          return FileExplorer;
-        })(),
-        {
-          files: [
-            { name: 'home', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwxr-xr-x', children: files.slice(0, 5) },
-            { name: 'etc', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwxr-xr-x', children: [
-              { name: 'passwd', type: 'file' as const, size: 1247, modified: '2024-01-15', permissions: '-rw-r--r--', content: 'root:x:0:0:root:/root:/bin/bash\nkali:x:1000:1000:kali:/home/kali:/bin/bash', mimeType: 'text/plain' },
-              { name: 'shadow.bak', type: 'file' as const, size: 892, modified: '2024-01-10', permissions: '-rw-r-----', content: 'root:$6$rounds=656000$...:19000:0:99999:7:::', mimeType: 'text/plain' },
-            ] },
-            { name: 'root', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwx------', children: [
-              { name: 'flag.txt', type: 'file' as const, size: 34, modified: '2024-01-15', permissions: '-rwx------', content: 'FLAG{pr1v3sc_4cc3ss_gr4nt3d}', mimeType: 'text/plain' },
-            ] },
-          ],
-        },
-      ),
+      content: React.createElement(FileExplorer, {
+        files: [
+          { name: 'home', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwxr-xr-x', children: files.slice(0, 5) },
+          { name: 'etc', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwxr-xr-x', children: [
+            { name: 'passwd', type: 'file' as const, size: 1247, modified: '2024-01-15', permissions: '-rw-r--r--', content: 'root:x:0:0:root:/root:/bin/bash\nkali:x:1000:1000:kali:/home/kali:/bin/bash', mimeType: 'text/plain' },
+            { name: 'shadow.bak', type: 'file' as const, size: 892, modified: '2024-01-10', permissions: '-rw-r-----', content: 'root:$6$rounds=656000$...:19000:0:99999:7:::', mimeType: 'text/plain' },
+          ] },
+          { name: 'root', type: 'dir' as const, size: 0, modified: '2024-01-15', permissions: 'drwx------', children: [
+            { name: 'flag.txt', type: 'file' as const, size: 34, modified: '2024-01-15', permissions: '-rwx------', content: 'FLAG{pr1v3sc_4cc3ss_gr4nt3d}', mimeType: 'text/plain' },
+          ] },
+        ],
+      }),
     },
     {
       type: 'log-viewer',
-      content: React.createElement(
-        (() => {
-          const { LogViewer } = require('./LogViewer');
-          return LogViewer;
-        })(),
-        {
-          sources: [
-            {
-              id: 'auth',
-              label: 'Auth Log',
-              entries: [
-                { timestamp: '2024-01-15 09:00:01', level: 'info' as const, source: 'sshd', message: 'Accepted password for trainee from 10.0.0.42' },
-                { timestamp: '2024-01-15 09:05:23', level: 'warn' as const, source: 'sudo', message: 'trainee : TTY=pts/0 ; USER=root ; COMMAND=/usr/bin/find / -perm -4000' },
-              ],
-            },
-          ],
-        },
-      ),
+      content: React.createElement(LogViewer, {
+        sources: [
+          {
+            id: 'auth',
+            label: 'Auth Log',
+            entries: [
+              { timestamp: '2024-01-15 09:00:01', level: 'info' as const, source: 'sshd', message: 'Accepted password for trainee from 10.0.0.42' },
+              { timestamp: '2024-01-15 09:05:23', level: 'warn' as const, source: 'sudo', message: 'trainee : TTY=pts/0 ; USER=root ; COMMAND=/usr/bin/find / -perm -4000' },
+            ],
+          },
+        ],
+      }),
     },
   ];
 }
