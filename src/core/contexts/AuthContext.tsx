@@ -51,6 +51,8 @@ interface User {
   onboardingCompletedAt: string | null;
   recoveryTokenAcknowledgedAt: string | null;
   handleNeedsUpdate: boolean;
+  twoFactorEnabled: boolean;
+  preferences?: Record<string, any>;
 }
 
 /**
@@ -97,6 +99,8 @@ interface BackendUser {
   onboardingCompletedAt?: string;
   recoveryTokenAcknowledgedAt?: string;
   handleNeedsUpdate?: boolean;
+  twoFactorEnabled?: boolean;
+  preferences?: Record<string, any>;
 }
 
 // ─── Context creation ─────────────────────────────────────────────────────────
@@ -159,6 +163,8 @@ const toFrontendUser = (backendUser: BackendUser): User => {
     onboardingCompletedAt: backendUser?.onboardingCompletedAt || null,
     recoveryTokenAcknowledgedAt: backendUser?.recoveryTokenAcknowledgedAt || null,
     handleNeedsUpdate: !!backendUser?.handleNeedsUpdate,
+    twoFactorEnabled: !!(backendUser as any)?.twoFactorEnabled,
+    preferences: (backendUser as any)?.preferences || undefined,
   };
 };
 
