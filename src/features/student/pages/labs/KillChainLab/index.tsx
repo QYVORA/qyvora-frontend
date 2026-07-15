@@ -4,7 +4,6 @@ import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthro
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
-import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -93,7 +92,6 @@ const KillChainLab = () => {
                 description={s.description}
                 cpReward={s.cpReward}
                 accentColor="#DC2626"
-                diagramSvg={SCENARIO_DIAGRAMS[s.id]}
                 onStart={() => startScenario(s)}
             />
           ))}

@@ -5,7 +5,6 @@ import { LabConnectButton } from '@/features/student/components/lab/LabConnectBu
 import { WIRELESS_CHALLENGES } from '@/features/student/data/simulations/wireless-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
-import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -101,7 +100,6 @@ const WirelessLab = () => {
                 description={challenge.description}
                 cpReward={challenge.cpReward}
                 accentColor="#F59E0B"
-                diagramSvg={SCENARIO_DIAGRAMS[challenge.id]}
                 onStart={() => startChallenge(challenge)}
               />
             ))}
