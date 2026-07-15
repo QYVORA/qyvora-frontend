@@ -12,6 +12,7 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { extractCpBalance } from '../../../shared/utils/cpBalance';
 import { formatNumber } from '../../../shared/utils/formatNumber';
 import { MarketplaceSkeleton } from '../components/StudentSkeletons';
+import LearningOverviewCard from '../components/learning/LearningOverviewCard';
 
 const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 const PAGE_SIZE = 10;
@@ -120,28 +121,23 @@ const Marketplace: React.FC = () => {
     <div className="bg-bg">
       <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." />
       <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-        <div className="pt-6 pb-16 md:px-6 lg:px-10">
-          <ScrollReveal className="mb-8 flex flex-col justify-between gap-8 md:flex-row md:items-end px-4 md:px-0">
-             <div>
-               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">Zero-Day Vault</div>
-               <h1 className="text-4xl font-black text-text-primary md:text-6xl">Intelligence Market</h1>
-               <p className="mt-2 max-w-lg text-base text-text-muted">High-value research papers, tools, and mission guides for operators.</p>
-             </div>
-             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center flex-wrap max-w-full">
-               {balance !== null && (
-                 <div className="rounded-2xl bg-accent-dim/10 px-6 py-3 inline-flex items-center gap-3 shadow-sm">
-                   <CpLogo className="h-7 w-7 shrink-0" />
-                   <span className="font-mono text-3xl font-black text-text-primary tracking-tighter">{formatNumber(balance)}</span>
-                 </div>
-               )}
-               {tab === 'market' && (
-                 <div className="relative w-full sm:w-auto">
-                   <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vault..." className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
-                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted pointer-events-none" />
-                 </div>
-               )}
-             </div>
-          </ScrollReveal>
+        <div className="pt-6 pb-8 md:px-6 lg:px-10">
+          <LearningOverviewCard
+            icon={<ShoppingBag className="w-6 h-6 text-bg" />}
+            title="Intelligence Market"
+            description="High-value research papers, tools, and mission guides for operators."
+            stats={balance !== null ? [{ label: 'CP Balance', value: formatNumber(balance), accent: true }] : undefined}
+          />
+
+          {/* Search and Tabs */}
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center flex-wrap max-w-full mt-6 px-4 md:px-0">
+            {tab === 'market' && (
+              <div className="relative w-full sm:w-auto">
+                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vault..." className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted pointer-events-none" />
+              </div>
+            )}
+          </div>
 
           {/* Tabs */}
           <div className="flex items-center gap-1 px-4 md:px-0 mb-8">

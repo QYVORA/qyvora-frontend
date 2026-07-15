@@ -6,6 +6,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import SEO from '@/shared/components/SEO';
 import { CompetitiveSkeleton } from '@/features/student/components/StudentSkeletons';
+import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
 
 const PERIODS = [
   { key: 'all',  label: 'All Time'   },
@@ -182,16 +183,12 @@ const CompetitivePage = () => {
 
       <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-black text-text-primary tracking-tight">
-              Competitive <span className="text-accent">Leaderboard</span>
-            </h1>
-            <p className="text-sm text-text-muted font-mono mt-1">
-              {Number(total).toLocaleString()} operators ranked by CyberPoints
-            </p>
-          </div>
-        </div>
+        <LearningOverviewCard
+          icon={<Trophy className="w-6 h-6 text-bg" />}
+          title="Competitive Leaderboard"
+          description={`${Number(total).toLocaleString()} operators ranked by CyberPoints`}
+          stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
+        />
 
         {/* Period tabs */}
         <div className="flex items-center gap-2 flex-wrap">

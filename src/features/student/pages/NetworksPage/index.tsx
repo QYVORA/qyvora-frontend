@@ -9,6 +9,7 @@ import {
   NETWORK_CONFIG, DEVICES, STUDENT_IP, STUDENT_MAC, STUDENT_HOSTNAME,
   getHiddenIps,
 } from '@/features/student/data/fakeNetwork';
+import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
 
 const SubnetBadge = () => (
   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent-dim/20 text-accent text-xs font-mono font-bold">
@@ -63,28 +64,17 @@ const NetworksPage = () => {
 
       <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl md:text-4xl font-black text-text-primary tracking-tight">
-                Network <span className="text-accent">Lab</span>
-              </h1>
-              <SubnetBadge />
-            </div>
-            <p className="text-sm text-text-muted font-mono">
-              Simulated corporate network environment for terminal practice
-            </p>
-          </div>
-          <button
-            onClick={() => setTerminalOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-black/80 border border-white/10 rounded-xl
-              hover:border-accent/30 hover:bg-black transition-all duration-200
-              text-xs font-mono text-white/70 hover:text-accent uppercase tracking-wider"
-          >
-            <Terminal className="w-4 h-4" />
-            _open terminal
-          </button>
-        </div>
+        <LearningOverviewCard
+          icon={<Network className="w-6 h-6 text-bg" />}
+          title="Network Lab"
+          description="Simulated corporate network environment for terminal practice"
+          stats={[{ label: 'Subnet', value: `${NETWORK_CONFIG.subnet}/${NETWORK_CONFIG.cidr}` }]}
+          action={{
+            label: 'Open Terminal',
+            onClick: () => setTerminalOpen(true),
+            icon: <Terminal className="w-4 h-4" />,
+          }}
+        />
 
         {/* Simulation notice */}
         <div className="flex items-start gap-3 px-5 py-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/5">
