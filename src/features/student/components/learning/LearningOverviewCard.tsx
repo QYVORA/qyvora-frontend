@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight } from '@/shared/components/icons';
 import { gsap } from '@/shared/utils/gsapSetup';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 interface LearningOverviewStat {
   label: string;
@@ -75,9 +76,10 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
 
       <div
         ref={cardRef}
-        className="rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+        className="relative rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden"
       >
-        <div className="w-full sm:w-auto min-w-0">
+        <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
+        <div className="relative z-10 w-full sm:w-auto min-w-0">
           <div className="ov-text flex items-center gap-3 mb-3">
             <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center shrink-0">
               {icon}
@@ -107,7 +109,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
         </div>
 
         {action && (
-          <div className="ov-cta shrink-0 w-full sm:w-auto">
+          <div className="ov-cta shrink-0 w-full sm:w-auto relative z-10">
             {action.to ? (
               <Link
                 to={action.to}
