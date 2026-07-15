@@ -39,7 +39,7 @@ const AuditLogTab = () => {
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 max-w-xs">
           <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
@@ -68,7 +68,7 @@ const AuditLogTab = () => {
         />
         <button
           onClick={() => fetchLogs(1)}
-          className="px-3 py-2 rounded-xl bg-accent text-bg text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all"
+          className="btn-primary px-3 py-2"
         >
           Filter
         </button>
@@ -109,7 +109,7 @@ const AuditLogTab = () => {
               key={i}
               onClick={() => setPage(i + 1)}
               className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${
-                page === i + 1 ? 'bg-accent text-bg' : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                page === i + 1 ? 'btn-primary' : 'btn-secondary'
               }`}
             >
               {i + 1}

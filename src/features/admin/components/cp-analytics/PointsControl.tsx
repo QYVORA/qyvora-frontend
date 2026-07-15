@@ -57,11 +57,11 @@ const PointsControl: React.FC<PointsControlProps> = ({
         <div className="grid grid-cols-3 gap-2">
           {(['grant','deduct','set'] as const).map(a => (
             <button key={a} onClick={() => setCpAction(a)}
-              className={`py-2 rounded-xl border text-xs font-bold uppercase tracking-wide transition-colors ${
+              className={`py-2 transition-colors ${
                 cpAction === a
-                  ? a === 'deduct' ? 'border-red-500/40 text-red-400 bg-red-500/10'
-                    : 'border-accent/40 text-accent bg-accent-dim'
-                  : 'border-border text-text-muted hover:border-accent/30'
+                  ? a === 'deduct' ? 'border-red-500/40 text-red-400 bg-red-500/10 rounded-xl border text-xs font-bold uppercase tracking-wide'
+                    : 'btn-primary'
+                  : 'btn-secondary'
               }`}>
               {a}
             </button>
@@ -83,7 +83,7 @@ const PointsControl: React.FC<PointsControlProps> = ({
         <button
           onClick={() => void runCpAction()}
           disabled={saving}
-          className="w-full py-3 rounded-xl border border-accent/40 text-accent bg-accent-dim hover:bg-accent/20 text-sm font-black uppercase tracking-wide transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          className="btn-secondary w-full py-3 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {saving ? <><div className="w-4 h-4 rounded-full border-2 border-accent/30 border-t-accent animate-spin" /> Processing…</> : 'Execute'}
         </button>

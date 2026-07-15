@@ -39,7 +39,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       <div ref={productFormRef} className={`rounded-2xl p-6 md:p-8 space-y-6 transition-all duration-300 border border-border/40 ${productForm.id ? 'bg-accent/5' : 'bg-bg-card'}`}>
         <div className="flex items-center justify-between border-b border-border/10 pb-4">
           <div className={`text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ${productForm.id ? 'text-accent' : 'text-text-muted'}`}>{productForm.id ? <><RefreshCw className="w-4 h-4 animate-spin-slow" /> Editing Asset: {productForm.title}</> : 'Initialize New Asset'}</div>
@@ -70,8 +70,8 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         </div>
 
         <div className="flex gap-4 pt-4">
-          <button onClick={handleSave} disabled={saving} className="flex-1 bg-accent text-bg py-4 rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-accent/20 transition-all active:scale-[0.98] disabled:opacity-50">{saving ? 'Processing...' : productForm.id ? 'Authorize Update' : 'Initialize Asset'}</button>
-          <button onClick={resetProductForm} className="px-8 rounded-xl bg-bg-elevated text-text-muted text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:text-accent active:scale-[0.98]">Purge</button>
+          <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 py-4 shadow-lg shadow-accent/20 transition-all active:scale-[0.98] disabled:opacity-50">{saving ? 'Processing...' : productForm.id ? 'Authorize Update' : 'Initialize Asset'}</button>
+          <button onClick={resetProductForm} className="btn-secondary px-8 transition-all hover:text-accent active:scale-[0.98]">Purge</button>
         </div>
       </div>
 
@@ -90,7 +90,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <button onClick={() => editProduct(item)} className="py-3 rounded-xl bg-bg border border-border/60 text-text-muted text-[10px] font-black uppercase tracking-widest active:scale-95">Modify</button>
+              <button onClick={() => editProduct(item)} className="btn-secondary py-3 active:scale-95">Modify</button>
               <button onClick={() => void deleteProduct(item._id)} className="py-3 rounded-xl border border-red-500/20 text-red-400/60 text-[10px] font-black uppercase tracking-widest active:scale-95">Terminate</button>
             </div>
           </div>

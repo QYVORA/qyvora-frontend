@@ -65,7 +65,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           className={`text-[9px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all ${
             item.bootcampAccessRevoked
               ? 'text-red-400 bg-red-500/10'
-              : 'text-accent bg-accent/10 hover:bg-accent/20'
+              : 'btn-primary'
           }`}
         >
           {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
@@ -173,13 +173,13 @@ const UsersTab: React.FC<UsersTabProps> = ({
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button
           onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
-          className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${item.bootcampAccessRevoked ? 'bg-red-500/10 text-red-400' : 'bg-accent/10 text-accent'}`}
+          className={`py-3 transition-all ${item.bootcampAccessRevoked ? 'bg-red-500/10 text-red-400 rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
         >
           {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
         </button>
         <button
           onClick={() => void handleUserBlockToggle(item)}
-          className="py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-95"
+          className="btn-secondary py-3 transition-all active:scale-95"
         >
           {isUserBlocked(item) ? 'Unblock' : 'Block'}
         </button>
@@ -195,7 +195,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard icon={<IconShield size={20} className="text-text-muted" />} label="Total Users" value={Number((overview?.users as any)?.total || 0)} />
         <StatCard icon={<IconShield size={20} className="text-accent" />} label="Active 24h" value={Number((overview?.users as any)?.active24h || 0)} accent />

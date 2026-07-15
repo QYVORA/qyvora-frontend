@@ -98,15 +98,15 @@ const InboxTab = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
           {(['all', 'contact', 'service'] as const).map((f) => (
             <button
               key={f}
               onClick={() => { setFilter(f); setPage(1); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors ${
-                filter === f ? 'bg-accent text-bg' : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+              className={`px-3 py-1.5 transition-colors ${
+                filter === f ? 'btn-primary' : 'btn-secondary'
               }`}
             >
               {f === 'all' ? 'All' : f === 'contact' ? 'Contact' : 'Service'}
@@ -150,12 +150,12 @@ const InboxTab = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-text-primary truncate">{d.name}</span>
-                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${
                       isContact ? 'bg-blue-500/10 text-blue-400' : 'bg-accent/10 text-accent'
                     }`}>
                       {isContact ? 'Contact' : 'Service'}
                     </span>
-                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                    <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${
                       d.status === 'new' ? 'bg-accent/10 text-accent' :
                       d.status === 'archived' ? 'bg-zinc-500/10 text-zinc-400' :
                       'bg-amber-500/10 text-amber-400'
@@ -251,8 +251,8 @@ const InboxTab = () => {
                         else updateServiceStatus(d.id, s);
                         setSelectedItem(null);
                       }}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                        d.status === s ? 'bg-accent text-bg' : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                      className={`px-2.5 py-1 transition-colors ${
+                        d.status === s ? 'btn-primary' : 'btn-secondary'
                       }`}
                     >
                       {s}

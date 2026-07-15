@@ -33,7 +33,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard label="Events 24h" value={Number(securitySummary?.events24h || 0)} />
         <StatCard label="Unique IPs 24h" value={Number(securitySummary?.uniqueIps24h || 0)} accent />

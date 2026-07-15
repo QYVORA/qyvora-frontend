@@ -117,7 +117,7 @@ const ChainExplorer: React.FC = () => {
         <button
           onClick={() => void runValidation()}
           disabled={validating}
-          className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-xs font-black uppercase tracking-widest text-text-muted hover:border-accent/40 hover:text-accent transition-colors disabled:opacity-50 shrink-0"
+          className="btn-secondary flex items-center gap-2 px-4 py-2.5 transition-colors disabled:opacity-50 shrink-0"
         >
           <IconShield size={14} />
           {validating ? 'Checking…' : 'Validate Chain'}
@@ -140,10 +140,10 @@ const ChainExplorer: React.FC = () => {
             <button
               key={type}
               onClick={() => setFilterType(type)}
-              className={`px-3 py-1.5 rounded-lg border text-[10px] font-black uppercase tracking-widest transition-colors ${
+              className={`px-3 py-1.5 transition-colors ${
                 filterType === type
-                  ? 'border-accent/40 bg-accent-dim text-accent'
-                  : 'border-border text-text-muted hover:border-accent/30 hover:text-text-primary'
+                  ? 'btn-primary'
+                  : 'btn-secondary'
               }`}
             >
               {type === 'ALL' ? `All (${chain.length})` : `${EVENT_LABELS[type]} (${stats?.eventBreakdown?.[type] ?? 0})`}
@@ -152,7 +152,7 @@ const ChainExplorer: React.FC = () => {
         </div>
         <button
           onClick={() => void load()}
-          className="flex items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors"
+          className="btn-secondary flex items-center gap-1.5 px-3 py-2"
         >
           <RefreshCw className="h-3.5 w-3.5" /> Refresh
         </button>
@@ -186,7 +186,7 @@ const ChainExplorer: React.FC = () => {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-50"
+            className="btn-secondary px-4 py-2 disabled:opacity-50"
           >
             ← Prev
           </button>
@@ -197,7 +197,7 @@ const ChainExplorer: React.FC = () => {
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            className="px-4 py-2 rounded-xl border border-border text-xs font-bold text-text-muted hover:border-accent/30 hover:text-accent transition-colors disabled:opacity-50"
+            className="btn-secondary px-4 py-2 disabled:opacity-50"
           >
             Next →
           </button>
