@@ -72,6 +72,11 @@ const OsintLab = () => {
 
   const allStepsCompleted = activeChallenge && completedSteps.size >= activeChallenge.steps.length;
 
+  const simulations = useMemo(
+    () => activeChallenge ? createOsintSimulations(activeChallenge.targetName, activeChallenge.skills) : [],
+    [activeChallenge],
+  );
+
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
@@ -111,11 +116,6 @@ const OsintLab = () => {
       </div>
     );
   }
-
-  const simulations = useMemo(
-    () => activeChallenge ? createOsintSimulations(activeChallenge.targetName, activeChallenge.skills) : [],
-    [activeChallenge],
-  );
 
   return (
     <div className="bg-bg min-h-full">

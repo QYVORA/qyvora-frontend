@@ -62,6 +62,11 @@ const PrivescLab = () => {
     chapters.length > 0 &&
     chapters.every((ch) => completedSteps.has(ch.id));
 
+  const simulations = useMemo(
+    () => selectedScenario ? createPrivescSimulations(selectedScenario.filesystem) : [],
+    [selectedScenario],
+  );
+
   if (!selectedScenario) {
     return (
       <div className="bg-bg min-h-full">
@@ -112,11 +117,6 @@ const PrivescLab = () => {
       </div>
     );
   }
-
-  const simulations = useMemo(
-    () => selectedScenario ? createPrivescSimulations(selectedScenario.filesystem) : [],
-    [selectedScenario],
-  );
 
   return (
     <div className="bg-bg min-h-full">

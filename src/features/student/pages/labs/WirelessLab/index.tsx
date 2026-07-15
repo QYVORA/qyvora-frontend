@@ -72,6 +72,11 @@ const WirelessLab = () => {
 
   const allStepsCompleted = activeChallenge && completedSteps.size >= activeChallenge.steps.length;
 
+  const simulations = useMemo(
+    () => activeChallenge ? createWirelessSimulations(activeChallenge.accessPoints) : [],
+    [activeChallenge],
+  );
+
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
@@ -116,11 +121,6 @@ const WirelessLab = () => {
     const isTarget = ap.bssid === activeChallenge.targetBssid;
     return `${isTarget ? '> ' : '  '}${ap.ssid.padEnd(20)} ${ap.bssid}  CH ${ap.channel}  ${ap.signal} dBm  ${ap.encryption}`;
   }).join('\n');
-
-  const simulations = useMemo(
-    () => activeChallenge ? createWirelessSimulations(activeChallenge.accessPoints) : [],
-    [activeChallenge],
-  );
 
   return (
     <div className="bg-bg min-h-full">

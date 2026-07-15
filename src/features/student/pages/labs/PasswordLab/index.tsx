@@ -63,6 +63,20 @@ const PasswordLab = () => {
 
   const allStepsCompleted = activeScenario && completedSteps.size >= activeScenario.steps.length;
 
+  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
+    if (!activeScenario) return { correct: false };
+    try {
+      return await verifyLabFlag('passwords', activeScenario.id, flag);
+    } catch {
+      return { correct: false };
+    }
+  }, [activeScenario]);
+
+  const simulations = useMemo(
+    () => activeScenario ? createPasswordSimulations(activeScenario.hashContent, activeScenario.hashType, ['password', '123456', 'admin', 'letmein', 'qwerty', 'test', 'guest', 'master', 'dragon', 'login']) : [],
+    [activeScenario],
+  );
+
   if (!activeScenario) {
     return (
       <div className="bg-bg min-h-full">
@@ -104,20 +118,6 @@ const PasswordLab = () => {
       </div>
     );
   }
-
-  const handleFlagSubmit = useCallback(async (_stepId: string, flag: string) => {
-    if (!activeScenario) return { correct: false };
-    try {
-      return await verifyLabFlag('passwords', activeScenario.id, flag);
-    } catch {
-      return { correct: false };
-    }
-  }, [activeScenario]);
-
-  const simulations = useMemo(
-    () => activeScenario ? createPasswordSimulations(activeScenario.hashContent, activeScenario.hashType, ['password', '123456', 'admin', 'letmein', 'qwerty', 'test', 'guest', 'master', 'dragon', 'login']) : [],
-    [activeScenario],
-  );
 
   return (
     <div className="bg-bg min-h-full">
