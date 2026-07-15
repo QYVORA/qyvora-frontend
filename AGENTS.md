@@ -76,12 +76,52 @@ px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
 
 | Context | Pattern |
 |---------|---------|
-| Marketing / landing hero | `text-5xl md:text-7xl lg:text-8xl` |
+| Marketing / landing hero (PublicHeroSection) | `font-black text-bg leading-[1.08] tracking-tight w-full relative` with `block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem]` |
 | Student dashboard pages | `text-4xl md:text-6xl` |
 | Admin / leaderboard pages | `text-4xl md:text-5xl lg:text-6xl` |
 | Auth form headings | `text-3xl` |
 
 Never go below `text-3xl` for an h1.
+
+## Hero Sections (PublicHeroSection)
+
+All public/marketing page heroes use the `PublicHeroSection` wrapper from `@/shared/components/PublicHeroSection`.
+
+**Props:**
+- `children` — badge, h1, description, CTAs
+- `rightContent` — optional ReactNode for right-column image (renders on `lg:` screens)
+- `mask` — `"right"` (default, globe pages) or `"none"` (single-column pages)
+- `showGlobe` — defaults to `true`
+
+**Layout handled by wrapper:**
+- Full-viewport height: `min-h-dvh md:h-dvh`
+- `GridBoxedBackground` with accent bg
+- Optional `HackerGlobe` (hidden on mobile via `hidden md:flex`)
+- 2-column grid on `lg:`, single-column on mobile
+- Left column padding: `px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
+- Inner text wrapper: `space-y-5 sm:space-y-6`
+
+**Description pattern:**
+```
+text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono
+```
+Always ONE sentence.
+
+**CTA pattern:**
+```
+flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2
+```
+
+**Image right column (rightContent):**
+```tsx
+<div className="relative hidden lg:flex items-center justify-center w-full h-full">
+  <div className="relative z-10 w-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
+    <img src={...} alt="..." className="w-full h-auto object-contain" />
+  </div>
+</div>
+```
+
+**Single-column pages** (Services, Contact): Use `mask="none"`, no `rightContent`, no globe.
 
 ## Container Widths
 
