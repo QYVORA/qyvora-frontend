@@ -13,7 +13,6 @@ import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import SEO from '@/shared/components/SEO';
 import EventReviewModal from '@/features/student/components/EventReviewModal';
 import OnboardingWizard from '@/features/student/components/OnboardingWizard';
-import LearningPathMap from '@/features/student/components/LearningPathMap';
 import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
@@ -21,6 +20,10 @@ import StudentBootcampCard from '@/features/student/components/StudentBootcampCa
 import LabCard from '@/features/student/pages/labs/LabsPage/LabCard';
 import {
   Loader2,
+  GraduationCap,
+  FlaskConical,
+  Briefcase,
+  ShoppingBag,
 } from 'lucide-react';
 import {
   IconRank,
@@ -49,6 +52,19 @@ const LABS = [
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { resolveImg } from '@/shared/utils/resolveImg';
+import { COURSES, getCategoryById } from '@/features/student/data/courses/courseData';
+import type { SkillLevel } from '@/features/student/data/courses/types';
+import {
+  Zap,
+  TrendingUp,
+  Sparkles,
+  Terminal,
+  Globe,
+  Wifi,
+  Wrench,
+  Layers,
+  BookOpen,
+} from 'lucide-react';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 import { useGsapReveal, useGsapHover } from '@/shared/hooks/useGsap';
 import { gsap } from '@/shared/utils/gsapSetup';
@@ -58,6 +74,8 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 
 const BOOTCAMP_COVER_IMGS: Record<string, string> = { bc_1775270338500: hpbCoverImg };
 const BOOTCAMP_FALLBACK_IMG = hpbCoverImg;
+
+type SectionKey = 'courses' | 'bootcamps' | 'labs' | 'marketplace';
 
 function pickCpBalance(userCp: number, overview: any, cpBalance: number | null): number {
   if (typeof cpBalance === 'number' && Number.isFinite(cpBalance)) return cpBalance;
@@ -212,20 +230,24 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
   );
 };
 
-const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent?: boolean }) => (
-  <div className={`flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border text-center transition-all duration-300 ${
-    accent
-      ? 'border-bg/20 bg-accent text-bg'
-      : 'border-border/30 bg-bg-card hover:border-accent/30'
-  }`} aria-label={`${label}: ${value}`}>
-    <div className={`w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 ${accent ? 'bg-bg/15' : 'bg-bg-elevated'}`}>
+const SectionButton = ({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className={`flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border text-center transition-all duration-300 ${
+      active
+        ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
+        : 'border-border/30 bg-bg-card hover:border-accent/30 hover:bg-bg-card/80'
+    }`}
+  >
+    <div className={`w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 ${
+      active ? 'bg-accent text-bg' : 'bg-bg-elevated text-text-primary'
+    }`}>
       {icon}
     </div>
-    <div className="min-w-0">
-      <div className={`font-mono text-xl md:text-2xl font-black leading-none break-words ${accent ? 'text-bg' : 'text-text-primary'}`}>{value}</div>
-      <div className={`text-[10px] font-black uppercase tracking-widest mt-1.5 ${accent ? 'text-bg/60' : 'text-text-muted'}`}>{label}</div>
-    </div>
-  </div>
+    <span className={`text-[10px] font-black uppercase tracking-widest mt-1.5 ${
+      active ? 'text-accent' : 'text-text-muted'
+    }`}>{label}</span>
+  </button>
 );
 
 const DashboardProductCard = ({ product }: { product: any }) => {
@@ -300,6 +322,7 @@ const Dashboard = () => {
   const [activeProductIdx, setActiveProductIdx] = useState(0);
   const [installing, setInstalling] = useState(false);
   const [canInstall, setCanInstall] = useState(false);
+  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
 
   useEffect(() => {
     setCanInstall(isInstallable());
@@ -417,40 +440,37 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* 2. Stats Strip */}
+        {/* 2. Navigation Buttons */}
         <div ref={statsRef}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
-            <StatCard icon={<IconRank size={32} className="text-bg" />} label="Rank" value={rankName} accent />
-            <StatCard icon={<IconDashboard size={32} className="text-text-primary" />} label="Rooms Done" value={String(totalRoomsDone)} />
-            <StatCard icon={<CpLogo className="w-10 h-10" />} label="CP Earned" value={cpBalance.toLocaleString()} accent />
-            <StatCard icon={<IconFire size={32} className="text-orange-400" />} label="Day Streak" value={`${streakDays ?? 0}d`} />
+            <SectionButton
+              icon={<GraduationCap size={32} className={activeSection === 'courses' ? 'text-bg' : 'text-text-primary'} />}
+              label="Courses"
+              active={activeSection === 'courses'}
+              onClick={() => setActiveSection(activeSection === 'courses' ? null : 'courses')}
+            />
+            <SectionButton
+              icon={<Briefcase size={32} className={activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'} />}
+              label="Bootcamps"
+              active={activeSection === 'bootcamps'}
+              onClick={() => setActiveSection(activeSection === 'bootcamps' ? null : 'bootcamps')}
+            />
+            <SectionButton
+              icon={<FlaskConical size={32} className={activeSection === 'labs' ? 'text-bg' : 'text-text-primary'} />}
+              label="Labs"
+              active={activeSection === 'labs'}
+              onClick={() => setActiveSection(activeSection === 'labs' ? null : 'labs')}
+            />
+            <SectionButton
+              icon={<ShoppingBag size={32} className={activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'} />}
+              label="Marketplace"
+              active={activeSection === 'marketplace'}
+              onClick={() => setActiveSection(activeSection === 'marketplace' ? null : 'marketplace')}
+            />
           </div>
         </div>
 
-        {/* 2.5 Attack Labs */}
-        <div ref={labsRef}>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
-              <IconLabs size={28} className="text-accent" />
-            </div>
-            <div>
-              <h3 className="text-base md:text-lg lg:text-xl font-black text-text-primary">Attack Labs</h3>
-              <p className="text-[10px] md:text-xs font-mono text-text-muted mt-0.5">Hands-on offensive security simulations</p>
-            </div>
-            <Link to="/dashboard/labs" className="ml-auto text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-              View All
-            </Link>
-          </div>
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-1 px-1">
-            {LABS.map((lab) => (
-              <div key={lab.id} className="min-w-[calc((100%-32px)/3)] snap-start flex-shrink-0">
-                <LabCard {...lab} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 2.6 PWA Install */}
+        {/* 2.5 PWA Install */}
         {canInstall && (
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-5 md:p-6 rounded-2xl border border-accent/20 bg-accent/5">
             <div className="flex items-center gap-3">
@@ -473,63 +493,131 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* 3. In-Progress Bootcamps + Featured Product */}
-        {(enrolledBootcamps.length > 0 || products.length > 0) && (
-          <div className="flex flex-col md:flex-row gap-4">
-            {enrolledBootcamps.length > 0 && (
-              <div className="flex-1 min-w-0">
-                <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-hover">
-                  {enrolledBootcamps.map((bc, idx) => (
-                    <div key={bc.id} className="snap-start shrink-0 w-[300px] sm:w-[340px]">
-                      <StudentBootcampCard data={bc} index={idx} />
+        {/* 3. Section Content */}
+        {activeSection === 'courses' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Courses</h3>
+              <Link to="/courses" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
+                View All <IconArrowRight size={12} className="inline-block ml-1" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {COURSES.slice(0, 6).map((course) => {
+                const category = getCategoryById(course.categoryId);
+                const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
+                  beginner: { label: 'Beginner', color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
+                  intermediate: { label: 'Intermediate', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10', icon: TrendingUp },
+                  advanced: { label: 'Advanced', color: 'text-red-400 border-red-400/30 bg-red-400/10', icon: GraduationCap },
+                };
+                const skillCfg = SKILL_CONFIG[course.skillLevel];
+                const SkillIcon = skillCfg.icon;
+                return (
+                  <Link
+                    key={course.id}
+                    to={`/courses/${course.id}`}
+                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
+                  >
+                    <div className="p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black uppercase tracking-widest text-accent border border-accent/20">
+                          {category?.name}
+                        </span>
+                        <span className="flex items-center gap-1 text-[10px] text-text-muted font-mono">
+                          {course.estimatedMinutes}min
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-black text-text-primary group-hover:text-accent transition-colors leading-tight break-words">
+                        {course.title}
+                      </h3>
+                      <p className="text-[10px] text-text-muted leading-relaxed line-clamp-2 break-words">
+                        {course.description}
+                      </p>
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest ${skillCfg.color}`}>
+                            <SkillIcon className="h-2.5 w-2.5" /> {skillCfg.label}
+                          </span>
+                          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-accent/10 text-[10px] font-black text-accent">
+                            <Zap className="h-3 w-3" /> {course.cpCost} CP
+                          </span>
+                        </div>
+                        <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                          View <IconArrowRight className="h-3 w-3" />
+                        </span>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {products.length > 0 && (
-              <div className="w-full md:w-[340px] shrink-0">
-                <DashboardProductCard product={products[activeProductIdx]} />
-                {products.length > 1 && (
-                  <div className="flex items-center justify-center gap-1.5 mt-3">
-                    {products.map((_: any, i: number) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveProductIdx(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === activeProductIdx
-                            ? 'bg-accent w-5'
-                            : 'bg-border/50 w-1.5 hover:bg-accent/40'
-                        }`}
-                        aria-label={`Show product ${i + 1}`}
-                      />
-                    ))}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'bootcamps' && (
+          <div>
+            {enrolledBootcamps.length > 0 ? (
+              <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-hover">
+                {enrolledBootcamps.map((bc, idx) => (
+                  <div key={bc.id} className="snap-start shrink-0 w-[300px] sm:w-[340px]">
+                    <StudentBootcampCard data={bc} index={idx} />
                   </div>
-                )}
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
+                <Briefcase className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
+                <p className="text-sm text-text-muted">No bootcamps enrolled yet.</p>
+                <Link to="/dashboard/bootcamps" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
+                  Browse Bootcamps <IconArrowRight size={12} />
+                </Link>
               </div>
             )}
           </div>
         )}
 
-        {/* 4. Learning Paths */}
-        <div>
-          <LearningPathMap
-            overview={overview}
-            bootcampId={activeBootcamp ? String(activeBootcamp.id) : BOOTCAMP_CONFIG.id}
-            isEnrolled={isEnrolled}
-          />
-        </div>
+        {activeSection === 'labs' && (
+          <div ref={labsRef}>
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-1 px-1">
+              {LABS.map((lab) => (
+                <div key={lab.id} className="min-w-[calc((100%-32px)/3)] snap-start flex-shrink-0">
+                  <LabCard {...lab} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* 5. Room Grid / Browse All */}
+        {activeSection === 'marketplace' && (
+          <div>
+            {products.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {products.map((product, idx) => (
+                  <DashboardProductCard key={product?.id || idx} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
+                <ShoppingBag className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
+                <p className="text-sm text-text-muted">No marketplace items available.</p>
+                <Link to="/dashboard/marketplace" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
+                  Browse Marketplace <IconArrowRight size={12} />
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 4. Room Grid */}
         <div ref={roomsRef}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
             {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
               <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
             ))}
           </div>
         </div>
 
-        {/* 6. Next Rank Progress */}
+        {/* 5. Next Rank Progress */}
         {nextRank && (
           <div ref={rankRef}>
             <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
