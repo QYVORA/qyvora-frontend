@@ -5,7 +5,6 @@ import { LabConnectButton } from '@/features/student/components/lab/LabConnectBu
 import { PROXY_SCENARIOS } from '@/features/student/data/simulations/proxy-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
-import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -101,7 +100,6 @@ const ProxyLab = () => {
                 description={scenario.description}
                 cpReward={scenario.cpReward}
                 accentColor="#10B981"
-                diagramSvg={SCENARIO_DIAGRAMS[scenario.id]}
                 onStart={() => startScenario(scenario)}
               />
             ))}

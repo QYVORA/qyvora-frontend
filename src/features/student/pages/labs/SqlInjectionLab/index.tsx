@@ -5,7 +5,6 @@ import { LabConnectButton } from '@/features/student/components/lab/LabConnectBu
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
-import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -102,7 +101,6 @@ const SqlInjectionLab = () => {
                 cpReward={target.cpReward}
                 subtitle={`${target.injectionType} · ${target.dbms}`}
                 accentColor="#06B66F"
-                diagramSvg={SCENARIO_DIAGRAMS[target.id]}
                 onStart={() => startTarget(target)}
               />
             ))}

@@ -5,7 +5,6 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations/privesc-scenarios';
-import { SCENARIO_DIAGRAMS } from '@/shared/components/ScenarioDiagrams';
 import type { PrivescScenario } from '@/features/student/data/simulations/types';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -97,7 +96,6 @@ const PrivescLab = () => {
                 description={scenario.technique}
                 cpReward={50}
                 accentColor="#FBBF24"
-                diagramSvg={SCENARIO_DIAGRAMS[scenario.id]}
                 onStart={() => {
                   setCompletedSteps(new Set());
                   setSelectedScenario(scenario);
