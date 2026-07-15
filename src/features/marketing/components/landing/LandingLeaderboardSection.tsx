@@ -149,7 +149,7 @@ const LandingLeaderboardSection = () => {
                     style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center bg-bg-card [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry!.userId} size={CELL_SIZE} />
+                      <Identicon value={entry!.hackerHandle || entry!.userId} size={CELL_SIZE} />
                     </div>
 
                     <div className="absolute top-[2px] left-[2px] z-10">
