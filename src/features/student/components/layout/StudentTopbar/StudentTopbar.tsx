@@ -28,9 +28,7 @@ import { useScrollLock } from '../../../../../core/hooks/useScrollLock';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
-import MobileMoreSheet from './MobileMoreSheet';
 import NotificationsDropdown from './NotificationsDropdown';
-import { MOBILE_PRIMARY } from './mobileNav';
 import { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
@@ -93,7 +91,6 @@ const StudentTopbar = () => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -154,7 +151,7 @@ const StudentTopbar = () => {
     }).catch(() => {});
     return () => { mounted = false; };
   }, [user?.uid]);
-  useEffect(() => { setMoreOpen(false); setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
+  useEffect(() => { setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -484,59 +481,6 @@ const StudentTopbar = () => {
               </button>
             </div>
           </div>
-        </>
-      )}
-
-      {/* ── Mobile bottom nav — hidden on room pages ── */}
-      {!isRoomPage && (
-        <>
-          <nav
-            className="fixed bottom-0 left-0 w-full bg-bg-card/95 backdrop-blur-md border-t border-border flex md:hidden z-50"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-          >
-            {MOBILE_PRIMARY.map((item) => {
-              const active = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-all`}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  {active && (
-                    <span className="absolute top-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
-                  )}
-                  <item.icon size={28} className={`transition-colors ${active ? 'text-accent' : 'text-text-muted'}`} />
-                  <span className={`text-[11px] font-bold uppercase tracking-wide transition-colors ${active ? 'text-accent' : 'text-text-muted'}`}>
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-
-            <button
-              onClick={() => setMoreOpen(true)}
-              className="relative flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[72px] active:bg-accent-dim/30 transition-colors"
-              aria-label="More"
-              aria-expanded={moreOpen}
-            >
-              <IconNotification size={28} className="text-text-muted" />
-              <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
-              {unreadCount > 0 && (
-                <span className="absolute top-2.5 right-[calc(50%-14px)] w-4.5 h-4.5 bg-accent text-bg text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-sm shadow-accent/30">
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
-              )}
-            </button>
-          </nav>
-
-          <MobileMoreSheet
-            open={moreOpen}
-            onOpenChange={setMoreOpen}
-            user={user}
-            unreadCount={unreadCount}
-            handleLogout={handleLogout}
-          />
         </>
       )}
     </>

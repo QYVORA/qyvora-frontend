@@ -8,7 +8,6 @@ import { SimulatedTerminal } from '@/features/student/components/SimulatedTermin
 import { initPWA, tryAutoSubscribePush } from '@/features/student/services/pwa';
 
 const TOPBAR_H = 'pt-20 md:pt-24';
-const MOBILE_NAV_PB = 'pb-[calc(68px+env(safe-area-inset-bottom,0px))] md:pb-6';
 
 const StudentLayout = () => {
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
@@ -42,7 +41,7 @@ const StudentLayout = () => {
   return (
     <div className="bg-bg min-h-screen">
       <StudentTopbar />
-      <div id="main-content" className={`${TOPBAR_H} ${isRoomPage ? '' : MOBILE_NAV_PB}`}>
+      <div id="main-content" className={`${TOPBAR_H} md:pb-6`}>
         <Outlet />
       </div>
       <ConsentBanner />
