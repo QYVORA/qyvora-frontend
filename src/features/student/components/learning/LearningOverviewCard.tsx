@@ -82,9 +82,9 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
       >
         <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
         <div className="relative z-10 w-full sm:w-auto min-w-0">
-          <div className="ov-text flex items-center gap-3 mb-3">
+          <div className="ov-text flex items-center gap-4 mb-3">
             {avatar ? (
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-bg/20 shrink-0">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-bg/20 shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
                 {avatar}
               </div>
             ) : (
