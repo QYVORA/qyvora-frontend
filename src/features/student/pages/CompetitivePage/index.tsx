@@ -66,7 +66,7 @@ const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: 
           ? 'border-accent/40 bg-accent-dim/10'
           : isTopThree
           ? 'border-accent/20 bg-accent-dim/5 shadow-[0_0_20px_-8px] shadow-accent/10'
-          : 'border-border bg-bg-card hover:border-accent/20'
+          : 'border-border/30 bg-bg-card hover:border-accent/20'
         }
         hover:brightness-110 active:scale-[0.99]
       `}

@@ -516,7 +516,7 @@ const Dashboard = () => {
                   <Link
                     key={course.id}
                     to={`/courses/${course.id}`}
-                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/40"
+                    className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all hover:border-accent/30"
                   >
                     <div className="p-5 space-y-3">
                       <div className="flex items-center justify-between">

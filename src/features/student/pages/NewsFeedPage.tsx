@@ -138,7 +138,7 @@ const NewsFeedPage = () => {
                         href={current.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-500 hover:border-accent/40 hover:shadow-[0_0_30px_rgba(6,182,111,0.06)]"
+                        className="group flex flex-col lg:flex-row w-full overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-500 hover:border-accent/30 hover:shadow-[0_0_30px_rgba(6,182,111,0.06)]"
                       >
                         {current.imageUrl && (
                           <div className="w-full lg:w-[45%] relative overflow-hidden group h-[180px] sm:h-[200px] lg:h-[280px]">
