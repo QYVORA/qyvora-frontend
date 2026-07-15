@@ -65,7 +65,7 @@ export interface BrowserPage {
   html: string;
   headers: Record<string, string>;
   cookies: { name: string; value: string; path: string; domain: string; httpOnly: boolean; secure: boolean }[];
-  hiddenElements?: { type: string; content: string }[];
+  hiddenElements?: { type: string; content: string; location?: string }[];
 }
 
 export interface BrowserState {
