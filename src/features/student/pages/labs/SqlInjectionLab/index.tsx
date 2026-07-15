@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
+import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -112,6 +113,11 @@ const SqlInjectionLab = () => {
     );
   }
 
+  const simulations = useMemo(
+    () => activeTarget ? createSqlInjectionSimulations(activeTarget.tables, activeTarget.url) : [],
+    [activeTarget],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeTarget.name} — SQL Injection Lab`} description={activeTarget.description} />
@@ -125,6 +131,7 @@ const SqlInjectionLab = () => {
         onBack={exitTarget}
         completedCount={completedSteps.size}
         totalSteps={activeTarget.steps.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-mono text-text-muted">

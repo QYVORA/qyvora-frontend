@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Activity, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { TRAFFIC_CHALLENGES } from '@/features/student/data/simulations/traffic-data';
+import { createTrafficSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -122,6 +123,11 @@ const TrafficLab = () => {
     `#${p.number} ${p.time}  ${p.source} -> ${p.destination}  ${p.protocol}  ${p.info}`
   ).join('\n');
 
+  const simulations = useMemo(
+    () => activeChallenge ? createTrafficSimulations(activeChallenge.packets) : [],
+    [activeChallenge],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeChallenge.title} — Traffic Lab`} description={activeChallenge.description} />
@@ -135,6 +141,7 @@ const TrafficLab = () => {
         onBack={exitChallenge}
         completedCount={completedSteps.size}
         totalSteps={activeChallenge.analysisTasks.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Packet Capture ({activeChallenge.packets.length} packets)</p>

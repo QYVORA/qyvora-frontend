@@ -15,4 +15,5 @@ export { TimelineInvestigation } from './TimelineInvestigation';
 export { ProgressiveHints } from './ProgressiveHints';
 export { NETWORK_PROFILES, getNetworkProfileForLab, getNetworkProfileForBootcamp } from './networkProfiles';
 export { LAB_SIMULATIONS, getSimulationsForLab } from './labSimulations';
+export type { SimulationContent } from './labSimulationContent';
 export type * from './types';

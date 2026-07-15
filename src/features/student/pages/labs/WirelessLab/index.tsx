@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Wifi, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { WIRELESS_CHALLENGES } from '@/features/student/data/simulations/wireless-data';
+import { createWirelessSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -116,6 +117,11 @@ const WirelessLab = () => {
     return `${isTarget ? '> ' : '  '}${ap.ssid.padEnd(20)} ${ap.bssid}  CH ${ap.channel}  ${ap.signal} dBm  ${ap.encryption}`;
   }).join('\n');
 
+  const simulations = useMemo(
+    () => activeChallenge ? createWirelessSimulations(activeChallenge.accessPoints) : [],
+    [activeChallenge],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeChallenge.title} — Wireless Lab`} description={activeChallenge.description} />
@@ -129,6 +135,7 @@ const WirelessLab = () => {
         onBack={exitChallenge}
         completedCount={completedSteps.size}
         totalSteps={activeChallenge.steps.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Access Points ({activeChallenge.accessPoints.length} found)</p>

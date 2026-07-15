@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Network, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PROXY_SCENARIOS } from '@/features/student/data/simulations/proxy-data';
+import { createProxySimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -122,6 +123,11 @@ const ProxyLab = () => {
     `[${r.method}] ${r.url} — Status: ${r.response.statusCode}`
   ).join('\n');
 
+  const simulations = useMemo(
+    () => activeScenario ? createProxySimulations(activeScenario.requests) : [],
+    [activeScenario],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeScenario.title} — Proxy Lab`} description={activeScenario.description} />
@@ -135,6 +141,7 @@ const ProxyLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={activeScenario.tasks.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-xs font-black uppercase tracking-widest text-accent mb-2">Intercepted Requests</p>

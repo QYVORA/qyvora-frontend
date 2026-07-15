@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Shield } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
 import { WalkthroughStep } from '@/shared/components/walkthrough/WalkthroughStep';
 import { PRIVESC_SCENARIOS } from '@/features/student/data/simulations/privesc-scenarios';
+import { createPrivescSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import type { PrivescScenario } from '@/features/student/data/simulations/types';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
@@ -112,6 +113,11 @@ const PrivescLab = () => {
     );
   }
 
+  const simulations = useMemo(
+    () => selectedScenario ? createPrivescSimulations(selectedScenario.filesystem) : [],
+    [selectedScenario],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO
@@ -132,6 +138,7 @@ const PrivescLab = () => {
         }}
         completedCount={completedSteps.size}
         totalSteps={chapters.length}
+        simulations={simulations}
       >
         {chapters.map((chapter, i) => {
           const { isLocked, isCompleted, isActive } = getStepState(i);

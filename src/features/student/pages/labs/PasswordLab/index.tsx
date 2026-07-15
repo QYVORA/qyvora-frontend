@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
+import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -113,6 +114,11 @@ const PasswordLab = () => {
     }
   }, [activeScenario]);
 
+  const simulations = useMemo(
+    () => activeScenario ? createPasswordSimulations(activeScenario.hashContent, activeScenario.hashType, ['password', '123456', 'admin', 'letmein', 'qwerty', 'test', 'guest', 'master', 'dragon', 'login']) : [],
+    [activeScenario],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} />
@@ -126,6 +132,7 @@ const PasswordLab = () => {
         onBack={exitScenario}
         completedCount={completedSteps.size}
         totalSteps={activeScenario.steps.length}
+        simulations={simulations}
       >
         {activeScenario.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);

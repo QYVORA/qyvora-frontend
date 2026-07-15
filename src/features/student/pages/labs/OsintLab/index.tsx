@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
+import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -111,6 +112,11 @@ const OsintLab = () => {
     );
   }
 
+  const simulations = useMemo(
+    () => activeChallenge ? createOsintSimulations(activeChallenge.targetName, activeChallenge.skills) : [],
+    [activeChallenge],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeChallenge.title} — OSINT Lab`} description={activeChallenge.description} />
@@ -124,6 +130,7 @@ const OsintLab = () => {
         onBack={exitChallenge}
         completedCount={completedSteps.size}
         totalSteps={activeChallenge.steps.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-black text-text-primary mb-1">🎯 Target: {activeChallenge.targetName}</p>
