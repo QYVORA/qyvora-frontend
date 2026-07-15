@@ -44,7 +44,7 @@ const LandingLeaderboardSection = () => {
     let cancelled = false;
     const fetchTop = async () => {
       try {
-        const res = await api.get('/public/leaderboard?period=all&limit=20');
+        const res = await api.get('/public/leaderboard?period=all&limit=40');
         const data = res.data;
         if (data.success && !cancelled) {
           setEntries(data.entries || []);
@@ -62,14 +62,14 @@ const LandingLeaderboardSection = () => {
 
   const cells = useMemo(() => {
     const arr: { entry: LeaderboardEntry | null; idx: number }[] = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 40; i++) {
       arr.push({ entry: i < entries.length ? entries[i] : null, idx: i });
     }
     return arr;
   }, [entries]);
 
   return (
-    <div className="relative bg-bg h-full flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg h-full flex flex-col overflow-hidden">
       <GridBoxedBackground opacity={0.15} blur={0} mask="none" />
 
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-12 md:py-16 lg:py-20 flex flex-col">
@@ -99,7 +99,7 @@ const LandingLeaderboardSection = () => {
               className="flex flex-wrap content-start"
               style={{ gap: `${GAP}px` }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
+              {Array.from({ length: 40 }).map((_, i) => (
                 <div
                   key={i}
                   className="rounded-lg bg-bg-card border border-border/20 animate-pulse shrink-0"
