@@ -155,6 +155,27 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     return () => { if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current); };
   }, [lines]);
 
+  const prevRoomKeyRef = useRef<string>('');
+
+  useEffect(() => {
+    if (context?.type === 'bootcamp' && context.bootcampId) {
+      const roomKey = `${context.bootcampId}/${context.phaseId || ''}/${context.roomId || ''}`;
+      if (prevRoomKeyRef.current !== roomKey) {
+        prevRoomKeyRef.current = roomKey;
+        const state = stateRef.current;
+        let newState = injectBootcampContent(state, context.bootcampId, context.phaseId, context.roomId);
+        if (context.courseId) {
+          newState = injectCourseContent(newState, context.courseId, context.lessonId);
+        }
+        stateRef.current = newState;
+      }
+    } else if (context?.type === 'course' && context.courseId) {
+      const state = stateRef.current;
+      const newState = injectCourseContent(state, context.courseId, context.lessonId);
+      stateRef.current = newState;
+    }
+  }, [context?.bootcampId, context?.phaseId, context?.roomId, context?.courseId, context?.lessonId]);
+
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [streamingActive, setStreamingActive] = useState(false);
