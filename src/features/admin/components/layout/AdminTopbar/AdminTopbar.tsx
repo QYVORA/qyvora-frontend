@@ -110,7 +110,7 @@ const AdminTopbar = () => {
           <div className="flex items-center gap-6 lg:gap-8">
             <div className="flex items-center gap-3">
               <Link to={`${ADMIN_PATH}/dashboard`}><Logo size="md" /></Link>
-              <div className="hidden sm:inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
+              <div className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
                 <IconShield size={12} className="text-accent" />
                 <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN</span>
               </div>

@@ -38,7 +38,7 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
         }}
       />
       <div className="absolute top-4 left-4">
-        <span className={`px-2 py-1 rounded-sm text-[10px] font-bold uppercase border tracking-widest ${
+        <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase border tracking-widest ${
           level === 'Elite' ? 'bg-accent text-bg border-accent' : 'bg-bg/80 text-accent border-accent/30 backdrop-blur-sm'
         }`}>
           {level}

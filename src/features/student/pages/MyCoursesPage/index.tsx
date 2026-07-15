@@ -256,10 +256,10 @@ const MyCoursesPage: React.FC = () => {
                   >
                     <div className="p-5 space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-bg-elevated text-[9px] font-black uppercase tracking-widest text-text-muted border border-border/20">
                           {category?.name}
                         </span>
-                        <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-accent/10 text-[9px] font-black text-accent">
+                        <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-accent/10 text-[9px] font-black text-accent">
                           <Zap className="h-2.5 w-2.5" /> {course.cpCost} CP
                         </span>
                       </div>

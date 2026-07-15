@@ -144,7 +144,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
             onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
             onFocus={() => { if (searchQuery.trim()) setShowSuggestions(true); }}
             placeholder="Search rooms, paths, topics..."
-            className="w-full bg-bg-elevated border border-border rounded-xl py-2.5 pl-10 pr-10 text-sm text-text-primary placeholder:text-text-muted/50 font-mono outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/20 transition-all"
+            className="w-full bg-bg-elevated border border-border rounded-xl py-2.5 pl-10 pr-10 text-sm text-text-primary placeholder:text-text-muted/50 font-mono outline-none focus:border-accent transition-all"
             autoComplete="off"
             role="combobox"
             aria-expanded={showSuggestions}
@@ -222,7 +222,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
           <button
             type="button"
             onClick={() => { setSearchQuery(''); setShowSuggestions(false); searchRef.current?.focus(); }}
-            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
+            className="absolute right-12 top-1/2 -translate-y-1/2 p-1 rounded-lg text-text-muted hover:text-text-primary hover:bg-accent-dim/30 transition-colors"
             aria-label="Clear search"
           >
             <IconX size={16} />

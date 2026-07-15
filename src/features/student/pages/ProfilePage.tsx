@@ -139,7 +139,7 @@ const Profile: React.FC = () => {
             <Trophy className="w-4 h-4 text-accent" />
           </div>
           <span className="text-xs font-black uppercase tracking-widest text-text-primary">Achievements</span>
-          <span className="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-md">{achievementCount}</span>
+          <span className="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-lg">{achievementCount}</span>
           <div className="ml-auto flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent transition-colors">
             {showAchievements ? 'Collapse' : 'Expand'}
             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showAchievements ? 'rotate-180' : ''}`} />
@@ -176,7 +176,7 @@ const Profile: React.FC = () => {
                     <div className="px-5 py-4 border-b border-border/30">
                       <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
                         Completed Rooms
-                        <span className="ml-2 px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-md">{rooms.length}</span>
+                        <span className="ml-2 px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-lg">{rooms.length}</span>
                       </h3>
                     </div>
                     <div className="p-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

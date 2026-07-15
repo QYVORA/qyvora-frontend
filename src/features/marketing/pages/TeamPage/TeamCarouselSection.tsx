@@ -43,7 +43,7 @@ const TeamCarouselSection: React.FC = () => {
                       <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight leading-tight">
                         {member.name}
                       </h3>
-                      <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-md uppercase tracking-widest">
+                      <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-lg uppercase tracking-widest">
                         {member.role}
                       </span>
                     </div>

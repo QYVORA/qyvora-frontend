@@ -42,7 +42,7 @@ const LandingCurriculumSection: React.FC = () => {
                       <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                         <Icon className="w-5 h-5 text-accent" />
                       </div>
-                      <div className="w-7 h-7 rounded-md bg-accent flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
                         <span className="text-xs font-black text-bg">{phase.id}</span>
                       </div>
                     </div>
@@ -53,11 +53,11 @@ const LandingCurriculumSection: React.FC = () => {
                       {phase.desc}
                     </p>
                     <div className="flex items-center gap-2 mt-auto">
-                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/5 border border-accent/10">
+                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
                         <Layers className="w-3.5 h-3.5 text-accent" />
                         <span className="text-[11px] font-bold text-text-primary">{phase.roomCount} rooms</span>
                       </div>
-                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/5 border border-accent/10">
+                      <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
                         <Clock className="w-3.5 h-3.5 text-accent" />
                         <span className="text-[11px] font-bold text-text-primary">{phase.totalSteps} steps</span>
                       </div>

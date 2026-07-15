@@ -277,7 +277,7 @@ const CourseLessonPage: React.FC = () => {
               setCurrentLessonIdx(i);
               setSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
+            className={`w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition-colors ${
               isActive
                 ? 'text-accent font-semibold bg-accent-dim/20'
                 : 'text-text-secondary hover:text-accent hover:bg-accent-dim/10'
@@ -353,7 +353,7 @@ const CourseLessonPage: React.FC = () => {
                   {completedCount} / {totalLessons} lessons
                 </span>
               </div>
-              <div className="h-3 overflow-hidden rounded-md bg-accent-dim border border-border/40">
+              <div className="h-3 overflow-hidden rounded-lg bg-accent-dim border border-border/40">
                 <div
                   className="h-full bg-accent transition-all duration-700 ease-out"
                   style={{ width: `${progress}%` }}
