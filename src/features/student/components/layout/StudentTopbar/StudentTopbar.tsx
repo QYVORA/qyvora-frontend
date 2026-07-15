@@ -322,27 +322,26 @@ const StudentTopbar = () => {
               <Logo size="md" />
             </Link>
 
-            {/* Hamburger — hidden when nav is visible */}
+            {/* Hamburger — visible on mobile only */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
-              className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+              className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors ml-auto"
               aria-label="Open navigation"
             >
               <IconMenu size={24} />
             </button>
 
-            {/* Nav tabs — horizontal scroll on mobile, flex-1 pushes right actions to the far right */}
-            <nav className="flex items-center justify-start flex-1 min-w-0 gap-1 pl-2 overflow-x-auto scrollbar-none">
+            {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
+            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1 pl-2">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="relative flex flex-col items-center gap-1 sm:gap-1.5 px-3 sm:px-5 py-2 text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors shrink-0"
+                    className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors shrink-0"
                   >
-                    <item.icon size={24} className="sm:hidden" />
-                    <item.icon size={32} className="hidden sm:block" />
+                    <item.icon size={32} />
                     <span>{item.label}</span>
                     {active && (
                       <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
