@@ -325,7 +325,7 @@ const StudentTopbar = () => {
 
         ) : (
           /* ══ DASHBOARD MODE ══ */
-          <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-2 md:gap-4">
+          <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-2 md:gap-3">
 
             {/* Logo */}
             <Link to="/dashboard" className="flex-none shrink-0">
@@ -341,8 +341,8 @@ const StudentTopbar = () => {
               <IconMenu size={24} />
             </button>
 
-            {/* Desktop icon tabs — spread across full width */}
-            <nav className="hidden lg:flex items-center justify-between flex-1 min-w-0">
+            {/* Desktop icon tabs — centered with balanced spacing */}
+            <nav className="hidden lg:flex items-center justify-center flex-1 min-w-0 gap-1">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -351,7 +351,7 @@ const StudentTopbar = () => {
                     to={item.path}
                     className="relative flex flex-col items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
                   >
-                    <item.icon size={30} />
+                    <item.icon size={32} />
                     <span>{item.label}</span>
                     {active && (
                       <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent rounded-full" />
