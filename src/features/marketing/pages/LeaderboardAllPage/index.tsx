@@ -229,7 +229,7 @@ const LeaderboardAllPage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by handle, name, or organization..."
-            className="w-full bg-bg-card border border-border rounded-xl py-3 pl-10 pr-9 text-sm text-text-primary placeholder:text-text-muted/40 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all"
+            className="w-full bg-bg-card border border-border rounded-xl py-3 pl-10 pr-9 text-sm text-text-primary placeholder:text-text-muted/40 focus:border-accent outline-none transition-all"
           />
           {search && (
             <button
@@ -253,7 +253,7 @@ const LeaderboardAllPage = () => {
         {loading ? (
           <div className="space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-16 rounded-2xl bg-bg-card border border-border animate-pulse" />
+              <div key={i} className="h-16 rounded-2xl bg-bg-card border border-border/30 animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (

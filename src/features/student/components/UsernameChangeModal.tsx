@@ -73,7 +73,7 @@ const UsernameChangeModal = () => {
                 placeholder="Pick a handle or choose one below"
                 maxLength={40}
                 autoFocus
-                className="w-full bg-bg-card border border-border rounded-lg py-3 px-4 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all font-mono text-base"
+                className="w-full bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-base"
               />
               <HandleSuggestions
                 name={user?.username || user?.email?.split('@')[0] || ''}

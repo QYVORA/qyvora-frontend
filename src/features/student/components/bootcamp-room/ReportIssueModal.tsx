@@ -54,7 +54,7 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
           value={issueText}
           onChange={(e) => setIssueText(e.target.value)}
           placeholder="Describe the issue..."
-          className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg text-text-primary text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/50"
+          className="w-full h-32 px-4 py-3 rounded-xl border border-border bg-bg text-text-primary text-sm resize-none focus:border-accent outline-none"
           autoFocus
         />
         <div className="flex gap-3 mt-4">
