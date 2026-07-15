@@ -84,7 +84,7 @@ const CoursesPage: React.FC = () => {
         <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />
 
         {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 flex items-end justify-end">
+        <div className="absolute inset-0 z-0 hidden md:flex items-end justify-end overflow-hidden">
           <div className="relative w-full h-full flex items-end justify-end">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>
