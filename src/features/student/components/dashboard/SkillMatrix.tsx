@@ -41,22 +41,36 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   }, [modules]);
 
   return (
-    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
-            {t('student.dashboard.skillMatrix', 'Skill Matrix')}
-          </h3>
-          <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">
-            {t('student.dashboard.skillMatrixSub', 'Overall')}{' '}
-            <span className="text-accent">{average}%</span>
-          </p>
+    <div className="flex flex-col lg:flex-row gap-6">
+      {/* Radar Chart Card */}
+      <div className="flex-1 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
+              {t('student.dashboard.skillMatrix', 'Skill Matrix')}
+            </h3>
+            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">
+              {t('student.dashboard.skillMatrixSub', 'Overall')}{' '}
+              <span className="text-accent">{average}%</span>
+            </p>
+          </div>
         </div>
+        <SkillRadarChart data={radarData} />
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        <SkillRadarChart data={radarData} />
+      {/* Skill Stats Card */}
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 lg:w-[320px] shrink-0">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
+              {t('student.dashboard.skillStats', 'Skill Progress')}
+            </h3>
+            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">
+              {t('student.dashboard.skillStatsSub', 'Completion')}{' '}
+              <span className="text-accent">{average}%</span>
+            </p>
+          </div>
+        </div>
         <SkillStats modules={modules} />
       </div>
     </div>

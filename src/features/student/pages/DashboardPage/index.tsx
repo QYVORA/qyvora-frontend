@@ -326,6 +326,17 @@ const Dashboard = () => {
   const [installing, setInstalling] = useState(false);
   const [canInstall, setCanInstall] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
+  const sectionContentRef = useRef<HTMLDivElement>(null);
+
+  const handleSectionToggle = (section: SectionKey) => {
+    const next = activeSection === section ? null : section;
+    setActiveSection(next);
+    if (next) {
+      requestAnimationFrame(() => {
+        sectionContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  };
 
   useEffect(() => {
     setCanInstall(isInstallable());
@@ -450,25 +461,25 @@ const Dashboard = () => {
               icon={<GraduationCap size={32} className={activeSection === 'courses' ? 'text-bg' : 'text-text-primary'} />}
               label={t('nav.courses')}
               active={activeSection === 'courses'}
-              onClick={() => setActiveSection(activeSection === 'courses' ? null : 'courses')}
+              onClick={() => handleSectionToggle('courses')}
             />
             <SectionButton
               icon={<Briefcase size={32} className={activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'} />}
               label={t('nav.bootcamps')}
               active={activeSection === 'bootcamps'}
-              onClick={() => setActiveSection(activeSection === 'bootcamps' ? null : 'bootcamps')}
+              onClick={() => handleSectionToggle('bootcamps')}
             />
             <SectionButton
               icon={<FlaskConical size={32} className={activeSection === 'labs' ? 'text-bg' : 'text-text-primary'} />}
               label={t('nav.labs')}
               active={activeSection === 'labs'}
-              onClick={() => setActiveSection(activeSection === 'labs' ? null : 'labs')}
+              onClick={() => handleSectionToggle('labs')}
             />
             <SectionButton
               icon={<ShoppingBag size={32} className={activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'} />}
               label={t('nav.marketplace')}
               active={activeSection === 'marketplace'}
-              onClick={() => setActiveSection(activeSection === 'marketplace' ? null : 'marketplace')}
+              onClick={() => handleSectionToggle('marketplace')}
             />
           </div>
         </div>
@@ -544,6 +555,7 @@ const Dashboard = () => {
         />
 
         {/* 4. Section Content — appears below stats when a button is toggled */}
+        <div ref={sectionContentRef}>
         {activeSection === 'courses' && (
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -657,6 +669,7 @@ const Dashboard = () => {
             )}
           </div>
         )}
+        </div>
 
         {/* 5. Next Rank Progress */}
         {nextRank && (
