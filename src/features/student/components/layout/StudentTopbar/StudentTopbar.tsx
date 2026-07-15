@@ -331,8 +331,8 @@ const StudentTopbar = () => {
               <IconMenu size={24} />
             </button>
 
-            {/* Desktop icon tabs — centered with balanced spacing */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 min-w-0 gap-1">
+            {/* Desktop icon tabs — left-aligned, flex-1 creates gap before right actions */}
+            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1 pl-2">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
