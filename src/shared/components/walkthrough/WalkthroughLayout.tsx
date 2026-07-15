@@ -40,13 +40,14 @@ export function WalkthroughLayout({
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
-  const { network } = useSimulation();
+  const { network, browser } = useSimulation();
 
   useEffect(() => {
     const profile = getNetworkProfileForLab(labId);
     if (profile) {
       network.setActiveProfile(profile);
     }
+    browser.resetBrowser();
     return () => { network.setActiveProfile(null); };
   }, [labId]);
 
