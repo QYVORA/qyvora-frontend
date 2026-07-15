@@ -85,7 +85,7 @@ const LandingLeaderboardSection = () => {
 
       {/* Right column — identicon grid (Athens-style) */}
       <div
-        className="absolute top-0 bottom-0 right-0 z-0 overflow-hidden pointer-events-none"
+        className="absolute top-0 bottom-0 right-0 z-0 overflow-hidden pointer-events-none flex items-center"
         style={{
           left: 'min(42%, 420px)',
           maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 8%, rgba(0,0,0,0.1) 18%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.9) 75%, black 100%)',
@@ -93,7 +93,7 @@ const LandingLeaderboardSection = () => {
         }}
       >
         {loading ? (
-          <div className="flex flex-wrap gap-[3px] p-3 content-start">
+          <div className="flex flex-wrap gap-[3px] p-3 w-full">
             {Array.from({ length: 35 }).map((_, i) => (
               <div
                 key={i}
@@ -103,7 +103,7 @@ const LandingLeaderboardSection = () => {
             ))}
           </div>
         ) : entries.length === 0 ? null : (
-          <div className="pointer-events-auto flex flex-wrap gap-[3px] p-3 content-start">
+          <div className="pointer-events-auto flex flex-wrap gap-[3px] p-3 w-full">
             {gridCells.map(({ entry, idx }) => {
               const isFilled = entry !== null;
               const isTopThree = isFilled && entry!.rank <= 3;
