@@ -8,12 +8,16 @@ import type { TerminalContext } from '../SimulatedTerminal/types';
 
 interface LabTerminalProps {
   scenario: PrivescScenario;
+  labId?: string;
+  terminalContext?: TerminalContext;
   onChapterComplete: (chapterId: string) => void;
   onFlagFound: () => void;
 }
 
 export const LabTerminal: React.FC<LabTerminalProps> = ({
   scenario,
+  labId = 'privesc',
+  terminalContext,
   onChapterComplete,
   onFlagFound,
 }) => {
@@ -21,8 +25,8 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
 
   const handleConnect = useCallback(async () => {
-    await connect('privesc', scenario.id);
-  }, [connect, scenario.id]);
+    await connect(labId, scenario.id);
+  }, [connect, labId, scenario.id]);
 
   const handleDisconnect = useCallback(async () => {
     await disconnect();
@@ -53,9 +57,7 @@ export const LabTerminal: React.FC<LabTerminalProps> = ({
     [connection, scenario, updateProgress, onChapterComplete, onFlagFound]
   );
 
-  const context: TerminalContext = {
-    type: 'dashboard',
-  };
+  const context: TerminalContext = terminalContext || { type: 'dashboard' };
 
   return (
     <div className="flex flex-col h-full">

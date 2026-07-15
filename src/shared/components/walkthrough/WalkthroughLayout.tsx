@@ -2,6 +2,7 @@ import { Unplug, Loader2 } from 'lucide-react';
 import { IconArrowLeft, IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
+import { SimulationPanel, type SimulationType } from '@/features/student/components/simulations';
 
 export interface WalkthroughLayoutProps {
   title: string;
@@ -17,6 +18,7 @@ export interface WalkthroughLayoutProps {
   completedCount?: number;
   totalSteps?: number;
   showConnectionGuide?: boolean;
+  simulations?: { type: SimulationType; content: React.ReactNode }[];
 }
 
 export function WalkthroughLayout({
@@ -33,6 +35,7 @@ export function WalkthroughLayout({
   completedCount = 0,
   totalSteps = 0,
   showConnectionGuide = true,
+  simulations,
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
@@ -133,6 +136,13 @@ export function WalkthroughLayout({
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Simulation Panel */}
+      {simulations && simulations.length > 0 && (
+        <div className="mb-10">
+          <SimulationPanel simulations={simulations} />
         </div>
       )}
 
