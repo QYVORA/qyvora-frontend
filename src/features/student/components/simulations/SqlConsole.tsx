@@ -17,20 +17,32 @@ export function SqlConsole({ tables, predefinedQueries = [] }: SqlConsoleProps) 
     const trimmed = query.trim().toLowerCase();
     const timing = Math.round(performance.now() - start + Math.random() * 50);
 
-    // Simple SQL simulation
-    if (trimmed.startsWith('select')) {
-      // Find referenced table
+    if (trimmed.startsWith('select') || trimmed.includes('union select') || trimmed.startsWith("'")) {
       const fromMatch = trimmed.match(/from\s+(\w+)/);
       const tableName = fromMatch?.[1];
-      const table = tables.find(t => t.name.toLowerCase() === tableName);
+      const table = tableName ? tables.find(t => t.name.toLowerCase() === tableName) : tables[0];
 
       if (table) {
         const limitMatch = trimmed.match(/limit\s+(\d+)/);
         const limit = limitMatch ? parseInt(limitMatch[1]) : 10;
-        const rows = table.rows.slice(0, limit);
-        setResult({ columns: table.columns, rows, timing });
+
+        if (trimmed.includes('union select') || trimmed.startsWith("'")) {
+          const unionMatch = trimmed.match(/union\s+select\s+(.+)/);
+          const columns = unionMatch ? unionMatch[1].split(',').length : table.columns.length;
+          const unionCols = Array.from({ length: columns }, (_, i) => table.columns[i] || `col${i}`);
+          const unionRow: Record<string, string> = {};
+          unionCols.forEach((col, i) => {
+            unionRow[col] = unionMatch?.[1]?.split(',')[i]?.trim() === 'null'
+              ? 'NULL'
+              : table.rows[0]?.[col] || `data_${i}`;
+          });
+          setResult({ columns: unionCols, rows: [unionRow], timing });
+        } else {
+          const rows = table.rows.slice(0, limit);
+          setResult({ columns: table.columns, rows, timing });
+        }
       } else {
-        setResult({ columns: [], rows: [], error: `Table '${tableName}' doesn't exist`, timing });
+        setResult({ columns: [], rows: [], error: tableName ? `Table '${tableName}' doesn't exist` : 'No table specified', timing });
       }
     } else if (trimmed.startsWith('show tables') || trimmed.startsWith('show databases')) {
       setResult({

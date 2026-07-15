@@ -31,6 +31,10 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
   const filtered = filterCategory ? events.filter(e => e.category === filterCategory) : events;
   const sorted = [...filtered].sort((a, b) => a.timestamp.localeCompare(b.timestamp));
 
+  const correctOrder = [...events].sort((a, b) => a.timestamp.localeCompare(b.timestamp)).map(e => e.id);
+  const isSequenceComplete = orderedIds.length === correctOrder.length &&
+    orderedIds.every((id, i) => id === correctOrder[i]);
+
   const handleReorder = (eventId: string) => {
     setOrderedIds(prev =>
       prev.includes(eventId) ? prev.filter(id => id !== eventId) : [...prev, eventId]
@@ -41,6 +45,13 @@ export function TimelineInvestigation({ events }: TimelineInvestigationProps) {
     <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
       <div className="px-4 py-3 bg-bg-elevated border-b border-border/20 flex items-center gap-3">
         <p className="text-[10px] font-black uppercase tracking-widest text-accent">Timeline Investigation</p>
+        {orderedIds.length > 0 && (
+          <span className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
+            isSequenceComplete ? 'bg-green-400/10 text-green-400' : 'bg-yellow-400/10 text-yellow-400'
+          }`}>
+            {isSequenceComplete ? 'Sequence Verified' : `${orderedIds.length}/${events.length} ordered`}
+          </span>
+        )}
         <div className="flex items-center gap-1 ml-auto">
           {['network', 'process', 'file', 'auth', 'dns', 'email'].map(cat => {
             const CatIcon = CATEGORY_ICONS[cat] || Network;

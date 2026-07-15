@@ -28,6 +28,7 @@ interface BrowserSimState {
   browser: BrowserState;
   setBrowserUrl: (url: string) => void;
   addBrowserPage: (page: BrowserState['pages'][0]) => void;
+  resetBrowser: () => void;
 }
 
 // ── Context ─────────────────────────────────────────────────────────────────
@@ -119,12 +120,21 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const resetBrowser = useCallback(() => {
+    setBrowser({
+      url: 'about:blank',
+      pages: [],
+      history: ['about:blank'],
+      historyIndex: 0,
+    });
+  }, []);
+
   return (
     <SimulationContext.Provider value={{
       discovery: { discoveredIps, discoveredHostnames, addDiscovery },
       panel: { activeSimulations, openSimulation, setActiveSimulations, setOpenSimulation, toggleSimulation },
       network: { activeProfile, setActiveProfile },
-      browser: { browser, setBrowserUrl, addBrowserPage },
+      browser: { browser, setBrowserUrl, addBrowserPage, resetBrowser },
     }}>
       {children}
     </SimulationContext.Provider>

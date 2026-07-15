@@ -121,6 +121,24 @@ export function createWebExploitationSimulations(
         },
       ),
     },
+    {
+      type: 'api-explorer',
+      content: React.createElement(
+        (() => {
+          const { ApiExplorer } = require('./ApiExplorer');
+          return ApiExplorer;
+        })(),
+        {
+          endpoints: [
+            { id: 'list-users', method: 'GET' as const, path: '/api/users', description: 'List all users', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"users":[{"id":1,"name":"admin","role":"admin","email":"admin@corp.local"},{"id":2,"name":"jdoe","role":"user","email":"jdoe@corp.local"}]}' } },
+            { id: 'get-user', method: 'GET' as const, path: '/api/users/1', description: 'Get user by ID', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: '{"id":1,"name":"admin","role":"admin","email":"admin@corp.local","lastLogin":"2024-01-15T10:30:00Z"}' } },
+            { id: 'create-user', method: 'POST' as const, path: '/api/users', description: 'Create new user', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer <token>' }, body: '{"name":"newuser","role":"user","email":"new@corp.local"}', response: { statusCode: 201, headers: { 'Content-Type': 'application/json' }, body: '{"id":3,"name":"newuser","role":"user","email":"new@corp.local","created":"2024-01-15T12:00:00Z"}' } },
+            { id: 'delete-user', method: 'DELETE' as const, path: '/api/users/2', description: 'Delete user', headers: { 'Authorization': 'Bearer <token>' }, response: { statusCode: 204, headers: {}, body: '' } },
+            { id: 'admin-config', method: 'GET' as const, path: '/api/admin/config', description: 'Admin config (forbidden for non-admin)', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer <token>' }, response: { statusCode: 403, headers: { 'Content-Type': 'application/json' }, body: '{"error":"Forbidden","message":"Admin access required"}' } },
+          ],
+        },
+      ),
+    },
   ];
 }
 

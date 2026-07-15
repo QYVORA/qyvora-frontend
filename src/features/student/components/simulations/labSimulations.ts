@@ -2,7 +2,7 @@ import type { SimulationType } from './types';
 
 export const LAB_SIMULATIONS: Record<string, SimulationType[]> = {
   'sql-injection':    ['sql-console', 'browser', 'http-inspector'],
-  'web-exploitation': ['browser', 'http-inspector', 'file-explorer'],
+  'web-exploitation': ['browser', 'http-inspector', 'api-explorer'],
   'privesc':          ['file-explorer', 'log-viewer'],
   'password':         ['password-cracker', 'file-explorer'],
   'phishing':         ['email-client', 'browser'],
