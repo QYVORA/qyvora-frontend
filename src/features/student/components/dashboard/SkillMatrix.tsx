@@ -173,7 +173,7 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
 
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Radar Chart */}
-        <div className="flex-1 min-h-[300px] lg:min-h-[360px]">
+        <div className="flex-1 h-[320px] sm:h-[360px] lg:h-[380px]">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
               <PolarGrid
