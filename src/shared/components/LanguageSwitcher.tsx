@@ -33,14 +33,14 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
   );
 
   const select = (code: LanguageCode) => {
-    i18n.changeLanguage(code);
     localStorage.setItem('qyvora-lang', code);
     document.documentElement.lang = code;
     const lang = LANGUAGES.find((l) => l.code === code);
     const dir = (lang && 'dir' in lang ? lang.dir : 'ltr') as string;
     document.documentElement.dir = dir;
-    setOpen(false);
-    setSearch('');
+    i18n.changeLanguage(code).then(() => {
+      window.location.reload();
+    });
   };
 
   useEffect(() => {
