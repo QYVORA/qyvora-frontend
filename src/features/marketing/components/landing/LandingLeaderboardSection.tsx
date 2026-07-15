@@ -31,6 +31,7 @@ const LandingLeaderboardSection = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [gridRows, setGridRows] = useState(5);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,16 +53,30 @@ const LandingLeaderboardSection = () => {
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    const calcRows = () => {
+      const vh = window.innerHeight;
+      const cellSize = Math.max(48, Math.min(72, vh / 10));
+      const rows = Math.max(4, Math.floor(vh / (cellSize + 3)));
+      setGridRows(rows);
+    };
+    calcRows();
+    window.addEventListener('resize', calcRows);
+    return () => window.removeEventListener('resize', calcRows);
+  }, []);
+
+  const totalCells = GRID_COLS * gridRows;
+
   const gridCells = useMemo(() => {
     const cells: { entry: LeaderboardEntry | null; idx: number }[] = [];
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < totalCells; i++) {
       cells.push({
         entry: i < entries.length ? entries[i] : null,
         idx: i,
       });
     }
     return cells;
-  }, [entries]);
+  }, [entries, totalCells]);
 
   return (
     <div className="relative w-full h-full flex items-center overflow-hidden">
@@ -84,7 +99,7 @@ const LandingLeaderboardSection = () => {
         )}
       </div>
 
-      {/* Right column — identicon grid (Athens-style) */}
+      {/* Right column — identicon grid (Athens-style, full height) */}
       <div
         className="absolute inset-0 lg:left-[42%] xl:left-[38%] z-0 overflow-hidden pointer-events-none"
         style={{
@@ -94,22 +109,28 @@ const LandingLeaderboardSection = () => {
       >
         {loading ? (
           <div
-            className="grid h-full gap-[3px] p-4"
-            style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+            className="grid h-full gap-[3px] p-3"
+            style={{
+              gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
+              gridTemplateRows: `repeat(${gridRows}, 1fr)`,
+            }}
           >
-            {Array.from({ length: 35 }).map((_, i) => (
+            {Array.from({ length: totalCells }).map((_, i) => (
               <div
                 key={i}
-                className="aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse"
-                style={{ animationDelay: `${i * 40}ms` }}
+                className="rounded-lg bg-bg-card border border-border/20 animate-pulse"
+                style={{ animationDelay: `${i * 30}ms` }}
               />
             ))}
           </div>
         ) : entries.length === 0 ? null : (
           <ScrollReveal direction="right" amount={0.05}>
             <div
-              className="pointer-events-auto grid h-full gap-[3px] p-4"
-              style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+              className="pointer-events-auto grid h-full gap-[3px] p-3"
+              style={{
+                gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
+                gridTemplateRows: `repeat(${gridRows}, 1fr)`,
+              }}
             >
               {gridCells.map(({ entry, idx }) => {
                 const isFilled = entry !== null;
@@ -120,7 +141,7 @@ const LandingLeaderboardSection = () => {
                   return (
                     <div
                       key={idx}
-                      className="aspect-square rounded-lg bg-bg/40 border border-border/5"
+                      className="rounded-lg bg-bg/40 border border-border/5"
                     />
                   );
                 }
@@ -132,21 +153,21 @@ const LandingLeaderboardSection = () => {
                     onMouseEnter={() => setHoveredIdx(idx)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className={[
-                      'aspect-square rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
-                      'hover:z-10 hover:scale-110 hover:shadow-lg',
+                      'rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
+                      'hover:z-10 hover:scale-105 hover:shadow-lg',
                       isTopThree
                         ? TOP_THREE_BORDER[entry!.rank - 1]
                         : 'border-accent/10 hover:border-accent/40',
-                      isHovered && 'z-10 scale-110 shadow-lg',
+                      isHovered && 'z-10 scale-105 shadow-lg',
                     ].join(' ')}
                   >
                     {/* Identicon fill */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-bg-card">
+                    <div className="absolute inset-0 flex items-center justify-center bg-bg-card [&_svg]:w-full [&_svg]:h-full">
                       <Identicon value={entry!.userId} size={80} />
                     </div>
 
                     {/* Rank badge */}
-                    <div className="absolute top-0.5 left-0.5 z-10">
+                    <div className="absolute top-1 left-1 z-10">
                       {isTopThree ? (
                         <Medal className={`w-3 h-3 ${TOP_THREE_RANK[entry!.rank - 1]}`} />
                       ) : (
@@ -160,7 +181,7 @@ const LandingLeaderboardSection = () => {
                     <div
                       className={[
                         'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg/95 via-bg/80 to-transparent',
-                        'flex flex-col items-center justify-end p-1 pt-4',
+                        'flex flex-col items-center justify-end p-1.5 pt-4',
                         'transition-opacity duration-200',
                         isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
                       ].join(' ')}
