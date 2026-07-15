@@ -3,7 +3,7 @@ import { Skeleton } from '@/shared/components/ui';
 /* ─── Profile Page Skeleton ─────────────────────────────────────────────────── */
 export const ProfileSkeleton = () => (
   <div className="w-full bg-bg">
-    <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
+    <div className="relative z-10 w-full  px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
         {/* Left sidebar */}
         <div className="md:w-[280px] lg:w-[300px] shrink-0 space-y-6 md:sticky md:top-[72px] md:self-start md:pb-16">
@@ -40,7 +40,7 @@ export const ProfileSkeleton = () => (
 /* ─── Notifications Page Skeleton ───────────────────────────────────────────── */
 export const NotificationsSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
       <div className="px-2 sm:px-6 md:px-8 pb-16 lg:px-8 lg:py-6">
         <div className="mb-10 md:mb-12 hidden lg:block">
           <Skeleton className="h-3 w-32 bg-border/30 rounded mb-2" />
@@ -75,7 +75,7 @@ export const NotificationsSkeleton = () => (
 /* ─── Settings Page Skeleton ────────────────────────────────────────────────── */
 export const SettingsSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
       <div className="mb-10 md:mb-12 hidden lg:block">
         <Skeleton className="h-3 w-40 bg-border/30 rounded mb-2" />
         <Skeleton className="h-12 w-40 bg-border/30 rounded-lg mb-2" />
@@ -121,8 +121,8 @@ export const SettingsSkeleton = () => (
 /* ─── News Feed Page Skeleton ───────────────────────────────────────────────── */
 export const NewsFeedSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-      <div className="mx-auto max-w-[1600px] px-2 sm:px-6 md:px-8 pt-6 pb-16">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+      <div className=" px-2 sm:px-6 md:px-8 pt-6 pb-16">
         <div className="mb-6 md:mb-8">
           <Skeleton className="h-3 w-40 bg-border/30 rounded mb-2" />
           <Skeleton className="h-12 w-48 bg-border/30 rounded-lg mb-2" />
@@ -166,8 +166,8 @@ export const NewsFeedSkeleton = () => (
 /* ─── Marketplace Page Skeleton ─────────────────────────────────────────────── */
 export const MarketplaceSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-      <div className="mx-auto max-w-[1600px] px-0 pt-6 pb-16 md:px-6 lg:px-10">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+      <div className=" px-0 pt-6 pb-16 md:px-6 lg:px-10">
         <div className="mb-8 flex flex-col justify-between gap-8 md:flex-row md:items-end px-4 md:px-0">
           <div>
             <Skeleton className="h-3 w-32 bg-border/30 rounded mb-2" />
@@ -208,7 +208,7 @@ export const MarketplaceSkeleton = () => (
 /* ─── Bootcamp Course Page Skeleton ─────────────────────────────────────────── */
 export const BootcampCourseSkeleton = () => (
   <div className="bg-bg">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
       {/* Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
@@ -280,7 +280,7 @@ export const BootcampCourseSkeleton = () => (
 /* ─── My Courses Page Skeleton ──────────────────────────────────────────────── */
 export const MyCoursesSkeleton = () => (
   <div className="bg-bg min-h-screen">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
       {/* Header */}
       <div className="mb-8">
         <Skeleton className="h-3 w-24 bg-border/30 rounded mb-4" />
@@ -332,7 +332,7 @@ export const MyCoursesSkeleton = () => (
 /* ─── Bootcamp Room Page Skeleton ───────────────────────────────────────────── */
 export const BootcampRoomSkeleton = () => (
   <div className="bg-bg overflow-x-hidden">
-    <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 md:px-8 pt-8 pb-20 lg:pb-24">
+    <div className="w-full px-4 sm:px-6 md:px-8 pt-8 pb-20 lg:pb-24">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -373,7 +373,7 @@ export const BootcampRoomSkeleton = () => (
 /* ─── Competitive Page Skeleton ─────────────────────────────────────────────── */
 export const CompetitiveSkeleton = () => (
   <div className="bg-bg min-h-full">
-    <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <Skeleton className="h-9 w-64 bg-border/30 rounded-lg mb-1" />

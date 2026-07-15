@@ -134,7 +134,7 @@ const Settings: React.FC = () => {
       </div>
 
       {/* Fixed two-column container below topbar */}
-      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
 
 
 

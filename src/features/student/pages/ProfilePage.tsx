@@ -83,7 +83,7 @@ const Profile: React.FC = () => {
 
       {/* ══ HERO SECTION ══ */}
       <section className="relative w-full">
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
+        <div className="relative z-10 w-full  px-4 md:px-12 lg:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
             {/* ── Left sidebar: avatar, stats, badges, actions (sticky on desktop) ── */}
             <motion.div

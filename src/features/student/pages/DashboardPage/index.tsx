@@ -67,7 +67,7 @@ function pickCpBalance(userCp: number, overview: any, cpBalance: number | null):
 }
 
 const DashboardSkeleton = () => (
-  <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+  <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
     {/* 1. Hero Banner */}
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
       <div className="space-y-2 w-full sm:w-auto">
@@ -403,7 +403,7 @@ const Dashboard = () => {
     <div className="bg-bg">
       <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
       <OnboardingWizard />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-10">
+      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-10">
 
         {/* 1. Welcome Banner */}
         <div ref={heroRef}>
