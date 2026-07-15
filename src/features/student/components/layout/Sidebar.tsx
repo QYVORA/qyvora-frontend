@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Map, BookOpen, Swords, Globe, BarChart3,
-  Layers, BookMarked, Loader2,
+  Layers, BookMarked, Loader2, LogOut,
 } from 'lucide-react';
 import {
   IconDashboard,
@@ -24,6 +24,7 @@ import { extractCpBalance } from '@/shared/utils/cpBalance';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import Logo from '@/shared/components/brand/Logo';
 import CpLogo from '@/shared/components/CpLogo';
+import Identicon from '@/shared/components/Identicon';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 
 const SidebarPanel = ({ children }: { children: React.ReactNode }) => (
@@ -464,6 +465,19 @@ const RightRailSection = () => {
 const Sidebar = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { user, logout } = useAuth();
+
+  const ALL_NAV: NavItem[] = [
+    { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
+    { label: t('nav.myCourses'), icon: BookMarked, path: '/dashboard/courses' },
+    { label: t('nav.bootcamp'), icon: Map, path: '/dashboard/bootcamps' },
+    { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
+    { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
+    { label: t('nav.competitive'), icon: Swords, path: '/dashboard/competitive' },
+    { label: t('nav.networkLab'), icon: Globe, path: '/dashboard/networks' },
+    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
+    { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
+  ];
 
   const PRIMARY_NAV: NavItem[] = [
     { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
@@ -558,15 +572,70 @@ const Sidebar = () => {
         {navContent}
       </aside>
 
-      {/* Mobile sidebar — drawer */}
+      {/* Mobile sidebar — slides from right */}
       {mobileOpen && (
         <>
           <div
             onClick={() => setMobileOpen(false)}
             className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm lg:hidden"
           />
-          <aside className="fixed left-0 top-0 bottom-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg border-r border-border lg:hidden overflow-y-auto">
-            {navContent}
+          <aside className="fixed inset-y-0 right-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg border-l border-border lg:hidden overflow-y-auto">
+            {/* Header: logo + close */}
+            <div className="h-20 flex items-center justify-between px-6 shrink-0">
+              <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
+                <Logo size="md" />
+              </Link>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
+                aria-label="Close sidebar"
+              >
+                <IconX size={20} />
+              </button>
+            </div>
+
+            {/* All nav buttons — flat, no section dividers */}
+            <nav className="flex-1 overflow-y-auto min-h-0 px-3 pt-2 pb-4">
+              {ALL_NAV.map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+                      active
+                        ? 'text-accent bg-accent-dim'
+                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
+                    }`}
+                  >
+                    <item.icon className="w-5 h-5 shrink-0" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* User profile + logout at bottom */}
+            <div className="shrink-0 border-t border-border px-4 py-4 space-y-3">
+              <Link
+                to="/dashboard/profile"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-accent-dim/50 transition-colors"
+              >
+                <Identicon value={user?.uid || user?.username || '?'} size={40} className="w-10 h-10 rounded-xl border-2 border-border shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-text-primary truncate">{user?.username || 'User'}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-accent">View Profile</p>
+                </div>
+              </Link>
+              <button
+                onClick={() => { logout(); setMobileOpen(false); }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-400/20 text-red-400 text-[10px] font-black uppercase tracking-widest hover:bg-red-400/10 transition-all"
+              >
+                <LogOut className="w-4 h-4" /> {t('button.logOut')}
+              </button>
+            </div>
           </aside>
         </>
       )}
