@@ -125,7 +125,7 @@ const LandingLeaderboardSection = () => {
                   return (
                     <div
                       key={idx}
-                      className="rounded-lg bg-bg/40 border border-border/5 shrink-0"
+                      className="rounded-lg bg-bg-elevated/40 border border-border/10 shrink-0"
                       style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
                     />
                   );
