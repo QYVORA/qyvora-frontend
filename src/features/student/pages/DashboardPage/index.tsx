@@ -610,13 +610,46 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* 4. Room Grid — only when no section selected */}
+        {/* 4. Achievement Stats — only when no section selected */}
         {!activeSection && (
           <div ref={roomsRef}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
-                <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
+              <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconRank size={32} className="text-accent" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rank</p>
+                  <p className="text-sm font-black text-text-primary">{rankName}</p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
+                  <CpLogo className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">CP</p>
+                  <p className="text-sm font-black text-text-primary">{cpBalance.toLocaleString()}</p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconFire size={32} className="text-orange-400" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Streak</p>
+                  <p className="text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
+                <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                  <IconCode size={32} className="text-accent" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rooms Done</p>
+                  <p className="text-sm font-black text-text-primary">{totalRoomsDone}</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
