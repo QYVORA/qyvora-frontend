@@ -89,7 +89,9 @@ const Profile: React.FC = () => {
           title={`@${profileData.username}`}
           description={profileData.bio || `${profileData.rank} operator`}
           avatar={
-            <Identicon value={profileData.id} size={256} className="w-full h-full" />
+            <div className="w-full h-full bg-black flex items-center justify-center">
+              <Identicon value={profileData.id} size={256} className="w-full h-full" />
+            </div>
           }
           stats={[
             { label: 'CP', value: profileData.cp.toLocaleString(), accent: true },
