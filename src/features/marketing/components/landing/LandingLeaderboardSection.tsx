@@ -63,47 +63,26 @@ const LandingLeaderboardSection = () => {
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {/* Left column — title + description */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12">
-        <div className="md:w-[380px] lg:w-[420px]">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-            Top <span className="text-accent">Operators</span>
-          </h2>
-          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mb-6">
-            Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.
-          </p>
-          {total > 0 && (
-            <Link
-              to="/leaderboard"
-              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:brightness-110 transition-all active:scale-95"
-            >
-              View Full Leaderboard ({total}) <IconArrowRight size={14} />
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* Right column — identicon grid (Athens-style) */}
+      {/* Right column — identicon grid (Athens-style, full section) */}
       <div
-        className="absolute top-0 bottom-0 right-0 z-0 overflow-hidden pointer-events-none flex items-center"
+        className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center"
         style={{
-          left: 'min(42%, 420px)',
           maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 8%, rgba(0,0,0,0.1) 18%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.9) 75%, black 100%)',
           WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.03) 8%, rgba(0,0,0,0.1) 18%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.9) 75%, black 100%)',
         }}
       >
         {loading ? (
-          <div className="flex flex-wrap gap-[3px] p-3 w-full">
+          <div className="flex flex-wrap gap-[3px] p-3 w-full justify-center lg:justify-start">
             {Array.from({ length: 35 }).map((_, i) => (
               <div
                 key={i}
-                className="w-[clamp(48px,8vw,72px)] aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse"
+                className="w-[clamp(40px,6vw,72px)] aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse"
                 style={{ animationDelay: `${i * 30}ms` }}
               />
             ))}
           </div>
         ) : entries.length === 0 ? null : (
-          <div className="pointer-events-auto flex flex-wrap gap-[3px] p-3 w-full">
+          <div className="pointer-events-auto flex flex-wrap gap-[3px] p-3 w-full justify-center lg:justify-start">
             {gridCells.map(({ entry, idx }) => {
               const isFilled = entry !== null;
               const isTopThree = isFilled && entry!.rank <= 3;
@@ -113,7 +92,7 @@ const LandingLeaderboardSection = () => {
                 return (
                   <div
                     key={idx}
-                    className="w-[clamp(48px,8vw,72px)] aspect-square rounded-lg bg-bg/40 border border-border/5"
+                    className="w-[clamp(40px,6vw,72px)] aspect-square rounded-lg bg-bg/40 border border-border/5"
                   />
                 );
               }
@@ -125,7 +104,7 @@ const LandingLeaderboardSection = () => {
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   className={[
-                    'w-[clamp(48px,8vw,72px)] aspect-square rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
+                    'w-[clamp(40px,6vw,72px)] aspect-square rounded-lg border relative overflow-hidden transition-all duration-300 group cursor-pointer',
                     'hover:z-10 hover:scale-110 hover:shadow-lg',
                     isTopThree
                       ? TOP_THREE_BORDER[entry!.rank - 1]
@@ -170,6 +149,26 @@ const LandingLeaderboardSection = () => {
             })}
           </div>
         )}
+      </div>
+
+      {/* Left column — title + description (on top of grid) */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12">
+        <div className="md:w-[380px] lg:w-[420px]">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
+            Top <span className="text-accent">Operators</span>
+          </h2>
+          <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-sm mb-6">
+            Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.
+          </p>
+          {total > 0 && (
+            <Link
+              to="/leaderboard"
+              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-accent hover:brightness-110 transition-all active:scale-95"
+            >
+              View Full Leaderboard ({total}) <IconArrowRight size={14} />
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Footer badge */}
