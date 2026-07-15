@@ -5,6 +5,7 @@ import { createInitialState, processInput, getInputPrefix } from './engine/state
 import { streamOutput, hasStreamingOutput } from './engine/streaming';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
+import { getDeviceByIp, getHostnameForIp } from '@/features/student/data/fakeNetwork';
 import type { TerminalState, TerminalLine, TerminalContext, VFSNode, ProcessInputResult } from './types';
 
 const LS_KEY_LINES = 'qyvora_terminal_lines';
@@ -193,6 +194,7 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     const trimmed = cmd.trim();
     if (!trimmed) return;
 
+    const prevDiscoveredIps = stateRef.current.discoveredIps;
     const result = processInput(trimmed, stateRef.current);
 
     if (result._clearLine) {
@@ -210,6 +212,18 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     }
 
     stateRef.current = result.newState;
+
+    if (result.newState.discoveredIps.length > prevDiscoveredIps.length) {
+      const newIps = result.newState.discoveredIps.filter(ip => !prevDiscoveredIps.includes(ip));
+      if (newIps.length > 0) {
+        const hostnames: Record<string, string> = {};
+        newIps.forEach(ip => {
+          const h = getHostnameForIp(ip);
+          if (h && h !== ip) hostnames[ip] = h;
+        });
+        window.dispatchEvent(new CustomEvent('qyvora:ip-discovered', { detail: { ips: newIps, hostnames } }));
+      }
+    }
 
     if (result.streaming && hasStreamingOutput(result.streaming) && !isInitialRender.current) {
       streamingRef.current = true;

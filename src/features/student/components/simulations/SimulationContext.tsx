@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import type { SimulationType, NetworkProfile, BrowserState } from './types';
 
 // ── Discovery State ─────────────────────────────────────────────────────────
@@ -68,6 +68,19 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
       setDiscoveredHostnames(prev => prev.includes(hostname) ? prev : [...prev, hostname]);
     }
   }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const custom = e as CustomEvent<{ ips: string[]; hostnames?: Record<string, string> }>;
+      const { ips, hostnames } = custom.detail;
+      ips.forEach(ip => {
+        const hostname = hostnames?.[ip];
+        addDiscovery(ip, hostname);
+      });
+    };
+    window.addEventListener('qyvora:ip-discovered', handler);
+    return () => window.removeEventListener('qyvora:ip-discovered', handler);
+  }, [addDiscovery]);
 
   // Simulation panel
   const [activeSimulations, setActiveSimulations] = useState<SimulationType[]>([]);
