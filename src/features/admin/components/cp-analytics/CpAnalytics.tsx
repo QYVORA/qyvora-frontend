@@ -119,14 +119,14 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
         <div className="flex items-center gap-2">
           {(['7d','30d','90d'] as Range[]).map(r => (
             <button key={r} onClick={() => setRange(r)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors ${
-                range === r ? 'bg-accent text-bg' : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+              className={`px-3 py-1.5 rounded-xl transition-colors ${
+                range === r ? 'btn-primary' : 'btn-secondary'
               }`}>
               {r}
             </button>
           ))}
           <button onClick={() => void loadTxs(1)}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-xs font-bold text-text-muted hover:text-accent hover:border-accent/30 transition-colors">
+            className="btn-secondary flex items-center gap-1.5 px-3 py-1.5">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
         </div>

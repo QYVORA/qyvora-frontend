@@ -84,10 +84,10 @@ const BroadcastTab = () => {
                 <button
                   key={opt.value}
                   onClick={() => setTargetFilter(opt.value)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 transition-colors ${
                     targetFilter === opt.value
-                      ? 'bg-accent text-bg'
-                      : 'border border-border text-text-muted hover:border-accent/30 hover:text-accent'
+                      ? 'btn-primary'
+                      : 'btn-secondary'
                   }`}
                 >
                   <Icon size={14} /> {opt.label}
@@ -124,7 +124,7 @@ const BroadcastTab = () => {
         <button
           onClick={() => setShowConfirm(true)}
           disabled={!title.trim() || !message.trim()}
-          className={`${BTN_CLS} w-full bg-accent text-bg hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed`}
+          className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Send className="w-4 h-4" /> Send Announcement
         </button>

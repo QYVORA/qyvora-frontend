@@ -116,7 +116,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
             type="button"
             onClick={() => void patch({ unlockNext: true }, `Module "${nextModule.title}" unlocked`)}
             disabled={saving || !started}
-            className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-border/30 bg-bg p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
+            className="group btn-secondary flex w-full items-center justify-between gap-4 p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
           >
 <div className="min-w-0 text-left">
                <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Unlock next phase</div>

@@ -345,16 +345,19 @@ export const BootcampRoomSkeleton = () => (
   <div className="bg-bg overflow-x-hidden">
     <div className="w-full px-4 sm:px-6 md:px-8 pt-8 pb-20 lg:pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Skeleton className="w-10 h-10 bg-border/30 rounded-xl" />
-          <div className="space-y-1.5">
-            <Skeleton className="h-3 w-20 bg-border/30 rounded" />
-            <Skeleton className="h-5 w-48 bg-border/30 rounded" />
-          </div>
+      <header className="mb-8">
+        <Skeleton className="h-3 w-48 bg-border/30 rounded mb-2" />
+        <Skeleton className="h-10 w-64 bg-border/30 rounded mb-4" />
+        <div className="border-l-4 border-border/30 pl-4 space-y-2 mb-4">
+          <Skeleton className="h-4 w-full bg-border/30 rounded" />
+          <Skeleton className="h-4 w-3/4 bg-border/30 rounded" />
         </div>
-        <Skeleton className="h-8 w-20 bg-border/30 rounded-lg" />
-      </div>
+        <div className="flex flex-wrap items-center gap-4 mt-4">
+          <Skeleton className="h-4 w-20 bg-border/30 rounded" />
+          <Skeleton className="h-4 w-20 bg-border/30 rounded" />
+          <Skeleton className="h-4 w-32 bg-border/30 rounded" />
+        </div>
+      </header>
       {/* Progress */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
