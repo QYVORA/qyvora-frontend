@@ -120,22 +120,17 @@ const Marketplace: React.FC = () => {
   return (
     <div className="bg-bg">
       <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." />
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-        <div className="pt-6 pb-8 md:px-6 lg:px-10">
+      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+        <div className="pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
           <LearningOverviewCard
             icon={<ShoppingBag className="w-6 h-6 text-bg" />}
             title="Intelligence Market"
             description="High-value research papers, tools, and mission guides for operators."
             stats={balance !== null ? [{ label: 'CP Balance', value: formatNumber(balance), accent: true }] : undefined}
-            action={{
-              label: tab === 'market' ? 'View History' : 'Browse Products',
-              onClick: () => setTab(tab === 'market' ? 'history' : 'market'),
-              icon: tab === 'market' ? <Zap className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />,
-            }}
           />
 
-          {/* Search and Tabs */}
-          <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center flex-wrap max-w-full mt-6 px-4 md:px-0">
+          {/* Search */}
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center flex-wrap max-w-full px-4 md:px-0">
             {tab === 'market' && (
               <div className="relative w-full sm:w-auto">
                 <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vault..." className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
@@ -145,7 +140,7 @@ const Marketplace: React.FC = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center gap-1 px-4 md:px-0 mb-8">
+          <div className="flex items-center gap-1 px-4 md:px-0">
             <button
               onClick={() => setTab('market')}
               className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
