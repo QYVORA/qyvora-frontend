@@ -728,6 +728,17 @@
       "seoDesc": "Account and learning preferences.",
       "title": "Settings",
       "description": "Manage your account and preferences.",
+      "tabs": {
+        "appearance": "Appearance",
+        "notifications": "Notifications",
+        "learning": "Learning",
+        "codeEditor": "Code Editor",
+        "data": "Data & Storage",
+        "security": "Security",
+        "account": "Account"
+      },
+      "saved": "Preferences saved.",
+      "saveFailed": "Failed to save preferences.",
       "profile": { "title": "Profile" },
       "password": {
         "title": "Change Password",
@@ -757,11 +768,82 @@
         "saved": "Saved",
         "saving": "Saving…"
       },
+      "appearance": {
+        "title": "Appearance",
+        "theme": "Theme",
+        "dark": "Dark",
+        "light": "Light",
+        "compactMode": "Compact Mode",
+        "compactModeDesc": "Reduce spacing and padding throughout the interface",
+        "showAnimations": "Animations",
+        "showAnimationsDesc": "Enable motion and transition effects",
+        "fontSize": "Font Size",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
+      },
+      "languageSection": {
+        "title": "Language",
+        "description": "Select your preferred language for the interface."
+      },
+      "learningPrefs": {
+        "title": "Learning Preferences",
+        "difficulty": "Preferred Difficulty",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "weeklyGoal": "Weekly Study Goal (hours)",
+        "showHints": "Show Hints",
+        "showHintsDesc": "Display hints and suggestions during learning",
+        "autoPlayVideos": "Auto-play Videos",
+        "autoPlayVideosDesc": "Automatically play video content",
+        "showCodeExamples": "Show Code Examples",
+        "showCodeExamplesDesc": "Display code examples alongside explanations"
+      },
+      "codeEditorPrefs": {
+        "title": "Code Editor",
+        "fontSize": "Font Size (px)",
+        "fontFamily": "Font Family",
+        "lineNumbers": "Line Numbers",
+        "minimap": "Minimap"
+      },
+      "dataStorage": {
+        "title": "Data & Storage",
+        "dataSaver": "Data Saver",
+        "dataSaverDesc": "Limit API responses to reduce bandwidth usage"
+      },
+      "accessibilityPrefs": {
+        "title": "Accessibility",
+        "reducedMotion": "Reduce Motion",
+        "reducedMotionDesc": "Minimize animations and motion effects"
+      },
       "dangerZone": {
         "title": "Danger Zone",
         "deleteAccount": "Delete Account",
         "deleteDescription": "This action is irreversible. All your data will be permanently deleted.",
-        "confirmDelete": "I understand, delete my account"
+        "confirmDelete": "I understand, delete my account",
+        "deleteConfirmTitle": "Delete Account?",
+        "deleteConfirmDesc": "This will permanently delete your account and all associated data. This action cannot be undone.",
+        "deleteSuccess": "Account deleted successfully.",
+        "deleteFailed": "Failed to delete account."
+      },
+      "twoFactor": {
+        "title": "Two-Factor Authentication",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "enable": "Enable 2FA",
+        "disable": "Disable 2FA",
+        "description": "Add an extra layer of security to your account."
+      },
+      "sessions": {
+        "title": "Active Sessions",
+        "current": "Current",
+        "revoke": "Revoke",
+        "revokeAll": "Revoke All Others",
+        "revokeSuccess": "Session revoked.",
+        "revokeAllSuccess": "All other sessions revoked.",
+        "empty": "No active sessions found.",
+        "unknown": "Unknown device"
       }
     },
     "profile": {
