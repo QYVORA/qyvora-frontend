@@ -43,7 +43,7 @@ export function WalkthroughLayout({
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 md:px-6 lg:px-8 py-8 md:py-12 font-mono">
+    <div className="w-full px-4 md:px-12 lg:px-16 py-8 md:py-12 font-mono">
       {/* Back button */}
       <button
         type="button"

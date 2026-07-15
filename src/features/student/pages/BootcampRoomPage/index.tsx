@@ -293,7 +293,7 @@ const BootcampRoomPage: React.FC = () => {
       <RoomSidebar phases={BOOTCAMP_CONFIG.phases} activePhaseId={phaseId || ''} activeRoomId={roomId || ''} completedRooms={completedRooms} lockedRooms={lockedRooms} bootcampId={bootcampId || ''} onNavigate={handleNavigate} mobileOpen={sidebarOpen} onMobileClose={() => setSidebarOpen(false)} />
       <main className="w-full px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
           {!phase || !room ? (
-            <div className="mx-auto max-w-4xl px-4 py-12">
+            <div className="px-4 py-12">
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
               </Link>
@@ -304,7 +304,7 @@ const BootcampRoomPage: React.FC = () => {
               </div>
             </div>
           ) : isRoomLocked ? (
-            <div className="mx-auto max-w-4xl px-4 py-12">
+            <div className="px-4 py-12">
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
               </Link>
