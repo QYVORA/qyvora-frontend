@@ -209,7 +209,7 @@ const Marketplace: React.FC = () => {
             </div>
           ) : (
             <div className="px-1 md:px-0">
-              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card">
                 <div className="flex items-center gap-2 border-b border-border px-5 py-4">
                   <Zap className="h-5 w-5 text-accent shrink-0" />
                   <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Transactions</h3>

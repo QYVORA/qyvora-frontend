@@ -38,7 +38,7 @@ const InstallBanner = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-[140]"
         >
-          <div className="bg-bg-card/95 backdrop-blur-xl border border-border rounded-2xl p-4 shadow-2xl">
+          <div className="bg-bg-card/95 backdrop-blur-xl border border-border/30 rounded-2xl p-4 shadow-2xl">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
                 {installing ? (
