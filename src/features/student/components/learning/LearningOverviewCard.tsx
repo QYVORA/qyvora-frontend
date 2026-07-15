@@ -14,6 +14,7 @@ interface LearningOverviewCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  avatar?: React.ReactNode;
   stats?: LearningOverviewStat[];
   action?: {
     label: string;
@@ -29,6 +30,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
   icon,
   title,
   description,
+  avatar,
   stats,
   action,
   progress,
@@ -81,9 +83,15 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
         <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
         <div className="relative z-10 w-full sm:w-auto min-w-0">
           <div className="ov-text flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center shrink-0">
-              {icon}
-            </div>
+            {avatar ? (
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-bg/20 shrink-0">
+                {avatar}
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center shrink-0">
+                {icon}
+              </div>
+            )}
           </div>
           <h2 className="ov-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight break-words">
             {title}
