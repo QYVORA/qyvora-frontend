@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, RefreshCw } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
@@ -11,6 +12,7 @@ interface HandleSuggestionsProps {
 }
 
 const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSuggestionsProps) => {
+  const { t } = useTranslation();
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,7 +30,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
       const list: string[] = res.data?.suggestions || [];
       setSuggestions(list.filter((h: string) => h !== selectedHandle).slice(0, 4));
     } catch {
-      setError('Could not load suggestions.');
+      setError(t('components.handleSuggestions.error'));
     } finally {
       setLoading(false);
     }
@@ -53,7 +55,7 @@ const HandleSuggestions = ({ name, email, onSelect, selectedHandle }: HandleSugg
       <div className="flex items-center gap-2">
         <Sparkles className="w-3 h-3 text-accent" />
         <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-          Suggested handles
+          {t('components.handleSuggestions.label')}
         </span>
         {suggestions.length > 0 && (
           <button

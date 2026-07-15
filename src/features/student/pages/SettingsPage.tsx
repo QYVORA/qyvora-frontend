@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon, User } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -31,6 +32,7 @@ const PasswordField: React.FC<{ name: string; placeholder?: string; label: strin
 };
 
 const Settings: React.FC = () => {
+  const { t } = useTranslation();
   const { addToast } = useToast();
   const [changingPwd, setChangingPwd] = useState(false);
   const [shakeCurrentPwd, setShakeCurrentPwd] = useState(false);
@@ -130,10 +132,10 @@ const Settings: React.FC = () => {
 
         <LearningOverviewCard
           icon={<SettingsIcon className="w-6 h-6 text-bg" />}
-          title="Settings"
-          description="Manage your password, recovery token, and account preferences."
+          title={t('student.settings.title')}
+          description={t('student.settings.description')}
           action={{
-            label: 'Edit Profile',
+            label: t('student.profile.edit'),
             to: '/dashboard/profile',
             icon: <User className="w-4 h-4" />,
           }}
@@ -147,23 +149,23 @@ const Settings: React.FC = () => {
               <div className="overflow-hidden rounded-2xl border border-border bg-bg-card h-full">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Shield className="h-5 w-5 text-accent" />
-                  <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Change Password</h2>
+                  <h2 className="text-base font-black uppercase tracking-widest text-text-primary">{t('student.settings.password.title')}</h2>
                 </div>
                 <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
                   <PasswordField
                     name="current_password"
-                    label="Current Password"
-                    placeholder="Your current password"
+                    label={t('student.settings.password.currentLabel')}
+                    placeholder={t('student.settings.password.currentPlaceholder')}
                     shake={shakeCurrentPwd}
                     onAnimationEnd={() => setShakeCurrentPwd(false)}
                   />
-                  <PasswordField name="new_password" label="New Password" placeholder="Min 8 characters" />
-                  <PasswordField name="confirm_password" label="Confirm New Password" />
+                  <PasswordField name="new_password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
+                  <PasswordField name="confirm_password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
                   <button type="submit" disabled={changingPwd}
                     className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
                     {changingPwd
                       ? <><Loader2 className="w-4 h-4 animate-spin" /> Updating...</>
-                      : <><Save className="w-4 h-4" /> Update Password</>}
+                      : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
                   </button>
                 </form>
               </div>
@@ -174,15 +176,14 @@ const Settings: React.FC = () => {
               <div className="overflow-hidden rounded-2xl border border-border bg-bg-card h-full">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Key className="h-5 w-5 text-accent" />
-                  <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Recovery Token</h2>
+                  <h2 className="text-base font-black uppercase tracking-widest text-text-primary">{t('student.settings.recovery.title')}</h2>
                 </div>
                 <div className="p-6 space-y-5">
 
                   <div className="flex items-start gap-3 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
                     <AlertTriangle className="w-4 h-4 text-yellow-500 flex-none mt-0.5" />
                     <p className="text-xs text-text-secondary leading-relaxed">
-                      Your recovery token lets you reset your password without email access. Store it safely.
-                      It is shown <strong className="text-text-primary">only once</strong> after generation.
+                      {t('student.settings.recovery.description')}
                     </p>
                   </div>
 
@@ -197,7 +198,7 @@ const Settings: React.FC = () => {
                             className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`}
                             onFocus={(e) => e.target.select()} />
                           <button type="button" onClick={copyToken}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" title="Copy token">
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" title={t('student.settings.recovery.copy')}>
                             {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                           </button>
                         </div>
@@ -242,7 +243,7 @@ const Settings: React.FC = () => {
                       {!confirmRegenerate ? (
                         <button onClick={() => setConfirmRegenerate(true)}
                           className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-xl text-sm text-text-muted hover:border-accent/30 hover:text-accent transition-colors">
-                          <RefreshCw className="w-4 h-4" /> Generate New Token
+                          <RefreshCw className="w-4 h-4" /> {t('student.settings.recovery.generate')}
                         </button>
                       ) : (
                         <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
@@ -269,7 +270,7 @@ const Settings: React.FC = () => {
                         className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
                         {regenerating
                           ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</>
-                          : <><Key className="w-4 h-4" /> Generate Recovery Token</>}
+                          : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
                       </button>
                     </div>
                   )}

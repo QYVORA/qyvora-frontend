@@ -5,12 +5,14 @@ import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import { QyvoraMark } from '../../../../shared/components/brand/QyvoraMark';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 interface LandingFinalCtaSectionProps {
   user: { isAdmin?: boolean } | null;
 }
 
 const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user }) => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -38,7 +40,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
 
           <div className="flex flex-col items-start w-full gap-7">
             <SimpleHeading
-              text={user ? "Continue Training" : "Start Your Journey"}
+              text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
               variant="inverted"
               className="mb-0"
@@ -51,7 +53,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-base sm:text-lg text-bg/60 leading-relaxed max-w-xl"
             >
-              Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.
+              {t('landing.finalCta.description')}
             </motion.p>
 
             <motion.div
@@ -66,7 +68,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                   to="/dashboard"
                   className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                 >
-                  <IconDashboard size={20} /> Go to Dashboard
+                   <IconDashboard size={20} /> {t('landing.finalCta.goToDashboard')}
                 </Link>
               ) : (
                 <>
@@ -74,13 +76,13 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                     to="/register"
                     className="btn-primary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
                   >
-                    Start Free Training <IconArrowRight size={20} />
+                     {t('landing.finalCta.startTraining')} <IconArrowRight size={20} />
                   </Link>
                   <Link
                     to="/login"
                     className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center"
                   >
-                    Log In
+                     {t('landing.finalCta.logIn')}
                   </Link>
                 </>
               )}
@@ -92,7 +94,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
         <div className="hidden lg:grid grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
           <div className="max-w-2xl">
             <SimpleHeading
-              text={user ? "Continue Training" : "Start Your Journey"}
+              text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
               variant="inverted"
               className="mb-6"
@@ -105,7 +107,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-base md:text-lg text-bg/60 leading-relaxed mb-10 max-w-xl"
             >
-              Join operators training in offensive security across Africa. Start with foundational modules, progress through bootcamp phases, and earn cyber points. No experience required — just commitment.
+              {t('landing.finalCta.description')}
             </motion.p>
 
             <motion.div
@@ -120,7 +122,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                   to="/dashboard"
                   className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                 >
-                  <IconDashboard size={20} /> Go to Dashboard
+                   <IconDashboard size={20} /> {t('landing.finalCta.goToDashboard')}
                 </Link>
               ) : (
                 <>
@@ -128,13 +130,13 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
                     to="/register"
                     className="btn-primary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
                   >
-                    Start Free Training <IconArrowRight size={20} />
+                     {t('landing.finalCta.startTraining')} <IconArrowRight size={20} />
                   </Link>
                   <Link
                     to="/login"
                     className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center"
                   >
-                    Log In
+                     {t('landing.finalCta.logIn')}
                   </Link>
                 </>
               )}

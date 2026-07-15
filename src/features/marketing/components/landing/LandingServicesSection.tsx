@@ -3,53 +3,48 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Sparkles } from 'lucide-react';
 import { IconShield, IconCheck, IconArrowRight } from '@/shared/components/icons';
 import { openServiceRequestModal } from '../ServiceRequestModal';
+import { useTranslation } from 'react-i18next';
 
 const SERVICES = [
   {
     id: 'basic',
-    tier: 'Basic',
-    price: 'GH₵ 4,000+',
-    subtitle: 'Essential Security Audit',
+    tKey: 'basic',
     featured: false,
-    features: [
-      'Web Application Assessment (up to 5 endpoints)',
-      'Automated + Manual Vulnerability Scanning',
-      'OWASP Top 10 Coverage',
-      'Single PDF Report with Executive Summary',
-    ],
+    featureKeys: ['webAppAssessment', 'scanning', 'owasp', 'report'],
   },
   {
     id: 'standard',
-    tier: 'Standard',
-    price: 'GH₵ 8,000+',
-    subtitle: 'Full Stack Assessment',
+    tKey: 'standard',
     featured: true,
-    features: [
-      'Web App + Mobile API Assessment',
-      'Authenticated & Role-Based Testing',
-      'Business Logic & Workflow Analysis',
-      'Detailed Report with PoC Walkthroughs',
-    ],
+    featureKeys: ['webMobile', 'authTesting', 'businessLogic', 'report'],
   },
   {
     id: 'bootcamp',
-    tier: 'Employee Bootcamp',
-    price: 'Custom',
-    subtitle: 'Team Training',
+    tKey: 'bootcamp',
     featured: false,
-    features: [
-      'Tailored Curriculum Design',
-      'Hands-on Simulated Exercises',
-      'Phishing & Social Engineering Drills',
-      'Progress Tracking & Reporting',
-    ],
+    featureKeys: ['curriculum', 'exercises', 'phishing', 'progress'],
   },
 ];
 
 const LandingServicesSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
-  const featured = SERVICES.find((s) => s.featured)!;
-  const supporting = SERVICES.filter((s) => !s.featured);
+  const featuredMeta = SERVICES.find((s) => s.featured)!;
+  const supportingMeta = SERVICES.filter((s) => !s.featured);
+  const featured = {
+    ...featuredMeta,
+    tier: t(`landing.services.${featuredMeta.tKey}.tier`),
+    price: t(`landing.services.${featuredMeta.tKey}.price`),
+    subtitle: t(`landing.services.${featuredMeta.tKey}.subtitle`),
+    features: featuredMeta.featureKeys.map((fk) => t(`landing.services.${featuredMeta.tKey}.features.${fk}`)),
+  };
+  const supporting = supportingMeta.map((meta) => ({
+    ...meta,
+    tier: t(`landing.services.${meta.tKey}.tier`),
+    price: t(`landing.services.${meta.tKey}.price`),
+    subtitle: t(`landing.services.${meta.tKey}.subtitle`),
+    features: meta.featureKeys.map((fk) => t(`landing.services.${meta.tKey}.features.${fk}`)),
+  }));
 
   return (
     <div className="relative overflow-hidden h-full flex flex-col">
@@ -64,7 +59,7 @@ const LandingServicesSection: React.FC = () => {
             className="mb-3 md:mb-5 shrink-0"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary">
-              <IconShield size={12} /> Enterprise Services
+               <IconShield size={12} /> {t('landing.services.badge')}
             </span>
           </motion.div>
 
@@ -83,7 +78,7 @@ const LandingServicesSection: React.FC = () => {
                 <div className="flex items-center gap-2 mb-3 sm:mb-6">
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">{featured.subtitle}</span>
                   <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[8px] font-black uppercase tracking-widest text-accent">
-                    <Sparkles className="w-2.5 h-2.5" /> Most Popular
+                     <Sparkles className="w-2.5 h-2.5" /> {t('landing.services.mostPopular')}
                   </span>
                 </div>
 
@@ -109,7 +104,7 @@ const LandingServicesSection: React.FC = () => {
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all active:scale-[0.98]"
                   >
                     <IconShield size={14} />
-                    Request Assessment
+                     {t('landing.services.requestAssessment')}
                     <IconArrowRight size={14} />
                   </button>
                 </div>
@@ -148,7 +143,7 @@ const LandingServicesSection: React.FC = () => {
                     onClick={() => openServiceRequestModal(supporting[0].tier)}
                     className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
                   >
-                    Request Assessment
+                     {t('landing.services.requestAssessment')}
                     <IconArrowRight size={12} />
                   </button>
                 </div>
@@ -187,7 +182,7 @@ const LandingServicesSection: React.FC = () => {
                     onClick={() => openServiceRequestModal(supporting[1].tier)}
                     className="w-full py-2.5 sm:py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary !border-accent/30"
                   >
-                    Request Assessment
+                     {t('landing.services.requestAssessment')}
                     <IconArrowRight size={12} />
                   </button>
                 </div>
@@ -207,7 +202,7 @@ const LandingServicesSection: React.FC = () => {
               href="/services"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
-              View All Services <IconArrowRight size={14} />
+               {t('landing.services.viewAll')} <IconArrowRight size={14} />
             </a>
           </motion.div>
         </div>

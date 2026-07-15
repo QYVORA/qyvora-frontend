@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bell, CheckCheck, Loader2, BellOff } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
@@ -35,6 +36,7 @@ const TYPE_COLORS: Record<string, string> = {
 const PAGE_SIZE = 15;
 
 const Notifications: React.FC = () => {
+  const { t } = useTranslation();
   const { addToast } = useToast();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading]             = useState(true);
@@ -104,11 +106,11 @@ const Notifications: React.FC = () => {
             {/* Page header */}
             <LearningOverviewCard
               icon={<Bell className="w-6 h-6 text-bg" />}
-              title="Notifications"
-              description="System alerts and mission updates."
+              title={t('student.notificationsPage.title')}
+              description={t('student.notificationsPage.description')}
               stats={[{ label: 'Unread', value: unreadCount }]}
               action={unreadCount > 0 ? {
-                label: 'Mark All Read',
+                label: t('student.notificationsPage.markAllRead'),
                 onClick: markAllRead,
                 icon: <CheckCheck className="w-4 h-4" />,
               } : undefined}
@@ -117,7 +119,7 @@ const Notifications: React.FC = () => {
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
                 <BellOff className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-40" />
                 <p className="text-base text-text-muted">
-                  {filter === 'unread' ? 'No unread notifications.' : 'No notifications yet — you\'re clear.'}
+                  {filter === 'unread' ? t('student.notificationsPage.empty.unread') : t('student.notificationsPage.empty.all')}
                 </p>
               </div>
             ) : (
@@ -153,7 +155,7 @@ const Notifications: React.FC = () => {
                                   onClick={() => markRead(n.id)}
                                   className="text-[10px] font-bold text-accent hover:underline inline-flex items-center gap-1"
                                 >
-                                  <CheckCheck className="w-3 h-3" /> Mark read
+                                  <CheckCheck className="w-3 h-3" /> {t('student.notificationsPage.markRead')}
                                 </button>
                               )}
                             </div>
@@ -170,7 +172,7 @@ const Notifications: React.FC = () => {
                       onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
                       className="px-4 py-2 bg-bg-card border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
                     >
-                      Load more ({displayed.length - visibleCount} remaining)
+                      {t('student.notificationsPage.loadMore', { count: displayed.length - visibleCount })}
                     </button>
                   </div>
                 )}

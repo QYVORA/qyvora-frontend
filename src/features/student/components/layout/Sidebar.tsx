@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Map, BookOpen, Swords, Globe, BarChart3,
@@ -24,22 +25,6 @@ import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import Logo from '@/shared/components/brand/Logo';
 import CpLogo from '@/shared/components/CpLogo';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
-
-const PRIMARY_NAV = [
-  { label: 'Dashboard',      icon: IconDashboard, path: '/dashboard' },
-  { label: 'Courses',        icon: BookMarked,      path: '/dashboard/courses' },
-  { label: 'Bootcamp',       icon: Map,             path: '/dashboard/bootcamps' },
-  { label: 'Attack Labs',    icon: IconLabs,        path: '/dashboard/labs' },
-  { label: 'Competitive',    icon: Swords,          path: '/dashboard/competitive' },
-  { label: 'Networks',       icon: Globe,           path: '/dashboard/networks' },
-  { label: 'My Progress',    icon: BarChart3,       path: '/dashboard/profile' },
-];
-
-const SECONDARY_NAV = [
-  { label: 'Market',      icon: IconMarketplace, path: '/dashboard/marketplace' },
-  { label: 'Notifications', icon: IconNotification, path: '/dashboard/notifications' },
-  { label: 'Settings',    icon: IconSettings,    path: '/dashboard/settings' },
-];
 
 const SidebarPanel = ({ children }: { children: React.ReactNode }) => (
   <div className="mx-3 mb-2 rounded-xl border border-border/30 bg-bg-card p-3 text-xs space-y-2">
@@ -441,7 +426,13 @@ const RoomCurriculumPanel = () => {
   );
 };
 
-const NavLink = ({ item, active }: { item: typeof PRIMARY_NAV[0]; active: boolean }) => (
+interface NavItem {
+  label: string;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  path: string;
+}
+
+const NavLink = ({ item, active }: { item: NavItem; active: boolean }) => (
   <Link
     to={item.path}
     className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
@@ -471,7 +462,24 @@ const RightRailSection = () => {
 };
 
 const Sidebar = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
+
+  const PRIMARY_NAV: NavItem[] = [
+    { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
+    { label: t('nav.myCourses'), icon: BookMarked, path: '/dashboard/courses' },
+    { label: t('nav.bootcamp'), icon: Map, path: '/dashboard/bootcamps' },
+    { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
+    { label: t('nav.competitive'), icon: Swords, path: '/dashboard/competitive' },
+    { label: t('nav.networkLab'), icon: Globe, path: '/dashboard/networks' },
+    { label: 'My Progress', icon: BarChart3, path: '/dashboard/profile' },
+  ];
+
+  const SECONDARY_NAV: NavItem[] = [
+    { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
+    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
+    { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
+  ];
   const [mobileOpen, setMobileOpen] = useState(false);
   useScrollLock(mobileOpen);
 

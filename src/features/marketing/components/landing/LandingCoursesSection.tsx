@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { GraduationCap, Globe, Wifi, Wrench } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
+import { useTranslation } from 'react-i18next';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   terminal: IconTerminal,
@@ -13,35 +14,36 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   tools: Wrench,
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  terminal: 'Terminal',
-  networking: 'Networking',
-  programming: 'Programming',
-  'web-security': 'Web Security',
-  wireless: 'Wireless',
-  tools: 'Tools',
+const CATEGORY_KEYS: Record<string, string> = {
+  terminal: 'terminal',
+  networking: 'networking',
+  programming: 'programming',
+  'web-security': 'webSecurity',
+  wireless: 'wireless',
+  tools: 'tools',
 };
 
 const COURSES = [
-  { id: 'linux-terminal-101', title: 'Linux Terminal 101', category: 'terminal', level: 'beginner', minutes: 70, popular: true, desc: 'Master the Linux command line from scratch.' },
-  { id: 'windows-cmd-101', title: 'Windows CMD 101', category: 'terminal', level: 'beginner', minutes: 50, popular: false, desc: 'Windows Command Prompt and PowerShell.' },
-  { id: 'networking-101', title: 'Networking 101', category: 'networking', level: 'beginner', minutes: 60, popular: true, desc: 'IP addresses, ports, protocols, and the OSI model.' },
-  { id: 'python-for-hackers-101', title: 'Python for Hackers', category: 'programming', level: 'beginner', minutes: 85, popular: true, desc: 'Security-focused Python scripting.' },
-  { id: 'git-github-101', title: 'Git & GitHub 101', category: 'programming', level: 'beginner', minutes: 55, popular: false, desc: 'Version control for security projects.' },
-  { id: 'web-technologies-101', title: 'Web Technologies', category: 'web-security', level: 'beginner', minutes: 55, popular: false, desc: 'HTTP, cookies, sessions, and APIs.' },
-  { id: 'web-recon-101', title: 'Web Reconnaissance', category: 'web-security', level: 'intermediate', minutes: 55, popular: true, desc: 'Subdomain enumeration and fingerprinting.' },
-  { id: 'sql-injection-101', title: 'SQL Injection 101', category: 'web-security', level: 'intermediate', minutes: 85, popular: true, desc: 'Exploit databases through SQL injection.' },
-  { id: 'burp-suite-101', title: 'Burp Suite 101', category: 'tools', level: 'intermediate', minutes: 65, popular: false, desc: 'The industry-standard web security proxy.' },
-  { id: 'nmap-101', title: 'Nmap 101', category: 'tools', level: 'beginner', minutes: 60, popular: true, desc: 'Network scanning and service discovery.' },
-  { id: 'wireshark-101', title: 'Wireshark 101', category: 'tools', level: 'intermediate', minutes: 65, popular: false, desc: 'Packet capture and traffic analysis.' },
-  { id: 'wifi-fundamentals-101', title: 'Wi-Fi Fundamentals', category: 'wireless', level: 'beginner', minutes: 55, popular: false, desc: 'Wireless networks and encryption protocols.' },
+  { id: 'linux-terminal-101', tKey: 'linuxTerminal101', category: 'terminal', level: 'beginner', minutes: 70, popular: true },
+  { id: 'windows-cmd-101', tKey: 'windowsCmd101', category: 'terminal', level: 'beginner', minutes: 50, popular: false },
+  { id: 'networking-101', tKey: 'networking101', category: 'networking', level: 'beginner', minutes: 60, popular: true },
+  { id: 'python-for-hackers-101', tKey: 'pythonForHackers', category: 'programming', level: 'beginner', minutes: 85, popular: true },
+  { id: 'git-github-101', tKey: 'gitGithub101', category: 'programming', level: 'beginner', minutes: 55, popular: false },
+  { id: 'web-technologies-101', tKey: 'webTechnologies', category: 'web-security', level: 'beginner', minutes: 55, popular: false },
+  { id: 'web-recon-101', tKey: 'webReconnaissance', category: 'web-security', level: 'intermediate', minutes: 55, popular: true },
+  { id: 'sql-injection-101', tKey: 'sqlInjection101', category: 'web-security', level: 'intermediate', minutes: 85, popular: true },
+  { id: 'burp-suite-101', tKey: 'burpSuite101', category: 'tools', level: 'intermediate', minutes: 65, popular: false },
+  { id: 'nmap-101', tKey: 'nmap101', category: 'tools', level: 'beginner', minutes: 60, popular: true },
+  { id: 'wireshark-101', tKey: 'wireshark101', category: 'tools', level: 'intermediate', minutes: 65, popular: false },
+  { id: 'wifi-fundamentals-101', tKey: 'wifiFundamentals', category: 'wireless', level: 'beginner', minutes: 55, popular: false },
 ];
 
-const CATEGORIES = Object.keys(CATEGORY_LABELS);
+const CATEGORIES = Object.keys(CATEGORY_KEYS);
 const PER_PAGE = 3;
 const CYCLE_MS = 3000;
 
 const LandingCoursesSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -88,13 +90,13 @@ const LandingCoursesSection: React.FC = () => {
             className="mb-4 md:mb-8 shrink-0"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
-              <GraduationCap className="h-3 w-3" /> Self-Paced
+              <GraduationCap className="h-3 w-3" /> {t('landing.courses.badge')}
             </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
-              Courses
+              {t('landing.courses.heading')}
             </h2>
             <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg">
-              12 courses across 6 categories. Each lesson earns CP.
+              {t('landing.courses.description')}
             </p>
           </motion.div>
 
@@ -115,7 +117,7 @@ const LandingCoursesSection: React.FC = () => {
                   : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
               }`}
             >
-              All
+              {t('landing.courses.filterAll')}
               <span className={`text-[9px] font-mono ${activeCategory === null ? 'text-text-muted' : 'text-text-muted/60'}`}>
                 {COURSES.length}
               </span>
@@ -135,7 +137,7 @@ const LandingCoursesSection: React.FC = () => {
                   }`}
                 >
                   {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" />}
-                  {CATEGORY_LABELS[cat]}
+                  {t(`landing.courses.categories.${CATEGORY_KEYS[cat]}`)}
                   <span className={`text-[9px] font-mono ${isActive ? 'text-text-muted' : 'text-text-muted/60'}`}>
                     {count}
                   </span>
@@ -171,22 +173,22 @@ const LandingCoursesSection: React.FC = () => {
                         </div>
                         {course.popular && (
                           <span className="px-2 py-0.5 rounded-full bg-bg-elevated border border-border/30 text-[8px] font-black uppercase tracking-widest text-text-primary">
-                            Popular
+                            {t('badge.popular')}
                           </span>
                         )}
                       </div>
 
                       <h4 className="text-sm font-black text-text-primary tracking-tight mb-1 leading-snug">
-                        {course.title}
+                        {t(`landing.courses.list.${course.tKey}.title`)}
                       </h4>
                       <p className="text-xs text-text-muted leading-relaxed mb-2 line-clamp-2 flex-1">
-                        {course.desc}
+                        {t(`landing.courses.list.${course.tKey}.desc`)}
                       </p>
 
                       <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/20">
                         <div className="flex items-center gap-2">
                           <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-accent/20 bg-accent/10 text-accent">
-                            {course.level}
+                            {t(`landing.courses.level.${course.level}`)}
                           </span>
                           <span className="text-[9px] text-text-muted/60 font-mono">{course.minutes}m</span>
                         </div>
@@ -205,7 +207,7 @@ const LandingCoursesSection: React.FC = () => {
               to="/courses"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
             >
-              View All {COURSES.length} Courses <IconArrowRight size={14} />
+               {t('landing.courses.viewAll', { count: COURSES.length })} <IconArrowRight size={14} />
             </Link>
             <div className="flex items-center gap-1.5">
               {Array.from({ length: totalPages }).map((_, i) => (

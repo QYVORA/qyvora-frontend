@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IconChevronRight } from '@/shared/components/icons';
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
@@ -17,7 +18,9 @@ interface BootcampCardProps {
 }
 
 // Fix #8: card is now a Link so clicking anywhere navigates to the bootcamp
-const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, description, duration, price, href = '/register' }) => (
+const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, description, duration, price, href = '/register' }) => {
+  const { t } = useTranslation();
+  return (
   <Link to={href} className="card-qyvora group overflow-hidden flex flex-col h-full block border border-border/30 hover:border-accent/30 transition-all">
     <div className="relative aspect-video overflow-hidden">
       <img
@@ -57,10 +60,11 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
         <span className="text-text-secondary font-mono">{price}</span>
       </div>
       <div className="w-full btn-primary !py-2.5 text-xs flex items-center justify-center gap-2">
-        Enroll Now <IconChevronRight size={16} />
+        {t('button.enrollNow')} <IconChevronRight size={16} />
       </div>
     </div>
   </Link>
-);
+  );
+};
 
 export default BootcampCard;

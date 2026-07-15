@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   Clock, ArrowRight, Zap, GraduationCap, Search, BookOpen, CheckCircle2,
@@ -16,6 +17,7 @@ const STORAGE_KEY = 'qyvora_course_progress';
 type CourseTab = 'all' | 'in-progress' | 'completed';
 
 const MyCoursesPage: React.FC = () => {
+  const { t } = useTranslation();
   const [purchased, setPurchased] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<CourseTab>('all');
@@ -128,15 +130,15 @@ const MyCoursesPage: React.FC = () => {
 
         <LearningOverviewCard
           icon={<GraduationCap className="w-6 h-6 text-bg" />}
-          title="My Courses"
-          description="Continue learning where you left off. Track your progress across all enrolled courses."
+          title={t('student.myCourses.title')}
+          description={t('student.myCourses.description')}
           stats={[
             { label: 'Enrolled', value: totalCourses },
             { label: 'In Progress', value: inProgressCourses },
             { label: 'Completed', value: completedCourses },
           ]}
           action={{
-            label: totalCourses > 0 ? 'Continue Learning' : 'Browse Courses',
+            label: totalCourses > 0 ? t('student.myCourses.continue') : t('student.myCourses.action.browse'),
             to: continuePath,
           }}
           progress={overallPct}
@@ -157,7 +159,7 @@ const MyCoursesPage: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search my courses..."
+              placeholder={t('student.myCourses.searchPlaceholder')}
               aria-label="Search my courses"
               className="w-full bg-bg border border-border rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent transition-colors caret-accent"
             />
@@ -211,15 +213,15 @@ const MyCoursesPage: React.FC = () => {
                       <div className="pt-1">
                         {isComplete ? (
                           <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent/60">
-                            <CheckCircle2 className="h-3 w-3" /> Completed
+                            <CheckCircle2 className="h-3 w-3" /> {t('student.myCourses.completed')}
                           </span>
                         ) : canResume ? (
                           <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                            <Play className="h-3 w-3" /> Continue Lesson {progress.lastLesson + 1} <ArrowRight className="h-3 w-3" />
+                            <Play className="h-3 w-3" /> {t('student.myCourses.continue')} Lesson {progress.lastLesson + 1} <ArrowRight className="h-3 w-3" />
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-accent group-hover:gap-2.5 transition-all">
-                            <BarChart3 className="h-3 w-3" /> Start Learning <ArrowRight className="h-3 w-3" />
+                            <BarChart3 className="h-3 w-3" /> {t('student.myCourses.start')} <ArrowRight className="h-3 w-3" />
                           </span>
                         )}
                       </div>
@@ -234,9 +236,9 @@ const MyCoursesPage: React.FC = () => {
         {!loading && availableCourses.length > 0 && filteredAvailable.length === 0 && (
           <div className="text-center py-16 space-y-3">
             <Search className="h-10 w-10 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted text-sm">No courses match your current filter.</p>
+            <p className="text-text-muted text-sm">{t('student.myCourses.empty.search')}</p>
             <button onClick={() => { setSearchQuery(''); setActiveTab('all'); }} className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline">
-              Clear filters
+              {t('button.clear')}
             </button>
           </div>
         )}
@@ -283,12 +285,12 @@ const MyCoursesPage: React.FC = () => {
         {!loading && availableCourses.length === 0 && (
           <div className="text-center py-20 space-y-4">
             <GraduationCap className="h-16 w-16 text-text-muted/20 mx-auto" />
-            <p className="text-text-muted">You haven't unlocked any courses yet.</p>
+            <p className="text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
             <Link
               to="/courses"
               className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
             >
-              Browse Courses <ArrowRight className="h-3 w-3" />
+              {t('student.myCourses.action.browse')} <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         )}

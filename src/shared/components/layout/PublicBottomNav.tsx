@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import {
   Home,
   Wrench,
@@ -19,18 +20,27 @@ import ADMIN_PATH from '@/shared/utils/adminPath';
 
 /* ── Primary tabs (always visible) ─────────────────────────────────────────── */
 const PRIMARY = [
-  { label: 'Home',        icon: Home,   path: '/'           },
-  { label: 'Leaderboard', icon: IconLeaderboard, path: '/leaderboard' },
-  { label: 'Contact',     icon: Mail,   path: '/contact'    },
+  { key: 'home',        icon: Home,   path: '/'           },
+  { key: 'leaderboard', icon: IconLeaderboard, path: '/leaderboard' },
+  { key: 'contact',     icon: Mail,   path: '/contact'    },
 ];
 
 /* ── More sheet items ───────────────────────────────────────────────────────── */
-const MORE_ITEMS: { label: string; icon: any; path: string }[] = [
-  { label: 'Events', icon: Calendar, path: '/events' },
-  { label: 'Market', icon: IconMarketplace, path: '/zero-day-market' },
+const MORE_ITEMS: { key: string; icon: any; path: string }[] = [
+  { key: 'events', icon: Calendar, path: '/events' },
+  { key: 'market', icon: IconMarketplace, path: '/zero-day-market' },
 ];
 
+const BOTTOM_NAV_KEYS: Record<string, string> = {
+  home: 'components.bottomNav.home',
+  leaderboard: 'components.bottomNav.leaderboard',
+  contact: 'components.bottomNav.contact',
+  events: 'components.bottomNav.events',
+  market: 'components.bottomNav.market',
+};
+
 const PublicBottomNav: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);
@@ -63,7 +73,7 @@ const PublicBottomNav: React.FC = () => {
                   active ? 'text-accent' : 'text-text-muted'
                 }`}
               >
-                {item.label}
+                {t(BOTTOM_NAV_KEYS[item.key] || item.key)}
               </span>
             </>
           );
@@ -99,7 +109,7 @@ const PublicBottomNav: React.FC = () => {
           aria-expanded={moreOpen}
         >
           <Wrench className="w-5 h-5 text-text-muted" strokeWidth={1.8} />
-          <span className="text-[10px] font-bold uppercase tracking-wide text-text-muted">More</span>
+          <span className="text-[10px] font-bold uppercase tracking-wide text-text-muted">{t('components.bottomNav.more')}</span>
         </button>
        </nav>
 
@@ -114,7 +124,7 @@ const PublicBottomNav: React.FC = () => {
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-3">
                 <span className="text-xs font-black uppercase tracking-widest text-text-muted">
-                  More
+                  {t('components.bottomNav.more')}
                 </span>
                 <BottomSheetClose
                   className="p-2 text-text-muted hover:text-accent transition-colors"
@@ -142,7 +152,7 @@ const PublicBottomNav: React.FC = () => {
                        >
                          <item.icon className="w-5 h-5" />
                          <span className="text-[11px] font-black uppercase tracking-wide text-center leading-tight">
-                           {item.label}
+                           {t(BOTTOM_NAV_KEYS[item.key] || item.key)}
                          </span>
                        </Link>
                      );
@@ -159,7 +169,7 @@ const PublicBottomNav: React.FC = () => {
                         onClick={closeMore}
                         className="w-full flex items-center justify-center gap-2 border border-accent text-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all active:scale-95"
                       >
-                        <IconLock size={16} /> Admin Console
+                        <IconLock size={16} /> {t('components.bottomNav.adminConsole')}
                       </Link>
                     )}
                     <Link
@@ -167,7 +177,7 @@ const PublicBottomNav: React.FC = () => {
                       onClick={closeMore}
                       className="w-full flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
-                      <IconDashboard size={16} /> Dashboard
+                      <IconDashboard size={16} /> {t('components.bottomNav.dashboard')}
                     </Link>
                   </>
                 ) : (
@@ -177,14 +187,14 @@ const PublicBottomNav: React.FC = () => {
                       onClick={closeMore}
                       className="flex items-center justify-center gap-2 border border-accent text-accent rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-accent-dim transition-all active:scale-95"
                     >
-                      <LogIn className="w-4 h-4" /> Log In
+                      <LogIn className="w-4 h-4" /> {t('components.bottomNav.logIn')}
                     </Link>
                     <Link
                       to="/register"
                       onClick={closeMore}
                       className="flex items-center justify-center gap-2 bg-accent text-bg rounded-xl py-3.5 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-black/10 active:scale-95"
                     >
-                      <UserPlus className="w-4 h-4" /> Sign Up
+                      <UserPlus className="w-4 h-4" /> {t('components.bottomNav.signUp')}
                     </Link>
                   </div>
                 )}

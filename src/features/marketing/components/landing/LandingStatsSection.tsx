@@ -5,18 +5,18 @@ import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import StatCounter from '@/shared/components/ui/StatCounter';
 import { Skeleton } from '@/shared/components/ui';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 interface StatCard {
   icon: React.ElementType;
-  label: string;
-  description: string;
+  tKey: string;
   value: number;
   suffix: string;
 }
 
 const STATS_CONFIG: Omit<StatCard, 'value'>[] = [
-  { icon: Trophy, label: 'CP Earned', description: 'On-chain credentials awarded', suffix: '+' },
-  { icon: GraduationCap, label: 'Bootcamp Registrants', description: 'Enrolled in structured programs', suffix: '+' },
+  { icon: Trophy, tKey: 'cpEarned', suffix: '+' },
+  { icon: GraduationCap, tKey: 'bootcampRegistrants', suffix: '+' },
 ];
 
 const containerVariants = {
@@ -36,16 +36,19 @@ const cardVariants = {
   },
 };
 
-const SectionHeader: React.FC = () => (
-  <motion.div variants={cardVariants} className="text-left md:text-right">
-    <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-bg tracking-tighter leading-none">
-      Built for <span className="text-bg/70">Impact</span>
-    </h2>
-    <p className="mt-4 text-sm md:text-lg text-bg/60 max-w-xl md:ml-auto md:mr-0">
-      Real metrics from real operators across the continent
-    </p>
-  </motion.div>
-);
+const SectionHeader: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <motion.div variants={cardVariants} className="text-left md:text-right">
+      <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-bg tracking-tighter leading-none">
+        {t('landing.stats.heading')}
+      </h2>
+      <p className="mt-4 text-sm md:text-lg text-bg/60 max-w-xl md:ml-auto md:mr-0">
+        {t('landing.stats.description')}
+      </p>
+    </motion.div>
+  );
+};
 
 const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }> = ({ header, cards }) => (
   <motion.div
@@ -69,6 +72,7 @@ const SectionShell: React.FC<{ header: React.ReactNode; cards: React.ReactNode }
 );
 
 const LandingStatsSection: React.FC = () => {
+  const { t } = useTranslation();
   const { stats, loading } = useLandingData();
   const s = stats?.stats;
 
@@ -83,7 +87,7 @@ const LandingStatsSection: React.FC = () => {
         <SectionShell
           header={<SectionHeader />}
           cards={STATS_CONFIG.map((card) => (
-            <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+            <div key={card.tKey} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
               <div className="p-4 sm:p-5 space-y-3">
                 <Skeleton variant="icon" className="w-10 h-10 bg-border/30" />
                 <Skeleton variant="stat-value" className="h-8 w-28 bg-border/30" />
@@ -108,14 +112,14 @@ const LandingStatsSection: React.FC = () => {
           cards={STATS_CONFIG.map((card) => {
             const Icon = card.icon;
             return (
-              <div key={card.label} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
+              <div key={card.tKey} className="rounded-2xl border border-border/30 bg-accent-dim overflow-hidden">
                 <div className="p-4 sm:p-5 flex flex-col items-start text-left">
                   <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
                     <Icon className="w-5 h-5 text-bg/40" />
                   </div>
                   <div className="text-3xl font-black text-text-primary font-mono tracking-tighter mb-1 leading-none">&mdash;</div>
-                  <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">{card.label}</h3>
-                  <p className="text-xs text-bg/60">{card.description}</p>
+                  <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">{t(`landing.stats.${card.tKey}.label`)}</h3>
+                  <p className="text-xs text-bg/60">{t(`landing.stats.${card.tKey}.desc`)}</p>
                 </div>
               </div>
             );
@@ -138,7 +142,7 @@ const LandingStatsSection: React.FC = () => {
           const Icon = card.icon;
           return (
             <motion.div
-              key={card.label}
+              key={card.tKey}
               variants={cardVariants}
               className="group rounded-2xl border border-border/30 bg-accent-dim overflow-hidden"
             >
@@ -150,10 +154,10 @@ const LandingStatsSection: React.FC = () => {
                   <StatCounter end={card.value} suffix={card.suffix} className="text-bg" />
                 </div>
                 <h3 className="text-xs font-black text-text-primary mb-0.5 tracking-tight">
-                  {card.label}
+                  {t(`landing.stats.${card.tKey}.label`)}
                 </h3>
                 <p className="text-xs text-bg/60 leading-relaxed">
-                  {card.description}
+                  {t(`landing.stats.${card.tKey}.desc`)}
                 </p>
               </div>
             </motion.div>

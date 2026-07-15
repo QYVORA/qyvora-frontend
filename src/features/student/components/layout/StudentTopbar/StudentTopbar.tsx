@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   LogOut,
 } from 'lucide-react';
@@ -33,23 +34,24 @@ import { NotificationItem } from './types';
 
 const NOTIF_PREVIEW_LIMIT = 6;
 
-const DESKTOP_NAV_ITEMS = [
-  { label: 'Dashboard', icon: IconDashboard, path: '/dashboard' },
-  { label: 'Courses',   icon: IconCode,      path: '/dashboard/courses' },
-  { label: 'Bootcamp',  icon: IconBootcamp,  path: '/dashboard/bootcamps' },
-  { label: 'Labs',      icon: IconLabs,      path: '/dashboard/labs' },
-  { label: 'Market',    icon: IconMarketplace, path: '/dashboard/marketplace' },
-  { label: 'Settings',  icon: IconSettings,  path: '/dashboard/settings' },
-];
-
-const ALL_NAV_ITEMS = [
-  ...DESKTOP_NAV_ITEMS,
-  { label: 'Competitive', icon: IconDashboard, path: '/dashboard/competitive' },
-  { label: 'Notifications', icon: IconNotification, path: '/dashboard/notifications' },
-];
-
 const StudentTopbar = () => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
+
+  const DESKTOP_NAV_ITEMS = [
+    { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
+    { label: t('nav.myCourses'), icon: IconCode, path: '/dashboard/courses' },
+    { label: t('nav.bootcamp'), icon: IconBootcamp, path: '/dashboard/bootcamps' },
+    { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
+    { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
+    { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
+  ];
+
+  const ALL_NAV_ITEMS = [
+    ...DESKTOP_NAV_ITEMS,
+    { label: t('nav.competitive'), icon: IconDashboard, path: '/dashboard/competitive' },
+    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
+  ];
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -418,7 +420,7 @@ const StudentTopbar = () => {
               <button
                 onClick={handleLogout}
                 className="hidden md:flex p-3 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10"
-                aria-label="Log out"
+                aria-label={t('button.logOut')}
               >
                 <LogOut className="w-6 h-6" />
               </button>
@@ -477,7 +479,7 @@ const StudentTopbar = () => {
                 onClick={() => { handleLogout(); setMobileNavOpen(false); }}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-400/20 text-red-400 text-sm font-bold uppercase tracking-widest hover:bg-red-400/10 transition-all"
               >
-                <LogOut className="w-4 h-4" /> Log Out
+                <LogOut className="w-4 h-4" /> {t('button.logOut')}
               </button>
             </div>
           </div>

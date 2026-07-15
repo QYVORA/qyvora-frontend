@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { IconArrowRight, IconLabs } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
+import { useTranslation } from 'react-i18next';
 
 const LandingQuiteRootSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -47,7 +49,7 @@ const LandingQuiteRootSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-xl"
             >
-              The research and engineering collective behind QYVORA&apos;s offensive tooling, intelligence, and operator-focused security experiments.
+              {t('landing.quiteroot.description')}
             </motion.p>
 
             <motion.div
@@ -61,13 +63,13 @@ const LandingQuiteRootSection: React.FC = () => {
                 to="/quiteroot"
                 className="btn-primary !border-accent/30 !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
               >
-                Explore QuiteRoot <IconArrowRight size={20} />
+                 {t('landing.quiteroot.explore')} <IconArrowRight size={20} />
               </Link>
               <Link
                 to="/blogs?tag=QuiteRoot"
                 className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 inline-flex items-center justify-center gap-2.5"
               >
-                <IconLabs size={20} /> Research
+                 <IconLabs size={20} /> {t('landing.quiteroot.research')}
               </Link>
             </motion.div>
           </div>
@@ -92,7 +94,7 @@ const LandingQuiteRootSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-base md:text-lg text-text-secondary leading-relaxed mb-10 max-w-xl"
             >
-              The research and engineering collective behind QYVORA&apos;s offensive tooling, intelligence, and operator-focused security experiments.
+              {t('landing.quiteroot.description')}
             </motion.p>
 
             <motion.div
@@ -106,13 +108,13 @@ const LandingQuiteRootSection: React.FC = () => {
                 to="/quiteroot"
                 className="btn-primary !border-accent/30 !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
               >
-                Explore QuiteRoot <IconArrowRight size={20} />
+                 {t('landing.quiteroot.explore')} <IconArrowRight size={20} />
               </Link>
               <Link
                 to="/blogs?tag=QuiteRoot"
                 className="btn-secondary !px-8 !py-4 inline-flex items-center justify-center gap-2.5"
               >
-                <IconLabs size={20} /> Research
+                 <IconLabs size={20} /> {t('landing.quiteroot.research')}
               </Link>
             </motion.div>
           </div>

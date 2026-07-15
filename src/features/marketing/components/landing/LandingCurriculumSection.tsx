@@ -4,8 +4,10 @@ import { Carousel } from '@/shared/components/carousel';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 const LandingCurriculumSection: React.FC = () => {
+  const { t } = useTranslation();
   const phasesWithRoomCount = PHASES.map((phase, idx) => {
     const config = BOOTCAMP_CONFIG.phases[idx];
     const roomCount = config?.rooms?.length || 0;
@@ -19,10 +21,10 @@ const LandingCurriculumSection: React.FC = () => {
       <div className="relative z-10 w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32 md:order-2 md:text-right md:self-start">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-4">
-            What You'll <span className="text-bg/70">Learn</span>
+            {t('landing.curriculum.heading')}
           </h2>
           <p className="text-sm md:text-base text-bg/60 leading-relaxed max-w-sm md:ml-auto md:mr-0">
-            Five phases of structured offensive-security training, from foundations to advanced exploitation.
+            {t('landing.curriculum.description')}
           </p>
         </div>
         <div className="md:w-[65%] lg:w-[62%] md:order-1">
@@ -55,11 +57,11 @@ const LandingCurriculumSection: React.FC = () => {
                     <div className="flex items-center gap-2 mt-auto">
                       <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
                         <Layers className="w-3.5 h-3.5 text-accent" />
-                        <span className="text-[11px] font-bold text-text-primary">{phase.roomCount} rooms</span>
+                        <span className="text-[11px] font-bold text-text-primary">{t('landing.curriculum.roomCount', { count: phase.roomCount })}</span>
                       </div>
                       <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-accent/5 border border-accent/10">
                         <Clock className="w-3.5 h-3.5 text-accent" />
-                        <span className="text-[11px] font-bold text-text-primary">{phase.totalSteps} steps</span>
+                        <span className="text-[11px] font-bold text-text-primary">{t('landing.curriculum.stepCount', { count: phase.totalSteps })}</span>
                       </div>
                     </div>
                   </div>

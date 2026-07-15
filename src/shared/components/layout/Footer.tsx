@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { BrandWhatsAppIcon } from '@/shared/components/icons';
 import { BrandLinkedinIcon } from '@/shared/components/icons';
@@ -54,9 +55,43 @@ const SOCIAL_LINKS: SocialLink[] = [
   { key: 'whatsapp', label: 'WhatsApp',   href: 'https://wa.me/233535535222',           Icon: BrandWhatsAppIcon },
 ];
 
-const PULSE_TEXT = 'QYVORA • LIVE NODE • TAMALE, GHANA';
+const PULSE_TEXT_KEY = 'body.liveNode';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
+  const FOOTER_COL_KEYS: Record<string, string> = {
+    Platform: 'footer.platform',
+    Company: 'footer.company',
+    Account: 'footer.account',
+  };
+
+  const FOOTER_LINK_KEYS: Record<string, string> = {
+    events: 'nav.events',
+    hpb: 'nav.hpb',
+    anansi: 'nav.anansi',
+    blogs: 'nav.blogs',
+    news: 'nav.news',
+    market: 'nav.market',
+    leaderboard: 'nav.leaderboard',
+    services: 'nav.services',
+    team: 'nav.team',
+    register: 'nav.signUp',
+    login: 'button.logIn',
+  };
+
+  const FOOTER_BOTTOM_LINK_KEYS: Record<string, string> = {
+    'Terms of Service': 'footer.termsOfService',
+    'Cyber Feed': 'nav.cyberFeed',
+    'Anansi': 'nav.anansi',
+    'Learn': 'nav.learn',
+    'Market': 'nav.market',
+    'Blogs': 'nav.blogs',
+    'Team': 'nav.team',
+    'Leaderboard': 'nav.leaderboard',
+    'Services': 'nav.services',
+  };
+
   return (
     <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
 
@@ -69,7 +104,7 @@ const Footer: React.FC = () => {
             <div className="max-w-xs space-y-3">
               <Logo size="lg" variant="full" className="block" />
               <p className="text-sm text-text-muted font-mono leading-relaxed">
-                Offensive Security Platform — discover, exploit, report. Africa&apos;s first dedicated offensive operations ecosystem.
+                {t('body.footerDesc')}
               </p>
               <div className="flex items-center gap-3 pt-1">
                 {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
@@ -92,7 +127,7 @@ const Footer: React.FC = () => {
               {FOOTER_COLS.map((col) => (
                 <div key={col.title} className="space-y-5">
                   <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
-                    {col.title}
+                    {t(FOOTER_COL_KEYS[col.title] || col.title)}
                   </h3>
                   <ul className="space-y-3">
                     {col.links.map((link: { key: string; label: string; path: string }) => (
@@ -102,7 +137,7 @@ const Footer: React.FC = () => {
                           onClick={() => window.scrollTo(0, 0)}
                           className="text-sm font-bold text-text-primary hover:text-accent transition-colors"
                         >
-                          {link.label}
+                          {t(FOOTER_LINK_KEYS[link.key] || link.label)}
                         </Link>
                       </li>
                     ))}
@@ -121,7 +156,7 @@ const Footer: React.FC = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
                   </span>
-                  <span className="tracking-[0.3em]">{PULSE_TEXT}</span>
+                    <span className="tracking-[0.3em]">{t(PULSE_TEXT_KEY)}</span>
                 </span>
               </div>
 
@@ -134,7 +169,7 @@ const Footer: React.FC = () => {
                     onClick={() => window.scrollTo(0, 0)}
                     className="text-[11px] text-text-muted/60 hover:text-text-muted transition-colors"
                   >
-                    {link.label}
+                    {t(FOOTER_BOTTOM_LINK_KEYS[link.label] || link.label)}
                   </Link>
                 ))}
                 <span className="text-[11px] text-text-muted/40">
@@ -144,7 +179,7 @@ const Footer: React.FC = () => {
                   type="button"
                   className="px-5 py-2.5 bg-accent text-bg text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:brightness-110 transition-all active:scale-95"
                 >
-                  Contact Us
+                  {t('button.contactUs')}
                 </ContactTrigger>
               </div>
             </div>

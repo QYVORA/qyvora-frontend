@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { User, AlertCircle } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
@@ -9,6 +10,7 @@ import HandleSuggestions from '@/shared/components/HandleSuggestions';
 const HANDLE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$/;
 
 const UsernameChangeModal = () => {
+  const { t } = useTranslation();
   const { user, refreshMe } = useAuth();
   const [open, setOpen] = useState(false);
   const [handle, setHandle] = useState('');
@@ -44,7 +46,7 @@ const UsernameChangeModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent title="Choose your username" description="Your username needs updating">
+      <DialogContent title={t('student.usernameChange.title')} description={t('student.usernameChange.description')}>
         <div className="p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
@@ -52,10 +54,10 @@ const UsernameChangeModal = () => {
             </div>
             <div>
               <h2 className="text-lg font-black uppercase tracking-tight text-text-primary">
-                Choose your username
+                {t('student.usernameChange.title')}
               </h2>
               <p className="text-sm text-text-muted">
-                Your current username needs updating. We have generated some suggestions for you.
+                {t('student.usernameChange.description')}
               </p>
             </div>
           </div>
@@ -70,7 +72,7 @@ const UsernameChangeModal = () => {
                 type="text"
                 value={handle}
                 onChange={(e) => { setHandle(e.target.value); setError(''); }}
-                placeholder="Pick a handle or choose one below"
+                placeholder={t('student.usernameChange.placeholder')}
                 maxLength={40}
                 autoFocus
                 className="w-full bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-base"
@@ -98,7 +100,7 @@ const UsernameChangeModal = () => {
               disabled={saving}
               className="w-full flex items-center justify-center gap-2 bg-accent text-bg font-bold uppercase tracking-wider rounded-xl py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
-              {saving ? 'Saving...' : <><IconCheck size={16} /> Update Username</>}
+              {saving ? t('button.signingIn') : <><IconCheck size={16} /> {t('student.usernameChange.save')}</>}
             </button>
           </form>
         </div>

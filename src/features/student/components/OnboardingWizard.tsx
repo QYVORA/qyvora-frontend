@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Rocket, Edit3, BookOpen, Zap } from 'lucide-react';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
 import { usePopupManager } from '@/core/hooks/usePopupManager';
@@ -7,33 +8,34 @@ import { usePopupManager } from '@/core/hooks/usePopupManager';
 const ONBOARDING_SEEN_KEY = 'qyvora_onboarding_dismissed';
 const ONBOARDING_SEEN_LEGACY = 'qyvora_onboarding_seen';
 
-const STEPS = [
-  {
-    icon: Rocket,
-    title: 'Welcome, Operator',
-    description: 'QYVORA is your launchpad into offensive security. You\'ll complete missions, earn CP, and level up your hacker rank. Every room you clear moves you closer to mastery.',
-  },
-  {
-    icon: Edit3,
-    title: 'Set your hacker handle',
-    description: 'Your handle is your identity across the platform. Visit your profile to choose one that represents your operator persona.',
-    action: { label: 'Go to Profile', link: '/dashboard/profile' },
-  },
-  {
-    icon: BookOpen,
-    title: 'Start the Hacker Protocol Bootcamp',
-    description: 'Your first objective is to complete the Hacker Protocol Bootcamp (HPB). This will establish your foundation in offsec methodology, Linux, networking, and more.',
-    action: { label: 'Open HPB', link: '/hpb' },
-  },
-  {
-    icon: Zap,
-    title: 'Earn your first CP',
-    description: 'Complete a room in the bootcamp to earn your first CP (Credential Points). CP unlocks marketplace items and determines your rank progression.',
-  },
-];
-
 const OnboardingWizard: React.FC = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
+
+  const STEPS = [
+    {
+      icon: Rocket,
+      title: t('student.onboarding.welcome.title'),
+      description: t('student.onboarding.welcome.subtitle'),
+    },
+    {
+      icon: Edit3,
+      title: t('student.onboarding.path.title'),
+      description: t('student.onboarding.path.prompt'),
+      action: { label: 'Go to Profile', link: '/dashboard/profile' },
+    },
+    {
+      icon: BookOpen,
+      title: t('student.onboarding.focus.title'),
+      description: t('student.onboarding.almost.title'),
+      action: { label: 'Open HPB', link: '/hpb' },
+    },
+    {
+      icon: Zap,
+      title: t('student.onboarding.complete.title'),
+      description: '',
+    },
+  ];
   const { isVisible, onDismiss } = usePopupManager('onboarding', 2);
 
   const [needsOnboarding, setNeedsOnboarding] = useState(() => {
@@ -92,7 +94,7 @@ const OnboardingWizard: React.FC = () => {
             onClick={handleDismiss}
             className="text-xs font-bold text-text-muted hover:text-accent transition-colors uppercase tracking-widest"
           >
-            Skip
+            {t('student.onboarding.skip')}
           </button>
           <div className="flex items-center gap-2">
             {step > 0 && (
@@ -100,14 +102,14 @@ const OnboardingWizard: React.FC = () => {
                 onClick={handleBack}
                 className="px-5 py-2.5 rounded-2xl border border-border text-xs font-black uppercase tracking-widest text-text-primary hover:border-accent/40 transition-all"
               >
-                Back
+                {t('student.onboarding.back')}
               </button>
             )}
             <button
               onClick={handleNext}
               className="px-5 py-2.5 rounded-2xl bg-accent text-bg text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110"
             >
-              {step < STEPS.length - 1 ? 'Next' : 'Finish'}
+              {step < STEPS.length - 1 ? t('student.onboarding.next') : t('student.onboarding.complete.cta')}
             </button>
           </div>
         </div>

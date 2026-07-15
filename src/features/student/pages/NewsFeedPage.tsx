@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Radio, AlertTriangle, RefreshCw, ExternalLink, Calendar,
   ChevronLeft, ChevronRight, Shield,
@@ -25,6 +26,7 @@ interface Article {
 const AUTOPLAY_DURATION = 8000;
 
 const NewsFeedPage = () => {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -86,10 +88,10 @@ const NewsFeedPage = () => {
 
           <LearningOverviewCard
             icon={<Radio className="w-6 h-6 text-bg" />}
-            title="Cyber Feed"
-            description="African-focused cybersecurity threat intelligence and situational awareness."
+            title={t('student.newsFeed.title')}
+            description={t('student.newsFeed.description')}
             action={{
-              label: refreshing ? 'Updating' : 'Refresh Feed',
+              label: refreshing ? 'Updating' : t('button.reloadPage'),
               onClick: () => fetchNews(true),
               icon: <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />,
             }}
@@ -112,8 +114,8 @@ const NewsFeedPage = () => {
             <ScrollReveal>
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">
                 <Shield className="mx-auto mb-4 h-12 w-12 text-text-muted opacity-30" />
-                <p className="text-base text-text-muted font-bold">No intelligence feeds available</p>
-                <p className="text-sm text-text-muted mt-1">New cyber threat data will appear here as it's published.</p>
+                <p className="text-base text-text-muted font-bold">{t('student.newsFeed.empty')}</p>
+                <p className="text-sm text-text-muted mt-1">{t('student.newsFeed.description')}</p>
               </div>
             </ScrollReveal>
           ) : (
@@ -182,7 +184,7 @@ const NewsFeedPage = () => {
                             </p>
                           )}
                           <div className="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent group-hover:gap-3 transition-all">
-                            Read intelligence <ExternalLink className="w-3.5 h-3.5" />
+                            {t('student.newsFeed.readMore')} <ExternalLink className="w-3.5 h-3.5" />
                           </div>
                         </div>
                       </a>
@@ -251,7 +253,7 @@ const NewsFeedPage = () => {
             <div>
               <ScrollReveal>
                 <div className="mb-6 text-xs font-black uppercase tracking-[0.3em] text-text-muted">
-                  All Intelligence Reports
+                  {t('student.newsFeed.latest')}
                 </div>
               </ScrollReveal>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
