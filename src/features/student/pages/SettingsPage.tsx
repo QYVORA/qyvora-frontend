@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
 import { getDataSaverEnabled, setDataSaverEnabled } from '../utils/studentExperience';
 import SEO from '../../../shared/components/SEO';
 import { SettingsSkeleton } from '../components/StudentSkeletons';
+import LearningOverviewCard from '../components/learning/LearningOverviewCard';
 
 const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono';
 
@@ -76,7 +77,6 @@ const Settings: React.FC = () => {
       addToast('Password updated successfully.', 'success');
       form.reset();
     } catch (err: any) {
-      // Shake the current password field — most likely it's wrong
       setShakeCurrentPwd(true);
       addToast(err?.response?.data?.error || 'Password change failed.', 'error');
     } finally {
@@ -124,30 +124,14 @@ const Settings: React.FC = () => {
   return (
     <div className="bg-bg">
       <SEO title="Settings" description="Manage your password, recovery token, and account preferences on QYVORA." />
-      {/* Mobile-first header (right section header shown before sidebar content) */}
-      <div className="px-2 sm:px-6 md:px-8 pt-6 lg:hidden">
-        <ScrollReveal className="mb-8">
-          <span className="mb-3 block text-xs font-black uppercase tracking-[0.35em] text-accent md:text-sm">Security</span>
-          <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
-          <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
-        </ScrollReveal>
-      </div>
 
-      {/* Fixed two-column container below topbar */}
       <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
 
-
-
-
-
-{/* Page header — desktop */}
-             <ScrollReveal className="mb-10 md:mb-12 hidden lg:block">
-               <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                 Security Settings
-               </div>
-               <h1 className="text-4xl font-black text-text-primary md:text-6xl">Settings</h1>
-               <p className="mt-2 max-w-lg text-base text-text-muted">Manage your password, recovery token, and preferences.</p>
-             </ScrollReveal>
+        <LearningOverviewCard
+          icon={<SettingsIcon className="w-6 h-6 text-bg" />}
+          title="Settings"
+          description="Manage your password, recovery token, and account preferences."
+        />
 
             <div className="space-y-6">
 
@@ -195,11 +179,7 @@ const Settings: React.FC = () => {
                     </p>
                   </div>
 
-                  {loadingRecovery ? (
-                    <div className="flex items-center gap-2 text-text-muted text-sm">
-                      <Loader2 className="w-6 h-6 animate-spin" /> Loading...
-                    </div>
-                  ) : liveToken ? (
+                  {liveToken ? (
                     <div className="space-y-4">
                       <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
                         <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">
@@ -299,7 +279,7 @@ const Settings: React.FC = () => {
               </div>
             </ScrollReveal>
 
-          </div>{/* end space-y-6 */}
+          </div>
       </div>
     </div>
   );

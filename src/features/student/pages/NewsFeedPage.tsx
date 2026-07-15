@@ -9,6 +9,7 @@ import api from '@/core/services/api';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import NewsCard from '@/features/news/components/NewsCard';
 import { NewsFeedSkeleton } from '@/features/student/components/StudentSkeletons';
+import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
 
 interface Article {
   id: string;
@@ -81,27 +82,18 @@ const NewsFeedPage = () => {
   return (
     <div className="bg-bg">
       <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
-        <div className="px-2 sm:px-6 md:px-8 pt-6 pb-16">
+        <div className="px-2 sm:px-6 md:px-8 pt-6 pb-8">
 
-          <ScrollReveal>
-            <div className="mb-6 md:mb-8">
-              <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-                Threat Intelligence
-              </div>
-              <h1 className="text-4xl md:text-6xl font-black text-text-primary">Cyber Feed</h1>
-              <p className="mt-2 max-w-2xl text-base text-text-muted">
-                African-focused cybersecurity threat intelligence and situational awareness.
-              </p>
-              <button
-                onClick={() => fetchNews(true)}
-                disabled={refreshing}
-                className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accent/30 bg-accent-dim text-accent text-[10px] font-black uppercase tracking-wider hover:bg-accent-dim/70 transition-colors disabled:opacity-50"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
-                {refreshing ? 'Updating' : 'Refresh Feed'}
-              </button>
-            </div>
-          </ScrollReveal>
+          <LearningOverviewCard
+            icon={<Radio className="w-6 h-6 text-bg" />}
+            title="Cyber Feed"
+            description="African-focused cybersecurity threat intelligence and situational awareness."
+            action={{
+              label: refreshing ? 'Updating' : 'Refresh Feed',
+              onClick: () => fetchNews(true),
+              icon: <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />,
+            }}
+          />
 
           {error && (
             <ScrollReveal>
