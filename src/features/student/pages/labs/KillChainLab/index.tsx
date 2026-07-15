@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
+import { createKillChainSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
@@ -102,6 +103,11 @@ const KillChainLab = () => {
     </div>
   );
 
+  const simulations = useMemo(
+    () => activeScenario ? createKillChainSimulations(activeScenario.phases.map(p => ({ name: p.name, commands: p.commands.map(c => ({ command: c.command, output: c.output })) }))) : [],
+    [activeScenario],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeScenario.title} — Kill Chain`} description={activeScenario.description} />
@@ -115,6 +121,7 @@ const KillChainLab = () => {
         onBack={exitScenario}
         completedCount={completedPhases.size}
         totalSteps={activeScenario.phases.length}
+        simulations={simulations}
       >
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm text-text-muted font-mono">🎯 {activeScenario.targetDescription}</p>

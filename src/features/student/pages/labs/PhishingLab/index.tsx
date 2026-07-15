@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Mail, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Shield } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PHISHING_CHALLENGES } from '@/features/student/data/simulations/phishing-data';
+import { createPhishingSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
@@ -129,6 +130,11 @@ const PhishingLab = () => {
     },
   ];
 
+  const simulations = useMemo(
+    () => activeChallenge ? createPhishingSimulations(activeChallenge.emails) : [],
+    [activeChallenge],
+  );
+
   return (
     <div className="bg-bg min-h-full">
       <SEO title={`${activeChallenge.title} — Phishing Lab`} description={activeChallenge.description} />
@@ -142,6 +148,7 @@ const PhishingLab = () => {
         onBack={exitChallenge}
         completedCount={completedSteps.size}
         totalSteps={3}
+        simulations={simulations}
       >
         {steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);

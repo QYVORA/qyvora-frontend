@@ -1,8 +1,9 @@
 import { Unplug, Loader2 } from 'lucide-react';
+import { useEffect } from 'react';
 import { IconArrowLeft, IconClock, IconTerminal } from '@/shared/components/icons';
 import { cn } from '@/shared/utils/cn';
 import { useLabConnection } from '@/features/student/hooks/useLabConnection';
-import { SimulationPanel, type SimulationType } from '@/features/student/components/simulations';
+import { SimulationPanel, useSimulation, getNetworkProfileForLab, type SimulationType } from '@/features/student/components/simulations';
 
 export interface WalkthroughLayoutProps {
   title: string;
@@ -39,6 +40,15 @@ export function WalkthroughLayout({
 }: WalkthroughLayoutProps) {
   const allDone = totalSteps > 0 && completedCount === totalSteps;
   const { connection, isConnected, isLoading, error, connect, disconnect } = useLabConnection();
+  const { network } = useSimulation();
+
+  useEffect(() => {
+    const profile = getNetworkProfileForLab(labId);
+    if (profile) {
+      network.setActiveProfile(profile);
+    }
+    return () => { network.setActiveProfile(null); };
+  }, [labId]);
 
   const handleConnect = async () => {
     if (!scenarioId) return;
