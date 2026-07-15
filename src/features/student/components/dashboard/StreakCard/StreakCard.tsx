@@ -1,4 +1,5 @@
 import { Circle, FlameKindling, Zap, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconFire, IconLeaderboard } from '@/shared/components/icons';
 
 interface StreakCardProps {
@@ -138,6 +139,7 @@ function StreakRing({ days, theme }: { days: number; theme: StreakTheme }) {
 }
 
 const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, variant = 'card' }) => {
+  const { t } = useTranslation();
   const theme = getStreakTheme(streakDays);
 
   if (variant === 'badge') {
@@ -147,7 +149,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
           <IconFire size={16} />
         </div>
         <span className={`font-mono text-sm font-black ${theme.textColor}`}>{streakDays}</span>
-        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Day Streak</span>
+        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">{t('student.dashboard.streak.label')}</span>
       </div>
     );
   }
@@ -161,7 +163,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streakDays, lastVisitDate, vari
               <span className={`text-3xl font-black font-mono tracking-tighter ${theme.textColor} tabular-nums`} aria-label={`${streakDays} day streak`}>
                 {streakDays}
               </span>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/70">Day Streak</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted/70">{t('student.dashboard.streak.label')}</span>
           </div>
           {lastVisitDate && (
             <p className="text-[10px] text-text-muted/50 mt-0.5 font-mono">

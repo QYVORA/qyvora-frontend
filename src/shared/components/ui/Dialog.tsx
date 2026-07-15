@@ -21,6 +21,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { IconX } from '../icons';
 import { cn } from '../../utils/cn';
@@ -66,7 +67,9 @@ interface DialogContentProps
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Content>,
   DialogContentProps
->(({ className, title, description, hideClose, maxWidth = 'max-w-xl', children, ...props }, ref) => (
+>(({ className, title, description, hideClose, maxWidth = 'max-w-xl', children, ...props }, ref) => {
+  const { t } = useTranslation();
+  return (
   <RadixDialog.Portal>
     <DialogOverlay />
     <RadixDialog.Content
@@ -113,7 +116,7 @@ export const DialogContent = React.forwardRef<
         {!hideClose && (
           <RadixDialog.Close
             className="p-1.5 rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-            aria-label="Close"
+            aria-label={t('components.dialog.close')}
           >
             <IconX size={16} />
           </RadixDialog.Close>
@@ -135,7 +138,8 @@ export const DialogContent = React.forwardRef<
       </div>
     </RadixDialog.Content>
   </RadixDialog.Portal>
-));
+  );
+});
 DialogContent.displayName = 'DialogContent';
 
 // ── Confirm dialog — convenience wrapper for destructive confirmations ────────
@@ -150,16 +154,19 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
 }
 
-export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
-  open,
-  onOpenChange,
-  title,
-  description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
-  destructive = false,
-  onConfirm,
-}) => (
+export const ConfirmDialog: React.FC<ConfirmDialogProps> = (props) => {
+  const { t } = useTranslation();
+  const {
+    open,
+    onOpenChange,
+    title,
+    description,
+    confirmLabel = t('components.dialog.confirm'),
+    cancelLabel = t('components.dialog.cancel'),
+    destructive = false,
+    onConfirm,
+  } = props;
+  return (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent title={title} maxWidth="max-w-lg">
       <p className="text-sm text-text-secondary mb-6 -mt-1">{description}</p>
@@ -183,4 +190,5 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       </div>
     </DialogContent>
   </Dialog>
-);
+  );
+};

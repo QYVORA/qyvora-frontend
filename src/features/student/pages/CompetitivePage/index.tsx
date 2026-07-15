@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Trophy, Medal, Shield } from 'lucide-react';
 import api from '@/core/services/api';
@@ -53,6 +54,7 @@ const RankBadge = ({ label }: { label: string }) => {
 };
 
 const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: any; rank: number }) => {
+  const { t } = useTranslation();
   const isTopThree = rank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
   const bootcampCompleted = entry.bootcampStatus === 'completed';
@@ -90,12 +92,12 @@ const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: 
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-black text-text-primary truncate flex items-center gap-1.5">
-              {entry.hackerHandle || entry.name || 'Anonymous'}
+              {entry.hackerHandle || entry.name || t('student.competitive.anonymous')}
               <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
               <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
-                You
+                {t('student.competitive.youBadge')}
               </span>
             )}
           </div>
@@ -141,6 +143,7 @@ const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: 
 };
 
 const CompetitivePage = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
@@ -185,11 +188,11 @@ const CompetitivePage = () => {
         {/* Header */}
         <LearningOverviewCard
           icon={<Trophy className="w-6 h-6 text-bg" />}
-          title="Competitive Leaderboard"
-          description={`${Number(total).toLocaleString()} operators ranked by CyberPoints`}
+          title={t('student.competitive.title')}
+          description={t('student.competitive.description', { count: total })}
           stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
           action={{
-            label: 'View Public Board',
+            label: t('button.viewPublicBoard'),
             to: '/leaderboard',
             icon: <Trophy className="w-4 h-4" />,
           }}
@@ -207,7 +210,7 @@ const CompetitivePage = () => {
                   : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
               }`}
             >
-              {p.label}
+              {t(`student.competitive.periods.${p.key}`)}
             </button>
           ))}
         </div>
@@ -223,18 +226,18 @@ const CompetitivePage = () => {
         ) : entries.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center">
             <Trophy className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
-            <p className="text-lg text-text-muted font-bold">No operators ranked yet</p>
-            <p className="text-sm text-text-muted mt-1">Complete bootcamp rooms to earn CP and appear on the leaderboard.</p>
+            <p className="text-lg text-text-muted font-bold">{t('student.competitive.empty.title')}</p>
+            <p className="text-sm text-text-muted mt-1">{t('student.competitive.empty.description')}</p>
           </div>
         ) : (
           <div>
             {/* Desktop header row */}
             <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40">
-              <span>#</span>
-              <span>Operator</span>
-              <span>Rank</span>
-              <span className="text-right">CP</span>
-              <span className="text-right">Streak</span>
+              <span>{t('student.competitive.tableHeaders.rank')}</span>
+              <span>{t('student.competitive.tableHeaders.operator')}</span>
+              <span>{t('student.competitive.tableHeaders.rankLabel')}</span>
+              <span className="text-right">{t('student.competitive.tableHeaders.cp')}</span>
+              <span className="text-right">{t('student.competitive.tableHeaders.streak')}</span>
             </div>
 
             {/* Entries */}
@@ -249,7 +252,7 @@ const CompetitivePage = () => {
             {/* Chain verification badge */}
             <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
               <Shield className="w-3 h-3 text-accent" />
-              CP balances verified on QYVORA Chain &middot; {total} operators
+              {t('student.competitive.footer', { count: total })}
             </div>
           </div>
         )}

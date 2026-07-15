@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IconTerminal } from '@/shared/components/icons';
 import { RefreshCw, Home } from 'lucide-react';
 
@@ -8,6 +9,8 @@ interface Props {
   fallback?: ReactNode;
   /** Scope label shown in the error card (e.g. "Dashboard", "Bootcamp") */
   scope?: string;
+  /** Injected by the wrapper — do not pass manually */
+  t?: (key: string, options?: Record<string, unknown>) => string;
 }
 
 interface State {
@@ -27,7 +30,7 @@ interface State {
  *
  * React requires this to be a class component — hooks cannot catch render errors.
  */
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundaryInner extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null, resetKey: 0 };
@@ -59,7 +62,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   render() {
     const { hasError, error, resetKey } = this.state;
-    const { children, fallback, scope } = this.props;
+    const { children, fallback, scope, t } = this.props;
 
     if (!hasError) {
       // Key forces full remount of children after a reset
@@ -84,11 +87,11 @@ class ErrorBoundary extends Component<Props, State> {
           {/* Heading */}
           <div className="space-y-2">
             <p className="text-[10px] font-bold text-red-400 uppercase tracking-[0.3em]">
-              // {scope ? `${scope} — ` : ''}Render Error
+              {t?.('components.errorBoundary.renderError', { scope }) ?? `// ${scope ? `${scope} — ` : ''}Render Error`}
             </p>
-            <h2 className="text-xl font-black text-text-primary">Something went wrong</h2>
+            <h2 className="text-xl font-black text-text-primary">{t?.('components.errorBoundary.title') ?? 'Something went wrong'}</h2>
             <p className="text-sm text-text-muted leading-relaxed">
-              This section crashed unexpectedly. The rest of the app is still running.
+              {t?.('components.errorBoundary.description') ?? 'This section crashed unexpectedly. The rest of the app is still running.'}
             </p>
           </div>
 
@@ -109,7 +112,7 @@ class ErrorBoundary extends Component<Props, State> {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-accent text-bg rounded-xl text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all"
             >
               <RefreshCw className="w-4 h-4" />
-              Try Again
+              {t?.('components.errorBoundary.tryAgain') ?? 'Try Again'}
             </button>
             <button
               type="button"
@@ -117,19 +120,19 @@ class ErrorBoundary extends Component<Props, State> {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border text-text-muted rounded-xl text-sm font-bold uppercase tracking-widest hover:border-accent/40 hover:text-accent transition-all"
             >
               <Home className="w-4 h-4" />
-              Dashboard
+              {t?.('components.errorBoundary.dashboard') ?? 'Dashboard'}
             </button>
           </div>
 
           {/* Hard reload fallback */}
           <p className="text-[10px] text-text-muted">
-            Still broken?{' '}
+            {t?.('components.errorBoundary.stillBroken') ?? 'Still broken?'}{' '}
             <button
               type="button"
               onClick={() => window.location.reload()}
               className="text-accent hover:underline font-bold"
             >
-              Reload the page
+              {t?.('components.errorBoundary.reloadPage') ?? 'Reload the page'}
             </button>
           </p>
 
@@ -138,5 +141,11 @@ class ErrorBoundary extends Component<Props, State> {
     );
   }
 }
+
+/** Wrapper that injects the `t` function via useTranslation hook */
+const ErrorBoundary: React.FC<Omit<Props, 't'>> = (props) => {
+  const { t } = useTranslation();
+  return <ErrorBoundaryInner {...props} t={t} />;
+};
 
 export default ErrorBoundary;

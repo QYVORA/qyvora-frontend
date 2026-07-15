@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   IconPlay,
@@ -36,6 +37,7 @@ interface Props {
 const FALLBACK_IMG = hpbCoverImg;
 
 const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLocked }) => {
+  const { t } = useTranslation();
   const { id, title, description, level, duration, priceLabel, img, progress, isEnrolled, isLocked } = data;
   const isComplete = progress === 100;
 
@@ -80,17 +82,17 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           )}
           {isLocked && (
             <span className="px-2 py-0.5 bg-black/75 rounded text-[9px] font-black uppercase text-text-muted tracking-widest flex items-center gap-1 shadow-sm">
-              <IconLock size={10} /> Coming soon
+              <IconLock size={10} /> {t('student.studentBootcampCard.comingSoon')}
             </span>
           )}
           {isComplete && !isLocked && (
             <span className="px-2 py-0.5 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
-              <IconCheck size={10} /> Complete
+              <IconCheck size={10} /> {t('badge.completed')}
             </span>
           )}
           {isEnrolled && !isComplete && !isLocked && (
             <span className="px-2 py-0.5 bg-accent/20 text-accent rounded text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm">
-              <IconPlay size={8} /> Active
+              <IconPlay size={8} /> {t('badge.active')}
             </span>
           )}
         </div>
@@ -127,7 +129,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
           {duration && priceLabel && <span className="opacity-30">·</span>}
           {priceLabel && <span className="text-accent">{priceLabel}</span>}
           <span className="flex items-center gap-1.5 ml-auto">
-            <IconDashboard size={14} className="opacity-60" /> 5 phases
+            <IconDashboard size={14} className="opacity-60" /> {t('student.studentBootcampCard.phasesCount')}
           </span>
         </div>
 
@@ -137,7 +139,7 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
             <button
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-bg-elevated text-text-muted text-xs font-black uppercase tracking-widest opacity-60 cursor-default"
             >
-              <IconLock size={14} /> Coming soon
+              <IconLock size={14} /> {t('student.studentBootcampCard.comingSoon')}
             </button>
           ) : isEnrolled ? (
             <Link
@@ -145,9 +147,9 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
               className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
             >
               {isComplete ? (
-                <><IconCheck size={16} /> Review curriculum</>
+                <><IconCheck size={16} /> {t('student.studentBootcampCard.reviewCurriculum')}</>
               ) : (
-                <><IconPlay size={16} /> Continue training</>
+                <><IconPlay size={16} /> {t('student.studentBootcampCard.continueTraining')}</>
               )}
             </Link>
           ) : (
@@ -156,14 +158,14 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
                 onClick={() => onEnroll(data)}
                 className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
-                Enroll now <IconArrowRight size={16} />
+                {t('student.studentBootcampCard.enrollNow')} <IconArrowRight size={16} />
               </button>
             ) : (
               <Link
                 to={`/dashboard/bootcamps/${id}`}
                 className="btn-primary w-full flex items-center justify-center gap-3 !text-xs !py-3.5"
               >
-                Enroll now <IconArrowRight size={16} />
+                {t('student.studentBootcampCard.enrollNow')} <IconArrowRight size={16} />
               </Link>
             )
           )}

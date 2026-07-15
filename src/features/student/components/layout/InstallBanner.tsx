@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 import { IconDownload, IconX } from '@/shared/components/icons';
@@ -8,6 +9,7 @@ import { usePopupManager } from '@/core/hooks/usePopupManager';
 const DISMISS_KEY = 'qyvora_install_dismissed';
 
 const InstallBanner = () => {
+  const { t } = useTranslation();
   const [dismissed, setDismissed] = useState(() => {
     try { return localStorage.getItem(DISMISS_KEY) === '1'; } catch { return false; }
   });
@@ -48,9 +50,9 @@ const InstallBanner = () => {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-text-primary">Install QYVORA</p>
+                <p className="text-sm font-bold text-text-primary">{t('student.installBanner.title')}</p>
                 <p className="text-xs text-text-muted mt-0.5">
-                  {installing ? 'Opening install dialog…' : 'Add to home screen for faster access.'}
+                  {installing ? t('button.installing') : t('student.installBanner.description')}
                 </p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
@@ -59,7 +61,7 @@ const InstallBanner = () => {
                   disabled={installing}
                   className="px-3 py-1.5 rounded-2xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50"
                 >
-                  {installing ? 'Installing…' : 'Install'}
+                  {installing ? t('button.installing') : t('student.installBanner.install')}
                 </button>
                 <button
                   onClick={handleDismiss}

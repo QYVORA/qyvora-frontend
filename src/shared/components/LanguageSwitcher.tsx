@@ -8,7 +8,7 @@ interface LanguageSwitcherProps {
 }
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef<HTMLDivElement>(null);
@@ -77,7 +77,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
             <input
               ref={inputRef}
               type="text"
-              placeholder="Search languages..."
+              placeholder={t('components.language.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-3 py-2 rounded-xl bg-bg border border-border text-text-primary text-sm font-mono placeholder:text-text-muted/50 focus:border-accent outline-none"

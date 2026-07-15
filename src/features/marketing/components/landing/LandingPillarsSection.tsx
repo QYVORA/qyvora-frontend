@@ -3,50 +3,35 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { BookOpen, Zap } from 'lucide-react';
 import { IconLabs, IconShield, IconLock, IconArrowRight } from '@/shared/components/icons';
+import { useTranslation } from 'react-i18next';
 
-const PILLARS = [
-  {
-    id: 'labs',
-    title: 'Attack Labs',
-    desc: '10 live labs — crack passwords, inject SQL, escalate privileges, and phish real targets in sandboxed environments.',
-    icon: IconLabs,
-    stat: '10 Labs',
-    link: '/dashboard/labs',
-    featured: false,
-  },
-  {
-    id: 'courses',
-    title: 'Self-Paced Courses',
-    desc: '12 structured courses across terminal, networking, web security, programming, and tools — earn CP as you learn.',
-    icon: BookOpen,
-    stat: '12 Courses',
-    link: '/courses',
-    featured: false,
-  },
-  {
-    id: 'bootcamp',
-    title: 'Hacker Protocol Bootcamp',
-    desc: '5-phase guided bootcamp from mindset to exploitation. 19 rooms, 100+ walkthrough steps, CP on completion.',
-    icon: IconShield,
-    stat: '5 Phases',
-    link: '/hpb',
-    featured: true,
-  },
-  {
-    id: 'services',
-    title: 'Penetration Testing',
-    desc: 'Enterprise-grade security assessments. OWASP Top 10, business logic analysis, and remediation retesting.',
-    icon: IconLock,
-    stat: 'From GH₵ 4,000',
-    link: '/services',
-    featured: false,
-  },
+const PILLARS_META = [
+  { id: 'labs', icon: IconLabs, link: '/dashboard/labs', featured: false },
+  { id: 'courses', icon: BookOpen, link: '/courses', featured: false },
+  { id: 'bootcamp', icon: IconShield, link: '/hpb', featured: true },
+  { id: 'services', icon: IconLock, link: '/services', featured: false },
 ];
 
 const LandingPillarsSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
-  const featured = PILLARS.find((p) => p.featured)!;
-  const supporting = PILLARS.filter((p) => !p.featured);
+  const featuredMeta = PILLARS_META.find((p) => p.featured)!;
+  const supportingMeta = PILLARS_META.filter((p) => !p.featured);
+  const featured = {
+    ...featuredMeta,
+    title: t('landing.pillars.bootcamp.title'),
+    desc: t('landing.pillars.bootcamp.desc'),
+    stat: t('landing.pillars.bootcamp.stat'),
+  };
+  const supporting = supportingMeta.map((meta) => {
+    const key = meta.id === 'labs' ? 'labs' : meta.id === 'courses' ? 'courses' : 'services';
+    return {
+      ...meta,
+      title: t(`landing.pillars.${key}.title`),
+      desc: t(`landing.pillars.${key}.desc`),
+      stat: t(`landing.pillars.${key}.stat`),
+    };
+  });
 
   return (
     <div className="relative overflow-hidden h-full flex flex-col">
@@ -61,7 +46,7 @@ const LandingPillarsSection: React.FC = () => {
             className="mb-3 md:mb-5 shrink-0"
           >
             <span className="inline-block px-4 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.3em] text-text-primary">
-              What We Build
+              {t('landing.pillars.badge')}
             </span>
           </motion.div>
 
@@ -101,7 +86,7 @@ const LandingPillarsSection: React.FC = () => {
                   <div className="mt-auto flex items-center gap-3">
                     <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-[10px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-3">
                       <Zap className="w-3.5 h-3.5" />
-                      Start Bootcamp
+                      {t('landing.pillars.startBootcamp')}
                       <IconArrowRight size={14} />
                     </span>
                   </div>
@@ -141,7 +126,7 @@ const LandingPillarsSection: React.FC = () => {
                   </p>
 
                   <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
-                    <span className="text-[10px] font-black uppercase tracking-widest">Explore</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.pillars.explore')}</span>
                     <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
@@ -179,7 +164,7 @@ const LandingPillarsSection: React.FC = () => {
                   </p>
 
                   <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
-                    <span className="text-[10px] font-black uppercase tracking-widest">Explore</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.pillars.explore')}</span>
                     <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
@@ -217,7 +202,7 @@ const LandingPillarsSection: React.FC = () => {
                   </p>
 
                   <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
-                    <span className="text-[10px] font-black uppercase tracking-widest">Explore</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.pillars.explore')}</span>
                     <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>

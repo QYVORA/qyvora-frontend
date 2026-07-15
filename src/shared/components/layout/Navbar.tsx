@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { IconDashboard, IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
 import { LogIn, UserPlus, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import { useScrollLock } from '@/core/hooks/useScrollLock';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { Logo } from '@/shared/components/brand';
@@ -12,6 +13,7 @@ import { useNavInvert } from '@/shared/hooks/useNavInvert';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen]             = useState(false);
   const [openDropdown, setOpenDropdown]         = useState<string | null>(null);
@@ -19,6 +21,28 @@ const Navbar: React.FC = () => {
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inverted                                 = useNavInvert();
+
+  const NAV_GROUP_LABELS: Record<string, string> = {
+    learn: 'nav.learn',
+    research: 'nav.research',
+    resources: 'nav.resources',
+    company: 'nav.company',
+  };
+
+  const NAV_ITEM_LABELS: Record<string, string> = {
+    courses: 'nav.courses',
+    hpb: 'nav.hpb',
+    events: 'nav.events',
+    services: 'nav.services',
+    anansi: 'nav.anansi',
+    quiteroot: 'nav.quiteroot',
+    market: 'nav.market',
+    blogs: 'nav.blogs',
+    news: 'nav.news',
+    leaderboard: 'nav.leaderboard',
+    team: 'nav.team',
+    contact: 'nav.contact',
+  };
 
   const isAnansiPage = location.pathname === '/anansi';
 
@@ -39,7 +63,7 @@ const Navbar: React.FC = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:font-bold focus:rounded-sm"
       >
-        Skip to content
+        {t('aria.skipToContent')}
       </a>
       <nav
         className={[
@@ -77,7 +101,7 @@ const Navbar: React.FC = () => {
                       : inverted ? 'text-bg/70 hover:text-bg' : 'text-text-primary/70 hover:text-accent'
                   }`}
                 >
-                  {group.label}
+                  {t(NAV_GROUP_LABELS[group.key] || group.label)}
                   <ChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${
                       openDropdown === group.key ? 'rotate-180' : ''
@@ -111,7 +135,7 @@ const Navbar: React.FC = () => {
                                 className={linkClasses}
                                 onOpen={() => setOpenDropdown(null)}
                               >
-                                {item.label}
+                                {t(NAV_ITEM_LABELS[item.key] || item.label)}
                               </ContactTrigger>
                             );
                           }
@@ -148,7 +172,7 @@ const Navbar: React.FC = () => {
                       : 'bg-accent text-bg hover:brightness-110'
                   }`}
                 >
-                  <IconDashboard className="w-4 h-4" /> Dashboard
+                  <IconDashboard className="w-4 h-4" /> {t('nav.dashboard')}
                 </Link>
               ) : (
                 <Link
@@ -159,7 +183,7 @@ const Navbar: React.FC = () => {
                       : 'bg-accent text-bg hover:brightness-110'
                   }`}
                 >
-                  START
+                  {t('nav.start')}
                 </Link>
               )}
             </div>
@@ -168,7 +192,7 @@ const Navbar: React.FC = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-bg hover:text-bg/70' : 'text-text-primary hover:text-accent'}`}
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
             >
               {isMenuOpen ? <IconX size={24} /> : <IconMenu size={24} />}
             </button>
@@ -202,7 +226,7 @@ const Navbar: React.FC = () => {
                   isActive('/') ? 'text-accent border-accent' : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
                 }`}
               >
-                Home
+                {t('nav.home')}
               </Link>
 
               {/* Grouped nav links */}
@@ -214,7 +238,7 @@ const Navbar: React.FC = () => {
                       onClick={() => setOpenMobileGroup(isOpen ? null : group.key)}
                       className="w-full flex items-center justify-between pl-4 pr-2 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors text-text-primary/70 hover:text-accent"
                     >
-                      {group.label}
+                      {t(NAV_GROUP_LABELS[group.key] || group.label)}
                       <IconChevronRight
                         size={16}
                         className={`transition-transform duration-200 ${
@@ -246,7 +270,7 @@ const Navbar: React.FC = () => {
                                     className={linkClasses}
                                     onOpen={() => setIsMenuOpen(false)}
                                   >
-                                    {item.label}
+                                    {t(NAV_ITEM_LABELS[item.key] || item.label)}
                                   </ContactTrigger>
                                 );
                               }
@@ -258,7 +282,7 @@ const Navbar: React.FC = () => {
                                   onClick={() => setIsMenuOpen(false)}
                                   className={linkClasses}
                                 >
-                                  {item.label}
+                                  {t(NAV_ITEM_LABELS[item.key] || item.label)}
                                 </Link>
                               );
                             })}
@@ -295,14 +319,14 @@ const Navbar: React.FC = () => {
                       onClick={() => setIsMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
                     >
-                      <UserPlus className="w-4 h-4" /> Start Training
+                      <UserPlus className="w-4 h-4" /> {t('button.startTraining')}
                     </Link>
                     <Link
                       to="/login"
                       onClick={() => setIsMenuOpen(false)}
                       className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:bg-accent/10 active:scale-[0.98]"
                     >
-                      <LogIn className="w-4 h-4" /> Log In
+                      <LogIn className="w-4 h-4" /> {t('button.logIn')}
                     </Link>
                   </>
                 )}

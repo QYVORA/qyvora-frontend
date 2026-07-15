@@ -5,36 +5,35 @@ import learnBg from '@/assets/sections/how-it-works/learn-bg.webp';
 import practiceBg from '@/assets/sections/how-it-works/practice-bg.webp';
 import proveBg from '@/assets/sections/how-it-works/prove-bg.webp';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 const STEPS = [
   {
     icon: BookOpen,
-    title: 'Learn',
-    description: 'Master offensive security foundations with structured modules covering Linux, networking, and web exploitation.',
+    tKey: 'learn',
     bgImage: learnBg,
   },
   {
     icon: Swords,
-    title: 'Practice',
-    description: 'Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments.',
+    tKey: 'practice',
     bgImage: practiceBg,
   },
   {
     icon: Award,
-    title: 'Prove',
-    description: 'Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency.',
+    tKey: 'prove',
     bgImage: proveBg,
   },
 ];
 
 const LandingHowItWorksSection: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative w-full px-4 md:px-12 lg:px-16 bg-accent overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-10 w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none">
-            Learn. <span className="text-bg/70">Practice.</span> Prove.
+            {t('landing.howItWorks.heading')}
           </h2>
         </div>
 
@@ -43,7 +42,7 @@ const LandingHowItWorksSection: React.FC = () => {
             {STEPS.map((step, i) => {
               const Icon = step.icon;
               return (
-                <ScrollReveal key={step.title} direction="up" amount={0.1} delay={i * 0.1}>
+                <ScrollReveal key={step.tKey} direction="up" amount={0.1} delay={i * 0.1}>
                   <div className="relative rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden group h-full snap-start shrink-0 w-[80vw] md:w-auto">
                     <div
                       className="absolute inset-0 bg-cover bg-center"
@@ -55,10 +54,10 @@ const LandingHowItWorksSection: React.FC = () => {
                         <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
                       </div>
                       <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2 tracking-tight">
-                        {step.title}
+                        {t(`landing.howItSteps.${step.tKey}.title`)}
                       </h3>
                       <p className="text-sm md:text-sm text-text-secondary leading-relaxed">
-                        {step.description}
+                        {t(`landing.howItSteps.${step.tKey}.desc`)}
                       </p>
                     </div>
                   </div>

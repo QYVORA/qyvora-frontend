@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
@@ -305,6 +306,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
 };
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -445,25 +447,25 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
               icon={<GraduationCap size={32} className={activeSection === 'courses' ? 'text-bg' : 'text-text-primary'} />}
-              label="Courses"
+              label={t('nav.courses')}
               active={activeSection === 'courses'}
               onClick={() => setActiveSection(activeSection === 'courses' ? null : 'courses')}
             />
             <SectionButton
               icon={<Briefcase size={32} className={activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'} />}
-              label="Bootcamps"
+              label={t('nav.bootcamps')}
               active={activeSection === 'bootcamps'}
               onClick={() => setActiveSection(activeSection === 'bootcamps' ? null : 'bootcamps')}
             />
             <SectionButton
               icon={<FlaskConical size={32} className={activeSection === 'labs' ? 'text-bg' : 'text-text-primary'} />}
-              label="Labs"
+              label={t('nav.labs')}
               active={activeSection === 'labs'}
               onClick={() => setActiveSection(activeSection === 'labs' ? null : 'labs')}
             />
             <SectionButton
               icon={<ShoppingBag size={32} className={activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'} />}
-              label="Marketplace"
+              label={t('nav.marketplace')}
               active={activeSection === 'marketplace'}
               onClick={() => setActiveSection(activeSection === 'marketplace' ? null : 'marketplace')}
             />
@@ -478,8 +480,8 @@ const Dashboard = () => {
                 <IconDownload size={28} className="text-accent" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm md:text-base font-black text-text-primary">Install QYVORA</p>
-                <p className="text-[10px] md:text-xs font-mono text-text-muted">Add to home screen for faster access and offline support.</p>
+                <p className="text-sm md:text-base font-black text-text-primary">{t('student.installBanner.title')}</p>
+                <p className="text-[10px] md:text-xs font-mono text-text-muted">{t('student.installBanner.description')}</p>
               </div>
             </div>
             <button
@@ -488,7 +490,7 @@ const Dashboard = () => {
               className="sm:ml-auto flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-accent text-bg text-[10px] font-black uppercase tracking-widest hover:bg-accent/90 transition-colors disabled:opacity-50"
             >
               {installing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <IconDownload size={14} />}
-              {installing ? 'Installing…' : 'Install'}
+              {installing ? t('button.installing') : t('button.install')}
             </button>
           </div>
         )}
@@ -567,9 +569,9 @@ const Dashboard = () => {
             ) : (
               <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
                 <Briefcase className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
-                <p className="text-sm text-text-muted">No bootcamps enrolled yet.</p>
+                <p className="text-sm text-text-muted">{t('student.myCourses.empty.enrolled')}</p>
                 <Link to="/dashboard/bootcamps" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                  Browse Bootcamps <IconArrowRight size={12} />
+                  {t('button.browseBootcamps')} <IconArrowRight size={12} />
                 </Link>
               </div>
             )}
@@ -599,9 +601,9 @@ const Dashboard = () => {
             ) : (
               <div className="text-center py-12 rounded-2xl border border-border/30 bg-bg-card">
                 <ShoppingBag className="w-12 h-12 text-text-muted/20 mx-auto mb-3" />
-                <p className="text-sm text-text-muted">No marketplace items available.</p>
+                <p className="text-sm text-text-muted">{t('student.marketplace.empty')}</p>
                 <Link to="/dashboard/marketplace" className="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                  Browse Marketplace <IconArrowRight size={12} />
+                  {t('student.marketplace.title')} <IconArrowRight size={12} />
                 </Link>
               </div>
             )}
@@ -622,7 +624,7 @@ const Dashboard = () => {
           <div ref={rankRef}>
             <div ref={progressRef} className="rounded-2xl border border-accent/20 bg-bg-card p-6 md:p-8 lg:p-10">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Target: <span className="text-accent">{nextRank.name}</span></span>
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted">{t('heading.target')}: <span className="text-accent">{nextRank.name}</span></span>
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
               </div>
               <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">

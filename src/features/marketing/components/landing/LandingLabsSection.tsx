@@ -5,24 +5,26 @@ import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import DotMapBackground from '@/shared/components/DotMapBackground';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 const LABS = [
-  { id: 'privesc', title: 'Privilege Escalation', desc: 'Escalate permissions and gain root access through misconfigs, kernel exploits, and SUID binaries', cp: '50-400 CP' },
-  { id: 'passwords', title: 'Password Cracking', desc: 'Crack hashes using brute-force, dictionary attacks, and rule-based generation', cp: '100-300 CP' },
-  { id: 'webapp', title: 'Web Exploitation', desc: 'Exploit XSS, SSRF, deserialization, and access control flaws in modern web apps', cp: '100-400 CP' },
-  { id: 'sqli', title: 'SQL Injection', desc: 'Extract databases through union-based, blind, and time-based injection vectors', cp: '200-400 CP' },
-  { id: 'phishing', title: 'Phishing Analysis', desc: 'Identify phishing kits, analyze email headers, and trace social engineering campaigns', cp: '150-400 CP' },
-  { id: 'proxy', title: 'Web Proxy', desc: 'Intercept, modify, and replay HTTP traffic using Burp Suite and mitmproxy', cp: '150-400 CP' },
-  { id: 'traffic', title: 'Traffic Analysis', desc: 'Analyze PCAP files, detect anomalies, and reconstruct sessions from network captures', cp: '150-400 CP' },
-  { id: 'osint', title: 'OSINT Recon', desc: 'Gather intelligence from public sources, breach databases, and map attack surfaces', cp: '150-400 CP' },
-  { id: 'wireless', title: 'Wireless Security', desc: 'Test WPA2 handshakes, rogue APs, and deauthentication vulnerabilities', cp: '200-400 CP' },
-  { id: 'killchain', title: 'Kill Chain', desc: 'Full pentest from recon to exploitation — chain every skill into a complete attack narrative', cp: '500-600 CP' },
+  { id: 'privesc' },
+  { id: 'passwords' },
+  { id: 'webapp' },
+  { id: 'sqli' },
+  { id: 'phishing' },
+  { id: 'proxy' },
+  { id: 'traffic' },
+  { id: 'osint' },
+  { id: 'wireless' },
+  { id: 'killchain' },
 ];
 
 const VISIBLE = 5;
 const CYCLE_MS = 3500;
 
 const LandingLabsSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const [order, setOrder] = useState(() => LABS.map((_, i) => i));
   const [featuredSlot, setFeaturedSlot] = useState(0);
@@ -59,13 +61,13 @@ const LandingLabsSection: React.FC = () => {
             className="mb-4 md:mb-8 shrink-0"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-3">
-              <Zap className="h-3 w-3" /> Live Environments
+              <Zap className="h-3 w-3" /> {t('landing.labs.badge')}
             </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
-              Attack <span className="text-bg">Labs</span>
+              {t('landing.labs.heading')}
             </h2>
             <p className="text-xs md:text-sm text-bg/70 leading-relaxed max-w-xl">
-              10 sandboxed environments. Real tools, real vulnerabilities, real exploits.
+              {t('landing.labs.description')}
             </p>
           </motion.div>
 
@@ -94,19 +96,19 @@ const LandingLabsSection: React.FC = () => {
                               <span className="text-lg font-black text-bg">{String(labIdx + 1).padStart(2, '0')}</span>
                             </div>
                             <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
-                              {lab.cp}
-                            </span>
+                               {t(`landing.labs.list.${lab.id}.cp`)}
+                             </span>
                           </div>
                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-text-primary tracking-tighter leading-none mb-2">
-                            {lab.title}
+                            {t(`landing.labs.list.${lab.id}.title`)}
                           </h3>
                           <p className="text-[11px] sm:text-xs md:text-sm text-text-secondary leading-relaxed mb-2 sm:mb-4 line-clamp-3">
-                            {lab.desc}
+                            {t(`landing.labs.list.${lab.id}.desc`)}
                           </p>
                           <div className="flex items-center gap-2">
                             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent text-[9px] font-black uppercase tracking-widest text-bg transition-all group-hover:gap-2.5">
                               <Zap className="w-3 h-3" />
-                              Launch Lab
+                               {t('landing.labs.launchLab')}
                               <IconArrowRight size={12} />
                             </span>
                           </div>
@@ -120,15 +122,15 @@ const LandingLabsSection: React.FC = () => {
                           <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
                             <span className="text-[9px] font-black text-bg">{String(labIdx + 1).padStart(2, '0')}</span>
                           </div>
-                          <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-bg/15 text-bg">
-                            {lab.cp}
-                          </span>
+                           <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-bg/15 text-bg">
+                             {t(`landing.labs.list.${lab.id}.cp`)}
+                           </span>
                         </div>
                         <h3 className="text-xs sm:text-sm font-black text-text-primary mb-0.5 tracking-tight group-hover/card:text-accent transition-colors leading-snug">
-                          {lab.title}
+                          {t(`landing.labs.list.${lab.id}.title`)}
                         </h3>
                         <p className="text-[10px] text-text-muted leading-relaxed line-clamp-2">
-                          {lab.desc}
+                          {t(`landing.labs.list.${lab.id}.desc`)}
                         </p>
                       </div>
                     )}
@@ -150,7 +152,7 @@ const LandingLabsSection: React.FC = () => {
               to="/dashboard/labs"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
             >
-              View All Labs <IconArrowRight size={14} />
+               {t('landing.labs.viewAll')} <IconArrowRight size={14} />
             </Link>
           </motion.div>
         </div>

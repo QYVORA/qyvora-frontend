@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShoppingBag, Search, Loader2, Download, BookOpen, Zap, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
@@ -18,6 +19,7 @@ const CACHE_KEY = 'qyvora_marketplace_cache_v2';
 const PAGE_SIZE = 10;
 
 const Marketplace: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToast } = useToast();
   const [products, setProducts] = useState<any[]>([]);
@@ -124,8 +126,8 @@ const Marketplace: React.FC = () => {
         <div className="pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
           <LearningOverviewCard
             icon={<ShoppingBag className="w-6 h-6 text-bg" />}
-            title="Intelligence Market"
-            description="High-value research papers, tools, and mission guides for operators."
+            title={t('student.marketplace.title')}
+            description={t('student.marketplace.description')}
             stats={balance !== null ? [{ label: 'CP Balance', value: formatNumber(balance), accent: true }] : undefined}
           />
 
@@ -133,7 +135,7 @@ const Marketplace: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center flex-wrap max-w-full px-4 md:px-0">
             {tab === 'market' && (
               <div className="relative w-full sm:w-auto">
-                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search vault..." className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
+                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('student.marketplace.searchPlaceholder')} className="w-full sm:w-64 rounded-xl border border-border/40 bg-bg-card py-3 pl-12 pr-4 text-sm text-text-primary transition-all focus:border-accent outline-none shadow-sm" />
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text-muted pointer-events-none" />
               </div>
             )}
@@ -150,7 +152,7 @@ const Marketplace: React.FC = () => {
               }`}
             >
               <ShoppingBag className="inline-block w-3.5 h-3.5 mr-1.5" />
-              Market
+              {t('student.marketplace.tabs.all')}
             </button>
             <button
               onClick={() => setTab('history')}
@@ -161,7 +163,7 @@ const Marketplace: React.FC = () => {
               }`}
             >
               <Zap className="inline-block w-3.5 h-3.5 mr-1.5" />
-              History
+              {t('nav.market')}
             </button>
           </div>
 
@@ -170,7 +172,7 @@ const Marketplace: React.FC = () => {
               {filtered.length === 0 ? (
                 <div className="col-span-full relative overflow-hidden py-20 text-center rounded-3xl border-2 border-dashed border-border/20 bg-transparent">
                   <BookOpen className="w-12 h-12 text-text-muted mx-auto mb-4 opacity-40" />
-                  <p className="text-text-muted text-base">{query ? 'No matching assets found.' : 'Marketplace is currently empty.'}</p>
+                  <p className="text-text-muted text-base">{query ? t('student.marketplace.empty') : t('student.marketplace.empty')}</p>
                 </div>
               ) : (
                 filtered.map((prod, idx) => {
@@ -212,11 +214,11 @@ const Marketplace: React.FC = () => {
               <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card">
                 <div className="flex items-center gap-2 border-b border-border px-5 py-4">
                   <Zap className="h-5 w-5 text-accent shrink-0" />
-                  <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Transactions</h3>
+                  <h3 className="text-base font-black uppercase tracking-widest text-text-primary">{t('nav.market')}</h3>
                 </div>
 
                 {txRows.length === 0 ? (
-                  <div className="py-12 text-center text-text-muted text-sm">No transactions yet.</div>
+                  <div className="py-12 text-center text-text-muted text-sm">{t('student.marketplace.empty')}</div>
                 ) : (
                   <div className="divide-y divide-border/50">
                     {visibleTxRows.map((tx, idx) => (

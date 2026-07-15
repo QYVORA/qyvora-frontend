@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 import { NotificationItem } from './types';
@@ -23,6 +24,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
   markAllNotificationsRead,
   onMarkRead,
 }) => {
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {open && (
@@ -34,19 +36,19 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
         >
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <div>
-              <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
+              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
               <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
             </div>
             {unreadCount > 0 && (
               <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline whitespace-nowrap">
-                Mark all read
+                {t('button.markAllRead')}
               </button>
             )}
           </div>
           {notifLoading ? (
             <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />Loading...</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-4 text-xs text-text-muted">No notifications yet.</div>
+            <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
           ) : (
             <div className="max-h-80 overflow-auto divide-y divide-border/50">
               {notificationsPreview.map((item) => (
@@ -73,7 +75,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           )}
           <div className="px-4 py-3 border-t border-border">
             <Link to="/dashboard/notifications" onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline">
-              View all notifications
+              {t('student.topbar.notifications.viewAll')}
             </Link>
           </div>
         </motion.div>

@@ -6,10 +6,12 @@ import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import DotMapBackground from '@/shared/components/DotMapBackground';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 const CYCLE_MS = 4500;
 
 const LandingBootcampSection: React.FC = () => {
+  const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const [featuredSlot, setFeaturedSlot] = useState(0);
 
@@ -42,13 +44,13 @@ const LandingBootcampSection: React.FC = () => {
             className="mb-4 md:mb-8 shrink-0"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-3">
-              <IconShield size={12} /> Structured Program
+              <IconShield size={12} /> {t('landing.bootcamp.badge')}
             </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
               Hacker Protocol <span className="text-bg">Bootcamp</span>
             </h2>
             <p className="text-xs md:text-sm text-bg/70 leading-relaxed max-w-xl">
-              5 phases. From mindset to exploitation. A guided path from zero to operator.
+              {t('landing.bootcamp.description')}
             </p>
           </motion.div>
 
@@ -88,9 +90,9 @@ const LandingBootcampSection: React.FC = () => {
                                 <span className="text-xs font-black text-bg">{phase.id}</span>
                               </div>
                             </div>
-                            <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
-                              {roomCount} rooms
-                            </span>
+                             <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
+                               {t('landing.bootcamp.roomCount', { count: roomCount })}
+                             </span>
                           </div>
                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-text-primary tracking-tighter leading-none mb-2">
                             {phase.name}
@@ -99,8 +101,8 @@ const LandingBootcampSection: React.FC = () => {
                             {phase.desc}
                           </p>
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2.5">
-                              Start Phase {phase.id}
+                             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2.5">
+                               {t('landing.bootcamp.startPhase')} {phase.id}
                                <IconArrowRight size={12} />
                             </span>
                           </div>
@@ -114,10 +116,10 @@ const LandingBootcampSection: React.FC = () => {
                             <Icon className="w-4 h-4 text-bg" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 mb-0.5 shrink-0">
-                              <span className="text-[8px] font-black uppercase tracking-widest text-bg">Phase {phase.id}</span>
-                              <span className="text-[7px] font-black text-bg/60 uppercase tracking-widest">{roomCount} rooms</span>
-                            </div>
+                             <div className="flex items-center gap-1.5 mb-0.5 shrink-0">
+                               <span className="text-[8px] font-black uppercase tracking-widest text-bg">{t('landing.bootcamp.phaseLabel')} {phase.id}</span>
+                               <span className="text-[7px] font-black text-bg/60 uppercase tracking-widest">{t('landing.bootcamp.roomCount', { count: roomCount })}</span>
+                             </div>
                             <h3 className="text-xs sm:text-sm font-black text-text-primary mb-0.5 tracking-tight group-hover:text-accent transition-colors leading-snug">
                               {phase.name}
                             </h3>
@@ -146,7 +148,7 @@ const LandingBootcampSection: React.FC = () => {
               to="/hpb"
               className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
             >
-              View Full Curriculum <IconArrowRight size={14} />
+               {t('landing.bootcamp.viewCurriculum')} <IconArrowRight size={14} />
             </Link>
           </motion.div>
         </div>

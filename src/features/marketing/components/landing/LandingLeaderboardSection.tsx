@@ -5,6 +5,7 @@ import { IconArrowRight, IconShield } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Identicon } from '@/shared/components';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { useTranslation } from 'react-i18next';
 
 interface LeaderboardEntry {
   rank: number;
@@ -35,6 +36,7 @@ const CELL_SIZE = 42;
 const GAP = 3;
 
 const LandingLeaderboardSection = () => {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -75,20 +77,20 @@ const LandingLeaderboardSection = () => {
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-12 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
         <div className="shrink-0 lg:w-[380px] xl:w-[420px]">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
-            <IconShield size={12} className="text-accent" /> Community
+             <IconShield size={12} className="text-accent" /> {t('landing.leaderboard.badge')}
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
-            Top <span className="text-accent">Operators</span>
-          </h2>
-          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
-            Ranked by CyberPoints earned. All balances verified on the QYVORA Chain.
-          </p>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+              {t('landing.leaderboard.heading')}
+            </h2>
+            <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
+              {t('landing.leaderboard.description')}
+            </p>
           {total > 0 && (
             <Link
               to="/leaderboard"
               className="btn-secondary inline-flex items-center gap-2.5"
             >
-              View Full Leaderboard ({total}) <IconArrowRight size={14} />
+               {t('landing.leaderboard.viewFull')} ({total}) <IconArrowRight size={14} />
             </Link>
           )}
         </div>
@@ -170,12 +172,12 @@ const LandingLeaderboardSection = () => {
                         isHovered ? 'opacity-100' : 'opacity-0',
                       ].join(' ')}
                     >
-                      <span className="text-[7px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
-                        {entry!.hackerHandle || entry!.name || 'Anon'}
-                      </span>
-                      <span className="text-[6px] font-mono font-bold text-accent leading-none">
-                        {Number(entry!.cp).toLocaleString()} CP
-                      </span>
+                       <span className="text-[7px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
+                         {entry!.hackerHandle || entry!.name || t('landing.leaderboard.anonFallback')}
+                       </span>
+                       <span className="text-[6px] font-mono font-bold text-accent leading-none">
+                         {Number(entry!.cp).toLocaleString()} {t('landing.leaderboard.cpSuffix')}
+                       </span>
                     </div>
                   </Link>
                 );

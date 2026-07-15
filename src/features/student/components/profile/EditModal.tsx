@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2, Save } from 'lucide-react';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import api from '../../../../core/services/api';
@@ -13,6 +14,7 @@ interface EditModalProps {
 }
 
 const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSaved }) => {
+  const { t } = useTranslation();
   const { addToast } = useToast();
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -47,11 +49,11 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent title="Edit Profile" maxWidth="max-w-2xl">
+      <DialogContent title={t('student.profile.editModal.title')} maxWidth="max-w-2xl">
         <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
-            <label className={labelCls}>Full Name</label>
-            <input value={form.name} onChange={set('name')} placeholder="Kwame Mensah" className={inputCls} />
+            <label className={labelCls}>{t('student.profile.editModal.displayName')}</label>
+            <input value={form.name} onChange={set('name')} placeholder={t('student.profile.editModal.displayNamePlaceholder')} className={inputCls} />
           </div>
           <div>
             <label className={labelCls}>Operator Handle</label>
@@ -66,23 +68,23 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
             </div>
           </div>
           <div>
-            <label className={labelCls}>Organization</label>
-            <input value={form.organization} onChange={set('organization')} placeholder="Company / team" className={inputCls} />
+            <label className={labelCls}>{t('student.profile.editModal.org')}</label>
+            <input value={form.organization} onChange={set('organization')} placeholder={t('student.profile.editModal.orgPlaceholder')} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>Bio</label>
+            <label className={labelCls}>{t('student.profile.editModal.bio')}</label>
             <textarea
               value={form.bio}
               onChange={set('bio')}
               rows={3}
-              placeholder="Short operator bio..."
+              placeholder={t('student.profile.editModal.bioPlaceholder')}
               className={`${inputCls} resize-none`}
             />
           </div>
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">Cancel</button>
+            <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{t('button.cancel')}</button>
             <button type="submit" disabled={saving} className="flex-1 btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-50">
-              {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving...</> : <><Save className="w-3 h-3" /> Save</>}
+              {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving...</> : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
             </button>
           </div>
         </form>

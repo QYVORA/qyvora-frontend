@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Mail, Edit3, Activity, ArrowRight, ChevronDown, Shield, User, Trophy } from 'lucide-react';
@@ -15,6 +16,7 @@ import { getRoomCoverImage } from '../utils/walkthroughImages';
 import LearningOverviewCard from '../components/learning/LearningOverviewCard';
 
 const Profile: React.FC = () => {
+  const { t } = useTranslation();
   const { username: paramUsername } = useParams<{ username?: string }>();
   const { user: authUser } = useAuth();
   const { addToast } = useToast();
@@ -94,12 +96,12 @@ const Profile: React.FC = () => {
             </div>
           }
           stats={[
-            { label: 'CP', value: profileData.cp.toLocaleString(), accent: true },
-            { label: 'Rank', value: profileData.rank },
-            { label: 'Rooms', value: rooms.length },
+            { label: t('student.profile.stats.cp'), value: profileData.cp.toLocaleString(), accent: true },
+            { label: t('student.profile.rank'), value: profileData.rank },
+            { label: t('student.profile.stats.rooms'), value: rooms.length },
           ]}
           action={isOwnProfile ? {
-            label: 'Edit Profile',
+            label: t('student.profile.edit'),
             onClick: () => setEditOpen(true),
             icon: <Edit3 className="w-4 h-4" />,
           } : undefined}
@@ -159,14 +161,14 @@ const Profile: React.FC = () => {
               <div className="space-y-6">
                 {/* Badges */}
                 <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">Badges</h3>
+                  <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">{t('student.profile.badges')}</h3>
                   {bootcampCompleted ? (
                     <div className="flex items-center gap-3">
                       <BootcampBadge completed className="w-20 h-20" />
                       <span className="text-xs font-bold text-text-primary">HPB Graduate</span>
                     </div>
                   ) : (
-                    <p className="text-xs text-text-muted">No badges earned yet.</p>
+                    <p className="text-xs text-text-muted">{t('student.profile.badgesEmpty')}</p>
                   )}
                 </div>
 
@@ -175,7 +177,7 @@ const Profile: React.FC = () => {
                   <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
                     <div className="px-5 py-4 border-b border-border/30">
                       <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-                        Completed Rooms
+                        {t('student.profile.stats.rooms')}
                         <span className="ml-2 px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-lg">{rooms.length}</span>
                       </h3>
                     </div>

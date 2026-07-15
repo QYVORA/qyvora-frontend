@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Map, Swords, Globe } from 'lucide-react';
 import { IconSearch, IconX } from '@/shared/components/icons';
 import { BOOTCAMP_CONFIG } from '../../constants/bootcampConfig';
@@ -20,6 +21,7 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -143,7 +145,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
             value={searchQuery}
             onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
             onFocus={() => { if (searchQuery.trim()) setShowSuggestions(true); }}
-            placeholder="Search rooms, paths, topics..."
+            placeholder={t('student.search.placeholder')}
             className="w-full bg-bg-elevated border border-border rounded-xl py-2.5 pl-10 pr-10 text-sm text-text-primary placeholder:text-text-muted/50 font-mono outline-none focus:border-accent transition-all"
             autoComplete="off"
             role="combobox"
@@ -210,7 +212,7 @@ const SearchBar = ({ onSearch, compact, onClose }: SearchBarProps) => {
           value={searchQuery}
           onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
           onFocus={() => { if (searchQuery.trim()) setShowSuggestions(true); }}
-          placeholder="Search rooms, bootcamps, courses..."
+          placeholder={t('student.search.placeholder')}
           className="w-full bg-bg-card border border-border/40 rounded-2xl pl-4 pr-16 py-3.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-all caret-accent"
           autoComplete="off"
           role="combobox"

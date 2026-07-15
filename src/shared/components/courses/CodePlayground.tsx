@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RotateCcw, Copy } from 'lucide-react';
 import { IconPlay, IconCheck, IconTerminal } from '@/shared/components/icons';
 
@@ -41,6 +42,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
   title = 'Code Playground',
   className = '',
 }) => {
+  const { t } = useTranslation();
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -53,21 +55,21 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
     const runner = RUNNERS[language];
     if (!runner) {
-      setError(`Language "${language}" is not supported in this sandbox.`);
+      setError(t('components.playground.langNotSupported', { language }));
       return;
     }
 
     try {
       const result = runner(code);
-      setOutput(result || '(no output)');
+      setOutput(result || t('components.playground.noOutput'));
 
       if (expectedOutput !== undefined && result !== expectedOutput) {
-        setError(`Expected output: "${expectedOutput}" but got: "${result}"`);
+        setError(t('components.playground.unexpectedOutput', { expected: expectedOutput, result }));
       } else if (expectedOutput !== undefined) {
-        setOutput(`${result}\n\n✓ Output matches expected!`);
+        setOutput(`${result}\n\n${t('components.playground.outputMatches')}`);
       }
     } catch (e: any) {
-      setError(e.message || 'Execution error');
+      setError(e.message || t('components.playground.executionError'));
     }
   };
 
@@ -116,11 +118,11 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
       <div className="flex items-center gap-3 px-5 py-3 bg-bg-card border-t border-border">
         <button onClick={handleRun} className="btn-primary text-[10px] py-2 px-5 inline-flex items-center gap-1.5">
-          <IconPlay size={12} /> Run
+          <IconPlay size={12} /> {t('components.playground.run')}
         </button>
         {expectedOutput && (
           <button onClick={() => setShowHint(!showHint)} className="text-[10px] font-mono text-text-muted hover:text-accent transition-colors">
-            {showHint ? 'Hide hint' : 'Show hint'}
+            {showHint ? t('components.playground.hideHint') : t('components.playground.showHint')}
           </button>
         )}
       </div>
@@ -128,7 +130,7 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
       {showHint && expectedOutput && (
         <div className="px-5 py-3 bg-accent-dim border-t border-border/30">
           <p className="text-[11px] font-mono text-text-muted">
-            Expected output: <span className="text-accent">{expectedOutput}</span>
+            {t('components.playground.expectedOutputLabel')} <span className="text-accent">{expectedOutput}</span>
           </p>
         </div>
       )}

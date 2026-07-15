@@ -2,6 +2,7 @@ import React from 'react';
 import { Github, Linkedin, Youtube, Twitter } from 'lucide-react';
 import { Carousel } from '@/shared/components/carousel';
 import { teamData } from '@/features/marketing/pages/TeamPage/teamData';
+import { useTranslation } from 'react-i18next';
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   github: Github,
@@ -11,15 +12,16 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
 };
 
 const LandingTeamSection: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="w-full px-4 md:px-12 lg:px-16">
       <div className="w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-            Built by <span className="text-accent">Hackers</span>
+            {t('landing.team.heading')}
           </h2>
           <p className="mt-6 text-sm md:text-base text-text-muted leading-relaxed">
-            Two operators, one mission — building Africa&apos;s offensive security platform
+            {t('landing.team.description')}
           </p>
         </div>
 
