@@ -331,7 +331,7 @@ const StudentTopbar = () => {
               <IconMenu size={24} />
             </button>
 
-            {/* Desktop icon tabs — left-aligned, flex-1 creates gap before right actions */}
+            {/* Desktop icon tabs — left-aligned, flex-1 pushes right actions to the far right */}
             <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1 pl-2">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
@@ -351,8 +351,8 @@ const StudentTopbar = () => {
               })}
             </nav>
 
-            {/* Right actions — hidden on mobile, bottom nav handles those */}
-            <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0 ml-auto">
+            {/* Right actions — separated from nav by flex-1 spacer */}
+            <div className="hidden md:flex items-center gap-1.5 md:gap-2.5 shrink-0">
               {/* CP Coin badge */}
               <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-accent/20 bg-accent/5">
                 <CpLogo className="w-5 h-5" />
