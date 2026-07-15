@@ -188,6 +188,11 @@ const CompetitivePage = () => {
           title="Competitive Leaderboard"
           description={`${Number(total).toLocaleString()} operators ranked by CyberPoints`}
           stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
+          action={{
+            label: 'View Public Board',
+            to: '/leaderboard',
+            icon: <Trophy className="w-4 h-4" />,
+          }}
         />
 
         {/* Period tabs */}

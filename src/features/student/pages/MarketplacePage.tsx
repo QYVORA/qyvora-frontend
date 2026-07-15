@@ -127,6 +127,11 @@ const Marketplace: React.FC = () => {
             title="Intelligence Market"
             description="High-value research papers, tools, and mission guides for operators."
             stats={balance !== null ? [{ label: 'CP Balance', value: formatNumber(balance), accent: true }] : undefined}
+            action={{
+              label: tab === 'market' ? 'View History' : 'Browse Products',
+              onClick: () => setTab(tab === 'market' ? 'history' : 'market'),
+              icon: tab === 'market' ? <Zap className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />,
+            }}
           />
 
           {/* Search and Tabs */}
