@@ -8,6 +8,7 @@ import LandingPillarsSection from '@/features/marketing/components/landing/Landi
 import LandingLabsSection from '@/features/marketing/components/landing/LandingLabsSection';
 import LandingCoursesSection from '@/features/marketing/components/landing/LandingCoursesSection';
 import LandingBootcampSection from '@/features/marketing/components/landing/LandingBootcampSection';
+import LandingLeaderboardSection from '@/features/marketing/components/landing/LandingLeaderboardSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 
@@ -22,6 +23,7 @@ const SECTIONS = [
   { id: 'labs',       label: 'Labs'         },
   { id: 'courses',    label: 'Courses'      },
   { id: 'bootcamp',   label: 'Bootcamp'     },
+  { id: 'leaderboard', label: 'Leaderboard' },
   { id: 'services',   label: 'Services'     },
   { id: 'cta',        label: 'Get Started'  },
   { id: 'footer',     label: 'Footer'       },
@@ -138,17 +140,22 @@ const Landing: React.FC = () => {
         <LandingBootcampSection />
       </section>
 
-      {/* 6. Services — dark */}
+      {/* 6. Leaderboard — dark */}
+      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingLeaderboardSection />
+      </section>
+
+      {/* 7. Services — dark */}
       <section id="services" className="relative w-full min-h-dvh md:min-h-dvh">
         <LandingServicesSection />
       </section>
 
-      {/* 7. CTA — accent */}
+      {/* 8. CTA — accent */}
       <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 
-      {/* 8. Footer */}
+      {/* 9. Footer */}
       <section id="footer" className="w-full bg-bg">
         <Footer />
       </section>
