@@ -567,35 +567,30 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Desktop sidebar — always visible on lg+ */}
-      <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[240px] bg-bg border-r border-border z-40">
-        {navContent}
-      </aside>
-
-      {/* Mobile sidebar — slides from right */}
+      {/* Mobile sidebar — full-screen overlay, slides from right */}
       {mobileOpen && (
         <>
           <div
             onClick={() => setMobileOpen(false)}
-            className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[60] bg-black/65 backdrop-blur-sm"
           />
-          <aside className="fixed inset-y-0 right-0 z-[70] w-[85vw] max-w-[320px] flex flex-col bg-bg border-l border-border lg:hidden overflow-y-auto">
+          <aside className="fixed inset-y-0 right-0 z-[70] w-full max-w-[400px] flex flex-col bg-bg border-l border-border overflow-y-auto animate-slide-in-right">
             {/* Header: logo + close */}
-            <div className="h-20 flex items-center justify-between px-6 shrink-0">
+            <div className="h-20 flex items-center justify-between px-6 shrink-0 border-b border-border">
               <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
-                <Logo size="md" />
+                <Logo size="lg" />
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
                 aria-label="Close sidebar"
               >
-                <IconX size={20} />
+                <IconX size={24} />
               </button>
             </div>
 
             {/* All nav buttons — flat, no section dividers */}
-            <nav className="flex-1 overflow-y-auto min-h-0 px-3 pt-2 pb-4">
+            <nav className="flex-1 overflow-y-auto min-h-0 px-4 pt-4 pb-4 space-y-1">
               {ALL_NAV.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -603,13 +598,13 @@ const Sidebar = () => {
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+                    className={`flex items-center gap-4 px-5 py-4 rounded-xl text-base font-bold uppercase tracking-wider transition-colors ${
                       active
                         ? 'text-accent bg-accent-dim'
                         : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
                     }`}
                   >
-                    <item.icon className="w-5 h-5 shrink-0" />
+                    <item.icon className="w-6 h-6 shrink-0" />
                     {item.label}
                   </Link>
                 );
@@ -617,23 +612,23 @@ const Sidebar = () => {
             </nav>
 
             {/* User profile + logout at bottom */}
-            <div className="shrink-0 border-t border-border px-4 py-4 space-y-3">
+            <div className="shrink-0 border-t border-border px-5 py-5 space-y-3">
               <Link
                 to="/dashboard/profile"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-accent-dim/50 transition-colors"
+                className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-accent-dim/50 transition-colors"
               >
-                <Identicon value={user?.uid || user?.username || '?'} size={40} className="w-10 h-10 rounded-xl border-2 border-border shrink-0" />
+                <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-12 h-12 rounded-xl border-2 border-border shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold text-text-primary truncate">{user?.username || 'User'}</p>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-accent">View Profile</p>
+                  <p className="text-base font-bold text-text-primary truncate">{user?.username || 'User'}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-accent">View Profile</p>
                 </div>
               </Link>
               <button
                 onClick={() => { logout(); setMobileOpen(false); }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-400/20 text-red-400 text-[10px] font-black uppercase tracking-widest hover:bg-red-400/10 transition-all"
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border border-red-400/20 text-red-400 text-xs font-black uppercase tracking-widest hover:bg-red-400/10 transition-all"
               >
-                <LogOut className="w-4 h-4" /> {t('button.logOut')}
+                <LogOut className="w-5 h-5" /> {t('button.logOut')}
               </button>
             </div>
           </aside>
