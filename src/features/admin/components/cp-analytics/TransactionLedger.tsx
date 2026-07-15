@@ -2,7 +2,7 @@ import React from 'react';
 import { Activity, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { CpTx } from './types';
 import { fmt } from './utils';
-import CpLogo from '../../../../shared/components/CpLogo';
+import CpLogo from '@/shared/components/CpLogo';
 
 interface TransactionLedgerProps {
   txs: CpTx[];
@@ -30,7 +30,7 @@ const TransactionLedger: React.FC<TransactionLedgerProps> = ({
   totalPages,
 }) => {
   return (
-    <div className="rounded-2xl border-2 border-border bg-bg-card overflow-hidden">
+    <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-accent" />

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Unlock } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
-import api from '../../../core/services/api';
-import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '../constants/bootcampModules';
+import api from '@/core/services/api';
+import { HACKER_PROTOCOL_ID, BOOTCAMP_MODULES } from '@/features/admin/constants/bootcampModules';
 
 interface Props {
   addToast: (msg: string, type: string) => void;
@@ -60,7 +60,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
           { label: 'Active students', value: activeStudents },
           { label: 'Engaged in current phase', value: engagement },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
+          <div key={label} className="rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
             <div className="mb-2 text-xs font-bold uppercase tracking-widest text-text-muted">{label}</div>
             <div className="text-3xl font-black tabular-nums text-text-primary md:text-4xl">{value}</div>
           </div>
@@ -68,7 +68,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       </div>
 
       {/* Live toggle */}
-      <div className="flex flex-col gap-4 rounded-2xl border-2 border-border bg-bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border/30 bg-bg-card p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:p-6">
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-base font-black uppercase tracking-wide text-text-primary md:text-lg">Bootcamp live</span>
@@ -91,7 +91,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
       </div>
 
       {/* Phase control */}
-      <div className="space-y-5 rounded-2xl border-2 border-border bg-bg-card p-5 md:p-6">
+      <div className="space-y-5 rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
         <div>
           <div className="mb-1 text-base font-black uppercase tracking-wide text-text-primary md:text-lg">Phase control</div>
           <div className="text-sm text-text-muted md:text-base">
@@ -116,7 +116,7 @@ const BootcampAccessPanel: React.FC<Props> = ({ addToast }) => {
             type="button"
             onClick={() => void patch({ unlockNext: true }, `Module "${nextModule.title}" unlocked`)}
             disabled={saving || !started}
-            className="group flex w-full items-center justify-between gap-4 rounded-2xl border-2 border-border bg-bg p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
+            className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-border/30 bg-bg p-4 transition-all hover:border-accent/40 hover:bg-accent-dim/20 disabled:opacity-50 md:p-5"
           >
 <div className="min-w-0 text-left">
                <div className="mb-1 text-xs font-black uppercase tracking-widest text-text-muted">Unlock next phase</div>

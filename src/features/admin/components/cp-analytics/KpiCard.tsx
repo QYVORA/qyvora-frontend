@@ -11,7 +11,7 @@ interface KpiCardProps {
 }
 
 const KpiCard: React.FC<KpiCardProps> = ({ label, value, sub, icon, trend, accent }) => (
-  <div className={`relative overflow-hidden rounded-2xl border-2 p-4 md:p-5 ${
+  <div className={`relative overflow-hidden rounded-2xl border border-border/30 p-4 md:p-5 ${
     accent ? 'border-accent/30 bg-accent-dim/40' : 'border-border bg-bg-card'
   }`}>
     <div className="pointer-events-none absolute -right-4 -top-4 h-20 w-20 rounded-full opacity-10"

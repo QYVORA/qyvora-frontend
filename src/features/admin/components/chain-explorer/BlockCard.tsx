@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Activity, BookOpen, Award, Zap } from 'lucide-react';
-import CpLogo from '../../../../shared/components/CpLogo';
+import CpLogo from '@/shared/components/CpLogo';
 import { ChainBlock, EVENT_COLORS, EVENT_LABELS, shortHash } from './types';
 
 const EVENT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -17,7 +17,7 @@ const BlockCard: React.FC<{ block: ChainBlock; isGenesis: boolean }> = ({ block,
   const label = EVENT_LABELS[block.data.type] ?? block.data.type;
 
   return (
-    <div className={`rounded-2xl border-2 bg-bg-card transition-all ${
+    <div className={`rounded-2xl border border-border/30 bg-bg-card transition-all ${
       isGenesis ? 'border-border/50 opacity-60' : 'border-border hover:border-accent/30'
     }`}>
       <button

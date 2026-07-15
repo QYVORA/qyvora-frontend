@@ -2,42 +2,44 @@ import { Skeleton } from '@/shared/components/ui';
 
 /* ─── Shared: LearningOverviewCard skeleton ─────────────────────────────────── */
 const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean; stats?: number; breadcrumbs?: boolean } = {}) => (
-  <div className="rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden relative">
-    <div className="absolute inset-0 opacity-10">
-      <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.15)_39px,rgba(255,255,255,0.15)_40px)] bg-[length:40px_40px]" />
-    </div>
-    <div className="relative z-10 w-full sm:w-auto min-w-0 space-y-3">
-      {breadcrumbs && (
-        <div className="flex items-center gap-2 mb-3">
-          <Skeleton className="h-3 w-20 bg-bg/20 rounded" />
-          <Skeleton className="h-3 w-3 bg-bg/20 rounded" />
-          <Skeleton className="h-3 w-24 bg-bg/20 rounded" />
-        </div>
-      )}
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center">
-          <Skeleton className="w-6 h-6 bg-bg/30 rounded" />
-        </div>
-      </div>
-      <Skeleton className="h-8 w-56 bg-bg/20 rounded-lg sm:h-9 lg:h-10" />
-      <Skeleton className="h-4 w-72 bg-bg/15 rounded" />
-      {stats && stats > 0 && (
-        <div className="flex items-center gap-4 mt-3">
-          {[...Array(stats)].map((_, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <Skeleton className="h-6 w-16 bg-bg/20 rounded" />
-              <Skeleton className="h-3 w-14 bg-bg/15 rounded" />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-    {action && (
-      <div className="relative z-10 shrink-0 w-full sm:w-auto">
-        <Skeleton className="h-11 w-full sm:w-40 bg-bg/20 rounded-xl" />
+  <>
+    {breadcrumbs && (
+      <div className="flex items-center gap-2 mb-1">
+        <Skeleton className="h-3 w-20 bg-border/30 rounded" />
+        <Skeleton className="h-3 w-3 bg-border/30 rounded" />
+        <Skeleton className="h-3 w-24 bg-border/30 rounded" />
       </div>
     )}
-  </div>
+    <div className="rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden relative">
+      <div className="absolute inset-0 opacity-10">
+        <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.15)_39px,rgba(255,255,255,0.15)_40px)] bg-[length:40px_40px]" />
+      </div>
+      <div className="relative z-10 w-full sm:w-auto min-w-0 space-y-3">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center">
+            <Skeleton className="w-6 h-6 bg-bg/30 rounded" />
+          </div>
+        </div>
+        <Skeleton className="h-8 w-56 bg-bg/20 rounded-lg sm:h-9 lg:h-10" />
+        <Skeleton className="h-4 w-72 bg-bg/15 rounded" />
+        {stats && stats > 0 && (
+          <div className="flex items-center gap-4 mt-5">
+            {[...Array(stats)].map((_, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Skeleton className="h-6 w-16 bg-bg/20 rounded" />
+                <Skeleton className="h-3 w-14 bg-bg/15 rounded" />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {action && (
+        <div className="relative z-10 shrink-0 w-full sm:w-auto">
+          <Skeleton className="h-11 w-full sm:w-40 bg-bg/20 rounded-xl" />
+        </div>
+      )}
+    </div>
+  </>
 );
 
 /* ─── Profile Page Skeleton ─────────────────────────────────────────────────── */
@@ -45,43 +47,21 @@ export const ProfileSkeleton = () => (
   <div className="w-full bg-bg">
     <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
       <OverviewCardSkeleton stats={3} action />
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
-        {/* Left sidebar */}
-        <div className="md:w-[280px] lg:w-[300px] shrink-0 space-y-6 md:sticky md:top-[72px] md:self-start md:pb-16">
-          <Skeleton className="w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full bg-border/30" />
-          <Skeleton className="h-6 w-20 bg-border/30 rounded-lg" />
-          {/* Badges card */}
-          <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3">
-              <Skeleton className="w-4 h-4 bg-border/30 rounded" />
-              <Skeleton className="h-3 w-16 bg-border/30 rounded" />
-              <Skeleton className="h-4 w-5 bg-border/30 rounded" />
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
-            <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
-          </div>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-3 w-28 bg-border/30 rounded" />
+          <Skeleton className="h-3 w-40 bg-border/30 rounded" />
         </div>
-        {/* Right content */}
-        <div className="flex-1 min-w-0 space-y-8">
-          <div className="space-y-4">
-            <Skeleton className="h-12 w-64 bg-border/30 rounded-lg" />
-            <Skeleton className="h-5 w-96 bg-border/30 rounded" />
-            <div className="flex gap-6">
-              <Skeleton className="h-4 w-32 bg-border/30 rounded" />
-              <Skeleton className="h-4 w-40 bg-border/30 rounded" />
-            </div>
-          </div>
-          {/* Rooms card */}
-          <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-            <div className="flex items-center gap-2 px-6 py-4 border-b border-border/30">
-              <Skeleton className="w-4 h-4 bg-border/30 rounded" />
-              <Skeleton className="h-4 w-36 bg-border/30 rounded" />
-              <Skeleton className="h-5 w-8 bg-border/30 rounded" />
-            </div>
-          </div>
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
+          <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
         </div>
+      </div>
+      <div className="flex items-center gap-3 rounded-xl border border-border/30 bg-bg-card px-4 py-3">
+        <Skeleton className="w-5 h-5 bg-border/30 rounded shrink-0" />
+        <Skeleton className="h-3 w-32 bg-border/30 rounded" />
+        <Skeleton className="h-3 w-16 bg-border/30 rounded ml-auto" />
+        <Skeleton className="w-4 h-4 bg-border/30 rounded shrink-0" />
       </div>
     </div>
   </div>
@@ -191,8 +171,17 @@ export const NewsFeedSkeleton = () => (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-              <Skeleton className="aspect-video w-full bg-border/30" />
+              <Skeleton className="h-48 w-full bg-border/30" />
               <div className="p-5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-3 w-20 bg-border/30 rounded" />
+                  <Skeleton className="h-3 w-24 bg-border/30 rounded" />
+                </div>
+                <div className="flex gap-2">
+                  <Skeleton className="h-4 w-14 bg-border/30 rounded-lg" />
+                  <Skeleton className="h-4 w-18 bg-border/30 rounded-lg" />
+                  <Skeleton className="h-4 w-12 bg-border/30 rounded-lg" />
+                </div>
                 <Skeleton className="h-4 w-3/4 bg-border/30 rounded" />
                 <Skeleton className="h-3 w-full bg-border/30 rounded" />
                 <Skeleton className="h-3 w-1/2 bg-border/30 rounded" />
@@ -247,7 +236,7 @@ export const BootcampCourseSkeleton = () => (
     <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
       <OverviewCardSkeleton action stats={2} breadcrumbs />
       {/* Filter strip */}
-      <div className="flex items-center gap-2">
+      <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
         <Skeleton className="h-10 w-28 bg-border/30 rounded-xl" />
         <Skeleton className="h-10 w-28 bg-border/30 rounded-xl" />
         <Skeleton className="h-10 w-28 bg-border/30 rounded-xl" />
@@ -312,42 +301,10 @@ export const BootcampCourseSkeleton = () => (
 export const MyCoursesSkeleton = () => (
   <div className="bg-bg min-h-screen">
     <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
-      {/* Overview Card with progress */}
-      <div className="rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden relative">
-        <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.15)_39px,rgba(255,255,255,0.15)_40px)] bg-[length:40px_40px]" />
-        </div>
-        <div className="relative z-10 w-full sm:w-auto min-w-0 space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center">
-              <Skeleton className="w-6 h-6 bg-bg/30 rounded" />
-            </div>
-          </div>
-          <Skeleton className="h-8 w-40 bg-bg/20 rounded-lg sm:h-9 lg:h-10" />
-          <Skeleton className="h-4 w-72 bg-bg/15 rounded" />
-          <div className="flex items-center gap-4 mt-3">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-10 bg-bg/20 rounded" />
-              <Skeleton className="h-3 w-14 bg-bg/15 rounded" />
-            </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-10 bg-bg/20 rounded" />
-              <Skeleton className="h-3 w-16 bg-bg/15 rounded" />
-            </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-10 bg-bg/20 rounded" />
-              <Skeleton className="h-3 w-18 bg-bg/15 rounded" />
-            </div>
-          </div>
-        </div>
-        <div className="relative z-10 shrink-0 w-full sm:w-auto">
-          <Skeleton className="h-11 w-full sm:w-40 bg-bg/20 rounded-xl" />
-        </div>
-      </div>
       {/* Progress bar */}
       <Skeleton className="h-3 w-full bg-border/30 rounded-full" />
       {/* Filter strip */}
-      <div className="flex items-center gap-2">
+      <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
         <Skeleton className="h-10 w-20 bg-border/30 rounded-xl" />
         <Skeleton className="h-10 w-28 bg-border/30 rounded-xl" />
         <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
@@ -430,7 +387,7 @@ export const CompetitiveSkeleton = () => (
     <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
       <OverviewCardSkeleton stats={1} action />
       {/* Tabs */}
-      <div className="flex items-center gap-2">
+      <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
         {[...Array(3)].map((_, i) => (
           <Skeleton key={i} className="h-10 w-28 bg-border/30 rounded-xl" />
         ))}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   Link2, RefreshCw, Hash,
-  Activity, Cpu,
+  Cpu,
 } from 'lucide-react';
 import { IconShield } from '@/shared/components/icons';
-import api from '../../../../core/services/api';
+import api from '@/core/services/api';
 import { ChainBlock, ChainStats, ValidateResult, EVENT_LABELS } from './types';
 import BlockCard from './BlockCard';
 
@@ -76,12 +76,12 @@ const ChainExplorer: React.FC = () => {
     <div className="space-y-6">
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-2xl border-2 border-border bg-bg-card p-4">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-4">
           <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Total Blocks</div>
           <div className="text-3xl font-black font-mono text-text-primary">{stats?.totalBlocks ?? '—'}</div>
         </div>
         {Object.entries(EVENT_LABELS).slice(0, 3).map(([type, label]) => (
-          <div key={type} className="rounded-2xl border-2 border-border bg-bg-card p-4">
+          <div key={type} className="rounded-2xl border border-border/30 bg-bg-card p-4">
             <div className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">{label}</div>
             <div className="text-3xl font-black font-mono text-text-primary">
               {stats?.eventBreakdown?.[type] ?? 0}
@@ -90,7 +90,7 @@ const ChainExplorer: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 rounded-2xl border-2 border-border bg-bg-card p-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 rounded-2xl border border-border/30 bg-bg-card p-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {validation ? (
             validation.valid ? (
@@ -161,11 +161,11 @@ const ChainExplorer: React.FC = () => {
       {loading ? (
         <div className="space-y-3">
           {[0, 1, 2, 3].map(i => (
-            <div key={i} className="h-16 rounded-2xl border-2 border-border bg-bg-card animate-pulse" />
+            <div key={i} className="h-16 rounded-2xl border border-border/30 bg-bg-card animate-pulse" />
           ))}
         </div>
       ) : paged.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center">
+        <div className="rounded-2xl border border-dashed border-border/30 py-16 text-center">
           <Link2 className="mx-auto mb-3 h-8 w-8 text-text-muted opacity-30" />
           <p className="text-sm text-text-muted">
             {chain.length === 0
