@@ -114,7 +114,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
   }, [disableTypewriter, steps]);
 
   return (
-    <div ref={heroRef} className="relative w-full h-full min-h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
+    <div ref={heroRef} className="relative w-full h-full min-h-dvh overflow-hidden flex flex-col bg-accent" data-nav-invert>
 
       {/* ── Animated grid background — fades in from globe side ── */}
       <GridBoxedBackground reduced={minimizeEffects} mask="right" />
@@ -126,7 +126,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
             ? { opacity: 1, scale: 1 }
             : { opacity: globeOpacityValue, scale: globeScaleValue }
         }
-        className="absolute inset-0 z-[1] hidden md:flex items-end justify-end overflow-hidden"
+        className="absolute inset-0 z-[1] flex items-end justify-end overflow-hidden"
       >
         <div className="relative w-full h-full flex items-end justify-end">
           <ErrorBoundary scope="HackerGlobe" fallback={null}>
