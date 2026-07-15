@@ -319,7 +319,7 @@ const StudentTopbar = () => {
 
             {/* Logo */}
             <Link to="/dashboard" className="flex-none shrink-0">
-              <Logo size="md" />
+              <Logo size="md" variant="mark" />
             </Link>
 
             {/* Hamburger — visible on mobile only */}
@@ -332,7 +332,7 @@ const StudentTopbar = () => {
             </button>
 
             {/* Nav tabs — desktop only (lg+), flex-1 pushes right actions to the far right */}
-            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1 pl-2">
+            <nav className="hidden lg:flex items-center justify-start flex-1 min-w-0 gap-1">
               {DESKTOP_NAV_ITEMS.map((item) => {
                 const active = isActive(item.path);
                 return (
