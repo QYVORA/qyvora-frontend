@@ -658,7 +658,6 @@ const Dashboard = () => {
             {/* 4b. Skill Matrix */}
             <SkillMatrix
               modules={overviewModules}
-              courseProgress={{ completed: totalRoomsDone, total: overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsTotal || 0), 0) }}
             />
           </>
         )}

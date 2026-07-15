@@ -9,23 +9,27 @@ import {
   Tooltip,
 } from 'recharts';
 import { PHASE_COLORS } from '@/features/student/constants/bootcampConfig';
+import { COURSES } from '@/features/student/data/courses/courseData';
 
 interface SkillAxis {
   key: string;
   label: string;
   shortLabel: string;
   color: string;
-  phaseId?: string;
+  /** Bootcamp phase IDs that contribute to this axis */
+  phaseIds: number[];
+  /** Course category IDs that contribute to this axis */
+  categoryIds: string[];
 }
 
 const SKILL_AXES: SkillAxis[] = [
-  { key: 'mindset', label: 'Security Mindset', shortLabel: 'Mindset', color: PHASE_COLORS.phase1, phaseId: 'phase1' },
-  { key: 'linux', label: 'Linux / Terminal', shortLabel: 'Linux', color: PHASE_COLORS.phase2, phaseId: 'phase2' },
-  { key: 'networking', label: 'Networking', shortLabel: 'Network', color: PHASE_COLORS.phase3, phaseId: 'phase3' },
-  { key: 'web', label: 'Web Security', shortLabel: 'Web', color: PHASE_COLORS.phase4, phaseId: 'phase4' },
-  { key: 'social', label: 'Social Engineering', shortLabel: 'Social', color: PHASE_COLORS.phase5, phaseId: 'phase5' },
-  { key: 'tools', label: 'Tools Proficiency', shortLabel: 'Tools', color: '#8B5CF6' },
-  { key: 'programming', label: 'Programming', shortLabel: 'Code', color: '#10B981' },
+  { key: 'mindset', label: 'Security Mindset', shortLabel: 'Mindset', color: PHASE_COLORS.phase1, phaseIds: [1], categoryIds: [] },
+  { key: 'linux', label: 'Linux / Terminal', shortLabel: 'Linux', color: PHASE_COLORS.phase2, phaseIds: [2], categoryIds: ['terminal'] },
+  { key: 'networking', label: 'Networking', shortLabel: 'Network', color: PHASE_COLORS.phase3, phaseIds: [3], categoryIds: ['networking'] },
+  { key: 'web', label: 'Web Security', shortLabel: 'Web', color: PHASE_COLORS.phase4, phaseIds: [4], categoryIds: ['web-security'] },
+  { key: 'social', label: 'Social Engineering', shortLabel: 'Social', color: PHASE_COLORS.phase5, phaseIds: [5], categoryIds: ['wireless'] },
+  { key: 'tools', label: 'Tools Proficiency', shortLabel: 'Tools', color: '#8B5CF6', phaseIds: [], categoryIds: ['tools'] },
+  { key: 'programming', label: 'Programming', shortLabel: 'Code', color: '#10B981', phaseIds: [], categoryIds: ['programming'] },
 ];
 
 interface OverviewModule {
@@ -36,42 +40,83 @@ interface OverviewModule {
   roomsTotal?: number;
 }
 
+interface CourseProgressEntry {
+  completed: number;
+  total: number;
+}
+
 interface SkillMatrixProps {
   modules: OverviewModule[];
-  courseProgress?: { completed: number; total: number };
+}
+
+/** Read course progress from localStorage: qyvora_course_progress_{courseId} */
+function readCourseProgressMap(): Map<string, CourseProgressEntry> {
+  const map = new Map<string, CourseProgressEntry>();
+  for (const course of COURSES) {
+    try {
+      const raw = localStorage.getItem(`qyvora_course_progress_${course.id}`);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw);
+      const completed = parsed.completedLessons?.length || 0;
+      const total = course.lessons.length;
+      if (total > 0) {
+        map.set(course.id, { completed, total });
+      }
+    } catch {
+      // ignore malformed localStorage
+    }
+  }
+  return map;
 }
 
 function computeSkillValues(
   modules: OverviewModule[],
-  courseProgress?: { completed: number; total: number },
+  courseMap: Map<string, CourseProgressEntry>,
 ): Record<string, number> {
   const phaseMap = new Map<number, OverviewModule>();
   modules.forEach((m) => {
     if (m.moduleId) phaseMap.set(m.moduleId, m);
   });
 
-  const getPhase = (id: number) => phaseMap.get(id);
   const pct = (done: number, total: number) => (total > 0 ? Math.round((done / total) * 100) : 0);
 
-  const p1 = getPhase(1);
-  const p2 = getPhase(2);
-  const p3 = getPhase(3);
-  const p4 = getPhase(4);
-  const p5 = getPhase(5);
+  const values: Record<string, number> = {};
 
-  const coursePct = courseProgress
-    ? pct(courseProgress.completed, courseProgress.total)
-    : 0;
+  for (const axis of SKILL_AXES) {
+    const sources: number[] = [];
 
-  return {
-    mindset: p1 ? pct(p1.roomsCompleted ?? 0, p1.roomsTotal ?? 3) : 0,
-    linux: p2 ? pct(p2.roomsCompleted ?? 0, p2.roomsTotal ?? 4) : 0,
-    networking: p3 ? pct(p3.roomsCompleted ?? 0, p3.roomsTotal ?? 4) : 0,
-    web: p4 ? pct(p4.roomsCompleted ?? 0, p4.roomsTotal ?? 5) : 0,
-    social: p5 ? pct(p5.roomsCompleted ?? 0, p5.roomsTotal ?? 3) : 0,
-    tools: Math.min(100, coursePct + 10),
-    programming: Math.min(100, coursePct),
-  };
+    // 1. Bootcamp phase progress
+    for (const phaseId of axis.phaseIds) {
+      const mod = phaseMap.get(phaseId);
+      if (mod) {
+        sources.push(pct(mod.roomsCompleted ?? 0, mod.roomsTotal ?? 1));
+      }
+    }
+
+    // 2. Course progress (average across matching courses)
+    const matchingCourses = COURSES.filter((c) => axis.categoryIds.includes(c.categoryId));
+    if (matchingCourses.length > 0) {
+      let totalCompleted = 0;
+      let totalLessons = 0;
+      for (const course of matchingCourses) {
+        const entry = courseMap.get(course.id);
+        if (entry) {
+          totalCompleted += entry.completed;
+          totalLessons += entry.total;
+        }
+      }
+      if (totalLessons > 0) {
+        sources.push(pct(totalCompleted, totalLessons));
+      }
+    }
+
+    // Combine: average of all available sources, or 0 if none
+    values[axis.key] = sources.length > 0
+      ? Math.round(sources.reduce((a, b) => a + b, 0) / sources.length)
+      : 0;
+  }
+
+  return values;
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -86,11 +131,12 @@ const CustomTooltip = ({ active, payload }: any) => {
   );
 };
 
-const SkillMatrix = ({ modules, courseProgress }: SkillMatrixProps) => {
+const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   const { t } = useTranslation();
 
   const { radarData, skills, average } = useMemo(() => {
-    const values = computeSkillValues(modules, courseProgress);
+    const courseMap = readCourseProgressMap();
+    const values = computeSkillValues(modules, courseMap);
 
     const radar = SKILL_AXES.map((axis) => ({
       axis: axis.shortLabel,
@@ -108,7 +154,7 @@ const SkillMatrix = ({ modules, courseProgress }: SkillMatrixProps) => {
     const avg = skillList.length > 0 ? Math.round(total / skillList.length) : 0;
 
     return { radarData: radar, skills: skillList, average: avg };
-  }, [modules, courseProgress]);
+  }, [modules]);
 
   return (
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
