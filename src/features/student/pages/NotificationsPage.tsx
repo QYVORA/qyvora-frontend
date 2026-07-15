@@ -107,6 +107,11 @@ const Notifications: React.FC = () => {
               title="Notifications"
               description="System alerts and mission updates."
               stats={[{ label: 'Unread', value: unreadCount }]}
+              action={unreadCount > 0 ? {
+                label: 'Mark All Read',
+                onClick: markAllRead,
+                icon: <CheckCheck className="w-4 h-4" />,
+              } : undefined}
             />
             {displayed.length === 0 ? (
               <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-16 text-center">

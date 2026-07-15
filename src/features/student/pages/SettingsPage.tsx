@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Shield, Key, Eye, EyeOff, Loader2, Save, Copy, CheckCircle2, AlertTriangle, RefreshCw, Settings as SettingsIcon, User } from 'lucide-react';
 import ScrollReveal from '../../../shared/components/ScrollReveal';
 import api from '../../../core/services/api';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -131,13 +132,19 @@ const Settings: React.FC = () => {
           icon={<SettingsIcon className="w-6 h-6 text-bg" />}
           title="Settings"
           description="Manage your password, recovery token, and account preferences."
+          action={{
+            label: 'Edit Profile',
+            to: '/dashboard/profile',
+            icon: <User className="w-4 h-4" />,
+          }}
         />
 
-            <div className="space-y-6">
+            {/* Desktop: two-column layout | Mobile: single column */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             {/* Change password */}
             <ScrollReveal>
-              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card h-full">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Shield className="h-5 w-5 text-accent" />
                   <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Change Password</h2>
@@ -164,7 +171,7 @@ const Settings: React.FC = () => {
 
             {/* Recovery token */}
             <ScrollReveal>
-              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card h-full">
                 <div className="flex items-center gap-3 border-b border-border bg-accent-dim/5 px-6 py-4">
                   <Key className="h-5 w-5 text-accent" />
                   <h2 className="text-base font-black uppercase tracking-widest text-text-primary">Recovery Token</h2>
@@ -279,7 +286,7 @@ const Settings: React.FC = () => {
               </div>
             </ScrollReveal>
 
-          </div>
+          </div>{/* end grid */}
       </div>
     </div>
   );
