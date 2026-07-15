@@ -51,7 +51,7 @@ const EventKeyCard: React.FC<EventKeyCardProps> = ({ eventId, eventTitle }) => {
 
   return (
     <ScrollReveal direction="up" amount={0.1}>
-      <div className="overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300 group hover:border-accent/30">
+      <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300 group hover:border-accent/30">
         <div className="p-5 sm:p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">

@@ -18,7 +18,7 @@ interface BootcampCardProps {
 
 // Fix #8: card is now a Link so clicking anywhere navigates to the bootcamp
 const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, description, duration, price, href = '/register' }) => (
-  <Link to={href} className="card-qyvora group overflow-hidden flex flex-col h-full block border border-border/60 hover:border-accent/40 transition-all">
+  <Link to={href} className="card-qyvora group overflow-hidden flex flex-col h-full block border border-border/30 hover:border-accent/30 transition-all">
     <div className="relative aspect-video overflow-hidden">
       <img
         src={image}

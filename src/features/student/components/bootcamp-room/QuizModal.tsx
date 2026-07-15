@@ -128,7 +128,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     {result.questions.map((q, idx) => {
                       const chosen  = answers[q.id];
                       return (
-                        <div key={q.id} className="rounded-xl border border-border bg-bg-card p-4">
+                        <div key={q.id} className="rounded-2xl border border-border/30 bg-bg-card p-4">
                           <div className="flex items-start gap-2 mb-3">
                             <span className="shrink-0 mt-0.5 text-text-muted">
                               <ClipboardList className="h-4 w-4" />

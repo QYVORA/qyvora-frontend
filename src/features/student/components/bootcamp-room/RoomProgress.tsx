@@ -23,7 +23,7 @@ const RoomProgress: React.FC<RoomProgressProps> = ({
   viewedSteps,
 }) => {
   return (
-    <div className="mb-8 rounded-2xl border border-border bg-bg-card p-5 md:p-6">
+    <div className="mb-8 rounded-2xl border border-border/30 bg-bg-card p-5 md:p-6">
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-xs font-black uppercase tracking-[0.2em] text-text-muted">Progress</span>
         <span className="font-mono text-base font-black text-accent">

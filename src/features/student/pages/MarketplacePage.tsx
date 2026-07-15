@@ -178,7 +178,7 @@ const Marketplace: React.FC = () => {
                   const hasPurchased = purchased.has(id);
                   return (
                     <motion.div key={id || idx} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}>
-                      <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
+                      <div className="group overflow-hidden flex flex-col w-full border border-border/30 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
                         <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
                           <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                           <div className="absolute top-4 left-4 flex items-center gap-2">
@@ -209,7 +209,7 @@ const Marketplace: React.FC = () => {
             </div>
           ) : (
             <div className="px-1 md:px-0">
-              <div className="overflow-hidden rounded-3xl border-2 border-border bg-bg-card">
+              <div className="overflow-hidden rounded-2xl border border-border bg-bg-card">
                 <div className="flex items-center gap-2 border-b border-border px-5 py-4">
                   <Zap className="h-5 w-5 text-accent shrink-0" />
                   <h3 className="text-base font-black uppercase tracking-widest text-text-primary">Transactions</h3>

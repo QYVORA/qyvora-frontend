@@ -19,7 +19,7 @@ const SubnetBadge = () => (
 );
 
 const InfoCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border/30 bg-bg-card">
+  <div className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-border/30 bg-bg-card">
     <div className="w-8 h-8 rounded-lg bg-accent-dim/30 flex items-center justify-center text-accent shrink-0">
       {icon}
     </div>
@@ -39,7 +39,7 @@ const OSIcon = ({ os }: { os: string }) => {
 };
 
 const DeviceRow = ({ device, index }: { device: typeof DEVICES[0]; index: number }) => (
-  <div className="grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-xl border border-border/30 bg-bg-card hover:border-accent/20 transition-all items-center">
+  <div className="grid grid-cols-[24px_1fr_auto] md:grid-cols-[24px_1fr_140px] gap-2 md:gap-4 px-4 py-3 rounded-2xl border border-border/30 bg-bg-card hover:border-accent/20 transition-all items-center">
     <span className="text-[10px] font-mono font-bold text-text-muted/40">{index + 1}</span>
     <div className="flex items-center gap-2 min-w-0">
       <OSIcon os={device.os} />

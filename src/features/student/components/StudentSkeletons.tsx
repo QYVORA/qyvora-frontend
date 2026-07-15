@@ -304,7 +304,7 @@ export const MyCoursesSkeleton = () => (
       {/* Course cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="rounded-2xl border border-border/70 bg-bg-card overflow-hidden">
+          <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
             <Skeleton className="aspect-[8/5] w-full bg-border/30" />
             <div className="p-5 space-y-3">
               <div className="flex items-center justify-between">

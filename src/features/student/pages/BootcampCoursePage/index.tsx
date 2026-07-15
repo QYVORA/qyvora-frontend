@@ -168,7 +168,7 @@ const BootcampCourse: React.FC = () => {
           onFilterChange={setActivePhase}
         />
 
-        <div className="border border-border/30 rounded-xl bg-bg-card p-5 md:p-6">
+        <div className="border border-border/30 rounded-2xl bg-bg-card p-5 md:p-6">
           <div className="flex items-center gap-2 mb-5">
             <MapIcon className="h-4 w-4 text-accent" />
             <span className="text-[10px] font-black uppercase tracking-widest text-accent">Journey Map</span>
@@ -206,7 +206,7 @@ const BootcampCourse: React.FC = () => {
         </div>
 
         {nextRoomLabel && nextRoomLabel.path && !nextRoomLabel.path.includes('undefined') && (
-          <div className="border border-accent/20 rounded-xl bg-accent-dim/20 p-5">
+          <div className="border border-accent/20 rounded-2xl bg-accent-dim/20 p-5">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">

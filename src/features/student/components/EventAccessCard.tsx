@@ -104,7 +104,7 @@ const EventAccessCard: React.FC<EventAccessCardProps> = ({ event }) => {
   const eventDate = parseEventDate(event.date, event.time);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/40 bg-bg-card transition-all duration-300">
+    <div className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-all duration-300">
       <div className="p-5 sm:p-6 space-y-5">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 border border-accent/20 text-accent shrink-0">
