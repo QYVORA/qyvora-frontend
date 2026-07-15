@@ -31,37 +31,8 @@ const TOP_THREE_RING = [
 
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
-function seededRandom(seed: number): number {
-  const x = Math.sin(seed * 9301 + 49297) * 49297;
-  return x - Math.floor(x);
-}
-
-interface CellPos {
-  x: number;
-  y: number;
-  size: number;
-  floatDuration: number;
-  floatDelay: number;
-}
-
-function computePositions(count: number, cols: number): CellPos[] {
-  const positions: CellPos[] = [];
-  const rows = Math.ceil(count / cols);
-  for (let i = 0; i < count; i++) {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    const jitterX = (seededRandom(i * 11 + 1) - 0.5) * 2.5;
-    const jitterY = (seededRandom(i * 13 + 3) - 0.5) * 3;
-    const xBase = (col / (cols - 1 || 1)) * 100;
-    const yBase = (row / (rows - 1 || 1)) * 100;
-    const x = Math.max(2, Math.min(98, xBase + jitterX));
-    const y = Math.max(2, Math.min(98, yBase + jitterY));
-    const floatDuration = 4 + seededRandom(i * 17 + 5) * 4;
-    const floatDelay = seededRandom(i * 23 + 7) * -6;
-    positions.push({ x, y, size: 0, floatDuration, floatDelay });
-  }
-  return positions;
-}
+const CELL_SIZE = 42;
+const GAP = 3;
 
 const LandingLeaderboardSection = () => {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
@@ -89,7 +60,13 @@ const LandingLeaderboardSection = () => {
     return () => { cancelled = true; };
   }, []);
 
-  const positions = useMemo(() => computePositions(20, 5), []);
+  const cells = useMemo(() => {
+    const arr: { entry: LeaderboardEntry | null; idx: number }[] = [];
+    for (let i = 0; i < 20; i++) {
+      arr.push({ entry: i < entries.length ? entries[i] : null, idx: i });
+    }
+    return arr;
+  }, [entries]);
 
   return (
     <div className="relative bg-bg h-full flex flex-col overflow-hidden" data-nav-invert>
@@ -97,12 +74,9 @@ const LandingLeaderboardSection = () => {
 
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-12 md:py-16 lg:py-20 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto shrink-0">
-          {/* ── Badge ── */}
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
             <IconShield size={12} className="text-accent" /> Community
           </span>
-
-          {/* ── Heading ── */}
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
             Top <span className="text-accent">Operators</span>
           </h2>
@@ -119,60 +93,71 @@ const LandingLeaderboardSection = () => {
           )}
         </div>
 
-        {/* ── Identicon field ── */}
-        <div className="relative flex-1 min-h-0 mt-6 md:mt-8">
+        <div className="relative flex-1 min-h-0 mt-6 md:mt-8 overflow-hidden">
           {loading ? (
-            <div className="absolute inset-0 grid grid-cols-5 gap-2 md:gap-3 content-center">
+            <div
+              className="flex flex-wrap content-start"
+              style={{ gap: `${GAP}px` }}
+            >
               {Array.from({ length: 20 }).map((_, i) => (
                 <div
                   key={i}
-                  className="aspect-square rounded-lg bg-bg-card border border-border/20 animate-pulse mx-auto w-full max-w-[80px]"
-                  style={{ animationDelay: `${i * 50}ms` }}
+                  className="rounded-lg bg-bg-card border border-border/20 animate-pulse shrink-0"
+                  style={{
+                    width: `${CELL_SIZE}px`,
+                    height: `${CELL_SIZE}px`,
+                    animationDelay: `${i * 40}ms`,
+                  }}
                 />
               ))}
             </div>
           ) : entries.length === 0 ? null : (
-            <div className="absolute inset-0">
-              {entries.map((entry, i) => {
-                const pos = positions[i];
-                if (!pos) return null;
-                const isTopThree = entry.rank <= 3;
-                const isHovered = hoveredIdx === i;
+            <div
+              className="flex flex-wrap content-start"
+              style={{ gap: `${GAP}px` }}
+            >
+              {cells.map(({ entry, idx }) => {
+                const isFilled = entry !== null;
+                const isTopThree = isFilled && entry!.rank <= 3;
+                const isHovered = hoveredIdx === idx;
+
+                if (!isFilled) {
+                  return (
+                    <div
+                      key={idx}
+                      className="rounded-lg bg-bg/40 border border-border/5 shrink-0"
+                      style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
+                    />
+                  );
+                }
 
                 return (
                   <Link
-                    key={entry.userId}
-                    to={`/@${entry.hackerHandle}`}
-                    onMouseEnter={() => setHoveredIdx(i)}
+                    key={idx}
+                    to={`/@${entry!.hackerHandle}`}
+                    onMouseEnter={() => setHoveredIdx(idx)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className={[
-                      'absolute rounded-lg border-2 overflow-hidden cursor-pointer',
-                      'transition-all duration-500 ease-out',
+                      'rounded-lg border-2 overflow-hidden cursor-pointer shrink-0 relative',
+                      'transition-all duration-300',
                       'hover:z-20',
                       isTopThree
-                        ? `${TOP_THREE_RING[entry.rank - 1]} ${TOP_THREE_GLOW[entry.rank - 1]}`
+                        ? `${TOP_THREE_RING[entry!.rank - 1]} ${TOP_THREE_GLOW[entry!.rank - 1]}`
                         : 'border-accent/15 hover:border-accent/40',
                       isHovered && 'z-20',
                     ].join(' ')}
-                    style={{
-                      left: `${pos.x}%`,
-                      top: `${pos.y}%`,
-                      width: 'clamp(48px, 10vw, 80px)',
-                      height: 'clamp(48px, 10vw, 80px)',
-                      transform: `translate(-50%, -50%)${isHovered ? ' scale(1.15)' : ''}`,
-                      animation: `leaderboard-float ${pos.floatDuration}s ease-in-out ${pos.floatDelay}s infinite`,
-                    }}
+                    style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center bg-bg-card [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry.userId} size={80} />
+                      <Identicon value={entry!.userId} size={CELL_SIZE} />
                     </div>
 
-                    <div className="absolute top-0.5 left-0.5 z-10">
+                    <div className="absolute top-[2px] left-[2px] z-10">
                       {isTopThree ? (
-                        <Medal className={`w-2.5 h-2.5 ${TOP_THREE_RANK_COLOR[entry.rank - 1]}`} />
+                        <Medal className={`w-2.5 h-2.5 ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
                         <span className="text-[6px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
-                          {entry.rank}
+                          {entry!.rank}
                         </span>
                       )}
                     </div>
@@ -186,10 +171,10 @@ const LandingLeaderboardSection = () => {
                       ].join(' ')}
                     >
                       <span className="text-[7px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
-                        {entry.hackerHandle || entry.name || 'Anon'}
+                        {entry!.hackerHandle || entry!.name || 'Anon'}
                       </span>
                       <span className="text-[6px] font-mono font-bold text-accent leading-none">
-                        {Number(entry.cp).toLocaleString()} CP
+                        {Number(entry!.cp).toLocaleString()} CP
                       </span>
                     </div>
                   </Link>
@@ -199,13 +184,6 @@ const LandingLeaderboardSection = () => {
           )}
         </div>
       </div>
-
-      <style>{`
-        @keyframes leaderboard-float {
-          0%, 100% { transform: translateY(0) translate(-50%, -50%); }
-          50% { transform: translateY(-6px) translate(-50%, -50%); }
-        }
-      `}</style>
     </div>
   );
 };
