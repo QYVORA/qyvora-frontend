@@ -141,7 +141,7 @@ const LabsPage = () => {
   return (
     <div className="bg-bg min-h-full">
       <SEO title="Attack Labs" description="Hands-on offensive security simulations on QYVORA." />
-      <div className="mx-auto max-w-[1600px] px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <LearningOverviewCard
           icon={<FlaskConical className="w-6 h-6 text-bg" />}

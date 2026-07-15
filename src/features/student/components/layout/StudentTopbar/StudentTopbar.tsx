@@ -190,7 +190,7 @@ const StudentTopbar = () => {
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
-            <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 h-20 md:h-24 flex flex-col">
+            <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex flex-col">
               <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
                 <button
                   onClick={() => navigate('/dashboard/courses')}
@@ -266,7 +266,7 @@ const StudentTopbar = () => {
             </div>
           ) : (
             /* ══ BOOTCAMP ROOM MODE ══ */
-            <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
+            <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
                 className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
@@ -325,7 +325,7 @@ const StudentTopbar = () => {
 
         ) : (
           /* ══ DASHBOARD MODE ══ */
-          <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-2 md:gap-4">
+          <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-2 md:gap-4">
 
             {/* Logo */}
             <Link to="/dashboard" className="flex-none shrink-0">
