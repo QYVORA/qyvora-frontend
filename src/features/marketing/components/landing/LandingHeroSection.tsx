@@ -117,7 +117,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
     <div ref={heroRef} className="relative w-full h-full min-h-dvh overflow-hidden flex flex-col bg-accent" data-nav-invert>
 
       {/* ── Animated grid background — fades in from globe side ── */}
-      <GridBoxedBackground reduced={shouldReduceMotion || constrainedDevice} mask="right" />
+      <GridBoxedBackground reduced={shouldReduceMotion || constrainedDevice} blur={0} mask="right" />
 
       {/* ── Globe - positioned absolutely behind text, expands + fades on scroll ── */}
       <motion.div
