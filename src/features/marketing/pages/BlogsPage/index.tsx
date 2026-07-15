@@ -27,13 +27,13 @@ const BlogsPage: React.FC = () => {
       />
 
       {/* ── Hero Section ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
+      <section className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-accent" data-nav-invert>
 
         {/* ── Grid background ── */}
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
 
         {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 hidden md:flex items-end justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
           <div className="relative w-full h-full flex items-end justify-end">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>

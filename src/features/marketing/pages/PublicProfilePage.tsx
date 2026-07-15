@@ -78,7 +78,7 @@ const PublicProfile: React.FC = () => {
         ]}
       />
 
-      <div className="px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className="px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24 space-y-6">
         {/* Profile Overview Card */}
         <LearningOverviewCard
           icon={<></>}

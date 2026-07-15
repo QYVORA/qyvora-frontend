@@ -77,14 +77,14 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col pt-[72px] bg-accent" data-nav-invert>
+      <section className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col pt-[72px] bg-accent" data-nav-invert>
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
         <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
         <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />
 
         {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 hidden md:flex items-end justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
           <div className="relative w-full h-full flex items-end justify-end">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>

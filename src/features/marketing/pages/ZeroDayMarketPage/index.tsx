@@ -62,14 +62,14 @@ const ZeroDayMarketPage: React.FC = () => {
       />
 
       {/* ── HERO ── */}
-      <section id="zd-hero" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="zd-hero" className="relative w-full min-h-dvh md:h-dvh overflow-hidden">
         <div className="relative w-full h-full bg-accent overflow-hidden" data-nav-invert>
 
         {/* ── Grid background ── */}
         <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
 
         {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 hidden md:flex items-end justify-end overflow-hidden">
+        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
           <div className="relative w-full h-full flex items-end justify-end">
             <ErrorBoundary scope="HackerGlobe" fallback={null}>
               <Suspense fallback={null}>
