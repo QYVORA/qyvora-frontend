@@ -47,7 +47,7 @@ const PageHeader = ({ pretitle, title, subtitle, actions, loading }: PageHeaderP
             key={action.label}
             onClick={action.onClick}
             disabled={action.loading}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-black uppercase tracking-wider transition-all active:scale-95 disabled:opacity-50 ${variantStyles[action.variant ?? 'primary']}`}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all active:scale-95 disabled:opacity-50 ${variantStyles[action.variant ?? 'primary']}`}
           >
             {action.icon && <span className={`w-4 h-4 ${action.loading ? 'animate-spin' : ''}`}>{action.icon}</span>}
             {action.loading ? 'Loading…' : action.label}

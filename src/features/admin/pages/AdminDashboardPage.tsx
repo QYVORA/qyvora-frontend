@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Shield } from 'lucide-react';
 
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
@@ -16,7 +16,8 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
 import api from '@/core/services/api';
 import { ConfirmDialog } from '@/shared/components/ui/Dialog';
-import { PageHeader, SyncIndicator } from '@/shared/components/dashboard';
+import { SyncIndicator } from '@/shared/components/dashboard';
+import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
 import {
   type AdminTab, type AdminUser, type CPProduct,
   type SecurityEventItem,
@@ -170,37 +171,36 @@ const AdminDashboardPage: React.FC = () => {
         className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
         style={{ scrollBehavior: 'smooth' }}
       >
-        <div className="mx-auto max-w-[1440px] px-4 pt-6 pb-16 md:px-8">
+        <div className="mx-auto max-w-6xl px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
 
-          <PageHeader
-            pretitle="Management Protocol"
+          <LearningOverviewCard
+            icon={<Shield className="w-6 h-6 text-bg" />}
             title={activeLabel}
-            subtitle={loading ? LOADING_SUBTITLE : `Managing system ${activeLabel.toLowerCase()}.`}
-            actions={[
-              {
-                label: loading ? 'Syncing' : 'Refresh',
-                icon: <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />,
-                onClick: () => void loadAll(),
-                loading,
-              },
-            ]}
+            description={loading ? LOADING_SUBTITLE : `Managing system ${activeLabel.toLowerCase()}.`}
+            stats={overview ? [
+              { label: 'Users', value: String((overview as Record<string, unknown>)?.totalUsers ?? 0) },
+              { label: 'Products', value: String(products.length) },
+            ] : undefined}
+            action={{
+              label: loading ? 'Syncing' : 'Refresh',
+              onClick: () => void loadAll(),
+              icon: <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />,
+            }}
           />
 
           {/* ── MAIN CONTENT ────────────────────────────────────────────── */}
           {loading ? (
-            <div className="mx-auto w-full max-w-5xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[0,1,2,3].map(i => (
-                  <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
-                    <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
-                    <div className="h-8 w-20 bg-border/30 rounded animate-pulse" />
-                    <div className="h-3 w-32 bg-border/30 rounded animate-pulse" />
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[0,1,2,3].map(i => (
+                <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-3">
+                  <div className="h-4 w-24 bg-border/30 rounded animate-pulse" />
+                  <div className="h-8 w-20 bg-border/30 rounded animate-pulse" />
+                  <div className="h-3 w-32 bg-border/30 rounded animate-pulse" />
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="mx-auto w-full max-w-[1440px]">
+            <div>
               {/* ── OVERVIEW ──────────────────────────────────────────────── */}
               {activeTab === 'overview' && <OverviewTab />}
 

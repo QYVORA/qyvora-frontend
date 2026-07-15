@@ -1,7 +1,7 @@
 import React from 'react';
 import { Coins, ChevronDown } from 'lucide-react';
 
-import { formatNumber } from '../../../../shared/utils/formatNumber';
+
 
 interface PointsControlProps {
   users: Array<{ id: string; hackerHandle?: string; name?: string; email?: string }>;
@@ -31,7 +31,7 @@ const PointsControl: React.FC<PointsControlProps> = ({
   saving,
 }) => {
   return (
-    <div className="rounded-2xl border-2 border-border bg-bg-card p-5">
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
       <div className="mb-4 flex items-center gap-2">
         <Coins className="w-4 h-4 text-accent" />
         <span className="text-sm font-black uppercase tracking-wide text-text-primary">Points Control</span>

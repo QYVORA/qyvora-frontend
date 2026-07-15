@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconX } from '@/shared/components/icons';
-import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
+import { BottomSheet, BottomSheetClose, BottomSheetContent } from '@/shared/components/ui/BottomSheet';
 import { NotificationItem } from './types';
 
 interface MobileNotificationsSheetProps {

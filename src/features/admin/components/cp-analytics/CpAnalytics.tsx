@@ -174,7 +174,7 @@ const CpAnalytics: React.FC<CpAnalyticsProps> = ({ users, addToast }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border-2 border-border bg-bg-card p-5">
+        <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
           <div className="mb-4 flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-accent" />
             <span className="text-sm font-black uppercase tracking-wide text-text-primary">By Type</span>

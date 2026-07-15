@@ -220,7 +220,7 @@ const AdminTopbar = () => {
 
             <div
               aria-label="Admin profile"
-              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-accent/30 bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors cursor-default"
+              className="w-11 h-11 md:w-12 md:h-12 rounded-xl border border-accent/30 bg-accent-dim flex items-center justify-center text-accent font-black text-base flex-none hover:border-accent/60 transition-colors cursor-default"
             >
               {(user?.username || user?.email || 'A').substring(0, 2).toUpperCase()}
             </div>

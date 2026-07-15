@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { RefreshCw, Trash2 } from 'lucide-react';
 import { IconSearch } from '@/shared/components/icons';
 import { CPProduct } from '../../types/admin.types';
-import { resolveImg } from '../../../../shared/utils/resolveImg';
-import CpLogo from '../../../../shared/components/CpLogo';
+import { resolveImg } from '@/shared/utils/resolveImg';
+import CpLogo from '@/shared/components/CpLogo';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 
 interface ZeroDayMarketTabProps {

@@ -129,7 +129,7 @@ const InboxTab = () => {
       {loading ? (
         <div className="space-y-2">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-14 rounded-xl bg-bg-card border border-border animate-pulse" />)}</div>
       ) : items.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
+        <div className="rounded-2xl border border-dashed border-border/30 py-12 text-center">
           <Mail className="mx-auto mb-3 h-10 w-10 text-text-muted opacity-30" />
           <p className="text-sm text-text-muted font-bold">No messages yet</p>
         </div>
