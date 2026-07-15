@@ -1,6 +1,5 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'motion/react';
 import { Cloud, FileText, BookOpen, Cpu } from 'lucide-react';
 import { IconShield, IconMarketplace, IconLock } from '@/shared/components/icons';
 import SEO from '@/shared/components/SEO';
@@ -10,11 +9,8 @@ import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { resolveImg } from '@/shared/utils/resolveImg';
-import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 interface ProductItem {
   id: string;
@@ -34,9 +30,6 @@ const FEATURES: { icon: React.ElementType; label: string; desc: string }[] = [
 const ZeroDayMarketPage: React.FC = () => {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const shouldReduceMotion = useReducedMotion();
-  const { constrainedDevice, isMobile } = useAdaptiveUi();
-  const minimizeEffects = shouldReduceMotion || constrainedDevice || isMobile;
 
   useEffect(() => {
     let mounted = true;
@@ -62,64 +55,34 @@ const ZeroDayMarketPage: React.FC = () => {
       />
 
       {/* ── HERO ── */}
-      <section id="zd-hero" className="relative w-full min-h-dvh md:h-dvh overflow-hidden">
-        <div className="relative w-full h-full bg-accent overflow-hidden" data-nav-invert>
-
-        {/* ── Grid background ── */}
-        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
-
-        {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
-          <div className="relative w-full h-full flex items-end justify-end">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
-              </Suspense>
-            </ErrorBoundary>
+      <section id="zd-hero">
+        <PublicHeroSection showGlobe mask="right">
+          <div className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
+            <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
+              <IconShield className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Intelligence Exchange
+            </span>
           </div>
-        </div>
-
-        <div className="relative z-10 w-full h-full mx-auto grid grid-cols-1 lg:grid-cols-2 items-center">
-          <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
-            <motion.div
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-5 sm:space-y-6"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
-                <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
-                  <IconShield className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Intelligence Exchange
-                </span>
-              </div>
-
-              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                  Zero-Day
-                </span>
-                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase text-bg/80">
-                  Market
-                </span>
-              </h1>
-
-              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-                A classified digital exchange where offensive security operators access high-value research assets. Each asset is a curated intelligence package — from exploitation guides and red-team tooling to vulnerability disclosures and network datasets.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-                  <IconMarketplace className="h-4 w-4" /> Access the Market
-                </Link>
-                <button onClick={() => scrollToSection('zd-products')} className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
-                  Browse Assets
-                </button>
-              </div>
-            </motion.div>
+          <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+            <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+              Zero-Day
+            </span>
+            <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase text-bg/80">
+              Market
+            </span>
+          </h1>
+          <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+            A classified digital exchange where offensive security operators access high-value intelligence assets.
+          </p>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+              <IconMarketplace className="h-4 w-4" /> Access the Market
+            </Link>
+            <button onClick={() => scrollToSection('zd-products')} className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
+              Browse Assets
+            </button>
           </div>
-          <div className="hidden lg:block" />
-        </div>
-        </div>
+        </PublicHeroSection>
       </section>
 
       {/* ── FEATURES ── */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
 import {
   BookOpen,
   Cpu,
@@ -22,7 +22,7 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { ResearchersCarouselSection } from './ResearchersCarouselSection';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 const capabilities = [
   { id: 'research', title: 'Offensive Security Research', icon: IconSearch, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
@@ -94,41 +94,31 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <div className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
-      <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
-      <div className="relative z-30 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left md:items-center md:h-full">
-        <div className="flex flex-col items-start justify-start px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-24 lg:pt-28 pb-14 sm:pb-16 lg:pb-16 w-full md:h-full">
-          <div className="flex flex-col items-start w-full space-y-5">
-            <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-              <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                QUITE <span className="text-bg/80">ROOT</span>
-              </span>
-            </h1>
-            <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-              The Intelligence Behind QYVORA
-            </p>
-            <p className="text-bg/60 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-2xl font-mono">
-              We engineer offensive security tools, conduct cyber intelligence research, and transform ideas into
-              production-ready security capabilities.
-            </p>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
-              <a href="#research" className="btn-primary px-8 py-4 font-black uppercase tracking-[0.15em] text-xs flex items-center justify-center gap-3">
-                Explore Research <IconArrowRight size={16} />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="relative hidden lg:flex items-center justify-center w-full pt-20 xl:pt-24">
-          <div className="relative z-10 w-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
-            <img
-              src={quiteRootLogo}
-              alt="QuiteRoot"
-              className="w-full h-auto object-contain"
-            />
-          </div>
+    <PublicHeroSection mask="none" rightContent={
+      <div className="relative hidden lg:flex items-center justify-center w-full h-full">
+        <div className="relative z-10 w-full max-w-[80%] 2xl:max-w-[75%] flex items-center justify-center">
+          <img
+            src={quiteRootLogo}
+            alt="QuiteRoot"
+            className="w-full h-auto object-contain"
+          />
         </div>
       </div>
-    </div>
+    }>
+      <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+        <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+          QUITE <span className="text-bg/80">ROOT</span>
+        </span>
+      </h1>
+      <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+        The intelligence behind QYVORA — engineering offensive security tools and production-ready security capabilities.
+      </p>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+        <a href="#research" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+          Explore Research <IconArrowRight size={16} />
+        </a>
+      </div>
+    </PublicHeroSection>
   );
 }
 

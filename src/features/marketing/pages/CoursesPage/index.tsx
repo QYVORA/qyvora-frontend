@@ -1,4 +1,4 @@
-import React, { useState, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen, Zap, Terminal, Globe,
@@ -7,11 +7,8 @@ import {
 import { IconArrowRight, IconCode, IconShield, IconSearch, IconClock } from '@/shared/components/icons';
 import ScrollReveal from '@/shared/components/ScrollReveal';
 import SEO from '@/shared/components/SEO';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { Footer } from '@/shared/components/layout';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { COURSES, COURSE_CATEGORIES, getCategoryById } from '@/features/student/data/courses/courseData';
 import type { CourseCategoryId, SkillLevel } from '@/features/student/data/courses/types';
 
@@ -77,52 +74,34 @@ const CoursesPage: React.FC = () => {
       />
 
       {/* ─── HERO: Full viewport ─── */}
-      <section className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col pt-[72px] bg-accent" data-nav-invert>
-        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
-        <div className="pointer-events-none absolute inset-0 dot-grid opacity-[0.03]" />
-        <div className="pointer-events-none absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/[0.02] blur-[120px]" />
-        <div className="pointer-events-none absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/[0.015] blur-[100px]" />
-
-        {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
-          <div className="relative w-full h-full flex items-end justify-end">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
-              </Suspense>
-            </ErrorBoundary>
-          </div>
+      <PublicHeroSection showGlobe mask="right">
+        <span className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
+          <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
+          <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
+            <BookOpen className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Self-Paced Learning
+          </span>
+        </span>
+        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+          <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+            QYVORA{' '}
+            <span className="text-bg/80">Courses</span>
+          </span>
+        </h1>
+        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          Beginner-friendly courses that teach one cybersecurity skill at a time.
+        </p>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+          <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+            Start Training <IconArrowRight className="h-4 w-4" />
+          </Link>
+          <a href="#courses" className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap">
+            Browse Courses
+          </a>
         </div>
-
-        <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
-          {/* Left column */}
-          <div className="flex flex-col items-start justify-center px-4 sm:px-8 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
-            <div className="flex flex-col items-start w-full space-y-6 max-w-xl">
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 border border-bg/20 bg-bg/10 rounded-lg max-w-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-bg/60 animate-pulse flex-none" />
-                <span className="font-mono text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] min-[380px]:tracking-[0.14em] sm:tracking-[0.3em] text-bg whitespace-normal">
-                  <BookOpen className="h-3 w-3 inline-block -mt-0.5 mr-1.5" /> Self-Paced Learning
-                </span>
-              </span>
-              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                  QYVORA{' '}
-                  <span className="text-bg/80">Courses</span>
-                </span>
-              </h1>
-              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-                Focused, beginner-friendly courses that teach one skill at a time.
-                Learn at your own pace and build your cybersecurity foundation lesson by lesson.
-              </p>
-            </div>
-          </div>
-
-          <div className="hidden lg:block" />
-        </div>
-      </section>
+      </PublicHeroSection>
 
       {/* ─── CONTENT: Search, filters, course grid ─── */}
-      <section className="relative z-10 w-full border-t border-border/10">
+      <section id="courses" className="relative z-10 w-full border-t border-border/10">
         <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 md:py-16">
           {/* Search + Sort */}
           <div className="flex items-center gap-3 mb-6">

@@ -1,16 +1,14 @@
-import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Radio, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
 import { IconShield, IconWarning } from '@/shared/components/icons';
 import { Carousel } from '@/shared/components/carousel';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 interface Article {
   id: string;
@@ -129,49 +127,29 @@ const NewsFeedPage = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex flex-col bg-accent" data-nav-invert>
-
-        {/* ── Grid background ── */}
-        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
-
-        {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 hidden md:flex items-end justify-end overflow-hidden">
-          <div className="relative w-full h-full flex items-end justify-end">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
-              </Suspense>
-            </ErrorBoundary>
-          </div>
+      <PublicHeroSection showGlobe mask="right">
+        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+          <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+            Cyber <span className="text-bg/80">Feed</span>
+          </span>
+        </h1>
+        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          African-focused cybersecurity threat intelligence and digital safety alerts.
+        </p>
+        <div className="flex items-center gap-4 pt-2">
+          <button
+            onClick={() => fetchNews(true)}
+            disabled={refreshing}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-bg/30 bg-bg/10 text-bg text-xs font-black uppercase tracking-wider hover:bg-bg/20 transition-colors disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Updating' : 'Refresh Feed'}
+          </button>
+          <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 !py-3.5 whitespace-nowrap">
+            Start Training
+          </Link>
         </div>
-
-        <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
-          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-28 lg:pt-24 pb-10 sm:pb-12 lg:pb-16 w-full h-full">
-            <div className="flex flex-col items-start w-full space-y-6">
-              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                  Cyber <span className="text-bg/80">Feed</span>
-                </span>
-              </h1>
-              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-                African-focused cybersecurity threat intelligence and situational awareness.
-                Curated cyber events, advisories, and digital safety alerts.
-              </p>
-              <div className="flex items-center gap-4 pt-2">
-                <button
-                  onClick={() => fetchNews(true)}
-                  disabled={refreshing}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-bg/30 bg-bg/10 text-bg text-xs font-black uppercase tracking-wider hover:bg-bg/20 transition-colors disabled:opacity-50"
-                >
-                  <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-                  {refreshing ? 'Updating' : 'Refresh Feed'}
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="hidden lg:block" />
-        </div>
-      </section>
+      </PublicHeroSection>
 
       {/* ══ NEWS FEED ══ */}
       <section className="relative w-full bg-bg py-20 md:py-28">

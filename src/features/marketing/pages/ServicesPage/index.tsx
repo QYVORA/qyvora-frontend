@@ -9,7 +9,7 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 const SERVICES_DATA = [
   {
@@ -71,30 +71,29 @@ const ServicesPage: React.FC = () => {
       />
 
       {/* ══ HERO ══ */}
-      <section className="relative bg-accent min-h-dvh md:h-dvh md:overflow-hidden flex flex-col justify-center pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
-        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
-              <IconShield className="w-4 h-4" />
-              Offensive Security Assessments
-            </div>
-            <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-              <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                Test Your <br />
-                <span className="text-bg/80">Defenses</span>
-              </span>
-            </h1>
-            <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-              Professional penetration testing services tailored for African organizations.
-              From startups to enterprises — we assess your attack surface before adversaries do.
-            </p>
-          </div>
+      <PublicHeroSection mask="none">
+        <div className="flex items-center gap-3 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
+          <IconShield className="w-4 h-4" />
+          Offensive Security Assessments
         </div>
-      </section>
+        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+          <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+            Test Your{' '}
+            <span className="text-bg/80">Defenses</span>
+          </span>
+        </h1>
+        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          Professional penetration testing services tailored for African organizations.
+        </p>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+          <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+            Request Assessment <IconArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </PublicHeroSection>
 
       {/* ══ SERVICES CARDS — dark bg ══ */}
-      <section className="relative w-full py-20 md:py-28">
+      <section id="services" className="relative w-full py-20 md:py-28">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
