@@ -8,29 +8,11 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-import { PHASE_COLORS } from '@/features/student/constants/bootcampConfig';
-import { COURSES } from '@/features/student/data/courses/courseData';
-
-interface SkillAxis {
-  key: string;
-  label: string;
-  shortLabel: string;
-  color: string;
-  /** Bootcamp phase IDs that contribute to this axis */
-  phaseIds: number[];
-  /** Course category IDs that contribute to this axis */
-  categoryIds: string[];
-}
-
-const SKILL_AXES: SkillAxis[] = [
-  { key: 'mindset', label: 'Security Mindset', shortLabel: 'Mindset', color: PHASE_COLORS.phase1, phaseIds: [1], categoryIds: [] },
-  { key: 'linux', label: 'Linux / Terminal', shortLabel: 'Linux', color: PHASE_COLORS.phase2, phaseIds: [2], categoryIds: ['terminal'] },
-  { key: 'networking', label: 'Networking', shortLabel: 'Network', color: PHASE_COLORS.phase3, phaseIds: [3], categoryIds: ['networking'] },
-  { key: 'web', label: 'Web Security', shortLabel: 'Web', color: PHASE_COLORS.phase4, phaseIds: [4], categoryIds: ['web-security'] },
-  { key: 'social', label: 'Social Engineering', shortLabel: 'Social', color: PHASE_COLORS.phase5, phaseIds: [5], categoryIds: ['wireless'] },
-  { key: 'tools', label: 'Tools Proficiency', shortLabel: 'Tools', color: '#8B5CF6', phaseIds: [], categoryIds: ['tools'] },
-  { key: 'programming', label: 'Programming', shortLabel: 'Code', color: '#10B981', phaseIds: [], categoryIds: ['programming'] },
-];
+import {
+  SKILL_DEFINITIONS,
+  computeAllSkills,
+  extractBootcampCompletedIds,
+} from '@/features/student/utils/skillRegistry';
 
 interface OverviewModule {
   moduleId?: number;
@@ -40,83 +22,8 @@ interface OverviewModule {
   roomsTotal?: number;
 }
 
-interface CourseProgressEntry {
-  completed: number;
-  total: number;
-}
-
 interface SkillMatrixProps {
   modules: OverviewModule[];
-}
-
-/** Read course progress from localStorage: qyvora_course_progress_{courseId} */
-function readCourseProgressMap(): Map<string, CourseProgressEntry> {
-  const map = new Map<string, CourseProgressEntry>();
-  for (const course of COURSES) {
-    try {
-      const raw = localStorage.getItem(`qyvora_course_progress_${course.id}`);
-      if (!raw) continue;
-      const parsed = JSON.parse(raw);
-      const completed = parsed.completedLessons?.length || 0;
-      const total = course.lessons.length;
-      if (total > 0) {
-        map.set(course.id, { completed, total });
-      }
-    } catch {
-      // ignore malformed localStorage
-    }
-  }
-  return map;
-}
-
-function computeSkillValues(
-  modules: OverviewModule[],
-  courseMap: Map<string, CourseProgressEntry>,
-): Record<string, number> {
-  const phaseMap = new Map<number, OverviewModule>();
-  modules.forEach((m) => {
-    if (m.moduleId) phaseMap.set(m.moduleId, m);
-  });
-
-  const pct = (done: number, total: number) => (total > 0 ? Math.round((done / total) * 100) : 0);
-
-  const values: Record<string, number> = {};
-
-  for (const axis of SKILL_AXES) {
-    const sources: number[] = [];
-
-    // 1. Bootcamp phase progress
-    for (const phaseId of axis.phaseIds) {
-      const mod = phaseMap.get(phaseId);
-      if (mod) {
-        sources.push(pct(mod.roomsCompleted ?? 0, mod.roomsTotal ?? 1));
-      }
-    }
-
-    // 2. Course progress (average across matching courses)
-    const matchingCourses = COURSES.filter((c) => axis.categoryIds.includes(c.categoryId));
-    if (matchingCourses.length > 0) {
-      let totalCompleted = 0;
-      let totalLessons = 0;
-      for (const course of matchingCourses) {
-        const entry = courseMap.get(course.id);
-        if (entry) {
-          totalCompleted += entry.completed;
-          totalLessons += entry.total;
-        }
-      }
-      if (totalLessons > 0) {
-        sources.push(pct(totalCompleted, totalLessons));
-      }
-    }
-
-    // Combine: average of all available sources, or 0 if none
-    values[axis.key] = sources.length > 0
-      ? Math.round(sources.reduce((a, b) => a + b, 0) / sources.length)
-      : 0;
-  }
-
-  return values;
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -135,20 +42,28 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   const { t } = useTranslation();
 
   const { radarData, skills, average } = useMemo(() => {
-    const courseMap = readCourseProgressMap();
-    const values = computeSkillValues(modules, courseMap);
+    const bootcampCompleted = extractBootcampCompletedIds(modules);
+    const allSkills = computeAllSkills(bootcampCompleted);
 
-    const radar = SKILL_AXES.map((axis) => ({
-      axis: axis.shortLabel,
-      label: axis.label,
-      value: values[axis.key] ?? 0,
-      color: axis.color,
-    }));
+    const radar = allSkills.map((s) => {
+      const def = SKILL_DEFINITIONS.find((d) => d.key === s.skillKey)!;
+      return {
+        axis: def.shortLabel,
+        label: def.label,
+        value: s.progress.percentage,
+        color: def.color,
+      };
+    });
 
-    const skillList = SKILL_AXES.map((axis) => ({
-      ...axis,
-      level: values[axis.key] ?? 0,
-    }));
+    const skillList = allSkills.map((s) => {
+      const def = SKILL_DEFINITIONS.find((d) => d.key === s.skillKey)!;
+      return {
+        ...def,
+        level: s.progress.percentage,
+        completed: s.progress.completed,
+        total: s.progress.total,
+      };
+    });
 
     const total = skillList.reduce((sum, s) => sum + s.level, 0);
     const avg = skillList.length > 0 ? Math.round(total / skillList.length) : 0;
@@ -236,8 +151,8 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
                   style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
                 />
               </div>
-              <span className="text-[10px] font-black text-text-primary w-8 text-right tabular-nums">
-                {skill.level}%
+              <span className="text-[10px] font-black text-text-primary w-12 text-right tabular-nums">
+                {skill.completed}/{skill.total}
               </span>
             </div>
           ))}
