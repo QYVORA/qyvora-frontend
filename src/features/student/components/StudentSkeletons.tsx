@@ -43,19 +43,24 @@ const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean
 /* ─── Profile Page Skeleton ─────────────────────────────────────────────────── */
 export const ProfileSkeleton = () => (
   <div className="w-full bg-bg">
-    <div className="relative z-10 w-full  px-4 md:px-10 lg:px-12 xl:px-16 pt-28 md:pt-24 lg:pt-28 pb-16">
+    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+      <OverviewCardSkeleton stats={3} action />
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
         {/* Left sidebar */}
         <div className="md:w-[280px] lg:w-[300px] shrink-0 space-y-6 md:sticky md:top-[72px] md:self-start md:pb-16">
           <Skeleton className="w-24 h-24 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full bg-border/30" />
-          <Skeleton className="h-5 w-32 bg-border/30 rounded" />
-          <Skeleton className="h-8 w-28 bg-border/30 rounded-lg" />
           <Skeleton className="h-6 w-20 bg-border/30 rounded-lg" />
-          <Skeleton className="h-10 w-full bg-border/30 rounded-xl" />
+          {/* Badges card */}
+          <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-3">
+              <Skeleton className="w-4 h-4 bg-border/30 rounded" />
+              <Skeleton className="h-3 w-16 bg-border/30 rounded" />
+              <Skeleton className="h-4 w-5 bg-border/30 rounded" />
+            </div>
+          </div>
           <div className="flex items-center gap-2">
             <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
             <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
-            <Skeleton className="h-10 w-20 bg-border/30 rounded-xl" />
           </div>
         </div>
         {/* Right content */}
@@ -68,8 +73,13 @@ export const ProfileSkeleton = () => (
               <Skeleton className="h-4 w-40 bg-border/30 rounded" />
             </div>
           </div>
-          <div className="border-t border-border/30 pt-6">
-            <Skeleton className="h-12 w-full bg-border/30 rounded-xl" />
+          {/* Rooms card */}
+          <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+            <div className="flex items-center gap-2 px-6 py-4 border-b border-border/30">
+              <Skeleton className="w-4 h-4 bg-border/30 rounded" />
+              <Skeleton className="h-4 w-36 bg-border/30 rounded" />
+              <Skeleton className="h-5 w-8 bg-border/30 rounded" />
+            </div>
           </div>
         </div>
       </div>
