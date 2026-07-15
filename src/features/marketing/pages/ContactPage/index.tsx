@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Send, Loader2, AlertCircle, Mail, MapPin, Globe } from 'lucide-react';
-import { IconCheck } from '@/shared/components/icons';
+import { IconCheck, IconArrowRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 type ContactType = 'student' | 'business';
 
@@ -44,31 +44,33 @@ const ContactPage: React.FC = () => {
         ]}
       />
 
-      <section className="relative bg-accent min-h-[85svh] md:min-h-screen md:overflow-hidden pt-24 md:pt-32 pb-16 md:pb-24" data-nav-invert>
-        <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
-              <Mail className="w-4 h-4" />
-              {SITE_CONFIG.contactPage.heroTag}
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-6 text-bg">
-              {SITE_CONFIG.contactPage.heroTitle.split(' ').map((word, i) =>
-                i === SITE_CONFIG.contactPage.heroTitle.split(' ').length - 1 ? (
-                  <span key={i} className="text-bg/80">{word}</span>
-                ) : (
-                  <React.Fragment key={i}>{word} </React.Fragment>
-                )
-              )}
-            </h1>
-            <p className="text-lg md:text-xl text-bg/70 font-mono leading-relaxed max-w-2xl">
-              {SITE_CONFIG.contactPage.heroSubtitle}
-            </p>
-          </div>
+      <PublicHeroSection mask="none">
+        <div className="flex items-center gap-3 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
+          <Mail className="w-4 h-4" />
+          {SITE_CONFIG.contactPage.heroTag}
         </div>
-      </section>
+        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+          <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+            {SITE_CONFIG.contactPage.heroTitle.split(' ').map((word, i) =>
+              i === SITE_CONFIG.contactPage.heroTitle.split(' ').length - 1 ? (
+                <span key={i} className="text-bg/80">{word}</span>
+              ) : (
+                <React.Fragment key={i}>{word} </React.Fragment>
+              )
+            )}
+          </span>
+        </h1>
+        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          {SITE_CONFIG.contactPage.heroSubtitle}
+        </p>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+          <button onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })} className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+            Get in Touch <IconArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </PublicHeroSection>
 
-      <section className="relative w-full py-20 md:py-28 border-t border-border/20">
+      <section id="contact-form" className="relative w-full py-20 md:py-28 border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-16">
             {/* Left info cards */}
@@ -242,7 +244,7 @@ const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      <section id="cta" className="relative w-full">
+      <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <LandingFinalCtaSection user={user} />
       </section>
 

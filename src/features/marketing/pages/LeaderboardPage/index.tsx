@@ -1,17 +1,14 @@
-import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
 import { IconShield, IconArrowRight, IconLeaderboard } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import ErrorBoundary from '@/shared/components/ErrorBoundary';
 import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
-
-const HackerGlobe = lazy(() => import('@/features/marketing/components/HackerGlobe'));
+import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 const PERIODS = [
   { key: 'all',  label: 'All Time'   },
@@ -194,62 +191,43 @@ const LeaderboardPage = () => {
       />
 
       {/* ══ HERO SECTION ══ */}
-      <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-accent" data-nav-invert>
-
-        {/* ── Grid background ── */}
-        <GridBoxedBackground opacity={0.5} blur={0} mask="right" />
-
-        {/* ── Globe ── */}
-        <div className="absolute inset-0 z-0 flex items-end justify-end overflow-hidden">
-          <div className="relative w-full h-full flex items-end justify-end">
-            <ErrorBoundary scope="HackerGlobe" fallback={null}>
-              <Suspense fallback={null}>
-                <HackerGlobe scale={1.0} offset={[0.9, -0.7, 0]} />
-              </Suspense>
-            </ErrorBoundary>
-          </div>
+      <PublicHeroSection showGlobe mask="right">
+        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+          <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
+            Operator <span className="text-bg/80">Leaderboard</span>
+          </span>
+        </h1>
+        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned on the QYVORA Chain.
+        </p>
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
+          <IconShield className="w-4 h-4 text-bg/80" />
+          CP verified on QYVORA Chain
         </div>
-
-        <div className="relative z-10 w-full flex-1 mx-auto grid grid-cols-1 lg:grid-cols-2 text-left items-center md:h-full">
-          <div className="flex flex-col items-start justify-center px-6 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16 w-full h-full">
-            <div className="flex flex-col items-start w-full space-y-6">
-              <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full">
-                <span className="block text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-                  Operator <span className="text-bg/80">Leaderboard</span>
-                </span>
-              </h1>
-              <p className="text-bg/70 text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed max-w-xl animate-fade-in font-mono">
-                Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned.
-                All balances verified on the QYVORA Chain — immutable, tamper-proof,
-                and fully on-ledger.
-              </p>
-              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
-                <IconShield className="w-4 h-4 text-bg/80" />
-                CP verified on QYVORA Chain
-              </div>
-              {entries.length > 0 && (
-                <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
-                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-bg">{Number(total).toLocaleString()}</span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Operators</p>
-                  </div>
-                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-bg">
-                      {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
-                    </span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Total CP</p>
-                  </div>
-                  <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-                    <span className="text-xl md:text-2xl font-black text-bg">{Number(entries[0].cp).toLocaleString()}</span>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Top CP</p>
-                  </div>
-                </div>
-              )}
+        {entries.length > 0 && (
+          <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
+            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-bg">{Number(total).toLocaleString()}</span>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Operators</p>
+            </div>
+            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-bg">
+                {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
+              </span>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Total CP</p>
+            </div>
+            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-bg">{Number(entries[0].cp).toLocaleString()}</span>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Top CP</p>
             </div>
           </div>
-          <div className="hidden lg:block" />
+        )}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+          <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
+            Start Training <IconArrowRight className="h-4 w-4" />
+          </Link>
         </div>
-      </div>
+      </PublicHeroSection>
 
       {/* ══ LEADERBOARD SECTION ══ */}
       <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28">
