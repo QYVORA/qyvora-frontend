@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
   LogOut,
 } from 'lucide-react';
-import { IconX } from '@/shared/components/icons';
 import {
   IconDashboard,
   IconBootcamp,
@@ -25,7 +24,6 @@ import Logo from '../../../../../shared/components/brand/Logo';
 import CpLogo from '../../../../../shared/components/CpLogo';
 import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
-import { useScrollLock } from '../../../../../core/hooks/useScrollLock';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
 import MobileNotificationsSheet from './MobileNotificationsSheet';
@@ -47,11 +45,6 @@ const StudentTopbar = () => {
     { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
   ];
 
-  const ALL_NAV_ITEMS = [
-    ...DESKTOP_NAV_ITEMS,
-    { label: t('nav.competitive'), icon: IconDashboard, path: '/dashboard/competitive' },
-    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
-  ];
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -93,10 +86,8 @@ const StudentTopbar = () => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
   const notifRef = useRef<HTMLDivElement>(null);
-  useScrollLock(mobileNavOpen);
 
   const loadNotificationsSnapshot = async () => {
     setNotifLoading(true);
@@ -153,7 +144,7 @@ const StudentTopbar = () => {
     }).catch(() => {});
     return () => { mounted = false; };
   }, [user?.uid]);
-  useEffect(() => { setNotifOpen(false); setMobileNavOpen(false); }, [location.pathname]);
+  useEffect(() => { setNotifOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     if (!notifOpen) return undefined;
@@ -331,9 +322,9 @@ const StudentTopbar = () => {
               <Logo size="md" />
             </Link>
 
-            {/* Mobile: hamburger */}
+            {/* Mobile: hamburger — opens the Sidebar drawer, not a separate topbar drawer */}
             <button
-              onClick={() => setMobileNavOpen(true)}
+              onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
               className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors ml-auto"
               aria-label="Open navigation"
             >
@@ -429,62 +420,7 @@ const StudentTopbar = () => {
         )}
       </header>
 
-      {/* ── Mobile nav overlay ── */}
-      {mobileNavOpen && (
-        <>
-          <div
-            onClick={() => setMobileNavOpen(false)}
-            className="fixed inset-0 z-[90] bg-black/65 backdrop-blur-sm lg:hidden"
-          />
-          <div className="fixed inset-y-0 left-0 z-[95] w-[85vw] max-w-[320px] flex flex-col bg-bg border-r border-border lg:hidden overflow-y-auto">
-            {/* Header */}
-            <div className="h-20 flex items-center justify-between px-6 border-b border-border shrink-0">
-              <Link to="/dashboard" onClick={() => setMobileNavOpen(false)}>
-                <Logo size="md" />
-              </Link>
-              <button
-                onClick={() => setMobileNavOpen(false)}
-                className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
-                aria-label="Close navigation"
-              >
-                <IconX size={20} />
-              </button>
-            </div>
 
-            {/* Nav links */}
-            <nav className="flex-1 px-3 pt-4">
-              {ALL_NAV_ITEMS.map((item) => {
-                const active = isActive(item.path);
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setMobileNavOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
-                      active
-                        ? 'text-accent'
-                        : 'text-text-muted hover:text-text-primary hover:bg-accent-dim/50'
-                    }`}
-                  >
-                    <item.icon size={24} className="shrink-0" />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Bottom actions */}
-            <div className="px-3 pb-4 border-t border-border pt-3 space-y-2">
-              <button
-                onClick={() => { handleLogout(); setMobileNavOpen(false); }}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-red-400/20 text-red-400 text-sm font-bold uppercase tracking-widest hover:bg-red-400/10 transition-all"
-              >
-                <LogOut className="w-4 h-4" /> {t('button.logOut')}
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </>
   );
 };

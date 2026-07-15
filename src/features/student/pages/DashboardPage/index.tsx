@@ -610,14 +610,16 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* 4. Room Grid */}
-        <div ref={roomsRef}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
-              <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
-            ))}
+        {/* 4. Room Grid — only when no section selected */}
+        {!activeSection && (
+          <div ref={roomsRef}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+              {BOOTCAMP_CONFIG.phases.flatMap(p => p.rooms.map(r => ({ ...r, _phaseId: p.id }))).slice(0, 6).map((room) => (
+                <DashboardRoomCard key={`${room._phaseId}-${room.id}`} room={room} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 5. Next Rank Progress */}
         {nextRank && (
