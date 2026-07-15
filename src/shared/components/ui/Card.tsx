@@ -211,7 +211,7 @@ export const CardStat: React.FC<CardStatProps> = ({
     return (
       <Link
         to={href}
-        className="group block overflow-hidden rounded-2xl border border-border bg-bg-card transition-colors hover:border-accent/40"
+        className="group block overflow-hidden rounded-2xl border border-border/30 bg-bg-card transition-colors hover:border-accent/40"
         style={{ boxShadow: 'var(--card-shimmer)' }}
       >
         {inner}
@@ -221,7 +221,7 @@ export const CardStat: React.FC<CardStatProps> = ({
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border border-border bg-bg-card"
+      className="overflow-hidden rounded-2xl border border-border/30 bg-bg-card"
       style={{ boxShadow: 'var(--card-shimmer)' }}
     >
       {inner}

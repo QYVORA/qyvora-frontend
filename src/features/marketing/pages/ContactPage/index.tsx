@@ -75,7 +75,7 @@ const ContactPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-16">
             {/* Left info cards */}
             <div className="md:col-span-2 space-y-6">
-              <div className="card-qyvora border border-border bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
+              <div className="card-qyvora border border-border/30 bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Mail className="w-5 h-5 text-accent" />
@@ -90,7 +90,7 @@ const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="card-qyvora border border-border bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
+              <div className="card-qyvora border border-border/30 bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <Globe className="w-5 h-5 text-accent" />
@@ -105,7 +105,7 @@ const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="card-qyvora border border-border bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
+              <div className="card-qyvora border border-border/30 bg-bg-card/60 p-6 md:p-8 hover:border-accent/35">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5 text-accent" />
@@ -120,7 +120,7 @@ const ContactPage: React.FC = () => {
 
             {/* Right form */}
             <div className="md:col-span-3">
-              <div className="card-qyvora border border-border bg-bg-card/60 p-6 md:p-8 lg:p-10 hover:border-accent/35">
+              <div className="card-qyvora border border-border/30 bg-bg-card/60 p-6 md:p-8 lg:p-10 hover:border-accent/35">
                 {status === 'sent' ? (
                   <div className="flex flex-col items-center justify-center py-12 gap-5 text-center">
                     <div className="w-16 h-16 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">

@@ -195,7 +195,7 @@ function Principles() {
           {principles.map(([title, body, Icon], index) => (
             <div
               key={title as string}
-              className="card-qyvora border border-border bg-bg-card/60 p-6 hover:border-accent/35"
+              className="card-qyvora border border-border/30 bg-bg-card/60 p-6 hover:border-accent/35"
             >
               {React.createElement(Icon as React.ElementType, { className: 'mb-7 h-8 w-8 text-accent' })}
               <h3 className="text-xl font-black uppercase tracking-tight text-text-primary">{title as string}</h3>
