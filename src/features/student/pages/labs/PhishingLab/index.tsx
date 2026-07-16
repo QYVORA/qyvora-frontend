@@ -153,7 +153,7 @@ const PhishingLab = () => {
         {steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
           const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
-          const isLocked = !isNextStep && !isCompleted;
+          const isLocked = false;
           const isActive = isNextStep && !isCompleted;
 
           return (

@@ -3,3 +3,5 @@ export type { WalkthroughStepProps, ProgressiveHintLevel } from './WalkthroughSt
 export { CommandBlock, FlagInput, StepComplete } from './StepParts';
 export { WalkthroughLayout } from './WalkthroughLayout';
 export type { WalkthroughLayoutProps } from './WalkthroughLayout';
+export { WalkthroughSidebar } from './WalkthroughSidebar';
+export type { WalkthroughSidebarProps, SidebarSection, SidebarItem } from './WalkthroughSidebar';
