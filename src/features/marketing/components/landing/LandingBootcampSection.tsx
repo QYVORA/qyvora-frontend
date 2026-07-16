@@ -30,7 +30,7 @@ const LandingBootcampSection: React.FC = () => {
   const visible = [featured, ...others];
 
   return (
-    <div className="relative bg-accent h-full md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-accent min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">

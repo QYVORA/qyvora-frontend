@@ -31,8 +31,9 @@ const TOP_THREE_RING = [
 
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
-const CELL_SIZE = 42;
-const GAP = 3;
+const CELL_SIZE_SM = 48;
+const CELL_SIZE_LG = 60;
+const GAP = 4;
 
 const LandingLeaderboardSection = () => {
   const { t } = useTranslation();
@@ -40,6 +41,17 @@ const LandingLeaderboardSection = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const cellSize = isDesktop ? CELL_SIZE_LG : CELL_SIZE_SM;
 
   useEffect(() => {
     let cancelled = false;
@@ -69,10 +81,12 @@ const LandingLeaderboardSection = () => {
     return arr;
   }, [entries]);
 
+  const medalSizes = isDesktop ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5';
+
   return (
-    <div className="relative bg-bg h-full md:h-dvh flex flex-col overflow-hidden">
-      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-        <div className="shrink-0 lg:w-[380px] xl:w-[420px]">
+    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden">
+      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-20 sm:gap-10 lg:gap-20 lg:items-center">
+        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
              <IconShield size={12} className="text-accent" /> {t('landing.leaderboard.badge')}
           </span>
@@ -92,7 +106,7 @@ const LandingLeaderboardSection = () => {
           )}
         </div>
 
-        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden">
+        <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center justify-center">
           {loading ? (
             <div
               className="flex flex-wrap content-start"
@@ -103,8 +117,8 @@ const LandingLeaderboardSection = () => {
                   key={i}
                   className="rounded-lg bg-bg-card border border-border/20 animate-pulse shrink-0"
                   style={{
-                    width: `${CELL_SIZE}px`,
-                    height: `${CELL_SIZE}px`,
+                    width: `${cellSize}px`,
+                    height: `${cellSize}px`,
                     animationDelay: `${i * 40}ms`,
                   }}
                 />
@@ -125,7 +139,7 @@ const LandingLeaderboardSection = () => {
                     <div
                       key={idx}
                       className="rounded-lg bg-bg-elevated/40 border border-border/10 shrink-0"
-                      style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
+                      style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                     />
                   );
                 }
@@ -145,17 +159,17 @@ const LandingLeaderboardSection = () => {
                         : 'border-accent/15 hover:border-accent/40',
                       isHovered && 'z-20',
                     ].join(' ')}
-                    style={{ width: `${CELL_SIZE}px`, height: `${CELL_SIZE}px` }}
+                    style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center bg-bg-card [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry!.hackerHandle || entry!.userId} size={CELL_SIZE} />
+                      <Identicon value={entry!.userId} size={cellSize} />
                     </div>
 
                     <div className="absolute top-[2px] left-[2px] z-10">
                       {isTopThree ? (
-                        <Medal className={`w-2.5 h-2.5 ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
+                        <Medal className={`${medalSizes} ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
-                        <span className="text-[6px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
+                        <span className="text-[7px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
                           {entry!.rank}
                         </span>
                       )}
@@ -169,10 +183,10 @@ const LandingLeaderboardSection = () => {
                         isHovered ? 'opacity-100' : 'opacity-0',
                       ].join(' ')}
                     >
-                       <span className="text-[7px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
+                       <span className="text-[8px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
                          {entry!.hackerHandle || entry!.name || t('landing.leaderboard.anonFallback')}
                        </span>
-                       <span className="text-[6px] font-mono font-bold text-accent leading-none">
+                       <span className="text-[7px] font-mono font-bold text-accent leading-none">
                          {Number(entry!.cp).toLocaleString()} {t('landing.leaderboard.cpSuffix')}
                        </span>
                     </div>
