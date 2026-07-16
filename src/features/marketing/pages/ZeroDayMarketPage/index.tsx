@@ -87,7 +87,7 @@ const ZeroDayMarketPage: React.FC = () => {
 
       {/* ── FEATURES ── */}
       <section id="zd-features" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center">
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="space-y-6">
               <ScrollReveal direction="up">
@@ -133,7 +133,7 @@ const ZeroDayMarketPage: React.FC = () => {
 
       {/* ── PRODUCTS ── */}
       <section id="zd-products" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center border-t border-border/20">
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
               <IconLock className="h-3 w-3" /> Featured Assets
@@ -240,7 +240,7 @@ const ZeroDayMarketPage: React.FC = () => {
       <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
         <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-20 sm:py-28 lg:py-24 text-center">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36 text-center">
           <ScrollReveal direction="up">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-4">
               <IconLock className="h-3 w-3" /> Classified Access

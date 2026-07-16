@@ -102,7 +102,7 @@ const CoursesPage: React.FC = () => {
 
       {/* ─── CONTENT: Search, filters, course grid ─── */}
       <section id="courses" className="relative z-10 w-full border-t border-border/10">
-        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 md:py-16">
+        <div className="mx-auto max-w-[1600px] w-full px-4 md:px-10 lg:px-12 xl:px-16 py-12 md:py-16 lg:py-20">
           {/* Search + Sort */}
           <div className="flex items-center gap-3 mb-6">
             <div className="relative flex-1 max-w-md">
@@ -253,7 +253,9 @@ const CoursesPage: React.FC = () => {
           )}
         </div>
       </section>
-      <Footer />
+      <section className="bg-transparent overflow-hidden">
+        <Footer />
+      </section>
     </div>
   );
 };
