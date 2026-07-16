@@ -46,14 +46,13 @@ const PrivescLab = () => {
   const getStepState = useCallback(
     (index: number) => {
       const chapter = chapters[index];
-      if (!chapter) return { isLocked: true, isCompleted: false, isActive: false };
+      if (!chapter) return { isLocked: false, isCompleted: false, isActive: false };
       const isCompleted = completedSteps.has(chapter.id);
       const firstIncomplete = chapters.findIndex(
         (ch) => !completedSteps.has(ch.id)
       );
       const isActive = index === firstIncomplete;
-      const isLocked = !isCompleted && !isActive;
-      return { isLocked, isCompleted, isActive };
+      return { isLocked: false, isCompleted, isActive };
     },
     [chapters, completedSteps]
   );

@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
 
+interface UseNavInvertOptions {
+  navHeight?: number;
+}
+
 /**
  * Detects whether any element with `data-nav-invert` attribute overlaps
- * with the fixed Navbar (80px tall at the top of the viewport).
+ * with the fixed navbar at the top of the viewport.
  *
  * Uses scroll + resize listener with getBoundingClientRect for
  * reliable detection, plus MutationObserver to catch DOM changes.
+ *
+ * Any section that needs to trigger navbar color inversion should add
+ * `data-nav-invert` to its root element. This hook scans for those
+ * elements and returns `true` when one overlaps the navbar zone.
+ *
+ * @param options.navHeight - Height of the navbar in px (default: 80)
  */
-export function useNavInvert(): boolean {
+export function useNavInvert(options?: UseNavInvertOptions): boolean {
   const [inverted, setInverted] = useState(false);
+  const navHeight = options?.navHeight ?? 80;
 
   useEffect(() => {
-    const navHeight = 80;
     let ticking = false;
 
     const check = () => {
@@ -20,7 +30,6 @@ export function useNavInvert(): boolean {
 
       for (const el of els) {
         const rect = el.getBoundingClientRect();
-        // Check if element overlaps the navbar zone (top 0 → navHeight)
         if (rect.top < navHeight && rect.bottom > 0) {
           found = true;
           break;
@@ -38,10 +47,8 @@ export function useNavInvert(): boolean {
       }
     };
 
-    // Initial check after a frame to let React mount
     requestAnimationFrame(check);
 
-    // Also check on DOM mutations (for lazy-loaded components)
     const observer = new MutationObserver(() => {
       if (!ticking) {
         ticking = true;
@@ -64,7 +71,7 @@ export function useNavInvert(): boolean {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, []);
+  }, [navHeight]);
 
   return inverted;
 }

@@ -47,29 +47,26 @@ export function WalkthroughStep({
   return (
     <div
       className={cn(
-        'w-full rounded-2xl border transition-all duration-200',
-        isLocked && 'opacity-40 border-border/20 bg-bg-card',
-        isCompleted && 'border-accent/30 bg-accent/5',
-        isActive && !isCompleted && 'border-accent/30 bg-bg-card',
-        !isActive && !isCompleted && !isLocked && 'border-border/20 bg-bg-card',
+        'w-full border-t border-border/10 first:border-t-0',
+        isLocked && 'opacity-40',
       )}
     >
       {/* Step Header */}
-      <div className="flex items-center gap-3 px-6 py-5">
+      <div className="flex items-center gap-3 py-8 md:py-12">
         <span
           className={cn(
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[11px] font-black',
+            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border font-mono text-lg font-black',
             isCompleted
-              ? 'bg-accent/20 text-accent'
+              ? 'bg-accent-dim border-accent/20 text-accent'
               : isLocked
-                ? 'bg-bg-elevated text-text-muted'
+                ? 'bg-bg-elevated border-border text-text-muted'
                 : isActive
-                  ? 'bg-accent text-bg'
-                  : 'bg-bg-elevated text-text-secondary',
+                  ? 'bg-accent border-accent text-bg'
+                  : 'bg-bg-elevated border-border text-text-muted',
           )}
         >
           {isCompleted ? (
-            <IconCheck size={16} />
+            <IconCheck size={24} />
           ) : isLocked ? (
             <IconLock size={14} />
           ) : (
@@ -77,14 +74,14 @@ export function WalkthroughStep({
           )}
         </span>
         <div className="flex-1 min-w-0">
-          <h3
+          <span
             className={cn(
-              'text-base font-black tracking-wide',
-              isCompleted ? 'text-accent' : isLocked ? 'text-text-muted' : 'text-text-primary',
+              'block font-black uppercase tracking-[0.25em] transition-colors duration-300',
+              isCompleted ? 'text-accent text-xs' : isLocked ? 'text-text-muted text-[10px]' : isActive ? 'text-accent text-xs' : 'text-text-muted text-[10px]',
             )}
           >
             {title}
-          </h3>
+          </span>
         </div>
         {isCompleted && (
           <span className="text-[9px] font-black uppercase tracking-widest text-accent">
@@ -95,7 +92,7 @@ export function WalkthroughStep({
 
       {/* Step Content — visible when active, hidden when locked */}
       {!isLocked && (
-        <div className="px-6 pb-8 space-y-5">
+        <div className="space-y-6 pb-12 md:pb-16">
           {/* Mission */}
           {mission && (
             <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-4 flex items-start gap-3">
@@ -125,11 +122,9 @@ export function WalkthroughStep({
             </div>
           )}
 
-          {/* Narrative */}
-          <div className="rounded-xl border border-border/20 bg-bg-elevated p-6">
-            <div className="text-base leading-[2] text-text-secondary font-mono whitespace-pre-wrap">
-              {narrative}
-            </div>
+          {/* Narrative — continuous reading flow */}
+          <div className="text-sm sm:text-base leading-[2] text-text-secondary font-mono whitespace-pre-wrap overflow-x-auto">
+            {narrative}
           </div>
 
           {/* Evidence */}
@@ -219,7 +214,7 @@ export function WalkthroughStep({
             </div>
           )}
 
-          {/* Flag Input */}
+          {/* Flag Input — embedded naturally in the reading flow */}
           {!isCompleted && (
             <FlagInput flagId={flagId} disabled={false} onFlagSubmit={onFlagSubmit} onCorrect={handleCorrect} />
           )}
@@ -230,7 +225,7 @@ export function WalkthroughStep({
 
       {/* Locked overlay */}
       {isLocked && (
-        <div className="px-6 pb-5">
+        <div className="pb-8">
           <p className="text-sm font-mono text-text-muted/50">
             Complete the previous step to unlock this one.
           </p>

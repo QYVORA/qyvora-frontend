@@ -54,8 +54,10 @@ const StudentTopbar = () => {
   const roomMatch = useMatch('/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId');
   const roomMatchLegacy = useMatch('/dashboard/bootcamps/:bootcampId/modules/:moduleId/rooms/:roomId');
   const courseMatch = useMatch('/dashboard/courses/:courseId');
+  const labMatch = useMatch('/dashboard/labs/:labType');
 
   const isCoursePage = Boolean(courseMatch);
+  const isLabPage = Boolean(labMatch);
   const activeRoomMatch = roomMatch ?? roomMatchLegacy;
   const isRoomPage = Boolean(activeRoomMatch) || isCoursePage;
 
@@ -182,7 +184,7 @@ const StudentTopbar = () => {
         {isRoomPage ? (
           isCoursePage ? (
             /* ══ COURSE MODE ══ */
-            <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex flex-col">
+            <div className="px-4 md:px-12 lg:px-16 h-20 md:h-24 flex flex-col">
               <div className="flex-1 flex items-center gap-1.5 md:gap-3 min-w-0">
                 <button
                   onClick={() => navigate('/dashboard/courses')}
@@ -258,7 +260,7 @@ const StudentTopbar = () => {
             </div>
           ) : (
             /* ══ BOOTCAMP ROOM MODE ══ */
-            <div className=" px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
+            <div className="px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
                 className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
@@ -314,6 +316,44 @@ const StudentTopbar = () => {
               </div>
             </div>
           )
+        ) : isLabPage ? (
+          /* ══ LAB MODE ══ */
+          <div className="px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
+            <button
+              onClick={() => navigate('/dashboard/labs')}
+              className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl text-text-muted hover:text-accent transition-colors"
+              aria-label="Back to labs"
+            >
+              <IconArrowLeft size={20} />
+            </button>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-text-muted min-w-0 flex-1">
+              <Link to="/dashboard/labs" className="hover:text-accent transition-colors shrink-0">
+                Labs
+              </Link>
+              <IconChevronRight size={12} className="opacity-40 shrink-0" />
+              <span className="text-text-primary font-black truncate">
+                {labMatch?.params?.labType?.replace(/-/g, ' ') || 'Lab'}
+              </span>
+            </div>
+            <div className="flex sm:hidden flex-col min-w-0 flex-1">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">Lab</span>
+              <span className="text-sm font-black text-text-primary truncate leading-tight">
+                {labMatch?.params?.labType?.replace(/-/g, ' ') || 'Lab'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
+                aria-label="Open terminal"
+              >
+                <IconTerminal size={20} />
+              </button>
+              <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
+                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+              </Link>
+            </div>
+          </div>
 
         ) : (
           /* ══ DASHBOARD MODE ══ */
