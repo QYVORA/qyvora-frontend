@@ -1,5 +1,25 @@
 import type { CommandHandler, VFSNode } from '../../types';
-import { findNode, resolvePath, pathBasename, pathDirname } from '../filesystem';
+import { findNode, resolvePath, pathDirname, pathBasename, addChild, removeChild, updateNodeAtPath } from '../filesystem';
+import { parseFlags, hasFlag, getParentPath } from './utils';
+
+function addChildToPath(root: VFSNode, parentPath: string, child: VFSNode, home: string): VFSNode {
+  const parent = findNode(root, parentPath, '/', home);
+  if (!parent || parent.type !== 'dir') return root;
+  return updateNodeAtPath(root, parentPath, '/', home, (p) => addChild(p, child));
+}
+
+function removeChildFromPath(root: VFSNode, parentPath: string, childName: string, home: string): VFSNode {
+  const parent = findNode(root, parentPath, '/', home);
+  if (!parent) return root;
+  return updateNodeAtPath(root, parentPath, '/', home, (p) => removeChild(p, childName));
+}
+
+function deepCopyNode(node: VFSNode): VFSNode {
+  return {
+    ...node,
+    children: node.children.map(deepCopyNode),
+  };
+}
 
 export const cat: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', exitCode: 0 };
@@ -26,21 +46,18 @@ export const echo: CommandHandler = (args, state) => {
 };
 
 export const touch: CommandHandler = (args, state) => {
-  if (args.length === 0) return { output: '', error: 'touch: missing file operand', exitCode: 1 };
+  const { positional: targets } = parseFlags(args);
+  if (targets.length === 0) return { output: '', error: 'touch: missing file operand', exitCode: 1 };
   let currentRoot = state.root;
-  for (const filepath of args) {
+  for (const filepath of targets) {
     const existing = findNode(currentRoot, filepath, state.cwd, state.home);
     if (!existing) {
-      const parentPath = pathDirname(resolvePath(filepath, state.cwd, state.home));
-      const name = pathBasename(filepath);
+      const { parentPath, name } = getParentPath(state, filepath);
       const newFile: VFSNode = {
         name, type: 'file', content: '',
         permissions: '-rw-r--r--', owner: state.user, group: state.user, size: 0, children: [],
       };
-      const parent = findNode(currentRoot, parentPath, '/', state.home);
-      if (parent && parent.type === 'dir') {
-        parent.children.push(newFile);
-      }
+      currentRoot = addChildToPath(currentRoot, parentPath, newFile, state.home);
     }
   }
   return { output: '', exitCode: 0, stateOverride: { root: currentRoot } };
@@ -48,21 +65,38 @@ export const touch: CommandHandler = (args, state) => {
 
 export const mkdir: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', error: 'mkdir: missing operand', exitCode: 1 };
+  const { flags, positional: targets } = parseFlags(args);
+  const recursive = hasFlag(flags, '-p');
   let currentRoot = state.root;
-  for (const dirpath of args) {
+  for (const dirpath of targets) {
     const existing = findNode(currentRoot, dirpath, state.cwd, state.home);
     if (existing) {
+      if (recursive) continue;
       return { output: '', error: `mkdir: cannot create directory '${dirpath}': File exists`, exitCode: 1 };
     }
-    const name = pathBasename(dirpath);
-    const newDir: VFSNode = {
-      name, type: 'dir', content: '',
-      permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [],
-    };
-    const parentPath = pathDirname(resolvePath(dirpath, state.cwd, state.home));
-    const parent = findNode(currentRoot, parentPath, '/', state.home);
-    if (parent && parent.type === 'dir') {
-      parent.children.push(newDir);
+    if (recursive) {
+      const resolved = resolvePath(dirpath, state.cwd, state.home);
+      const parts = resolved.split('/').filter(Boolean);
+      let pathSoFar = '';
+      for (const part of parts) {
+        pathSoFar += '/' + part;
+        const existingNode = findNode(currentRoot, pathSoFar, '/', state.home);
+        if (!existingNode) {
+          const newDir: VFSNode = {
+            name: part, type: 'dir', content: '',
+            permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [],
+          };
+          const parentPath = pathDirname(pathSoFar);
+          currentRoot = addChildToPath(currentRoot, parentPath, newDir, state.home);
+        }
+      }
+    } else {
+      const { parentPath, name } = getParentPath(state, dirpath);
+      const newDir: VFSNode = {
+        name, type: 'dir', content: '',
+        permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [],
+      };
+      currentRoot = addChildToPath(currentRoot, parentPath, newDir, state.home);
     }
   }
   return { output: '', exitCode: 0, stateOverride: { root: currentRoot } };
@@ -70,10 +104,12 @@ export const mkdir: CommandHandler = (args, state) => {
 
 export const rm: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', error: 'rm: missing operand', exitCode: 1 };
-  const recursive = args.includes('-r') || args.includes('-rf');
-  const force = args.includes('-f') || args.includes('-rf');
-  const targets = args.filter(a => !a.startsWith('-'));
+  const { flags, positional: targets } = parseFlags(args);
+  const recursive = hasFlag(flags, '-r', '-R');
+  const force = hasFlag(flags, '-f');
+  const verbose = hasFlag(flags, '-v');
   let currentRoot = state.root;
+  const outputs: string[] = [];
   for (const filepath of targets) {
     const node = findNode(currentRoot, filepath, state.cwd, state.home);
     if (!node) {
@@ -83,73 +119,111 @@ export const rm: CommandHandler = (args, state) => {
     if (node.type === 'dir' && !recursive) {
       return { output: '', error: `rm: cannot remove '${filepath}': Is a directory`, exitCode: 1 };
     }
-    const parentPath = pathDirname(resolvePath(filepath, state.cwd, state.home));
-    const name = pathBasename(filepath);
-    const parent = findNode(currentRoot, parentPath, '/', state.home);
-    if (parent) {
-      parent.children = parent.children.filter(c => c.name !== name);
-    }
+    const { parentPath, name } = getParentPath(state, filepath);
+    currentRoot = removeChildFromPath(currentRoot, parentPath, name, state.home);
+    if (verbose) outputs.push(`removed '${filepath}'`);
   }
-  return { output: '', exitCode: 0, stateOverride: { root: currentRoot } };
+  return { output: outputs.join('\n'), exitCode: 0, stateOverride: { root: currentRoot } };
 };
 
 export const cp: CommandHandler = (args, state) => {
-  const recursive = args.includes('-r') || args.includes('-rf');
-  const targets = args.filter(a => !a.startsWith('-'));
+  const { flags, positional: targets } = parseFlags(args);
+  const recursive = hasFlag(flags, '-r', '-R', '-a');
+  const verbose = hasFlag(flags, '-v');
   if (targets.length < 2) return { output: '', error: 'cp: missing file operand', exitCode: 1 };
-  const [src, dest] = targets;
-  const srcNode = findNode(state.root, src, state.cwd, state.home);
-  if (!srcNode) return { output: '', error: `cp: cannot stat '${src}': No such file or directory`, exitCode: 1 };
-  if (srcNode.type === 'dir' && !recursive) {
-    return { output: '', error: `cp: omitting directory '${src}'`, exitCode: 1 };
+  const dest = targets[targets.length - 1];
+  const sources = targets.slice(0, -1);
+  const destNode = findNode(state.root, dest, state.cwd, state.home);
+  const destIsDir = destNode?.type === 'dir';
+  const outputs: string[] = [];
+  let currentRoot = state.root;
+
+  for (const src of sources) {
+    const srcNode = findNode(currentRoot, src, state.cwd, state.home);
+    if (!srcNode) return { output: '', error: `cp: cannot stat '${src}': No such file or directory`, exitCode: 1 };
+    if (srcNode.type === 'dir' && !recursive) {
+      return { output: '', error: `cp: omitting directory '${src}'`, exitCode: 1 };
+    }
+    const targetPath = destIsDir ? `${dest}/${pathBasename(src)}` : dest;
+    const { parentPath: destParentPath, name: destName } = getParentPath(state, targetPath);
+    const copy = deepCopyNode(srcNode);
+    copy.name = destName;
+    copy.mtime = new Date();
+    currentRoot = addChildToPath(currentRoot, destParentPath, copy, currentRoot === state.root ? state.home : state.home);
+    if (verbose) outputs.push(`'${src}' -> '${targetPath}'`);
   }
-  const destParentPath = pathDirname(resolvePath(dest, state.cwd, state.home));
-  const destName = pathBasename(dest);
-  const destParent = findNode(state.root, destParentPath, '/', state.home);
-  if (!destParent || destParent.type !== 'dir') {
-    return { output: '', error: `cp: cannot create regular file '${dest}': No such file or directory`, exitCode: 1 };
-  }
-  const copy = { ...srcNode, name: destName };
-  destParent.children.push(copy);
-  return { output: '', exitCode: 0 };
+
+  return { output: outputs.join('\n'), exitCode: 0, stateOverride: { root: currentRoot } };
 };
 
 export const mv: CommandHandler = (args, state) => {
-  const targets = args.filter(a => !a.startsWith('-'));
+  const { flags, positional: targets } = parseFlags(args);
+  const verbose = hasFlag(flags, '-v');
+  const noClobber = hasFlag(flags, '-n');
   if (targets.length < 2) return { output: '', error: 'mv: missing file operand', exitCode: 1 };
   const [src, dest] = targets;
   const srcNode = findNode(state.root, src, state.cwd, state.home);
   if (!srcNode) return { output: '', error: `mv: cannot stat '${src}': No such file or directory`, exitCode: 1 };
-  const srcParentPath = pathDirname(resolvePath(src, state.cwd, state.home));
-  const srcName = pathBasename(src);
-  const srcParent = findNode(state.root, srcParentPath, '/', state.home);
-  if (srcParent) {
-    srcParent.children = srcParent.children.filter(c => c.name !== srcName);
-  }
-  const destParentPath = pathDirname(resolvePath(dest, state.cwd, state.home));
-  const destName = pathBasename(dest);
+  const destNode = findNode(state.root, dest, state.cwd, state.home);
+  if (noClobber && destNode) return { output: '', exitCode: 0 };
+  const { parentPath: srcParentPath, name: srcName } = getParentPath(state, src);
+  const { parentPath: destParentPath, name: destName } = getParentPath(state, dest);
   const destParent = findNode(state.root, destParentPath, '/', state.home);
   if (!destParent || destParent.type !== 'dir') {
     return { output: '', error: `mv: cannot move '${src}' to '${dest}': No such file or directory`, exitCode: 1 };
   }
-  const moved = { ...srcNode, name: destName };
-  destParent.children.push(moved);
-  return { output: '', exitCode: 0 };
+  let currentRoot = state.root;
+  currentRoot = removeChildFromPath(currentRoot, srcParentPath, srcName, state.home);
+  const moved = { ...srcNode, name: destName, mtime: new Date() };
+  currentRoot = addChildToPath(currentRoot, destParentPath, moved, state.home);
+  const output = verbose ? ` '${src}' -> '${dest}'` : '';
+  return { output, exitCode: 0, stateOverride: { root: currentRoot } };
 };
 
 export const chmod: CommandHandler = (args, state) => {
-  if (args.length < 2) return { output: '', error: 'chmod: missing operand', exitCode: 1 };
-  const mode = args[0];
-  const filepath = args[1];
+  const { positional } = parseFlags(args);
+  if (positional.length < 2) return { output: '', error: 'chmod: missing operand', exitCode: 1 };
+  const mode = positional[0];
+  const filepath = positional[1];
   const node = findNode(state.root, filepath, state.cwd, state.home);
   if (!node) return { output: '', error: `chmod: cannot access '${filepath}': No such file or directory`, exitCode: 1 };
-  if (mode === '+x' || mode === 'a+x') {
-    node.executable = true;
-    const perms = node.permissions.split('');
-    perms[7] = 'x'; perms[8] = 'x'; perms[9] = 'x';
-    node.permissions = perms.join('');
+
+  const typeChar = node.type === 'dir' ? 'd' : '-';
+  let perms: string[];
+
+  if (/^\d{3,4}$/.test(mode)) {
+    const octal = mode.padStart(4, '0');
+    const bits = [
+      [parseInt(octal[0]) & 4, parseInt(octal[0]) & 2, parseInt(octal[0]) & 1],
+      [parseInt(octal[1]) & 4, parseInt(octal[1]) & 2, parseInt(octal[1]) & 1],
+      [parseInt(octal[2]) & 4, parseInt(octal[2]) & 2, parseInt(octal[2]) & 1],
+    ];
+    perms = [typeChar];
+    for (const [r, w, x] of bits) {
+      perms.push(r ? 'r' : '-', w ? 'w' : '-', x ? 'x' : '-');
+    }
+  } else {
+    perms = node.permissions.split('');
+    const classes = mode.includes('u') ? [1] : mode.includes('g') ? [2] : mode.includes('o') ? [3] : [1, 2, 3];
+    const action = mode.includes('+') ? '+' : mode.includes('-') ? '-' : '=';
+    const opIdx = mode.indexOf(action);
+    const chars = mode.slice(opIdx + 1);
+    for (const cls of classes) {
+      for (const ch of chars) {
+        if (ch === 'r') perms[cls * 3 - 2] = action === '+' ? 'r' : '-';
+        if (ch === 'w') perms[cls * 3 - 1] = action === '+' ? 'w' : '-';
+        if (ch === 'x') perms[cls * 3] = action === '+' ? 'x' : '-';
+      }
+    }
   }
-  return { output: '', exitCode: 0 };
+
+  const newPerms = perms.join('');
+  const updated = updateNodeAtPath(state.root, filepath, state.cwd, state.home, (n) => ({
+    ...n,
+    executable: newPerms.includes('x'),
+    permissions: newPerms,
+  }));
+  return { output: '', exitCode: 0, stateOverride: { root: updated } };
 };
 
 export const head: CommandHandler = (args, state) => {
@@ -189,66 +263,234 @@ export const wc: CommandHandler = (args, state) => {
 };
 
 export const grep: CommandHandler = (args, state) => {
-  const showColor = args.includes('--color=auto');
-  const noColor = args.includes('--color=never');
-  const ignoreCase = args.includes('-i') || args.includes('--ignore-case');
-  const filterArgs = args.filter(a => !a.startsWith('--') && !a.startsWith('-'));
-  if (filterArgs.length < 1) return { output: '', error: 'grep: missing pattern', exitCode: 2 };
-  if (filterArgs.length < 2) return { output: '', exitCode: 1 };
-  const pattern = filterArgs[0];
-  const filepath = filterArgs[1];
+  const { flags, positional } = parseFlags(args);
+  const ignoreCase = hasFlag(flags, '-i');
+  const invertMatch = hasFlag(flags, '-v');
+  const countOnly = hasFlag(flags, '-c');
+  const filesOnly = hasFlag(flags, '-l');
+  const lineNumbers = hasFlag(flags, '-n');
+  const wholeWord = hasFlag(flags, '-w');
+  const fixedStrings = hasFlag(flags, '-F');
+  const extendedRegex = hasFlag(flags, '-E');
+  const beforeContext = (() => {
+    const idx = args.indexOf('-B');
+    return idx !== -1 ? parseInt(args[idx + 1]) || 0 : 0;
+  })();
+  const afterContext = (() => {
+    const idx = args.indexOf('-A');
+    return idx !== -1 ? parseInt(args[idx + 1]) || 0 : 0;
+  })();
+  const contextLines = (() => {
+    const idx = args.indexOf('-C');
+    return idx !== -1 ? parseInt(args[idx + 1]) || 0 : 0;
+  })();
+  const before = Math.max(beforeContext, contextLines);
+  const after = Math.max(afterContext, contextLines);
+  const color = hasFlag(flags, '--color=auto') || hasFlag(flags, '--color=always');
+
+  const nonFlagArgs = positional;
+  if (nonFlagArgs.length < 1) return { output: '', error: 'grep: missing pattern', exitCode: 2 };
+  if (nonFlagArgs.length < 2) return { output: '', exitCode: 1 };
+  const pattern = nonFlagArgs[0];
+  const filepath = nonFlagArgs[1];
+
   const node = findNode(state.root, filepath, state.cwd, state.home);
   if (!node) return { output: '', error: `grep: ${filepath}: No such file or directory`, exitCode: 2 };
   const content = node.content || '';
   const lines = content.split('\n');
-  const matching = lines.filter(l => {
-    const match = ignoreCase ? l.toLowerCase().includes(pattern.toLowerCase()) : l.includes(pattern);
-    if (!match && pattern.startsWith('^')) {
-      const regex = new RegExp(pattern, ignoreCase ? 'i' : '');
-      return regex.test(l);
+
+  let regex: RegExp;
+  try {
+    const flags = ignoreCase ? 'i' : '';
+    if (fixedStrings) {
+      const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      regex = new RegExp(wholeWord ? `\\b${escaped}\\b` : escaped, flags);
+    } else if (extendedRegex) {
+      regex = new RegExp(wholeWord ? `\\b(?:${pattern})\\b` : pattern, flags);
+    } else {
+      regex = new RegExp(wholeWord ? `\\b${pattern}\\b` : pattern, flags);
     }
-    return match;
-  });
-  if (matching.length === 0) return { output: '', exitCode: 1 };
-  return { output: matching.join('\n'), exitCode: 0 };
+  } catch {
+    return { output: '', error: `grep: invalid pattern '${pattern}'`, exitCode: 2 };
+  }
+
+  const matchIndices: number[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (invertMatch ? !regex.test(lines[i]) : regex.test(lines[i])) {
+      matchIndices.push(i);
+    }
+  }
+
+  if (countOnly) {
+    return { output: String(matchIndices.length), exitCode: matchIndices.length > 0 ? 0 : 1 };
+  }
+  if (filesOnly) {
+    return { output: matchIndices.length > 0 ? filepath : '', exitCode: matchIndices.length > 0 ? 0 : 1 };
+  }
+  if (matchIndices.length === 0) return { output: '', exitCode: 1 };
+
+  const result: string[] = [];
+  let lastShown = -1;
+  for (const idx of matchIndices) {
+    const contextStart = Math.max(0, idx - before);
+    const contextEnd = Math.min(lines.length - 1, idx + after);
+    if (lastShown >= 0 && contextStart <= lastShown + 1) {
+      for (let i = lastShown + 1; i <= contextEnd; i++) {
+        const prefix = lineNumbers ? `${i + 1}:` : '';
+        const line = color ? lines[i].replace(regex, (m) => `\x1b[1;31m${m}\x1b[0m`) : lines[i];
+        result.push(`${prefix}${line}`);
+      }
+    } else {
+      if (contextStart > 0 && result.length > 0) result.push('--');
+      for (let i = contextStart; i <= contextEnd; i++) {
+        const isMatch = matchIndices.includes(i);
+        const prefix = lineNumbers ? `${i + 1}:` : '';
+        const line = isMatch && color ? lines[i].replace(regex, (m) => `\x1b[1;31m${m}\x1b[0m`) : lines[i];
+        result.push(`${prefix}${line}`);
+      }
+    }
+    lastShown = contextEnd;
+  }
+
+  return { output: result.join('\n'), exitCode: 0 };
 };
 
 export const find: CommandHandler = (args, state) => {
-  const startPath = args[0] || '.';
+  const { positional } = parseFlags(args);
+  const startPath = positional[0] || '.';
   const startNode = findNode(state.root, startPath, state.cwd, state.home);
   if (!startNode) return { output: '', error: `find: '${startPath}': No such file or directory`, exitCode: 1 };
+
   const nameIdx = args.indexOf('-name');
   const typeIdx = args.indexOf('-type');
+  const sizeIdx = args.indexOf('-size');
+  const permIdx = args.indexOf('-perm');
+  const userIdx = args.indexOf('-user');
+  const maxDepthIdx = args.indexOf('-maxdepth');
+  const minDepthIdx = args.indexOf('-mindepth');
+  const pathIdx = args.indexOf('-path');
+
   const namePattern = nameIdx !== -1 ? args[nameIdx + 1] : null;
   const typeFilter = typeIdx !== -1 ? args[typeIdx + 1] : null;
+  const sizeFilter = sizeIdx !== -1 ? args[sizeIdx + 1] : null;
+  const permFilter = permIdx !== -1 ? args[permIdx + 1] : null;
+  const userFilter = userIdx !== -1 ? args[userIdx + 1] : null;
+  const maxDepth = maxDepthIdx !== -1 ? parseInt(args[maxDepthIdx + 1]) : Infinity;
+  const minDepth = minDepthIdx !== -1 ? parseInt(args[minDepthIdx + 1]) : 0;
+  const pathMatch = pathIdx !== -1 ? args[pathIdx + 1] : null;
+  const negate = args.includes('-not');
+
   const results: string[] = [];
-  function walk(node: VFSNode, path: string) {
-    if (path !== '/') {
+
+  function matchSize(node: VFSNode, filter: string): boolean {
+    const size = node.content?.length || node.size;
+    const op = filter[0];
+    const val = parseInt(filter.slice(1));
+    if (op === '+') return size > val;
+    if (op === '-') return size < val;
+    return size === val;
+  }
+
+  function matchPerm(node: VFSNode, filter: string): boolean {
+    return node.permissions.includes(filter);
+  }
+
+  function matchPath(nodePath: string, pattern: string): boolean {
+    const regex = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
+    return regex.test(nodePath);
+  }
+
+  function walk(node: VFSNode, nodePath: string, depth: number) {
+    if (depth > maxDepth) return;
+    if (startPath !== '/' || depth > 0) {
       let match = true;
       if (namePattern) {
-        const regex = new RegExp('^' + namePattern.replace(/\*/g, '.*') + '$');
+        const regex = new RegExp('^' + namePattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
         match = regex.test(node.name);
       }
       if (typeFilter && node.type !== typeFilter) match = false;
-      if (match) results.push(path);
+      if (sizeFilter && !matchSize(node, sizeFilter)) match = false;
+      if (permFilter && !matchPerm(node, permFilter)) match = false;
+      if (userFilter && node.owner !== userFilter) match = false;
+      if (pathMatch && !matchPath(nodePath, pathMatch)) match = false;
+      if (negate) match = !match;
+      if (depth >= minDepth && match) results.push(nodePath);
     }
     if (node.type === 'dir') {
-      node.children.forEach(c => walk(c, path === '/' ? `/${c.name}` : `${path}/${c.name}`));
+      node.children.forEach(c => {
+        const childPath = nodePath === '/' ? `/${c.name}` : `${nodePath}/${c.name}`;
+        walk(c, childPath, depth + 1);
+      });
     }
   }
-  walk(startNode, resolvePath(startPath, state.cwd, state.home));
+  walk(startNode, resolvePath(startPath, state.cwd, state.home), 0);
   return { output: results.length > 0 ? results.join('\n') : '', exitCode: 0 };
 };
 
 export const sort: CommandHandler = (args, state) => {
-  const reverse = args.includes('-r');
-  const fileArgs = args.filter(a => !a.startsWith('-'));
+  const { flags, positional: fileArgs } = parseFlags(args);
+  const reverse = hasFlag(flags, '-r');
+  const numeric = hasFlag(flags, '-n');
+  const unique = hasFlag(flags, '-u');
+  const foldCase = hasFlag(flags, '-f');
+  const humanNum = hasFlag(flags, '-h');
+  const fieldSep = (() => {
+    const idx = args.indexOf('-t');
+    return idx !== -1 ? args[idx + 1] : null;
+  })();
+  const keyField = (() => {
+    const idx = args.indexOf('-k');
+    return idx !== -1 ? parseInt(args[idx + 1]) || 1 : 1;
+  })();
+
   if (fileArgs.length === 0) return { output: '', exitCode: 0 };
   const node = findNode(state.root, fileArgs[0], state.cwd, state.home);
   if (!node) return { output: '', error: `sort: ${fileArgs[0]}: No such file or directory`, exitCode: 1 };
   const lines = (node.content || '').split('\n').filter(l => l);
-  const sorted = reverse ? lines.sort().reverse() : lines.sort();
-  return { output: sorted.join('\n'), exitCode: 0 };
+
+  const parsedLines = lines.map(l => ({
+    original: l,
+    key: fieldSep ? l.split(fieldSep)[keyField - 1] || '' : l.split(/\s+/)[keyField - 1] || l,
+  }));
+
+  const sorted = [...parsedLines].sort((a, b) => {
+    let cmp: number;
+    if (numeric) {
+      cmp = (parseFloat(a.key) || 0) - (parseFloat(b.key) || 0);
+    } else if (humanNum) {
+      const parseSize = (s: string): number => {
+        const match = s.match(/^([\d.]+)([KMGTP]?)$/i);
+        if (!match) return parseFloat(s) || 0;
+        const val = parseFloat(match[1]);
+        const unit = match[2].toUpperCase();
+        const multipliers: Record<string, number> = { '': 1, 'K': 1024, 'M': 1048576, 'G': 1073741824, 'T': 1099511627776 };
+        return val * (multipliers[unit] || 1);
+      };
+      cmp = parseSize(a.key) - parseSize(b.key);
+    } else {
+      cmp = a.key.localeCompare(b.key);
+    }
+    return reverse ? -cmp : cmp;
+  });
+
+  let result = sorted.map(s => s.original);
+  if (foldCase) {
+    result.sort((a, b) => {
+      const cmp = a.toLowerCase().localeCompare(b.toLowerCase());
+      return reverse ? -cmp : cmp;
+    });
+  }
+  if (unique) {
+    const seen = new Set<string>();
+    result = result.filter(l => {
+      const key = foldCase ? l.toLowerCase() : l;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  return { output: result.join('\n'), exitCode: 0 };
 };
 
 export const less: CommandHandler = (args, state) => {
@@ -299,11 +541,27 @@ export const ln: CommandHandler = (args, state) => {
   if (targets.length < 2) return { output: '', error: 'ln: missing operand', exitCode: 1 };
   const [src, dest] = targets;
   const srcNode = findNode(state.root, src, state.cwd, state.home);
-  if (!srcNode && !symbolic) return { output: '', error: `ln: failed to create hard link '${dest}': No such file or directory`, exitCode: 1 };
-  if (symbolic) {
-    return { output: '', exitCode: 0 };
+  if (!srcNode && !symbolic) {
+    return { output: '', error: `ln: failed to create hard link '${dest}': No such file or directory`, exitCode: 1 };
   }
-  return { output: '', exitCode: 0 };
+  if (symbolic) {
+    const { parentPath, name } = getParentPath(state, dest);
+    const symlinkNode: VFSNode = {
+      name, type: 'file', content: `symlink:${src}`, permissions: 'lrwxrwxrwx',
+      owner: state.user, group: state.user, size: src.length, children: [],
+      symlink: src,
+    };
+    const finalRoot = addChildToPath(state.root, parentPath, symlinkNode, state.home);
+    return { output: '', exitCode: 0, stateOverride: { root: finalRoot } };
+  }
+  const { parentPath, name } = getParentPath(state, dest);
+  const linkNode: VFSNode = {
+    name, type: srcNode.type, content: srcNode.content,
+    permissions: srcNode.permissions, owner: state.user, group: state.user,
+    size: srcNode.size, children: srcNode.children.map(c => ({ ...c })),
+  };
+  const finalRoot = addChildToPath(state.root, parentPath, linkNode, state.home);
+  return { output: '', exitCode: 0, stateOverride: { root: finalRoot } };
 };
 
 export const du: CommandHandler = (args, state) => {
@@ -327,9 +585,27 @@ export const du: CommandHandler = (args, state) => {
   return { output: [...lines, `${totalDisplay}\ttotal`].join('\n'), exitCode: 0 };
 };
 
-export const df: CommandHandler = (_args, _state) => {
+export const df: CommandHandler = (_args, state) => {
+  function calcSize(node: VFSNode): number {
+    let size = node.content?.length || node.size;
+    if (node.type === 'dir') {
+      for (const child of node.children) {
+        size += calcSize(child);
+      }
+    }
+    return size;
+  }
+  const rootSize = calcSize(state.root);
+  const homeNode = findNode(state.root, state.home, state.cwd, state.home);
+  const homeSize = homeNode ? calcSize(homeNode) : 0;
+  const usedKB = Math.ceil((rootSize + 12345678) / 1024);
+  const homeUsedKB = Math.ceil(homeSize / 1024);
+  const totalKB = 41152768;
+  const homeTotalKB = 8257536;
+  const rootPct = Math.round((usedKB / totalKB) * 100);
+  const homePct = Math.round((homeUsedKB / homeTotalKB) * 100);
   return {
-    output: 'Filesystem     1K-blocks     Used Available Use% Mounted on\n/dev/sda1       41152768 12345678  28807090  30% /\ntmpfs            2032764        0   2032764   0% /dev/shm\n/dev/sdb1        8257536  1234567   7022969  15% /home',
+    output: `Filesystem     1K-blocks     Used Available Use% Mounted on\n/dev/sda1       ${totalKB} ${usedKB.toLocaleString()}  ${(totalKB - usedKB).toLocaleString()}  ${rootPct}% /\ntmpfs            2032764        0   2032764   0% /dev/shm\n/dev/sdb1        ${homeTotalKB}  ${homeUsedKB.toLocaleString()}   ${(homeTotalKB - homeUsedKB).toLocaleString()}  ${homePct}% /home`,
     exitCode: 0,
   };
 };
@@ -342,16 +618,93 @@ export const tar: CommandHandler = (args, state) => {
   const archiveName = fileIdx !== -1 ? args[fileIdx + 1] : 'archive.tar';
   const fileArgs = args.slice(fileIdx + 2).filter(a => !a.startsWith('-'));
 
+  function collectFiles(node: VFSNode, prefix: string): string[] {
+    const files: string[] = [];
+    for (const child of node.children) {
+      const path = prefix ? `${prefix}/${child.name}` : child.name;
+      files.push(path + (child.type === 'dir' ? '/' : ''));
+      if (child.type === 'dir') files.push(...collectFiles(child, path));
+    }
+    return files;
+  }
+
   if (create) {
-    return { output: `tar: ${archiveName}: Archived ${fileArgs.length > 0 ? fileArgs.join(', ') : '(empty)'}`, exitCode: 0 };
+    const entries: string[] = [];
+    for (const f of fileArgs) {
+      const node = findNode(state.root, f, state.cwd, state.home);
+      if (!node) continue;
+      if (node.type === 'dir') {
+        entries.push(...collectFiles(node, f));
+      } else {
+        entries.push(f);
+      }
+    }
+    const data = JSON.stringify({ entries, timestamp: Date.now() });
+    const updated = updateNodeAtPath(state.root, archiveName, state.cwd, state.home, (n) => ({
+      ...n, type: 'file', content: data, size: data.length,
+    }));
+    const archiveNode = findNode(updated, archiveName, state.cwd, state.home);
+    if (!archiveNode) {
+      const name = pathBasename(archiveName);
+      const parentPath = pathDirname(resolvePath(archiveName, state.cwd, state.home));
+      const newFile: VFSNode = {
+        name, type: 'file', content: data, permissions: '-rw-r--r--',
+        owner: state.user, group: state.user, size: data.length, children: [],
+      };
+      const finalRoot = addChildToPath(state.root, parentPath, newFile, state.home);
+      return { output: '', exitCode: 0, stateOverride: { root: finalRoot } };
+    }
+    const finalRoot = updateNodeAtPath(state.root, archiveName, state.cwd, state.home, (n) => ({
+      ...n, content: data, size: data.length,
+    }));
+    return { output: '', exitCode: 0, stateOverride: { root: finalRoot } };
   }
+
   if (extract) {
-    return { output: `tar: ${archiveName}: Extracted`, exitCode: 0 };
+    const node = findNode(state.root, archiveName, state.cwd, state.home);
+    if (!node) return { output: '', error: `tar: ${archiveName}: Cannot open: No such file or directory`, exitCode: 1 };
+    try {
+      const data = JSON.parse(node.content || '{}');
+      const entries = data.entries || [];
+      let currentRoot = state.root;
+      for (const entry of entries) {
+        if (entry.endsWith('/')) {
+          const dirPath = entry.slice(0, -1);
+          const dirName = pathBasename(dirPath);
+          const parentPath = pathDirname(resolvePath(dirPath, state.cwd, state.home));
+          const newDir: VFSNode = {
+            name: dirName, type: 'dir', content: '',
+            permissions: 'drwxr-xr-x', owner: state.user, group: state.user, size: 4096, children: [],
+          };
+          currentRoot = addChildToPath(currentRoot, parentPath, newDir, state.home);
+        } else {
+          const fileName = pathBasename(entry);
+          const parentPath = pathDirname(resolvePath(entry, state.cwd, state.home));
+          const newFile: VFSNode = {
+            name: fileName, type: 'file', content: '', permissions: '-rw-r--r--',
+            owner: state.user, group: state.user, size: 0, children: [],
+          };
+          currentRoot = addChildToPath(currentRoot, parentPath, newFile, state.home);
+        }
+      }
+      return { output: entries.join('\n'), exitCode: 0, stateOverride: { root: currentRoot } };
+    } catch {
+      return { output: `tar: ${archiveName}: This does not look like a tar archive`, exitCode: 1 };
+    }
   }
+
   if (list) {
-    const exampleFiles = ['README.md', 'src/', 'src/index.js', 'src/utils.js', 'package.json'];
-    return { output: exampleFiles.join('\n'), exitCode: 0 };
+    const node = findNode(state.root, archiveName, state.cwd, state.home);
+    if (!node) return { output: '', error: `tar: ${archiveName}: Cannot open: No such file or directory`, exitCode: 1 };
+    try {
+      const data = JSON.parse(node.content || '{}');
+      const entries = data.entries || [];
+      return { output: entries.join('\n'), exitCode: 0 };
+    } catch {
+      return { output: `tar: ${archiveName}: This does not look like a tar archive`, exitCode: 1 };
+    }
   }
+
   return { output: '', error: 'tar: You must specify one of the `-c`, `-x` or `-t` options', exitCode: 1 };
 };
 
@@ -359,12 +712,50 @@ export const zipCmd: CommandHandler = (args, state) => {
   const targets = args.filter(a => !a.startsWith('-'));
   if (targets.length < 2) return { output: '', error: 'zip: missing file operand', exitCode: 1 };
   const [archive, ...files] = targets;
-  return { output: `  adding: ${files.join(', ')} (stored 0%)\nZip file: ${archive}.zip`, exitCode: 0 };
+  const entries: string[] = [];
+  let totalSize = 0;
+  for (const f of files) {
+    const node = findNode(state.root, f, state.cwd, state.home);
+    if (node) {
+      entries.push(f);
+      totalSize += node.content?.length || node.size;
+    }
+  }
+  const data = JSON.stringify({ entries, timestamp: Date.now() });
+  const archivePath = archive.endsWith('.zip') ? archive : `${archive}.zip`;
+  const name = pathBasename(archivePath);
+  const parentPath = pathDirname(resolvePath(archivePath, state.cwd, state.home));
+  const newFile: VFSNode = {
+    name, type: 'file', content: data, permissions: '-rw-r--r--',
+    owner: state.user, group: state.user, size: data.length, children: [],
+  };
+  const finalRoot = addChildToPath(state.root, parentPath, newFile, state.home);
+  const addingOutput = entries.map(f => `  adding: ${f} (stored 0%)`).join('\n');
+  return { output: addingOutput, exitCode: 0, stateOverride: { root: finalRoot } };
 };
 export const unzip: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', error: 'unzip: missing file operand', exitCode: 1 };
   const archive = args[0];
-  return { output: `Archive:  ${archive}\n  inflating: extracted_file.txt\n  inflating: data.csv`, exitCode: 0 };
+  const node = findNode(state.root, archive, state.cwd, state.home);
+  if (!node) return { output: '', error: `unzip:  cannot find ${archive}`, exitCode: 1 };
+  try {
+    const data = JSON.parse(node.content || '{}');
+    const entries = data.entries || [];
+    let currentRoot = state.root;
+    for (const entry of entries) {
+      const fileName = pathBasename(entry);
+      const parentPath = pathDirname(resolvePath(entry, state.cwd, state.home));
+      const newFile: VFSNode = {
+        name: fileName, type: 'file', content: '', permissions: '-rw-r--r--',
+        owner: state.user, group: state.user, size: 0, children: [],
+      };
+      currentRoot = addChildToPath(currentRoot, parentPath, newFile, state.home);
+    }
+    const inflating = entries.map(f => `  inflating: ${f}`).join('\n');
+    return { output: inflating, exitCode: 0, stateOverride: { root: currentRoot } };
+  } catch {
+    return { output: '', error: `unzip:  ${archive} is not a valid zip file`, exitCode: 1 };
+  }
 };
 
 export const xxd: CommandHandler = (args, state) => {
@@ -452,51 +843,136 @@ export const sha256sum: CommandHandler = (args, state) => {
 
 export const awk: CommandHandler = (args, state) => {
   const stdin = state.stdin || '';
-  const scriptIdx = args.findIndex(a => a.includes('{print') || a.includes('{ print'));
+  const fieldSepIdx = args.indexOf('-F');
+  const fieldSep = fieldSepIdx !== -1 ? args[fieldSepIdx + 1] : null;
+  const scriptIdx = args.findIndex(a => a.includes('{print') || a.includes('{ if') || a.includes('BEGIN') || a.includes('END'));
   if (scriptIdx === -1 && !stdin) return { output: '', error: 'awk: usage: awk \'{print $N}\' [file]', exitCode: 1 };
+
   let content = stdin;
   if (!content) {
     const filepath = args[scriptIdx + 1] || args[args.length - 1];
-    if (filepath && !filepath.includes('{')) {
+    if (filepath && !filepath.includes('{') && !filepath.startsWith('-')) {
       const node = findNode(state.root, filepath, state.cwd, state.home);
       if (node) content = node.content || '';
     }
   }
-  const script = args.find(a => a.includes('{print')) || '{print $0}';
-  const fieldMatch = script.match(/\$(\d+)/);
-  const fieldIdx = fieldMatch ? parseInt(fieldMatch[1]) : 0;
+
+  const script = args.find(a => a.includes('{') && !a.startsWith('-')) || '{print $0}';
+  const hasPrintAll = script.includes('{print $0}') || script.includes('{print}');
+  const fieldMatches = script.match(/\$(\d+)/g);
+  const fieldIndices = fieldMatches ? fieldMatches.map(m => parseInt(m.slice(1))) : [];
+  const hasNF = script.includes('NF');
+  const hasNR = script.includes('NR');
+  const hasPrint = script.includes('print');
+
+  const sep = fieldSep || /\s+/;
   const lines = content.split('\n').filter(l => l.trim());
-  const output = lines.map(l => {
-    const fields = l.split(/\s+/);
-    if (fieldIdx === 0) return l;
-    return fields[fieldIdx - 1] || '';
-  });
+  const output: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const fields = lines[i].split(sep);
+    if (hasPrintAll || (!fieldIndices.length && !hasNF && !hasNR)) {
+      output.push(lines[i]);
+    } else if (fieldIndices.length > 0) {
+      const vals = fieldIndices.map(idx => {
+        if (idx === 0) return lines[i];
+        if (idx === fields.length) return String(fields.length);
+        return fields[idx - 1] || '';
+      });
+      output.push(vals.join(' '));
+    }
+  }
+
   return { output: output.join('\n'), exitCode: 0 };
 };
 
 export const sed: CommandHandler = (args, state) => {
   const stdin = state.stdin || '';
-  const exprIdx = args.findIndex(a => a.startsWith('s/'));
-  if (exprIdx === -1 && !stdin) return { output: '', error: 'sed: usage: sed \'s/old/new/\' [file]', exitCode: 1 };
-  let content = stdin;
-  if (!content) {
-    const filepath = args[exprIdx + 1] || args[args.length - 1];
-    if (filepath && !filepath.startsWith('s/')) {
-      const node = findNode(state.root, filepath, state.cwd, state.home);
-      if (node) content = node.content || '';
+  const inPlace = args.includes('-i');
+  const { positional } = parseFlags(args);
+  const expressions: string[] = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '-e' && i + 1 < args.length) {
+      expressions.push(args[++i]);
+    } else if (args[i].startsWith('s/') || args[i].match(/^[0-9,/].*[dai]$/)) {
+      expressions.push(args[i]);
     }
   }
-  const expr = args.find(a => a.startsWith('s/')) || 's///';
-  const parts = expr.split('/');
-  if (parts.length < 3) return { output: content, exitCode: 0 };
-  const [_, search, replace] = parts;
-  const global = expr.endsWith('/g');
-  const lines = content.split('\n');
-  const output = lines.map(l => {
-    if (global) return l.split(search).join(replace);
-    return l.replace(search, replace);
-  });
-  return { output: output.join('\n'), exitCode: 0 };
+  if (expressions.length === 0 && !stdin) {
+    return { output: '', error: 'sed: usage: sed \'s/old/new/\' [file]', exitCode: 1 };
+  }
+
+  let content = stdin;
+  let filepath: string | undefined;
+  if (!content) {
+    const fileArgs = positional.filter(a => !a.startsWith('s/') && !a.match(/^[0-9,/]/));
+    if (fileArgs.length > 0) {
+      filepath = fileArgs[0];
+      const node = findNode(state.root, filepath, state.cwd, state.home);
+      if (!node) return { output: '', error: `sed: can't read ${filepath}: No such file or directory`, exitCode: 1 };
+      content = node.content || '';
+    }
+  }
+
+  let lines = content.split('\n');
+  let modified = false;
+
+  for (const expr of expressions) {
+    if (expr.startsWith('s/')) {
+      const parts = expr.split('/');
+      if (parts.length < 3) continue;
+      const [, search, replace] = parts;
+      const global = expr.endsWith('/g');
+      lines = lines.map(l => {
+        if (search === '') return l;
+        const regex = new RegExp(search, global ? 'g' : '');
+        const result = l.replace(regex, replace);
+        if (result !== l) modified = true;
+        return result;
+      });
+    } else if (expr.endsWith('d')) {
+      const addr = expr.slice(0, -1);
+      if (addr.match(/^\d+$/)) {
+        const lineNum = parseInt(addr);
+        const before = lines.length;
+        lines = lines.filter((_, i) => i + 1 !== lineNum);
+        if (lines.length !== before) modified = true;
+      } else if (addr.match(/^\d+,\d+$/)) {
+        const [start, end] = addr.split(',').map(Number);
+        const before = lines.length;
+        lines = lines.filter((_, i) => i + 1 < start || i + 1 > end);
+        if (lines.length !== before) modified = true;
+      }
+    } else if (expr.endsWith('a\\')) {
+      const text = expr.replace(/a\\$/, '').trim();
+      const addrMatch = expr.match(/^(\d+)a/);
+      if (addrMatch) {
+        const lineNum = parseInt(addrMatch[1]);
+        lines.splice(lineNum, 0, text);
+        modified = true;
+      }
+    } else if (expr.endsWith('i\\')) {
+      const text = expr.replace(/i\\$/, '').trim();
+      const addrMatch = expr.match(/^(\d+)i/);
+      if (addrMatch) {
+        const lineNum = parseInt(addrMatch[1]);
+        lines.splice(lineNum - 1, 0, text);
+        modified = true;
+      }
+    }
+  }
+
+  if (inPlace && filepath && modified) {
+    const node = findNode(state.root, filepath, state.cwd, state.home);
+    if (node) {
+      const updated = updateNodeAtPath(state.root, filepath, state.cwd, state.home, (n) => ({
+        ...n, content: lines.join('\n'),
+      }));
+      return { output: '', exitCode: 0, stateOverride: { root: updated } };
+    }
+  }
+
+  return { output: lines.join('\n'), exitCode: 0 };
 };
 
 export const cut: CommandHandler = (args, state) => {
