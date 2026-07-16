@@ -368,3 +368,143 @@ export const msfconsole: CommandHandler = (args, state) => {
   ].join('\n');
   return { output: banner, exitCode: 0, stateOverride: { inMsfConsole: true } as any };
 };
+
+export const nslookup: CommandHandler = (args, state) => {
+  const target = args[0] || 'localhost';
+  const server = args.includes('-type=MX') ? '8.8.8.8' : '8.8.8.8';
+  if (target === 'localhost') {
+    return {
+      output: `Server:		${server}
+Address:	${server}#53
+
+Non-authoritative answer:
+Name:	localhost
+Address: 127.0.0.1`,
+      exitCode: 0,
+    };
+  }
+  return {
+    output: `Server:		${server}
+Address:	${server}#53
+
+Non-authoritative answer:
+Name:	${target}
+Address: 10.0.0.${Math.floor(Math.random() * 254) + 1}`,
+    exitCode: 0,
+  };
+};
+
+export const dirb: CommandHandler = (args, state) => {
+  const url = args.find(a => a.startsWith('http')) || 'http://10.0.0.42/';
+  const lines = [
+    `-----------------`,
+    `DIRB v2.22`,
+    `-----------------`,
+    `URL_BASE: ${url}`,
+    `-----------------`,
+    ``,
+    `GENERATED WORDS: 4612`,
+    ``,
+    `---- Scanning URL: ${url} ----`,
+    `+ ${url}admin (CODE:301|SIZE:312)`,
+    `+ ${url}backup (CODE:403|SIZE:277)`,
+    `+ ${url}config.php (CODE:200|SIZE:1337)`,
+    `+ ${url}database.sql (CODE:200|SIZE:45678)`,
+    `+ ${url}images (CODE:403|SIZE:277)`,
+    `+ ${url}index.php (CODE:200|SIZE:5678)`,
+    `+ ${url}login.php (CODE:200|SIZE:2345)`,
+    `+ ${url}robots.txt (CODE:200|SIZE:123)`,
+    `+ ${url}server-status (CODE:403|SIZE:277)`,
+    `+ ${url}uploads/ (CODE:403|SIZE:277)`,
+    `-----------------`,
+    `END_REPORT: Found: 10 result(s)`,
+    `-----------------`,
+  ];
+  return { output: lines.join('\n'), exitCode: 0 };
+};
+
+export const wfuzz: CommandHandler = (args, state) => {
+  const url = args.find(a => a.startsWith('http')) || 'http://10.0.0.42/FUZZ';
+  const wordlistIdx = args.indexOf('-w');
+  const wordlist = wordlistIdx !== -1 ? args[wordlistIdx + 1] : '/usr/share/wordlists/dirb/common.txt';
+  const lines = [
+    `Target: ${url}`,
+    `Total requests: 4612`,
+    `=====================================================================`,
+    `ID           Response   Lines    Word       Payload`,
+    `=====================================================================`,
+    `000000001    200       45       123        admin`,
+    `000000002    301       0        0          backup`,
+    `000000003    403       12       45         images`,
+    `000000004    200       156      456        index.php`,
+    `000000005    200       89       234        login.php`,
+    `000000006    200       5        12         robots.txt`,
+    `000000007    403       12       45         uploads/`,
+    `=====================================================================`,
+    `Total: 4612`,
+    `=====================================================================`,
+  ];
+  return { output: lines.join('\n'), exitCode: 0 };
+};
+
+export const whatweb: CommandHandler = (args, state) => {
+  const target = args[0] || 'http://10.0.0.42/';
+  return {
+    output: `http://10.0.0.42/ [200 OK] Apache[2.4.57], Country[US], HTTPServer[Apache/2.4.57 (Debian)], IP[10.0.0.42], PHP[8.2.10], Title[Welcome to Apache2], X-Powered-By[PHP/8.2.10]`,
+    exitCode: 0,
+  };
+};
+
+export const wpscan: CommandHandler = (args, state) => {
+  const url = args.find(a => a.startsWith('http')) || 'http://10.0.0.42/';
+  const lines = [
+    `_______________________________________________________________`,
+    `        __          _______   _____                            `,
+    `        \\ \\        / /  __ \\ / ____|                           `,
+    `         \\ \\  /\\  / /| |__) | (___   ___  __ _ _ __ ®        `,
+    `          \\ \\/  \\/ / |  ___/ \\___ \\ / __|/ _\` | '_ \\         `,
+    `           \\  /\\  /  | |     ____) | (__| (_| | | | |         `,
+    `            \\/  \\/   |_|    |_____/ \\___|\\__,_|_| |_|         `,
+    `         WordPress Security Scanner by the WPScan Team`,
+    `_______________________________________________________________`,
+    `[+] URL: ${url}`,
+    `[+] Started: ${new Date().toISOString()}`,
+    `[!] The WordPress '${url}readme.html' file exists exposing a version number`,
+    `[+] WordPress version: 6.4.2`,
+    `[+] WordPress theme: twenty-twentyfour`,
+    `[+] Enumerating plugins from passive detection`,
+    `[+] No plugins found`,
+    `[*] Finished: ${new Date().toISOString()}`,
+  ];
+  return { output: lines.join('\n'), exitCode: 0 };
+};
+
+export const medusa: CommandHandler = (args, state) => {
+  const hostIdx = args.indexOf('-h');
+  const userIdx = args.indexOf('-u');
+  const passIdx = args.indexOf('-P');
+  const host = hostIdx !== -1 ? args[hostIdx + 1] : '10.0.0.42';
+  const user = userIdx !== -1 ? args[userIdx + 1] : 'admin';
+  const passFile = passIdx !== -1 ? args[passIdx + 1] : '/usr/share/wordlists/rockyou.txt';
+  return {
+    output: `ACCOUNT FOUND: [ssh] Host: ${host} User: ${user} Password: [Found] [SUCCESS]`,
+    exitCode: 0,
+  };
+};
+
+export const ncrack: CommandHandler = (args, state) => {
+  const targetIdx = args.indexOf('-p');
+  const target = targetIdx !== -1 ? args[targetIdx + 1] : '10.0.0.42:22';
+  return {
+    output: `Discovered credentials for ssh on ${target}:\nssh root password123\nNcrack done: 1 service scanned in 45.23 seconds.`,
+    exitCode: 0,
+  };
+};
+
+export const cewl: CommandHandler = (args, state) => {
+  const url = args.find(a => a.startsWith('http')) || 'http://10.0.0.42/';
+  return {
+    output: `CeWL 5.5.2 (Hashy) by Robin Wood (robin@digi.ninja)\n${url}\nLength: 5\npassword\nadmin\n12345\nsecret\nletmein`,
+    exitCode: 0,
+  };
+};

@@ -8,6 +8,8 @@ export interface VFSNode {
   size: number;
   children: VFSNode[];
   executable?: boolean;
+  mtime?: Date;
+  symlink?: string;
 }
 
 export type TerminalLineType = 'input' | 'output' | 'error' | 'system' | 'prompt';

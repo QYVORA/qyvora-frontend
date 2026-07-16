@@ -83,7 +83,16 @@ export const curl: CommandHandler = (args, state) => {
   const url = targets[0];
 
   if (method === 'POST' && data) {
-    const parsed = JSON.parse(data.replace(/'/g, '"'));
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(data.replace(/'/g, '"'));
+    } catch {
+      return {
+        output: '',
+        error: `curl: (2) Failed to decode the JSON: ${data.slice(0, 40)}...`,
+        exitCode: 2,
+      };
+    }
     return {
       output: JSON.stringify({ success: true, data: parsed, id: Math.floor(Math.random() * 10000) }, null, 2),
       exitCode: 0,

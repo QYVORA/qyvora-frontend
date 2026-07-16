@@ -193,7 +193,10 @@ export const exportCmd: CommandHandler = (args, state) => {
   };
 };
 
-export const exitCmd: CommandHandler = (_args, _state) => {
+export const exitCmd: CommandHandler = (_args, state) => {
+  if (state.inMsfConsole) {
+    return { output: '', exitCode: 0, stateOverride: { inMsfConsole: false } as any };
+  }
   return { output: 'exit', exitCode: 0, exit: true };
 };
 
@@ -311,3 +314,30 @@ export const tutorialReset: CommandHandler = (args, state) => {
 export const reset: CommandHandler = (_args, _state) => {
   return { output: 'Terminal reset.', exitCode: 0, clearLine: true };
 };
+
+export const nano: CommandHandler = (args, state) => {
+  if (args.length === 0) return { output: 'Usage: nano <filename>', exitCode: 1 };
+  const filepath = args[0];
+  const existing = findNode(state.root, filepath, state.cwd, state.home);
+  if (existing && existing.type === 'dir') {
+    return { output: `nano: ${filepath}: Is a directory`, exitCode: 1 };
+  }
+  return {
+    output: `[ File: ${filepath} ]\n${existing?.content || ''}\n\n[ Modified line in nano - write with Ctrl+O, exit with Ctrl+X ]`,
+    exitCode: 0,
+  };
+};
+
+export const vi: CommandHandler = (args, state) => {
+  if (args.length === 0) return { output: 'Usage: vi <filename>', exitCode: 1 };
+  const filepath = args.filter(a => !a.startsWith('-'))[0];
+  const existing = findNode(state.root, filepath, state.cwd, state.home);
+  if (existing && existing.type === 'dir') {
+    return { output: `vi: ${filepath}: Is a directory`, exitCode: 1 };
+  }
+  return {
+    output: `"${filepath}" ${existing ? `[New] ` : ''}-- No lines in file --\n\n-- INSERT -- (simulated vi editor: :wq to save, :q! to quit)`,
+    exitCode: 0,
+  };
+};
+export { vi as vim };

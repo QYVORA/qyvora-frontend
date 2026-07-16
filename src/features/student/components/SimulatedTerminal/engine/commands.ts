@@ -1,8 +1,7 @@
 import type { CommandHandler, TerminalState, CommandResult, PipelineStage, InternalCommandResult } from '../types';
 import * as handlers from './handlers';
-import { resolvePath, findNode } from './filesystem';
+import { findNode } from './filesystem';
 import { expandVars, applyGlobbing } from './parser';
-import { findNode as findNodeFs } from './filesystem';
 
 const commandMap: Record<string, CommandHandler> = {
   ls: handlers.ls,
@@ -112,6 +111,31 @@ const commandMap: Record<string, CommandHandler> = {
   reset: handlers.reset,
   man: handlers.man,
   which: handlers.which,
+  realpath: handlers.realpath,
+  tee: handlers.tee,
+  xargs: handlers.xargs,
+  locate: (_args, _state) => ({ output: '', error: 'locate: command not found (install plocate)', exitCode: 127 }),
+  nano: handlers.nano,
+  vi: handlers.vi,
+  vim: handlers.vi,
+  journalctl: handlers.journalctl,
+  dmesg: handlers.dmesg,
+  who: handlers.who,
+  w: handlers.wCmd,
+  last: handlers.last,
+  groups: handlers.groups,
+  useradd: handlers.useradd,
+  usermod: handlers.usermod,
+  userdel: handlers.userdel,
+  passwd: handlers.passwd,
+  nslookup: handlers.nslookup,
+  dirb: handlers.dirb,
+  wfuzz: handlers.wfuzz,
+  whatweb: handlers.whatweb,
+  wpscan: handlers.wpscan,
+  medusa: handlers.medusa,
+  ncrack: handlers.ncrack,
+  cewl: handlers.cewl,
   'qyvora-help': handlers.qyvoraHelp,
   'tutorial-start': handlers.tutorialStart,
   'tutorial-next': handlers.tutorialNext,
@@ -191,32 +215,15 @@ export function executeCommandInternal(
 }
 
 export function executeCommand(input: string, state: TerminalState): CommandResult & { _clearLine?: boolean; _exit?: boolean; _stateOverride?: InternalCommandResult['stateOverride'] } {
-  const expandedInput = input.replace(/\$(\w+|\?)/g, (match, varName) => {
-    if (varName === '?') return String(state.lastExitCode);
-    return state.env[varName] || '';
-  });
-
+  const expandedInput = expandVars(input, state);
   const parts = expandedInput.trim().split(/\s+/);
-  const cmd = parts[0];
   const args = parts.slice(1);
-
-  if (!cmd) return { output: '', exitCode: 0 };
-
   const globbedArgs = applyGlobbing(args, state, state.cwd, state.home);
 
-  const handler = commandMap[cmd];
-  if (!handler) {
-    if (cmd.startsWith('/')) {
-      const node = findNode(state.root, cmd, state.cwd, state.home);
-      if (node && node.executable) {
-        return { output: `bash: ${cmd}: cannot execute binary file: Exec format error`, exitCode: 126 };
-      }
-      if (node) return { output: `bash: ${cmd}: Is a directory`, exitCode: 126 };
-    }
-    return { output: '', error: `bash: ${cmd}: command not found`, exitCode: 127 };
-  }
-
-  const result = handler(globbedArgs, state) as InternalCommandResult;
+  const result = executeCommandInternal(
+    { command: parts[0], args: globbedArgs },
+    state,
+  ) as InternalCommandResult;
   return {
     output: result.output,
     error: result.error,
