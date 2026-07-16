@@ -4,7 +4,6 @@ import { Medal } from 'lucide-react';
 import { IconArrowRight, IconShield } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Identicon } from '@/shared/components';
-import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
 
 interface LeaderboardEntry {
@@ -72,9 +71,7 @@ const LandingLeaderboardSection = () => {
 
   return (
     <div className="relative bg-bg h-full flex flex-col overflow-hidden">
-      <GridBoxedBackground opacity={0.15} blur={0} mask="none" />
-
-      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-12 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+      <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
         <div className="shrink-0 lg:w-[380px] xl:w-[420px]">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
              <IconShield size={12} className="text-accent" /> {t('landing.leaderboard.badge')}
