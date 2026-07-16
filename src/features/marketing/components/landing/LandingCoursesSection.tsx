@@ -79,7 +79,7 @@ const LandingCoursesSection: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden h-full flex flex-col">
-      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-16 lg:py-20 flex flex-col">
+      <div className="relative w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
           {/* Heading */}
           <motion.div

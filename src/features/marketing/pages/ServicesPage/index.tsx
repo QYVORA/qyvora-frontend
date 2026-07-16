@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Building2, Send } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { IconShield, IconLock, IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
@@ -8,7 +9,6 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { openServiceRequestModal } from '@/features/marketing/components/ServiceRequestModal';
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
-import ScrollReveal from '@/shared/components/ScrollReveal';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 const SERVICES_DATA = [
@@ -56,8 +56,24 @@ const SERVICES_DATA = [
   },
 ];
 
+const CYCLE_MS = 4000;
+
 const ServicesPage: React.FC = () => {
   const { user } = useAuth();
+  const shouldReduceMotion = useReducedMotion();
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [dir, setDir] = useState(1);
+
+  const advance = useCallback(() => {
+    setDir(1);
+    setActiveIdx((p) => (p + 1) % SERVICES_DATA.length);
+  }, []);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(advance, CYCLE_MS);
+    return () => clearInterval(id);
+  }, [advance, shouldReduceMotion]);
 
   return (
     <div className="relative min-h-screen w-full bg-bg">
@@ -71,7 +87,7 @@ const ServicesPage: React.FC = () => {
       />
 
       {/* ══ HERO ══ */}
-      <PublicHeroSection mask="none">
+      <PublicHeroSection mask="right" showGlobe>
         <div className="flex items-center gap-3 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
           <IconShield className="w-4 h-4" />
           Offensive Security Assessments
@@ -104,79 +120,99 @@ const ServicesPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {SERVICES_DATA.map((service, idx) => {
-              const isFeatured = service.featured;
-              return (
-                <ScrollReveal key={service.id} delay={idx * 0.1}>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => openServiceRequestModal(service.tier)}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
-                    className={`group relative rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 cursor-pointer h-full ${
-                      isFeatured
-                        ? 'border-accent/40 bg-bg-card shadow-[0_0_30px_-8px] shadow-accent/20'
-                        : 'border-border/30 bg-bg-card hover:border-accent/30'
-                    }`}
-                  >
-                    {isFeatured && (
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-bg" />
-                    )}
-                    {/* Image */}
-                    {service.image && (
-                      <div className="relative h-44 overflow-hidden">
-                        <div
-                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                          style={{ backgroundImage: `url(${service.image})` }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                        <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
-                          <div>
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
-                            <h3 className="text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+          <div className="flex items-center justify-center gap-1.5 mb-6">
+            {SERVICES_DATA.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => { setDir(idx > activeIdx ? 1 : -1); setActiveIdx(idx); }}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === activeIdx ? 'bg-accent w-5' : 'bg-border/40 w-1.5 hover:bg-border/60'
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="relative max-w-5xl mx-auto min-h-[420px]">
+            <AnimatePresence mode="wait" custom={dir}>
+              <motion.div
+                key={activeIdx}
+                custom={dir}
+                initial={{ opacity: 0, x: dir > 0 ? 60 : -60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {(() => {
+                  const service = SERVICES_DATA[activeIdx];
+                  const isFeatured = service.featured;
+                  return (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => openServiceRequestModal(service.tier)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
+                      className={`group relative rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 cursor-pointer max-w-lg mx-auto ${
+                        isFeatured
+                          ? 'border-accent/40 bg-bg-card shadow-[0_0_30px_-8px] shadow-accent/20'
+                          : 'border-border/30 bg-bg-card hover:border-accent/30'
+                      }`}
+                    >
+                      {isFeatured && (
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
+                      )}
+                      {service.image && (
+                        <div className="relative h-48 overflow-hidden">
+                          <div
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                            style={{ backgroundImage: `url(${service.image})` }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                          <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                            <div>
+                              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                              <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                            </div>
+                            <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-card/80 backdrop-blur-sm border border-border/30">
+                              {service.price}
+                            </span>
                           </div>
-                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-card/80 backdrop-blur-sm border border-border/30">
-                            {service.price}
-                          </span>
                         </div>
-                      </div>
-                    )}
-                    {!service.image && (
-                      <div className="p-5 pb-0">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
-                        <div className="flex items-end justify-between mb-2">
-                          <h3 className="text-xl font-black text-text-primary tracking-tight">{service.tier}</h3>
-                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-elevated border border-border/30">
-                            {service.price}
-                          </span>
+                      )}
+                      {!service.image && (
+                        <div className="p-6 pb-0">
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                          <div className="flex items-end justify-between mb-2">
+                            <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                            <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-elevated border border-border/30">
+                              {service.price}
+                            </span>
+                          </div>
                         </div>
+                      )}
+                      <div className="p-6 flex-1 flex flex-col">
+                        <p className="text-sm text-text-muted mb-5">{service.desc}</p>
+                        <ul className="space-y-3 flex-1">
+                          {service.features.map((f) => (
+                            <li key={f} className="flex items-start gap-2.5">
+                              <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                              <span className="text-sm text-text-secondary leading-relaxed break-words">{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <button
+                          onClick={() => openServiceRequestModal(service.tier)}
+                          className="mt-6 w-full py-3.5 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary"
+                        >
+                          <IconLock className="w-3 h-3" />
+                          Request Assessment
+                          <IconArrowRight className="w-3 h-3" />
+                        </button>
                       </div>
-                    )}
-                    {/* Features */}
-                    <div className="p-5 flex-1 flex flex-col">
-                      <p className="text-xs text-text-muted mb-4">{service.desc}</p>
-                      <ul className="space-y-2.5 flex-1">
-                        {service.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5">
-                            <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                            <span className="text-xs text-text-secondary leading-relaxed break-words">{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <button
-                        onClick={() => openServiceRequestModal(service.tier)}
-                        className="mt-5 w-full py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary"
-                      >
-                        <IconLock className="w-3 h-3" />
-                        Request Assessment
-                        <IconArrowRight className="w-3 h-3" />
-                      </button>
                     </div>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
+                  );
+                })()}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </section>
