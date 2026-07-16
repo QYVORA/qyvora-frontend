@@ -16,7 +16,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
+    <div className="relative w-full h-full md:h-dvh bg-accent flex items-center overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
 
