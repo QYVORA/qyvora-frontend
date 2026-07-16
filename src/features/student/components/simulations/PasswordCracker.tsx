@@ -30,6 +30,7 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
   }, [stop]);
 
   const startCrack = useCallback(() => {
+    if (!hash) return;
     reset();
     setIsRunning(true);
     let idx = 0;
@@ -53,6 +54,19 @@ export function PasswordCracker({ hashes, wordlist }: PasswordCrackerProps) {
   useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
 
   const found = attempts.find(a => a.result === 'hit');
+
+  if (!hash) {
+    return (
+      <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+        <div className="px-4 py-3 bg-bg-elevated border-b border-border/20">
+          <p className="text-[10px] font-black uppercase tracking-widest text-accent">Password Cracker</p>
+        </div>
+        <div className="flex-1 flex items-center justify-center text-text-muted/50 text-[10px] font-mono">
+          No hashes loaded
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
