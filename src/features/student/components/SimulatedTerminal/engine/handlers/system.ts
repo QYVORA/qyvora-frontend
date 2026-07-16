@@ -1,5 +1,7 @@
 import type { CommandHandler } from '../../types';
-import { findNode } from '../filesystem';
+import { findNode, updateNodeAtPath } from '../filesystem';
+import { executeCommandInternal } from '../commands';
+import { parseFlags } from './utils';
 
 export const whoami: CommandHandler = (_args, state) => {
   return { output: state.user, exitCode: 0 };
@@ -13,16 +15,57 @@ export const id: CommandHandler = (_args, state) => {
 };
 
 export const uname: CommandHandler = (args, state) => {
-  if (args.includes('-a')) {
-    return { output: `Linux ${state.hostname} 6.8.0-kali1-amd64 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux`, exitCode: 0 };
-  }
-  return { output: 'Linux', exitCode: 0 };
+  if (args.length === 0) return { output: 'Linux', exitCode: 0 };
+  const { flags } = parseFlags(args);
+  const parts: string[] = [];
+  if (flags.has('-s') || flags.has('-a')) parts.push('Linux');
+  if (flags.has('-n') || flags.has('-a')) parts.push(state.hostname);
+  if (flags.has('-r') || flags.has('-a')) parts.push('6.8.0-kali1-amd64');
+  if (flags.has('-v') || flags.has('-a')) parts.push('#1 SMP PREEMPT_DYNAMIC');
+  if (flags.has('-m') || flags.has('-a')) parts.push('x86_64');
+  if (flags.has('-p') || flags.has('-a')) parts.push('x86_64');
+  if (flags.has('-i') || flags.has('-a')) parts.push('x86_64');
+  if (flags.has('-o') || flags.has('-a')) parts.push('GNU/Linux');
+  if (parts.length === 0) parts.push('Linux');
+  return { output: parts.join(' '), exitCode: 0 };
 };
 
 export const date: CommandHandler = (args, state) => {
   const now = new Date();
   if (args.includes('-u')) {
     return { output: now.toUTCString(), exitCode: 0 };
+  }
+  if (args.includes('-R')) {
+    const rfc2822 = now.toUTCString().replace('GMT', '+0000');
+    return { output: rfc2822, exitCode: 0 };
+  }
+  const formatArg = args.find(a => a.startsWith('+'));
+  if (formatArg) {
+    const format = formatArg.slice(1);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const result = format
+      .replace(/%Y/g, String(now.getFullYear()))
+      .replace(/%m/g, pad(now.getMonth() + 1))
+      .replace(/%d/g, pad(now.getDate()))
+      .replace(/%H/g, pad(now.getHours()))
+      .replace(/%M/g, pad(now.getMinutes()))
+      .replace(/%S/g, pad(now.getSeconds()))
+      .replace(/%s/g, String(Math.floor(now.getTime() / 1000)))
+      .replace(/%A/g, days[now.getDay()])
+      .replace(/%B/g, monthsFull[now.getMonth()])
+      .replace(/%b/g, months[now.getMonth()])
+      .replace(/%p/g, now.getHours() >= 12 ? 'PM' : 'AM')
+      .replace(/%I/g, pad(now.getHours() % 12 || 12))
+      .replace(/%Z/g, 'UTC');
+    return { output: result, exitCode: 0 };
+  }
+  if (args.includes('-d')) {
+    const idx = args.indexOf('-d');
+    const dateStr = args[idx + 1];
+    return { output: `date: invalid date '${dateStr}'`, exitCode: 1 };
   }
   return { output: now.toString(), exitCode: 0 };
 };
@@ -31,26 +74,51 @@ export const cal: CommandHandler = (args, state) => {
   const now = new Date();
   const year = args.length > 0 ? parseInt(args[args.length - 1]) || now.getFullYear() : now.getFullYear();
   const month = args.length > 1 ? parseInt(args[0]) || now.getMonth() + 1 : now.getMonth() + 1;
-  const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
-  const daysInMonth = lastDay.getDate();
-  const startDay = firstDay.getDay();
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
-  const header = `    ${monthNames[month - 1]} ${year}`;
-  const weekDays = 'Su Mo Tu We Th Fr Sa';
-  const lines: string[] = [header, weekDays];
-  let currentLine = '   '.repeat(startDay);
-  for (let d = 1; d <= daysInMonth; d++) {
-    currentLine += String(d).padStart(2) + ' ';
-    if ((startDay + d) % 7 === 0 || d === daysInMonth) {
-      lines.push(currentLine);
-      currentLine = '';
+
+  function renderMonth(y: number, m: number): string[] {
+    const firstDay = new Date(y, m - 1, 1);
+    const lastDay = new Date(y, m, 0);
+    const daysInMonth = lastDay.getDate();
+    const startDay = firstDay.getDay();
+    const header = `    ${monthNames[m - 1]} ${y}`;
+    const weekDays = 'Su Mo Tu We Th Fr Sa';
+    const lines: string[] = [header, weekDays];
+    let currentLine = '   '.repeat(startDay);
+    for (let d = 1; d <= daysInMonth; d++) {
+      currentLine += String(d).padStart(2) + ' ';
+      if ((startDay + d) % 7 === 0 || d === daysInMonth) {
+        lines.push(currentLine);
+        currentLine = '';
+      }
     }
+    return lines;
   }
-  return { output: lines.join('\n'), exitCode: 0 };
+
+  if (args.includes('-3')) {
+    const prevMonth = month === 1 ? 12 : month - 1;
+    const prevYear = month === 1 ? year - 1 : year;
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
+    const prevCal = renderMonth(prevYear, prevMonth);
+    const curCal = renderMonth(year, month);
+    const nextCal = renderMonth(nextYear, nextMonth);
+    const maxLen = Math.max(prevCal.length, curCal.length, nextCal.length);
+    const combined: string[] = [];
+    for (let i = 0; i < maxLen; i++) {
+      combined.push(
+        (prevCal[i] || '').padEnd(22) +
+        (curCal[i] || '').padEnd(22) +
+        (nextCal[i] || '')
+      );
+    }
+    return { output: combined.join('\n'), exitCode: 0 };
+  }
+
+  return { output: renderMonth(year, month).join('\n'), exitCode: 0 };
 };
 
 export const uptime: CommandHandler = (_args, _state) => {
@@ -112,18 +180,58 @@ export const top: CommandHandler = (args, state) => {
 
 export const kill: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', error: 'kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ...', exitCode: 2 };
-  const signal = args[0].startsWith('-') ? args[0].slice(1) : 'TERM';
-  const pids = args.filter(a => !a.startsWith('-'));
-  if (pids.length === 0) return { output: '', error: 'kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ...', exitCode: 2 };
-  return { output: '', exitCode: 0 };
+  let signal = 'TERM';
+  let pidArgs = args;
+  if (args[0].startsWith('-') && !args[0].match(/^-?\d+$/)) {
+    signal = args[0].slice(1);
+    pidArgs = args.slice(1);
+  }
+  if (pidArgs.length === 0) return { output: '', error: 'kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ...', exitCode: 2 };
+  const processes: Record<number, { cmd: string; killed: boolean }> = {
+    1: { cmd: 'init', killed: false },
+    42: { cmd: 'systemd-journald', killed: false },
+    89: { cmd: 'systemd-logind', killed: false },
+    124: { cmd: 'cron', killed: false },
+    156: { cmd: 'NetworkManager', killed: false },
+    203: { cmd: 'sshd', killed: false },
+  };
+  const results: string[] = [];
+  for (const pidStr of pidArgs) {
+    const pid = parseInt(pidStr.replace('%', ''));
+    if (isNaN(pid)) {
+      results.push(`-bash: kill: (${pidStr}) - No such process`);
+      continue;
+    }
+    if (pid === 1) {
+      results.push(`-bash: kill: (${pid}) - Operation not permitted`);
+      continue;
+    }
+    if (!processes[pid]) {
+      results.push(`-bash: kill: (${pid}) - No such process`);
+      continue;
+    }
+    results.push(``);
+  }
+  return { output: results.join('\n'), exitCode: 0 };
 };
 
 export const sudo: CommandHandler = (args, state) => {
   if (args.length === 0) return { output: '', error: 'usage: sudo -h | -K | -k | -V\nusage: sudo -v [-AknS] [-g group] [-h host] [-p prompt] [-u user]\nusage: sudo -l [-AknS] [-g group] [-h host] [-p prompt] [-U user] [-u user]\n            [command]\nusage: sudo [-AbknS] [-r role] [-t type] [-C num] [-g group] [-h host] [-p prompt]\n            [-T timeout] [-u user] [VAR=value] [-i|-s] [<command>]\nusage: sudo -e [-AknS] [-r role] [-t type] [-C num] [-g group] [-h host] [-p prompt]\n            [-u user] file ...', exitCode: 1 };
-  if (!state.isRoot) {
-    return { output: '', error: `[sudo] password for ${state.user}:\nsorry, try again.\nsudo: 1 incorrect password attempt`, exitCode: 1 };
-  }
-  return { output: '', exitCode: 0 };
+  
+  const sudoArgs = args.filter(a => !a.startsWith('-'));
+  const command = sudoArgs.join(' ');
+  
+  if (!command) return { output: '', exitCode: 0 };
+
+  const rootState = { ...state, isRoot: true };
+  const result = executeCommandInternal(command, rootState);
+  
+  return {
+    output: result.output,
+    error: result.error,
+    exitCode: result.exitCode,
+    stateOverride: { isRoot: false },
+  };
 };
 
 export const free: CommandHandler = (_args, _state) => {
@@ -225,9 +333,12 @@ export const chown: CommandHandler = (args, state) => {
   const node = findNode(state.root, filepath, state.cwd, state.home);
   if (!node) return { output: '', error: `chown: cannot access '${filepath}': No such file or directory`, exitCode: 1 };
   const [owner, group] = ownerSpec.includes(':') ? ownerSpec.split(':') : [ownerSpec, undefined];
-  if (owner) node.owner = owner;
-  if (group) node.group = group;
-  return { output: '', exitCode: 0 };
+  const updated = updateNodeAtPath(state.root, filepath, state.cwd, state.home, (n) => ({
+    ...n,
+    owner: owner || n.owner,
+    group: group || n.group,
+  }));
+  return { output: '', exitCode: 0, stateOverride: { root: updated } };
 };
 
 export const umask: CommandHandler = (args, state) => {
@@ -273,4 +384,103 @@ export const fg: CommandHandler = (args, _state) => {
     return { output: JOB_STORE[lastId].cmd, exitCode: 0 };
   }
   return { output: 'fg: no current job', exitCode: 1 };
+};
+
+export const journalctl: CommandHandler = (args, state) => {
+  const lines = [
+    `-- Logs begin at ${new Date().toUTCString()}. --`,
+    `Jul 16 10:00:01 ${state.hostname} systemd[1]: Started Daily apt activities.`,
+    `Jul 16 10:00:01 ${state.hostname} CRON[1234]: (root) CMD (test -x /usr/sbin/anacron && ... )`,
+    `Jul 16 10:05:12 ${state.hostname} kernel: [12345.678] audit: type=1400 msg=apparmor="ALLOWED" ...`,
+    `Jul 16 10:10:00 ${state.hostname} sshd[5678]: Accepted publickey for kali from 10.0.0.1`,
+    `Jul 16 10:15:30 ${state.hostname} NetworkManager[890]: <info> ...`,
+    `Jul 16 10:20:00 ${state.hostname} systemd[1]: Starting Cleanup Directories...`,
+    `Jul 16 10:25:00 ${state.hostname} kernel: [13000.123] audit: type=1400 msg=apparmor="STATUS" ...`,
+    `Jul 16 10:30:00 ${state.hostname} CRON[9999]: (kali) CMD (cd / && run-parts --report ...)`,
+    `Jul 16 10:35:00 ${state.hostname} sshd[1111]: pam_unix(sshd:session): session opened for user kali`,
+  ];
+  if (args.includes('-n')) {
+    const idx = args.indexOf('-n');
+    const n = parseInt(args[idx + 1]) || 10;
+    return { output: lines.slice(-n).join('\n'), exitCode: 0 };
+  }
+  if (args.includes('--no-pager') || args.includes('-e')) {
+    return { output: lines.join('\n'), exitCode: 0 };
+  }
+  return { output: lines.slice(-20).join('\n'), exitCode: 0 };
+};
+
+export const dmesg: CommandHandler = (_args, _state) => {
+  return {
+    output: `[    0.000000] Linux version 6.8.0-kali1-amd64 (devel@kali.org) (gcc-13 (Debian 13.2.0-5) 13.2.0)
+[    0.000000] Command line: BOOT_IMAGE=/vmlinuz-6.8.0-kali1-amd64
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+[    0.000000] tsc: Fast TSC calibration using PMI
+[    0.000000] e820: update [mem 0x000000000009fbff-0x000000000009ffff] usable ==> reserved
+[    1.234567] audit: type=1400 audit(1234567890.123:1): apparmor="STATUS" profile="unconfined"
+[    2.345678] EXT4-fs (sda1): mounted filesystem with ordered data mode
+[    3.456789] systemd[1]: Starting Journal Service...
+[    4.567890] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input0`,
+    exitCode: 0,
+  };
+};
+
+export const who: CommandHandler = (_args, _state) => {
+  const now = new Date();
+  const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return {
+    output: `kali     pts/0        ${now.toISOString().split('T')[0]} ${time} (10.0.0.1)`,
+    exitCode: 0,
+  };
+};
+
+export const wCmd: CommandHandler = (_args, _state) => {
+  const now = new Date();
+  const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return {
+    output: ` ${time} up 2 days, 14:23,  1 user,  load average: 0.12, 0.08, 0.05
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+kali     pts/0    10.0.0.1         ${time}   0.00s  0.12s  0.01s w`,
+    exitCode: 0,
+  };
+};
+
+export const last: CommandHandler = (_args, _state) => {
+  return {
+    output: `kali     pts/0        10.0.0.1    Wed Jul 16 10:00   still logged in
+kali     pts/0        10.0.0.1    Tue Jul 15 09:30 - 18:45  (09:15)
+reboot   system boot  6.8.0-kali1    Wed Jul 16 09:00   still running
+
+wtmp begins Sat Jul  1 00:00:01 2023`,
+    exitCode: 0,
+  };
+};
+
+export const groups: CommandHandler = (args, state) => {
+  const user = args[0] || state.user;
+  return { output: `${user} : ${user} sudo cdrom floppy dip video plugdev netdev`, exitCode: 0 };
+};
+
+export const useradd: CommandHandler = (args, state) => {
+  const { positional } = parseFlags(args);
+  if (positional.length === 0) return { output: '', error: 'useradd: missing operand', exitCode: 1 };
+  return { output: '', exitCode: 0 };
+};
+
+export const usermod: CommandHandler = (args, state) => {
+  const { positional } = parseFlags(args);
+  if (positional.length < 2) return { output: '', error: 'usermod: option -aG requires a group and a user', exitCode: 1 };
+  return { output: '', exitCode: 0 };
+};
+
+export const userdel: CommandHandler = (args, state) => {
+  const { positional } = parseFlags(args);
+  if (positional.length === 0) return { output: '', error: 'userdel: missing operand', exitCode: 1 };
+  return { output: `userdel: user '${positional[0]}' does not exist`, exitCode: 6 };
+};
+
+export const passwd: CommandHandler = (args, state) => {
+  const user = args[0] || state.user;
+  return { output: `passwd: password updated successfully`, exitCode: 0 };
 };

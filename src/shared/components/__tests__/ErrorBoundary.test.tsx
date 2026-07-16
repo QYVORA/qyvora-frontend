@@ -1,7 +1,24 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ErrorBoundary from '../ErrorBoundary';
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const map: Record<string, string> = {
+        'components.errorBoundary.renderError': 'Render Error',
+        'components.errorBoundary.title': 'Something went wrong',
+        'components.errorBoundary.description': 'This section crashed unexpectedly. The rest of the app is still running.',
+        'components.errorBoundary.tryAgain': 'Try Again',
+        'components.errorBoundary.dashboard': 'Dashboard',
+        'components.errorBoundary.stillBroken': 'Still broken?',
+        'components.errorBoundary.reloadPage': 'Reload the page',
+      };
+      return map[key] ?? key;
+    },
+  }),
+}));
 
 function GoodChild() {
   return <div>Child content</div>;
