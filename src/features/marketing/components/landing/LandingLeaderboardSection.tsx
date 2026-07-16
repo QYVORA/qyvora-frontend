@@ -70,7 +70,7 @@ const LandingLeaderboardSection = () => {
   }, [entries]);
 
   return (
-    <div className="relative bg-bg h-full flex flex-col overflow-hidden">
+    <div className="relative bg-bg h-full md:h-dvh flex flex-col overflow-hidden">
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
         <div className="shrink-0 lg:w-[380px] xl:w-[420px]">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
