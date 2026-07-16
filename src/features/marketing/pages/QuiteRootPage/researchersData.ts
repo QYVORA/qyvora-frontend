@@ -27,7 +27,7 @@ export const researchersData: Researcher[] = [
   },
   {
     id: 'r3',
-    name: 'Zerosmind',
+    name: 'zeromind',
     role: 'Security Researcher',
     bio: 'I help Qyvora identify and understand security vulnerabilities through hands-on research and web application testing.',
     image: zeroImg,
