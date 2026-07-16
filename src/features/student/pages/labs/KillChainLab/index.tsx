@@ -92,12 +92,10 @@ const KillChainLab = () => {
           {KILL_CHAIN_SCENARIOS.map((s, i) => (
               <ScenarioCard
                 key={s.id}
-                index={i}
                 title={s.title}
                 difficulty={s.difficulty}
                 description={s.description}
                 cpReward={s.cpReward}
-                accentColor="#DC2626"
                 onStart={() => startScenario(s)}
             />
           ))}

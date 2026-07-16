@@ -34,18 +34,10 @@ const LandingCurriculumSection: React.FC = () => {
               const Icon = phase.icon;
               return (
                 <div className="relative min-h-[260px] md:min-h-[360px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${phase.image})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
                   <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                         <Icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
-                        <span className="text-xs font-black text-bg">{phase.id}</span>
                       </div>
                     </div>
                     <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2 tracking-tight">

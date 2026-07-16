@@ -100,12 +100,10 @@ const WirelessLab = () => {
             {WIRELESS_CHALLENGES.map((challenge, index) => (
               <ScenarioCard
                 key={challenge.id}
-                index={index}
                 title={challenge.title}
                 difficulty={challenge.difficulty}
                 description={challenge.description}
                 cpReward={challenge.cpReward}
-                accentColor="#F59E0B"
                 onStart={() => startChallenge(challenge)}
               />
             ))}

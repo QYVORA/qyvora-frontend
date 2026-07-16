@@ -100,12 +100,10 @@ const OsintLab = () => {
             {OSINT_CHALLENGES.map((challenge, index) => (
               <ScenarioCard
                 key={challenge.id}
-                index={index}
                 title={challenge.title}
                 difficulty={challenge.difficulty}
                 description={challenge.description}
                 cpReward={challenge.cpReward}
-                accentColor="#0EA5E9"
                 onStart={() => startChallenge(challenge)}
               />
             ))}

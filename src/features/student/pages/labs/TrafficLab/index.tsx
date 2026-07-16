@@ -100,12 +100,10 @@ const TrafficLab = () => {
             {TRAFFIC_CHALLENGES.map((challenge, index) => (
               <ScenarioCard
                 key={challenge.id}
-                index={index}
                 title={challenge.title}
                 difficulty={challenge.difficulty}
                 description={challenge.description}
                 cpReward={challenge.cpReward}
-                accentColor="#84CC16"
                 onStart={() => startChallenge(challenge)}
               />
             ))}

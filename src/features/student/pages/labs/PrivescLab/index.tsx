@@ -95,12 +95,10 @@ const PrivescLab = () => {
             {PRIVESC_SCENARIOS.map((scenario, i) => (
               <ScenarioCard
                 key={scenario.id}
-                index={i}
                 title={scenario.title}
                 difficulty={scenario.difficulty}
                 description={scenario.technique}
                 cpReward={50}
-                accentColor="#FBBF24"
                 onStart={() => {
                   setCompletedSteps(new Set());
                   setSelectedScenario(scenario);

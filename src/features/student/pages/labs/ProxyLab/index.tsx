@@ -100,12 +100,10 @@ const ProxyLab = () => {
             {PROXY_SCENARIOS.map((scenario, index) => (
               <ScenarioCard
                 key={scenario.id}
-                index={index}
                 title={scenario.title}
                 difficulty={scenario.difficulty}
                 description={scenario.description}
                 cpReward={scenario.cpReward}
-                accentColor="#10B981"
                 onStart={() => startScenario(scenario)}
               />
             ))}

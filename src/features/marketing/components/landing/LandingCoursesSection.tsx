@@ -166,7 +166,6 @@ const LandingCoursesSection: React.FC = () => {
                       to={`/courses/${course.id}`}
                       className="group/card relative rounded-2xl border border-border/30 bg-bg-card p-3 md:p-5 transition-all duration-300 hover:border-accent/30 flex flex-col"
                     >
-                      <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }} />
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-accent/10 border border-accent/20">
                           {CatIc && <CatIc className="w-4 h-4 text-accent" />}
