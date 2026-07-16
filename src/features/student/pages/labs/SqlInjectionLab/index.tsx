@@ -100,13 +100,11 @@ const SqlInjectionLab = () => {
             {SQL_INJECTION_TARGETS.map((target, index) => (
               <ScenarioCard
                 key={target.id}
-                index={index}
                 title={target.name}
                 difficulty={target.difficulty}
                 description={target.description}
                 cpReward={target.cpReward}
                 subtitle={`${target.injectionType} · ${target.dbms}`}
-                accentColor="#06B66F"
                 onStart={() => startTarget(target)}
               />
             ))}

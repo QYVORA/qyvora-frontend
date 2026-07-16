@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from 'motion/react';
 import { IconArrowRight, IconShield } from '@/shared/components/icons';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
-import DotMapBackground from '@/shared/components/DotMapBackground';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
 
@@ -81,14 +80,9 @@ const LandingBootcampSection: React.FC = () => {
                           <div className="absolute inset-0 bg-gradient-to-t from-bg-card via-bg-card/80 to-bg-card/40" />
                         </div>
                         <div className="relative p-3 sm:p-6">
-                          <div className="flex items-center justify-between mb-2 sm:mb-4 shrink-0">
-                            <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
-                                <Icon className="w-5 h-5 text-bg" />
-                              </div>
-                              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-bg/20 border border-bg/30">
-                                <span className="text-xs font-black text-bg">{phase.id}</span>
-                              </div>
+                           <div className="flex items-center justify-between mb-2 sm:mb-4 shrink-0">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
+                              <Icon className="w-5 h-5 text-bg" />
                             </div>
                              <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
                                {t('landing.bootcamp.roomCount', { count: roomCount })}
@@ -110,7 +104,6 @@ const LandingBootcampSection: React.FC = () => {
                       </div>
                     ) : (
                       <div className="relative p-3 sm:p-4">
-                        <DotMapBackground opacity={0.04} step={4} />
                         <div className="flex items-start gap-2.5">
                           <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
                             <Icon className="w-4 h-4 text-bg" />

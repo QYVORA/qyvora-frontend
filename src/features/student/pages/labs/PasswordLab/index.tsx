@@ -101,13 +101,11 @@ const PasswordLab = () => {
             {PASSWORD_EXERCISES.map((scenario, index) => (
               <ScenarioCard
                 key={scenario.id}
-                index={index}
                 title={scenario.title}
                 difficulty={scenario.difficulty}
                 description={scenario.description}
                 cpReward={scenario.cpReward}
                 subtitle={scenario.hashType}
-                accentColor="#F59E0B"
                 onStart={() => startScenario(scenario)}
               />
             ))}

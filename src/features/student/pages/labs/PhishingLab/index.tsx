@@ -100,12 +100,10 @@ const PhishingLab = () => {
             {PHISHING_CHALLENGES.map((challenge, index) => (
               <ScenarioCard
                 key={challenge.id}
-                index={index}
                 title={challenge.title}
                 difficulty={challenge.difficulty}
                 description={challenge.description}
                 cpReward={challenge.cpReward}
-                accentColor="#8B5CF6"
                 onStart={() => startChallenge(challenge)}
               />
             ))}

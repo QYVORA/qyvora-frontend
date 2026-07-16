@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { Zap } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
-import DotMapBackground from '@/shared/components/DotMapBackground';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useTranslation } from 'react-i18next';
 
@@ -89,12 +88,8 @@ const LandingLabsSection: React.FC = () => {
                   >
                     {isFeatured ? (
                       <div className="relative p-4 sm:p-6">
-                        <DotMapBackground opacity={0.04} step={4} />
                         <div className="relative">
                           <div className="flex items-center justify-between mb-2 sm:mb-4">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
-                              <span className="text-lg font-black text-bg">{String(labIdx + 1).padStart(2, '0')}</span>
-                            </div>
                             <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
                                {t(`landing.labs.list.${lab.id}.cp`)}
                              </span>
@@ -116,12 +111,8 @@ const LandingLabsSection: React.FC = () => {
                       </div>
                     ) : (
                       <div className="relative p-3 sm:p-4">
-                        <DotMapBackground opacity={0.04} step={4} />
                         <div className="w-full h-0.5 rounded-full mb-2 bg-accent/30 shrink-0" />
                         <div className="flex items-center gap-2 mb-1.5 shrink-0">
-                          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-accent/15 border border-accent/25">
-                            <span className="text-[9px] font-black text-bg">{String(labIdx + 1).padStart(2, '0')}</span>
-                          </div>
                            <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-bg/15 text-bg">
                              {t(`landing.labs.list.${lab.id}.cp`)}
                            </span>
