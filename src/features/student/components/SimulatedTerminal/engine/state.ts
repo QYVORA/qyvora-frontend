@@ -76,22 +76,31 @@ function executeStage(
     if (parentNode && parentNode.type === 'dir') {
       const existing = parentNode.children.find(c => c.name === name);
       if (existing) {
-        if (stage.stdoutRedirect.append) {
-          existing.content = (existing.content || '') + outputContent;
-        } else {
-          existing.content = outputContent;
-        }
+        const updatedContent = stage.stdoutRedirect.append
+          ? (existing.content || '') + outputContent
+          : outputContent;
+        const newRoot = updateNodeAtPath(newState.root, resolvedPath, currentState.cwd, currentState.home, (n) => ({
+          ...n,
+          content: updatedContent,
+          size: updatedContent.length,
+        }));
+        newState = { ...newState, root: newRoot };
       } else {
-        parentNode.children.push({
+        const newFile = {
           name,
-          type: 'file',
+          type: 'file' as const,
           content: outputContent,
           permissions: '-rw-r--r--',
           owner: newState.user,
           group: newState.user,
           size: outputContent.length,
           children: [],
-        });
+        };
+        const newRoot = updateNodeAtPath(newState.root, parentPath, currentState.cwd, currentState.home, (p) => ({
+          ...p,
+          children: [...p.children, newFile],
+        }));
+        newState = { ...newState, root: newRoot };
       }
     }
 

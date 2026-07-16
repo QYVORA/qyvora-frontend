@@ -3,12 +3,12 @@ import type { VFSNode } from '../types';
 export function createNode(
   name: string,
   type: 'file' | 'dir',
-  opts?: Partial<Omit<VFSNode, 'name' | 'type' | 'children'>>,
+  opts?: Partial<Omit<VFSNode, 'name' | 'type'>> & { children?: VFSNode[] },
 ): VFSNode {
   return {
     name,
     type,
-    children: type === 'dir' ? [] : [],
+    children: opts?.children ?? (type === 'dir' ? [] : []),
     permissions: type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--',
     owner: 'kali',
     group: 'kali',
@@ -113,45 +113,38 @@ export function updateNodeAtPath(
 
   const parts = resolved.split('/').filter(Boolean);
   const targetName = parts.pop()!;
-  const parentPath = '/' + parts.join('/');
 
-  const updateRecursive = (node: VFSNode, remaining: string[]): VFSNode => {
+  const target = findNode(root, path, cwd, home);
+  if (!target) return root;
+
+  if (parts.length === 0) {
+    return {
+      ...root,
+      children: root.children.map((c) =>
+        c.name === targetName ? updater(c) : c,
+      ),
+    };
+  }
+
+  const navigateToParent = (node: VFSNode, remaining: string[]): VFSNode => {
     if (remaining.length === 0) {
-      if (node.name === targetName) return updater(node);
-      return node;
+      return {
+        ...node,
+        children: node.children.map((c) =>
+          c.name === targetName ? updater(c) : c,
+        ),
+      };
     }
     const [head, ...rest] = remaining;
     return {
       ...node,
       children: node.children.map((c) =>
-        c.name === head ? updateRecursive(c, rest) : c,
+        c.name === head ? navigateToParent(c, rest) : c,
       ),
     };
   };
 
-  const parentParts = parts.length === 0 ? [] : parts;
-  if (parentParts.length > 0) {
-    const navigateToParent = (node: VFSNode, remaining: string[]): VFSNode => {
-      if (remaining.length === 0) return node;
-      const [head, ...rest] = remaining;
-      return {
-        ...node,
-        children: node.children.map((c) =>
-          c.name === head ? navigateToParent(c, rest) : c,
-        ),
-      };
-    };
-    const targetDir = nodeAtPath(root, parentPath, '/', home);
-    if (!targetDir) return root;
-    return navigateToParent(root, parentParts);
-  }
-
-  return {
-    ...root,
-    children: root.children.map((c) =>
-      c.name === targetName ? updater(c) : c,
-    ),
-  };
+  return navigateToParent(root, parts);
 }
 
 export function getPathComponents(path: string): string[] {
