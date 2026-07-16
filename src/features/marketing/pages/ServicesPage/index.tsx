@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Building2, Send } from 'lucide-react';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { IconShield, IconLock, IconArrowRight, IconCheck } from '@/shared/components/icons';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
@@ -10,6 +9,7 @@ import { openServiceRequestModal } from '@/features/marketing/components/Service
 import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { Carousel } from '@/shared/components/carousel';
 
 const SERVICES_DATA = [
   {
@@ -56,24 +56,8 @@ const SERVICES_DATA = [
   },
 ];
 
-const CYCLE_MS = 4000;
-
 const ServicesPage: React.FC = () => {
   const { user } = useAuth();
-  const shouldReduceMotion = useReducedMotion();
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [dir, setDir] = useState(1);
-
-  const advance = useCallback(() => {
-    setDir(1);
-    setActiveIdx((p) => (p + 1) % SERVICES_DATA.length);
-  }, []);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    const id = setInterval(advance, CYCLE_MS);
-    return () => clearInterval(id);
-  }, [advance, shouldReduceMotion]);
 
   return (
     <div className="relative min-h-screen w-full bg-bg">
@@ -108,134 +92,157 @@ const ServicesPage: React.FC = () => {
         </div>
       </PublicHeroSection>
 
-      {/* ══ SERVICES CARDS — dark bg ══ */}
-      <section id="services" className="relative w-full py-20 md:py-28">
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
+      {/* ══ SERVICES CARDS ══ */}
+      <section id="services" className="w-full px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+          <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
               Engagement <span className="text-accent">Packages</span>
             </h2>
-            <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto">
+            <p className="text-text-muted text-sm md:text-base max-w-sm">
               Fixed-scope packages with optional add-ons. Every engagement includes a detailed report with actionable findings.
             </p>
           </div>
-
-          <div className="flex items-center justify-center gap-1.5 mb-6">
-            {SERVICES_DATA.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => { setDir(idx > activeIdx ? 1 : -1); setActiveIdx(idx); }}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === activeIdx ? 'bg-accent w-5' : 'bg-border/40 w-1.5 hover:bg-border/60'
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="relative max-w-5xl mx-auto min-h-[420px]">
-            <AnimatePresence mode="wait" custom={dir}>
-              <motion.div
-                key={activeIdx}
-                custom={dir}
-                initial={{ opacity: 0, x: dir > 0 ? 60 : -60 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: dir > 0 ? -60 : 60 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {(() => {
-                  const service = SERVICES_DATA[activeIdx];
-                  const isFeatured = service.featured;
-                  return (
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => openServiceRequestModal(service.tier)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
-                      className={`group relative rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 cursor-pointer max-w-lg mx-auto ${
-                        isFeatured
-                          ? 'border-accent/40 bg-bg-card shadow-[0_0_30px_-8px] shadow-accent/20'
-                          : 'border-border/30 bg-bg-card hover:border-accent/30'
-                      }`}
-                    >
-                      {isFeatured && (
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
-                      )}
-                      {service.image && (
-                        <div className="relative h-48 overflow-hidden">
-                          <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                            style={{ backgroundImage: `url(${service.image})` }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                          <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-                            <div>
-                              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
-                              <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
-                            </div>
-                            <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-card/80 backdrop-blur-sm border border-border/30">
-                              {service.price}
-                            </span>
+          <div className="md:w-[65%] lg:w-[62%]">
+            <Carousel
+              slides={SERVICES_DATA}
+              autoPlayInterval={5000}
+              renderCard={(service) => {
+                const isFeatured = service.featured;
+                return (
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openServiceRequestModal(service.tier)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
+                    className={`group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[340px] cursor-pointer ${
+                      isFeatured ? 'shadow-[0_0_30px_-8px] shadow-accent/20' : ''
+                    }`}
+                  >
+                    {isFeatured && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-accent z-20" />
+                    )}
+                    {service.image ? (
+                      <div className="relative w-full md:w-[45%] h-48 md:h-auto overflow-hidden shrink-0">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                          style={{ backgroundImage: `url(${service.image})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-bg-card md:bg-gradient-to-r md:from-transparent md:to-bg-card" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden" />
+                        <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between md:hidden">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70 block mb-1">{service.subtitle}</span>
+                            <h3 className="text-2xl font-black text-white tracking-tight">{service.tier}</h3>
                           </div>
+                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-black/50 backdrop-blur-sm border border-border/30">
+                            {service.price}
+                          </span>
                         </div>
-                      )}
-                      {!service.image && (
-                        <div className="p-6 pb-0">
-                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
-                          <div className="flex items-end justify-between mb-2">
-                            <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
-                            <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-bg-elevated border border-border/30">
-                              {service.price}
-                            </span>
-                          </div>
+                      </div>
+                    ) : (
+                      <div className="relative w-full md:w-[45%] h-48 md:h-auto overflow-hidden shrink-0 bg-accent/5 flex items-center justify-center">
+                        <Building2 className="w-16 h-16 text-accent/30" />
+                      </div>
+                    )}
+                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[340px]">
+                      <div className="hidden md:block mb-3">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                        <div className="flex items-end justify-between gap-4">
+                          <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 whitespace-nowrap">
+                            {service.price}
+                          </span>
                         </div>
-                      )}
-                      <div className="p-6 flex-1 flex flex-col">
-                        <p className="text-sm text-text-muted mb-5">{service.desc}</p>
-                        <ul className="space-y-3 flex-1">
-                          {service.features.map((f) => (
-                            <li key={f} className="flex items-start gap-2.5">
-                              <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                              <span className="text-sm text-text-secondary leading-relaxed break-words">{f}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <button
-                          onClick={() => openServiceRequestModal(service.tier)}
-                          className="mt-6 w-full py-3.5 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 btn-primary"
-                        >
-                          <IconLock className="w-3 h-3" />
+                      </div>
+                      <div className="md:hidden mb-3">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
+                        <div className="flex items-end justify-between gap-4">
+                          <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
+                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 whitespace-nowrap">
+                            {service.price}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-text-secondary font-mono leading-relaxed mb-4 line-clamp-3">{service.desc}</p>
+                      <ul className="space-y-2.5 flex-1 mb-4">
+                        {service.features.map((f) => (
+                          <li key={f} className="flex items-start gap-2.5">
+                            <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                            <span className="text-sm text-text-secondary leading-relaxed break-words">{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex items-center gap-2 text-accent/60 mt-auto">
+                        <IconLock className="w-3 h-3" />
+                        <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
                           Request Assessment
-                          <IconArrowRight className="w-3 h-3" />
-                        </button>
+                        </span>
+                        <IconArrowRight className="w-3 h-3" />
                       </div>
                     </div>
-                  );
-                })()}
-              </motion.div>
-            </AnimatePresence>
+                  </div>
+                );
+              }}
+            />
           </div>
         </div>
       </section>
 
       {/* ══ CUSTOM INQUIRIES ══ */}
-      <section className="relative w-full py-20 md:py-28 border-t border-border/20">
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-6">
-              <Building2 className="w-8 h-8 text-accent" />
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-4">
+      <section className="w-full px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36 border-t border-border/20">
+        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
+          <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
               Need Something <span className="text-accent">Custom?</span>
             </h2>
-            <p className="text-text-muted text-sm md:text-base max-w-xl mx-auto mb-8">
-              Not sure which package fits? Let's talk. We design custom engagement scopes for unique infrastructure, compliance requirements, and multi-team Red Team exercises.
-            </p>
-            <button
+          </div>
+          <div className="md:w-[65%] lg:w-[62%]">
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => openServiceRequestModal('Custom Inquiry')}
-              className="btn-primary !px-10 !py-4 inline-flex items-center justify-center gap-3 text-xs font-black uppercase tracking-[0.15em]"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
+              className="group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[340px] rounded-2xl border border-border/30 bg-bg-card overflow-hidden cursor-pointer hover:border-accent/30 transition-all duration-300"
             >
-              <Send className="w-4 h-4" /> Contact Our Team
-            </button>
+              <div className="relative w-full md:w-[45%] h-48 md:h-auto overflow-hidden shrink-0 bg-accent/5 flex items-center justify-center">
+                <Building2 className="w-16 h-16 text-accent/30 group-hover:text-accent/50 transition-colors" />
+              </div>
+              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[340px]">
+                <div className="mb-3">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">Bespoke Engagement</span>
+                  <div className="flex items-end justify-between gap-4">
+                    <h3 className="text-2xl font-black text-text-primary tracking-tight">Custom Inquiry</h3>
+                    <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 whitespace-nowrap">
+                      Let's Talk
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-text-secondary font-mono leading-relaxed mb-4 line-clamp-3">
+                  Not sure which package fits? We design custom engagement scopes for unique infrastructure, compliance requirements, and multi-team Red Team exercises.
+                </p>
+                <ul className="space-y-2.5 flex-1 mb-4">
+                  {[
+                    'Multi-Team Red Team Exercises',
+                    'Compliance-Driven Assessments',
+                    'Unique Infrastructure Scoping',
+                    'Dedicated Project Management',
+                  ].map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <IconCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <span className="text-sm text-text-secondary leading-relaxed break-words">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex items-center gap-2 text-accent/60 mt-auto">
+                  <Send className="w-3 h-3" />
+                  <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
+                    Contact Our Team
+                  </span>
+                  <IconArrowRight className="w-3 h-3" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
