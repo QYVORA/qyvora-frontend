@@ -18,16 +18,16 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   return (
     <div className="relative w-full min-h-dvh md:h-dvh bg-accent flex items-center overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-3 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center pb-12 lg:pb-0">
 
         {/* Mobile layout */}
-        <div className="flex flex-col lg:hidden w-full gap-12">
+        <div className="flex flex-col lg:hidden w-full gap-8">
           <motion.div
             initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.88 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center w-full px-4"
+            className="flex items-center justify-center w-full"
           >
             <div className="relative w-full max-w-[420px] sm:max-w-[540px]">
               <QyvoraMark
@@ -38,7 +38,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             </div>
           </motion.div>
 
-          <div className="flex flex-col items-start w-full gap-7">
+          <div className="flex flex-col items-start w-full gap-5">
             <SimpleHeading
               text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
