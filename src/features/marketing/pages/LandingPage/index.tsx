@@ -156,7 +156,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 9. Footer */}
-      <section id="footer" className="w-full bg-bg">
+      <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
         <Footer />
       </section>
     </div>

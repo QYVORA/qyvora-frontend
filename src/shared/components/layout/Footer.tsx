@@ -95,11 +95,11 @@ const Footer: React.FC = () => {
   return (
     <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
 
-      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20">
+      <div className="relative z-10 w-full flex flex-col flex-1 px-3 md:px-12 lg:px-20 py-8 md:py-20">
         <div className="w-full max-w-[1600px] mx-auto">
 
           {/* ── Brand + Nav Columns (same row on desktop) ──────────────────── */}
-          <div className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-20 xl:gap-32">
+          <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-20 xl:gap-32">
             {/* Brand — left (logo acts as header to description) */}
             <div className="max-w-xs space-y-3">
               <Logo size="lg" variant="full" className="block" />
@@ -126,7 +126,7 @@ const Footer: React.FC = () => {
             <div className="flex flex-wrap gap-x-16 gap-y-10">
               {FOOTER_COLS.map((col) => (
                 <div key={col.title} className="space-y-5">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                     {t(FOOTER_COL_KEYS[col.title] || col.title)}
                   </h3>
                   <ul className="space-y-3">
@@ -148,15 +148,15 @@ const Footer: React.FC = () => {
           </div>
 
           {/* ── Bottom Bar ────────────────────────────────────────────────── */}
-          <div className="pt-10 mt-12 md:mt-16 border-t border-border/40">
+          <div className="pt-8 md:pt-10 mt-8 md:mt-16 border-t border-border/40">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">
+              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-text-muted">
                 <span className="flex items-center gap-2">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
                   </span>
-                    <span className="tracking-[0.3em]">{t(PULSE_TEXT_KEY)}</span>
+                    <span className="tracking-widest">{t(PULSE_TEXT_KEY)}</span>
                 </span>
               </div>
 
@@ -177,7 +177,7 @@ const Footer: React.FC = () => {
                 </span>
                 <ContactTrigger
                   type="button"
-                  className="px-5 py-2.5 bg-accent text-bg text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:brightness-110 transition-all active:scale-95"
+                  className="btn-primary"
                 >
                   {t('button.contactUs')}
                 </ContactTrigger>
