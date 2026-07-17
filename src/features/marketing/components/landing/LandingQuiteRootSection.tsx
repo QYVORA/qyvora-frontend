@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight, IconLabs } from '@/shared/components/icons';
 import SimpleHeading from '../../../../shared/components/ui/SimpleHeading';
-import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.png';
+import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { useTranslation } from 'react-i18next';
 
 const LandingQuiteRootSection: React.FC = () => {
@@ -29,6 +29,7 @@ const LandingQuiteRootSection: React.FC = () => {
                 src={quiteRootLogo}
                 alt="QuiteRoot"
                 className="relative z-10 w-full h-auto block"
+                loading="lazy"
               />
             </div>
           </motion.div>
@@ -131,6 +132,7 @@ const LandingQuiteRootSection: React.FC = () => {
                 src={quiteRootLogo}
                 alt="QuiteRoot"
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
+                loading="lazy"
               />
             </div>
           </motion.div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Zap } from 'lucide-react';
 import { IconDownload } from '@/shared/components/icons';
-import anansiLogo from '@/assets/anansi/anansi-main-logo.png';
+import anansiLogo from '@/assets/anansi/anansi-main-logo.webp';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
 const AnansiHeroSection: React.FC = () => {
@@ -13,6 +13,7 @@ const AnansiHeroSection: React.FC = () => {
             src={anansiLogo}
             alt="Anansi CLI"
             className="w-full h-auto object-contain"
+            loading="lazy"
           />
         </div>
       </div>

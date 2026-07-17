@@ -79,7 +79,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
         {products.map(item => (
           <div key={item._id} className="bg-bg-card border border-border/40 rounded-2xl p-5 space-y-4">
             <div className="flex items-start gap-4">
-              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-sm border border-border/40"><img src={resolveImg(item.coverUrl, 'productFallbackImg')} alt={item.title} className="w-full h-full object-cover" /></div>
+              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-sm border border-border/40"><img src={resolveImg(item.coverUrl, 'productFallbackImg')} alt={item.title} className="w-full h-full object-cover" loading="lazy" /></div>
               <div className="min-w-0 flex-1">
                 <div className="font-black text-base text-text-primary leading-tight">{item.title}</div>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
@@ -106,7 +106,7 @@ const ZeroDayMarketTab: React.FC<ZeroDayMarketTabProps> = ({
             <tbody className="divide-y divide-border/20">
               {products.map(item => (
                 <tr key={item._id} className="hover:bg-accent-dim/5 transition-colors group">
-                  <td className="px-6 py-6"><div className="w-16 h-16 rounded-xl overflow-hidden border border-border/60 shadow-lg group-hover:scale-[1.05] transition-transform duration-500"><img src={resolveImg(item.coverUrl, 'productFallbackImg')} alt={item.title} className="w-full h-full object-cover" /></div></td>
+                  <td className="px-6 py-6"><div className="w-16 h-16 rounded-xl overflow-hidden border border-border/60 shadow-lg group-hover:scale-[1.05] transition-transform duration-500"><img src={resolveImg(item.coverUrl, 'productFallbackImg')} alt={item.title} className="w-full h-full object-cover" loading="lazy" /></div></td>
                   <td className="px-6 py-6"><div className="font-black text-base text-text-primary group-hover:text-accent transition-colors">{item.title}</div><div className="text-[10px] text-text-muted/40 font-mono mt-0.5 uppercase tracking-widest">ID: {String(item._id).slice(-8)}</div></td>
                   <td className="px-6 py-6">{item.isFree ? <span className="text-[9px] font-black text-accent bg-accent/10 px-2.5 py-1 rounded-lg uppercase tracking-widest border border-accent/20">Free Access</span> : <div className="flex items-center gap-2 font-mono font-bold text-text-primary"><CpLogo className="w-4 h-4" />{Number(item.cpPrice || 0).toLocaleString()}</div>}</td>
                   <td className="px-6 py-6"><span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent whitespace-nowrap border border-accent/10">{item.type}</span></td>

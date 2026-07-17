@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, User, Tag } from 'lucide-react';
@@ -7,14 +7,15 @@ import SEO from '@/shared/components/SEO';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { BLOG_POSTS } from './blogContent';
-import { HackerProtocolBookBlog } from './HackerProtocolBookBlog';
-import { AnansiCliBlog } from './AnansiCliBlog';
-import { AfricaCybersecurityEcosystemBlog } from './AfricaCybersecurityEcosystemBlog';
-import { AttackersDiscoverCompaniesBlog } from './AttackersDiscoverCompaniesBlog';
-import { AfricaNeedsCybersecurityProfessionalsBlog } from './AfricaNeedsCybersecurityProfessionalsBlog';
-import { MappingAttackSurfacesBlog } from './MappingAttackSurfacesBlog';
-import { FutureCybersecurityAfricaBlog } from './FutureCybersecurityAfricaBlog';
-import { Hpb2026CaseStudy } from './Hpb2026CaseStudy';
+
+const HackerProtocolBookBlog = lazy(() => import('./HackerProtocolBookBlog').then(m => ({ default: m.HackerProtocolBookBlog })));
+const AnansiCliBlog = lazy(() => import('./AnansiCliBlog').then(m => ({ default: m.AnansiCliBlog })));
+const AfricaCybersecurityEcosystemBlog = lazy(() => import('./AfricaCybersecurityEcosystemBlog').then(m => ({ default: m.AfricaCybersecurityEcosystemBlog })));
+const AttackersDiscoverCompaniesBlog = lazy(() => import('./AttackersDiscoverCompaniesBlog').then(m => ({ default: m.AttackersDiscoverCompaniesBlog })));
+const AfricaNeedsCybersecurityProfessionalsBlog = lazy(() => import('./AfricaNeedsCybersecurityProfessionalsBlog').then(m => ({ default: m.AfricaNeedsCybersecurityProfessionalsBlog })));
+const MappingAttackSurfacesBlog = lazy(() => import('./MappingAttackSurfacesBlog').then(m => ({ default: m.MappingAttackSurfacesBlog })));
+const FutureCybersecurityAfricaBlog = lazy(() => import('./FutureCybersecurityAfricaBlog').then(m => ({ default: m.FutureCybersecurityAfricaBlog })));
+const Hpb2026CaseStudy = lazy(() => import('./Hpb2026CaseStudy').then(m => ({ default: m.Hpb2026CaseStudy })));
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -135,7 +136,9 @@ const BlogPostPage: React.FC = () => {
       {/* ── Article Body ── */}
       <div className="w-full px-3 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-32">
         <article className="prose-custom max-w-none">
-          {renderContent()}
+          <Suspense fallback={<div className="animate-pulse h-40 bg-border/20 rounded-2xl" />}>
+            {renderContent()}
+          </Suspense>
         </article>
 
         {/* ── Footer Nav ── */}

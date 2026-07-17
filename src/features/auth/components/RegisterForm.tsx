@@ -22,15 +22,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
   };
 
   return (
-    <div>
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Request Access</h1>
-        <p className="text-text-muted text-base">Create your account to start learning.</p>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">Request Access</h1>
+        <p className="text-text-muted text-sm">Create your account to start learning.</p>
       </div>
 
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
-          <label htmlFor="register-handle" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Handle</label>
+          <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Operator Handle</label>
           <div className="relative">
             <input ref={handleRef} id="register-handle" type="text" name="handle" required autoComplete="username"
               pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
@@ -49,7 +49,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
 
           {/* Full Name */}
           <div className="space-y-2">
-          <label htmlFor="register-full-name" className="text-xs font-bold text-text-muted uppercase tracking-widest">Full Name</label>
+          <label htmlFor="register-full-name" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Full Name</label>
           <div className="relative">
             <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder="Kwame Mensah"
               value={fullName}
@@ -59,7 +59,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="register-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
+          <label htmlFor="register-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Email</label>
           <div className="relative">
             <input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@qyvora.africa"
               className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
@@ -68,22 +68,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="register-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
+          <label htmlFor="register-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Password</label>
           <PasswordInput id="register-password" name="password" autoComplete="new-password" />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="register-confirm-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Confirm Password</label>
+          <label htmlFor="register-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Confirm Password</label>
           <PasswordInput id="register-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
 
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          {isLoading ? 'Creating account...' : 'Create Account'} <LogIn className="w-5 h-5" />
+          <span className="text-[10px]">{isLoading ? 'Creating account...' : 'Create Account'}</span> <LogIn className="w-5 h-5" />
         </button>
       </form>
 
-      <p className="mt-8 text-center text-base text-text-muted">
+      <p className="mt-8 text-center text-sm text-text-muted">
         Already have access?{' '}
         <button onClick={onLogin} className="text-accent font-bold hover:underline">Log In</button>
       </p>

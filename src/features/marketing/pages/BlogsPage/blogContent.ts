@@ -5,7 +5,7 @@ import blogAttackersDiscover from '@/assets/blog/attackers-discover-companies.we
 import blogAfricaNeeds from '@/assets/blog/africa-needs-professionals.webp';
 import blogMappingSurfaces from '@/assets/blog/mapping-attack-surfaces.webp';
 import blogFutureCybersecurity from '@/assets/blog/future-cybersecurity-africa.webp';
-import blogCaseStudyCover from '@/assets/blog/01-hpb-2026-online-class-screenshot.png';
+import blogCaseStudyCover from '@/assets/blog/01-hpb-2026-online-class-screenshot.webp';
 
 export interface BlogPost {
   id: string;
