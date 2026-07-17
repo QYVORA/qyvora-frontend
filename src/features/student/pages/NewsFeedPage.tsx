@@ -83,7 +83,7 @@ const NewsFeedPage = () => {
 
   return (
     <div className="bg-bg">
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
         <div className="px-2 sm:px-6 md:px-8 pt-6 pb-8 space-y-6">
 
           <LearningOverviewCard

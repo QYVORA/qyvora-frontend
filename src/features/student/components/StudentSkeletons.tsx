@@ -45,7 +45,7 @@ const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean
 /* ─── Profile Page Skeleton ─────────────────────────────────────────────────── */
 export const ProfileSkeleton = () => (
   <div className="w-full bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
       <OverviewCardSkeleton stats={3} action />
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -70,7 +70,7 @@ export const ProfileSkeleton = () => (
 /* ─── Notifications Page Skeleton ───────────────────────────────────────────── */
 export const NotificationsSkeleton = () => (
   <div className="bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
       <div
         className="w-full flex-1 min-w-0 lg:h-full lg:overflow-y-auto lg:overscroll-contain scroll-hover"
         style={{ WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)', maskImage: 'linear-gradient(to bottom, transparent 0px, black 24px)' }}
@@ -106,7 +106,7 @@ export const NotificationsSkeleton = () => (
 /* ─── Settings Page Skeleton ────────────────────────────────────────────────── */
 export const SettingsSkeleton = () => (
   <div className="bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
       <OverviewCardSkeleton action />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Change Password */}
@@ -148,7 +148,7 @@ export const SettingsSkeleton = () => (
 /* ─── News Feed Page Skeleton ───────────────────────────────────────────────── */
 export const NewsFeedSkeleton = () => (
   <div className="bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
       <div className=" px-2 sm:px-6 md:px-8 pt-6 pb-8 space-y-6">
         <OverviewCardSkeleton action />
         {/* Featured carousel */}
@@ -197,7 +197,7 @@ export const NewsFeedSkeleton = () => (
 /* ─── Marketplace Page Skeleton ─────────────────────────────────────────────── */
 export const MarketplaceSkeleton = () => (
   <div className="bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
       <div className=" pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
         <OverviewCardSkeleton stats={1} />
         {/* Search */}
@@ -233,7 +233,7 @@ export const MarketplaceSkeleton = () => (
 /* ─── Bootcamp Course Page Skeleton ─────────────────────────────────────────── */
 export const BootcampCourseSkeleton = () => (
   <div className="bg-bg">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
       <OverviewCardSkeleton action stats={2} breadcrumbs />
       {/* Filter strip */}
       <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">
@@ -300,7 +300,7 @@ export const BootcampCourseSkeleton = () => (
 /* ─── My Courses Page Skeleton ──────────────────────────────────────────────── */
 export const MyCoursesSkeleton = () => (
   <div className="bg-bg min-h-screen">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
       {/* Progress bar */}
       <Skeleton className="h-3 w-full bg-border/30 rounded-full" />
       {/* Filter strip */}
@@ -387,7 +387,7 @@ export const BootcampRoomSkeleton = () => (
 /* ─── Competitive Page Skeleton ─────────────────────────────────────────────── */
 export const CompetitiveSkeleton = () => (
   <div className="bg-bg min-h-full">
-    <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
       <OverviewCardSkeleton stats={1} action />
       {/* Tabs */}
       <div className="border border-border/30 rounded-xl bg-bg-card p-1.5 flex items-center gap-1">

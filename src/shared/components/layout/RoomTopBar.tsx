@@ -73,7 +73,7 @@ export function RoomTopBar({
       </a>
 
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
-        <div className="px-4 md:px-12 lg:px-16 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
+        <div className="px-3 md:px-4 lg:px-6 h-20 md:h-24 flex items-center gap-1.5 md:gap-3">
           {/* Back button */}
           {backHref ? (
             <Link
