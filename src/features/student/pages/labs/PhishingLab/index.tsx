@@ -80,7 +80,7 @@ const PhishingLab = () => {
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
-        <SEO title="Phishing Analysis Lab" description="Analyze simulated phishing emails for signs of deception." />
+        <SEO title="Phishing Analysis Lab" description="Analyze simulated phishing emails for signs of deception." noindex />
         <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
@@ -135,7 +135,7 @@ const PhishingLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeChallenge.title} — Phishing Lab`} description={activeChallenge.description} />
+      <SEO title={`${activeChallenge.title} — Phishing Lab`} description={activeChallenge.description} noindex />
       <WalkthroughLayout
         title={activeChallenge.title}
         subtitle={activeChallenge.description}

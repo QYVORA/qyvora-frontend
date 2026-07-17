@@ -72,6 +72,7 @@ const PrivescLab = () => {
         <SEO
           title="Privilege Escalation Lab"
           description="Escalate privileges in simulated Linux environments."
+          noindex
         />
         <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-10">
@@ -120,6 +121,7 @@ const PrivescLab = () => {
       <SEO
         title={`${selectedScenario.title} — Privilege Escalation`}
         description={selectedScenario.description}
+        noindex
       />
       <WalkthroughLayout
         title={selectedScenario.title}

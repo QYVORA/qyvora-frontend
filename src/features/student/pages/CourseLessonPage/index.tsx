@@ -304,7 +304,7 @@ const CourseLessonPage: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title={`${course.title} — ${lesson.title}`} description={course.description} />
+      <SEO title={`${course.title} — ${lesson.title}`} description={course.description} noindex />
 
       <AnimatePresence>
         {sidebarOpen && (

@@ -140,7 +140,7 @@ const LabsPage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Attack Labs" description="Hands-on offensive security simulations on QYVORA." />
+      <SEO title="Attack Labs" description="Hands-on offensive security simulations on QYVORA." noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <LearningOverviewCard

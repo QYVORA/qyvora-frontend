@@ -182,7 +182,7 @@ const CompetitivePage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Competitive Leaderboard" description="Operator leaderboard ranked by CP earned." />
+      <SEO title="Competitive Leaderboard" description="Operator leaderboard ranked by CP earned." noindex />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}

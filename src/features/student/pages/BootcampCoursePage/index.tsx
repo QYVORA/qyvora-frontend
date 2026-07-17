@@ -139,6 +139,7 @@ const BootcampCourse: React.FC = () => {
       <SEO
         title={course?.title || 'Bootcamp Course'}
         description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
+        noindex
       />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">

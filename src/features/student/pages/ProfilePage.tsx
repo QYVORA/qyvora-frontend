@@ -82,6 +82,7 @@ const Profile: React.FC = () => {
         title={`@${profileData.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profileData.username} on QYVORA. — ${profileData.rank} — ${profileData.cp.toLocaleString()} CP earned.`}
         image="https://qyvora.netlify.app/favicon.png"
+        noindex
       />
 
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
