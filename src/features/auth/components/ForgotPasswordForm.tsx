@@ -16,19 +16,19 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   onEnterToken,
 }) => {
   return (
-    <div>
-      <button onClick={onBackToLogin} className="flex items-center gap-2 text-text-muted hover:text-accent text-sm font-bold uppercase tracking-widest mb-8 transition-colors">
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
+      <button onClick={onBackToLogin} className="flex items-center gap-2 text-text-muted hover:text-accent mb-8 transition-colors">
         <IconArrowLeft size={16} /> Back to Login
       </button>
 
       <div className="mb-8">
-        <h1 className="text-3xl font-black text-text-primary uppercase tracking-tight mb-1">Reset Password</h1>
-        <p className="text-text-muted text-base">Enter your email and we will help you reset your password.</p>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">Reset Password</h1>
+        <p className="text-text-muted text-sm">Enter your email and we will help you reset your password.</p>
       </div>
 
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
-          <label htmlFor="forgot-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Operator Email</label>
+          <label htmlFor="forgot-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Operator Email</label>
           <div className="relative">
             <input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder="operator@qyvora.africa"
               className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
@@ -38,7 +38,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          {isLoading ? 'Submitting...' : 'Send Reset Instructions'} <Send className="w-5 h-5" />
+          <span className="text-[10px]">{isLoading ? 'Submitting...' : 'Send Reset Instructions'}</span> <Send className="w-5 h-5" />
         </button>
       </form>
 

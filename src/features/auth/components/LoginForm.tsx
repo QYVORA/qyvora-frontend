@@ -22,12 +22,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
   onRegister,
 }) => {
   return (
-    <div>
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-black uppercase tracking-tight mb-1 text-text-primary">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
           {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
         </h1>
-        <p className="text-base text-text-muted">
+        <p className="text-sm text-text-muted">
           {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Sign in to continue your training.'}
         </p>
       </div>
@@ -35,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       <form className="space-y-5" onSubmit={onSubmit} noValidate>
         {/* Email */}
         <div className="space-y-2">
-          <label htmlFor="login-email" className="text-xs font-bold text-text-muted uppercase tracking-widest">Email</label>
+          <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Email</label>
           <div className="relative">
             <input
               id="login-email"
@@ -54,9 +54,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
         {/* Password */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label htmlFor="login-password" className="text-xs font-bold text-text-muted uppercase tracking-widest">Password</label>
+            <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Password</label>
             {!isAdminLoginRoute && (
-              <button type="button" onClick={onForgotPassword} className="text-xs font-bold text-accent hover:underline">Forgot?</button>
+              <button type="button" onClick={onForgotPassword} className="text-accent hover:underline transition-colors">Forgot?</button>
             )}
           </div>
           <PasswordInput
@@ -77,12 +77,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
               : ''
           }`}
         >
-          {isLoading ? 'Signing you in...' : 'Sign In'} <LogIn className="w-5 h-5" />
+          <span className="text-[10px]">{isLoading ? 'Signing you in...' : 'Sign In'}</span> <LogIn className="w-5 h-5" />
         </button>
       </form>
 
       {!isAdminLoginRoute && (
-        <p className="mt-8 text-center text-base text-text-muted">
+        <p className="mt-8 text-center text-sm text-text-muted">
           New here?{' '}
           <button onClick={onRegister} className="text-accent font-bold hover:underline">Create account</button>
         </p>

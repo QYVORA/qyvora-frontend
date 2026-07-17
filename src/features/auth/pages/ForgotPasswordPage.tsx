@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconArrowLeft } from '@/shared/components/icons';
 import { useToast } from '../../../core/contexts/ToastContext';
+import SEO from '@/shared/components/SEO';
 import api from '../../../core/services/api';
 import AuthHero from '../components/AuthHero';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
@@ -58,42 +59,45 @@ const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative md:grid md:grid-cols-2">
-      <AuthHero />
-      <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">
-        {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}
-        <div className="absolute top-6 left-6 z-20 md:hidden">
-          <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
-            <IconArrowLeft size={16} /> Back to Home
-          </Link>
-        </div>
-        
-        {/* Scrollable form container */}
-        <div className="w-full max-w-lg relative z-10 py-12 md:py-16 my-auto">
-          <AnimatePresence mode="wait">
-            <motion.div key={mode} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-              {mode === 'forgot' ? (
-                <ForgotPasswordForm
-                  onSubmit={handleSubmit}
-                  isLoading={isLoading}
-                  onBackToLogin={() => navigate('/login')}
-                  onEnterToken={() => setMode('reset-confirm')}
-                />
-              ) : (
-                <ResetPasswordConfirmForm
-                  onSubmit={handleSubmit}
-                  isLoading={isLoading}
-                  email={resetEmail}
-                  onEmailChange={setResetEmail}
-                  token={urlToken}
-                  onBack={() => setMode('forgot')}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+    <>
+      <SEO title="Reset Password" description="Reset your QYVORA account password." />
+      <div className="min-h-screen relative md:grid md:grid-cols-2">
+        <AuthHero />
+        <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">
+          {/* Back to Home button - Mobile only (desktop has it in AuthHero) */}
+          <div className="absolute top-6 left-6 z-20 md:hidden">
+            <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95">
+              <IconArrowLeft size={16} /> Back to Home
+            </Link>
+          </div>
+          
+          {/* Scrollable form container */}
+          <div className="w-full max-w-lg relative z-10 py-12 md:py-16 my-auto">
+            <AnimatePresence mode="wait">
+              <motion.div key={mode} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+                {mode === 'forgot' ? (
+                  <ForgotPasswordForm
+                    onSubmit={handleSubmit}
+                    isLoading={isLoading}
+                    onBackToLogin={() => navigate('/login')}
+                    onEnterToken={() => setMode('reset-confirm')}
+                  />
+                ) : (
+                  <ResetPasswordConfirmForm
+                    onSubmit={handleSubmit}
+                    isLoading={isLoading}
+                    email={resetEmail}
+                    onEmailChange={setResetEmail}
+                    token={urlToken}
+                    onBack={() => setMode('forgot')}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

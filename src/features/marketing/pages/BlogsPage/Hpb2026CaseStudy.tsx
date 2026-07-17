@@ -4,11 +4,11 @@ import { IconShield, IconTerminal, IconNetwork, IconTarget, IconSearch, IconLead
 import { Section, Heading, Body, Highlight, CodeBlock } from './shared';
 import sopt4Img from '@/assets/team/sopt4.webp';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
-import img01 from '@/assets/blog/01-hpb-2026-online-class-screenshot.png';
-import img02 from '@/assets/blog/02-hpb-2026-online-class-screenshot.png';
-import img03 from '@/assets/blog/03-hpb-2026-online-class-screenshot.png';
-import img04 from '@/assets/blog/04-hpb-2026-online-class-screenshot.png';
-import img05 from '@/assets/blog/05-hpb-2026-online-class-screenshot.png';
+import img01 from '@/assets/blog/01-hpb-2026-online-class-screenshot.webp';
+import img02 from '@/assets/blog/02-hpb-2026-online-class-screenshot.webp';
+import img03 from '@/assets/blog/03-hpb-2026-online-class-screenshot.webp';
+import img04 from '@/assets/blog/04-hpb-2026-online-class-screenshot.webp';
+import img05 from '@/assets/blog/05-hpb-2026-online-class-screenshot.webp';
 
 const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
   <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/10">
