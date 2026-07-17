@@ -30,6 +30,8 @@ interface SEOProps {
   schemaData?: object;
   /** Optional breadcrumbs for the BreadcrumbList schema */
   breadcrumbs?: Array<{ name: string; item: string }>;
+  /** Prevent search engines from indexing this page */
+  noindex?: boolean;
 }
 
 /**
@@ -46,6 +48,7 @@ const SEO: React.FC<SEOProps> = ({
   canonical,
   schemaData,
   breadcrumbs,
+  noindex,
 }) => {
   const isMobile = useIsMobile();
   const location = useLocation();
@@ -100,7 +103,7 @@ const SEO: React.FC<SEOProps> = ({
       <title>{seoTitle}</title>
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={seoCanonical} />
-      <meta name="robots" content="index,follow,max-image-preview:large" />
+      <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'} />
       <html lang={i18n.language} />
 
       <meta property="og:type" content={article ? 'article' : 'website'} />

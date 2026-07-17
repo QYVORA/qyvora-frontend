@@ -121,7 +121,7 @@ const Marketplace: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." />
+      <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         <div className="pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
           <LearningOverviewCard

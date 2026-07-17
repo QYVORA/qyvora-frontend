@@ -253,7 +253,7 @@ const Settings: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} />
+      <SEO title={t('student.settings.seoTitle')} description={t('student.settings.seoDesc')} noindex />
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         <LearningOverviewCard
           icon={<SettingsIcon className="w-6 h-6 text-bg" />}

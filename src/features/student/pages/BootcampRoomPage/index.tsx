@@ -258,6 +258,7 @@ const BootcampRoomPage: React.FC = () => {
       <SEO
         title={roomTitle}
         description={`Complete the "${roomTitle}" room in the Hacker Protocol Bootcamp on QYVORA.`}
+        noindex
       />
       <AnimatePresence>
         {quizGateOpen && <QuizGateModal onClose={() => setQuizGateOpen(false)} onTakeQuiz={() => { setQuizGateOpen(false); setQuizOpen(true); }} />}

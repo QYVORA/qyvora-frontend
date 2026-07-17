@@ -36,7 +36,7 @@ const AnansiHeroSection: React.FC = () => {
         <a
           href="https://github.com/QYVORA/qyvora-anansi-cli"
           target="_blank"
-          rel="noreferrer"
+           rel="noopener noreferrer"
           className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap"
         >
           <Zap className="w-4 h-4 inline-block mr-2" /> View Source

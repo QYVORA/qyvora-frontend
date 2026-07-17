@@ -80,7 +80,7 @@ const PasswordLab = () => {
   if (!activeScenario) {
     return (
       <div className="bg-bg min-h-full">
-        <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." />
+        <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." noindex />
         <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
@@ -119,7 +119,7 @@ const PasswordLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} />
+      <SEO title={`${activeScenario.title} — Password Lab`} description={activeScenario.description} noindex />
       <WalkthroughLayout
         title={activeScenario.title}
         subtitle={`${activeScenario.hashType} — ${activeScenario.description}`}

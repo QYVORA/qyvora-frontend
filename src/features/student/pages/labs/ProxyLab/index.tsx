@@ -80,7 +80,7 @@ const ProxyLab = () => {
   if (!activeScenario) {
     return (
       <div className="bg-bg min-h-full">
-        <SEO title="Web Proxy Lab" description="Intercept, analyze, and manipulate HTTP traffic." />
+        <SEO title="Web Proxy Lab" description="Intercept, analyze, and manipulate HTTP traffic." noindex />
         <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
@@ -128,7 +128,7 @@ const ProxyLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeScenario.title} — Proxy Lab`} description={activeScenario.description} />
+      <SEO title={`${activeScenario.title} — Proxy Lab`} description={activeScenario.description} noindex />
       <WalkthroughLayout
         title={activeScenario.title}
         subtitle={activeScenario.description}

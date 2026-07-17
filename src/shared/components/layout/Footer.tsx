@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
                     key={key}
                     href={href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     aria-label={label}
                     className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >

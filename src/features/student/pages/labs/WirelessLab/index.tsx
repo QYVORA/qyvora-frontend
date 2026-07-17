@@ -80,7 +80,7 @@ const WirelessLab = () => {
   if (!activeChallenge) {
     return (
       <div className="bg-bg min-h-full">
-        <SEO title="Wireless Security Lab" description="Practice WiFi scanning and wireless security." />
+        <SEO title="Wireless Security Lab" description="Practice WiFi scanning and wireless security." noindex />
         <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
@@ -122,7 +122,7 @@ const WirelessLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeChallenge.title} — Wireless Lab`} description={activeChallenge.description} />
+      <SEO title={`${activeChallenge.title} — Wireless Lab`} description={activeChallenge.description} noindex />
       <WalkthroughLayout
         title={activeChallenge.title}
         subtitle={activeChallenge.description}

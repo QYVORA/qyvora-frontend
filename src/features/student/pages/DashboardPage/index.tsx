@@ -438,7 +438,7 @@ const Dashboard = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." />
+      <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." noindex />
       <OnboardingWizard />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
 

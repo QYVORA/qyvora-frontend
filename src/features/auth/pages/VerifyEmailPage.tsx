@@ -48,7 +48,7 @@ const VerifyEmailPage: React.FC = () => {
 
   return (
     <>
-      <SEO title="Verify Email" description="Verify your QYVORA email address to activate your account." />
+      <SEO title="Verify Email" description="Verify your QYVORA email address to activate your account." noindex />
       <div className="min-h-screen relative md:grid md:grid-cols-2">
         <AuthHero />
         <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">
