@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RefreshCw, Shield } from 'lucide-react';
+import SEO from '@/shared/components/SEO';
 
 import CpAnalytics from '../components/CpAnalytics';
 import BootcampAccessPanel from '../components/BootcampAccessPanel';
@@ -166,12 +167,13 @@ const AdminDashboardPage: React.FC = () => {
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
     <>
+    <SEO title="Admin Dashboard" description="QYVORA administrator control panel." noindex />
     <div className="bg-bg text-text-primary">
       <div
         className="scroll-hover lg:fixed lg:left-0 lg:right-20 lg:bottom-0 lg:top-24 lg:overflow-y-auto lg:overscroll-contain"
         style={{ scrollBehavior: 'smooth' }}
       >
-        <div className="mx-auto max-w-6xl px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+        <div className="px-4 md:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
 
           <LearningOverviewCard
             icon={<Shield className="w-6 h-6 text-bg" />}

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { IconDashboard, IconArrowRight } from '@/shared/components/icons';
 import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SITE_CONFIG } from '../../content/siteConfig';
 import type { BackendStats } from './types';
 import { useAdaptiveUi } from '../../../../core/hooks/useAdaptiveUi';
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary';
@@ -207,7 +206,7 @@ const LandingHeroSection: React.FC<LandingHeroSectionProps> = ({
               transition={minimizeEffects ? { duration: 0.2 } : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in"
             >
-              {SITE_CONFIG.brand.description}
+              {t('hero.description')}
             </motion.p>
           </div>
 

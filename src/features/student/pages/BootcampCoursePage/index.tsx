@@ -139,9 +139,10 @@ const BootcampCourse: React.FC = () => {
       <SEO
         title={course?.title || 'Bootcamp Course'}
         description={`Track your progress through ${course?.title || 'the bootcamp'} on QYVORA — ${progressValue} complete.`}
+        noindex
       />
 
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <LearningOverviewCard
           icon={<BookOpen className="w-6 h-6 text-bg" />}

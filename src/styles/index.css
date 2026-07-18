@@ -117,27 +117,6 @@
     background-size: 24px 24px;
   }
 
-  .scanlines {
-    position: relative;
-    overflow: hidden;
-  }
-  .scanlines::after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    z-index: 20;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-    opacity: 0.03;
-  }
-
-  .glow-shadow {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  }
-
   .border-beam {
     position: relative;
     isolation: isolate;
@@ -253,12 +232,6 @@
   .btn-secondary,
   .card-qyvora {
     transition-duration: var(--dur-base);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-
-  .hero-bg-img,
-  .section-bg-img {
     transform: translateZ(0);
     backface-visibility: hidden;
   }
@@ -379,19 +352,12 @@
     }
   }
 
-  /* Safe-area bottom padding utility (used in walkthrough page) */
-  .pb-safe-bottom {
-    padding-bottom: max(4rem, env(safe-area-inset-bottom, 4rem));
-  }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-bg); border-radius: 999px; }
   ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; border: 2px solid var(--color-bg); }
   ::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
   ::-webkit-scrollbar-corner { background: var(--color-bg); }
 
-  .section-bg-overlay {
-    background: rgba(5, 7, 6, 0.20);
-  }
 }
 
 @keyframes border-beam-spin {
@@ -458,18 +424,6 @@
   animation: shake-x 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-.animate-pulse-error {
-  animation: pulse-error 0.6s ease-in-out 2;
-}
-
-.animate-success-pop {
-  animation: success-pop 0.35s ease-out both;
-}
-
-.animate-glow-error {
-  animation: glow-error 0.6s ease-in-out 2;
-}
-
 /* Input error state — red border + glow */
 .input-error {
   border-color: rgb(239 68 68 / 0.7) !important;
@@ -517,14 +471,6 @@
     transform: scale(1.01);
   }
 
-  .binary-stream-bg {
-    position: absolute !important;
-    z-index: 0 !important;
-    opacity: 0.78;
-    mix-blend-mode: screen;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 88%, transparent 100%);
-  }
-
   .terminal-card {
     position: relative;
     isolation: isolate;
@@ -553,10 +499,6 @@
     border: none;
     border-radius: 0;
     padding: 0;
-  }
-
-  .footer-logo-banner {
-    background-color: transparent;
   }
 
   @media (max-width: 767px) {
@@ -596,76 +538,6 @@
   .min-h-\[240px\] { min-height: 160px !important; }
   .min-h-\[280px\] { min-height: 180px !important; }
   .h-36 { height: 4.5rem !important; }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   PARTNERS MARQUEE
-   Endless right-scrolling carousel. translateX moves left by (100% / copies)
-   which equals exactly one copy of the strip → seamless loop.
-   GPU-accelerated via will-change + translateZ(0).
-───────────────────────────────────────────────────────────────────────────── */
-
-@keyframes partners-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% / var(--marquee-copies, 3))); }
-}
-
-.partners-marquee {
-  display: flex;
-  flex-wrap: nowrap;
-  width: max-content;             /* lets the strip be as wide as it needs */
-  will-change: transform;
-  transform: translateZ(0);       /* promote to its own GPU layer */
-  animation: partners-scroll var(--marquee-duration, 30s) linear infinite;
-}
-
-/* Pause on hover — lets users read a logo */
-.partners-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* Reduced-motion: animation disabled in the component via shouldReduceMotion,
-   but this is a belt-and-suspenders OS-level override */
-@media (prefers-reduced-motion: reduce) {
-  .partners-marquee {
-    animation: none;
-  }
-}
-
-/* Constrained-device: skip the animation to save battery */
-body[data-performance-mode='constrained'] .partners-marquee {
-  animation: none;
-}
-
-/* ── Dual-direction marquee for partners section ── */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  overflow: hidden;
-  width: 100%;
-}
-
-.marquee-content {
-  animation: marquee-scroll var(--marquee-speed, 25s) linear infinite;
-  width: max-content;
-  will-change: transform;
-}
-
-.marquee-track:hover .marquee-content {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-content {
-    animation: none !important;
-  }
-}
-
-body[data-performance-mode='constrained'] .marquee-content {
-  animation: none !important;
 }
 
 [data-saver="true"] * {

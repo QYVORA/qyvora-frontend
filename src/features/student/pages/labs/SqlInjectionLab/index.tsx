@@ -80,8 +80,8 @@ const SqlInjectionLab = () => {
   if (!activeTarget) {
     return (
       <div className="bg-bg min-h-full">
-        <SEO title="SQL Injection Lab" description="Deep dive into SQL injection techniques." />
-        <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+        <SEO title="SQL Injection Lab" description="Deep dive into SQL injection techniques." noindex />
+        <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
@@ -118,7 +118,7 @@ const SqlInjectionLab = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title={`${activeTarget.name} — SQL Injection Lab`} description={activeTarget.description} />
+      <SEO title={`${activeTarget.name} — SQL Injection Lab`} description={activeTarget.description} noindex />
       <WalkthroughLayout
         title={activeTarget.name}
         subtitle={`${activeTarget.injectionType} — ${activeTarget.description}`}

@@ -40,7 +40,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
               <div className="text-[10px] text-text-muted">{user?.rank || 'Candidate'}</div>
             </div>
           </div>
-          <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors">
+          <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close menu">
             <IconX size={20} />
           </BottomSheetClose>
         </div>

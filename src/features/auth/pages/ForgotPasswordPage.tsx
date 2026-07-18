@@ -60,7 +60,7 @@ const ForgotPasswordPage: React.FC = () => {
 
   return (
     <>
-      <SEO title="Reset Password" description="Reset your QYVORA account password." />
+      <SEO title="Reset Password" description="Reset your QYVORA account password." noindex />
       <div className="min-h-screen relative md:grid md:grid-cols-2">
         <AuthHero />
         <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">

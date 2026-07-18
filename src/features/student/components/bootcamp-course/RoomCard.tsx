@@ -122,6 +122,8 @@ const RoomCard: React.FC<RoomCardProps> = ({
         <img
           src={roomImg}
           alt={room.title}
+          width={1200}
+          height={675}
           loading="lazy"
           className={`w-full h-full object-cover transition-transform duration-500 ${
             isRoomLocked ? 'grayscale brightness-50'

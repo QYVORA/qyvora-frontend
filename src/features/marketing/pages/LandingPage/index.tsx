@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useLandingData } from '@/features/marketing/hooks/useLandingData';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,20 +18,22 @@ import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
 import PromotionalSystem from '@/features/marketing/components/PromotionalSystem';
 import SEO from '@/shared/components/SEO';
 
-const SECTIONS = [
-  { id: 'hero',       label: 'Home'         },
-  { id: 'pillars',    label: 'Platform'     },
-  { id: 'labs',       label: 'Labs'         },
-  { id: 'courses',    label: 'Courses'      },
-  { id: 'bootcamp',   label: 'Bootcamp'     },
-  { id: 'leaderboard', label: 'Leaderboard' },
-  { id: 'services',   label: 'Services'     },
-  { id: 'cta',        label: 'Get Started'  },
-  { id: 'footer',     label: 'Footer'       },
-];
-
 const Landing: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
+
+  const SECTIONS = [
+    { id: 'hero',       label: t('nav.home') },
+    { id: 'pillars',    label: t('landing2.platform') },
+    { id: 'labs',       label: t('nav.labs') },
+    { id: 'courses',    label: t('nav.courses') },
+    { id: 'bootcamp',   label: t('nav.bootcamp') },
+    { id: 'leaderboard', label: t('nav.leaderboard') },
+    { id: 'services',   label: t('nav.services') },
+    { id: 'cta',        label: t('button.getStarted') },
+    { id: 'footer',     label: t('landing2.footer') },
+  ];
+
   const { stats } = useLandingData();
   const { isMobile } = useAdaptiveUi();
 
@@ -98,8 +101,8 @@ const Landing: React.FC = () => {
   return (
     <div className="relative min-h-screen w-full bg-bg overflow-hidden">
       <SEO
-        title="Africa's Offensive Security Platform"
-        description="QYVORA is an offensive security company building Africa's cybersecurity ecosystem through structured training, live labs, and enterprise-grade penetration testing services."
+        title={t('landing2.seo.title')}
+        description={t('landing2.seo.description')}
         schemaData={{
           '@context': 'https://schema.org',
           '@type': 'Organization',
@@ -156,7 +159,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* 9. Footer */}
-      <section id="footer" className="w-full bg-bg">
+      <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
         <Footer />
       </section>
     </div>

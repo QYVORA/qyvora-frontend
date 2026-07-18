@@ -82,9 +82,10 @@ const Profile: React.FC = () => {
         title={`@${profileData.username}'s Profile`}
         description={`View the operator profile, rank, and accomplishments of @${profileData.username} on QYVORA. — ${profileData.rank} — ${profileData.cp.toLocaleString()} CP earned.`}
         image="https://qyvora.netlify.app/favicon.png"
+        noindex
       />
 
-      <div className="px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Profile Overview Card */}
         <LearningOverviewCard
           icon={<User className="w-6 h-6 text-bg" />}
@@ -191,6 +192,8 @@ const Profile: React.FC = () => {
                             <img
                               src={getRoomImage(room.roomId)}
                               alt=""
+                              width={800}
+                              height={600}
                               loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}

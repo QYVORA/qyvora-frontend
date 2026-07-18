@@ -33,7 +33,7 @@ const LandingHowItWorksSection: React.FC = () => {
       <div className="relative z-10 w-full lg:max-w-6xl lg:mx-auto flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
         <div className="md:w-[35%] lg:w-[38%] mb-6 md:mb-0 md:sticky md:top-32">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none">
-            {t('landing.howItWorks.heading')}
+            {t('landing2.howItWorks.heading')}
           </h2>
         </div>
 
@@ -54,10 +54,10 @@ const LandingHowItWorksSection: React.FC = () => {
                         <Icon className="w-6 h-6 md:w-7 md:h-7 text-accent" />
                       </div>
                       <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2 tracking-tight">
-                        {t(`landing.howItSteps.${step.tKey}.title`)}
+                        {t(`landing2.howItWorks.steps.${step.tKey}.title`)}
                       </h3>
                       <p className="text-sm md:text-sm text-text-secondary leading-relaxed">
-                        {t(`landing.howItSteps.${step.tKey}.desc`)}
+                        {t(`landing2.howItWorks.steps.${step.tKey}.desc`)}
                       </p>
                     </div>
                   </div>

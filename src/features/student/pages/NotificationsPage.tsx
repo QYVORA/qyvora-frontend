@@ -91,10 +91,10 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Notifications" description="System alerts, mission updates, and activity notifications on QYVORA." />
+      <SEO title="Notifications" description="System alerts, mission updates, and activity notifications on QYVORA." noindex />
 
       {/* Fixed two-column container below topbar */}
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-6">
+      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
 
         {/* RIGHT MAIN */}
         <div

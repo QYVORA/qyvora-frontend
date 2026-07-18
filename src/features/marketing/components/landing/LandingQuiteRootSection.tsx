@@ -28,6 +28,8 @@ const LandingQuiteRootSection: React.FC = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
+                width={540}
+                height={300}
                 className="relative z-10 w-full h-auto block"
                 loading="lazy"
               />
@@ -36,7 +38,7 @@ const LandingQuiteRootSection: React.FC = () => {
 
           <div className="flex flex-col items-start w-full gap-7">
             <SimpleHeading
-              text="Quite Root"
+              text={t('landing.quiteroot.title')}
               align="left"
               accentWords={1}
               accentPlacement="end"
@@ -81,7 +83,7 @@ const LandingQuiteRootSection: React.FC = () => {
 
           <div className="max-w-2xl">
             <SimpleHeading
-              text="Quite Root"
+              text={t('landing.quiteroot.title')}
               align="left"
               accentWords={1}
               accentPlacement="end"
@@ -131,6 +133,8 @@ const LandingQuiteRootSection: React.FC = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
+                width={1100}
+                height={620}
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
                 loading="lazy"
               />

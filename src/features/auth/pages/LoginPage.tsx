@@ -73,7 +73,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <SEO title="Login" description="Sign in to your QYVORA account to continue your offensive security training." />
+      <SEO title="Login" description="Sign in to your QYVORA account to continue your offensive security training." noindex />
       <div className={`min-h-screen relative ${isAdminLoginRoute ? '' : 'md:grid md:grid-cols-2'}`}>
         {!isAdminLoginRoute && <AuthHero />}
         <div className={`flex flex-col items-center px-4 py-8 md:p-12 relative ${isAdminLoginRoute ? '' : 'md:backdrop-blur-xl'} min-h-screen ${isAdminLoginRoute ? '' : 'md:h-screen md:overflow-y-auto'}`}>

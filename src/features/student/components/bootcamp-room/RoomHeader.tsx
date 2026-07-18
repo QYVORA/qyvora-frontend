@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Timer } from 'lucide-react';
 import { IconClock, IconCheck } from '@/shared/components/icons';
 import type { BootcampPhase, BootcampRoom } from '../../constants/bootcampConfig';
@@ -18,6 +19,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
   formatTime,
   isRoomComplete,
 }) => {
+  const { t } = useTranslation();
   return (
     <header className="mb-8">
       <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
@@ -47,7 +49,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       
       {isRoomComplete && (
         <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent text-bg px-4 py-1.5 text-xs font-black uppercase tracking-widest border border-accent/30">
-          <IconCheck size={16} /> Room Complete
+          <IconCheck size={16} /> {t('student.bootcampRoom.header.completeBadge')}
         </div>
       )}
     </header>

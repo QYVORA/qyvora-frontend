@@ -25,7 +25,7 @@ export interface TeamMember {
 
 export const teamData: TeamMember[] = [
   {
-    id: 'CEO',
+    id: 'wsuits6',
     name: 'wsuits6',
     handle: 'wsuits6',
     role: 'CEO',
@@ -52,7 +52,7 @@ export const teamData: TeamMember[] = [
     },
   },
   {
-    id: 'CFO',
+    id: 'mohammedRafiq',
     name: 'Mohammed Rafiq',
     role: 'CFO',
     bio: "I don\u2019t protect assets\u2014I grow them wisely.",

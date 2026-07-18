@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { GraduationCap } from 'lucide-react';
 import { IconX, IconShield } from '@/shared/components/icons';
@@ -10,14 +11,14 @@ import standardPackageImg from '@/assets/sections/services/standard-package.webp
 
 const PROMO_DISMISS_KEY = 'qyvora_promo_dismissed';
 
-const PROMOTIONS = [
+const getPromotions = (t: (key: string) => string) => [
   {
     id: 'bootcamp-promo',
     type: 'bootcamp',
-    title: 'Hacker Protocol',
-    subtitle: 'Next-Gen Offensive Security Training',
-    description: 'Master advanced penetration testing with hands-on bootcamps.',
-    cta: 'Explore Bootcamp',
+    title: t('promo.bootcamp.title'),
+    subtitle: t('promo.bootcamp.subtitle'),
+    description: t('promo.bootcamp.description'),
+    cta: t('promo.bootcamp.cta'),
     href: '#bootcamps',
     icon: GraduationCap,
     image: hpbCoverImg,
@@ -26,10 +27,10 @@ const PROMOTIONS = [
   {
     id: 'services-promo',
     type: 'service',
-    title: 'Web Pentesting',
-    subtitle: 'Professional Security Audits',
-    description: 'Protect your apps with our comprehensive penetration testing services.',
-    cta: 'Request Assessment',
+    title: t('promo.services.title'),
+    subtitle: t('promo.services.subtitle'),
+    description: t('promo.services.description'),
+    cta: t('promo.services.cta'),
     action: () => openServiceRequestModal('Standard WebApp Pentest'),
     icon: IconShield,
     image: standardPackageImg,
@@ -38,8 +39,9 @@ const PROMOTIONS = [
 ];
 
 const PromotionalSystem: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const [activePromo, setActivePromo] = useState<typeof PROMOTIONS[0] | null>(null);
+  const [activePromo, setActivePromo] = useState<ReturnType<typeof getPromotions>[number] | null>(null);
   const [delayReady, setDelayReady] = useState(false);
 
   const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('promotional', 4);
@@ -49,13 +51,14 @@ const PromotionalSystem: React.FC = () => {
     const dismissed = (() => { try { return localStorage.getItem(PROMO_DISMISS_KEY); } catch { return null; } })();
     if (dismissed) return;
 
+    const promotions = getPromotions(t);
     const timer = setTimeout(() => {
-      setActivePromo(PROMOTIONS[Math.floor(Math.random() * PROMOTIONS.length)]);
+      setActivePromo(promotions[Math.floor(Math.random() * promotions.length)]);
       setDelayReady(true);
     }, 15000);
 
     return () => clearTimeout(timer);
-  }, [user]);
+  }, [user, t]);
 
   const isVisible = !user && delayReady && managerVisible && !!activePromo;
 
@@ -100,6 +103,8 @@ const PromotionalSystem: React.FC = () => {
               <img
                 src={activePromo.image}
                 alt={activePromo.title}
+                width={192}
+                height={144}
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               

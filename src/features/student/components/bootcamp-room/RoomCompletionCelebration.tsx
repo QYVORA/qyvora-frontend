@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned, onClose }) => {
+  const { t } = useTranslation();
   useScrollLock(show);
 
   return (
@@ -50,7 +52,7 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
 
                 {/* Title */}
                 <h2 className="mb-2 text-2xl font-black text-accent uppercase tracking-wide">
-                  Room Cleared!
+                  {t('student.bootcampRoom.complete.title')}
                 </h2>
 
                 {/* Room title */}
@@ -70,7 +72,7 @@ const RoomCompletionCelebration: React.FC<Props> = ({ show, roomTitle, cpEarned,
                   onClick={onClose}
                   className="w-full btn-primary py-3 text-sm font-black uppercase"
                 >
-                  Continue
+                  {t('button.continue')}
                 </button>
               </div>
             </div>

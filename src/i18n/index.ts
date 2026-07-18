@@ -13,15 +13,6 @@ i18n.use(initReactI18next).init({
 });
 
 const localeModules: Record<string, () => Promise<{ default: any }>> = {
-  fr: () => import('./locales/fr.json'),
-  ar: () => import('./locales/ar.json'),
-  es: () => import('./locales/es.json'),
-  pt: () => import('./locales/pt.json'),
-  hi: () => import('./locales/hi.json'),
-  zh: () => import('./locales/zh.json'),
-  de: () => import('./locales/de.json'),
-  ja: () => import('./locales/ja.json'),
-  ru: () => import('./locales/ru.json'),
   ha: () => import('./locales/ha.json'),
   yo: () => import('./locales/yo.json'),
   ig: () => import('./locales/ig.json'),
@@ -65,15 +56,6 @@ export default i18n;
 
 export const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English', region: 'Global' },
-  { code: 'fr', name: 'French', native: 'Français', region: 'Global' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', region: 'Global', dir: 'rtl' as const },
-  { code: 'es', name: 'Spanish', native: 'Español', region: 'Global' },
-  { code: 'pt', name: 'Portuguese', native: 'Português', region: 'Global' },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', region: 'Global' },
-  { code: 'zh', name: 'Chinese', native: '中文', region: 'Global' },
-  { code: 'de', name: 'German', native: 'Deutsch', region: 'Global' },
-  { code: 'ja', name: 'Japanese', native: '日本語', region: 'Global' },
-  { code: 'ru', name: 'Russian', native: 'Русский', region: 'Global' },
   { code: 'ha', name: 'Hausa', native: 'Hausa', region: 'West Africa' },
   { code: 'yo', name: 'Yoruba', native: 'Yorùbá', region: 'West Africa' },
   { code: 'ig', name: 'Igbo', native: 'Igbo', region: 'West Africa' },

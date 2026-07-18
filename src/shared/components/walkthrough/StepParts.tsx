@@ -47,9 +47,9 @@ export function FlagInput({ flagId, disabled, onFlagSubmit, onCorrect }: FlagInp
   };
   return (
     <div className="space-y-2">
-      <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Submit flag</span>
+      <label htmlFor={`flag-input-${flagId}`} className="text-[10px] font-black uppercase tracking-widest text-text-muted">Submit flag</label>
       <div className="flex items-center gap-2">
-        <input type="text" value={flag} onChange={(e) => { setFlag(e.target.value); setError(''); }}
+        <input id={`flag-input-${flagId}`} type="text" value={flag} onChange={(e) => { setFlag(e.target.value); setError(''); }}
           onKeyDown={(e) => e.key === 'Enter' && handleSubmit()} placeholder="QYVORA{...}" disabled={disabled || submitting}
           className={cn('flex-1 rounded-xl border bg-bg px-4 py-3 font-mono text-base text-text-primary placeholder:text-text-muted outline-none transition-colors',
             error ? 'border-red-500/50 focus:border-red-500' : 'border-border focus:border-accent', 'disabled:opacity-50')} />

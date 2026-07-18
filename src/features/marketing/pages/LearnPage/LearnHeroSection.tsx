@@ -12,6 +12,8 @@ const LearnHeroSection: React.FC = () => {
           <img
             src={chatGptImage}
             alt="ChatGPT Bootcamp"
+            width={800}
+            height={800}
             className="w-full h-auto object-contain"
           />
         </div>

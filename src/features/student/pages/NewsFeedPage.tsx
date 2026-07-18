@@ -11,6 +11,7 @@ import ScrollReveal from '@/shared/components/ScrollReveal';
 import NewsCard from '@/features/news/components/NewsCard';
 import { NewsFeedSkeleton } from '@/features/student/components/StudentSkeletons';
 import LearningOverviewCard from '@/features/student/components/learning/LearningOverviewCard';
+import SEO from '@/shared/components/SEO';
 
 interface Article {
   id: string;
@@ -83,7 +84,8 @@ const NewsFeedPage = () => {
 
   return (
     <div className="bg-bg">
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24">
+      <SEO title="Cyber Feed" description="Stay updated with the latest cybersecurity intelligence from QYVORA." noindex />
+      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
         <div className="px-2 sm:px-6 md:px-8 pt-6 pb-8 space-y-6">
 
           <LearningOverviewCard
@@ -147,6 +149,8 @@ const NewsFeedPage = () => {
                             <img
                               src={current.imageUrl}
                               alt=""
+                              width={1200}
+                              height={675}
                               className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                               loading="lazy"
                             />
