@@ -1325,6 +1325,10 @@
     "backToLogin": "Back to Login"
   },
   "landing2": {
+    "seo": {
+      "title": "QYVORA — Africa's Offensive Security Platform",
+      "description": "Training, labs, and enterprise penetration testing. Building a strong cybersecurity ecosystem in Africa."
+    },
     "bootcamp": {
       "heading1": "Hacker Protocol",
       "heading2": "Bootcamp"
@@ -1395,6 +1399,7 @@
     "bootcamp": { "desc": "Custom security awareness training for your team." }
   },
   "leaderboardPage": {
+    "seo": { "title": "Leaderboard — QYVORA", "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned." },
     "hero": {
       "title": "Operator",
       "titleHighlight": "Leaderboard",
