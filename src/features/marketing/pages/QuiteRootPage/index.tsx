@@ -100,6 +100,8 @@ function Hero() {
           <img
             src={quiteRootLogo}
             alt="QuiteRoot"
+            width={800}
+            height={800}
             className="w-full h-auto object-contain"
           />
         </div>

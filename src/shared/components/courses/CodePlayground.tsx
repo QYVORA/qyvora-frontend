@@ -97,10 +97,10 @@ const CodePlayground: React.FC<CodePlaygroundProps> = ({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={handleCopy} className="text-text-muted hover:text-accent transition-colors p-1" title="Copy code">
+          <button onClick={handleCopy} className="text-text-muted hover:text-accent transition-colors p-1" title="Copy code" aria-label="Copy code">
             {copied ? <IconCheck size={14} className="text-accent" /> : <Copy className="h-3.5 w-3.5" />}
           </button>
-          <button onClick={handleReset} className="text-text-muted hover:text-accent transition-colors p-1" title="Reset">
+          <button onClick={handleReset} className="text-text-muted hover:text-accent transition-colors p-1" title="Reset" aria-label="Reset code">
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
         </div>

@@ -38,6 +38,8 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
           <img
             src={event.flyerUrl}
             alt={event.title}
+            width={800}
+            height={500}
             className="w-full h-full object-cover"
           />
         </div>
@@ -73,6 +75,8 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
         <img
           src={event.flyerUrl}
           alt={event.title}
+          width={1200}
+          height={525}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />

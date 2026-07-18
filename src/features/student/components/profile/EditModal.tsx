@@ -52,12 +52,12 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
       <DialogContent title={t('student.profile.editModal.title')} maxWidth="max-w-2xl">
         <form onSubmit={handleSave} className="space-y-4 -mt-2">
           <div>
-            <label className={labelCls}>{t('student.profile.editModal.displayName')}</label>
-            <input value={form.name} onChange={set('name')} placeholder={t('student.profile.editModal.displayNamePlaceholder')} className={inputCls} />
+            <label htmlFor="edit-display-name" className={labelCls}>{t('student.profile.editModal.displayName')}</label>
+            <input id="edit-display-name" value={form.name} onChange={set('name')} placeholder={t('student.profile.editModal.displayNamePlaceholder')} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>Operator Handle</label>
-            <input value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame-operator" className={inputCls} />
+            <label htmlFor="edit-handle" className={labelCls}>Operator Handle</label>
+            <input id="edit-handle" value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame-operator" className={inputCls} />
             <div className="mt-2">
               <HandleSuggestions
                 name={form.name}
@@ -68,12 +68,12 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
             </div>
           </div>
           <div>
-            <label className={labelCls}>{t('student.profile.editModal.org')}</label>
-            <input value={form.organization} onChange={set('organization')} placeholder={t('student.profile.editModal.orgPlaceholder')} className={inputCls} />
+            <label htmlFor="edit-organization" className={labelCls}>{t('student.profile.editModal.org')}</label>
+            <input id="edit-organization" value={form.organization} onChange={set('organization')} placeholder={t('student.profile.editModal.orgPlaceholder')} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>{t('student.profile.editModal.bio')}</label>
-            <textarea
+            <label htmlFor="edit-bio" className={labelCls}>{t('student.profile.editModal.bio')}</label>
+            <textarea id="edit-bio"
               value={form.bio}
               onChange={set('bio')}
               rows={3}

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SITE_CONFIG } from '../../features/marketing/content/siteConfig';
-import ogImageSrc from '@/assets/branding/logos/qyvora-full-logo.webp';
+const ogImageSrc = '/og-image.svg';
 
 const MOBILE_BREAKPOINT = 768;
 

@@ -17,15 +17,15 @@ const INPUT_CLS = 'w-full bg-bg border border-border rounded-xl py-3 px-4 text-s
 const TABS = ['appearance', 'notifications', 'learning', 'codeEditor', 'data', 'security', 'account'] as const;
 type Tab = typeof TABS[number];
 
-const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd }) => {
+const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void; id: string }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd, id }) => {
   const [show, setShow] = useState(false);
   return (
     <div>
-      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5">{label}</label>
-      <div className={`relative${shake ? ' animate-shake-x' : ''}`} onAnimationEnd={onAnimationEnd}>
-        <input type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11${shake ? ' input-error' : ''}`} />
+      <label htmlFor={id} className="text-[10px] font-bold text-text-muted uppercase tracking-widest block mb-1.5">{label}</label>
+        <div className={`relative${shake ? ' animate-shake-x' : ''}`} onAnimationEnd={onAnimationEnd}>
+          <input id={id} type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11${shake ? ' input-error' : ''}`} />
         <button type="button" onClick={() => setShow((s) => !s)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
+          aria-label="Toggle password visibility" className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
@@ -310,7 +310,7 @@ const Settings: React.FC = () => {
                       <Toggle checked={preferences.display.showAnimations} onChange={(v) => updateDisplay('showAnimations', v)} disabled={prefsSaving} />
                     </SettingsRow>
                     <SettingsRow label={t('student.settings.appearance.fontSize')}>
-                      <select value={preferences.display.fontSize} onChange={(e) => updateDisplay('fontSize', e.target.value)}
+                      <select id="settings-font-size" aria-label={t('student.settings.appearance.fontSize')} value={preferences.display.fontSize} onChange={(e) => updateDisplay('fontSize', e.target.value)}
                         className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary focus:border-accent outline-none">
                         <option value="small">{t('student.settings.appearance.small')}</option>
                         <option value="medium">{t('student.settings.appearance.medium')}</option>
@@ -318,7 +318,7 @@ const Settings: React.FC = () => {
                       </select>
                     </SettingsRow>
                     <SettingsRow label={t('student.settings.languageSection.title')} description={t('student.settings.languageSection.description')}>
-                      <select value={preferences.display.language || i18n.language} onChange={(e) => handleLanguageChange(e.target.value)}
+                      <select id="settings-language" aria-label={t('student.settings.languageSection.title')} value={preferences.display.language || i18n.language} onChange={(e) => handleLanguageChange(e.target.value)}
                         className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary focus:border-accent outline-none">
                         <option value="en">English</option>
                         <option value="fr">Français</option>
@@ -387,7 +387,7 @@ const Settings: React.FC = () => {
                   </div>
                   <div className="p-6 divide-y divide-border/30">
                     <SettingsRow label={t('student.settings.learningPrefs.difficulty')}>
-                      <select value={preferences.learning.preferredDifficulty} onChange={(e) => updateLearning('preferredDifficulty', e.target.value)}
+                      <select id="settings-preferred-difficulty" aria-label={t('student.settings.learningPrefs.difficulty')} value={preferences.learning.preferredDifficulty} onChange={(e) => updateLearning('preferredDifficulty', e.target.value)}
                         className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary focus:border-accent outline-none">
                         <option value="beginner">{t('student.settings.learningPrefs.beginner')}</option>
                         <option value="intermediate">{t('student.settings.learningPrefs.intermediate')}</option>
@@ -395,7 +395,7 @@ const Settings: React.FC = () => {
                       </select>
                     </SettingsRow>
                     <SettingsRow label={t('student.settings.learningPrefs.weeklyGoal')}>
-                      <input type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
+                      <input id="settings-weekly-goal" type="number" min={0} max={80} value={preferences.learning.weeklyGoalHours}
                         onChange={(e) => updateLearning('weeklyGoalHours', Number(e.target.value))}
                         className="w-20 bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary text-center focus:border-accent outline-none" />
                     </SettingsRow>
@@ -422,12 +422,12 @@ const Settings: React.FC = () => {
                   </div>
                   <div className="p-6 divide-y divide-border/30">
                     <SettingsRow label={t('student.settings.codeEditorPrefs.fontSize')}>
-                      <input type="number" min={10} max={24} value={preferences.display.codeFontSize}
+                      <input id="settings-code-font-size" type="number" min={10} max={24} value={preferences.display.codeFontSize}
                         onChange={(e) => updateDisplay('codeFontSize', Number(e.target.value))}
                         className="w-20 bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary text-center focus:border-accent outline-none" />
                     </SettingsRow>
                     <SettingsRow label={t('student.settings.codeEditorPrefs.fontFamily')}>
-                      <select value={preferences.display.codeFontFamily} onChange={(e) => updateDisplay('codeFontFamily', e.target.value)}
+                      <select id="settings-code-font-family" aria-label={t('student.settings.codeEditorPrefs.fontFamily')} value={preferences.display.codeFontFamily} onChange={(e) => updateDisplay('codeFontFamily', e.target.value)}
                         className="bg-bg border border-border rounded-xl px-3 py-1.5 text-xs font-bold text-text-primary focus:border-accent outline-none">
                         <option value="Fira Code">Fira Code</option>
                         <option value="JetBrains Mono">JetBrains Mono</option>
@@ -493,9 +493,9 @@ const Settings: React.FC = () => {
                       <h2 className="text-base font-black uppercase tracking-widest">{t('student.settings.password.title')}</h2>
                     </div>
                     <form onSubmit={handlePasswordChange} className="p-6 space-y-4">
-                      <PasswordField name="current_password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
-                      <PasswordField name="new_password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
-                      <PasswordField name="confirm_password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
+                      <PasswordField name="current_password" id="settings-current-password" label={t('student.settings.password.currentLabel')} placeholder={t('student.settings.password.currentPlaceholder')} shake={shakeCurrentPwd} onAnimationEnd={() => setShakeCurrentPwd(false)} />
+                      <PasswordField name="new_password" id="settings-new-password" label={t('student.settings.password.newLabel')} placeholder={t('student.settings.password.newPlaceholder')} />
+                      <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
                       <button type="submit" disabled={changingPwd}
                         className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
                         {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> Updating...</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
@@ -521,8 +521,8 @@ const Settings: React.FC = () => {
                           <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
                             <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">Copy this now — it won't be shown again</p>
                             <div className="relative">
-                              <input type="text" readOnly value={liveToken} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
-                              <button type="button" onClick={copyToken} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors">
+                              <input id="settings-recovery-token" type="text" readOnly value={liveToken} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
+                              <button type="button" onClick={copyToken} aria-label="Copy token" className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors">
                                 {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                               </button>
                             </div>

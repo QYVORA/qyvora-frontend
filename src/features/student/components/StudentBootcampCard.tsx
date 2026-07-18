@@ -54,6 +54,8 @@ const StudentBootcampCard: React.FC<Props> = ({ data, index = 0, onEnroll, onLoc
         <img
           src={img}
           alt={title}
+          width={1200}
+          height={675}
           loading="lazy"
           className={`w-full h-full object-cover transition-transform duration-500 ${
             isLocked ? 'grayscale brightness-50' : 'group-hover:scale-[1.03]'

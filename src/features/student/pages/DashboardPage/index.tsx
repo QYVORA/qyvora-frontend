@@ -264,6 +264,8 @@ const DashboardProductCard = ({ product }: { product: any }) => {
         <img
           src={coverUrl}
           alt={title}
+          width={1200}
+          height={675}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           onError={(e) => { e.currentTarget.src = productFallbackImg; }}

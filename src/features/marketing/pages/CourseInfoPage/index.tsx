@@ -122,7 +122,7 @@ const CourseInfoPage: React.FC = () => {
             {/* Cover */}
             <div className="w-full lg:w-[40%] shrink-0">
               <div className="aspect-[8/5] rounded-2xl overflow-hidden border border-border/30 bg-bg-elevated">
-                <img src={course.coverSvg} alt={course.title} className="w-full h-full object-cover" loading="lazy" />
+                <img src={course.coverSvg} alt={course.title} width={800} height={500} className="w-full h-full object-cover" loading="lazy" />
               </div>
             </div>
 

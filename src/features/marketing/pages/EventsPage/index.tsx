@@ -115,6 +115,8 @@ const EventsPage: React.FC = () => {
                         <img
                           src={event.flyerUrl}
                           alt={event.title}
+                          width={1200}
+                          height={675}
                           className="w-full h-auto object-contain"
                         />
                       </motion.div>

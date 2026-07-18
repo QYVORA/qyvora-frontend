@@ -28,6 +28,8 @@ const LandingQuiteRootSection: React.FC = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
+                width={540}
+                height={300}
                 className="relative z-10 w-full h-auto block"
                 loading="lazy"
               />
@@ -131,6 +133,8 @@ const LandingQuiteRootSection: React.FC = () => {
               <img
                 src={quiteRootLogo}
                 alt="QuiteRoot"
+                width={1100}
+                height={620}
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
                 loading="lazy"
               />

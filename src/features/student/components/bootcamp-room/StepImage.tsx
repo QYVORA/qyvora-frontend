@@ -24,6 +24,8 @@ const StepImage: React.FC<Props> = ({ src, alt, stepNum }) => {
         <img
           src={src}
           alt={alt}
+          width={1200}
+          height={800}
           loading="lazy"
           decoding="async"
           onLoad={() => setStatus('loaded')}

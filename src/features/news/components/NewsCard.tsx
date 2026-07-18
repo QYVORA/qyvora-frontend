@@ -32,6 +32,8 @@ const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, cate
           <img
             src={imageUrl}
             alt={title}
+            width={800}
+            height={192}
             loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
