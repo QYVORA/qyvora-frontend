@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Copy, Ban, Unlock, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconShield } from '@/shared/components/icons';
 import type { AdminUser } from '../../types/admin.types';
 import { isUserBlocked } from '../../types/admin.types';
@@ -20,12 +21,13 @@ interface UsersTabProps {
 const UsersTab: React.FC<UsersTabProps> = ({
   users, overview, addToast, patchUser, handleUserBlockToggle, handleDeleteUser,
 }) => {
+  const { t } = useTranslation();
   const adminsCount = users.filter(u => u.role === 'admin').length;
 
   const columns: Column<AdminUser>[] = [
     {
       key: 'name',
-      header: 'User',
+      header: t('admin.users.user'),
       sortable: true,
       render: (item) => (
         <div>
@@ -38,7 +40,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
     },
     {
       key: 'role',
-      header: 'Role',
+      header: t('admin.users.role'),
       render: (item) => (
         <span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent">
           {item.role}
@@ -47,7 +49,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
     },
     {
       key: 'cpPoints',
-      header: 'Points',
+      header: t('admin.users.points'),
       sortable: true,
       render: (item) => (
         <div className="flex items-center gap-2 text-sm font-mono font-bold text-text-primary">
@@ -58,23 +60,23 @@ const UsersTab: React.FC<UsersTabProps> = ({
     },
     {
       key: 'bootcampAccessRevoked',
-      header: 'Bootcamp Access',
+      header: t('admin.users.bootcampAccess'),
       render: (item) => (
         <button
-          onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
+          onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
           className={`text-[9px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all ${
             item.bootcampAccessRevoked
               ? 'text-red-400 bg-red-500/10'
               : 'btn-primary'
           }`}
         >
-          {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
+          {item.bootcampAccessRevoked ? t('admin.users.revoked') : t('admin.users.allowed')}
         </button>
       ),
     },
     {
       key: 'recoveryToken',
-      header: 'Recovery',
+      header: t('admin.users.recovery'),
       render: (item) => (
         item.recoveryToken ? (
           <div className="flex items-center gap-3 group/token">
@@ -82,45 +84,45 @@ const UsersTab: React.FC<UsersTabProps> = ({
               {item.recoveryToken}
             </div>
             <button
-              onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast('Token copied', 'success'); }}
+              onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast(t('admin.users.tokenCopied'), 'success'); }}
               className="p-2 rounded-lg hover:bg-bg-elevated text-text-muted hover:text-accent transition-all"
             >
               <Copy className="w-4 h-4" />
             </button>
             {item.recoveryTokenAcknowledgedAt && (
-              <Tooltip content="User has acknowledged token">
+              <Tooltip content={t('admin.users.acknowledgedToken')}>
                 <IconShield size={16} className="text-emerald-500" />
               </Tooltip>
             )}
           </div>
         ) : (
-          <span className="text-[10px] font-black uppercase text-text-muted/40 tracking-widest">N/A</span>
+          <span className="text-[10px] font-black uppercase text-text-muted/40 tracking-widest">{t('common2.na')}</span>
         )
       ),
     },
     {
       key: 'status',
-      header: 'Status',
+      header: t('admin.users.status'),
       render: (item) => (
         isUserBlocked(item) ? (
           <span className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-red-400 bg-red-400/10 px-3 py-1.5 rounded-lg">
-            <Ban className="w-3.5 h-3.5" /> Blocked
+            <Ban className="w-3.5 h-3.5" /> {t('badge.blocked')}
           </span>
         ) : (
           <span className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-accent bg-accent/10 px-3 py-1.5 rounded-lg">
-            <Unlock className="w-3.5 h-3.5" /> Active
+            <Unlock className="w-3.5 h-3.5" /> {t('badge.active')}
           </span>
         )
       ),
     },
     {
       key: 'actions',
-      header: 'Actions',
+      header: t('admin.users.actions'),
       className: 'text-right',
       headerClassName: 'text-right',
       render: (item) => (
         <div className="flex items-center justify-end gap-3">
-          <Tooltip content={isUserBlocked(item) ? 'Unblock user' : 'Block user'} side="left">
+          <Tooltip content={isUserBlocked(item) ? t('admin.users.unblockUser') : t('admin.users.blockUser')} side="left">
             <button
               onClick={() => void handleUserBlockToggle(item)}
               className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-bg-elevated text-text-muted hover:text-accent transition-all active:scale-90 shadow-sm"
@@ -128,7 +130,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
               {isUserBlocked(item) ? <Unlock className="w-4.5 h-4.5" /> : <Ban className="w-4.5 h-4.5" />}
             </button>
           </Tooltip>
-          <Tooltip content="Permanently delete user" side="left">
+          <Tooltip content={t('admin.users.permanentlyDelete')} side="left">
             <button
               onClick={() => void handleDeleteUser(item)}
               className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-90 shadow-sm"
@@ -155,8 +157,8 @@ const UsersTab: React.FC<UsersTabProps> = ({
             <CpLogo className="w-4 h-4" /> {Number(item.cpPoints || 0).toLocaleString()}
           </span>
           {isUserBlocked(item) && (
-            <span className="text-red-400 font-black text-[9px] uppercase tracking-widest bg-red-400/10 px-2.5 py-1 rounded-lg flex items-center gap-1">
-              <Ban className="w-3 h-3" /> BLOCKED
+              <span className="text-red-400 font-black text-[9px] uppercase tracking-widest bg-red-400/10 px-2.5 py-1 rounded-lg flex items-center gap-1">
+              <Ban className="w-3 h-3" /> {t('badge.blocked')}
             </span>
           )}
         </div>
@@ -164,7 +166,7 @@ const UsersTab: React.FC<UsersTabProps> = ({
           <div className="flex items-center gap-3 mt-4 p-3 bg-bg-elevated rounded-xl shadow-sm">
             <IconShield size={16} className="text-accent" />
             <span className="font-mono text-[10px] text-accent/70 truncate flex-1">{item.recoveryToken}</span>
-            <button onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast('Token copied', 'success'); }} className="p-1.5 hover:text-accent transition-colors">
+            <button onClick={() => { navigator.clipboard.writeText(item.recoveryToken || ''); addToast(t('admin.users.tokenCopied'), 'success'); }} className="p-1.5 hover:text-accent transition-colors">
               <Copy className="w-4 h-4" />
             </button>
           </div>
@@ -172,22 +174,22 @@ const UsersTab: React.FC<UsersTabProps> = ({
       </div>
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button
-          onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? 'Access restored' : 'Access revoked')}
+          onClick={() => void patchUser(item.id, { bootcampAccessRevoked: !item.bootcampAccessRevoked }, item.bootcampAccessRevoked ? t('admin.users.accessRestored') : t('admin.users.accessRevoked'))}
           className={`py-3 transition-all ${item.bootcampAccessRevoked ? 'bg-red-500/10 text-red-400 rounded-xl text-[10px] font-black uppercase tracking-widest' : 'btn-primary'}`}
         >
-          {item.bootcampAccessRevoked ? 'Revoked' : 'Allowed'}
+          {item.bootcampAccessRevoked ? t('admin.users.revoked') : t('admin.users.allowed')}
         </button>
         <button
           onClick={() => void handleUserBlockToggle(item)}
           className="btn-secondary py-3 transition-all active:scale-95"
         >
-          {isUserBlocked(item) ? 'Unblock' : 'Block'}
+          {isUserBlocked(item) ? t('admin.users.unblock') : t('admin.users.block')}
         </button>
         <button
           onClick={() => void handleDeleteUser(item)}
           className="col-span-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest bg-red-500/5 text-red-400/60 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95"
         >
-          Delete User
+          {t('admin.users.deleteUser')}
         </button>
       </div>
       <div className="h-px w-full bg-border/20 mt-6" />
@@ -197,9 +199,9 @@ const UsersTab: React.FC<UsersTabProps> = ({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label="Total Users" value={Number((overview?.users as any)?.total || 0)} />
-        <StatCard icon={<IconShield size={20} className="text-accent" />} label="Active 24h" value={Number((overview?.users as any)?.active24h || 0)} accent />
-        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label="Admins" value={adminsCount} />
+        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label={t('admin.overview.totalUsers')} value={Number((overview?.users as any)?.total || 0)} />
+        <StatCard icon={<IconShield size={20} className="text-accent" />} label={t('admin.overview.active24h')} value={Number((overview?.users as any)?.active24h || 0)} accent />
+        <StatCard icon={<IconShield size={20} className="text-text-muted" />} label={t('admin.users.admins')} value={adminsCount} />
       </div>
 
       <DataTable
@@ -207,10 +209,10 @@ const UsersTab: React.FC<UsersTabProps> = ({
         columns={columns}
         keyExtractor={(u) => u.id}
         searchable
-        searchPlaceholder="Search by name, handle, email…"
+        searchPlaceholder={t('admin.users.searchPlaceholder')}
         searchFilter={searchFilter}
         mobileCard={mobileCard}
-        emptyTitle="No users found"
+        emptyTitle={t('admin.users.empty')}
       />
     </div>
   );

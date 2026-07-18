@@ -124,9 +124,9 @@ const MyCoursesPage: React.FC = () => {
 
   return (
     <div className="bg-bg min-h-screen">
-      <SEO title="My Courses" description="Your purchased courses." />
+      <SEO title="My Courses" description="Your purchased courses." noindex />
 
-      <div className=" px-4 md:px-12 lg:px-16 pt-8 pb-20 lg:pb-24 space-y-8">
+      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-8">
 
         <LearningOverviewCard
           icon={<GraduationCap className="w-6 h-6 text-bg" />}

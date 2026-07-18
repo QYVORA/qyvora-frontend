@@ -48,94 +48,94 @@ interface SocialLink {
 }
 
 const SOCIAL_LINKS: SocialLink[] = [
-  { key: 'x',       label: 'X',          href: 'https://x.com/qyvorasec',              Icon: BrandXIcon },
-  { key: 'linkedin', label: 'LinkedIn',   href: 'https://linkedin.com/company/qyvora', Icon: BrandLinkedinIcon },
-  { key: 'github',   label: 'GitHub',     href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
-  { key: 'youtube',  label: 'YouTube',    href: 'https://www.youtube.com/@QYVORA',      Icon: BrandYoutubeIcon },
-  { key: 'whatsapp', label: 'WhatsApp',   href: 'https://wa.me/233535535222',           Icon: BrandWhatsAppIcon },
+  { key: 'x',        label: 'X',        href: 'https://x.com/qyvorasec',             Icon: BrandXIcon },
+  { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/company/qyvora', Icon: BrandLinkedinIcon },
+  { key: 'github',   label: 'GitHub',   href: 'https://github.com/QYVORA',           Icon: BrandGithubIcon },
+  { key: 'youtube',  label: 'YouTube',  href: 'https://www.youtube.com/@QYVORA',     Icon: BrandYoutubeIcon },
+  { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/233535535222',          Icon: BrandWhatsAppIcon },
 ];
 
 const PULSE_TEXT_KEY = 'body.liveNode';
 
+const FOOTER_COL_KEYS: Record<string, string> = {
+  Platform: 'footer.platform',
+  Company: 'footer.company',
+  Account: 'footer.account',
+};
+
+const FOOTER_LINK_KEYS: Record<string, string> = {
+  events: 'nav.events',
+  hpb: 'nav.hpb',
+  anansi: 'nav.anansi',
+  blogs: 'nav.blogs',
+  news: 'nav.news',
+  market: 'nav.market',
+  leaderboard: 'nav.leaderboard',
+  services: 'nav.services',
+  team: 'nav.team',
+  register: 'nav.signUp',
+  login: 'button.logIn',
+};
+
+const FOOTER_BOTTOM_LINK_KEYS: Record<string, string> = {
+  'Terms of Service': 'footer.termsOfService',
+  'Cyber Feed': 'nav.cyberFeed',
+  'Anansi': 'nav.anansi',
+  'Learn': 'nav.learn',
+  'Market': 'nav.market',
+  'Blogs': 'nav.blogs',
+  'Team': 'nav.team',
+  'Leaderboard': 'nav.leaderboard',
+  'Services': 'nav.services',
+};
+
 const Footer: React.FC = () => {
   const { t } = useTranslation();
 
-  const FOOTER_COL_KEYS: Record<string, string> = {
-    Platform: 'footer.platform',
-    Company: 'footer.company',
-    Account: 'footer.account',
-  };
-
-  const FOOTER_LINK_KEYS: Record<string, string> = {
-    events: 'nav.events',
-    hpb: 'nav.hpb',
-    anansi: 'nav.anansi',
-    blogs: 'nav.blogs',
-    news: 'nav.news',
-    market: 'nav.market',
-    leaderboard: 'nav.leaderboard',
-    services: 'nav.services',
-    team: 'nav.team',
-    register: 'nav.signUp',
-    login: 'button.logIn',
-  };
-
-  const FOOTER_BOTTOM_LINK_KEYS: Record<string, string> = {
-    'Terms of Service': 'footer.termsOfService',
-    'Cyber Feed': 'nav.cyberFeed',
-    'Anansi': 'nav.anansi',
-    'Learn': 'nav.learn',
-    'Market': 'nav.market',
-    'Blogs': 'nav.blogs',
-    'Team': 'nav.team',
-    'Leaderboard': 'nav.leaderboard',
-    'Services': 'nav.services',
-  };
-
   return (
-    <footer className="relative w-full overflow-hidden select-none bg-bg flex flex-col">
+    <footer className="relative w-full overflow-hidden select-none bg-bg">
+      <div className="px-3 py-10 md:px-12 md:py-20 lg:px-20">
+        <div className="mx-auto max-w-[1600px]">
 
-      <div className="relative z-10 w-full flex flex-col flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-20">
-        <div className="w-full max-w-[1600px] mx-auto">
+          {/* ── Top: Brand | Nav grid ─────────────────────────────────────── */}
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-20 xl:gap-32">
 
-          {/* ── Brand + Nav Columns (same row on desktop) ──────────────────── */}
-          <div className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-20 xl:gap-32">
-            {/* Brand — left (logo acts as header to description) */}
-            <div className="max-w-xs space-y-3">
+            {/* Brand */}
+            <div className="space-y-5">
               <Logo size="lg" variant="full" className="block" />
-              <p className="text-sm text-text-muted font-mono leading-relaxed">
+              <p className="max-w-xs font-mono text-sm leading-relaxed text-text-muted">
                 {t('body.footerDesc')}
               </p>
-              <div className="flex items-center gap-3 pt-1">
+              <div className="flex items-center gap-3">
                 {SOCIAL_LINKS.map(({ key, label, href, Icon }) => (
                   <a
                     key={key}
                     href={href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-11 h-11 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent hover:border-accent/40 transition-all group hover:scale-105 active:scale-95"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    <Icon />
+                    <Icon className="h-4 w-4" />
                   </a>
                 ))}
               </div>
             </div>
 
-            {/* Nav columns — right */}
-            <div className="flex flex-wrap gap-x-16 gap-y-10">
+            {/* Nav columns — fixed grid so it never reflows unevenly */}
+            <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 sm:gap-x-12">
               {FOOTER_COLS.map((col) => (
-                <div key={col.title} className="space-y-5">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">
+                <div key={col.title}>
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted">
                     {t(FOOTER_COL_KEYS[col.title] || col.title)}
                   </h3>
-                  <ul className="space-y-3">
-                    {col.links.map((link: { key: string; label: string; path: string }) => (
+                  <ul className="mt-5 space-y-3">
+                    {col.links.map((link) => (
                       <li key={link.key}>
                         <Link
                           to={link.path}
                           onClick={() => window.scrollTo(0, 0)}
-                          className="text-sm font-bold text-text-primary hover:text-accent transition-colors"
+                          className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                         >
                           {t(FOOTER_LINK_KEYS[link.key] || link.label)}
                         </Link>
@@ -144,44 +144,42 @@ const Footer: React.FC = () => {
                   </ul>
                 </div>
               ))}
-            </div>
+            </nav>
           </div>
 
-          {/* ── Bottom Bar ────────────────────────────────────────────────── */}
-          <div className="pt-10 mt-12 md:mt-16 border-t border-border/40">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">
-                <span className="flex items-center gap-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-                  </span>
-                    <span className="tracking-[0.3em]">{t(PULSE_TEXT_KEY)}</span>
-                </span>
-              </div>
+          {/* ── Legal / secondary links row ──────────────────────────────── */}
+          <div className="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-border/40 pt-8 md:mt-16">
+            {SITE_CONFIG.footer.links.map((link, idx) => (
+              <Link
+                key={idx}
+                to={link.path}
+                onClick={() => window.scrollTo(0, 0)}
+                className="text-[11px] text-text-muted/60 transition-colors hover:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {t(FOOTER_BOTTOM_LINK_KEYS[link.label] || link.label)}
+              </Link>
+            ))}
+          </div>
 
-              <div className="flex flex-wrap items-center gap-4 md:ml-auto">
-                <LanguageSwitcher />
-                {SITE_CONFIG.footer.links.map((link, idx) => (
-                  <Link
-                    key={idx}
-                    to={link.path}
-                    onClick={() => window.scrollTo(0, 0)}
-                    className="text-[11px] text-text-muted/60 hover:text-text-muted transition-colors"
-                  >
-                    {t(FOOTER_BOTTOM_LINK_KEYS[link.label] || link.label)}
-                  </Link>
-                ))}
-                <span className="text-[11px] text-text-muted/40">
-                  &copy; {new Date().getFullYear()} QYVORA
-                </span>
-                <ContactTrigger
-                  type="button"
-                  className="px-5 py-2.5 bg-accent text-bg text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:brightness-110 transition-all active:scale-95"
-                >
-                  {t('button.contactUs')}
-                </ContactTrigger>
-              </div>
+          {/* ── Utility bar: status · language · copyright · contact ────── */}
+          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              <span>{t(PULSE_TEXT_KEY)}</span>
+              <span className="mx-2 h-3 w-px bg-border/60" aria-hidden="true" />
+              <span className="text-text-muted/40 normal-case tracking-normal">
+                &copy; {new Date().getFullYear()} QYVORA
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              <ContactTrigger type="button" className="btn-primary">
+                {t('button.contactUs')}
+              </ContactTrigger>
             </div>
           </div>
 

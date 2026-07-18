@@ -160,7 +160,7 @@ const ZeroDayMarketPage: React.FC = () => {
                   <ScrollReveal key={prod.id || idx} direction="up" delay={idx * 0.08}>
                     <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300 hover:border-accent/30 hover:scale-[1.01]">
                       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                        <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                        <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                         <div className="absolute bottom-4 left-4">
                           <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
                             <IconMarketplace className="h-3 w-3 text-accent" /> Intelligence Asset
@@ -195,7 +195,7 @@ const ZeroDayMarketPage: React.FC = () => {
                   renderCard={(prod) => (
                     <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300">
                       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
-                        <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                        <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                         <div className="absolute bottom-4 left-4">
                           <span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm">
                             <IconMarketplace className="h-3 w-3 text-accent" /> Intelligence Asset

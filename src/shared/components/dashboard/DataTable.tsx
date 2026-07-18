@@ -1,4 +1,5 @@
 import { useState, useMemo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { IconChevronRight, IconSearch } from '@/shared/components/icons';
 import { Skeleton } from '@/shared/components/ui';
@@ -34,6 +35,7 @@ function DataTable<T>({
   searchFilter, pageSize: initialPageSize = 25, emptyIcon, emptyTitle, emptyAction,
   mobileCard, minWidth = 'min-w-[640px]',
 }: DataTableProps<T>) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -91,18 +93,18 @@ function DataTable<T>({
               type="text"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1); }}
-              placeholder={searchPlaceholder ?? 'Search…'}
+              placeholder={searchPlaceholder ?? t('components.dataTable.searchPlaceholder')}
               className="w-full bg-bg border border-border/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary focus:outline-none focus:border-accent transition-all"
             />
           </div>
-          <span className="text-xs text-text-muted font-mono">{sorted.length} results</span>
+          <span className="text-xs text-text-muted font-mono">{t('components.dataTable.resultsCount', { count: sorted.length })}</span>
         </div>
       )}
 
       {paginated.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-border py-12 text-center">
           {emptyIcon && <div className="mx-auto mb-3 opacity-30">{emptyIcon}</div>}
-          <p className="text-sm text-text-muted font-bold">{emptyTitle ?? 'No data'}</p>
+          <p className="text-sm text-text-muted font-bold">{emptyTitle ?? t('components.dataTable.noData')}</p>
           {emptyAction}
         </div>
       ) : (
@@ -167,11 +169,11 @@ function DataTable<T>({
                   className="bg-bg-elevated rounded-lg px-3 py-2 text-[10px] font-black text-text-primary outline-none cursor-pointer"
                 >
                   {[10, 25, 50, 100].map((n) => (
-                    <option key={n} value={n}>{n} / page</option>
+                    <option key={n} value={n}>{t('components.dataTable.itemsPerPage', { n })}</option>
                   ))}
                 </select>
                 <span className="text-[10px] font-mono text-text-muted">
-                  Page {safePage} of {totalPages}
+                  {t('components.dataTable.pageOf', { page: safePage, total: totalPages })}
                 </span>
               </div>
               <div className="flex items-center gap-2">

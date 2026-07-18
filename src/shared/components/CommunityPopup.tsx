@@ -112,7 +112,7 @@ const CommunityPopup: React.FC = () => {
                 <a
                   href={SITE_CONFIG.social.find(s => s.key === 'whatsapp')?.href || 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5'}
                   target="_blank"
-                  rel="noreferrer"
+                   rel="noopener noreferrer"
                   onClick={() => {
                     try { localStorage.setItem(COMMUNITY_JOINED_KEY, '1'); } catch {}
                     managerDismiss();

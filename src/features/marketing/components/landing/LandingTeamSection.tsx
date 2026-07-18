@@ -41,6 +41,8 @@ const LandingTeamSection: React.FC = () => {
                       <img
                         src={member.image}
                         alt={member.name}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
@@ -50,13 +52,13 @@ const LandingTeamSection: React.FC = () => {
                         {member.name}
                       </h3>
                       <span className="inline-block mt-1 px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-black rounded-lg uppercase tracking-widest">
-                        {member.role}
+                        {t(`landing.team.members.${member.id}.role`)}
                       </span>
                     </div>
                   </div>
 
                   <p className="text-xs sm:text-sm text-text-muted leading-relaxed line-clamp-4 mb-4">
-                    {member.bio}
+                    {t(`landing.team.members.${member.id}.bio`)}
                   </p>
 
                   <div className="flex items-center gap-2 mt-auto pt-3 border-t border-border/30 w-full">

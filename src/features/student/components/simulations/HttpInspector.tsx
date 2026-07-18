@@ -66,7 +66,7 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <button onClick={() => { setEditMode(!editMode); setEditedBody(selected.body || ''); }}
-                    className="text-[9px] font-black uppercase tracking-wider text-text-muted hover:text-accent">
+                    aria-label="Toggle inspector" className="text-[9px] font-black uppercase tracking-wider text-text-muted hover:text-accent">
                     <ArrowUpDown size={12} />
                   </button>
                   <button onClick={handleReplay}
@@ -88,9 +88,9 @@ export function HttpInspector({ requests }: HttpInspectorProps) {
 
               {selected.body && (
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Body</p>
+                  <label htmlFor="http-body-editor" className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1 block">Body</label>
                   {editMode ? (
-                    <textarea value={editedBody} onChange={e => setEditedBody(e.target.value)}
+                    <textarea id="http-body-editor" value={editedBody} onChange={e => setEditedBody(e.target.value)}
                       className="w-full h-20 bg-black/40 border border-border/30 rounded p-2 text-[10px] font-mono text-text-primary outline-none" />
                   ) : (
                     <pre className="text-[10px] font-mono text-text-muted whitespace-pre-wrap bg-black/40 rounded p-2">{selected.body}</pre>

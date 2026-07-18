@@ -60,27 +60,30 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
 
         <div className="flex items-center gap-1 ml-2">
           <button onClick={goBack} disabled={browser.historyIndex <= 0}
-            className="p-1 rounded hover:bg-white/5 text-text-muted disabled:opacity-30">
+            aria-label="Go back" className="p-1 rounded hover:bg-white/5 text-text-muted disabled:opacity-30">
             <ArrowLeft size={14} />
           </button>
           <button onClick={goForward} disabled={browser.historyIndex >= browser.history.length - 1}
-            className="p-1 rounded hover:bg-white/5 text-text-muted disabled:opacity-30">
+            aria-label="Go forward" className="p-1 rounded hover:bg-white/5 text-text-muted disabled:opacity-30">
             <ArrowRight size={14} />
           </button>
           <button onClick={() => navigate(browser.url)}
-            className="p-1 rounded hover:bg-white/5 text-text-muted">
+            aria-label="Refresh page" className="p-1 rounded hover:bg-white/5 text-text-muted">
             <RotateCcw size={14} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="flex-1 mx-2">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg border border-border/30">
-            {currentPage?.url.startsWith('https') ? (
-              <Lock size={12} className="text-green-400 shrink-0" />
-            ) : (
-              <Globe size={12} className="text-text-muted shrink-0" />
-            )}
+            <label htmlFor="browser-url-input" className="contents">
+              {currentPage?.url.startsWith('https') ? (
+                <Lock size={12} className="text-green-400 shrink-0" />
+              ) : (
+                <Globe size={12} className="text-text-muted shrink-0" />
+              )}
+            </label>
             <input
+              id="browser-url-input"
               type="text"
               value={urlInput}
               onChange={e => setUrlInput(e.target.value)}
@@ -92,15 +95,15 @@ export function BrowserSimulation({ pages, defaultUrl }: BrowserSimProps) {
 
         <div className="flex items-center gap-1">
           <button onClick={() => setShowSource(!showSource)}
-            className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showSource ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="View source" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showSource ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Code size={14} />
           </button>
           <button onClick={() => setShowHeaders(!showHeaders)}
-            className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showHeaders ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="Preview" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showHeaders ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Eye size={14} />
           </button>
           <button onClick={() => setShowCookies(!showCookies)}
-            className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showCookies ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
+            aria-label="View cookies" className={`p-1.5 rounded text-[9px] font-black uppercase tracking-wider ${showCookies ? 'bg-accent/20 text-accent' : 'hover:bg-white/5 text-text-muted'}`}>
             <Cookie size={14} />
           </button>
         </div>

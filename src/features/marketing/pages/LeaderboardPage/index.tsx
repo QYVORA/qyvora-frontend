@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Medal } from 'lucide-react';
 import { IconShield, IconArrowRight, IconLeaderboard } from '@/shared/components/icons';
 import api from '@/core/services/api';
@@ -10,13 +11,7 @@ import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 
-const PERIODS = [
-  { key: 'all',  label: 'All Time'   },
-  { key: 'week',  label: 'This Week'  },
-  { key: 'month', label: 'This Month' },
-] as const;
-
-type Period = (typeof PERIODS)[number]['key'];
+type Period = 'all' | 'week' | 'month';
 
 interface LeaderboardEntry {
   rank: number;
@@ -57,6 +52,7 @@ const RankBadge = ({ label }: { label: string }) => {
 };
 
 const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; user: any; isExpanded: boolean }) => {
+  const { t } = useTranslation();
   const isTopThree = entry.rank <= 3;
   const isCurrentUser = user && entry.userId === user.uid;
   const bootcampCompleted = entry.bootcampStatus === 'completed';
@@ -94,12 +90,12 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-black text-text-primary truncate flex items-center gap-1.5">
-              {entry.hackerHandle || entry.name || 'Anonymous'}
+              {entry.hackerHandle || entry.name || t('landing.leaderboard.anonFallback')}
               <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
             </span>
             {isCurrentUser && (
               <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
-                You
+                {t('badge.you')}
               </span>
             )}
           </div>
@@ -133,7 +129,7 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
         <div className="flex items-center gap-2">
           <RankBadge label={entry.rankLabel} />
           <span className="text-[10px] font-mono text-text-muted/60">
-            {entry.roomsCompleted} rooms
+            {entry.roomsCompleted} {t('leaderboardPage.rooms')}
           </span>
         </div>
         <span className="text-sm font-black font-mono text-accent">
@@ -145,7 +141,14 @@ const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; 
 };
 
 const LeaderboardPage = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
+
+  const PERIODS = [
+    { key: 'all' as const,  label: t('leaderboardPage.periods.all') },
+    { key: 'week' as const,  label: t('leaderboardPage.periods.week') },
+    { key: 'month' as const, label: t('leaderboardPage.periods.month') },
+  ];
 
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -164,14 +167,14 @@ const LeaderboardPage = () => {
         setEntries(data.entries || []);
         setTotal(data.total || 0);
       } else {
-        setError('Failed to load leaderboard.');
+        setError(t('leaderboardPage.loadError'));
       }
     } catch {
-      setError('Failed to load leaderboard. Check connection and try again.');
+      setError(t('leaderboardPage.loadErrorNetwork'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchLeaderboard(period);
@@ -186,45 +189,45 @@ const LeaderboardPage = () => {
   return (
     <div className="min-h-screen w-full relative z-10 bg-bg">
       <SEO
-        title="Operator Leaderboard"
-        description="Top-ranked cybersecurity operators on QYVORA. Ranked by CP earned and verified on the QYVORA Chain."
+        title={t('leaderboardPage.seo.title')}
+        description={t('leaderboardPage.seo.description')}
       />
 
       {/* ══ HERO SECTION ══ */}
       <PublicHeroSection showGlobe mask="right">
         <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-            Operator <span className="text-bg/80">Leaderboard</span>
+            {t('leaderboardPage.hero.title')} <span className="text-bg/80">{t('leaderboardPage.hero.titleHighlight')}</span>
           </span>
         </h1>
         <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
-          Ranking Africa&apos;s top cybersecurity operators by CyberPoints earned on the QYVORA Chain.
+          {t('leaderboardPage.hero.description')}
         </p>
         <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
           <IconShield className="w-4 h-4 text-bg/80" />
-          CP verified on QYVORA Chain
+          {t('leaderboardPage.hero.chainBadge')}
         </div>
         {entries.length > 0 && (
           <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
             <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
               <span className="text-xl md:text-2xl font-black text-bg">{Number(total).toLocaleString()}</span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Operators</p>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.operators')}</p>
             </div>
             <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
               <span className="text-xl md:text-2xl font-black text-bg">
                 {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
               </span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Total CP</p>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.totalCp')}</p>
             </div>
             <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
               <span className="text-xl md:text-2xl font-black text-bg">{Number(entries[0].cp).toLocaleString()}</span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">Top CP</p>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.topCp')}</p>
             </div>
           </div>
         )}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
           <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-            Start Training <IconArrowRight className="h-4 w-4" />
+            {t('button.startTraining')} <IconArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </PublicHeroSection>
@@ -279,19 +282,19 @@ const LeaderboardPage = () => {
             <div className="flex-1 flex items-center justify-center">
               <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center w-full">
                 <IconLeaderboard className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
-                <p className="text-lg text-text-muted font-bold">No operators ranked yet</p>
-                <p className="text-sm text-text-muted mt-1">Complete bootcamp rooms to earn CP and appear on the leaderboard.</p>
+                <p className="text-lg text-text-muted font-bold">{t('leaderboardPage.empty.title')}</p>
+                <p className="text-sm text-text-muted mt-1">{t('leaderboardPage.empty.description')}</p>
               </div>
             </div>
           ) : (
             <div className="flex flex-col min-h-0 flex-1">
               {/* Desktop header row */}
               <div className="hidden md:grid grid-cols-[48px_1fr_140px_100px_80px] gap-4 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-text-muted/50 border-b border-border/40 shrink-0">
-                <span>#</span>
-                <span>Operator</span>
-                <span>Rank</span>
-                <span className="text-right">CP</span>
-                <span className="text-right">Streak</span>
+                <span>{t('leaderboardPage.table.rank')}</span>
+                <span>{t('leaderboardPage.table.operator')}</span>
+                <span>{t('leaderboardPage.table.rankLabel')}</span>
+                <span className="text-right">{t('leaderboardPage.table.cp')}</span>
+                <span className="text-right">{t('leaderboardPage.table.streak')}</span>
               </div>
 
               {/* Top 5 entries — no scroll */}
@@ -306,7 +309,7 @@ const LeaderboardPage = () => {
               {/* Chain verification badge */}
               <div className="flex items-center justify-center gap-2 pt-3 shrink-0 text-[10px] font-bold uppercase tracking-widest text-text-muted/40">
                 <IconShield className="w-3 h-3 text-accent" />
-                CP balances verified on QYVORA Chain &middot; {total} operators
+                CP balances verified on QYVORA Chain &middot; {t('leaderboardPage.footer', { count: total })}
               </div>
             </div>
           )}

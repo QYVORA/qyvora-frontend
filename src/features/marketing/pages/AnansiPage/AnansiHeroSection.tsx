@@ -12,6 +12,8 @@ const AnansiHeroSection: React.FC = () => {
           <img
             src={anansiLogo}
             alt="Anansi CLI"
+            width={800}
+            height={800}
             className="w-full h-auto object-contain"
             loading="lazy"
           />
@@ -36,7 +38,7 @@ const AnansiHeroSection: React.FC = () => {
         <a
           href="https://github.com/QYVORA/qyvora-anansi-cli"
           target="_blank"
-          rel="noreferrer"
+           rel="noopener noreferrer"
           className="btn-secondary !px-8 sm:!px-10 !py-3 sm:!py-4 text-center whitespace-nowrap"
         >
           <Zap className="w-4 h-4 inline-block mr-2" /> View Source

@@ -41,10 +41,10 @@ const LandingCurriculumSection: React.FC = () => {
                       </div>
                     </div>
                     <h3 className="text-xl md:text-2xl font-black text-text-primary mb-2 tracking-tight">
-                      {phase.name}
+                      {t(`landing.bootcamp.phases.${phase.id}.name`)}
                     </h3>
                     <p className="text-sm text-text-secondary leading-relaxed line-clamp-3 mb-4">
-                      {phase.desc}
+                      {t(`landing.bootcamp.phases.${phase.id}.desc`)}
                     </p>
                     <div className="flex items-center gap-2 mt-auto">
                       <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-accent/5 border border-accent/10">

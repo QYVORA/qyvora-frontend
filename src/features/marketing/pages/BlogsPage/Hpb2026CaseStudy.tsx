@@ -24,7 +24,7 @@ const StatRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
 
 const Screenshot = ({ src, alt, caption }: { src: string; alt: string; caption: string }) => (
   <div className="my-10 rounded-2xl overflow-hidden border border-border/20">
-    <img src={src} alt={alt} className="w-full object-cover" loading="lazy" />
+    <img src={src} alt={alt} width={1200} height={675} className="w-full object-cover" loading="lazy" />
     <div className="px-5 py-3 bg-bg-card border-t border-border/20">
       <p className="text-xs font-mono text-text-muted">{caption}</p>
     </div>
@@ -147,6 +147,8 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <img
               src={sopt4Img}
               alt="sopt4"
+              width={96}
+              height={96}
               className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-accent/20 shrink-0"
             />
             <div className="min-w-0">
@@ -161,6 +163,8 @@ export const Hpb2026CaseStudy: React.FC = () => {
             <img
               src={quiteRootLogo}
               alt="QuiteRoot logo"
+              width={80}
+              height={80}
               className="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shrink-0"
             />
             <div className="min-w-0">

@@ -19,7 +19,7 @@ export function formatEventTime(event: EventData): string {
 
 export const EVENTS: EventData[] = [
   {
-    id: 'evt_001',
+    id: 'poundTheCalabash',
     title: 'Pound the Calabash',
     description:
       'A 2-hour live ethical hacking session. Join us for an intense, hands-on offensive security challenge where you will attack a live target in real time.',

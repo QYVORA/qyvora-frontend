@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Users, Activity, UserPlus, Award, BookOpen, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { StatCard } from '@/shared/components/dashboard';
@@ -16,6 +17,7 @@ interface OverviewData {
 }
 
 const OverviewTab = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState<OverviewData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,17 +58,17 @@ const OverviewTab = () => {
   }, []);
 
   const statCards = [
-    { icon: <Users className="w-5 h-5 text-text-muted" />, label: 'Total Users', value: data?.users.total ?? 0, accent: false },
-    { icon: <Activity className="w-5 h-5 text-accent" />, label: 'Active 24h', value: data?.users.active24h ?? 0, accent: true },
-    { icon: <UserPlus className="w-5 h-5 text-text-muted" />, label: 'New This Week', value: data?.newSignupsWeek ?? 0, accent: false },
-    { icon: <Award className="w-5 h-5 text-accent" />, label: 'Total CP Minted', value: Number(data?.totalCpMinted ?? 0).toLocaleString(), accent: true },
-    { icon: <BookOpen className="w-5 h-5 text-text-muted" />, label: 'Bootcamp Enrollment', value: `${Math.round((data?.bootcampEnrollmentRate ?? 0) * 100)}%`, accent: false },
-    { icon: data?.chainReachable ? <IconCheck size={20} className="text-accent" /> : <XCircle className="w-5 h-5 text-red-400" />, label: 'Chain Status', value: data?.chainReachable ? 'Reachable' : 'Unreachable', accent: data?.chainReachable ?? false },
+    { icon: <Users className="w-5 h-5 text-text-muted" />, label: t('admin.overview.totalUsers'), value: data?.users.total ?? 0, accent: false },
+    { icon: <Activity className="w-5 h-5 text-accent" />, label: t('admin.overview.active24h'), value: data?.users.active24h ?? 0, accent: true },
+    { icon: <UserPlus className="w-5 h-5 text-text-muted" />, label: t('admin.overview.newThisWeek'), value: data?.newSignupsWeek ?? 0, accent: false },
+    { icon: <Award className="w-5 h-5 text-accent" />, label: t('admin.overview.totalCpMinted'), value: Number(data?.totalCpMinted ?? 0).toLocaleString(), accent: true },
+    { icon: <BookOpen className="w-5 h-5 text-text-muted" />, label: t('admin.overview.bootcampEnrollment'), value: `${Math.round((data?.bootcampEnrollmentRate ?? 0) * 100)}%`, accent: false },
+    { icon: data?.chainReachable ? <IconCheck size={20} className="text-accent" /> : <XCircle className="w-5 h-5 text-red-400" />, label: t('admin.overview.chainStatus'), value: data?.chainReachable ? t('admin.overview.reachable') : t('admin.overview.unreachable'), accent: data?.chainReachable ?? false },
   ];
 
   const signupColumns: Column<any>[] = [
-    { key: 'name', header: 'Name', render: (u) => <div><div className="text-sm font-bold text-text-primary">{u.name || 'Unknown'}</div><div className="text-xs text-text-muted font-mono">{u.email}</div></div> },
-    { key: 'createdAt', header: 'Date', render: (u) => <span className="text-[10px] text-text-muted font-mono">{new Date(u.createdAt).toLocaleDateString()}</span>, className: 'text-right' },
+    { key: 'name', header: t('form.name'), render: (u) => <div><div className="text-sm font-bold text-text-primary">{u.name || t('common2.unknown')}</div><div className="text-xs text-text-muted font-mono">{u.email}</div></div> },
+    { key: 'createdAt', header: t('common2.date'), render: (u) => <span className="text-[10px] text-text-muted font-mono">{new Date(u.createdAt).toLocaleDateString()}</span>, className: 'text-right' },
   ];
 
   return (
@@ -79,14 +81,14 @@ const OverviewTab = () => {
 
       <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
         <h3 className="text-sm font-black uppercase tracking-wide text-text-primary mb-4 flex items-center gap-2">
-          <UserPlus className="w-4 h-4 text-accent" /> Recent Signups
+          <UserPlus className="w-4 h-4 text-accent" /> {t('admin.overview.recentSignups')}
         </h3>
         <DataTable
           data={data?.recentSignups ?? []}
           columns={signupColumns}
           keyExtractor={(u) => u.id}
           loading={loading}
-          emptyTitle="No recent signups"
+          emptyTitle={t('admin.overview.noRecentSignups')}
           pageSize={5}
           minWidth="min-w-[400px]"
         />
