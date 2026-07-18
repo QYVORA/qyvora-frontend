@@ -12,7 +12,7 @@
  * any descendant via the `useToast()` hook.
  */
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Info } from 'lucide-react';
 import { IconShield, IconCheck, IconX } from '@/shared/components/icons';
@@ -74,21 +74,18 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
    * The timeout captures the `id` constant so it removes only its own toast,
    * even if other toasts have been added or removed in the meantime.
    */
-  const addToast = (message: string, type: Toast['type']) => {
+  const addToast = useCallback((message: string, type: Toast['type']) => {
     const id = Math.random().toString(36).slice(2, 11);
-
-    // Append the new toast to the end of the list (newest at the bottom).
     setToasts((prev) => [...prev, { id, message, type }]);
-
-    // Auto-dismiss after 5 seconds. The functional form of setToasts ensures
-    // we filter against the current list, not a stale snapshot.
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 5000);
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({ addToast }), [addToast]);
 
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={contextValue}>
       {children}
 
       {/*
