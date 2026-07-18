@@ -89,6 +89,8 @@ const StudentTopbar = () => {
   const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
   const notifRef = useRef<HTMLDivElement>(null);
+  const lastNotifFetchRef = useRef<number>(0);
+  const NOTIF_THROTTLE_MS = 30000;
 
   const loadNotificationsSnapshot = async () => {
     setNotifLoading(true);
@@ -133,7 +135,12 @@ const StudentTopbar = () => {
     } catch { /* silent */ }
   };
 
-  useEffect(() => { loadNotificationsSnapshot(); }, [location.pathname]);
+  useEffect(() => {
+    const now = Date.now();
+    if (now - lastNotifFetchRef.current < NOTIF_THROTTLE_MS) return;
+    lastNotifFetchRef.current = now;
+    loadNotificationsSnapshot();
+  }, [location.pathname]);
 
   useEffect(() => {
     let mounted = true;
