@@ -1,5 +1,9 @@
 # State Management
 
+> **Status:** ✅ IMPLEMENTED  
+> **Approach:** React Context + Local State (No Redux/Zustand)  
+> **Contexts:** AuthContext, ThemeContext, ToastContext
+
 ## Philosophy
 
 QYVORA Frontend uses **React Context + local component state** exclusively. No global state library (Redux, Zustand, Jotai) is used. This is intentional — the app's state is largely server-driven, and Context provides sufficient provider-level state without added complexity.

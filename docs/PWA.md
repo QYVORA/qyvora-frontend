@@ -1,5 +1,9 @@
 # Progressive Web App
 
+> **Status:** ✅ IMPLEMENTED  
+> **Service Worker:** Offline caching enabled  
+> **Install:** Browser install prompt with banner
+
 ## Overview
 
 QYVORA Frontend is a Progressive Web App with offline support and install capability.

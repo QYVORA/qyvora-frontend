@@ -1,5 +1,9 @@
 # Accessibility
 
+> **Status:** ✅ IMPLEMENTED  
+> **Target:** WCAG 2.1 AA compliance  
+> **Features:** Keyboard navigation, ARIA labels, reduced motion
+
 ## Standards
 
 QYVORA targets **WCAG 2.1 AA** compliance.

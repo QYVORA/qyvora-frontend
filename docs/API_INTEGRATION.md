@@ -1,5 +1,9 @@
 # API Integration
 
+> **Status:** ✅ IMPLEMENTED  
+> **Source:** `src/core/services/api.ts`  
+> **Client:** Axios with interceptors for auth and CSRF
+
 ## Architecture
 
 ```mermaid

@@ -1,5 +1,9 @@
 # Deployment
 
+> **Status:** ✅ IMPLEMENTED  
+> **Platform:** Netlify  
+> **Domain:** qyvora.com
+
 ## Platform
 
 **Hosting:** Netlify

@@ -1,4 +1,24 @@
-# Learning Paths — Design Plan
+# Learning Paths
+
+> **Status:** 📋 PLANNED - Design Complete, Not Yet Implemented  
+> **Design Phase:** Complete (449 lines)  
+> **Implementation Phase:** Not Started  
+> **See Also:** `_ROADMAP.md` for implementation timeline
+
+## ⚠️ Implementation Status
+
+**THE LEARNING PATHS FEATURE DOES NOT EXIST YET.** This is a design document for a planned feature.
+
+### What Does NOT Exist
+- ❌ NO `/dashboard/learning-paths` route
+- ❌ NO `LearningPathsPage` component
+- ❌ NO `LearningPathDetailPage` component  
+- ❌ NO `LearningPathCard` or `LearningPathStep` components
+- ❌ NO `src/features/student/data/learningPaths.ts` data file
+
+### Current State
+- ⚠️ Sidebar "Learning Paths" button currently redirects to `/dashboard/bootcamps`
+- ⚠️ Single hardcoded bootcamp (`bc_1775270338500`) shown instead
 
 ## Problem
 
