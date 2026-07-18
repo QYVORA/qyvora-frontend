@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useReducedMotion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import {
   BookOpen,
   Cpu,
@@ -23,35 +24,6 @@ import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import quiteRootLogo from '@/assets/quiteRoot/ChatGPT Image Jul 3, 2026, 02_45_59 AM.webp';
 import { ResearchersCarouselSection } from './ResearchersCarouselSection';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
-
-const capabilities = [
-  { id: 'research', title: 'Offensive Security Research', icon: IconSearch, desc: 'Pioneering research into attack vectors, exploit techniques, and defensive gaps across African digital infrastructure.' },
-  { id: 'tool-dev', title: 'Tool Development', icon: Wrench, desc: 'Building production-grade security tools purpose-built for the unique challenges of African cybersecurity operations.' },
-  { id: 'threat-intel', title: 'Threat Intelligence', icon: IconShield, desc: 'Collecting, analyzing, and operationalizing threat intelligence to protect African organizations and critical infrastructure.' },
-  { id: 'red-team', title: 'Red Team Automation', icon: Brain, desc: 'Automating adversarial simulation workflows to continuously validate security postures at scale.' },
-  { id: 'detection', title: 'Detection Engineering', icon: Cctv, desc: 'Crafting detection logic and signatures that identify real threats while minimizing false positives.' },
-  { id: 'infra', title: 'Secure Infrastructure', icon: Cloud, desc: 'Designing and deploying hardened infrastructure for offensive operations and secure communications.' },
-  { id: 'ai', title: 'AI-assisted Security', icon: Cpu, desc: 'Leveraging machine learning and AI to accelerate vulnerability discovery and security analysis.' },
-  { id: 'education', title: 'Cyber Education', icon: BookOpen, desc: 'Developing curriculum, training, and knowledge-sharing initiatives to grow Africa\'s cybersecurity talent pool.' },
-];
-
-const timeline = [
-  ['Research Idea', 'Frame the operational problem and collect raw signal.'],
-  ['Threat Analysis', 'Map adversary behavior, targets, and defensive gaps.'],
-  ['Prototype', 'Build narrow tools that prove the technique.'],
-  ['Internal Testing', 'Stress the workflow against lab and field conditions.'],
-  ['Production', 'Harden modules for repeatable operator use.'],
-  ['Released', 'Ship documentation, binaries, and learning paths.'],
-];
-
-const principles = [
-  ['Research First', 'Every tool begins with understanding the problem.', IconLabs],
-  ['Precision Engineering', 'Every feature serves a purpose.', Cpu],
-  ['Open Knowledge', 'Learning accelerates innovation.', BookOpen],
-  ['Operational Security', 'Security is built into every layer.', LockKeyhole],
-  ['African Innovation', 'Designed for African defenders.', Globe2],
-  ['Continuous Improvement', 'Never finished.', Rocket],
-];
 
 function SectionHeader({
   eyebrow,
@@ -93,6 +65,7 @@ function SectionHeader({
 }
 
 function Hero() {
+  const { t } = useTranslation();
   return (
     <PublicHeroSection mask="none" rightContent={
       <div className="relative hidden lg:flex items-center justify-center w-full h-full">
@@ -109,15 +82,15 @@ function Hero() {
     }>
       <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
         <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-          QUITE <span className="text-bg/80">ROOT</span>
+          {t('quiterootPage.hero.title')}
         </span>
       </h1>
       <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
-        The intelligence behind QYVORA — engineering offensive security tools and production-ready security capabilities.
+        {t('quiterootPage.hero.description')}
       </p>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
         <a href="#research" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 sm:!px-10 !py-3 sm:!py-4 whitespace-nowrap">
-          Explore Research <IconArrowRight size={16} />
+          {t('quiterootPage.hero.cta')} <IconArrowRight size={16} />
         </a>
       </div>
     </PublicHeroSection>
@@ -125,15 +98,26 @@ function Hero() {
 }
 
 function WhoWeAre() {
+  const { t } = useTranslation();
+  const capabilities = [
+    { id: 'research', title: t('quiterootPage.capabilities.research.title'), icon: IconSearch, desc: t('quiterootPage.capabilities.research.desc') },
+    { id: 'tool-dev', title: t('quiterootPage.capabilities.toolDev.title'), icon: Wrench, desc: t('quiterootPage.capabilities.toolDev.desc') },
+    { id: 'threat-intel', title: t('quiterootPage.capabilities.threatIntel.title'), icon: IconShield, desc: t('quiterootPage.capabilities.threatIntel.desc') },
+    { id: 'red-team', title: t('quiterootPage.capabilities.redTeam.title'), icon: Brain, desc: t('quiterootPage.capabilities.redTeam.desc') },
+    { id: 'detection', title: t('quiterootPage.capabilities.detection.title'), icon: Cctv, desc: t('quiterootPage.capabilities.detection.desc') },
+    { id: 'infra', title: t('quiterootPage.capabilities.infra.title'), icon: Cloud, desc: t('quiterootPage.capabilities.infra.desc') },
+    { id: 'ai', title: t('quiterootPage.capabilities.ai.title'), icon: Cpu, desc: t('quiterootPage.capabilities.ai.desc') },
+    { id: 'education', title: t('quiterootPage.capabilities.education.title'), icon: BookOpen, desc: t('quiterootPage.capabilities.education.desc') },
+  ];
   return (
     <div className="py-20 md:py-28 lg:py-32">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="mb-12">
         <SectionHeader
-          eyebrow="// WHO WE ARE"
-          title="Who is"
-          accent="QuiteRoot?"
-          body="QuiteRoot is the offensive research and engineering collective behind QYVORA. We are the team responsible for building the tools, frameworks, intelligence, and offensive capabilities that power QYVORA."
+          eyebrow={t('quiterootPage.about.eyebrow')}
+          title={t('quiterootPage.about.title')}
+          accent={t('quiterootPage.about.accent')}
+          body={t('quiterootPage.about.body')}
         />
         </div>
         <ScrollReveal direction="up" amount={0.1}>
@@ -169,16 +153,17 @@ function WhoWeAre() {
 }
 
 function Mission() {
+  const { t } = useTranslation();
   return (
     <ScrollReveal direction="up">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-bg-card/50 p-8 text-center sm:p-12 lg:p-16">
           <SectionHeader
             align="center"
-            eyebrow="// MISSION"
-            title="Engineering Africa's Offensive"
-            accent="Security Future"
-            body="We believe offensive security should be built, not borrowed. QuiteRoot exists to create indigenous cybersecurity capability through original research, open innovation, and enterprise-grade engineering. Instead of relying solely on external tooling, we develop technologies that solve problems unique to African organizations."
+            eyebrow={t('quiterootPage.mission.eyebrow')}
+            title={t('quiterootPage.mission.title')}
+            accent={t('quiterootPage.mission.accent')}
+            body={t('quiterootPage.mission.body')}
           />
         </div>
       </div>
@@ -189,10 +174,19 @@ function Mission() {
 
 
 function Principles() {
+  const { t } = useTranslation();
+  const principles = [
+    [t('quiterootPage.principles.researchFirst'), t('quiterootPage.principles.researchFirstDesc'), IconLabs],
+    [t('quiterootPage.principles.precision'), t('quiterootPage.principles.precisionDesc'), Cpu],
+    [t('quiterootPage.principles.openKnowledge'), t('quiterootPage.principles.openKnowledgeDesc'), BookOpen],
+    [t('quiterootPage.principles.opSec'), t('quiterootPage.principles.opSecDesc'), LockKeyhole],
+    [t('quiterootPage.principles.africanInnovation'), t('quiterootPage.principles.africanInnovationDesc'), Globe2],
+    [t('quiterootPage.principles.continuousImprovement'), t('quiterootPage.principles.continuousImprovementDesc'), Rocket],
+  ];
   return (
     <ScrollReveal direction="up">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        <SectionHeader align="center" title="How QuiteRoot" accent="Builds" />
+        <SectionHeader align="center" title={t('quiterootPage.principles.title')} accent={t('quiterootPage.principles.accent')} />
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map(([title, body, Icon], index) => (
             <div
@@ -213,6 +207,16 @@ function Principles() {
 const QuiteRootPage: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const { user } = useAuth();
+  const { t } = useTranslation();
+
+  const timeline = [
+    [t('quiterootPage.timeline.researchIdea'), t('quiterootPage.timeline.researchIdeaDesc')],
+    [t('quiterootPage.timeline.threatAnalysis'), t('quiterootPage.timeline.threatAnalysisDesc')],
+    [t('quiterootPage.timeline.prototype'), t('quiterootPage.timeline.prototypeDesc')],
+    [t('quiterootPage.timeline.internalTesting'), t('quiterootPage.timeline.internalTestingDesc')],
+    [t('quiterootPage.timeline.production'), t('quiterootPage.timeline.productionDesc')],
+    [t('quiterootPage.timeline.released'), t('quiterootPage.timeline.releasedDesc')],
+  ];
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-bg">
