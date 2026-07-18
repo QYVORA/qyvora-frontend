@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Radio, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
 import { IconShield, IconWarning } from '@/shared/components/icons';
@@ -23,6 +24,7 @@ interface Article {
 }
 
 const NewsCard = ({ article }: { article: Article }) => {
+  const { t } = useTranslation();
   const dateStr = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -79,7 +81,7 @@ const NewsCard = ({ article }: { article: Article }) => {
         )}
 
         <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-accent group-hover:gap-2 transition-all mt-auto pt-3">
-          Read intelligence <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          {t('news.readIntelligence')} <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
       </div>
     </a>
@@ -87,6 +89,7 @@ const NewsCard = ({ article }: { article: Article }) => {
 };
 
 const NewsFeedPage = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   const [articles, setArticles] = useState<Article[]>([]);
@@ -106,7 +109,7 @@ const NewsFeedPage = () => {
       const items = Array.isArray(data.articles) ? data.articles : [];
       setArticles(items);
     } catch {
-      setError('Failed to fetch threat intelligence feed. Check connection and try again.');
+      setError(t('news.fetchError'));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -122,8 +125,8 @@ const NewsFeedPage = () => {
   return (
     <div className="w-full bg-bg">
       <SEO
-        title="Cyber Feed"
-        description="African-focused cybersecurity threat intelligence and situational awareness. Curated cyber events, advisories, and digital safety alerts."
+        title={t('nav.cyberFeed')}
+        description={t('news.heroDescription')}
       />
 
       {/* ══ HERO SECTION ══ */}
@@ -143,10 +146,10 @@ const NewsFeedPage = () => {
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-bg/30 bg-bg/10 text-bg text-xs font-black uppercase tracking-wider hover:bg-bg/20 transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            {refreshing ? 'Updating' : 'Refresh Feed'}
+            {refreshing ? t('news.updating') : t('news.refreshFeed')}
           </button>
           <Link to="/register" className="btn-primary inline-flex items-center justify-center gap-2.5 !px-8 !py-3.5 whitespace-nowrap">
-            Start Training
+            {t('button.startTraining')}
           </Link>
         </div>
       </PublicHeroSection>
@@ -158,7 +161,7 @@ const NewsFeedPage = () => {
             <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
               <IconWarning size={20} className="text-red-400 shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-bold text-red-400">Feed Error</p>
+                <p className="text-sm font-bold text-red-400">{t('news.feedError')}</p>
                 <p className="text-sm text-text-secondary mt-1">{error}</p>
               </div>
             </div>
@@ -168,7 +171,7 @@ const NewsFeedPage = () => {
             <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
               <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-                  Latest <span className="text-accent">Intel</span>
+                  {t('news.latestIntel')}
                 </h2>
               </div>
               <div className="md:w-[65%] lg:w-[62%]">
@@ -187,14 +190,14 @@ const NewsFeedPage = () => {
           ) : !hasArticles ? (
             <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-24 text-center">
               <IconShield size={56} className="mx-auto mb-4 text-text-muted opacity-30" />
-              <p className="text-lg text-text-muted font-bold">No intelligence feeds available</p>
-              <p className="text-sm text-text-muted mt-1">New cyber threat data will appear here as it's published.</p>
+              <p className="text-lg text-text-muted font-bold">{t('news.empty')}</p>
+              <p className="text-sm text-text-muted mt-1">{t('news.emptyDescription')}</p>
             </div>
           ) : (
             <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
               <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-                  Latest <span className="text-accent">Intel</span>
+                  {t('news.latestIntel')}
                 </h2>
               </div>
               <div className="md:w-[65%] lg:w-[62%]">

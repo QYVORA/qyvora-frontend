@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ExternalLink, Calendar, Radio, ImageOff } from 'lucide-react';
 
 interface NewsCardProps {
@@ -11,6 +12,7 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, categories }: NewsCardProps) => {
+  const { t } = useTranslation();
   const dateStr = publishedAt
     ? new Date(publishedAt).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -37,9 +39,9 @@ const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, cate
             loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
-              const t = e.currentTarget;
-              t.style.display = 'none';
-              t.nextElementSibling?.classList.remove('hidden');
+              const img = e.currentTarget;
+              img.style.display = 'none';
+              img.nextElementSibling?.classList.remove('hidden');
             }}
           />
         ) : null}
@@ -92,7 +94,7 @@ const NewsCard = ({ title, description, imageUrl, source, publishedAt, url, cate
 
         {/* Read more */}
         <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-          Read intelligence <ExternalLink className="w-3 h-3" />
+          {t('news.readIntelligence')} <ExternalLink className="w-3 h-3" />
         </div>
       </div>
     </a>

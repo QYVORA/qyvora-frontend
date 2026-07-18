@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogOut, ChevronDown,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconShield, IconDashboard, IconNotification } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { useToast } from '@/core/contexts/ToastContext';
@@ -20,6 +21,7 @@ import type { NotificationItem } from './types';
 const NOTIF_PREVIEW_LIMIT = 6;
 
 const AdminTopbar = () => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -65,9 +67,9 @@ const AdminTopbar = () => {
       await api.post('/notifications/read-all', {});
       setUnreadCount(0);
       setNotificationsPreview((prev) => prev.map((item) => ({ ...item, read: true })));
-      addToast('All notifications marked as read.', 'success');
+      addToast(t('nav.notifications.markedAsRead'), 'success');
     } catch {
-      addToast('Could not mark notifications as read.', 'error');
+      addToast(t('nav.notifications.markAsReadFailed'), 'error');
     }
   };
 
@@ -86,7 +88,7 @@ const AdminTopbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    addToast('Security session terminated.', 'info');
+    addToast(t('aria.sessionTerminated'), 'info');
     navigate(ADMIN_PATH);
   };
 
@@ -102,7 +104,7 @@ const AdminTopbar = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
-        Skip to main content
+        {t('aria.skipToMain')}
       </a>
 
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
@@ -112,7 +114,7 @@ const AdminTopbar = () => {
               <Link to={`${ADMIN_PATH}/dashboard`}><Logo size="md" /></Link>
               <div className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent-dim/40 px-2 py-0.5">
                 <IconShield size={12} className="text-accent" />
-                <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">ADMIN</span>
+                <span className="text-[9px] font-black text-accent font-mono tracking-[0.2em]">{t('nav.admin')}</span>
               </div>
             </div>
 
@@ -122,7 +124,7 @@ const AdminTopbar = () => {
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors text-text-muted hover:text-text-primary hover:bg-accent-dim/50"
               >
                 <IconDashboard size={16} />
-                Operator
+                {t('nav.operator')}
               </Link>
 
               {NAV_GROUPS.map((group) => (
@@ -228,7 +230,7 @@ const AdminTopbar = () => {
             <button
               onClick={handleLogout}
               className="hidden md:flex p-3 md:p-3.5 text-text-muted hover:text-red-400 transition-colors rounded-xl hover:bg-red-400/10 active:scale-95"
-              aria-label="Log out"
+              aria-label={t('aria.logOut')}
             >
               <LogOut className="w-6 h-6" />
             </button>
@@ -271,7 +273,7 @@ const AdminTopbar = () => {
           className="flex-1 flex flex-col items-center justify-center gap-1 py-4 min-h-[68px] active:bg-accent-dim/30 transition-colors"
         >
           <IconShield size={24} className="text-text-muted" />
-          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">More</span>
+          <span className="text-[11px] font-bold uppercase tracking-wide text-text-muted">{t('nav.more')}</span>
         </button>
       </nav>
     </>

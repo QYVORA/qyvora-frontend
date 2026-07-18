@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, LogIn } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 
 interface LoginFormProps {
@@ -21,21 +22,22 @@ const LoginForm: React.FC<LoginFormProps> = ({
   onForgotPassword,
   onRegister,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-1 text-text-primary">
-          {isAdminLoginRoute ? 'Workspace Access' : 'Operator Login'}
+          {isAdminLoginRoute ? t('heading.workspaceAccess') : t('heading.operatorLogin')}
         </h1>
         <p className="text-sm text-text-muted">
-          {isAdminLoginRoute ? 'Enter your credentials to continue.' : 'Sign in to continue your training.'}
+          {isAdminLoginRoute ? t('auth.enterCredentials') : t('auth.signIntoContinue')}
         </p>
       </div>
 
       <form className="space-y-5" onSubmit={onSubmit} noValidate>
         {/* Email */}
         <div className="space-y-2">
-          <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Email</label>
+          <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
           <div className="relative">
             <input
               id="login-email"
@@ -44,7 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
               required
               autoComplete="email"
               inputMode="email"
-              placeholder="operator@qyvora.africa"
+              placeholder={t('auth.emailPlaceholder')}
               className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
             />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
@@ -54,9 +56,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
         {/* Password */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Password</label>
+            <label htmlFor="login-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.password')}</label>
             {!isAdminLoginRoute && (
-              <button type="button" onClick={onForgotPassword} className="text-accent hover:underline transition-colors">Forgot?</button>
+              <button type="button" onClick={onForgotPassword} className="text-accent hover:underline transition-colors">{t('button.forgot')}</button>
             )}
           </div>
           <PasswordInput
@@ -77,14 +79,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
               : ''
           }`}
         >
-          <span className="text-[10px]">{isLoading ? 'Signing you in...' : 'Sign In'}</span> <LogIn className="w-5 h-5" />
+          <span className="text-[10px]">{isLoading ? t('button.signingIn') : t('button.signIn')}</span> <LogIn className="w-5 h-5" />
         </button>
       </form>
 
       {!isAdminLoginRoute && (
         <p className="mt-8 text-center text-sm text-text-muted">
-          New here?{' '}
-          <button onClick={onRegister} className="text-accent font-bold hover:underline">Create account</button>
+          {t('auth.newHere')}{' '}
+          <button onClick={onRegister} className="text-accent font-bold hover:underline">{t('button.createAccountLower')}</button>
         </p>
       )}
     </div>

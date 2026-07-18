@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Filter } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconClock } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Skeleton } from '@/shared/components/ui';
 import type { AuditLogEntry } from '@/features/admin/types/admin.types';
 
 const AuditLogTab = () => {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -48,7 +50,7 @@ const AuditLogTab = () => {
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
             className="w-full bg-bg border border-border rounded-xl pl-9 pr-3 py-2 text-xs text-text-primary focus:border-accent outline-none transition-colors appearance-none"
           >
-            <option value="">All Actions</option>
+            <option value="">{t('admin.audit.allActions')}</option>
             {availableActions.map((a) => (
               <option key={a} value={a}>{a.replace(/_/g, ' ')}</option>
             ))}
@@ -70,9 +72,9 @@ const AuditLogTab = () => {
           onClick={() => fetchLogs(1)}
           className="btn-primary px-3 py-2"
         >
-          Filter
+          {t('admin.audit.filter')}
         </button>
-        <span className="text-xs text-text-muted font-mono">{total} entries</span>
+        <span className="text-xs text-text-muted font-mono">{t('admin.audit.entriesCount', { count: total })}</span>
       </div>
 
       {loading ? (
@@ -80,7 +82,7 @@ const AuditLogTab = () => {
       ) : entries.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border/30 py-12 text-center">
           <IconClock size={40} className="mx-auto mb-3 text-text-muted opacity-30" />
-          <p className="text-sm text-text-muted font-bold">No audit log entries</p>
+          <p className="text-sm text-text-muted font-bold">{t('admin.audit.empty')}</p>
         </div>
       ) : (
         <div className="space-y-1">

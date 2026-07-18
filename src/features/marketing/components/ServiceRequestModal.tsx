@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2, Send, Building2, Globe, Phone, User as UserIcon } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import api from '../../../core/services/api';
@@ -11,6 +12,7 @@ export function openServiceRequestModal(packageTier?: string) {
 }
 
 const ServiceRequestModalHost: React.FC = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [packageTier, setPackageTier] = useState<string | undefined>();
@@ -56,8 +58,8 @@ const ServiceRequestModalHost: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        title="Request Assessment"
-        description={packageTier ? `Inquiry for ${packageTier}` : "Tell us about your project requirements and we'll get back to you with a tailored proposal."}
+        title={t('services2.requestAssessment')}
+        description={packageTier ? t('services2.inquiryFor', { packageTier }) : t('services2.description')}
         maxWidth="max-w-2xl"
       >
         {status === 'sent' ? (
@@ -65,25 +67,23 @@ const ServiceRequestModalHost: React.FC = () => {
             <div className="w-14 h-14 rounded-2xl bg-accent-dim border border-accent/30 flex items-center justify-center">
               <IconCheck size={28} className="text-accent" />
             </div>
-            <h3 className="text-lg font-bold text-text-primary">Request Received</h3>
+            <h3 className="text-lg font-bold text-text-primary">{t('services2.requestReceived')}</h3>
             <p className="text-sm text-text-muted">
-              Thank you for your interest. A security consultant will review your request and contact you within 24-48 hours.
+              {t('services2.requestReceivedDesc')}
             </p>
             <button
               type="button"
               onClick={() => setOpen(false)}
               className="btn-secondary text-xs !py-2 !px-5 mt-2"
             >
-              Close
+              {t('button.close')}
             </button>
           </div>
         ) : (
           <div className="space-y-5">
             <div className="rounded-2xl border border-border bg-accent/5 p-4">
               <p className="text-xs text-text-secondary">
-                We provide offensive security assessments for web applications, infrastructure, and networks —
-                as well as <strong className="text-accent">Employee Security Awareness Bootcamps</strong> for your team.
-                Tell us what you need below.
+                {t('services2.introText')} <strong className="text-accent">{t('services2.bootcampsHighlight')}</strong> {t('services2.introTextEnd')}
               </p>
             </div>
 
@@ -92,7 +92,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Full Name */}
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <UserIcon className="w-3 h-3" /> Full Name
+                    <UserIcon className="w-3 h-3" /> {t('services2.fullName')}
                   </label>
                   <input
                     name="name"
@@ -106,7 +106,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Email Address */}
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Send className="w-3 h-3" /> Email Address
+                    <Send className="w-3 h-3" /> {t('services2.emailAddress')}
                   </label>
                   <input
                     name="email"
@@ -120,7 +120,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Business Name */}
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Building2 className="w-3 h-3" /> Business Name
+                    <Building2 className="w-3 h-3" /> {t('services2.businessName')}
                   </label>
                   <input
                     name="businessName"
@@ -133,7 +133,7 @@ const ServiceRequestModalHost: React.FC = () => {
                 {/* Phone Number */}
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                    <Phone className="w-3 h-3" /> Phone Number
+                    <Phone className="w-3 h-3" /> {t('services2.phoneNumber')}
                   </label>
                   <input
                     name="phone"
@@ -147,7 +147,7 @@ const ServiceRequestModalHost: React.FC = () => {
               {/* Website URL */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center gap-2">
-                  <Globe className="w-3 h-3" /> Website URL
+                  <Globe className="w-3 h-3" /> {t('services2.websiteUrl')}
                 </label>
                 <input
                   name="websiteUrl"
@@ -160,7 +160,7 @@ const ServiceRequestModalHost: React.FC = () => {
               {/* Message / Notes */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                  Optional Notes / Message
+                  {t('services2.optionalNotes')}
                 </label>
                 <textarea
                   name="message"
@@ -172,7 +172,7 @@ const ServiceRequestModalHost: React.FC = () => {
 
               {status === 'error' && (
                 <p className="text-xs text-red-400 font-mono">
-                  Failed to send request. Please try again or email us directly at ops@qyvora.com
+                  {t('services2.sendError')}
                 </p>
               )}
 
@@ -182,8 +182,8 @@ const ServiceRequestModalHost: React.FC = () => {
                 className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {status === 'sending'
-                  ? <><Loader2 className="w-4 h-4 animate-spin" /> Transmitting...</>
-                  : <><Send className="w-4 h-4" /> Submit Request</>}
+                  ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('services2.transmitting')}</>
+                  : <><Send className="w-4 h-4" /> {t('services2.submitRequest')}</>}
               </button>
             </form>
           </div>

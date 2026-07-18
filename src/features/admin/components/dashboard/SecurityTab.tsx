@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { SecurityEventItem } from '../../types/admin.types';
 import { StatCard, DataTable } from '@/shared/components/dashboard';
 import type { Column } from '@/shared/components/dashboard';
@@ -6,6 +7,7 @@ import type { Column } from '@/shared/components/dashboard';
 interface SecurityTabProps { securitySummary: any; securityEvents: SecurityEventItem[]; }
 
 const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEvents }) => {
+  const { t } = useTranslation();
   const columns: Column<SecurityEventItem>[] = [
     { key: 'createdAt', header: 'Time', render: (item) => <span className="text-text-muted/60 font-mono whitespace-nowrap text-xs">{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</span> },
     { key: 'eventType', header: 'Type', render: (item) => <span className="px-2.5 py-1 rounded-lg bg-accent-dim text-[9px] font-black uppercase tracking-widest text-accent whitespace-nowrap border border-accent/10">{item.eventType}</span> },
@@ -35,9 +37,9 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Events 24h" value={Number(securitySummary?.events24h || 0)} />
-        <StatCard label="Unique IPs 24h" value={Number(securitySummary?.uniqueIps24h || 0)} accent />
-        <StatCard label="Auth Failures 24h" value={Number(securitySummary?.authFailures24h || 0)} />
+        <StatCard label={t('admin.security.events24h')} value={Number(securitySummary?.events24h || 0)} />
+        <StatCard label={t('admin.security.uniqueIps24h')} value={Number(securitySummary?.uniqueIps24h || 0)} accent />
+        <StatCard label={t('admin.security.authFailures24h')} value={Number(securitySummary?.authFailures24h || 0)} />
       </div>
 
       <DataTable
@@ -45,7 +47,7 @@ const SecurityTab: React.FC<SecurityTabProps> = ({ securitySummary, securityEven
         columns={columns}
         keyExtractor={(item) => item.id}
         mobileCard={mobileCard}
-        emptyTitle="No security events"
+        emptyTitle={t('admin.security.empty')}
         pageSize={25}
         minWidth="min-w-[860px]"
       />
