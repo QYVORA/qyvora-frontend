@@ -55,14 +55,14 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   const { skills } = computeSkillStats(modules);
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-1.5">
       {skills.map((skill) => (
-        <div key={skill.key} className="flex items-center gap-3">
+        <div key={skill.key} className="flex items-center gap-2">
           <div
-            className="w-2.5 h-2.5 rounded-full shrink-0"
+            className="w-2 h-2 rounded-full shrink-0"
             style={{ backgroundColor: skill.color }}
           />
-          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted min-w-[90px] truncate">
+          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted min-w-[72px] truncate">
             {skill.shortLabel}
           </span>
           <div className="flex-1 h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
@@ -71,7 +71,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
               style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
             />
           </div>
-          <span className="text-[10px] font-black text-text-primary w-12 text-right tabular-nums">
+          <span className="text-[9px] font-black text-text-primary w-10 text-right tabular-nums">
             {skill.completed}/{skill.total}
           </span>
         </div>
