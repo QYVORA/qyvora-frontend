@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconShield, IconCheck } from '@/shared/components/icons';
 import { KeyRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 
 interface ChangePasswordFormProps {
@@ -14,6 +15,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   isLoading,
   token,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
       <div className="mb-8">
@@ -21,32 +23,32 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
           <div className="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center">
             <IconShield size={20} className="text-yellow-500" />
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter">Password Change Required</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter">{t('auth2.changePassword.title')}</h1>
         </div>
-        <p className="text-text-muted text-sm">Your account requires a password change before continuing.</p>
+        <p className="text-text-muted text-sm">{t('auth2.changePassword.description')}</p>
       </div>
       <form className="space-y-5" onSubmit={onSubmit}>
         {!token && (
           <div className="space-y-2">
-            <label htmlFor="change-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Change Token</label>
+            <label htmlFor="change-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.changePassword.tokenLabel')}</label>
             <div className="relative">
-              <input id="change-token" type="text" name="change_token" required placeholder="Paste token from login response"
+              <input id="change-token" type="text" name="change_token" required placeholder={t('auth2.changePassword.tokenPlaceholder')}
                 className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
               <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
             </div>
           </div>
         )}
         <div className="space-y-2">
-          <label htmlFor="change-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">New Password</label>
-          <PasswordInput id="change-new-password" name="new_password" placeholder="Min 8 characters" autoComplete="new-password" />
+          <label htmlFor="change-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>
+          <PasswordInput id="change-new-password" name="new_password" placeholder={t('auth2.changePassword.minLength')} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <label htmlFor="change-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Confirm Password</label>
+          <label htmlFor="change-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
           <PasswordInput id="change-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          <span className="text-[10px]">{isLoading ? 'Updating...' : 'Set New Password'}</span> <IconCheck size={20} />
+          <span className="text-[10px]">{isLoading ? t('auth2.changePassword.updating') : t('auth2.changePassword.setNewPassword')}</span> <IconCheck size={20} />
         </button>
       </form>
     </div>

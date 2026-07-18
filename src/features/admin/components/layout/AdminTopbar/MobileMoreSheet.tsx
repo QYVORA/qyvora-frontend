@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { IconX } from '@/shared/components/icons';
 import { MOBILE_MORE } from './navGroups';
 import { AnimatePresence, motion } from 'motion/react';
@@ -18,6 +19,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
   user,
   handleLogout,
 }) => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   return (
@@ -36,11 +38,11 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
             style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 5rem)' }}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-              <span className="text-sm font-black uppercase tracking-widest text-text-primary">More</span>
+              <span className="text-sm font-black uppercase tracking-widest text-text-primary">{t('nav.more')}</span>
               <button
                 onClick={() => onOpenChange(false)}
                 className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-text-muted hover:text-accent transition-colors"
-                aria-label="Close"
+                aria-label={t('aria.close')}
               >
                 <IconX size={16} />
               </button>
@@ -79,7 +81,7 @@ const MobileMoreSheet: React.FC<MobileMoreSheetProps> = ({
                 onClick={handleLogout}
                 className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase text-text-muted border border-border rounded-xl hover:text-red-400 hover:border-red-500/30 transition-colors shrink-0"
               >
-                <LogOut className="w-3.5 h-3.5" /> Logout
+                <LogOut className="w-3.5 h-3.5" /> {t('aria.logOut')}
               </button>
             </div>
           </motion.div>

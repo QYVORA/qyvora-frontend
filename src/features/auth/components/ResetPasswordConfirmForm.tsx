@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { Mail, KeyRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 
 interface ResetPasswordConfirmFormProps {
@@ -20,44 +21,45 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
   token,
   onBack,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
       <button onClick={onBack} className="flex items-center gap-2 text-text-muted hover:text-accent mb-8 transition-colors">
-        <IconArrowLeft size={16} /> Back
+        <IconArrowLeft size={16} /> {t('button.back')}
       </button>
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">Set New Password</h1>
-        <p className="text-text-muted text-sm">Enter your reset token and choose a new password.</p>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter mb-1">{t('auth2.reset.title')}</h1>
+        <p className="text-text-muted text-sm">{t('auth2.reset.description')}</p>
       </div>
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
-          <label htmlFor="reset-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Email</label>
+          <label htmlFor="reset-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
           <div className="relative">
-            <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder="operator@qyvora.africa"
+            <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder={t('auth.emailPlaceholder')}
               onChange={(e) => onEmailChange(e.target.value)}
               className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
         <div className="space-y-2">
-          <label htmlFor="reset-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Reset Token</label>
+          <label htmlFor="reset-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.reset.tokenLabel')}</label>
           <div className="relative">
-            <input id="reset-token" type="text" name="token" required defaultValue={token} placeholder="Paste reset token here"
+            <input id="reset-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.reset.tokenPlaceholder')}
               className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
             <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
           </div>
         </div>
         <div className="space-y-2">
-          <label htmlFor="reset-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">New Password</label>
-          <PasswordInput id="reset-new-password" name="new_password" placeholder="Min 8 characters" autoComplete="new-password" />
+          <label htmlFor="reset-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>
+          <PasswordInput id="reset-new-password" name="new_password" placeholder={t('auth2.reset.minLength')} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <label htmlFor="reset-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">Confirm Password</label>
+          <label htmlFor="reset-confirm-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.confirmPassword')}</label>
           <PasswordInput id="reset-confirm-password" name="confirm_password" autoComplete="new-password" />
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">
-          <span className="text-[10px]">{isLoading ? 'Resetting...' : 'Reset Password'}</span> <IconCheck size={20} />
+          <span className="text-[10px]">{isLoading ? t('auth2.reset.resetting') : t('auth2.reset.resetPassword')}</span> <IconCheck size={20} />
         </button>
       </form>
     </div>

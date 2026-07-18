@@ -1,5 +1,6 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import { NotificationItem } from './types';
 
 interface NotificationsDropdownProps {
@@ -18,54 +19,57 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
   notifLoading,
   notificationsPreview,
   markAllNotificationsRead,
-}) => (
-  <AnimatePresence>
-    {open && (
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
-        className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
-      >
-        <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-          <div>
-            <div className="text-xs font-black uppercase tracking-widest text-text-primary">Notifications</div>
-            <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
+}) => {
+  const { t } = useTranslation();
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          className="hidden md:block absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-bg-card shadow-2xl z-[80] overflow-hidden"
+        >
+          <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+            <div>
+              <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
+              <div className="text-[10px] text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
+            </div>
+            {unreadCount > 0 && (
+              <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline whitespace-nowrap">
+                {t('button.markAllRead')}
+              </button>
+            )}
           </div>
-          {unreadCount > 0 && (
-            <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline whitespace-nowrap">
-              Mark all read
-            </button>
+          {notifLoading ? (
+            <div className="p-4 text-xs text-text-muted">{t('empty.loading')}</div>
+          ) : notificationsPreview.length === 0 ? (
+            <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
+          ) : (
+            <div className="max-h-80 overflow-auto divide-y divide-border/50">
+              {notificationsPreview.map((item) => (
+                <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`} role="listitem">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
+                    {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}
+                  </div>
+                  <p className="text-[11px] text-text-secondary line-clamp-2 mt-0.5">{item.message}</p>
+                  <div className="text-[10px] text-text-muted mt-1">
+                    {item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
-        </div>
-        {notifLoading ? (
-          <div className="p-4 text-xs text-text-muted">Loading...</div>
-        ) : notificationsPreview.length === 0 ? (
-          <div className="p-4 text-xs text-text-muted">No notifications yet.</div>
-        ) : (
-          <div className="max-h-80 overflow-auto divide-y divide-border/50">
-            {notificationsPreview.map((item) => (
-              <div key={item.id} className={`px-4 py-3 ${item.read ? 'opacity-60' : ''}`} role="listitem">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-text-primary line-clamp-1">{item.title}</span>
-                  {!item.read && <span className="w-1.5 h-1.5 rounded-full bg-accent flex-none" />}
-                </div>
-                <p className="text-[11px] text-text-secondary line-clamp-2 mt-0.5">{item.message}</p>
-                <div className="text-[10px] text-text-muted mt-1">
-                  {item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}
-                </div>
-              </div>
-            ))}
+          <div className="px-4 py-3 border-t border-border">
+            <button onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline">
+              {t('button.close')}
+            </button>
           </div>
-        )}
-        <div className="px-4 py-3 border-t border-border">
-          <button onClick={onClose} className="block w-full text-center text-xs font-bold text-accent hover:underline">
-            Close
-          </button>
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export default NotificationsDropdown;
