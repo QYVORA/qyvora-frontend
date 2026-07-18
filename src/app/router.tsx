@@ -83,6 +83,11 @@ const OsintLab          = lazy(() => import('../features/student/pages/labs/Osin
 const WirelessLab       = lazy(() => import('../features/student/pages/labs/WirelessLab'));
 const KillChainLab      = lazy(() => import('../features/student/pages/labs/KillChainLab'));
 
+// Tool full-screen pages
+const IdeToolPage         = lazy(() => import('../features/student/pages/tools/IdeToolPage'));
+const TerminalToolPage    = lazy(() => import('../features/student/pages/tools/TerminalToolPage'));
+const NetworkVizToolPage  = lazy(() => import('../features/student/pages/tools/NetworkVizToolPage'));
+
 // Public pages
 const ZeroDayMarketPage = lazy(() => import('../features/marketing/pages/ZeroDayMarketPage'));
 
@@ -212,6 +217,11 @@ export const AppRouter = () => {
           <Route path="/notifications"    element={<Navigate to="/dashboard/notifications" replace />} />
           <Route path="/settings"         element={<Navigate to="/dashboard/settings" replace />} />
         </Route>
+
+        {/* ── Tool full-screen pages (no layout chrome) ──────── */}
+        <Route path="/dashboard/tools/ide" element={<Wrap scope="IDE Tool"><StudentOnly><IdeToolPage /></StudentOnly></Wrap>} />
+        <Route path="/dashboard/tools/terminal" element={<Wrap scope="Terminal Tool"><StudentOnly><TerminalToolPage /></StudentOnly></Wrap>} />
+        <Route path="/dashboard/tools/network-visualizer" element={<Wrap scope="Network Visualizer Tool"><StudentOnly><NetworkVizToolPage /></StudentOnly></Wrap>} />
 
         {/* ── Admin routes ───────────────────────────────────────────────── */}
         <Route element={<AdminLayout />}>

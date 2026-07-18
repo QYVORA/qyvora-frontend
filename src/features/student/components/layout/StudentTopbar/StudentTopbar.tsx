@@ -10,10 +10,10 @@ import {
   IconNotification,
   IconArrowLeft,
   IconMenu,
-  IconTerminal,
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
+import ToolsDropdown from './ToolsDropdown';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
@@ -244,13 +244,11 @@ const StudentTopbar = () => {
                       </button>
                     </>
                   )}
-                  <button
-                    onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                    className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center text-text-muted hover:text-accent transition-colors rounded-xl hover:bg-accent-dim/50"
-                    aria-label="Open terminal"
-                  >
-                    <IconTerminal size={20} />
-                  </button>
+                  <ToolsDropdown
+                    onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                    onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                    onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                  />
                   <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
                     <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                   </Link>
@@ -307,13 +305,11 @@ const StudentTopbar = () => {
                 </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                <button
-                  onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                  className={`w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50`}
-                  aria-label="Open terminal"
-                >
-                  <IconTerminal size={20} />
-                </button>
+                <ToolsDropdown
+                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                />
                 <Link to="/dashboard/profile" className={`w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 overflow-hidden flex-none transition-colors border-border hover:border-accent/60`}>
                   <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
                 </Link>
@@ -346,13 +342,11 @@ const StudentTopbar = () => {
               </span>
             </div>
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                className={`w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50`}
-                aria-label="Open terminal"
-              >
-                <IconTerminal size={20} />
-              </button>
+              <ToolsDropdown
+                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+              />
               <Link to="/dashboard/profile" className={`w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 overflow-hidden flex-none transition-colors border-border hover:border-accent/60`}>
                 <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
               </Link>
@@ -438,13 +432,11 @@ const StudentTopbar = () => {
                 onMarkRead={markNotificationRead}
               />
 
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
-                className={`w-12 h-12 md:w-13 md:h-13 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50`}
-                aria-label="Open terminal"
-              >
-                <IconTerminal size={28} />
-              </button>
+              <ToolsDropdown
+                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+              />
 
               <Link
                 to="/dashboard/profile"
