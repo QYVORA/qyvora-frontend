@@ -69,7 +69,7 @@ import {
 } from 'lucide-react';
 import { isInstallable, showInstallPrompt } from '@/features/student/services/pwa';
 import { useGsapReveal, useGsapHover } from '@/shared/hooks/useGsap';
-import { gsap } from '@/shared/utils/gsapSetup';
+
 
 import hpbCoverImg from '@/assets/bootcamp/hpb-cover.webp';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
@@ -424,16 +424,14 @@ const Dashboard = () => {
     if (!bar) return;
     const fill = bar.querySelector<HTMLElement>('.progress-fill');
     if (!fill) return;
-    const tween = gsap.fromTo(fill, { width: '0%' }, {
-      width: `${rankProgress}%`,
-      duration: 1.2,
-      ease: 'power2.out',
-      scrollTrigger: { trigger: bar, start: 'top 85%', once: true },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        fill.style.width = `${rankProgress}%`;
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(bar);
+    return () => observer.disconnect();
   }, [rankProgress]);
 
   if (loading) return <DashboardSkeleton />;
@@ -682,7 +680,7 @@ const Dashboard = () => {
                 <span className="font-mono text-sm font-black text-accent">{rankProgress}%</span>
               </div>
               <div className="h-3 rounded-full bg-accent-dim/20 overflow-hidden">
-                <div className="progress-fill h-full rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" style={{ width: 0 }} />
+                <div className="progress-fill h-full rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" style={{ width: '0%', transition: 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)' }} />
               </div>
             </div>
           </div>

@@ -1,14 +1,22 @@
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import type { SimulationType, NetworkProfile, BrowserState } from './types';
 
-// ── Discovery State ─────────────────────────────────────────────────────────
+// ── Discovery ───────────────────────────────────────────────────────────────
 interface DiscoveryState {
   discoveredIps: string[];
   discoveredHostnames: string[];
   addDiscovery: (ip: string, hostname?: string) => void;
 }
 
-// ── Simulation Panel State ──────────────────────────────────────────────────
+const DiscoveryContext = createContext<DiscoveryState | null>(null);
+
+export function useDiscovery() {
+  const ctx = useContext(DiscoveryContext);
+  if (!ctx) throw new Error('useDiscovery must be used within SimulationProvider');
+  return ctx;
+}
+
+// ── Panel ───────────────────────────────────────────────────────────────────
 interface SimulationPanelState {
   activeSimulations: SimulationType[];
   openSimulation: SimulationType | null;
@@ -17,13 +25,29 @@ interface SimulationPanelState {
   toggleSimulation: (type: SimulationType) => void;
 }
 
-// ── Network Profile State ───────────────────────────────────────────────────
+const SimulationPanelContext = createContext<SimulationPanelState | null>(null);
+
+export function useSimulationPanel() {
+  const ctx = useContext(SimulationPanelContext);
+  if (!ctx) throw new Error('useSimulationPanel must be used within SimulationProvider');
+  return ctx;
+}
+
+// ── Network ─────────────────────────────────────────────────────────────────
 interface NetworkProfileState {
   activeProfile: NetworkProfile | null;
   setActiveProfile: (profile: NetworkProfile | null) => void;
 }
 
-// ── Browser State ───────────────────────────────────────────────────────────
+const NetworkProfileContext = createContext<NetworkProfileState | null>(null);
+
+export function useNetworkProfile() {
+  const ctx = useContext(NetworkProfileContext);
+  if (!ctx) throw new Error('useNetworkProfile must be used within SimulationProvider');
+  return ctx;
+}
+
+// ── Browser ─────────────────────────────────────────────────────────────────
 interface BrowserSimState {
   browser: BrowserState;
   setBrowserUrl: (url: string) => void;
@@ -31,25 +55,27 @@ interface BrowserSimState {
   resetBrowser: () => void;
 }
 
-// ── Context ─────────────────────────────────────────────────────────────────
-interface SimulationContextValue {
-  discovery: DiscoveryState;
-  panel: SimulationPanelState;
-  network: NetworkProfileState;
-  browser: BrowserSimState;
+const BrowserSimContext = createContext<BrowserSimState | null>(null);
+
+export function useBrowserSim() {
+  const ctx = useContext(BrowserSimContext);
+  if (!ctx) throw new Error('useBrowserSim must be used within SimulationProvider');
+  return ctx;
 }
 
-const SimulationContext = createContext<SimulationContextValue | null>(null);
-
+// ── Combined hook (backward compat) ─────────────────────────────────────────
 export function useSimulation() {
-  const ctx = useContext(SimulationContext);
-  if (!ctx) throw new Error('useSimulation must be used within SimulationProvider');
-  return ctx;
+  return {
+    discovery: useDiscovery(),
+    panel: useSimulationPanel(),
+    network: useNetworkProfile(),
+    browser: useBrowserSim(),
+  };
 }
 
 // ── Provider ────────────────────────────────────────────────────────────────
 export function SimulationProvider({ children }: { children: ReactNode }) {
-  // Discovery
+  // Discovery state
   const [discoveredIps, setDiscoveredIps] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('qyvora_discovered_ips');
@@ -83,7 +109,7 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('qyvora:ip-discovered', handler);
   }, [addDiscovery]);
 
-  // Simulation panel
+  // Panel state
   const [activeSimulations, setActiveSimulations] = useState<SimulationType[]>([]);
   const [openSimulation, setOpenSimulation] = useState<SimulationType | null>(null);
 
@@ -93,10 +119,10 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  // Network profile
+  // Network state
   const [activeProfile, setActiveProfile] = useState<NetworkProfile | null>(null);
 
-  // Browser
+  // Browser state
   const [browser, setBrowser] = useState<BrowserState>({
     url: 'about:blank',
     pages: [],
@@ -129,14 +155,21 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  // Memoize each context value independently
+  const discoveryValue = useMemo(() => ({ discoveredIps, discoveredHostnames, addDiscovery }), [discoveredIps, discoveredHostnames, addDiscovery]);
+  const panelValue = useMemo(() => ({ activeSimulations, openSimulation, setActiveSimulations, setOpenSimulation, toggleSimulation }), [activeSimulations, openSimulation, toggleSimulation]);
+  const networkValue = useMemo(() => ({ activeProfile, setActiveProfile }), [activeProfile]);
+  const browserValue = useMemo(() => ({ browser, setBrowserUrl, addBrowserPage, resetBrowser }), [browser, setBrowserUrl, addBrowserPage, resetBrowser]);
+
   return (
-    <SimulationContext.Provider value={{
-      discovery: { discoveredIps, discoveredHostnames, addDiscovery },
-      panel: { activeSimulations, openSimulation, setActiveSimulations, setOpenSimulation, toggleSimulation },
-      network: { activeProfile, setActiveProfile },
-      browser: { browser, setBrowserUrl, addBrowserPage, resetBrowser },
-    }}>
-      {children}
-    </SimulationContext.Provider>
+    <DiscoveryContext.Provider value={discoveryValue}>
+      <SimulationPanelContext.Provider value={panelValue}>
+        <NetworkProfileContext.Provider value={networkValue}>
+          <BrowserSimContext.Provider value={browserValue}>
+            {children}
+          </BrowserSimContext.Provider>
+        </NetworkProfileContext.Provider>
+      </SimulationPanelContext.Provider>
+    </DiscoveryContext.Provider>
   );
 }
