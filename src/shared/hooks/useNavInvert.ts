@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface UseNavInvertOptions {
   navHeight?: number;
@@ -20,9 +20,10 @@ interface UseNavInvertOptions {
 export function useNavInvert(options?: UseNavInvertOptions): boolean {
   const [inverted, setInverted] = useState(false);
   const navHeight = options?.navHeight ?? 80;
+  const rafId = useRef(0);
 
   useEffect(() => {
-    let ticking = false;
+    let lastResult = false;
 
     const check = () => {
       const els = document.querySelectorAll<HTMLElement>('[data-nav-invert]');
@@ -36,40 +37,41 @@ export function useNavInvert(options?: UseNavInvertOptions): boolean {
         }
       }
 
-      setInverted(found);
-      ticking = false;
+      if (found !== lastResult) {
+        lastResult = found;
+        setInverted(found);
+      }
+
+      rafId.current = 0;
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(check);
+    const scheduleCheck = () => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
       }
+      rafId.current = requestAnimationFrame(check);
     };
 
-    requestAnimationFrame(check);
+    // Run once synchronously on mount to avoid flash
+    check();
 
-    const observer = new MutationObserver(() => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(check);
-      }
-    });
+    const observer = new MutationObserver(scheduleCheck);
 
     observer.observe(document.body, {
       childList: true,
       subtree: true,
-      attributes: true,
-      attributeFilter: ['data-nav-invert']
     });
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('scroll', scheduleCheck, { passive: true });
+    window.addEventListener('resize', scheduleCheck, { passive: true });
 
     return () => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
       observer.disconnect();
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('scroll', scheduleCheck);
+      window.removeEventListener('resize', scheduleCheck);
     };
   }, [navHeight]);
 
