@@ -56,10 +56,10 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
             </span>
           </div>
           <h3 className="text-xl font-black text-text-primary tracking-tight leading-tight">
-            {event.title}
+            {t(`landing.events.list.${event.id}.title`)}
           </h3>
           <p className="text-xs text-text-muted leading-relaxed line-clamp-2">
-            {event.description}
+            {t(`landing.events.list.${event.id}.desc`)}
           </p>
           <button
             onClick={handleJoin}
@@ -93,10 +93,10 @@ const EventSlideInner: React.FC<EventSlideInnerProps> = ({ event, user }) => {
             </span>
           </div>
           <h3 className="text-3xl lg:text-4xl font-black text-white tracking-tight mb-2">
-            {event.title}
+            {t(`landing.events.list.${event.id}.title`)}
           </h3>
           <p className="text-sm md:text-base text-white/70 max-w-2xl mb-4 line-clamp-2">
-            {event.description}
+            {t(`landing.events.list.${event.id}.desc`)}
           </p>
           <button
             onClick={handleJoin}
