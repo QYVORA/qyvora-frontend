@@ -1,5 +1,9 @@
 # Hacker Protocol Bootcamp
 
+> **Status:** ✅ FULLY IMPLEMENTED  
+> **Config:** `src/features/student/constants/bootcampConfig.ts` (4028 lines)  
+> **Pages:** `BootcampCoursePage`, `BootcampRoomPage`
+
 ## Overview
 
 The Hacker Protocol Bootcamp (HPB) is a structured cybersecurity training program delivered entirely in the browser.

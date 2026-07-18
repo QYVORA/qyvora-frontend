@@ -1,11 +1,32 @@
 # CTF Platform
 
+> **Status:** 📋 PLANNED - Design Complete, Not Yet Implemented  
+> **See Also:** `CTF_PLAN.md` for detailed implementation plan  
+> **Roadmap:** `_ROADMAP.md` for implementation timeline
+
 ## Overview
 
-The QYVORA CTF (Capture The Flag) platform provides browser-native cybersecurity challenges deployed on Netlify.
+The QYVORA CTF (Capture The Flag) platform will provide browser-native cybersecurity challenges deployed on Netlify.
 
-**Plan source:** `docs/CTF_PLAN.md` (449 lines)
-**Challenge infrastructure:** `infrastructure/hpb-ctf-infrastructure/`
+**Plan source:** `docs/CTF_PLAN.md` (449 lines)  
+**Challenge infrastructure:** PLANNED - Not yet created
+
+## ⚠️ Implementation Status
+
+**NONE OF THE CTF PLATFORM EXISTS YET.** This document describes a planned feature.
+
+### What Actually Exists
+- ✅ Labs with flag validation (in lab simulations)
+- ✅ Lab exercises with completion markers
+
+### What Does NOT Exist
+- ❌ NO dedicated CTF routes or pages
+- ❌ NO separate CTF rooms repository  
+- ❌ NO CTF challenge infrastructure
+- ❌ NO flag submission UI specific to CTF
+- ❌ NO `/infrastructure/hpb-ctf-infrastructure/` directory
+
+**Note:** The "flags" mentioned in labs are completion markers for lab exercises, not CTF challenges.
 
 ## Architecture
 

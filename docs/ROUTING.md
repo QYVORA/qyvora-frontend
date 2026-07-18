@@ -1,5 +1,9 @@
 # Routing
 
+> **Status:** ✅ IMPLEMENTED  
+> **Source:** `src/app/router.tsx`  
+> **Strategy:** React Router v6 with lazy loading
+
 ## Architecture
 
 Routes are defined in `src/app/router.tsx` — the single source of truth for all client-side routing.

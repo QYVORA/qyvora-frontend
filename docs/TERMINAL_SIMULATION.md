@@ -1,8 +1,12 @@
 # Terminal Simulation
 
+> **Status:** ✅ IMPLEMENTED  
+> **See Also:** `SIMULATIONS.md` for complete simulation system documentation  
+> **Component:** `src/features/student/components/SimulatedTerminal/`
+
 ## Overview
 
-QYVORA includes an in-browser terminal simulator that replicates a Kali Linux environment for educational purposes.
+QYVORA includes a fully-functional in-browser terminal simulator that replicates a Kali Linux environment for educational purposes. This terminal supports 114+ commands and includes a complete virtual filesystem (VFS).
 
 **Source:** `src/features/student/components/SimulatedTerminal/`
 

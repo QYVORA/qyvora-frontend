@@ -1,5 +1,9 @@
 # Build Pipeline
 
+> **Status:** ✅ IMPLEMENTED  
+> **Build Tool:** Vite 6  
+> **Bundler:** esbuild with code splitting
+
 ## Overview
 
 QYVORA Frontend uses Vite 6 as its build tool with TypeScript, ESLint, and Tailwind CSS v4.

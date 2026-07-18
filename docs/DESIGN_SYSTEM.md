@@ -1,5 +1,9 @@
 # Design System
 
+> **Status:** ✅ IMPLEMENTED  
+> **Source:** `src/styles/index.css` with Tailwind CSS v4  
+> **Theme:** Dark mode only
+
 ## Accent Color
 
 **Source of truth:** SVG logo `#06B66F`
