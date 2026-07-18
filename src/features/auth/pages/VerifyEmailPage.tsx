@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { IconArrowLeft } from '@/shared/components/icons';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import api from '../../../core/services/api';
@@ -49,6 +50,12 @@ const VerifyEmailPage: React.FC = () => {
   return (
     <>
       <SEO title="Verify Email" description="Verify your QYVORA email address to activate your account." noindex />
+      
+      {/* Mobile background layer */}
+      <div className="md:hidden fixed inset-0 bg-accent -z-10">
+        <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
+      </div>
+      
       <div className="min-h-screen relative md:grid md:grid-cols-2">
         <AuthHero />
         <div className="flex flex-col items-center px-4 py-8 md:p-12 relative md:backdrop-blur-xl min-h-screen md:h-screen md:overflow-y-auto">

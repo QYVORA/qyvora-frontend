@@ -8,6 +8,7 @@ import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { IconShield, IconTerminal, IconTarget, IconArrowLeft } from '@/shared/components/icons';
 import { Logo } from '@/shared/components/brand';
 import PasswordInput from '../components/PasswordInput';
@@ -397,7 +398,7 @@ const LoginPage: React.FC = () => {
       
       {/* Mobile: Form with accent background */}
       <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-accent">
-        <div className="absolute inset-0 opacity-50 dot-grid" style={{ backgroundSize: '24px 24px' }} />
+        <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
         
         {/* Back to Home button - Mobile */}
         <div className="absolute top-6 left-6 z-20">
