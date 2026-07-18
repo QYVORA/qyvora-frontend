@@ -89,7 +89,9 @@ const FOOTER_BOTTOM_LINK_KEYS: Record<string, string> = {
   'Services': 'nav.services',
 };
 
-const Footer: React.FC = () => {
+const CURRENT_YEAR = new Date().getFullYear();
+
+const Footer: React.FC = React.memo(() => {
   const { t } = useTranslation();
 
   return (
@@ -171,7 +173,7 @@ const Footer: React.FC = () => {
               <span>{t(PULSE_TEXT_KEY)}</span>
               <span className="mx-2 h-3 w-px bg-border/60" aria-hidden="true" />
               <span className="text-text-muted/40 normal-case tracking-normal">
-                &copy; {new Date().getFullYear()} QYVORA
+                &copy; {CURRENT_YEAR} QYVORA
               </span>
             </div>
 
@@ -187,6 +189,8 @@ const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IconDashboard, IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
 import { LogIn, UserPlus, ChevronDown } from 'lucide-react';
@@ -12,7 +12,29 @@ import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { useNavInvert } from '@/shared/hooks/useNavInvert';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
 
-const Navbar: React.FC = () => {
+const NAV_GROUP_LABELS: Record<string, string> = {
+  learn: 'nav.learn',
+  research: 'nav.research',
+  resources: 'nav.resources',
+  company: 'nav.company',
+};
+
+const NAV_ITEM_LABELS: Record<string, string> = {
+  courses: 'nav.courses',
+  hpb: 'nav.hpb',
+  events: 'nav.events',
+  services: 'nav.services',
+  anansi: 'nav.anansi',
+  quiteroot: 'nav.quiteroot',
+  market: 'nav.market',
+  blogs: 'nav.blogs',
+  news: 'nav.news',
+  leaderboard: 'nav.leaderboard',
+  team: 'nav.team',
+  contact: 'nav.contact',
+};
+
+const Navbar: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen]             = useState(false);
@@ -21,28 +43,6 @@ const Navbar: React.FC = () => {
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inverted                                 = useNavInvert();
-
-  const NAV_GROUP_LABELS: Record<string, string> = {
-    learn: 'nav.learn',
-    research: 'nav.research',
-    resources: 'nav.resources',
-    company: 'nav.company',
-  };
-
-  const NAV_ITEM_LABELS: Record<string, string> = {
-    courses: 'nav.courses',
-    hpb: 'nav.hpb',
-    events: 'nav.events',
-    services: 'nav.services',
-    anansi: 'nav.anansi',
-    quiteroot: 'nav.quiteroot',
-    market: 'nav.market',
-    blogs: 'nav.blogs',
-    news: 'nav.news',
-    leaderboard: 'nav.leaderboard',
-    team: 'nav.team',
-    contact: 'nav.contact',
-  };
 
   const isAnansiPage = location.pathname === '/anansi';
 
@@ -55,7 +55,25 @@ const Navbar: React.FC = () => {
 
   useScrollLock(isMenuOpen);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = useCallback((path: string) => location.pathname === path, [location.pathname]);
+
+  const handleMenuToggle = useCallback(() => setIsMenuOpen((prev) => !prev), []);
+
+  const handleDropdownEnter = useCallback((key: string) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    setOpenDropdown(key);
+  }, []);
+
+  const handleDropdownLeave = useCallback(() => {
+    hoverTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
+  }, []);
+
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+  const closeDropdown = useCallback(() => setOpenDropdown(null), []);
+
+  const toggleMobileGroup = useCallback((key: string, isOpen: boolean) => {
+    setOpenMobileGroup(isOpen ? null : key);
+  }, []);
 
   return (
     <>
@@ -86,13 +104,8 @@ const Navbar: React.FC = () => {
               <div
                 key={group.key}
                 className="relative"
-                onMouseEnter={() => {
-                  if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-                  setOpenDropdown(group.key);
-                }}
-                onMouseLeave={() => {
-                  hoverTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
-                }}
+                onMouseEnter={() => handleDropdownEnter(group.key)}
+                onMouseLeave={handleDropdownLeave}
               >
                 <button
                   className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-widest transition-colors rounded-xl ${
@@ -133,7 +146,7 @@ const Navbar: React.FC = () => {
                               <ContactTrigger
                                 key={item.key}
                                 className={linkClasses}
-                                onOpen={() => setOpenDropdown(null)}
+                                onOpen={closeDropdown}
                               >
                                 {t(NAV_ITEM_LABELS[item.key] || item.label)}
                               </ContactTrigger>
@@ -144,7 +157,7 @@ const Navbar: React.FC = () => {
                             <Link
                               key={item.key}
                               to={item.path}
-                              onClick={() => setOpenDropdown(null)}
+                              onClick={closeDropdown}
                               className={linkClasses}
                             >
                               {item.label}
@@ -166,7 +179,7 @@ const Navbar: React.FC = () => {
               {user ? (
                 <Link
                   to="/dashboard"
-                  className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2 text-sm ${
+                  className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm ${
                     inverted
                       ? 'bg-bg text-text-primary hover:brightness-110'
                       : 'bg-accent text-bg hover:brightness-110'
@@ -177,7 +190,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <Link
                   to="/register"
-                  className={`font-bold uppercase tracking-widest rounded-xl px-9 py-3.5 transition-all active:scale-95 flex items-center justify-center gap-2.5 text-sm ${
+                  className={`font-bold uppercase tracking-widest rounded-xl px-9 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2.5 text-sm ${
                     inverted
                       ? 'bg-bg text-text-primary hover:brightness-110'
                       : 'bg-accent text-bg hover:brightness-110'
@@ -190,7 +203,7 @@ const Navbar: React.FC = () => {
 
             {/* ── Mobile hamburger (far right edge) ────────────── */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={handleMenuToggle}
               className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-bg hover:text-bg/70' : 'text-text-primary hover:text-accent'}`}
               aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
             >
@@ -221,7 +234,7 @@ const Navbar: React.FC = () => {
               {/* Home link */}
               <Link
                 to="/"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeMenu}
                 className={`relative pl-4 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors border-l-2 ${
                   isActive('/') ? 'text-accent border-accent' : 'text-text-primary/70 border-transparent hover:text-accent hover:border-accent/50'
                 }`}
@@ -235,7 +248,7 @@ const Navbar: React.FC = () => {
                 return (
                   <div key={group.key} className="border-b border-border/10 last:border-b-0">
                     <button
-                      onClick={() => setOpenMobileGroup(isOpen ? null : group.key)}
+                      onClick={() => toggleMobileGroup(group.key, isOpen)}
                       className="w-full flex items-center justify-between pl-4 pr-2 py-3 text-sm font-black uppercase tracking-[0.25em] transition-colors text-text-primary/70 hover:text-accent"
                     >
                       {t(NAV_GROUP_LABELS[group.key] || group.label)}
@@ -268,7 +281,7 @@ const Navbar: React.FC = () => {
                                   <ContactTrigger
                                     key={item.key}
                                     className={linkClasses}
-                                    onOpen={() => setIsMenuOpen(false)}
+                                    onOpen={closeMenu}
                                   >
                                     {t(NAV_ITEM_LABELS[item.key] || item.label)}
                                   </ContactTrigger>
@@ -279,7 +292,7 @@ const Navbar: React.FC = () => {
                                 <Link
                                   key={item.key}
                                   to={item.path}
-                                  onClick={() => setIsMenuOpen(false)}
+                                  onClick={closeMenu}
                                   className={linkClasses}
                                 >
                                   {t(NAV_ITEM_LABELS[item.key] || item.label)}
@@ -307,8 +320,8 @@ const Navbar: React.FC = () => {
                 {user ? (
                   <Link
                     to="/dashboard"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
+                    onClick={closeMenu}
+                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                   >
                   <IconDashboard size={16} /> Dashboard
                   </Link>
@@ -316,15 +329,15 @@ const Navbar: React.FC = () => {
                   <>
                     <Link
                       to="/register"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:brightness-110 active:scale-[0.98]"
+                      onClick={closeMenu}
+                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                     >
                       <UserPlus className="w-4 h-4" /> {t('button.startTraining')}
                     </Link>
                     <Link
                       to="/login"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-all hover:bg-accent/10 active:scale-[0.98]"
+                      onClick={closeMenu}
+                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
                     >
                       <LogIn className="w-4 h-4" /> {t('button.logIn')}
                     </Link>
@@ -337,6 +350,8 @@ const Navbar: React.FC = () => {
       </AnimatePresence>
     </>
   );
-};
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;
