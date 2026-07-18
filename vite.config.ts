@@ -59,6 +59,9 @@ export default defineConfig(() => ({
           // Animation library
           if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) return 'motion';
 
+          // GSAP — scroll/timeline animations
+          if (id.includes('node_modules/gsap')) return 'gsap';
+
           // React core
           if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) return 'react';
 
@@ -70,6 +73,9 @@ export default defineConfig(() => ({
 
           // Axios
           if (id.includes('node_modules/axios')) return 'axios';
+
+          // Recharts (pulls in redux, d3) — lazy-loaded by SkillRadarChart
+          if (id.includes('node_modules/recharts') || id.includes('node_modules/@reduxjs') || id.includes('node_modules/d3')) return 'recharts';
 
           // Lucide icons — large icon set
           if (id.includes('node_modules/lucide-react')) return 'lucide';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { IconShield, IconInfo, IconX } from '@/shared/components/icons';
@@ -8,15 +8,15 @@ import { usePopupManager } from '../../core/hooks/usePopupManager';
 const CONSENT_DISMISS_KEY = 'qyvora_consent_dismissed';
 const CONSENT_DISMISS_LEGACY = 'qyvora_cookie_dismissed';
 
-const ConsentBanner: React.FC = () => {
+const ConsentBanner: React.FC = React.memo(() => {
   const { t } = useTranslation();
-  const existing = getCookiePreferences();
-  const dismissed = (() => {
+  const existing = useMemo(() => getCookiePreferences(), []);
+  const dismissed = useMemo(() => {
     try {
       return localStorage.getItem(CONSENT_DISMISS_KEY) === '1'
         || localStorage.getItem(CONSENT_DISMISS_LEGACY) === '1';
     } catch { return false; }
-  })();
+  }, []);
   const needsConsent = !existing && !dismissed;
 
   const { isVisible: managerVisible, onDismiss: managerDismiss } = usePopupManager('consent-banner', 1);
@@ -171,6 +171,8 @@ const ConsentBanner: React.FC = () => {
       )}
     </AnimatePresence>
   );
-};
+});
+
+ConsentBanner.displayName = 'ConsentBanner';
 
 export default ConsentBanner;
