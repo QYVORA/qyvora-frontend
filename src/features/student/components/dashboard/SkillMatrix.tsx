@@ -41,37 +41,37 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
   }, [modules]);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex flex-col lg:flex-row lg:items-start gap-3 lg:ml-auto lg:max-w-[600px]">
       {/* Radar Chart Card */}
-      <div className="flex-1 rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
-              {t('student.dashboard.skillMatrix', 'Skill Matrix')}
-            </h3>
-            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">
-              {t('student.dashboard.skillMatrixSub', 'Overall')}{' '}
-              <span className="text-accent">{average}%</span>
-            </p>
-          </div>
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-3 flex flex-col lg:w-[280px] shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+            {t('student.dashboard.skillMatrix', 'Skill Matrix')}
+          </h3>
+          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+            {t('student.dashboard.skillMatrixSub', 'Overall')}{' '}
+            <span className="text-accent">{average}%</span>
+          </span>
         </div>
-        <SkillRadarChart data={radarData} />
+        <div className="flex-1 min-h-0">
+          <SkillRadarChart data={radarData} />
+        </div>
       </div>
 
       {/* Skill Stats Card */}
-      <div className="rounded-2xl border border-border/30 bg-bg-card p-6 md:p-8 lg:w-[320px] shrink-0">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">
-              {t('student.dashboard.skillStats', 'Skill Progress')}
-            </h3>
-            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">
-              {t('student.dashboard.skillStatsSub', 'Completion')}{' '}
-              <span className="text-accent">{average}%</span>
-            </p>
-          </div>
+      <div className="rounded-2xl border border-border/30 bg-bg-card p-3 flex flex-col lg:w-[280px] shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+            {t('student.dashboard.skillStats', 'Skill Progress')}
+          </h3>
+          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+            {t('student.dashboard.skillStatsSub', 'Completion')}{' '}
+            <span className="text-accent">{average}%</span>
+          </span>
         </div>
-        <SkillStats modules={modules} />
+        <div className="min-h-0 overflow-y-auto">
+          <SkillStats modules={modules} />
+        </div>
       </div>
     </div>
   );

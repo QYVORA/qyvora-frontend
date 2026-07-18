@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 
 interface SkillRadarChartProps {
   data: { axis: string; label: string; value: number; color: string }[];
@@ -6,11 +6,12 @@ interface SkillRadarChartProps {
 
 const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const n = data.length;
   const cx = 200;
   const cy = 200;
-  const radius = 140;
+  const radius = 160;
   const gridLevels = [0.25, 0.5, 0.75, 1];
 
   const axisAngles = useMemo(
@@ -48,12 +49,13 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
   const hoveredData = hoveredIdx !== null ? data[hoveredIdx] : null;
   const hoveredPoint = hoveredIdx !== null ? pointOnAxis(axisAngles[hoveredIdx], (data[hoveredIdx].value / 100) * radius) : null;
 
+  const handleMouseLeave = useCallback(() => setHoveredIdx(null), []);
+
   return (
-    <div className="h-[320px] sm:h-[360px] lg:h-[380px] lg:flex-1 overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-full" onMouseLeave={handleMouseLeave}>
       <svg
         viewBox="0 0 400 400"
-        className="w-full h-full"
-        onMouseLeave={() => setHoveredIdx(null)}
+        className="w-full h-full overflow-visible"
       >
         {/* Grid polygons */}
         {gridPolygons.map((points, i) => (
@@ -99,7 +101,7 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
 
         {/* Axis labels */}
         {axisAngles.map((angle, i) => {
-          const labelRadius = radius + 22;
+          const labelRadius = radius + 18;
           const p = pointOnAxis(angle, labelRadius);
           return (
             <text
@@ -125,36 +127,34 @@ const SkillRadarChart = ({ data }: SkillRadarChartProps) => {
               key={`hit-${i}`}
               cx={p.x}
               cy={p.y}
-              r={12}
+              r={16}
               fill="transparent"
               onMouseEnter={() => setHoveredIdx(i)}
               style={{ cursor: 'pointer' }}
             />
           );
         })}
-
-        {/* Tooltip */}
-        {hoveredData && hoveredPoint && (
-          <g className="pointer-events-none">
-            <foreignObject
-              x={hoveredPoint.x - 60}
-              y={hoveredPoint.y - 50}
-              width={120}
-              height={44}
-            >
-              <div
-                className="bg-bg-card border border-border/50 rounded-xl px-3 py-2 shadow-lg text-center"
-                style={{ fontSize: 10 }}
-              >
-                <p className="font-black uppercase tracking-widest text-text-muted" style={{ fontSize: 9 }}>
-                  {hoveredData.label}
-                </p>
-                <p className="text-sm font-black text-accent">{hoveredData.value}%</p>
-              </div>
-            </foreignObject>
-          </g>
-        )}
       </svg>
+
+      {/* Tooltip — rendered outside SVG so it never gets clipped */}
+      {hoveredData && hoveredPoint && (
+        <div
+          className="pointer-events-none absolute z-10 bg-bg-card border border-border/50 rounded-lg px-2.5 py-1.5 shadow-lg text-center"
+          style={{
+            left: `${(hoveredPoint.x / 400) * 100}%`,
+            top: `${(hoveredPoint.y / 400) * 100}%`,
+            transform: 'translate(-50%, -130%)',
+            fontSize: 9,
+            transition: 'left 120ms ease-out, top 120ms ease-out',
+          }}
+        >
+          <p className="font-black uppercase tracking-widest text-text-muted" style={{ fontSize: 8 }}>
+            {hoveredData.label}
+          </p>
+          <p className="text-xs font-black text-accent">{hoveredData.value}%</p>
+        </div>
+      )}
+
       <style>{`
         @keyframes radar-draw {
           from { transform: scale(0); opacity: 0; }

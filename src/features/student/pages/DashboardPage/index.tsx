@@ -235,18 +235,18 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
 const SectionButton = ({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) => (
   <button
     onClick={onClick}
-    className={`flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border text-center transition-all duration-300 ${
+    className={`flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border text-center transition-all duration-300 ${
       active
         ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
         : 'border-border/30 bg-bg-card hover:border-accent/30 hover:bg-bg-card/80'
     }`}
   >
-    <div className={`w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 ${
+    <div className={`w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 ${
       active ? 'bg-accent text-bg' : 'bg-bg-elevated text-text-primary'
     }`}>
       {icon}
     </div>
-    <span className={`text-[10px] font-black uppercase tracking-widest mt-1.5 ${
+    <span className={`text-[10px] font-black uppercase tracking-widest mt-1 ${
       active ? 'text-accent' : 'text-text-muted'
     }`}>{label}</span>
   </button>
@@ -458,25 +458,25 @@ const Dashboard = () => {
         <div ref={statsRef}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
             <SectionButton
-              icon={<GraduationCap size={32} className={activeSection === 'courses' ? 'text-bg' : 'text-text-primary'} />}
+              icon={<GraduationCap className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'courses' ? 'text-bg' : 'text-text-primary'}`} />}
               label={t('nav.courses')}
               active={activeSection === 'courses'}
               onClick={() => handleSectionToggle('courses')}
             />
             <SectionButton
-              icon={<Briefcase size={32} className={activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'} />}
+              icon={<Briefcase className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'bootcamps' ? 'text-bg' : 'text-text-primary'}`} />}
               label={t('nav.bootcamps')}
               active={activeSection === 'bootcamps'}
               onClick={() => handleSectionToggle('bootcamps')}
             />
             <SectionButton
-              icon={<FlaskConical size={32} className={activeSection === 'labs' ? 'text-bg' : 'text-text-primary'} />}
+              icon={<FlaskConical className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'labs' ? 'text-bg' : 'text-text-primary'}`} />}
               label={t('nav.labs')}
               active={activeSection === 'labs'}
               onClick={() => handleSectionToggle('labs')}
             />
             <SectionButton
-              icon={<ShoppingBag size={32} className={activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'} />}
+              icon={<ShoppingBag className={`w-5 h-5 md:w-7 md:h-7 ${activeSection === 'marketplace' ? 'text-bg' : 'text-text-primary'}`} />}
               label={t('nav.marketplace')}
               active={activeSection === 'marketplace'}
               onClick={() => handleSectionToggle('marketplace')}
@@ -509,41 +509,41 @@ const Dashboard = () => {
 
         {/* 3. Achievement Stats — always visible */}
         <div ref={roomsRef}>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
-            <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconRank size={32} className="text-accent" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
+            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                <IconRank size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rank</p>
-                <p className="text-sm font-black text-text-primary">{rankName}</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rank</p>
+                <p className="text-xs md:text-sm font-black text-text-primary">{rankName}</p>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
-                <CpLogo className="w-8 h-8" />
+            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated">
+                <CpLogo className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">CP</p>
-                <p className="text-sm font-black text-text-primary">{cpBalance.toLocaleString()}</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">CP</p>
+                <p className="text-xs md:text-sm font-black text-text-primary">{cpBalance.toLocaleString()}</p>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconFire size={32} className="text-orange-400" />
+            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                <IconFire size={20} className="text-orange-400 md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Streak</p>
-                <p className="text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Streak</p>
+                <p className="text-xs md:text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-3 p-6 md:p-7 lg:p-8 min-h-[140px] rounded-2xl border border-border/30 bg-bg-card text-center">
-              <div className="w-16 h-16 md:w-18 md:h-18 rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
-                <IconCode size={32} className="text-accent" />
+            <div className="flex flex-col items-center gap-2 p-3 md:p-5 lg:p-6 min-h-[100px] md:min-h-[120px] rounded-2xl border border-border/30 bg-bg-card text-center">
+              <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 bg-bg-elevated text-text-primary">
+                <IconCode size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rooms Done</p>
-                <p className="text-sm font-black text-text-primary">{totalRoomsDone}</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rooms Done</p>
+                <p className="text-xs md:text-sm font-black text-text-primary">{totalRoomsDone}</p>
               </div>
             </div>
           </div>
