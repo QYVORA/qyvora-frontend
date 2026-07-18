@@ -1323,5 +1323,173 @@
     "sending": "Sending...",
     "unreadCount": "{{count}} unread",
     "backToLogin": "Back to Login"
+  },
+  "landing2": {
+    "bootcamp": {
+      "heading1": "Hacker Protocol",
+      "heading2": "Bootcamp"
+    },
+    "howItWorks": {
+      "heading": "Learn. Practice. Prove.",
+      "steps": {
+        "learn": { "title": "Learn", "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation." },
+        "practice": { "title": "Practice", "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments." },
+        "prove": { "title": "Prove", "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency." }
+      }
+    },
+    "platform": "Platform",
+    "footer": "Footer"
+  },
+  "coursesPage": {
+    "hero": {
+      "badge": "Self-Paced Learning",
+      "title": "Courses",
+      "description": "Beginner-friendly courses that teach one cybersecurity skill at a time.",
+      "browseCta": "Browse Courses"
+    },
+    "searchPlaceholder": "Search courses...",
+    "sort": { "label": "Sort", "popular": "Popular", "lowestCp": "Lowest CP", "highestCp": "Highest CP", "duration": "Duration" },
+    "sortOptions": { "default": "Default", "popular": "Popular", "priceLow": "Price: Low to High", "priceHigh": "Price: High to Low", "duration": "Duration" },
+    "resultsCount_one": "{{count}} course",
+    "resultsCount_other": "{{count}} courses",
+    "empty": "No courses found matching your criteria.",
+    "clearFilters": "Clear filters",
+    "badge": { "top": "Top" },
+    "viewCta": "View",
+    "levels": { "advanced": "Advanced" }
+  },
+  "eventsPage": {
+    "hero": {
+      "badge": "Live Operations",
+      "title": "Events",
+      "description": "Join QYVORA live events — offensive security sessions, hacking challenges, and community meetups."
+    },
+    "empty": "No upcoming events.",
+    "badge": "Live Operations"
+  },
+  "servicesPage": {
+    "seo": { "title": "Services — QYVORA", "description": "Professional penetration testing services tailored for African organizations." },
+    "hero": {
+      "badge": "Offensive Security Assessments",
+      "title": "Test Your",
+      "titleHighlight": "Defenses",
+      "description": "Professional penetration testing services tailored for African organizations."
+    },
+    "packages": {
+      "heading": "Engagement",
+      "headingHighlight": "Packages",
+      "description": "Fixed-scope packages with optional add-ons. Every engagement includes a detailed report with actionable findings."
+    },
+    "custom": {
+      "title": "Need Something",
+      "titleHighlight": "Custom?",
+      "subtitle": "Bespoke Engagement",
+      "heading": "Custom Inquiry",
+      "price": "Let's Talk",
+      "description": "Not sure which package fits? We design custom engagement scopes for unique infrastructure, compliance requirements, and multi-team Red Team exercises.",
+      "features": { "redTeam": "Multi-Team Red Team Exercises", "compliance": "Compliance-Driven Assessments", "infrastructure": "Unique Infrastructure Scoping", "projectMgmt": "Dedicated Project Management" },
+      "cta": "Contact Our Team"
+    },
+    "basic": { "desc": "Essential penetration testing for startups and small teams." },
+    "standard": { "desc": "Comprehensive testing for growing organizations." },
+    "bootcamp": { "desc": "Custom security awareness training for your team." }
+  },
+  "leaderboardPage": {
+    "hero": {
+      "title": "Operator",
+      "titleHighlight": "Leaderboard",
+      "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned on the QYVORA Chain.",
+      "chainBadge": "CP verified on QYVORA Chain",
+      "operatorsStat": "Operators",
+      "totalCpStat": "Total CP",
+      "topCpStat": "Top CP"
+    },
+    "periods": { "all": "All Time", "week": "This Week", "month": "This Month" },
+    "table": { "rank": "#", "operator": "Operator", "rankLabel": "Rank", "cp": "CP", "streak": "Streak" },
+    "rooms": "rooms",
+    "loadError": "Failed to load leaderboard.",
+    "loadErrorNetwork": "Failed to load leaderboard. Check connection and try again.",
+    "empty": {
+      "title": "No operators ranked yet",
+      "description": "Complete bootcamp rooms to earn CP and appear on the leaderboard."
+    },
+    "footer": "CP balances verified on QYVORA Chain · {{count}} operators"
+  },
+  "quiterootPage": {
+    "hero": {
+      "title": "QUITE ROOT",
+      "description": "The intelligence and engineering collective behind QYVORA's offensive tooling, research, and operator-focused security experiments.",
+      "cta": "Explore Research"
+    },
+    "about": {
+      "eyebrow": "// WHO WE ARE",
+      "title": "Who is",
+      "accent": "QuiteRoot?",
+      "body": "QuiteRoot is the offensive research and engineering arm of QYVORA. We build the tools, intelligence, and infrastructure that power Africa's offensive security ecosystem."
+    },
+    "mission": {
+      "eyebrow": "// MISSION",
+      "title": "Engineering Africa's Offensive",
+      "accent": "Security Future",
+      "body": "We believe offensive security should be built in Africa, by African defenders, for African organizations. Every tool we create is designed to strengthen the continent's cyber resilience."
+    },
+    "capabilities": {
+      "research": { "title": "Offensive Security Research", "desc": "Pioneering research into attack vectors, vulnerability discovery, and exploitation techniques." },
+      "toolDev": { "title": "Tool Development", "desc": "Building production-grade security tools for penetration testing and red team operations." },
+      "threatIntel": { "title": "Threat Intelligence", "desc": "Collecting, analyzing, and operationalizing threat intelligence for African contexts." },
+      "redTeam": { "title": "Red Team Automation", "desc": "Automating adversarial simulation to scale offensive operations." },
+      "detection": { "title": "Detection Engineering", "desc": "Crafting detection logic that identifies real attacks, not just noise." },
+      "infra": { "title": "Secure Infrastructure", "desc": "Designing and deploying hardened infrastructure for offensive operations." },
+      "ai": { "title": "AI-assisted Security", "desc": "Leveraging machine learning and AI to enhance offensive capabilities." },
+      "education": { "title": "Cyber Education", "desc": "Developing curriculum, training materials, and hands-on labs for African learners." }
+    },
+    "timeline": {
+      "researchIdea": "Research Idea",
+      "researchIdeaDesc": "Frame the operational problem and define the research scope.",
+      "threatAnalysis": "Threat Analysis",
+      "threatAnalysisDesc": "Map adversary behavior and identify attack patterns.",
+      "prototype": "Prototype",
+      "prototypeDesc": "Build narrow tools that solve specific problems.",
+      "internalTesting": "Internal Testing",
+      "internalTestingDesc": "Stress the workflow against real-world scenarios.",
+      "production": "Production",
+      "productionDesc": "Harden modules, add documentation, and prepare for release.",
+      "released": "Released",
+      "releasedDesc": "Ship documentation, publish findings, and open-source where possible."
+    },
+    "principles": {
+      "title": "How QuiteRoot",
+      "accent": "Builds",
+      "researchFirst": "Research First",
+      "researchFirstDesc": "Every tool begins with understanding the problem.",
+      "precision": "Precision Engineering",
+      "precisionDesc": "Every feature serves a purpose.",
+      "openKnowledge": "Open Knowledge",
+      "openKnowledgeDesc": "Learning accelerates innovation.",
+      "opSec": "Operational Security",
+      "opSecDesc": "Security is built into every layer.",
+      "africanInnovation": "African Innovation",
+      "africanInnovationDesc": "Designed for African defenders.",
+      "continuousImprovement": "Continuous Improvement",
+      "continuousImprovementDesc": "Never finished."
+    }
+  },
+  "contactPage": {
+    "hero": { "cta": "Get in Touch" },
+    "emailFormHint": "Use the form below to send us a secure transmission."
+  },
+  "promo": {
+    "bootcamp": {
+      "title": "Hacker Protocol",
+      "subtitle": "Next-Gen Offensive Security Training",
+      "description": "Master advanced penetration testing with hands-on bootcamps.",
+      "cta": "Explore Bootcamp"
+    },
+    "services": {
+      "title": "Web Pentesting",
+      "subtitle": "Professional Security Audits",
+      "description": "Protect your apps with our comprehensive penetration testing services.",
+      "cta": "Request Assessment"
+    }
   }
 }

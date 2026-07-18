@@ -46,7 +46,7 @@ const LandingBootcampSection: React.FC = () => {
               <IconShield size={12} /> {t('landing.bootcamp.badge')}
             </span>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
-              Hacker Protocol <span className="text-bg">Bootcamp</span>
+              {t('landing2.bootcamp.heading1')} <span className="text-bg">{t('landing2.bootcamp.heading2')}</span>
             </h2>
             <p className="text-xs md:text-sm text-bg/70 leading-relaxed max-w-xl">
               {t('landing.bootcamp.description')}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Calendar, Video, Users, Loader2 } from 'lucide-react';
 import { IconArrowRight, IconClock } from '@/shared/components/icons';
 import { motion } from 'motion/react';
@@ -13,6 +14,7 @@ import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { AdinkraBackground } from '@/shared/components/backgrounds';
 
 const EventsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const events = getActiveEvents();
   const navigate = useNavigate();
@@ -31,23 +33,23 @@ const EventsPage: React.FC = () => {
   return (
     <div className="relative min-h-screen w-full bg-bg">
       <SEO
-        title="Events"
-        description="Join QYVORA live events - offensive security sessions, hacking challenges, and community meetups."
+        title={t('eventsPage.hero.title')}
+        description={t('eventsPage.hero.description')}
       />
 
       {/* ══ HERO ══ */}
       <PublicHeroSection mask="right" showGlobe>
         <div className="flex items-center gap-3 text-bg/70 text-xs font-black uppercase tracking-[0.3em]">
           <Calendar className="w-4 h-4" />
-          Live Operations
+          {t('eventsPage.hero.badge')}
         </div>
         <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-            Events
+            {t('eventsPage.hero.title')}
           </span>
         </h1>
         <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
-          Join QYVORA live events — offensive security sessions, hacking challenges, and community meetups.
+          {t('eventsPage.hero.description')}
         </p>
       </PublicHeroSection>
 
@@ -57,7 +59,7 @@ const EventsPage: React.FC = () => {
         <div className="relative z-10 mx-auto max-w-[1600px] px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           {events.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-text-muted">No upcoming events.</p>
+              <p className="text-text-muted">{t('eventsPage.empty')}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-16 md:gap-24">
@@ -66,7 +68,7 @@ const EventsPage: React.FC = () => {
                   <div className="lg:w-[28%] lg:sticky lg:top-32 shrink-0">
                     <ScrollReveal direction="left" amount={0.1}>
                       <span className="inline-flex items-center gap-2 px-3 py-1.5 border border-accent/30 bg-accent/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-accent mb-4">
-                        <Users className="h-3.5 w-3.5" /> Live Operations
+                        <Users className="h-3.5 w-3.5" /> {t('eventsPage.badge')}
                       </span>
                       <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4 mt-4">
                         {event.title}
@@ -99,7 +101,7 @@ const EventsPage: React.FC = () => {
                           ) : (
                             <IconArrowRight className="h-4 w-4" />
                           )}
-                          Join Event
+                          {t('button.joinEvent')}
                         </button>
                       </div>
                     </ScrollReveal>
