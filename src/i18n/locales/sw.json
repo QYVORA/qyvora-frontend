@@ -1436,5 +1436,508 @@
       "install": "Install",
       "dismiss": "Not now"
     }
+  },
+  "auth2": {
+    "forgot": {
+      "title": "Reset Password",
+      "description": "Enter your email and we will help you reset your password.",
+      "emailLabel": "Operator Email",
+      "submitting": "Submitting...",
+      "sendInstructions": "Send Reset Instructions",
+      "alreadyHaveToken": "Already have a reset token?",
+      "enterToken": "Enter token"
+    },
+    "reset": {
+      "title": "Set New Password",
+      "description": "Enter your reset token and choose a new password.",
+      "tokenLabel": "Reset Token",
+      "tokenPlaceholder": "Paste reset token here",
+      "minLength": "Min 8 characters",
+      "resetting": "Resetting...",
+      "resetPassword": "Reset Password"
+    },
+    "changePassword": {
+      "title": "Password Change Required",
+      "description": "Your account requires a password change before continuing.",
+      "tokenLabel": "Change Token",
+      "tokenPlaceholder": "Paste token from login response",
+      "minLength": "Min 8 characters",
+      "updating": "Updating...",
+      "setNewPassword": "Set New Password"
+    },
+    "verify": {
+      "title": "Verify Email",
+      "description": "Enter the verification token sent to {{email}}.",
+      "descriptionFallback": "Enter your email verification token.",
+      "tokenLabel": "Verification Token",
+      "tokenPlaceholder": "Paste verification token",
+      "verifying": "Verifying...",
+      "verifyEmail": "Verify Email",
+      "didNotGetToken": "Didn't get a token?",
+      "resendToken": "Resend token"
+    },
+    "registerDescription": "Create your account to start learning."
+  },
+  "admin": {
+    "tabs": {
+      "overview": "Overview",
+      "users": "Users",
+      "bootcamps": "Bootcamps",
+      "market": "Market",
+      "points": "Points",
+      "inbox": "Inbox",
+      "broadcast": "Broadcast",
+      "audit": "Audit",
+      "security": "Security"
+    },
+    "seoTitle": "Admin Dashboard",
+    "seoDesc": "QYVORA administrator control panel.",
+    "syncing": "Synchronizing encrypted data…",
+    "managingDescription": "Managing system {{section}}.",
+    "updateFailed": "Update failed",
+    "overview": {
+      "totalUsers": "Total Users",
+      "active24h": "Active 24h",
+      "newThisWeek": "New This Week",
+      "totalCpMinted": "Total CP Minted",
+      "bootcampEnrollment": "Bootcamp Enrollment",
+      "chainStatus": "Chain Status",
+      "reachable": "Reachable",
+      "unreachable": "Unreachable",
+      "recentSignups": "Recent Signups",
+      "noRecentSignups": "No recent signups"
+    },
+    "users": {
+      "user": "User",
+      "role": "Role",
+      "points": "Points",
+      "bootcampAccess": "Bootcamp Access",
+      "accessRestored": "Access restored",
+      "accessRevoked": "Access revoked",
+      "revoked": "Revoked",
+      "allowed": "Allowed",
+      "tokenAcknowledged": "User has acknowledged token",
+      "status": "Status",
+      "blocked": "Blocked",
+      "actions": "Actions",
+      "unblock": "Unblock",
+      "block": "Block",
+      "permanentlyDelete": "Permanently delete user",
+      "deleteUser": "Delete User",
+      "admins": "Admins",
+      "searchPlaceholder": "Search by name, handle, email…",
+      "empty": "No users found",
+      "authorizeTermination": "Authorize User Termination",
+      "deleteConfirm": "Are you sure you want to permanently delete this user? This action cannot be undone.",
+      "terminate": "Terminate",
+      "abort": "Abort",
+      "unblocked": "User unblocked",
+      "blockedToast": "User blocked",
+      "blockFailed": "Block action failed",
+      "deletedToast": "User deleted",
+      "deleteFailed": "Delete failed"
+    },
+    "inbox": {
+      "loadFailed": "Failed to load inbox",
+      "updateFailed": "Failed to update",
+      "deleted": "Deleted",
+      "deleteFailed": "Failed to delete",
+      "filterAll": "All",
+      "filterContact": "Contact",
+      "filterService": "Service",
+      "searchPlaceholder": "Search by name or email...",
+      "itemsCount": "{{count}} items",
+      "empty": "No messages yet",
+      "contactMessage": "Contact Message",
+      "serviceInquiry": "Service Inquiry",
+      "business": "Business",
+      "phone": "Phone",
+      "website": "Website",
+      "packageType": "Package / Service Type",
+      "noMessage": "No message",
+      "updateStatus": "Update Status:",
+      "deleteMessage": "Delete Message",
+      "deleteConfirmDescription": "Are you sure you want to delete this message? This action cannot be undone."
+    },
+    "broadcast": {
+      "newAnnouncement": "New Announcement",
+      "description": "Send a broadcast notification to platform users",
+      "title": "Title",
+      "titlePlaceholder": "e.g., Platform Maintenance Tomorrow",
+      "messagePlaceholder": "Write your announcement message...",
+      "targetAudience": "Target Audience",
+      "allUsers": "All Users",
+      "bootcampEnrolled": "Bootcamp Enrolled",
+      "byRole": "By Role",
+      "selectRole": "Select role...",
+      "roleStudent": "Student",
+      "roleAdmin": "Admin",
+      "preview": "Preview",
+      "sendAnnouncement": "Send Announcement",
+      "confirmBroadcast": "Confirm Broadcast",
+      "sending": "Sending..."
+    },
+    "security": {
+      "events24h": "Events 24h",
+      "uniqueIps24h": "Unique IPs 24h",
+      "authFailures24h": "Auth Failures 24h",
+      "empty": "No security events"
+    },
+    "audit": {
+      "allActions": "All Actions",
+      "filter": "Filter",
+      "entriesCount": "{{count}} entries",
+      "empty": "No audit log entries"
+    },
+    "market": {
+      "initializeNewAsset": "Initialize New Asset",
+      "abortProtocol": "✕ Abort Protocol",
+      "assetTitle": "Asset Title *",
+      "assetDescription": "Asset Intelligence (Description)",
+      "cpValuation": "CP Valuation",
+      "sequenceOrder": "Sequence Order",
+      "classification": "Classification (Type)",
+      "deploymentActive": "Deployment Active",
+      "publicDomain": "Public Domain (Free)",
+      "coverImage": "Visual Identification (Cover Image)",
+      "productPdf": "Data Core (Product PDF) *",
+      "processing": "Processing...",
+      "authorizeUpdate": "Authorize Update",
+      "initializeAsset": "Initialize Asset",
+      "purge": "Purge",
+      "offline": "Offline",
+      "modify": "Modify",
+      "terminate": "Terminate",
+      "tableHeaders": {
+        "asset": "Asset",
+        "title": "Title",
+        "valuation": "Valuation",
+        "classification": "Classification",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "pdfRequired": "Product PDF is required for new products.",
+      "productUpdated": "Product updated",
+      "productCreated": "Product created",
+      "deleteProduct": "Delete Product",
+      "deleteProductConfirm": "Are you sure you want to delete this product? This action cannot be undone."
+    },
+    "bootcamps": {
+      "loadingPanel": "Loading control panel…",
+      "enrolledStudents": "Enrolled students",
+      "activeStudents": "Active students",
+      "engagedCurrentPhase": "Engaged in current phase",
+      "bootcampLive": "Bootcamp live",
+      "paused": "Paused",
+      "liveToggleDescription": "When off, learners cannot open new phases.",
+      "pausedToast": "Bootcamp paused",
+      "startedToast": "Bootcamp started!",
+      "phaseControl": "Phase control",
+      "phaseControlDescription": "{{unlocked}} of {{total}} phases unlocked · unlock adds all rooms in that phase",
+      "roomsInPhase": "{{count}} rooms in this phase",
+      "unlockNextPhase": "Unlock next phase",
+      "allPhasesUnlocked": "All phases are unlocked",
+      "allPhases": "All phases",
+      "roomsCount": "{{count}} rooms"
+    }
+  },
+  "news": {
+    "readIntelligence": "Read intelligence",
+    "fetchError": "Failed to fetch threat intelligence feed. Check connection and try again.",
+    "heroDescription": "African-focused cybersecurity threat intelligence and digital safety alerts.",
+    "updating": "Updating",
+    "refreshFeed": "Refresh Feed",
+    "feedError": "Feed Error",
+    "latestIntel": "Latest Intel",
+    "empty": "No intelligence feeds available",
+    "emptyDescription": "New cyber threat data will appear here as it's published."
+  },
+  "contact2": {
+    "messageSent": "Message Sent!",
+    "thankYou": "Thank you for reaching out. We'll get back to you within 24-48 hours.",
+    "sendAnotherMessage": "Send Another Message",
+    "category": "Category",
+    "student": "Student",
+    "business": "Business",
+    "yourName": "Your Name",
+    "yourEmail": "Your Email",
+    "sendingMessage": "Sending Message...",
+    "sendMessage": "Send Message"
+  },
+  "services2": {
+    "inquiryFor": "Inquiry for {{tier}}",
+    "requestReceived": "Request Received",
+    "thankYou": "Thank you for your interest. A security consultant will contact you within 24-48 hours.",
+    "modalDescription": "Describe your security needs and we'll prepare a tailored assessment scope.",
+    "emailAddress": "Email Address",
+    "businessName": "Business Name",
+    "businessNamePlaceholder": "QYVORA Africa",
+    "phoneNumber": "Phone Number",
+    "websiteUrl": "Website URL",
+    "optionalNotes": "Optional Notes / Message",
+    "notesPlaceholder": "Describe your project scope, timeline, and specific security concerns...",
+    "sendFailed": "Failed to send request. Please try again or email us directly.",
+    "transmitting": "Transmitting...",
+    "submitRequest": "Submit Request"
+  },
+  "common2": {
+    "unknown": "Unknown",
+    "na": "N/A",
+    "date": "Date",
+    "processing": "Processing...",
+    "sending": "Sending...",
+    "unreadCount": "{{count}} unread",
+    "backToLogin": "Back to Login"
+  },
+  "landing2": {
+    "seo": {
+      "title": "QYVORA — Africa's Offensive Security Platform",
+      "description": "Training, labs, and enterprise penetration testing. Building a strong cybersecurity ecosystem in Africa."
+    },
+    "bootcamp": {
+      "heading1": "Hacker Protocol",
+      "heading2": "Bootcamp"
+    },
+    "howItWorks": {
+      "heading": "Learn. Practice. Prove.",
+      "steps": {
+        "learn": {
+          "title": "Learn",
+          "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation."
+        },
+        "practice": {
+          "title": "Practice",
+          "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments."
+        },
+        "prove": {
+          "title": "Prove",
+          "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency."
+        }
+      }
+    },
+    "platform": "Platform",
+    "footer": "Footer"
+  },
+  "coursesPage": {
+    "hero": {
+      "badge": "Self-Paced Learning",
+      "title": "Courses",
+      "description": "Beginner-friendly courses that teach one cybersecurity skill at a time.",
+      "browseCta": "Browse Courses"
+    },
+    "searchPlaceholder": "Search courses...",
+    "sort": {
+      "label": "Sort",
+      "popular": "Popular",
+      "lowestCp": "Lowest CP",
+      "highestCp": "Highest CP",
+      "duration": "Duration"
+    },
+    "sortOptions": {
+      "default": "Default",
+      "popular": "Popular",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low",
+      "duration": "Duration"
+    },
+    "resultsCount_one": "{{count}} course",
+    "resultsCount_other": "{{count}} courses",
+    "empty": "No courses found matching your criteria.",
+    "clearFilters": "Clear filters",
+    "badge": {
+      "top": "Top"
+    },
+    "viewCta": "View",
+    "levels": {
+      "advanced": "Advanced"
+    }
+  },
+  "eventsPage": {
+    "hero": {
+      "badge": "Live Operations",
+      "title": "Events",
+      "description": "Join QYVORA live events — offensive security sessions, hacking challenges, and community meetups."
+    },
+    "empty": "No upcoming events.",
+    "badge": "Live Operations"
+  },
+  "servicesPage": {
+    "seo": {
+      "title": "Services — QYVORA",
+      "description": "Professional penetration testing services tailored for African organizations."
+    },
+    "hero": {
+      "badge": "Offensive Security Assessments",
+      "title": "Test Your",
+      "titleHighlight": "Defenses",
+      "description": "Professional penetration testing services tailored for African organizations."
+    },
+    "packages": {
+      "heading": "Engagement",
+      "headingHighlight": "Packages",
+      "description": "Fixed-scope packages with optional add-ons. Every engagement includes a detailed report with actionable findings."
+    },
+    "custom": {
+      "title": "Need Something",
+      "titleHighlight": "Custom?",
+      "subtitle": "Bespoke Engagement",
+      "heading": "Custom Inquiry",
+      "price": "Let's Talk",
+      "description": "Not sure which package fits? We design custom engagement scopes for unique infrastructure, compliance requirements, and multi-team Red Team exercises.",
+      "features": {
+        "redTeam": "Multi-Team Red Team Exercises",
+        "compliance": "Compliance-Driven Assessments",
+        "infrastructure": "Unique Infrastructure Scoping",
+        "projectMgmt": "Dedicated Project Management"
+      },
+      "cta": "Contact Our Team"
+    },
+    "basic": {
+      "desc": "Essential penetration testing for startups and small teams."
+    },
+    "standard": {
+      "desc": "Comprehensive testing for growing organizations."
+    },
+    "bootcamp": {
+      "desc": "Custom security awareness training for your team."
+    }
+  },
+  "leaderboardPage": {
+    "seo": {
+      "title": "Leaderboard — QYVORA",
+      "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned."
+    },
+    "hero": {
+      "title": "Operator",
+      "titleHighlight": "Leaderboard",
+      "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned on the QYVORA Chain.",
+      "chainBadge": "CP verified on QYVORA Chain",
+      "operatorsStat": "Operators",
+      "totalCpStat": "Total CP",
+      "topCpStat": "Top CP"
+    },
+    "periods": {
+      "all": "All Time",
+      "week": "This Week",
+      "month": "This Month"
+    },
+    "table": {
+      "rank": "#",
+      "operator": "Operator",
+      "rankLabel": "Rank",
+      "cp": "CP",
+      "streak": "Streak"
+    },
+    "rooms": "rooms",
+    "loadError": "Failed to load leaderboard.",
+    "loadErrorNetwork": "Failed to load leaderboard. Check connection and try again.",
+    "empty": {
+      "title": "No operators ranked yet",
+      "description": "Complete bootcamp rooms to earn CP and appear on the leaderboard."
+    },
+    "footer": "CP balances verified on QYVORA Chain · {{count}} operators"
+  },
+  "quiterootPage": {
+    "hero": {
+      "title": "QUITE ROOT",
+      "description": "The intelligence and engineering collective behind QYVORA's offensive tooling, research, and operator-focused security experiments.",
+      "cta": "Explore Research"
+    },
+    "about": {
+      "eyebrow": "// WHO WE ARE",
+      "title": "Who is",
+      "accent": "QuiteRoot?",
+      "body": "QuiteRoot is the offensive research and engineering arm of QYVORA. We build the tools, intelligence, and infrastructure that power Africa's offensive security ecosystem."
+    },
+    "mission": {
+      "eyebrow": "// MISSION",
+      "title": "Engineering Africa's Offensive",
+      "accent": "Security Future",
+      "body": "We believe offensive security should be built in Africa, by African defenders, for African organizations. Every tool we create is designed to strengthen the continent's cyber resilience."
+    },
+    "capabilities": {
+      "research": {
+        "title": "Offensive Security Research",
+        "desc": "Pioneering research into attack vectors, vulnerability discovery, and exploitation techniques."
+      },
+      "toolDev": {
+        "title": "Tool Development",
+        "desc": "Building production-grade security tools for penetration testing and red team operations."
+      },
+      "threatIntel": {
+        "title": "Threat Intelligence",
+        "desc": "Collecting, analyzing, and operationalizing threat intelligence for African contexts."
+      },
+      "redTeam": {
+        "title": "Red Team Automation",
+        "desc": "Automating adversarial simulation to scale offensive operations."
+      },
+      "detection": {
+        "title": "Detection Engineering",
+        "desc": "Crafting detection logic that identifies real attacks, not just noise."
+      },
+      "infra": {
+        "title": "Secure Infrastructure",
+        "desc": "Designing and deploying hardened infrastructure for offensive operations."
+      },
+      "ai": {
+        "title": "AI-assisted Security",
+        "desc": "Leveraging machine learning and AI to enhance offensive capabilities."
+      },
+      "education": {
+        "title": "Cyber Education",
+        "desc": "Developing curriculum, training materials, and hands-on labs for African learners."
+      }
+    },
+    "timeline": {
+      "researchIdea": "Research Idea",
+      "researchIdeaDesc": "Frame the operational problem and define the research scope.",
+      "threatAnalysis": "Threat Analysis",
+      "threatAnalysisDesc": "Map adversary behavior and identify attack patterns.",
+      "prototype": "Prototype",
+      "prototypeDesc": "Build narrow tools that solve specific problems.",
+      "internalTesting": "Internal Testing",
+      "internalTestingDesc": "Stress the workflow against real-world scenarios.",
+      "production": "Production",
+      "productionDesc": "Harden modules, add documentation, and prepare for release.",
+      "released": "Released",
+      "releasedDesc": "Ship documentation, publish findings, and open-source where possible."
+    },
+    "principles": {
+      "title": "How QuiteRoot",
+      "accent": "Builds",
+      "researchFirst": "Research First",
+      "researchFirstDesc": "Every tool begins with understanding the problem.",
+      "precision": "Precision Engineering",
+      "precisionDesc": "Every feature serves a purpose.",
+      "openKnowledge": "Open Knowledge",
+      "openKnowledgeDesc": "Learning accelerates innovation.",
+      "opSec": "Operational Security",
+      "opSecDesc": "Security is built into every layer.",
+      "africanInnovation": "African Innovation",
+      "africanInnovationDesc": "Designed for African defenders.",
+      "continuousImprovement": "Continuous Improvement",
+      "continuousImprovementDesc": "Never finished."
+    }
+  },
+  "contactPage": {
+    "hero": {
+      "cta": "Get in Touch"
+    },
+    "emailFormHint": "Use the form below to send us a secure transmission."
+  },
+  "promo": {
+    "bootcamp": {
+      "title": "Hacker Protocol",
+      "subtitle": "Next-Gen Offensive Security Training",
+      "description": "Master advanced penetration testing with hands-on bootcamps.",
+      "cta": "Explore Bootcamp"
+    },
+    "services": {
+      "title": "Web Pentesting",
+      "subtitle": "Professional Security Audits",
+      "description": "Protect your apps with our comprehensive penetration testing services.",
+      "cta": "Request Assessment"
+    }
   }
 }

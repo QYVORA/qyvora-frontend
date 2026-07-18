@@ -88,12 +88,12 @@ const LandingBootcampSection: React.FC = () => {
                                {t('landing.bootcamp.roomCount', { count: roomCount })}
                              </span>
                           </div>
-                          <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-text-primary tracking-tighter leading-none mb-2">
-                            {phase.name}
-                          </h3>
-                          <p className="text-[11px] sm:text-xs md:text-sm text-text-secondary leading-relaxed mb-2 sm:mb-4 line-clamp-3">
-                            {phase.desc}
-                          </p>
+                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-text-primary tracking-tighter leading-none mb-2">
+                             {t(`landing.bootcamp.phases.${phase.id}.name`)}
+                           </h3>
+                           <p className="text-[11px] sm:text-xs md:text-sm text-text-secondary leading-relaxed mb-2 sm:mb-4 line-clamp-3">
+                             {t(`landing.bootcamp.phases.${phase.id}.desc`)}
+                           </p>
                           <div className="flex items-center gap-2">
                              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-bg text-[9px] font-black uppercase tracking-widest text-accent transition-all group-hover:gap-2.5">
                                {t('landing.bootcamp.startPhase')} {phase.id}
@@ -114,10 +114,10 @@ const LandingBootcampSection: React.FC = () => {
                                <span className="text-[7px] font-black text-bg/60 uppercase tracking-widest">{t('landing.bootcamp.roomCount', { count: roomCount })}</span>
                              </div>
                             <h3 className="text-xs sm:text-sm font-black text-text-primary mb-0.5 tracking-tight group-hover:text-accent transition-colors leading-snug">
-                              {phase.name}
+                              {t(`landing.bootcamp.phases.${phase.id}.name`)}
                             </h3>
                             <p className="text-[10px] text-text-muted leading-relaxed line-clamp-2">
-                              {phase.desc}
+                              {t(`landing.bootcamp.phases.${phase.id}.desc`)}
                             </p>
                           </div>
                         </div>

@@ -38,7 +38,7 @@ const LandingQuiteRootSection: React.FC = () => {
 
           <div className="flex flex-col items-start w-full gap-7">
             <SimpleHeading
-              text="Quite Root"
+              text={t('landing.quiteroot.title')}
               align="left"
               accentWords={1}
               accentPlacement="end"
@@ -83,7 +83,7 @@ const LandingQuiteRootSection: React.FC = () => {
 
           <div className="max-w-2xl">
             <SimpleHeading
-              text="Quite Root"
+              text={t('landing.quiteroot.title')}
               align="left"
               accentWords={1}
               accentPlacement="end"

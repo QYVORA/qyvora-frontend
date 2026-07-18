@@ -451,7 +451,29 @@
       "startPhase": "Start Phase",
       "phaseLabel": "Phase",
       "roomCount": "{{count}} rooms",
-      "viewCurriculum": "View Full Curriculum"
+      "viewCurriculum": "View Full Curriculum",
+      "phases": {
+        "01": {
+          "name": "Hacker Mindset",
+          "desc": "Offensive security is a proactive mindset. Train to find weaknesses before adversaries do by understanding the legal boundaries, scopes, and coordinator rules."
+        },
+        "02": {
+          "name": "Linux Foundations",
+          "desc": "Master navigation, user privilege escalation, file permissions, and directory structures. Transition from a GUI observer to a terminal-proficient operator."
+        },
+        "03": {
+          "name": "Networking",
+          "desc": "Establish total visibility over the network stack. Audit TCP/IP, OSI layers, routing protocols, and intercept packets at the raw bytecode level."
+        },
+        "04": {
+          "name": "Web & Backend Systems",
+          "desc": "Analyze web server frameworks, dissect HTTP protocol traffic, manipulate REST APIs, and compromise backend database persistence layers."
+        },
+        "05": {
+          "name": "Social Engineering",
+          "desc": "Understand the human factor in the defensive boundary. Study pretexting, psychological vectors, coordinates of trust, and human spoofing."
+        }
+      }
     },
     "curriculum": {
       "heading": "What You'll Learn",
@@ -466,7 +488,13 @@
       "description": "Join live offensive security sessions and compete in real-time challenges.",
       "joinEvent": "Join Event",
       "viewAll": "View All",
-      "viewAllEvents": "View All Events"
+      "viewAllEvents": "View All Events",
+      "list": {
+        "poundTheCalabash": {
+          "title": "Pound the Calabash",
+          "desc": "A 2-hour live ethical hacking session. Join us for an intense, hands-on offensive security challenge where you will attack a live target in real time."
+        }
+      }
     },
     "finalCta": {
       "headingReturning": "Continue Training",
@@ -493,6 +521,7 @@
       "anonFallback": "Anon"
     },
     "quiteroot": {
+      "title": "Quite Root",
       "description": "The research and engineering collective behind QYVORA's offensive tooling, intelligence, and operator-focused security experiments.",
       "explore": "Explore QuiteRoot",
       "research": "Research"
@@ -545,7 +574,21 @@
     },
     "team": {
       "heading": "Built by Hackers",
-      "description": "Two operators, one mission — building Africa's offensive security platform"
+      "description": "Two operators, one mission — building Africa's offensive security platform",
+      "members": {
+        "wsuits6": {
+          "role": "CEO",
+          "bio": "I dont follow paths I burn them then I write my own in code ."
+        },
+        "sopt4": {
+          "role": "COO",
+          "bio": "I don't break systems, i find the flaws so others don't"
+        },
+        "mohammedRafiq": {
+          "role": "CFO",
+          "bio": "I don\u2019t protect assets\u2014I grow them wisely."
+        }
+      }
     }
   },
   "student": {
