@@ -35,6 +35,8 @@ const TeamCarouselSection: React.FC = () => {
                       <img
                         src={member.image}
                         alt={member.name}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />

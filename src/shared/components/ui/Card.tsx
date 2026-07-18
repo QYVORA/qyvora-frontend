@@ -118,6 +118,8 @@ export const CardMedia: React.FC<CardMediaProps> = ({
         <img
           src={image}
           alt={imageAlt}
+          width={1200}
+          height={675}
           loading="lazy"
           className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${
             muted ? 'grayscale brightness-50' : ''

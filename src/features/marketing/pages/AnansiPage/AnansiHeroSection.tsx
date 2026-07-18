@@ -12,6 +12,8 @@ const AnansiHeroSection: React.FC = () => {
           <img
             src={anansiLogo}
             alt="Anansi CLI"
+            width={800}
+            height={800}
             className="w-full h-auto object-contain"
             loading="lazy"
           />

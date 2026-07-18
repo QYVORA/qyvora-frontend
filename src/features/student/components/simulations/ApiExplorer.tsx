@@ -77,8 +77,8 @@ export function ApiExplorer({ endpoints }: ApiExplorerProps) {
 
               {selected.body && (
                 <div className="mt-3">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1">Request Body</p>
-                  <textarea value={customBody || selected.body} onChange={e => setCustomBody(e.target.value)}
+                  <label htmlFor="api-request-body" className="text-[9px] font-black uppercase tracking-widest text-text-muted mb-1 block">Request Body</label>
+                  <textarea id="api-request-body" value={customBody || selected.body} onChange={e => setCustomBody(e.target.value)}
                     className="w-full h-20 bg-black/40 border border-border/30 rounded p-2 text-[10px] font-mono text-text-primary outline-none resize-none" />
                 </div>
               )}

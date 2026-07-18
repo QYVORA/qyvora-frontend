@@ -149,6 +149,8 @@ const NewsFeedPage = () => {
                             <img
                               src={current.imageUrl}
                               alt=""
+                              width={1200}
+                              height={675}
                               className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                               loading="lazy"
                             />

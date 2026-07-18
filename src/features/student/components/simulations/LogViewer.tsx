@@ -47,8 +47,8 @@ export function LogViewer({ sources }: LogViewerProps) {
         </div>
         <div className="ml-auto flex items-center gap-2">
           <div className="flex items-center gap-1 px-2 py-1 rounded bg-bg border border-border/30">
-            <Search size={10} className="text-text-muted" />
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+            <label htmlFor="log-search" className="contents"><Search size={10} className="text-text-muted" /></label>
+            <input id="log-search" type="text" value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search logs..."
               className="bg-transparent text-[10px] font-mono text-text-primary outline-none w-28" />
           </div>

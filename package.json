@@ -56,6 +56,7 @@
     "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
+    "vite-prerender-plugin": "^0.5.13",
     "vitest": "^4.1.10"
   }
 }

@@ -127,6 +127,8 @@ const BlogPostPage: React.FC = () => {
           <img
             src={post.image}
             alt={post.title}
+            width={1200}
+            height={630}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/5 to-transparent" />
@@ -174,6 +176,8 @@ const BlogPostPage: React.FC = () => {
                     <img
                       src={other.image}
                       alt={other.title}
+                      width={1200}
+                      height={675}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />

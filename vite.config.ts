@@ -3,9 +3,41 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import webpConversion from './vite-plugin-webp-conversion';
+import { vitePrerenderPlugin } from 'vite-prerender-plugin';
 
 export default defineConfig(() => ({
-  plugins: [react(), tailwindcss(), webpConversion()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    webpConversion(),
+    vitePrerenderPlugin({
+      renderTarget: '#root',
+      additionalPrerenderRoutes: [
+        '/',
+        '/hpb',
+        '/services',
+        '/blogs',
+        '/courses',
+        '/zero-day-market',
+        '/quiteroot',
+        '/anansi',
+        '/team',
+        '/events',
+        '/leaderboard',
+        '/leaderboard/all',
+        '/news',
+        '/terms',
+        '/blogs/hpb-2026-cohort-case-study',
+        '/blogs/hacker-protocol-book',
+        '/blogs/anansi-cli',
+        '/blogs/africa-cybersecurity-ecosystem',
+        '/blogs/attackers-discover-companies',
+        '/blogs/africa-needs-cybersecurity-professionals',
+        '/blogs/mapping-attack-surfaces',
+        '/blogs/future-cybersecurity-africa',
+      ],
+    }),
+  ],
 
   resolve: {
     alias: {

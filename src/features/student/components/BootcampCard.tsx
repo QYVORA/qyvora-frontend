@@ -26,6 +26,8 @@ const BootcampCard: React.FC<BootcampCardProps> = ({ image, level, title, descri
       <img
         src={image}
         alt={title}
+        width={1200}
+        height={675}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         referrerPolicy="no-referrer"
         loading="lazy"

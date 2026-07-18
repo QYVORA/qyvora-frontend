@@ -100,6 +100,8 @@ const PromotionalSystem: React.FC = () => {
               <img
                 src={activePromo.image}
                 alt={activePromo.title}
+                width={192}
+                height={144}
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               
