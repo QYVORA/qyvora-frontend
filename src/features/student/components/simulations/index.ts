@@ -1,4 +1,4 @@
-export { SimulationProvider, useSimulation } from './SimulationContext';
+export { SimulationProvider, useSimulation, useDiscovery, useSimulationPanel, useNetworkProfile, useBrowserSim } from './SimulationContext';
 export { SimulationPanel } from './SimulationPanel';
 export { BrowserSimulation } from './BrowserSimulation';
 export { HttpInspector } from './HttpInspector';

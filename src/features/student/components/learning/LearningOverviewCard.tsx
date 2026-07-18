@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight } from '@/shared/components/icons';
-import { gsap } from '@/shared/utils/gsapSetup';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
+import { motion } from 'motion/react';
 
 interface LearningOverviewStat {
   label: string;
@@ -36,27 +35,6 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
   progress,
   breadcrumbs,
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-    const textEl = card.querySelector('.ov-text');
-    const titleEl = card.querySelector('.ov-title');
-    const descEl = card.querySelector('.ov-desc');
-    const statsEl = card.querySelector('.ov-stats');
-    const ctaEl = card.querySelector('.ov-cta');
-
-    const tl = gsap.timeline({ delay: 0.15 });
-    if (textEl) tl.fromTo(textEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
-    if (titleEl) tl.fromTo(titleEl, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
-    if (descEl) tl.fromTo(descEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, '-=0.25');
-    if (statsEl) tl.fromTo(statsEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, '-=0.2');
-    if (ctaEl) tl.fromTo(ctaEl, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.3)' }, '-=0.15');
-
-    return () => { tl.kill(); };
-  }, []);
-
   return (
     <div data-nav-invert>
       {breadcrumbs && breadcrumbs.length > 0 && (
@@ -76,13 +54,20 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
         </div>
       )}
 
-      <div
-        ref={cardRef}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
         className="relative rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden"
       >
         <GridBoxedBackground opacity={0.3} blur={0} mask="none" />
         <div className="relative z-10 w-full sm:w-auto min-w-0">
-          <div className="ov-text flex items-center gap-4 mb-3">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.15 }}
+            className="ov-text flex items-center gap-4 mb-3"
+          >
             {avatar ? (
               <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-bg/20 shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
                 {avatar}
@@ -92,16 +77,31 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
                 {icon}
               </div>
             )}
-          </div>
-          <h2 className="ov-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight break-words">
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="ov-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight break-words"
+          >
             {title}
-          </h2>
-          <p className="ov-desc text-sm text-bg/70 mt-1.5 max-w-xl">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.35 }}
+            className="ov-desc text-sm text-bg/70 mt-1.5 max-w-xl"
+          >
             {description}
-          </p>
+          </motion.p>
 
           {stats && stats.length > 0 && (
-            <div className="ov-stats flex flex-wrap items-center gap-4 mt-5">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.45 }}
+              className="ov-stats flex flex-wrap items-center gap-4 mt-5"
+            >
               {stats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <span className={`font-mono text-lg sm:text-xl font-black ${stat.accent ? 'text-bg' : 'text-bg/90'}`}>
@@ -112,12 +112,17 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
                   </span>
                 </div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
 
         {action && (
-          <div className="ov-cta shrink-0 w-full sm:w-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35, delay: 0.55, type: 'spring', stiffness: 200, damping: 20 }}
+            className="ov-cta shrink-0 w-full sm:w-auto relative z-10"
+          >
             {action.to ? (
               <Link
                 to={action.to}
@@ -137,9 +142,9 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
                 <IconArrowRight size={14} className="inline" />
               </button>
             )}
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {typeof progress === 'number' && (
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-accent-dim">

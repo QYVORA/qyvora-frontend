@@ -3,36 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import LabsPage from '../LabsPage';
 
-vi.mock('gsap', () => ({
-  default: {
-    registerPlugin: vi.fn(),
-    matchMedia: { add: vi.fn() },
-    timeline: vi.fn(() => ({
-      fromTo: vi.fn().mockReturnThis(),
-      to: vi.fn().mockReturnThis(),
-      kill: vi.fn(),
-      play: vi.fn(),
-    })),
-    fromTo: vi.fn(),
-    to: vi.fn(),
-  },
-  ScrollTrigger: { create: vi.fn(), register: vi.fn() },
-}));
-
-vi.mock('@/shared/utils/gsapSetup', () => ({
-  gsap: {
-    timeline: vi.fn(() => ({
-      fromTo: vi.fn().mockReturnThis(),
-      to: vi.fn().mockReturnThis(),
-      kill: vi.fn(),
-      play: vi.fn(),
-    })),
-    fromTo: vi.fn(),
-    to: vi.fn(),
-  },
-  ScrollTrigger: { create: vi.fn(), register: vi.fn() },
-}));
-
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
