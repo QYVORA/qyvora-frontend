@@ -1,5 +1,4 @@
 import { useEffect, useRef, RefObject } from 'react';
-import { gsap, ScrollTrigger } from '../utils/gsapSetup';
 
 /* ──────────── Reveal ──────────── */
 interface RevealOpts {
@@ -29,41 +28,37 @@ export function useGsapReveal<T extends HTMLElement>(
       opacity = 0,
       duration = 0.7,
       delay = 0,
-      ease = 'power3.out',
       stagger = 0,
-      scrollTrigger = true,
-      start = 'top 85%',
     } = opts;
 
-    const children = stagger ? Array.from(el.children) : [el];
-    const targets = children.length ? children : [el];
+    const targets = stagger ? Array.from(el.children) : [el];
+    const effectiveTargets = targets.length ? targets : [el];
 
-    const fromVars = { y, x, opacity: 0, duration: 0 };
-    const toVars: gsap.TweenVars = {
-      y: 0,
-      x: 0,
-      opacity: 1,
-      duration,
-      delay,
-      ease,
-      stagger: stagger || undefined,
-      overwrite: true,
-    };
+    effectiveTargets.forEach((target, i) => {
+      const t = target as HTMLElement;
+      t.style.opacity = String(opacity);
+      t.style.transform = `translate(${x}px, ${y}px)`;
+      t.style.transition = `none`;
+    });
 
-    if (scrollTrigger) {
-      toVars.scrollTrigger = {
-        trigger: el,
-        start,
-        once: true,
-      };
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          effectiveTargets.forEach((target, i) => {
+            const t = target as HTMLElement;
+            t.style.transition = `opacity ${duration}s cubic-bezier(0.22, 1, 0.36, 1) ${delay + (stagger ? i * stagger : 0)}s, transform ${duration}s cubic-bezier(0.22, 1, 0.36, 1) ${delay + (stagger ? i * stagger : 0)}s`;
+            t.style.opacity = '1';
+            t.style.transform = 'translate(0, 0)';
+          });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
 
-    const tween = gsap.fromTo(targets, fromVars, toVars);
+    observer.observe(el);
 
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return ref;
@@ -87,27 +82,32 @@ export function useGsapCounter<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
-    const { duration = 1.5, ease = 'power2.out', prefix = '', suffix = '' } = opts;
+    const { duration = 1.5, prefix = '', suffix = '' } = opts;
 
-    const counter = { value: 0 };
-    const tween = gsap.to(counter, {
-      value: endValue,
-      duration,
-      ease,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const start = performance.now();
+          const animate = (now: number) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / (duration * 1000), 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * endValue);
+            el.textContent = `${prefix}${current.toLocaleString()}${suffix}`;
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+          requestAnimationFrame(animate);
+          observer.disconnect();
+        }
       },
-      onUpdate() {
-        el.textContent = `${prefix}${Math.round(counter.value).toLocaleString()}${suffix}`;
-      },
-    });
+      { threshold: 0.1 },
+    );
 
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    observer.observe(el);
+
+    return () => observer.disconnect();
   }, [endValue]);
 
   return ref;
@@ -130,13 +130,12 @@ export function useGsapPathDraw<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
-    const { duration = 1, delay = 0, ease = 'power2.inOut', stagger = 0.1 } = opts;
-    const tweens: gsap.core.Tween[] = [];
+    const { duration = 1, delay = 0, stagger = 0.1 } = opts;
 
-    // Stroke-based paths → dashoffset draw
     const strokeEls = el.querySelectorAll<SVGPathElement | SVGRectElement | SVGLineElement>(
       'path:not([fill]), path[fill="none"], rect:not([fill]), rect[fill="none"], line',
     );
+
     strokeEls.forEach((path) => {
       let length: number;
       if (path instanceof SVGLineElement) {
@@ -154,53 +153,54 @@ export function useGsapPathDraw<T extends HTMLElement>(
         length = (path as SVGPathElement).getTotalLength?.() || 0;
       }
       if (length > 0) {
-        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-        tweens.push(
-          gsap.to(path, {
-            strokeDashoffset: 0,
-            duration,
-            delay,
-            ease,
-            stagger,
-            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-          })
-        );
+        path.style.strokeDasharray = String(length);
+        path.style.strokeDashoffset = String(length);
       }
     });
 
-    // Filled circles → scale pop
     const filledDots = el.querySelectorAll<SVGCircleElement>('circle[fill="currentColor"], circle[fill="var(--color-accent)"]');
     filledDots.forEach((dot) => {
-      const r = parseFloat(dot.getAttribute('r') || '0');
-      if (r <= 3) {
-        tweens.push(
-          gsap.fromTo(dot, { scale: 0, transformOrigin: 'center center', opacity: 0 }, {
-            scale: 1, opacity: 1, duration: 0.35,
-            delay: delay + duration * 0.7, ease: 'back.out(2.5)',
-            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-          })
-        );
-      }
+      dot.style.opacity = '0';
+      dot.style.transform = 'scale(0)';
+      dot.style.transformOrigin = 'center center';
+      dot.style.transition = `transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay + duration * 0.7}s, opacity 0.35s ease ${delay + duration * 0.7}s`;
     });
 
-    // Text elements → fade + scale
     const textEls = el.querySelectorAll<SVGTextElement>('text');
     textEls.forEach((text) => {
-      tweens.push(
-        gsap.fromTo(text, { opacity: 0, scale: 0.5, transformOrigin: 'center center' }, {
-          opacity: 1, scale: 1, duration: 0.4,
-          delay: delay + duration * 0.6, ease: 'back.out(1.8)',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        })
-      );
+      text.style.opacity = '0';
+      text.style.transform = 'scale(0.5)';
+      text.style.transformOrigin = 'center center';
+      text.style.transition = `transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay + duration * 0.6}s, opacity 0.4s ease ${delay + duration * 0.6}s`;
     });
 
-    return () => {
-      tweens.forEach((t) => {
-        t.scrollTrigger?.kill();
-        t.kill();
-      });
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          strokeEls.forEach((path, i) => {
+            path.style.transition = `stroke-dashoffset ${duration}s cubic-bezier(0.4, 0, 0.2, 1) ${delay + i * stagger}s`;
+            path.style.strokeDashoffset = '0';
+          });
+
+          filledDots.forEach((dot) => {
+            dot.style.opacity = '1';
+            dot.style.transform = 'scale(1)';
+          });
+
+          textEls.forEach((text) => {
+            text.style.opacity = '1';
+            text.style.transform = 'scale(1)';
+          });
+
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
   }, []);
 
   return ref;
@@ -224,13 +224,17 @@ export function useGsapHover<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
-    const { scale = 1.02, y = -4, duration = 0.3, ease = 'power2.out', boxShadow } = opts;
+    const { scale = 1.02, y = -4, duration = 0.3, boxShadow } = opts;
+
+    el.style.transition = `transform ${duration}s cubic-bezier(0.22, 1, 0.36, 1), box-shadow ${duration}s cubic-bezier(0.22, 1, 0.36, 1)`;
 
     const enter = () => {
-      gsap.to(el, { scale, y, duration, ease, overwrite: true, ...(boxShadow ? { boxShadow } : {}) });
+      el.style.transform = `scale(${scale}) translateY(${y}px)`;
+      if (boxShadow) el.style.boxShadow = boxShadow;
     };
     const leave = () => {
-      gsap.to(el, { scale: 1, y: 0, duration, ease, overwrite: true, boxShadow: 'none' });
+      el.style.transform = 'scale(1) translateY(0)';
+      el.style.boxShadow = 'none';
     };
 
     el.addEventListener('mouseenter', enter);

@@ -1,38 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { gsap } from '@/shared/utils/gsapSetup';
+import React from 'react';
 
 interface AdinkraBackgroundProps {
-  /**
-   * Overall opacity of the Adinkra symbols layer (0-1)
-   * @default 0.18
-   */
   opacity?: number;
-
-  /**
-   * Whether to include the ambient gradient blobs
-   * @default true
-   */
   includeGradients?: boolean;
-
-  /**
-   * Whether to include the dot grid pattern
-   * @default true
-   */
   includeDotGrid?: boolean;
-
-  /**
-   * Additional CSS classes for the container
-   */
   className?: string;
 }
-
-/**
- * AdinkraBackground Component
- */
-
-/* ─────────────────────────────────────────────
-   SYMBOL COMPONENTS (100×100 viewBox each)
-───────────────────────────────────────────── */
 
 const GyeNyame: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -106,22 +79,25 @@ interface Placement {
   style: React.CSSProperties;
   symOpacity: number;
   label: string;
+  speed: number;
+  range: number;
+  rotation: number;
 }
 
 const PLACEMENTS: Placement[] = [
-  { Symbol: GyeNyame, style: { top: '6%', left: '5%', width: 140, height: 140, transform: 'rotate(-6deg)' }, symOpacity: 0.70, label: 'gye-nyame-tl' },
-  { Symbol: Adinkrahene, style: { bottom: '7%', right: '5%', width: 150, height: 150 }, symOpacity: 0.60, label: 'adinkrahene-br' },
-  { Symbol: Dwennimmen, style: { top: '10%', right: '7%', width: 130, height: 130, transform: 'rotate(10deg)' }, symOpacity: 0.65, label: 'dwennimmen-tr' },
-  { Symbol: Aya, style: { bottom: '6%', left: '8%', width: 120, height: 120, transform: 'rotate(5deg)' }, symOpacity: 0.60, label: 'aya-bl' },
-  { Symbol: Sankofa, style: { top: '40%', left: '2%', width: 100, height: 100, transform: 'rotate(8deg)' }, symOpacity: 0.60, label: 'sankofa-ml' },
-  { Symbol: Nkyinkyim, style: { top: '22%', right: '20%', width: 96, height: 96, transform: 'rotate(-12deg)' }, symOpacity: 0.55, label: 'nkyinkyim-tm' },
-  { Symbol: Nsoromma, style: { bottom: '30%', left: '26%', width: 90, height: 90, transform: 'rotate(15deg)' }, symOpacity: 0.55, label: 'nsoromma-bml' },
-  { Symbol: GyeNyame, style: { top: '58%', right: '14%', width: 80, height: 80, transform: 'rotate(18deg)' }, symOpacity: 0.45, label: 'gye-nyame-sm1' },
-  { Symbol: Adinkrahene, style: { top: '16%', left: '38%', width: 72, height: 72 }, symOpacity: 0.42, label: 'adinkrahene-sm' },
-  { Symbol: Nsoromma, style: { top: '7%', right: '30%', width: 68, height: 68, transform: 'rotate(22deg)' }, symOpacity: 0.42, label: 'nsoromma-sm' },
-  { Symbol: Aya, style: { top: '74%', right: '28%', width: 72, height: 72, transform: 'rotate(-8deg)' }, symOpacity: 0.42, label: 'aya-sm' },
-  { Symbol: Dwennimmen, style: { bottom: '18%', left: '46%', width: 76, height: 76, transform: 'rotate(-15deg)' }, symOpacity: 0.42, label: 'dwennimmen-sm' },
-  { Symbol: Sankofa, style: { top: '84%', left: '56%', width: 68, height: 68, transform: 'rotate(12deg)' }, symOpacity: 0.40, label: 'sankofa-sm' },
+  { Symbol: GyeNyame, style: { top: '6%', left: '5%', width: 140, height: 140, transform: 'rotate(-6deg)' }, symOpacity: 0.70, label: 'gye-nyame-tl', speed: 3, range: 3, rotation: 2 },
+  { Symbol: Adinkrahene, style: { bottom: '7%', right: '5%', width: 150, height: 150 }, symOpacity: 0.60, label: 'adinkrahene-br', speed: 4.5, range: 5, rotation: 3 },
+  { Symbol: Dwennimmen, style: { top: '10%', right: '7%', width: 130, height: 130, transform: 'rotate(10deg)' }, symOpacity: 0.65, label: 'dwennimmen-tr', speed: 6, range: 3, rotation: 2 },
+  { Symbol: Aya, style: { bottom: '6%', left: '8%', width: 120, height: 120, transform: 'rotate(5deg)' }, symOpacity: 0.60, label: 'aya-bl', speed: 3, range: 5, rotation: 4 },
+  { Symbol: Sankofa, style: { top: '40%', left: '2%', width: 100, height: 100, transform: 'rotate(8deg)' }, symOpacity: 0.60, label: 'sankofa-ml', speed: 4.5, range: 3, rotation: 2 },
+  { Symbol: Nkyinkyim, style: { top: '22%', right: '20%', width: 96, height: 96, transform: 'rotate(-12deg)' }, symOpacity: 0.55, label: 'nkyinkyim-tm', speed: 6, range: 5, rotation: 3 },
+  { Symbol: Nsoromma, style: { bottom: '30%', left: '26%', width: 90, height: 90, transform: 'rotate(15deg)' }, symOpacity: 0.55, label: 'nsoromma-bml', speed: 3, range: 3, rotation: 4 },
+  { Symbol: GyeNyame, style: { top: '58%', right: '14%', width: 80, height: 80, transform: 'rotate(18deg)' }, symOpacity: 0.45, label: 'gye-nyame-sm1', speed: 4.5, range: 5, rotation: 2 },
+  { Symbol: Adinkrahene, style: { top: '16%', left: '38%', width: 72, height: 72 }, symOpacity: 0.42, label: 'adinkrahene-sm', speed: 6, range: 3, rotation: 3 },
+  { Symbol: Nsoromma, style: { top: '7%', right: '30%', width: 68, height: 68, transform: 'rotate(22deg)' }, symOpacity: 0.42, label: 'nsoromma-sm', speed: 3, range: 5, rotation: 2 },
+  { Symbol: Aya, style: { top: '74%', right: '28%', width: 72, height: 72, transform: 'rotate(-8deg)' }, symOpacity: 0.42, label: 'aya-sm', speed: 4.5, range: 3, rotation: 4 },
+  { Symbol: Dwennimmen, style: { bottom: '18%', left: '46%', width: 76, height: 76, transform: 'rotate(-15deg)' }, symOpacity: 0.42, label: 'dwennimmen-sm', speed: 6, range: 5, rotation: 3 },
+  { Symbol: Sankofa, style: { top: '84%', left: '56%', width: 68, height: 68, transform: 'rotate(12deg)' }, symOpacity: 0.40, label: 'sankofa-sm', speed: 3, range: 3, rotation: 2 },
 ];
 
 const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
@@ -131,34 +107,6 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
   className = '',
 }) => {
   const effectiveOpacity = opacity * (includeGradients ? 1.5 : 1);
-
-  const symbolsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = symbolsRef.current;
-    if (!container) return;
-    const symbols = container.querySelectorAll<HTMLElement>('.adinkra-symbol');
-    if (!symbols.length) return;
-
-    const tweens: gsap.core.Tween[] = [];
-    symbols.forEach((sym, i) => {
-      const speed = 3 + (i % 4) * 1.5;
-      const range = 3 + (i % 3) * 2;
-      tweens.push(
-        gsap.to(sym, {
-          y: range,
-          rotation: `+=${2 + (i % 3)}`,
-          duration: speed,
-          ease: 'sine.inOut',
-          yoyo: true,
-          repeat: -1,
-          delay: i * 0.3,
-        })
-      );
-    });
-
-    return () => tweens.forEach((t) => t.kill());
-  }, []);
 
   return (
     <div
@@ -174,22 +122,37 @@ const AdinkraBackground: React.FC<AdinkraBackgroundProps> = ({
         </>
       )}
 
-      {/* Adinkra symbols layer - Force text-accent to match light theme green */}
-      <div 
-        ref={symbolsRef}
-        className="absolute inset-0 text-accent transition-opacity duration-300" 
+      <div
+        className="absolute inset-0 text-accent transition-opacity duration-300"
         style={{ opacity: effectiveOpacity }}
       >
-        {PLACEMENTS.map(({ Symbol, style, symOpacity, label }) => (
+        {PLACEMENTS.map(({ Symbol, style, symOpacity, label, speed, range, rotation }) => (
           <div
             key={label}
             className="absolute adinkra-symbol"
-            style={{ ...style, opacity: symOpacity }}
+            style={{
+              ...style,
+              opacity: symOpacity,
+              animation: `adinkra-float ${speed}s ease-in-out infinite alternate`,
+              animationDelay: `${PLACEMENTS.findIndex(p => p.label === label) * 0.3}s`,
+              '--float-range': `${range}px`,
+              '--float-rotation': `${rotation}deg`,
+            } as React.CSSProperties}
           >
             <Symbol className="w-full h-full" />
           </div>
         ))}
       </div>
+      <style>{`
+        @keyframes adinkra-float {
+          0% {
+            transform: translateY(0) rotate(0deg);
+          }
+          100% {
+            transform: translateY(var(--float-range, 3px)) rotate(var(--float-rotation, 2deg));
+          }
+        }
+      `}</style>
     </div>
   );
 };
