@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { User, Mail, LogIn } from 'lucide-react';
+import { User, Mail, LogIn, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/shared/utils/cn';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
-import { IconShield, IconTerminal, IconTarget } from '@/shared/components/icons';
+import { IconShield, IconTerminal, IconTarget, IconArrowLeft } from '@/shared/components/icons';
 import { Logo } from '@/shared/components/brand';
 import PasswordInput from '../components/PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
@@ -50,7 +50,13 @@ const LoginPage: React.FC = () => {
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    if (isLoading) return; // Prevent double submission
+    
     setIsLoading(true);
+    setFormMessage('');
+    
     try {
       const form = e.currentTarget;
       const formData = new FormData(form);
@@ -76,7 +82,6 @@ const LoginPage: React.FC = () => {
       setFormMessage(msg);
       setShakePassword(true);
       addToast(msg, 'error');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -180,11 +185,11 @@ const LoginPage: React.FC = () => {
 
   // Student auth - shared form component
   const AuthForm = () => (
-    <>
+    <div className="space-y-6">
       <p className="sr-only" aria-live="polite">{formMessage}</p>
 
       {/* Toggle between login and register */}
-      <div className="flex bg-bg-card/50 border border-border/30 p-1.5 rounded-xl mb-8 backdrop-blur-sm">
+      <div className="flex bg-bg/90 border border-bg/50 p-1.5 rounded-xl backdrop-blur-sm">
         <button
           type="button"
           onClick={() => setMode('login')}
@@ -220,6 +225,7 @@ const LoginPage: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.2 }}
+            className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
             <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
               <div className="space-y-2">
@@ -233,7 +239,7 @@ const LoginPage: React.FC = () => {
                     autoComplete="email"
                     inputMode="email"
                     placeholder={t('auth.emailPlaceholder')}
-                    className="w-full bg-bg border border-bg rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
+                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
                   />
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                 </div>
@@ -245,7 +251,7 @@ const LoginPage: React.FC = () => {
                   <button 
                     type="button" 
                     onClick={() => navigate('/forgot-password')} 
-                    className="text-accent hover:underline transition-colors text-xs"
+                    className="text-accent hover:text-accent/70 hover:underline transition-colors text-xs font-bold"
                   >
                     {t('button.forgot')}
                   </button>
@@ -262,9 +268,19 @@ const LoginPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
-                <span className="text-[10px]">{isLoading ? t('button.signingIn') : t('button.signIn')}</span> <LogIn className="w-5 h-5" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span className="text-[10px]">{t('button.signingIn')}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[10px]">{t('button.signIn')}</span>
+                    <LogIn className="w-5 h-5" />
+                  </>
+                )}
               </button>
             </form>
           </motion.div>
@@ -275,6 +291,7 @@ const LoginPage: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
+            className="rounded-2xl bg-bg/90 backdrop-blur-sm p-6 lg:p-8"
           >
             <form className="space-y-5" onSubmit={handleRegisterSubmit}>
               <div className="space-y-2">
@@ -290,7 +307,7 @@ const LoginPage: React.FC = () => {
                     pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
                     title={t('validation.handleRules')}
                     placeholder={t('auth.handlePlaceholder')}
-                    className="w-full bg-bg border border-bg rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
                   />
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                 </div>
@@ -299,7 +316,7 @@ const LoginPage: React.FC = () => {
                   onSelect={handleSuggestionSelect}
                   selectedHandle={selectedHandle}
                 />
-                <p className="text-[10px] text-text-muted/60 mt-1">{t('validation.handleRules')}</p>
+                <p className="text-[10px] text-text-muted/70 mt-1">{t('validation.handleRules')}</p>
               </div>
 
               <div className="space-y-2">
@@ -314,7 +331,7 @@ const LoginPage: React.FC = () => {
                     placeholder={t('auth.namePlaceholder')}
                     value={fullName}
                     onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }}
-                    className="w-full bg-bg border border-bg rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
                   />
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                 </div>
@@ -331,7 +348,7 @@ const LoginPage: React.FC = () => {
                     autoComplete="email" 
                     inputMode="email" 
                     placeholder={t('auth.emailPlaceholder')}
-                    className="w-full bg-bg border border-bg rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
                   />
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                 </div>
@@ -358,7 +375,7 @@ const LoginPage: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 
   const bullets = [
@@ -381,7 +398,18 @@ const LoginPage: React.FC = () => {
       {/* Mobile: Form with accent background */}
       <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-accent">
         <div className="absolute inset-0 opacity-50 dot-grid" style={{ backgroundSize: '24px 24px' }} />
-        <div className="relative z-10 flex items-center justify-center min-h-dvh px-4 py-12 overflow-y-auto">
+        
+        {/* Back to Home button - Mobile */}
+        <div className="absolute top-6 left-6 z-20">
+          <button 
+            onClick={() => navigate('/')} 
+            className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+          >
+            <IconArrowLeft size={16} /> Back to Home
+          </button>
+        </div>
+        
+        <div className="relative z-10 flex items-center justify-center min-h-dvh px-4 pt-24 pb-12 overflow-y-auto">
           <div className="w-full max-w-md my-auto">
             <AuthForm />
           </div>
@@ -391,6 +419,16 @@ const LoginPage: React.FC = () => {
       {/* Desktop: PublicHeroSection with left hero and right form */}
       <div className="hidden lg:block">
         <PublicHeroSection mask="right" showGlobe={false}>
+          {/* Back to Home button - Desktop */}
+          <div className="absolute top-6 left-6 z-20">
+            <button 
+              onClick={() => navigate('/')} 
+              className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+            >
+              <IconArrowLeft size={16} /> Back to Home
+            </button>
+          </div>
+
           {/* Left column hero content */}
           <Logo size="md" variant="full" color="#000000" />
 
