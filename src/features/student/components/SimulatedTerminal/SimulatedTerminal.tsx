@@ -64,7 +64,10 @@ export const SimulatedTerminal: React.FC<SimulatedTerminalProps> = ({
 
   return (
     <div className={isFullscreen ? 'fixed inset-0 z-50' : 'w-full'}>
-      <div className={isFullscreen ? 'h-screen' : 'h-[50vh] min-h-[300px] max-h-[80vh]'}>
+      <div className={cn(
+        isFullscreen ? 'h-screen' : 'h-[50vh] min-h-[300px] max-h-[80vh]',
+        !isFullscreen && 'rounded-2xl overflow-hidden',
+      )}>
         {shell}
       </div>
     </div>
