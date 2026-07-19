@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Wrench, Terminal, Code2, Network } from 'lucide-react';
 import { BottomSheet, BottomSheetContent, BottomSheetClose } from '@/shared/components/ui/BottomSheet';
 import { IconX } from '@/shared/components/icons';
@@ -21,6 +22,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
   onOpenIDE,
   onOpenNetworkVisualizer,
 }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [chooserOpen, setChooserOpen] = useState(false);
@@ -79,6 +81,8 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
     <div className="flex flex-col gap-1 p-2">
       {TOOL_ITEMS.map((tool) => {
         const Icon = tool.icon;
+        const toolLabel = t(`student.tools.${tool.id === 'network-visualizer' ? 'networkVisualizer' : tool.id}`);
+        const toolDesc = t(`student.tools.${tool.id === 'network-visualizer' ? 'networkVisualizer' : tool.id}Desc`);
         return (
           <button
             key={tool.id}
@@ -90,9 +94,9 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-xs font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
-                {tool.label}
+                {toolLabel}
               </div>
-              <div className="text-[10px] text-text-muted mt-0.5 truncate">{tool.description}</div>
+              <div className="text-[10px] text-text-muted mt-0.5 truncate">{toolDesc}</div>
             </div>
             <span className="text-[9px] font-mono text-text-muted/50 shrink-0">{tool.shortcut}</span>
           </button>
@@ -108,7 +112,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
         <button
           onClick={() => setOpen(prev => !prev)}
           className="w-12 h-12 md:w-13 md:h-13 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50"
-          aria-label="Open tools"
+          aria-label={t('aria.openTools')}
           aria-expanded={open}
         >
           <Wrench size={28} />
@@ -117,7 +121,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
         {open && (
           <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-border/30 bg-bg-card shadow-2xl shadow-black/40 z-[80] overflow-hidden">
             <div className="px-4 py-3 border-b border-border/20">
-              <span className="text-[9px] font-black uppercase tracking-widest text-accent">Tools</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-accent">{t('student.tools.title')}</span>
             </div>
             {toolList}
           </div>
@@ -135,7 +139,7 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
 
       {/* Mobile bottom sheet */}
       <BottomSheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <BottomSheetContent ariaLabel="Tools">
+        <BottomSheetContent ariaLabel={t('student.tools.title')}>
           <div className="flex justify-center pt-3 pb-1">
             <div className="w-10 h-1 rounded-full bg-border" />
           </div>
@@ -144,9 +148,9 @@ const ToolsDropdown: React.FC<ToolsDropdownProps> = ({
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                 <Wrench size={18} className="text-accent" />
               </div>
-              <span className="text-sm font-black uppercase tracking-widest text-text-primary">Tools</span>
+              <span className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.tools.title')}</span>
             </div>
-            <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label="Close tools">
+            <BottomSheetClose className="p-2 text-text-muted hover:text-accent transition-colors" aria-label={t('aria.closeTools')}>
               <IconX size={20} />
             </BottomSheetClose>
           </div>

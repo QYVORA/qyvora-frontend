@@ -1,34 +1,29 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LogOut, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import {
   IconDashboard,
   IconBootcamp,
   IconLabs,
   IconMarketplace,
   IconSettings,
-  IconNotification,
   IconArrowLeft,
   IconMenu,
   IconCode,
   IconChevronRight,
 } from '@/shared/components/icons';
-import ToolsDropdown from './ToolsDropdown';
+import ProfileDropdown from './ProfileDropdown';
+import MobileProfileSheet from './MobileProfileSheet';
 import { BOOTCAMP_CONFIG } from '../../../constants/bootcampConfig';
 import { getCourseById } from '../../../data/courses/courseData';
 import { useAuth } from '../../../../../core/contexts/AuthContext';
 import { useToast } from '../../../../../core/contexts/ToastContext';
 import Logo from '../../../../../shared/components/brand/Logo';
 import CpLogo from '../../../../../shared/components/CpLogo';
-import Identicon from '../../../../../shared/components/Identicon';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../../../../core/services/api';
 import { extractCpBalance } from '@/shared/utils/cpBalance';
-import MobileNotificationsSheet from './MobileNotificationsSheet';
-import NotificationsDropdown from './NotificationsDropdown';
-import { NotificationItem } from './types';
-
-const NOTIF_PREVIEW_LIMIT = 6;
+import Identicon from '@/shared/components/Identicon';
 
 const StudentTopbar = () => {
   const { t } = useTranslation();
@@ -84,55 +79,19 @@ const StudentTopbar = () => {
 
   const openSidebar = () => window.dispatchEvent(new CustomEvent(isCoursePage ? 'course:openSidebar' : 'bootcamp:openSidebar'));
   const [unreadCount, setUnreadCount] = useState(0);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [notifLoading, setNotifLoading] = useState(false);
-  const [notificationsPreview, setNotificationsPreview] = useState<NotificationItem[]>([]);
   const [cpBalance, setCpBalance] = useState<number>(user?.cp ?? 0);
-  const notifRef = useRef<HTMLDivElement>(null);
+  const [profileSheetOpen, setProfileSheetOpen] = useState(false);
   const lastNotifFetchRef = useRef<number>(0);
   const NOTIF_THROTTLE_MS = 30000;
 
   const loadNotificationsSnapshot = async () => {
-    setNotifLoading(true);
     try {
       const res = await api.get('/notifications');
       const items = Array.isArray(res.data) ? res.data : [];
       setUnreadCount(items.filter((n: any) => !n.read).length);
-      setNotificationsPreview(
-        items.slice(0, NOTIF_PREVIEW_LIMIT).map((item: any) => ({
-          id: String(item?.id || ''),
-          title: String(item?.title || 'Notification'),
-          message: String(item?.message || ''),
-          read: Boolean(item?.read),
-          createdAt: String(item?.createdAt || ''),
-        }))
-      );
     } catch {
-      setNotificationsPreview([]);
-    } finally {
-      setNotifLoading(false);
+      /* silent */
     }
-  };
-
-  const markAllNotificationsRead = async () => {
-    try {
-      await api.post('/notifications/read-all', {});
-      setUnreadCount(0);
-      setNotificationsPreview((prev) => prev.map((item) => ({ ...item, read: true })));
-      addToast('All notifications marked as read.', 'success');
-    } catch {
-      addToast('Could not mark notifications as read.', 'error');
-    }
-  };
-
-  const markNotificationRead = async (id: string) => {
-    try {
-      await api.post(`/notifications/${id}/read`, {});
-      setUnreadCount((prev) => Math.max(0, prev - 1));
-      setNotificationsPreview((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, read: true } : item))
-      );
-    } catch { /* silent */ }
   };
 
   useEffect(() => {
@@ -140,6 +99,10 @@ const StudentTopbar = () => {
     if (now - lastNotifFetchRef.current < NOTIF_THROTTLE_MS) return;
     lastNotifFetchRef.current = now;
     loadNotificationsSnapshot();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    setProfileSheetOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -152,21 +115,10 @@ const StudentTopbar = () => {
     }).catch(() => {});
     return () => { mounted = false; };
   }, [user?.uid]);
-  useEffect(() => { setNotifOpen(false); }, [location.pathname]);
-
-  useEffect(() => {
-    if (!notifOpen) return undefined;
-    const onPointerDown = (e: MouseEvent) => {
-      if (!notifRef.current || notifRef.current.contains(e.target as Node)) return;
-      setNotifOpen(false);
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    return () => document.removeEventListener('mousedown', onPointerDown);
-  }, [notifOpen]);
 
   const handleLogout = async () => {
     await logout();
-    addToast('Security session terminated.', 'info');
+    addToast(t('toast.sessionTerminated'), 'info');
     navigate('/login');
   };
 
@@ -181,7 +133,7 @@ const StudentTopbar = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg focus:text-sm focus:font-bold focus:outline-none"
       >
-        Skip to main content
+        {t('aria.skipToContent')}
       </a>
 
       <header className="fixed top-0 left-0 w-full z-40 bg-bg border-b border-border">
@@ -193,20 +145,20 @@ const StudentTopbar = () => {
                 <button
                   onClick={() => navigate('/dashboard/courses')}
                   className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
-                  aria-label="Back to courses"
+                  aria-label={t('aria.backToCourses')}
                 >
                   <IconArrowLeft size={20} />
                 </button>
                 <button
                   onClick={openSidebar}
                   className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
-                  aria-label="Toggle lessons sidebar"
+                  aria-label={t('aria.toggleLessons')}
                 >
                   <IconMenu size={20} />
                 </button>
                 <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                   <Link to="/dashboard/courses" className={`transition-colors shrink-0 hover:text-accent`}>
-                    Courses
+                    {t('student.topbar.breadcrumb.courses')}
                   </Link>
                   {courseConfig && (
                     <>
@@ -216,8 +168,8 @@ const StudentTopbar = () => {
                   )}
                 </div>
                 <div className="flex sm:hidden flex-col min-w-0 flex-1">
-                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">Course</span>
-                  <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? 'Course'}</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.course')}</span>
+                  <span className="text-sm font-black text-text-primary truncate leading-tight">{courseConfig?.title ?? t('student.topbar.breadcrumb.course')}</span>
                 </div>
                 <div className="flex items-center gap-1.5 md:gap-2 shrink-0 ml-auto">
                   {courseMeta && (
@@ -240,19 +192,41 @@ const StudentTopbar = () => {
                         onClick={openSidebar}
                         className="md:hidden flex items-center gap-1 px-2 py-1.5 rounded-lg bg-bg-elevated text-text-muted text-[9px] font-black uppercase tracking-widest border border-border"
                       >
-                        Lessons
+                        {t('student.topbar.breadcrumb.lessons')}
                       </button>
                     </>
                   )}
-                  <ToolsDropdown
+
+                  <ProfileDropdown
+                    user={user}
+                    unreadCount={unreadCount}
+                    onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
                     onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                     onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                     onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                    handleLogout={handleLogout}
                   />
-                  <Link to="/dashboard/profile" className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors">
-                    <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
-                  </Link>
                 </div>
+
+                {/* Mobile profile trigger */}
+                <button
+                  onClick={() => setProfileSheetOpen(true)}
+                  className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+                  aria-label="Open profile menu"
+                >
+                  <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+                </button>
+
+                <MobileProfileSheet
+                  open={profileSheetOpen}
+                  onOpenChange={setProfileSheetOpen}
+                  user={user}
+                  unreadCount={unreadCount}
+                  onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                  onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                  onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                  handleLogout={handleLogout}
+                />
               </div>
               {courseMeta && (
                 <div className="h-1 bg-bg-elevated">
@@ -266,20 +240,20 @@ const StudentTopbar = () => {
               <button
                 onClick={() => navigate(`/dashboard/bootcamps/${roomBootcampId}`)}
                 className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
-                aria-label="Back to curriculum"
+                aria-label={t('aria.backToCurriculum')}
               >
                 <IconArrowLeft size={20} />
               </button>
               <button
                 onClick={openSidebar}
                 className={`md:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
-                aria-label="Toggle curriculum sidebar"
+                aria-label={t('aria.toggleCurriculum')}
               >
                 <IconMenu size={16} />
               </button>
               <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
                 <Link to={`/dashboard/bootcamps/${roomBootcampId}`} className="hover:text-accent transition-colors shrink-0">
-                  Curriculum
+                  {t('student.topbar.breadcrumb.curriculum')}
                 </Link>
                 {roomPhaseConfig && (
                   <>
@@ -301,19 +275,40 @@ const StudentTopbar = () => {
                   </span>
                 )}
                 <span className="text-sm font-black text-text-primary truncate leading-tight">
-                  {roomConfig?.title ?? 'Room'}
+                  {roomConfig?.title ?? t('student.topbar.breadcrumb.room')}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                <ToolsDropdown
+                <ProfileDropdown
+                  user={user}
+                  unreadCount={unreadCount}
+                  onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
                   onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                   onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                   onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                  handleLogout={handleLogout}
                 />
-                <Link to="/dashboard/profile" className={`w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 overflow-hidden flex-none transition-colors border-border hover:border-accent/60`}>
-                  <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
-                </Link>
               </div>
+
+              {/* Mobile profile trigger */}
+              <button
+                onClick={() => setProfileSheetOpen(true)}
+                className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+                aria-label="Open profile menu"
+              >
+                <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+              </button>
+
+              <MobileProfileSheet
+                open={profileSheetOpen}
+                onOpenChange={setProfileSheetOpen}
+                user={user}
+                unreadCount={unreadCount}
+                onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+                onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+                onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                handleLogout={handleLogout}
+              />
             </div>
           )
         ) : isLabPage ? (
@@ -322,13 +317,13 @@ const StudentTopbar = () => {
             <button
               onClick={() => navigate('/dashboard/labs')}
               className={`flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl transition-colors text-text-muted hover:text-accent`}
-              aria-label="Back to labs"
+              aria-label={t('aria.backToLabs')}
             >
               <IconArrowLeft size={20} />
             </button>
             <div className={`hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest min-w-0 flex-1 text-text-muted`}>
               <Link to="/dashboard/labs" className="hover:text-accent transition-colors shrink-0">
-                Labs
+                {t('student.topbar.breadcrumb.labs')}
               </Link>
               <IconChevronRight size={12} className="opacity-40 shrink-0" />
               <span className="text-text-primary font-black truncate">
@@ -336,21 +331,42 @@ const StudentTopbar = () => {
               </span>
             </div>
             <div className="flex sm:hidden flex-col min-w-0 flex-1">
-              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">Lab</span>
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-accent leading-none mb-0.5">{t('student.topbar.breadcrumb.lab')}</span>
               <span className="text-sm font-black text-text-primary truncate leading-tight">
-                {labMatch?.params?.labType?.replace(/-/g, ' ') || 'Lab'}
+                {labMatch?.params?.labType?.replace(/-/g, ' ') || t('student.topbar.breadcrumb.lab')}
               </span>
             </div>
             <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-              <ToolsDropdown
+              <ProfileDropdown
+                user={user}
+                unreadCount={unreadCount}
+                onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
                 onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                 onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                 onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                handleLogout={handleLogout}
               />
-              <Link to="/dashboard/profile" className={`w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 overflow-hidden flex-none transition-colors border-border hover:border-accent/60`}>
-                <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
-              </Link>
             </div>
+
+            {/* Mobile profile trigger */}
+            <button
+              onClick={() => setProfileSheetOpen(true)}
+              className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+              aria-label="Open profile menu"
+            >
+              <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+            </button>
+
+            <MobileProfileSheet
+              open={profileSheetOpen}
+              onOpenChange={setProfileSheetOpen}
+              user={user}
+              unreadCount={unreadCount}
+              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+              handleLogout={handleLogout}
+            />
           </div>
 
         ) : (
@@ -366,7 +382,7 @@ const StudentTopbar = () => {
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('qyvora:open-main-sidebar'))}
               className={`lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ml-auto text-text-muted hover:text-accent`}
-              aria-label="Open navigation"
+              aria-label={t('aria.openNav')}
             >
               <IconMenu size={24} />
             </button>
@@ -398,62 +414,37 @@ const StudentTopbar = () => {
                 <CpLogo className="w-5 h-5" />
                 <span className="text-xs font-black text-accent">{cpBalance.toLocaleString()}</span>
               </div>
-              <div ref={notifRef} className="relative">
-                <button
-                  onClick={() => { const next = !notifOpen; setNotifOpen(next); if (next) loadNotificationsSnapshot(); }}
-                  className={`relative p-3 md:p-3.5 flex items-center justify-center transition-colors rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50`}
-                  aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount > 9 ? '9+' : unreadCount} unread)` : ''}`}
-                >
-                  <span className="inline-flex"><IconNotification size={28} /></span>
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 min-w-3.5 h-3.5 px-1 bg-accent text-bg text-[8px] font-black rounded-full flex items-center justify-center leading-none">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </button>
-                <NotificationsDropdown
-                  open={notifOpen}
-                  onClose={() => setNotifOpen(false)}
-                  unreadCount={unreadCount}
-                  notifLoading={notifLoading}
-                  notificationsPreview={notificationsPreview}
-                  markAllNotificationsRead={markAllNotificationsRead}
-                  onMarkRead={markNotificationRead}
-                />
-              </div>
 
-              <MobileNotificationsSheet
-                open={notifOpen}
-                onOpenChange={setNotifOpen}
+              <ProfileDropdown
+                user={user}
                 unreadCount={unreadCount}
-                notifLoading={notifLoading}
-                notificationsPreview={notificationsPreview}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onMarkRead={markNotificationRead}
-              />
-
-              <ToolsDropdown
+                onOpenNotifications={() => window.location.href = '/dashboard/notifications'}
                 onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
                 onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
                 onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+                handleLogout={handleLogout}
               />
-
-              <Link
-                to="/dashboard/profile"
-                aria-label="Go to profile"
-                className={`w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 overflow-hidden flex-none transition-colors border-border hover:border-accent/60`}
-              >
-                <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
-              </Link>
-
-              <button
-                onClick={handleLogout}
-                className={`hidden md:flex p-3 transition-colors rounded-xl text-text-muted hover:text-red-400 hover:bg-red-400/10`}
-                aria-label={t('button.logOut')}
-              >
-                <LogOut className="w-6 h-6" />
-              </button>
             </div>
+
+            {/* Mobile profile trigger */}
+            <button
+              onClick={() => setProfileSheetOpen(true)}
+              className="md:hidden w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+              aria-label="Open profile menu"
+            >
+              <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+            </button>
+
+            <MobileProfileSheet
+              open={profileSheetOpen}
+              onOpenChange={setProfileSheetOpen}
+              user={user}
+              unreadCount={unreadCount}
+              onOpenTerminal={() => window.dispatchEvent(new CustomEvent('qyvora:open-terminal'))}
+              onOpenIDE={() => window.dispatchEvent(new CustomEvent('qyvora:open-ide'))}
+              onOpenNetworkVisualizer={() => window.dispatchEvent(new CustomEvent('qyvora:open-network-visualizer'))}
+              handleLogout={handleLogout}
+            />
           </div>
         )}
       </header>

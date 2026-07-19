@@ -48,7 +48,7 @@ const NewsFeedPage = () => {
       setArticles(items);
       setActiveIndex(0);
     } catch {
-      setError('Failed to fetch threat intelligence feed. Check connection and try again.');
+      setError(t('toast.newsLoadFailed'));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -84,7 +84,7 @@ const NewsFeedPage = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Cyber Feed" description="Stay updated with the latest cybersecurity intelligence from QYVORA." noindex />
+      <SEO title={t('student.newsFeed.seoTitle')} description={t('student.newsFeed.seoDesc')} noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
         <div className="px-2 sm:px-6 md:px-8 pt-6 pb-8 space-y-6">
 
@@ -93,7 +93,7 @@ const NewsFeedPage = () => {
             title={t('student.newsFeed.title')}
             description={t('student.newsFeed.description')}
             action={{
-              label: refreshing ? 'Updating' : t('button.reloadPage'),
+              label: refreshing ? t('student.newsFeed.updating') : t('button.reloadPage'),
               onClick: () => fetchNews(true),
               icon: <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />,
             }}
@@ -104,7 +104,7 @@ const NewsFeedPage = () => {
               <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
                 <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-bold text-red-400">Feed Error</p>
+                  <p className="text-sm font-bold text-red-400">{t('student.newsFeed.feedError')}</p>
                   <p className="text-sm text-text-secondary mt-1">{error}</p>
                 </div>
               </div>
@@ -237,7 +237,7 @@ const NewsFeedPage = () => {
                     className="flex items-center gap-1 text-text-muted/50 hover:text-accent transition-colors text-[10px] font-bold uppercase tracking-widest"
                     aria-label="Previous article"
                   >
-                    <ChevronLeft className="w-3.5 h-3.5" /> Prev
+                    <ChevronLeft className="w-3.5 h-3.5" /> {t('common.prev')}
                   </button>
 
                   <button
@@ -245,7 +245,7 @@ const NewsFeedPage = () => {
                     className="flex items-center gap-1 text-text-muted/50 hover:text-accent transition-colors text-[10px] font-bold uppercase tracking-widest"
                     aria-label="Next article"
                   >
-                    Next <ChevronRight className="w-3.5 h-3.5" />
+                    {t('common.next')} <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>

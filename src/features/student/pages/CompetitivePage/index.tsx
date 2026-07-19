@@ -131,7 +131,7 @@ const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: 
         <div className="flex items-center gap-2">
           <RankBadge label={entry.rankLabel} />
           <span className="text-[10px] font-mono text-text-muted/60">
-            {entry.roomsCompleted} rooms
+            {entry.roomsCompleted} {t('student.competitive.rooms')}
           </span>
         </div>
         <span className="text-sm font-black font-mono text-accent">
@@ -163,10 +163,10 @@ const CompetitivePage = () => {
         setEntries(data.entries || []);
         setTotal(data.total || 0);
       } else {
-        setError('Failed to load leaderboard.');
+        setError(t('toast.leaderboardLoadFailed'));
       }
     } catch {
-      setError('Failed to load leaderboard. Check connection and try again.');
+      setError(t('toast.leaderboardLoadFailedNetwork'));
     } finally {
       setLoading(false);
     }
@@ -182,7 +182,7 @@ const CompetitivePage = () => {
 
   return (
     <div className="bg-bg min-h-full">
-      <SEO title="Competitive Leaderboard" description="Operator leaderboard ranked by CP earned." noindex />
+      <SEO title={t('student.competitive.seoTitle')} description={t('student.competitive.seoDesc')} noindex />
 
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         {/* Header */}
@@ -190,7 +190,7 @@ const CompetitivePage = () => {
           icon={<Trophy className="w-6 h-6 text-bg" />}
           title={t('student.competitive.title')}
           description={t('student.competitive.description', { count: total })}
-          stats={[{ label: 'Operators', value: Number(total).toLocaleString() }]}
+          stats={[{ label: t('stat.operators'), value: Number(total).toLocaleString() }]}
           action={{
             label: t('button.viewPublicBoard'),
             to: '/leaderboard',

@@ -17,7 +17,7 @@ const QuizGateModal: React.FC<QuizGateModalProps> = ({ onClose, onTakeQuiz }) =>
         <div className="mb-4 flex justify-center">
           <IconLock size={40} className="text-accent" />
         </div>
-        <h2 className="mb-2 text-lg font-black text-text-primary">{t('student.bootcampRoom.quizGate.notSoFast')}</h2>
+        <h2 className="mb-2 text-lg font-black text-text-primary">{t('student.bootcampRoom.quizGate.heading')}</h2>
         <p className="mb-6 text-sm text-text-muted leading-relaxed">
           {t('student.bootcampRoom.quizGate.description')}
         </p>

@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
         setProfileApi(res.data || null);
       } catch {
         if (!mounted) return;
-        addToast('Failed to load profile', 'error');
+        addToast(t('toast.profileLoadFailed'), 'error');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
     username: isOwnProfile
       ? (profileApi?.hackerHandle || profileApi?.name || displayHandle)
       : (profileApi?.handle || profileApi?.name || displayHandle),
-    rank: String(profileApi?.xpSummary?.rank || profileApi?.rank || authUser?.rank || 'Candidate'),
+    rank: String(profileApi?.xpSummary?.rank || profileApi?.rank || authUser?.rank || t('stat.candidate')),
     bio: String(profileApi?.bio || ''),
     organization: String(profileApi?.organization || ''),
     name: String(profileApi?.name || ''),
@@ -127,7 +127,7 @@ const Profile: React.FC = () => {
               to={`/@${profileData.username}`}
               className="btn-secondary !text-xs inline-flex items-center gap-2"
             >
-              Public View
+              {t('student.profile.publicView')}
             </Link>
             <ShareProfile handle={profileData.username} />
           </div>
@@ -141,10 +141,10 @@ const Profile: React.FC = () => {
           <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
             <Trophy className="w-4 h-4 text-accent" />
           </div>
-          <span className="text-xs font-black uppercase tracking-widest text-text-primary">Achievements</span>
+          <span className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.profile.achievements')}</span>
           <span className="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded-lg">{achievementCount}</span>
           <div className="ml-auto flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent transition-colors">
-            {showAchievements ? 'Collapse' : 'Expand'}
+            {showAchievements ? t('student.profile.collapse') : t('student.profile.expand')}
             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showAchievements ? 'rotate-180' : ''}`} />
           </div>
         </button>
@@ -166,7 +166,7 @@ const Profile: React.FC = () => {
                   {bootcampCompleted ? (
                     <div className="flex items-center gap-3">
                       <BootcampBadge completed className="w-20 h-20" />
-                      <span className="text-xs font-bold text-text-primary">HPB Graduate</span>
+                      <span className="text-xs font-bold text-text-primary">{t('student.profile.hpbGraduate')}</span>
                     </div>
                   ) : (
                     <p className="text-xs text-text-muted">{t('student.profile.badgesEmpty')}</p>
@@ -206,7 +206,7 @@ const Profile: React.FC = () => {
                           <div className="flex flex-1 flex-col p-4">
                             <h3 className="text-sm font-black leading-snug text-text-primary group-hover:text-accent transition-colors line-clamp-2">{room.title}</h3>
                             <div className="mt-auto pt-3 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-accent opacity-0 transition-all duration-300 transform translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0">
-                              View room <ArrowRight className="h-3 w-3" />
+                              {t('student.profile.viewRoom')} <ArrowRight className="h-3 w-3" />
                             </div>
                           </div>
                         </div>

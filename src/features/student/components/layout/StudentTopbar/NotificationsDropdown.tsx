@@ -37,7 +37,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
             <div>
               <div className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-              <div className="text-[10px] text-text-muted">{unreadCount} unread</div>
+              <div className="text-[10px] text-text-muted">{unreadCount} {t('badge.unread')}</div>
             </div>
             {unreadCount > 0 && (
               <button onClick={markAllNotificationsRead} className="text-[10px] font-bold text-accent hover:underline whitespace-nowrap">
@@ -46,7 +46,7 @@ const NotificationsDropdown: React.FC<NotificationsDropdownProps> = ({
             )}
           </div>
           {notifLoading ? (
-            <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />Loading...</div>
+            <div className="p-4 text-xs text-text-muted"><Loader2 className="h-5 w-5 animate-spin inline-block mr-2" />{t('empty.loading')}</div>
           ) : notificationsPreview.length === 0 ? (
             <div className="p-4 text-xs text-text-muted">{t('student.topbar.notifications.empty')}</div>
           ) : (

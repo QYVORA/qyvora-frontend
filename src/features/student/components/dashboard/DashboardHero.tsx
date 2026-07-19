@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { IconArrowRight } from '@/shared/components/icons';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import { motion } from 'motion/react';
@@ -15,7 +16,8 @@ interface DashboardHeroProps {
 const DashboardHero = ({
   isEnrolled, allDone, nextMission, continuePath, currentPhaseTitle, username,
 }: DashboardHeroProps) => {
-  const displayName = username ? `@${username}` : 'Operator';
+  const { t } = useTranslation();
+  const displayName = username ? `@${username}` : t('student.dashboard.hero.operatorFallback');
 
   const cardClass = "relative rounded-2xl border border-bg/20 bg-accent p-6 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6";
 
@@ -36,7 +38,7 @@ const DashboardHero = ({
               transition={{ duration: 0.4, delay: 0.2 }}
               className="hero-text text-xs font-black uppercase tracking-[0.3em] text-bg/60 mb-2"
             >
-              Welcome back, <span className="text-bg font-black">{displayName}</span>
+              {t('student.dashboard.hero.welcomeBack')} <span className="text-bg font-black">{displayName}</span>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -44,7 +46,7 @@ const DashboardHero = ({
               transition={{ duration: 0.5, delay: 0.3 }}
               className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight"
             >
-              All missions complete
+              {t('student.dashboard.hero.allMissionsComplete')}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -52,7 +54,7 @@ const DashboardHero = ({
               transition={{ duration: 0.4, delay: 0.4 }}
               className="hero-sub text-sm text-bg/70 mt-1.5"
             >
-              You have completed every available room.
+              {t('student.dashboard.hero.allRoomsComplete')}
             </motion.p>
           </div>
           <motion.div
@@ -60,8 +62,8 @@ const DashboardHero = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label="Review completed curriculum">
-              Review Curriculum <IconArrowRight size={14} className="inline" />
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.reviewCurriculum')}>
+              {t('student.dashboard.hero.reviewCurriculum')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
         </motion.div>
@@ -86,7 +88,7 @@ const DashboardHero = ({
               transition={{ duration: 0.4, delay: 0.2 }}
               className="hero-text text-xs font-black uppercase tracking-[0.3em] text-bg/60 mb-2"
             >
-              Welcome back, <span className="text-bg font-black">{displayName}</span>
+              {t('student.dashboard.hero.welcomeBack')} <span className="text-bg font-black">{displayName}</span>
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -94,7 +96,7 @@ const DashboardHero = ({
               transition={{ duration: 0.5, delay: 0.3 }}
               className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight break-words"
             >
-              {nextMission?.title || currentPhaseTitle || 'Continue your training'}
+              {nextMission?.title || currentPhaseTitle || t('student.dashboard.hero.continueTraining')}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -102,7 +104,7 @@ const DashboardHero = ({
               transition={{ duration: 0.4, delay: 0.4 }}
               className="hero-sub text-sm text-bg/70 mt-1.5"
             >
-              Pick up where you left off.
+              {t('student.dashboard.hero.pickUpWhere')}
             </motion.p>
           </div>
           <motion.div
@@ -110,8 +112,8 @@ const DashboardHero = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label="Continue training">
-              Continue <IconArrowRight size={14} className="inline" />
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.continueTraining')}>
+              {t('student.dashboard.hero.continue')} <IconArrowRight size={14} className="inline" />
             </Link>
           </motion.div>
         </motion.div>
@@ -133,25 +135,25 @@ const DashboardHero = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="hero-text text-xs font-black uppercase tracking-[0.3em] text-bg/60 mb-2"
-          >
-            Welcome, <span className="text-bg font-black">{displayName}</span>
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight"
-          >
-            Begin your journey
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-            className="hero-sub text-sm text-bg/70 mt-1.5"
-          >
-            Start the Hacker Protocol Bootcamp and earn your first CP.
+              className="hero-text text-xs font-black uppercase tracking-[0.3em] text-bg/60 mb-2"
+            >
+              {t('student.dashboard.hero.welcome')} <span className="text-bg font-black">{displayName}</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="hero-title text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight"
+            >
+              {t('student.dashboard.hero.beginJourney')}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+              className="hero-sub text-sm text-bg/70 mt-1.5"
+            >
+              {t('student.dashboard.hero.startHpb')}
           </motion.p>
         </div>
         <motion.div
@@ -159,8 +161,8 @@ const DashboardHero = ({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
         >
-          <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label="Start Hacker Protocol Bootcamp training">
-            Start Training <IconArrowRight size={14} className="inline" />
+            <Link to={continuePath} className="hero-cta btn-primary shrink-0 !text-xs w-full sm:w-auto text-center relative z-10" aria-label={t('student.dashboard.hero.startTraining')}>
+              {t('student.dashboard.hero.startTraining')} <IconArrowRight size={14} className="inline" />
           </Link>
         </motion.div>
       </motion.div>

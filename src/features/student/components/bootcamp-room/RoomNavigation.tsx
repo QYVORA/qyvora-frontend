@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { List, Minimize2, Maximize2, Loader2 } from 'lucide-react';
 import { IconArrowLeft, IconArrowRight, IconCheck } from '@/shared/components/icons';
 
@@ -33,6 +34,7 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
   toggleFullscreen,
   setJumpMenuOpen,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={`flex flex-wrap items-center gap-3 pb-16 ${totalSteps <= 5 ? 'md:justify-end' : ''}`}>
       <button
@@ -40,26 +42,26 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
         className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
       >
         <List className="h-3.5 w-3.5" />
-        <span className="hidden sm:inline">Jump</span>
+        <span className="hidden sm:inline">{t('student.bootcampRoom.nav.jump')}</span>
       </button>
 
       <button
         onClick={toggleFullscreen}
         className="btn-secondary inline-flex items-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest px-3.5 py-2"
-        title="Toggle fullscreen (F)"
+        title={t('student.bootcampRoom.nav.fullscreenTitle')}
       >
         {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-        <span className="hidden sm:inline">{fullscreen ? 'Exit' : 'Full'}</span>
+        <span className="hidden sm:inline">{fullscreen ? t('student.bootcampRoom.nav.fullscreen.exit') : t('student.bootcampRoom.nav.fullscreen.enter')}</span>
       </button>
 
       <button
         onClick={() => { if (currentStepIdx > 0) goToStep(currentStepIdx - 1); }}
         disabled={currentStepIdx === 0}
         className="btn-secondary md:hidden inline-flex flex-1 items-center justify-center gap-1.5 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest disabled:opacity-50 sm:flex-none px-3.5 py-2"
-        aria-label="Previous step"
+        aria-label={t('student.bootcampRoom.nav.prev')}
       >
         <IconArrowLeft size={14} className="shrink-0" />
-        <span>Prev</span>
+        <span>{t('student.bootcampRoom.nav.prev')}</span>
       </button>
 
       <span className="md:hidden order-3 w-full text-center font-mono text-xs font-semibold text-text-muted sm:order-none sm:w-auto">
@@ -69,10 +71,8 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
       <button
         onClick={async () => {
           if (!isLastStep) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             goToStep(currentStepIdx + 1);
           } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             await handleComplete();
           }
         }}
@@ -82,24 +82,24 @@ const RoomNavigation: React.FC<RoomNavigationProps> = ({
         {completing ? (
           <>
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            <span>Processing...</span>
+            <span>{t('student.bootcampRoom.nav.processing')}</span>
           </>
         ) : isLastStep ? (
           isRoomComplete ? (
             <>
-              <span>{nextRoom ? 'Next Room' : 'Finish'}</span>
+              <span>{nextRoom ? t('student.bootcampRoom.nav.nextRoom') : t('student.bootcampRoom.nav.finish')}</span>
               <IconArrowRight size={14} className="shrink-0" />
             </>
           ) : (
             <>
-              <span>{quizPassed ? 'Complete' : quizModuleId ? 'Quiz & Complete' : 'Complete'}</span>
+              <span>{quizPassed ? t('student.bootcampRoom.nav.complete') : quizModuleId ? t('student.bootcampRoom.nav.quizAndComplete') : t('student.bootcampRoom.nav.complete')}</span>
               <IconCheck size={14} className="shrink-0" />
             </>
           )
         ) : (
           <>
-            <span className="md:hidden">Next</span>
-            <span className="hidden md:inline">Next Step</span>
+            <span className="md:hidden">{t('student.bootcampRoom.nav.next')}</span>
+            <span className="hidden md:inline">{t('student.bootcampRoom.nav.nextStep')}</span>
             <IconArrowRight size={14} className="shrink-0" />
           </>
         )}

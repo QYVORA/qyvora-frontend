@@ -5,6 +5,7 @@ import { IconX, IconCheck } from '@/shared/components/icons';
 import api from '../../../../core/services/api';
 import { useToast } from '../../../../core/contexts/ToastContext';
 import { Dialog, DialogContent } from '../../../../shared/components/ui/Dialog';
+import { ROOM_QUIZ_BANK, FALLBACK_QUESTIONS } from '../../data/quizzes';
 import type { RoomQuiz, QuizQuestion } from './types';
 
 interface QuizModalProps {
@@ -26,7 +27,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     passed: boolean;
     reward?: number;
     questions: QuizQuestion[];
-    answerResults?: Array<{ correct: boolean; correctAnswer: string }>;
+    answerResults: Array<{ correct: boolean; correctAnswer: string }>;
   } | null>(null);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -35,11 +36,11 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
     setLoading(true);
     try {
       const key = `${moduleId}:${roomId}`;
-      const questions: QuizQuestion[] = [
-        { id: 'q1', text: 'What is the primary mindset of an ethical hacker?', options: ['Break everything without limits', 'Think like an attacker while respecting boundaries', 'Ignore rules to find vulnerabilities', 'Automate all security work'] },
-        { id: 'q2', text: 'What is the most important first step when learning a new hacking topic?', options: ['Memorize every tool command', 'Run tools blindly until something works', 'Understand the underlying system and threat model', 'Skip basics and jump into advanced exploits'] },
-        { id: 'q3', text: 'What does the QYVORA operating model focus on?', options: ['Only selling security tools', 'Education, execution, and community', 'Government contracts only', 'Defensive security only'] },
-      ];
+      const bankQuestions = ROOM_QUIZ_BANK[key];
+      const questions: QuizQuestion[] = bankQuestions || FALLBACK_QUESTIONS.map((q) => ({
+        ...q,
+        correctIndex: q.correctIndex ?? 0,
+      }));
       setQuiz({
         scope: { type: 'room', id: key, courseId, moduleId, roomId },
         questions,
@@ -54,7 +55,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
   const submit = async () => {
     if (!quiz) return;
     if (Object.keys(answers).length < quiz.questions.length) {
-      addToast(t('student.bootcampRoom.quiz.answerAll'), 'error');
+      addToast(t('toast.quizAnswerAll'), 'error');
       return;
     }
     setSubmitting(true);
@@ -63,16 +64,19 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
       const score   = Number(res?.data?.score || 0);
       const passed  = Boolean(res?.data?.passed);
       const reward  = Number(res?.data?.reward?.points || 0);
-      const answerResults = res?.data?.answers as Array<{ correct: boolean; correctAnswer: string }> | undefined;
+      const answerResults = quiz.questions.map((q) => ({
+        correct: answers[q.id] === q.correctIndex,
+        correctAnswer: q.options[q.correctIndex],
+      }));
       setResult({ score, passed, reward, questions: quiz.questions, answerResults });
       if (passed) {
-        addToast(t('student.bootcampRoom.quiz.passed', { score, reward }), 'success');
+        addToast(t('toast.quizPassed', { score, cp: reward }), 'success');
         // Let the user see the "Passed" screen and click "Continue" themselves
       } else {
-        addToast(t('student.bootcampRoom.quiz.scoreInfo', { score }), 'info');
+        addToast(t('toast.quizScore', { score }), 'info');
       }
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('student.bootcampRoom.quiz.submitError'), 'error');
+      addToast(err?.response?.data?.error || t('toast.quizSubmitError'), 'error');
     } finally {
       setSubmitting(false);
     }
@@ -103,8 +107,8 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                 </div>
                 <div className={`flex items-center justify-center gap-1.5 text-sm font-bold uppercase tracking-widest ${result.passed ? 'text-accent' : 'text-red-400'}`}>
                   {result.passed
-                    ? <><IconCheck size={16} /> {t('student.bootcampRoom.quiz.passedLabel')}</>
-                    : <><XCircle className="h-4 w-4" /> {t('student.bootcampRoom.quiz.notPassed')}</>
+                    ? <><IconCheck size={16} /> {t('student.bootcampRoom.quiz.passed')}</>
+                    : <><XCircle className="h-4 w-4" /> {t('student.bootcampRoom.quiz.failed')}</>
                   }
                 </div>
                 {result.passed && result.reward > 0 && (
@@ -115,10 +119,10 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
               {result.passed ? (
                 <div className="rounded-2xl border-2 border-accent/20 bg-accent-dim/30 p-6 text-center">
                   <p className="text-sm text-text-primary font-bold mb-4">
-                    {t('student.bootcampRoom.quiz.excellentWork')}
+                    {t('student.bootcampRoom.quiz.excellent')}
                   </p>
                   <button
-                    onClick={onPassed}
+                    onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); onPassed(); }}
                     className="btn-primary w-full py-3 text-sm font-black uppercase"
                   >
                     {t('button.continue')}
@@ -143,18 +147,14 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                           <div className="space-y-1.5 pl-5">
                             {q.options.map((opt, optIdx) => {
                               const isChosenOpt  = optIdx === chosen;
-                              const ansResult = result.answerResults?.[idx];
-                              const isCorrectOpt = ansResult && opt === ansResult.correctAnswer;
-                              const showCorrect = ansResult && isCorrectOpt && !isChosenOpt;
+                              const ansResult = result.answerResults[idx];
+                              const isCorrectOpt = ansResult.correct && opt === ansResult.correctAnswer;
+                              const showCorrect = isCorrectOpt && !isChosenOpt;
                               let cls = 'border-border text-text-muted';
                               if (isChosenOpt) {
-                                if (ansResult) {
-                                  cls = ansResult.correct
-                                    ? 'border-green-500/50 bg-green-500/10 text-green-500 font-bold'
-                                    : 'border-red-500/50 bg-red-500/10 text-red-500 font-bold';
-                                } else {
-                                  cls = 'border-accent/50 bg-accent/10 text-accent font-bold';
-                                }
+                                cls = ansResult.correct
+                                  ? 'border-green-500/50 bg-green-500/10 text-green-500 font-bold'
+                                  : 'border-red-500/50 bg-red-500/10 text-red-500 font-bold';
                               } else if (showCorrect) {
                                 cls = 'border-accent/30 bg-accent/5 text-accent';
                               }
@@ -162,7 +162,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                                 <div key={optIdx} className={`rounded-lg border px-3 py-2 text-xs flex items-center gap-2 ${cls}`}>
                                   <span className="font-mono opacity-50 shrink-0">{String.fromCharCode(65 + optIdx)}.</span>
                                   <span>{opt}</span>
-                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black shrink-0">{ansResult ? (ansResult.correct ? t('student.bootcampRoom.quiz.correct') : t('student.bootcampRoom.quiz.wrong')) : t('student.bootcampRoom.quiz.yourAnswer')}</span>}
+                                  {isChosenOpt && <span className="ml-auto text-[10px] font-black shrink-0">{ansResult.correct ? t('student.bootcampRoom.quiz.correct') : t('student.bootcampRoom.quiz.wrong')}</span>}
                                   {showCorrect && <span className="ml-auto text-[10px] font-black text-accent shrink-0">{t('student.bootcampRoom.quiz.correctAnswer')}</span>}
                                 </div>
                               );
@@ -180,7 +180,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                     >
                       {t('button.tryAgain')}
                     </button>
-                    <button onClick={onClose} className="btn-secondary text-sm py-3">
+                    <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); onClose(); }} className="btn-secondary text-sm py-3">
                       {t('button.close')}
                     </button>
                   </div>
@@ -244,7 +244,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ moduleId, roomId, courseId, onClo
                       {t('student.bootcampRoom.quiz.scoring')}
                     </>
                   ) : (
-                    t('student.bootcampRoom.quiz.submitQuiz')
+                    t('student.bootcampRoom.quiz.submit')
                   )}
                 </button>
                 {Object.keys(answers).length < quiz.questions.length && (

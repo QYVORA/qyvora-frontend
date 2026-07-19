@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { X, Maximize2, LayoutPanelLeft, Code2, Terminal, Network } from 'lucide-react';
 
@@ -25,6 +26,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
   onSelectPanel,
   onSelectFullscreen,
 }) => {
+  const { t } = useTranslation();
   const Icon = TOOL_ICONS[toolId] || Code2;
 
   const handlePanel = () => {
@@ -42,10 +44,10 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
       <RadixDialog.Portal>
         <RadixDialog.Overlay className="fixed inset-0 z-[200] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <RadixDialog.Content
-          aria-label={`Open ${toolLabel}`}
+          aria-label={t('components.toolChooser.openTool', { tool: toolLabel })}
           className="fixed z-[201] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2rem)] max-w-md bg-bg-card border border-border/30 rounded-2xl overflow-hidden shadow-2xl shadow-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-150"
         >
-          <RadixDialog.Title className="sr-only">Open {toolLabel}</RadixDialog.Title>
+          <RadixDialog.Title className="sr-only">{t('components.toolChooser.openTool', { tool: toolLabel })}</RadixDialog.Title>
 
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-border/20">
@@ -55,7 +57,7 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
               </div>
               <div>
                 <span className="text-sm font-black uppercase tracking-widest text-text-primary block">{toolLabel}</span>
-                <span className="text-[10px] text-text-muted">Choose how to open</span>
+                <span className="text-[10px] text-text-muted">{t('components.toolChooser.chooseHowToOpen')}</span>
               </div>
             </div>
             <RadixDialog.Close asChild>
@@ -76,10 +78,10 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
-                  Open in Panel
+                  {t('components.toolChooser.openInPanel')}
                 </div>
                 <div className="text-[10px] text-text-muted mt-0.5">
-                  Opens as a modal panel inside the current page
+                  {t('components.toolChooser.openInPanelDesc')}
                 </div>
               </div>
             </button>
@@ -93,10 +95,10 @@ const ToolChooserModal: React.FC<ToolChooserModalProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
-                  Open Full Screen
+                  {t('components.toolChooser.openFullScreen')}
                 </div>
                 <div className="text-[10px] text-text-muted mt-0.5">
-                  Opens in a new browser tab, full screen
+                  {t('components.toolChooser.openFullScreenDesc')}
                 </div>
               </div>
             </button>

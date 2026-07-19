@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { List, Minimize2, Maximize2, Loader2 } from 'lucide-react';
 import { IconArrowRight, IconCheck } from '@/shared/components/icons';
 
@@ -29,6 +30,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
   goToStep,
   handleComplete,
 }) => {
+  const { t } = useTranslation();
   return (
     <aside
       className="hidden lg:flex fixed right-6 z-[100] flex-col items-center gap-3"
@@ -41,7 +43,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
     >
       <button
         onClick={() => setJumpMenuOpen(true)}
-        title="Jump to step"
+        title={t('student.bootcampRoom.desktopToolbar.jump')}
         className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
       >
         <List className="h-4 w-4" />
@@ -49,7 +51,7 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
 
       <button
         onClick={toggleFullscreen}
-        title={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        title={fullscreen ? t('student.bootcampRoom.desktopToolbar.exitFullscreen') : t('student.bootcampRoom.desktopToolbar.enterFullscreen')}
         className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-card border border-border text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
       >
         {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -60,10 +62,8 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
       <button
         onClick={async () => {
           if (!isLastStep) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             goToStep(currentStepIdx + 1);
           } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             await handleComplete();
           }
         }}
@@ -72,12 +72,12 @@ const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
           isLastStep
             ? isRoomComplete
               ? nextRoom
-                ? 'Continue to Next Room'
-                : 'Finish Module'
+                ? t('student.bootcampRoom.desktopToolbar.continueToNext')
+                : t('student.bootcampRoom.desktopToolbar.finishModule')
               : quizModuleId
-              ? 'Take Quiz & Complete'
-              : 'Complete Room'
-            : 'Next Step'
+              ? t('student.bootcampRoom.desktopToolbar.quizAndComplete')
+              : t('student.bootcampRoom.desktopToolbar.completeRoom')
+            : t('student.bootcampRoom.desktopToolbar.nextStep')
         }
         className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
           isLastStep

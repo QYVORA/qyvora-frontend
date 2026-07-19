@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface LabCardProps {
   id: string;
@@ -11,6 +12,7 @@ interface LabCardProps {
 }
 
 const LabCard = ({ title, description, cpReward, route }: LabCardProps) => {
+  const { t } = useTranslation();
   return (
     <Link
       to={route}
@@ -29,7 +31,7 @@ const LabCard = ({ title, description, cpReward, route }: LabCardProps) => {
             {cpReward} CP
           </span>
           <span className="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-accent text-bg transition-all duration-200 group-hover:brightness-110 group-active:scale-95">
-            Start
+            {t('student.labs.labCard.start')}
           </span>
         </div>
       </div>

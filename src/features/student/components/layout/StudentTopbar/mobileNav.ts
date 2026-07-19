@@ -1,3 +1,4 @@
+import i18n from '@/i18n';
 import {
   IconDashboard,
   IconCode,
@@ -8,15 +9,15 @@ import {
 import { Radio, Globe } from 'lucide-react';
 
 export const MOBILE_PRIMARY = [
-  { label: 'Home',     icon: IconDashboard, path: '/dashboard'  },
-  { label: 'Courses',  icon: IconCode,        path: '/dashboard/courses'  },
-  { label: 'Market',   icon: IconMarketplace,     path: '/dashboard/marketplace' },
+  { label: i18n.t('nav.dashboard'),     icon: IconDashboard, path: '/dashboard'  },
+  { label: i18n.t('nav.courses'),  icon: IconCode,        path: '/dashboard/courses'  },
+  { label: i18n.t('nav.marketplace'),   icon: IconMarketplace,     path: '/dashboard/marketplace' },
 ];
 
 export const MOBILE_MORE = [
-  { label: 'HPB',           icon: IconBootcamp,      path: '/dashboard/bootcamps/bc_1775270338500' },
-  { label: 'Network Lab',   icon: Globe,             path: '/dashboard/networks' },
-  { label: 'Cyber Feed',    icon: Radio,         path: '/dashboard/news'         },
-  { label: 'Settings',      icon: IconSettings,      path: '/dashboard/settings'      },
+  { label: i18n.t('nav.hpb'),           icon: IconBootcamp,      path: '/dashboard/bootcamps/bc_1775270338500' },
+  { label: i18n.t('nav.networkLab'),   icon: Globe,             path: '/dashboard/networks' },
+  { label: i18n.t('nav.cyberFeed'),    icon: Radio,         path: '/dashboard/news'         },
+  { label: i18n.t('nav.settings'),      icon: IconSettings,      path: '/dashboard/settings'      },
 ];
 

@@ -109,6 +109,8 @@
     "updatePassword": "Update Password",
     "generateNewToken": "Generate New Token",
     "copyToClipboard": "Copy to clipboard",
+    "copy": "Copy",
+    "copied": "Copied!",
     "deleteAccount": "Delete Account",
     "confirmDelete": "I understand, delete my account",
     "enrollNow": "Enroll Now",
@@ -275,7 +277,30 @@
     "lessonCpEarned": "You earned +{{cp}} CP",
     "contactSent": "Transmission sent successfully.",
     "contactFailed": "Transmission failed. Try emailing us directly at",
-    "saved": "Saved"
+    "saved": "Saved",
+    "copyFailed": "Failed to copy to clipboard.",
+    "courseLoadFailed": "Failed to load course data",
+    "roomCompleteFailed": "Failed to mark room as complete",
+    "sessionOpenFailed": "Failed to open room session",
+    "passwordMinLength": "Password must be at least 8 characters.",
+    "passwordChangeFailed": "Password change failed.",
+    "recoveryTokenAcknowledged": "Recovery token acknowledged.",
+    "couldNotAcknowledgeToken": "Could not acknowledge token.",
+    "newRecoveryTokenGenerated": "New recovery token generated.",
+    "failedToGenerateToken": "Failed to generate token.",
+    "twoFaDisabled": "2FA disabled.",
+    "twoFaEnabled": "2FA enabled.",
+    "failedToUpdateTwoFa": "Failed to update 2FA.",
+    "failedToRevokeSession": "Failed to revoke session.",
+    "failedToRevokeSessions": "Failed to revoke sessions.",
+    "profileLoadFailed": "Failed to load profile",
+    "purchaseSuccess": "{{title}} purchased successfully.",
+    "purchaseFailed": "Purchase failed.",
+    "downloadFailed": "Download failed.",
+    "marketplaceLoadFailed": "Failed to load marketplace",
+    "newsLoadFailed": "Failed to fetch threat intelligence feed. Check connection and try again.",
+    "leaderboardLoadFailed": "Failed to load leaderboard.",
+    "leaderboardLoadFailedNetwork": "Failed to load leaderboard. Check connection and try again."
   },
   "validation": {
     "authFailed": "Authentication failed. Check credentials.",
@@ -292,7 +317,10 @@
     "sessionExpired": "Session expired. Please log in and try again.",
     "tokenMismatch": "Security token mismatch. Please refresh the page and try again.",
     "submitReviewFailed": "Failed to submit review. Please try again.",
-    "reviewRequired": "Please share your thoughts about QYVORA."
+    "reviewRequired": "Please share your thoughts about QYVORA.",
+    "handleRequired": "Handle is required.",
+    "handleInvalidChars": "Use only letters, numbers, and hyphens. No spaces or consecutive hyphens.",
+    "handleUpdateFailed": "Failed to update handle. Try again."
   },
   "aria": {
     "skipToContent": "Skip to content",
@@ -306,12 +334,18 @@
     "logOut": "Log out",
     "backToCourses": "Back to courses",
     "backToCurriculum": "Back to curriculum",
+    "backToLabs": "Back to labs",
     "toggleLessons": "Toggle lessons sidebar",
     "toggleCurriculum": "Toggle curriculum sidebar",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "adminProfile": "Admin profile",
-    "scrollToTop": "Scroll to top"
+    "scrollToTop": "Scroll to top",
+    "openTools": "Open tools",
+    "closeTools": "Close tools",
+    "closeSidebar": "Close sidebar",
+    "togglePassword": "Toggle password visibility",
+    "copyToken": "Copy token"
   },
   "auth": {
     "signIntoContinue": "Sign in to continue your training.",
@@ -597,7 +631,24 @@
       "description": "Manage your bootcamps, labs, and personal settings."
     },
     "sidebar": {
-      "promo": "Enroll Now — 75% off"
+      "promo": "Enroll Now — 75% off",
+      "overview": "Overview",
+      "filter": "Filter",
+      "progress": "Progress",
+      "roomsCount": "{{count}} rooms",
+      "courses": "Courses",
+      "enrolled": "Enrolled",
+      "inProgress": "In Progress",
+      "lessons": "Lessons",
+      "balance": "Balance",
+      "browseMarket": "Browse Market",
+      "filterAll": "All",
+      "unread": "Unread",
+      "system": "System",
+      "achievements": "Achievements",
+      "myProgress": "My Progress",
+      "userFallback": "User",
+      "viewProfile": "View Profile"
     },
     "topbar": {
       "search": { "placeholder": "Search courses, labs, rooms…", "empty": "No results found", "searching": "Searching…" },
@@ -605,9 +656,27 @@
       "news": { "title": "Recent News", "empty": "No recent news", "viewAll": "Go to News Feed" },
       "profile": { "view": "View profile" },
       "cp": { "earned": "Earned" },
-      "streak": { "tooltip": "Streak", "days": "days" }
+      "streak": { "tooltip": "Streak", "days": "days" },
+      "breadcrumb": {
+        "courses": "Courses",
+        "course": "Course",
+        "curriculum": "Curriculum",
+        "labs": "Labs",
+        "lab": "Lab",
+        "lessons": "Lessons",
+        "room": "Room"
+      }
     },
     "search": { "placeholder": "Search courses, labs, rooms…", "empty": "No results found", "searching": "Searching…", "button": "Search" },
+    "tools": {
+      "title": "Tools",
+      "ide": "IDE",
+      "ideDesc": "Write and run Python/Bash for course exercises",
+      "terminal": "Terminal",
+      "terminalDesc": "Kali Linux terminal emulator",
+      "networkVisualizer": "Network Visualizer",
+      "networkVisualizerDesc": "Build and explore network topologies"
+    },
     "installBanner": { "title": "Install QYVORA", "description": "Get the full experience with our desktop app.", "install": "Install", "dismiss": "Not now" },
     "notifications": { "markRead": "Mark as read", "empty": "No notifications yet", "unread": "Unread", "viewAll": "View all notifications" },
     "mobile": { "menu": "Menu", "navigation": "Navigation" },
@@ -633,7 +702,9 @@
       "title": "Choose your hacker handle",
       "description": "This is how other operators will see you. Pick something unique.",
       "placeholder": "Enter your hacker handle…",
-      "save": "Save"
+      "save": "Save",
+      "usernameLabel": "Username",
+      "handleRules": "Letters, numbers, and hyphens only. No spaces. Must be unique."
     },
     "dashboard": {
       "seoTitle": "Dashboard",
@@ -643,11 +714,21 @@
       "overviewDesc": "Your CyberPoints summary and quick actions.",
       "stats": { "cp": "CP Earned", "streak": "Streak", "rooms": "Rooms Completed" },
       "action": { "startLearning": "Start Learning" },
+      "intelligenceAsset": "Intelligence Asset",
+      "intelligenceDesc": "Secure intelligence report for offensive security operatives.",
+      "free": "Free",
+      "view": "View",
+      "rank": "Rank",
+      "cp": "CP",
+      "streak": "Streak",
+      "roomsDone": "Rooms Done",
+      "courses": "Courses",
+      "viewAll": "View All",
       "weekActivity": { "title": "Week at a Glance", "empty": "No activity recorded this week." },
       "activeDeployments": { "title": "Active Deployments", "empty": "No active deployments.", "expires": "Expires" },
       "streak": { "title": "Streak", "description": "Keep your streak alive!", "count": "{{count}} day streak", "logActivity": "Log today's activity", "info": "Complete one room or lab per day to maintain your streak.", "label": "Streak", "hint": "Complete a room or lab daily to keep your streak going." },
       "courseProgress": { "title": "Course Progress", "continue": "Continue" },
-      "hero": { "tagline": "What will you hack today?", "resume": "Pick up where you left off", "newLab": "Start a new lab", "viewCourses": "View my courses" }
+      "hero": { "tagline": "What will you hack today?", "resume": "Pick up where you left off", "newLab": "Start a new lab", "viewCourses": "View my courses", "welcomeBack": "Welcome back,", "welcome": "Welcome,", "operatorFallback": "Operator", "allMissionsComplete": "All missions complete", "allRoomsComplete": "You have completed every available room.", "reviewCurriculum": "Review Curriculum", "continueTraining": "Continue your training", "pickUpWhere": "Pick up where you left off.", "beginJourney": "Begin your journey", "startHpb": "Start the Hacker Protocol Bootcamp and earn your first CP.", "continue": "Continue", "startTraining": "Start Training" }
     },
     "myCourses": {
       "seoTitle": "My Courses",
@@ -688,10 +769,29 @@
       "complete": { "title": "Room Complete", "congrats": "Congratulations!", "cpEarned": "+{{cp}} CP earned", "nextRoom": "Next Room", "backToCourse": "Back to Course" },
       "loading": "Loading room…",
       "notFound": "Room not found.",
+      "notFoundDesc": "This room doesn't exist in the bootcamp config.",
       "error": "An error occurred. Please try refreshing.",
+      "roomLocked": "This room is locked. Your instructor will unlock it when it's time.",
+      "backToBootcamp": "Back to Bootcamp",
+      "backToCurriculum": "Back to Curriculum",
+      "noStepsAvailable": "No steps available yet",
+      "checkBackLater": "Check back later for new content",
+      "sidebar": {
+        "curriculum": "Curriculum",
+        "roomNavigator": "Room Navigator",
+        "closeCurriculum": "Close curriculum"
+      },
       "header": { "phaseLabel": "{{codename}} — {{phase}}", "duration": "{{min}} min", "steps": "{{count}} steps", "sessionTime": "Session: {{time}}", "completeBadge": "Room Complete" },
       "progress": { "title": "Progress", "stepsCount": "{{viewed}} / {{total}} steps", "sessionTime": "Time in session: {{time}}" },
-      "nav": {
+  "common": {
+    "updating": "Updating...",
+    "generating": "Generating...",
+    "acknowledging": "Acknowledging...",
+    "deleting": "Deleting...",
+    "prev": "Prev",
+    "next": "Next"
+  },
+  "nav": {
         "jump": "Jump",
         "fullscreenTitle": "Toggle fullscreen (F)",
         "fullscreen": { "exit": "Exit", "enter": "Full" },
@@ -798,7 +898,17 @@
         "description": "Your recovery token is used to restore access to your account.",
         "generate": "Generate New Token",
         "copy": "Copy to clipboard",
-        "copied": "Copied!"
+        "copied": "Copied!",
+        "copyNowWarning": "Copy this now — it won't be shown again",
+        "acknowledging": "Acknowledging...",
+        "savedToken": "I've saved my token",
+        "tokenSaved": "Token saved",
+        "tokenExists": "Token exists",
+        "acknowledged": "Acknowledged",
+        "invalidateWarning": "This will invalidate your current token. Are you sure?",
+        "generating": "Generating...",
+        "regenerate": "Regenerate",
+        "noTokenYet": "No recovery token yet. Generate one to protect your account."
       },
       "notifications": {
         "title": "Notification Preferences",
@@ -809,7 +919,18 @@
         "cpAlerts": "CP alerts",
         "marketing": "Marketing emails",
         "saved": "Saved",
-        "saving": "Saving…"
+        "saving": "Saving…",
+        "receiveEmail": "Receive email notifications",
+        "receivePush": "Receive push notifications",
+        "courseAndMission": "Course and mission updates",
+        "cpAlertsDesc": "CyberPoints alerts",
+        "productService": "Product and service updates",
+        "systemUpdates": "System updates",
+        "systemUpdatesDesc": "Platform and system notifications",
+        "sound": "Sound",
+        "soundDesc": "Notification sounds",
+        "desktopNotifications": "Desktop notifications",
+        "desktopNotificationsDesc": "Browser notification popups"
       },
       "appearance": {
         "title": "Appearance",
@@ -868,7 +989,8 @@
         "deleteConfirmTitle": "Delete Account?",
         "deleteConfirmDesc": "This will permanently delete your account and all associated data. This action cannot be undone.",
         "deleteSuccess": "Account deleted successfully.",
-        "deleteFailed": "Failed to delete account."
+        "deleteFailed": "Failed to delete account.",
+        "deleting": "Deleting..."
       },
       "twoFactor": {
         "title": "Two-Factor Authentication",
@@ -906,15 +1028,24 @@
       "badges": "Badges",
       "badgesEmpty": "No badges earned yet.",
       "stats": { "cp": "CP Earned", "rooms": "Rooms Done", "streak": "Streak" },
+      "publicView": "Public View",
+      "achievements": "Achievements",
+      "collapse": "Collapse",
+      "expand": "Expand",
+      "hpbGraduate": "HPB Graduate",
+      "viewRoom": "View room",
+      "operatorFallback": "operator",
       "editModal": {
         "title": "Edit Profile",
         "displayName": "Display Name",
         "displayNamePlaceholder": "Enter your display name",
+        "handle": "Operator Handle",
         "bio": "Bio",
         "bioPlaceholder": "Tell us about yourself…",
         "org": "Organization",
         "orgPlaceholder": "Your organization (optional)",
-        "save": "Save Changes"
+        "save": "Save Changes",
+        "saving": "Saving..."
       }
     },
     "notificationsPage": {
@@ -925,7 +1056,8 @@
       "markAllRead": "Mark All Read",
       "empty": { "unread": "No unread notifications.", "all": "No notifications yet — you're clear." },
       "markRead": "Mark read",
-      "loadMore": "Load more ({{count}} remaining)"
+      "loadMore": "Load more ({{count}} remaining)",
+      "unread": "Unread"
     },
     "newsFeed": {
       "seoTitle": "News Feed",
@@ -937,7 +1069,9 @@
       "readMore": "Read more",
       "empty": "No articles found.",
       "featured": "Featured",
-      "latest": "Latest"
+      "latest": "Latest",
+      "feedError": "Feed Error",
+      "updating": "Updating"
     },
     "marketplace": {
       "seoTitle": "Marketplace",
@@ -950,7 +1084,16 @@
       "redeemed": "Redeemed",
       "price": "{{cp}} CP",
       "empty": "No items found.",
-      "insufficientCp": "Insufficient CP"
+      "insufficientCp": "Insufficient CP",
+      "owned": "Owned",
+      "public": "Public",
+      "intelligenceAsset": "Intelligence Asset",
+      "defaultDescription": "Secure intelligence report for offensive security operatives.",
+      "freeAccess": "Free Access",
+      "download": "Download",
+      "unlock": "Unlock",
+      "cpBalance": "CP Balance",
+      "loadMore": "Load more ({{count}} remaining)"
     },
     "competitive": {
       "seoTitle": "Competitive Leaderboard",
@@ -966,7 +1109,8 @@
       "youBadge": "You",
       "roomCount": "{{count}} rooms",
       "ranks": { "vanguard": "Vanguard", "architect": "Architect", "specialist": "Specialist", "contributor": "Contributor", "candidate": "Candidate" },
-      "anonymous": "Anonymous"
+      "anonymous": "Anonymous",
+      "rooms": "rooms"
     },
     "networks": {
       "seoTitle": "Network Lab",
@@ -991,6 +1135,18 @@
       "searchPlaceholder": "Search labs…",
       "empty": { "title": "No labs found", "description": "Try adjusting your search or filter criteria." },
       "labCard": { "start": "Start", "reward": "{{range}} CP" },
+      "list": {
+        "privesc": { "title": "Privilege Escalation", "description": "Escalate permissions and gain root access on vulnerable systems" },
+        "passwords": { "title": "Password Cracking", "description": "Crack password hashes using brute-force and dictionary attacks" },
+        "webapp": { "title": "Web Exploitation", "description": "Exploit web application vulnerabilities and misconfigurations" },
+        "sqli": { "title": "SQL Injection", "description": "Extract data through SQL injection attacks on databases" },
+        "phishing": { "title": "Phishing Analysis", "description": "Identify and analyze phishing campaigns and social engineering" },
+        "proxy": { "title": "Web Proxy", "description": "Intercept and manipulate HTTP traffic using proxy tools" },
+        "traffic": { "title": "Traffic Analysis", "description": "Analyze network traffic patterns and detect suspicious activity" },
+        "osint": { "title": "OSINT Recon", "description": "Gather intelligence using open source investigation techniques" },
+        "wireless": { "title": "Wireless Security", "description": "Test wireless network security and crack encryption protocols" },
+        "killchain": { "title": "Kill Chain", "description": "Execute a full penetration test from recon to exploitation" }
+      },
       "relatedContent": { "title": "Continue This Topic" },
       "scenarioComplete": "Scenario Complete",
       "reward": "+{{cp}} CP earned.",
@@ -1120,7 +1276,27 @@
       "tip": { "label": "Tip", "text": "Start with the easier scenarios (beginner) and work your way up to more advanced challenges." }
     },
     "labStoryPanel": { "timeline": "Mission Timeline", "hintButton": "Need a hint?", "progress": "Progress", "progressCount": "{{completed}} / {{total}}" },
-    "installBanner": { "title": "Install QYVORA", "description": "Get the full experience with our desktop app.", "install": "Install", "dismiss": "Not now" }
+    "installBanner": { "title": "Install QYVORA", "description": "Get the full experience with our desktop app.", "install": "Install", "dismiss": "Not now" },
+    "toolChooser": {
+      "chooseHowToOpen": "Choose how to open",
+      "openInPanel": "Open in Panel",
+      "openInPanelDesc": "Opens as a modal panel inside the current page",
+      "openFullScreen": "Open Full Screen",
+      "openFullScreenDesc": "Opens in a new browser tab, full screen",
+      "openTool": "Open {{tool}}"
+    },
+    "eventReview": {
+      "title": "Event Registration",
+      "reviewPrompt": "Submit a quick review to unlock access. You'll receive +{{cp}} CP.",
+      "leaveReview": "Leave Your Review",
+      "reviewPlaceholder": "Share your thoughts about the platform...",
+      "submitReview": "Submit Review (+{{cp}} CP)",
+      "errorEmpty": "Please share your thoughts about QYVORA.",
+      "errorEnded": "This event has already ended. Reviews are no longer accepted.",
+      "errorExpired": "Session expired. Please log in and try again.",
+      "errorCsrf": "Security token mismatch. Please refresh the page and try again.",
+      "errorGeneric": "Failed to submit review. Please try again."
+    }
   },
   "auth2": {
     "forgot": {
