@@ -57,21 +57,21 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   return (
     <div className="flex flex-col justify-between h-full">
       {skills.map((skill) => (
-        <div key={skill.key} className="flex items-center gap-2">
+        <div key={skill.key} className="flex items-center gap-3">
           <div
-            className="w-2 h-2 rounded-full shrink-0"
+            className="w-2.5 h-2.5 rounded-full shrink-0"
             style={{ backgroundColor: skill.color }}
           />
-          <span className="text-[9px] font-black uppercase tracking-widest text-text-muted min-w-[72px] truncate">
+          <span className="text-[10px] font-black uppercase tracking-widest text-text-muted min-w-[80px] truncate">
             {skill.shortLabel}
           </span>
-          <div className="flex-1 h-1.5 rounded-full bg-accent-dim/20 overflow-hidden">
+          <div className="flex-1 h-2.5 rounded-full bg-accent-dim/20 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
             />
           </div>
-          <span className="text-[9px] font-black text-text-primary w-10 text-right tabular-nums">
+          <span className="text-[10px] font-black text-text-primary w-12 text-right tabular-nums">
             {skill.completed}/{skill.total}
           </span>
         </div>
