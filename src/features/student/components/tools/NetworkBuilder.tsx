@@ -386,7 +386,7 @@ const NetworkBuilder: React.FC<NetworkBuilderProps> = ({ open, onOpenChange, sta
             }}
             proOptions={{ hideAttribution: true }}
           >
-            <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(255,255,255,0.03)" />
+            <Background variant={BackgroundVariant.Cross} gap={15} size={1} color="rgba(255,255,255,0.06)" />
             <MiniMap style={minimapStyle} nodeColor={(n) => {
               const data = n.data as DeviceNodeData;
               return data?.deviceType ? getDeviceDef(data.deviceType).color : '#666';

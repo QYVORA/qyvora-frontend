@@ -4,6 +4,10 @@ import {
   Scale, KeyRound, Eye, Network, Radio,
   HardDrive, Mail, Cloud, FileCode, Database, FolderOpen,
   Lock, Users, Clock, Activity, Box, Container,
+  Cable, Plug, ArrowRightLeft, Merge,
+  Lightbulb,
+  Satellite, Signal, Waves,
+  Bluetooth,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -112,36 +116,36 @@ export const DEVICE_CATEGORIES: { id: DeviceCategory; label: string; types: Devi
   },
 ];
 
-export const CONNECTION_MEDIA = [
+export const CONNECTION_MEDIA: { category: string; items: { id: string; label: string; icon: LucideIcon }[] }[] = [
   {
     category: 'Copper',
     items: [
-      { id: 'ethernet', label: 'Ethernet', icon: '🔌' },
-      { id: 'rj45', label: 'RJ45', icon: '🔌' },
-      { id: 'straight-through', label: 'Straight-through', icon: '🔌' },
-      { id: 'crossover', label: 'Crossover', icon: '🔀' },
+      { id: 'ethernet', label: 'Ethernet', icon: Cable },
+      { id: 'rj45', label: 'RJ45', icon: Plug },
+      { id: 'straight-through', label: 'Straight-through', icon: Cable },
+      { id: 'crossover', label: 'Crossover', icon: ArrowRightLeft },
     ],
   },
   {
     category: 'Fiber',
     items: [
-      { id: 'single-mode', label: 'Single-mode Fiber', icon: '💡' },
-      { id: 'multi-mode', label: 'Multi-mode Fiber', icon: '💡' },
+      { id: 'single-mode', label: 'Single-mode Fiber', icon: Lightbulb },
+      { id: 'multi-mode', label: 'Multi-mode Fiber', icon: Lightbulb },
     ],
   },
   {
     category: 'WAN',
     items: [
-      { id: 'serial', label: 'Serial', icon: '📡' },
-      { id: 'mpls', label: 'MPLS', icon: '📡' },
-      { id: 'leased-line', label: 'Leased Line', icon: '📡' },
+      { id: 'serial', label: 'Serial', icon: Satellite },
+      { id: 'mpls', label: 'MPLS', icon: Signal },
+      { id: 'leased-line', label: 'Leased Line', icon: Waves },
     ],
   },
   {
     category: 'Wireless',
     items: [
-      { id: 'wifi', label: 'Wi-Fi', icon: '📶' },
-      { id: 'bluetooth', label: 'Bluetooth', icon: '🔵' },
+      { id: 'wifi', label: 'Wi-Fi', icon: Radio },
+      { id: 'bluetooth', label: 'Bluetooth', icon: Bluetooth },
     ],
   },
 ];
