@@ -22,7 +22,11 @@
     "labs": "Labs",
     "settings": "Settings",
     "competitive": "Competitive",
-    "notifications": "Notifications",
+    "notifications": {
+      "title": "Notifications",
+      "markedAsRead": "Marked as read",
+      "markAsReadFailed": "Failed to mark as read"
+    },
     "more": "More",
     "cyberFeed": "Cyber Feed",
     "curriculum": "Curriculum",
@@ -125,7 +129,9 @@
     "send": "Send",
     "retry": "Retry",
     "dismiss": "Dismiss",
-    "joinNow": "Join Now"
+    "joinNow": "Join Now",
+    "all": "All",
+    "purge": "Purge"
   },
   "heading": {
     "operatorLogin": "Operator Login",
@@ -164,7 +170,12 @@
     "newPassword": "New Password",
     "displayName": "Display Name",
     "bio": "Bio",
-    "organization": "Organization"
+    "organization": "Organization",
+    "title": "Title",
+    "business": "Business",
+    "phone": "Phone",
+    "website": "Website",
+    "packageServiceType": "Package / Service Type"
   },
   "stat": {
     "rank": "Rank",
@@ -197,7 +208,10 @@
     "active": "Active",
     "elite": "Elite",
     "registerd": "Registered",
-    "you": "You"
+    "you": "You",
+    "blocked": "Blocked",
+    "offline": "Offline",
+    "unlocked": "Unlocked"
   },
   "hero": {
     "welcomeBack": "Welcome back,",
@@ -346,7 +360,10 @@
     "closeTools": "Close tools",
     "closeSidebar": "Close sidebar",
     "togglePassword": "Toggle password visibility",
-    "copyToken": "Copy token"
+    "copyToken": "Copy token",
+    "close": "Close",
+    "notifications": "Notifications",
+    "sessionTerminated": "Session terminated"
   },
   "auth": {
     "signIntoContinue": "Sign in to continue your training.",
@@ -740,7 +757,10 @@
       "achievements": "Achievements",
       "myProgress": "My Progress",
       "userFallback": "User",
-      "viewProfile": "View Profile"
+      "viewProfile": "View Profile",
+      "rooms": "Rooms",
+      "cp": "CP",
+      "streak": "Streak"
     },
     "topbar": {
       "search": {
@@ -752,7 +772,8 @@
         "title": "Notifications",
         "empty": "No new notifications",
         "preferences": "Notification preferences",
-        "viewAll": "View all notifications"
+        "viewAll": "View all notifications",
+        "markAllRead": "Mark all as read"
       },
       "news": {
         "title": "Recent News",
@@ -913,7 +934,11 @@
         "startHpb": "Start the Hacker Protocol Bootcamp and earn your first CP.",
         "continue": "Continue",
         "startTraining": "Start Training"
-      }
+      },
+      "skillMatrix": "Skill Matrix",
+      "skillMatrixSub": "Overall",
+      "skillStats": "Skill Progress",
+      "skillStatsSub": "Completion"
     },
     "myCourses": {
       "seoTitle": "My Courses",
@@ -1512,6 +1537,21 @@
       "backToCourse": "Back to Course",
       "previous": "Previous",
       "next": "Next"
+    },
+    "studentBootcampCard": {
+      "comingSoon": "Coming Soon",
+      "phasesCount": "{{count}} Phases",
+      "reviewCurriculum": "Review Curriculum",
+      "continueTraining": "Continue Training",
+      "enrollNow": "Enroll Now"
+    },
+    "courses": {
+      "bootcamp": "Bootcamp",
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+      }
     }
   },
   "components": {
@@ -1877,7 +1917,12 @@
       "blockedToast": "User blocked",
       "blockFailed": "Block action failed",
       "deletedToast": "User deleted",
-      "deleteFailed": "Delete failed"
+      "deleteFailed": "Delete failed",
+      "recovery": "Recovery",
+      "tokenCopied": "Token copied to clipboard",
+      "acknowledgedToken": "Token acknowledged",
+      "unblockUser": "Unblock User",
+      "blockUser": "Block User"
     },
     "inbox": {
       "loadFailed": "Failed to load inbox",
@@ -1899,7 +1944,12 @@
       "noMessage": "No message",
       "updateStatus": "Update Status:",
       "deleteMessage": "Delete Message",
-      "deleteConfirmDescription": "Are you sure you want to delete this message? This action cannot be undone."
+      "deleteConfirmDescription": "Are you sure you want to delete this message? This action cannot be undone.",
+      "updated": "Inbox updated",
+      "contact": "Contact",
+      "service": "Service",
+      "deleteTitle": "Delete Inquiry",
+      "serviceRequest": "Service Request"
     },
     "broadcast": {
       "newAnnouncement": "New Announcement",
@@ -1917,7 +1967,12 @@
       "preview": "Preview",
       "sendAnnouncement": "Send Announcement",
       "confirmBroadcast": "Confirm Broadcast",
-      "sending": "Sending..."
+      "sending": "Sending...",
+      "sendFailed": "Failed to send broadcast",
+      "student": "Student",
+      "admin": "Admin",
+      "confirmTitle": "Confirm Broadcast",
+      "users": "Users"
     },
     "security": {
       "events24h": "Events 24h",
@@ -1962,7 +2017,20 @@
       "productUpdated": "Product updated",
       "productCreated": "Product created",
       "deleteProduct": "Delete Product",
-      "deleteProductConfirm": "Are you sure you want to delete this product? This action cannot be undone."
+      "deleteProductConfirm": "Are you sure you want to delete this product? This action cannot be undone.",
+      "editingAsset": "Editing Asset",
+      "assetTitlePlaceholder": "Enter asset title",
+      "assetDescriptionPlaceholder": "Enter asset description",
+      "zeroCost": "Zero Cost",
+      "classificationPlaceholder": "Select classification",
+      "publicDomainFree": "Public Domain (Free)",
+      "asset": "Asset",
+      "title": "Title",
+      "valuation": "Valuation",
+      "status": "Status",
+      "actions": "Actions",
+      "freeAccess": "Free Access",
+      "operational": "Operational"
     },
     "bootcamps": {
       "loadingPanel": "Loading control panel…",
@@ -1980,7 +2048,16 @@
       "unlockNextPhase": "Unlock next phase",
       "allPhasesUnlocked": "All phases are unlocked",
       "allPhases": "All phases",
-      "roomsCount": "{{count}} rooms"
+      "roomsCount": "{{count}} rooms",
+      "failed": "Failed to load",
+      "loading": "Loading...",
+      "engagedInCurrentPhase": "Engaged in current phase",
+      "live": "Live",
+      "whenOffDescription": "Turn off when bootcamp is not active",
+      "bootcampPaused": "Bootcamp paused",
+      "bootcampStarted": "Bootcamp started",
+      "moduleUnlocked": "Module unlocked",
+      "rooms": "{{count}} Rooms"
     }
   },
   "news": {
@@ -2020,7 +2097,15 @@
     "notesPlaceholder": "Describe your project scope, timeline, and specific security concerns...",
     "sendFailed": "Failed to send request. Please try again or email us directly.",
     "transmitting": "Transmitting...",
-    "submitRequest": "Submit Request"
+    "submitRequest": "Submit Request",
+    "requestAssessment": "Request Assessment",
+    "description": "Describe your needs and we'll get back to you.",
+    "requestReceivedDesc": "Your request has been received. We'll contact you shortly.",
+    "introText": "We offer comprehensive cybersecurity services including ",
+    "bootcampsHighlight": "bootcamps, training, ",
+    "introTextEnd": "and consulting.",
+    "fullName": "Full Name",
+    "sendError": "Failed to send request. Please try again."
   },
   "common2": {
     "unknown": "Unknown",
@@ -2177,7 +2262,12 @@
       "title": "No operators ranked yet",
       "description": "Complete bootcamp rooms to earn CP and appear on the leaderboard."
     },
-    "footer": "CP balances verified on QYVORA Chain · {{count}} operators"
+    "footer": "CP balances verified on QYVORA Chain · {{count}} operators",
+    "stats": {
+      "operators": "Operators",
+      "totalCp": "Total CP",
+      "topCp": "Top CP"
+    }
   },
   "quiterootPage": {
     "hero": {
@@ -2281,5 +2371,10 @@
       "description": "Protect your apps with our comprehensive penetration testing services.",
       "cta": "Request Assessment"
     }
+  },
+  "common": {
+    "prev": "Previous",
+    "next": "Next",
+    "updating": "Updating..."
   }
 }
