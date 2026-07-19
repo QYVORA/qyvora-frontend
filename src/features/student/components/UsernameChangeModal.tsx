@@ -26,9 +26,9 @@ const UsernameChangeModal = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const clean = handle.trim().toLowerCase();
-    if (!clean) { setError('Handle is required.'); return; }
+    if (!clean) { setError(t('validation.handleRequired')); return; }
     if (!HANDLE_PATTERN.test(clean) || clean.includes('--')) {
-      setError('Use only letters, numbers, and hyphens. No spaces or consecutive hyphens.');
+      setError(t('validation.handleInvalidChars'));
       return;
     }
     setSaving(true);
@@ -38,7 +38,7 @@ const UsernameChangeModal = () => {
       await refreshMe();
       setOpen(false);
     } catch (err: any) {
-      setError(err?.response?.data?.error || 'Failed to update handle. Try again.');
+      setError(err?.response?.data?.error || t('validation.handleUpdateFailed'));
     } finally {
       setSaving(false);
     }
@@ -65,7 +65,7 @@ const UsernameChangeModal = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="username-change" className="text-xs font-bold text-text-muted uppercase tracking-widest">
-                Username
+                {t('student.usernameChange.usernameLabel')}
               </label>
               <input
                 id="username-change"
@@ -84,7 +84,7 @@ const UsernameChangeModal = () => {
                 selectedHandle={handle}
               />
               <p className="text-[10px] text-text-muted/60">
-                Letters, numbers, and hyphens only. No spaces. Must be unique.
+                {t('student.usernameChange.handleRules')}
               </p>
             </div>
 

@@ -5,10 +5,26 @@ import LabsPage from '../LabsPage';
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string) => translations[key] || key,
     i18n: { language: 'en' },
   }),
 }));
+
+const translations: Record<string, string> = {
+  'student.labs.title': 'Attack Labs',
+  'student.labs.list.privesc.title': 'Privilege Escalation',
+  'student.labs.list.passwords.title': 'Password Cracking',
+  'student.labs.list.webapp.title': 'Web Exploitation',
+  'student.labs.list.sqli.title': 'SQL Injection',
+  'student.labs.list.phishing.title': 'Phishing Analysis',
+  'student.labs.list.proxy.title': 'Web Proxy',
+  'student.labs.list.traffic.title': 'Traffic Analysis',
+  'student.labs.list.osint.title': 'OSINT Recon',
+  'student.labs.list.wireless.title': 'Wireless Security',
+  'student.labs.list.killchain.title': 'Kill Chain',
+  'student.labs.filter.all': 'All',
+  'student.labs.search.placeholder': 'Search labs...',
+};
 
 vi.mock('@/shared/components/SEO', () => ({
   default: () => null,

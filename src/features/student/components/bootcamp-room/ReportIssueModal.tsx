@@ -20,7 +20,7 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
 
   const submit = async () => {
     if (!issueText.trim()) {
-      addToast(t('student.bootcampRoom.reportIssue.describeIssue'), 'error');
+      addToast(t('validation.describeIssue'), 'error');
       return;
     }
     setSubmitting(true);
@@ -33,10 +33,10 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
         description: issueText,
         url: window.location.href,
       });
-      addToast(t('student.bootcampRoom.reportIssue.reported'), 'success');
+      addToast(t('toast.issueReported'), 'success');
       onClose();
     } catch (err: any) {
-      addToast(err?.response?.data?.error || t('student.bootcampRoom.reportIssue.submitError'), 'error');
+      addToast(err?.response?.data?.error || t('toast.issueReportFailed'), 'error');
     } finally {
       setSubmitting(false);
     }
@@ -47,7 +47,7 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
       <DialogContent title={t('student.bootcampRoom.reportIssue.title')} maxWidth="max-w-xl" className="shadow-none">
         <div className="flex items-center gap-2 mb-4">
           <Flag className="h-4 w-4 text-accent" />
-          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.bootcampRoom.reportIssue.roomFeedback')}</h3>
+          <h3 className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.bootcampRoom.reportIssue.feedbackLabel')}</h3>
         </div>
         <p className="text-sm text-text-muted mb-4">
           {t('student.bootcampRoom.reportIssue.description')}
@@ -66,8 +66,8 @@ const ReportIssueModal: React.FC<Props> = ({ phaseId, roomId, stepIdx, onClose }
             className="btn-primary flex-1 py-2.5 text-sm disabled:opacity-50"
           >
             {submitting
-              ? <><Loader2 className="h-3.5 w-3.5 animate-spin inline mr-2" />{t('button.submitting')}</>
-              : t('student.bootcampRoom.reportIssue.submitReport')}
+              ? <><Loader2 className="h-3.5 w-3.5 animate-spin inline mr-2" />{t('student.bootcampRoom.reportIssue.submitting')}</>
+              : t('student.bootcampRoom.reportIssue.submit')}
           </button>
           <button onClick={onClose} className="btn-secondary px-4 py-2.5 text-sm">
             {t('button.cancel')}

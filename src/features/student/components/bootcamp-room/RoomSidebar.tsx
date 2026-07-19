@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Github } from 'lucide-react';
 import { IconArrowLeft, IconCheck, IconLock, IconX } from '@/shared/components/icons';
@@ -23,6 +24,7 @@ const RoomSidebar: React.FC<Props> = ({
   onNavigate, mobileOpen, onMobileClose,
 }) => {
   useScrollLock(mobileOpen);
+  const { t } = useTranslation();
   const content = (
     <nav className="flex flex-col gap-1 p-3 pb-6">
       <div className="mb-3 px-1">
@@ -31,7 +33,7 @@ const RoomSidebar: React.FC<Props> = ({
           className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
           onClick={onMobileClose}
         >
-          <IconArrowLeft size={12} /> Back to Curriculum
+          <IconArrowLeft size={12} /> {t('student.bootcampRoom.backToCurriculum')}
         </Link>
       </div>
 
@@ -100,13 +102,13 @@ const RoomSidebar: React.FC<Props> = ({
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-3.5 bg-bg/95 backdrop-blur-md shrink-0">
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">Curriculum</p>
-                  <p className="text-xs font-black text-text-primary">Room Navigator</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">{t('student.bootcampRoom.sidebar.curriculum')}</p>
+                  <p className="text-xs font-black text-text-primary">{t('student.bootcampRoom.sidebar.roomNavigator')}</p>
                 </div>
                 <button
                   onClick={onMobileClose}
                   className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-accent hover:bg-accent-dim/10 transition-colors"
-                  aria-label="Close curriculum"
+                  aria-label={t('student.bootcampRoom.sidebar.closeCurriculum')}
                 >
                   <IconX size={16} />
                 </button>

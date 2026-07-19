@@ -35,10 +35,10 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
         organization: form.organization.trim(),
       });
       onSaved(res.data);
-      addToast('Profile updated.', 'success');
+      addToast(t('toast.profileUpdated'), 'success');
       onOpenChange(false);
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Update failed.', 'error');
+      addToast(err?.response?.data?.error || t('toast.profileUpdateFailed'), 'error');
     } finally {
       setSaving(false);
     }
@@ -56,7 +56,7 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
             <input id="edit-display-name" value={form.name} onChange={set('name')} placeholder={t('student.profile.editModal.displayNamePlaceholder')} className={inputCls} />
           </div>
           <div>
-            <label htmlFor="edit-handle" className={labelCls}>Operator Handle</label>
+            <label htmlFor="edit-handle" className={labelCls}>{t('student.profile.editModal.handle')}</label>
             <input id="edit-handle" value={form.hackerHandle} onChange={set('hackerHandle')} placeholder="kwame-operator" className={inputCls} />
             <div className="mt-2">
               <HandleSuggestions
@@ -84,7 +84,7 @@ const EditModal: React.FC<EditModalProps> = ({ open, onOpenChange, initial, onSa
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => onOpenChange(false)} className="flex-1 btn-secondary !py-2.5 text-xs">{t('button.cancel')}</button>
             <button type="submit" disabled={saving} className="flex-1 btn-primary !py-2.5 text-xs flex items-center justify-center gap-2 disabled:opacity-50">
-              {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> Saving...</> : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
+              {saving ? <><Loader2 className="w-3 h-3 animate-spin" /> {t('student.profile.editModal.saving')}</> : <><Save className="w-3 h-3" /> {t('student.profile.editModal.save')}</>}
             </button>
           </div>
         </form>

@@ -66,10 +66,9 @@ const LoginPage: React.FC = () => {
 
       await login({ email, password, isAdminRoute: isAdminLoginRoute });
       
-      const meRes = await api.get('/auth/me').catch(() => null);
-      const isAdmin = String(meRes?.data?.role || '').toLowerCase() === 'admin';
-      
-      if (isAdmin) {
+      // login() already calls /auth/me and sets user state internally.
+      // Determine redirect based on isAdminRoute to avoid a redundant API call.
+      if (isAdminLoginRoute) {
         addToast('Session established.', 'success');
         navigate(`${ADMIN_PATH}/dashboard`);
         return;

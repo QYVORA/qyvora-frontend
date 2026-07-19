@@ -136,7 +136,6 @@ const Footer: React.FC = React.memo(() => {
                       <li key={link.key}>
                         <Link
                           to={link.path}
-                          onClick={() => window.scrollTo(0, 0)}
                           className="text-sm font-bold text-text-primary transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                         >
                           {t(FOOTER_LINK_KEYS[link.key] || link.label)}
@@ -155,7 +154,6 @@ const Footer: React.FC = React.memo(() => {
               <Link
                 key={idx}
                 to={link.path}
-                onClick={() => window.scrollTo(0, 0)}
                 className="text-[11px] text-text-muted/60 transition-colors hover:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 {t(FOOTER_BOTTOM_LINK_KEYS[link.label] || link.label)}

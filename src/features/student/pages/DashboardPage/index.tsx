@@ -40,16 +40,16 @@ import {
 } from '@/shared/components/icons';
 
 const LABS = [
-  { id: 'privesc', title: 'Privilege Escalation', description: 'Escalate permissions and gain root access', difficulty: 'beginner-advanced', cpReward: '50-400', route: '/dashboard/labs/privesc', accentColor: '#FBBF24' },
-  { id: 'passwords', title: 'Password Cracking', description: 'Crack password hashes using brute-force', difficulty: 'beginner-advanced', cpReward: '100-300', route: '/dashboard/labs/passwords', accentColor: '#F59E0B' },
-  { id: 'webapp', title: 'Web Exploitation', description: 'Exploit web application vulnerabilities', difficulty: 'beginner-advanced', cpReward: '100-400', route: '/dashboard/labs/web-exploitation', accentColor: '#EF4444' },
-  { id: 'sqli', title: 'SQL Injection', description: 'Extract data through SQL injection attacks', difficulty: 'beginner-advanced', cpReward: '200-400', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F' },
-  { id: 'phishing', title: 'Phishing Analysis', description: 'Identify and analyze phishing campaigns', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/phishing', accentColor: '#8B5CF6' },
-  { id: 'proxy', title: 'Web Proxy', description: 'Intercept and manipulate HTTP traffic', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/proxy', accentColor: '#10B981' },
-  { id: 'traffic', title: 'Traffic Analysis', description: 'Analyze network traffic patterns', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/traffic', accentColor: '#84CC16' },
-  { id: 'osint', title: 'OSINT Recon', description: 'Gather intelligence using open source techniques', difficulty: 'beginner-advanced', cpReward: '150-400', route: '/dashboard/labs/osint', accentColor: '#0EA5E9' },
-  { id: 'wireless', title: 'Wireless Security', description: 'Test wireless network security', difficulty: 'beginner-advanced', cpReward: '200-400', route: '/dashboard/labs/wireless', accentColor: '#F59E0B' },
-  { id: 'killchain', title: 'Kill Chain', description: 'Execute a full penetration test', difficulty: 'intermediate-advanced', cpReward: '500-600', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626' },
+  { id: 'privesc', titleKey: 'student.labs.list.privesc.title', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
+  { id: 'passwords', titleKey: 'student.labs.list.passwords.title', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300' },
+  { id: 'webapp', titleKey: 'student.labs.list.webapp.title', route: '/dashboard/labs/web-exploitation', accentColor: '#EF4444', difficulty: 'beginner-advanced', cpReward: '100-400' },
+  { id: 'sqli', titleKey: 'student.labs.list.sqli.title', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400' },
+  { id: 'phishing', titleKey: 'student.labs.list.phishing.title', route: '/dashboard/labs/phishing', accentColor: '#8B5CF6', difficulty: 'beginner-advanced', cpReward: '150-400' },
+  { id: 'proxy', titleKey: 'student.labs.list.proxy.title', route: '/dashboard/labs/proxy', accentColor: '#10B981', difficulty: 'beginner-advanced', cpReward: '150-400' },
+  { id: 'traffic', titleKey: 'student.labs.list.traffic.title', route: '/dashboard/labs/traffic', accentColor: '#84CC16', difficulty: 'beginner-advanced', cpReward: '150-400' },
+  { id: 'osint', titleKey: 'student.labs.list.osint.title', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400' },
+  { id: 'wireless', titleKey: 'student.labs.list.wireless.title', route: '/dashboard/labs/wireless', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '200-400' },
+  { id: 'killchain', titleKey: 'student.labs.list.killchain.title', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600' },
 ];
 import CpLogo from '@/shared/components/CpLogo';
 import { Link, useNavigate } from 'react-router-dom';
@@ -216,6 +216,7 @@ const DashboardSkeleton = () => (
 );
 
 const DashboardRoomCard = ({ room }: { room: any }) => {
+  const { t } = useTranslation();
   const hoverRef = useGsapHover<HTMLAnchorElement>({ scale: 1.02, y: -4 });
   return (
     <Link
@@ -225,7 +226,7 @@ const DashboardRoomCard = ({ room }: { room: any }) => {
     >
       <div className="flex items-center gap-2 mb-3">
         <IconCode size={22} className="text-accent/60" />
-        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Room</span>
+        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">{t('stat.room')}</span>
       </div>
       <h3 className="text-sm md:text-base font-black text-text-primary group-hover:text-accent transition-colors leading-snug break-words">{room.title}</h3>
     </Link>
@@ -253,9 +254,10 @@ const SectionButton = ({ icon, label, active, onClick }: { icon: React.ReactNode
 );
 
 const DashboardProductCard = ({ product }: { product: any }) => {
+  const { t } = useTranslation();
   const id = String(product?.id || '');
-  const title = String(product?.title || 'Intelligence Asset');
-  const description = String(product?.description || 'Secure intelligence report for offensive security operatives.');
+  const title = String(product?.title || t('student.dashboard.intelligenceAsset'));
+  const description = String(product?.description || t('student.dashboard.intelligenceDesc'));
   const coverUrl = resolveImg(product?.coverUrl, productFallbackImg);
 
   return (
@@ -272,7 +274,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
         />
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                         <span className="px-2 py-0.5 bg-bg/85 backdrop-blur-sm rounded-lg text-[10px] font-black uppercase text-accent tracking-widest shadow-sm flex items-center gap-1">
-            <IconMarketplace size={10} /> Intelligence Asset
+            <IconMarketplace size={10} /> {t('student.dashboard.intelligenceAsset')}
           </span>
         </div>
       </div>
@@ -286,7 +288,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             {product?.isFree ? (
-              <span className="text-xs font-black text-accent uppercase tracking-widest">Free</span>
+              <span className="text-xs font-black text-accent uppercase tracking-widest">{t('student.dashboard.free')}</span>
             ) : (
               <>
                 <CpLogo className="w-4 h-4" />
@@ -300,7 +302,7 @@ const DashboardProductCard = ({ product }: { product: any }) => {
             to="/dashboard/marketplace"
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/20 transition-colors"
           >
-            View <IconArrowRight size={12} />
+            {t('student.dashboard.view')} <IconArrowRight size={12} />
           </Link>
         </div>
       </div>
@@ -371,8 +373,8 @@ const Dashboard = () => {
         setCpBalance(user?.cp ?? 0);
         setSyncError('');
       } catch {
-        setSyncError('Could not sync. Showing cached data.');
-        addToast('Failed to load dashboard data', 'error');
+        setSyncError(t('empty.syncError'));
+        addToast(t('toast.loadFailed'), 'error');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -388,7 +390,7 @@ const Dashboard = () => {
     .slice(0, 4)
     .map(({ item, prog }) => ({
       id: String(item.id || ''),
-      title: item.title || 'Bootcamp',
+      title: item.title || t('student.courses.bootcamp'),
       description: String(item.description || '').trim(),
       level: String(item.level || '').trim(),
       duration: String(item.duration || '').trim(),
@@ -410,7 +412,7 @@ const Dashboard = () => {
   const totalRoomsDone = overviewModules.reduce((sum: number, m: any) => sum + Number(m.roomsCompleted || 0), 0);
   const allDone = isEnrolled && !nextMission && totalRoomsDone > 0;
   const streakDays = overview?.xpSummary?.streakDays ?? null;
-  const rankName = _r?.name || 'Candidate';
+  const rankName = _r?.name || t('stat.candidate');
 
   const heroRef = useGsapReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
   const statsRef = useGsapReveal<HTMLDivElement>({ y: 30, stagger: 0.1 });
@@ -438,7 +440,7 @@ const Dashboard = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Dashboard" description="Your training overview and active deployments on QYVORA." noindex />
+      <SEO title={t('student.dashboard.seoTitle')} description={t('student.dashboard.seoDesc')} noindex />
       <OnboardingWizard />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-10">
 
@@ -515,7 +517,7 @@ const Dashboard = () => {
                 <IconRank size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rank</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.rank')}</p>
                 <p className="text-xs md:text-sm font-black text-text-primary">{rankName}</p>
               </div>
             </div>
@@ -524,7 +526,7 @@ const Dashboard = () => {
                 <CpLogo className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">CP</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.cp')}</p>
                 <p className="text-xs md:text-sm font-black text-text-primary">{cpBalance.toLocaleString()}</p>
               </div>
             </div>
@@ -533,7 +535,7 @@ const Dashboard = () => {
                 <IconFire size={20} className="text-orange-400 md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Streak</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.streak')}</p>
                 <p className="text-xs md:text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
               </div>
             </div>
@@ -542,7 +544,7 @@ const Dashboard = () => {
                 <IconCode size={20} className="text-accent md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">Rooms Done</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.roomsDone')}</p>
                 <p className="text-xs md:text-sm font-black text-text-primary">{totalRoomsDone}</p>
               </div>
             </div>
@@ -559,18 +561,18 @@ const Dashboard = () => {
         {activeSection === 'courses' && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">Courses</h3>
+              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-muted">{t('student.dashboard.courses')}</h3>
               <Link to="/courses" className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline">
-                View All <IconArrowRight size={12} className="inline-block ml-1" />
+                {t('student.dashboard.viewAll')} <IconArrowRight size={12} className="inline-block ml-1" />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {COURSES.slice(0, 6).map((course) => {
                 const category = getCategoryById(course.categoryId);
                 const SKILL_CONFIG: Record<SkillLevel, { label: string; color: string; icon: React.ElementType }> = {
-                  beginner: { label: 'Beginner', color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
-                  intermediate: { label: 'Intermediate', color: 'text-blue-400 border-blue-400/30 bg-blue-400/10', icon: TrendingUp },
-                  advanced: { label: 'Advanced', color: 'text-red-400 border-red-400/30 bg-red-400/10', icon: GraduationCap },
+                  beginner: { label: t('student.courses.levels.beginner'), color: 'text-accent border-accent/30 bg-accent/10', icon: Sparkles },
+                  intermediate: { label: t('student.courses.levels.intermediate'), color: 'text-blue-400 border-blue-400/30 bg-blue-400/10', icon: TrendingUp },
+                  advanced: { label: t('student.courses.levels.advanced'), color: 'text-red-400 border-red-400/30 bg-red-400/10', icon: GraduationCap },
                 };
                 const skillCfg = SKILL_CONFIG[course.skillLevel];
                 const SkillIcon = skillCfg.icon;
@@ -605,7 +607,7 @@ const Dashboard = () => {
                           </span>
                         </div>
                         <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                          View <IconArrowRight className="h-3 w-3" />
+                          {t('student.dashboard.view')} <IconArrowRight className="h-3 w-3" />
                         </span>
                       </div>
                     </div>
@@ -643,7 +645,7 @@ const Dashboard = () => {
             <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-1 px-1">
               {LABS.map((lab) => (
                 <div key={lab.id} className="min-w-[calc((100%-32px)/3)] snap-start flex-shrink-0">
-                  <LabCard {...lab} />
+                  <LabCard id={lab.id} title={t(lab.titleKey)} description={t(lab.titleKey)} difficulty={lab.difficulty} cpReward={lab.cpReward} route={lab.route} accentColor={lab.accentColor} />
                 </div>
               ))}
             </div>

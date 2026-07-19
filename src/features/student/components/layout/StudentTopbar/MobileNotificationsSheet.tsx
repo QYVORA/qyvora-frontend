@@ -35,7 +35,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
         <div className="px-5 py-3 border-b border-border flex items-center justify-between flex-none">
           <div>
             <div className="text-sm font-black uppercase tracking-widest text-text-primary">{t('student.topbar.notifications.title')}</div>
-            <div className="text-[10px] text-text-muted">{t('student.topbar.notifications.unreadCount', { count: unreadCount })}</div>
+            <div className="text-[10px] text-text-muted">{t('common2.unreadCount', { count: unreadCount })}</div>
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
@@ -52,7 +52,7 @@ const MobileNotificationsSheet: React.FC<MobileNotificationsSheetProps> = ({
           {notifLoading ? (
             <div className="p-5 text-sm text-text-muted text-center"><Loader2 className="h-6 w-6 animate-spin inline-block" /> {t('components.common.loading')}</div>
           ) : notificationsPreview.length === 0 ? (
-            <div className="p-5 text-sm text-text-muted text-center">{t('empty.notifications')}</div>
+            <div className="p-5 text-sm text-text-muted text-center">{t('empty.noNotifications')}</div>
           ) : (
             notificationsPreview.map((item) => (
               <div

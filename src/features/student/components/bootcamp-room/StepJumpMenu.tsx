@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { List } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
@@ -13,14 +14,15 @@ interface Props {
 }
 
 const StepJumpMenu: React.FC<Props> = ({ steps, currentStepIdx, viewedSteps, onJump, isOpen, onClose }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent title="Jump to Step" maxWidth="max-w-md" className="shadow-none">
+      <DialogContent title={t('student.bootcampRoom.stepJump.title')} maxWidth="max-w-md" className="shadow-none">
         <div className="flex items-center gap-2 mb-3">
           <List className="h-4 w-4 text-accent" />
-          <p className="text-xs font-black uppercase tracking-widest text-text-primary">Select a step</p>
+          <p className="text-xs font-black uppercase tracking-widest text-text-primary">{t('student.bootcampRoom.stepJump.selectStep')}</p>
         </div>
         <div className="max-h-96 overflow-y-auto">
           <div className="space-y-1">

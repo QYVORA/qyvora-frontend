@@ -47,7 +47,7 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     api.get('/notifications')
       .then((res) => setNotifications(Array.isArray(res.data) ? res.data : []))
-      .catch(() => { setNotifications([]); addToast('Failed to load notifications', 'error'); })
+      .catch(() => { setNotifications([]); addToast(t('toast.notificationsLoadFailed'), 'error'); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -56,7 +56,7 @@ const Notifications: React.FC = () => {
       await api.post(`/notifications/${id}/read`, {});
       setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
     } catch {
-      addToast('Could not mark as read.', 'error');
+      addToast(t('toast.markReadError'), 'error');
     }
   };
 
@@ -65,9 +65,9 @@ const Notifications: React.FC = () => {
     try {
       await api.post('/notifications/read-all', {});
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      addToast('All notifications marked as read.', 'success');
+      addToast(t('toast.markAllSuccess'), 'success');
     } catch {
-      addToast('Could not mark all as read.', 'error');
+      addToast(t('toast.markAllError'), 'error');
     } finally {
       setMarkingAll(false);
     }
@@ -91,7 +91,7 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Notifications" description="System alerts, mission updates, and activity notifications on QYVORA." noindex />
+      <SEO title={t('student.notificationsPage.seoTitle')} description={t('student.notificationsPage.seoDesc')} noindex />
 
       {/* Fixed two-column container below topbar */}
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
@@ -108,7 +108,7 @@ const Notifications: React.FC = () => {
               icon={<Bell className="w-6 h-6 text-bg" />}
               title={t('student.notificationsPage.title')}
               description={t('student.notificationsPage.description')}
-              stats={[{ label: 'Unread', value: unreadCount }]}
+              stats={[{ label: t('student.notificationsPage.unread'), value: unreadCount }]}
               action={unreadCount > 0 ? {
                 label: t('student.notificationsPage.markAllRead'),
                 onClick: markAllRead,

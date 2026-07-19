@@ -18,6 +18,7 @@ const TABS = ['appearance', 'notifications', 'learning', 'codeEditor', 'data', '
 type Tab = typeof TABS[number];
 
 const PasswordField: React.FC<{ name: string; placeholder?: string; label: string; shake?: boolean; onAnimationEnd?: () => void; id: string }> = ({ name, placeholder = '••••••••', label, shake = false, onAnimationEnd, id }) => {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   return (
     <div>
@@ -25,7 +26,7 @@ const PasswordField: React.FC<{ name: string; placeholder?: string; label: strin
         <div className={`relative${shake ? ' animate-shake-x' : ''}`} onAnimationEnd={onAnimationEnd}>
           <input id={id} type={show ? 'text' : 'password'} name={name} required placeholder={placeholder} className={`${INPUT_CLS} pr-11${shake ? ' input-error' : ''}`} />
         <button type="button" onClick={() => setShow((s) => !s)}
-          aria-label="Toggle password visibility" className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
+          aria-label={t('aria.togglePassword')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors" tabIndex={-1}>
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
@@ -132,7 +133,7 @@ const Settings: React.FC = () => {
     const newPassword = String(fd.get('new_password') || '');
     const confirmPassword = String(fd.get('confirm_password') || '');
     if (newPassword !== confirmPassword) { addToast(t('validation.passwordMismatch'), 'error'); return; }
-    if (newPassword.length < 8) { addToast('Password must be at least 8 characters.', 'error'); return; }
+    if (newPassword.length < 8) { addToast(t('toast.passwordMinLength'), 'error'); return; }
     setChangingPwd(true);
     try {
       await api.put('/profile/password', { currentPassword, newPassword });
@@ -140,7 +141,7 @@ const Settings: React.FC = () => {
       form.reset();
     } catch (err: any) {
       setShakeCurrentPwd(true);
-      addToast(err?.response?.data?.error || 'Password change failed.', 'error');
+      addToast(err?.response?.data?.error || t('toast.passwordChangeFailed'), 'error');
     } finally { setChangingPwd(false); }
   };
 
@@ -150,7 +151,7 @@ const Settings: React.FC = () => {
       await navigator.clipboard.writeText(liveToken);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch { addToast('Could not copy to clipboard.', 'error'); }
+    } catch { addToast(t('toast.copyFailed'), 'error'); }
   };
 
   const acknowledgeToken = async () => {
@@ -159,8 +160,8 @@ const Settings: React.FC = () => {
       await api.post('/profile/recovery-token/ack', {});
       setRecoveryAcked(true);
       setLiveToken('');
-      addToast('Recovery token acknowledged.', 'success');
-    } catch { addToast('Could not acknowledge token.', 'error'); }
+      addToast(t('toast.recoveryTokenAcknowledged'), 'success');
+    } catch { addToast(t('toast.couldNotAcknowledgeToken'), 'error'); }
     finally { setAcking(false); }
   };
 
@@ -173,9 +174,9 @@ const Settings: React.FC = () => {
       setTokenAvailable(true);
       setRecoveryAcked(false);
       setRecoveryCreatedAt(res.data?.createdAt || new Date().toISOString());
-      addToast('New recovery token generated.', 'success');
+      addToast(t('toast.newRecoveryTokenGenerated'), 'success');
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Failed to generate token.', 'error');
+      addToast(err?.response?.data?.error || t('toast.failedToGenerateToken'), 'error');
     } finally { setRegenerating(false); }
   };
 
@@ -185,14 +186,14 @@ const Settings: React.FC = () => {
       if (twoFAEnabled) {
         await api.post('/auth/2fa/disable');
         setTwoFAEnabled(false);
-        addToast('2FA disabled.', 'success');
+        addToast(t('toast.twoFaDisabled'), 'success');
       } else {
         await api.post('/auth/2fa/enable');
         setTwoFAEnabled(true);
-        addToast('2FA enabled.', 'success');
+        addToast(t('toast.twoFaEnabled'), 'success');
       }
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Failed to update 2FA.', 'error');
+      addToast(err?.response?.data?.error || t('toast.failedToUpdateTwoFa'), 'error');
     } finally { setToggling2FA(false); }
   };
 
@@ -201,7 +202,7 @@ const Settings: React.FC = () => {
       await api.post(`/profile/sessions/${sessionId}/revoke`);
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
       addToast(t('student.settings.sessions.revokeSuccess'), 'success');
-    } catch { addToast('Failed to revoke session.', 'error'); }
+    } catch { addToast(t('toast.failedToRevokeSession'), 'error'); }
   };
 
   const handleRevokeAll = async () => {
@@ -210,7 +211,7 @@ const Settings: React.FC = () => {
       const currentUA = navigator.userAgent;
       setSessions((prev) => prev.filter((s) => s.userAgent === currentUA));
       addToast(t('student.settings.sessions.revokeAllSuccess'), 'success');
-    } catch { addToast('Failed to revoke sessions.', 'error'); }
+    } catch { addToast(t('toast.failedToRevokeSessions'), 'error'); }
   };
 
   const handleDeleteAccount = async () => {
@@ -349,28 +350,28 @@ const Settings: React.FC = () => {
                     <h2 className="text-base font-black uppercase tracking-widest">{t('student.settings.notifications.title')}</h2>
                   </div>
                   <div className="p-6 divide-y divide-border/30">
-                    <SettingsRow label={t('student.settings.notifications.email')} description="Receive email notifications">
+                    <SettingsRow label={t('student.settings.notifications.email')} description={t('student.settings.notifications.receiveEmail')}>
                       <Toggle checked={preferences.notifications.email} onChange={(v) => updateNotification('email', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label={t('student.settings.notifications.push')} description="Receive push notifications">
+                    <SettingsRow label={t('student.settings.notifications.push')} description={t('student.settings.notifications.receivePush')}>
                       <Toggle checked={preferences.notifications.push} onChange={(v) => updateNotification('push', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label={t('student.settings.notifications.mission')} description="Course and mission updates">
+                    <SettingsRow label={t('student.settings.notifications.mission')} description={t('student.settings.notifications.courseAndMission')}>
                       <Toggle checked={preferences.notifications.courseUpdates} onChange={(v) => updateNotification('courseUpdates', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label={t('student.settings.notifications.cpAlerts')} description="CyberPoints alerts">
+                    <SettingsRow label={t('student.settings.notifications.cpAlerts')} description={t('student.settings.notifications.cpAlertsDesc')}>
                       <Toggle checked={preferences.notifications.competitiveEvents} onChange={(v) => updateNotification('competitiveEvents', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label={t('student.settings.notifications.marketing')} description="Product and service updates">
+                    <SettingsRow label={t('student.settings.notifications.marketing')} description={t('student.settings.notifications.productService')}>
                       <Toggle checked={preferences.notifications.newBlogs} onChange={(v) => updateNotification('newBlogs', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label="System updates" description="Platform and system notifications">
+                    <SettingsRow label={t('student.settings.notifications.systemUpdates')} description={t('student.settings.notifications.systemUpdatesDesc')}>
                       <Toggle checked={preferences.notifications.systemUpdates} onChange={(v) => updateNotification('systemUpdates', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label="Sound" description="Notification sounds">
+                    <SettingsRow label={t('student.settings.notifications.sound')} description={t('student.settings.notifications.soundDesc')}>
                       <Toggle checked={preferences.notifications.soundEnabled} onChange={(v) => updateNotification('soundEnabled', v)} disabled={prefsSaving} />
                     </SettingsRow>
-                    <SettingsRow label="Desktop notifications" description="Browser notification popups">
+                    <SettingsRow label={t('student.settings.notifications.desktopNotifications')} description={t('student.settings.notifications.desktopNotificationsDesc')}>
                       <Toggle checked={preferences.notifications.desktopNotifications} onChange={(v) => updateNotification('desktopNotifications', v)} disabled={prefsSaving} />
                     </SettingsRow>
                   </div>
@@ -498,7 +499,7 @@ const Settings: React.FC = () => {
                       <PasswordField name="confirm_password" id="settings-confirm-password" label={t('student.settings.password.confirmLabel')} placeholder={t('student.settings.password.confirmPlaceholder')} />
                       <button type="submit" disabled={changingPwd}
                         className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
-                        {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> Updating...</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
+                        {changingPwd ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('common.updating')}</> : <><Save className="w-4 h-4" /> {t('student.settings.password.update')}</>}
                       </button>
                     </form>
                   </div>
@@ -519,16 +520,16 @@ const Settings: React.FC = () => {
                       {liveToken ? (
                         <div className="space-y-4">
                           <div className="p-4 bg-accent-dim/30 border border-accent/30 rounded-xl">
-                            <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">Copy this now — it won't be shown again</p>
+                            <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">{t('student.settings.recovery.copyNowWarning')}</p>
                             <div className="relative">
                               <input id="settings-recovery-token" type="text" readOnly value={liveToken} className={`${INPUT_CLS} pr-12 select-all cursor-text bg-bg`} onFocus={(e) => e.target.select()} />
-                              <button type="button" onClick={copyToken} aria-label="Copy token" className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors">
+                              <button type="button" onClick={copyToken} aria-label={t('aria.copyToken')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent transition-colors">
                                 {copied ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4" />}
                               </button>
                             </div>
                           </div>
                           <button onClick={acknowledgeToken} disabled={acking} className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
-                            {acking ? <><Loader2 className="w-4 h-4 animate-spin" /> Acknowledging...</> : <><CheckCircle2 className="w-4 h-4" /> I've saved my token</>}
+                            {acking ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.acknowledging')}</> : <><CheckCircle2 className="w-4 h-4" /> {t('student.settings.recovery.savedToken')}</>}
                           </button>
                         </div>
                       ) : tokenAvailable ? (
@@ -536,8 +537,8 @@ const Settings: React.FC = () => {
                           <div className="flex items-center gap-3 p-4 bg-bg border border-border rounded-xl">
                             <div className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center shrink-0"><Key className="w-4 h-4 text-accent" /></div>
                             <div className="min-w-0">
-                              <div className="text-sm font-bold text-text-primary">{recoveryAcked ? 'Token saved' : 'Token exists'}</div>
-                              {recoveryAcked && <div className="flex items-center gap-1 text-[10px] text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> Acknowledged</div>}
+                              <div className="text-sm font-bold text-text-primary">{recoveryAcked ? t('student.settings.recovery.tokenSaved') : t('student.settings.recovery.tokenExists')}</div>
+                              {recoveryAcked && <div className="flex items-center gap-1 text-[10px] text-accent font-bold mt-0.5"><CheckCircle2 className="w-3 h-3" /> {t('student.settings.recovery.acknowledged')}</div>}
                             </div>
                           </div>
                           {!confirmRegenerate ? (
@@ -546,11 +547,11 @@ const Settings: React.FC = () => {
                             </button>
                           ) : (
                             <div className="p-4 border border-yellow-500/30 rounded-xl bg-yellow-500/5 space-y-3">
-                              <p className="text-xs text-yellow-400 font-bold">This will invalidate your current token. Are you sure?</p>
+                              <p className="text-xs text-yellow-400 font-bold">{t('student.settings.recovery.invalidateWarning')}</p>
                               <div className="flex gap-2">
-                                <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">Cancel</button>
+                                <button onClick={() => setConfirmRegenerate(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">{t('button.cancel')}</button>
                                 <button onClick={() => void regenerateToken()} disabled={regenerating} className="flex-1 px-3 py-2 border border-yellow-500/40 rounded-xl text-xs text-yellow-400 hover:bg-yellow-500/10 transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5">
-                                  {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Generating...</> : <><RefreshCw className="w-3.5 h-3.5" /> Regenerate</>}
+                                  {regenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><RefreshCw className="w-3.5 h-3.5" /> {t('student.settings.recovery.regenerate')}</>}
                                 </button>
                               </div>
                             </div>
@@ -558,9 +559,9 @@ const Settings: React.FC = () => {
                         </div>
                       ) : (
                         <div className="space-y-4">
-                          <p className="text-sm text-text-muted">No recovery token yet. Generate one to protect your account.</p>
+                          <p className="text-sm text-text-muted">{t('student.settings.recovery.noTokenYet')}</p>
                           <button onClick={() => void regenerateToken()} disabled={regenerating} className="w-full btn-primary !py-2.5 text-sm flex items-center justify-center gap-2 disabled:opacity-50">
-                            {regenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
+                            {regenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('student.settings.recovery.generating')}</> : <><Key className="w-4 h-4" /> {t('student.settings.recovery.generate')}</>}
                           </button>
                         </div>
                       )}
@@ -630,9 +631,9 @@ const Settings: React.FC = () => {
                       <div className="p-4 border border-red-500/30 rounded-xl bg-red-500/5 space-y-3">
                         <p className="text-xs text-red-400 font-bold">{t('student.settings.dangerZone.deleteConfirmDesc')}</p>
                         <div className="flex gap-2">
-                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">Cancel</button>
+                          <button onClick={() => setConfirmDelete(false)} className="flex-1 px-3 py-2 border border-border rounded-xl text-xs text-text-muted hover:border-accent/30 transition-colors">{t('button.cancel')}</button>
                           <button onClick={handleDeleteAccount} disabled={deleting} className="flex-1 px-3 py-2 btn-danger !text-xs disabled:opacity-50 flex items-center justify-center gap-1.5">
-                            {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Deleting...</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
+                            {deleting ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> {t('student.settings.dangerZone.deleting')}</> : <><Trash2 className="w-3.5 h-3.5" /> {t('student.settings.dangerZone.confirmDelete')}</>}
                           </button>
                         </div>
                       </div>

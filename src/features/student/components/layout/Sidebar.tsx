@@ -44,6 +44,7 @@ const PanelRow = ({ icon, label, value }: { icon: React.ReactNode; label: string
 );
 
 const DashboardOverviewPanel = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
 
@@ -62,20 +63,21 @@ const DashboardOverviewPanel = () => {
   const cp = extractCpBalance(overview?.xpSummary) ?? user?.cp ?? 0;
   const { rank: _r } = getRankInfo(cp);
   const streakDays = overview?.xpSummary?.streakDays ?? null;
-  const rankName = _r?.name || 'Candidate';
+  const rankName = _r?.name || t('stat.candidate');
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Overview</div>
-      <PanelRow icon={<IconLeaderboard size={14} className="text-accent" />} label="Rank" value={rankName} />
-      <PanelRow icon={<Layers className="w-3.5 h-3.5 text-text-primary" />} label="Rooms" value={String(totalRoomsDone)} />
-      <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(cp).toLocaleString()} />
-      <PanelRow icon={<IconFire size={14} className="text-orange-400" />} label="Streak" value={`${streakDays ?? 0}d`} />
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.overview')}</div>
+      <PanelRow icon={<IconLeaderboard size={14} className="text-accent" />} label={t('stat.rank')} value={rankName} />
+      <PanelRow icon={<Layers className="w-3.5 h-3.5 text-text-primary" />} label={t('student.sidebar.rooms')} value={String(totalRoomsDone)} />
+      <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label={t('student.sidebar.cp')} value={Number(cp).toLocaleString()} />
+      <PanelRow icon={<IconFire size={14} className="text-orange-400" />} label={t('student.sidebar.streak')} value={`${streakDays ?? 0}d`} />
     </SidebarPanel>
   );
 };
 
 const LeaderboardFiltersPanel = () => {
+  const { t } = useTranslation();
   const { search } = useLocation();
   const [period, setPeriod] = useState('all');
 
@@ -85,14 +87,14 @@ const LeaderboardFiltersPanel = () => {
   }, [search]);
 
   const PERIODS = [
-    { key: 'all', label: 'All Time' },
-    { key: 'week', label: 'Week' },
-    { key: 'month', label: 'Month' },
+    { key: 'all', label: t('student.competitive.periods.all') },
+    { key: 'week', label: t('student.competitive.periods.week') },
+    { key: 'month', label: t('student.competitive.periods.month') },
   ];
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Filter</div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.filter')}</div>
       <div className="flex flex-col gap-1">
         {PERIODS.map((p) => {
           const active = period === p.key;
@@ -116,6 +118,7 @@ const LeaderboardFiltersPanel = () => {
 };
 
 const CourseProgressPanel = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const { user } = useAuth();
   const [overview, setOverview] = useState<any>(null);
@@ -151,12 +154,12 @@ const CourseProgressPanel = () => {
   return (
     <div className="mx-3 mb-2 space-y-2">
       <div className="rounded-xl border border-accent/25 bg-accent-dim p-3">
-        <p className="text-[8px] font-black uppercase tracking-widest text-accent mb-1">Progress</p>
+        <p className="text-[8px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.progress')}</p>
         <div className="text-2xl font-black text-accent font-mono">{progressNum}%</div>
         <div className="h-1 overflow-hidden rounded-full bg-bg/40 mt-1.5 mb-1">
           <div className="h-full rounded-full bg-accent transition-all duration-700" style={{ width: `${progressNum}%` }} />
         </div>
-        <p className="text-[10px] text-text-secondary">{doneRooms}/{totalRooms} rooms</p>
+        <p className="text-[10px] text-text-secondary">{doneRooms}/{totalRooms} {t('badge.rooms')}</p>
       </div>
       <div className="rounded-xl border border-border/30 bg-bg-card divide-y divide-border/30 max-h-[260px] overflow-y-auto">
         {courseModules.map((mod: any, idx: number) => {
@@ -188,6 +191,7 @@ const CourseProgressPanel = () => {
 };
 
 const CoursesListPanel = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [courses, setCourses] = useState<any[]>([]);
 
@@ -206,9 +210,9 @@ const CoursesListPanel = () => {
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Courses</div>
-      <PanelRow icon={<BookMarked className="w-3.5 h-3.5 text-accent" />} label="Enrolled" value={String(enrolled.length)} />
-      <PanelRow icon={<BarChart3 className="w-3.5 h-3.5" />} label="In Progress" value={String(inProgress.length)} />
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.courses')}</div>
+      <PanelRow icon={<BookMarked className="w-3.5 h-3.5 text-accent" />} label={t('student.sidebar.enrolled')} value={String(enrolled.length)} />
+      <PanelRow icon={<BarChart3 className="w-3.5 h-3.5" />} label={t('student.sidebar.inProgress')} value={String(inProgress.length)} />
       {courses.length > 0 && (
         <div className="pt-1 space-y-1 max-h-[180px] overflow-y-auto">
           {courses.map((c: any) => {
@@ -233,6 +237,7 @@ const CoursesListPanel = () => {
 };
 
 const LessonNavPanel = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const [lessons, setLessons] = useState<any[]>([]);
   const courseId = pathname.split('/dashboard/courses/')[1]?.split('/')[0];
@@ -251,7 +256,7 @@ const LessonNavPanel = () => {
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Lessons</div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.lessons')}</div>
       <div className="space-y-0.5 max-h-[260px] overflow-y-auto">
         {lessons.map((lesson: any) => {
           const active = lesson.id === currentLessonId || lesson.slug === currentLessonId;
@@ -273,6 +278,7 @@ const LessonNavPanel = () => {
 };
 
 const MarketBalancePanel = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [balance, setBalance] = useState<number | null>(null);
 
@@ -287,31 +293,32 @@ const MarketBalancePanel = () => {
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Balance</div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.balance')}</div>
       <PanelRow icon={<CpLogo className="w-3.5 h-3.5" />} label="CP" value={Number(balance ?? user?.cp ?? 0).toLocaleString()} />
       <Link
         to="/dashboard/marketplace"
         className="block text-center px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-accent text-bg hover:brightness-110 transition-all mt-1"
       >
-        Browse Market
+        {t('student.sidebar.browseMarket')}
       </Link>
     </SidebarPanel>
   );
 };
 
 const NotificationsFilterPanel = () => {
+  const { t } = useTranslation();
   const { search } = useLocation();
   const filter = new URLSearchParams(search).get('filter') || 'all';
 
   return (
     <SidebarPanel>
-      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">Filter</div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-accent mb-1">{t('student.sidebar.filter')}</div>
       <div className="flex flex-col gap-1">
         {[
-          { key: 'all', label: 'All' },
-          { key: 'unread', label: 'Unread' },
-          { key: 'system', label: 'System' },
-          { key: 'achievement', label: 'Achievements' },
+          { key: 'all', label: t('student.sidebar.filterAll') },
+          { key: 'unread', label: t('student.sidebar.unread') },
+          { key: 'system', label: t('student.sidebar.system') },
+          { key: 'achievement', label: t('student.sidebar.achievements') },
         ].map((f) => {
           const active = filter === f.key;
           return (
@@ -486,7 +493,7 @@ const Sidebar = () => {
     { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
     { label: t('nav.competitive'), icon: Swords, path: '/dashboard/competitive' },
     { label: t('nav.networkLab'), icon: Globe, path: '/dashboard/networks' },
-    { label: 'My Progress', icon: BarChart3, path: '/dashboard/profile' },
+    { label: t('student.sidebar.myProgress'), icon: BarChart3, path: '/dashboard/profile' },
   ];
 
   const SECONDARY_NAV: NavItem[] = [
@@ -524,7 +531,7 @@ const Sidebar = () => {
         <button
           onClick={() => setMobileOpen(false)}
           className="lg:hidden p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
-          aria-label="Close sidebar"
+          aria-label={t('aria.closeSidebar')}
         >
           <IconX size={20} />
         </button>
@@ -583,7 +590,7 @@ const Sidebar = () => {
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 rounded-xl text-text-muted hover:text-accent hover:bg-accent-dim/50 transition-colors"
-                aria-label="Close sidebar"
+                aria-label={t('aria.closeSidebar')}
               >
                 <IconX size={24} />
               </button>
@@ -620,8 +627,8 @@ const Sidebar = () => {
               >
                 <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-12 h-12 rounded-xl border-2 border-border shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-base font-bold text-text-primary truncate">{user?.username || 'User'}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-accent">View Profile</p>
+                  <p className="text-base font-bold text-text-primary truncate">{user?.username || t('student.sidebar.userFallback')}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-accent">{t('student.sidebar.viewProfile')}</p>
                 </div>
               </Link>
               <button

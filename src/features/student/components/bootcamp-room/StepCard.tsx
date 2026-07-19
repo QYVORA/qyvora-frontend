@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bookmark, Flag } from 'lucide-react';
 import { IconCheck } from '@/shared/components/icons';
 import type { BootcampStep } from '../../constants/bootcampConfig';
@@ -35,6 +36,7 @@ const StepCard: React.FC<Props> = ({
   onNext, onPrev,
   onGotIt, gotIt = false,
 }) => {
+  const { t } = useTranslation();
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isActive) return;
     if (e.key === 'ArrowRight') {
@@ -64,7 +66,7 @@ const StepCard: React.FC<Props> = ({
           ? 'border-accent/30 text-yellow-500'
           : 'bg-transparent border-border text-text-muted hover:text-accent opacity-100 lg:opacity-0 lg:group-hover:opacity-100'
       }`}
-      title={isBookmarked ? 'Remove bookmark' : 'Bookmark this step'}
+      title={isBookmarked ? t('student.bootcampRoom.stepCard.removeBookmark') : t('student.bootcampRoom.stepCard.addBookmark')}
     >
       <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
     </button>
@@ -94,7 +96,7 @@ const StepCard: React.FC<Props> = ({
       </div>
       {isActive && (
         <span className="shrink-0 text-accent text-[9px] font-black uppercase tracking-widest px-2 py-1">
-          Current Focus
+          {t('student.bootcampRoom.stepCard.currentFocus')}
         </span>
       )}
     </div>
@@ -122,7 +124,7 @@ const StepCard: React.FC<Props> = ({
         }`}
       >
         <IconCheck size={12} className={gotIt ? '' : 'opacity-50'} />
-        {gotIt ? 'Got It!' : 'Mark as Got It'}
+        {gotIt ? t('student.bootcampRoom.stepCard.gotIt') : t('student.bootcampRoom.stepCard.markGotIt')}
       </button>
     </div>
 
@@ -144,12 +146,12 @@ const StepCard: React.FC<Props> = ({
         className="text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
       >
         <Flag className="h-3 w-3" />
-        Report Issue
+        {t('student.bootcampRoom.stepCard.reportIssue')}
       </button>
 
       {isActive && !isViewed && (
         <span className="text-[10px] font-bold uppercase tracking-widest text-accent/40">
-          Unread Step
+          {t('student.bootcampRoom.stepCard.unread')}
         </span>
       )}
     </div>

@@ -5,10 +5,14 @@ import LabCard from '../LabsPage/LabCard';
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string) => translations[key] || key,
     i18n: { language: 'en' },
   }),
 }));
+
+const translations: Record<string, string> = {
+  'student.labs.labCard.start': 'Start',
+};
 
 const defaultProps = {
   id: 'privesc',

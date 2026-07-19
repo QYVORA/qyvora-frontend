@@ -23,7 +23,7 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
   return (
     <header className="mb-8">
       <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-accent">
-        {phase.codename} — {phase.title}
+        {t('student.bootcampRoom.header.phaseLabel', { codename: phase.codename, phase: phase.title })}
       </div>
       <h1 className="mb-4 text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-text-primary break-words">
         {room.title}
@@ -35,15 +35,15 @@ const RoomHeader: React.FC<RoomHeaderProps> = ({
       <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mt-4">
         <div className="flex items-center gap-1.5">
           <IconClock size={16} />
-          <span>{room.estimatedMinutes} min</span>
+          <span>{t('student.bootcampRoom.header.duration', { min: room.estimatedMinutes })}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <BookOpen className="h-4 w-4" />
-          <span>{room.steps.length} steps</span>
+          <span>{t('student.bootcampRoom.header.steps', { count: room.steps.length })}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <Timer className="h-4 w-4" />
-          <span>Session: {formatTime(timeSpent)}</span>
+          <span>{t('student.bootcampRoom.header.sessionTime', { time: formatTime(timeSpent) })}</span>
         </div>
       </div>
       

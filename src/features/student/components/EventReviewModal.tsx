@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2, Video, MessageSquare, Sparkles } from 'lucide-react';
 import { IconHeart, IconCheck, IconShield } from '@/shared/components/icons';
 import { Dialog, DialogContent } from '@/shared/components/ui/Dialog';
@@ -17,6 +18,7 @@ interface EventReviewModalProps {
 const REWARD_CP = 50;
 
 const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange, eventId, onReviewSubmitted }) => {
+  const { t } = useTranslation();
   const { refreshMe } = useAuth();
   const event = getEventById(eventId);
   const [review, setReview] = useState('');
@@ -27,7 +29,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
 
   const handleSubmitReview = async () => {
     if (!review.trim()) {
-      setError('Please share your thoughts about QYVORA.');
+      setError(t('components.eventReview.errorEmpty'));
       return;
     }
     setError('');
@@ -50,13 +52,13 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
         onReviewSubmitted();
         onOpenChange(false);
       } else if (status === 410) {
-        setError('This event has already ended. Reviews are no longer accepted.');
+        setError(t('components.eventReview.errorEnded'));
       } else if (status === 401) {
-        setError('Session expired. Please log in and try again.');
+        setError(t('components.eventReview.errorExpired'));
       } else if (status === 403) {
-        setError('Security token mismatch. Please refresh the page and try again.');
+        setError(t('components.eventReview.errorCsrf'));
       } else {
-        setError('Failed to submit review. Please try again.');
+        setError(t('components.eventReview.errorGeneric'));
       }
     } finally {
       setSubmitting(false);
@@ -68,7 +70,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        title="[ EVENT REGISTRATION ]"
+        title={t('components.eventReview.title')}
         maxWidth="max-w-lg"
         className="border-accent/30"
       >
@@ -86,19 +88,19 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
           <div className="flex items-center gap-2.5 p-4 rounded-2xl bg-accent/5 border border-accent/10">
             <Sparkles className="h-5 w-5 text-accent shrink-0" />
             <p className="text-xs text-text-muted leading-relaxed">
-              Submit a quick review to unlock access. You&apos;ll receive <span className="text-accent font-black">+{REWARD_CP} CP</span>.
+              {t('components.eventReview.reviewPrompt', { cp: REWARD_CP })}
             </p>
           </div>
 
           <div className="space-y-2">
             <label className="text-[10px] font-black text-text-muted uppercase tracking-[0.25em] flex items-center gap-2">
               <MessageSquare className="w-3.5 h-3.5" />
-              Leave Your Review
+              {t('components.eventReview.leaveReview')}
             </label>
             <textarea
               value={review}
               onChange={(e) => { setReview(e.target.value); setError(''); }}
-              placeholder="Share your thoughts about the platform..."
+              placeholder={t('components.eventReview.reviewPlaceholder')}
               rows={4}
               className="w-full bg-bg border border-border rounded-xl py-3.5 px-5 text-text-primary focus:border-accent hover:border-border/80 outline-none font-mono text-sm resize-none transition-colors"
             />
@@ -120,7 +122,7 @@ const EventReviewModal: React.FC<EventReviewModalProps> = ({ open, onOpenChange,
             ) : (
               <IconHeart size={16} />
             )}
-            Submit Review (+50 CP)
+            {t('components.eventReview.submitReview', { cp: REWARD_CP })}
           </button>
         </div>
       </DialogContent>

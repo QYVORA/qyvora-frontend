@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, ArrowRight, Lock, Loader2,
   CheckCircle2, BookOpen,
@@ -57,6 +58,7 @@ const BootcampRoomPage: React.FC = () => {
   const phaseId = phaseIdParam || (moduleId ? `phase${moduleId}` : undefined);
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { t } = useTranslation();
 
   const mountedRef = useRef(true);
   const redirectCountRef = useRef(0);
@@ -102,7 +104,7 @@ const BootcampRoomPage: React.FC = () => {
       const enrolledViaModules = (Array.isArray(ov?.modules) ? ov.modules : []).some((m: any) => String(m.bootcampId || m.id || '') === String(bootcampId || ''));
       setBootcampStatus(enrolledViaStatus || enrolledViaModules ? 'enrolled' : 'not_enrolled');
       if (courseRes?.data) setApiCourse(courseRes.data as ApiCourse);
-    } catch { addToast('Failed to load course data', 'error'); }
+    } catch { addToast(t('toast.courseLoadFailed'), 'error'); }
     finally { if (mountedRef.current) setApiLoading(false); }
   }, [bootcampId]);
 
@@ -117,7 +119,7 @@ const BootcampRoomPage: React.FC = () => {
       loadCourseData(); 
     } catch (err: any) {
       console.error('Failed to complete room:', err?.response?.data || err);
-      addToast('Failed to mark room as complete', 'error');
+      addToast(t('toast.roomCompleteFailed'), 'error');
     }
   };
 
@@ -139,7 +141,7 @@ const BootcampRoomPage: React.FC = () => {
         if (err?.name === 'CanceledError' || err?.name === 'AbortError') return;
         if (err?.response?.status === 403) return;
         console.error('Failed to open room session:', err?.response?.data || err?.message || err);
-        addToast('Failed to open room session', 'error');
+        addToast(t('toast.sessionOpenFailed'), 'error');
       }
     };
     callSessionOpen();
@@ -240,6 +242,9 @@ const BootcampRoomPage: React.FC = () => {
       return prev;
     }, { replace: true });
     setViewedSteps((prev) => { const next = new Set(prev); next.add(idx); return next; });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   };
   const handleComplete = async () => {
     if (completing) return; setCompleting(true);
@@ -252,7 +257,7 @@ const BootcampRoomPage: React.FC = () => {
 
   if (apiLoading) return <BootcampRoomSkeleton />;
 
-  const roomTitle = room?.title || 'Room';
+  const roomTitle = room?.title || t('stat.room');
   return (
     <div className="bg-bg overflow-x-hidden">
       <SEO
@@ -296,23 +301,23 @@ const BootcampRoomPage: React.FC = () => {
           {!phase || !room ? (
             <div className="px-4 py-12">
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+                <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
               </Link>
               <div className="rounded-2xl border border-border/30 bg-bg-card p-10 text-center">
                 <BookOpen className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
-                <h1 className="mb-2 text-3xl font-black text-text-primary">Room Not Found</h1>
-                <p className="text-sm text-text-muted">This room doesn't exist in the bootcamp config.</p>
+                <h1 className="mb-2 text-3xl font-black text-text-primary">{t('student.bootcampRoom.notFound')}</h1>
+                <p className="text-sm text-text-muted">{t('student.bootcampRoom.notFoundDesc')}</p>
               </div>
             </div>
           ) : isRoomLocked ? (
             <div className="px-4 py-12">
               <Link to={`/dashboard/bootcamps/${bootcampId}`} className="mb-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors">
-                <ArrowLeft className="h-3.5 w-3.5" /> Back to Bootcamp
+                <ArrowLeft className="h-3.5 w-3.5" /> {t('student.bootcampRoom.backToBootcamp')}
               </Link>
               <div className="rounded-2xl border border-border/30 bg-bg-card p-10 text-center">
                 <Lock className="mx-auto mb-4 h-10 w-10 text-text-muted opacity-40" />
                 <h1 className="mb-2 text-3xl font-black text-text-primary">{room.title}</h1>
-                <p className="text-sm text-text-muted">This room is locked. Your instructor will unlock it when it's time.</p>
+                <p className="text-sm text-text-muted">{t('student.bootcampRoom.roomLocked')}</p>
               </div>
             </div>
           ) : (
@@ -322,8 +327,8 @@ const BootcampRoomPage: React.FC = () => {
               {room.steps.length === 0 && !apiLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <BookOpen className="h-12 w-12 text-text-muted opacity-20 mb-4" />
-                  <p className="text-base font-bold text-text-muted">No steps available yet</p>
-                  <p className="text-sm text-text-muted/60 mt-1">Check back later for new content</p>
+                  <p className="text-base font-bold text-text-muted">{t('student.bootcampRoom.noStepsAvailable')}</p>
+                  <p className="text-sm text-text-muted/60 mt-1">{t('student.bootcampRoom.checkBackLater')}</p>
                 </div>
               ) : (
                 <>
@@ -333,7 +338,7 @@ const BootcampRoomPage: React.FC = () => {
               )}
               {phaseId && roomId && (
                 <div className="mb-8">
-                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title="Continue This Topic" />
+                  <RelatedContent {...getRelatedContentForHpbRoom(phaseId, roomId)} title={t('student.labs.relatedContent.title')} />
                 </div>
               )}
               <RoomNavigation currentStepIdx={currentStepIdx} totalSteps={room.steps.length} isLastStep={isLastStep} isRoomComplete={isRoomComplete} nextRoom={nextRoom} quizPassed={quizPassed} quizModuleId={quizModuleId} completing={completing} fullscreen={fullscreen} goToStep={goToStep} handleComplete={handleComplete} toggleFullscreen={toggleFullscreen} setJumpMenuOpen={setJumpMenuOpen} />

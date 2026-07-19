@@ -60,7 +60,7 @@ const Marketplace: React.FC = () => {
       const purchasedIds = new Set<string>(txItems.filter((tx: any) => tx.type === 'purchase' && tx.productId).map((tx: any) => String(tx.productId)));
       setPurchased(purchasedIds);
     }).catch(() => {
-      if (mounted) { addToast('Failed to load marketplace', 'error'); if (products.length === 0) setProducts([]); }
+      if (mounted) { addToast(t('toast.marketplaceLoadFailed'), 'error'); if (products.length === 0) setProducts([]); }
     }).finally(() => {
       if (mounted) setLoading(false);
     });
@@ -72,13 +72,13 @@ const Marketplace: React.FC = () => {
     setPurchasing(id);
     try {
       await api.post('/cp/purchase', { productId: id });
-      addToast(`${product.title} purchased successfully.`, 'success');
+      addToast(t('toast.purchaseSuccess', { title: product.title }), 'success');
       setPurchased((prev) => new Set([...prev, id]));
       const [balRes, txRes] = await Promise.all([api.get('/cp/balance').catch(() => null), api.get('/cp/transactions?limit=100').catch(() => null)]);
       const dbBalance = extractCpBalance(balRes?.data) ?? 0;
       setBalance(dbBalance);
     } catch (err: any) {
-      addToast(err?.response?.data?.error || 'Purchase failed.', 'error');
+      addToast(err?.response?.data?.error || t('toast.purchaseFailed'), 'error');
       setShakePurchase(id);
     } finally {
       setPurchasing(null);
@@ -91,14 +91,14 @@ const Marketplace: React.FC = () => {
     try {
       const base = String(import.meta.env.VITE_API_BASE_URL || '/api');
       const res = await fetch(`${base}/cp/products/${id}/download`, { credentials: 'include' });
-      if (!res.ok) { addToast('Download failed.', 'error'); return; }
+      if (!res.ok) { addToast(t('toast.downloadFailed'), 'error'); return; }
       const blob = await res.blob();
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = product.fileName || `${product.title || 'product'}.pdf`;
       link.click();
       URL.revokeObjectURL(link.href);
-    } catch { addToast('Download failed.', 'error'); }
+    } catch { addToast(t('toast.downloadFailed'), 'error'); }
     finally { setDownloading(null); }
   };
 
@@ -121,14 +121,14 @@ const Marketplace: React.FC = () => {
 
   return (
     <div className="bg-bg">
-      <SEO title="Zero-Day Market" description="High-value intelligence reports, tools, and mission guides for operators." noindex />
+      <SEO title={t('student.marketplace.seoTitle')} description={t('student.marketplace.seoDesc')} noindex />
       <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
         <div className="pt-6 pb-8 md:px-6 lg:px-10 space-y-6">
           <LearningOverviewCard
             icon={<ShoppingBag className="w-6 h-6 text-bg" />}
             title={t('student.marketplace.title')}
             description={t('student.marketplace.description')}
-            stats={balance !== null ? [{ label: 'CP Balance', value: formatNumber(balance), accent: true }] : undefined}
+            stats={balance !== null ? [{ label: t('student.marketplace.cpBalance'), value: formatNumber(balance), accent: true }] : undefined}
           />
 
           {/* Search */}
@@ -184,22 +184,22 @@ const Marketplace: React.FC = () => {
                         <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
                           <img src={resolveImg(prod.coverUrl, productFallbackImg)} alt={prod.title} width={1200} height={675} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                           <div className="absolute top-4 left-4 flex items-center gap-2">
-                            {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Owned</span>}
-                            {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">Public</span>}
+                            {hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.owned')}</span>}
+                            {prod.isFree && !hasPurchased && <span className="px-2.5 py-1 bg-accent text-bg rounded text-[9px] font-black uppercase tracking-widest shadow-md">{t('student.marketplace.public')}</span>}
                           </div>
-                          <div className="absolute bottom-4 left-4"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> Intelligence Asset</span></div>
+                          <div className="absolute bottom-4 left-4"><span className="inline-flex items-center gap-2 px-3 py-1 bg-bg/85 backdrop-blur-md rounded-lg text-[9px] font-black uppercase text-text-primary tracking-widest shadow-sm"><ShoppingBag className="h-3 w-3 text-accent" /> {t('student.marketplace.intelligenceAsset')}</span></div>
                         </div>
                         <div className="flex flex-1 flex-col p-8 sm:p-10">
                           <h3 className="mb-2 text-xl font-black leading-snug text-text-primary group-hover:text-accent transition-colors tracking-tight line-clamp-1">{prod.title}</h3>
-                          <p className="text-xs text-text-muted/70 mb-8 line-clamp-2 leading-relaxed font-mono">{prod.description || 'Secure intelligence report for offensive security operatives.'}</p>
+                          <p className="text-xs text-text-muted/70 mb-8 line-clamp-2 leading-relaxed font-mono">{prod.description || t('student.marketplace.defaultDescription')}</p>
                           <div className="mt-auto flex items-center justify-between gap-6">
                             <div className="flex items-center gap-2">
-                               {prod.isFree ? <span className="text-sm font-black text-accent uppercase tracking-widest">Free Access</span> : <><CpLogo className="h-5 w-5" /><span className="font-mono text-xl font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
+                               {prod.isFree ? <span className="text-sm font-black text-accent uppercase tracking-widest">{t('student.marketplace.freeAccess')}</span> : <><CpLogo className="h-5 w-5" /><span className="font-mono text-xl font-black text-text-primary">{Number(prod.cpPrice || 0).toLocaleString()}</span></>}
                             </div>
                             {(hasPurchased || prod.isFree) ? (
-                              <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-2">{downloading === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download</button>
+                              <button onClick={() => handleDownload(prod)} disabled={downloading === id} className="bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-2">{downloading === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} {t('student.marketplace.download')}</button>
                             ) : (
-                              <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-2 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <><ShoppingBag className="h-4 w-4" /> Unlock</>}</button>
+                              <button onClick={() => handlePurchase(prod)} disabled={purchasing === id} className={`bg-accent text-bg px-8 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-accent/20 transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 flex items-center gap-2 ${shakePurchase === id ? 'animate-shake-x' : ''}`} onAnimationEnd={() => setShakePurchase(null)}>{purchasing === id ? <Loader2 className="h-4 w-4 animate-spin" /> : <><ShoppingBag className="h-4 w-4" /> {t('student.marketplace.unlock')}</>}</button>
                             )}
                           </div>
                         </div>
@@ -248,7 +248,7 @@ const Marketplace: React.FC = () => {
                           onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
                           className="px-4 py-2 bg-bg border border-border hover:border-accent/40 rounded-lg text-xs font-bold text-text-primary transition-all"
                         >
-                          Load more ({txRows.length - visibleCount} remaining)
+                          {t('student.marketplace.loadMore', { count: txRows.length - visibleCount })}
                         </button>
                       </div>
                     )}
