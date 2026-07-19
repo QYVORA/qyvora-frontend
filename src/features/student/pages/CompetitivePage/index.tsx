@@ -86,7 +86,7 @@ const LeaderboardRow = ({ entry, user, rank }: { entry: LeaderboardEntry; user: 
 
       {/* Operator info */}
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 md:w-10 md:h-10 rounded-full shrink-0 overflow-hidden border border-accent/20 [&_svg]:w-full [&_svg]:h-full">
+        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl shrink-0 overflow-hidden border border-accent/20 [&_svg]:w-full [&_svg]:h-full">
           <Identicon value={entry.userId} size={40} />
         </div>
         <div className="min-w-0">

@@ -69,7 +69,7 @@ const LearningOverviewCard: React.FC<LearningOverviewCardProps> = ({
             className="ov-text flex items-center gap-4 mb-3"
           >
             {avatar ? (
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-bg/20 shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden border-2 border-bg/20 shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
                 {avatar}
               </div>
             ) : (
