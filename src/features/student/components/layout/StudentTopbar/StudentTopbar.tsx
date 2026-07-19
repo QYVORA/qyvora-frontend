@@ -1,12 +1,9 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
 import {
-  IconDashboard,
   IconBootcamp,
   IconLabs,
   IconMarketplace,
-  IconSettings,
   IconArrowLeft,
   IconMenu,
   IconCode,
@@ -30,13 +27,10 @@ const StudentTopbar = () => {
   const { user, logout } = useAuth();
 
   const DESKTOP_NAV_ITEMS = [
-    { label: t('nav.dashboard'), icon: IconDashboard, path: '/dashboard' },
     { label: t('nav.myCourses'), icon: IconCode, path: '/dashboard/courses' },
     { label: t('nav.bootcamp'), icon: IconBootcamp, path: '/dashboard/bootcamps' },
     { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
-    { label: t('nav.networkLab'), icon: Globe, path: '/dashboard/networks' },
     { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
-    { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
   ];
 
   const { addToast } = useToast();
