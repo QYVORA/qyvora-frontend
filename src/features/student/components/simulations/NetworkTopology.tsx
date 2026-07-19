@@ -1,22 +1,12 @@
 import { useMemo } from 'react';
-import { Monitor, Server, Wifi, Shield, Router, Printer, Cpu } from 'lucide-react';
 import type { TopologyNode, TopologyLink } from './types';
 import { useSimulation } from './SimulationContext';
+import { getDeviceDef } from '../tools/network/devices';
 
 interface NetworkTopologyProps {
   nodes: TopologyNode[];
   links: TopologyLink[];
 }
-
-const ICONS: Record<string, typeof Server> = {
-  router: Router, switch: Wifi, server: Server, firewall: Shield,
-  workstation: Monitor, printer: Printer, iot: Cpu,
-};
-
-const COLORS: Record<string, string> = {
-  router: 'text-amber-400', switch: 'text-blue-400', server: 'text-accent',
-  firewall: 'text-red-400', workstation: 'text-purple-400', printer: 'text-orange-400', iot: 'text-cyan-400',
-};
 
 export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
   const { discovery } = useSimulation();
@@ -68,8 +58,9 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
 
           {/* Nodes */}
           {enrichedNodes.map(node => {
-            const Icon = ICONS[node.type] || Server;
-            const color = COLORS[node.type] || 'text-text-muted';
+            const def = getDeviceDef(node.type);
+            const Icon = def.icon;
+            const color = def.color;
             const discovered = node.discovered;
 
             return (
@@ -80,7 +71,7 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
                   strokeWidth={discovered ? 2 : 1}
                 />
                 <foreignObject x={node.x - 10} y={node.y - 10} width={20} height={20}>
-                  <div className={`${discovered ? color : 'text-text-muted/30'}`}>
+                  <div style={{ color: discovered ? color : undefined }} className={!discovered ? 'text-text-muted/30' : undefined}>
                     <Icon size={20} />
                   </div>
                 </foreignObject>
@@ -105,12 +96,16 @@ export function NetworkTopology({ nodes, links }: NetworkTopologyProps) {
 
         {/* Legend */}
         <div className="flex flex-wrap gap-3 mt-4 justify-center">
-          {Object.entries(ICONS).map(([type, Icon]) => (
-            <div key={type} className="flex items-center gap-1 text-[8px] font-mono text-text-muted">
-              <Icon size={10} className={COLORS[type]} />
-              <span className="capitalize">{type}</span>
-            </div>
-          ))}
+          {(['router', 'switch', 'server', 'firewall', 'workstation', 'printer', 'iot'] as const).map((type) => {
+            const def = getDeviceDef(type);
+            const Icon = def.icon;
+            return (
+              <div key={type} className="flex items-center gap-1 text-[8px] font-mono text-text-muted">
+                <Icon size={10} style={{ color: def.color }} />
+                <span className="capitalize">{def.label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

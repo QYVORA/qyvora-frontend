@@ -1,5 +1,6 @@
 @import './fonts.css';
 @import "tailwindcss";
+@import '@xyflow/react/dist/style.css';
 
 @property --beam-angle {
   syntax: '<angle>';
