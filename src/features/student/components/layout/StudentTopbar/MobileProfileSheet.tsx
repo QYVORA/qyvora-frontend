@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LogOut, User, Terminal, Code2, Network, Wrench } from 'lucide-react';
+import { LogOut, User, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { BottomSheet, BottomSheetClose, BottomSheetContent } from '../../../../../shared/components/ui/BottomSheet';
 import Identicon from '../../../../../shared/components/Identicon';
@@ -168,6 +168,38 @@ const MobileProfileSheet: React.FC<MobileProfileSheetProps> = ({
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-black uppercase tracking-widest text-text-primary">
                   {t('nav.profile') || 'Profile'}
+                </div>
+              </div>
+            </Link>
+
+            {/* Network Lab */}
+            <Link
+              to="/dashboard/networks"
+              onClick={() => onOpenChange(false)}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
+            >
+              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+                <Globe size={16} className="text-text-muted" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-black uppercase tracking-widest text-text-primary">
+                  {t('nav.networkLab') || 'Network Lab'}
+                </div>
+              </div>
+            </Link>
+
+            {/* Settings */}
+            <Link
+              to="/dashboard/settings"
+              onClick={() => onOpenChange(false)}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border text-left transition-all active:scale-[0.98] hover:border-accent/30"
+            >
+              <div className="w-10 h-10 rounded-xl bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0">
+                <Settings size={16} className="text-text-muted" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-black uppercase tracking-widest text-text-primary">
+                  {t('nav.settings') || 'Settings'}
                 </div>
               </div>
             </Link>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
-import { LogOut, User, ChevronRight, Terminal, Code2, Network, Wrench } from 'lucide-react';
+import { LogOut, User, ChevronRight, Terminal, Code2, Network, Wrench, Settings, Globe } from 'lucide-react';
 import Identicon from '../../../../../shared/components/Identicon';
 import ToolChooserModal from '@/features/student/components/tools/ToolChooserModal';
 
@@ -236,6 +236,42 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary transition-colors">
                     {t('nav.profile') || 'Profile'}
+                  </div>
+                </div>
+                <ChevronRight size={12} className="text-text-muted/30 shrink-0" />
+              </Link>
+
+              {/* Network Lab */}
+              <Link
+                to="/dashboard/networks"
+                onClick={close}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                role="menuitem"
+              >
+                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                  <Globe size={14} className="text-text-muted group-hover:text-accent transition-colors" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary transition-colors">
+                    {t('nav.networkLab') || 'Network Lab'}
+                  </div>
+                </div>
+                <ChevronRight size={12} className="text-text-muted/30 shrink-0" />
+              </Link>
+
+              {/* Settings */}
+              <Link
+                to="/dashboard/settings"
+                onClick={close}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-all hover:bg-accent-dim/50 active:scale-[0.98] group"
+                role="menuitem"
+              >
+                <div className="w-8 h-8 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center shrink-0 group-hover:border-accent/30 group-hover:bg-accent/10 transition-colors">
+                  <Settings size={14} className="text-text-muted group-hover:text-accent transition-colors" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary transition-colors">
+                    {t('nav.settings') || 'Settings'}
                   </div>
                 </div>
                 <ChevronRight size={12} className="text-text-muted/30 shrink-0" />
