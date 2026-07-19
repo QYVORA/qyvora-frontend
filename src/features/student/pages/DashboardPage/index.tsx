@@ -535,7 +535,7 @@ const Dashboard = () => {
                 <IconFire size={20} className="text-orange-400 md:w-6 md:h-6 lg:w-8 lg:h-8" />
               </div>
               <div>
-                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.streak')}</p>
+                <p className="hidden md:block text-[10px] font-black uppercase tracking-widest text-text-muted mb-1">{t('student.dashboard.streak.title')}</p>
                 <p className="text-xs md:text-sm font-black text-text-primary">{streakDays ?? 0}d</p>
               </div>
             </div>

@@ -43,7 +43,8 @@
     "newsFeed": "News Feed",
     "marketplace": "Marketplace",
     "adminConsole": "Admin Console",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "profile": "Profile"
   },
   "button": {
     "startTraining": "Start Training",
@@ -434,16 +435,56 @@
       "launchLab": "Launch Lab",
       "viewAll": "View All Labs",
       "list": {
-        "privesc": { "title": "Privilege Escalation", "desc": "Escalate permissions and gain root access through misconfigs, kernel exploits, and SUID binaries", "cp": "50-400 CP" },
-        "passwords": { "title": "Password Cracking", "desc": "Crack hashes using brute-force, dictionary attacks, and rule-based generation", "cp": "100-300 CP" },
-        "webapp": { "title": "Web Exploitation", "desc": "Exploit XSS, SSRF, deserialization, and access control flaws in modern web apps", "cp": "100-400 CP" },
-        "sqli": { "title": "SQL Injection", "desc": "Extract databases through union-based, blind, and time-based injection vectors", "cp": "200-400 CP" },
-        "phishing": { "title": "Phishing Analysis", "desc": "Identify phishing kits, analyze email headers, and trace social engineering campaigns", "cp": "150-400 CP" },
-        "proxy": { "title": "Web Proxy", "desc": "Intercept, modify, and replay HTTP traffic using Burp Suite and mitmproxy", "cp": "150-400 CP" },
-        "traffic": { "title": "Traffic Analysis", "desc": "Analyze PCAP files, detect anomalies, and reconstruct sessions from network captures", "cp": "150-400 CP" },
-        "osint": { "title": "OSINT Recon", "desc": "Gather intelligence from public sources, breach databases, and map attack surfaces", "cp": "150-400 CP" },
-        "wireless": { "title": "Wireless Security", "desc": "Test WPA2 handshakes, rogue APs, and deauthentication vulnerabilities", "cp": "200-400 CP" },
-        "killchain": { "title": "Kill Chain", "desc": "Full pentest from recon to exploitation — chain every skill into a complete attack narrative", "cp": "500-600 CP" }
+        "privesc": {
+          "title": "Privilege Escalation",
+          "desc": "Escalate permissions and gain root access through misconfigs, kernel exploits, and SUID binaries",
+          "cp": "50-400 CP"
+        },
+        "passwords": {
+          "title": "Password Cracking",
+          "desc": "Crack hashes using brute-force, dictionary attacks, and rule-based generation",
+          "cp": "100-300 CP"
+        },
+        "webapp": {
+          "title": "Web Exploitation",
+          "desc": "Exploit XSS, SSRF, deserialization, and access control flaws in modern web apps",
+          "cp": "100-400 CP"
+        },
+        "sqli": {
+          "title": "SQL Injection",
+          "desc": "Extract databases through union-based, blind, and time-based injection vectors",
+          "cp": "200-400 CP"
+        },
+        "phishing": {
+          "title": "Phishing Analysis",
+          "desc": "Identify phishing kits, analyze email headers, and trace social engineering campaigns",
+          "cp": "150-400 CP"
+        },
+        "proxy": {
+          "title": "Web Proxy",
+          "desc": "Intercept, modify, and replay HTTP traffic using Burp Suite and mitmproxy",
+          "cp": "150-400 CP"
+        },
+        "traffic": {
+          "title": "Traffic Analysis",
+          "desc": "Analyze PCAP files, detect anomalies, and reconstruct sessions from network captures",
+          "cp": "150-400 CP"
+        },
+        "osint": {
+          "title": "OSINT Recon",
+          "desc": "Gather intelligence from public sources, breach databases, and map attack surfaces",
+          "cp": "150-400 CP"
+        },
+        "wireless": {
+          "title": "Wireless Security",
+          "desc": "Test WPA2 handshakes, rogue APs, and deauthentication vulnerabilities",
+          "cp": "200-400 CP"
+        },
+        "killchain": {
+          "title": "Kill Chain",
+          "desc": "Full pentest from recon to exploitation — chain every skill into a complete attack narrative",
+          "cp": "500-600 CP"
+        }
       }
     },
     "courses": {
@@ -465,18 +506,54 @@
         "intermediate": "intermediate"
       },
       "list": {
-        "linuxTerminal101": { "title": "Linux Terminal 101", "desc": "Master the Linux command line from scratch." },
-        "windowsCmd101": { "title": "Windows CMD 101", "desc": "Windows Command Prompt and PowerShell." },
-        "networking101": { "title": "Networking 101", "desc": "IP addresses, ports, protocols, and the OSI model." },
-        "pythonForHackers": { "title": "Python for Hackers", "desc": "Security-focused Python scripting." },
-        "gitGithub101": { "title": "Git & GitHub 101", "desc": "Version control for security projects." },
-        "webTechnologies": { "title": "Web Technologies", "desc": "HTTP, cookies, sessions, and APIs." },
-        "webReconnaissance": { "title": "Web Reconnaissance", "desc": "Subdomain enumeration and fingerprinting." },
-        "sqlInjection101": { "title": "SQL Injection 101", "desc": "Exploit databases through SQL injection." },
-        "burpSuite101": { "title": "Burp Suite 101", "desc": "The industry-standard web security proxy." },
-        "nmap101": { "title": "Nmap 101", "desc": "Network scanning and service discovery." },
-        "wireshark101": { "title": "Wireshark 101", "desc": "Packet capture and traffic analysis." },
-        "wifiFundamentals": { "title": "Wi-Fi Fundamentals", "desc": "Wireless networks and encryption protocols." }
+        "linuxTerminal101": {
+          "title": "Linux Terminal 101",
+          "desc": "Master the Linux command line from scratch."
+        },
+        "windowsCmd101": {
+          "title": "Windows CMD 101",
+          "desc": "Windows Command Prompt and PowerShell."
+        },
+        "networking101": {
+          "title": "Networking 101",
+          "desc": "IP addresses, ports, protocols, and the OSI model."
+        },
+        "pythonForHackers": {
+          "title": "Python for Hackers",
+          "desc": "Security-focused Python scripting."
+        },
+        "gitGithub101": {
+          "title": "Git & GitHub 101",
+          "desc": "Version control for security projects."
+        },
+        "webTechnologies": {
+          "title": "Web Technologies",
+          "desc": "HTTP, cookies, sessions, and APIs."
+        },
+        "webReconnaissance": {
+          "title": "Web Reconnaissance",
+          "desc": "Subdomain enumeration and fingerprinting."
+        },
+        "sqlInjection101": {
+          "title": "SQL Injection 101",
+          "desc": "Exploit databases through SQL injection."
+        },
+        "burpSuite101": {
+          "title": "Burp Suite 101",
+          "desc": "The industry-standard web security proxy."
+        },
+        "nmap101": {
+          "title": "Nmap 101",
+          "desc": "Network scanning and service discovery."
+        },
+        "wireshark101": {
+          "title": "Wireshark 101",
+          "desc": "Packet capture and traffic analysis."
+        },
+        "wifiFundamentals": {
+          "title": "Wi-Fi Fundamentals",
+          "desc": "Wireless networks and encryption protocols."
+        }
       }
     },
     "bootcamp": {
@@ -541,9 +618,18 @@
     "howItWorks": {
       "heading": "Learn. Practice. Prove.",
       "steps": {
-        "learn": { "title": "Learn", "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation." },
-        "practice": { "title": "Practice", "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments." },
-        "prove": { "title": "Prove", "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency." }
+        "learn": {
+          "title": "Learn",
+          "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation."
+        },
+        "practice": {
+          "title": "Practice",
+          "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments."
+        },
+        "prove": {
+          "title": "Prove",
+          "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency."
+        }
       }
     },
     "leaderboard": {
@@ -603,8 +689,14 @@
       "heading": "Built for Impact",
       "description": "Real metrics from real operators across the continent",
       "suffix": "+",
-      "cpEarned": { "label": "CP Earned", "desc": "On-chain credentials awarded" },
-      "bootcampRegistrants": { "label": "Bootcamp Registrants", "desc": "Enrolled in structured programs" }
+      "cpEarned": {
+        "label": "CP Earned",
+        "desc": "On-chain credentials awarded"
+      },
+      "bootcampRegistrants": {
+        "label": "Bootcamp Registrants",
+        "desc": "Enrolled in structured programs"
+      }
     },
     "team": {
       "heading": "Built by Hackers",
@@ -620,7 +712,7 @@
         },
         "mohammedRafiq": {
           "role": "CFO",
-          "bio": "I don\u2019t protect assets\u2014I grow them wisely."
+          "bio": "I don’t protect assets—I grow them wisely."
         }
       }
     }
@@ -651,12 +743,32 @@
       "viewProfile": "View Profile"
     },
     "topbar": {
-      "search": { "placeholder": "Search courses, labs, rooms…", "empty": "No results found", "searching": "Searching…" },
-      "notifications": { "title": "Notifications", "empty": "No new notifications", "preferences": "Notification preferences", "viewAll": "View all notifications" },
-      "news": { "title": "Recent News", "empty": "No recent news", "viewAll": "Go to News Feed" },
-      "profile": { "view": "View profile" },
-      "cp": { "earned": "Earned" },
-      "streak": { "tooltip": "Streak", "days": "days" },
+      "search": {
+        "placeholder": "Search courses, labs, rooms…",
+        "empty": "No results found",
+        "searching": "Searching…"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "empty": "No new notifications",
+        "preferences": "Notification preferences",
+        "viewAll": "View all notifications"
+      },
+      "news": {
+        "title": "Recent News",
+        "empty": "No recent news",
+        "viewAll": "Go to News Feed"
+      },
+      "profile": {
+        "view": "View profile"
+      },
+      "cp": {
+        "earned": "Earned"
+      },
+      "streak": {
+        "tooltip": "Streak",
+        "days": "days"
+      },
       "breadcrumb": {
         "courses": "Courses",
         "course": "Course",
@@ -667,7 +779,12 @@
         "room": "Room"
       }
     },
-    "search": { "placeholder": "Search courses, labs, rooms…", "empty": "No results found", "searching": "Searching…", "button": "Search" },
+    "search": {
+      "placeholder": "Search courses, labs, rooms…",
+      "empty": "No results found",
+      "searching": "Searching…",
+      "button": "Search"
+    },
     "tools": {
       "title": "Tools",
       "ide": "IDE",
@@ -677,12 +794,35 @@
       "networkVisualizer": "Network Visualizer",
       "networkVisualizerDesc": "Build and explore network topologies"
     },
-    "installBanner": { "title": "Install QYVORA", "description": "Get the full experience with our desktop app.", "install": "Install", "dismiss": "Not now" },
-    "notifications": { "markRead": "Mark as read", "empty": "No notifications yet", "unread": "Unread", "viewAll": "View all notifications" },
-    "mobile": { "menu": "Menu", "navigation": "Navigation" },
+    "installBanner": {
+      "title": "Install QYVORA",
+      "description": "Get the full experience with our desktop app.",
+      "install": "Install",
+      "dismiss": "Not now"
+    },
+    "notifications": {
+      "markRead": "Mark as read",
+      "empty": "No notifications yet",
+      "unread": "Unread",
+      "viewAll": "View all notifications"
+    },
+    "mobile": {
+      "menu": "Menu",
+      "navigation": "Navigation"
+    },
     "onboarding": {
-      "welcome": { "title": "Welcome to QYVORA", "subtitle": "Let's get you set up.", "cta": "Get Started" },
-      "path": { "title": "Choose your path", "prompt": "What brings you here?", "beginner": "Beginner", "intermediate": "Intermediate", "advanced": "Advanced" },
+      "welcome": {
+        "title": "Welcome to QYVORA",
+        "subtitle": "Let's get you set up.",
+        "cta": "Get Started"
+      },
+      "path": {
+        "title": "Choose your path",
+        "prompt": "What brings you here?",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+      },
       "focus": {
         "title": "Set your focus",
         "pentest": "Penetration Testing",
@@ -692,8 +832,13 @@
         "exploit": "Exploit Development",
         "osint": "OSINT"
       },
-      "almost": { "title": "Almost there…" },
-      "complete": { "title": "You're all set!", "cta": "Start Learning" },
+      "almost": {
+        "title": "Almost there…"
+      },
+      "complete": {
+        "title": "You're all set!",
+        "cta": "Start Learning"
+      },
       "skip": "Skip",
       "back": "Back",
       "next": "Next"
@@ -712,38 +857,88 @@
       "greeting": "Welcome back, {{name}}",
       "greetingFallback": "Welcome to QYVORA",
       "overviewDesc": "Your CyberPoints summary and quick actions.",
-      "stats": { "cp": "CP Earned", "streak": "Streak", "rooms": "Rooms Completed" },
-      "action": { "startLearning": "Start Learning" },
+      "stats": {
+        "cp": "CP Earned",
+        "streak": "Streak",
+        "rooms": "Rooms Completed"
+      },
+      "action": {
+        "startLearning": "Start Learning"
+      },
       "intelligenceAsset": "Intelligence Asset",
       "intelligenceDesc": "Secure intelligence report for offensive security operatives.",
       "free": "Free",
       "view": "View",
       "rank": "Rank",
       "cp": "CP",
-      "streak": "Streak",
+      "streak": {
+        "title": "Streak",
+        "description": "Keep your streak alive!",
+        "count": "{{count}} day streak",
+        "logActivity": "Log today's activity",
+        "info": "Complete one room or lab per day to maintain your streak.",
+        "label": "Streak",
+        "hint": "Complete a room or lab daily to keep your streak going."
+      },
       "roomsDone": "Rooms Done",
       "courses": "Courses",
       "viewAll": "View All",
-      "weekActivity": { "title": "Week at a Glance", "empty": "No activity recorded this week." },
-      "activeDeployments": { "title": "Active Deployments", "empty": "No active deployments.", "expires": "Expires" },
-      "streak": { "title": "Streak", "description": "Keep your streak alive!", "count": "{{count}} day streak", "logActivity": "Log today's activity", "info": "Complete one room or lab per day to maintain your streak.", "label": "Streak", "hint": "Complete a room or lab daily to keep your streak going." },
-      "courseProgress": { "title": "Course Progress", "continue": "Continue" },
-      "hero": { "tagline": "What will you hack today?", "resume": "Pick up where you left off", "newLab": "Start a new lab", "viewCourses": "View my courses", "welcomeBack": "Welcome back,", "welcome": "Welcome,", "operatorFallback": "Operator", "allMissionsComplete": "All missions complete", "allRoomsComplete": "You have completed every available room.", "reviewCurriculum": "Review Curriculum", "continueTraining": "Continue your training", "pickUpWhere": "Pick up where you left off.", "beginJourney": "Begin your journey", "startHpb": "Start the Hacker Protocol Bootcamp and earn your first CP.", "continue": "Continue", "startTraining": "Start Training" }
+      "weekActivity": {
+        "title": "Week at a Glance",
+        "empty": "No activity recorded this week."
+      },
+      "activeDeployments": {
+        "title": "Active Deployments",
+        "empty": "No active deployments.",
+        "expires": "Expires"
+      },
+      "courseProgress": {
+        "title": "Course Progress",
+        "continue": "Continue"
+      },
+      "hero": {
+        "tagline": "What will you hack today?",
+        "resume": "Pick up where you left off",
+        "newLab": "Start a new lab",
+        "viewCourses": "View my courses",
+        "welcomeBack": "Welcome back,",
+        "welcome": "Welcome,",
+        "operatorFallback": "Operator",
+        "allMissionsComplete": "All missions complete",
+        "allRoomsComplete": "You have completed every available room.",
+        "reviewCurriculum": "Review Curriculum",
+        "continueTraining": "Continue your training",
+        "pickUpWhere": "Pick up where you left off.",
+        "beginJourney": "Begin your journey",
+        "startHpb": "Start the Hacker Protocol Bootcamp and earn your first CP.",
+        "continue": "Continue",
+        "startTraining": "Start Training"
+      }
     },
     "myCourses": {
       "seoTitle": "My Courses",
       "seoDesc": "Track your enrolled bootcamps and progress.",
       "title": "My Courses",
       "description": "Your enrolled bootcamps and progress.",
-      "filter": { "all": "All", "active": "Active", "completed": "Completed" },
+      "filter": {
+        "all": "All",
+        "active": "Active",
+        "completed": "Completed"
+      },
       "searchPlaceholder": "Search courses…",
-      "empty": { "search": "No courses match your search.", "enrolled": "You aren't enrolled in any bootcamps yet.", "cta": "Browse bootcamps" },
+      "empty": {
+        "search": "No courses match your search.",
+        "enrolled": "You aren't enrolled in any bootcamps yet.",
+        "cta": "Browse bootcamps"
+      },
       "continue": "Continue",
       "start": "Start",
       "review": "Review",
       "completed": "Completed",
       "progress": "{{percent}}% complete",
-      "action": { "browse": "Browse Bootcamps" }
+      "action": {
+        "browse": "Browse Bootcamps"
+      }
     },
     "bootcampCourse": {
       "seoSuffix": "Bootcamp",
@@ -759,14 +954,44 @@
       "phaseCount": "{{phase}} of {{total}} phases",
       "empty": "No phases found.",
       "phaseLabel": "Phase {{n}}",
-      "phaseSection": { "label": "Phase {{n}}", "roomCount": "{{count}} rooms", "completed": "Completed", "inProgress": "In Progress", "locked": "Locked" },
-      "roomCard": { "complete": "Complete", "continue": "Continue", "start": "Start", "lockedHint": "Locked — complete previous rooms first", "steps": "{{count}} steps", "duration": "{{min}} min" },
-      "header": { "label": "Bootcamp", "overview": "Overview", "prerequisites": "Prerequisites", "noPrereqs": "No prerequisites", "instructors": "Instructors" },
-      "sidebarProgress": { "title": "Course Progress", "percent": "{{percent}}% complete", "phases": "Phases", "phaseLabel": "Phase {{n}}" }
+      "phaseSection": {
+        "label": "Phase {{n}}",
+        "roomCount": "{{count}} rooms",
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "locked": "Locked"
+      },
+      "roomCard": {
+        "complete": "Complete",
+        "continue": "Continue",
+        "start": "Start",
+        "lockedHint": "Locked — complete previous rooms first",
+        "steps": "{{count}} steps",
+        "duration": "{{min}} min"
+      },
+      "header": {
+        "label": "Bootcamp",
+        "overview": "Overview",
+        "prerequisites": "Prerequisites",
+        "noPrereqs": "No prerequisites",
+        "instructors": "Instructors"
+      },
+      "sidebarProgress": {
+        "title": "Course Progress",
+        "percent": "{{percent}}% complete",
+        "phases": "Phases",
+        "phaseLabel": "Phase {{n}}"
+      }
     },
     "bootcampRoom": {
       "seoTitle": "Bootcamp Room",
-      "complete": { "title": "Room Complete", "congrats": "Congratulations!", "cpEarned": "+{{cp}} CP earned", "nextRoom": "Next Room", "backToCourse": "Back to Course" },
+      "complete": {
+        "title": "Room Complete",
+        "congrats": "Congratulations!",
+        "cpEarned": "+{{cp}} CP earned",
+        "nextRoom": "Next Room",
+        "backToCourse": "Back to Course"
+      },
       "loading": "Loading room…",
       "notFound": "Room not found.",
       "notFoundDesc": "This room doesn't exist in the bootcamp config.",
@@ -781,20 +1006,33 @@
         "roomNavigator": "Room Navigator",
         "closeCurriculum": "Close curriculum"
       },
-      "header": { "phaseLabel": "{{codename}} — {{phase}}", "duration": "{{min}} min", "steps": "{{count}} steps", "sessionTime": "Session: {{time}}", "completeBadge": "Room Complete" },
-      "progress": { "title": "Progress", "stepsCount": "{{viewed}} / {{total}} steps", "sessionTime": "Time in session: {{time}}" },
-  "common": {
-    "updating": "Updating...",
-    "generating": "Generating...",
-    "acknowledging": "Acknowledging...",
-    "deleting": "Deleting...",
-    "prev": "Prev",
-    "next": "Next"
-  },
-  "nav": {
+      "header": {
+        "phaseLabel": "{{codename}} — {{phase}}",
+        "duration": "{{min}} min",
+        "steps": "{{count}} steps",
+        "sessionTime": "Session: {{time}}",
+        "completeBadge": "Room Complete"
+      },
+      "progress": {
+        "title": "Progress",
+        "stepsCount": "{{viewed}} / {{total}} steps",
+        "sessionTime": "Time in session: {{time}}"
+      },
+      "common": {
+        "updating": "Updating...",
+        "generating": "Generating...",
+        "acknowledging": "Acknowledging...",
+        "deleting": "Deleting...",
+        "prev": "Prev",
+        "next": "Next"
+      },
+      "nav": {
         "jump": "Jump",
         "fullscreenTitle": "Toggle fullscreen (F)",
-        "fullscreen": { "exit": "Exit", "enter": "Full" },
+        "fullscreen": {
+          "exit": "Exit",
+          "enter": "Full"
+        },
         "prev": "Prev",
         "processing": "Processing…",
         "nextRoom": "Next Room",
@@ -823,7 +1061,10 @@
         "reportIssue": "Report Issue",
         "unread": "Unread Step"
       },
-      "stepJump": { "title": "Jump to Step", "selectStep": "Select a step" },
+      "stepJump": {
+        "title": "Jump to Step",
+        "selectStep": "Select a step"
+      },
       "quiz": {
         "title": "Room Quiz",
         "loading": "Loading quiz…",
@@ -882,7 +1123,9 @@
       },
       "saved": "Preferences saved.",
       "saveFailed": "Failed to save preferences.",
-      "profile": { "title": "Profile" },
+      "profile": {
+        "title": "Profile"
+      },
       "password": {
         "title": "Change Password",
         "currentLabel": "Current Password",
@@ -1027,7 +1270,11 @@
       "handle": "Hacker Handle",
       "badges": "Badges",
       "badgesEmpty": "No badges earned yet.",
-      "stats": { "cp": "CP Earned", "rooms": "Rooms Done", "streak": "Streak" },
+      "stats": {
+        "cp": "CP Earned",
+        "rooms": "Rooms Done",
+        "streak": "Streak"
+      },
       "publicView": "Public View",
       "achievements": "Achievements",
       "collapse": "Collapse",
@@ -1054,7 +1301,10 @@
       "title": "Notifications",
       "description": "System alerts and mission updates.",
       "markAllRead": "Mark All Read",
-      "empty": { "unread": "No unread notifications.", "all": "No notifications yet — you're clear." },
+      "empty": {
+        "unread": "No unread notifications.",
+        "all": "No notifications yet — you're clear."
+      },
       "markRead": "Mark read",
       "loadMore": "Load more ({{count}} remaining)",
       "unread": "Unread"
@@ -1065,7 +1315,13 @@
       "title": "News Feed",
       "description": "Security news and updates.",
       "subscribe": "Subscribe",
-      "categories": { "all": "All", "news": "News", "tutorials": "Tutorials", "research": "Research", "events": "Events" },
+      "categories": {
+        "all": "All",
+        "news": "News",
+        "tutorials": "Tutorials",
+        "research": "Research",
+        "events": "Events"
+      },
       "readMore": "Read more",
       "empty": "No articles found.",
       "featured": "Featured",
@@ -1079,7 +1335,13 @@
       "title": "Marketplace",
       "description": "Redeem your CyberPoints.",
       "searchPlaceholder": "Search items…",
-      "tabs": { "all": "All", "courses": "Courses", "gear": "Gear", "vouchers": "Vouchers", "digital": "Digital" },
+      "tabs": {
+        "all": "All",
+        "courses": "Courses",
+        "gear": "Gear",
+        "vouchers": "Vouchers",
+        "digital": "Digital"
+      },
       "redeem": "Redeem",
       "redeemed": "Redeemed",
       "price": "{{cp}} CP",
@@ -1100,15 +1362,34 @@
       "seoDesc": "Operator leaderboard ranked by CP earned.",
       "title": "Competitive Leaderboard",
       "description": "{{count}} operators ranked by CyberPoints",
-      "periods": { "all": "All Time", "week": "This Week", "month": "This Month" },
-      "tableHeaders": { "rank": "#", "operator": "Operator", "rankLabel": "Rank", "cp": "CP", "streak": "Streak" },
+      "periods": {
+        "all": "All Time",
+        "week": "This Week",
+        "month": "This Month"
+      },
+      "tableHeaders": {
+        "rank": "#",
+        "operator": "Operator",
+        "rankLabel": "Rank",
+        "cp": "CP",
+        "streak": "Streak"
+      },
       "loadError": "Failed to load leaderboard.",
       "loadErrorNetwork": "Failed to load leaderboard. Check connection and try again.",
-      "empty": { "title": "No operators ranked yet", "description": "Complete bootcamp rooms to earn CP and appear on the leaderboard." },
+      "empty": {
+        "title": "No operators ranked yet",
+        "description": "Complete bootcamp rooms to earn CP and appear on the leaderboard."
+      },
       "footer": "CP balances verified on QYVORA Chain · {{count}} operators",
       "youBadge": "You",
       "roomCount": "{{count}} rooms",
-      "ranks": { "vanguard": "Vanguard", "architect": "Architect", "specialist": "Specialist", "contributor": "Contributor", "candidate": "Candidate" },
+      "ranks": {
+        "vanguard": "Vanguard",
+        "architect": "Architect",
+        "specialist": "Specialist",
+        "contributor": "Contributor",
+        "candidate": "Candidate"
+      },
       "anonymous": "Anonymous",
       "rooms": "rooms"
     },
@@ -1118,42 +1399,110 @@
       "title": "Network Lab",
       "description": "Simulated corporate network environment for terminal practice",
       "openTerminal": "Open Terminal",
-      "simulationWarning": { "title": "Simulated Environment", "description": "This is a fully simulated network environment for educational purposes." },
-      "infoCards": { "subnet": "Subnet", "gateway": "Gateway", "dns": "DNS", "netmask": "Netmask" },
+      "simulationWarning": {
+        "title": "Simulated Environment",
+        "description": "This is a fully simulated network environment for educational purposes."
+      },
+      "infoCards": {
+        "subnet": "Subnet",
+        "gateway": "Gateway",
+        "dns": "DNS",
+        "netmask": "Netmask"
+      },
       "yourMachine": "Your Machine (Kali)",
-      "yourMachineFields": { "ip": "IP Address", "mac": "MAC", "hostname": "Hostname" },
-      "hosts": { "known": "Known hosts ({{count}})", "hidden": "{{count}} hidden — use nmap to discover", "empty": "No known hosts discovered. Use the terminal to start scanning." },
-      "tableHeaders": { "num": "#", "hostname": "Hostname", "ip": "IP" },
-      "tips": { "title": "Try it yourself", "description": "Open the terminal and practice network scanning techniques:" }
+      "yourMachineFields": {
+        "ip": "IP Address",
+        "mac": "MAC",
+        "hostname": "Hostname"
+      },
+      "hosts": {
+        "known": "Known hosts ({{count}})",
+        "hidden": "{{count}} hidden — use nmap to discover",
+        "empty": "No known hosts discovered. Use the terminal to start scanning."
+      },
+      "tableHeaders": {
+        "num": "#",
+        "hostname": "Hostname",
+        "ip": "IP"
+      },
+      "tips": {
+        "title": "Try it yourself",
+        "description": "Open the terminal and practice network scanning techniques:"
+      }
     },
     "labs": {
       "seoTitle": "Attack Labs",
       "seoDesc": "Hands-on offensive security simulations on QYVORA.",
       "title": "Attack Labs",
       "description": "Hands-on offensive security simulations. Practice real-world attack techniques in isolated environments.",
-      "filter": { "all": "All Labs" },
-      "searchPlaceholder": "Search labs…",
-      "empty": { "title": "No labs found", "description": "Try adjusting your search or filter criteria." },
-      "labCard": { "start": "Start", "reward": "{{range}} CP" },
-      "list": {
-        "privesc": { "title": "Privilege Escalation", "description": "Escalate permissions and gain root access on vulnerable systems" },
-        "passwords": { "title": "Password Cracking", "description": "Crack password hashes using brute-force and dictionary attacks" },
-        "webapp": { "title": "Web Exploitation", "description": "Exploit web application vulnerabilities and misconfigurations" },
-        "sqli": { "title": "SQL Injection", "description": "Extract data through SQL injection attacks on databases" },
-        "phishing": { "title": "Phishing Analysis", "description": "Identify and analyze phishing campaigns and social engineering" },
-        "proxy": { "title": "Web Proxy", "description": "Intercept and manipulate HTTP traffic using proxy tools" },
-        "traffic": { "title": "Traffic Analysis", "description": "Analyze network traffic patterns and detect suspicious activity" },
-        "osint": { "title": "OSINT Recon", "description": "Gather intelligence using open source investigation techniques" },
-        "wireless": { "title": "Wireless Security", "description": "Test wireless network security and crack encryption protocols" },
-        "killchain": { "title": "Kill Chain", "description": "Execute a full penetration test from recon to exploitation" }
+      "filter": {
+        "all": "All Labs"
       },
-      "relatedContent": { "title": "Continue This Topic" },
+      "searchPlaceholder": "Search labs…",
+      "empty": {
+        "title": "No labs found",
+        "description": "Try adjusting your search or filter criteria."
+      },
+      "labCard": {
+        "start": "Start",
+        "reward": "{{range}} CP"
+      },
+      "list": {
+        "privesc": {
+          "title": "Privilege Escalation",
+          "description": "Escalate permissions and gain root access on vulnerable systems"
+        },
+        "passwords": {
+          "title": "Password Cracking",
+          "description": "Crack password hashes using brute-force and dictionary attacks"
+        },
+        "webapp": {
+          "title": "Web Exploitation",
+          "description": "Exploit web application vulnerabilities and misconfigurations"
+        },
+        "sqli": {
+          "title": "SQL Injection",
+          "description": "Extract data through SQL injection attacks on databases"
+        },
+        "phishing": {
+          "title": "Phishing Analysis",
+          "description": "Identify and analyze phishing campaigns and social engineering"
+        },
+        "proxy": {
+          "title": "Web Proxy",
+          "description": "Intercept and manipulate HTTP traffic using proxy tools"
+        },
+        "traffic": {
+          "title": "Traffic Analysis",
+          "description": "Analyze network traffic patterns and detect suspicious activity"
+        },
+        "osint": {
+          "title": "OSINT Recon",
+          "description": "Gather intelligence using open source investigation techniques"
+        },
+        "wireless": {
+          "title": "Wireless Security",
+          "description": "Test wireless network security and crack encryption protocols"
+        },
+        "killchain": {
+          "title": "Kill Chain",
+          "description": "Execute a full penetration test from recon to exploitation"
+        }
+      },
+      "relatedContent": {
+        "title": "Continue This Topic"
+      },
       "scenarioComplete": "Scenario Complete",
       "reward": "+{{cp}} CP earned.",
       "backToScenarios": "Back to Scenarios",
       "backToChallenges": "Back to Challenges",
       "requiredBadge": "Required",
-      "killchain": { "progressTitle": "Kill Chain Progress", "missionComplete": "Mission Complete!", "completePhase": "Complete Phase & Move Next", "allPhasesComplete": "All Phases Complete" }
+      "killchain": {
+        "progressTitle": "Kill Chain Progress",
+        "missionComplete": "Mission Complete!",
+        "completePhase": "Complete Phase & Move Next",
+        "allPhasesComplete": "All Phases Complete"
+      }
     },
     "courseLesson": {
       "seoTitle": "Course Lesson",
@@ -1195,7 +1544,13 @@
       "joinNow": "Join Now"
     },
     "share": {
-      "platforms": { "x": "X", "linkedin": "LinkedIn", "whatsapp": "WhatsApp", "email": "Email", "copyLink": "Copy Link" },
+      "platforms": {
+        "x": "X",
+        "linkedin": "LinkedIn",
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "copyLink": "Copy Link"
+      },
       "emailSubject": "QYVORA Profile",
       "shareText": "Check out {{handle}}'s cybersecurity operator profile on QYVORA",
       "buttonLabel": "Share",
@@ -1203,8 +1558,18 @@
       "choosePlatform": "Choose Platform",
       "copied": "Copied!"
     },
-    "dialog": { "confirm": "Confirm", "cancel": "Cancel", "close": "Close" },
-    "common": { "loading": "Loading…", "submit": "Submit", "cancel": "Cancel", "close": "Close", "dismiss": "Dismiss" },
+    "dialog": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "common": {
+      "loading": "Loading…",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "close": "Close",
+      "dismiss": "Dismiss"
+    },
     "bottomNav": {
       "home": "Home",
       "leaderboard": "Leaderboard",
@@ -1218,22 +1583,86 @@
       "signUp": "Sign Up"
     },
     "relatedContent": {
-      "typeLabel": { "course": "Course", "lab": "Lab", "hpbRoom": "HPB Room" },
+      "typeLabel": {
+        "course": "Course",
+        "lab": "Lab",
+        "hpbRoom": "HPB Room"
+      },
       "open": "Open",
       "defaultTitle": "Related Content",
       "description": "Continue learning this topic across other parts of the platform"
     },
-    "scenarioCard": { "cpSuffix": "CP", "start": "Start" },
-    "sync": { "lastUpdated": "Last updated: {{time}}", "noData": "No data yet", "retry": "Retry" },
-    "dataTable": { "searchPlaceholder": "Search…", "resultsCount": "{{count}} results", "noData": "No data", "itemsPerPage": "{{n}} / page", "pageOf": "Page {{page}} of {{total}}" },
-    "language": { "searchPlaceholder": "Search languages…" },
-    "handleSuggestions": { "error": "Could not load suggestions.", "label": "Suggested handles" },
-    "bootcampBadge": { "alt": "HPB Bootcamp Completed", "title": "Hacker Protocol Bootcamp — Completed" },
-    "terminal": { "welcome": "QYVORA Sandbox Terminal v1.0", "helpHint": "Type \"help\" for available commands.", "helpOutput": "Available commands: help, clear, ls, cat, whoami, id, uname, ifconfig, ping, nmap", "sessionTerminated": "[Session terminated. Type 'help' to restart.]", "catNoFile": "cat: {{file}}: No such file or directory", "commandNotFound": "bash: {{cmd}}: command not found" },
-    "playground": { "langNotSupported": "Language \"{{language}}\" is not supported in this sandbox.", "noOutput": "(no output)", "unexpectedOutput": "Expected output: \"{{expected}}\" but got: \"{{result}}\"", "outputMatches": "✓ Output matches expected!", "executionError": "Execution error", "run": "Run", "hideHint": "Hide hint", "showHint": "Show hint", "expectedOutputLabel": "Expected output:" },
-    "stepNotes": { "hideNotes": "Hide Notes", "myNotes": "My Notes", "placeholder": "Write your notes for this step…", "clearNotes": "Clear notes" },
-    "quiz": { "defaultTitle": "Knowledge Check", "passed": "Passed", "needsReview": "Needs Review", "scoreSummary": "{{correct}} of {{total}} correct ({{threshold}}% to pass)", "yourAnswer": "Your answer: ", "correctAnswer": "Correct answer: ", "retry": "Retry", "next": "Next", "remaining": "{{count}} remaining" },
-    "annotate": { "freehand": "Freehand draw", "rect": "Draw rectangle", "arrow": "Draw arrow", "undo": "Undo", "clearAll": "Clear all", "expand": "Expand" },
+    "scenarioCard": {
+      "cpSuffix": "CP",
+      "start": "Start"
+    },
+    "sync": {
+      "lastUpdated": "Last updated: {{time}}",
+      "noData": "No data yet",
+      "retry": "Retry"
+    },
+    "dataTable": {
+      "searchPlaceholder": "Search…",
+      "resultsCount": "{{count}} results",
+      "noData": "No data",
+      "itemsPerPage": "{{n}} / page",
+      "pageOf": "Page {{page}} of {{total}}"
+    },
+    "language": {
+      "searchPlaceholder": "Search languages…"
+    },
+    "handleSuggestions": {
+      "error": "Could not load suggestions.",
+      "label": "Suggested handles"
+    },
+    "bootcampBadge": {
+      "alt": "HPB Bootcamp Completed",
+      "title": "Hacker Protocol Bootcamp — Completed"
+    },
+    "terminal": {
+      "welcome": "QYVORA Sandbox Terminal v1.0",
+      "helpHint": "Type \"help\" for available commands.",
+      "helpOutput": "Available commands: help, clear, ls, cat, whoami, id, uname, ifconfig, ping, nmap",
+      "sessionTerminated": "[Session terminated. Type 'help' to restart.]",
+      "catNoFile": "cat: {{file}}: No such file or directory",
+      "commandNotFound": "bash: {{cmd}}: command not found"
+    },
+    "playground": {
+      "langNotSupported": "Language \"{{language}}\" is not supported in this sandbox.",
+      "noOutput": "(no output)",
+      "unexpectedOutput": "Expected output: \"{{expected}}\" but got: \"{{result}}\"",
+      "outputMatches": "✓ Output matches expected!",
+      "executionError": "Execution error",
+      "run": "Run",
+      "hideHint": "Hide hint",
+      "showHint": "Show hint",
+      "expectedOutputLabel": "Expected output:"
+    },
+    "stepNotes": {
+      "hideNotes": "Hide Notes",
+      "myNotes": "My Notes",
+      "placeholder": "Write your notes for this step…",
+      "clearNotes": "Clear notes"
+    },
+    "quiz": {
+      "defaultTitle": "Knowledge Check",
+      "passed": "Passed",
+      "needsReview": "Needs Review",
+      "scoreSummary": "{{correct}} of {{total}} correct ({{threshold}}% to pass)",
+      "yourAnswer": "Your answer: ",
+      "correctAnswer": "Correct answer: ",
+      "retry": "Retry",
+      "next": "Next",
+      "remaining": "{{count}} remaining"
+    },
+    "annotate": {
+      "freehand": "Freehand draw",
+      "rect": "Draw rectangle",
+      "arrow": "Draw arrow",
+      "undo": "Undo",
+      "clearAll": "Clear all",
+      "expand": "Expand"
+    },
     "walkthrough": {
       "allLabs": "All Labs",
       "min": "min",
@@ -1258,25 +1687,77 @@
       "flagPlaceholder": "QYVORA{...}",
       "stepCompleted": "Step completed!"
     },
-    "blogTerminal": { "helpOutput": "Available commands: help, clear, ls, cat, whoami", "sessionTerminated": "Session terminated. Goodbye, operator.", "catNoFile": "cat: no file specified", "catPlaceholder": "(contents of {{file}} would be shown here)", "commandNotFound": "command not found: {{cmd}}" },
-    "ideBlock": { "cursorPosition": "Ln {{n}}, Col 1", "spaces": "Spaces: 2", "encoding": "UTF-8" },
-    "labTerminal": { "notConnected": "Not connected", "connected": "Connected", "disconnect": "Disconnect", "connect": "Connect", "title": "Lab: {{title}}" },
-    "labTerminalConfirm": { "title": "Disconnect from Target?", "description": "Your terminal session will end. Progress is saved automatically.", "confirm": "Disconnect" },
-    "labConnectButton": { "connected": "Connected", "disconnect": "Disconnect", "connect": "Connect" },
+    "blogTerminal": {
+      "helpOutput": "Available commands: help, clear, ls, cat, whoami",
+      "sessionTerminated": "Session terminated. Goodbye, operator.",
+      "catNoFile": "cat: no file specified",
+      "catPlaceholder": "(contents of {{file}} would be shown here)",
+      "commandNotFound": "command not found: {{cmd}}"
+    },
+    "ideBlock": {
+      "cursorPosition": "Ln {{n}}, Col 1",
+      "spaces": "Spaces: 2",
+      "encoding": "UTF-8"
+    },
+    "labTerminal": {
+      "notConnected": "Not connected",
+      "connected": "Connected",
+      "disconnect": "Disconnect",
+      "connect": "Connect",
+      "title": "Lab: {{title}}"
+    },
+    "labTerminalConfirm": {
+      "title": "Disconnect from Target?",
+      "description": "Your terminal session will end. Progress is saved automatically.",
+      "confirm": "Disconnect"
+    },
+    "labConnectButton": {
+      "connected": "Connected",
+      "disconnect": "Disconnect",
+      "connect": "Connect"
+    },
     "labConnectionGuide": {
       "toggle": "How to Connect & Use This Lab",
       "title": "Lab Connection Guide",
       "steps": {
-        "openTerminal": { "title": "Open the Terminal", "description": "Click the Connect button to establish a connection to the lab environment." },
-        "waitConnection": { "title": "Wait for Connection", "description": "The system will allocate a sandboxed environment for your session." },
-        "runCommands": { "title": "Run Commands", "description": "Type commands in the terminal to interact with the lab environment." },
-        "sessionTimeout": { "title": "Session Timeout", "description": "Sessions expire after inactivity. Your progress is saved automatically." },
-        "hintsFlags": { "title": "Hints & Flags", "description": "Use the story panel for hints. Capture flags to complete scenarios." }
+        "openTerminal": {
+          "title": "Open the Terminal",
+          "description": "Click the Connect button to establish a connection to the lab environment."
+        },
+        "waitConnection": {
+          "title": "Wait for Connection",
+          "description": "The system will allocate a sandboxed environment for your session."
+        },
+        "runCommands": {
+          "title": "Run Commands",
+          "description": "Type commands in the terminal to interact with the lab environment."
+        },
+        "sessionTimeout": {
+          "title": "Session Timeout",
+          "description": "Sessions expire after inactivity. Your progress is saved automatically."
+        },
+        "hintsFlags": {
+          "title": "Hints & Flags",
+          "description": "Use the story panel for hints. Capture flags to complete scenarios."
+        }
       },
-      "tip": { "label": "Tip", "text": "Start with the easier scenarios (beginner) and work your way up to more advanced challenges." }
+      "tip": {
+        "label": "Tip",
+        "text": "Start with the easier scenarios (beginner) and work your way up to more advanced challenges."
+      }
     },
-    "labStoryPanel": { "timeline": "Mission Timeline", "hintButton": "Need a hint?", "progress": "Progress", "progressCount": "{{completed}} / {{total}}" },
-    "installBanner": { "title": "Install QYVORA", "description": "Get the full experience with our desktop app.", "install": "Install", "dismiss": "Not now" },
+    "labStoryPanel": {
+      "timeline": "Mission Timeline",
+      "hintButton": "Need a hint?",
+      "progress": "Progress",
+      "progressCount": "{{completed}} / {{total}}"
+    },
+    "installBanner": {
+      "title": "Install QYVORA",
+      "description": "Get the full experience with our desktop app.",
+      "install": "Install",
+      "dismiss": "Not now"
+    },
     "toolChooser": {
       "chooseHowToOpen": "Choose how to open",
       "openInPanel": "Open in Panel",
@@ -1469,7 +1950,14 @@
       "offline": "Offline",
       "modify": "Modify",
       "terminate": "Terminate",
-      "tableHeaders": { "asset": "Asset", "title": "Title", "valuation": "Valuation", "classification": "Classification", "status": "Status", "actions": "Actions" },
+      "tableHeaders": {
+        "asset": "Asset",
+        "title": "Title",
+        "valuation": "Valuation",
+        "classification": "Classification",
+        "status": "Status",
+        "actions": "Actions"
+      },
       "pdfRequired": "Product PDF is required for new products.",
       "productUpdated": "Product updated",
       "productCreated": "Product created",
@@ -1555,9 +2043,18 @@
     "howItWorks": {
       "heading": "Learn. Practice. Prove.",
       "steps": {
-        "learn": { "title": "Learn", "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation." },
-        "practice": { "title": "Practice", "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments." },
-        "prove": { "title": "Prove", "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency." }
+        "learn": {
+          "title": "Learn",
+          "desc": "Master offensive security foundations with structured modules covering Linux, networking, and web exploitation."
+        },
+        "practice": {
+          "title": "Practice",
+          "desc": "Execute real exploits in simulated attack labs. Capture flags and chain vulnerabilities in production-mirror environments."
+        },
+        "prove": {
+          "title": "Prove",
+          "desc": "Earn on-chain CP credentials that validate your expertise and build a verifiable track record of proficiency."
+        }
       }
     },
     "platform": "Platform",
@@ -1571,15 +2068,31 @@
       "browseCta": "Browse Courses"
     },
     "searchPlaceholder": "Search courses...",
-    "sort": { "label": "Sort", "popular": "Popular", "lowestCp": "Lowest CP", "highestCp": "Highest CP", "duration": "Duration" },
-    "sortOptions": { "default": "Default", "popular": "Popular", "priceLow": "Price: Low to High", "priceHigh": "Price: High to Low", "duration": "Duration" },
+    "sort": {
+      "label": "Sort",
+      "popular": "Popular",
+      "lowestCp": "Lowest CP",
+      "highestCp": "Highest CP",
+      "duration": "Duration"
+    },
+    "sortOptions": {
+      "default": "Default",
+      "popular": "Popular",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low",
+      "duration": "Duration"
+    },
     "resultsCount_one": "{{count}} course",
     "resultsCount_other": "{{count}} courses",
     "empty": "No courses found matching your criteria.",
     "clearFilters": "Clear filters",
-    "badge": { "top": "Top" },
+    "badge": {
+      "top": "Top"
+    },
     "viewCta": "View",
-    "levels": { "advanced": "Advanced" }
+    "levels": {
+      "advanced": "Advanced"
+    }
   },
   "eventsPage": {
     "hero": {
@@ -1591,7 +2104,10 @@
     "badge": "Live Operations"
   },
   "servicesPage": {
-    "seo": { "title": "Services — QYVORA", "description": "Professional penetration testing services tailored for African organizations." },
+    "seo": {
+      "title": "Services — QYVORA",
+      "description": "Professional penetration testing services tailored for African organizations."
+    },
     "hero": {
       "badge": "Offensive Security Assessments",
       "title": "Test Your",
@@ -1610,15 +2126,29 @@
       "heading": "Custom Inquiry",
       "price": "Let's Talk",
       "description": "Not sure which package fits? We design custom engagement scopes for unique infrastructure, compliance requirements, and multi-team Red Team exercises.",
-      "features": { "redTeam": "Multi-Team Red Team Exercises", "compliance": "Compliance-Driven Assessments", "infrastructure": "Unique Infrastructure Scoping", "projectMgmt": "Dedicated Project Management" },
+      "features": {
+        "redTeam": "Multi-Team Red Team Exercises",
+        "compliance": "Compliance-Driven Assessments",
+        "infrastructure": "Unique Infrastructure Scoping",
+        "projectMgmt": "Dedicated Project Management"
+      },
       "cta": "Contact Our Team"
     },
-    "basic": { "desc": "Essential penetration testing for startups and small teams." },
-    "standard": { "desc": "Comprehensive testing for growing organizations." },
-    "bootcamp": { "desc": "Custom security awareness training for your team." }
+    "basic": {
+      "desc": "Essential penetration testing for startups and small teams."
+    },
+    "standard": {
+      "desc": "Comprehensive testing for growing organizations."
+    },
+    "bootcamp": {
+      "desc": "Custom security awareness training for your team."
+    }
   },
   "leaderboardPage": {
-    "seo": { "title": "Leaderboard — QYVORA", "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned." },
+    "seo": {
+      "title": "Leaderboard — QYVORA",
+      "description": "Ranking Africa's top cybersecurity operators by CyberPoints earned."
+    },
     "hero": {
       "title": "Operator",
       "titleHighlight": "Leaderboard",
@@ -1628,8 +2158,18 @@
       "totalCpStat": "Total CP",
       "topCpStat": "Top CP"
     },
-    "periods": { "all": "All Time", "week": "This Week", "month": "This Month" },
-    "table": { "rank": "#", "operator": "Operator", "rankLabel": "Rank", "cp": "CP", "streak": "Streak" },
+    "periods": {
+      "all": "All Time",
+      "week": "This Week",
+      "month": "This Month"
+    },
+    "table": {
+      "rank": "#",
+      "operator": "Operator",
+      "rankLabel": "Rank",
+      "cp": "CP",
+      "streak": "Streak"
+    },
     "rooms": "rooms",
     "loadError": "Failed to load leaderboard.",
     "loadErrorNetwork": "Failed to load leaderboard. Check connection and try again.",
@@ -1658,14 +2198,38 @@
       "body": "We believe offensive security should be built in Africa, by African defenders, for African organizations. Every tool we create is designed to strengthen the continent's cyber resilience."
     },
     "capabilities": {
-      "research": { "title": "Offensive Security Research", "desc": "Pioneering research into attack vectors, vulnerability discovery, and exploitation techniques." },
-      "toolDev": { "title": "Tool Development", "desc": "Building production-grade security tools for penetration testing and red team operations." },
-      "threatIntel": { "title": "Threat Intelligence", "desc": "Collecting, analyzing, and operationalizing threat intelligence for African contexts." },
-      "redTeam": { "title": "Red Team Automation", "desc": "Automating adversarial simulation to scale offensive operations." },
-      "detection": { "title": "Detection Engineering", "desc": "Crafting detection logic that identifies real attacks, not just noise." },
-      "infra": { "title": "Secure Infrastructure", "desc": "Designing and deploying hardened infrastructure for offensive operations." },
-      "ai": { "title": "AI-assisted Security", "desc": "Leveraging machine learning and AI to enhance offensive capabilities." },
-      "education": { "title": "Cyber Education", "desc": "Developing curriculum, training materials, and hands-on labs for African learners." }
+      "research": {
+        "title": "Offensive Security Research",
+        "desc": "Pioneering research into attack vectors, vulnerability discovery, and exploitation techniques."
+      },
+      "toolDev": {
+        "title": "Tool Development",
+        "desc": "Building production-grade security tools for penetration testing and red team operations."
+      },
+      "threatIntel": {
+        "title": "Threat Intelligence",
+        "desc": "Collecting, analyzing, and operationalizing threat intelligence for African contexts."
+      },
+      "redTeam": {
+        "title": "Red Team Automation",
+        "desc": "Automating adversarial simulation to scale offensive operations."
+      },
+      "detection": {
+        "title": "Detection Engineering",
+        "desc": "Crafting detection logic that identifies real attacks, not just noise."
+      },
+      "infra": {
+        "title": "Secure Infrastructure",
+        "desc": "Designing and deploying hardened infrastructure for offensive operations."
+      },
+      "ai": {
+        "title": "AI-assisted Security",
+        "desc": "Leveraging machine learning and AI to enhance offensive capabilities."
+      },
+      "education": {
+        "title": "Cyber Education",
+        "desc": "Developing curriculum, training materials, and hands-on labs for African learners."
+      }
     },
     "timeline": {
       "researchIdea": "Research Idea",
@@ -1699,7 +2263,9 @@
     }
   },
   "contactPage": {
-    "hero": { "cta": "Get in Touch" },
+    "hero": {
+      "cta": "Get in Touch"
+    },
     "emailFormHint": "Use the form below to send us a secure transmission."
   },
   "promo": {
