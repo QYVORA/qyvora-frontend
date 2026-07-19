@@ -69,7 +69,7 @@ const SkillMatrix = ({ modules }: SkillMatrixProps) => {
             <span className="text-accent">{average}%</span>
           </span>
         </div>
-        <div className="min-h-0 overflow-y-auto">
+        <div className="min-h-0 h-full flex flex-col overflow-y-auto">
           <SkillStats modules={modules} />
         </div>
       </div>

@@ -55,7 +55,7 @@ const SkillStats = ({ modules }: SkillStatsProps) => {
   const { skills } = computeSkillStats(modules);
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col justify-between h-full">
       {skills.map((skill) => (
         <div key={skill.key} className="flex items-center gap-2">
           <div
