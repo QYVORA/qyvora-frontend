@@ -1,6 +1,7 @@
 import giantImg from '@/assets/quiteRoot/711f362b-0f9e-4030-8602-640d4626e903.webp';
-import awalImg from '@/assets/quiteRoot/WhatsApp Image 2026-06-14 at 12.37.49 AM (1).webp';
+import awalImg from '@/assets/quiteRoot/197788-entenda-a-importancia-do-suporte-tecnico-para-software-financeiro.jpg';
 import zeroImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-09 at 9.23.16 PM.webp';
+import ghostImg from '@/assets/quiteRoot/WhatsApp Image 2026-07-16 at 10.45.41 PM.jpeg';
 
 export interface Researcher {
   id: string;
@@ -31,6 +32,13 @@ export const researchersData: Researcher[] = [
     role: 'Security Researcher',
     bio: 'I help Qyvora identify and understand security vulnerabilities through hands-on research and web application testing.',
     image: zeroImg,
+  },
+  {
+    id: 'r4',
+    name: 'Ghost Venom',
+    role: 'Penetration Tester',
+    bio: 'I am curious to know how things work in building my skills in cybersecurity,',
+    image: ghostImg,
   },
 ];
 

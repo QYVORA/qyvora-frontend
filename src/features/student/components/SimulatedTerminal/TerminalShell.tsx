@@ -3,8 +3,7 @@ import { Minimize2, Maximize2 } from 'lucide-react';
 import { IconX } from '@/shared/components/icons';
 import { createInitialState, processInput, getInputPrefix } from './engine/state';
 import { streamOutput, hasStreamingOutput } from './engine/streaming';
-import { injectBootcampContent } from './context/bootcampContent';
-import { injectCourseContent } from './context/courseContent';
+import { injectBootcampContent, injectCourseContent } from './context/courseContent';
 import { getDeviceByIp, getHostnameForIp } from '@/features/student/data/fakeNetwork';
 import type { TerminalState, TerminalLine, TerminalContext, VFSNode, ProcessInputResult } from './types';
 
