@@ -715,6 +715,25 @@
         "desc": "Enrolled in structured programs"
       }
     },
+    "publicProfile": {
+      "achievements": "Achievements",
+      "collapse": "Collapse",
+      "expand": "Expand",
+      "badges": "Badges",
+      "badgesEmpty": "No badges earned yet.",
+      "hpbGraduate": "HPB Graduate",
+      "stats": {
+        "rooms": "Completed Rooms"
+      },
+      "viewRoom": "View room"
+    },
+    "contributionCalendar": {
+      "title": "Activity",
+      "activities": "activities",
+      "activeDays": "active days",
+      "less": "Less",
+      "more": "More"
+    },
     "team": {
       "heading": "Built by Hackers",
       "description": "Two operators, one mission — building Africa's offensive security platform",
@@ -2273,6 +2292,38 @@
       "totalCp": "Total CP",
       "topCp": "Top CP"
     }
+  },
+  "leaderboardAll": {
+    "seo": {
+      "title": "Full Operator Leaderboard",
+      "description": "All ranked cybersecurity operators on QYVORA."
+    },
+    "backToLeaderboard": "Back to Leaderboard",
+    "hero": {
+      "title": "Full",
+      "titleHighlight": "Leaderboard",
+      "description": "{{count}} operators ranked by CyberPoints earned on the QYVORA Chain.",
+      "chainBadge": "CP verified on QYVORA Chain"
+    },
+    "periods": {
+      "all": "All Time",
+      "week": "This Week",
+      "month": "This Month"
+    },
+    "table": {
+      "rank": "#",
+      "operator": "Operator",
+      "rankLabel": "Rank",
+      "cp": "CP",
+      "streak": "Streak"
+    },
+    "rooms": "rooms",
+    "searchPlaceholder": "Search by handle, name, or organization...",
+    "empty": {
+      "search": "No operators match your search",
+      "default": "No operators ranked yet"
+    },
+    "footer": "CP balances verified on QYVORA Chain · {{filtered}} of {{total}} operators"
   },
   "quiterootPage": {
     "hero": {

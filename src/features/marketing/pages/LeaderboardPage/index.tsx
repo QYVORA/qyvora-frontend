@@ -1,180 +1,37 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Medal } from 'lucide-react';
 import { IconShield, IconArrowRight, IconLeaderboard } from '@/shared/components/icons';
-import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
-import { ScrollReveal, Identicon, BootcampBadge, StreakIcon } from '@/shared/components';
+import { ScrollReveal } from '@/shared/components';
+import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
-
-type Period = 'all' | 'week' | 'month';
-
-interface LeaderboardEntry {
-  rank: number;
-  userId: string;
-  name: string;
-  hackerHandle: string;
-  organization: string;
-  cp: number;
-  rankLabel: string;
-  roomsCompleted: number;
-  streakDays: number;
-  bootcampStatus?: string;
-}
+import type { Period } from '@/shared/components/leaderboard';
 
 const INITIAL_SHOW = 5;
-
-const TOP_THREE_COLORS = [
-  'text-yellow-400',
-  'text-gray-300',
-  'text-amber-600',
-];
-
-const RANK_COLORS: Record<string, string> = {
-  Vanguard: 'text-accent',
-  Architect: 'text-amber-400',
-  Specialist: 'text-purple-400',
-  Contributor: 'text-blue-400',
-  Candidate: 'text-zinc-400',
-};
-
-const RankBadge = ({ label }: { label: string }) => {
-  const color = RANK_COLORS[label] || 'text-text-muted';
-  return (
-    <span className={`text-[10px] font-black uppercase tracking-widest ${color}`}>
-      {label}
-    </span>
-  );
-};
-
-const LeaderboardRow = ({ entry, user, isExpanded }: { entry: LeaderboardEntry; user: any; isExpanded: boolean }) => {
-  const { t } = useTranslation();
-  const isTopThree = entry.rank <= 3;
-  const isCurrentUser = user && entry.userId === user.uid;
-  const bootcampCompleted = entry.bootcampStatus === 'completed';
-
-  return (
-    <Link
-      to={`/@${entry.hackerHandle}`}
-      className={`
-        grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_140px_100px_80px] gap-2 md:gap-4 px-4 md:px-6 py-4 rounded-2xl border transition-all duration-300 items-center
-        ${isCurrentUser
-          ? 'border-accent/40 bg-accent-dim/10'
-          : isTopThree
-          ? 'border-accent/20 bg-accent-dim/5 shadow-[0_0_20px_-8px] shadow-accent/10'
-          : 'border-border bg-bg-card hover:border-accent/20'
-        }
-        hover:brightness-110 active:scale-[0.99]
-      `}
-    >
-      {/* Rank */}
-      <div className="flex items-center justify-center">
-        {isTopThree ? (
-          <Medal className={`w-5 h-5 ${TOP_THREE_COLORS[entry.rank - 1]}`} />
-        ) : (
-          <span className="text-sm font-mono font-bold text-text-muted/60">
-            {entry.rank}
-          </span>
-        )}
-      </div>
-
-      {/* Operator info */}
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 md:w-10 md:h-10 rounded-full shrink-0 overflow-hidden border border-accent/20 [&_svg]:w-full [&_svg]:h-full">
-          <Identicon value={entry.userId} size={40} />
-        </div>
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-black text-text-primary truncate flex items-center gap-1.5">
-              {entry.hackerHandle || entry.name || t('landing.leaderboard.anonFallback')}
-              <BootcampBadge completed={bootcampCompleted} className="w-5 h-5 md:w-6 md:h-6 shrink-0" />
-            </span>
-            {isCurrentUser && (
-              <span className="px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider rounded bg-accent text-bg">
-                {t('badge.you')}
-              </span>
-            )}
-          </div>
-          {entry.organization && (
-            <div className="text-[10px] font-mono text-text-muted truncate">
-              {entry.organization}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Rank label (desktop) */}
-      <div className="hidden md:flex items-center">
-        <RankBadge label={entry.rankLabel} />
-      </div>
-
-      {/* CP (desktop) */}
-      <div className="hidden md:block text-right">
-        <span className="text-sm font-black font-mono text-text-primary">
-          {Number(entry.cp).toLocaleString()}
-        </span>
-      </div>
-
-      {/* Streak (desktop) */}
-      <div className="hidden md:flex items-center justify-end">
-        <StreakIcon days={entry.streakDays} />
-      </div>
-
-      {/* Mobile stats row */}
-      <div className="md:hidden col-span-2 flex items-center justify-between mt-1">
-        <div className="flex items-center gap-2">
-          <RankBadge label={entry.rankLabel} />
-          <span className="text-[10px] font-mono text-text-muted/60">
-            {entry.roomsCompleted} {t('leaderboardPage.rooms')}
-          </span>
-        </div>
-        <span className="text-sm font-black font-mono text-accent">
-          {Number(entry.cp).toLocaleString()} CP
-        </span>
-      </div>
-    </Link>
-  );
-};
 
 const LeaderboardPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
 
-  const PERIODS = [
-    { key: 'all' as const,  label: t('leaderboardPage.periods.all') },
-    { key: 'week' as const,  label: t('leaderboardPage.periods.week') },
+  const PERIOD_LABELS = [
+    { key: 'all' as const, label: t('leaderboardPage.periods.all') },
+    { key: 'week' as const, label: t('leaderboardPage.periods.week') },
     { key: 'month' as const, label: t('leaderboardPage.periods.month') },
   ];
 
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [period, setPeriod] = useState<Period>('all');
-  const [total, setTotal] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const fetchLeaderboard = useCallback(async (activePeriod: Period) => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await api.get(`/public/leaderboard?period=${activePeriod}&limit=50&offset=0`);
-      const data = res.data;
-      if (data.success) {
-        setEntries(data.entries || []);
-        setTotal(data.total || 0);
-      } else {
-        setError(t('leaderboardPage.loadError'));
-      }
-    } catch {
-      setError(t('leaderboardPage.loadErrorNetwork'));
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+  const { entries, loading, error, total, fetchLeaderboard } = useLeaderboard({
+    errorMessages: {
+      loadFailed: t('leaderboardPage.loadError'),
+      networkFailed: t('leaderboardPage.loadErrorNetwork'),
+    },
+  });
 
   useEffect(() => {
     fetchLeaderboard(period);
@@ -242,7 +99,7 @@ const LeaderboardPage = () => {
           {/* Period tabs */}
           <div className="flex items-center justify-between gap-4 mb-4 shrink-0">
             <div className="flex items-center gap-2 flex-wrap">
-              {PERIODS.map((p) => (
+              {PERIOD_LABELS.map((p) => (
                 <button
                   key={p.key}
                   onClick={() => handlePeriodChange(p.key)}
@@ -301,7 +158,13 @@ const LeaderboardPage = () => {
               <div className="space-y-2 py-2">
                 {topEntries.map((entry) => (
                   <ScrollReveal key={entry.userId} amount={0.05}>
-                    <LeaderboardRow entry={entry} user={user} isExpanded={false} />
+                    <LeaderboardRow
+                      entry={entry}
+                      user={user}
+                      anonymousLabel={t('landing.leaderboard.anonFallback')}
+                      youLabel={t('badge.you')}
+                      roomsLabel={t('leaderboardPage.rooms')}
+                    />
                   </ScrollReveal>
                 ))}
               </div>
