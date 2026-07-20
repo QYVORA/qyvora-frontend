@@ -2456,5 +2456,28 @@
     "prev": "Previous",
     "next": "Next",
     "updating": "Updating..."
+  },
+  "profile": {
+    "contributionCalendar": {
+      "title": "Activity",
+      "activities": "activities",
+      "activeDays": "active days",
+      "less": "Less",
+      "more": "More"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "empty": "No achievements yet. Start learning to earn your first!",
+      "pinned": "Pinned",
+      "showAll": "Show all",
+      "showLess": "Show less",
+      "hpbGraduate": "HPB Graduate",
+      "hpbGraduateDesc": "Completed the Hacker Protocol Bootcamp",
+      "labsCompleted": "Lab Operator",
+      "labsCompletedDesc": "{{count}} labs completed",
+      "coursesCompleted": "Course Graduate",
+      "coursesCompletedDesc": "{{count}} courses completed",
+      "roomCompleted": "Room completed"
+    }
   }
 }

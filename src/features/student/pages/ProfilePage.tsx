@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, Link } from 'react-router-dom';
-import { Mail, Edit3, Activity, User, FlaskConical, GraduationCap, Trophy } from 'lucide-react';
-import ShareProfile from '../../../shared/components/ShareProfile';
+import { useParams } from 'react-router-dom';
+import { Edit3, User, FlaskConical, GraduationCap, Trophy } from 'lucide-react';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
-import Identicon from '../../../shared/components/Identicon';
 import api from '../../../core/services/api';
 import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
-import LearningOverviewCard from '../components/learning/LearningOverviewCard';
+import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
+import ProfileStatCard from '../../../shared/components/profile/ProfileStatCard';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 
@@ -46,7 +45,6 @@ const Profile: React.FC = () => {
     return () => { mounted = false; };
   }, [isOwnProfile, paramUsername]);
 
-  // Fetch activity calendar data
   useEffect(() => {
     if (!isOwnProfile) return;
     let mounted = true;
@@ -99,68 +97,68 @@ const Profile: React.FC = () => {
       />
 
       <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
-        {/* Profile Overview Card */}
-        <LearningOverviewCard
-          icon={<User className="w-6 h-6 text-bg" />}
-          title={`@${profileData.username}`}
-          description={profileData.bio || `${profileData.rank} operator`}
-          avatar={
-            <div className="w-full h-full bg-black flex items-center justify-center">
-              <Identicon value={profileData.id} size={256} className="w-full h-full" />
-            </div>
-          }
-          stats={[
-            { label: t('student.profile.stats.cp'), value: profileData.cp.toLocaleString(), accent: true },
-            { label: t('student.profile.rank'), value: profileData.rank },
-            { label: t('student.profile.stats.labs'), value: profileData.labsCompleted || rooms.length },
-            { label: t('student.profile.stats.courses'), value: profileData.coursesCompleted },
-          ]}
-          action={isOwnProfile ? {
-            label: t('student.profile.edit'),
-            onClick: () => setEditOpen(true),
-            icon: <Edit3 className="w-4 h-4" />,
-          } : undefined}
+        {/* Identity Block — full width */}
+        <ProfileIdentityBlock
+          id={profileData.id}
+          handle={profileData.username}
+          name={profileData.name || undefined}
+          bio={profileData.bio || undefined}
+          rank={profileData.rank}
+          organization={profileData.organization || undefined}
+          email={isOwnProfile ? authUser?.email : undefined}
+          actions={isOwnProfile ? [
+            { label: t('student.profile.edit'), onClick: () => setEditOpen(true), icon: <Edit3 className="w-3.5 h-3.5" /> },
+          ] : []}
+          showShare
+          showPublicView={isOwnProfile}
+          publicViewPath={`/@${profileData.username}`}
         />
 
-        {/* Meta Row: info + actions */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-4 text-xs text-text-muted">
-            {profileData.organization && (
-              <span className="flex items-center gap-1.5">
-                <Activity className="w-3 h-3 text-accent" /> {profileData.organization}
-              </span>
+        {/* Two-column layout on desktop: main content left, stats right */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left column — calendar + achievements */}
+          <div className="flex-1 min-w-0 space-y-6">
+            {/* Contribution Calendar */}
+            {Object.keys(activityDates).length > 0 && (
+              <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+                <ContributionCalendar activityDates={activityDates} />
+              </div>
             )}
-            {isOwnProfile && authUser?.email && (
-              <span className="flex items-center gap-1.5">
-                <Mail className="w-3 h-3 text-accent" /> {authUser.email}
-              </span>
-            )}
+
+            {/* Achievements — pinned + full grid */}
+            <AchievementsSection
+              rooms={rooms}
+              bootcampCompleted={bootcampCompleted}
+              labsCompleted={profileData.labsCompleted}
+              coursesCompleted={profileData.coursesCompleted}
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <Link
-              to={`/@${profileData.username}`}
-              className="btn-secondary !text-xs inline-flex items-center gap-2"
-            >
-              {t('student.profile.publicView')}
-            </Link>
-            <ShareProfile handle={profileData.username} />
+
+          {/* Right column — stat cards */}
+          <div className="w-full lg:w-[340px] shrink-0 grid grid-cols-2 lg:grid-cols-1 gap-4">
+            <ProfileStatCard
+              icon={<Trophy className="w-5 h-5 text-accent" />}
+              label={t('student.profile.stats.cp')}
+              value={profileData.cp.toLocaleString()}
+              accent
+            />
+            <ProfileStatCard
+              icon={<User className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.rank')}
+              value={profileData.rank}
+            />
+            <ProfileStatCard
+              icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.labs')}
+              value={profileData.labsCompleted || rooms.length}
+            />
+            <ProfileStatCard
+              icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
+              label={t('student.profile.stats.courses')}
+              value={profileData.coursesCompleted}
+            />
           </div>
         </div>
-
-        {/* Achievements */}
-        <AchievementsSection
-          rooms={rooms}
-          bootcampCompleted={bootcampCompleted}
-          labsCompleted={profileData.labsCompleted}
-          coursesCompleted={profileData.coursesCompleted}
-        />
-
-        {/* Contribution Calendar */}
-        {isOwnProfile && Object.keys(activityDates).length > 0 && (
-          <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-            <ContributionCalendar activityDates={activityDates} />
-          </div>
-        )}
       </div>
 
       {isOwnProfile && (
