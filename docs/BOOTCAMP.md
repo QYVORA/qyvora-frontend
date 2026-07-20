@@ -134,3 +134,18 @@ Renders individual steps within a room:
 - **Room view:** `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId`
 - **Sidebar:** Phase/room tree navigation (desktop + mobile)
 - **Jump menu:** Quick step navigation overlay
+
+## Recent Room Features (Implemented)
+
+The following features were added to the bootcamp room page and are now part of the living codebase:
+
+- **Keyboard Navigation** — Arrow keys (prev/next step), Q (quiz), J (jump menu), F (fullscreen). Ignores keypresses when typing in inputs or modals open. Visual hints on desktop.
+- **Copy Code Buttons** — Auto-detects code blocks via regex, inline copy on hover, 2s "Copied" confirmation.
+- **Estimated Time Display** — Shows `estimatedMinutes` per room, total step count, and live session timer.
+- **Jump-to-Step Menu** — Quick navigation overlay for jumping to any step in the current room.
+- **Step Bookmarking** — localStorage-persisted bookmarks per bootcamp (`hpb_bookmarks_{bootcampId}`).
+- **Report Issue Modal** — `POST /student/report-issue` endpoint for flagging content problems.
+- **Session Timer** — Tracks time spent in room, displayed in header.
+- **Fullscreen Mode** — Toggle via F key or button, uses Fullscreen API.
+
+Key components: `CopyButton`, `InstructionWithCodeBlocks`, `KeyboardHints`, `JumpMenu`, `ReportIssueModal`.

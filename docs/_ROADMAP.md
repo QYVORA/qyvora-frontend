@@ -18,8 +18,8 @@ This document tracks the implementation status of all features in the QYVORA pla
 - ✅ **Attack Labs (10 labs)** - Fully interactive penetration testing labs
   - Privilege Escalation, Password Cracking, Web Exploitation, SQL Injection
   - Phishing Analysis, Web Proxy, Traffic Analysis, OSINT, Wireless, Kill Chain
-- ✅ **Simulated Terminal** - 114+ commands, Kali Linux emulation, virtual filesystem
-- ✅ **19 Simulation Components** - Browser, HTTP Inspector, SQL Console, Email Client, etc.
+- ✅ **Simulated Terminal** - ~149 commands, Kali Linux emulation, virtual filesystem
+- ✅ **20 Simulation Components** - Browser, HTTP Inspector, SQL Console, Email Client, etc.
 - ✅ **Course System (12 courses)** - Structured lessons with quizzes and code playgrounds
 - ✅ **Bootcamp System** - Hacker Protocol Bootcamp with multi-phase progression
 - ✅ **Code Playground** - In-browser code execution for Python, Bash, JavaScript
@@ -113,6 +113,18 @@ This document tracks the implementation status of all features in the QYVORA pla
 - 🚧 **Real-time Collaboration** - Multi-user lab sessions
 - 🚧 **Advanced Analytics** - Learning pattern insights
 - 🚧 **Content Recommendations** - AI-powered course suggestions
+
+### Bootcamp Room Polish
+- 🚧 **Step Transition Animations** - AnimatePresence fade/slide between steps
+- 🚧 **Confetti on Completion** - canvas-confetti celebration when room completed
+- 🚧 **Dark/Light Image Variants** - Optional `imageDark` field on steps for theme-specific screenshots
+- 🚧 **Step Preview Thumbnails** - Mini image previews on hover in progress bar
+- 🚧 **Scroll-to-Top Button** - For long rooms with many steps on desktop
+- 🚧 **Step Time Analytics** - Track time per step, POST /analytics/step-timing
+- 🚧 **Quiz Attempt Tracking** - Log attempts per quiz pass
+- 🚧 **Image Preloading** - Preload next 2 step images
+- 🚧 **Offline Room Caching** - Service Worker caching for room content
+- 🚧 **Print Stylesheet** - PDF study guide export for room content
 
 ---
 

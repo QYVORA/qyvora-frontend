@@ -6,7 +6,7 @@
 
 ## Overview
 
-QYVORA includes a fully-functional in-browser terminal simulator that replicates a Kali Linux environment for educational purposes. This terminal supports 114+ commands and includes a complete virtual filesystem (VFS).
+QYVORA includes a fully-functional in-browser terminal simulator that replicates a Kali Linux environment for educational purposes. This terminal supports ~149 commands and includes a complete virtual filesystem (VFS).
 
 **Source:** `src/features/student/components/SimulatedTerminal/`
 
@@ -38,7 +38,7 @@ Parses user input into structured command objects:
 
 ### Commands (`commands.ts`)
 
-114 commands registered in the command registry. Each command maps to a handler function.
+~149 commands registered in the command registry. Each command maps to a handler function.
 
 **Categories:**
 - File operations: `ls`, `cd`, `pwd`, `cat`, `echo`, `touch`, `mkdir`, `rm`, `cp`, `mv`, `chmod`, `chown`

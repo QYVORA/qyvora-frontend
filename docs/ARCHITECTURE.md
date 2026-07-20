@@ -211,7 +211,7 @@ features/
 | `components/layout/` | Navbar, Footer, PublicBottomNav | Layouts |
 | `components/brand/` | Logo, QyvoraLogotype, QyvoraMark | All features |
 | `components/backgrounds/` | HeroBackground, AdinkraBackground | All features |
-| `layouts/` | LandingLayout, PublicLayout, SnapPublicLayout, BlogsLayout | Router only |
+| `layouts/` | LandingLayout, BlogsLayout, StudentLayout, AdminLayout | Router only |
 | `utils/` | cn, cpBalance, formatNumber, resolveImg, etc. | All features |
 
 **Anti-pattern:** Do not put domain-specific components in `shared/`. If a component is only used by one feature, keep it in that feature. If it is used by two or more features, put it in `shared/`.
@@ -232,13 +232,11 @@ features/
 
 ### 5.6 Layout System
 
-Six layouts, each with different chrome:
+Four layouts, each with different chrome:
 
 | Layout | Navbar | Footer | Bottom Nav | Used For |
 |--------|--------|--------|------------|----------|
 | `LandingLayout` | Fixed top | Embedded in last scroll section | None | Marketing homepage |
-| `PublicLayout` | Fixed top | Bottom of page | `PublicBottomNav` (mobile) | Standard public pages |
-| `SnapPublicLayout` | Fixed top | Desktop: none; Mobile: bottom | None | Snap-scroll pages |
 | `BlogsLayout` | Fixed top | Blog post detail only | None | Blog pages |
 | `StudentLayout` | `StudentTopbar` (fixed) | None | Student mobile nav | Authenticated student pages |
 | `AdminLayout` | `AdminTopbar` (fixed) | None | Admin mobile nav | Admin dashboard |
@@ -254,12 +252,12 @@ Six layouts, each with different chrome:
 - `--color-bg`: `#000000` — page background
 - `--color-bg-card`: `#050505` — card surface
 - `--color-bg-elevated`: `#0b0b0b` — elevated surface
-- `--color-accent`: `#66B870` — green accent (CTAs, active states, highlights)
+- `--color-accent`: `#06B66F` — green accent (CTAs, active states, highlights)
 - `--color-text-primary`: `#EEF0EE` — primary text
 - `--color-text-secondary`: `rgba(238,240,238,0.70)` — secondary text
 - `--color-text-muted`: `rgba(238,240,238,0.40)` — muted text
 - `--color-border`: `rgba(171,181,192,0.12)` — default borders
-- `--color-border-strong`: `rgba(102,184,112,0.18)` — accent borders
+- `--color-border-strong`: `rgba(6,182,111,0.18)` — accent borders
 
 **No-Gos (must never appear in frontend code):**
 1. No gradient backgrounds
