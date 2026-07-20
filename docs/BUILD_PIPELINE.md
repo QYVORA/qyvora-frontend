@@ -41,6 +41,7 @@ npm run test:watch   # Vitest watch mode
 1. `@vitejs/plugin-react` — React Fast Refresh
 2. `@tailwindcss/vite` — Tailwind CSS v4 integration
 3. `vite-plugin-webp-conversion` — Image optimization
+4. `vite-prerender-plugin` — Static prerendering for public routes
 
 ### Path Aliases
 

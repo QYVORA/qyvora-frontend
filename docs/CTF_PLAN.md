@@ -5,6 +5,22 @@
 
 ---
 
+## ⚠️ Implementation Status
+
+**NONE OF THE CTF PLATFORM EXISTS YET.** This document describes a planned feature.
+
+### What Actually Exists
+- Labs with flag validation (in lab simulations)
+- Lab exercises with completion markers
+
+### What Does NOT Exist
+- NO dedicated CTF routes or pages
+- NO separate CTF rooms repository  
+- NO CTF challenge infrastructure
+- NO flag submission UI specific to CTF
+
+---
+
 ## 1. Overview
 
 The CTF system is a browser-native hacking challenge platform. Students use their browser's built-in DevTools — no VM, no downloads, no setup. Each challenge is a standalone static HTML "room" hosted on a dedicated Netlify subdomain. The main QYVORA app handles authentication, flag submission, CP rewards, and leaderboard tracking.

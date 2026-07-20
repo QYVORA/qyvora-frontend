@@ -113,12 +113,15 @@ import { NavCard } from '@/shared/components/ui/NavCard';
 
 ## Icon Design Features
 
-✅ **Consistent**: All 24x24 viewBox, 2px stroke, round caps/joins  
-✅ **Themed**: Use `currentColor` - works with accent #06B66F  
-✅ **Hacker Culture**: Terminal, binary, exploits, bugs, network themes  
-✅ **Accessible**: Proper sizing, semantic usage  
-✅ **Lightweight**: Pure SVG, no external dependencies  
-✅ **Flexible**: Easy to customize size and color
+- **Consistent stroke:** 1.5px stroke width
+- **Size system:** `size` prop controls dimensions (default: 20px)
+- **Color:** Inherits from parent via `currentColor`
+- **Accessibility:** Include `aria-hidden="true"` for decorative icons
+- **ViewBox:** All 24x24, 2px stroke, round caps/joins  
+- **Themed:** Use `currentColor` - works with accent #06B66F  
+- **Hacker Culture:** Terminal, binary, exploits, bugs, network themes  
+- **Lightweight:** Pure SVG, no external dependencies  
+- **Flexible:** Easy to customize size and color
 
 ## File Structure
 ```

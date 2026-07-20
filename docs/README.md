@@ -1,74 +1,60 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-07-18
+> **Last Updated:** 2026-07-20
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
 
 ---
 
-## 📋 Quick Navigation
+## Quick Navigation
 
 ### Getting Started
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Complete system architecture overview ⭐ START HERE
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Complete system architecture overview (start here)
 - **[_ROADMAP.md](_ROADMAP.md)** - Feature implementation status and future plans
 
-### Core Systems (✅ Implemented)
+### Core Systems
 - **[AUTHENTICATION.md](AUTHENTICATION.md)** - JWT auth, CSRF, session management
 - **[API_INTEGRATION.md](API_INTEGRATION.md)** - Axios setup, interceptors, token refresh
 - **[ROUTING.md](ROUTING.md)** - React Router setup, route guards, lazy loading
 - **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)** - Context providers, local state patterns
 - **[ERROR_HANDLING.md](ERROR_HANDLING.md)** - Error boundaries, toasts, API errors
 
-### Learning Systems (✅ Implemented)
-- **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (19 types) ⭐
+### Learning Systems
+- **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (20 types)
 - **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)** - Labs, courses, bootcamp overview
-- **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details
-- **[TERMINAL_SIMULATION.md](TERMINAL_SIMULATION.md)** - Terminal emulator (114+ commands)
+- **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details + recent room features
+- **[TERMINAL_SIMULATION.md](TERMINAL_SIMULATION.md)** - Terminal emulator (~149 commands)
 
-### UI/UX (✅ Implemented)
+### UI/UX
 - **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Colors, typography, buttons, spacing
-- **[ICON_SYSTEM.md](ICON_SYSTEM.md)** - Custom SVG icon library (45+ icons)
 - **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)** - Component structure
 - **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - WCAG 2.1 AA compliance, keyboard nav
 
-### Development (✅ Implemented)
+### Development
 - **[BUILD_PIPELINE.md](BUILD_PIPELINE.md)** - Vite 6, TypeScript, ESLint setup
 - **[TESTING.md](TESTING.md)** - Vitest, React Testing Library (192 tests)
 - **[PERFORMANCE.md](PERFORMANCE.md)** - Bundle optimization, lazy loading
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Netlify configuration, security headers
 
-### Advanced Features (✅ Implemented)
+### Advanced Features
 - **[PWA.md](PWA.md)** - Progressive Web App setup, offline support
-- **[SEO.md](SEO.md)** - Meta tags, Open Graph, social sharing
 
-### Planned Features (📋 Design Complete)
-- **[LEARNING_PATHS.md](LEARNING_PATHS.md)** - 📋 5 guided learning tracks (NOT YET IMPLEMENTED)
-- **[CTF.md](CTF.md)** - 📋 Capture The Flag platform overview (NOT YET IMPLEMENTED)
-- **[CTF_PLAN.md](CTF_PLAN.md)** - 📋 Detailed CTF implementation plan (NOT YET IMPLEMENTED)
+### Planned Features
+- **[LEARNING_PATHS.md](LEARNING_PATHS.md)** - 5 guided learning tracks (not yet implemented)
+- **[CTF_PLAN.md](CTF_PLAN.md)** - CTF platform implementation plan (not yet implemented)
 
-### Audit Records
-- **[frontend-audits/](frontend-audits/)** - Historical audit reports and fixes
+### Archive
+- **[archive/](archive/)** - Historical audit docs and command reference (read-only)
 
 ---
 
-## 📊 Documentation Status Legend
-
-| Icon | Status | Description |
-|------|--------|-------------|
-| ✅ | **Implemented** | Feature is live and documented accurately |
-| 📋 | **Planned** | Design complete, implementation pending |
-| 🚧 | **Future** | Concept stage, no detailed design |
-| ⚠️ | **Partial** | Partially implemented or needs update |
-
----
-
-## 🎯 Documentation by Role
+## Documentation by Role
 
 ### For New Developers
-1. Start with **[ARCHITECTURE.md](ARCHITECTURE.md)** for system overview
-2. Read **[ROUTING.md](ROUTING.md)** to understand page structure
-3. Review **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** for UI patterns
-4. Check **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)** for data flow
+1. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System overview
+2. **[ROUTING.md](ROUTING.md)** - Page structure
+3. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - UI patterns
+4. **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)** - Data flow
 
 ### For Backend Developers
 1. **[AUTHENTICATION.md](AUTHENTICATION.md)** - Token flow and security
@@ -77,7 +63,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### For UI/UX Designers
 1. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
-2. **[ICON_SYSTEM.md](ICON_SYSTEM.md)** - Available icons
+2. Root `CUSTOM_ICONS_IMPLEMENTED.md` - Icon library reference
 3. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
 
 ### For QA/Testers
@@ -92,15 +78,15 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ---
 
-## 📁 File Organization
+## File Organization
 
 ```
 docs/
 ├── README.md                    # This file - documentation index
 ├── _ROADMAP.md                  # Implementation status and plans
 │
-├── Core System Docs (✅)
-│   ├── ARCHITECTURE.md          # System overview ⭐
+├── Core System Docs
+│   ├── ARCHITECTURE.md          # System overview (start here)
 │   ├── COMPONENT_ARCHITECTURE.md
 │   ├── AUTHENTICATION.md
 │   ├── API_INTEGRATION.md
@@ -108,64 +94,65 @@ docs/
 │   ├── STATE_MANAGEMENT.md
 │   └── ERROR_HANDLING.md
 │
-├── Learning System Docs (✅)
-│   ├── SIMULATIONS.md           # Complete simulation reference ⭐
+├── Learning System Docs
+│   ├── SIMULATIONS.md           # Complete simulation reference
 │   ├── LEARNING_SYSTEM.md
 │   ├── BOOTCAMP.md
 │   └── TERMINAL_SIMULATION.md
 │
-├── UI/UX Docs (✅)
+├── UI/UX Docs
 │   ├── DESIGN_SYSTEM.md
-│   ├── ICON_SYSTEM.md
 │   └── ACCESSIBILITY.md
 │
-├── Development Docs (✅)
+├── Development Docs
 │   ├── BUILD_PIPELINE.md
 │   ├── TESTING.md
 │   ├── PERFORMANCE.md
 │   └── DEPLOYMENT.md
 │
-├── Advanced Features (✅)
-│   ├── PWA.md
-│   └── SEO.md
+├── Advanced Features
+│   └── PWA.md
 │
-├── Planned Features (📋)
-│   ├── LEARNING_PATHS.md        # NOT YET IMPLEMENTED
-│   ├── CTF.md                   # NOT YET IMPLEMENTED
-│   └── CTF_PLAN.md              # NOT YET IMPLEMENTED
+├── Planned Features
+│   ├── LEARNING_PATHS.md        # Not yet implemented
+│   └── CTF_PLAN.md              # Not yet implemented
 │
-└── frontend-audits/             # Historical records
-    ├── ARCHITECTURE.md
-    ├── BOOTCAMP_ROOM_*.md
-    ├── MOBILE_FIXES_SUMMARY.md
-    ├── SCROLLBAR_*.md
-    └── WALKTHROUGH_TEXT.md
+└── archive/                     # Historical reference (read-only)
+    ├── QYVORA_TERMINAL_ENGINEERING_AUDIT.md
+    └── QYVORA_TERMINAL_SIMULATION_COMMANDS.md
 ```
+
+Root-level docs (outside `docs/`):
+- `README.md` - Project README with stack, quick start, routes
+- `ROADMAP.md` - Product roadmap with future priorities
+- `CUSTOM_ICONS_IMPLEMENTED.md` - Icon library reference
+- `SEO_AUDIT_REPORT.md` - Comprehensive SEO audit
+- `UIB.md` - Mobile-first UI behavior guidelines
 
 ---
 
-## 🔍 Finding Specific Information
+## Finding Specific Information
 
 ### Authentication & Security
 - How auth works: **[AUTHENTICATION.md](AUTHENTICATION.md)**
-- Token storage: **[AUTHENTICATION.md](AUTHENTICATION.md)** → "Token Storage Model"
-- CSRF protection: **[AUTHENTICATION.md](AUTHENTICATION.md)** → "CSRF Protection"
-- Route guards: **[ROUTING.md](ROUTING.md)** → "Route Guards"
+- Token storage: **[AUTHENTICATION.md](AUTHENTICATION.md)** - "Token Storage Model"
+- CSRF protection: **[AUTHENTICATION.md](AUTHENTICATION.md)** - "CSRF Protection"
+- Route guards: **[ROUTING.md](ROUTING.md)** - "Route Guards"
 
 ### API & Data
 - API client setup: **[API_INTEGRATION.md](API_INTEGRATION.md)**
-- Token refresh: **[API_INTEGRATION.md](API_INTEGRATION.md)** → "Response Interceptor"
+- Token refresh: **[API_INTEGRATION.md](API_INTEGRATION.md)** - "Response Interceptor"
 - Error handling: **[ERROR_HANDLING.md](ERROR_HANDLING.md)**
 - State management: **[STATE_MANAGEMENT.md](STATE_MANAGEMENT.md)**
 
 ### UI Components
 - Design tokens: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)**
-- Button styles: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** → "Button System"
-- Icons: **[ICON_SYSTEM.md](ICON_SYSTEM.md)**
+- Button styles: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - "Button System"
+- Icons: Root `CUSTOM_ICONS_IMPLEMENTED.md`
 - Component structure: **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)**
 
 ### Learning Features
-- Lab simulations: **[SIMULATIONS.md](SIMULATIONS.md)** ⭐ Most comprehensive
+- Lab simulations: **[SIMULATIONS.md](SIMULATIONS.md)**
 - Terminal commands: **[TERMINAL_SIMULATION.md](TERMINAL_SIMULATION.md)**
 - Bootcamp structure: **[BOOTCAMP.md](BOOTCAMP.md)**
 - Course system: **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)**
@@ -178,46 +165,14 @@ docs/
 
 ---
 
-## ⚠️ Important Notes
+## Important Notes
 
 ### About Planned Features
-Documents marked with 📋 (LEARNING_PATHS.md, CTF.md, CTF_PLAN.md) describe **planned features that do NOT exist yet**. They are design documents, not implementation documentation.
-
-**Before implementing a planned feature:**
-1. Read the design document thoroughly
-2. Check **[_ROADMAP.md](_ROADMAP.md)** for implementation timeline
-3. Update the status header when implementation begins
-4. Move to "Implemented Features" section in roadmap when complete
+Documents marked as planned (LEARNING_PATHS.md, CTF_PLAN.md) describe features that do NOT exist yet. They are design documents, not implementation documentation.
 
 ### Keeping Documentation Current
 When making code changes:
 1. Update relevant documentation files
-2. Keep status headers accurate (✅, 📋, 🚧)
+2. Keep status headers accurate
 3. Update **[_ROADMAP.md](_ROADMAP.md)** if adding/removing features
-4. Use present tense only for implemented features
-5. Use future tense for planned features
-
----
-
-## 📞 Documentation Feedback
-
-If you find:
-- **Inaccurate information** - Update the doc and note the change
-- **Missing documentation** - Create an issue or add the doc
-- **Outdated content** - Mark it and schedule an update
-- **Confusing sections** - Clarify and simplify
-
----
-
-## 🔗 External Resources
-
-- **React 19:** https://react.dev/
-- **Vite 6:** https://vitejs.dev/
-- **Tailwind CSS v4:** https://tailwindcss.com/
-- **React Router:** https://reactrouter.com/
-- **Vitest:** https://vitest.dev/
-- **Netlify:** https://docs.netlify.com/
-
----
-
-**Happy coding! 🚀**
+4. Use present tense for implemented features, future tense for planned ones

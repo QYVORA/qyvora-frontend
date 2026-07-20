@@ -8,6 +8,16 @@
 
 ---
 
+## Quick Reference
+
+- **SEO Component:** `src/shared/components/SEO.tsx` — uses `react-helmet-async` for dynamic meta tags
+- **Static Routes:** All public routes have unique meta descriptions (see §4)
+- **Canonical URLs:** Set via `og:url` meta tag, base from env or hardcoded `https://qyvora.com`
+- **Social Sharing:** Profile share via `ShareProfile` component (copy link + social buttons)
+- **Security Headers:** Configured in `netlify.toml` — X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy strict-origin-when-cross-origin
+
+---
+
 ## Table of Contents
 
 1. [Technical SEO Audit](#1-technical-seo-audit)

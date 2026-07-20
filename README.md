@@ -307,7 +307,7 @@ public/
 │   └── social/                 # Social card thumbnails
 ├── walkthrough/
 │   └── hpb/                    # Step-by-step walkthrough images by phase/room
-├── _headers                    # Netlify/Vercel response headers
+├── _headers                    # Netlify response headers
 ├── _redirects                  # Netlify SPA redirect rule
 └── robots.txt
 
@@ -321,24 +321,36 @@ docs/
 | Path | Access | Page |
 |---|---|---|
 | `/` | Public | Landing page |
-| `/chain` | Public | CP + QYVORA Chain explainer |
-| `/cyber-points` | Public | Redirects to `/chain` |
+| `/hpb` | Public | Hacker Protocol Bootcamp |
+| `/services` | Public | Services page |
+| `/courses` | Public | Course catalog |
+| `/blogs` | Public | Blog listing |
 | `/leaderboard` | Public | Operator leaderboard |
 | `/zero-day-market` | Public | Marketplace preview |
-| `/services` | Public | Services page |
-| `/contact` | Public | Contact form |
-| `/login` | Public | Login / Register |
+| `/anansi` | Public | Anansi CLI |
+| `/quiteroot` | Public | QuiteRoot |
+| `/team` | Public | Team page |
+| `/events` | Public | Events page |
+| `/news` | Public | Cyber Feed |
+| `/terms` | Public | Terms of Service |
+| `/login` | Public | Login |
+| `/register` | Public | Register |
 | `/dashboard` | Student | Main dashboard |
-| `/bootcamps` | Student | Bootcamp list |
-| `/bootcamps/:id` | Student | Curriculum map |
-| `/bootcamps/:id/phases/:phaseId/rooms/:roomId` | Student | Room walkthrough |
-| `/wallet` | Student | CP wallet + chain ledger |
-| `/profile` | Student | Operator profile |
-| `/*` | Public | Catch-all for 404 / handle resolution |
+| `/dashboard/bootcamps/:bootcampId` | Student | Curriculum map |
+| `/dashboard/bootcamps/:bootcampId/phases/:phaseId/rooms/:roomId` | Student | Room walkthrough |
+| `/dashboard/courses/:courseId` | Student | Course lesson |
+| `/dashboard/labs` | Student | Attack Labs overview |
+| `/dashboard/labs/:labId` | Student | Individual lab |
+| `/dashboard/marketplace` | Student | Marketplace |
+| `/dashboard/profile` | Student | Operator profile |
+| `/dashboard/settings` | Student | Settings |
+| `/mr-robot/dashboard` | Admin | Admin dashboard |
+| `/:handle` | Public | Public profile |
+| `/*` | Public | Catch-all 404 |
 
 ## Deployment
 
-Deployed on Vercel. Every push to `master` triggers a production deploy.
+Deployed on Netlify. Every push to `master` triggers a production deploy.
 
 ```bash
 # Build
@@ -348,4 +360,4 @@ npm run build
 npm run preview
 ```
 
-Set `VITE_API_BASE_URL` in the Vercel project environment variables.
+Set `VITE_API_BASE_URL` in the Netlify project environment variables.
