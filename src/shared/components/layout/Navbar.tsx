@@ -94,8 +94,8 @@ const Navbar: React.FC = React.memo(() => {
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="md" className="hidden md:block" color={inverted ? '#000000' : undefined} />
-            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#000000' : undefined} />
+            <Logo size="md" className="hidden md:block" color={inverted ? '#000000' : '#06B66F'} />
+            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#000000' : '#06B66F'} />
           </Link>
 
           {/* ── Desktop Navigation (centered, hover dropdowns) ──── */}

@@ -5,7 +5,7 @@ export interface QyvoraLogotypeProps extends React.SVGProps<SVGSVGElement> {
 }
 
 export const QyvoraLogotype: React.FC<QyvoraLogotypeProps> = ({
-  color = "currentColor",
+  color = "#06B66F",
   ...props
 }) => {
   return (

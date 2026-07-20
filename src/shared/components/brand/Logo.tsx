@@ -30,7 +30,7 @@ const markSizes: Record<LogoSize, string> = {
   '3xl': 'w-[140px]',
 };
 
-const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full', color }) => {
+const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'full', color = '#06B66F' }) => {
   if (variant === 'mark') {
     return (
       <div className={`logo-wrap flex-none ${markSizes[size]} max-w-full ${className}`}>
@@ -48,7 +48,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', variant = 'ful
   );
 };
 
-export const QyvoraLogo: React.FC<{ className?: string; color?: string }> = ({ className = '', color }) => {
+export const QyvoraLogo: React.FC<{ className?: string; color?: string }> = ({ className = '', color = '#06B66F' }) => {
   return (
     <div className={`logo-wrap flex-none w-[292px] max-w-full ${className}`}>
       <div className="overflow-hidden aspect-[848/116] flex items-center">

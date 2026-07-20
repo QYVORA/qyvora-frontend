@@ -5,7 +5,7 @@ export interface QyvoraMarkProps extends React.SVGProps<SVGSVGElement> {
 }
 
 export const QyvoraMark: React.FC<QyvoraMarkProps> = ({
-  color = "currentColor",
+  color = "#06B66F",
   ...props
 }) => {
   return (
