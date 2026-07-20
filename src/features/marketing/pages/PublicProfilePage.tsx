@@ -49,9 +49,8 @@ const PublicProfile: React.FC = () => {
   const cp = Number(profile?.cpPoints || 0);
   const rooms = useMemo(() => Array.isArray(profile?.completedRooms) ? profile.completedRooms : [], [profile?.completedRooms]);
   const bootcampCompleted = profile?.bootcampStatus === 'completed' || profile?.bootcampCompleted === true;
-
-  const badgeCount = bootcampCompleted ? 1 : 0;
-  const achievementCount = badgeCount + rooms.length;
+  const labsCompleted = Number(profile?.labsCompleted || 0);
+  const coursesCompleted = Number(profile?.coursesCompleted || 0);
 
   if (!isValidHandle) return <NotFoundPage />;
 
@@ -99,7 +98,8 @@ const PublicProfile: React.FC = () => {
           stats={[
             { label: 'CP', value: cp.toLocaleString(), accent: true },
             { label: 'Rank', value: profile.rank || 'Operator' },
-            { label: 'Rooms', value: rooms.length },
+            { label: 'Labs', value: labsCompleted || rooms.length },
+            { label: 'Courses', value: coursesCompleted },
           ]}
           action={{
             label: 'Back to Home',
@@ -117,13 +117,8 @@ const PublicProfile: React.FC = () => {
         <AchievementsSection
           rooms={rooms}
           bootcampCompleted={bootcampCompleted}
-          achievementCount={achievementCount}
-          i18nPrefix="landing.publicProfile"
-          viewRoomLabel="View room"
-          roomsLabel="Completed Rooms"
-          badgesLabel="Badges"
-          badgesEmptyLabel="No badges earned yet."
-          hpbGraduateLabel="HPB Graduate"
+          labsCompleted={labsCompleted}
+          coursesCompleted={coursesCompleted}
         />
 
         {/* Contribution Calendar */}
