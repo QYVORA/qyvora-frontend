@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
-import { Mail, Edit3, Activity, User } from 'lucide-react';
+import { Mail, Edit3, Activity, User, FlaskConical, GraduationCap, Trophy } from 'lucide-react';
 import ShareProfile from '../../../shared/components/ShareProfile';
 import { useAuth } from '../../../core/contexts/AuthContext';
 import { useToast } from '../../../core/contexts/ToastContext';
@@ -73,13 +73,12 @@ const Profile: React.FC = () => {
     name: String(profileApi?.name || ''),
     cp: Number(profileApi?.cpPoints || authUser?.cp || 0),
     completedRooms: Array.isArray(profileApi?.learn?.completedRooms) ? profileApi.learn.completedRooms : [],
-  }), [isOwnProfile, profileApi, authUser, displayHandle]);
+    labsCompleted: Number(profileApi?.labsCompleted || 0),
+    coursesCompleted: Number(profileApi?.coursesCompleted || 0),
+  }), [isOwnProfile, profileApi, authUser, displayHandle, t]);
 
   const rooms = useMemo(() => Array.isArray(profileData.completedRooms) ? profileData.completedRooms : [], [profileData.completedRooms]);
   const bootcampCompleted = authUser?.bootcampStatus === 'completed' || profileApi?.bootcampStatus === 'completed';
-
-  const badgeCount = bootcampCompleted ? 1 : 0;
-  const achievementCount = badgeCount + rooms.length;
 
   const editInitial = {
     name: profileData.name,
@@ -113,7 +112,8 @@ const Profile: React.FC = () => {
           stats={[
             { label: t('student.profile.stats.cp'), value: profileData.cp.toLocaleString(), accent: true },
             { label: t('student.profile.rank'), value: profileData.rank },
-            { label: t('student.profile.stats.rooms'), value: rooms.length },
+            { label: t('student.profile.stats.labs'), value: profileData.labsCompleted || rooms.length },
+            { label: t('student.profile.stats.courses'), value: profileData.coursesCompleted },
           ]}
           action={isOwnProfile ? {
             label: t('student.profile.edit'),
@@ -151,7 +151,8 @@ const Profile: React.FC = () => {
         <AchievementsSection
           rooms={rooms}
           bootcampCompleted={bootcampCompleted}
-          achievementCount={achievementCount}
+          labsCompleted={profileData.labsCompleted}
+          coursesCompleted={profileData.coursesCompleted}
         />
 
         {/* Contribution Calendar */}

@@ -716,14 +716,26 @@
       }
     },
     "publicProfile": {
-      "achievements": "Achievements",
+      "achievements": {
+        "title": "Achievements",
+        "empty": "No achievements yet. Start learning to earn your first!",
+        "hpbGraduate": "HPB Graduate",
+        "hpbGraduateDesc": "Completed the Hacker Protocol Bootcamp",
+        "labsCompleted": "Lab Operator",
+        "labsCompletedDesc": "{{count}} lab completed",
+        "coursesCompleted": "Course Graduate",
+        "coursesCompletedDesc": "{{count}} course completed",
+        "roomCompleted": "Room completed"
+      },
       "collapse": "Collapse",
       "expand": "Expand",
       "badges": "Badges",
       "badgesEmpty": "No badges earned yet.",
       "hpbGraduate": "HPB Graduate",
       "stats": {
-        "rooms": "Completed Rooms"
+        "rooms": "Completed Rooms",
+        "labs": "Labs",
+        "courses": "Courses"
       },
       "viewRoom": "View room"
     },
@@ -1318,10 +1330,22 @@
       "stats": {
         "cp": "CP Earned",
         "rooms": "Rooms Done",
+        "labs": "Labs",
+        "courses": "Courses",
         "streak": "Streak"
       },
       "publicView": "Public View",
-      "achievements": "Achievements",
+      "achievements": {
+        "title": "Achievements",
+        "empty": "No achievements yet. Start learning to earn your first!",
+        "hpbGraduate": "HPB Graduate",
+        "hpbGraduateDesc": "Completed the Hacker Protocol Bootcamp",
+        "labsCompleted": "Lab Operator",
+        "labsCompletedDesc": "{{count}} lab completed",
+        "coursesCompleted": "Course Graduate",
+        "coursesCompletedDesc": "{{count}} course completed",
+        "roomCompleted": "Room completed"
+      },
       "collapse": "Collapse",
       "expand": "Expand",
       "hpbGraduate": "HPB Graduate",
