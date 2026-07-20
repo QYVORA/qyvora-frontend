@@ -176,7 +176,7 @@ const BootcampCourse: React.FC = () => {
           </div>
           <div className="flex flex-wrap gap-3">
             {BOOTCAMP_CONFIG.phases.map((phase, idx) => {
-              const color = PHASE_COLORS[phase.id] || '#06B66F';
+              const color = PHASE_COLORS[phase.id] || 'var(--color-accent)';
               const modProgress = moduleProgressMap.get(idx + 1);
               const isComplete = modProgress && Number(modProgress.progress) === 100;
               const isCurrent = !isComplete && (!moduleProgressMap.get(idx) || Number(moduleProgressMap.get(idx)?.progress) === 100);

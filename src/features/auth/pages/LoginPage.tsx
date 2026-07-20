@@ -15,6 +15,7 @@ import PasswordInput from '../components/PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
 import api from '../../../core/services/api';
 import ADMIN_PATH from '@/shared/utils/adminPath';
+import Input from '@/shared/components/ui/Input';
 
 type AuthMode = 'login' | 'register';
 
@@ -142,8 +143,7 @@ const LoginPage: React.FC = () => {
               <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
                 <div className="space-y-2">
                   <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                  <div className="relative">
-                    <input
+                  <Input
                       id="login-email"
                       type="email"
                       name="email"
@@ -151,10 +151,8 @@ const LoginPage: React.FC = () => {
                       autoComplete="email"
                       inputMode="email"
                       placeholder={t('auth.emailPlaceholder')}
-                      className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
+                      icon={<Mail className="w-4 h-4" />}
                     />
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -230,8 +228,7 @@ const LoginPage: React.FC = () => {
             <form className="space-y-5" onSubmit={handleLoginSubmit} noValidate>
               <div className="space-y-2">
                 <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                <div className="relative">
-                  <input
+                <Input
                     id="login-email"
                     type="email"
                     name="email"
@@ -239,10 +236,8 @@ const LoginPage: React.FC = () => {
                     autoComplete="email"
                     inputMode="email"
                     placeholder={t('auth.emailPlaceholder')}
-                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
+                    icon={<Mail className="w-4 h-4" />}
                   />
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                </div>
               </div>
 
               <div className="space-y-2">
@@ -296,8 +291,7 @@ const LoginPage: React.FC = () => {
             <form className="space-y-5" onSubmit={handleRegisterSubmit}>
               <div className="space-y-2">
                 <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
-                <div className="relative">
-                  <input 
+                <Input 
                     ref={handleRef} 
                     id="register-handle" 
                     type="text" 
@@ -307,10 +301,8 @@ const LoginPage: React.FC = () => {
                     pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
                     title={t('validation.handleRules')}
                     placeholder={t('auth.handlePlaceholder')}
-                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    icon={<User className="w-4 h-4" />}
                   />
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                </div>
                 <HandleSuggestions
                   name={fullName}
                   onSelect={handleSuggestionSelect}
@@ -321,8 +313,7 @@ const LoginPage: React.FC = () => {
 
               <div className="space-y-2">
                 <label htmlFor="register-full-name" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.fullName')}</label>
-                <div className="relative">
-                  <input 
+                <Input 
                     id="register-full-name" 
                     type="text" 
                     name="full_name" 
@@ -331,16 +322,13 @@ const LoginPage: React.FC = () => {
                     placeholder={t('auth.namePlaceholder')}
                     value={fullName}
                     onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }}
-                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    icon={<User className="w-4 h-4" />}
                   />
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                </div>
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="register-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-                <div className="relative">
-                  <input 
+                <Input 
                     id="register-email" 
                     type="email" 
                     name="email" 
@@ -348,10 +336,8 @@ const LoginPage: React.FC = () => {
                     autoComplete="email" 
                     inputMode="email" 
                     placeholder={t('auth.emailPlaceholder')}
-                    className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" 
+                    icon={<Mail className="w-4 h-4" />}
                   />
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-                </div>
               </div>
 
               <div className="space-y-2">

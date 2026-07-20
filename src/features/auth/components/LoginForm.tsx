@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
+import Input from '@/shared/components/ui/Input';
 
 interface LoginFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -38,8 +39,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         {/* Email */}
         <div className="space-y-2">
           <label htmlFor="login-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-          <div className="relative">
-            <input
+          <Input
               id="login-email"
               type="email"
               name="email"
@@ -47,10 +47,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
               autoComplete="email"
               inputMode="email"
               placeholder={t('auth.emailPlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm"
+              icon={<Mail className="w-4 h-4" />}
             />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
         </div>
 
         {/* Password */}

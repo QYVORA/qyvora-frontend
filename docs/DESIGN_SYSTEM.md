@@ -40,15 +40,25 @@ Three tiers defined in `src/styles/index.css`:
 | `btn-secondary` | Secondary action | Bordered, transparent |
 | `btn-danger` | Destructive action | Red bg |
 
-All buttons: `!rounded-xl`, `text-[10px]`, `font-black`, `uppercase`, `tracking-widest`.
+All buttons: `!rounded-xl`, `font-black`, `uppercase`, `tracking-[0.08em]`.
+
+## Shared Components
+
+| Component | Location | Variants |
+|-----------|----------|----------|
+| `Button` | `src/shared/components/ui/Button.tsx` | primary, secondary, danger, ghost |
+| `Input` | `src/shared/components/ui/Input.tsx` | with/without icon slot |
+| `Badge` | `src/shared/components/ui/Badge.tsx` | default, accent, success, warning, danger, info |
 
 ## Input Fields
 
 Standard pattern:
 ```
-bg-bg border border-border rounded-xl py-3 px-4 text-text-primary
-focus:border-accent outline-none font-mono text-sm
+bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary
+placeholder:text-text-muted focus:border-accent outline-none font-mono text-sm
 ```
+
+With icon: `pl-12 pr-4` (handled by shared `Input` component via `icon` prop).
 
 ## Badge Styles
 
@@ -85,10 +95,11 @@ px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
 
 | Context | Size |
 |---------|------|
-| Marketing hero | `text-[2rem]` to `text-[3rem]` (responsive) |
-| Dashboard | `text-4xl md:text-6xl` |
+| Marketing hero | `text-[2rem]` to `text-[3rem]` (responsive via PublicHeroSection) |
+| Dashboard | `text-4xl md:text-5xl` |
 | Admin | `text-4xl md:text-5xl lg:text-6xl` |
-| Auth forms | `text-3xl` |
+| Auth forms | `text-3xl md:text-4xl lg:text-5xl` |
+| Not found | `text-4xl md:text-6xl` |
 
 ## Container Widths
 

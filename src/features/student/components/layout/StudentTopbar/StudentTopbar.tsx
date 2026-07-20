@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate, useMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  IconBootcamp,
+  IconTerminal,
   IconLabs,
   IconMarketplace,
   IconArrowLeft,
@@ -28,7 +28,7 @@ const StudentTopbar = () => {
 
   const DESKTOP_NAV_ITEMS = [
     { label: t('nav.myCourses'), icon: IconCode, path: '/dashboard/courses' },
-    { label: t('nav.bootcamp'), icon: IconBootcamp, path: '/dashboard/bootcamps' },
+    { label: t('nav.bootcamp'), icon: IconTerminal, path: '/dashboard/bootcamps' },
     { label: t('nav.labs'), icon: IconLabs, path: '/dashboard/labs' },
     { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
   ];

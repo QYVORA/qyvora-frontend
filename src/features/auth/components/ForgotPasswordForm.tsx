@@ -2,6 +2,7 @@ import React from 'react';
 import { IconArrowLeft } from '@/shared/components/icons';
 import { Mail, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Input from '@/shared/components/ui/Input';
 
 interface ForgotPasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -31,11 +32,8 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="forgot-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.forgot.emailLabel')}</label>
-          <div className="relative">
-            <input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder={t('auth.emailPlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+          <Input id="forgot-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder={t('auth.emailPlaceholder')}
+            icon={<Mail className="w-4 h-4" />} />
         </div>
 
         <button type="submit" disabled={isLoading}

@@ -6,6 +6,7 @@ import { IconCheck } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import HandleSuggestions from '@/shared/components/HandleSuggestions';
+import Input from '@/shared/components/ui/Input';
 
 const HANDLE_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}[a-zA-Z0-9]$/;
 
@@ -67,7 +68,7 @@ const UsernameChangeModal = () => {
               <label htmlFor="username-change" className="text-xs font-bold text-text-muted uppercase tracking-widest">
                 {t('student.usernameChange.usernameLabel')}
               </label>
-              <input
+              <Input
                 id="username-change"
                 type="text"
                 value={handle}
@@ -75,7 +76,7 @@ const UsernameChangeModal = () => {
                 placeholder={t('student.usernameChange.placeholder')}
                 maxLength={40}
                 autoFocus
-                className="w-full bg-bg-card border border-border rounded-xl py-3 px-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-base"
+                className="text-base"
               />
               <HandleSuggestions
                 name={user?.username || user?.email?.split('@')[0] || ''}
