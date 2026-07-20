@@ -28,7 +28,7 @@ interface AchievementCardProps {
   className?: string;
 }
 
-const RARITY_STYLES: Record<string, { border: string; bg: string; glow: string }> = {
+export const RARITY_STYLES: Record<string, { border: string; bg: string; glow: string }> = {
   common: {
     border: 'border-border/30',
     bg: 'bg-bg-card',
@@ -56,7 +56,7 @@ const RARITY_STYLES: Record<string, { border: string; bg: string; glow: string }
   },
 };
 
-const TYPE_ICONS: Record<string, React.ReactNode> = {
+export const TYPE_ICONS: Record<string, React.ReactNode> = {
   lab: <FlaskConical className="w-4 h-4" />,
   course: <GraduationCap className="w-4 h-4" />,
   bootcamp: <Shield className="w-4 h-4" />,
@@ -65,7 +65,7 @@ const TYPE_ICONS: Record<string, React.ReactNode> = {
   challenge: <Target className="w-4 h-4" />,
 };
 
-const TYPE_COLORS: Record<string, string> = {
+export const TYPE_COLORS: Record<string, string> = {
   lab: 'text-red-400',
   course: 'text-blue-400',
   bootcamp: 'text-accent',

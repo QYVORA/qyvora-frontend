@@ -2,15 +2,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { IconArrowLeft } from '@/shared/components/icons';
 import NotFoundPage from '../../../shared/pages/NotFoundPage';
-import ShareProfile from '../../../shared/components/ShareProfile';
-import Identicon from '../../../shared/components/Identicon';
 import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
-import LearningOverviewCard from '../../student/components/learning/LearningOverviewCard';
+import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
+import ProfileStatCard from '../../../shared/components/profile/ProfileStatCard';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
+import { FlaskConical, GraduationCap, Trophy, User } from 'lucide-react';
 
 const PublicProfile: React.FC = () => {
   const { handle: rawHandle } = useParams<{ handle: string }>();
@@ -36,7 +36,6 @@ const PublicProfile: React.FC = () => {
     return () => { mounted = false; };
   }, [handle]);
 
-  // Fetch activity calendar data
   useEffect(() => {
     if (!handle) return;
     let mounted = true;
@@ -85,48 +84,65 @@ const PublicProfile: React.FC = () => {
       />
 
       <div className="px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24 space-y-6">
-        {/* Profile Overview Card */}
-        <LearningOverviewCard
-          icon={<></>}
-          title={`@${profile.handle || profile.name}`}
-          description={profile.bio || `${profile.rank || 'Operator'} operator`}
-          avatar={
-            <div className="w-full h-full bg-black flex items-center justify-center">
-              <Identicon value={profile.id} size={256} className="w-full h-full" />
-            </div>
-          }
-          stats={[
-            { label: 'CP', value: cp.toLocaleString(), accent: true },
-            { label: 'Rank', value: profile.rank || 'Operator' },
-            { label: 'Labs', value: labsCompleted || rooms.length },
-            { label: 'Courses', value: coursesCompleted },
+        {/* Identity Block — full width */}
+        <ProfileIdentityBlock
+          id={profile.id}
+          handle={profile.handle || handle}
+          name={profile.name || undefined}
+          bio={profile.bio || undefined}
+          rank={profile.rank || 'Operator'}
+          organization={profile.organization || undefined}
+          actions={[
+            { label: 'Back to Home', to: '/', icon: <IconArrowLeft className="w-3.5 h-3.5" /> },
           ]}
-          action={{
-            label: 'Back to Home',
-            to: '/',
-            icon: <IconArrowLeft className="w-3.5 h-3.5" />,
-          }}
+          showShare
         />
 
-        {/* Meta Row: share */}
-        <div className="flex justify-end">
-          <ShareProfile handle={handle || ''} />
-        </div>
+        {/* Two-column layout on desktop: main content left, stats right */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left column — calendar + achievements */}
+          <div className="flex-1 min-w-0 space-y-6">
+            {/* Contribution Calendar */}
+            {Object.keys(activityDates).length > 0 && (
+              <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+                <ContributionCalendar activityDates={activityDates} />
+              </div>
+            )}
 
-        {/* Achievements */}
-        <AchievementsSection
-          rooms={rooms}
-          bootcampCompleted={bootcampCompleted}
-          labsCompleted={labsCompleted}
-          coursesCompleted={coursesCompleted}
-        />
-
-        {/* Contribution Calendar */}
-        {Object.keys(activityDates).length > 0 && (
-          <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-            <ContributionCalendar activityDates={activityDates} />
+            {/* Achievements */}
+            <AchievementsSection
+              rooms={rooms}
+              bootcampCompleted={bootcampCompleted}
+              labsCompleted={labsCompleted}
+              coursesCompleted={coursesCompleted}
+            />
           </div>
-        )}
+
+          {/* Right column — stat cards */}
+          <div className="w-full lg:w-[340px] shrink-0 grid grid-cols-2 lg:grid-cols-1 gap-4">
+            <ProfileStatCard
+              icon={<Trophy className="w-5 h-5 text-accent" />}
+              label="CP"
+              value={cp.toLocaleString()}
+              accent
+            />
+            <ProfileStatCard
+              icon={<User className="w-5 h-5 text-text-muted" />}
+              label="Rank"
+              value={profile.rank || 'Operator'}
+            />
+            <ProfileStatCard
+              icon={<FlaskConical className="w-5 h-5 text-text-muted" />}
+              label="Labs"
+              value={labsCompleted || rooms.length}
+            />
+            <ProfileStatCard
+              icon={<GraduationCap className="w-5 h-5 text-text-muted" />}
+              label="Courses"
+              value={coursesCompleted}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

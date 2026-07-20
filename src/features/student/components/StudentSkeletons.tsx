@@ -45,23 +45,64 @@ const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean
 /* ─── Profile Page Skeleton ─────────────────────────────────────────────────── */
 export const ProfileSkeleton = () => (
   <div className="w-full bg-bg">
-    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
-      <OverviewCardSkeleton stats={3} action />
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-3 w-28 bg-border/30 rounded" />
-          <Skeleton className="h-3 w-40 bg-border/30 rounded" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
-          <Skeleton className="h-10 w-24 bg-border/30 rounded-xl" />
+    <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24 space-y-6">
+      {/* Identity block skeleton — full width */}
+      <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
+        <div className="h-1 w-full bg-accent/30" />
+        <div className="p-5 sm:p-6">
+          <div className="flex items-start gap-4 sm:gap-5">
+            <Skeleton className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-border/30 shrink-0" />
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-5 w-32 bg-border/30 rounded" />
+                <Skeleton className="h-5 w-20 bg-border/30 rounded-lg" />
+                <Skeleton className="h-5 w-16 bg-border/30 rounded-lg" />
+              </div>
+              <Skeleton className="h-4 w-48 bg-border/20 rounded" />
+              <Skeleton className="h-3 w-28 bg-border/20 rounded" />
+            </div>
+          </div>
+          <div className="flex gap-2 mt-5">
+            <Skeleton className="h-9 w-24 bg-border/30 rounded-xl" />
+            <Skeleton className="h-9 w-24 bg-border/30 rounded-xl" />
+            <Skeleton className="h-9 w-24 bg-border/30 rounded-xl" />
+          </div>
         </div>
       </div>
-      <div className="flex items-center gap-3 rounded-xl border border-border/30 bg-bg-card px-4 py-3">
-        <Skeleton className="w-5 h-5 bg-border/30 rounded shrink-0" />
-        <Skeleton className="h-3 w-32 bg-border/30 rounded" />
-        <Skeleton className="h-3 w-16 bg-border/30 rounded ml-auto" />
-        <Skeleton className="w-4 h-4 bg-border/30 rounded shrink-0" />
+
+      {/* Two-column skeleton: left (calendar + achievements), right (stats) */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left column */}
+        <div className="flex-1 min-w-0 space-y-6">
+          <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <Skeleton className="h-3 w-36 bg-border/30 rounded" />
+              <Skeleton className="h-3 w-28 bg-border/20 rounded" />
+            </div>
+            <Skeleton className="h-[118px] w-full bg-border/20 rounded-lg" />
+          </div>
+          <div className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-4">
+            <Skeleton className="h-4 w-32 bg-border/30 rounded" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {[...Array(4)].map((_, i) => (
+                <Skeleton key={i} className="h-28 bg-border/20 rounded-xl" />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right column — stats */}
+        <div className="w-full lg:w-[340px] shrink-0 grid grid-cols-2 lg:grid-cols-1 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="rounded-2xl border border-border/30 bg-bg-card p-5 space-y-2.5">
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-10 h-10 rounded-xl bg-border/30" />
+                <Skeleton className="h-3 w-16 bg-border/30 rounded" />
+              </div>
+              <Skeleton className="h-7 w-20 bg-border/30 rounded" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
