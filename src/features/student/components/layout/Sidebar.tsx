@@ -482,7 +482,7 @@ const Sidebar = () => {
     { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
     { label: t('nav.competitive'), icon: Swords, path: '/dashboard/competitive' },
     { label: t('nav.networkLab'), icon: Globe, path: '/dashboard/networks' },
-    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
+    { label: t('nav.notifications.title'), icon: IconNotification, path: '/dashboard/notifications' },
     { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
   ];
 
@@ -498,7 +498,7 @@ const Sidebar = () => {
 
   const SECONDARY_NAV: NavItem[] = [
     { label: t('nav.marketplace'), icon: IconMarketplace, path: '/dashboard/marketplace' },
-    { label: t('nav.notifications'), icon: IconNotification, path: '/dashboard/notifications' },
+    { label: t('nav.notifications.title'), icon: IconNotification, path: '/dashboard/notifications' },
     { label: t('nav.settings'), icon: IconSettings, path: '/dashboard/settings' },
   ];
   const [mobileOpen, setMobileOpen] = useState(false);

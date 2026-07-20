@@ -773,7 +773,8 @@
         "empty": "No new notifications",
         "preferences": "Notification preferences",
         "viewAll": "View all notifications",
-        "markAllRead": "Mark all as read"
+        "markAllRead": "Mark all as read",
+        "unreadCount": "{{count}} unread"
       },
       "news": {
         "title": "Recent News",
@@ -1949,7 +1950,8 @@
       "contact": "Contact",
       "service": "Service",
       "deleteTitle": "Delete Inquiry",
-      "serviceRequest": "Service Request"
+      "serviceRequest": "Service Request",
+      "deleteDescription": "This action cannot be undone."
     },
     "broadcast": {
       "newAnnouncement": "New Announcement",
@@ -1972,7 +1974,9 @@
       "student": "Student",
       "admin": "Admin",
       "confirmTitle": "Confirm Broadcast",
-      "users": "Users"
+      "users": "Users",
+      "sent": "Broadcast sent",
+      "confirmDescription": "Are you sure you want to send this broadcast to {{count}} users?"
     },
     "security": {
       "events24h": "Events 24h",
@@ -2177,7 +2181,8 @@
     "viewCta": "View",
     "levels": {
       "advanced": "Advanced"
-    }
+    },
+    "resultsCount": "{{count}} results"
   },
   "eventsPage": {
     "hero": {
