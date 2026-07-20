@@ -74,7 +74,7 @@ const LandingCoursesSection: React.FC = () => {
   const pageCourses = filteredCourses.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
   // Get the color for the first visible course's category
-  const activeColor = '#06B66F';
+  const activeColor = 'var(--color-accent)';
   const ActiveCatIcon = pageCourses[0] ? CATEGORY_ICONS[pageCourses[0].category] : GraduationCap;
 
   return (

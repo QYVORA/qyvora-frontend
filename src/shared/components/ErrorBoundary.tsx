@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconTerminal } from '@/shared/components/icons';
+import { Button } from '@/shared/components/ui';
 import { RefreshCw, Home } from 'lucide-react';
 
 interface Props {
@@ -106,14 +107,16 @@ class ErrorBoundaryInner extends Component<Props, State> {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button
+            <Button
               type="button"
+              variant="primary"
+              size="md"
               onClick={this.reset}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-accent text-bg rounded-xl text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all"
+              className="px-5 py-2.5 text-sm"
             >
               <RefreshCw className="w-4 h-4" />
               {t?.('components.errorBoundary.tryAgain') ?? 'Try Again'}
-            </button>
+            </Button>
             <button
               type="button"
               onClick={() => { window.location.href = '/dashboard'; }}

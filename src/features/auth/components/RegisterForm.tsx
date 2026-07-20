@@ -3,6 +3,7 @@ import { User, Mail, LogIn } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
 import HandleSuggestions from '../../../shared/components/HandleSuggestions';
+import Input from '@/shared/components/ui/Input';
 
 interface RegisterFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -33,14 +34,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="register-handle" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.operatorHandle')}</label>
-          <div className="relative">
-            <input ref={handleRef} id="register-handle" type="text" name="handle" required autoComplete="username"
+          <Input ref={handleRef} id="register-handle" type="text" name="handle" required autoComplete="username"
               pattern="^[a-zA-Z0-9][a-zA-Z0-9\-]{0,38}[a-zA-Z0-9]$"
               title={t('validation.handleRules')}
               placeholder={t('auth.handlePlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+              icon={<User className="w-4 h-4" />} />
           <HandleSuggestions
             name={fullName}
             onSelect={handleSuggestionSelect}
@@ -52,21 +50,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading, onLogi
           {/* Full Name */}
           <div className="space-y-2">
           <label htmlFor="register-full-name" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.fullName')}</label>
-          <div className="relative">
-            <input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder={t('auth.namePlaceholder')}
+          <Input id="register-full-name" type="text" name="full_name" required autoComplete="name" placeholder={t('auth.namePlaceholder')}
               value={fullName}
-              onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-          </div>
+              onChange={(e) => { setFullName(e.target.value); setSelectedHandle(''); }} />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="register-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-          <div className="relative">
-            <input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder={t('auth.emailPlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+          <Input id="register-email" type="email" name="email" required autoComplete="email" inputMode="email" placeholder={t('auth.emailPlaceholder')}
+              icon={<Mail className="w-4 h-4" />} />
         </div>
 
         <div className="space-y-2">

@@ -3,6 +3,7 @@ import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { Mail, KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
+import Input from '@/shared/components/ui/Input';
 
 interface ResetPasswordConfirmFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -34,20 +35,14 @@ const ResetPasswordConfirmForm: React.FC<ResetPasswordConfirmFormProps> = ({
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="reset-email" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.email')}</label>
-          <div className="relative">
-            <input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder={t('auth.emailPlaceholder')}
-              onChange={(e) => onEmailChange(e.target.value)}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+          <Input id="reset-email" type="email" name="email" required autoComplete="email" inputMode="email" defaultValue={email} placeholder={t('auth.emailPlaceholder')}
+            onChange={(e) => onEmailChange(e.target.value)}
+            icon={<Mail className="w-4 h-4" />} />
         </div>
         <div className="space-y-2">
           <label htmlFor="reset-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.reset.tokenLabel')}</label>
-          <div className="relative">
-            <input id="reset-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.reset.tokenPlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+          <Input id="reset-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.reset.tokenPlaceholder')}
+            icon={<KeyRound className="w-4 h-4" />} />
         </div>
         <div className="space-y-2">
           <label htmlFor="reset-new-password" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('form.newPassword')}</label>

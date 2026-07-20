@@ -20,7 +20,7 @@ const ChainLogo: React.FC<ChainLogoProps> = ({
     <QyvoraMark
       className="object-contain inline-block align-middle"
       style={{ width: size, height: size }}
-      color={variant === '3d' ? '#06B66F' : '#06B66F'}
+      color="var(--color-accent)"
     />
     {showLabel && (
       <span

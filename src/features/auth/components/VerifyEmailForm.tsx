@@ -2,6 +2,7 @@ import React from 'react';
 import { IconArrowLeft, IconCheck } from '@/shared/components/icons';
 import { KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Input from '@/shared/components/ui/Input';
 
 interface VerifyEmailFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -35,11 +36,8 @@ const VerifyEmailForm: React.FC<VerifyEmailFormProps> = ({
       <form className="space-y-5" onSubmit={onSubmit}>
         <div className="space-y-2">
           <label htmlFor="verify-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.verify.tokenLabel')}</label>
-          <div className="relative">
-            <input id="verify-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.verify.tokenPlaceholder')}
-              className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-          </div>
+          <Input id="verify-token" type="text" name="token" required defaultValue={token} placeholder={t('auth2.verify.tokenPlaceholder')}
+            icon={<KeyRound className="w-4 h-4" />} />
         </div>
         <button type="submit" disabled={isLoading}
           className="w-full btn-primary !py-4 flex items-center justify-center gap-3 disabled:opacity-50">

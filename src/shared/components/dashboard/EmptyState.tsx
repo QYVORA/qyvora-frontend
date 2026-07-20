@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/shared/components/ui';
 
 interface EmptyStateProps {
   icon: ReactNode;
@@ -25,12 +26,14 @@ const EmptyState = ({ icon, title, description, action }: EmptyStateProps) => (
       </Link>
     )}
     {action && action.onClick && (
-      <button
+      <Button
+        variant="primary"
+        size="md"
         onClick={action.onClick}
-        className="bg-accent text-bg px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:brightness-110"
+        className="px-6 py-2.5"
       >
         {action.label}
-      </button>
+      </Button>
     )}
   </div>
 );

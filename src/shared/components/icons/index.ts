@@ -10,7 +10,7 @@ export {
   Menu as IconMenu,
 
   // Domain
-  Terminal as IconBootcamp,
+  Terminal as IconTerminal,
   FlaskConical as IconLabs,
   Flag as IconCTF,
   CircuitBoard as IconChallenges,
@@ -26,15 +26,12 @@ export {
   Shield as IconShield,
   Award as IconBadge,
   Target as IconTarget,
-  Award as IconCertificate,
 
   // Dev / terminal
-  Terminal as IconTerminal,
   FileCode as IconCode,
   Skull as IconHack,
   Network as IconNetwork,
   Binary as IconBinary,
-  Bug as IconExploit,
   Bug as IconBug,
 
   // Status / time

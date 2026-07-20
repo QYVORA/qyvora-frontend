@@ -3,6 +3,7 @@ import { IconShield, IconCheck } from '@/shared/components/icons';
 import { KeyRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import PasswordInput from './PasswordInput';
+import Input from '@/shared/components/ui/Input';
 
 interface ChangePasswordFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -31,11 +32,8 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
         {!token && (
           <div className="space-y-2">
             <label htmlFor="change-token" className="text-[10px] font-black text-text-muted uppercase tracking-widest">{t('auth2.changePassword.tokenLabel')}</label>
-            <div className="relative">
-              <input id="change-token" type="text" name="change_token" required placeholder={t('auth2.changePassword.tokenPlaceholder')}
-                className="w-full bg-bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-text-primary placeholder:text-text-muted focus:border-accent outline-none transition-all font-mono text-sm" />
-              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
-            </div>
+              <Input id="change-token" type="text" name="change_token" required placeholder={t('auth2.changePassword.tokenPlaceholder')}
+                icon={<KeyRound className="w-4 h-4" />} />
           </div>
         )}
         <div className="space-y-2">

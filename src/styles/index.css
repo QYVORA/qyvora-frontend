@@ -436,21 +436,21 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-accent text-bg font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:brightness-110 active:scale-95 border-2 border-bg;
+    @apply bg-accent text-bg font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:brightness-110 active:scale-95 border-2 border-bg;
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
     transition-timing-function: var(--ease-smooth);
   }
 
   .btn-secondary {
-    @apply bg-bg-elevated text-accent font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border border-white/5;
+    @apply bg-bg-elevated text-accent font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-bg-card active:scale-95 border border-white/5;
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
     transition-timing-function: var(--ease-smooth);
   }
 
   .btn-danger {
-    @apply bg-red-500/10 text-red-400 font-bold uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-red-500/20 active:scale-95 border border-red-500/40;
+    @apply bg-red-500/10 text-red-400 font-black uppercase tracking-[0.08em] rounded-xl px-7 py-3 cursor-pointer hover:bg-red-500/20 active:scale-95 border border-red-500/40;
     transition-property: filter, transform, background-color, color, border-color, box-shadow;
     transition-duration: var(--dur-base);
     transition-timing-function: var(--ease-smooth);

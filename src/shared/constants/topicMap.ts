@@ -177,7 +177,7 @@ const LAB_REFS: Record<string, ContentRef> = {
   privesc: { type: 'lab', id: 'privesc', title: 'Privilege Escalation', subtitle: 'Escalate to root', route: '/dashboard/labs/privesc', color: '#FBBF24' },
   passwords: { type: 'lab', id: 'passwords', title: 'Password Cracking', subtitle: 'Crack password hashes', route: '/dashboard/labs/passwords', color: '#F59E0B' },
   webapp: { type: 'lab', id: 'webapp', title: 'Web Exploitation', subtitle: 'Exploit web vulnerabilities', route: '/dashboard/labs/web-exploitation', color: '#EF4444' },
-  sqli: { type: 'lab', id: 'sqli', title: 'SQL Injection', subtitle: 'Extract data via SQLi', route: '/dashboard/labs/sql-injection', color: '#06B66F' },
+  sqli: { type: 'lab', id: 'sqli', title: 'SQL Injection', subtitle: 'Extract data via SQLi', route: '/dashboard/labs/sql-injection', color: '#06B66F' /* must match --color-accent */ },
   phishing: { type: 'lab', id: 'phishing', title: 'Phishing Analysis', subtitle: 'Identify phishing campaigns', route: '/dashboard/labs/phishing', color: '#8B5CF6' },
   proxy: { type: 'lab', id: 'proxy', title: 'Web Proxy', subtitle: 'Intercept HTTP traffic', route: '/dashboard/labs/proxy', color: '#10B981' },
   traffic: { type: 'lab', id: 'traffic', title: 'Traffic Analysis', subtitle: 'Analyze network traffic', route: '/dashboard/labs/traffic', color: '#84CC16' },
@@ -187,9 +187,9 @@ const LAB_REFS: Record<string, ContentRef> = {
 };
 
 const HPB_ROOM_REFS: Record<string, ContentRef> = {
-  'phase1:room1': { type: 'hpb', id: 'phase1:room1', title: 'Introduction to Offensive Security', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room1', color: '#06B66F' },
-  'phase1:room2': { type: 'hpb', id: 'phase1:room2', title: 'Legal & Ethical Framework', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room2', color: '#06B66F' },
-  'phase1:room3': { type: 'hpb', id: 'phase1:room3', title: 'Setting Up Your Lab', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room3', color: '#06B66F' },
+  'phase1:room1': { type: 'hpb', id: 'phase1:room1', title: 'Introduction to Offensive Security', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room1', color: '#06B66F' /* must match --color-accent */ },
+  'phase1:room2': { type: 'hpb', id: 'phase1:room2', title: 'Legal & Ethical Framework', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room2', color: '#06B66F' /* must match --color-accent */ },
+  'phase1:room3': { type: 'hpb', id: 'phase1:room3', title: 'Setting Up Your Lab', subtitle: 'Hacker Mindset', route: '/dashboard/bootcamps/hpb/phases/phase1/rooms/room3', color: '#06B66F' /* must match --color-accent */ },
   'phase2:room1': { type: 'hpb', id: 'phase2:room1', title: 'Linux Fundamentals', subtitle: 'Linux Essentials', route: '/dashboard/bootcamps/hpb/phases/phase2/rooms/room1', color: '#60A5FA' },
   'phase2:room2': { type: 'hpb', id: 'phase2:room2', title: 'File System Navigation', subtitle: 'Linux Essentials', route: '/dashboard/bootcamps/hpb/phases/phase2/rooms/room2', color: '#60A5FA' },
   'phase2:room3': { type: 'hpb', id: 'phase2:room3', title: 'Process Management', subtitle: 'Linux Essentials', route: '/dashboard/bootcamps/hpb/phases/phase2/rooms/room3', color: '#60A5FA' },
