@@ -152,9 +152,12 @@ const LandingLeaderboardSection = () => {
                     className={[
                       'cursor-pointer shrink-0 relative',
                       'transition-all duration-300',
-                      'rounded-lg border border-border/30 overflow-hidden',
-                      'hover:z-20 hover:border-accent/30',
-                      isHovered && 'z-20 border-accent/30',
+                      'rounded-lg overflow-hidden',
+                      isTopThree
+                        ? `${TOP_THREE_RING[entry!.rank - 1]} ${TOP_THREE_GLOW[entry!.rank - 1]} border-2`
+                        : 'border border-border/30',
+                      'hover:z-20',
+                      isHovered && 'z-20',
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
