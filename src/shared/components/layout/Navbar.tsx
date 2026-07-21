@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { IconDashboard, IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
+import { IconMenu, IconX, IconChevronRight } from '@/shared/components/icons';
 import { LogIn, UserPlus, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { SITE_CONFIG } from '@/features/marketing/content/siteConfig';
 import { ContactTrigger } from '@/features/marketing/components/ContactModal';
 import { useNavInvert } from '@/shared/hooks/useNavInvert';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher';
+import Identicon from '@/shared/components/Identicon';
 
 const NAV_GROUP_LABELS: Record<string, string> = {
   learn: 'nav.learn',
@@ -218,28 +219,31 @@ const Navbar: React.FC = React.memo(() => {
           {/* ── Right controls ──────────────────────────────────── */}
           <div className="flex items-center gap-3 shrink-0 relative z-[110]">
             <LanguageSwitcher inverted={inverted} />
-            <div className="hidden md:flex items-center">
-              {user ? (
+            <div className="hidden md:flex items-center gap-3">
+              <ContactTrigger
+                className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm ${
+                  inverted
+                    ? 'bg-bg text-text-primary hover:brightness-110'
+                    : 'bg-accent text-bg hover:brightness-110'
+                }`}
+              >
+                {t('nav.contact')}
+              </ContactTrigger>
+              {user && (
                 <Link
-                  to="/dashboard"
-                  className={`font-bold uppercase tracking-widest rounded-xl px-5 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2 text-sm ${
+                  to="/dashboard/profile"
+                  className={`w-11 h-11 flex-none rounded-xl border overflow-hidden bg-black transition-colors ${
                     inverted
-                      ? 'bg-bg text-text-primary hover:brightness-110'
-                      : 'bg-accent text-bg hover:brightness-110'
+                      ? 'border-bg/30 hover:border-bg/50'
+                      : 'border-border/30 hover:border-accent/30'
                   }`}
+                  aria-label={t('nav.profile')}
                 >
-                  <IconDashboard className="w-4 h-4" /> {t('nav.dashboard')}
-                </Link>
-              ) : (
-                <Link
-                  to="/register"
-                  className={`font-bold uppercase tracking-widest rounded-xl px-9 py-3.5 transition-[filter,transform] duration-200 active:scale-95 flex items-center justify-center gap-2.5 text-sm ${
-                    inverted
-                      ? 'bg-bg text-text-primary hover:brightness-110'
-                      : 'bg-accent text-bg hover:brightness-110'
-                  }`}
-                >
-                  {t('nav.start')}
+                  <Identicon
+                    value={user.username || '?'}
+                    size={44}
+                    className="w-full h-full"
+                  />
                 </Link>
               )}
             </div>
@@ -361,22 +365,30 @@ const Navbar: React.FC = React.memo(() => {
               {/* Auth buttons */}
               <div className="flex flex-col gap-3">
                 {user ? (
-                  <Link
-                    to="/dashboard"
-                    onClick={closeMenu}
-                    className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
-                  >
-                  <IconDashboard size={16} /> Dashboard
-                  </Link>
-                ) : (
                   <>
                     <Link
-                      to="/register"
+                      to="/dashboard/profile"
                       onClick={closeMenu}
-                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                      className="w-full flex items-center justify-center gap-3 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                     >
-                      <UserPlus className="w-4 h-4" /> {t('button.startTraining')}
+                      <Identicon value={user.username || '?'} size={20} className="w-5 h-5 rounded-lg bg-black" />
+                      {user.username}
                     </Link>
+                    <ContactTrigger
+                      className="w-full flex items-center justify-center gap-2.5 border border-accent/50 text-accent font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[background-color,color] duration-200 hover:bg-accent/10 active:scale-[0.98]"
+                      onOpen={closeMenu}
+                    >
+                      {t('nav.contact')}
+                    </ContactTrigger>
+                  </>
+                ) : (
+                  <>
+                    <ContactTrigger
+                      className="w-full flex items-center justify-center gap-2.5 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
+                      onOpen={closeMenu}
+                    >
+                      {t('nav.contact')}
+                    </ContactTrigger>
                     <Link
                       to="/login"
                       onClick={closeMenu}
