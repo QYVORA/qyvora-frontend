@@ -157,7 +157,7 @@ function Mission() {
   return (
     <ScrollReveal direction="up">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-bg-card/50 p-8 text-center sm:p-12 lg:p-16">
+        <div className="mx-auto max-w-5xl rounded-2xl border border-white/10 bg-bg-card/50 p-8 text-center sm:p-12 lg:p-16">
           <SectionHeader
             align="center"
             eyebrow={t('quiterootPage.mission.eyebrow')}

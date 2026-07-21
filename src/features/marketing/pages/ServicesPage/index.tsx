@@ -11,6 +11,7 @@ import basicPackageImg from '@/assets/sections/services/basic-package.webp';
 import standardPackageImg from '@/assets/sections/services/standard-package.webp';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { Carousel } from '@/shared/components/carousel';
+import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
 
 const ServicesPage: React.FC = () => {
   const { t } = useTranslation();
@@ -96,19 +97,21 @@ const ServicesPage: React.FC = () => {
 
       {/* ══ SERVICES CARDS ══ */}
       <section id="services" className="w-full px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-          <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
-              {t('servicesPage.packages.heading')} <span className="text-accent">{t('servicesPage.packages.headingHighlight')}</span>
-            </h2>
-            <p className="text-text-muted text-sm md:text-base max-w-sm">
-              {t('servicesPage.packages.description')}
-            </p>
-          </div>
-          <div className="md:w-[65%] lg:w-[62%]">
+        <div className="max-w-[1600px] mx-auto w-full">
+          <StickySidebarLayout
+            heading={
+              <>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                  {t('servicesPage.packages.heading')} <span className="text-accent">{t('servicesPage.packages.headingHighlight')}</span>
+                </h2>
+                <p className="text-text-muted text-sm md:text-base max-w-sm mt-4">
+                  {t('servicesPage.packages.description')}
+                </p>
+              </>
+            }
+          >
             <Carousel
               slides={servicesData}
-              autoPlayInterval={5000}
               renderCard={(service) => {
                 const isFeatured = service.featured;
                 return (
@@ -117,7 +120,7 @@ const ServicesPage: React.FC = () => {
                     tabIndex={0}
                     onClick={() => openServiceRequestModal(service.tier)}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal(service.tier); } }}
-                    className={`group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[340px] cursor-pointer ${
+                    className={`group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[360px] cursor-pointer ${
                       isFeatured ? 'shadow-[0_0_30px_-8px] shadow-accent/20' : ''
                     }`}
                   >
@@ -147,17 +150,8 @@ const ServicesPage: React.FC = () => {
                         <Building2 className="w-16 h-16 text-accent/30" />
                       </div>
                     )}
-                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[340px]">
-                      <div className="hidden md:block mb-3">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
-                        <div className="flex items-end justify-between gap-4">
-                          <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
-                          <span className="text-sm font-black text-accent px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 whitespace-nowrap">
-                            {service.price}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="md:hidden mb-3">
+                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
+                      <div className="mb-3">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{service.subtitle}</span>
                         <div className="flex items-end justify-between gap-4">
                           <h3 className="text-2xl font-black text-text-primary tracking-tight">{service.tier}</h3>
@@ -187,30 +181,31 @@ const ServicesPage: React.FC = () => {
                 );
               }}
             />
-          </div>
+          </StickySidebarLayout>
         </div>
       </section>
 
       {/* ══ CUSTOM INQUIRIES ══ */}
       <section className="w-full px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36 border-t border-border/20">
-        <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-          <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+        <div className="max-w-[1600px] mx-auto w-full">
+          <StickySidebarLayout
+            heading={
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
                 {t('servicesPage.custom.title')} <span className="text-accent">{t('servicesPage.custom.titleHighlight')}</span>
               </h2>
-          </div>
-          <div className="md:w-[65%] lg:w-[62%]">
+            }
+          >
             <div
               role="button"
               tabIndex={0}
               onClick={() => openServiceRequestModal('Custom Inquiry')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
-              className="group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[340px] rounded-2xl border border-border/30 bg-bg-card overflow-hidden cursor-pointer hover:border-accent/30 transition-all duration-300"
+              className="group relative flex flex-col md:flex-row min-h-[260px] md:min-h-[360px] rounded-2xl border border-border/30 bg-bg-card overflow-hidden cursor-pointer hover:border-accent/30 transition-all duration-300"
             >
               <div className="relative w-full md:w-[45%] h-48 md:h-auto overflow-hidden shrink-0 bg-accent/5 flex items-center justify-center">
                 <Building2 className="w-16 h-16 text-accent/30 group-hover:text-accent/50 transition-colors" />
               </div>
-              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[340px]">
+              <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                 <div className="mb-3">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block mb-1">{t('servicesPage.custom.subtitle')}</span>
                     <div className="flex items-end justify-between gap-4">
@@ -245,7 +240,7 @@ const ServicesPage: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </StickySidebarLayout>
         </div>
       </section>
 

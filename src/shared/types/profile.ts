@@ -77,11 +77,9 @@ export type ProfileSectionId =
   | 'identity'
   | 'stats'
   | 'activity'
-  | 'skills'
   | 'achievements'
   | 'labs'
   | 'courses'
-  | 'bootcamp'
   | 'trophy';
 
 export interface ProfileSection {
@@ -94,11 +92,9 @@ export const PROFILE_SECTIONS: ProfileSection[] = [
   { id: 'identity',     label: 'Identity',     labelKey: 'profile.nav.identity' },
   { id: 'stats',        label: 'Statistics',    labelKey: 'profile.nav.stats' },
   { id: 'activity',     label: 'Activity',      labelKey: 'profile.nav.activity' },
-  { id: 'skills',       label: 'Skills',        labelKey: 'profile.nav.skills' },
   { id: 'achievements', label: 'Achievements',  labelKey: 'profile.nav.achievements' },
   { id: 'labs',         label: 'Labs',          labelKey: 'profile.nav.labs' },
   { id: 'courses',      label: 'Courses',       labelKey: 'profile.nav.courses' },
-  { id: 'bootcamp',     label: 'Bootcamp',      labelKey: 'profile.nav.bootcamp' },
   { id: 'trophy',       label: 'Trophy Cabinet', labelKey: 'profile.nav.trophy' },
 ];
 

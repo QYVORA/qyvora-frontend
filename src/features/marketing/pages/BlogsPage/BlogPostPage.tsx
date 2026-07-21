@@ -26,9 +26,9 @@ const BlogPostPage: React.FC = () => {
     return (
       <div className="relative min-h-screen w-full bg-bg flex items-center justify-center pt-32">
         <div className="text-center">
-          <h1 className="text-4xl font-black uppercase tracking-tight mb-4">Blog Not Found</h1>
-          <Link to="/blogs" className="text-accent font-mono text-sm underline hover:no-underline">
-            ← Back to blogs
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-4">Blog Not Found</h1>
+          <Link to="/blogs" className="btn-primary mt-4 inline-flex items-center gap-2">
+            <IconArrowLeft size={14} /> Back to Blogs
           </Link>
         </div>
       </div>
@@ -93,7 +93,7 @@ const BlogPostPage: React.FC = () => {
               ))}
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05] mb-6 break-words">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.05] mb-6 break-words">
               {post.title}
             </h1>
 

@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
 import Identicon from '@/shared/components/Identicon';
 import ShareProfile from '@/shared/components/ShareProfile';
@@ -70,6 +71,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   twitter,
 }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
 
   const xpPercent = xpToNext && xpToNext > 0
     ? Math.min(Math.round(((xpCurrent || 0) / xpToNext) * 100), 100)
@@ -87,9 +89,9 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={prefersReduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45 }}
+      transition={{ duration: prefersReduced ? 0 : 0.45 }}
       className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}
     >
       {/* Accent stripe at top */}
@@ -174,9 +176,9 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
             </div>
             <div className="h-2 rounded-full bg-border/20 overflow-hidden">
               <motion.div
-                initial={{ width: 0 }}
+                initial={prefersReduced ? false : { width: 0 }}
                 animate={{ width: `${xpPercent}%` }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: prefersReduced ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="h-full rounded-full bg-accent"
               />
             </div>
@@ -186,13 +188,12 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         {/* Action buttons row */}
         <div className="flex flex-wrap items-center gap-2 mt-5">
           {actions.map((action, i) => {
-            const base = 'inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95';
             if (action.to) {
               return (
                 <Link
                   key={i}
                   to={action.to}
-                  className={`bg-bg border border-border hover:border-accent/50 text-text-muted ${base}`}
+                  className="btn-secondary flex items-center gap-2"
                 >
                   {action.icon}
                   {action.label}
@@ -203,7 +204,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
               <button
                 key={i}
                 onClick={action.onClick}
-                className={`bg-bg border border-border hover:border-accent/50 text-text-muted ${base}`}
+                className="btn-secondary flex items-center gap-2"
               >
                 {action.icon}
                 {action.label}
@@ -213,7 +214,7 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
           {showPublicView && publicViewPath && (
             <Link
               to={publicViewPath}
-              className={`bg-bg border border-border hover:border-accent/50 text-text-muted inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95`}
+              className="btn-secondary flex items-center gap-2"
             >
               {t('student.profile.publicView')}
             </Link>

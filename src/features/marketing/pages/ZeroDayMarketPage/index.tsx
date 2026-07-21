@@ -5,7 +5,6 @@ import { IconShield, IconMarketplace, IconLock } from '@/shared/components/icons
 import SEO from '@/shared/components/SEO';
 import { Carousel } from '@/shared/components/carousel';
 import ScrollReveal from '@/shared/components/ScrollReveal';
-import SimpleHeading from '@/shared/components/ui/SimpleHeading';
 import api from '@/core/services/api';
 import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { resolveImg } from '@/shared/utils/resolveImg';
@@ -87,7 +86,7 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="zd-features" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center">
+      <section id="zd-features" className="relative w-full flex items-center">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="space-y-6">
@@ -95,11 +94,9 @@ const ZeroDayMarketPage: React.FC = () => {
                 <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-2">
                   <Cloud className="h-3 w-3" /> Asset Categories
                 </span>
-                <SimpleHeading
-                  text="The Operator's Intelligence Supply Chain"
-                  align="left"
-                  className="mb-4"
-                />
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-4">
+                  The Operator's Intelligence Supply Chain
+                </h2>
               </ScrollReveal>
               <ScrollReveal direction="up" delay={0.1}>
                 <p className="text-xs sm:text-sm text-text-secondary font-mono leading-relaxed">
@@ -133,13 +130,15 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── PRODUCTS ── */}
-      <section id="zd-products" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden flex items-center border-t border-border/20">
+      <section id="zd-products" className="relative w-full flex items-center border-t border-border/20">
         <div className="w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           <ScrollReveal direction="up" className="mb-10 lg:mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-[10px] font-black uppercase tracking-[0.25em] text-accent mb-3">
               <IconLock className="h-3 w-3" /> Featured Assets
             </span>
-            <SimpleHeading text="Recently Published" align="left" className="mb-0" />
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+              Recently Published
+            </h2>
           </ScrollReveal>
 
           {loadingProducts ? (
@@ -192,7 +191,6 @@ const ZeroDayMarketPage: React.FC = () => {
               <div className="md:hidden">
                 <Carousel
                   slides={products.map((p, i) => ({ ...p, id: p.id || `prod-${i}` }))}
-                  autoPlayInterval={5000}
                   renderCard={(prod) => (
                     <div className="group overflow-hidden flex flex-col w-full border border-border/40 bg-bg-card rounded-2xl transition-all duration-300">
                       <div className="relative aspect-video overflow-hidden rounded-t-2xl shadow-sm">
@@ -238,8 +236,8 @@ const ZeroDayMarketPage: React.FC = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
-        <div className="relative w-full h-full bg-accent flex items-center overflow-hidden" data-nav-invert>
+      <section className="relative w-full">
+        <div className="relative w-full bg-accent flex items-center overflow-hidden" data-nav-invert>
         <GridBoxedBackground opacity={0.4} blur={0} mask="none" />
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36 text-center">
           <ScrollReveal direction="up">
@@ -247,11 +245,9 @@ const ZeroDayMarketPage: React.FC = () => {
               <IconLock className="h-3 w-3" /> Classified Access
             </div>
 
-            <SimpleHeading
-              text="Ready to Access the Intelligence Vault?"
-              align="center"
-              className="mb-4 !text-bg"
-            />
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-4">
+              Ready to Access the Intelligence Vault?
+            </h2>
 
             <p className="text-xs sm:text-sm text-bg/70 font-mono max-w-xl mx-auto mb-8">
               Create an account, complete the Hacker Protocol Bootcamp, and earn CP to unlock premium intelligence assets.

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import {
   FlaskConical,
   GraduationCap,
@@ -11,6 +12,8 @@ import {
   UserCheck,
 } from 'lucide-react';
 import type { ActivityEvent, ActivityType, ProfileData } from '@/shared/types/profile';
+import { deriveActivityEvents } from '@/shared/utils/profileDerivations';
+import ModuleHeader from './ModuleHeader';
 
 const ACTIVITY_CONFIG: Record<ActivityType, { icon: React.ReactNode; color: string; bg: string }> = {
   lab_completed:     { icon: <FlaskConical className="w-4 h-4" />,  color: 'text-red-400',    bg: 'bg-red-400/10' },
@@ -25,56 +28,6 @@ const ACTIVITY_CONFIG: Record<ActivityType, { icon: React.ReactNode; color: stri
 interface ActivityTimelineProps {
   profile: ProfileData;
   className?: string;
-}
-
-/**
- * Derives recent activity events from available profile data.
- * Since the backend doesn't have a dedicated activity feed endpoint,
- * we synthesize events from rooms completed, bootcamp status, etc.
- */
-function deriveActivityEvents(profile: ProfileData): ActivityEvent[] {
-  const events: ActivityEvent[] = [];
-
-  // Completed rooms → lab events
-  if (profile.completedRooms.length > 0) {
-    const recent = profile.completedRooms.slice(-5).reverse();
-    recent.forEach((room, i) => {
-      events.push({
-        id: `room-${room.roomId}`,
-        type: 'lab_completed',
-        title: room.title,
-        description: 'Lab completed',
-        timestamp: new Date(Date.now() - i * 86400000 * (i + 1)).toISOString(),
-      });
-    });
-  }
-
-  // Bootcamp completed
-  if (profile.bootcampCompleted) {
-    events.push({
-      id: 'bootcamp-done',
-      type: 'bootcamp_completed',
-      title: 'Hacker Protocol Bootcamp',
-      description: 'Graduated from HPB',
-      timestamp: new Date(Date.now() - 30 * 86400000).toISOString(),
-    });
-  }
-
-  // Courses completed
-  if (profile.coursesCompleted > 0) {
-    events.push({
-      id: 'courses-done',
-      type: 'course_completed',
-      title: `${profile.coursesCompleted} course${profile.coursesCompleted !== 1 ? 's' : ''} completed`,
-      description: 'Course milestone reached',
-      timestamp: new Date(Date.now() - 14 * 86400000).toISOString(),
-    });
-  }
-
-  // Sort by timestamp descending
-  events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-
-  return events.slice(0, 10);
 }
 
 function formatTimestamp(iso: string): string {
@@ -92,20 +45,18 @@ function formatTimestamp(iso: string): string {
 
 const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className = '' }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
 
   const events = useMemo(() => deriveActivityEvents(profile), [profile]);
 
   if (events.length === 0) {
     return (
       <div className={`rounded-2xl border border-border/30 bg-bg-card p-6 ${className}`}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-            <Clock className="w-4 h-4 text-accent" />
-          </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-            {t('profile.activity.title', 'Recent Activity')}
-          </h3>
-        </div>
+        <ModuleHeader
+          icon={<Clock className="w-4 h-4 text-accent" />}
+          iconClassName="bg-accent/10"
+          title={t('profile.activity.title', 'Recent Activity')}
+        />
         <p className="text-xs text-text-muted text-center py-4">
           {t('profile.activity.empty', 'No activity yet. Complete labs and courses to see your timeline.')}
         </p>
@@ -115,16 +66,11 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
 
   return (
     <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
-      <div className="px-5 py-4 border-b border-border/30">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-            <Clock className="w-4 h-4 text-accent" />
-          </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-            {t('profile.activity.title', 'Recent Activity')}
-          </h3>
-        </div>
-      </div>
+      <ModuleHeader
+        icon={<Clock className="w-4 h-4 text-accent" />}
+        iconClassName="bg-accent/10"
+        title={t('profile.activity.title', 'Recent Activity')}
+      />
 
       <div className="p-5">
         <div className="relative">
@@ -137,9 +83,9 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ profile, className 
               return (
                 <motion.div
                   key={event.id}
-                  initial={{ opacity: 0, x: -8 }}
+                  initial={prefersReduced ? false : { opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
                   className="relative flex items-start gap-3 py-3 pl-1"
                 >
                   {/* Icon dot */}

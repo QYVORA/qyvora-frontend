@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Radio, RefreshCw, ExternalLink, Calendar } from 'lucide-react';
 import { IconShield, IconWarning } from '@/shared/components/icons';
+import { ErrorState } from '@/shared/components/ui';
 import { Carousel } from '@/shared/components/carousel';
+import { StickySidebarLayout } from '@/shared/components/layout';
 import api from '@/core/services/api';
 import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
@@ -38,14 +40,14 @@ const NewsCard = ({ article }: { article: Article }) => {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block relative min-h-[320px] md:min-h-[400px] group"
+      className="block relative min-h-[260px] md:min-h-[360px] group"
     >
       <div
         className="absolute inset-0 bg-cover bg-center hidden dark:block"
         style={{ backgroundImage: `url(${article.imageUrl || ''})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-      <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[320px] md:min-h-[400px]">
+      <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
         {article.categories.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {article.categories.slice(0, 2).map((cat) => (
@@ -155,58 +157,57 @@ const NewsFeedPage = () => {
       </PublicHeroSection>
 
       {/* ══ NEWS FEED ══ */}
-      <section className="relative w-full bg-bg py-20 md:py-28">
+      <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
         <div className="max-w-[1600px] mx-auto w-full px-4 md:px-10 lg:px-12 xl:px-16">
           {error && (
-            <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
-              <IconWarning size={20} className="text-red-400 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-bold text-red-400">{t('news.feedError')}</p>
-                <p className="text-sm text-text-secondary mt-1">{error}</p>
-              </div>
-            </div>
+            <ErrorState
+              message={error}
+              title={t('news.feedError')}
+              icon={<IconWarning size={20} className="text-red-400 shrink-0 mt-0.5" />}
+              className="mb-6"
+            />
           )}
 
           {loading ? (
-            <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-              <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+            <StickySidebarLayout
+              heading={
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
                   {t('news.latestIntel')}
                 </h2>
-              </div>
-              <div className="md:w-[65%] lg:w-[62%]">
-                <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden animate-pulse min-h-[320px] md:min-h-[400px]">
-                  <div className="p-6 sm:p-8 space-y-4">
-                    <div className="h-4 bg-accent-dim/30 rounded w-1/4" />
-                    <div className="h-3 bg-accent-dim/20 rounded w-1/3" />
-                    <div className="h-8 bg-accent-dim/30 rounded w-3/4" />
-                    <div className="h-4 bg-accent-dim/20 rounded w-1/2" />
-                    <div className="h-4 bg-accent-dim/20 rounded w-5/6" />
-                    <div className="h-4 bg-accent-dim/20 rounded w-2/3" />
-                  </div>
+              }
+            >
+              <div className="rounded-2xl md:rounded-3xl border border-border/30 bg-accent-dim overflow-hidden animate-pulse min-h-[260px] md:min-h-[360px]">
+                <div className="p-6 sm:p-8 space-y-4">
+                  <div className="h-4 bg-accent-dim/30 rounded w-1/4" />
+                  <div className="h-3 bg-accent-dim/20 rounded w-1/3" />
+                  <div className="h-8 bg-accent-dim/30 rounded w-3/4" />
+                  <div className="h-4 bg-accent-dim/20 rounded w-1/2" />
+                  <div className="h-4 bg-accent-dim/20 rounded w-5/6" />
+                  <div className="h-4 bg-accent-dim/20 rounded w-2/3" />
                 </div>
               </div>
-            </div>
+            </StickySidebarLayout>
           ) : !hasArticles ? (
-            <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border py-24 text-center">
-              <IconShield size={56} className="mx-auto mb-4 text-text-muted opacity-30" />
-              <p className="text-lg text-text-muted font-bold">{t('news.empty')}</p>
+            <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border/20 py-24 text-center min-h-[220px] flex flex-col items-center justify-center">
+              <div className="mx-auto mb-3 opacity-40">
+                <IconShield size={40} className="text-text-muted" />
+              </div>
+              <p className="mb-4 text-sm text-text-muted">{t('news.empty')}</p>
               <p className="text-sm text-text-muted mt-1">{t('news.emptyDescription')}</p>
             </div>
           ) : (
-            <div className="w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-              <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+            <StickySidebarLayout
+              heading={
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
                   {t('news.latestIntel')}
                 </h2>
-              </div>
-              <div className="md:w-[65%] lg:w-[62%]">
-                <Carousel
-                  slides={articles}
-                  renderCard={(article) => <NewsCard article={article} />}
-                />
-              </div>
-            </div>
+              }
+            >
+              <Carousel
+                slides={articles}
+                renderCard={(article) => <NewsCard article={article} />}
+              />
+            </StickySidebarLayout>
           )}
         </div>
       </section>

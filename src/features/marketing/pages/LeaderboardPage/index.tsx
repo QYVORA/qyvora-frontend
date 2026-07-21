@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IconShield, IconArrowRight, IconLeaderboard } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal } from '@/shared/components';
+import { ErrorState, FilterTabs, Skeleton } from '@/shared/components/ui';
 import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
@@ -96,21 +97,11 @@ const LeaderboardPage = () => {
         <div className="h-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 flex flex-col pt-16 md:pt-24 pb-6 md:pb-10">
           {/* Period tabs */}
           <div className="flex items-center justify-between gap-4 mb-4 shrink-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              {PERIOD_LABELS.map((p) => (
-                <button
-                  key={p.key}
-                  onClick={() => handlePeriodChange(p.key)}
-                  className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 ${
-                    period === p.key
-                      ? 'bg-accent text-bg'
-                      : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
-                  }`}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
+            <FilterTabs
+              tabs={PERIOD_LABELS.map((p) => ({ key: p.key, label: p.label }))}
+              activeKey={period}
+              onChange={(key) => handlePeriodChange(key as Period)}
+            />
             <Link
               to="/leaderboard/all"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shrink-0 bg-accent text-bg hover:brightness-110"
@@ -121,23 +112,23 @@ const LeaderboardPage = () => {
 
           {error && (
             <div className="mb-4 shrink-0">
-              <div className="flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
-                <span className="text-sm text-red-400">{error}</span>
-              </div>
+              <ErrorState message={error} />
             </div>
           )}
 
           {loading ? (
             <div className="space-y-3 flex-1">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-16 rounded-2xl bg-bg-card border border-border animate-pulse" />
+                <Skeleton key={i} variant="card" className="h-16" />
               ))}
             </div>
           ) : entries.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
-              <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center w-full">
-                <IconLeaderboard className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
-                <p className="text-lg text-text-muted font-bold">{t('leaderboardPage.empty.title')}</p>
+              <div className="rounded-2xl border-2 border-dashed border-border/20 py-16 text-center w-full min-h-[220px] flex flex-col items-center justify-center">
+                <div className="mx-auto mb-3 opacity-40">
+                  <IconLeaderboard className="h-10 w-10 text-text-muted" />
+                </div>
+                <p className="mb-4 text-sm text-text-muted">{t('leaderboardPage.empty.title')}</p>
                 <p className="text-sm text-text-muted mt-1">{t('leaderboardPage.empty.description')}</p>
               </div>
             </div>

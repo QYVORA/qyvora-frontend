@@ -92,7 +92,9 @@ const CourseInfoPage: React.FC = () => {
         <div className="text-center">
           <h1 className="text-3xl font-black text-text-primary mb-2">Course not found.</h1>
           <p className="text-text-muted text-sm">The course you're looking for doesn't exist.</p>
-          <Link to="/courses" className="text-accent hover:underline mt-4 inline-block">← Back to Courses</Link>
+          <Link to="/courses" className="btn-primary mt-4 inline-flex items-center gap-2">
+            <IconArrowLeft size={14} /> Back to Courses
+          </Link>
         </div>
       </div>
     );
@@ -173,7 +175,7 @@ const CourseInfoPage: React.FC = () => {
               {isUnlocked ? (
                 <Link
                   to={`/dashboard/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start btn-primary inline-flex items-center gap-2.5"
                 >
                   Start Learning <IconArrowRight size={16} />
                 </Link>
@@ -182,7 +184,7 @@ const CourseInfoPage: React.FC = () => {
                   <button
                     onClick={handlePurchase}
                     disabled={purchasing || !canAfford}
-                    className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn-primary inline-flex items-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {purchasing ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -200,7 +202,7 @@ const CourseInfoPage: React.FC = () => {
               ) : (
                 <Link
                   to={`/register?redirect=/courses/${course.id}`}
-                  className="self-start inline-flex items-center gap-2.5 px-8 py-3.5 bg-accent text-bg rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="self-start btn-primary inline-flex items-center gap-2.5"
                 >
                   <IconLock size={16} /> Sign Up to Unlock
                 </Link>

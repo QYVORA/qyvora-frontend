@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { FlaskConical, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { CompletedRoom } from '@/shared/types/profile';
+import ModuleHeader from './ModuleHeader';
 
 interface LabsModuleProps {
   completedRooms: CompletedRoom[];
@@ -16,29 +18,25 @@ const LabsModule: React.FC<LabsModuleProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
 
   const displayRooms = completedRooms.slice(-8).reverse();
   const totalLabs = labsCompleted || completedRooms.length;
 
   return (
     <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
-      <div className="px-5 py-4 border-b border-border/30">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-red-400/10 flex items-center justify-center">
-              <FlaskConical className="w-4 h-4 text-red-400" />
-            </div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-              {t('profile.labs.title', 'Labs')}
-            </h3>
-          </div>
-          {totalLabs > 0 && (
+      <ModuleHeader
+        icon={<FlaskConical className="w-4 h-4 text-red-400" />}
+        iconClassName="bg-red-400/10"
+        title={t('profile.labs.title', 'Labs')}
+        trailing={
+          totalLabs > 0 ? (
             <span className="px-2 py-1 bg-red-400/10 text-red-400 text-[9px] font-black rounded-lg">
               {totalLabs}
             </span>
-          )}
-        </div>
-      </div>
+          ) : undefined
+        }
+      />
 
       <div className="p-5">
         {displayRooms.length === 0 ? (
@@ -50,9 +48,9 @@ const LabsModule: React.FC<LabsModuleProps> = ({
             {displayRooms.map((room, idx) => (
               <motion.div
                 key={room.roomId}
-                initial={{ opacity: 0, x: -8 }}
+                initial={prefersReduced ? false : { opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: idx * 0.04 }}
+                transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
                 className="flex items-center gap-3 py-2.5 px-3 rounded-xl bg-bg-elevated/50 hover:bg-bg-elevated transition-colors group"
               >
                 <div className="w-7 h-7 rounded-lg bg-red-400/10 flex items-center justify-center shrink-0">

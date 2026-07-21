@@ -189,9 +189,11 @@ const CoursesPage: React.FC = () => {
 
           {/* Course grid */}
           {filtered.length === 0 ? (
-            <div className="text-center py-20 space-y-4">
-              <IconSearch className="h-12 w-12 text-text-muted/20 mx-auto" />
-              <p className="text-text-muted">{t('coursesPage.empty')}</p>
+            <div className="rounded-2xl border-2 border-dashed border-border/20 py-20 text-center min-h-[220px] flex flex-col items-center justify-center space-y-4">
+              <div className="mx-auto mb-3 opacity-40">
+                <IconSearch className="h-10 w-10 text-text-muted" />
+              </div>
+              <p className="text-sm text-text-muted">{t('coursesPage.empty')}</p>
               <button
                 onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
                 className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline"

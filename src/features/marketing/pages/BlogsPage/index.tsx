@@ -9,6 +9,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import { Footer } from '@/shared/components/layout';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import StickySidebarLayout from '@/shared/components/layout/StickySidebarLayout';
 
 const BlogsPage: React.FC = () => {
   const { user } = useAuth();
@@ -44,26 +45,27 @@ const BlogsPage: React.FC = () => {
       {/* ── Blog Card Carousel ── */}
       <section className="relative w-full bg-bg py-20 md:py-28 lg:py-36">
         <div className="w-full px-4 md:px-10 lg:px-12 xl:px-16">
-          <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:items-start md:gap-12 lg:gap-16">
-            <div className="md:w-[35%] lg:w-[38%] text-center md:text-left mb-8 md:mb-0 md:sticky md:top-32 min-w-0">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
-                Latest <span className="text-accent">Posts</span>
-              </h2>
-            </div>
-            <div className="md:w-[65%] lg:w-[62%] min-w-0">
+          <div className="max-w-[1600px] mx-auto w-full">
+            <StickySidebarLayout
+              heading={
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none">
+                  Latest <span className="text-accent">Posts</span>
+                </h2>
+              }
+            >
               <Carousel
                 slides={BLOG_POSTS}
                 renderCard={(post) => (
                   <a
                     href={`/blogs/${post.slug}`}
-                    className="block relative min-h-[260px] md:min-h-[400px] group"
+                    className="block relative min-h-[260px] md:min-h-[360px] group"
                   >
                     <div
                       className="absolute inset-0 bg-cover bg-center hidden dark:block"
                       style={{ backgroundImage: `url(${post.image})` }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-bg-card via-bg-card to-transparent dark:from-bg-card dark:via-bg-card/60 dark:to-transparent" />
-                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[400px]">
+                    <div className="relative z-10 p-6 sm:p-8 md:p-6 lg:p-8 flex flex-col items-start text-left h-full min-h-[260px] md:min-h-[360px]">
                       <div className="flex flex-wrap gap-1.5 mb-3">
                         {post.tags.map((tag) => (
                           <span
@@ -110,7 +112,7 @@ const BlogsPage: React.FC = () => {
                   </a>
                 )}
               />
-            </div>
+            </StickySidebarLayout>
           </div>
         </div>
       </section>
