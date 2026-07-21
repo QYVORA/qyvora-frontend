@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { Globe, Github, Linkedin, Calendar, Flame } from 'lucide-react';
 import Identicon from '@/shared/components/Identicon';
 import ShareProfile from '@/shared/components/ShareProfile';
 
@@ -25,6 +26,24 @@ export interface ProfileIdentityBlockProps {
   showPublicView?: boolean;
   publicViewPath?: string;
   className?: string;
+  /** XP level (displayed as "Level N") */
+  xpLevel?: number;
+  /** Current XP within the level */
+  xpCurrent?: number;
+  /** XP needed for next level */
+  xpToNext?: number;
+  /** ISO date string of when the user joined */
+  joinDate?: string;
+  /** Country code or name */
+  country?: string;
+  /** Website URL */
+  website?: string;
+  /** GitHub username or URL */
+  github?: string;
+  /** LinkedIn URL */
+  linkedin?: string;
+  /** Twitter/X handle */
+  twitter?: string;
 }
 
 const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
@@ -40,8 +59,31 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
   showPublicView = false,
   publicViewPath,
   className = '',
+  xpLevel,
+  xpCurrent,
+  xpToNext,
+  joinDate,
+  country,
+  website,
+  github,
+  linkedin,
+  twitter,
 }) => {
   const { t } = useTranslation();
+
+  const xpPercent = xpToNext && xpToNext > 0
+    ? Math.min(Math.round(((xpCurrent || 0) / xpToNext) * 100), 100)
+    : 0;
+
+  const socialLinks = [
+    { url: website, icon: <Globe className="w-3.5 h-3.5" />, label: 'Website' },
+    { url: github, icon: <Github className="w-3.5 h-3.5" />, label: 'GitHub' },
+    { url: linkedin, icon: <Linkedin className="w-3.5 h-3.5" />, label: 'LinkedIn' },
+  ].filter((l) => l.url);
+
+  const formattedJoinDate = joinDate
+    ? new Date(joinDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    : null;
 
   return (
     <motion.div
@@ -86,15 +128,60 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
               </p>
             )}
 
-            {/* Meta line: org + email */}
-            {(organization || email) && (
-              <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
-                {organization && <span>{organization}</span>}
-                {email && <span className="hidden sm:inline">{email}</span>}
+            {/* Meta line: org + email + join date + country */}
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-text-muted">
+              {organization && <span>{organization}</span>}
+              {email && <span className="hidden sm:inline">{email}</span>}
+              {formattedJoinDate && (
+                <span className="inline-flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  Joined {formattedJoinDate}
+                </span>
+              )}
+              {country && <span>{country}</span>}
+            </div>
+
+            {/* Social links */}
+            {socialLinks.length > 0 && (
+              <div className="flex items-center gap-2 mt-2">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-7 h-7 rounded-lg bg-bg-elevated border border-border/30 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-colors"
+                    aria-label={link.label}
+                  >
+                    {link.icon}
+                  </a>
+                ))}
               </div>
             )}
           </div>
         </div>
+
+        {/* XP Progress Bar */}
+        {xpLevel != null && xpToNext != null && xpToNext > 0 && (
+          <div className="mt-5 p-3 rounded-xl bg-bg-elevated border border-border/20">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                Level {xpLevel}
+              </span>
+              <span className="text-[10px] font-mono text-text-muted/60">
+                {(xpCurrent || 0).toLocaleString()} / {xpToNext.toLocaleString()} XP
+              </span>
+            </div>
+            <div className="h-2 rounded-full bg-border/20 overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${xpPercent}%` }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="h-full rounded-full bg-accent"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Action buttons row */}
         <div className="flex flex-wrap items-center gap-2 mt-5">
