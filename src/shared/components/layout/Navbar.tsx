@@ -48,13 +48,17 @@ const Navbar: React.FC = React.memo(() => {
 
   const isAnansiPage = location.pathname === '/anansi';
 
-  // Hide navbar on scroll down, show on scroll up (desktop only, public pages)
+  // Hide navbar on scroll down, show on scroll up (desktop only, snap-scroll pages)
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     if (!mq.matches) return;
 
+    // Find the snap container (landing page uses overflow-y:auto on .snap-container)
+    const container = document.querySelector('.snap-container') as HTMLElement | null;
+    const scrollEl = container || document.documentElement;
+
     const handleScroll = () => {
-      const y = window.scrollY;
+      const y = container ? container.scrollTop : window.scrollY;
       if (y < 80) {
         setHidden(false);
       } else if (y > lastScrollY.current + 5) {
@@ -65,9 +69,9 @@ const Navbar: React.FC = React.memo(() => {
       lastScrollY.current = y;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    scrollEl.addEventListener('scroll', handleScroll, { passive: true });
+    return () => scrollEl.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
 
   // Close menu/dropdowns on route change
   useEffect(() => {
