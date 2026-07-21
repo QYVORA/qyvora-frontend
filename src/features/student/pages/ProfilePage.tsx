@@ -64,15 +64,11 @@ const Profile: React.FC = () => {
       />
 
       {/* Mobile section nav (sticky horizontal tabs) */}
-      <ProfileSectionNav visibleSections={visibleSections} className="lg:hidden" />
+      <ProfileSectionNav visibleSections={visibleSections} />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
-        <div className="flex gap-6">
-          {/* Desktop section nav (sidebar) */}
-          <ProfileSectionNav visibleSections={visibleSections} className="hidden lg:flex w-48 shrink-0" />
-
           {/* Main content */}
-          <div className="flex-1 min-w-0 space-y-6">
+          <div className="space-y-6">
             {/* ── Identity Section ── */}
             <section id="profile-section-identity">
               <ProfileIdentityBlock
@@ -187,7 +183,6 @@ const Profile: React.FC = () => {
               <TrophyCabinet profile={profile} />
             </section>
           </div>
-        </div>
       </div>
 
       {isOwnProfile && (

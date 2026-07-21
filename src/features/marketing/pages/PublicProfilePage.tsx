@@ -121,15 +121,11 @@ const PublicProfile: React.FC = () => {
       />
 
       {/* Mobile section nav */}
-      <ProfileSectionNav visibleSections={visibleSections} className="lg:hidden" />
+      <ProfileSectionNav visibleSections={visibleSections} />
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24">
-        <div className="flex gap-6">
-          {/* Desktop section nav */}
-          <ProfileSectionNav visibleSections={visibleSections} className="hidden lg:flex w-48 shrink-0" />
-
           {/* Main content */}
-          <div className="flex-1 min-w-0 space-y-6">
+          <div className="space-y-6">
             {/* ── Identity Section ── */}
             <section id="profile-section-identity">
               <ProfileIdentityBlock
@@ -238,7 +234,6 @@ const PublicProfile: React.FC = () => {
               <TrophyCabinet profile={profile} />
             </section>
           </div>
-        </div>
       </div>
 
       {/* ══ FOOTER ══ */}
