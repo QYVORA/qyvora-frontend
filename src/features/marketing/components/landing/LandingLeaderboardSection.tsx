@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
 import { IconArrowRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Identicon } from '@/shared/components';
 import { useTranslation } from 'react-i18next';
+import { FilterTabs } from '@/shared/components/ui';
 
 interface LeaderboardEntry {
   rank: number;
@@ -35,6 +36,8 @@ const CELL_SIZE_SM = 56;
 const CELL_SIZE_LG = 72;
 const GAP = 4;
 
+type Period = 'all' | 'week' | 'month';
+
 const LandingLeaderboardSection = () => {
   const { t } = useTranslation();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
@@ -42,6 +45,7 @@ const LandingLeaderboardSection = () => {
   const [loading, setLoading] = useState(true);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [period, setPeriod] = useState<Period>('all');
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -53,25 +57,25 @@ const LandingLeaderboardSection = () => {
 
   const cellSize = isDesktop ? CELL_SIZE_LG : CELL_SIZE_SM;
 
-  useEffect(() => {
-    let cancelled = false;
-    const fetchTop = async () => {
-      try {
-        const res = await api.get('/public/leaderboard?period=all&limit=40');
-        const data = res.data;
-        if (data.success && !cancelled) {
-          setEntries(data.entries || []);
-          setTotal(data.total || 0);
-        }
-      } catch {
-        // silently fail on landing
-      } finally {
-        if (!cancelled) setLoading(false);
+  const fetchLeaderboard = useCallback(async (p: Period) => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/public/leaderboard?period=${p}&limit=40`);
+      const data = res.data;
+      if (data.success) {
+        setEntries(data.entries || []);
+        setTotal(data.total || 0);
       }
-    };
-    fetchTop();
-    return () => { cancelled = true; };
+    } catch {
+      // silently fail on landing
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchLeaderboard(period);
+  }, [period, fetchLeaderboard]);
 
   const cells = useMemo(() => {
     const arr: { entry: LeaderboardEntry | null; idx: number }[] = [];
@@ -94,6 +98,17 @@ const LandingLeaderboardSection = () => {
             <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
               {t('landing.leaderboard.description')}
             </p>
+            <div className="mb-4">
+              <FilterTabs
+                tabs={[
+                  { key: 'all', label: t('leaderboardPage.periods.all') },
+                  { key: 'week', label: t('leaderboardPage.periods.week') },
+                  { key: 'month', label: t('leaderboardPage.periods.month') },
+                ]}
+                activeKey={period}
+                onChange={(key) => setPeriod(key as Period)}
+              />
+            </div>
           {total > 0 && (
             <Link
               to="/leaderboard"
