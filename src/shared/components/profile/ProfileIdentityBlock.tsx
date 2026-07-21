@@ -57,10 +57,8 @@ const ProfileIdentityBlock: React.FC<ProfileIdentityBlockProps> = ({
         {/* Top row: Avatar + Identity */}
         <div className="flex items-start gap-4 sm:gap-5">
           {/* Circular avatar */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-border/40 shrink-0 bg-bg-elevated">
-            <div className="w-full h-full bg-bg-elevated flex items-center justify-center">
-              <Identicon value={id} size={256} className="w-full h-full" />
-            </div>
+          <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 flex items-center justify-center">
+            <Identicon value={handle || id} size={256} className="w-full h-full" />
           </div>
 
           {/* Name + handle + badges */}

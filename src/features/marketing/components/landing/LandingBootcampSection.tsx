@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { IconArrowRight, IconShield } from '@/shared/components/icons';
+import { IconArrowRight } from '@/shared/components/icons';
 import { PHASES } from '@/features/marketing/pages/LearnPage/learnData';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
@@ -42,9 +42,7 @@ const LandingBootcampSection: React.FC = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-8 shrink-0"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-bg/20 bg-bg/10 text-[10px] font-black uppercase tracking-[0.25em] text-bg mb-3">
-              <IconShield size={12} /> {t('landing.bootcamp.badge')}
-            </span>
+
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
               {t('landing2.bootcamp.heading1')} <span className="text-bg">{t('landing2.bootcamp.heading2')}</span>
             </h2>

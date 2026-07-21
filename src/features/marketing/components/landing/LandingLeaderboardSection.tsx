@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Medal } from 'lucide-react';
-import { IconArrowRight, IconShield } from '@/shared/components/icons';
+import { IconArrowRight } from '@/shared/components/icons';
 import api from '@/core/services/api';
 import { Identicon } from '@/shared/components';
 import { useTranslation } from 'react-i18next';
@@ -87,9 +87,7 @@ const LandingLeaderboardSection = () => {
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden">
       <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-20 sm:gap-10 lg:gap-20 lg:items-center">
         <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
-             <IconShield size={12} className="text-accent" /> {t('landing.leaderboard.badge')}
-          </span>
+
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.leaderboard.heading')}
             </h2>
@@ -151,18 +149,16 @@ const LandingLeaderboardSection = () => {
                     onMouseEnter={() => setHoveredIdx(idx)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className={[
-                      'rounded-lg border-2 overflow-hidden cursor-pointer shrink-0 relative',
+                      'cursor-pointer shrink-0 relative',
                       'transition-all duration-300',
-                      'hover:z-20',
-                      isTopThree
-                        ? `${TOP_THREE_RING[entry!.rank - 1]} ${TOP_THREE_GLOW[entry!.rank - 1]}`
-                        : 'border-accent/15 hover:border-accent/40',
-                      isHovered && 'z-20',
+                      'rounded-lg border border-border/30 overflow-hidden',
+                      'hover:z-20 hover:border-accent/30',
+                      isHovered && 'z-20 border-accent/30',
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
-                    <div className="absolute inset-0 flex items-center justify-center bg-bg-card [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry!.userId} size={cellSize} />
+                    <div className="flex items-center justify-center [&_svg]:w-full [&_svg]:h-full">
+                      <Identicon value={entry!.hackerHandle || entry!.name} size={cellSize} />
                     </div>
 
                     <div className="absolute top-[2px] left-[2px] z-10">

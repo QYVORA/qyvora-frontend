@@ -25,7 +25,7 @@ export interface RoomTopBarProps {
   backHref?: string;
   onBack?: () => void;
   backLabel?: string;
-  userUid?: string;
+  username?: string;
   onOpenTerminal?: () => void;
   showProfile?: boolean;
   profileHref?: string;
@@ -51,7 +51,7 @@ export function RoomTopBar({
   backHref,
   onBack,
   backLabel,
-  userUid,
+  username,
   onOpenTerminal,
   showProfile = true,
   profileHref = '/dashboard/profile',
@@ -194,12 +194,12 @@ export function RoomTopBar({
             )}
 
             {/* Profile button */}
-            {showProfile && userUid && (
+            {showProfile && username && (
               <Link
                 to={profileHref}
-                className="w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none hover:border-accent/60 transition-colors"
+                className="w-9 h-9 md:w-11 md:h-11 flex-none transition-colors"
               >
-                <Identicon value={userUid} size={44} className="w-full h-full" />
+                <Identicon value={username} size={44} className="w-full h-full" />
               </Link>
             )}
           </div>

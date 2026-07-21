@@ -58,8 +58,8 @@ const LeaderboardRow = ({
 
       {/* Operator info */}
       <div className="flex items-center gap-3 min-w-0">
-        <div className={`w-9 h-9 md:w-10 md:h-10 ${avatarShape} shrink-0 overflow-hidden border border-accent/20 [&_svg]:w-full [&_svg]:h-full`}>
-          <Identicon value={entry.userId} size={40} />
+        <div className={`w-9 h-9 md:w-10 md:h-10 ${avatarShape} shrink-0 [&_svg]:w-full [&_svg]:h-full`}>
+          <Identicon value={entry.hackerHandle || entry.name} size={40} />
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2">

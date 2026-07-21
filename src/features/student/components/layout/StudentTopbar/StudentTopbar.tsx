@@ -205,10 +205,10 @@ const StudentTopbar = () => {
                 {/* Mobile profile trigger */}
                 <button
                   onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+                  className="md:hidden w-9 h-9 flex-none transition-colors"
                   aria-label="Open profile menu"
                 >
-                  <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
                 </button>
 
                 <MobileProfileSheet
@@ -287,10 +287,10 @@ const StudentTopbar = () => {
               {/* Mobile profile trigger */}
               <button
                 onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+                className="md:hidden w-9 h-9 flex-none transition-colors"
                 aria-label="Open profile menu"
               >
-                <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
               </button>
 
               <MobileProfileSheet
@@ -345,10 +345,10 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+              className="md:hidden w-9 h-9 flex-none transition-colors"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.uid || user?.username || '?'} size={36} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
             </button>
 
             <MobileProfileSheet
@@ -423,10 +423,10 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 md:w-11 md:h-11 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60"
+              className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none transition-colors"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.uid || user?.username || '?'} size={44} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={44} className="w-full h-full" />
             </button>
 
             <MobileProfileSheet
