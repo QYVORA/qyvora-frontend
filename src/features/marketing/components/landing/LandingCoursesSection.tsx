@@ -89,9 +89,7 @@ const LandingCoursesSection: React.FC = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-8 shrink-0"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary mb-3">
-              <GraduationCap className="h-3 w-3" /> {t('landing.courses.badge')}
-            </span>
+
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.courses.heading')}
             </h2>

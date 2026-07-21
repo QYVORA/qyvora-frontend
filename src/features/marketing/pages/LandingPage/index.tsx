@@ -99,7 +99,7 @@ const Landing: React.FC = () => {
   }, [activeSection, navigate, isMobile]);
 
   return (
-    <div className="relative min-h-screen w-full bg-bg overflow-hidden">
+    <div className="relative w-full bg-bg snap-container no-scrollbar">
       <SEO
         title={t('landing2.seo.title')}
         description={t('landing2.seo.description')}
@@ -119,42 +119,42 @@ const Landing: React.FC = () => {
       <PromotionalSystem />
 
       {/* 1. Hero — accent */}
-      <section id="hero" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="hero" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingHeroSection heroRef={heroRef} user={user} stats={stats} totalCp={totalCp} />
       </section>
 
       {/* 2. Platform — dark */}
-      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="pillars" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingPillarsSection />
       </section>
 
       {/* 3. Labs — accent */}
-      <section id="labs" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="labs" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingLabsSection />
       </section>
 
       {/* 4. Courses — dark */}
-      <section id="courses" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="courses" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingCoursesSection />
       </section>
 
       {/* 5. Bootcamp — accent */}
-      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="bootcamp" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingBootcampSection />
       </section>
 
       {/* 6. Leaderboard — dark */}
-      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingLeaderboardSection />
       </section>
 
       {/* 7. Services — dark */}
-      <section id="services" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="services" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingServicesSection />
       </section>
 
       {/* 8. CTA — accent */}
-      <section id="cta" className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+      <section id="cta" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingFinalCtaSection user={user} />
       </section>
 

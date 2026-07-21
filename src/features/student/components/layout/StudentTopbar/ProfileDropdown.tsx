@@ -99,12 +99,12 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <button
         ref={triggerRef}
         onClick={() => setOpen(prev => !prev)}
-        className="w-11 h-11 md:w-12 md:h-12 rounded-xl border-2 border-border overflow-hidden flex-none transition-colors hover:border-accent/60 focus:border-accent focus:outline-none"
+className="w-11 h-11 md:w-12 md:h-12 flex-none transition-colors focus:outline-none"
         aria-label="Profile menu"
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-full h-full" />
+        <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
       </button>
 
       <AnimatePresence>
@@ -120,8 +120,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
             {/* User header */}
             <div className="px-4 py-3 border-b border-border/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl border border-border overflow-hidden shrink-0">
-                  <Identicon value={user?.uid || user?.username || '?'} size={40} className="w-full h-full" />
+                <div className="w-10 h-10 shrink-0 flex items-center justify-center">
+                  <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs font-black uppercase tracking-widest text-text-primary truncate">

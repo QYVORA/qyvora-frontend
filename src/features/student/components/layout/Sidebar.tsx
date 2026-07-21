@@ -625,7 +625,7 @@ const Sidebar = () => {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-accent-dim/50 transition-colors"
               >
-                <Identicon value={user?.uid || user?.username || '?'} size={48} className="w-12 h-12 rounded-xl border-2 border-border shrink-0" />
+                <Identicon value={user?.username || '?'} size={48} className="w-12 h-12 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <p className="text-base font-bold text-text-primary truncate">{user?.username || t('student.sidebar.userFallback')}</p>
                   <p className="text-[10px] font-black uppercase tracking-widest text-accent">{t('student.sidebar.viewProfile')}</p>

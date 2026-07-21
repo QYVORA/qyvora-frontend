@@ -178,6 +178,21 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
   /* ─────────────────────────────────────────────────────────────────────────
+     SNAP SCROLLING (desktop only)
+  ───────────────────────────────────────────────────────────────────────── */
+  @media (min-width: 768px) {
+    .snap-container {
+      scroll-snap-type: y mandatory;
+      overflow-y: auto;
+      height: 100dvh;
+    }
+    .snap-section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
      SMOOTH OVERLAY SCROLLBAR (scroll-hover)
      Scrollbar overlays content instead of pushing it, appears smoothly on hover
   ───────────────────────────────────────────────────────────────────────── */

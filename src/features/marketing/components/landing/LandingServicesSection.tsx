@@ -58,9 +58,7 @@ const LandingServicesSection: React.FC = () => {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="mb-3 md:mb-5 shrink-0"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/30 bg-bg-elevated text-[10px] font-black uppercase tracking-[0.25em] text-text-primary">
-               <IconShield size={12} /> {t('landing.services.badge')}
-            </span>
+
           </motion.div>
 
           {/* Bento grid: 4 columns on desktop — same structure as pillars */}
