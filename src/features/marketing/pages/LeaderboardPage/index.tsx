@@ -9,6 +9,7 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 import { Footer } from '@/shared/components/layout';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import type { Period } from '@/shared/components/leaderboard';
 
 const INITIAL_SHOW = 5;
@@ -91,10 +92,7 @@ const LeaderboardPage = () => {
 
       {/* ══ LEADERBOARD SECTION ══ */}
       <section className="relative w-full bg-bg overflow-hidden py-20 md:py-28 lg:py-36">
-        {/* Background grid pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-          <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-        </div>
+        <GridBoxedBackground opacity={0.04} mask="right" />
         <div className="h-full max-w-[1600px] mx-auto px-4 md:px-10 lg:px-12 xl:px-16 flex flex-col pt-16 md:pt-24 pb-6 md:pb-10">
           {/* Period tabs */}
           <div className="flex items-center justify-between gap-4 mb-4 shrink-0">

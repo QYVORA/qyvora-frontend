@@ -113,7 +113,7 @@ const CourseInfoPage: React.FC = () => {
 
       {/* Hero */}
       <div className="border-b border-border/30">
-        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 lg:py-16">
+        <div className="mx-auto max-w-[1600px] w-full px-4 md:px-8 lg:px-12 py-12 lg:py-16">
           <Link to="/courses" className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-accent transition-colors mb-6 self-start">
             <IconArrowLeft size={12} /> All Courses
           </Link>
@@ -211,7 +211,7 @@ const CourseInfoPage: React.FC = () => {
       </div>
 
       {/* Content sections */}
-      <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-12 space-y-14">
+      <div className="mx-auto max-w-[1600px] w-full px-4 md:px-8 lg:px-12 py-12 space-y-14">
         {/* Learning Objectives */}
         <section>
           <h2 className="text-lg font-black text-text-primary tracking-tight mb-6 font-mono">

@@ -5,6 +5,7 @@ import { IconShield, IconSearch, IconX, IconArrowLeft, IconLeaderboard } from '@
 import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal } from '@/shared/components';
 import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
+import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import SEO from '@/shared/components/SEO';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
 import { Footer } from '@/shared/components/layout';
@@ -155,6 +156,11 @@ const LeaderboardAllPage = () => {
             </div>
           )}
         </div>
+      </section>
+
+      {/* ══ CTA ══ */}
+      <section className="relative w-full min-h-dvh md:h-dvh md:overflow-hidden">
+        <LandingFinalCtaSection user={user} />
       </section>
 
       {/* ══ FOOTER ══ */}
