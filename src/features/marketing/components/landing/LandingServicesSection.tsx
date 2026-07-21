@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { Sparkles } from 'lucide-react';
-import { IconShield, IconCheck, IconArrowRight } from '@/shared/components/icons';
+import { Sparkles, Building2, Send } from 'lucide-react';
+import { IconShield, IconCheck, IconArrowRight, IconLock } from '@/shared/components/icons';
 import { openServiceRequestModal } from '../ServiceRequestModal';
 import { useTranslation } from 'react-i18next';
 import { getDottedMapBg } from '@/shared/utils/dottedMap';
@@ -189,12 +189,54 @@ const LandingServicesSection: React.FC = () => {
             </motion.div>
           </div>
 
+          {/* Custom Inquiries Card */}
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 shrink-0"
+          >
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => openServiceRequestModal('Custom Inquiry')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openServiceRequestModal('Custom Inquiry'); } }}
+              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 sm:p-6 rounded-2xl border border-border/30 bg-bg-card cursor-pointer hover:border-accent/30 transition-all"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-accent/10">
+                <Building2 className="h-6 w-6 text-accent group-hover:text-accent/80 transition-colors" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">Custom Inquiry</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-accent/20 bg-accent/10 text-accent">
+                    Contact Us
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-black text-text-primary tracking-tight mb-1">
+                  Red Team, Compliance, or Custom Engagement
+                </h3>
+                <p className="text-[10px] sm:text-xs text-text-muted leading-relaxed">
+                  Bespoke security assessments tailored to your infrastructure, compliance requirements, and threat model.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-accent/60 shrink-0">
+                <Send className="w-3 h-3" />
+                <span className="font-mono text-[10px] uppercase tracking-widest font-bold">
+                  Send Inquiry
+                </span>
+                <IconArrowRight className="w-3 h-3" />
+              </div>
+            </div>
+          </motion.div>
+
           {/* Footer link */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-4 shrink-0"
           >
             <a

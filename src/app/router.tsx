@@ -17,7 +17,6 @@ import ErrorBoundary from '../shared/components/ErrorBoundary';
 
 
 const LandingLayout = lazy(() => import('../shared/layouts/LandingLayout'));
-const BlogsLayout = lazy(() => import('../shared/layouts/BlogsLayout'));
 const StudentLayout = lazy(() => import('../features/student/layouts/StudentLayout'));
 const AdminLayout = lazy(() => import('../features/admin/layouts/AdminLayout'));
 
@@ -29,12 +28,9 @@ const LandingPage       = lazy(() => import('../features/marketing/pages/Landing
 const ServicesPage      = lazy(() => import('../features/marketing/pages/ServicesPage'));
 const TermsPage         = lazy(() => import('../features/marketing/pages/TermsPage'));
 const AnansiPage        = lazy(() => import('../features/marketing/pages/AnansiPage'));
-const QuiteRootPage     = lazy(() => import('../features/marketing/pages/QuiteRootPage'));
-const TeamPage          = lazy(() => import('../features/marketing/pages/TeamPage'));
 const LearnPage         = lazy(() => import('../features/marketing/pages/LearnPage'));
 const LeaderboardPage   = lazy(() => import('../features/marketing/pages/LeaderboardPage'));
 const LeaderboardAllPage = lazy(() => import('../features/marketing/pages/LeaderboardAllPage'));
-const BlogsPage         = lazy(() => import('../features/marketing/pages/BlogsPage'));
 const BlogPostPage      = lazy(() => import('../features/marketing/pages/BlogsPage/BlogPostPage'));
 
 // Auth pages
@@ -44,15 +40,8 @@ const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPassw
 const VerifyEmailPage    = lazy(() => import('../features/auth/pages/VerifyEmailPage'));
 const ChangePasswordPage = lazy(() => import('../features/auth/pages/ChangePasswordPage'));
 
-// Events pages
-const EventsPage        = lazy(() => import('../features/marketing/pages/EventsPage'));
-
 // Courses pages
-const CoursesPage       = lazy(() => import('../features/marketing/pages/CoursesPage'));
 const CourseInfoPage    = lazy(() => import('../features/marketing/pages/CourseInfoPage'));
-
-// News pages
-const NewsFeedPage      = lazy(() => import('../features/news/pages/NewsFeedPage'));
 
 // Student pages
 const DashboardPage     = lazy(() => import('../features/student/pages/DashboardPage'));
@@ -87,9 +76,6 @@ const KillChainLab      = lazy(() => import('../features/student/pages/labs/Kill
 const IdeToolPage         = lazy(() => import('../features/student/pages/tools/IdeToolPage'));
 const TerminalToolPage    = lazy(() => import('../features/student/pages/tools/TerminalToolPage'));
 const NetworkVizToolPage  = lazy(() => import('../features/student/pages/tools/NetworkVizToolPage'));
-
-// Public pages
-const ZeroDayMarketPage = lazy(() => import('../features/marketing/pages/ZeroDayMarketPage'));
 
 // Admin pages
 const AdminDashboardPage= lazy(() => import('../features/admin/pages/AdminDashboardPage'));
@@ -148,22 +134,23 @@ export const AppRouter = () => {
           <Route path="/" element={<Wrap scope="Landing"><LandingPage /></Wrap>} />
           <Route path="/terms" element={<Wrap scope="Terms of Service"><TermsPage /></Wrap>} />
           <Route path="/anansi" element={<Wrap scope="Anansi CLI"><AnansiPage /></Wrap>} />
-          <Route path="/quiteroot" element={<Wrap scope="QuiteRoot"><QuiteRootPage /></Wrap>} />
-          <Route path="/team" element={<Wrap scope="Team"><TeamPage /></Wrap>} />
           <Route path="/services" element={<Wrap scope="Services"><ServicesPage /></Wrap>} />
           <Route path="/hpb" element={<Wrap scope="HPB"><LearnPage /></Wrap>} />
           <Route path="/learn" element={<Navigate to="/hpb" replace />} />
-          <Route path="/news" element={<Wrap scope="Cyber Feed"><NewsFeedPage /></Wrap>} />
           <Route path="/leaderboard" element={<Wrap scope="Leaderboard"><LeaderboardPage /></Wrap>} />
           <Route path="/leaderboard/all" element={<Wrap scope="Leaderboard"><LeaderboardAllPage /></Wrap>} />
-          <Route path="/events" element={<Wrap scope="Events"><EventsPage /></Wrap>} />
-          <Route path="/courses" element={<Wrap scope="Courses"><CoursesPage /></Wrap>} />
+          <Route path="/courses" element={<Navigate to="/#courses" replace />} />
           <Route path="/courses/:courseId" element={<Wrap scope="Course"><CourseInfoPage /></Wrap>} />
-          <Route path="/zero-day-market" element={<Wrap scope="Zero Day Market"><ZeroDayMarketPage /></Wrap>} />
-        </Route>
-
-        <Route element={<BlogsLayout />}>
-          <Route path="/blogs" element={<Wrap scope="Blogs"><BlogsPage /></Wrap>} />
+          
+          {/* Redirects for merged pages */}
+          <Route path="/team" element={<Navigate to="/#team" replace />} />
+          <Route path="/quiteroot" element={<Navigate to="/#quiteroot" replace />} />
+          <Route path="/events" element={<Navigate to="/#events" replace />} />
+          <Route path="/blogs" element={<Navigate to="/#blogs" replace />} />
+          <Route path="/news" element={<Navigate to="/#news" replace />} />
+          <Route path="/zero-day-market" element={<Navigate to="/#market" replace />} />
+          
+          {/* Blog post route (individual posts still accessible) */}
           <Route path="/blogs/:slug" element={<Wrap scope="Blog"><BlogPostPage /></Wrap>} />
         </Route>
 

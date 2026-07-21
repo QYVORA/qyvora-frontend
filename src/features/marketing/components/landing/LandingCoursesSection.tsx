@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
-import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight } from 'lucide-react';
-import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
+import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { IconArrowRight, IconTerminal, IconNetwork, IconCode, IconSearch } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -46,16 +46,24 @@ const LandingCoursesSection: React.FC = () => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState(1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const filteredCourses = useMemo(
-    () => activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES,
-    [activeCategory]
-  );
+  const filteredCourses = useMemo(() => {
+    let result = activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter((c) =>
+        t(`landing.courses.list.${c.tKey}.title`).toLowerCase().includes(q) ||
+        t(`landing.courses.list.${c.tKey}.desc`).toLowerCase().includes(q)
+      );
+    }
+    return result;
+  }, [activeCategory, searchQuery, t]);
 
   const totalPages = Math.max(1, Math.ceil(filteredCourses.length / PER_PAGE));
 
@@ -121,9 +129,20 @@ const LandingCoursesSection: React.FC = () => {
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.courses.heading')}
             </h2>
-            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg">
+            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-lg mb-4">
               {t('landing.courses.description')}
             </p>
+            <div className="relative max-w-md">
+              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t('coursesPage.searchPlaceholder')}
+                aria-label={t('coursesPage.searchPlaceholder')}
+                className="w-full bg-bg-elevated border border-border rounded-xl pl-9 pr-4 py-2.5 text-sm font-mono text-text-primary placeholder:text-text-muted/30 outline-none focus:border-accent/40 transition-colors caret-accent"
+              />
+            </div>
           </motion.div>
 
           {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}

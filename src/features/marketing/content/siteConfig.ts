@@ -92,7 +92,6 @@ export const SITE_CONFIG = {
         items: [
           { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
           { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
-          { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
         ],
       },
@@ -101,48 +100,22 @@ export const SITE_CONFIG = {
         label: 'Research',
         items: [
           { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-          { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Offensive research and engineering' },
-          { key: 'market', label: 'Market', path: '/zero-day-market', desc: 'Zero-day intelligence vault' },
-        ],
-      },
-      {
-        key: 'resources',
-        label: 'Resources',
-        items: [
-          { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
-          { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
           { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
         ],
       },
-      {
-        key: 'company',
-        label: 'Company',
-        items: [
-          { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
-      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch', modal: true },
-      { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
-    ],
-  },
     ],
     platform: [
-      { key: 'events', label: 'Events', path: '/events', desc: 'Live events' },
       { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-      { key: 'quiteroot', label: 'QuiteRoot', path: '/quiteroot', desc: 'Offensive research and engineering' },
-      { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
-      { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
-      { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
-      { key: 'market', label: 'Market', path: '/zero-day-market', desc: 'Zero-day intelligence vault' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
-      { key: 'contact', label: 'Contact', path: '/contact', desc: 'Get in touch', modal: true },
+      { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
     ],
     company: [
-      { key: 'team', label: 'Team', path: '/team', desc: 'Meet the team' },
+      { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Bootcamp phases' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
-      { key: 'news', label: 'News', path: '/news', desc: 'Cyber threat feed' },
-      { key: 'blogs', label: 'Blogs', path: '/blogs', desc: 'Read our blog' },
+      { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
       { key: 'contact', label: 'Contact', path: '/contact', desc: 'Open secure contact modal', modal: true }
     ],
   },
@@ -150,12 +123,9 @@ export const SITE_CONFIG = {
   footer: {
     links: [
       { label: 'Terms of Service', path: '/terms' },
-      { label: 'Cyber Feed', path: '/news' },
+      { label: 'Courses', path: '/courses' },
       { label: 'Anansi', path: '/anansi' },
-      { label: 'Learn', path: '/learn' },
-      { label: 'Market', path: '/zero-day-market' },
-      { label: 'Blogs', path: '/blogs' },
-      { label: 'Team', path: '/team' },
+      { label: 'Learn', path: '/hpb' },
       { label: 'Leaderboard', path: '/leaderboard' },
       { label: 'Services', path: '/services' }
     ],
