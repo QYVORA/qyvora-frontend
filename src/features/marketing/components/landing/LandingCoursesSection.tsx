@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
-import { GraduationCap, Globe, Wifi, Wrench } from 'lucide-react';
+import { GraduationCap, Globe, Wifi, Wrench, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IconArrowRight, IconTerminal, IconNetwork, IconCode } from '@/shared/components/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -48,6 +48,9 @@ const LandingCoursesSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [dir, setDir] = useState(1);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const filteredCourses = useMemo(
     () => activeCategory ? COURSES.filter((c) => c.category === activeCategory) : COURSES,
@@ -70,6 +73,31 @@ const LandingCoursesSection: React.FC = () => {
   useEffect(() => {
     setPage(0);
   }, [activeCategory]);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener('scroll', updateScrollState, { passive: true });
+    window.addEventListener('resize', updateScrollState);
+    return () => {
+      el.removeEventListener('scroll', updateScrollState);
+      window.removeEventListener('resize', updateScrollState);
+    };
+  }, [updateScrollState]);
+
+  const scrollTabs = (dir: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * 160, behavior: 'smooth' });
+  };
 
   const pageCourses = filteredCourses.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
@@ -98,50 +126,75 @@ const LandingCoursesSection: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Category tabs */}
+          {/* Category tabs — horizontal carousel on mobile, wrapping on desktop */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex gap-2 mb-2 md:mb-4 overflow-x-auto pb-1 scrollbar-hide flex-wrap shrink-0"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="relative mb-2 md:mb-4 shrink-0"
           >
-            <button
-              onClick={() => setActiveCategory(null)}
-              className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
-                activeCategory === null
-                  ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
-                  : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
-              }`}
+            {/* Left arrow — mobile only */}
+            {canScrollLeft && (
+              <button
+                onClick={() => scrollTabs(-1)}
+                className="md:hidden absolute -left-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary hover:border-accent/30 transition-all backdrop-blur-sm"
+              >
+                <ChevronLeft size={14} />
+              </button>
+            )}
+
+            <div
+              ref={scrollRef}
+              className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-x-visible"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {t('landing.courses.filterAll')}
-              <span className={`text-[9px] font-mono ${activeCategory === null ? 'text-text-muted' : 'text-text-muted/60'}`}>
-                {COURSES.length}
-              </span>
-            </button>
-            {CATEGORIES.map((cat) => {
-              const isActive = cat === activeCategory;
-              const CatIconBtn = CATEGORY_ICONS[cat];
-              const count = COURSES.filter((c) => c.category === cat).length;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
-                    isActive
-                      ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
-                      : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
-                  }`}
-                >
-                  {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" />}
-                  {t(`landing.courses.categories.${CATEGORY_KEYS[cat]}`)}
-                  <span className={`text-[9px] font-mono ${isActive ? 'text-text-muted' : 'text-text-muted/60'}`}>
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
+              <button
+                onClick={() => setActiveCategory(null)}
+                className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
+                  activeCategory === null
+                    ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
+                    : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
+                }`}
+              >
+                {t('landing.courses.filterAll')}
+                <span className={`text-[9px] font-mono ${activeCategory === null ? 'text-text-muted' : 'text-text-muted/60'}`}>
+                  {COURSES.length}
+                </span>
+              </button>
+              {CATEGORIES.map((cat) => {
+                const isActive = cat === activeCategory;
+                const CatIconBtn = CATEGORY_ICONS[cat];
+                const count = COURSES.filter((c) => c.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200 border ${
+                      isActive
+                        ? 'bg-bg-elevated text-text-primary border-border/50 shadow-lg'
+                        : 'bg-bg-card text-text-muted border-border/30 hover:bg-bg-elevated hover:text-text-primary'
+                    }`}
+                  >
+                    {CatIconBtn && <CatIconBtn className="w-3.5 h-3.5" />}
+                    {t(`landing.courses.categories.${CATEGORY_KEYS[cat]}`)}
+                    <span className={`text-[9px] font-mono ${isActive ? 'text-text-muted' : 'text-text-muted/60'}`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right arrow — mobile only */}
+            {canScrollRight && (
+              <button
+                onClick={() => scrollTabs(1)}
+                className="md:hidden absolute -right-1 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-card/90 border border-border/30 flex items-center justify-center text-text-muted hover:text-text-primary hover:border-accent/30 transition-all backdrop-blur-sm"
+              >
+                <ChevronRight size={14} />
+              </button>
+            )}
           </motion.div>
 
           {/* Carousel — fills remaining space */}

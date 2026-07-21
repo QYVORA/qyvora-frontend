@@ -31,8 +31,8 @@ const TOP_THREE_RING = [
 
 const TOP_THREE_RANK_COLOR = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
 
-const CELL_SIZE_SM = 48;
-const CELL_SIZE_LG = 60;
+const CELL_SIZE_SM = 56;
+const CELL_SIZE_LG = 72;
 const GAP = 4;
 
 const LandingLeaderboardSection = () => {
@@ -81,13 +81,13 @@ const LandingLeaderboardSection = () => {
     return arr;
   }, [entries]);
 
-  const medalSizes = isDesktop ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5';
+  const medalSizes = isDesktop ? 'w-4 h-4' : 'w-3 h-3';
 
   return (
     <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden">
-      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-20 sm:gap-10 lg:gap-20 lg:items-center">
-        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col lg:justify-center">
-
+      <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
+        {/* Header column — same height as grid on desktop */}
+        <div className="shrink-0 lg:w-[420px] xl:w-[480px] flex flex-col justify-center">
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.leaderboard.heading')}
             </h2>
@@ -104,6 +104,7 @@ const LandingLeaderboardSection = () => {
           )}
         </div>
 
+        {/* Grid column — fills same height as header */}
         <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden flex items-center justify-center">
           {loading ? (
             <div
@@ -161,11 +162,11 @@ const LandingLeaderboardSection = () => {
                       <Identicon value={entry!.hackerHandle || entry!.name} size={cellSize} />
                     </div>
 
-                    <div className="absolute top-[2px] left-[2px] z-10">
+                    <div className="absolute top-[3px] left-[3px] z-10">
                       {isTopThree ? (
                         <Medal className={`${medalSizes} ${TOP_THREE_RANK_COLOR[entry!.rank - 1]}`} />
                       ) : (
-                        <span className="text-[7px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
+                        <span className="text-[8px] font-mono font-bold text-text-muted/40 bg-bg/70 rounded px-0.5 leading-none">
                           {entry!.rank}
                         </span>
                       )}
@@ -174,15 +175,15 @@ const LandingLeaderboardSection = () => {
                     <div
                       className={[
                         'absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-bg via-bg/90 to-transparent',
-                        'flex flex-col items-center justify-end pb-1 pt-3',
+                        'flex flex-col items-center justify-end pb-1.5 pt-4',
                         'transition-opacity duration-300',
                         isHovered ? 'opacity-100' : 'opacity-0',
                       ].join(' ')}
                     >
-                       <span className="text-[8px] font-black text-text-primary truncate w-full text-center leading-none px-0.5">
+                       <span className="text-[9px] font-black text-text-primary truncate w-full text-center leading-none px-1">
                          {entry!.hackerHandle || entry!.name || t('landing.leaderboard.anonFallback')}
                        </span>
-                       <span className="text-[7px] font-mono font-bold text-accent leading-none">
+                       <span className="text-[8px] font-mono font-bold text-accent leading-none mt-0.5">
                          {Number(entry!.cp).toLocaleString()} {t('landing.leaderboard.cpSuffix')}
                        </span>
                     </div>

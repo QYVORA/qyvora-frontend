@@ -99,12 +99,12 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <button
         ref={triggerRef}
         onClick={() => setOpen(prev => !prev)}
-className="w-11 h-11 md:w-12 md:h-12 flex-none transition-colors focus:outline-none"
+className="w-11 h-11 md:w-12 md:h-12 flex-none rounded-xl border border-border/30 overflow-hidden transition-colors focus:outline-none"
         aria-label="Profile menu"
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <Identicon value={user?.username || '?'} size={48} className="w-full h-full" />
+        <Identicon value={user?.username || '?'} size={48} className="w-full h-full rounded-xl border border-border/30 overflow-hidden" />
       </button>
 
       <AnimatePresence>
@@ -120,7 +120,7 @@ className="w-11 h-11 md:w-12 md:h-12 flex-none transition-colors focus:outline-n
             {/* User header */}
             <div className="px-4 py-3 border-b border-border/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 shrink-0 flex items-center justify-center">
+                <div className="w-10 h-10 shrink-0 rounded-xl border border-border/30 overflow-hidden flex items-center justify-center">
                   <Identicon value={user?.username || '?'} size={40} className="w-full h-full" />
                 </div>
                 <div className="min-w-0">
