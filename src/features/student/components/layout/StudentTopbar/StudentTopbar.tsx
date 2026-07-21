@@ -205,7 +205,7 @@ const StudentTopbar = () => {
                 {/* Mobile profile trigger */}
                 <button
                   onClick={() => setProfileSheetOpen(true)}
-                  className="md:hidden w-9 h-9 flex-none transition-colors"
+                  className="md:hidden w-9 h-9 flex-none rounded-lg border border-border/30 overflow-hidden transition-colors"
                   aria-label="Open profile menu"
                 >
                   <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
@@ -287,7 +287,7 @@ const StudentTopbar = () => {
               {/* Mobile profile trigger */}
               <button
                 onClick={() => setProfileSheetOpen(true)}
-                className="md:hidden w-9 h-9 flex-none transition-colors"
+                className="md:hidden w-9 h-9 flex-none rounded-lg border border-border/30 overflow-hidden transition-colors"
                 aria-label="Open profile menu"
               >
                 <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
@@ -345,7 +345,7 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 flex-none transition-colors"
+              className="md:hidden w-9 h-9 flex-none rounded-lg border border-border/30 overflow-hidden transition-colors"
               aria-label="Open profile menu"
             >
               <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
@@ -423,7 +423,7 @@ const StudentTopbar = () => {
             {/* Mobile profile trigger */}
             <button
               onClick={() => setProfileSheetOpen(true)}
-              className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none transition-colors"
+              className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none rounded-lg border border-border/30 overflow-hidden transition-colors"
               aria-label="Open profile menu"
             >
               <Identicon value={user?.username || '?'} size={44} className="w-full h-full" />
