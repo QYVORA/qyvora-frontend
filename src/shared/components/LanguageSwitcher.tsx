@@ -60,7 +60,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all text-[10px] font-black uppercase tracking-widest ${
+        className={`p-2 rounded-xl border transition-all ${
           inverted
             ? 'border-bg/30 text-bg hover:bg-bg/10'
             : 'border-border text-text-muted hover:text-accent hover:border-accent/40'
@@ -68,7 +68,6 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
         aria-label="Change language"
       >
         <Globe size={16} />
-        <span className="hidden sm:inline">{currentLang.native}</span>
       </button>
 
       {open && (
