@@ -40,11 +40,34 @@ const Navbar: React.FC = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen]             = useState(false);
   const [openDropdown, setOpenDropdown]         = useState<string | null>(null);
   const [openMobileGroup, setOpenMobileGroup]   = useState<string | null>(null);
+  const [hidden, setHidden]                     = useState(false);
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY                              = useRef(0);
   const inverted                                 = useNavInvert();
 
   const isAnansiPage = location.pathname === '/anansi';
+
+  // Hide navbar on scroll down, show on scroll up (desktop only, public pages)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    if (!mq.matches) return;
+
+    const handleScroll = () => {
+      const y = window.scrollY;
+      if (y < 80) {
+        setHidden(false);
+      } else if (y > lastScrollY.current + 5) {
+        setHidden(true);
+      } else if (y < lastScrollY.current - 5) {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Close menu/dropdowns on route change
   useEffect(() => {
@@ -87,6 +110,8 @@ const Navbar: React.FC = React.memo(() => {
         className={[
           'fixed top-0 left-0 w-full z-[100] overflow-visible',
           'h-[80px] flex items-center',
+          'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          hidden ? '-translate-y-full' : 'translate-y-0',
           isMenuOpen ? 'bg-bg/95 backdrop-blur-xl' : 'bg-transparent',
         ].join(' ')}
       >
