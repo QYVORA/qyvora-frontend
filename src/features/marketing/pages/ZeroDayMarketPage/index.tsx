@@ -11,6 +11,7 @@ import productFallbackImg from '@/assets/sections/stats/cp-earned-bg.webp';
 import { resolveImg } from '@/shared/utils/resolveImg';
 import { GridBoxedBackground } from '@/shared/components/backgrounds';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
+import { Footer } from '@/shared/components/layout';
 
 interface ProductItem {
   id: string;
@@ -267,6 +268,11 @@ const ZeroDayMarketPage: React.FC = () => {
           </ScrollReveal>
         </div>
         </div>
+      </section>
+
+      {/* ══ FOOTER ══ */}
+      <section className="bg-transparent overflow-hidden">
+        <Footer />
       </section>
     </div>
   );

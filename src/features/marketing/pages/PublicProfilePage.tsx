@@ -7,6 +7,7 @@ import api from '../../../core/services/api';
 import PageLoader from '../../../shared/components/PageLoader';
 import SEO from '../../../shared/components/SEO';
 import { Navbar } from '../../../shared/components/layout';
+import { Footer } from '../../../shared/components/layout';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import ProfileStatCard from '../../../shared/components/profile/ProfileStatCard';
 import ProfileSectionNav from '../../../shared/components/profile/ProfileSectionNav';
@@ -136,7 +137,7 @@ const PublicProfile: React.FC = () => {
       {/* Mobile section nav */}
       <ProfileSectionNav visibleSections={visibleSections} className="lg:hidden" />
 
-      <div className="px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24">
         <div className="flex gap-6">
           {/* Desktop section nav */}
           <ProfileSectionNav visibleSections={visibleSections} className="hidden lg:flex w-48 shrink-0" />
@@ -277,6 +278,11 @@ const PublicProfile: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* ══ FOOTER ══ */}
+      <section className="bg-transparent overflow-hidden">
+        <Footer />
+      </section>
     </div>
   );
 };

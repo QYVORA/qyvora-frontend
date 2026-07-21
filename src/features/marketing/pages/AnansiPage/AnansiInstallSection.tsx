@@ -39,7 +39,7 @@ const AnansiInstallSection: React.FC = () => {
   const [selected, setSelected] = useState<AnansiRelease>(RELEASES[0]);
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+    <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

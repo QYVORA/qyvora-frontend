@@ -11,7 +11,7 @@ import { useAuth } from '@/core/contexts/AuthContext';
 import { getActiveEvents, formatEventTime } from '@/features/marketing/content/eventsData';
 import { setPendingEventJoin } from '@/shared/utils/eventJoin';
 import PublicHeroSection from '@/shared/components/PublicHeroSection';
-import { AdinkraBackground } from '@/shared/components/backgrounds';
+import { GridBoxedBackground } from '@/shared/components/backgrounds';
 
 const EventsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -55,7 +55,7 @@ const EventsPage: React.FC = () => {
 
       {/* ══ EVENTS LIST ══ */}
       <section className="relative w-full overflow-hidden">
-        <AdinkraBackground opacity={0.08} includeGradients={false} />
+        <GridBoxedBackground opacity={0.06} mask="right" />
         <div className="relative z-10 mx-auto max-w-[1600px] px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           {events.length === 0 ? (
             <div className="text-center py-20">

@@ -156,7 +156,7 @@ const NewsFeedPage = () => {
 
       {/* ══ NEWS FEED ══ */}
       <section className="relative w-full bg-bg py-20 md:py-28">
-        <div className="max-w-[1440px] mx-auto w-full px-4 md:px-10 lg:px-12 xl:px-16">
+        <div className="max-w-[1600px] mx-auto w-full px-4 md:px-10 lg:px-12 xl:px-16">
           {error && (
             <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
               <IconWarning size={20} className="text-red-400 shrink-0 mt-0.5" />
