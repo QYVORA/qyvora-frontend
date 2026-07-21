@@ -43,7 +43,6 @@ const Navbar: React.FC = React.memo(() => {
   const [hidden, setHidden]                     = useState(false);
   const location                                 = useLocation();
   const hoverTimeoutRef                          = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastScrollY                              = useRef(0);
   const inverted                                 = useNavInvert();
 
   const isAnansiPage = location.pathname === '/anansi';
@@ -53,24 +52,39 @@ const Navbar: React.FC = React.memo(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     if (!mq.matches) return;
 
-    // Find the snap container (landing page uses overflow-y:auto on .snap-container)
-    const container = document.querySelector('.snap-container') as HTMLElement | null;
-    const scrollEl = container || document.documentElement;
+    let scrollEl: Element | null = null;
+    let lastY = 0;
 
     const handleScroll = () => {
-      const y = container ? container.scrollTop : window.scrollY;
+      const y = scrollEl ? (scrollEl as HTMLElement).scrollTop : window.scrollY;
       if (y < 80) {
         setHidden(false);
-      } else if (y > lastScrollY.current + 5) {
+      } else if (y > lastY + 5) {
         setHidden(true);
-      } else if (y < lastScrollY.current - 5) {
+      } else if (y < lastY - 5) {
         setHidden(false);
       }
-      lastScrollY.current = y;
+      lastY = y;
     };
 
-    scrollEl.addEventListener('scroll', handleScroll, { passive: true });
-    return () => scrollEl.removeEventListener('scroll', handleScroll);
+    // Wait one frame for Outlet to render the snap container
+    const raf = requestAnimationFrame(() => {
+      scrollEl = document.querySelector('.snap-container');
+      if (scrollEl) {
+        scrollEl.addEventListener('scroll', handleScroll, { passive: true });
+      } else {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      }
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (scrollEl) {
+        scrollEl.removeEventListener('scroll', handleScroll);
+      } else {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
   }, [location.pathname]);
 
   // Close menu/dropdowns on route change
