@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Award, ChevronDown, ChevronUp } from 'lucide-react';
-import AchievementCard, { type Achievement, RARITY_STYLES, TYPE_ICONS, TYPE_COLORS } from './AchievementCard';
+import { type Achievement, RARITY_STYLES, TYPE_ICONS, TYPE_COLORS } from './AchievementCard';
 import BootcampBadge from '@/shared/components/BootcampBadge';
+import ModuleHeader from './ModuleHeader';
 
 interface CompletedRoom {
   roomId: number;
@@ -29,6 +31,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   i18nPrefix,
 }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
   const prefix = i18nPrefix || 'student.profile';
   const [expanded, setExpanded] = useState(false);
 
@@ -90,14 +93,11 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   if (achievements.length === 0) {
     return (
       <div className="rounded-2xl border border-border/30 bg-bg-card p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-            <Award className="w-4 h-4 text-accent" />
-          </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-            {t('profile.achievements.title', 'Achievements')}
-          </h3>
-        </div>
+        <ModuleHeader
+          icon={<Award className="w-4 h-4 text-accent" />}
+          iconClassName="bg-accent/10"
+          title={t('profile.achievements.title', 'Achievements')}
+        />
         <p className="text-xs text-text-muted text-center py-4">
           {t('profile.achievements.empty', 'No achievements yet. Start learning to earn your first!')}
         </p>
@@ -110,9 +110,9 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {/* Bootcamp Badge (if completed) */}
       {bootcampCompleted && (
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={prefersReduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
+          transition={{ duration: prefersReduced ? 0 : 0.35 }}
           className="rounded-2xl border border-border/30 bg-bg-card p-5 flex items-center gap-4"
         >
           <BootcampBadge completed className="w-16 h-16" />
@@ -130,19 +130,16 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       {/* Pinned achievements shelf */}
       {pinned.length > 0 && (
         <div className="rounded-2xl border border-border/30 bg-bg-card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Award className="w-4 h-4 text-accent" />
-              </div>
-              <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-                {t('profile.achievements.pinned', 'Pinned')}
-              </h3>
-            </div>
-            <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
-              {pinned.length}
-            </span>
-          </div>
+          <ModuleHeader
+            icon={<Award className="w-4 h-4 text-accent" />}
+            iconClassName="bg-accent/10"
+            title={t('profile.achievements.pinned', 'Pinned')}
+            trailing={
+              <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
+                {pinned.length}
+              </span>
+            }
+          />
           <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1">
             {pinned.map((achievement, idx) => {
               const rarity = achievement.rarity || 'common';
@@ -153,9 +150,9 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
               return (
                 <motion.div
                   key={achievement.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.05 }}
                   className={`
                     relative flex flex-col items-center text-center p-4 rounded-xl border
                     min-w-[140px] shrink-0 transition-all duration-300 hover:scale-[1.02] cursor-default
@@ -199,21 +196,16 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
       {/* Full achievement grid */}
       <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-        <div className="px-5 py-4 border-b border-border/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Award className="w-4 h-4 text-accent" />
-              </div>
-              <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-                {t('profile.achievements.title', 'Achievements')}
-              </h3>
-            </div>
+        <ModuleHeader
+          icon={<Award className="w-4 h-4 text-accent" />}
+          iconClassName="bg-accent/10"
+          title={t('profile.achievements.title', 'Achievements')}
+          trailing={
             <span className="px-2 py-1 bg-accent/10 text-accent text-[9px] font-black rounded-lg">
               {achievements.length}
             </span>
-          </div>
-        </div>
+          }
+        />
 
         <div className="p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           <AnimatePresence mode="popLayout">
@@ -227,10 +219,10 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
                 <motion.div
                   key={achievement.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={prefersReduced ? false : { opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3, delay: idx * 0.03 }}
+                  exit={prefersReduced ? undefined : { opacity: 0, scale: 0.9 }}
+                  transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.03 }}
                   className={`
                     relative group flex flex-col items-center text-center p-4 rounded-xl border
                     transition-all duration-300 hover:scale-[1.02] cursor-default

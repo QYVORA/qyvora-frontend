@@ -81,7 +81,7 @@ const ShareProfile = ({ handle }: { handle: string }) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-bg border border-border hover:border-accent/50 rounded-xl text-xs font-black uppercase tracking-widest text-text-muted transition-all active:scale-95"
+        className="flex items-center gap-2 px-4 py-2 bg-bg-elevated border border-white/5 hover:bg-bg-card rounded-xl text-[10px] font-black uppercase tracking-[0.08em] text-text-muted transition-all active:scale-95"
         aria-label="Share profile"
       >
         <Share2 className="w-3.5 h-3.5" />

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IconShield, IconSearch, IconX, IconArrowLeft, IconLeaderboard } from '@/shared/components/icons';
 import { useAuth } from '@/core/contexts/AuthContext';
 import { ScrollReveal } from '@/shared/components';
+import { ErrorState, FilterTabs, Input, Skeleton } from '@/shared/components/ui';
 import { LeaderboardRow, useLeaderboard, PERIODS } from '@/shared/components/leaderboard';
 import LandingFinalCtaSection from '@/features/marketing/components/landing/LandingFinalCtaSection';
 import SEO from '@/shared/components/SEO';
@@ -72,31 +73,22 @@ const LeaderboardAllPage = () => {
         <div className="mx-auto max-w-[1600px] px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           {/* Period tabs */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-2 flex-wrap">
-              {PERIODS.map((p) => (
-                <button
-                  key={p.key}
-                  onClick={() => { setPeriod(p.key); setSearch(''); }}
-                  className={`px-4 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all duration-300 ${
-                    period === p.key
-                      ? 'bg-accent text-bg'
-                      : 'bg-bg-card border border-border text-text-muted hover:border-accent/30 hover:text-accent'
-                  }`}
-                >
-                  {t(`leaderboardAll.periods.${p.key}`)}
-                </button>
-              ))}
-            </div>
+            <FilterTabs
+              tabs={PERIODS.map((p) => ({ key: p.key, label: t(`leaderboardAll.periods.${p.key}`) }))}
+              activeKey={period}
+              onChange={(key) => { setPeriod(key as Period); setSearch(''); }}
+              size="sm"
+            />
 
             {/* Search */}
             <div className="relative max-w-md w-full md:w-auto">
-              <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted/60" />
-              <input
+              <Input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('leaderboardAll.searchPlaceholder')}
-                className="w-full bg-bg-card border border-border rounded-xl py-2.5 pl-10 pr-9 text-sm text-text-primary placeholder:text-text-muted/40 focus:border-accent outline-none transition-all"
+                icon={<IconSearch className="w-4 h-4" />}
+                className="pr-9"
               />
               {search && (
                 <button
@@ -110,21 +102,21 @@ const LeaderboardAllPage = () => {
           </div>
 
           {error && (
-            <div className="mb-4 p-4 rounded-2xl border border-red-400/30 bg-red-400/5">
-              <span className="text-sm text-red-400">{error}</span>
-            </div>
+            <ErrorState message={error} className="mb-4" />
           )}
 
           {loading ? (
             <div className="space-y-3">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="h-16 rounded-2xl bg-bg-card border border-border/30 animate-pulse" />
+                <Skeleton key={i} variant="card" className="h-16" />
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-border py-16 text-center w-full">
-              <IconLeaderboard className="mx-auto mb-4 h-14 w-14 text-text-muted opacity-30" />
-              <p className="text-lg text-text-muted font-bold">
+            <div className="rounded-2xl border-2 border-dashed border-border/20 py-16 text-center w-full min-h-[220px] flex flex-col items-center justify-center">
+              <div className="mx-auto mb-3 opacity-40">
+                <IconLeaderboard className="h-10 w-10 text-text-muted" />
+              </div>
+              <p className="mb-4 text-sm text-text-muted">
                 {search ? t('leaderboardAll.empty.search') : t('leaderboardAll.empty.default')}
               </p>
             </div>

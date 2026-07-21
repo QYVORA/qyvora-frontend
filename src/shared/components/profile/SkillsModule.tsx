@@ -1,12 +1,14 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { Cpu } from 'lucide-react';
 import {
   SKILL_DEFINITIONS,
   computeAllSkills,
   extractBootcampCompletedIds,
 } from '@/features/student/utils/skillRegistry';
+import ModuleHeader from './ModuleHeader';
 
 interface OverviewModule {
   moduleId?: number;
@@ -21,6 +23,7 @@ interface SkillsModuleProps {
 
 const SkillsModule: React.FC<SkillsModuleProps> = ({ modules, className = '' }) => {
   const { t } = useTranslation();
+  const prefersReduced = useReducedMotion();
 
   const skills = useMemo(() => {
     const bootcampCompleted = extractBootcampCompletedIds(modules);
@@ -44,30 +47,25 @@ const SkillsModule: React.FC<SkillsModuleProps> = ({ modules, className = '' }) 
 
   return (
     <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${className}`}>
-      <div className="px-5 py-4 border-b border-border/30">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-              <Cpu className="w-4 h-4 text-accent" />
-            </div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-text-muted">
-              {t('profile.skills.title', 'Skills')}
-            </h3>
-          </div>
+      <ModuleHeader
+        icon={<Cpu className="w-4 h-4 text-accent" />}
+        iconClassName="bg-accent/10"
+        title={t('profile.skills.title', 'Skills')}
+        trailing={
           <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
             {t('profile.skills.overall', 'Overall')}{' '}
             <span className="text-accent">{overallAverage}%</span>
           </span>
-        </div>
-      </div>
+        }
+      />
 
       <div className="p-5 space-y-4">
         {skills.map((skill, idx) => (
           <motion.div
             key={skill.key}
-            initial={{ opacity: 0, x: -8 }}
+            initial={prefersReduced ? false : { opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: idx * 0.04 }}
+            transition={{ duration: prefersReduced ? 0 : 0.3, delay: prefersReduced ? 0 : idx * 0.04 }}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
@@ -85,9 +83,9 @@ const SkillsModule: React.FC<SkillsModuleProps> = ({ modules, className = '' }) 
             </div>
             <div className="h-2 rounded-full bg-border/20 overflow-hidden">
               <motion.div
-                initial={{ width: 0 }}
+                initial={prefersReduced ? false : { width: 0 }}
                 animate={{ width: `${skill.percentage}%` }}
-                transition={{ duration: 0.6, delay: idx * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: prefersReduced ? 0 : 0.6, delay: prefersReduced ? 0 : idx * 0.05, ease: [0.22, 1, 0.36, 1] }}
                 className="h-full rounded-full"
                 style={{ backgroundColor: skill.color }}
               />

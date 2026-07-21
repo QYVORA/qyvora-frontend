@@ -58,8 +58,8 @@ const EventsPage: React.FC = () => {
         <GridBoxedBackground opacity={0.06} mask="right" />
         <div className="relative z-10 mx-auto max-w-[1600px] px-4 md:px-10 lg:px-12 xl:px-16 py-20 md:py-28 lg:py-36">
           {events.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-text-muted">{t('eventsPage.empty')}</p>
+            <div className="rounded-2xl border-2 border-dashed border-border/20 py-20 text-center min-h-[220px] flex flex-col items-center justify-center">
+              <p className="text-sm text-text-muted">{t('eventsPage.empty')}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-16 md:gap-24">

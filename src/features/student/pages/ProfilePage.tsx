@@ -8,12 +8,11 @@ import EditModal from '../components/profile/EditModal';
 import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
-import ProfileStatCard from '../../../shared/components/profile/ProfileStatCard';
+import ProfileStatCard from '../../../shared/components/ui/CardStat';
 import ProfileSectionNav from '../../../shared/components/profile/ProfileSectionNav';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
-import SkillsModule from '../../../shared/components/profile/SkillsModule';
 import LabsModule from '../../../shared/components/profile/LabsModule';
 import CoursesModule from '../../../shared/components/profile/CoursesModule';
 import TrophyCabinet from '../../../shared/components/profile/TrophyCabinet';
@@ -34,18 +33,6 @@ const Profile: React.FC = () => {
     setRawProfile,
   } = useProfile({ paramUsername, authUser });
 
-  const bootcampModules = useMemo(() => {
-    if (!rawProfile) return [];
-    // Approximate bootcamp modules from profile data
-    return rawProfile.bootcampStatus === 'completed'
-      ? [{ moduleId: 1, roomsCompleted: 5, roomsTotal: 5 },
-         { moduleId: 2, roomsCompleted: 5, roomsTotal: 5 },
-         { moduleId: 3, roomsCompleted: 5, roomsTotal: 5 },
-         { moduleId: 4, roomsCompleted: 5, roomsTotal: 5 },
-         { moduleId: 5, roomsCompleted: 5, roomsTotal: 5 }]
-      : [];
-  }, [rawProfile]);
-
   const editInitial = profile ? {
     name: profile.displayName,
     hackerHandle: profile.username,
@@ -59,15 +46,11 @@ const Profile: React.FC = () => {
     if (Object.keys(activityDates).length > 0 || profile.completedRooms.length > 0) {
       sections.push('activity');
     }
-    if (bootcampModules.length > 0) {
-      sections.push('skills');
-    }
     if (profile.completedRooms.length > 0) sections.push('labs');
     if (profile.coursesCompleted > 0) sections.push('courses');
-    if (profile.bootcampCompleted) sections.push('bootcamp');
     sections.push('trophy');
     return sections;
-  }, [profile, activityDates, bootcampModules]);
+  }, [profile, activityDates]);
 
   if (loading || !profile) return <ProfileSkeleton />;
 
@@ -83,7 +66,7 @@ const Profile: React.FC = () => {
       {/* Mobile section nav (sticky horizontal tabs) */}
       <ProfileSectionNav visibleSections={visibleSections} className="lg:hidden" />
 
-      <div className="px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
         <div className="flex gap-6">
           {/* Desktop section nav (sidebar) */}
           <ProfileSectionNav visibleSections={visibleSections} className="hidden lg:flex w-48 shrink-0" />
@@ -172,13 +155,6 @@ const Profile: React.FC = () => {
               </section>
             )}
 
-            {/* ── Skills Section ── */}
-            {visibleSections.includes('skills') && bootcampModules.length > 0 && (
-              <section id="profile-section-skills">
-                <SkillsModule modules={bootcampModules} />
-              </section>
-            )}
-
             {/* ── Achievements Section ── */}
             <section id="profile-section-achievements">
               <AchievementsSection
@@ -203,23 +179,6 @@ const Profile: React.FC = () => {
             {visibleSections.includes('courses') && (
               <section id="profile-section-courses">
                 <CoursesModule coursesCompleted={profile.coursesCompleted} />
-              </section>
-            )}
-
-            {/* ── Bootcamp Section ── */}
-            {visibleSections.includes('bootcamp') && (
-              <section id="profile-section-bootcamp">
-                <div className="rounded-2xl border border-border/30 bg-bg-card p-6 text-center">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-3">
-                    <GraduationCap className="w-6 h-6 text-accent" />
-                  </div>
-                  <h3 className="text-sm font-black text-text-primary mb-1">
-                    {t('profile.bootcamp.title', 'Hacker Protocol Bootcamp')}
-                  </h3>
-                  <p className="text-xs text-text-muted">
-                    {t('profile.bootcamp.completed', 'Successfully graduated from HPB')}
-                  </p>
-                </div>
               </section>
             )}
 
