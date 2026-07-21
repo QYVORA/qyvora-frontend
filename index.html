@@ -52,18 +52,13 @@
   </head>
   <body>
     <div id="root">
-      <!-- Static loader shown while JS bundles load -->
-      <div id="initial-loader" style="position:fixed;inset:0;z-index:9999;background:var(--color-bg,#0A0A0A);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;touch-action:none">
+      <!-- Thin progress bar shown while JS bundles load -->
+      <div id="initial-loader" style="position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;background:rgba(171,181,192,0.12);overflow:hidden">
         <style>
-          #initial-loader .spinner { width:80px;height:80px;animation:spin 1s linear infinite; }
-          #initial-loader .spinner .track { opacity:0.1; }
-          #initial-loader .spinner .arc { opacity:0.9;stroke-dasharray:45 150;stroke-linecap:round; }
-          @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+          #initial-loader .bar { height:100%;background:#06B66F;width:0%;animation:loader-progress 2s ease-out forwards; }
+          @keyframes loader-progress { 0%{width:0%} 20%{width:30%} 50%{width:60%} 80%{width:85%} 100%{width:95%} }
         </style>
-        <svg class="spinner" viewBox="0 0 50 50">
-          <circle class="track" cx="25" cy="25" r="22" fill="none" stroke="var(--color-accent,#06B66F)" stroke-width="3.5" />
-          <circle class="arc" cx="25" cy="25" r="22" fill="none" stroke="var(--color-accent,#06B66F)" stroke-width="3.5" />
-        </svg>
+        <div class="bar"></div>
       </div>
     </div>
     <script type="module" src="/src/app/main.tsx"></script>
