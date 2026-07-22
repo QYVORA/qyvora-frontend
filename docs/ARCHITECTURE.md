@@ -168,7 +168,7 @@ src/
   app/                  # Application entry, router, provider tree
   assets/               # Static images (organized by domain)
   core/                 # Cross-cutting: api.ts, contexts, hooks
-  features/             # Domain modules (marketing, auth, student, admin, news)
+  features/             # Domain modules (marketing, auth, student, admin)
   shared/               # Reusable UI, layouts, utils
   styles/               # Tailwind CSS v4 with @theme tokens
 ```
@@ -191,8 +191,7 @@ src/
 features/
   admin/        # Admin dashboard, chain explorer, CP analytics
   auth/         # Login, register, password flow
-  marketing/    # Landing page, blogs, events, courses, team, news
-  news/         # Cyber feed
+  marketing/    # Landing page, blogs, courses, team
   student/      # Dashboard, bootcamps, marketplace, wallet, profile, settings
 ```
 
@@ -302,8 +301,6 @@ src/
     dashboards/         # controllers/, routes/ (admin)
     cp/                 # controllers/, routes/
     shared/             # controllers/, models/, routes/ (public, upload)
-    news/               # controllers/, services/, routes/
-    events/             # controllers/, models/, routes/
     notifications/      # models/, routes/
   shared/
     config/             # bootcamp.config.ts
@@ -353,8 +350,6 @@ All API routes mount under `/api` (prefix defined in `endpoints.config.ts`):
 | `/api/public` | `modules/shared/routes/` | None | Landing stats, CP products, leaderboard, contact form |
 | `/api/cp` | `modules/cp/routes/` | `requireAuth` | Balance, transactions, purchase, download |
 | `/api/notifications` | `modules/notifications/routes/` | `requireAuth` | List, mark read |
-| `/api/news` | `modules/news/routes/` | None | Cyber feed |
-| `/api/events` | `modules/events/routes/` | `requireAuth` | Event review, access key, access status |
 | `/uploads` | `modules/shared/routes/` | None (public) | GridFS file serving |
 
 **Rule:** Route files must only bind middleware to controller methods. Route files must not contain business logic.

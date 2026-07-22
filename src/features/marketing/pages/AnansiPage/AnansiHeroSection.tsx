@@ -20,12 +20,12 @@ const AnansiHeroSection: React.FC = () => {
         </div>
       </div>
     }>
-      <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+      <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
         <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-          ANANSI <span className="text-bg/80">CLI</span>
+          ANANSI <span className="text-accent">CLI</span>
         </span>
       </h1>
-      <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+      <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
         Terminal-first attack surface intelligence engine built for speed, portability, and raw technical signal.
       </p>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">

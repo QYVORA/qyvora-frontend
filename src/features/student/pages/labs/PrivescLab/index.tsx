@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Shield, Skull } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
@@ -10,6 +10,7 @@ import type { PrivescScenario } from '@/features/student/data/simulations/types'
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
+import LabHeroSection from '@/shared/components/LabHeroSection';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -68,6 +69,7 @@ const PrivescLab = () => {
   );
 
   if (!selectedScenario) {
+    const firstScenarioWithVillain = PRIVESC_SCENARIOS.find(s => s.villain);
     return (
       <div className="bg-bg min-h-full">
         <SEO
@@ -75,57 +77,35 @@ const PrivescLab = () => {
           description="Escalate privileges in simulated Linux environments."
           noindex
         />
-        <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-          <div className="mb-10">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Shield className="w-7 h-7 text-accent" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">
-                Privilege <span className="text-accent">Escalation</span>
-              </h1>
-            </div>
-            <p className="text-base text-text-muted font-mono max-w-2xl">
-              Escalate from low-privilege user to root using Linux
-              misconfigurations.
-            </p>
-          </div>
 
-          <div className="border-t border-border/30 mb-8" />
+        <LabHeroSection
+          icon={<Shield className="w-8 h-8 text-accent" />}
+          title="Privilege"
+          accentWord="Escalation"
+          description="Escalate from low-privilege user to root using Linux misconfigurations."
+          villain={firstScenarioWithVillain?.villain}
+        />
+
+        <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
+          <div className="border-t border-border/30" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {PRIVESC_SCENARIOS.map((scenario, i) => (
-              <div key={scenario.id} className="relative">
-                <ScenarioCard
-                  title={scenario.title}
-                  difficulty={scenario.difficulty}
-                  description={scenario.technique}
-                  cpReward={50}
-                  onStart={() => {
-                    setCompletedSteps(new Set());
-                    setSelectedScenario(scenario);
-                  }}
-                />
-                {scenario.villain && (
-                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{scenario.villain.avatar}</span>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                        <p className="text-xs font-bold text-text-primary">{scenario.villain.name}</p>
-                      </div>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{scenario.villain.alias}"</p>
-                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{scenario.villain.description}</p>
-                  </div>
-                )}
-              </div>
+            {PRIVESC_SCENARIOS.map((scenario) => (
+              <ScenarioCard
+                key={scenario.id}
+                title={scenario.title}
+                difficulty={scenario.difficulty}
+                description={scenario.technique}
+                cpReward={50}
+                onStart={() => {
+                  setCompletedSteps(new Set());
+                  setSelectedScenario(scenario);
+                }}
+              />
             ))}
           </div>
 
-          <div className="mt-10">
-            <RelatedContent {...getRelatedContentForLab('privesc')} title="Continue This Topic" />
-          </div>
+          <RelatedContent {...getRelatedContentForLab('privesc')} title="Continue This Topic" />
         </div>
       </div>
     );
@@ -154,19 +134,6 @@ const PrivescLab = () => {
         totalSteps={chapters.length}
         simulations={simulations}
       >
-        {selectedScenario.villain && (
-          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{selectedScenario.villain.avatar}</span>
-              <div className="flex-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                <p className="text-sm font-bold text-text-primary">{selectedScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({selectedScenario.villain.alias})</span></p>
-                <p className="text-xs font-mono text-text-muted/70 mt-1">{selectedScenario.villain.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {chapters.map((chapter, i) => {
           const { isLocked, isCompleted, isActive } = getStepState(i);
           return (

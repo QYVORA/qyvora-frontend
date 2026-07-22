@@ -65,56 +65,55 @@ data-nav-invert attribute    ← Signals navbar to invert colors over this card
 
 ### Card itself
 ```
-rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14
-flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden
+rounded-2xl border border-border/30 bg-bg-card p-5 sm:p-6
+flex flex-col overflow-hidden
 ```
-- **Background:** `bg-accent` (the brand green `#06B66F`)
+- **Background:** `bg-bg-card` (dark elevated surface)
 - **Border radius:** `rounded-2xl`
-- **Border:** `border-bg/20` (subtle dark border over the accent)
-- **Padding:** `p-8` → `sm:p-10` → `lg:p-14`
-- **Layout:** Column on mobile (`flex-col`), row on `sm:` and up (`sm:flex-row`). Items centered vertically on desktop.
+- **Border:** `border-border/30` (subtle border)
+- **Padding:** `p-5` → `sm:p-6`
+- **Layout:** Column layout with accent stripe at top
 - **Overflow hidden** for the background grid pattern
-- Contains a `<GridBoxedBackground opacity={0.3} blur={0} mask="none" />` as a decorative background layer
 
 ### Avatar
 On the profile page, the avatar section renders a **256x256 Identicon** (jdenticon SVG, deterministic from user ID):
 ```
-<div className="w-full h-full bg-black flex items-center justify-center">
-  <Identicon value={profileData.id} size={256} className="w-full h-full" />
+<div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-2xl overflow-hidden flex items-center justify-center">
+  <Identicon value={handle || id} size={256} className="w-full h-full" />
 </div>
 ```
-This sits inside the avatar slot:
-```
-w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden border-2 border-bg/20
-shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0
-```
-- Square avatar, `rounded-xl`, with a semi-transparent dark border
-- Subtle white glow shadow
-- Responsive size: `w-28 h-28` on mobile → `sm:w-32 sm:h-32`
+- Square avatar, `rounded-2xl`, with built-in `border-accent/30` from Identicon defaults
+- Responsive size: `w-20 h-20` on mobile → `sm:w-24 sm:h-24`
 
 ### Title (Username)
 ```
-text-xl sm:text-2xl lg:text-3xl font-black text-bg tracking-tight break-words
+text-lg sm:text-xl font-black text-text-primary truncate
 ```
-Rendered as `@username`. Uses `font-black` (extra bold), `text-bg` (dark text on accent background). `break-words` allows long handles to wrap.
+Rendered as the user's display name. Uses `font-black` (extra bold), `text-text-primary` for visibility on dark card background.
+
+### Handle badge
+```
+px-2 py-0.5 rounded-lg bg-bg-elevated border border-border/30 text-[10px] font-black uppercase tracking-widest text-accent font-mono
+```
+Rendered as `@username`. Uses `text-accent` for the handle text.
 
 ### Description (Bio / Rank)
 ```
-text-sm text-bg/70 mt-1.5 max-w-xl
+text-sm text-text-secondary leading-relaxed mt-1.5 line-clamp-2
 ```
-Falls back to `"<rank> operator"` if no bio is set.
+Falls back to rank badge if no bio is set.
 
 ### Stats Row
 Rendered inside a flex container: `flex flex-wrap items-center gap-4 mt-5`
 
 Each stat has two parts:
-- **Value:** `font-mono text-lg sm:text-xl font-black` with `text-bg` (full) or `text-bg/90` (slightly muted). The `accent: true` stat (CP points) gets full opacity.
-- **Label:** `text-[10px] font-black uppercase tracking-widest text-bg/50`
+- **Value:** `font-mono text-lg sm:text-xl font-black text-text-primary` for regular stats, or `text-accent` for the accent stat (CP points).
+- **Label:** `text-[10px] font-black uppercase tracking-widest text-text-muted`
 
 Stats displayed:
 | Stat | Label Key | Accent? |
 |---|---|---|
-| CP points (formatted with `toLocaleString()`) | `student.profile.stats.cp` | Yes (`text-bg`) |
+| CP points (formatted with `toLocaleString()`) | `student.profile.stats.cp` | Yes (`text-accent`) |
 | Rank | `student.profile.rank` | No |
 | Labs completed | `student.profile.stats.labs` | No |
 | Courses completed | `student.profile.stats.courses` | No |
@@ -420,19 +419,19 @@ A simple image component. Renders a `.webp` badge image (`hpb-completion-badge.w
 |---|---|
 | Page background | `bg-bg` (dark) |
 | Card backgrounds | `bg-bg-card` (dark elevated) |
-| Hero card background | `bg-accent` (brand green) |
+| Hero card background | `bg-bg-card` (dark elevated) with accent stripe |
 | Card border radius | `rounded-2xl` |
 | Button/input border radius | `rounded-xl` |
 | Badge border radius | `rounded-lg` |
 | Font | `font-mono` (JetBrains Mono throughout) |
 | Section headings | `text-xs font-black uppercase tracking-widest text-text-muted` |
-| Stat values | `font-mono text-lg sm:text-xl font-black` |
-| Stat labels | `text-[10px] font-black uppercase tracking-widest text-bg/50` |
-| Button primary class | `btn-primary` (inverted on accent bg: `!bg-bg !text-accent`) |
+| Stat values | `font-mono text-lg sm:text-xl font-black text-text-primary` |
+| Stat labels | `text-[10px] font-black uppercase tracking-widest text-text-muted` |
+| Button primary class | `btn-primary` |
 | Button secondary class | `btn-secondary` |
 | Input focus state | `focus:border-accent` (border color change, no ring) |
 | Disabled state | `disabled:opacity-50` |
-| Card borders | `border-border/30` (standard), `border-bg/20` (on accent) |
+| Card borders | `border-border/30` (standard) |
 | Transitions | `transition-all duration-300` on cards, `transition-all` on inputs |
 | Animation library | `motion/react` (Framer Motion successor) |
 | i18n | All user-facing text uses `useTranslation()` with `t()` |

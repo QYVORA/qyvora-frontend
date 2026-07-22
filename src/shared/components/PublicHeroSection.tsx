@@ -18,7 +18,7 @@ const PublicHeroSection: React.FC<PublicHeroSectionProps> = ({
   showGlobe = false,
 }) => {
   return (
-    <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-accent" data-nav-invert>
+    <div className="relative w-full min-h-dvh md:h-dvh overflow-hidden flex flex-col bg-bg" data-nav-invert>
       <GridBoxedBackground opacity={0.5} blur={0} mask={mask} />
 
       {showGlobe && (

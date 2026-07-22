@@ -51,7 +51,6 @@ const ProfilePage       = lazy(() => import('../features/student/pages/ProfilePa
 const PublicProfilePage = lazy(() => import('../features/marketing/pages/PublicProfilePage'));
 const NotificationsPage = lazy(() => import('../features/student/pages/NotificationsPage'));
 const SettingsPage      = lazy(() => import('../features/student/pages/SettingsPage'));
-const StudentNewsFeedPage = lazy(() => import('../features/student/pages/NewsFeedPage'));
 const BootcampCoursePage= lazy(() => import('../features/student/pages/BootcampCoursePage'));
 const BootcampRoomPage  = lazy(() => import('../features/student/pages/BootcampRoomPage'));
 const MyCoursesPage     = lazy(() => import('../features/student/pages/MyCoursesPage'));
@@ -140,9 +139,7 @@ export const AppRouter = () => {
           {/* Redirects for merged pages */}
           <Route path="/team" element={<Navigate to="/#team" replace />} />
           <Route path="/quiteroot" element={<Navigate to="/#quiteroot" replace />} />
-          <Route path="/events" element={<Navigate to="/#events" replace />} />
           <Route path="/blogs" element={<Navigate to="/#blogs" replace />} />
-          <Route path="/news" element={<Navigate to="/#news" replace />} />
           <Route path="/zero-day-market" element={<Navigate to="/#market" replace />} />
           
           {/* Blog post route (individual posts still accessible) */}
@@ -173,7 +170,6 @@ export const AppRouter = () => {
           
           <Route path="/dashboard/profile"       element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/profile/:username" element={<Wrap scope="Profile"><StudentOnly><ProfilePage /></StudentOnly></Wrap>} />
-          <Route path="/dashboard/news"         element={<Wrap scope="Cyber Feed"><StudentOnly><StudentNewsFeedPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/notifications" element={<Wrap scope="Notifications"><StudentOnly><NotificationsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/settings"      element={<Wrap scope="Settings"><StudentOnly><SettingsPage /></StudentOnly></Wrap>} />
           <Route path="/dashboard/competitive"  element={<Wrap scope="Competitive"><StudentOnly><CompetitivePage /></StudentOnly></Wrap>} />

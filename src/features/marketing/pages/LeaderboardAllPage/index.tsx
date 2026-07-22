@@ -49,21 +49,21 @@ const LeaderboardAllPage = () => {
       <PublicHeroSection showGlobe mask="right">
         <Link
           to="/leaderboard"
-          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors mb-4"
         >
           <IconArrowLeft className="w-3.5 h-3.5" />
           {t('leaderboardAll.backToLeaderboard')}
         </Link>
-        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+        <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-            {t('leaderboardAll.hero.title')} <span className="text-bg/80">{t('leaderboardAll.hero.titleHighlight')}</span>
+            {t('leaderboardAll.hero.title')} <span className="text-accent">{t('leaderboardAll.hero.titleHighlight')}</span>
           </span>
         </h1>
-        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+        <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
           {t('leaderboardAll.hero.description', { count: Number(total).toLocaleString() })}
         </p>
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
-          <IconShield className="w-4 h-4 text-bg/80" />
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">
+          <IconShield className="w-4 h-4 text-accent" />
           {t('leaderboardAll.hero.chainBadge')}
         </div>
       </PublicHeroSection>

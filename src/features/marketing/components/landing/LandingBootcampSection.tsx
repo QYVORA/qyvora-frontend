@@ -41,7 +41,7 @@ const LandingBootcampSection: React.FC = () => {
   const featuredRoomCount = featuredConfig?.rooms?.length || 0;
 
   return (
-    <div className="relative bg-accent min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
@@ -53,10 +53,10 @@ const LandingBootcampSection: React.FC = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-8 shrink-0"
           >
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
-              {t('landing2.bootcamp.heading1')} <span className="text-bg">{t('landing2.bootcamp.heading2')}</span>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+              {t('landing2.bootcamp.heading1')} <span className="text-text-primary">{t('landing2.bootcamp.heading2')}</span>
             </h2>
-            <p className="text-xs md:text-sm text-bg/70 leading-relaxed max-w-xl">
+            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-xl">
               {t('landing.bootcamp.description')}
             </p>
           </motion.div>
@@ -82,9 +82,9 @@ const LandingBootcampSection: React.FC = () => {
                 <div className="relative h-full flex flex-col p-4 sm:p-8">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
-                      {featured.icon && <featured.icon className="w-7 h-7 sm:w-9 sm:h-9 text-bg" />}
+                      {featured.icon && <featured.icon className="w-7 h-7 sm:w-9 sm:h-9 text-accent" />}
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-bg/20 bg-bg/10 text-bg">
+                    <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                       {t('landing.bootcamp.roomCount', { count: featuredRoomCount })}
                     </span>
                   </div>
@@ -125,9 +125,9 @@ const LandingBootcampSection: React.FC = () => {
                     <div className="relative h-full flex flex-col">
                       <div className="flex items-center justify-between mb-2 sm:mb-3">
                         <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-accent/30 bg-accent/15 flex items-center justify-center shrink-0">
-                          {phase.icon && <phase.icon className="w-6 h-6 sm:w-7 sm:h-7 text-bg" />}
+                          {phase.icon && <phase.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />}
                         </div>
-                        <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
+                        <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                           {t('landing.bootcamp.roomCount', { count: roomCount })}
                         </span>
                       </div>
@@ -139,7 +139,7 @@ const LandingBootcampSection: React.FC = () => {
                         {t(`landing.bootcamp.phases.${phase.id}.desc`)}
                       </p>
 
-                      <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-bg transition-colors">
+                      <div className="mt-auto flex items-center gap-2 text-text-muted group-hover:text-accent transition-colors">
                         <span className="text-[10px] font-black uppercase tracking-widest">{t('landing.bootcamp.startPhase')} {phase.id}</span>
                         <IconArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                       </div>
@@ -160,7 +160,7 @@ const LandingBootcampSection: React.FC = () => {
           >
             <Link
               to="/hpb"
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
+              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
             >
               {t('landing.bootcamp.viewCurriculum')} <IconArrowRight size={14} />
             </Link>

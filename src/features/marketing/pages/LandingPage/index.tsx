@@ -11,9 +11,7 @@ import LandingCoursesSection from '@/features/marketing/components/landing/Landi
 import LandingBootcampSection from '@/features/marketing/components/landing/LandingBootcampSection';
 import LandingTeamSection from '@/features/marketing/components/landing/LandingTeamSection';
 import LandingQuiteRootSection from '@/features/marketing/components/landing/LandingQuiteRootSection';
-import LandingEventsSection from '@/features/marketing/components/landing/LandingEventsSection';
 import LandingBlogsSection from '@/features/marketing/components/landing/LandingBlogsSection';
-import LandingNewsSection from '@/features/marketing/components/landing/LandingNewsSection';
 import LandingMarketSection from '@/features/marketing/components/landing/LandingMarketSection';
 import LandingLeaderboardSection from '@/features/marketing/components/landing/LandingLeaderboardSection';
 import LandingServicesSection from '@/features/marketing/components/landing/LandingServicesSection';
@@ -35,9 +33,7 @@ const Landing: React.FC = () => {
     { id: 'bootcamp',   label: t('nav.bootcamp') },
     { id: 'team',       label: 'Team' },
     { id: 'quiteroot',  label: 'QuiteRoot' },
-    { id: 'events',     label: 'Events' },
     { id: 'blogs',      label: 'Blogs' },
-    { id: 'news',       label: 'News' },
     { id: 'market',     label: 'Market' },
     { id: 'leaderboard', label: t('nav.leaderboard') },
     { id: 'services',   label: t('nav.services') },
@@ -163,42 +159,32 @@ const Landing: React.FC = () => {
         <LandingQuiteRootSection />
       </section>
 
-      {/* 8. Events — dark */}
-      <section id="events" className="relative w-full min-h-dvh md:h-dvh snap-section">
-        <LandingEventsSection />
-      </section>
-
-      {/* 9. Blogs — accent */}
+      {/* 8. Blogs — accent */}
       <section id="blogs" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingBlogsSection />
       </section>
 
-      {/* 10. News — dark */}
-      <section id="news" className="relative w-full min-h-dvh md:h-dvh snap-section">
-        <LandingNewsSection />
-      </section>
-
-      {/* 11. Market — accent */}
+      {/* 9. Market — accent */}
       <section id="market" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingMarketSection />
       </section>
 
-      {/* 12. Leaderboard — dark */}
+      {/* 10. Leaderboard — dark */}
       <section id="leaderboard" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingLeaderboardSection />
       </section>
 
-      {/* 13. Services — dark */}
+      {/* 11. Services — dark */}
       <section id="services" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingServicesSection />
       </section>
 
-      {/* 14. CTA — accent */}
+      {/* 12. CTA — accent */}
       <section id="cta" className="relative w-full min-h-dvh md:h-dvh snap-section">
         <LandingFinalCtaSection user={user} />
       </section>
 
-      {/* 15. Footer */}
+      {/* 13. Footer */}
       <section id="footer" className="w-full bg-bg pt-10 md:pt-0">
         <Footer />
       </section>

@@ -75,7 +75,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
 
       const equatorGeo = new THREE.TorusGeometry(1.002, 0.001, 8, isSimplified ? 64 : 128);
       const equatorMat = new THREE.MeshBasicMaterial({
-        color: 0x000000,
+        color: ACCENT_COLOR,
         transparent: true,
         opacity: isLight ? 0.15 : 0.25,
       });
@@ -108,7 +108,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
       globe.add(globeFront);
 
       {
-        const graticuleColor = 0x000000;
+        const graticuleColor = ACCENT_COLOR;
         const graticuleOpacity = isLight ? 0.08 : 0.12;
         const lineStep = isSimplified ? 60 : 30;
         const latStep = isSimplified ? 4 : 2;
@@ -188,7 +188,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(segments));
         const isAfricaLink = ta.region === 'africa' && tb.region === 'africa';
         globe!.add(new THREE.Line(geo, new THREE.LineBasicMaterial({
-          color: 0x000000,
+          color: ACCENT_COLOR,
           transparent: true,
           opacity: isAfricaLink ? (isLight ? 0.40 : 0.35) : 0.15,
         })));
@@ -219,7 +219,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
         const trailPts = Array.from({ length: trailLen }, () => startPos.clone());
         const trailGeo = new THREE.BufferGeometry().setFromPoints(trailPts);
         const trailLine = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({
-          color: 0x000000, transparent: true, opacity: 0.15,
+          color: ACCENT_COLOR, transparent: true, opacity: 0.15,
         }));
         scene!.add(trailLine);
         return { dot, trailLine, trailPts, trailHead: 0, radius, incl, speed, phase };
@@ -393,7 +393,7 @@ const HackerGlobe: React.FC<HackerGlobeProps> = ({ scale = 0.88, offset = [0, 0,
           border: '1px solid rgba(0,0,0,0.25)',
           borderRadius: '4px', padding: '7px 12px',
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-          color: '#000000',
+          color: '#06B66F',
           zIndex: 10, lineHeight: 1.75,
           whiteSpace: 'nowrap', backdropFilter: 'blur(6px)',
         }}

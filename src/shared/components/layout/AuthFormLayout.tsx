@@ -12,7 +12,7 @@ interface AuthFormLayoutProps {
 const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({ children }) => (
   <>
     {/* Mobile background layer */}
-    <div className="md:hidden fixed inset-0 bg-accent -z-10">
+    <div className="md:hidden fixed inset-0 bg-bg -z-10">
       <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
     </div>
 

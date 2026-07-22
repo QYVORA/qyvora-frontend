@@ -23,7 +23,7 @@ function ContentCard({ item }: { item: ContentRef }) {
   return (
     <Link
       to={item.route}
-      className="group flex flex-col rounded-2xl border border-border/30 bg-bg-card p-4 transition-all hover:border-accent/30"
+      className="group flex flex-col aspect-square rounded-2xl border border-border/30 bg-bg-card p-4 transition-all hover:border-accent/30"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${cfg.color}`}>
@@ -34,7 +34,7 @@ function ContentCard({ item }: { item: ContentRef }) {
         {item.title}
       </h4>
       {item.subtitle && (
-        <p className="text-[11px] text-text-muted line-clamp-1">{item.subtitle}</p>
+        <p className="text-[11px] text-text-muted line-clamp-2 flex-1">{item.subtitle}</p>
       )}
       <div className="mt-auto pt-2 flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent transition-colors">
         Open <IconArrowRight size={10} className="transition-transform group-hover:translate-x-0.5" />

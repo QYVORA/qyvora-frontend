@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar, Shield, Skull, Eye } from 'lucide-react';
+import { Target, CheckCircle, Radar } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { KILL_CHAIN_SCENARIOS } from '@/features/student/data/simulations/kill-chain-data';
@@ -10,7 +9,7 @@ import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
 import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDiagram';
-import { cn } from '@/shared/utils/cn';
+import LabHeroSection from '@/shared/components/LabHeroSection';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -22,21 +21,21 @@ const DIFFICULTY_STYLES: Record<string, string> = {
 const KillChainLab = () => {
   const [activeScenario, setActiveScenario] = useState(null);
   const [activePhaseIndex, setActivePhaseIndex] = useState(0);
-  const [completedCommands, setCompletedCommands] = useState(new Set());
-  const [completedPhases, setCompletedPhases] = useState(new Set());
+  const [completedCommands, setCompletedCommands] = useState<Set<string>>(new Set());
+  const [completedPhases, setCompletedPhases] = useState<Set<string>>(new Set());
   const [flagInput, setFlagInput] = useState('');
   const [flagStatus, setFlagStatus] = useState('idle');
   const [flagLoading, setFlagLoading] = useState(false);
 
   const startScenario = useCallback((scenario) => {
     setActiveScenario(scenario); setActivePhaseIndex(0);
-    setCompletedCommands(new Set()); setCompletedPhases(new Set());
+    setCompletedCommands(new Set<string>()); setCompletedPhases(new Set<string>());
     setFlagInput(''); setFlagStatus('idle'); setFlagLoading(false);
   }, []);
 
   const exitScenario = useCallback(() => {
     setActiveScenario(null); setActivePhaseIndex(0);
-    setCompletedCommands(new Set()); setCompletedPhases(new Set());
+    setCompletedCommands(new Set<string>()); setCompletedPhases(new Set<string>());
     setFlagInput(''); setFlagStatus('idle'); setFlagLoading(false);
   }, []);
 
@@ -76,51 +75,41 @@ const KillChainLab = () => {
     [activeScenario],
   );
 
-  if (!activeScenario) return (
-    <div className="bg-bg min-h-full">
-      <SEO title="Kill Chain Lab" description="Execute full penetration test simulations." noindex />
-      <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-        <div className="mb-12">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-              <Target className="w-7 h-7 text-accent" />
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">Kill <span className="text-accent">Chain</span> Lab</h1>
-          </div>
-          <p className="text-base text-text-muted font-mono max-w-2xl">Execute full kill chain simulations — from reconnaissance to exfiltration.</p>
-        </div>
-        <div className="border-t border-border/30 mb-10" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {KILL_CHAIN_SCENARIOS.map((s, i) => (
-              <div key={s.id} className="relative">
-                <ScenarioCard
-                  title={s.title}
-                  difficulty={s.difficulty}
-                  description={s.description}
-                  cpReward={s.cpReward}
-                  onStart={() => startScenario(s)}
-                />
-                {s.villain && (
-                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{s.villain.avatar}</span>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                        <p className="text-xs font-bold text-text-primary">{s.villain.name}</p>
-                      </div>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{s.villain.alias}"</p>
-                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{s.villain.description}</p>
-                  </div>
-                )}
-              </div>
-          ))}
-        </div>
+  if (!activeScenario) {
+    const firstScenarioWithVillain = KILL_CHAIN_SCENARIOS.find(s => s.villain);
+    return (
+      <div className="bg-bg min-h-full">
+        <SEO title="Kill Chain Lab" description="Execute full penetration test simulations." noindex />
 
-        <div className="mt-10"><RelatedContent {...getRelatedContentForLab('killchain')} title="Continue This Topic" /></div>
+        <LabHeroSection
+          icon={<Target className="w-8 h-8 text-accent" />}
+          title="Kill"
+          accentWord="Chain"
+          description="Execute full kill chain simulations — from reconnaissance to exfiltration."
+          villain={firstScenarioWithVillain?.villain}
+        />
+
+        <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
+          <div className="border-t border-border/30" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {KILL_CHAIN_SCENARIOS.map((s) => (
+              <ScenarioCard
+                key={s.id}
+                title={s.title}
+                difficulty={s.difficulty}
+                description={s.description}
+                cpReward={s.cpReward}
+                onStart={() => startScenario(s)}
+              />
+            ))}
+          </div>
+
+          <RelatedContent {...getRelatedContentForLab('killchain')} title="Continue This Topic" />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   return (
     <div className="bg-bg min-h-full">
@@ -140,19 +129,6 @@ const KillChainLab = () => {
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm text-text-muted font-mono">🎯 {activeScenario.targetDescription}</p>
         </div>
-
-        {activeScenario.villain && (
-          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{activeScenario.villain.avatar}</span>
-              <div className="flex-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                <p className="text-sm font-bold text-text-primary">{activeScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeScenario.villain.alias})</span></p>
-                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeScenario.villain.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="rounded-2xl border border-border/30 bg-bg-card p-5 mb-2">
           <div className="flex items-center gap-2 mb-4"><Radar className="w-4 h-4 text-accent" /><span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span></div>

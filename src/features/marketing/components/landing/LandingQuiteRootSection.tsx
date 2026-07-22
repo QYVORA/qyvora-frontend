@@ -20,7 +20,7 @@ const capabilities = [
 
 const LandingQuiteRootSection = () => {
   return (
-    <div className="relative bg-accent min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-5 sm:px-6 md:px-16 lg:px-24 py-10 sm:py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row gap-10 sm:gap-10 lg:gap-16 lg:items-stretch">
         {/* Header column */}
@@ -30,15 +30,15 @@ const LandingQuiteRootSection = () => {
             alt="QuiteRoot Logo"
             className="w-16 h-16 md:w-20 md:h-20 object-contain mb-4"
           />
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
-            Quite<span className="text-bg/70">Root</span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
+            Quite<span className="text-text-secondary">Root</span>
           </h2>
-          <p className="text-xs md:text-sm text-bg/60 leading-relaxed max-w-xl mb-4">
+          <p className="text-xs md:text-sm text-text-muted leading-relaxed max-w-xl mb-4">
             The offensive security research and engineering collective behind QYVORA. Building tools, intelligence, and production-ready security capabilities.
           </p>
           <Link
             to="/quiteroot"
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-bg/30 bg-bg/10 text-bg text-[10px] font-black uppercase tracking-widest hover:bg-bg/20 transition-colors"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/30 bg-bg-elevated text-text-primary text-[10px] font-black uppercase tracking-widest hover:bg-bg-card transition-colors"
           >
             Explore QuiteRoot <IconArrowRight size={14} />
           </Link>
@@ -72,9 +72,9 @@ const LandingQuiteRootSection = () => {
               {researchersData.map((researcher) => (
                 <div
                   key={researcher.id}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-bg/20 bg-bg/10"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-border/20 bg-bg-elevated"
                 >
-                  <div className="w-10 h-10 rounded-lg overflow-hidden border border-bg/20 shrink-0">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden border border-border/20 shrink-0">
                     <img
                       src={researcher.image}
                       alt={researcher.name}
@@ -83,10 +83,10 @@ const LandingQuiteRootSection = () => {
                     />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-bg truncate">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-text-primary truncate">
                       {researcher.name}
                     </p>
-                    <p className="text-[9px] text-bg/60 truncate">
+                    <p className="text-[9px] text-text-muted truncate">
                       {researcher.role}
                     </p>
                   </div>

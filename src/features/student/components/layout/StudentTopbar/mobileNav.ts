@@ -6,7 +6,7 @@ import {
   IconSettings,
   IconTerminal,
 } from '@/shared/components/icons';
-import { Radio, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 export const MOBILE_PRIMARY = [
   { label: i18n.t('nav.dashboard'),     icon: IconDashboard, path: '/dashboard'  },
@@ -17,7 +17,6 @@ export const MOBILE_PRIMARY = [
 export const MOBILE_MORE = [
   { label: i18n.t('nav.hpb'),           icon: IconTerminal,      path: '/dashboard/bootcamps/bc_1775270338500' },
   { label: i18n.t('nav.networkLab'),   icon: Globe,             path: '/dashboard/networks' },
-  { label: i18n.t('nav.cyberFeed'),    icon: Radio,         path: '/dashboard/news'         },
   { label: i18n.t('nav.settings'),      icon: IconSettings,      path: '/dashboard/settings'      },
 ];
 

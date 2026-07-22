@@ -48,7 +48,7 @@ const LandingLabsSection: React.FC = () => {
   const supporting = group.slice(1);
 
   return (
-    <div className="relative bg-accent min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
+    <div className="relative bg-bg min-h-dvh md:h-dvh flex flex-col overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 py-6 md:py-8 lg:py-10 flex flex-col">
         <div className="w-full lg:max-w-6xl lg:mx-auto flex-1 flex flex-col min-h-0">
@@ -60,10 +60,10 @@ const LandingLabsSection: React.FC = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-4 md:mb-8 shrink-0"
           >
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-bg tracking-tighter leading-none mb-2">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter leading-none mb-2">
               {t('landing.labs.heading')}
             </h2>
-            <p className="text-xs md:text-sm text-bg/70 leading-relaxed max-w-xl">
+            <p className="text-xs md:text-sm text-text-secondary leading-relaxed max-w-xl">
               {t('landing.labs.description')}
             </p>
           </motion.div>
@@ -87,7 +87,7 @@ const LandingLabsSection: React.FC = () => {
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
                       <Identicon value={featured.id} size={64} className="w-12 h-12 sm:w-16 sm:h-16 border-black" />
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-bg/20 bg-bg/10 text-bg">
+                    <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                       {t(`landing.labs.list.${featured.id}.cp`)}
                     </span>
                   </div>
@@ -127,7 +127,7 @@ const LandingLabsSection: React.FC = () => {
                       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
                         <Identicon value={lab.id} size={48} className="w-9 h-9 sm:w-11 sm:h-11 border-black" />
                       </div>
-                      <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
+                      <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-border/30 bg-bg-elevated text-text-muted">
                         {t(`landing.labs.list.${lab.id}.cp`)}
                       </span>
                     </div>
@@ -159,7 +159,7 @@ const LandingLabsSection: React.FC = () => {
           >
             <Link
               to="/dashboard/labs"
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-bg/60 hover:text-bg transition-colors"
+              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-text-primary transition-colors"
             >
               {t('landing.labs.viewAll')} <IconArrowRight size={14} />
             </Link>

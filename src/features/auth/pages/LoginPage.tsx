@@ -382,14 +382,14 @@ const LoginPage: React.FC = () => {
       />
       
       {/* Mobile: Form with accent background */}
-      <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-accent">
+      <div className="lg:hidden relative w-full min-h-dvh overflow-hidden flex flex-col bg-bg">
         <GridBoxedBackground opacity={0.5} blur={0} mask="none" />
         
         {/* Back to Home button - Mobile */}
         <div className="absolute top-6 left-6 z-20">
           <button 
             onClick={() => navigate('/')} 
-            className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
           >
             <IconArrowLeft size={16} /> Back to Home
           </button>
@@ -409,26 +409,26 @@ const LoginPage: React.FC = () => {
           <div className="absolute top-6 left-6 z-20">
             <button 
               onClick={() => navigate('/')} 
-              className="inline-flex items-center gap-2 px-4 py-2 text-bg rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 text-text-primary rounded-lg text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
             >
               <IconArrowLeft size={16} /> Back to Home
             </button>
           </div>
 
           {/* Left column hero content */}
-          <Logo size="md" variant="full" color="#000000" />
+          <Logo size="md" variant="full" />
 
-          <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+          <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
             Africa&apos;s offensive security platform built to sharpen your skills from the ground up.
           </p>
 
           <ul className="flex flex-col gap-4">
             {bullets.map(({ icon: Icon, text }) => (
               <li key={text} className="flex items-center gap-3">
-                <span className="flex-none w-9 h-9 rounded-xl bg-bg/10 flex items-center justify-center">
-                  <Icon className="w-4.5 h-4.5 text-bg" />
+                <span className="flex-none w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
+                  <Icon className="w-4.5 h-4.5 text-accent" />
                 </span>
-                <span className="text-bg text-sm font-bold">{text}</span>
+                <span className="text-text-primary text-sm font-bold">{text}</span>
               </li>
             ))}
           </ul>

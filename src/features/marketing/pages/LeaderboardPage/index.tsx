@@ -54,33 +54,33 @@ const LeaderboardPage = () => {
 
       {/* ══ HERO SECTION ══ */}
       <PublicHeroSection showGlobe mask="right">
-        <h1 className="font-black text-bg leading-[1.08] tracking-tight w-full relative">
+        <h1 className="font-black text-text-primary leading-[1.08] tracking-tight w-full relative">
           <span className="block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem] lg:leading-[1.1] xl:leading-[1.05] uppercase">
-            {t('leaderboardPage.hero.title')} <span className="text-bg/80">{t('leaderboardPage.hero.titleHighlight')}</span>
+            {t('leaderboardPage.hero.title')} <span className="text-accent">{t('leaderboardPage.hero.titleHighlight')}</span>
           </span>
         </h1>
-        <p className="text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
+        <p className="text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono">
           {t('leaderboardPage.hero.description')}
         </p>
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-bg/50">
-          <IconShield className="w-4 h-4 text-bg/80" />
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">
+          <IconShield className="w-4 h-4 text-accent" />
           {t('leaderboardPage.hero.chainBadge')}
         </div>
         {entries.length > 0 && (
           <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-sm pt-2">
-            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-              <span className="text-xl md:text-2xl font-black text-bg">{Number(total).toLocaleString()}</span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.operators')}</p>
+            <div className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-text-primary">{Number(total).toLocaleString()}</span>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">{t('leaderboardPage.stats.operators')}</p>
             </div>
-            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-              <span className="text-xl md:text-2xl font-black text-bg">
+            <div className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-text-primary">
                 {Number(entries.slice(0, 20).reduce((s, e) => s + Number(e.cp), 0)).toLocaleString()}
               </span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.totalCp')}</p>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">{t('leaderboardPage.stats.totalCp')}</p>
             </div>
-            <div className="rounded-2xl border border-bg/20 bg-bg/10 px-4 py-3 md:px-5 md:py-4 text-center">
-              <span className="text-xl md:text-2xl font-black text-bg">{Number(entries[0].cp).toLocaleString()}</span>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-bg/40 mt-1">{t('leaderboardPage.stats.topCp')}</p>
+            <div className="rounded-2xl border border-border/30 bg-bg-card px-4 py-3 md:px-5 md:py-4 text-center">
+              <span className="text-xl md:text-2xl font-black text-text-primary">{Number(entries[0].cp).toLocaleString()}</span>
+              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-text-muted mt-1">{t('leaderboardPage.stats.topCp')}</p>
             </div>
           </div>
         )}

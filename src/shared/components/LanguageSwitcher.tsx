@@ -62,7 +62,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
         onClick={() => setOpen(!open)}
         className={`w-8 h-8 flex items-center justify-center rounded-lg border transition-all ${
           inverted
-            ? 'border-bg/30 text-bg hover:bg-bg/10'
+            ? 'border-border text-text-primary hover:text-accent hover:border-accent/40'
             : 'border-border text-text-muted hover:text-accent hover:border-accent/40'
         }`}
         aria-label="Change language"

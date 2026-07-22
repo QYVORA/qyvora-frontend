@@ -1,6 +1,6 @@
 import { Maximize2, Minimize2 } from 'lucide-react';
 import { useState } from 'react';
-import { SIMULATION_REGISTRY, type SimulationType } from './types';
+import { type SimulationType } from './types';
 
 interface SimulationPanelProps {
   simulations: {
@@ -18,29 +18,8 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[400px]' }: Si
 
   return (
     <div className={`rounded-2xl border border-border/30 bg-bg-card overflow-hidden ${expanded ? 'fixed inset-4 z-[200]' : defaultHeight}`}>
-      {/* Tab Bar */}
-      <div className="flex items-center gap-1 px-3 py-2 bg-bg-elevated border-b border-border/20">
-        {simulations.map(sim => {
-          const def = SIMULATION_REGISTRY[sim.type];
-          return (
-            <button key={sim.type} onClick={() => setActiveTab(sim.type)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors ${
-                activeTab === sim.type ? 'bg-accent/15 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-white/5'
-              }`}>
-              {def?.label || sim.type}
-            </button>
-          );
-        })}
-        <div className="ml-auto flex items-center gap-1">
-          <button onClick={() => setExpanded(!expanded)}
-            className="p-1.5 rounded hover:bg-white/5 text-text-muted">
-            {expanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
-          </button>
-        </div>
-      </div>
-
       {/* Content — each simulation rendered with data-active attribute */}
-      <div className={`${expanded ? 'h-[calc(100%-40px)]' : 'h-[calc(100%-40px)]'} min-h-0`}>
+      <div className="h-full min-h-0">
         {simulations.map(sim => (
           <div
             key={sim.type}

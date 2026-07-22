@@ -12,9 +12,7 @@ import {
 import { Skeleton } from '@/shared/components/ui';
 import { BOOTCAMP_CONFIG } from '@/features/student/constants/bootcampConfig';
 import SEO from '@/shared/components/SEO';
-import EventReviewModal from '@/features/student/components/EventReviewModal';
 import OnboardingWizard from '@/features/student/components/OnboardingWizard';
-import { getPendingEventJoin, clearPendingEventJoin } from '@/shared/utils/eventJoin';
 import type { StudentBootcampCardData } from '@/features/student/components/StudentBootcampCard';
 import { DashboardHero } from '@/features/student/components/dashboard';
 import StudentBootcampCard from '@/features/student/components/StudentBootcampCard';
@@ -310,10 +308,6 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
-
-  const pending = getPendingEventJoin();
-  const [showReviewModal, setShowReviewModal] = useState(!!pending);
-  const [, setReviewSubmitted] = useState(false);
 
   const [overview, setOverview] = useState<any>(null);
   const [bootcamps, setBootcamps] = useState<any[]>([]);
@@ -683,21 +677,6 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-
-      {pending && showReviewModal && (
-        <EventReviewModal
-          open={showReviewModal}
-          onOpenChange={(open) => {
-            setShowReviewModal(open);
-            if (!open) clearPendingEventJoin();
-          }}
-          eventId={pending.eventId}
-          onReviewSubmitted={() => {
-            setReviewSubmitted(true);
-            clearPendingEventJoin();
-          }}
-        />
-      )}
 
     </div>
   );

@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal, Skull } from 'lucide-react';
+import { Key, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
 import { createPasswordSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
@@ -9,6 +8,8 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
+import LabHeroSection from '@/shared/components/LabHeroSection';
+import { FlowDiagram, type FlowNode, type FlowArrow } from '@/shared/components/diagrams/FlowDiagram';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -16,6 +17,48 @@ const DIFFICULTY_STYLES: Record<string, string> = {
   intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
   advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
+
+const HASH_CRACKING_NODES: FlowNode[] = [
+  { id: 'hash', label: 'Hash File', icon: '\u{1F4C4}', status: 'warning' },
+  { id: 'identify', label: 'Identify Type', icon: '\u{1F50D}', status: 'active' },
+  { id: 'attack', label: 'Dictionary', icon: '\u{26A1}', status: 'danger' },
+  { id: 'result', label: 'Plaintext', icon: '\u{1F513}', status: 'success' },
+];
+const HASH_CRACKING_ARROWS: FlowArrow[] = [
+  { from: 'hash', to: 'identify', type: 'solid' },
+  { from: 'identify', to: 'attack', type: 'solid' },
+  { from: 'attack', to: 'result', type: 'solid' },
+];
+
+const ITERATION_NODES: FlowNode[] = [
+  { id: 'wordlist', label: 'Wordlist', icon: '\u{1F4D6}', status: 'default' },
+  { id: 'hashfn', label: 'Hash Function', icon: '\u{2699}\u{FE0F}', status: 'active' },
+  { id: 'compare', label: 'Compare', icon: '\u{2696}\u{FE0F}', status: 'warning' },
+  { id: 'match', label: 'Match', icon: '\u{1F3AF}', status: 'success' },
+];
+const ITERATION_ARROWS: FlowArrow[] = [
+  { from: 'wordlist', to: 'hashfn', type: 'solid' },
+  { from: 'hashfn', to: 'compare', type: 'solid' },
+  { from: 'compare', to: 'match', type: 'dashed' },
+];
+
+const HARVEST_NODES: FlowNode[] = [
+  { id: 'cracked', label: 'Cracked', icon: '\u{1F480}', status: 'danger' },
+  { id: 'plain', label: 'Plaintext', icon: '\u{1F4DD}', status: 'active' },
+  { id: 'harvest', label: 'Harvest', icon: '\u{1F3C6}', status: 'success' },
+];
+const HARVEST_ARROWS: FlowArrow[] = [
+  { from: 'cracked', to: 'plain', type: 'solid' },
+  { from: 'plain', to: 'harvest', type: 'solid' },
+];
+
+const PASSWORD_FLOWS: { nodes: FlowNode[]; arrows: FlowArrow[] }[] = [
+  { nodes: HASH_CRACKING_NODES, arrows: HASH_CRACKING_ARROWS },
+  { nodes: ITERATION_NODES, arrows: ITERATION_ARROWS },
+  { nodes: HARVEST_NODES, arrows: HARVEST_ARROWS },
+  { nodes: HASH_CRACKING_NODES, arrows: HASH_CRACKING_ARROWS },
+  { nodes: HARVEST_NODES, arrows: HARVEST_ARROWS },
+];
 
 const PasswordLab = () => {
   const [activeScenario, setActiveScenario] = useState(null);
@@ -78,54 +121,37 @@ const PasswordLab = () => {
   );
 
   if (!activeScenario) {
+    const firstScenarioWithVillain = PASSWORD_EXERCISES.find(s => s.villain);
     return (
       <div className="bg-bg min-h-full">
         <SEO title="Password Cracking Lab" description="Crack password hashes using John the Ripper and Hashcat." noindex />
-        <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Key className="w-7 h-7 text-accent" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">
-                Password <span className="text-accent">Cracking</span>
-              </h1>
-            </div>
-            <p className="text-base text-text-muted font-mono max-w-2xl">
-              Extract and crack password hashes using John the Ripper and Hashcat.
-            </p>
-          </div>
 
-          <div className="border-t border-border/30 mb-10" />
+        <LabHeroSection
+          icon={<Key className="w-8 h-8 text-accent" />}
+          title="Password"
+          accentWord="Cracking"
+          description="Extract and crack password hashes using John the Ripper and Hashcat."
+          villain={firstScenarioWithVillain?.villain}
+        />
+
+        <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
+          <div className="border-t border-border/30" />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {PASSWORD_EXERCISES.map((scenario, index) => (
-              <div key={scenario.id} className="relative">
-                <ScenarioCard
-                  title={scenario.title}
-                  difficulty={scenario.difficulty}
-                  description={scenario.description}
-                  cpReward={scenario.cpReward}
-                  subtitle={scenario.hashType}
-                  onStart={() => startScenario(scenario)}
-                />
-                {scenario.villain && (
-                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{scenario.villain.avatar}</span>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                        <p className="text-xs font-bold text-text-primary">{scenario.villain.name}</p>
-                      </div>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{scenario.villain.alias}"</p>
-                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{scenario.villain.description}</p>
-                  </div>
-                )}
-              </div>
+            {PASSWORD_EXERCISES.map((scenario) => (
+              <ScenarioCard
+                key={scenario.id}
+                title={scenario.title}
+                difficulty={scenario.difficulty}
+                description={scenario.description}
+                cpReward={scenario.cpReward}
+                subtitle={scenario.hashType}
+                onStart={() => startScenario(scenario)}
+              />
             ))}
           </div>
 
-          <div className="mt-10"><RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" /></div>
+          <RelatedContent {...getRelatedContentForLab('passwords')} title="Continue This Topic" />
         </div>
       </div>
     );
@@ -146,19 +172,6 @@ const PasswordLab = () => {
         totalSteps={activeScenario.steps.length}
         simulations={simulations}
       >
-        {activeScenario.villain && (
-          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{activeScenario.villain.avatar}</span>
-              <div className="flex-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                <p className="text-sm font-bold text-text-primary">{activeScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeScenario.villain.alias})</span></p>
-                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeScenario.villain.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {activeScenario.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
           const firstIncomplete = activeScenario.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
@@ -166,12 +179,14 @@ const PasswordLab = () => {
           const isLocked = !isCompleted && index > firstIncomplete;
 
           const narratives = [
-            `🔑 Initialize your cracking session.\n\nBefore attacking, we identify the hash type and prepare our toolchain. Different hashes require different approaches:\n\n  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐\n  │  Hash File   │────▶│  Identify    │────▶│  Select Tool │\n  │  (input.txt) │     │  Hash Type   │     │  (john)      │\n  └──────────────┘     └──────────────┘     └──────────────┘\n\nFollow the command below to prepare your environment.`,
-            `⚡ Launch the cracking attack.\n\nJohn the Ripper iterates through password candidates, hashing each one and comparing against the target hash:\n\n  Password Candidates ──▶ Hash Function ──▶ Compare ──▶ Match?\n       (wordlist)          (MD5/SHA)        (target hash)\n\nExecute the command below to begin cracking.`,
-            `🎯 Extract and analyze results.\n\nOnce cracks are found, retrieve the plaintext passwords from the output. These credentials are your foothold into the target system.\n\n  Cracked Hashes ──▶ Plaintext ──▶ Credential Harvest\n\nRun the command below to view your results.`,
-            `💀 Advanced cracking techniques.\n\nIf standard dictionary attacks fail, we escalate to rule-based mutations and incremental mode. This遍历 password patterns systematically.\n\n  Rules ──▶ Wordlist Mutations ──▶ New Candidates\n  Aa1 → Aa1! → Aa1@ → ...\n\nApply advanced techniques with the command below.`,
-            `🏆 Final credential extraction.\n\nCompile all cracked passwords and verify them against the target. The flag is embedded within the recovered credential data.\n\n  ┌──────────┐     ┌──────────┐     ┌──────────┐\n  │  Cracked  │────▶│  Verify  │────▶│  Extract │\n  │  List     │     │  Access  │     │  Flag    │\n  └──────────┘     └──────────┘     └──────────┘\n\nExecute the final command to complete the exercise.`,
+            `\u{1F511} Initialize your cracking session.\n\nBefore attacking, we identify the hash type and prepare our toolchain. Different hashes require different approaches.\n\nFollow the command below to prepare your environment.`,
+            `\u{26A1} Launch the cracking attack.\n\nJohn the Ripper iterates through password candidates, hashing each one and comparing against the target hash.\n\nExecute the command below to begin cracking.`,
+            `\u{1F3AF} Extract and analyze results.\n\nOnce cracks are found, retrieve the plaintext passwords from the output. These credentials are your foothold into the target system.\n\nRun the command below to view your results.`,
+            `\u{1F480} Advanced cracking techniques.\n\nIf standard dictionary attacks fail, we escalate to rule-based mutations and incremental mode.\n\nApply advanced techniques with the command below.`,
+            `\u{1F3C6} Final credential extraction.\n\nCompile all cracked passwords and verify them against the target. The flag is embedded within the recovered credential data.\n\nExecute the final command to complete the exercise.`,
           ];
+
+          const flow = PASSWORD_FLOWS[index % PASSWORD_FLOWS.length];
 
           return (
             <WalkthroughStep
@@ -187,7 +202,9 @@ const PasswordLab = () => {
               labId="passwords"
               onFlagSubmit={handleFlagSubmit}
               onComplete={() => handleStepComplete(index)}
-            />
+            >
+              <FlowDiagram nodes={flow.nodes} arrows={flow.arrows} direction="horizontal" />
+            </WalkthroughStep>
           );
         })}
 

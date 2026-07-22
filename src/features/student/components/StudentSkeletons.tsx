@@ -10,24 +10,24 @@ const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean
         <Skeleton className="h-3 w-24 bg-border/30 rounded" />
       </div>
     )}
-    <div className="rounded-2xl border border-bg/20 bg-accent p-8 sm:p-10 lg:p-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 overflow-hidden relative">
+    <div className="rounded-2xl border border-border/30 bg-bg-card p-6 sm:p-8 lg:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 overflow-hidden relative">
       <div className="absolute inset-0 opacity-10">
-        <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.15)_39px,rgba(255,255,255,0.15)_40px)] bg-[length:40px_40px]" />
+        <div className="w-full h-full bg-[repeating-linear-gradient(90deg,transparent,transparent_39px,rgba(255,255,255,0.05)_39px,rgba(255,255,255,0.05)_40px)] bg-[length:40px_40px]" />
       </div>
-      <div className="relative z-10 w-full sm:w-auto min-w-0 space-y-3">
-        <div className="flex items-center gap-4 mb-3">
-          <div className="w-12 h-12 rounded-2xl bg-bg/15 flex items-center justify-center">
-            <Skeleton className="w-6 h-6 bg-bg/30 rounded" />
+      <div className="relative z-10 w-full sm:w-auto min-w-0 space-y-2">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-xl bg-bg-elevated flex items-center justify-center">
+            <Skeleton className="w-5 h-5 bg-border/30 rounded" />
           </div>
         </div>
-        <Skeleton className="h-8 w-56 bg-bg/20 rounded-lg sm:h-9 lg:h-10" />
-        <Skeleton className="h-4 w-72 bg-bg/15 rounded" />
+        <Skeleton className="h-6 w-56 bg-border/30 rounded-lg sm:h-7 lg:h-8" />
+        <Skeleton className="h-3 w-72 bg-border/20 rounded" />
         {stats && stats > 0 && (
-          <div className="flex items-center gap-4 mt-5">
+          <div className="flex items-center gap-3 mt-3">
             {[...Array(stats)].map((_, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <Skeleton className="h-6 w-16 bg-bg/20 rounded" />
-                <Skeleton className="h-3 w-14 bg-bg/15 rounded" />
+              <div key={i} className="flex items-center gap-1.5">
+                <Skeleton className="h-4 w-14 bg-border/30 rounded" />
+                <Skeleton className="h-2.5 w-12 bg-border/20 rounded" />
               </div>
             ))}
           </div>
@@ -35,7 +35,7 @@ const OverviewCardSkeleton = ({ action, stats, breadcrumbs }: { action?: boolean
       </div>
       {action && (
         <div className="relative z-10 shrink-0 w-full sm:w-auto">
-          <Skeleton className="h-11 w-full sm:w-40 bg-bg/20 rounded-xl" />
+          <Skeleton className="h-9 w-full sm:w-36 bg-border/30 rounded-xl" />
         </div>
       )}
     </div>
@@ -227,55 +227,6 @@ export const SettingsSkeleton = () => (
             <Skeleton className="h-16 w-full bg-border/30 rounded-xl" />
             <Skeleton className="h-10 w-full bg-border/30 rounded-xl" />
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-/* ─── News Feed Page Skeleton ───────────────────────────────────────────────── */
-export const NewsFeedSkeleton = () => (
-  <div className="bg-bg">
-    <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-      <div className=" px-2 sm:px-6 md:px-8 pt-6 pb-8 space-y-6">
-        <OverviewCardSkeleton action />
-        {/* Featured carousel */}
-        <div className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-          <div className="flex flex-col lg:flex-row">
-            <Skeleton className="w-full lg:w-[45%] h-[180px] sm:h-[200px] lg:h-[280px] bg-border/30" />
-            <div className="flex-1 p-5 sm:p-6 lg:p-8 space-y-3">
-              <div className="flex gap-3">
-                <Skeleton className="h-3 w-20 bg-border/30 rounded" />
-                <Skeleton className="h-3 w-24 bg-border/30 rounded" />
-              </div>
-              <Skeleton className="h-8 w-3/4 bg-border/30 rounded-lg" />
-              <Skeleton className="h-4 w-full bg-border/30 rounded" />
-              <Skeleton className="h-3 w-32 bg-border/30 rounded mt-4" />
-            </div>
-          </div>
-        </div>
-        {/* Grid */}
-        <Skeleton className="h-3 w-48 bg-border/30 rounded" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="rounded-2xl border border-border/30 bg-bg-card overflow-hidden">
-              <Skeleton className="h-48 w-full bg-border/30" />
-              <div className="p-5 space-y-3">
-                <div className="flex items-center gap-2">
-                  <Skeleton className="h-3 w-20 bg-border/30 rounded" />
-                  <Skeleton className="h-3 w-24 bg-border/30 rounded" />
-                </div>
-                <div className="flex gap-2">
-                  <Skeleton className="h-4 w-14 bg-border/30 rounded-lg" />
-                  <Skeleton className="h-4 w-18 bg-border/30 rounded-lg" />
-                  <Skeleton className="h-4 w-12 bg-border/30 rounded-lg" />
-                </div>
-                <Skeleton className="h-4 w-3/4 bg-border/30 rounded" />
-                <Skeleton className="h-3 w-full bg-border/30 rounded" />
-                <Skeleton className="h-3 w-1/2 bg-border/30 rounded" />
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

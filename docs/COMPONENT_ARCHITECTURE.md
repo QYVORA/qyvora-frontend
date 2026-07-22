@@ -87,7 +87,7 @@ graph TD
 | `ScrollReveal` | Intersection Observer scroll animations |
 | `ScrollToTop` | Reset scroll on route change |
 | `SEO` | Dynamic meta tags via react-helmet-async |
-| `PublicHeroSection` | Public page hero with Globe, accent bg, `data-nav-invert` |
+| `PublicHeroSection` | Public page hero with Globe, dark bg (`bg-bg`), `data-nav-invert` |
 | `ScenarioCard` | Lab scenario selection card |
 | `ShareProfile` | Profile sharing modal |
 | `LanguageSwitcher` | i18n language selector |
@@ -120,8 +120,7 @@ graph TD
 |---------|------|-------------|
 | `admin` | `features/admin/` | Admin dashboard, user management |
 | `auth` | `features/auth/` | Login, register, forgot password |
-| `marketing` | `features/marketing/` | Landing pages, public pages, events |
-| `news` | `features/news/` | News feed |
+| `marketing` | `features/marketing/` | Landing pages, public pages |
 | `student` | `features/student/` | Main student experience (largest) |
 
 ### Student Feature Structure
