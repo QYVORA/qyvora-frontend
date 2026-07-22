@@ -90,7 +90,6 @@ export const SITE_CONFIG = {
         key: 'learn',
         label: 'Learn',
         items: [
-          { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
           { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
           { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
         ],
@@ -105,14 +104,12 @@ export const SITE_CONFIG = {
       },
     ],
     platform: [
-      { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Hacker Protocol Bootcamp' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
       { key: 'services', label: 'Services', path: '/services', desc: 'Pentesting services' },
     ],
     company: [
-      { key: 'courses', label: 'Courses', path: '/courses', desc: 'Self-paced courses' },
       { key: 'hpb', label: 'HPB', path: '/hpb', desc: 'Bootcamp phases' },
       { key: 'anansi', label: 'Anansi', path: '/anansi', desc: 'Attack Surface Intelligence' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', desc: 'Top operators ranking' },
