@@ -65,6 +65,12 @@ export interface PrivescScenario {
   filesystem: Record<string, string>;
   solutionCommands: string[];
   story?: LabStory;
+  villain?: {
+    name: string;
+    alias: string;
+    description: string;
+    avatar: string;
+  };
 }
 
 // ── Lab Story System ───────────────────────────────────────────────────────

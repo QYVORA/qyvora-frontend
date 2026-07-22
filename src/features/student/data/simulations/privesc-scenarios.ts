@@ -8,6 +8,12 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       'You have a low-privilege shell on a Linux server. A routine audit reveals that common utilities may have been misconfigured. Explore the filesystem to find a way to escalate to root and capture the flag stored in /root/flag.txt.',
     technique: 'SUID Binary',
     difficulty: 'beginner',
+    villain: {
+      name: 'Dr. Elena Vasquez',
+      alias: 'The Architect of Chaos',
+      description: 'A rogue sysadmin who deliberately weakened server security to create backdoors for her hacking group.',
+      avatar: '🧪',
+    },
     hints: [
       'Run: find / -perm -4000 -type f 2>/dev/null',
       'The find binary has the SUID bit set — it can execute commands as the file owner.',
@@ -19,21 +25,44 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
         {
           id: 'ch1-discovery',
           title: 'Chapter 1: Routine Reconnaissance',
-          narrative: `🔮 Valkyrie: "We have a low-privilege shell on this staging server. Before we do anything dangerous, let's map out our surroundings. Every good hack starts with recon."\n\n🗺️ Attack Flow:\n  [You] ──ls──> [Filesystem] ──identify──> [SUID Binary] ──exploit──> [root]\n\nStart by listing files and checking where you are. The filesystem tells the story if you know how to read it.`,
+          narrative: `🔮 Valkyrie: "We have a low-privilege shell on this staging server. Before we do anything dangerous, let's map out our surroundings. Every good hack starts with recon."
+
+Dr. Elena Vasquez — The Architect of Chaos — was NovaCorp's lead sysadmin. She deliberately weakened security to create backdoors for her hacking group. Let's trace her steps.
+
+🗺️ Attack Flow:
+[You] ──ls──> [Filesystem] ──identify──> [SUID Binary] ──exploit──> [root]
+
+Start by listing files and checking where you are. The filesystem tells the story if you know how to read it.`,
           triggers: [{ type: 'command', value: 'ls' }, { type: 'command', value: 'pwd' }],
           hint: 'Start by exploring your surroundings with ls -la',
         },
         {
           id: 'ch2-finding',
           title: 'Chapter 2: The Rogue Binary',
-          narrative: `🔍 "Good recon. Now let's dig deeper. The admin notes mention a tool called 'find' with SUID permissions. SUID = Set User ID — when a binary has this bit, it runs as the FILE OWNER, not the person who executed it."\n\n⚠️ If 'find' has SUID and is owned by root, we can use it to run commands as root!\n\n🔎 The find command supports -exec, which lets you execute arbitrary commands. This is the vulnerability.`,
+          narrative: `🔍 "Good recon. Now let's dig deeper. The admin notes mention a tool called 'find' with SUID permissions. SUID = Set User ID — when a binary has this bit, it runs as the FILE OWNER, not the person who executed it."
+
+Dr. Vasquez was clever — she used a legitimate tool as her backdoor. SUID binaries are dangerous when misconfigured.
+
+⚠️ If 'find' has SUID and is owned by root, we can use it to run commands as root!
+
+🔎 The find command supports -exec, which lets you execute arbitrary commands. This is the vulnerability.`,
           triggers: [{ type: 'command', value: 'find' }, { type: 'output_contains', value: '4755' }],
           hint: 'Search for SUID binaries: find / -perm -4000 -type f 2>/dev/null',
         },
         {
           id: 'ch3-escalation',
           title: 'Chapter 3: Exploitation',
-          narrative: `💀 "Bingo! find has SUID bit set (mode 4755). Here's the exploit chain:\n\n  find /tmp -exec /bin/bash -p \\;\n    │\n    ├── find runs as root (SUID)\n    ├── -exec executes /bin/bash -p\n    └── -p preserves the elevated UID → root shell!\n\n🎯 Once you have root, read the flag at /root/flag.txt. Game over."`,
+          narrative: `💀 "Bingo! find has SUID bit set (mode 4755). Here's the exploit chain:
+
+  find /tmp -exec /bin/bash -p \\
+    │
+    ├── find runs as root (SUID)
+    ├── -exec executes /bin/bash -p
+    └── -p preserves the elevated UID → root shell!
+
+Dr. Vasquez thought she was clever with this backdoor. But we've turned her own weapon against her.
+
+🎯 Once you have root, read the flag at /root/flag.txt. Game over."`,
           triggers: [{ type: 'file_access', value: '/root/flag.txt' }],
           hint: 'Use find with -exec to spawn a root shell: find /tmp -exec /bin/bash -p \\;',
         },

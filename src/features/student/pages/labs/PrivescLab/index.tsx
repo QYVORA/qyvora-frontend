@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Shield } from 'lucide-react';
+import { Shield, Skull } from 'lucide-react';
 import SEO from '@/shared/components/SEO';
 import ScenarioCard from '@/shared/components/ScenarioCard';
 import { WalkthroughLayout } from '@/shared/components/walkthrough/WalkthroughLayout';
@@ -95,17 +95,31 @@ const PrivescLab = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PRIVESC_SCENARIOS.map((scenario, i) => (
-              <ScenarioCard
-                key={scenario.id}
-                title={scenario.title}
-                difficulty={scenario.difficulty}
-                description={scenario.technique}
-                cpReward={50}
-                onStart={() => {
-                  setCompletedSteps(new Set());
-                  setSelectedScenario(scenario);
-                }}
-              />
+              <div key={scenario.id} className="relative">
+                <ScenarioCard
+                  title={scenario.title}
+                  difficulty={scenario.difficulty}
+                  description={scenario.technique}
+                  cpReward={50}
+                  onStart={() => {
+                    setCompletedSteps(new Set());
+                    setSelectedScenario(scenario);
+                  }}
+                />
+                {scenario.villain && (
+                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{scenario.villain.avatar}</span>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                        <p className="text-xs font-bold text-text-primary">{scenario.villain.name}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{scenario.villain.alias}"</p>
+                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{scenario.villain.description}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -140,6 +154,19 @@ const PrivescLab = () => {
         totalSteps={chapters.length}
         simulations={simulations}
       >
+        {selectedScenario.villain && (
+          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{selectedScenario.villain.avatar}</span>
+              <div className="flex-1">
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                <p className="text-sm font-bold text-text-primary">{selectedScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({selectedScenario.villain.alias})</span></p>
+                <p className="text-xs font-mono text-text-muted/70 mt-1">{selectedScenario.villain.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {chapters.map((chapter, i) => {
           const { isLocked, isCompleted, isActive } = getStepState(i);
           return (

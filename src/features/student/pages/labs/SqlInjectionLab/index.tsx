@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal } from 'lucide-react';
+import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Skull } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
@@ -98,15 +98,29 @@ const SqlInjectionLab = () => {
           <div className="border-t border-border/30 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {SQL_INJECTION_TARGETS.map((target, index) => (
-              <ScenarioCard
-                key={target.id}
-                title={target.name}
-                difficulty={target.difficulty}
-                description={target.description}
-                cpReward={target.cpReward}
-                subtitle={`${target.injectionType} · ${target.dbms}`}
-                onStart={() => startTarget(target)}
-              />
+              <div key={target.id} className="relative">
+                <ScenarioCard
+                  title={target.name}
+                  difficulty={target.difficulty}
+                  description={target.description}
+                  cpReward={target.cpReward}
+                  subtitle={`${target.injectionType} · ${target.dbms}`}
+                  onStart={() => startTarget(target)}
+                />
+                {target.villain && (
+                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{target.villain.avatar}</span>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                        <p className="text-xs font-bold text-text-primary">{target.villain.name}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{target.villain.alias}"</p>
+                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{target.villain.description}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -136,6 +150,19 @@ const SqlInjectionLab = () => {
             <span className="text-accent font-black">Target:</span> {activeTarget.url}
           </p>
         </div>
+
+        {activeTarget.villain && (
+          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{activeTarget.villain.avatar}</span>
+              <div className="flex-1">
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                <p className="text-sm font-bold text-text-primary">{activeTarget.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeTarget.villain.alias})</span></p>
+                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeTarget.villain.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeTarget.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
