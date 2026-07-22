@@ -170,14 +170,14 @@ const LandingLeaderboardSection = () => {
                       'rounded-lg overflow-hidden',
                       isTopThree
                         ? `${TOP_THREE_RING[entry!.rank - 1]} ${TOP_THREE_GLOW[entry!.rank - 1]} border-2`
-                        : 'border border-border/30',
+                        : '',
                       'hover:z-20',
                       isHovered && 'z-20',
                     ].join(' ')}
                     style={{ width: `${cellSize}px`, height: `${cellSize}px` }}
                   >
                     <div className="flex items-center justify-center [&_svg]:w-full [&_svg]:h-full">
-                      <Identicon value={entry!.hackerHandle || entry!.name} size={cellSize} />
+                      <Identicon value={entry!.hackerHandle || entry!.name} size={cellSize} className={isTopThree ? 'border-0' : ''} />
                     </div>
 
                     <div className="absolute top-[3px] left-[3px] z-10">

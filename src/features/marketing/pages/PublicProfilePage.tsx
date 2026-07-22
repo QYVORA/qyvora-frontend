@@ -10,7 +10,6 @@ import { Navbar } from '../../../shared/components/layout';
 import { Footer } from '../../../shared/components/layout';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import ProfileStatCard from '../../../shared/components/ui/CardStat';
-import ProfileSectionNav from '../../../shared/components/profile/ProfileSectionNav';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
@@ -119,9 +118,6 @@ const PublicProfile: React.FC = () => {
           { name: handle ? `@${handle}` : 'Profile', item: location.pathname }
         ]}
       />
-
-      {/* Mobile section nav */}
-      <ProfileSectionNav visibleSections={visibleSections} />
 
       <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-16 pt-28 md:pt-24 pb-20 lg:pb-24">
           {/* Main content */}
