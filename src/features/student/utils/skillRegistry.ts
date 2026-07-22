@@ -111,13 +111,8 @@ function buildLabItems(): LearningItem[] {
   const LAB_CATEGORIES: { id: string; scenarios: string[]; skillKey: string }[] = [
     { id: 'privesc',           scenarios: ['privesc-001','privesc-002','privesc-003','privesc-004','privesc-005','privesc-006','privesc-007','privesc-008','privesc-009','privesc-010'], skillKey: 'linux' },
     { id: 'passwords',         scenarios: ['pwd-crack-md5-simple','pwd-crack-sha256-common','pwd-crack-bcrypt','pwd-crack-ntlm-windows','pwd-crack-shadow-extract','pwd-crack-multi-hash'], skillKey: 'tools' },
-    { id: 'web-exploitation',  scenarios: ['vuln-001','vuln-002','vuln-003','vuln-004','vuln-005','vuln-006','vuln-007','vuln-008','vuln-010'], skillKey: 'web' },
     { id: 'sql-injection',     scenarios: ['sqli-union-1','sqli-blind-1','sqli-time-1','sqli-error-1','sqli-second-1','sqli-stacked-1'], skillKey: 'web' },
-    { id: 'phishing',          scenarios: ['phishing-credential-harvest','phishing-ceo-fraud','phishing-tech-support','phishing-spear-phishing','phishing-qr-code'], skillKey: 'social' },
-    { id: 'proxy',             scenarios: ['proxy-intercept-1','proxy-tamper-1','proxy-session-1'], skillKey: 'networking' },
-    { id: 'traffic',           scenarios: ['pcap-password-1','pcap-dns-1','pcap-arp-1','pcap-c2-1'], skillKey: 'networking' },
     { id: 'osint',             scenarios: ['osint-email-1','osint-social-1','osint-subdomain-1','osint-breach-1','osint-full-1'], skillKey: 'mindset' },
-    { id: 'wireless',          scenarios: ['wifi-wpa2-1','wifi-evil-1','wifi-wep-1'], skillKey: 'social' },
     { id: 'kill-chain',        scenarios: ['kc-internal-1','kc-web-1'], skillKey: 'mindset' },
   ];
 

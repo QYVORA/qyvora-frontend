@@ -5,18 +5,13 @@ import SEO from '@/shared/components/SEO';
 import LabCard from './LabCard';
 import { LearningOverviewCard, LearningFilterStrip } from '@/features/student/components/learning';
 
-const LABS_IDS = ['privesc', 'passwords', 'webapp', 'sqli', 'phishing', 'proxy', 'traffic', 'osint', 'wireless', 'killchain'] as const;
+const LABS_IDS = ['privesc', 'passwords', 'sqli', 'osint', 'killchain'] as const;
 
 const LABS = [
   { id: 'privesc', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
   { id: 'passwords', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300' },
-  { id: 'webapp', route: '/dashboard/labs/web-exploitation', accentColor: '#EF4444', difficulty: 'beginner-advanced', cpReward: '100-400' },
   { id: 'sqli', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400' },
-  { id: 'phishing', route: '/dashboard/labs/phishing', accentColor: '#8B5CF6', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'proxy', route: '/dashboard/labs/proxy', accentColor: '#10B981', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'traffic', route: '/dashboard/labs/traffic', accentColor: '#84CC16', difficulty: 'beginner-advanced', cpReward: '150-400' },
   { id: 'osint', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'wireless', route: '/dashboard/labs/wireless', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '200-400' },
   { id: 'killchain', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600' },
 ];
 

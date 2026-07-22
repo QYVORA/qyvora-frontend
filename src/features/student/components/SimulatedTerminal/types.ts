@@ -59,7 +59,9 @@ export interface PipelineStage {
 }
 
 export interface TerminalContext {
-  type: 'dashboard' | 'bootcamp' | 'course';
+  type: 'dashboard' | 'bootcamp' | 'course' | 'lab';
+  labId?: string;
+  scenarioId?: string;
   bootcampId?: string;
   phaseId?: string;
   roomId?: string;

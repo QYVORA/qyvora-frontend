@@ -47,7 +47,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/trainee/notes.txt':
         '# System Notes\n- The sysadmin installed find with SUID for recursive audits\n- /root/flag.txt contains today\'s flag\n- Do NOT share root credentials',
       '/usr/bin/find': '[SUID binary — owned by root, mode 4755]',
-      '/root/flag.txt': 'FLAG{su1d_b1nary_3scalation_f0und}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'find / -perm -4000 -type f 2>/dev/null',
@@ -101,7 +101,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/analyst/.bash_history': 'sudo vim /etc/nginx/nginx.conf',
       '/home/analyst/README.txt':
         '# Analyst Workstation\n- You have sudo access to vim for editing configs\n- Flag is in /root/flag.txt\n- Contact admin if you need additional access',
-      '/root/flag.txt': 'FLAG{sudo_vim_3sc4pe_to_ro0t}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'sudo -l',
@@ -162,7 +162,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
         '#!/bin/bash\n# Scheduled cleanup — runs every minute\n# Last modified by deploy bot 2025-11-03\nLOGDIR=/var/log/tmp\nmkdir -p $LOGDIR\nfind /tmp -type f -mtime +1 -delete\nfind /var/tmp -type f -mtime +1 -delete\necho "[$(date)] Cleanup complete" >> /var/log/cleanup.log',
       '/home/dev/notes.txt':
         '# Dev Notes\n- The cleanup script runs as root every minute\n- You can write to /opt/cleanup.sh\n- /root/flag.txt is the target\n- Make sure your payload writes to a location you can read',
-      '/root/flag.txt': 'FLAG{cr0n_j0b_writable_sc1pt_pr1vesc}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'cat /etc/crontab',
@@ -226,7 +226,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/ubuntu/.bash_history': 'ls -la /etc/passwd\nfind / -writable -type f 2>/dev/null',
       '/home/ubuntu/hint.txt':
         '# Recon Complete\n- /etc/passwd is world-writable!\n- You can add a user with UID 0 to gain root\n- Generate a password hash: openssl passwd -1 -salt xyz newpass\n- Then add the line to /etc/passwd\n- The flag is in /root/flag.txt',
-      '/root/flag.txt': 'FLAG{wr1t4ble_3tc_p4sswd_3scalation}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'ls -la /etc/passwd',
@@ -299,7 +299,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/dev/readme.txt':
         '# Security Audit Notes\n- Kernel is 3.13.0-24-generic — UNPATCHED\n- This version is vulnerable to CVE-2015-1328 (overlayfs)\n- gcc is installed at /usr/bin/gcc\n- Public exploits available on exploit-db\n- /root/flag.txt is the target',
       '/usr/bin/gcc': '[available — gcc 4.8.4]',
-      '/root/flag.txt': 'FLAG{k3rn3l_3xplo1t_cve_2015_1328}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'uname -a',
@@ -363,7 +363,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/deploy/.bash_history': 'getcap -r / 2>/dev/null',
       '/home/deploy/deploy-note.txt':
         '# Deployment Notes\n- python3 has cap_setuid for the deploy user\n- Getcap output: /usr/bin/python3.4 cap_setuid=ep\n- The flag is in /root/flag.txt\n- Hint: Python\'s os module can call setuid(0)',
-      '/root/flag.txt': 'FLAG{c4p4b1l1ty_c4p_setuid_pyth0n}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'getcap -r / 2>/dev/null',
@@ -433,7 +433,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
         'root:x:0:0:root:/root:/bin/bash\ndev:x:1004:1004::/home/dev:/bin/bash',
       '/home/dev/notes.txt':
         '# PATH Hijack Lab\n- /usr/local/bin/db_backup.sh runs as root via cron\n- It calls "backup" without a full path\n- Create /home/dev/bin/backup with your payload\n- Set PATH=/home/dev/bin:$PATH\n- The flag is in /root/flag.txt',
-      '/root/flag.txt': 'FLAG{p4th_h1j4ck_pr1vesc_cr0n}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'cat /usr/local/bin/db_backup.sh',
@@ -499,7 +499,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/trainee/docker-lab-notes.txt':
         '# Docker Group Lab\n- Your user (trainee) is in the docker group\n- Docker is installed and the daemon is running\n- You can mount the host filesystem into a container\n- Target: /root/flag.txt on the host\n- Hint: docker run -v /:/mnt --rm -it alpine chroot /mnt <command>',
       '/var/run/docker.sock': '[Docker socket — accessible by docker group]',
-      '/root/flag.txt': 'FLAG{d0ck3r_gr0up_m0unt_h0st_f1lesystem}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'id',
@@ -568,7 +568,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/home/nfsuser/exploit_template.c':
         '#include <stdio.h>\n#include <stdlib.h>\n#include <unistd.h>\nint main(void) {\n    setuid(0);\n    setgid(0);\n    system("/bin/bash -p");\n    return 0;\n}',
       '/srv/nfs/data': '[NFS share — mounted from client with no_root_squash]',
-      '/root/flag.txt': 'FLAG{nfs_n0_r00t_sqush_3scalation}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'cat /etc/exports',
@@ -641,7 +641,7 @@ export const PRIVESC_SCENARIOS: PrivescScenario[] = [
       '/var/log/scratch.log': '[cron appends contents of scratch.txt here]',
       '/home/user/race-notes.txt':
         '# Sticky Bit Race Lab\n- /tmp/shared has NO sticky bit — any user can delete any file\n- A cron job reads /tmp/shared/scratch.txt every minute\n- Replace scratch.txt with a symlink to /root/flag.txt\n- Then check /var/log/scratch.log for the flag contents\n- Race condition: delete and recreate before cron reads it',
-      '/root/flag.txt': 'FLAG{st1cky_b1t_r4ce_c0nd1t10n}',
+      '/root/flag.txt': '[flag verified server-side]',
     },
     solutionCommands: [
       'ls -la /tmp/shared/',

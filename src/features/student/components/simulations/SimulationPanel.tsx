@@ -1,6 +1,5 @@
-import { X, Maximize2, Minimize2 } from 'lucide-react';
+import { Maximize2, Minimize2 } from 'lucide-react';
 import { useState } from 'react';
-import { useSimulation } from './SimulationContext';
 import { SIMULATION_REGISTRY, type SimulationType } from './types';
 
 interface SimulationPanelProps {
@@ -12,11 +11,8 @@ interface SimulationPanelProps {
 }
 
 export function SimulationPanel({ simulations, defaultHeight = 'h-[400px]' }: SimulationPanelProps) {
-  const { panel } = useSimulation();
   const [activeTab, setActiveTab] = useState<SimulationType | null>(simulations[0]?.type || null);
   const [expanded, setExpanded] = useState(false);
-
-  const active = simulations.find(s => s.type === activeTab);
 
   if (simulations.length === 0) return null;
 
@@ -43,9 +39,18 @@ export function SimulationPanel({ simulations, defaultHeight = 'h-[400px]' }: Si
         </div>
       </div>
 
-      {/* Content */}
+      {/* Content — each simulation rendered with data-active attribute */}
       <div className={`${expanded ? 'h-[calc(100%-40px)]' : 'h-[calc(100%-40px)]'} min-h-0`}>
-        {active?.content || (
+        {simulations.map(sim => (
+          <div
+            key={sim.type}
+            data-active={activeTab === sim.type ? 'true' : 'false'}
+            className={`h-full ${activeTab === sim.type ? '' : 'hidden'}`}
+          >
+            {sim.content}
+          </div>
+        ))}
+        {simulations.length === 0 && (
           <div className="flex items-center justify-center h-full text-text-muted/50 text-[10px] font-mono">
             No simulation loaded
           </div>

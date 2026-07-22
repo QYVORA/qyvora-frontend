@@ -13,31 +13,6 @@ export const NETWORK_PROFILES: NetworkProfile[] = [
     ],
   },
   {
-    id: 'networking',
-    label: 'Networking Lab',
-    subnet: '10.0.0.0/24',
-    gateway: '10.0.0.1',
-    dns: ['10.0.0.2', '8.8.8.8'],
-    devices: [
-      { ip: '10.0.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }, { port: 443, protocol: 'tcp', service: 'https', version: 'nginx 1.24', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.2', hostname: 'dns-server', os: 'Ubuntu 22.04 LTS', vendor: 'Linux', role: 'DNS Server', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.9', state: 'open' }, { port: 53, protocol: 'udp', service: 'dns', version: 'BIND 9.18', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.21', hostname: 'dev-workstation', os: 'Fedora 39', vendor: 'Linux', role: 'Workstation', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 9.3', state: 'open' }, { port: 3000, protocol: 'tcp', service: 'http', version: 'Node.js', state: 'open' }], discoverable: true },
-    ],
-  },
-  {
-    id: 'web-exploitation',
-    label: 'Web Exploitation Lab',
-    subnet: '10.0.0.0/24',
-    gateway: '10.0.0.1',
-    dns: ['10.0.0.2'],
-    devices: [
-      { ip: '10.0.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.5', hostname: 'web-server', os: 'Debian 12', vendor: 'Linux', role: 'Web Server', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 9.2', state: 'open' }, { port: 80, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }, { port: 443, protocol: 'tcp', service: 'https', version: 'nginx 1.24', state: 'open' }, { port: 8080, protocol: 'tcp', service: 'http', version: 'Apache Tomcat', state: 'filtered' }], discoverable: true },
-      { ip: '10.0.0.6', hostname: 'db-server', os: 'Ubuntu 20.04 LTS', vendor: 'Linux', role: 'Database', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.0', state: 'open' }, { port: 3306, protocol: 'tcp', service: 'mysql', version: 'MySQL 8.0.35', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.51', hostname: 'vulnerable-app', os: 'Ubuntu 20.04 LTS', vendor: 'Linux', role: 'Target', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'Apache 2.4', state: 'open' }, { port: 8080, protocol: 'tcp', service: 'http', version: 'Tomcat', state: 'open' }], discoverable: false },
-    ],
-  },
-  {
     id: 'sql-injection',
     label: 'SQL Injection Lab',
     subnet: '10.0.0.0/24',
@@ -47,18 +22,6 @@ export const NETWORK_PROFILES: NetworkProfile[] = [
       { ip: '10.0.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
       { ip: '10.0.0.5', hostname: 'web-server', os: 'Debian 12', vendor: 'Linux', role: 'Web Server', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }, { port: 443, protocol: 'tcp', service: 'https', version: 'nginx 1.24', state: 'open' }], discoverable: true },
       { ip: '10.0.0.6', hostname: 'db-server', os: 'Ubuntu 20.04 LTS', vendor: 'Linux', role: 'Database', ports: [{ port: 3306, protocol: 'tcp', service: 'mysql', version: 'MySQL 8.0.35', state: 'open' }], discoverable: true },
-    ],
-  },
-  {
-    id: 'proxy-traffic',
-    label: 'Proxy & Traffic Lab',
-    subnet: '10.0.0.0/24',
-    gateway: '10.0.0.1',
-    dns: ['10.0.0.2'],
-    devices: [
-      { ip: '10.0.0.1', hostname: 'gateway', os: 'Cisco IOS 15.7', vendor: 'Cisco', role: 'Router', ports: [{ port: 22, protocol: 'tcp', service: 'ssh', version: 'OpenSSH 8.4', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.5', hostname: 'web-server', os: 'Debian 12', vendor: 'Linux', role: 'Web Server', ports: [{ port: 80, protocol: 'tcp', service: 'http', version: 'nginx 1.24', state: 'open' }], discoverable: true },
-      { ip: '10.0.0.10', hostname: 'file-server', os: 'Windows Server 2022', vendor: 'Microsoft', role: 'File Server', ports: [{ port: 445, protocol: 'tcp', service: 'smb', version: 'SMB 3.1.1', state: 'open' }, { port: 3389, protocol: 'tcp', service: 'rdp', version: 'RDP', state: 'filtered' }], discoverable: true },
     ],
   },
   {
@@ -85,13 +48,8 @@ export function getNetworkProfileForLab(labId: string): NetworkProfile {
   const map: Record<string, string> = {
     privesc: 'default',
     passwords: 'default',
-    'web-exploitation': 'web-exploitation',
     'sql-injection': 'sql-injection',
-    phishing: 'default',
-    proxy: 'proxy-traffic',
-    traffic: 'proxy-traffic',
     osint: 'default',
-    wireless: 'default',
     'kill-chain': 'kill-chain',
   };
   return NETWORK_PROFILES.find(p => p.id === (map[labId] || 'default')) || NETWORK_PROFILES[0];
@@ -101,8 +59,8 @@ export function getNetworkProfileForBootcamp(phaseId: string): NetworkProfile {
   const map: Record<string, string> = {
     phase1: 'default',
     phase2: 'default',
-    phase3: 'networking',
-    phase4: 'web-exploitation',
+    phase3: 'default',
+    phase4: 'sql-injection',
     phase5: 'default',
   };
   return NETWORK_PROFILES.find(p => p.id === (map[phaseId] || 'default')) || NETWORK_PROFILES[0];

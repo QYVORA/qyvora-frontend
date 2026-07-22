@@ -42,13 +42,8 @@ import {
 const LABS = [
   { id: 'privesc', titleKey: 'student.labs.list.privesc.title', route: '/dashboard/labs/privesc', accentColor: '#FBBF24', difficulty: 'beginner-advanced', cpReward: '50-400' },
   { id: 'passwords', titleKey: 'student.labs.list.passwords.title', route: '/dashboard/labs/passwords', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '100-300' },
-  { id: 'webapp', titleKey: 'student.labs.list.webapp.title', route: '/dashboard/labs/web-exploitation', accentColor: '#EF4444', difficulty: 'beginner-advanced', cpReward: '100-400' },
   { id: 'sqli', titleKey: 'student.labs.list.sqli.title', route: '/dashboard/labs/sql-injection', accentColor: '#06B66F', difficulty: 'beginner-advanced', cpReward: '200-400' },
-  { id: 'phishing', titleKey: 'student.labs.list.phishing.title', route: '/dashboard/labs/phishing', accentColor: '#8B5CF6', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'proxy', titleKey: 'student.labs.list.proxy.title', route: '/dashboard/labs/proxy', accentColor: '#10B981', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'traffic', titleKey: 'student.labs.list.traffic.title', route: '/dashboard/labs/traffic', accentColor: '#84CC16', difficulty: 'beginner-advanced', cpReward: '150-400' },
   { id: 'osint', titleKey: 'student.labs.list.osint.title', route: '/dashboard/labs/osint', accentColor: '#0EA5E9', difficulty: 'beginner-advanced', cpReward: '150-400' },
-  { id: 'wireless', titleKey: 'student.labs.list.wireless.title', route: '/dashboard/labs/wireless', accentColor: '#F59E0B', difficulty: 'beginner-advanced', cpReward: '200-400' },
   { id: 'killchain', titleKey: 'student.labs.list.killchain.title', route: '/dashboard/labs/kill-chain', accentColor: '#DC2626', difficulty: 'intermediate-advanced', cpReward: '500-600' },
 ];
 import CpLogo from '@/shared/components/CpLogo';
