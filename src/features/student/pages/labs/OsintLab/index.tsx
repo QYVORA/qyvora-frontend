@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe } from 'lucide-react';
+import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe, Eye } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
@@ -98,14 +98,28 @@ const OsintLab = () => {
           <div className="border-t border-border/30 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {OSINT_CHALLENGES.map((challenge, index) => (
-              <ScenarioCard
-                key={challenge.id}
-                title={challenge.title}
-                difficulty={challenge.difficulty}
-                description={challenge.description}
-                cpReward={challenge.cpReward}
-                onStart={() => startChallenge(challenge)}
-              />
+              <div key={challenge.id} className="relative">
+                <ScenarioCard
+                  title={challenge.title}
+                  difficulty={challenge.difficulty}
+                  description={challenge.description}
+                  cpReward={challenge.cpReward}
+                  onStart={() => startChallenge(challenge)}
+                />
+                {challenge.villain && (
+                  <div className="mt-3 rounded-xl border border-purple-400/20 bg-purple-400/5 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{challenge.villain.avatar}</span>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-purple-400">Target Villain</p>
+                        <p className="text-xs font-bold text-text-primary">{challenge.villain.name}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{challenge.villain.alias}"</p>
+                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{challenge.villain.description}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -130,6 +144,19 @@ const OsintLab = () => {
         totalSteps={activeChallenge.steps.length}
         simulations={simulations}
       >
+        {activeChallenge.villain && (
+          <div className="rounded-2xl border border-purple-400/20 bg-purple-400/5 p-4 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{activeChallenge.villain.avatar}</span>
+              <div className="flex-1">
+                <p className="text-[9px] font-black uppercase tracking-widest text-purple-400">Target Villain</p>
+                <p className="text-sm font-bold text-text-primary">{activeChallenge.villain.name} <span className="text-purple-400/70 font-mono text-xs">({activeChallenge.villain.alias})</span></p>
+                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeChallenge.villain.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-black text-text-primary mb-1">🎯 Target: {activeChallenge.targetName}</p>
           <p className="text-sm text-text-muted font-mono">{activeChallenge.targetDescription}</p>
@@ -144,7 +171,9 @@ const OsintLab = () => {
           const emojis = ['🔎', '🌐', '📡', '🔍', '🕵️', '🏆'];
           const emoji = emojis[index % emojis.length];
 
-          const narrative = `${emoji} OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nIntelligence Flow:\n  ┌──────────┐     ┌──────────┐     ┌──────────┐\n  │  Public  │────▶│  OSINT   │────▶│  Intel   │\n  │  Sources │     │  Tools   │     │  Gathered│\n  └──────────┘     └──────────┘     └──────────┘\n       │                │                │\n       └── Scrape ──────┘                │\n              │                          │\n              └──── Analyze ◀────────────┘\n\nExecute the command below to gather intelligence.`;
+          const narrative = index === 0 && activeChallenge.narrative
+            ? `${activeChallenge.narrative}\n\n🔎 OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`
+            : `${emoji} OSINT Reconnaissance — Step ${index + 1}\n\nTool: ${step.tool}\n\n${step.explanation}\n\nExecute the command below to gather intelligence.`;
 
           return (
             <WalkthroughStep

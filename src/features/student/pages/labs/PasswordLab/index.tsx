@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal } from 'lucide-react';
+import { Key, ArrowLeft, CheckCircle, AlertTriangle, Flag, Terminal, Skull } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { PASSWORD_EXERCISES } from '@/features/student/data/simulations/password-exercises';
@@ -99,15 +99,29 @@ const PasswordLab = () => {
           <div className="border-t border-border/30 mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {PASSWORD_EXERCISES.map((scenario, index) => (
-              <ScenarioCard
-                key={scenario.id}
-                title={scenario.title}
-                difficulty={scenario.difficulty}
-                description={scenario.description}
-                cpReward={scenario.cpReward}
-                subtitle={scenario.hashType}
-                onStart={() => startScenario(scenario)}
-              />
+              <div key={scenario.id} className="relative">
+                <ScenarioCard
+                  title={scenario.title}
+                  difficulty={scenario.difficulty}
+                  description={scenario.description}
+                  cpReward={scenario.cpReward}
+                  subtitle={scenario.hashType}
+                  onStart={() => startScenario(scenario)}
+                />
+                {scenario.villain && (
+                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{scenario.villain.avatar}</span>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                        <p className="text-xs font-bold text-text-primary">{scenario.villain.name}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{scenario.villain.alias}"</p>
+                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{scenario.villain.description}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -132,6 +146,19 @@ const PasswordLab = () => {
         totalSteps={activeScenario.steps.length}
         simulations={simulations}
       >
+        {activeScenario.villain && (
+          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{activeScenario.villain.avatar}</span>
+              <div className="flex-1">
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                <p className="text-sm font-bold text-text-primary">{activeScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeScenario.villain.alias})</span></p>
+                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeScenario.villain.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeScenario.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
           const firstIncomplete = activeScenario.steps.findIndex((_: string, i: number) => !completedSteps.has(i));

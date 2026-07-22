@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar } from 'lucide-react';
+import { Target, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Radar, Shield, Skull, Eye } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
 import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import SEO from '@/shared/components/SEO';
@@ -9,6 +9,8 @@ import { createKillChainSimulations } from '@/features/student/components/simula
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
+import { KillChainDiagramSimple } from '@/shared/components/diagrams/KillChainDiagram';
+import { cn } from '@/shared/utils/cn';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -90,14 +92,28 @@ const KillChainLab = () => {
         <div className="border-t border-border/30 mb-10" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {KILL_CHAIN_SCENARIOS.map((s, i) => (
-              <ScenarioCard
-                key={s.id}
-                title={s.title}
-                difficulty={s.difficulty}
-                description={s.description}
-                cpReward={s.cpReward}
-                onStart={() => startScenario(s)}
-            />
+              <div key={s.id} className="relative">
+                <ScenarioCard
+                  title={s.title}
+                  difficulty={s.difficulty}
+                  description={s.description}
+                  cpReward={s.cpReward}
+                  onStart={() => startScenario(s)}
+                />
+                {s.villain && (
+                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{s.villain.avatar}</span>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                        <p className="text-xs font-bold text-text-primary">{s.villain.name}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{s.villain.alias}"</p>
+                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{s.villain.description}</p>
+                  </div>
+                )}
+              </div>
           ))}
         </div>
 
@@ -125,22 +141,26 @@ const KillChainLab = () => {
           <p className="text-sm text-text-muted font-mono">🎯 {activeScenario.targetDescription}</p>
         </div>
 
+        {activeScenario.villain && (
+          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{activeScenario.villain.avatar}</span>
+              <div className="flex-1">
+                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
+                <p className="text-sm font-bold text-text-primary">{activeScenario.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeScenario.villain.alias})</span></p>
+                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeScenario.villain.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-2xl border border-border/30 bg-bg-card p-5 mb-2">
           <div className="flex items-center gap-2 mb-4"><Radar className="w-4 h-4 text-accent" /><span className="text-[9px] font-black uppercase tracking-widest text-accent">Kill Chain Progress</span></div>
-          <div className="flex items-center gap-2 flex-wrap">
-            {activeScenario.phases.map((phase, idx) => {
-              const done = completedPhases.has(phase.id);
-              const current = idx === activePhaseIndex;
-              return (
-                <div key={phase.id} className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                  done ? 'bg-accent/10 text-accent border border-accent/30' : current ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' : 'bg-white/5 text-text-muted/40 border border-border/20'
-                }`}>
-                  {done ? <CheckCircle className="w-3.5 h-3.5" /> : <span>{idx + 1}</span>}
-                  {phase.name}
-                </div>
-              );
-            })}
-          </div>
+          <KillChainDiagramSimple
+            phases={activeScenario.phases.map(p => p.name)}
+            currentPhaseIndex={activePhaseIndex}
+            completedPhaseIds={Array.from(completedPhases)}
+          />
         </div>
 
         {currentPhase && (
@@ -155,7 +175,7 @@ const KillChainLab = () => {
               const phaseIdx = activeScenario.phases.indexOf(currentPhase);
               const emoji = phaseEmojis[phaseIdx % phaseEmojis.length];
 
-              const narrative = `${emoji} ${currentPhase.name} — Command ${cmdIdx + 1}\n\n${cmd.explanation}\n\nKill Chain Phase:\n  ┌──────────┐     ┌──────────┐     ┌──────────┐\n  │  Phase   │────▶│  Execute │────▶│  Result  │\n  │  ${currentPhase.name.padEnd(7)}│     │  Command │     │  Gained  │\n  └──────────┘     └──────────┘     └──────────┘\n       │                │                │\n       └── Inject ──────┘                │\n              │                          │\n              └──── Access ◀─────────────┘\n\nExecute the command below to advance the kill chain.`;
+              const narrative = `${emoji} ${currentPhase.name} — Command ${cmdIdx + 1}\n\n${currentPhase.narrative || cmd.explanation}\n\nExecute the command below to advance the kill chain.`;
 
               return (
                 <WalkthroughStep

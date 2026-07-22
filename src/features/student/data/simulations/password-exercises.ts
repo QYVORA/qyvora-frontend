@@ -10,6 +10,13 @@ export interface PasswordExercise {
   wordlist: string;
   steps: string[];
   cpReward: number;
+  villain?: {
+    name: string;
+    alias: string;
+    description: string;
+    avatar: string;
+  };
+  narrative?: string;
 }
 
 export function getShadowFileContent(): string {
@@ -52,6 +59,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     hashContent: '5f4dcc3b5aa765d61d8327deb882cf99',
     crackedPassword: 'password',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: 'Marcus Chen',
+      alias: 'The Script Kiddie',
+      description: 'A low-level hacker who relies on pre-made tools and weak passwords. His MD5 hashes are trivial to crack.',
+      avatar: '👦',
+    },
+    narrative: `🔐 Valkyrie: "Marcus Chen — The Script Kiddie — left this MD5 hash in a config file. He thought MD5 was secure. Let's prove him wrong."
+
+MD5 is ancient — it's fast to compute and even faster to crack. Marcus used 'password' as his admin password. Classic mistake.
+
+🔑 Cracking Strategy:
+[Hash File] ──> [Identify Type] ──> [Dictionary Attack] ──> [Plaintext]`,
     steps: [
       'echo "5f4dcc3b5aa765d61d8327deb882cf99" > mystery_hash.txt',
       'hashcat -m 0 mystery_hash.txt rockyou.txt',
@@ -70,6 +89,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     hashContent: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
     crackedPassword: 'password',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: "Sarah O'Brien",
+      alias: 'The Hash Hoarder',
+      description: 'A database admin who stored passwords in SHA-256 without salt. Her hashes are vulnerable to dictionary attacks.',
+      avatar: '👩‍💻',
+    },
+    narrative: `🔓 Valkyrie: "Sarah O'Brien — The Hash Hoarder — stored user passwords in SHA-256 without salt. She thought SHA-256 was enough. It's not."
+
+SHA-256 is better than MD5, but without salt, it's still vulnerable to rainbow tables and dictionary attacks. Sarah's users are about to have a bad day.
+
+🔑 Attack Vector:
+[SHA-256 Hash] ──> [Dictionary Attack] ──> [Plaintext Password]`,
     steps: [
       'echo "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8" > user_hash.txt',
       'hashcat -m 1400 user_hash.txt rockyou.txt',
@@ -88,6 +119,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     hashContent: '$2y$10$ZxR3kL5mN7oP9rS1tV3wXyZ0aB2cD4eF6gH8jK0lM2nO4pQ6rS8tU0vW',
     crackedPassword: 's3cur3P@ss',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: 'Viktor Petrov',
+      alias: 'The Encryption Expert',
+      description: 'A security consultant who used bcrypt but chose a weak password. His "expert" reputation is about to crumble.',
+      avatar: '🧑‍🔬',
+    },
+    narrative: `🛡️ Valkyrie: "Viktor Petrov — The Encryption Expert — used bcrypt, which is good. But his password 's3cur3P@ss' is in every dictionary. His expertise is questionable."
+
+Bcrypt is slow by design — it's meant to resist brute-force attacks. But dictionary attacks still work if the password is common. Viktor's ego was his downfall.
+
+⏱️ Bcrypt Challenge:
+[Bcrypt Hash] ──> [Slow Dictionary Attack] ──> [Patience] ──> [Plaintext]`,
     steps: [
       'echo "$2y$10$ZxR3kL5mN7oP9rS1tV3wXyZ0aB2cD4eF6gH8jK0lM2nO4pQ6rS8tU0vW" > bcrypt_hash.txt',
       'hashcat -m 3200 bcrypt_hash.txt rockyou.txt --force',
@@ -106,6 +149,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     hashContent: '8846f7eaee8fb117ad06bdd830b7586c',
     crackedPassword: 'password123',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: 'James Wilson',
+      alias: 'The Windows Whisperer',
+      description: 'A Windows sysadmin who thought NTLM was secure. He used the same password across all his accounts.',
+      avatar: '🪟',
+    },
+    narrative: `🪟 Valkyrie: "James Wilson — The Windows Whisperer — stored his admin password in NTLM format. He used 'password123' across all his accounts. One password to rule them all."
+
+NTLM is fast to compute and fast to crack. James thought complexity rules made his password secure. They don't.
+
+🔑 Windows Attack:
+[NTLM Hash] ──> [Fast Dictionary Attack] ──> [Credential Reuse] ──> [Domain Access]`,
     steps: [
       'echo "8846f7eaee8fb117ad06bdd830b7586c" > ntlm_hash.txt',
       'hashcat -m 1000 ntlm_hash.txt rockyou.txt',
@@ -124,6 +179,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     hashContent: getShadowFileContent(),
     crackedPassword: 'sunshine (appuser), summer (admin)',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: 'Dr. Amara Osei',
+      alias: 'The Shadow Broker',
+      description: 'A Linux security researcher who stored weak passwords in /etc/shadow. Her SHA-512 hashes with weak salts are vulnerable.',
+      avatar: '🕵️',
+    },
+    narrative: `🕵️ Valkyrie: "Dr. Amara Osei — The Shadow Broker — stored her passwords in /etc/shadow with weak salts. She's a security researcher who should know better."
+
+Linux shadow files contain password hashes, but without proper salting and strong passwords, they're vulnerable. Dr. Osei's hypocrisy is our opportunity.
+
+🐧 Linux Attack:
+[Shadow File] ──> [Unshadow] ──> [John the Ripper] ──> [Plaintext Credentials]`,
     steps: [
       'cat /etc/shadow > shadow.txt',
       'unshadow /etc/passwd shadow.txt > unshadowed.txt',
@@ -150,6 +217,18 @@ export const PASSWORD_EXERCISES: PasswordExercise[] = [
     ].join('\n'),
     crackedPassword: 'password, letmein, qwerty, trustn01',
     wordlist: 'rockyou.txt',
+    villain: {
+      name: 'The Collective',
+      alias: 'The Hash Syndicate',
+      description: 'A group of developers who used different hash types across their applications. Their inconsistent security practices created multiple attack vectors.',
+      avatar: '👥',
+    },
+    narrative: `👥 Valkyrie: "The Hash Syndicate — a group of developers — used different hash types across their applications. Their inconsistency is our opportunity."
+
+Multiple hash types mean multiple attack vectors. The Collective thought diversity would protect them. Instead, it gave us more entry points.
+
+🎯 Multi-Vector Attack:
+[Hash List] ──> [Type Identification] ──> [Parallel Cracking] ──> [Full Credential Dump]`,
     steps: [
       'cat > multi_hashes.txt << EOF',
       '5f4dcc3b5aa765d61d8327deb882cf99',

@@ -25,6 +25,13 @@ export interface SqlInjectionTarget {
   injectionType: string;
   steps: SqlInjectionStep[];
   cpReward: number;
+  villain?: {
+    name: string;
+    alias: string;
+    description: string;
+    avatar: string;
+  };
+  narrative?: string;
 }
 
 export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
@@ -40,6 +47,18 @@ export const SQL_INJECTION_TARGETS: SqlInjectionTarget[] = [
     dbms: 'MySQL 8.0.35',
     difficulty: 'beginner',
     injectionType: 'UNION-Based',
+    villain: {
+      name: 'Kevin Liu',
+      alias: 'The Query Master',
+      description: 'A database administrator who never learned about parameterized queries. His login form is a SQL injection playground.',
+      avatar: '🧑‍💻',
+    },
+    narrative: `💉 Valkyrie: "Kevin Liu — The Query Master — built this login form. He concatenates user input directly into SQL queries. Classic mistake."
+
+UNION-based injection is the most direct attack. We inject our own SELECT statement to extract data from other tables.
+
+💉 Attack Flow:
+[Login Form] ──> [UNION Injection] ──> [Data Extraction] ──> [Credential Harvest]`,
     tables: [
       {
         name: 'users',

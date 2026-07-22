@@ -15,6 +15,13 @@ export interface OsintChallenge {
   steps: OsintStep[];
   cpReward: number;
   skills: string[];
+  villain?: {
+    name: string;
+    alias: string;
+    description: string;
+    avatar: string;
+  };
+  narrative?: string;
 }
 
 export const OSINT_CHALLENGES: OsintChallenge[] = [
@@ -25,6 +32,18 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
     difficulty: 'beginner',
     targetName: 'NovaCorp',
     targetDescription: 'A cybersecurity firm based in Lagos, Nigeria. They have a public website at novacorp.io.',
+    villain: {
+      name: 'Chen Wei',
+      alias: 'The Digital Ghost',
+      description: 'A corporate spy who uses email harvesting to launch phishing attacks. His email patterns are predictable.',
+      avatar: '👻',
+    },
+    narrative: `🔎 Valkyrie: "Chen Wei — The Digital Ghost — harvested NovaCorp's emails to launch a phishing campaign. Let's trace his steps and find every email he could have used."
+
+Email addresses are the first step in any attack. Chen Wei built a database of NovaCorp employees using publicly available information. Let's do the same.
+
+🗺️ Recon Flow:
+[Domain Research] ──> [DNS Enumeration] ──> [Email Harvesting] ──> [Pattern Analysis]`,
     steps: [
       {
         tool: 'whois',
@@ -67,6 +86,18 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
     difficulty: 'intermediate',
     targetName: 'Fatima Okafor',
     targetDescription: 'A developer at NovaCorp. Find her social media profiles and public repositories.',
+    villain: {
+      name: 'The Social Engineer',
+      alias: 'The Profile Builder',
+      description: 'A social engineering expert who builds detailed profiles of targets using public social media data.',
+      avatar: '🕵️',
+    },
+    narrative: `🌐 Valkyrie: "The Social Engineer — The Profile Builder — targets employees through social media. Fatima Okafor is his latest target. Let's see how much information he could have gathered."
+
+Social media is a goldmine for attackers. Fatima's public profiles reveal her location, interests, and even her daily routine. The Social Engineer uses this to craft personalized phishing attacks.
+
+🔍 Social Recon Strategy:
+[Username Search] ──> [Profile Analysis] ──> [Metadata Extraction] ──> [Profile Building]`,
     steps: [
       {
         tool: 'sherlock',
@@ -103,6 +134,18 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
     difficulty: 'intermediate',
     targetName: 'novacorp.io',
     targetDescription: 'The main corporate domain. Find all accessible subdomains.',
+    villain: {
+      name: 'The Subdomain Hunter',
+      alias: 'The Network Mapper',
+      description: 'A reconnaissance specialist who maps entire corporate networks through subdomain enumeration.',
+      avatar: '🗺️',
+    },
+    narrative: `🗺️ Valkyrie: "The Subdomain Hunter — The Network Mapper — discovered NovaCorp's entire infrastructure through subdomain enumeration. Let's see what he found."
+
+Subdomains reveal the hidden architecture of a company. The Network Mapper found everything from dev servers to internal admin panels. Let's trace his steps.
+
+🗺️ Subdomain Strategy:
+[Passive Enumeration] ──> [Active Brute-force] ──> [DNS Resolution] ──> [Service Mapping]`,
     steps: [
       {
         tool: 'subfinder',
@@ -139,6 +182,18 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
     difficulty: 'beginner',
     targetName: 'NovaCorp',
     targetDescription: 'Check if any NovaCorp email addresses appear in known data breaches.',
+    villain: {
+      name: 'The Breach Collector',
+      alias: 'The Data Hoarder',
+      description: 'A black-hat hacker who collects and sells leaked credentials from data breaches.',
+      avatar: '📦',
+    },
+    narrative: `📦 Valkyrie: "The Breach Collector — The Data Hoarder — sold NovaCorp's leaked credentials on the dark web. Let's find out what he had access to."
+
+Data breaches are common, but password reuse makes them dangerous. The Breach Collector found NovaCorp employees using weak passwords. Let's check what's been exposed.
+
+🔍 Breach Analysis:
+[Breach Database] ──> [Credential Matching] ──> [Pattern Analysis] ──> [Risk Assessment]`,
     steps: [
       {
         tool: 'breach-check',
@@ -169,6 +224,18 @@ export const OSINT_CHALLENGES: OsintChallenge[] = [
     difficulty: 'advanced',
     targetName: 'NovaCorp',
     targetDescription: 'Conduct full reconnaissance including DNS, social, subdomain, and breach analysis.',
+    villain: {
+      name: 'The Phantom Network',
+      alias: 'The Intelligence Syndicate',
+      description: 'A group of elite hackers who combine OSINT techniques to build comprehensive profiles of their targets.',
+      avatar: '🌐',
+    },
+    narrative: `🌐 Valkyrie: "The Phantom Network — The Intelligence Syndicate — conducted a full recon of NovaCorp. They used every OSINT technique available. Let's replicate their operation."
+
+The Phantom Network is legendary in the hacking community. They don't write exploits — they use publicly available information to find vulnerabilities. Let's learn from the masters.
+
+🗺️ Full Recon Strategy:
+[Domain Research] ──> [DNS Enumeration] ──> [Social Profiling] ──> [Service Mapping] ──> [Intelligence Compilation]`,
     steps: [
       {
         tool: 'whois',
