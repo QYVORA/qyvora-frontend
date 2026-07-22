@@ -112,8 +112,7 @@ src/
 │   │   │   ├── landing/           # HeroSection, ServicesSection, FinalCtaSection
 │   │   │   ├── HackerGlobe.tsx    # Barrel re-export
 │   │   │   ├── ContactModal.tsx
-│   │   │   ├── ServiceRequestModal.tsx
-│   │   │   └── PromotionalSystem.tsx
+│   │   │   └── ServiceRequestModal.tsx
 │   │   ├── content/               # Blog content, site config, team data
 │   │   ├── hooks/                 # useLandingData, landingCache
 │   │   └── pages/                 # LandingPage, BlogsPage, TeamPage, etc.
@@ -237,8 +236,7 @@ src/
 │   │   │   ├── landing/        # HeroSection, ServicesSection, FinalCtaSection
 │   │   │   ├── HackerGlobe.tsx # Barrel re-export
 │   │   │   ├── ContactModal.tsx
-│   │   │   ├── ServiceRequestModal.tsx
-│   │   │   └── PromotionalSystem.tsx
+│   │   │   └── ServiceRequestModal.tsx
 │   │   ├── content/
 │   │   │   └── siteConfig.ts   # Nav items, brand config
 │   │   └── pages/              # LandingPage, Blog pages, TeamPage, etc.
