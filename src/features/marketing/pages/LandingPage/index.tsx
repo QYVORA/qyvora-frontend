@@ -21,7 +21,6 @@ import LandingFinalCtaSection from '@/features/marketing/components/landing/Land
 
 import { Footer } from '@/shared/components/layout';
 import { useAdaptiveUi } from '@/core/hooks/useAdaptiveUi';
-import PromotionalSystem from '@/features/marketing/components/PromotionalSystem';
 import SEO from '@/shared/components/SEO';
 
 const Landing: React.FC = () => {
@@ -128,7 +127,6 @@ const Landing: React.FC = () => {
           ],
         }}
       />
-      <PromotionalSystem />
 
       {/* 1. Hero — accent */}
       <section id="hero" className="relative w-full min-h-dvh md:h-dvh snap-section">
