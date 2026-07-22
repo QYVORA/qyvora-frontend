@@ -49,6 +49,18 @@ All buttons: `!rounded-xl`, `font-black`, `uppercase`, `tracking-[0.08em]`.
 | `Button` | `src/shared/components/ui/Button.tsx` | primary, secondary, danger, ghost |
 | `Input` | `src/shared/components/ui/Input.tsx` | with/without icon slot |
 | `Badge` | `src/shared/components/ui/Badge.tsx` | default, accent, success, warning, danger, info |
+| `Identicon` | `src/shared/components/Identicon.tsx` | jdenticon SVG with default border/bg |
+
+## Identicon Defaults
+
+The `Identicon` component renders jdenticon SVGs with built-in styling via `cn()` merging:
+
+**Default classes:** `bg-black border-accent/30 rounded-xl`
+
+- **Dark backgrounds:** Default works — black bg + accent border
+- **Accent backgrounds:** Override with `border-black` for contrast
+- **Special cases (e.g. top-3 leaderboard):** Override with `border-0` to suppress
+- Consumer `className` overrides defaults via tailwind-merge
 
 ## Input Fields
 
