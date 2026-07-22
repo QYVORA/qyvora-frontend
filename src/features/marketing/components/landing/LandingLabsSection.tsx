@@ -89,8 +89,8 @@ const LandingLabsSection: React.FC = () => {
               >
                 <div className="relative h-full flex flex-col">
                   <div className="flex items-center justify-between mb-3 sm:mb-6">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border border-accent/30 bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
-                      <Identicon value={featured.id} size={64} className="w-12 h-12 sm:w-16 sm:h-16" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
+                      <Identicon value={featured.id} size={64} className="w-12 h-12 sm:w-16 sm:h-16 border-black" />
                     </div>
                     <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border border-bg/20 bg-bg/10 text-bg">
                       {t(`landing.labs.list.${featured.id}.cp`)}
@@ -129,8 +129,8 @@ const LandingLabsSection: React.FC = () => {
                 >
                   <div className="relative h-full flex flex-col">
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-accent/30 bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
-                        <Identicon value={lab.id} size={48} className="w-9 h-9 sm:w-11 sm:h-11" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-accent/10 overflow-hidden flex items-center justify-center shrink-0">
+                        <Identicon value={lab.id} size={48} className="w-9 h-9 sm:w-11 sm:h-11 border-black" />
                       </div>
                       <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full border border-bg/20 bg-bg/10 text-bg">
                         {t(`landing.labs.list.${lab.id}.cp`)}

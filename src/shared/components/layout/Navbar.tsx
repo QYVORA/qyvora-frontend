@@ -232,11 +232,7 @@ const Navbar: React.FC = React.memo(() => {
               {user && (
                 <Link
                   to="/dashboard/profile"
-                  className={`w-11 h-11 flex-none rounded-xl border overflow-hidden bg-black transition-colors ${
-                    inverted
-                      ? 'border-bg/30 hover:border-bg/50'
-                      : 'border-border/30 hover:border-accent/30'
-                  }`}
+                  className={`w-11 h-11 flex-none rounded-xl overflow-hidden bg-black transition-colors`}
                   aria-label={t('nav.profile')}
                 >
                   <Identicon
@@ -371,7 +367,7 @@ const Navbar: React.FC = React.memo(() => {
                       onClick={closeMenu}
                       className="w-full flex items-center justify-center gap-3 bg-accent text-bg font-bold uppercase tracking-widest rounded-xl px-6 py-3.5 text-sm transition-[filter,transform] duration-200 hover:brightness-110 active:scale-[0.98]"
                     >
-                      <Identicon value={user.username || '?'} size={20} className="w-5 h-5 rounded-lg bg-black" />
+                      <Identicon value={user.username || '?'} size={20} className="w-5 h-5 rounded-lg bg-black border-black" />
                       {user.username}
                     </Link>
                     <ContactTrigger

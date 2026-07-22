@@ -60,7 +60,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inverted = false })
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`p-2 rounded-xl border transition-all ${
+        className={`w-8 h-8 flex items-center justify-center rounded-lg border transition-all ${
           inverted
             ? 'border-bg/30 text-bg hover:bg-bg/10'
             : 'border-border text-text-muted hover:text-accent hover:border-accent/40'

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { cn } from '../utils/cn';
 
 interface IdenticonProps {
   value: string | number;
@@ -31,7 +32,7 @@ const Identicon = ({ value, size = 40, className }: IdenticonProps) => {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: svg }}
-      className={className}
+      className={cn('bg-black border-accent/30 rounded-xl', className)}
     />
   );
 };

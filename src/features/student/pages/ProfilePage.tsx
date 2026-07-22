@@ -9,7 +9,6 @@ import { ProfileSkeleton } from '../components/StudentSkeletons';
 import SEO from '../../../shared/components/SEO';
 import ProfileIdentityBlock from '../../../shared/components/profile/ProfileIdentityBlock';
 import ProfileStatCard from '../../../shared/components/ui/CardStat';
-import ProfileSectionNav from '../../../shared/components/profile/ProfileSectionNav';
 import AchievementsSection from '../../../shared/components/profile/AchievementsSection';
 import ContributionCalendar from '../../../shared/components/profile/ContributionCalendar';
 import ActivityTimeline from '../../../shared/components/profile/ActivityTimeline';
@@ -62,9 +61,6 @@ const Profile: React.FC = () => {
         image="https://qyvora.netlify.app/favicon.png"
         noindex
       />
-
-      {/* Mobile section nav (sticky horizontal tabs) */}
-      <ProfileSectionNav visibleSections={visibleSections} />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-20 lg:pb-24">
           {/* Main content */}
