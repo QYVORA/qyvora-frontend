@@ -153,7 +153,7 @@ Pass icons at `w-10 h-10` or `w-12 h-12` to the shared `EmptyState` component.
 | Navbar logo / actions | `z-[110]` |
 | BottomSheet overlay | `z-[120]` |
 | BottomSheet content | `z-[130]` |
-| InstallBanner / PromotionalSystem | `z-[140]` |
+| InstallBanner | `z-[140]` |
 | CommunityPopup | `z-[145]` |
 | ConsentBanner | `z-[150]` |
 | Dialog overlay | `z-[200]` |

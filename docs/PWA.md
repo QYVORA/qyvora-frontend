@@ -42,8 +42,8 @@ QYVORA Frontend is a Progressive Web App with offline support and install capabi
 
 1. Browser fires `beforeinstallprompt` event
 2. Event captured and stored
-3. `PromotionalSystem` checks `usePopupManager('install', 5)`
-4. Install banner shown to user (highest popup priority)
+3. `InstallBanner` checks `usePopupManager('install', 5)`
+4. Install banner shown to user (lowest popup priority)
 5. User clicks "Install" → browser install prompt
 
 ## Popup Priority
