@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Database, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Skull } from 'lucide-react';
+import { Database, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { SQL_INJECTION_TARGETS } from '@/features/student/data/simulations/sql-injection-data';
 import { createSqlInjectionSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
@@ -9,6 +8,8 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
+import LabHeroSection from '@/shared/components/LabHeroSection';
+import { FlowDiagram } from '@/shared/components/diagrams/FlowDiagram';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -16,6 +17,17 @@ const DIFFICULTY_STYLES: Record<string, string> = {
   intermediate: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
   advanced: 'bg-red-400/10 text-red-400 border-red-400/20',
 };
+
+const SQL_ATTACK_FLOW_NODES = [
+  { id: 'input', label: 'Input Field', icon: '⌨️', status: 'warning' as const },
+  { id: 'query', label: 'Query Builder', icon: '🔍', status: 'danger' as const },
+  { id: 'db', label: 'DB Server', icon: '🗄️', status: 'default' as const },
+];
+
+const SQL_ATTACK_FLOW_ARROWS = [
+  { from: 'input', to: 'query', label: 'Inject', type: 'solid' as const },
+  { from: 'query', to: 'db', label: 'Execute', type: 'dashed' as const },
+];
 
 const SqlInjectionLab = () => {
   const [activeTarget, setActiveTarget] = useState(null);
@@ -78,53 +90,37 @@ const SqlInjectionLab = () => {
   );
 
   if (!activeTarget) {
+    const firstTargetWithVillain = SQL_INJECTION_TARGETS.find(t => t.villain);
     return (
       <div className="bg-bg min-h-full">
         <SEO title="SQL Injection Lab" description="Deep dive into SQL injection techniques." noindex />
-        <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Database className="w-7 h-7 text-accent" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">
-                SQL Injection <span className="text-accent">Deep Dive</span>
-              </h1>
-            </div>
-            <p className="text-base text-text-muted font-mono max-w-2xl">
-              Explore and exploit SQL injection vulnerabilities across different target systems.
-            </p>
-          </div>
-          <div className="border-t border-border/30 mb-10" />
+
+        <LabHeroSection
+          icon={<Database className="w-8 h-8 text-accent" />}
+          title="SQL Injection"
+          accentWord="Deep Dive"
+          description="Explore and exploit SQL injection vulnerabilities across different target systems."
+          villain={firstTargetWithVillain?.villain}
+        />
+
+        <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
+          <div className="border-t border-border/30" />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {SQL_INJECTION_TARGETS.map((target, index) => (
-              <div key={target.id} className="relative">
-                <ScenarioCard
-                  title={target.name}
-                  difficulty={target.difficulty}
-                  description={target.description}
-                  cpReward={target.cpReward}
-                  subtitle={`${target.injectionType} · ${target.dbms}`}
-                  onStart={() => startTarget(target)}
-                />
-                {target.villain && (
-                  <div className="mt-3 rounded-xl border border-red-400/20 bg-red-400/5 p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{target.villain.avatar}</span>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                        <p className="text-xs font-bold text-text-primary">{target.villain.name}</p>
-                      </div>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{target.villain.alias}"</p>
-                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{target.villain.description}</p>
-                  </div>
-                )}
-              </div>
+            {SQL_INJECTION_TARGETS.map((target) => (
+              <ScenarioCard
+                key={target.id}
+                title={target.name}
+                difficulty={target.difficulty}
+                description={target.description}
+                cpReward={target.cpReward}
+                subtitle={`${target.injectionType} · ${target.dbms}`}
+                onStart={() => startTarget(target)}
+              />
             ))}
           </div>
 
-          <div className="mt-10"><RelatedContent {...getRelatedContentForLab('sql-injection')} title="Continue This Topic" /></div>
+          <RelatedContent {...getRelatedContentForLab('sql-injection')} title="Continue This Topic" />
         </div>
       </div>
     );
@@ -151,19 +147,6 @@ const SqlInjectionLab = () => {
           </p>
         </div>
 
-        {activeTarget.villain && (
-          <div className="rounded-2xl border border-red-400/20 bg-red-400/5 p-4 mb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{activeTarget.villain.avatar}</span>
-              <div className="flex-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-red-400">Target Villain</p>
-                <p className="text-sm font-bold text-text-primary">{activeTarget.villain.name} <span className="text-red-400/70 font-mono text-xs">({activeTarget.villain.alias})</span></p>
-                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeTarget.villain.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {activeTarget.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
           const firstIncomplete = activeTarget.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
@@ -173,7 +156,7 @@ const SqlInjectionLab = () => {
           const emojis = ['💉', '🗄️', '🔓', '💀', '🎯', '🏆'];
           const emoji = emojis[index % emojis.length];
 
-          const narrative = `${emoji} SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nAttack Flow:\n  ┌──────────┐     ┌──────────┐     ┌──────────┐\n  │  Input   │────▶│  Query   │────▶│  DB      │\n  │  Field   │     │  Builder │     │  Server  │\n  └──────────┘     └──────────┘     └──────────┘\n       │                │                │\n       └── Inject ──────┘                │\n              │                          │\n              └──── Data ◀───────────────┘\n\nExecute the command below to proceed.`;
+          const narrative = `${emoji} SQL Injection — Step ${index + 1}\n\n${step.explanation}\n\nExecute the command below to proceed.`;
 
           return (
             <WalkthroughStep
@@ -189,7 +172,15 @@ const SqlInjectionLab = () => {
               labId="sql-injection"
               onFlagSubmit={handleFlagSubmit}
               onComplete={() => handleStepComplete(index)}
-            />
+            >
+              {index === 0 && (
+                <FlowDiagram
+                  nodes={SQL_ATTACK_FLOW_NODES}
+                  arrows={SQL_ATTACK_FLOW_ARROWS}
+                  direction="horizontal"
+                />
+              )}
+            </WalkthroughStep>
           );
         })}
 

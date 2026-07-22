@@ -16,7 +16,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative w-full min-h-dvh md:h-dvh bg-accent flex items-center overflow-hidden" data-nav-invert>
+    <div className="relative w-full min-h-dvh md:h-dvh bg-bg flex items-center overflow-hidden" data-nav-invert>
       <GridBoxedBackground opacity={0.4} blur={0} mask="right" />
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-3 sm:px-8 lg:px-12 xl:px-16 flex flex-col justify-center pb-12 lg:pb-0">
 
@@ -33,7 +33,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               <QyvoraMark
                 aria-label="QYVORA Logo - Africa's Offensive Security Platform"
                 className="relative z-10 w-full h-auto block"
-                color="#000000"
+                color="#06B66F"
               />
             </div>
           </motion.div>
@@ -42,7 +42,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             <SimpleHeading
               text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
-              variant="inverted"
+              variant="default"
               className="mb-0"
             />
 
@@ -51,7 +51,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base sm:text-lg text-bg/60 leading-relaxed max-w-xl"
+              className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-xl"
             >
               {t('landing.finalCta.description')}
             </motion.p>
@@ -96,7 +96,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
             <SimpleHeading
               text={user ? t('landing.finalCta.headingReturning') : t('landing.finalCta.headingNew')}
               align="left"
-              variant="inverted"
+              variant="default"
               className="mb-6"
             />
 
@@ -105,7 +105,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base md:text-lg text-bg/60 leading-relaxed mb-10 max-w-xl"
+              className="text-base md:text-lg text-text-secondary leading-relaxed mb-10 max-w-xl"
             >
               {t('landing.finalCta.description')}
             </motion.p>
@@ -154,7 +154,7 @@ const LandingFinalCtaSection: React.FC<LandingFinalCtaSectionProps> = ({ user })
               <QyvoraMark
                 aria-label="QYVORA Offensive Security Platform"
                 className="relative z-10 w-full max-w-[850px] xl:max-w-[1100px] h-auto block"
-                color="#000000"
+                color="#06B66F"
               />
             </div>
           </motion.div>

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { ACCENT_COLOR, ACCENT_COLOR_HEX, MAP_COLOR_HEX } from './data';
+import { ACCENT_COLOR, ACCENT_COLOR_HEX } from './data';
 
 export type BBox = { minLat: number; maxLat: number; minLng: number; maxLng: number };
 
@@ -171,7 +171,7 @@ export function buildDotMapTexture(isLight: boolean, step = 1.8): THREE.CanvasTe
   ctx.clearRect(0, 0, W, H);
 
   const dotR      = (step / 180) * H * (step > 2 ? 0.50 : 0.38);
-  const landFill  = MAP_COLOR_HEX;
+  const landFill  = ACCENT_COLOR_HEX;
 
   for (let lat = 89; lat >= -89; lat -= step) {
     for (let lng = -179; lng <= 179; lng += step) {

@@ -15,11 +15,9 @@ const FOOTER_COLS = [
   {
     title: 'Platform',
     links: [
-      { key: 'events', label: 'Events', path: '/events' },
       { key: 'hpb', label: 'HPB', path: '/hpb' },
       { key: 'anansi', label: 'Anansi', path: '/anansi' },
       { key: 'blogs', label: 'Blogs', path: '/blogs' },
-      { key: 'news', label: 'News', path: '/news' },
       { key: 'market', label: 'Market', path: '/zero-day-market' },
       { key: 'leaderboard', label: 'Leaderboard', path: '/leaderboard' },
       { key: 'services', label: 'Services', path: '/services' },

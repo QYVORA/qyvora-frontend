@@ -107,11 +107,13 @@ px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
 
 | Context | Size |
 |---------|------|
-| Marketing hero | `text-[2rem]` to `text-[3rem]` (responsive via PublicHeroSection) |
+| Marketing hero | `text-[2rem]` to `text-[3rem]` (responsive via PublicHeroSection). Use `text-text-primary` for main text, `text-accent` for highlighted words. |
 | Dashboard | `text-4xl md:text-5xl` |
 | Admin | `text-4xl md:text-5xl lg:text-6xl` |
 | Auth forms | `text-3xl md:text-4xl lg:text-5xl` |
 | Not found | `text-4xl md:text-6xl` |
+
+**Important:** Hero sections use `bg-bg` (black) backgrounds. All hero children must use dark-theme text colors (`text-text-primary`, `text-text-secondary`, `text-text-muted`, `text-accent`). Never use `text-bg` on dark backgrounds — it is invisible.
 
 ## Container Widths
 

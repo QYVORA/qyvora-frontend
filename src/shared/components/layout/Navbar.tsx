@@ -137,8 +137,8 @@ const Navbar: React.FC = React.memo(() => {
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <Link to="/" aria-label="QYVORA - Africa's Offensive Security Platform" className="flex items-center shrink-0 transition-transform hover:scale-105 duration-300 relative z-[110]">
-            <Logo size="md" className="hidden md:block" color={inverted ? '#000000' : '#06B66F'} />
-            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#000000' : '#06B66F'} />
+            <Logo size="md" className="hidden md:block" color={inverted ? '#06B66F' : '#06B66F'} />
+            <Logo size="md" variant="mark" className="md:hidden" color={inverted ? '#06B66F' : '#06B66F'} />
           </Link>
 
           {/* ── Desktop Navigation (centered, hover dropdowns) ──── */}
@@ -153,8 +153,8 @@ const Navbar: React.FC = React.memo(() => {
                 <button
                   className={`flex items-center gap-1.5 px-4 py-2 text-sm font-black uppercase tracking-widest transition-colors rounded-xl ${
                     group.items.some((item) => isActive(item.path))
-                      ? inverted ? 'text-bg hover:text-bg/80' : 'text-accent hover:text-accent/80'
-                      : inverted ? 'text-bg/70 hover:text-bg' : 'text-text-primary/70 hover:text-accent'
+                      ? inverted ? 'text-accent hover:text-accent/80' : 'text-accent hover:text-accent/80'
+                      : inverted ? 'text-text-primary/70 hover:text-text-primary' : 'text-text-primary/70 hover:text-accent'
                   }`}
                 >
                   {t(NAV_GROUP_LABELS[group.key] || group.label)}
@@ -246,7 +246,7 @@ const Navbar: React.FC = React.memo(() => {
             {/* ── Mobile hamburger (far right edge) ────────────── */}
             <button
               onClick={handleMenuToggle}
-              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-bg hover:text-bg/70' : 'text-text-primary hover:text-accent'}`}
+              className={`md:hidden p-2 -mr-2 transition-colors relative z-[110] ${inverted ? 'text-text-primary hover:text-accent' : 'text-text-primary hover:text-accent'}`}
               aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
             >
               {isMenuOpen ? <IconX size={24} /> : <IconMenu size={24} />}

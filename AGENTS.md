@@ -76,7 +76,7 @@ px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest
 
 | Context | Pattern |
 |---------|---------|
-| Marketing / landing hero (PublicHeroSection) | `font-black text-bg leading-[1.08] tracking-tight w-full relative` with `block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem]` |
+| Marketing / landing hero (PublicHeroSection) | `font-black text-text-primary leading-[1.08] tracking-tight w-full relative` with `block whitespace-normal lg:whitespace-nowrap text-[2rem] min-[400px]:text-[2.25rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[2.5rem] xl:text-[3rem]` |
 | Student dashboard pages | `text-4xl md:text-6xl` |
 | Admin / leaderboard pages | `text-4xl md:text-5xl lg:text-6xl` |
 | Auth form headings | `text-3xl` |
@@ -95,15 +95,31 @@ All public/marketing page heroes use the `PublicHeroSection` wrapper from `@/sha
 
 **Layout handled by wrapper:**
 - Full-viewport height: `min-h-dvh md:h-dvh`
-- `GridBoxedBackground` with accent bg
+- `GridBoxedBackground` with dark bg (`bg-bg`)
 - Optional `HackerGlobe` (hidden on mobile via `hidden md:flex`)
 - 2-column grid on `lg:`, single-column on mobile
 - Left column padding: `px-4 sm:px-10 md:px-12 lg:pl-16 xl:pl-20 lg:pr-8 xl:pr-12 pt-20 sm:pt-20 lg:pt-24 pb-14 sm:pb-16 lg:pb-16`
 - Inner text wrapper: `space-y-5 sm:space-y-6`
 
+**Text color convention on dark hero backgrounds:**
+
+All hero sections use `bg-bg` (black). Children must use dark-theme text colors — never `text-bg` (which is black and invisible on black).
+
+| Element | Class |
+|---------|-------|
+| h1 heading | `text-text-primary` |
+| Highlighted word in h1 | `text-accent` |
+| Description paragraph | `text-text-secondary` |
+| Badge / label | `text-text-muted` |
+| Icon in badge | `text-accent` |
+| Stat cards border | `border-border/30` |
+| Stat cards bg | `bg-bg-card` |
+| Stat values | `text-text-primary` |
+| Stat labels | `text-text-muted` |
+
 **Description pattern:**
 ```
-text-bg/70 text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono
+text-text-secondary text-base sm:text-lg lg:text-base xl:text-lg leading-relaxed max-w-xl animate-fade-in font-mono
 ```
 Always ONE sentence.
 
@@ -122,6 +138,8 @@ flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2
 ```
 
 **Single-column pages** (Services, Contact): Use `mask="none"`, no `rightContent`, no globe.
+
+**Navbar inversion:** Hero sections use `data-nav-invert` attribute to signal the navbar to invert its colors for contrast over the hero.
 
 ## Container Widths
 

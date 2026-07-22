@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Search, ArrowLeft, CheckCircle, AlertTriangle, Terminal, Globe, Eye } from 'lucide-react';
+import { Globe, CheckCircle } from 'lucide-react';
 import { WalkthroughLayout, WalkthroughStep } from '@/shared/components/walkthrough/';
-import { LabConnectButton } from '@/features/student/components/lab/LabConnectButton';
 import { OSINT_CHALLENGES } from '@/features/student/data/simulations/osint-data';
 import { createOsintSimulations } from '@/features/student/components/simulations/labSimulationContent';
 import SEO from '@/shared/components/SEO';
@@ -9,6 +8,7 @@ import ScenarioCard from '@/shared/components/ScenarioCard';
 import { verifyLabFlag } from '../../../services/lab.service';
 import { getRelatedContentForLab } from '@/shared/constants/topicMap';
 import RelatedContent from '@/shared/components/RelatedContent';
+import LabHeroSection from '@/shared/components/LabHeroSection';
 
 
 const DIFFICULTY_STYLES: Record<string, string> = {
@@ -78,52 +78,36 @@ const OsintLab = () => {
   );
 
   if (!activeChallenge) {
+    const firstChallengeWithVillain = OSINT_CHALLENGES.find(c => c.villain);
     return (
       <div className="bg-bg min-h-full">
         <SEO title="OSINT Recon Lab" description="Master open-source intelligence gathering techniques." noindex />
-        <div className=" px-3 md:px-4 lg:px-6 pt-8 pb-20 lg:pb-24">
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
-                <Globe className="w-7 h-7 text-accent" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tight">
-                OSINT Recon <span className="text-accent">Challenge</span>
-              </h1>
-            </div>
-            <p className="text-base text-text-muted font-mono max-w-2xl">
-              Master open-source intelligence gathering with guided reconnaissance exercises.
-            </p>
-          </div>
-          <div className="border-t border-border/30 mb-10" />
+
+        <LabHeroSection
+          icon={<Globe className="w-8 h-8 text-accent" />}
+          title="OSINT Recon"
+          accentWord="Challenge"
+          description="Master open-source intelligence gathering with guided reconnaissance exercises."
+          villain={firstChallengeWithVillain?.villain}
+        />
+
+        <div className="px-3 md:px-4 lg:px-6 pb-20 lg:pb-24 space-y-8">
+          <div className="border-t border-border/30" />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {OSINT_CHALLENGES.map((challenge, index) => (
-              <div key={challenge.id} className="relative">
-                <ScenarioCard
-                  title={challenge.title}
-                  difficulty={challenge.difficulty}
-                  description={challenge.description}
-                  cpReward={challenge.cpReward}
-                  onStart={() => startChallenge(challenge)}
-                />
-                {challenge.villain && (
-                  <div className="mt-3 rounded-xl border border-purple-400/20 bg-purple-400/5 p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{challenge.villain.avatar}</span>
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-purple-400">Target Villain</p>
-                        <p className="text-xs font-bold text-text-primary">{challenge.villain.name}</p>
-                      </div>
-                    </div>
-                    <p className="text-[10px] font-mono text-text-muted/70 italic">"{challenge.villain.alias}"</p>
-                    <p className="text-[10px] font-mono text-text-muted/60 mt-1 line-clamp-2">{challenge.villain.description}</p>
-                  </div>
-                )}
-              </div>
+            {OSINT_CHALLENGES.map((challenge) => (
+              <ScenarioCard
+                key={challenge.id}
+                title={challenge.title}
+                difficulty={challenge.difficulty}
+                description={challenge.description}
+                cpReward={challenge.cpReward}
+                onStart={() => startChallenge(challenge)}
+              />
             ))}
           </div>
 
-          <div className="mt-10"><RelatedContent {...getRelatedContentForLab('osint')} title="Continue This Topic" /></div>
+          <RelatedContent {...getRelatedContentForLab('osint')} title="Continue This Topic" />
         </div>
       </div>
     );
@@ -135,7 +119,7 @@ const OsintLab = () => {
       <WalkthroughLayout
         title={activeChallenge.title}
         subtitle={activeChallenge.description}
-        icon={<Search className="w-6 h-6" />}
+        icon={<Globe className="w-6 h-6" />}
         difficulty={activeChallenge.difficulty}
         labId="osint"
         scenarioId={activeChallenge.id}
@@ -144,19 +128,6 @@ const OsintLab = () => {
         totalSteps={activeChallenge.steps.length}
         simulations={simulations}
       >
-        {activeChallenge.villain && (
-          <div className="rounded-2xl border border-purple-400/20 bg-purple-400/5 p-4 mb-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{activeChallenge.villain.avatar}</span>
-              <div className="flex-1">
-                <p className="text-[9px] font-black uppercase tracking-widest text-purple-400">Target Villain</p>
-                <p className="text-sm font-bold text-text-primary">{activeChallenge.villain.name} <span className="text-purple-400/70 font-mono text-xs">({activeChallenge.villain.alias})</span></p>
-                <p className="text-xs font-mono text-text-muted/70 mt-1">{activeChallenge.villain.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="rounded-2xl border border-border/30 bg-bg-card p-4 mb-2">
           <p className="text-sm font-black text-text-primary mb-1">🎯 Target: {activeChallenge.targetName}</p>
           <p className="text-sm text-text-muted font-mono">{activeChallenge.targetDescription}</p>

@@ -39,7 +39,7 @@ export const NavCard: React.FC<NavCardProps> = ({
         // Base styles
         'relative group block',
         'bg-bg-card border border-border rounded-2xl',
-        'p-6 sm:p-8',
+        'p-4 sm:p-5',
         'transition-all duration-300',
         
         // Hover & interaction states
@@ -89,7 +89,7 @@ export const NavCard: React.FC<NavCardProps> = ({
       {/* Icon */}
       <div
         className={cn(
-          'w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6',
+          'w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3',
           'flex items-center justify-center',
           'text-accent',
           'transition-all duration-300',
@@ -103,7 +103,7 @@ export const NavCard: React.FC<NavCardProps> = ({
       {/* Label */}
       <h3
         className={cn(
-          'text-center font-bold text-lg sm:text-xl mb-1',
+          'text-center font-bold text-xs sm:text-sm mb-0.5',
           'text-text-primary uppercase tracking-wide',
           'transition-colors duration-300',
           isActive && 'text-accent'
@@ -114,7 +114,7 @@ export const NavCard: React.FC<NavCardProps> = ({
 
       {/* Description (optional) */}
       {description && (
-        <p className="text-center text-sm text-text-secondary mt-2 leading-relaxed">
+        <p className="text-center text-[11px] text-text-secondary mt-1 leading-relaxed">
           {description}
         </p>
       )}
