@@ -89,7 +89,7 @@ All interactive simulation systems in one place.
 - `CourseLessonPage` — inline terminal in lessons with `hasTerminal: true`
 - `NetworksPage` — modal terminal for network lab
 
-**Docs:** `QYVORA_TERMINAL_SIMULATION_COMMANDS.md`, `docs/TERMINAL_SIMULATION.md`
+**Docs:** `SIMULATIONS.md` (this document)
 
 ---
 

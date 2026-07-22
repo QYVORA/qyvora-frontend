@@ -1,6 +1,6 @@
 # QYVORA Frontend Documentation
 
-> **Last Updated:** 2026-07-20
+> **Last Updated:** 2026-07-22
 
 Welcome to the QYVORA Frontend documentation. This guide helps you navigate all available documentation.
 
@@ -23,7 +23,6 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 - **[SIMULATIONS.md](SIMULATIONS.md)** - Complete simulation system reference (20 types)
 - **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)** - Labs, courses, bootcamp overview
 - **[BOOTCAMP.md](BOOTCAMP.md)** - Hacker Protocol Bootcamp details + recent room features
-- **[TERMINAL_SIMULATION.md](TERMINAL_SIMULATION.md)** - Terminal emulator (~149 commands)
 
 ### UI/UX
 - **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Colors, typography, buttons, spacing
@@ -63,8 +62,7 @@ Welcome to the QYVORA Frontend documentation. This guide helps you navigate all 
 
 ### For UI/UX Designers
 1. **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Design tokens and patterns
-2. Root `CUSTOM_ICONS_IMPLEMENTED.md` - Icon library reference
-3. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
+2. **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - Accessibility standards
 
 ### For QA/Testers
 1. **[TESTING.md](TESTING.md)** - Test framework and patterns
@@ -97,8 +95,7 @@ docs/
 ├── Learning System Docs
 │   ├── SIMULATIONS.md           # Complete simulation reference
 │   ├── LEARNING_SYSTEM.md
-│   ├── BOOTCAMP.md
-│   └── TERMINAL_SIMULATION.md
+│   └── BOOTCAMP.md
 │
 ├── UI/UX Docs
 │   ├── DESIGN_SYSTEM.md
@@ -118,16 +115,14 @@ docs/
 │   └── CTF_PLAN.md              # Not yet implemented
 │
 └── archive/                     # Historical reference (read-only)
-    ├── QYVORA_TERMINAL_ENGINEERING_AUDIT.md
-    └── QYVORA_TERMINAL_SIMULATION_COMMANDS.md
+    └── (empty - audits cleaned up)
 ```
 
 Root-level docs (outside `docs/`):
 - `README.md` - Project README with stack, quick start, routes
 - `ROADMAP.md` - Product roadmap with future priorities
-- `CUSTOM_ICONS_IMPLEMENTED.md` - Icon library reference
-- `SEO_AUDIT_REPORT.md` - Comprehensive SEO audit
 - `UIB.md` - Mobile-first UI behavior guidelines
+- `PROFILE_PAGE_UI.md` - Profile page UI design and layout
 
 ---
 
@@ -148,12 +143,11 @@ Root-level docs (outside `docs/`):
 ### UI Components
 - Design tokens: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)**
 - Button styles: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - "Button System"
-- Icons: Root `CUSTOM_ICONS_IMPLEMENTED.md`
+- Identicon defaults: **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - "Identicon Defaults"
 - Component structure: **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)**
 
 ### Learning Features
 - Lab simulations: **[SIMULATIONS.md](SIMULATIONS.md)**
-- Terminal commands: **[TERMINAL_SIMULATION.md](TERMINAL_SIMULATION.md)**
 - Bootcamp structure: **[BOOTCAMP.md](BOOTCAMP.md)**
 - Course system: **[LEARNING_SYSTEM.md](LEARNING_SYSTEM.md)**
 
