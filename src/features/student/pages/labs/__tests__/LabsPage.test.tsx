@@ -14,13 +14,8 @@ const translations: Record<string, string> = {
   'student.labs.title': 'Attack Labs',
   'student.labs.list.privesc.title': 'Privilege Escalation',
   'student.labs.list.passwords.title': 'Password Cracking',
-  'student.labs.list.webapp.title': 'Web Exploitation',
   'student.labs.list.sqli.title': 'SQL Injection',
-  'student.labs.list.phishing.title': 'Phishing Analysis',
-  'student.labs.list.proxy.title': 'Web Proxy',
-  'student.labs.list.traffic.title': 'Traffic Analysis',
   'student.labs.list.osint.title': 'OSINT Recon',
-  'student.labs.list.wireless.title': 'Wireless Security',
   'student.labs.list.killchain.title': 'Kill Chain',
   'student.labs.filter.all': 'All',
   'student.labs.search.placeholder': 'Search labs...',
@@ -62,18 +57,13 @@ describe('LabsPage', () => {
     expect(screen.getByText('Attack Labs')).toBeTruthy();
   });
 
-  it('renders all 10 lab cards', () => {
+  it('renders all 5 lab cards', () => {
     renderLabsPage();
     expect(screen.getByText('Privilege Escalation')).toBeTruthy();
     expect(screen.getByText('Password Cracking')).toBeTruthy();
     expect(screen.getByText('SQL Injection')).toBeTruthy();
-    expect(screen.getByText('Phishing Analysis')).toBeTruthy();
-    expect(screen.getByText('Web Proxy')).toBeTruthy();
-    expect(screen.getByText('Traffic Analysis')).toBeTruthy();
     expect(screen.getByText('OSINT Recon')).toBeTruthy();
-    expect(screen.getByText('Wireless Security')).toBeTruthy();
     expect(screen.getByText('Kill Chain')).toBeTruthy();
-    expect(screen.getAllByText('Web Exploitation').length).toBeGreaterThanOrEqual(1);
   });
 
   it('each lab card links to the correct route', () => {
@@ -82,13 +72,8 @@ describe('LabsPage', () => {
     const hrefs = links.map((l) => l.getAttribute('href'));
     expect(hrefs).toContain('/dashboard/labs/privesc');
     expect(hrefs).toContain('/dashboard/labs/passwords');
-    expect(hrefs).toContain('/dashboard/labs/web-exploitation');
     expect(hrefs).toContain('/dashboard/labs/sql-injection');
-    expect(hrefs).toContain('/dashboard/labs/phishing');
-    expect(hrefs).toContain('/dashboard/labs/proxy');
-    expect(hrefs).toContain('/dashboard/labs/traffic');
     expect(hrefs).toContain('/dashboard/labs/osint');
-    expect(hrefs).toContain('/dashboard/labs/wireless');
     expect(hrefs).toContain('/dashboard/labs/kill-chain');
   });
 
