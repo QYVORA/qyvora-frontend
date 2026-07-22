@@ -186,8 +186,8 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
             isRequired: true,
           },
           {
-            command: 'cat /root/flag.txt 2>/dev/null || echo "FLAG{kc_internal_full_chain_pwned}"',
-            output: `FLAG{kc_internal_full_chain_pwned}`,
+            command: 'cat /root/flag.txt',
+            output: `root@file-srv-01:~# cat /root/flag.txt\n[flag verified server-side]`,
             explanation: 'Capture the final flag to complete the kill chain.',
             isRequired: true,
           },
@@ -325,8 +325,8 @@ export const KILL_CHAIN_SCENARIOS: KillChainScenario[] = [
             isRequired: true,
           },
           {
-            command: 'cat /root/flag.txt 2>/dev/null || echo "FLAG{kc_web_full_chain_complete}"',
-            output: `FLAG{kc_web_full_chain_complete}`,
+            command: 'cat /root/flag.txt',
+            output: `root@target:~# cat /root/flag.txt\n[flag verified server-side]`,
             explanation: 'Capture the final flag.',
             isRequired: true,
           },

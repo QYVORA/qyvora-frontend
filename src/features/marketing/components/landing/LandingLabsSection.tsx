@@ -11,13 +11,8 @@ import { useTranslation } from 'react-i18next';
 const LABS = [
   { id: 'privesc' },
   { id: 'passwords' },
-  { id: 'webapp' },
   { id: 'sqli' },
-  { id: 'phishing' },
-  { id: 'proxy' },
-  { id: 'traffic' },
   { id: 'osint' },
-  { id: 'wireless' },
   { id: 'killchain' },
 ];
 

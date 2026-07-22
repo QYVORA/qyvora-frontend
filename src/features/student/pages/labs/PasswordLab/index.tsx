@@ -134,9 +134,9 @@ const PasswordLab = () => {
       >
         {activeScenario.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
-          const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
-          const isLocked = false;
-          const isActive = isNextStep && !isCompleted;
+          const firstIncomplete = activeScenario.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
+          const isActive = index === firstIncomplete;
+          const isLocked = !isCompleted && index > firstIncomplete;
 
           const narratives = [
             `🔑 Initialize your cracking session.\n\nBefore attacking, we identify the hash type and prepare our toolchain. Different hashes require different approaches:\n\n  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐\n  │  Hash File   │────▶│  Identify    │────▶│  Select Tool │\n  │  (input.txt) │     │  Hash Type   │     │  (john)      │\n  └──────────────┘     └──────────────┘     └──────────────┘\n\nFollow the command below to prepare your environment.`,

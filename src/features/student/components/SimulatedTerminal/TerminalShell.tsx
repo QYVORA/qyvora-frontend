@@ -5,6 +5,7 @@ import { createInitialState, processInput, getInputPrefix } from './engine/state
 import { streamOutput, hasStreamingOutput } from './engine/streaming';
 import { injectBootcampContent } from './context/bootcampContent';
 import { injectCourseContent } from './context/courseContent';
+import { injectLabContent } from './context/labContent';
 import { getDeviceByIp, getHostnameForIp } from '@/features/student/data/fakeNetwork';
 import type { TerminalState, TerminalLine, TerminalContext, VFSNode, ProcessInputResult } from './types';
 
@@ -130,6 +131,9 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
     if (context?.type === 'course' && context.courseId) {
       state = injectCourseContent(state, context.courseId, context.lessonId);
     }
+    if (context?.type === 'lab' && context.labId) {
+      state = injectLabContent(state, context.labId, context.scenarioId);
+    }
 
     stateRef.current = state;
 
@@ -173,8 +177,16 @@ export const TerminalShell: React.FC<TerminalShellProps> = ({
       const state = stateRef.current;
       const newState = injectCourseContent(state, context.courseId, context.lessonId);
       stateRef.current = newState;
+    } else if (context?.type === 'lab' && context.labId) {
+      const labKey = `${context.labId}/${context.scenarioId || ''}`;
+      if (prevRoomKeyRef.current !== labKey) {
+        prevRoomKeyRef.current = labKey;
+        const state = stateRef.current;
+        const newState = injectLabContent(state, context.labId, context.scenarioId);
+        stateRef.current = newState;
+      }
     }
-  }, [context?.bootcampId, context?.phaseId, context?.roomId, context?.courseId, context?.lessonId]);
+  }, [context?.bootcampId, context?.phaseId, context?.roomId, context?.courseId, context?.lessonId, context?.labId, context?.scenarioId]);
 
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);

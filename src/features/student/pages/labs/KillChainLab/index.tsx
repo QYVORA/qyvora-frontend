@@ -146,10 +146,10 @@ const KillChainLab = () => {
         {currentPhase && (
           <>
             {currentPhase.commands.map((cmd, cmdIdx) => {
-              const cmdKey = `${currentPhase.id}-${cmdIdx}`;
-              const isCompleted = completedCommands.has(cmdKey);
-              const allRequiredDone = currentPhase.commands.filter(c => c.isRequired).every((_, i) => completedCommands.has(`${currentPhase.id}-${i}`));
-              const isLastRequired = cmd.isRequired && allRequiredDone;
+          const cmdKey = `${currentPhase.id}-${cmdIdx}`;
+          const isCompleted = completedCommands.has(cmdKey);
+          const firstIncomplete = currentPhase.commands.findIndex((_: any, i: number) => !completedCommands.has(`${currentPhase.id}-${i}`));
+          const isLocked = !isCompleted && cmdIdx > firstIncomplete;
 
               const phaseEmojis = ['🔎', '💉', '💀', '🔓', '📡', '🏆'];
               const phaseIdx = activeScenario.phases.indexOf(currentPhase);
@@ -164,7 +164,7 @@ const KillChainLab = () => {
                   title={`${currentPhase.name} — Command ${cmdIdx + 1}`}
                   narrative={narrative}
                   commandInstruction={cmd.command}
-                  isLocked={false}
+                  isLocked={isLocked}
                   isCompleted={isCompleted}
                   isActive={!isCompleted}
                   flagId={cmdKey}

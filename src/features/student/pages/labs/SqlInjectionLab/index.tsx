@@ -139,9 +139,9 @@ const SqlInjectionLab = () => {
 
         {activeTarget.steps.map((step, index) => {
           const isCompleted = completedSteps.has(index);
-          const isNextStep = index === 0 ? !completedSteps.has(0) : completedSteps.has(index - 1);
-          const isLocked = false;
-          const isActive = isNextStep && !isCompleted;
+          const firstIncomplete = activeTarget.steps.findIndex((_: string, i: number) => !completedSteps.has(i));
+          const isActive = index === firstIncomplete;
+          const isLocked = !isCompleted && index > firstIncomplete;
 
           const emojis = ['💉', '🗄️', '🔓', '💀', '🎯', '🏆'];
           const emoji = emojis[index % emojis.length];

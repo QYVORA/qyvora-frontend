@@ -55,7 +55,7 @@ export const TOPICS: Topic[] = [
     label: 'Networking',
     icon: 'net',
     courses: ['networking-101'],
-    labs: ['traffic', 'proxy'],
+    labs: [],
     hpbRooms: [
       { phaseId: 'phase3', roomId: 'room1' },
       { phaseId: 'phase3', roomId: 'room2' },
@@ -66,7 +66,7 @@ export const TOPICS: Topic[] = [
     label: 'Web Security',
     icon: 'www',
     courses: ['web-technologies-101', 'web-recon-101', 'burp-suite-101'],
-    labs: ['webapp', 'sqli', 'proxy'],
+    labs: ['sqli'],
     hpbRooms: [
       { phaseId: 'phase4', roomId: 'room1' },
       { phaseId: 'phase4', roomId: 'room2' },
@@ -88,20 +88,10 @@ export const TOPICS: Topic[] = [
     label: 'Social Engineering',
     icon: '@',
     courses: [],
-    labs: ['phishing'],
+    labs: [],
     hpbRooms: [
       { phaseId: 'phase5', roomId: 'room1' },
       { phaseId: 'phase5', roomId: 'room2' },
-    ],
-  },
-  {
-    id: 'wireless',
-    label: 'Wireless Security',
-    icon: '~',
-    courses: ['wifi-fundamentals-101'],
-    labs: ['wireless'],
-    hpbRooms: [
-      { phaseId: 'phase3', roomId: 'room3' },
     ],
   },
   {
@@ -130,7 +120,7 @@ export const TOPICS: Topic[] = [
     label: 'Security Tools',
     icon: '$',
     courses: ['burp-suite-101', 'nmap-101', 'wireshark-101'],
-    labs: ['proxy', 'traffic', 'killchain'],
+    labs: ['killchain'],
     hpbRooms: [
       { phaseId: 'phase3', roomId: 'room2' },
       { phaseId: 'phase4', roomId: 'room1' },
@@ -176,13 +166,8 @@ const COURSE_REFS: Record<string, ContentRef> = {
 const LAB_REFS: Record<string, ContentRef> = {
   privesc: { type: 'lab', id: 'privesc', title: 'Privilege Escalation', subtitle: 'Escalate to root', route: '/dashboard/labs/privesc', color: '#FBBF24' },
   passwords: { type: 'lab', id: 'passwords', title: 'Password Cracking', subtitle: 'Crack password hashes', route: '/dashboard/labs/passwords', color: '#F59E0B' },
-  webapp: { type: 'lab', id: 'webapp', title: 'Web Exploitation', subtitle: 'Exploit web vulnerabilities', route: '/dashboard/labs/web-exploitation', color: '#EF4444' },
-  sqli: { type: 'lab', id: 'sqli', title: 'SQL Injection', subtitle: 'Extract data via SQLi', route: '/dashboard/labs/sql-injection', color: '#06B66F' /* must match --color-accent */ },
-  phishing: { type: 'lab', id: 'phishing', title: 'Phishing Analysis', subtitle: 'Identify phishing campaigns', route: '/dashboard/labs/phishing', color: '#8B5CF6' },
-  proxy: { type: 'lab', id: 'proxy', title: 'Web Proxy', subtitle: 'Intercept HTTP traffic', route: '/dashboard/labs/proxy', color: '#10B981' },
-  traffic: { type: 'lab', id: 'traffic', title: 'Traffic Analysis', subtitle: 'Analyze network traffic', route: '/dashboard/labs/traffic', color: '#84CC16' },
+  sqli: { type: 'lab', id: 'sqli', title: 'SQL Injection', subtitle: 'Extract data via SQLi', route: '/dashboard/labs/sql-injection', color: '#06B66F' },
   osint: { type: 'lab', id: 'osint', title: 'OSINT Recon', subtitle: 'Open source intelligence', route: '/dashboard/labs/osint', color: '#0EA5E9' },
-  wireless: { type: 'lab', id: 'wireless', title: 'Wireless Security', subtitle: 'Crack wireless encryption', route: '/dashboard/labs/wireless', color: '#F59E0B' },
   killchain: { type: 'lab', id: 'killchain', title: 'Kill Chain', subtitle: 'Full pentest walkthrough', route: '/dashboard/labs/kill-chain', color: '#DC2626' },
 };
 
