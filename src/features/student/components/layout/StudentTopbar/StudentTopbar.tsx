@@ -208,7 +208,7 @@ const StudentTopbar = () => {
                   className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
                   aria-label="Open profile menu"
                 >
-                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+                  <Identicon value={user?.username || '?'} size={36} className="w-full h-full bg-accent" />
                 </button>
 
                 <MobileProfileSheet
@@ -290,7 +290,7 @@ const StudentTopbar = () => {
                 className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
                 aria-label="Open profile menu"
               >
-                <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+                <Identicon value={user?.username || '?'} size={36} className="w-full h-full bg-accent" />
               </button>
 
               <MobileProfileSheet
@@ -348,7 +348,7 @@ const StudentTopbar = () => {
               className="md:hidden w-9 h-9 flex-none rounded-lg overflow-hidden transition-colors"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.username || '?'} size={36} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={36} className="w-full h-full bg-accent" />
             </button>
 
             <MobileProfileSheet
@@ -426,7 +426,7 @@ const StudentTopbar = () => {
               className="md:hidden w-9 h-9 md:w-11 md:h-11 flex-none rounded-lg overflow-hidden transition-colors"
               aria-label="Open profile menu"
             >
-              <Identicon value={user?.username || '?'} size={44} className="w-full h-full" />
+              <Identicon value={user?.username || '?'} size={44} className="w-full h-full bg-accent" />
             </button>
 
             <MobileProfileSheet
