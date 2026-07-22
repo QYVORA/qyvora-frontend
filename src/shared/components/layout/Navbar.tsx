@@ -21,7 +21,6 @@ const NAV_GROUP_LABELS: Record<string, string> = {
 };
 
 const NAV_ITEM_LABELS: Record<string, string> = {
-  courses: 'nav.courses',
   hpb: 'nav.hpb',
   events: 'nav.events',
   services: 'nav.services',
