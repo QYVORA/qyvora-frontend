@@ -28,6 +28,7 @@ import type {
   MarketplaceItem,
 } from '../components/landing/types';
 import { resolveImg } from '../components/landing/helpers';
+import { getAccessToken } from '../../../core/services/api';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 
@@ -225,7 +226,10 @@ export const warmLandingImageCache = async (snapshot: LandingSnapshot): Promise<
         const existing = await imageCache.match(absoluteUrl);
         if (existing) return;
 
-        const response = await fetch(absoluteUrl, { credentials: 'include' });
+        const authHeaders: Record<string, string> = {};
+        const token = getAccessToken();
+        if (token) authHeaders['Authorization'] = `Bearer ${token}`;
+        const response = await fetch(absoluteUrl, { credentials: 'include', headers: authHeaders });
         if (response.ok) {
           // Store a clone — the original response body can only be read once
           await imageCache.put(absoluteUrl, response.clone());
